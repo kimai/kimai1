@@ -1,0 +1,28 @@
+
+body {
+	color: black;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+}
+
+th {
+	background: #ccc;
+	border-top: 1px solid #999;
+	border-bottom: 1px solid #999;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+td {
+	border-bottom: 1px solid #999;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 11px;
+}
+
+
+
+#div_liste {
+	float: left;
+	width: 600px;
+}

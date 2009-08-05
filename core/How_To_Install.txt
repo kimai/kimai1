@@ -1,0 +1,104 @@
+Installation:
+-------------
+
+# Use a *modern* Browser!
+# You need PHP 5 with PDO-support and access to a MySQL-database.
+# Start your Browser and go to your Kimai directory.
+# Since 0.8 Kimai has a step-by-step installation program. 
+  Just follow the instructions of the installer.
+
+IMPORTANT! Remove the 'installer' directory when you’ve successfully
+installed Kimai.
+
+  ***********************************************
+  * You can login via the preinstalled account: *
+  * User: admin / Password: changeme            *
+  ***********************************************
+
+When Kimai doesn't start the reason is probably wrong writing permissions
+of certain files and folders! The installer shows you which permissions
+are to be set.
+
+If you have problems installing, please read the section 'Support'
+in the forum. -> http://forum.kimai.org
+
+A new version updates the database automatically (is nessesary).
+Before that a backup of your data will be created. Normally you'll
+not even notice this process. If anything goes wrong during the
+database-update you can recover the data via phpMyAdmin (we're
+also working on a tool for recoverage...)
+
+
+Updates:
+--------
+
+YOU CAN ONLY UPDATE VERSIONS HIGHER THAN 7.0!
+
+There are two new variables to set in the conf.php if you did not
+install via the step-by-step installer:
+
+$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
+						  // check the PHP PDO manual if you are using a different
+						  // database
+$server_conn = "mysql";
+
+The installation will then be performed in non-PDO mode. If you want to
+use PDO $server_conn must be set to "pdo".
+
+To install a new version just replace the entire directory with the new
+package except the file 'conf.php' which sits insite the 'includes' folder.
+Additionally you have to set the writing permissions of the directory 'compile' 
+so that PHP can write to it. Additionally you need to make all 'compile' folders 
+(also inside all extension subfolders!). Writing permission must also be granted
+to the 'temporary' folder and the included 'logfile.txt'.
+
+For coming versions (>0.8.0) you need to keep the file 'autoconf.php' if you
+installed Kimai via the UI-Installer (not by editing the 'conf.php').
+
+Once again: Kimai will NOT work with wrong writing permissions!
+
+
+CAUTION:
+--------
+
+This software is free of charge. That doesn't mean, that you are allowed to
+remove copyright-notes. Neither on the login-panel nor in the cretits-window.
+Of course you're not allowed to remove the link to the credits... If those
+notes are bothing you and you do not agree with this rules - DON'T use
+Kimai. 
+
+
+
+Installation via conf.php
+-------------------------
+
+Hint: This is the *old* way to install Kimai. You *can* install this way,
+but it is recommended to install via the step-by-step installer.
+
+# Enter database name, server, host, etc. into the /includes/conf.php file.
+
+# Make sure that the 'temporary' directory and the contained 'logfile.txt' are
+  writable for PHP.
+  
+# Make sure that the 'compile' directory is writable for PHP. Also proceed this
+  way with the 'compile' directories of all extensions. You find a shell-script
+  which performs this tasks under Unix and Linux systems.
+
+# Call up the Kimai directory in your browser
+  (the database tables are generated automatically then)
+  
+# The 'includes' folder should be protected from external access. On Apache
+  servers you achieve this with the delivered .htaccess file (make sure
+  your FTP-client transfers invisible files).
+  
+# Setup ready!
+
+You can set more options in the file 'includes/vars.php' such as the date-format
+for example. By default Kimai displays dates like "day.month.year". You can
+easily change that into "month-day-year" ... You find more instructions
+directly in the vars.php file.
+
+SQL for database creation: 
+CREATE DATABASE `kimai` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+Have Fun!

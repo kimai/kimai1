@@ -1,0 +1,84 @@
+#zef,#knd,#pct,#evt {
+    border:1px solid black; 
+    margin:0;
+    padding:0;
+    background-color:#eee;
+    position:absolute;
+    overflow:auto;
+    left:10px;
+}
+
+#knd, #evt, #pct { 
+    height:175px;
+    border-top:none;
+    z-index:1;
+}
+
+#zef { 
+    top:150px;
+    z-index:2;
+}
+
+#zef_head, #knd_head, #pct_head, #evt_head {
+    border:1px solid black; 
+    border-bottom:none;
+    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    position:absolute;
+    height:25px;
+    text-align:left;
+    color:#FFF;
+    left:10px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+#knd_head, #pct_head, #evt_head {
+    padding:3px 0 0 5px;
+}
+
+#zef_head { top:125px; }
+
+#zef_head table { border:none; }
+
+#zef_head td {
+    font-weight:bold;
+    color:white;
+}
+
+#zefShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('../../../skins/standard/grfx/zefShrink_up.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:500px;
+    height:10px;
+    left:10px;
+    z-index:30;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+#kndShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('../../../skins/standard/grfx/kndShrink_left.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:10px;
+    height:100px;
+    left:10px;
+    z-index:31;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+

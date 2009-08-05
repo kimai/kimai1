@@ -1,0 +1,18 @@
+/* your extension_key is (among others) used for the wrapper DIV */
+div .demo_ext {
+    border:1px solid black;
+    padding:10px;
+    margin:10px;
+    color:black;
+    background:white;
+}
+
+h1 {
+    color:#f00;
+}
+
+#testdiv {
+    padding:5px;
+    color:gray;
+    background:yellow;
+}

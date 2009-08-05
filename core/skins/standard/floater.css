@@ -1,0 +1,172 @@
+#floater {
+    border:1px solid #fff;
+	position: absolute;
+	padding:5px;
+	background: url("grfx/floaterborder.png");
+	z-index: 500;
+	display:none;
+}
+
+#floater_innerwrap {
+    background-color:#444;
+    border: 1px solid #222;
+}
+
+#floater_handle {
+    background: url("grfx/g3_table_header.png");
+    border-bottom:1px solid #555;
+    padding:2px;
+    padding-left:10px;
+    font-weight:bold;
+    line-height:18px;
+    color: #FFFFFF;
+    height:20px;
+}
+
+#floater_handle:hover {
+    cursor: move;
+}
+
+#floater_content {
+    color: #FFFFFF;
+	padding:10px;
+	font-size:11px;
+	overflow: auto;
+}
+
+#floater_content h2 { 
+    color: #0BE400; 
+}
+    
+#floater_content a, 
+#floater_content a:visited {
+	color:#fff;
+}
+
+
+/* forms */
+
+#floater_content fieldset {
+    border:none;
+}
+#floater_content fieldset label {
+    margin-right:5px;
+    width:110px;
+    float:left;
+    text-align:right;
+}
+#floater_content fieldset ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#floater_content fieldset li {
+    border-bottom:1px dotted #666;
+    padding: 5px 0;
+}
+#floater_content fieldset select,
+#floater_content fieldset input,
+#floater_content fieldset textarea
+{
+    background-color:#fff;
+    border:3px double #bbb;
+}
+
+#floater_content #formbuttons {
+    margin-top:10px;
+}
+
+#floater_content #formbuttons .btn_ok {
+    cursor: pointer;
+    background-color:#4AA917;
+    font-weight:bold;
+    color:#fff;
+}
+
+#floater_content #formbuttons .btn_norm {
+    cursor: pointer;
+    background-color:#B72917;
+    font-weight:bold;
+    color:#fff;
+}
+
+
+#floater div#help {
+    cursor: pointer;
+    font-size:10px;
+    background-color:#666;
+    border-bottom:1px solid #777;
+}
+
+#floater div#help div.content {
+    padding:10px;
+    color:#fff; 
+}
+
+#floater_handle div.right { 
+    position:absolute;
+    overflow:hidden;
+    width:80px;
+    height:16px;
+    top:9px;
+    right:10px;
+/*    background-color:red;*/
+}
+
+#floater_handle div.right a {
+    cursor: pointer;
+    margin-left:2px;
+    float:right;
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    text-indent:-500px;
+}
+
+#floater_handle div.right a.close { 
+    background: url('grfx/close.png') no-repeat;
+}
+
+#floater_handle div.right a.options.down { 
+    background: url('grfx/options2.png') no-repeat 0 0;
+}
+
+#floater_handle div.right a.options.up { 
+    background: url('grfx/options2.png') no-repeat 0 -16px;
+}
+
+#floater_handle div.right a.help { 
+    background: url('grfx/help.png') no-repeat 0 0;
+}
+
+
+
+
+
+/*
+#floater_content a.options.down {
+    display:block;
+    text-decoration:none;
+    float:right;
+    color:#aaa;
+    width:100px;
+    height:13px;
+    padding-right:20px;
+    text-align:right;
+    background: url("grfx/options.png") no-repeat 105px 0;
+}
+
+#floater_content a.options.up {
+    display:block;
+    text-decoration:none;
+    float:right;
+    color:#aaa;
+    width:100px;
+    height:13px;
+    padding-right:20px;
+    text-align:right;
+    background: url("grfx/options.png") no-repeat 105px -20px;
+}
+*/
+

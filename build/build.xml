@@ -1,0 +1,114 @@
+<project name="KIMAI" default="help" basedir="..">
+
+	<!--
+	    ##########################################################
+		# Loads the main XML file to have a proper build         #
+		# environment. Adjust the settings in there, NOT HERE!   #
+	    ##########################################################
+	-->
+	<import file="./environment.xml"/>
+
+	<description>
+        Build File for the Kimai - Time Tracking Software.
+		
+	 	Copyright (C) Kimai Team.
+		See http://www.kimai.org/ for further informations.
+		
+		Distributed under the terms of the GNU General Public License.
+    </description>
+	
+	<!--
+		Creates all required empty directories, which might not be available from SVN.
+	-->
+	<target name="release.empty-directories" depends="release.check" if="release.initialized">
+		<!-- mkdir dir="${release.path}/test/"/ -->
+	</target>
+
+
+	<!--
+		This task creates a KIMAI file release.
+		
+		ATTENTION: All existing resources will be overwritten!
+	-->
+	<target name="release.files" depends="release.check" if="release.initialized">
+	    <!-- Create release directory -->
+		<mkdir dir="${release.path}"/>
+
+		<!-- Copy core files over there -->
+	  	<copy todir="${release.path}" includeemptydirs="true" overwrite="true">
+	  	    <fileset dir="${core.src}">
+	  	    	<patternset refid="always.exclude.files" />
+	  	    	<patternset refid="release.exclude.files" />
+	  		</fileset>
+		</copy>
+	</target>
+
+    <!-- 
+		This task creates the KIMAI release like mentioned in the Task "release.files"
+		and creates a ZIP File from all these resources.
+		
+		Make sure that the release directory is cleaned up before, otherwise you might
+		have data within your release ZIP, which is NOT part of KIMAI!
+    -->
+	<target name="release.archives">
+		<mkdir dir="${target.release.dir}"/>
+		<zip destfile="${target.release.zip}">
+		    <fileset dir="${target.release.dir}"/>
+		</zip>
+		<tar destfile="${target.release.tar}">
+			<fileset dir="${target.release.dir}"/>
+		</tar>
+		<bzip2 destfile="${target.release.bz2}" src="${target.release.tar}"/>
+		<delete file="${target.release.tar}"/>
+		<delete dir="${target.release.dir}"/>
+	</target>
+	
+	<!--
+		Creates a Kimai ZIP release.
+		
+		After checking dependencies and creating the file release, a ZIP archive will be created.
+	-->
+	<target name="release" description="Creates a Kimai release ZIP archive.">
+		<antcall target="release.files">
+			<param name="release.path" value="${target.release.dir}"/>
+		</antcall>
+		<antcall target="release.empty-directories">
+			<param name="release.path" value="${target.release.dir}"/>
+		</antcall>
+		<antcall target="release.archives" />
+	</target>
+	
+	<!-- 
+		Checks whether all required variables for releasing files are set. 
+	-->
+	<target name="release.check">
+	    <condition property="release.initialized">
+	        <and>
+	        	<isset property="release.path" />
+	        </and>
+	    </condition>
+	</target>
+
+	<!--
+		#####################################################
+        ##   [START] HELP                                  ##
+		#####################################################
+	-->
+	<target name="help" description="Show help">
+		<echo taskname="INFO" level="info">
+KIMAI - Time Tracking Software.
+
+Copyright (C) Kimai Team.
+See http://www.kikmai.org for further information.
+Distributed under the terms of the GNU General Public License.
+
+Adjust the settings in build.properties, before executing!
+
+Available tasks:
+================
+release - creates the KIMAI release archive
+help    - display this short help
+		</echo>
+	</target>
+	
+</project>

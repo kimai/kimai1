@@ -1,0 +1,76 @@
+<project name="KIMAI-Env" default="help" basedir="..">
+
+	<!--
+	    ##########################################################
+		# Loads all required Properties from the Properties file.#
+		# Adjust the settings in there, NOT HERE!                #
+	    ##########################################################
+	-->
+	<loadproperties srcfile="build/build.properties" />
+
+	<description>
+        Creates the environment for the Kimai - Time Tracking Software.
+		
+	 	Copyright (C) Kimai Team.
+		See http://www.kimai.org/ for further informations.
+		
+		Distributed under the terms of the GNU General Public License.
+    </description>
+
+	<!-- Kimai Directories -->
+	<property name="core.src" location="core"/>
+	<property name="upgrade.src" location="upgrade"/>
+
+	<!-- Excludes files for test deploys, which would overwrite settings of an existing installation -->
+	<patternset id="exclude.test.files" description="Files to be excluded from the copy tasks for local deployments">
+	  	<exclude name="**/autoconf.php"/>
+	</patternset>
+
+	<!-- These files will be excluded from every task. Add files like Eclipse .project or CVS files here. -->
+    <patternset id="always.exclude.files" description="Files to be excluded from copy tasks">
+	  	<exclude name=".settings"/>
+	  	<exclude name=".project"/>
+	  	<exclude name=".svn"/>
+	  	<exclude name="Entries"/>
+	  	<exclude name="Repository"/>
+	  	<exclude name="Root"/>
+	</patternset>
+	
+	<!-- These files will be excluded from release task. Only add project specific files here. -->
+	<patternset id="release.exclude.files" description="Files to be excluded from release tasks">
+	  	<exclude name="test_umysql_layer"/>
+	  	<exclude name="updater_old.php"/>
+	  	<exclude name="kimaiversion.php"/>
+	  	<exclude name="todo.txt"/>
+	</patternset>
+
+	<!-- Name and location of the release files -->
+	<property name="upgrade.zip.filename" 	value="kimai_update_${upgrade.version}.zip"/>
+	<property name="upgrade.tar.filename" 	value="kimai_update_${upgrade.version}.tar.bz2"/>
+	<property name="install.zip.filename" 	value="kimai_install_${release.version}.zip"/>
+	<property name="release.zip.filename" 	value="kimai_${release.version}.zip"/>
+	<property name="release.tar.filename" 	value="kimai_${release.version}.tar"/>
+	<property name="release.bz2.filename" 	value="${release.tar.filename}.bz2"/>
+	
+	<property name="target.extensions.dir" 	location="${extensions.directory}/"/>
+	<property name="target.release.dir"  	location="${release.directory}/temp/"/>
+	<property name="target.install.file" 	location="${release.directory}/${install.zip.filename}"/>
+	<property name="target.release.tar" 	location="${release.directory}/${release.tar.filename}"/>
+	<property name="target.release.bz2" 	location="${release.directory}/${release.bz2.filename}"/>
+	<property name="target.release.zip" 	location="${release.directory}/${release.zip.filename}"/>
+	<property name="target.release.aps" 	location="${release.directory}/${install.aps.filename}"/>
+
+	<!-- HELP TASK -->
+	<target name="help">
+		<echo taskname="INFO" level="info">
+KIMAI - Time Tracking Software.
+
+Copyright (C) Kimai Team.
+See http://www.kikmai.org for further information.
+Distributed under the terms of the GNU General Public License.
+
+This files has no executable tasks, please run the build.xml file!
+		</echo>
+	</target>
+	
+</project>

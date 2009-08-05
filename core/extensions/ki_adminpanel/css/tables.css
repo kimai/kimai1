@@ -1,0 +1,37 @@
+#ap_ext_panel table {
+    font-size: 11px;
+    color: #363636;
+    border-collapse:collapse;
+    width:100%;
+    border:1px solid #ccc;
+}
+
+#ap_ext_panel table th {
+    height:25px;
+    background-color:#666;
+    color:#fff;
+    text-align:left;
+    padding-left:5px;
+}
+
+#ap_ext_panel table td {
+    padding-left:5px;
+}
+
+#ap_ext_panel table tr {
+    height:20px;
+    background-color:#eee;
+    border-bottom:1px solid #ccc;
+}
+
+#ap_ext_panel table tr.even {
+    background-color:#fff;
+}
+
+#ap_ext_panel div.ap_ext_subject td.option {
+    width:30px;
+}
+
+#ap_ext_panel div.ap_ext_4cols td {
+    width:25%;
+}
