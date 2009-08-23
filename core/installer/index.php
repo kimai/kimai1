@@ -1,5 +1,7 @@
 <?php
 $installsteps=8;
+$kga = array();
+require("../includes/version.php");
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -40,7 +42,7 @@ $installsteps=8;
             </script>";
         ?>
         </div>
-        <h1>Installation v0.8.0</h1>
+        <h1>Installation <?php echo "v".$kga['version'].".".$kga['revision'] ?></h1>
         </div>
         <div id="body">
             
