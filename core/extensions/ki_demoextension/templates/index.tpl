@@ -10,6 +10,10 @@
     </script>
 {/literal}
 
+<div id="demo_ext_header">
+     <strong>Demo Extension</strong>
+</div>
+
 
 <h1>My Extension</h1>
 

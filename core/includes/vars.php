@@ -92,6 +92,7 @@ $kga['show_RecordAgain'] = 1;       // set to 0 to supress the 'record again' bu
 $kga['show_TrackingNr'] = 1;        // set to 1 to make the tracking number of timesheet records editable
 
 $kga['global'] = 0;                 // set to 1 to make tracking records of all users visible for admins
+// not fully implemented yet!
 
 
                                 

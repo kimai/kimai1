@@ -1,8 +1,24 @@
 /* your extension_key is (among others) used for the wrapper DIV */
+
+#demo_ext_header {
+        border:1px solid black; 
+        border-bottom:none;
+        background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+        position:absolute;
+        height:25px;
+        text-align:left;
+        color:#FFF;
+        left:10px;
+        font-size:11px;
+        font-weight:bold;
+    }
+
+
 div .demo_ext {
     border:1px solid black;
-    padding:10px;
+    padding:5px;
     margin:10px;
+    margin-top:25px;
     color:black;
     background:white;
 }
