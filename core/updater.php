@@ -120,7 +120,7 @@ EOD;
 	       border:1px solid black;
 	   }
 	</style>
-    <script src="libraries/jQuery/jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 

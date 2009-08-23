@@ -6,7 +6,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Kimai Error</title>
     <link rel="stylesheet" type="text/css" media="screen" href="css/error.css" />
-    <script src="../../libraries/jQuery/jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
     
     {literal}    
         <script type="text/javascript"> 

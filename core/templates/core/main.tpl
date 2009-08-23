@@ -17,7 +17,7 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libs -->
-    <script src="../libraries/jQuery/jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
