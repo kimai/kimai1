@@ -171,6 +171,7 @@ $kga['lang'] = array(
 "hint"              => "Hinweis:",
 "usr_caution1"      => "Wenn Sie den Benutzernamen von",
 "usr_caution2"      => "ändern, müssen Sie sich danach direkt mit dem neuen Namen wieder einloggen!",
+"timediff_warn"     => "Sie müssen unterschiedliche Werte in die Zeiten-Felder eintragen!",
 "visibility"        => "Sichtbarkeit",
 "showitem"          => "sichtbar machen",
 "hideitem"          => "unsichtbar machen",

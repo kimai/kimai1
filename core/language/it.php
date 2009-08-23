@@ -171,6 +171,7 @@ $kga['lang']= array(
 "hint"              => "Hint:",
 "usr_caution1"      => "If you change the user-name of",
 "usr_caution2"      => "you have to re-login under your new username immediately!",
+"timediff_warn"     => "You must enter different times into the time in-/out fields!",
 "visibility"        => "Visibility",
 "showitem"          => "make visible",
 "hideitem"          => "make invisible",
