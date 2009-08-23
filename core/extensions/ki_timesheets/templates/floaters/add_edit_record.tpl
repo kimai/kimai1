@@ -1,10 +1,20 @@
 {literal}    
     <script type="text/javascript"> 
+        
         $(document).ready(function() {
             $('#help').hide();
             $('#ts_ext_form_add_edit_record').ajaxForm(function() { 
-                floaterClose();
-                ts_ext_reloadAllTables();
+                
+                $edit_in_time = $('#edit_in_time').val();
+                $edit_out_time = $('#edit_out_time').val();
+                
+                if ($edit_in_time == $edit_out_time) {
+                    alert("{/literal}{$kga.lang.timediff_warn}{literal}");
+                } else {
+                    floaterClose();
+                    ts_ext_reloadAllTables();
+                }
+                
             });
             {/literal}{if $id}{literal}
             {/literal}{else}{literal}
@@ -15,6 +25,7 @@
         
     </script>
 {/literal}
+
 
 <div id="floater_innerwrap">
 
