@@ -29,14 +29,22 @@
 	<title>Kimai Update</title>
 	<style type="text/css" media="screen">
 	   body {
+	       background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
 	       font-family: sans-serif;
-           background-color: red;
-           color:white;
+           color:#333;
        }
        div {
+           background-image: url('skins/standard/grfx/floaterborder.png');
+
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           width:500px;
+           height:250px;
+           margin-left:-250px;
+           margin-top:-125px;
            border:6px solid white;
            padding:10px;
-           margin:30px;
        }
 	</style>
 </head>
