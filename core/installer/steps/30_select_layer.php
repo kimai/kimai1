@@ -5,13 +5,13 @@ if ($_REQUEST['lang']=="en") {
 echo<<<EOD
 <h2>Select Database-Layer</h2>
 <!--If you're unsure try to install the MySQL version.-->
-MySQL-DB-Layer is currently not available!
+MySQL-DB-Layer is currently not available! In this version you can only use MySQL via PDO. 
 EOD;
 } else {
 echo<<<EOD
 <h2>Datenbank-Verbindungsart auswählen</h2>
 <!--Wenn Sie unsicher sind versuchen Sie die MySQL-Version.-->
-Der MySQL-DB-Layer ist in dieser Version nicht lauffähig!
+Der MySQL-DB-Layer ist in dieser Version nicht lauffähig! Sie können MySQL in dieser Version nur über PDO ansteuern. 
 EOD;
 }
 
