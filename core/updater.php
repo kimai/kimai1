@@ -18,6 +18,46 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */ 
+ 
+ 
+ 
+  if (!isset($_REQUEST['a'])) {
+ echo <<<EOD
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Kimai Update</title>
+	<style type="text/css" media="screen">
+	   body {
+	       font-family: sans-serif;
+           background-color: red;
+           color:white;
+       }
+       div {
+           border:6px solid white;
+           padding:10px;
+           margin:30px;
+       }
+	</style>
+</head>
+<body>
+<div  align="center">
+     <FORM action="" method="post">
+     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
+     <h1>UPDATE</h1>
+     Yes, I have a backup of my Kimai database! Proceed updating!<br />
+     Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!<br /><br />
+     <INPUT type="hidden" name="a" value="1">
+     <INPUT type="submit" value="START">
+     
+     </FORM>
+     </div>
+</body>
+</html>
+EOD;
+
+ } else {
+     
  require('includes/basics.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -758,7 +798,7 @@ if ((int)$revisionDB < $kga['revision']) {
     
     $versionDB_e[0] = 0;
     $versionDB_e[1] = 8;
-    $versionDB_e[2] = 0;
+    $versionDB_e[2] = 1;
     
     $query=sprintf("UPDATE `${p}var` SET value = '%s' WHERE var = 'version';", $kga['version']);
     exec_query($query,0);
@@ -808,3 +848,6 @@ EOD;
 <h1><a href='index.php'>Login</a></h1>
 
 </body></html>
+
+<?php } // end of "do you have a backup blah" condition 
+?>
