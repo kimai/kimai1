@@ -17,16 +17,6 @@
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
- * 
- * 
- *    ******************************************************************
- *    ***   CAUTION  ++  CAUTION  ++  CAUTION  ++  CAUTION  ++      ****
- *    ***                                                           ****
- *    ***   CHANGE THIS VALUES WITH CARE. IN THE CURRENT VERSION    ****
- *    ***   THE BEHAVIOR OF SOME OF THEM IS ABSOLUTELY NOT TESTED   ****
- *    ***   NEXT VERSION WILL OPERATE STABLE WITH THESE VALUES      **** 
- *    ***                                                           ****
- *    ******************************************************************
  */
  
 // define kimai-global-array variables which are used in func, processor, etc...
@@ -62,7 +52,7 @@ $kga['charset_descr']  = array('UTF-8','iso-8859-1');
 // $kga['customerhack']     = 1; // set to 1 to activate a temporary filter option for PDF printing 
                                  // [actually this is obsolete because PDF printing is not available in 0.8...]
 
-$kga['show_sensible_data'] = 1; // turn this on to display sensible data in the debug/developer extension 
+$kga['show_sensible_data'] = 0; // turn this on to display sensible data in the debug/developer extension 
                                 // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
                                 // DON'T BLAME US - YOU HAVE BEEN WARNED!
                                 
@@ -72,7 +62,7 @@ $kga['delete_logfile']     = 1;   // can the logfile be cleaned via debug_ext?
 $kga['utf8']               = 0;     // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case, 
                                     // depends on server preferences
                                     
-$kga['dbname_public']      = 1;     // allow/disallow to show the name of you database
+$kga['dbname_public']      = 0;     // allow/disallow to show the name of you database
                                     // as tooltip when hovering over the Kimai logo
                                     
 $kga['show_update_warn']   = 1;     // if you find the update warning page annoying - turn it off by setting this to 0
