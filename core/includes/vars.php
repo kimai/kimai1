@@ -75,7 +75,7 @@ $kga['utf8']               = 0;     // set to 1 if utf-8 CONVERSION (!) is neede
 $kga['dbname_public']      = 1;     // allow/disallow to show the name of you database
                                     // as tooltip when hovering over the Kimai logo
                                     
-$kga['show_update_warn']   = 0;     // if you find the update warning page annoying - turn it off by setting this to 0
+$kga['show_update_warn']   = 1;     // if you find the update warning page annoying - turn it off by setting this to 0
                                     
 $kga['check_at_startup']   = 0;     // everytime the login-screen appears the version-number will be checked against our
                                     // server if this is set to 1. We do not transmit any personal data!
