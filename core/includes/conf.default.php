@@ -29,7 +29,8 @@ $server_password = '';           // guess again ...
 $server_type = 'mysql';			 // the database type (needed for PDO) usually 'mysql'
 								 // check the PHP PDO manual if you are using a different
 								 // database
-$server_conn     = "";
+								 
+$server_conn     = "pdo";       // PDO is the only possible option here for now ...
 
 $server_prefix   = 'kimai_';     // optional, but if you have more tables in your database
                                  // besides kimai you should assign a prefix here
