@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={$kga.conf.charset}"/>
 
-    <title>{$kga.user.usr_name} - Kimai</title>
+    <title>{$kga.usr.usr_name} - Kimai</title>
 
     <!-- Default Stylesheets -->
     <link rel="stylesheet" href="../skins/{$kga.conf.skin}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
@@ -52,7 +52,7 @@
 
         var recstate              = {$recstate};
         
-        var user_ID                = {$kga.user.usr_ID}
+        var usr_ID                = {$kga.usr.usr_ID}
        
         var timeoutTicktack       = 0;
         
@@ -64,7 +64,7 @@
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
         var nextday               = "{$nextday}";
-        var default_title         = "{$kga.user.usr_name} - Kimai";
+        var default_title         = "{$kga.uer.usr_name} - Kimai";
         var revision              = {$kga.revision};
 
         var selected_knd  = '{$knd_data.knd_ID}';
@@ -89,7 +89,7 @@
     $('#extShrink').click(lists_shrinkExtToggle);
     $('#kndShrink').hover(lists_kndShrinkShow,lists_kndShrinkHide);
     $('#kndShrink').click(lists_shrinkKndToggle);
-  {/literal}{if $kga.user.usr_sts < 2}
+  {/literal}{if $kga.usr.usr_sts < 2}
     $('#usrShrink').hover(lists_usrShrinkShow,lists_usrShrinkHide);
     $('#usrShrink').click(lists_shrinkUsrToggle);
   {else}
@@ -204,7 +204,7 @@
     {$kga.lang.knds} 
     
         
-{if $kga.user.usr_sts != 2 }    
+{if $kga.usr.usr_sts != 2 }    
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>
@@ -216,7 +216,7 @@
     {$kga.lang.pcts}
     
     
-{if $kga.user.usr_sts != 2 }  
+{if $kga.usr.usr_sts != 2 }  
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>
@@ -228,7 +228,7 @@
     {$kga.lang.evts}
     
     
-{if $kga.user.usr_sts != 2 } 
+{if $kga.usr.usr_sts != 2 } 
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>

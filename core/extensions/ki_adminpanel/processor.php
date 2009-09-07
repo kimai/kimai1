@@ -54,13 +54,13 @@ switch ($axAction) {
 		$grp_data['grp_name'] = $axValue;
 		$new_grp_id = grp_create($grp_data);
 		if ($new_grp_id != false) {
-			assign_grp2ldrs($new_grp_id, array($kga['user']['usr_ID']));
+			assign_grp2ldrs($new_grp_id, array($kga['usr']['usr_ID']));
 		}
     break;
     
     case "refreshSubtab":
     // builds either user/group/advanced/DB subtab
-        $tpl->assign('curr_user', $kga['user']['usr_name']);
+        $tpl->assign('curr_user', $kga['usr']['usr_name']);
         $tpl->assign('arr_grp',  get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
         $tpl->assign('arr_usr',  get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
         $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));

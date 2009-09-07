@@ -5,7 +5,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-checkUser();
+$usr = checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -69,8 +69,8 @@ $tpl->assign('kga', $kga);
 // ==========================
 // = display timesheet area =
 // ==========================
-$total = intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out));
-$arr_zef = get_arr_zef($kga['user']['usr_ID'],$in,$out,1);
+$total = intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out));
+$arr_zef = get_arr_zef($kga['usr']['usr_ID'],$in,$out,1);
 if (count($arr_zef)>0) {
     $tpl->assign('arr_zef', $arr_zef);
 } else {
@@ -79,19 +79,19 @@ if (count($arr_zef)>0) {
 $tpl->assign('total', $total);
 
 
-$ann = get_arr_time_usr($in,$out,$kga['user']['usr_ID']);
+$ann = get_arr_time_usr($in,$out,$kga['usr']['usr_ID']);
 $ann_new = intervallApos($ann);
 $tpl->assign('usr_ann',$ann_new);
 
-$ann = get_arr_time_knd($in,$out,$kga['user']['usr_ID']);
+$ann = get_arr_time_knd($in,$out,$kga['usr']['usr_ID']);
 $ann_new = intervallApos($ann);
 $tpl->assign('knd_ann',$ann_new);
 
-$ann = get_arr_time_pct($in,$out,$kga['user']['usr_ID']);
+$ann = get_arr_time_pct($in,$out,$kga['usr']['usr_ID']);
 $ann_new = intervallApos($ann);
 $tpl->assign('pct_ann',$ann_new);
 
-$ann = get_arr_time_evt($in,$out,$kga['user']['usr_ID']);
+$ann = get_arr_time_evt($in,$out,$kga['usr']['usr_ID']);
 $ann_new = intervallApos($ann);
 $tpl->assign('evt_ann',$ann_new);
 
@@ -102,12 +102,12 @@ $tpl->assign('buzzerAction', "startRecord()");
 $tpl->assign('browser', get_agent());
 
 // select for projects
-      $sel = makeSelectBox("pct",$kga['user']['usr_grp']);
+      $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
       $tpl->assign('sel_pct_names', $sel[0]);
       $tpl->assign('sel_pct_IDs',   $sel[1]);
 
 // select for events
-      $sel = makeSelectBox("evt",$kga['user']['usr_grp']);
+      $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
       $tpl->assign('sel_evt_names', $sel[0]);
       $tpl->assign('sel_evt_IDs',   $sel[1]);
 

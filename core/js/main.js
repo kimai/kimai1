@@ -377,7 +377,7 @@ function buzzer() {
         stopRecord();
         recstate=0;
     } else {
-        startRecord(selected_pct,selected_evt,user_ID);
+        startRecord(selected_pct,selected_evt,usr_ID);
         recstate=1;
     }
 }

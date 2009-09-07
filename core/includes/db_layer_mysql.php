@@ -1469,7 +1469,7 @@ function grp_create($data) {
     $data = clean_data($data);
     
     $values ['grp_name']   = MySQL::SQLValue($data ['grp_name'] );
-    $values ['grp_leader'] = $kga['user']['usr_ID'];
+    $values ['grp_leader'] = $kga['usr']['usr_ID'];
     $table = $kga['server_prefix']."grp";
     $result = $conn->InsertRow($table, $values);
 
@@ -1803,7 +1803,7 @@ function zef_get_data($zef_id) {
     if ($zef_id) {
         $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_ID = " . $zef_id);
     } else {
-        $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$kga['user']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+        $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
     }
     
     if (! $result) {
@@ -2240,6 +2240,8 @@ function checkUser() {
       $kga['language'] = $kga['conf']['lang'];
     }
     require(sprintf(WEBROOT."language/%s.php",$kga['language']));
+    
+    return $kga['usr'];
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -2303,7 +2305,7 @@ function get_user_config($user) {
   $conn->SelectRows($table, $filter, $columns);
   $rows = $conn->RowArray(0,MYSQL_ASSOC);
   foreach($rows as $key => $value) {
-      $kga['user'][$key] = $value;
+      $kga['usr'][$key] = $value;
   } 
   
   // get values from user configuration (user-preferences)
@@ -2716,7 +2718,7 @@ function get_arr_knd_with_time($group,$user,$in,$out) {
 function get_current_timer() {
     global $kga, $conn;
     
-    $user  = MySQL::SQLValue($kga['user']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
+    $user  = MySQL::SQLValue($kga['usr']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
 	$p     = $kga['server_prefix'];
         
     $conn->Query("SELECT zef_ID,zef_in,zef_time FROM ${p}zef WHERE zef_usrID = $user ORDER BY zef_in DESC LIMIT 1;");
@@ -3107,7 +3109,7 @@ function stopRecorder() {
     
     $table = $kga['server_prefix']."zef";
 
-    $last_task        = get_event_last($kga['user']['usr_ID']); // aktuelle vorgangs-ID auslesen
+    $last_task        = get_event_last($kga['usr']['usr_ID']); // aktuelle vorgangs-ID auslesen
     
     $filter['zef_ID'] = $last_task['zef_ID'];
     $values['zef_in'] = $last_task['zef_in'];
@@ -3352,8 +3354,8 @@ function get_grp($id) {
 function get_timespace() {
     global $kga, $conn;
     
-    if (isset($kga['user']['usr_ID'])) {
-        $filter ['usr_ID'] = $kga['user']['usr_ID'];
+    if (isset($kga['usr']['usr_ID'])) {
+        $filter ['usr_ID'] = $kga['usr']['usr_ID'];
         $columns[] = "timespace_in";
         $columns[] = "timespace_out";
         $table = $kga['server_prefix']."usr";
@@ -3523,7 +3525,7 @@ function knd_pct_arr() {
          ON " . $kga['server_prefix'] . "zef.zef_pctID = " . $kga['server_prefix'] . "pct.pct_ID 
          WHERE zef_usrID = ?
          AND pct_kndID = ?");
-        $result_pre = $pdo_query_pre->execute(array($kga['user']['usr_ID'], $current_knd));
+        $result_pre = $pdo_query_pre->execute(array($kga['usr']['usr_ID'], $current_knd));
         $result_pre_array = $pdo_query_pre->fetch();
         
         $pdo_query2 = $conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");

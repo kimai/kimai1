@@ -32,7 +32,7 @@ $tpl->compile_dir  = '../compile/';
 // ==================================
 include('../includes/basics.php');
 
-checkUser();
+$usr = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
@@ -80,10 +80,10 @@ if ($handle = opendir('../extensions/')) {
                        	// logfile("*************** ADMIN ALLOWED: " . $settings['ADMIN_ALLOWED']);
                        	// logfile("*************** GROUP LEADER ALLOWED: " . $settings['GROUP_LEADER_ALLOWED']);
                        	// logfile("*************** USER ALLOWED: " . $settings['USER_ALLOWED']);                      	
-                       	// logfile("****************** user status: " . $kga['user']['usr_sts']);
+                       	// logfile("****************** user status: " . $kga['usr']['usr_sts']);
                        	
                        	// Check if user has the correct rank to use this extension
-                       	switch ($kga['user']['usr_sts']) {
+                       	switch ($kga['usr']['usr_sts']) {
                        		case 0:
                        		if ($settings['ADMIN_ALLOWED'] == "1") {
                        			$extensions[] = $settings;
@@ -193,7 +193,7 @@ $current_timer = get_current_timer();
 $wd       = $kga['lang']['weekdays_short'][date("w",time())];
 
 if ($kga['calender_start']=="") {
-    $dp_start = date("d/m/Y",getjointime($kga['user']['usr_ID']));    
+    $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
 } else {
     $dp_start = $kga['calender_start'];    
 }
@@ -206,7 +206,7 @@ $tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $pd_today);
 $tpl->assign('nextday', $nextday);
-$tpl->assign('total', intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out)));
+$tpl->assign('total', intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out)));
 
 // ===========================
 // = DatePicker localization =
@@ -247,7 +247,7 @@ $tpl->assign('js_extension_files', $js_extension_files);
 
 $tpl->assign('timespace_warning', timespace_warning($in,$out));
 
-$tpl->assign('recstate', get_rec_state($kga['user']['usr_ID']));
+$tpl->assign('recstate', get_rec_state($kga['usr']['usr_ID']));
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 
@@ -296,7 +296,7 @@ if ($handle = opendir($extDir)) {
 // =======================
 // = display user table =
 // =======================
-$arr_usr = get_arr_watchable_users($kga['user']['usr_ID']);
+$arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
 if (count($arr_usr)>0) {
     $tpl->assign('arr_usr', $arr_usr);
 } else {
@@ -307,7 +307,7 @@ $tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
 // ==========================
 // = display customer table =
 // ==========================
-$arr_knd = get_arr_knd($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+$arr_knd = get_arr_knd($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -318,7 +318,7 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // =========================
 // = display project table =
 // =========================
-$arr_pct = get_arr_pct($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+$arr_pct = get_arr_pct($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -329,7 +329,7 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // ========================
 // = display events table =
 // ========================
-$arr_evt = get_arr_evt($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+$arr_evt = get_arr_evt($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {

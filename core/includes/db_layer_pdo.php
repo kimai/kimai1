@@ -1589,7 +1589,7 @@ function zef_get_data($zef_id) {
     if ($zef_id) {
         $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ".$kga['user']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ".$kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
         // logfile("SELECT * FROM " . $kga['server_prefix'] . "zef ORDER BY zef_ID DESC LIMIT 1");
     }
     
@@ -2003,6 +2003,8 @@ function checkUser() {
       $kga['language'] = $kga['conf']['lang'];
     }
     require(sprintf(WEBROOT."language/%s.php",$kga['language']));
+    
+    return $kga['usr'];
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -2061,7 +2063,7 @@ function get_user_config($user) {
   $result = $pdo_query->execute(array($user));
   $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
   foreach( $row as $key => $value) {
-      $kga['user'][$key] = $value;
+      $kga['usr'][$key] = $value;
   }
 
   $pdo_query->fetchAll();
@@ -2575,7 +2577,7 @@ function get_current_timer() {
     global $kga, $pdo_conn;
         
     $pdo_query = $pdo_conn->prepare("SELECT zef_ID,zef_in,zef_time FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ? ORDER BY zef_in DESC LIMIT 1;");
-    $pdo_query->execute(array($kga['user']['usr_ID']));
+    $pdo_query->execute(array($kga['usr']['usr_ID']));
     $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
     $zef_time  = (int)$row['zef_time'];
     $zef_in    = (int)$row['zef_in'];
@@ -2890,7 +2892,7 @@ function stopRecorder() {
 ## stop running recording
     global $kga, $pdo_conn;
     
-    $last_task = get_event_last($kga['user']['usr_ID']);      // aktuelle vorgangs-ID auslesen
+    $last_task = get_event_last($kga['usr']['usr_ID']);      // aktuelle vorgangs-ID auslesen
     
     $zef_ID = $last_task['zef_ID'];
     $zef_in = $last_task['zef_in'];
@@ -3073,9 +3075,9 @@ function get_grp($id) {
 function get_timespace() {
     global $kga,$pdo_conn;
     
-    if (isset($kga['user']['usr_ID'])) {
+    if (isset($kga['usr']['usr_ID'])) {
         $pdo_query = $pdo_conn->prepare("SELECT timespace_in, timespace_out FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
-        $pdo_query->execute(array($kga['user']['usr_ID']));
+        $pdo_query->execute(array($kga['usr']['usr_ID']));
     
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
         //die ($query);
@@ -3215,7 +3217,7 @@ function knd_pct_arr() {
          ON " . $kga['server_prefix'] . "zef.zef_pctID = " . $kga['server_prefix'] . "pct.pct_ID 
          WHERE zef_usrID = ?
          AND pct_kndID = ?");
-        $result_pre = $pdo_query_pre->execute(array($kga['user']['usr_ID'], $current_knd));
+        $result_pre = $pdo_query_pre->execute(array($kga['usr']['usr_ID'], $current_knd));
         $result_pre_array = $pdo_query_pre->fetch();
         
         $pdo_query2 = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");

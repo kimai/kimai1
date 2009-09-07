@@ -38,14 +38,14 @@ switch ($axAction) {
     // ==========================
     case 'record':
         
-        if (get_rec_state($kga['user']['usr_ID'])) {
-            stopRecorder($kga['user']['usr_ID']);
+        if (get_rec_state($kga['usr']['usr_ID'])) {
+            stopRecorder($kga['usr']['usr_ID']);
         }
         
         // IDs -> pctID|evtID
         //
         $IDs = explode('|',$axValue);
-        startRecorder($IDs[0],$IDs[1],$kga['user']['usr_ID']);
+        startRecorder($IDs[0],$IDs[1],$kga['usr']['usr_ID']);
         
         $pctdata = pct_get_data($IDs[0]);        
         $return =  "pct_name = '" . $pctdata['pct_name'] ."'; ";
@@ -64,7 +64,7 @@ switch ($axAction) {
     // = stop recording =
     // ==================
     case 'stop':
-        stopRecorder($kga['user']['usr_ID']);
+        stopRecorder($kga['usr']['usr_ID']);
         echo 1;
     break;
 
@@ -82,15 +82,15 @@ switch ($axAction) {
     case 'reload_zef':
         $IDs = explode('|',$axValue);
 
-        $IDs[0] = $IDs[0]==-1?$kga['user']['usr_ID']:$IDs[0];
+        $IDs[0] = $IDs[0]==-1?$kga['usr']['usr_ID']:$IDs[0];
 
-        $arr_zef = get_arr_zef($kga['user']['usr_ID'],$in,$out,1);
+        $arr_zef = get_arr_zef($kga['usr']['usr_ID'],$in,$out,1);
         if (count($arr_zef)>0) {
             $tpl->assign('arr_zef', $arr_zef);
         } else {
             $tpl->assign('arr_zef', 0);
         }
-        $tpl->assign('total', intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out)));
+        $tpl->assign('total', intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out)));
 
         $ann = get_arr_time_usr($in,$out,$IDs[0],$IDs[1],$IDs[2]);
         $ann_new = intervallApos($ann);
@@ -207,7 +207,7 @@ switch ($axAction) {
                 
                 // TIME RIGHT - NEW ENTRY
                 logfile("zef_create_record");
-                zef_create_record($kga['user']['usr_ID'],$data);
+                zef_create_record($kga['usr']['usr_ID'],$data);
                 
             }
             
@@ -215,7 +215,7 @@ switch ($axAction) {
             if (count($records)>1) {
                 $this_record['zef_pctID'] = $pct_ID;
                 $this_record['zef_evtID'] = $evt_ID;
-                save_further_records($kga['user']['usr_ID'],$this_record,$records);
+                save_further_records($kga['usr']['usr_ID'],$this_record,$records);
             }
             
         }
@@ -229,7 +229,7 @@ switch ($axAction) {
     // = Temporary Customer Filter =
     // =============================
     case 'filter':
-    mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$kga['user']['usr_ID']));
+    mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$kga['usr']['usr_ID']));
     // this is connected to a hidden feature and can be activated in the file vars.php inside the includes dir
     break;
 */

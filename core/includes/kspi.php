@@ -58,7 +58,7 @@ include(WEBROOT . 'includes/basics.php');
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
-checkUser();
+$usr = checkUser();
 
 $tpl->assign('kga',$kga);
 
@@ -88,7 +88,7 @@ $in = $timespace[0];
 $out = $timespace[1];
 
 if ($axAction != "reloadLogfile") {
-    logfile("KSPI axAction (".$kga['user']['usr_name']."): " . $axAction);
+    logfile("KSPI axAction (".$kga['usr']['usr_name']."): " . $axAction);
 }
 
 ?>

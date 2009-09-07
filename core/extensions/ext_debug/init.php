@@ -2,7 +2,7 @@
 	// Include Basics
 	include('../../includes/basics.php');
 	
-	checkUser();
+	$usr = checkUser();
 	// ============================================
 	// = initialize currently displayed timespace =
 	// ============================================
