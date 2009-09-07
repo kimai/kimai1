@@ -48,7 +48,7 @@ switch ($axAction) {
     case 'prefs':
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', langs());
-        $tpl->assign('usr', $usr);
+        $tpl->assign('usr', $kga['user']);
         $tpl->display("preferences.tpl");
     break;
     
@@ -77,11 +77,11 @@ switch ($axAction) {
                 $tpl->assign('id', $id);
             }
         }
-        $sel = makeSelectBox("grp",$usr['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['user']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
         if (!$id) {
-            $grp_selection[]=$usr['usr_grp'];
+            $grp_selection[]=$kga['user']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
             $tpl->assign('id', 0);
         }
@@ -103,15 +103,15 @@ switch ($axAction) {
             }
         }
     // select for customers
-        $sel = makeSelectBox("knd",$usr['usr_grp']);
+        $sel = makeSelectBox("knd",$kga['user']['usr_grp']);
         $tpl->assign('sel_knd_names', $sel[0]);
         $tpl->assign('sel_knd_IDs',   $sel[1]);
         
-        $sel = makeSelectBox("grp",$usr['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['user']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
         if (!$id) {
-            $grp_selection[]=$usr['usr_grp'];
+            $grp_selection[]=$kga['user']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
             if(!isset($knd_selection))
             	$knd_selection = null;
@@ -134,11 +134,11 @@ switch ($axAction) {
                 $tpl->assign('id', $id);
             }
         }
-        $sel = makeSelectBox("grp",$usr['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['user']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
         if (!$id) {
-            $grp_selection[]=$usr['usr_grp'];
+            $grp_selection[]=$kga['user']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
             $tpl->assign('id', 0);
         }

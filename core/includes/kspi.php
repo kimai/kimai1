@@ -54,24 +54,12 @@ if ($isCoreProcessor) {
 // = implementing standard includes =
 // ==================================
 include(WEBROOT . 'includes/basics.php');
-if (!isset($kga['conf'], $kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-$language = $kga['language'];
-} else {
-$language = $kga['conf']['lang'];
-}
-require_once(WEBROOT . "language/${language}.php" );
 
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
-$usr  = checkUser();
-get_config($usr['usr_ID']);
+checkUser();
 
-// override conf.php language if user has chosen a language in the prefs
-if ($kga['conf']['lang'] != "") {
-$kga['language'] = $kga['conf']['lang'];
-}
-require_once( WEBROOT . "language/${language}.php" );
 $tpl->assign('kga',$kga);
 
 $comment_types   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
@@ -100,7 +88,7 @@ $in = $timespace[0];
 $out = $timespace[1];
 
 if ($axAction != "reloadLogfile") {
-    logfile("KSPI axAction (".$usr['usr_name']."): " . $axAction);
+    logfile("KSPI axAction (".$kga['user']['usr_name']."): " . $axAction);
 }
 
 ?>

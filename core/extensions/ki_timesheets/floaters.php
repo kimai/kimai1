@@ -65,12 +65,12 @@ switch ($axAction) {
     $tpl->assign('comment_values', array('0','1','2'));
 
     // select for projects
-    $sel = makeSelectBox("pct",$usr['usr_grp']);
+    $sel = makeSelectBox("pct",$kga['user']['usr_grp']);
     $tpl->assign('sel_pct_names', $sel[0]);
     $tpl->assign('sel_pct_IDs',   $sel[1]);
 
     // select for events
-    $sel = makeSelectBox("evt",$usr['usr_grp']);
+    $sel = makeSelectBox("evt",$kga['user']['usr_grp']);
     $tpl->assign('sel_evt_names', $sel[0]);
     $tpl->assign('sel_evt_IDs',   $sel[1]);
 

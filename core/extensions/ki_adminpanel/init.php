@@ -2,24 +2,13 @@
     // Include Basics
     include('../../includes/basics.php');
 
-    $usr = checkUser();
+    checkUser();
     // ============================================
     // = initialize currently displayed timespace =
     // ============================================
     $timespace = get_timespace();
     $in = $timespace[0];
     $out = $timespace[1];
-
-    // append (!) config to $kga
-    get_config($usr['usr_ID']);
-
-    if ($kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-    } else {
-    $language = $kga['conf']['lang'];
-    }
-
-    require_once(WEBROOT."language/${language}.php");
 
     // set smarty config
     require_once('../../libraries/smarty/Smarty.class.php');
@@ -64,7 +53,7 @@
     }
     $tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
 
-    $tpl->assign('curr_user', $kga['usr']['usr_name']);
+    $tpl->assign('curr_user', $kga['user']['usr_name']);
     $tpl->assign('arr_grp', get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
     $tpl->assign('arr_usr', get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
     $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));

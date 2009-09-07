@@ -1469,7 +1469,7 @@ function grp_create($data) {
     $data = clean_data($data);
     
     $values ['grp_name']   = MySQL::SQLValue($data ['grp_name'] );
-    $values ['grp_leader'] = $kga['usr']['usr_ID'];
+    $values ['grp_leader'] = $kga['user']['usr_ID'];
     $table = $kga['server_prefix']."grp";
     $result = $conn->InsertRow($table, $values);
 
@@ -1803,7 +1803,7 @@ function zef_get_data($zef_id) {
     if ($zef_id) {
         $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_ID = " . $zef_id);
     } else {
-        $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+        $result = $conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$kga['user']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
     }
     
     if (! $result) {
@@ -2231,20 +2231,21 @@ function checkUser() {
         kickUser();
     }
     
-    $usr = array(
-        "usr_ID"=>$usr_ID,
-        "usr_sts"=>$usr_sts,
-        "usr_grp"=>$usr_grp,
-        "usr_name"=>$usr_name
-    );
-    
-    return $usr;
+    // load configuration and language
+    get_global_config();
+    get_user_config($usr_ID);
+
+    // override conf.php language if user has chosen a language in the prefs
+    if ($kga['conf']['lang'] != "") {
+      $kga['language'] = $kga['conf']['lang'];
+    }
+    require(sprintf(WEBROOT."language/%s.php",$kga['language']));
 }
 
 //-----------------------------------------------------------------------------------------------------------
 
 /**
- * write global configuration AND details of a specific user into $kga
+ * write global configuration into $kga
  *
  * @param integer $user ID of user in table usr
  * @global array $kga kimai-global-array
@@ -2255,74 +2256,87 @@ function checkUser() {
 
 // seems to be ok 
 
-function get_config($user) {
-    global $kga, $conn;
-        
-        if ($user) {
-            
-            $table = $kga['server_prefix']."usr";
-            $filter['usr_ID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
-            
-            // get values from user record
-            $columns[] = "usr_ID";
-            $columns[] = "usr_name";
-            $columns[] = "usr_grp";
-            $columns[] = "usr_sts";
-            $columns[] = "usr_trash";
-            $columns[] = "usr_active";
-            $columns[] = "usr_mail";
-            $columns[] = "pw";
-            $columns[] = "ban";
-            $columns[] = "banTime";
-            $columns[] = "secure";
+function get_global_config() {
+  global $kga, $conn;
+  // get values from global configuration 
+  $table = $kga['server_prefix']."var";
+  $conn->SelectRows($table);
+  
+  $conn->MoveFirst();
+  while (! $conn->EndOfSeek()) {
+      $row = $conn->Row();
+      $kga['conf'][$row->var] = $row->value;
+  }
+}
 
-            $conn->SelectRows($table, $filter, $columns);
-            $rows = $conn->RowArray(0,MYSQL_ASSOC);
-            foreach($rows as $key => $value) {
-                $kga['usr'][$key] = $value;
-            } 
-            
-            // get values from user configuration (user-preferences)
-            unset($columns);
-            $columns[] = "rowlimit"; 
-            $columns[] = "skin"; 
-            $columns[] = "lastProject"; 
-            $columns[] = "lastEvent"; 
-            $columns[] = "lastRecord"; 
-            $columns[] = "filter"; 
-            $columns[] = "filter_knd"; 
-            $columns[] = "filter_pct"; 
-            $columns[] = "filter_evt"; 
-            $columns[] = "view_knd"; 
-            $columns[] = "view_pct"; 
-            $columns[] = "view_evt"; 
-            $columns[] = "zef_anzahl"; 
-            $columns[] = "timespace_in"; 
-            $columns[] = "timespace_out"; 
-            $columns[] = "autoselection"; 
-            $columns[] = "quickdelete"; 
-            $columns[] = "allvisible"; 
-            $columns[] = "flip_pct_display"; 
-            $columns[] = "showIDs"; 
-            $columns[] = "pct_comment_flag"; 
-            $columns[] = "lang"; 
+/**
+ * write details of a specific user into $kga
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array $kga 
+ * @author th
+ *
+ */
 
-            $conn->SelectRows($table, $filter, $columns);
-            $rows = $conn->RowArray(0,MYSQL_ASSOC);
-            foreach($rows as $key => $value) {
-                $kga['conf'][$key] = $value;
-            } 
-        }
+function get_user_config($user) {
+  global $kga, $conn;
         
-        // get values from global configuration 
-        $table = $kga['server_prefix']."var";
-        $conn->SelectRows($table);
-        
-        $conn->MoveFirst();
-        while (! $conn->EndOfSeek()) {
-            $row = $conn->Row();
-            $kga['conf'][$row->var] = $row->value;
-        }
+  if (!$user) return;
+  
+  $table = $kga['server_prefix']."usr";
+  $filter['usr_ID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+  
+  // get values from user record
+  $columns[] = "usr_ID";
+  $columns[] = "usr_name";
+  $columns[] = "usr_grp";
+  $columns[] = "usr_sts";
+  $columns[] = "usr_trash";
+  $columns[] = "usr_active";
+  $columns[] = "usr_mail";
+  $columns[] = "pw";
+  $columns[] = "ban";
+  $columns[] = "banTime";
+  $columns[] = "secure";
+
+  $conn->SelectRows($table, $filter, $columns);
+  $rows = $conn->RowArray(0,MYSQL_ASSOC);
+  foreach($rows as $key => $value) {
+      $kga['user'][$key] = $value;
+  } 
+  
+  // get values from user configuration (user-preferences)
+  unset($columns);
+  $columns[] = "rowlimit"; 
+  $columns[] = "skin"; 
+  $columns[] = "lastProject"; 
+  $columns[] = "lastEvent"; 
+  $columns[] = "lastRecord"; 
+  $columns[] = "filter"; 
+  $columns[] = "filter_knd"; 
+  $columns[] = "filter_pct"; 
+  $columns[] = "filter_evt"; 
+  $columns[] = "view_knd"; 
+  $columns[] = "view_pct"; 
+  $columns[] = "view_evt"; 
+  $columns[] = "zef_anzahl"; 
+  $columns[] = "timespace_in"; 
+  $columns[] = "timespace_out"; 
+  $columns[] = "autoselection"; 
+  $columns[] = "quickdelete"; 
+  $columns[] = "allvisible"; 
+  $columns[] = "flip_pct_display"; 
+  $columns[] = "showIDs"; 
+  $columns[] = "pct_comment_flag"; 
+  $columns[] = "lang"; 
+
+  $conn->SelectRows($table, $filter, $columns);
+  $rows = $conn->RowArray(0,MYSQL_ASSOC);
+  foreach($rows as $key => $value) {
+      $kga['conf'][$key] = $value;
+  } 
+
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -2702,7 +2716,7 @@ function get_arr_knd_with_time($group,$user,$in,$out) {
 function get_current_timer() {
     global $kga, $conn;
     
-    $user  = MySQL::SQLValue($kga['usr']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
+    $user  = MySQL::SQLValue($kga['user']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
 	$p     = $kga['server_prefix'];
         
     $conn->Query("SELECT zef_ID,zef_in,zef_time FROM ${p}zef WHERE zef_usrID = $user ORDER BY zef_in DESC LIMIT 1;");
@@ -3093,7 +3107,7 @@ function stopRecorder() {
     
     $table = $kga['server_prefix']."zef";
 
-    $last_task        = get_event_last($kga['usr']['usr_ID']); // aktuelle vorgangs-ID auslesen
+    $last_task        = get_event_last($kga['user']['usr_ID']); // aktuelle vorgangs-ID auslesen
     
     $filter['zef_ID'] = $last_task['zef_ID'];
     $values['zef_in'] = $last_task['zef_in'];
@@ -3338,8 +3352,8 @@ function get_grp($id) {
 function get_timespace() {
     global $kga, $conn;
     
-    if (isset($kga['usr']['usr_ID'])) {
-        $filter ['usr_ID'] = $kga['usr']['usr_ID'];
+    if (isset($kga['user']['usr_ID'])) {
+        $filter ['usr_ID'] = $kga['user']['usr_ID'];
         $columns[] = "timespace_in";
         $columns[] = "timespace_out";
         $table = $kga['server_prefix']."usr";
@@ -3509,7 +3523,7 @@ function knd_pct_arr() {
          ON " . $kga['server_prefix'] . "zef.zef_pctID = " . $kga['server_prefix'] . "pct.pct_ID 
          WHERE zef_usrID = ?
          AND pct_kndID = ?");
-        $result_pre = $pdo_query_pre->execute(array($kga['usr']['usr_ID'], $current_knd));
+        $result_pre = $pdo_query_pre->execute(array($kga['user']['usr_ID'], $current_knd));
         $result_pre_array = $pdo_query_pre->fetch();
         
         $pdo_query2 = $conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
@@ -3631,6 +3645,290 @@ function knd_pct_arr() {
 // 
 
 
+// -----------------------------------------------------------------------------------------------------------
 
+/**
+ * returns list of users the given user can watch
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_watchable_users($user_id) {
+    global $kga,$conn;
+
+    $arr = array();
+    $user_id = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
+
+    // check if user is admin
+    $filter['usr_ID'] = $user_id;
+    $table = $kga['server_prefix']."usr";
+    $result = $conn->SelectRows($table, $filter);
+    if (! $result) return array();
+    $row = $conn->RowArray(0,MYSQL_ASSOC);
+
+    if ($row['usr_sts'] == "0") { // if is admin
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr";
+      $result = $conn->Query($query);
+    }
+    else {
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE grp_leader = $user_id";
+      $result = $conn->Query($query);
+    }
+
+    if (! $result) return array();
+
+    return $conn->RecordsArray(MYSQL_ASSOC);
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns assoc. array where the index is the ID of a user and the value the time
+ * this user has accumulated in the given time with respect to the filtersettings
+ *
+ * @param integer $in from this timestamp
+* @param integer $out to this  timestamp
+* @param integer $user ID of user in table usr
+* @param integer $customer ID of customer in table knd
+* @param integer $project ID of project in table pct
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_usr($in,$out,$user = -1, $customer = -1, $project = -1) {
+    global $kga;
+    global $conn;
+    
+    $whereClauses = array();
+    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
+    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
+    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
+    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+
+    
+    $query = "SELECT SUM(zef_time) as zeit, usr_ID
+             FROM " . $kga['server_prefix'] . "zef 
+             Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
+             Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID
+             Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
+             .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;");
+    
+    $result = $conn->Query($query);
+    if (! $result) return array();
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+
+    $arr = array();  
+    foreach($rows as $ow) {
+        if (empty($row['usr_ID'])) break; // $row['usr_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
+        $arr[$row['usr_ID']] = $row['zeit'];
+    }
+    
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns list of time summary attached to customer ID's within specific timespace as array
+ * !! becomes obsolete with new querys !!
+ *
+ * @param integer $in start of timespace in unix seconds
+ * @param integer $out end of timespace in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_knd($in,$out,$user = -1, $customer = -1, $project = -1) {
+    global $kga;
+    global $pdo_conn;
+    
+    $whereClauses = array();
+    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
+    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
+    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
+    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+    
+    if ($in) 
+      $whereClauses[]="zef_in > $in";
+    if ($out) 
+      $whereClauses[]="zef_out < $out";
+    $arr = array();  
+    
+    $query = "SELECT SUM(zef_time) as zeit, knd_ID FROM " . $kga['server_prefix'] . "zef 
+            Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".
+            (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+            " GROUP BY knd_ID;";
+
+    $result = $conn->Query($query);
+    if (! $result) return array();
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+
+    
+    foreach ($rows as $row) {
+        if (empty($row['knd_ID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
+        $arr[$row['knd_ID']] = $row['zeit'];
+    }
+    
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns list of time summary attached to project ID's within specific timespace as array
+ * !! becomes obsolete with new querys !!
+ *
+ * @param integer $in start time in unix seconds
+ * @param integer $out end time in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_pct($in,$out,$user = -1,$customer = -1, $project = -1) {
+    global $kga;
+    global $pdo_conn;
+    
+    $whereClauses = array();
+    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
+    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
+    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
+    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+    $arr = array();
+    
+    $query = "SELECT sum(zef_time) as zeit,zef_pctID FROM " . $kga['server_prefix'] . "zef 
+        Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".
+        (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+       " GROUP BY zef_pctID;";
+    
+    $result = $conn->Query($query);
+    if (! $result) return array();
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+
+    foreach ($rows as $row) {
+        if (empty($row['zef_pctID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
+        $arr[$row['zef_pctID']] = $row['zeit'];
+    }
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns list of time summary attached to event ID's within specific timespace as array
+ *
+ * @param integer $in start time in unix seconds
+ * @param integer $out end time in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_evt($in,$out,$user = -1,$customer = -1,$project = -1) {
+    global $kga;
+    global $pdo_conn;
+    
+    $whereClauses = array();
+    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
+    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
+    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
+    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+    $arr = array();    
+    
+    $query = "SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef 
+        Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".
+        (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+        " GROUP BY zef_evtID;";
+    
+    $result = $conn->Query($query);
+    if (! $result) return array();
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+
+    foreach ($rows as $row) {
+        if (empty($row['zef_evtID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
+        $arr[$row['zef_evtID']] = $row['zeit'];
+    }
+    return $arr;
+}
 
 ?>

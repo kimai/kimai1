@@ -5,10 +5,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-$usr = checkUser();
-
-// append (!) config to $kga
-get_config($usr['usr_ID']);
+checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -16,14 +13,6 @@ get_config($usr['usr_ID']);
 $timespace = get_timespace();
 $in = $timespace[0];
 $out = $timespace[1];
-
-if ($kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-
-require_once("../../language/${language}.php");
 
 // set smarty config
 require_once('../../libraries/smarty/Smarty.class.php');
@@ -33,15 +22,7 @@ $tpl->compile_dir  = 'compile/';
 
 $tpl->assign('kga', $kga);
 
-// ==========================
-// = display customer table =
-// ==========================
-$arr_knd = get_arr_knd_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
-if (count($arr_knd)>0) {
-    $tpl->assign('arr_knd', $arr_knd);
-} else {
-    $tpl->assign('arr_knd', '0');
-}
+
 
 
 // @Oleg: ich brauche bitte ein Array:
@@ -65,20 +46,10 @@ if (count($arr_knd)>0) {
 // brauche...
 
 // $tpl->assign('jsArrKndPct', knd_pct_arr());
-$tpl->assign('jsArrKndPct', "");
-$tpl->assign('knd_display', $tpl->fetch("knd.tpl"));
+//$tpl->assign('jsArrKndPct', "");
 
 
-// =========================
-// = display project table =
-// =========================
-$arr_pct = get_arr_pct_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
-if (count($arr_pct)>0) {
-    $tpl->assign('arr_pct', $arr_pct);
-} else {
-    $tpl->assign('arr_pct', '0');
-}
-$tpl->assign('pct_display', $tpl->fetch("pct.tpl"));
+
 
 // @Oleg: hier bitte so:
 // [pctID][kndID, kndID, kndID, kndID, kndID....]
@@ -88,16 +59,7 @@ $tpl->assign('pct_display', $tpl->fetch("pct.tpl"));
 // tätigkeit des projekts
 
 
-// ========================
-// = display events table =
-// ========================
-$arr_evt = get_arr_evt_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
-if (count($arr_evt)>0) {
-    $tpl->assign('arr_evt', $arr_evt);
-} else {
-    $tpl->assign('arr_evt', '0');
-}
-$tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
+
 
 // @Oleg: und hier bitte einfach nur
 // 
@@ -107,26 +69,45 @@ $tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
 // ==========================
 // = display timesheet area =
 // ==========================
-$total = intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out));
-$arr_zef = get_arr_zef($kga['usr']['usr_ID'],$in,$out,1);
+$total = intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out));
+$arr_zef = get_arr_zef($kga['user']['usr_ID'],$in,$out,1);
 if (count($arr_zef)>0) {
     $tpl->assign('arr_zef', $arr_zef);
 } else {
     $tpl->assign('arr_zef', 0);
 }
 $tpl->assign('total', $total);
+
+
+$ann = get_arr_time_usr($in,$out,$kga['user']['usr_ID']);
+$ann_new = intervallApos($ann);
+$tpl->assign('usr_ann',$ann_new);
+
+$ann = get_arr_time_knd($in,$out,$kga['user']['usr_ID']);
+$ann_new = intervallApos($ann);
+$tpl->assign('knd_ann',$ann_new);
+
+$ann = get_arr_time_pct($in,$out,$kga['user']['usr_ID']);
+$ann_new = intervallApos($ann);
+$tpl->assign('pct_ann',$ann_new);
+
+$ann = get_arr_time_evt($in,$out,$kga['user']['usr_ID']);
+$ann_new = intervallApos($ann);
+$tpl->assign('evt_ann',$ann_new);
+
+
 $tpl->assign('zef_display', $tpl->fetch("zef.tpl"));
 
 $tpl->assign('buzzerAction', "startRecord()");
 $tpl->assign('browser', get_agent());
 
 // select for projects
-      $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+      $sel = makeSelectBox("pct",$kga['user']['usr_grp']);
       $tpl->assign('sel_pct_names', $sel[0]);
       $tpl->assign('sel_pct_IDs',   $sel[1]);
 
 // select for events
-      $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
+      $sel = makeSelectBox("evt",$kga['user']['usr_grp']);
       $tpl->assign('sel_evt_names', $sel[0]);
       $tpl->assign('sel_evt_IDs',   $sel[1]);
 

@@ -1,0 +1,250 @@
+#usr, #knd, #evt, #pct { 
+    height:175px;
+    border-top:none;
+    z-index:1;
+    border:1px solid black; 
+    margin:0;
+    padding:0;
+    background-color:#eee;
+    position:absolute;
+    overflow:auto;
+    left:10px;
+}
+
+#usr_head, #knd_head, #pct_head, #evt_head {
+    border:1px solid black; 
+    border-bottom:none;
+    background-image: url('grfx/g3_table_header.png');
+    position:absolute;
+    height:25px;
+    text-align:left;
+    color:#FFF;
+    left:10px;
+    font-size:11px;
+    font-weight:bold;
+    padding:3px 0 0 5px;
+}
+
+#kndShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/kndShrink_left.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:10px;
+    height:100px;
+    left:10px;
+    z-index:31;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+#usrShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/kndShrink_left.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:10px;
+    height:100px;
+    left:10px;
+    z-index:31;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+#extShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/zefShrink_up.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:500px;
+    height:10px;
+    left:10px;
+    z-index:30;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+div#usr>table>tbody>tr>td.annotation,
+div#knd>table>tbody>tr>td.annotation,
+div#pct>table>tbody>tr>td.annotation, 
+div#evt>table>tbody>tr>td.annotation {
+    border-right: none;
+}
+
+div#usr td.option,
+div#knd td.option,
+div#pct td.option,
+div#evt td.option 
+{ 
+/*    width:70px;*/
+}
+
+div#usr td.option img,
+div#knd td.option img,
+div#pct td.option img,
+div#evt td.option img 
+{ 
+    margin-top:2px;
+}
+
+div#usr td.annotation,
+div#knd td.annotation,
+div#pct td.annotation,
+div#evt td.annotation 
+{ 
+    width:60px;
+    text-align: right;
+}
+
+div#usr td,
+div#knd td,
+div#pct td,
+div#evt td 
+{ 
+    border-right:none;
+}
+
+div#usr_head div.right,
+div#knd_head div.right,
+div#pct_head div.right,
+div#evt_head div.right 
+{ 
+    position:absolute;
+    overflow:hidden;
+    width:32px;
+    height:20px;
+    top:3px;
+    right:0;
+/*    background-color:red;*/
+}
+
+div#usr_head div.right a,
+div#knd_head div.right a,
+div#pct_head div.right a,
+div#evt_head div.right a 
+{ 
+    background-image: url('grfx/add.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    text-indent:-500px;
+}
+
+.livefilterfield {
+    float:right;
+    background-image:url("grfx/filter_bg.jpg");
+    border:1px solid #555;
+    height:12px;
+    margin:0;
+    padding:1px;
+    margin-left:10px;
+    margin-right:38px;
+    color:#fff;
+    font-size:9px;
+}
+
+.livefilterfield:focus {
+    background: #fff;
+    color:#333;
+}
+
+
+.highlightPctForPreselection td
+ {
+    background: #C5E6C3 !important;
+    cursor:pointer !important;
+    font-weight:bold;
+}
+
+.filterPctForPreselection td
+ {
+    background: #64BE5E !important;
+}
+
+.ids {
+    width:25px;
+    color:#C4C4C4;
+    display:block;
+    float:left;
+}
+
+.filterPctForPreselection td .ids {
+    color:#4D9247 !important;
+}
+
+
+.TableRowInvisible {
+    display:none;
+}
+
+.lighter {
+    color:#777;
+}
+
+
+div.lists table {
+    border-collapse: collapse;
+    font-size: 11px;
+    color: #363636;
+    border-bottom:1px solid #888;
+}
+div.lists table a.preselect_lnk {
+    color: #363636;
+    text-decoration:none;
+    border-bottom:1px dotted #bbb;
+}
+
+div.lists table a:hover {
+    color: #0F9E00;
+    border-bottom:none;
+}
+
+div.lists table thead {
+    height:25px;
+    text-align:left;
+    color:#FFF;
+}
+
+div.lists table thead th {
+    background-image: url('grfx/g3_table_header.png');
+}
+
+div.lists tr.even td,
+div.lists tr.odd td
+{
+    border-bottom: none;
+    border-left: none;
+    border-right: 1px dotted #CCC;
+/*    border-top: 1px solid #DDD;*/
+    padding: 3px 4px 4px 5px;
+}
+
+div.lists tr.hover td {
+    background: #FFC !important;
+/*    border-top: 1px solid #666 !important;
+    border-bottom: 1px solid #666 !important;*/
+}
+
+div.lists tr.even td {
+    background: #FFF;
+}
+
+div.lists tr.odd td {
+    background: #EEE;
+}

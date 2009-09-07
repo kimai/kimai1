@@ -12,7 +12,7 @@
                     alert("{/literal}{$kga.lang.timediff_warn}{literal}");
                 } else {
                     floaterClose();
-                    ts_ext_reloadAllTables();
+                    ts_ext_reload();
                 }
                 
             });

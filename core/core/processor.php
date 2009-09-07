@@ -56,7 +56,7 @@ switch ($axAction) {
         }
         // $usr_data['pw']                 = $_REQUEST['pw'];
         
-        usr_edit($kga['usr']['usr_ID'], $usr_data);
+        usr_edit($kga['user']['usr_ID'], $usr_data);
     break;
     
     // ==============================
@@ -74,7 +74,7 @@ switch ($axAction) {
         $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
         if ($timespace_out < 950000000) $timespace_out = $out;
         
-        $timespace_warning = save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']);
+        $timespace_warning = save_timespace($timespace_in,$timespace_out,$kga['user']['usr_ID']);
 
         $tpl->assign('timespace_warning', $timespace_warning);
         $tpl->assign('timespace_in',  $timespace_in);
@@ -85,7 +85,7 @@ switch ($axAction) {
         // =======================================
         $wd       = $kga['lang']['weekdays_short'][date("w",time())];
         $today    = date($kga['date_format'][0],time());
-        $dp_start = date("d/m/Y",getjointime($usr['usr_ID']));
+        $dp_start = date("d/m/Y",getjointime($kga['user']['usr_ID']));
         $pd_today = date("d/m/Y",time());
         $nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . date($kga['date_format'][0],time()+86400);
 
@@ -93,7 +93,7 @@ switch ($axAction) {
         $tpl->assign('dp_start', $dp_start);
         $tpl->assign('dp_today', $pd_today);
         $tpl->assign('nextday', $nextday);
-        $tpl->assign('total', intervallApos(get_zef_time($usr['usr_ID'],$timespace_in,$timespace_out)));
+        $tpl->assign('total', intervallApos(get_zef_time($kga['user']['usr_ID'],$timespace_in,$timespace_out)));
         $tpl->assign('hook_tss_inDisplay',1);
         $tpl->display("display.tpl");
     break;
@@ -102,7 +102,7 @@ switch ($axAction) {
     // = record new event =
     // ====================
     case 'startRecord':
-        if (get_rec_state($usr['usr_ID'])) {
+        if (get_rec_state($kga['user']['usr_ID'])) {
             stopRecorder();
         }
     
@@ -119,6 +119,58 @@ switch ($axAction) {
         echo 1;
     break;
 
+    // =================================
+    // = load user table (usr) from DB =
+    // =================================
+    case 'reload_usr':
+        $arr_usr = get_arr_watchable_users($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+        if (count($arr_usr)>0) {
+            $tpl->assign('arr_usr', $arr_usr);
+        } else {
+            $tpl->assign('arr_usr', 0);
+        }
+        $tpl->display("../lists/usr.tpl");
+    break;
+
+    // =====================================
+    // = load customer table (knd) from DB =
+    // =====================================
+    case 'reload_knd':
+        $arr_knd = get_arr_knd_with_time($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+        if (count($arr_knd)>0) {
+            $tpl->assign('arr_knd', $arr_knd);
+        } else {
+            $tpl->assign('arr_knd', 0);
+        }
+        $tpl->display("../lists/knd.tpl");
+    break;
+
+    // ====================================
+    // = load project table (pct) from DB =
+    // ====================================
+    case 'reload_pct':
+        $arr_pct = get_arr_pct_with_time($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+        if (count($arr_pct)>0) {
+            $tpl->assign('arr_pct', $arr_pct);
+        } else {
+            $tpl->assign('arr_pct', 0);
+        }
+        $tpl->display("../lists/pct.tpl");
+    break;
+
+    // ===================================
+    // = load events table (evt) from DB =
+    // ===================================
+    case 'reload_evt':
+        $arr_evt = get_arr_evt_with_time($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+        if (count($arr_evt)>0) {
+            $tpl->assign('arr_evt', $arr_evt);
+        } else {
+            $tpl->assign('arr_evt', 0);
+        }
+        $tpl->display("../lists/evt.tpl");
+    break;
+
 
     // ============================================
     // = adding new customers, projects or events =
@@ -127,7 +179,7 @@ switch ($axAction) {
     
     case 'add_edit_KndPctEvt':
     
-        if($usr['usr_sts']==2) die(); // only admins and grpleaders can do this ...
+        if($kga['user']['usr_sts']==2) die(); // only admins and grpleaders can do this ...
     	
         switch($axValue) {
             case "knd":
@@ -146,7 +198,7 @@ switch ($axAction) {
             	$data['knd_filter']   = $_REQUEST['knd_filter'];
             	$data['knd_logo']     = $_REQUEST['knd_logo'];
             	
-                // logfile("knd_create (" .$kga['usr']['usr_name'] ."): " . $data['knd_name']);
+                // logfile("knd_create (" .$kga['user']['usr_name'] ."): " . $data['knd_name']);
             	
             	if (!$id) {
                     $id = knd_create($data);
@@ -165,7 +217,7 @@ switch ($axAction) {
                 $data['pct_filter']   = $_REQUEST['pct_filter'];
                 $data['pct_logo']     = $_REQUEST['pct_logo'];
                 
-                // logfile("pct_create (" .$kga['usr']['usr_name'] ."): " . $data['pct_name']);
+                // logfile("pct_create (" .$kga['user']['usr_name'] ."): " . $data['pct_name']);
                 
                 if (!$id) {
                     $id = pct_create($data);
@@ -183,7 +235,7 @@ switch ($axAction) {
                 $data['evt_filter']   = $_REQUEST['evt_filter'];
                 $data['evt_logo']     = $_REQUEST['evt_logo'];
                 
-                // logfile("evt_create (" .$kga['usr']['usr_name'] ."): " . $data['evt_name']);
+                // logfile("evt_create (" .$kga['user']['usr_name'] ."): " . $data['evt_name']);
                 
                 if (!$id) {
                     $id = evt_create($data);
@@ -217,11 +269,11 @@ switch ($axAction) {
     // = Temporary Customer Filter =
     // =============================
     case 'filter':
-    // mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$kga['usr']['usr_ID']));
+    // mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$kga['user']['usr_ID']));
     // this is connected to a hidden feature and can be activated in the file vars.php inside the includes dir
     
     	$usr_data['filter'] = $_REQUEST['id'];
-    	usr_edit($kga['usr']['usr_ID'], $usr_data);
+    	usr_edit($kga['user']['usr_ID'], $usr_data);
     
     break;
     
@@ -234,7 +286,7 @@ switch ($axAction) {
 
 
 	    case 'giveMeTheCustomerList':
-	        $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+	        $arr_knd = get_arr_knd($kga['user']['usr_grp']);
 	        if (count($arr_knd)>0) {
 	            $tpl->assign('arr_knd', $arr_knd);
 	        } else { // no customers - no dropdown ...
@@ -278,7 +330,7 @@ switch ($axAction) {
 
 	    case 'giveMeTheProjectList':
 	        $id = (int)strip_tags($_REQUEST['id']);
-	        $arr_pct = get_arr_pct_by_knd($kga['usr']['usr_grp'],$id);
+	        $arr_pct = get_arr_pct_by_knd($kga['user']['usr_grp'],$id);
 	        if (count($arr_pct)>0) {
 	            $tpl->assign('arr_pct', $arr_pct);
 	        } else {
@@ -289,7 +341,7 @@ switch ($axAction) {
 	    break;
 
 	    case 'giveMeTheEventList':
-	        $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
+	        $arr_evt = get_arr_evt($kga['user']['usr_grp']);
 	        if (count($arr_evt)>0) {
 	            $tpl->assign('arr_evt', $arr_evt);
 	        } else {

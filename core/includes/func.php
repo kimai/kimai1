@@ -37,6 +37,15 @@ function kickUser() {
  * @author th
  */
 function intervallApos($sek) {
+  if (is_array($sek)) {
+    $arr = array();
+    foreach ($sek as $key=>$value)
+    {
+      $arr[$key] = intervallApos($value);
+    }
+    return $arr;
+  }
+  else
     return sprintf('%d:%02d', $sek / 3600, $sek / 60 % 60);
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={$kga.conf.charset}"/>
 
-    <title>{$kga.usr.usr_name} - Kimai</title>
+    <title>{$kga.user.usr_name} - Kimai</title>
 
     <!-- Default Stylesheets -->
     <link rel="stylesheet" href="../skins/{$kga.conf.skin}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
@@ -52,7 +52,7 @@
 
         var recstate              = {$recstate};
         
-        var usr_ID                = {$kga.usr.usr_ID}
+        var user_ID                = {$kga.user.usr_ID}
        
         var timeoutTicktack       = 0;
         
@@ -64,7 +64,7 @@
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
         var nextday               = "{$nextday}";
-        var default_title         = "{$kga.usr.usr_name} - Kimai";
+        var default_title         = "{$kga.user.usr_name} - Kimai";
         var revision              = {$kga.revision};
 
         var selected_knd  = '{$knd_data.knd_ID}';
@@ -77,10 +77,35 @@
         {literal}function hook_tss(){{/literal}{$hook_tss}{literal}}{/literal}
         {literal}function hook_bzzRec(){{/literal}{$hook_bzzRec}{literal}}{/literal}
         {literal}function hook_bzzStp(){{/literal}{$hook_bzzStp}{literal}}{/literal}
-        {literal}function hook_chgKnd(){{/literal}{$hook_chgKnd}{literal}}{/literal}
-        {literal}function hook_chgPct(){{/literal}{$hook_chgPct}{literal}}{/literal}
-        {literal}function hook_chgEvt(){{/literal}{$hook_chgEvt}{literal}}{/literal}
+        {literal}function hook_chgKnd(){lists_reload("knd");lists_reload("pct");{/literal}{$hook_chgKnd}{literal}}{/literal}
+        {literal}function hook_chgPct(){lists_reload("pct");{/literal}{$hook_chgPct}{literal}}{/literal}
+        {literal}function hook_chgEvt(){lists_reload("evt");{/literal}{$hook_chgEvt}{literal}}{/literal}
+        {literal}function hook_filter(){{/literal}{$hook_filter}{literal}}{/literal}
+        {literal}function hook_resize(){{/literal}{$hook_resize}{literal}}{/literal}
         {literal}function kill_reg_timeouts(){{/literal}{$timeoutlist}{literal}}{/literal}
+
+        {literal}function kimai_onload() {
+    $('#extShrink').hover(lists_extShrinkShow,lists_extShrinkHide);
+    $('#extShrink').click(lists_shrinkExtToggle);
+    $('#kndShrink').hover(lists_kndShrinkShow,lists_kndShrinkHide);
+    $('#kndShrink').click(lists_shrinkKndToggle);
+  {/literal}{if $kga.user.usr_sts < 2}
+    $('#usrShrink').hover(lists_usrShrinkShow,lists_usrShrinkHide);
+    $('#usrShrink').click(lists_shrinkUsrToggle);
+  {else}
+    $('#usrShrink').hide();
+  {/if}{literal}
+    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
+    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
+    
+    lists_resize();
+    
+    //$('#gui').html('');
+    
+    // give browser time to render page. afterwards make sure lists are resized correctly
+    setTimeout(lists_resize,500);
+    clearTimeout(lists_resize);
+        }{/literal}
 
     </script>
 
@@ -88,7 +113,7 @@
     
   </head>
 
-<body>
+<body onload="kimai_onload();">
 
     <div id="top">
         
@@ -167,6 +192,58 @@
 {/foreach}
 
     </div>
+
+<div class="lists" style="display:none">
+<div id="usr_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('usr', this.value);" type="text" id="filt_usr" name="filt_usr"/>
+    {$kga.lang.users} 
+</div>
+
+<div id="knd_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('knd', this.value);" type="text" id="filt_knd" name="filt_knd"/>
+    {$kga.lang.knds} 
+    
+        
+{if $kga.user.usr_sts != 2 }    
+    <div class="right">
+        <a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;">{$kga.lang.add}</a>
+    </div>
+{/if}
+</div>
+
+<div id="pct_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('pct', this.value);" type="text" id="filt_pct" name="filt_pct"/>
+    {$kga.lang.pcts}
+    
+    
+{if $kga.user.usr_sts != 2 }  
+    <div class="right">
+        <a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;">{$kga.lang.add}</a>
+    </div>
+{/if}
+</div>
+
+<div id="evt_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('evt', this.value);" type="text" id="filt_evt" name="filt_evt"/>
+    {$kga.lang.evts}
+    
+    
+{if $kga.user.usr_sts != 2 } 
+    <div class="right">
+        <a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;">{$kga.lang.add}</a>
+    </div>
+{/if}
+</div>
+
+<div id="usr">{$usr_display}</div>
+<div id="knd">{$knd_display}</div>
+<div id="pct">{$pct_display}</div>
+<div id="evt">{$evt_display}</div>
+
+<div id="extShrink">&nbsp;</div>
+<div id="usrShrink">&nbsp;</div>
+<div id="kndShrink">&nbsp;</div>
+</div>
     
     <div id="loader">&nbsp;</div>
     

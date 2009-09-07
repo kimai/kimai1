@@ -29,9 +29,6 @@ var scroller_width;
 var drittel;
 var zef_w;
 var zef_h;
-var knd_w;
-var pct_w;
-var evt_w;
 
 var ts_tss_hook_flag = 0;
 var ts_rec_hook_flag = 0;
@@ -39,9 +36,6 @@ var ts_stp_hook_flag = 0;
 var ts_chk_hook_flag = 0;
 var ts_chp_hook_flag = 0;
 var ts_che_hook_flag = 0;
-
-var zefShrinkMode = 0; // if true the timesheet table shrinks to 3 rows
-var kndShrinkMode = 0; // if true the timesheet table shrinks to 3 rows
 
 $(document).ready(function(){
 

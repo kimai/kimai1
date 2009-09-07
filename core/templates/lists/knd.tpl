@@ -13,7 +13,7 @@
 {section name=row loop=$arr_knd}
 {if $arr_knd[row].knd_visible || $arr_knd[row].zeit != "0:00"}
             
-                    <tr class="knd knd{$arr_knd[row].knd_ID} {cycle values="odd,even"}">
+                    <tr id="row_knd{$arr_knd[row].knd_ID}" class="knd knd{$arr_knd[row].knd_ID} {cycle values="odd,even"}">
 
 
 {* --- option cell ---*}
@@ -28,19 +28,19 @@
 
 
 
-{if $kga.usr.usr_sts != 2}
+{if $kga.user.usr_sts != 2}
                         <a href ="#" onClick="editSubject('knd',{$arr_knd[row].knd_ID});"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' /></a>
 {/if}  
 
 {*
-                        <a href ="#" onClick="ts_ext_preselect('knd',{$arr_knd[row].knd_ID},'{$arr_knd[row].knd_name}',0,0); return false;" id="ps{$arr_knd[row].knd_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_knd[row].knd_ID})' border='0' /></a>
+                        <a href ="#" onClick="lists_preselect('knd',{$arr_knd[row].knd_ID},'{$arr_knd[row].knd_name}',0,0); return false;" id="ps{$arr_knd[row].knd_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_knd[row].knd_ID})' border='0' /></a>
 *}
-                        <a href ="#" onClick="ts_knd_prefilter({$arr_knd[row].knd_ID},'filter'); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+                        <a href ="#" onClick="lists_knd_prefilter({$arr_knd[row].knd_ID},'filter'); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                     </td>
 
 {* --- name cell ---*}
-                    <td width="100%" class="clients" onmouseover="ChangeColor(this,true);" onmouseout="ChangeColor(this,false);" onClick="ts_knd_prefilter({$arr_knd[row].knd_ID},'highlight'); return false;">
+                    <td width="100%" class="clients" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="lists_knd_prefilter({$arr_knd[row].knd_ID},'highlight'); return false;">
 {if $kga.customerhack}
 {if $filter == $arr_knd[row].knd_ID}
                         <a href ="#" onClick="filter(0); return false;">
@@ -56,8 +56,8 @@
                     </td>
 
 
-{* --- time cell ---*}
-                    <td nowrap class="time">
+{* --- annotation cell ---*}
+                    <td nowrap class="annotation">
                         {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
                         {$arr_knd[row].zeit}
                         {if $arr_knd[row].knd_visible != 1}</span>{/if}

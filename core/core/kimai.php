@@ -32,25 +32,14 @@ $tpl->compile_dir  = '../compile/';
 // ==================================
 include('../includes/basics.php');
 
-$usr = checkUser();
+checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-// append (!) config to $kga
-get_config($usr['usr_ID']);
-
 $tpl->assign('browser', get_agent());
-
-if ($kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-
-require_once("../language/${language}.php");
 
 // =========================================
 // = PARSE EXTENSION CONFIGS (ext_configs) =
@@ -72,6 +61,8 @@ if ($handle = opendir('../extensions/')) {
     $chk_hooks           = array();
     $chp_hooks           = array();
     $che_hooks           = array();
+    $lft_hooks           = array(); // list filter hooks
+    $rsz_hooks           = array(); // resize hooks
     $timeouts            = array();
     
     while (false !== ($file = readdir($handle))) {
@@ -89,10 +80,10 @@ if ($handle = opendir('../extensions/')) {
                        	// logfile("*************** ADMIN ALLOWED: " . $settings['ADMIN_ALLOWED']);
                        	// logfile("*************** GROUP LEADER ALLOWED: " . $settings['GROUP_LEADER_ALLOWED']);
                        	// logfile("*************** USER ALLOWED: " . $settings['USER_ALLOWED']);                      	
-                       	// logfile("****************** user status: " . $kga['usr']['usr_sts']);
+                       	// logfile("****************** user status: " . $kga['user']['usr_sts']);
                        	
                        	// Check if user has the correct rank to use this extension
-                       	switch ($kga['usr']['usr_sts']) {
+                       	switch ($kga['user']['usr_sts']) {
                        		case 0:
                        		if ($settings['ADMIN_ALLOWED'] == "1") {
                        			$extensions[] = $settings;
@@ -154,6 +145,8 @@ if ($handle = opendir('../extensions/')) {
                             if ($key == 'CHANGE_KND_TRIGGER')       { $chk_hooks[] = $value; }
                             if ($key == 'CHANGE_PCT_TRIGGER')       { $chp_hooks[] = $value; }
                             if ($key == 'CHANGE_EVT_TRIGGER')       { $che_hooks[] = $value; }
+                            if ($key == 'LIST_FILTER_TRIGGER')      { $lft_hooks[] = $value; }
+                            if ($key == 'RESIZE_TRIGGER')           { $rsz_hooks[] = $value; }
                             
                             // add Timeout clearing
                             
@@ -200,7 +193,7 @@ $current_timer = get_current_timer();
 $wd       = $kga['lang']['weekdays_short'][date("w",time())];
 
 if ($kga['calender_start']=="") {
-    $dp_start = date("d/m/Y",getjointime($usr['usr_ID']));    
+    $dp_start = date("d/m/Y",getjointime($kga['user']['usr_ID']));    
 } else {
     $dp_start = $kga['calender_start'];    
 }
@@ -213,7 +206,7 @@ $tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $pd_today);
 $tpl->assign('nextday', $nextday);
-$tpl->assign('total', intervallApos(get_zef_time($usr['usr_ID'],$in,$out)));
+$tpl->assign('total', intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out)));
 
 // ===========================
 // = DatePicker localization =
@@ -254,7 +247,7 @@ $tpl->assign('js_extension_files', $js_extension_files);
 
 $tpl->assign('timespace_warning', timespace_warning($in,$out));
 
-$tpl->assign('recstate', get_rec_state($usr['usr_ID']));
+$tpl->assign('recstate', get_rec_state($kga['user']['usr_ID']));
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 
@@ -298,6 +291,51 @@ if ($handle = opendir($extDir)) {
     }
     closedir($handle);
 }
+
+
+// =======================
+// = display user table =
+// =======================
+$arr_usr = get_arr_watchable_users($kga['user']['usr_ID']);
+if (count($arr_usr)>0) {
+    $tpl->assign('arr_usr', $arr_usr);
+} else {
+    $tpl->assign('arr_usr', '0');
+}
+$tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
+
+// ==========================
+// = display customer table =
+// ==========================
+$arr_knd = get_arr_knd($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+if (count($arr_knd)>0) {
+    $tpl->assign('arr_knd', $arr_knd);
+} else {
+    $tpl->assign('arr_knd', '0');
+}
+$tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
+
+// =========================
+// = display project table =
+// =========================
+$arr_pct = get_arr_pct($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+if (count($arr_pct)>0) {
+    $tpl->assign('arr_pct', $arr_pct);
+} else {
+    $tpl->assign('arr_pct', '0');
+}
+$tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
+
+// ========================
+// = display events table =
+// ========================
+$arr_evt = get_arr_evt($kga['user']['usr_grp'],$kga['user']['usr_ID'],$in,$out);
+if (count($arr_evt)>0) {
+    $tpl->assign('arr_evt', $arr_evt);
+} else {
+    $tpl->assign('arr_evt', '0');
+}
+$tpl->assign('evt_display', $tpl->fetch("lists/evt.tpl"));
 
 
 // ========================
@@ -346,12 +384,28 @@ if(is_array($che_hooks)){
     }
 }
 
+$hook_filter="";
+if(is_array($lft_hooks)){
+    foreach ($lft_hooks as $hook) { 
+        $hook_filter .= $hook; 
+    }
+}
+
+$hook_resize="";
+if(is_array($rsz_hooks)){
+    foreach ($rsz_hooks as $hook) { 
+        $hook_resize .= $hook; 
+    }
+}
+
 $tpl->assign('hook_tss',      $hook_tss);
 $tpl->assign('hook_bzzRec',   $hook_bzzRec);
 $tpl->assign('hook_bzzStp',   $hook_bzzStp);
 $tpl->assign('hook_chgKnd',   $hook_chgKnd);
 $tpl->assign('hook_chgPct',   $hook_chgPct);
 $tpl->assign('hook_chgEvt',   $hook_chgEvt);
+$tpl->assign('hook_filter',   $hook_filter);
+$tpl->assign('hook_resize',   $hook_resize);
 
 $timeoutlist = "";
 foreach ($timeouts as $timeout) {

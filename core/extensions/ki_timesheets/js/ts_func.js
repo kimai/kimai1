@@ -25,53 +25,8 @@
 function ts_ext_onload() {
     ts_ext_applyHoverIntent2zefRows();
     ts_ext_resize();
-    $('#zefShrink').hover(ts_ext_zefShrinkShow,ts_ext_zefShrinkHide);
-    $('#kndShrink').hover(ts_ext_kndShrinkShow,ts_ext_kndShrinkHide);
-    $('#zefShrink').click(ts_ext_shrinkZefToggle);
-    $('#kndShrink').click(ts_ext_shrinkKndToggle);
     $("#loader").hide();
-    
-    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-}
-
-function ts_ext_zefShrinkShow() {
-    $('#zefShrink').css("background-color","red");
-}
-
-function ts_ext_zefShrinkHide() {
-    $('#zefShrink').css("background-color","transparent");
-}
-
-function ts_ext_kndShrinkShow() {
-    $('#kndShrink').css("background-color","red");
-}
-
-function ts_ext_kndShrinkHide() {
-    $('#kndShrink').css("background-color","transparent");
-}
-
-function ts_ext_shrinkZefToggle() {
-    logfile("zefshrink");
-    (zefShrinkMode)?zefShrinkMode=0:zefShrinkMode=1;
-    if (zefShrinkMode) {
-        $('#zefShrink').css("background-image","url('../skins/standard/grfx/zefShrink_down.png')");
-    } else {
-        $('#zefShrink').css("background-image","url('../skins/standard/grfx/zefShrink_up.png')");
-    }    ts_ext_set_heightTop();
-}
-
-function ts_ext_shrinkKndToggle() {
-    logfile("kndshrink");
-    (kndShrinkMode)?kndShrinkMode=0:kndShrinkMode=1;
-    if (kndShrinkMode) {
-        $('#knd, #knd_head').hide();
-        $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_right.png')");
-    } else {
-        $('#knd, #knd_head').show();
-        $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
-    }
-    ts_ext_set_tableWrapperWidths();
+    lists_visible(true);
 }
 
 function ts_ext_get_dimensions() {
@@ -85,10 +40,6 @@ function ts_ext_get_dimensions() {
     
     zef_w = pageWidth()-24;
     zef_h = pageHeight()-224-headerHeight()-28;
-
-    knd_w = subtableWidth-5; // subtract the space between the panels
-    pct_w = subtableWidth-6;
-    evt_w = subtableWidth-5;
 }
 
 function ts_ext_applyHoverIntent2zefRows() {
@@ -115,56 +66,15 @@ function ts_ext_set_tableWrapperWidths() {
     ts_ext_get_dimensions();
     // zef: set width of table and faked table head  
     $("#zef_head,#zef").css("width",zef_w);
-    $('#zefShrink').css("width",zef_w+2);
-    // set width of faked table heads of subtables -----------------
-    $("#knd_head").css("width",knd_w-5); // subtract the left padding inside the header
-    $("#pct_head").css("width",pct_w-5); // which is 5px
-    $("#evt_head").css("width",evt_w-5);
-    $("#knd").css("width",knd_w);
-    $("#pct").css("width",pct_w);
-    $("#evt").css("width",evt_w);
-    ts_ext_set_left();
     ts_ext_set_TableWidths();
-}
-
-function ts_ext_set_left() {
-    
-    // push pct/evt subtables in place LEFT
-    
-    (kndShrinkMode)?leftmargin=0:leftmargin=subtableWidth;
-    (kndShrinkMode)?rightmargin=0:rightmargin=7;
-
-    (kndShrinkMode)?kndSkrinkPos=0:kndSkrinkPos=subtableWidth+7;
-    
-    $("#pct_head,#pct").css("left",leftmargin+rightmargin+10);
-    
-    $("#evt_head,#evt").css("left",subtableWidth+leftmargin+rightmargin+15); //22
-    $('#kndShrink').css("left",kndSkrinkPos);
-    
 }
 
 function ts_ext_set_heightTop() {
     ts_ext_get_dimensions();
-    if (!zefShrinkMode) {
+    if (!extShrinkMode) {
         $("#zef").css("height", zef_h);
-        $("#knd,#pct,#evt").css("height","175px");
-        $('#kndShrink').css("height","201px");
-        // push knd/pct/evt subtables in place TOP
-        var subs = pageHeight()-headerHeight()-90+25;
-        $("#knd,#pct,#evt").css("top",subs);
-        // push faked table heads of subtables in place
-        var subs = pageHeight()-headerHeight()-90;    
-        $("#knd_head,#pct_head,#evt_head").css("top",subs);
-        $('#zefShrink').css("top",subs-10);
-        $('#kndShrink').css("top",subs);
     } else {
         $("#zef").css("height", "70px");
-        $("#knd_head,#pct_head,#evt_head").css("top",headerHeight()+107);
-        $("#knd,#pct,#evt").css("top",headerHeight()+135);
-        $("#knd,#pct,#evt").css("height",pageHeight()-headerHeight()-150);
-        $('#kndShrink').css("height",pageHeight()-headerHeight()-119);
-        $('#zefShrink').css("top",headerHeight()+97);
-        $('#kndShrink').css("top",headerHeight()+105);
     }
     
     ts_ext_set_TableWidths();
@@ -175,12 +85,6 @@ function ts_ext_set_TableWidths() {
     // set table widths   
     ($("#zef").innerHeight()-$("#zef table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
     $("#zef table").css("width",zef_w-scr);
-    ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
-    $("#knd table").css("width",knd_w-scr);
-    ($("#pct").innerHeight()-$("#pct table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#pct table").css("width",pct_w-scr);
-    ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#evt table").css("width",evt_w-scr);
     // stretch customer column in faked zef table head
     $("#zef_head > table > tbody > tr > td.knd").css("width", $("div#zef > div > table > tbody > tr > td.knd").width());    
     // stretch project column in faked zef table head
@@ -189,7 +93,7 @@ function ts_ext_set_TableWidths() {
 
 function ts_ext_triggerchange() {
     if (ts_tss_hook_flag) {
-        ts_ext_reloadAllTables();
+        ts_ext_reload();
         ts_chk_hook_flag = 0;
         ts_chp_hook_flag = 0;
         ts_che_hook_flag = 0;
@@ -212,11 +116,14 @@ function ts_ext_triggerchange() {
     ts_chk_hook_flag = 0;
     ts_chp_hook_flag = 0;
     ts_che_hook_flag = 0;
+
+    if ($("#loader").css("display") == "none")
+      lists_visible(true);
 }
 
 function ts_ext_triggerTSS() {
     if ($('.ki_timesheet').css('display') == "block") {
-        ts_ext_reloadAllTables();
+        ts_ext_reload();
     } else {
         ts_tss_hook_flag++;
     }
@@ -232,9 +139,7 @@ function ts_ext_triggerTSS() {
 
 function ts_ext_triggerCHK() {
     if ($('.ki_timesheet').css('display') == "block") {
-        ts_ext_reloadSubject('zef');
-        ts_ext_reloadSubject('knd');
-        ts_ext_reloadSubject('pct');
+        ts_ext_reload();
     } else {
         ts_chk_hook_flag++;
     }
@@ -242,8 +147,7 @@ function ts_ext_triggerCHK() {
 
 function ts_ext_triggerCHP() {
     if ($('.ki_timesheet').css('display') == "block") {
-        ts_ext_reloadSubject('zef');
-        ts_ext_reloadSubject('pct');
+        ts_ext_reload();
     } else {
         ts_chp_hook_flag++;
     }
@@ -251,8 +155,7 @@ function ts_ext_triggerCHP() {
 
 function ts_ext_triggerCHE() {
     if ($('.ki_timesheet').css('display') == "block") {
-        ts_ext_reloadSubject('zef');
-        ts_ext_reloadSubject('evt');
+        ts_ext_reload();
     } else {
         ts_che_hook_flag++;
     }
@@ -289,10 +192,8 @@ function ts_ext_preselect(subject,id,name,kndID,kndName) {
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
 //
-function ts_ext_reloadSubject(subject) {
-    switch (subject) {
-        case "zef":
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: 0, id: 0 },
+function ts_ext_reload() {
+            $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr+'|'+filterKnd+'|'+filterPct, id: 0 },
                 function(data) { 
                     $("#zef").html(data);
                 
@@ -306,46 +207,6 @@ function ts_ext_reloadSubject(subject) {
                     ts_ext_applyHoverIntent2zefRows();
                 }
             );
-    break;
-        case "knd":
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_knd", axValue: 0, id: 0 },
-                function(data) {
-                    $("#knd").html(data);
-                    ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#knd table").css("width",knd_w-scr);
-                    filter_lists('knd', $('#filt_knd').val());
-                }
-            );
-    break;
-        case "pct": 
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_pct", axValue: 0, id: 0 },
-                function(data) { 
-                    $("#pct").html(data);
-                    ($("#pct").innerHeight()-$("#pct table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#pct table").css("width",pct_w-scr);
-                    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-                    filter_lists('pct', $('#filt_pct').val());
-                }
-            );
-    break;
-        case "evt": 
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_evt", axValue: 0, id: 0 },
-                function(data) { 
-                    $("#evt").html(data);
-                    ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#evt table").css("width",evt_w-scr);
-                    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-                    filter_lists('evt', $('#filt_evt').val());
-                }
-            );
-    break;
-    }
-}
-function ts_ext_reloadAllTables() {
-    ts_ext_reloadSubject("zef");
-    ts_ext_reloadSubject("knd");
-    ts_ext_reloadSubject("pct");
-    ts_ext_reloadSubject("evt");
 }
 
 // ----------------------------------------------------------------------------------------
@@ -366,7 +227,7 @@ function ts_ext_recordAgain(pct,evt,id) {
     $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: pct+"|"+evt, id: 0 },
         function(data) {
                 eval(data);
-                ts_ext_reloadSubject("zef");
+                ts_ext_reload();
                 ts_ext_preselect('pct',pct,pct_name,0,knd_name);
                 ts_ext_preselect('evt',evt,evt_name,0,0);
                 $("#ticker_knd").html(knd_name);
@@ -395,7 +256,7 @@ function ts_ext_stopRecord(id) {
     $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: 0 },
         function(data) {
             if (data == 1) {
-                ts_ext_reloadAllTables();
+                ts_ext_reload();
             } else {
                 alert("~~an error occured!~~")
             }
@@ -415,7 +276,7 @@ function quickdelete(id) {
     $.post(ts_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
         function(data){
             if (data == 1) {
-                ts_ext_reloadAllTables();
+                ts_ext_reload();
             } else {
                 alert("~~an error occured!~~")
             }
@@ -454,55 +315,6 @@ function pasteNow(value) {
     time  = H + ":" + i + ":" + s;
     
     $("#edit_out_time").val(time);
-}
-
-
-// ----------------------------------------------------------------------------------------
-//  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
-// 
-function filter_lists(div_list, needle) {
-   var n = new RegExp(needle, 'i');
-   $('#'+div_list+' tr ').filter(function(index) {
-       return ($(this).children('td:nth-child(2)').text().match(n) === null);
-   }).css('display','none');
-   $('#'+div_list+' tr ').filter(function(index) {
-       return ($(this).children('td:nth-child(2)').text().match(n) !== null);
-   }).css('display','');
-}
-
-
-function ts_knd_prefilter(knd,type) {
-    $('a').blur();
-    if (type=="highlight") {
-        
-        $(".knd").removeClass("filterPctForPreselection");
-        $(".pct").removeClass("filterPctForPreselection");
-        $("#pct .knd"+knd).addClass("filterPctForPreselection");
-        $("#pct .pct").removeClass("TableRowInvisible");
-
-        
-    } else {
-        
-        $(".knd").removeClass("filterPctForPreselection");      
-        $(".pct").removeClass("filterPctForPreselection");
-        $("#knd .knd"+knd).addClass("filterPctForPreselection");
-        $("#pct .pct").addClass("TableRowInvisible");
-        $("#pct .pct").removeClass("highlightPctForPreselection");
-        $("#pct .knd"+knd).removeClass("TableRowInvisible");
-        
-    }
-}
-
-
-// ----------------------------------------------------------------------------------------
-//  table row changes color on rollover - preselection link on whole row
-//
-function ChangeColor(tableRow,highLight) {
-  if (highLight) {
-    $(tableRow).parents("tr").addClass("highlightPctForPreselection");
-  } else {
-    $(tableRow).parents("tr").removeClass("highlightPctForPreselection");
-  }
 }
 
 

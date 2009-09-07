@@ -2,24 +2,13 @@
 	// Include Basics
 	include('../../includes/basics.php');
 	
-	$usr = checkUser();
+	checkUser();
 	// ============================================
 	// = initialize currently displayed timespace =
 	// ============================================
 	$timespace = get_timespace();
 	$in = $timespace[0];
 	$out = $timespace[1];
-
-    // append (!) config to $kga
-    get_config($usr['usr_ID']);
-    
-    if ($kga['conf']['lang'] == "") {
-        $language = $kga['language'];
-    } else {
-        $language = $kga['conf']['lang'];
-    }
-
-    require_once(WEBROOT."language/${language}.php");	
 	
 	// set smarty config
 	require_once(WEBROOT.'libraries/smarty/Smarty.class.php');

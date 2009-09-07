@@ -22,6 +22,22 @@
 // =====================================================================
 // = Runs when the DOM of the Kimai GUI is loaded => MAIN init script! =
 // =====================================================================
+
+
+var usr_w;
+var knd_w;
+var pct_w;
+var evt_w;
+
+var extShrinkMode = 0; // 0 = show, 1 = hide
+var kndShrinkMode = 0; 
+var usrShrinkMode = 1; 
+
+var filterUsr = -1;
+var filterKnd = -1;
+var filterPct = -1;
+var filterEvt = -1;
+
 $(document).ready(function() {
   
     var preselected_knd = 0;
@@ -58,6 +74,12 @@ $(document).ready(function() {
     } else {
         show_selectors();
     }
+
+    var lists_resizeTimer = null;
+    $(window).bind('resize', function() {
+       if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
+       lists_resizeTimer = setTimeout(lists_resize, 500);
+    });
 
 });
 

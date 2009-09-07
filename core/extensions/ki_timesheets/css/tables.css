@@ -78,9 +78,6 @@ div.ki_timesheet a {
     margin: 0 3px;
 }
 
-div.ki_timesheet>div#knd>table>tbody>tr>td.time,
-div.ki_timesheet>div#pct>table>tbody>tr>td.time, 
-div.ki_timesheet>div#evt>table>tbody>tr>td.time,
 div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.evt {
     border-right: none;
 }
@@ -113,35 +110,6 @@ div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.evt {
     width:50px;
 }
 
-div#knd td.option,
-div#pct td.option,
-div#evt td.option 
-{ 
-/*    width:70px;*/
-}
-
-div#knd td.option img,
-div#pct td.option img,
-div#evt td.option img 
-{ 
-    margin-top:2px;
-}
-
-div#knd td.time,
-div#pct td.time,
-div#evt td.time 
-{ 
-    width:60px;
-    text-align: right;
-}
-
-div#knd td,
-div#pct td,
-div#evt td 
-{ 
-    border-right:none;
-}
-
 div#zef_head div.left
 { 
     position:absolute;
@@ -162,31 +130,8 @@ div#zef_head div.left a
     text-indent:-500px;
 }
 
+div#zef_head td {padding: 3px 4px 4px 6px;}
 
-div#knd_head div.right,
-div#pct_head div.right,
-div#evt_head div.right 
-{ 
-    position:absolute;
-    overflow:hidden;
-    width:32px;
-    height:20px;
-    top:3px;
-    right:0;
-/*    background-color:red;*/
-}
-
-div#knd_head div.right a,
-div#pct_head div.right a,
-div#evt_head div.right a 
-{ 
-    background-image: url('../../../skins/standard/grfx/add.png');
-    overflow:hidden;
-    display:block;
-    width:22px;
-    height:16px;
-    text-indent:-500px;
-}
 
 tbody tr.comm0 td {
     padding:5px;
@@ -206,57 +151,6 @@ tbody tr.comm2 td {
     background-image:url(../../../skins/standard/grfx/schraff2.gif);
     font-weight:bold;
     color:#fff;
-}
-
-.livefilterfield {
-    float:right;
-    background-image:url(../../../skins/standard/grfx/filter_bg.jpg);
-    border:1px solid #555;
-    height:12px;
-    margin:0;
-    padding:1px;
-    margin-left:10px;
-    margin-right:38px;
-    color:#fff;
-    font-size:9px;
-}
-
-.livefilterfield:focus {
-    background: #fff;
-    color:#333;
-}
-
-
-.highlightPctForPreselection td
- {
-    background: #C5E6C3 !important;
-    cursor:pointer !important;
-    font-weight:bold;
-}
-
-.filterPctForPreselection td
- {
-    background: #64BE5E !important;
-}
-
-.ids {
-    width:25px;
-    color:#C4C4C4;
-    display:block;
-    float:left;
-}
-
-.filterPctForPreselection td .ids {
-    color:#4D9247 !important;
-}
-
-
-.TableRowInvisible {
-    display:none;
-}
-
-.lighter {
-    color:#777;
 }
 
 .break_day {

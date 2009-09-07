@@ -38,14 +38,14 @@ switch ($axAction) {
     // ==========================
     case 'record':
         
-        if (get_rec_state($usr['usr_ID'])) {
-            stopRecorder($usr['usr_ID']);
+        if (get_rec_state($kga['user']['usr_ID'])) {
+            stopRecorder($kga['user']['usr_ID']);
         }
         
         // IDs -> pctID|evtID
         //
         $IDs = explode('|',$axValue);
-        startRecorder($IDs[0],$IDs[1],$usr['usr_ID']);
+        startRecorder($IDs[0],$IDs[1],$kga['user']['usr_ID']);
         
         $pctdata = pct_get_data($IDs[0]);        
         $return =  "pct_name = '" . $pctdata['pct_name'] ."'; ";
@@ -64,7 +64,7 @@ switch ($axAction) {
     // = stop recording =
     // ==================
     case 'stop':
-        stopRecorder($usr['usr_ID']);
+        stopRecorder($kga['user']['usr_ID']);
         echo 1;
     break;
 
@@ -80,53 +80,35 @@ switch ($axAction) {
     // = Load timesheet data (zef) from DB and return it =
     // ===================================================
     case 'reload_zef':
-        $arr_zef = get_arr_zef($usr['usr_ID'],$in,$out,1);
+        $IDs = explode('|',$axValue);
+
+        $IDs[0] = $IDs[0]==-1?$kga['user']['usr_ID']:$IDs[0];
+
+        $arr_zef = get_arr_zef($kga['user']['usr_ID'],$in,$out,1);
         if (count($arr_zef)>0) {
             $tpl->assign('arr_zef', $arr_zef);
         } else {
             $tpl->assign('arr_zef', 0);
         }
-        $tpl->assign('total', intervallApos(get_zef_time($usr['usr_ID'],$in,$out)));
+        $tpl->assign('total', intervallApos(get_zef_time($kga['user']['usr_ID'],$in,$out)));
+
+        $ann = get_arr_time_usr($in,$out,$IDs[0],$IDs[1],$IDs[2]);
+        $ann_new = intervallApos($ann);
+        $tpl->assign('usr_ann',$ann_new);
+        
+        $ann = get_arr_time_knd($in,$out,$IDs[0],$IDs[1],$IDs[2]);
+        $ann_new = intervallApos($ann);
+        $tpl->assign('knd_ann',$ann_new);
+
+        $ann = get_arr_time_pct($in,$out,$IDs[0],$IDs[1],$IDs[2]);
+        $ann_new = intervallApos($ann);
+        $tpl->assign('pct_ann',$ann_new);
+
+        $ann = get_arr_time_evt($in,$out,$IDs[0],$IDs[1],$IDs[2]);
+        $ann_new = intervallApos($ann);
+        $tpl->assign('evt_ann',$ann_new);
+
         $tpl->display("zef.tpl");
-    break;
-
-    // ==================================================================================================
-    // = load customer table (knd) from DB - returned table includes time summary for current timespace =
-    // ==================================================================================================
-    case 'reload_knd':
-        $arr_knd = get_arr_knd_with_time($usr['usr_grp'],$usr['usr_ID'],$in,$out);
-        if (count($arr_knd)>0) {
-            $tpl->assign('arr_knd', $arr_knd);
-        } else {
-            $tpl->assign('arr_knd', 0);
-        }
-        $tpl->display("knd.tpl");
-    break;
-
-    // =================================================================================================
-    // = load project table (pct) from DB - returned table includes time summary for current timespace =
-    // =================================================================================================
-    case 'reload_pct':
-        $arr_pct = get_arr_pct_with_time($usr['usr_grp'],$usr['usr_ID'],$in,$out);
-        if (count($arr_pct)>0) {
-            $tpl->assign('arr_pct', $arr_pct);
-        } else {
-            $tpl->assign('arr_pct', 0);
-        }
-        $tpl->display("pct.tpl");
-    break;
-
-    // ================================================================================================
-    // = load events table (evt) from DB - returned table includes time summary for current timespace =
-    // ================================================================================================
-    case 'reload_evt':
-        $arr_evt = get_arr_evt_with_time($usr['usr_grp'],$usr['usr_ID'],$in,$out);
-        if (count($arr_evt)>0) {
-            $tpl->assign('arr_evt', $arr_evt);
-        } else {
-            $tpl->assign('arr_evt', 0);
-        }
-        $tpl->display("evt.tpl");
     break;
     
     
@@ -225,7 +207,7 @@ switch ($axAction) {
                 
                 // TIME RIGHT - NEW ENTRY
                 logfile("zef_create_record");
-                zef_create_record($usr['usr_ID'],$data);
+                zef_create_record($kga['user']['usr_ID'],$data);
                 
             }
             
@@ -233,7 +215,7 @@ switch ($axAction) {
             if (count($records)>1) {
                 $this_record['zef_pctID'] = $pct_ID;
                 $this_record['zef_evtID'] = $evt_ID;
-                save_further_records($usr['usr_ID'],$this_record,$records);
+                save_further_records($kga['user']['usr_ID'],$this_record,$records);
             }
             
         }
@@ -247,7 +229,7 @@ switch ($axAction) {
     // = Temporary Customer Filter =
     // =============================
     case 'filter':
-    mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$usr['usr_ID']));
+    mysql_query(sprintf("UPDATE `%susr` SET `filter` = '%d' WHERE `usr_ID` = '%d';",$kga['server_prefix'],$_REQUEST['id'],$kga['user']['usr_ID']));
     // this is connected to a hidden feature and can be activated in the file vars.php inside the includes dir
     break;
 */

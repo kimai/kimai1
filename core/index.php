@@ -135,7 +135,7 @@ if (!$kga['virtual_users']) {
 // ==============================================
 // = Login active? If not redirect to interface =
 // ==============================================
-get_config(0);
+get_global_config();
 if (!$kga['conf']['login']) {
     header("Location: core/kimai.php");
     exit;

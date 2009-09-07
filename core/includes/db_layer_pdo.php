@@ -1589,7 +1589,7 @@ function zef_get_data($zef_id) {
     if ($zef_id) {
         $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ".$kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ".$kga['user']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
         // logfile("SELECT * FROM " . $kga['server_prefix'] . "zef ORDER BY zef_ID DESC LIMIT 1");
     }
     
@@ -1994,20 +1994,21 @@ function checkUser() {
         kickUser();
     }
     
-    $usr = array(
-        "usr_ID"=>$usr_ID,
-        "usr_sts"=>$usr_sts,
-        "usr_grp"=>$usr_grp,
-        "usr_name"=>$usr_name
-    );
-    
-    return $usr;
+    // load configuration
+    get_global_config();
+    get_user_config($usr_ID);
+
+    // override conf.php language if user has chosen a language in the prefs
+    if ($kga['conf']['lang'] != "") {
+      $kga['language'] = $kga['conf']['lang'];
+    }
+    require(sprintf(WEBROOT."language/%s.php",$kga['language']));
 }
 
 // -----------------------------------------------------------------------------------------------------------
 
 /**
- * write global configuration AND details of a specific user into $kga
+ * write global configuration into $kga
  *
  * @param integer $user ID of user in table usr
  * @global array $kga kimai-global-array
@@ -2015,76 +2016,89 @@ function checkUser() {
  * @author th
  *
  */
-function get_config($user) {
-    global $kga, $pdo_conn;    
-        if ($user) {
+function get_global_config() {
+  global $kga, $pdo_conn;    
+  // get values from global configuration 
+  $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "var;");
+  $result = $pdo_query->execute();
+  $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
-            // get values from user record
-            $pdo_query = $pdo_conn->prepare("SELECT
-            `usr_ID`,
-            `usr_name`,
-            `usr_grp`,
-            `usr_sts`,
-            `usr_trash`,
-            `usr_active`,
-            `usr_mail`,
-            `pw`,
-            `ban`,
-            `banTime`,
-            `secure`
-            FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
-            
-            $result = $pdo_query->execute(array($user));
-            $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
-            foreach( $row as $key => $value) {
-                $kga['usr'][$key] = $value;
-            }
-            
+  do { 
+      $kga['conf'][$row['var']] = $row['value']; 
+  } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
+}
+
+
+/**
+ * write details of a specific user into $kga
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array $kga 
+ * @author th
+ *
+ */
+function get_user_config($user) {
+  global $kga, $pdo_conn;    
+  if (!$user) 
+    return;
+
+  // get values from user record
+  $pdo_query = $pdo_conn->prepare("SELECT
+  `usr_ID`,
+  `usr_name`,
+  `usr_grp`,
+  `usr_sts`,
+  `usr_trash`,
+  `usr_active`,
+  `usr_mail`,
+  `pw`,
+  `ban`,
+  `banTime`,
+  `secure`
+  FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
+
+  $result = $pdo_query->execute(array($user));
+  $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
+  foreach( $row as $key => $value) {
+      $kga['user'][$key] = $value;
+  }
+
+  $pdo_query->fetchAll();
+
+  // get values from user configuration (user-preferences)
+  $pdo_query = $pdo_conn->prepare("SELECT 
+  `rowlimit`,
+  `skin`,
+  `lastProject`,
+  `lastEvent`,
+  `lastRecord`,
+  `filter`,
+  `filter_knd`,
+  `filter_pct`,
+  `filter_evt`,
+  `view_knd`,
+  `view_pct`,
+  `view_evt`,
+  `zef_anzahl`,
+  `timespace_in`,
+  `timespace_out`,
+  `autoselection`,
+  `quickdelete`,
+  `allvisible`,
+  `flip_pct_display`,
+  `pct_comment_flag`,
+  `showIDs`,
+  `lang`
+  FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
+
+  $result = $pdo_query->execute(array($user));
+  $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+  foreach( $row as $key => $value) {
+      $kga['conf'][$key] = $value;
+  }
+
             $pdo_query->fetchAll();
-            
-            // get values from user configuration (user-preferences)
-            $pdo_query = $pdo_conn->prepare("SELECT 
-            `rowlimit`,
-            `skin`,
-            `lastProject`,
-            `lastEvent`,
-            `lastRecord`,
-            `filter`,
-            `filter_knd`,
-            `filter_pct`,
-            `filter_evt`,
-            `view_knd`,
-            `view_pct`,
-            `view_evt`,
-            `zef_anzahl`,
-            `timespace_in`,
-            `timespace_out`,
-            `autoselection`,
-            `quickdelete`,
-            `allvisible`,
-            `flip_pct_display`,
-            `pct_comment_flag`,
-            `showIDs`,
-            `lang`
-            FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
-            
-            $result = $pdo_query->execute(array($user));
-            $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-            foreach( $row as $key => $value) {
-                $kga['conf'][$key] = $value;
-            }
-            
-            $pdo_query->fetchAll();
-        }
-        
-        // get values from global configuration 
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "var;");
-        $result = $pdo_query->execute();
-        $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        
-        do { 
-            $kga['conf'][$row['var']] = $row['value']; 
-        } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -2215,30 +2229,148 @@ function get_arr_knd($group) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * returns list of users the given user can watch
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_watchable_users($user_id) {
+    global $kga,$pdo_conn;
+
+    $arr = array();
+
+    // check if user is admin
+    $pdo_query = $pdo_conn->prepare("SELECT usr_sts FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?");
+    $result   = $pdo_query->execute(array($user_id));
+    $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
+
+    // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
+    if ($row['usr_sts'] == "0") { // if is admin
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr");
+      $pdo_query->execute();
+    }
+    else {
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE grp_leader = ?");
+      $pdo_query->execute(array($user_id));
+    }
+    
+    $i=0;
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        $arr[$i]['usr_ID']   = $row['usr_ID'];
+        $arr[$i]['usr_name'] = $row['usr_name'];
+        $i++;
+    }
+    
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns assoc. array where the index is the ID of a user and the value the time
+ * this user has accumulated in the given time with respect to the filtersettings
+ *
+ * @param integer $in from this timestamp
+* @param integer $out to this  timestamp
+* @param integer $user ID of user in table usr
+* @param integer $customer ID of customer in table knd
+* @param integer $project ID of project in table pct
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_usr($in,$out,$user = -1, $customer = -1, $project = -1) {
+    global $kga;
+    global $pdo_conn;
+    
+    $whereClauses = array();
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+    
+    
+ $pdo_query = $pdo_conn->prepare("SELECT SUM(zef_time) as zeit, usr_ID
+             FROM " . $kga['server_prefix'] . "zef 
+             Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
+             Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID
+             Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
+             .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;");
+    
+             $pdo_query->execute();
+
+    $arr = array();  
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        if (empty($row['usr_ID'])) break;
+        $arr[$row['usr_ID']] = $row['zeit'];
+    }
+    
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * returns list of time summary attached to customer ID's within specific timespace as array
  * !! becomes obsolete with new querys !!
  *
- * @param integer $user ID of user in table usr
  * @param integer $in start of timespace in unix seconds
  * @param integer $out end of timespace in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
  * @global array $kga kimai-global-array
  * @return array
- * @author th
+ * @author sl
  */
-function get_arr_time_knd($user,$in,$out) {
-    global $kga, $pdo_conn;
+function get_arr_time_knd($in,$out,$user = -1, $customer = -1, $project = -1) {
+    global $kga;
+    global $pdo_conn;
     
-    if ($in) $zeitraum="AND zef_in > $in";
-    if ($in && $out) $zeitraum="AND zef_in > $in AND zef_in < $out";
+    $whereClauses = array();
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+    
+    if ($in) 
+      $whereClauses[]="zef_in > $in";
+    if ($out) 
+      $whereClauses[]="zef_out < $out";
     $arr = array();  
     
     $pdo_query = $pdo_conn->prepare("SELECT SUM(zef_time) as zeit, knd_ID FROM " . $kga['server_prefix'] . "zef 
             Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID 
-            WHERE zef_usrID = ? " . $zeitraum . " GROUP BY knd_ID;");
-    $pdo_query->execute(array($user));
+            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+            " GROUP BY knd_ID;");
+    $pdo_query->execute();
     
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        if (empty($row['knd_ID'])) break;
         $arr[$row['knd_ID']] = $row['zeit'];
     }
     
@@ -2251,23 +2383,46 @@ function get_arr_time_knd($user,$in,$out) {
  * returns list of time summary attached to project ID's within specific timespace as array
  * !! becomes obsolete with new querys !!
  *
- * @param integer $user ID of user in table usr
  * @param integer $in start time in unix seconds
  * @param integer $out end time in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
  * @global array $kga kimai-global-array
  * @return array
- * @author th
+ * @author sl
  */
-function get_arr_time_pct($user,$in,$out) {
-    global $kga, $pdo_conn;
+function get_arr_time_pct($in,$out,$user = -1,$customer = -1, $project = -1) {
+    global $kga;
+    global $pdo_conn;
     
-    if ($in) $zeitraum="AND zef_in > $in";
-    if ($in && $out) $zeitraum="AND zef_in > $in AND zef_in < $out";
+    $whereClauses = array();
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
     $arr = array();
-    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_pctID FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ? " . $zeitraum . " GROUP BY zef_pctID;");
-    $pdo_query->execute(array($user));
-    
+    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_pctID FROM " . $kga['server_prefix'] . "zef 
+        Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+       " GROUP BY zef_pctID;");
+    $pdo_query->execute();
+
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        if (empty($row['zef_pctID'])) break;
         $arr[$row['zef_pctID']] = $row['zeit'];
     }
     return $arr;
@@ -2301,17 +2456,48 @@ function get_arr_evt($group) {
 
 // -----------------------------------------------------------------------------------------------------------
 
-## EVT time-sum
-function get_arr_time_evt($user,$in,$out) {
-    global $kga, $pdo_conn;
+/**
+ * returns list of time summary attached to event ID's within specific timespace as array
+ *
+ * @param integer $in start time in unix seconds
+ * @param integer $out end time in unix seconds
+ * @param integer $user filter for only this ID of auser
+ * @param integer $customer filter for only this ID of a customer
+ * @param integer $project filter for only this ID of a project
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ */
+function get_arr_time_evt($in,$out,$user = -1,$customer = -1,$project = -1) {
+    global $kga;
+    global $pdo_conn;
     
-    if ($in) $zeitraum="AND zef_in > $in";
-    if ($in && $out) $zeitraum="AND zef_in > $in AND zef_in < $out";
+    $whereClauses = array();
+    
+    if ($user > -1) {
+      $whereClauses[] = "zef_usrID = $user";
+    }
+    
+    if ($customer > -1) {
+      $whereClauses[] = "knd_ID = $customer";
+    }
+    
+    if ($project > -1) {
+      $whereClauses[] = "pct_ID = $project";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
     $arr = array();    
-    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ? " . $zeitraum . " GROUP BY zef_evtID;");
-    $pdo_query->execute(array($user));
-    
+    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef 
+        Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+        " GROUP BY zef_evtID;");
+    $pdo_query->execute();
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        if (empty($row['zef_evtID'])) break;
         $arr[$row['zef_evtID']] = $row['zeit'];
     }
     return $arr;
@@ -2389,7 +2575,7 @@ function get_current_timer() {
     global $kga, $pdo_conn;
         
     $pdo_query = $pdo_conn->prepare("SELECT zef_ID,zef_in,zef_time FROM " . $kga['server_prefix'] . "zef WHERE zef_usrID = ? ORDER BY zef_in DESC LIMIT 1;");
-    $pdo_query->execute(array($kga['usr']['usr_ID']));
+    $pdo_query->execute(array($kga['user']['usr_ID']));
     $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
     $zef_time  = (int)$row['zef_time'];
     $zef_in    = (int)$row['zef_in'];
@@ -2704,7 +2890,7 @@ function stopRecorder() {
 ## stop running recording
     global $kga, $pdo_conn;
     
-    $last_task = get_event_last($kga['usr']['usr_ID']);      // aktuelle vorgangs-ID auslesen
+    $last_task = get_event_last($kga['user']['usr_ID']);      // aktuelle vorgangs-ID auslesen
     
     $zef_ID = $last_task['zef_ID'];
     $zef_in = $last_task['zef_in'];
@@ -2887,9 +3073,9 @@ function get_grp($id) {
 function get_timespace() {
     global $kga,$pdo_conn;
     
-    if (isset($kga['usr']['usr_ID'])) {
+    if (isset($kga['user']['usr_ID'])) {
         $pdo_query = $pdo_conn->prepare("SELECT timespace_in, timespace_out FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
-        $pdo_query->execute(array($kga['usr']['usr_ID']));
+        $pdo_query->execute(array($kga['user']['usr_ID']));
     
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
         //die ($query);
@@ -3029,7 +3215,7 @@ function knd_pct_arr() {
          ON " . $kga['server_prefix'] . "zef.zef_pctID = " . $kga['server_prefix'] . "pct.pct_ID 
          WHERE zef_usrID = ?
          AND pct_kndID = ?");
-        $result_pre = $pdo_query_pre->execute(array($kga['usr']['usr_ID'], $current_knd));
+        $result_pre = $pdo_query_pre->execute(array($kga['user']['usr_ID'], $current_knd));
         $result_pre_array = $pdo_query_pre->fetch();
         
         $pdo_query2 = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
