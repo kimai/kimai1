@@ -116,9 +116,6 @@ function ts_ext_triggerchange() {
     ts_chk_hook_flag = 0;
     ts_chp_hook_flag = 0;
     ts_che_hook_flag = 0;
-
-    if ($("#loader").css("display") == "none")
-      lists_visible(true);
 }
 
 function ts_ext_triggerTSS() {

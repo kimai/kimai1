@@ -101,7 +101,7 @@ $kga['date_format'][2]    = "%d.%m.%Y"; // Another Smarty notation for the full 
 //$kga['date_format'][3]    = "dmy";    // This sets the order of the date-picker fields in the timespace selector 
                                         // (allowed values: dmy or mdy)  OUTDATED!!!
                                         
-$kga['calender_start']      = "";       // here you can set a custom start day for the date-picker.
+$kga['calender_start']      = "0";      // here you can set a custom start day for the date-picker.
                                         // if this is not set the day of the users first day in the system will be taken
                                         // Format: ... = "DD/MM/YYYY"; 
 

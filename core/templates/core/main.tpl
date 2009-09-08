@@ -98,8 +98,6 @@
     $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
     $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
     
-    lists_resize();
-    
     //$('#gui').html('');
     
     // give browser time to render page. afterwards make sure lists are resized correctly

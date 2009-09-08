@@ -179,6 +179,12 @@ function comment(id) {
 function changeTab(target,path) {
     
     kill_reg_timeouts();
+
+  
+  if ($("#loader").is(':hidden')) {
+    // if previous extension was loaded save visibility of lists
+    lists_visibility[$('dd.act').attr('id')] = $('body>.lists').is(':visible');
+  }
     
 	$('dd').removeClass('act');
 	$('dd').addClass('norm');
@@ -201,6 +207,8 @@ function changeTab(target,path) {
     	$(div).load(path);
 	} else {
 	    $("#loader").hide();
+      // restore visibility of lists
+      lists_visible(lists_visibility[$('dd.act').attr('id')]);
 	}
 
 	$.cookie('ki_active_tab_target', target);
@@ -439,8 +447,11 @@ function editSubject(subject,id) {
 // -----------------------------------------------------------------------------
 
 function lists_visible(visible) {
-  if (visible)
+  if (visible) {
+    lists_resize();
     $('body>.lists').show();
+    lists_resize();
+  }
   else
     $('body>.lists').hide();
 }

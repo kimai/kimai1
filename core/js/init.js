@@ -38,6 +38,8 @@ var filterKnd = -1;
 var filterPct = -1;
 var filterEvt = -1;
 
+var lists_visibility = new Array();
+
 $(document).ready(function() {
   
     var preselected_knd = 0;
