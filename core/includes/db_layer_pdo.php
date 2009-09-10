@@ -1156,6 +1156,8 @@ function assign_ldr2grps($ldr_id, $grp_array) {
         }
     }
     
+    update_leader_status();
+    
     if ($pdo_conn->commit() == true) {
         return true;
     } else {
@@ -1197,6 +1199,8 @@ function assign_grp2ldrs($grp_id, $ldr_array) {
             }
         }
     }
+    
+    update_leader_status();
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -3154,6 +3158,31 @@ function getjointime($usr_id) {
         return mktime(0,0,0,date("n"),date("j"),date("Y"));        
     } else {
         return $result_array[0];
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Set field usr_sts for users to 1 if user is a group leader, otherwise to 2.
+ * Admin status will never be changed.
+ * Calling function should start and end sql transaction.
+ * 
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function update_leader_status() {
+    global $pdo_conn;
+    $query = $pdo_conn->prepare("UPDATE kimai_usr,kimai_ldr SET kimai_usr.usr_sts = 2 WHERE kimai_usr.usr_sts = 1");
+    $result = $query->execute();
+    if ($result == false) {
+        return false;
+    }
+    
+    $query = $pdo_conn->prepare("UPDATE kimai_usr,kimai_ldr SET kimai_usr.usr_sts = 1 WHERE kimai_usr.usr_sts = 2 AND kimai_ldr.grp_leader = kimai_usr.usr_ID");
+    $result = $query->execute();
+    if ($result == false) {
+        return false;
     }
 }
 
