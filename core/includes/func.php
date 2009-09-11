@@ -407,6 +407,7 @@ function expand_date_shortcut($date) {
  */
 function expand_time_shortcut($time) {
     $time  = str_replace(" ","",$time);
+    $time  = str_replace(":","",$time);
     $return = $time;
     
     $length = strlen($time);
