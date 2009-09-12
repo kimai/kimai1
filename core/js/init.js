@@ -45,8 +45,8 @@ $(document).ready(function() {
     var preselected_knd = 0;
 
     // automatic tab-change on reload
-    ki_active_tab_target  = $.cookie('ki_active_tab_target');
-    ki_active_tab_path    = $.cookie('ki_active_tab_path');
+    ki_active_tab_target  = $.cookie('ki_active_tab_target_'+usr_ID);
+    ki_active_tab_path    = $.cookie('ki_active_tab_path_'+usr_ID);
     if (ki_active_tab_target && ki_active_tab_path ) {
       changeTab(ki_active_tab_target,ki_active_tab_path);
     } else {

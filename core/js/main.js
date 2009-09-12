@@ -211,8 +211,8 @@ function changeTab(target,path) {
       lists_visible(lists_visibility[$('dd.act').attr('id')]);
 	}
 
-	$.cookie('ki_active_tab_target', target);
-	$.cookie('ki_active_tab_path', path);
+	$.cookie('ki_active_tab_target_'+usr_ID, target);
+	$.cookie('ki_active_tab_path_'+usr_ID, path);
 }
 
 function kill_timeout(to) {
