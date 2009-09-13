@@ -197,7 +197,11 @@ $kga['lang'] = array(
 "testPCT"           => "TestProjekt",
 "testEVT"           => "testen",
 
+"rate"              => "Stundenlohn",
+"default_rate"      => "Stundenlohn",
+"my_rate"           => "mein Stundenlohn",
 
+"wage"              => "Lohn",
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");

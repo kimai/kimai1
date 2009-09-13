@@ -70,6 +70,12 @@
 
 
                     <li>
+                        <label for="usr_rate">{$kga.lang.rate}:</label>
+                        <input class="formfield" type="text" name="usr_rate" value="{$usr_details.usr_rate}" />
+                    </li>
+
+
+                    <li>
                         <label for="usr_mail">{$kga.lang.mail}:</label>
                         <input class="formfield" type="text" name="usr_mail" value="{$usr_details.usr_mail}" />
                     </li>

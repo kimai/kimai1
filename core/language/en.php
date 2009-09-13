@@ -197,6 +197,12 @@ $kga['lang']= array(
 "testKND"           => "Test-Customer",
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
+
+"rate"              => "rate",
+"default_rate"      => "default rate",
+"my_rate"           => "my rate",
+
+"wage"              => "wage",
 );
 
 $kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");

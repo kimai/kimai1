@@ -333,7 +333,20 @@ function pct_create($data) {
     ));
     
     if ($result == true) {
-        return $pdo_conn->lastInsertId();
+    
+      $pct_id = $pdo_conn->lastInsertId();
+
+      if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
+        save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+      else
+        remove_rate(NULL,$pct_id,NULL);
+
+      if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
+        save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+      else
+        remove_rate(NULL,$pct_id,NULL);
+        
+        return $pct_id;
     } else {
         return false;
     }
@@ -352,15 +365,22 @@ function pct_create($data) {
 function pct_get_data($pct_id) {
     global $kga, $pdo_conn;
 
+    if (!is_numeric($pct_id)) {
+        return false;
+    }
+
     $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct WHERE pct_ID = ?");
     $result = $pdo_query->execute(array($pct_id));
     
     if ($result == false) {
         return false;
-    } else {
-        $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        return $result_array;
     }
+
+    $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
+ 
+    $result_array['pct_default_rate'] = get_rate(NULL,$pct_id,NULL);
+    $result_array['pct_my_rate'] = get_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+    return $result_array;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -414,6 +434,16 @@ function pct_edit($pct_id, $data) {
     if ($result == false) {
         return $result;
     }
+    
+    if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
+      save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+    else
+      remove_rate(NULL,$pct_id,NULL);
+
+    if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
+      save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+    else
+      remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -549,9 +579,22 @@ function evt_create($data) {
     ));
     
     if ($result == true) {
-        return $pdo_conn->lastInsertId();
+    
+      $evt_id = $pdo_conn->lastInsertId();
+    
+      if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
+        save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+      else
+        remove_rate(NULL,NULL,$evt_id);
+
+      if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
+        save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+      else
+        remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+
+      return $evt_id;
     } else {
-        return false;
+      return false;
     }
 }
 
@@ -573,10 +616,14 @@ function evt_get_data($evt_id) {
     
     if ($result == false) {
         return false;
-    } else {
-        $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        return $result_array;
     }
+
+    $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
+
+    $result_array['evt_default_rate'] = get_rate(NULL,NULL,$result_array['evt_ID']);
+    $result_array['evt_my_rate'] = get_rate($kga['usr']['usr_ID'],NULL,$result_array['evt_ID']);
+
+    return $result_array;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -628,6 +675,16 @@ function evt_edit($evt_id, $data) {
     if ($result == false) {
         return $result;
     }
+
+    if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
+      save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+    else
+      remove_rate(NULL,NULL,$evt_id);
+
+    if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
+      save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+    else
+      remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -1090,6 +1147,11 @@ function usr_edit($usr_id, $data) {
     if ($result == false) {
         return $result;
     }
+
+    if (!empty($data['usr_rate']) && is_numeric($data['usr_rate']))
+      save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+    else 
+      remove_rate($usr_id,NULL,NULL);
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -1649,8 +1711,9 @@ function zef_create_record($usr_ID,$data) {
     `zef_in`,
     `zef_out`,
     `zef_time`,
-    `zef_usrID`
-    ) VALUES (?,?,?,?,?,?,?,?,?,?)
+    `zef_usrID`,
+    `zef_rate`
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
     ;");
     
     $result = $pdo_query->execute(array(
@@ -1663,7 +1726,8 @@ function zef_create_record($usr_ID,$data) {
     $data['in'],
     $data['out'],
     $data['diff'],
-    $usr_ID
+    $usr_ID,
+    $data['rate']
     ));
    logfile($pdo_query->errorInfo());
     if ($result == false) {
@@ -1705,7 +1769,8 @@ function zef_edit_record($id,$data) {
     zef_comment_type = ?,
     zef_in = ?,
     zef_out = ?,
-    zef_time = ?
+    zef_time = ?,
+    zef_rate = ?
     WHERE zef_ID = ?;");    
     
     $result = $pdo_query->execute(array(
@@ -1718,6 +1783,7 @@ function zef_edit_record($id,$data) {
     $new_array['zef_in'],
     $new_array['zef_out'],
     $new_array['zef_time'],
+    $new_array['zef_rate'],
     $id
     ));
    
@@ -1895,7 +1961,7 @@ function get_arr_zef($user,$in,$out,$limit) {
         $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
     }
     
-    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias
+    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias
 			
              FROM " . $kga['server_prefix'] . "zef
              Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
@@ -1935,6 +2001,7 @@ function get_arr_zef($user,$in,$out,$limit) {
         $arr[$i]['zef_comment']      = $row['zef_comment'];
         $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
         $arr[$i]['usr_alias']        = $row['usr_alias'];
+        $arr[$i]['wage']             = sprintf("%01.2f",$row['zef_time']/3600*$row['zef_rate'],2);
         $i++;
     }
     
@@ -2964,9 +3031,9 @@ function startRecorder($pct_ID,$evt_ID,$user) {
     global $kga, $pdo_conn;
     
     $pdo_query = $pdo_conn->prepare("INSERT INTO " . $kga['server_prefix'] . "zef 
-    (zef_pctID,zef_evtID,zef_in,zef_usrID) VALUES 
-    (?, ?, ?, ?);");
-    $pdo_query->execute(array($pct_ID,$evt_ID,$kga['now'],$user));
+    (zef_pctID,zef_evtID,zef_in,zef_usrID,zef_rate) VALUES 
+    (?, ?, ?, ?, ?);");
+    $pdo_query->execute(array($pct_ID,$evt_ID,$kga['now'],$user,get_best_fitting_rate($user,$pct_ID,$evt_ID)));
     
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
     $pdo_query->execute(array($user));
@@ -3008,6 +3075,8 @@ function get_usr($id) {
         } else {                 
             $arr['usr_pw'] = "no"; 
         }
+
+    $arr['usr_rate'] = get_rate($arr['usr_ID'],NULL,NULL);
     return $arr;
 }
 
@@ -3168,22 +3237,163 @@ function getjointime($usr_id) {
  * Admin status will never be changed.
  * Calling function should start and end sql transaction.
  * 
+ * @global array $kga              kimai global array
  * @global array $pdo_conn         PDO connection
  * @author sl
  */
 function update_leader_status() {
-    global $pdo_conn;
-    $query = $pdo_conn->prepare("UPDATE kimai_usr,kimai_ldr SET kimai_usr.usr_sts = 2 WHERE kimai_usr.usr_sts = 1");
+    global $kga,$pdo_conn;
+    $query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr," . $kga['server_prefix'] . "ldr SET usr_sts = 2 WHERE usr_sts = 1");
     $result = $query->execute();
     if ($result == false) {
         return false;
     }
     
-    $query = $pdo_conn->prepare("UPDATE kimai_usr,kimai_ldr SET kimai_usr.usr_sts = 1 WHERE kimai_usr.usr_sts = 2 AND kimai_ldr.grp_leader = kimai_usr.usr_ID");
+    $query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr," . $kga['server_prefix'] . "ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
     $result = $query->execute();
     if ($result == false) {
         return false;
     }
+
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save rate to database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function save_rate($user_id,$project_id,$event_id,$rate) {
+  global $kga,$pdo_conn;
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+  if (!is_numeric($rate)) return false;
+
+
+  // build update or insert statement
+  $query_string = "";
+  if (get_rate($user_id,$project_id,$event_id) === false)
+    $query_string = "INSERT INTO " . $kga['server_prefix'] . "rates VALUES($user_id,$project_id,$event_id,$rate);";
+  else
+    $query_string = "UPDATE " . $kga['server_prefix'] . "rates SET rate = $rate WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $query = $pdo_conn->prepare($query_string);
+  $result = $query->execute();
+
+  if ($result == false)
+    return false;
+  else
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Read rate from database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function get_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $query = $pdo_conn->prepare($query_string);
+  $result = $query->execute();
+
+  if ($query->rowCount() == 0)
+    return false;
+
+  $data = $query->fetch(PDO::FETCH_ASSOC);
+  return $data['rate'];
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Remove rate from database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function remove_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+  $query_string = "DELETE FROM " . $kga['server_prefix'] . "rates WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $query = $pdo_conn->prepare($query_string);
+  $result = $query->execute();
+
+  if ($result === false)
+    return false;
+  else
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Query the database for the best fitting rate for the given user, project and event.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function get_best_fitting_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+
+  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE
+  (user_id = $user_id OR user_id IS NULL)  AND
+  (project_id = $project_id OR project_id IS NULL)  AND
+  (event_id = $event_id OR event_id IS NULL)
+  ORDER BY user_id DESC, project_id DESC, event_id DESC
+  LIMIT 1;";
+
+  $query = $pdo_conn->prepare($query_string);
+  $result = $query->execute();
+
+  if ($query->rowCount() == 0)
+    return false;
+
+  $data = $query->fetch(PDO::FETCH_ASSOC);
+  return $data['rate'];
 }
 
 // -----------------------------------------------------------------------------------------------------------

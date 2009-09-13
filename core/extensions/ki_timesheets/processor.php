@@ -123,6 +123,7 @@ switch ($axAction) {
     	$data['comment']         = $_REQUEST['comment'];
     	$data['comment_type']    = $_REQUEST['comment_type'];
     	$data['erase']           = $_REQUEST['erase'];
+      $data['rate']            = $_REQUEST['rate'];
     	
         if ($data['erase']) {
     	    // delete checkbox set ?

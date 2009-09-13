@@ -652,6 +652,7 @@ if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0
     $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
     $zef_final_data['zef_comment']      = $zef_data['comment'];
     $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
+    $zef_final_data['zef_rate']         = $zef_data['rate'];
     
     return zef_edit_record($id,$zef_final_data);
     
@@ -666,6 +667,7 @@ if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0
     $zef_final_data['zef_in']           = $zef_data['in'];
     $zef_final_data['zef_out']          = $zef_data['out'];
     $zef_final_data['zef_time']         = $zef_data['diff'];
+    $zef_final_data['zef_rate']         = $zef_data['rate'];
     
     return zef_edit_record($id,$zef_final_data);
 

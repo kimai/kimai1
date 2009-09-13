@@ -776,6 +776,17 @@ if ((int)$revisionDB < 848) {
     exec_query("ALTER TABLE `${p}zef` ADD `zef_trackingnr` int(20)",1);
 }
 
+if ((int)$revisionDB < 898) {
+    logfile("-- update to r898");
+    exec_query("CREATE TABLE `${p}rates` (
+  `user_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  `event_id` int(10) DEFAULT NULL,
+  `rate` decimal(10,2) NOT NULL
+);",1);
+    exec_query("ALTER TABLE `${p}zef` ADD `zef_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';",1);
+}
+
 
 
 //////// ---------------------------------------------------------------------------------------------------

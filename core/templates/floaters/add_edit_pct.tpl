@@ -39,6 +39,16 @@
                             {html_options values=$sel_knd_IDs output=$sel_knd_names selected=$knd_selection}
                         </select>
                     </li>
+
+                    <li>
+                        <label for="pct_default_rate" >{$kga.lang.default_rate}:</label>
+                        <input type="text" name="pct_default_rate" value="{$pct_default_rate}" />
+                    </li>
+
+                    <li>
+                        <label for="pct_my_rate" >{$kga.lang.my_rate}:</label>
+                        <input type="text" name="pct_my_rate" value="{$pct_my_rate}" />
+                    </li>
                     
                     <li class="extended">
                          <label for="pct_visible">{$kga.lang.visibility}:</label>

@@ -30,7 +30,7 @@ switch ($axAction) {
     // ==============================================
     // = display edit dialog for timesheet record   =
     // ==============================================
-    
+    $selected = explode('|',$axValue);
     if ($id) {
         $zef_entry = get_entry_zef($id);
         $tpl->assign('id', $id);
@@ -38,6 +38,8 @@ switch ($axAction) {
         
         $tpl->assign('trackingnr', $zef_entry['zef_trackingnr']);
         $tpl->assign('comment', $zef_entry['zef_comment']);
+        
+        $tpl->assign('rate', $zef_entry['zef_rate']);
     
         $tpl->assign('edit_day', date("d.m.Y",$zef_entry['zef_in']));
     
@@ -58,6 +60,7 @@ switch ($axAction) {
     
         $tpl->assign('edit_in_time',  date("H:i:s"));
         $tpl->assign('edit_out_time', date("H:i:s"));
+        $tpl->assign('rate',get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
 
     }
 

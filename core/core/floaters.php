@@ -92,12 +92,14 @@ switch ($axAction) {
         if ($id) {
             $data = pct_get_data($id);
             if ($data) {
-                $tpl->assign('pct_name'     , $data['pct_name'    ]);
-                $tpl->assign('pct_comment'  , $data['pct_comment' ]);
-                $tpl->assign('pct_visible'  , $data['pct_visible' ]);
-                $tpl->assign('pct_filter'   , $data['pct_filter'  ]);
-                $tpl->assign('pct_logo'     , $data['pct_logo'    ]);
-                $tpl->assign('knd_selection', $data['pct_kndID'   ]);
+                $tpl->assign('pct_name'        , $data['pct_name'        ]);
+                $tpl->assign('pct_comment'     , $data['pct_comment'     ]);
+                $tpl->assign('pct_visible'     , $data['pct_visible'     ]);
+                $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
+                $tpl->assign('pct_logo'        , $data['pct_logo'        ]);
+                $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
+                $tpl->assign('pct_default_rate', $data['pct_default_rate']);
+                $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
                 $tpl->assign('grp_selection', pct_get_grps($id));
                 $tpl->assign('id', $id);
             }
@@ -125,11 +127,13 @@ switch ($axAction) {
         if ($id) {
             $data = evt_get_data($id);
             if ($data) {
-                $tpl->assign('evt_name'     , $data['evt_name'    ]);
-                $tpl->assign('evt_comment'  , $data['evt_comment' ]);
-                $tpl->assign('evt_visible'  , $data['evt_visible' ]);
-                $tpl->assign('evt_filter'   , $data['evt_filter'  ]);
-                $tpl->assign('evt_logo'     , $data['evt_logo'    ]);
+                $tpl->assign('evt_name'        , $data['evt_name'        ]);
+                $tpl->assign('evt_comment'     , $data['evt_comment'     ]);
+                $tpl->assign('evt_visible'     , $data['evt_visible'     ]);
+                $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
+                $tpl->assign('evt_logo'        , $data['evt_logo'        ]);
+                $tpl->assign('evt_default_rate', $data['evt_default_rate']);
+                $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
                 $tpl->assign('grp_selection', evt_get_grps($id));
                 $tpl->assign('id', $id);
             }

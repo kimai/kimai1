@@ -11,6 +11,7 @@
               <col class="from" />
               <col class="to" />
               <col class="time" />
+              <col class="wage" />
               <col class="client" />
               <col class="project" />
               <col class="action" />
@@ -173,6 +174,27 @@
                       
 {else}  
                         &ndash;:&ndash;&ndash;
+{/if}
+                    </td>
+
+{*task wage ----------------------------------------------------*}
+
+                    <td class="wage
+                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_zef[row].zef_out != $zef_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    
+{if $arr_zef[row].wage != 0}
+                    
+                        {$arr_zef[row].wage}
+                      
+{else}  
+                        &ndash;
 {/if}
                     </td>
 

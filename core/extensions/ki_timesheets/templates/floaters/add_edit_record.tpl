@@ -105,32 +105,37 @@
 {* -------------------------------------------------------------------- *}       
         
                    <li>
+                        <label for="rate">{$kga.lang.rate}:</label>
+                        <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                   </li>
+
+                   <li>
                         <label for="zlocation">{$kga.lang.zlocation}:</label>
-                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
                    <li>
                         <label for="trackingnr">{$kga.lang.trackingnr}:</label>
-                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
                            
                    <li>
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='11'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='12'>{$comment}</textarea>
                    </li>
                    
                    <li>
                        <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="12" >
+                       <select id="comment_type" class="formfield" name="comment_type" tabindex="13" >
                            {html_options values=$comment_values output=$comment_types selected=$comment_active}
                        </select>
                    </li>
                    
                     <li>
                         <label for="erase">{$kga.lang.erase}:</label>
-                        <input type='checkbox' id='erase' name='erase' tabindex='13'/>
+                        <input type='checkbox' id='erase' name='erase' tabindex='14'/>
                    </li>
         
                 </ul>

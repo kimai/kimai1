@@ -210,12 +210,14 @@ switch ($axAction) {
             break;
             
             case "pct":
-                $data['pct_name']     = $_REQUEST['pct_name'];
-                $data['pct_kndID']    = $_REQUEST['pct_kndID'];
-                $data['pct_comment']  = $_REQUEST['pct_comment'];
-                $data['pct_visible']  = $_REQUEST['pct_visible'];
-                $data['pct_filter']   = $_REQUEST['pct_filter'];
-                $data['pct_logo']     = $_REQUEST['pct_logo'];
+                $data['pct_name']         = $_REQUEST['pct_name'];
+                $data['pct_kndID']        = $_REQUEST['pct_kndID'];
+                $data['pct_comment']      = $_REQUEST['pct_comment'];
+                $data['pct_visible']      = $_REQUEST['pct_visible'];
+                $data['pct_filter']       = $_REQUEST['pct_filter'];
+                $data['pct_logo']         = $_REQUEST['pct_logo'];
+                $data['pct_default_rate'] = $_REQUEST['pct_default_rate'];
+                $data['pct_my_rate']      = $_REQUEST['pct_my_rate'];
                 
                 // logfile("pct_create (" .$kga['usr']['usr_name'] ."): " . $data['pct_name']);
                 
@@ -229,11 +231,13 @@ switch ($axAction) {
             break;
             
             case "evt":
-                $data['evt_name']     = $_REQUEST['evt_name'];
-                $data['evt_comment']  = $_REQUEST['evt_comment'];
-                $data['evt_visible']  = $_REQUEST['evt_visible'];
-                $data['evt_filter']   = $_REQUEST['evt_filter'];
-                $data['evt_logo']     = $_REQUEST['evt_logo'];
+                $data['evt_name']         = $_REQUEST['evt_name'];
+                $data['evt_comment']      = $_REQUEST['evt_comment'];
+                $data['evt_visible']      = $_REQUEST['evt_visible'];
+                $data['evt_filter']       = $_REQUEST['evt_filter'];
+                $data['evt_logo']         = $_REQUEST['evt_logo'];
+                $data['evt_default_rate'] = $_REQUEST['evt_default_rate'];
+                $data['evt_my_rate']      = $_REQUEST['evt_my_rate'];
                 
                 // logfile("evt_create (" .$kga['usr']['usr_name'] ."): " . $data['evt_name']);
                 

@@ -327,11 +327,22 @@ function pct_create($data) {
     $table = $kga['server_prefix']."pct";
     $result = $conn->InsertRow($table, $values);
      
-    if (! $result) {
+    if (! $result)
     	return false;
-    } else {
-    	return $conn->GetLastInsertID();
-    }
+
+   	$pct_id = $conn->GetLastInsertID();
+
+    if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
+      save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+    else
+      remove_rate(NULL,$pct_id,NULL);
+
+    if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
+      save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+    else
+      remove_rate(NULL,$pct_id,NULL);
+
+    return $pct_id;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -350,15 +361,22 @@ function pct_create($data) {
 function pct_get_data($pct_id) {
     global $kga, $conn;
 
+    if (!is_numeric($pct_id)) {
+        return false;
+    }
+
     $filter['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."pct";
     $result = $conn->SelectRows($table, $filter);
 
-    if (! $result) {
+    if (! $result)
     	return false;
-    } else {
-        return $conn->RowArray(0,MYSQL_ASSOC);
-    }
+
+    $result_array = $conn->RowArray(0,MYSQL_ASSOC);
+    $result_array['pct_default_rate'] = get_rate(NULL,$pct_id,NULL);
+    $result_array['pct_my_rate'] = get_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+    return $result_array;
+
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -409,6 +427,17 @@ function pct_edit($pct_id, $data) {
     if (! $conn->Query($query)) $success = false;
     
     if ($success) {
+    
+        if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
+          save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+        else
+          remove_rate(NULL,$pct_id,NULL);
+
+        if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
+          save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+        else
+          remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+    
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
@@ -563,11 +592,22 @@ function evt_create($data) {
     $table = $kga['server_prefix']."evt";
     $result = $conn->InsertRow($table, $values);
 
-    if (! $result) {
+    if (! $result)
     	return false;
-    } else {
-    	return $conn->GetLastInsertID();
-    }
+
+  	$evt_id = $conn->GetLastInsertID();
+    
+    if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
+      save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+    else
+      remove_rate(NULL,NULL,$evt_id);
+
+    if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
+      save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+    else
+      remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+
+    return $evt_id;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -590,11 +630,16 @@ function evt_get_data($evt_id) {
     $table = $kga['server_prefix']."evt";
     $result = $conn->SelectRows($table, $filter);
 
-    if (! $result) {
+    if (! $result)
     	return false;
-    } else {
-        return $conn->RowArray(0,MYSQL_ASSOC);
-    }
+
+
+    $result_array = $conn->RowArray(0,MYSQL_ASSOC);
+
+    $result_array['evt_default_rate'] = get_rate(NULL,NULL,$result_array['evt_ID']);
+    $result_array['evt_my_rate'] = get_rate($kga['usr']['usr_ID'],NULL,$result_array['evt_ID']);
+
+    return $result_array;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -644,6 +689,17 @@ function evt_edit($evt_id, $data) {
     if (! $conn->Query($query)) $success = false;
     
     if ($success) {
+
+        if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
+          save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+        else
+          remove_rate(NULL,NULL,$evt_id);
+
+        if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
+          save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+        else
+          remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
@@ -1233,6 +1289,12 @@ function usr_edit($usr_id, $data) {
     if (! $conn->Query($query)) $success = false;
 
     if ($success) {
+
+        if (!empty($data['usr_rate']) && is_numeric($data['usr_rate']))
+          save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+        else 
+          remove_rate($usr_id,NULL,NULL);
+
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
@@ -1855,6 +1917,7 @@ function zef_create_record($usr_ID,$data) {
     $values ['zef_in']           =   MySQL::SQLValue( $data ['in']           , MySQL::SQLVALUE_NUMBER );
     $values ['zef_out']          =   MySQL::SQLValue( $data ['out']          , MySQL::SQLVALUE_NUMBER );
     $values ['zef_time']         =   MySQL::SQLValue( $data ['diff']         , MySQL::SQLVALUE_NUMBER );
+    $values ['zef_rate']         =   MySQL::SQLValue( $data ['rate']         , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."zef";
     return $conn->InsertRow($table, $values);
@@ -1897,6 +1960,7 @@ function zef_edit_record($id,$data) {
     $values ['zef_in']           = MySQL::SQLValue($new_array ['zef_in']            , MySQL::SQLVALUE_NUMBER );
     $values ['zef_out']          = MySQL::SQLValue($new_array ['zef_out']           , MySQL::SQLVALUE_NUMBER );
     $values ['zef_time']         = MySQL::SQLValue($new_array ['zef_time']          , MySQL::SQLVALUE_NUMBER );
+    $values ['zef_rate']         = MySQL::SQLValue($new_array ['zef_rate']          , MySQL::SQLVALUE_NUMBER );
                                    
     $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."zef";
@@ -2119,7 +2183,7 @@ function get_arr_zef($user,$in,$out,$limit) {
         $limit="";
     }
 
-    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias
+    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias
 					 
               FROM ${p}zef 
               Join ${p}pct ON zef_pctID = pct_ID
@@ -2156,6 +2220,7 @@ function get_arr_zef($user,$in,$out,$limit) {
             $arr[$i]['zef_trackingnr']   = $row->zef_trackingnr;
             $arr[$i]['zef_comment']      = $row->zef_comment;
             $arr[$i]['zef_comment_type'] = $row->zef_comment_type;
+            $arr[$i]['wage']             = sprintf("%01.2f",$row->zef_time/3600*$row->zef_rate,2);
             $i++;
         }
         return $arr;
@@ -3192,6 +3257,7 @@ function startRecorder($pct_ID,$evt_ID,$user) {
     $values ['zef_evtID'] = $evt_ID;
     $values ['zef_in']    = $kga['now'];
     $values ['zef_usrID'] = $user;
+    $values ['zef_rate']  = get_best_fitting_rate($user,$pct_ID,$evt_ID);
     
     $table = $kga['server_prefix']."zef";
     $result = $conn->InsertRow($table, $values);
@@ -3260,6 +3326,8 @@ function get_usr($usr_id) {
     } else {                 
         $arr['usr_pw'] = "no"; 
     }
+
+    $arr['usr_rate'] = get_rate($arr['usr_ID'],NULL,NULL);
        
     return $arr;
 }
@@ -3931,6 +3999,168 @@ function get_arr_time_evt($in,$out,$user = -1,$customer = -1,$project = -1) {
         $arr[$row['zef_evtID']] = $row['zeit'];
     }
     return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Set field usr_sts for users to 1 if user is a group leader, otherwise to 2.
+ * Admin status will never be changed.
+ * Calling function should start and end sql transaction.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function update_leader_status() {
+    global $kga,$pdo_conn;
+    $query = "UPDATE " . $kga['server_prefix'] . "usr," . $kga['server_prefix'] . "ldr SET usr_sts = 2 WHERE usr_sts = 1";
+    $result = $conn->Query($query);
+    if ($result == false) {
+        return false;
+    }
+    
+    $query = "UPDATE " . $kga['server_prefix'] . "usr," . $kga['server_prefix'] . "ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID";
+    $result = $conn->Query($query);
+    if ($result == false) {
+        return false;
+    }
+
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save rate to database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function save_rate($user_id,$project_id,$event_id,$rate) {
+  global $kga,$pdo_conn;
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+  if (!is_numeric($rate)) return false;
+
+
+  // build update or insert statement
+  $query_string = "";
+  if (get_rate($user_id,$project_id,$event_id) === false)
+    $query_string = "INSERT INTO " . $kga['server_prefix'] . "rates VALUES($user_id,$project_id,$event_id,$rate);";
+  else
+    $query_string = "UPDATE " . $kga['server_prefix'] . "rates SET rate = $rate WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $result = $conn->Query($query);
+
+  if ($result == false)
+    return false;
+  else
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Read rate from database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function get_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $result = $conn->Query($query);
+
+  if ($conn->RowCount() == 0)
+    return false;
+
+  $data = $query->rowArray(0,MYSQL_ASSOC);
+  return $data['rate'];
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Remove rate from database.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function remove_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+  $query_string = "DELETE FROM " . $kga['server_prefix'] . "rates WHERE ".
+  (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
+  (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+  (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+  $result = $conn->Query($query);
+
+  if ($result === false)
+    return false;
+  else
+    return true;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Query the database for the best fitting rate for the given user, project and event.
+ * 
+ * @global array $kga              kimai global array
+ * @global array $pdo_conn         PDO connection
+ * @author sl
+ */
+function get_best_fitting_rate($user_id,$project_id,$event_id) {
+  global $kga,$pdo_conn;
+
+  // validate input
+  if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+  if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+  if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+
+  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE
+  (user_id = $user_id OR user_id IS NULL)  AND
+  (project_id = $project_id OR project_id IS NULL)  AND
+  (event_id = $event_id OR event_id IS NULL)
+  ORDER BY user_id DESC, project_id DESC, event_id DESC
+  LIMIT 1;";
+
+  $result = $conn->Query($query);
+
+  if ($query->RowCount() == 0)
+    return false;
+
+  $data = $query->rowArray(0,MYSQL_ASSOC);
+  return $data['rate'];
 }
 
 ?>

@@ -184,6 +184,7 @@ $query=
   `zef_cleared` TINYINT(1) NOT NULL DEFAULT '0',
   `zef_location` VARCHAR(50),
   `zef_trackingnr` int(20),
+  `zef_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`zef_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
@@ -193,6 +194,15 @@ $query=
   `var` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY  (`var`)
+);";
+exec_query($query);
+
+$query=
+"CREATE TABLE `" . $kga['server_prefix'] . "rates` (
+  `user_id` int(10) DEFAULT NULL,
+  `project_id` int(10) DEFAULT NULL,
+  `event_id` int(10) DEFAULT NULL,
+  `rate` decimal(10,2) NOT NULL
 );";
 exec_query($query);
 

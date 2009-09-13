@@ -32,6 +32,16 @@
                         <label for="evt_name" >{$kga.lang.evt}:</label>
                         <input type="text" name="evt_name" id="focus" value="{$evt_name}" />
                     </li>
+                
+                    <li>
+                        <label for="evt_default_rate" >{$kga.lang.default_rate}:</label>
+                        <input type="text" name="evt_default_rate" value="{$evt_default_rate}" />
+                    </li>
+                
+                    <li>
+                        <label for="evt_my_rate" >{$kga.lang.my_rate}:</label>
+                        <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate}" />
+                    </li>
 
                     <li class="extended">
                          <label for="evt_visible">{$kga.lang.visibility}:</label>

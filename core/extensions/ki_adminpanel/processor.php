@@ -156,6 +156,7 @@ switch ($axAction) {
         $usr_data['usr_sts']   = $_REQUEST['usr_sts'];
         $usr_data['usr_mail']  = $_REQUEST['usr_mail'];
         $usr_data['usr_alias'] = $_REQUEST['usr_alias'];
+        $usr_data['usr_rate']  = $_REQUEST['usr_rate'];
         
         // if password field is empty => password unchanged (not overwritten with "")
         if ($_REQUEST['usr_pw'] != "") {
