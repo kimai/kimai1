@@ -3383,7 +3383,7 @@ function get_best_fitting_rate($user_id,$project_id,$event_id) {
   (user_id = $user_id OR user_id IS NULL)  AND
   (project_id = $project_id OR project_id IS NULL)  AND
   (event_id = $event_id OR event_id IS NULL)
-  ORDER BY user_id DESC, project_id DESC, event_id DESC
+  ORDER BY user_id DESC, event_id DESC, project_id DESC
   LIMIT 1;";
 
   $query = $pdo_conn->prepare($query_string);
