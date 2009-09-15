@@ -69,8 +69,8 @@ $tpl->assign('kga', $kga);
 // ==========================
 // = display timesheet area =
 // ==========================
-$total = intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out));
-$arr_zef = get_arr_zef($kga['usr']['usr_ID'],$in,$out,1);
+$total = intervallApos(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
+$arr_zef = get_arr_zef($in,$out,array($kga['usr']['usr_ID']),null,null,1);
 if (count($arr_zef)>0) {
     $tpl->assign('arr_zef', $arr_zef);
 } else {
@@ -79,19 +79,19 @@ if (count($arr_zef)>0) {
 $tpl->assign('total', $total);
 
 
-$ann = get_arr_time_usr($in,$out,$kga['usr']['usr_ID']);
+$ann = get_arr_time_usr($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('usr_ann',$ann_new);
 
-$ann = get_arr_time_knd($in,$out,$kga['usr']['usr_ID']);
+$ann = get_arr_time_knd($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('knd_ann',$ann_new);
 
-$ann = get_arr_time_pct($in,$out,$kga['usr']['usr_ID']);
+$ann = get_arr_time_pct($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('pct_ann',$ann_new);
 
-$ann = get_arr_time_evt($in,$out,$kga['usr']['usr_ID']);
+$ann = get_arr_time_evt($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('evt_ann',$ann_new);
 

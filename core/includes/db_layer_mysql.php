@@ -2163,16 +2163,44 @@ function get_arr_pct_by_knd($group, $knd_id) {
  
 // checked 
 
-function get_arr_zef($user,$in,$out,$limit) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $limit) {
     global $kga, $conn;
+    
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
     
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
-    $user  = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
+
+    $p     = $kga['server_prefix'];
+
+    $whereClauses = array();
     
-    $currTimespace = "AND zef_in > $in AND zef_out < $out";
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
+    }
+    
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+    }
+    
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
             $limit = "LIMIT " .$kga['conf']['rowlimit'];
@@ -2189,8 +2217,8 @@ function get_arr_zef($user,$in,$out,$limit) {
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
               Join ${p}usr ON zef_usrID = usr_ID
-              Join ${p}evt ON evt_ID    = zef_evtID
-              WHERE zef_pctID > 0 AND zef_evtID > 0 AND zef_usrID = $user $currTimespace ORDER BY zef_in DESC $limit;";
+              Join ${p}evt ON evt_ID    = zef_evtID "
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC $limit;";
     
     $conn->Query($query);
     
@@ -2484,15 +2512,44 @@ function get_entry_zef($id) {
  
 // checked 
  
-function get_zef_time($user,$in,$out) {
+function get_zef_time($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga, $conn;
-
-    $in    = MySQL::SQLValue($in   , MySQL::SQLVALUE_NUMBER);
-    $out   = MySQL::SQLValue($out  , MySQL::SQLVALUE_NUMBER);
-    $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
     
-    $query = "SELECT SUM(`zef_time`) AS zeit FROM ${p}zef WHERE zef_usrID = $user AND zef_in > $in AND zef_out < $out ;";
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    
+    $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
+    $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
+
+    $whereClauses = array();
+    
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
+    }
+    
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+    }
+    
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+    }  
+
+    if ($in)
+      $whereClauses[]="zef_in > $in";
+    if ($out)
+      $whereClauses[]="zef_out < $out";
+    
+    $query = "SELECT SUM(`zef_time`) AS zeit FROM ${p}zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
     $conn->Query($query);
 
     $row = $conn->RowArray(0,MYSQL_ASSOC);
@@ -3767,27 +3824,36 @@ function get_arr_watchable_users($user_id) {
  * @return array
  * @author sl
  */
-function get_arr_time_usr($in,$out,$user = -1, $customer = -1, $project = -1) {
+function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
     global $conn;
     
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    
+    $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
+    $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
     $whereClauses = array();
-    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
-    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
-    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
-    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
-    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
     
-    if ($user > -1) {
-      $whereClauses[] = "zef_usrID = $user";
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
     }
     
-    if ($customer > -1) {
-      $whereClauses[] = "knd_ID = $customer";
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
     }
     
-    if ($project > -1) {
-      $whereClauses[] = "pct_ID = $project";
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
 
     if ($in)
@@ -3832,34 +3898,43 @@ function get_arr_time_usr($in,$out,$user = -1, $customer = -1, $project = -1) {
  * @return array
  * @author sl
  */
-function get_arr_time_knd($in,$out,$user = -1, $customer = -1, $project = -1) {
+function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
     global $pdo_conn;
     
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    
+    $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
+    $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
     $whereClauses = array();
-    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
-    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
-    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
-    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
-    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
     
-    if ($user > -1) {
-      $whereClauses[] = "zef_usrID = $user";
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
     }
     
-    if ($customer > -1) {
-      $whereClauses[] = "knd_ID = $customer";
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
     }
     
-    if ($project > -1) {
-      $whereClauses[] = "pct_ID = $project";
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
-    
-    if ($in) 
+
+    if ($in)
       $whereClauses[]="zef_in > $in";
-    if ($out) 
+    if ($out)
       $whereClauses[]="zef_out < $out";
-    $arr = array();  
+    
     
     $query = "SELECT SUM(zef_time) as zeit, knd_ID FROM " . $kga['server_prefix'] . "zef 
             Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
@@ -3871,7 +3946,7 @@ function get_arr_time_knd($in,$out,$user = -1, $customer = -1, $project = -1) {
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
 
-    
+    $arr = array();  
     foreach ($rows as $row) {
         if (empty($row['knd_ID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
         $arr[$row['knd_ID']] = $row['zeit'];
@@ -3895,34 +3970,42 @@ function get_arr_time_knd($in,$out,$user = -1, $customer = -1, $project = -1) {
  * @return array
  * @author sl
  */
-function get_arr_time_pct($in,$out,$user = -1,$customer = -1, $project = -1) {
+function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
     global $pdo_conn;
     
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    
+    $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
+    $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
     $whereClauses = array();
-    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
-    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
-    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
-    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
-    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
     
-    if ($user > -1) {
-      $whereClauses[] = "zef_usrID = $user";
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
     }
     
-    if ($customer > -1) {
-      $whereClauses[] = "knd_ID = $customer";
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
     }
     
-    if ($project > -1) {
-      $whereClauses[] = "pct_ID = $project";
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
 
     if ($in)
       $whereClauses[]="zef_in > $in";
     if ($out)
       $whereClauses[]="zef_out < $out";
-    $arr = array();
     
     $query = "SELECT sum(zef_time) as zeit,zef_pctID FROM " . $kga['server_prefix'] . "zef 
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
@@ -3934,6 +4017,7 @@ function get_arr_time_pct($in,$out,$user = -1,$customer = -1, $project = -1) {
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
 
+    $arr = array();
     foreach ($rows as $row) {
         if (empty($row['zef_pctID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
         $arr[$row['zef_pctID']] = $row['zeit'];
@@ -3955,34 +4039,42 @@ function get_arr_time_pct($in,$out,$user = -1,$customer = -1, $project = -1) {
  * @return array
  * @author sl
  */
-function get_arr_time_evt($in,$out,$user = -1,$customer = -1,$project = -1) {
+function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
     global $pdo_conn;
     
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    
+    $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
+    $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($users);$i++)
+      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($customers);$i++)
+      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0;$i<count($projects);$i++)
+      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
     $whereClauses = array();
-    $in       = MySQL::SQLValue($in,       MySQL::SQLVALUE_NUMBER);
-    $out      = MySQL::SQLValue($out,      MySQL::SQLVALUE_NUMBER);
-    $user     = MySQL::SQLValue($user,     MySQL::SQLVALUE_NUMBER);
-    $customer = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
-    $project  = MySQL::SQLValue($project,  MySQL::SQLVALUE_NUMBER);
     
-    if ($user > -1) {
-      $whereClauses[] = "zef_usrID = $user";
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
     }
     
-    if ($customer > -1) {
-      $whereClauses[] = "knd_ID = $customer";
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
     }
     
-    if ($project > -1) {
-      $whereClauses[] = "pct_ID = $project";
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
 
     if ($in)
       $whereClauses[]="zef_in > $in";
     if ($out)
       $whereClauses[]="zef_out < $out";
-    $arr = array();    
     
     $query = "SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef 
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
@@ -3994,6 +4086,7 @@ function get_arr_time_evt($in,$out,$user = -1,$customer = -1,$project = -1) {
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
 
+    $arr = array();
     foreach ($rows as $row) {
         if (empty($row['zef_evtID'])) break; // $row['knd_ID'] should never be empty!. Needed in PDO, don't know if needed here. 
         $arr[$row['zef_evtID']] = $row['zeit'];

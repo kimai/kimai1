@@ -23,6 +23,8 @@
 {if $kga.usr.usr_sts != 2}
                         <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID});"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
 {/if}
+                        <a href ="#" onClick="lists_update_filter('pct',{$arr_pct[row].pct_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+
                         <a href ="#" class="preselect" onClick="lists_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name}'); return false;" id="ps{$arr_pct[row].pct_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
                     </td>
 

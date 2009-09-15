@@ -33,10 +33,10 @@ var extShrinkMode = 0; // 0 = show, 1 = hide
 var kndShrinkMode = 0; 
 var usrShrinkMode = 1; 
 
-var filterUsr = -1;
-var filterKnd = -1;
-var filterPct = -1;
-var filterEvt = -1;
+var filterUsr = new Array();
+var filterKnd = new Array();
+var filterPct = new Array();
+var filterEvt = new Array();
 
 var lists_visibility = new Array();
 

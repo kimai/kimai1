@@ -749,9 +749,14 @@ function lists_knd_prefilter(knd,type) {
         $(".knd").removeClass("filterPctForPreselection");      
         $(".pct").removeClass("filterPctForPreselection");
         $("#knd .knd"+knd).addClass("filterPctForPreselection");
-        $("#pct .pct").addClass("TableRowInvisible");
         $("#pct .pct").removeClass("highlightPctForPreselection");
-        $("#pct .knd"+knd).removeClass("TableRowInvisible");
+        if (knd > 0) {
+          $("#pct .pct").addClass("TableRowInvisible");
+          $("#pct .knd"+knd).removeClass("TableRowInvisible");
+        }
+        else {
+          $("#pct .pct").removeClass("TableRowInvisible");
+        }
         
     }
 }
@@ -802,39 +807,41 @@ function lists_write_annotations(usr,knd,pct,evt)
 
 function lists_update_filter(subject,id) {
     $('a').blur();
-    alreadySelected = $('#'+subject+'>table>tbody>tr>td>a.filter#'+subject[0]+'f'+id).hasClass('fhighlighted');
-    $('#'+subject+'>table>tbody>tr>td>a.filter').removeClass('fhighlighted');
+    alreadySelected = $('#row_'+subject+id).hasClass('fhighlighted');
+    $('#row_'+subject+id).removeClass('fhighlighted');
     if (alreadySelected) {
         switch (subject) {
         case 'usr':
-          filterUsr = -1;
+          filterUsr.splice(filterUsr.indexOf(id),1);
         break;
         case 'knd':
-          filterKnd = -1;
+          filterKnd.splice(filterKnd.indexOf(id),1);
+          lists_knd_prefilter(0,'filter');
         break;
         case 'pct':
-          filterPct = -1;
+          filterPct.splice(filterPct.indexOf(id),1);
         break;
         case 'evt':
-          filterEvt = -1;
+          filterEvt.splice(filterEvt.indexOf(id),1);
         break;
       }
     }
     else
     {
-      $('#'+subject+'>table>tbody>tr>td>a.filter#'+subject[0]+'f'+id).addClass('fhighlighted');
+      $('#row_'+subject+id).addClass('fhighlighted');
       switch (subject) {
         case 'usr':
-          filterUsr = id;
+          filterUsr.push(id);
         break;
         case 'knd':
-          filterKnd = id;
+          filterKnd.push(id);
+          lists_knd_prefilter(id,'filter');
         break;
         case 'pct':
-          filterPct = id;
+          filterPct.push(id);
         break;
         case 'evt':
-          filterEvt = id;
+          filterEvt.push(id);
         break;
       }
     }

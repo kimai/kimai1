@@ -190,7 +190,7 @@ function ts_ext_preselect(subject,id,name,kndID,kndName) {
 // reloads timesheet, customer, project and event tables
 //
 function ts_ext_reload() {
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr+'|'+filterKnd+'|'+filterPct, id: 0 },
+            $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0 },
                 function(data) { 
                     $("#zef").html(data);
                 

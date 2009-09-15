@@ -248,3 +248,7 @@ div.lists tr.even td {
 div.lists tr.odd td {
     background: #EEE;
 }
+
+.fhighlighted td {
+   background: #64BE5E !important;
+}
