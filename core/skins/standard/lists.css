@@ -46,7 +46,7 @@
 #usrShrink {
     cursor: pointer;
     background-color:transparent;
-    background-image:url('grfx/kndShrink_left.png');
+    background-image:url('grfx/kndShrink_right.png');
     background-position:center;
     background-repeat:no-repeat;
     position:absolute;
