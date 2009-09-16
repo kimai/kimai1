@@ -332,15 +332,19 @@ function pct_create($data) {
 
    	$pct_id = $conn->GetLastInsertID();
 
-    if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
-      save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
-    else
-      remove_rate(NULL,$pct_id,NULL);
+    if (isset($data['pct_default_rate'])) {
+      if (is_numeric($data['pct_default_rate']))
+        save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+      else
+        remove_rate(NULL,$pct_id,NULL);
+    }
 
-    if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
-      save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
-    else
-      remove_rate(NULL,$pct_id,NULL);
+    if (isset($data['pct_my_rate'])) {
+      if (is_numeric($data['pct_my_rate']))
+        save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+      else
+        remove_rate(NULL,$pct_id,NULL);
+    }
 
     return $pct_id;
 }
@@ -428,15 +432,19 @@ function pct_edit($pct_id, $data) {
     
     if ($success) {
     
-        if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
-          save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
-        else
-          remove_rate(NULL,$pct_id,NULL);
+        if (isset($data['pct_default_rate'])) {
+          if (is_numeric($data['pct_default_rate']))
+            save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+          else
+            remove_rate(NULL,$pct_id,NULL);
+        }
 
-        if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
-          save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
-        else
-          remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+        if (isset($data['pct_my_rate'])) {
+          if (is_numeric($data['pct_my_rate']))
+            save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+          else
+            remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+        }
     
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {
@@ -597,15 +605,19 @@ function evt_create($data) {
 
   	$evt_id = $conn->GetLastInsertID();
     
-    if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
-      save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
-    else
-      remove_rate(NULL,NULL,$evt_id);
+    if (isset($data['evt_default_rate'])) {
+      if (is_numeric($data['evt_default_rate']))
+        save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+      else
+        remove_rate(NULL,NULL,$evt_id);
+    }
 
-    if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
-      save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
-    else
-      remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+    if (isset($data['evt_my_rate'])) {
+      if (is_numeric($data['evt_my_rate']))
+        save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+      else
+        remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+    }
 
     return $evt_id;
 }
@@ -690,15 +702,19 @@ function evt_edit($evt_id, $data) {
     
     if ($success) {
 
-        if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
-          save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
-        else
-          remove_rate(NULL,NULL,$evt_id);
+        if (isset($data['evt_default_rate'])) {
+          if (is_numeric($data['evt_default_rate']))
+            save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+          else
+            remove_rate(NULL,NULL,$evt_id);
+        }
 
-        if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
-          save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
-        else
-          remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+        if (isset($data['evt_my_rate'])) {
+          if (is_numeric($data['evt_my_rate']))
+            save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+          else
+            remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+        }
 
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {
@@ -1290,10 +1306,12 @@ function usr_edit($usr_id, $data) {
 
     if ($success) {
 
-        if (!empty($data['usr_rate']) && is_numeric($data['usr_rate']))
-          save_rate($usr_id,NULL,NULL,$data['usr_rate']);
-        else 
-          remove_rate($usr_id,NULL,NULL);
+        if (isset($data['usr_rate'])) {
+          if (is_numeric($data['usr_rate']))
+            save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+          else 
+            remove_rate($usr_id,NULL,NULL);
+        }
 
         if (! $conn->TransactionEnd()) $conn->Kill();
     } else {

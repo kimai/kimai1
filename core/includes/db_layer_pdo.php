@@ -336,15 +336,19 @@ function pct_create($data) {
     
       $pct_id = $pdo_conn->lastInsertId();
 
-      if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
-        save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
-      else
-        remove_rate(NULL,$pct_id,NULL);
+      if (isset($data['pct_default_rate'])) {
+        if (is_numeric($data['pct_default_rate']))
+          save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+        else
+          remove_rate(NULL,$pct_id,NULL);
+      }
 
-      if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
-        save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
-      else
-        remove_rate(NULL,$pct_id,NULL);
+      if (isset($data['pct_my_rate'])) {
+        if (is_numeric($data['pct_my_rate']))
+          save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+        else
+          remove_rate(NULL,$pct_id,NULL);
+      }
         
         return $pct_id;
     } else {
@@ -435,15 +439,19 @@ function pct_edit($pct_id, $data) {
         return $result;
     }
     
-    if (!empty($data['pct_default_rate']) && is_numeric($data['pct_default_rate']))
-      save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
-    else
-      remove_rate(NULL,$pct_id,NULL);
+    if (isset($data['pct_default_rate'])) {
+      if (is_numeric($data['pct_default_rate']))
+        save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+      else
+        remove_rate(NULL,$pct_id,NULL);
+    }
 
-    if (!empty($data['pct_my_rate']) && is_numeric($data['pct_my_rate']))
-      save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
-    else
-      remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+    if (isset($data['pct_my_rate'])) {
+      if (is_numeric($data['pct_my_rate']))
+        save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+      else
+        remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+    }
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -582,15 +590,20 @@ function evt_create($data) {
     
       $evt_id = $pdo_conn->lastInsertId();
     
-      if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
-        save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
-      else
-        remove_rate(NULL,NULL,$evt_id);
+      
+      if (isset($data['evt_default_rate'])) {
+        if (is_numeric($data['evt_default_rate']))
+          save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+        else
+          remove_rate(NULL,NULL,$evt_id);
+      }
 
-      if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
-        save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
-      else
-        remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+      if (isset($data['evt_my_rate'])) {
+        if (is_numeric($data['evt_my_rate']))
+          save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+        else
+          remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+      }
 
       return $evt_id;
     } else {
@@ -676,15 +689,19 @@ function evt_edit($evt_id, $data) {
         return $result;
     }
 
-    if (!empty($data['evt_default_rate']) && is_numeric($data['evt_default_rate']))
-      save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
-    else
-      remove_rate(NULL,NULL,$evt_id);
+    if (isset($data['evt_default_rate'])) {
+      if (is_numeric($data['evt_default_rate']))
+        save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+      else
+        remove_rate(NULL,NULL,$evt_id);
+    }
 
-    if (!empty($data['evt_my_rate']) && is_numeric($data['evt_my_rate']))
-      save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
-    else
-      remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+    if (isset($data['evt_my_rate'])) {
+      if (is_numeric($data['evt_my_rate']))
+        save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+      else
+        remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+    }
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -1042,6 +1059,12 @@ function usr_create($data) {
     ));
             
     if ($result == true) {
+        if (isset($data['usr_rate'])) {
+          if (is_numeric($data['usr_rate']))
+            save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+          else
+            remove_rate($usr_id,NULL,NULL);
+        }
         return true;
     } else {
         return false;
@@ -1148,10 +1171,12 @@ function usr_edit($usr_id, $data) {
         return $result;
     }
 
-    if (!empty($data['usr_rate']) && is_numeric($data['usr_rate']))
-      save_rate($usr_id,NULL,NULL,$data['usr_rate']);
-    else 
-      remove_rate($usr_id,NULL,NULL);
+    if (isset($data['usr_rate'])) {
+      if (is_numeric($data['usr_rate']))
+        save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+      else
+        remove_rate($usr_id,NULL,NULL);
+    }
     
     if ($pdo_conn->commit() == true) {
         return true;
