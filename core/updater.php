@@ -245,6 +245,7 @@ function exec_query($query,$errorProcessing=0) {
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
+
 if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
     $language = $kga['language'];
 } else {
@@ -263,21 +264,10 @@ $versionDB_e = explode(".",$versionDB);
 $errors = 0;
 $executed_queries = 0;
 
-if (!isset($_GET['ok']) && $kga['show_update_warn']) {
-    require_once('libraries/smarty/Smarty.class.php');
-    $tpl = new Smarty();
-    $tpl->template_dir = 'templates/';
-    $tpl->compile_dir = 'compile/';
-    $tpl->assign('kga',$kga);
-    $tpl->display('admin/updater.tpl');
-    exit;
-} else {
-    logfile("-- begin update -----------------------------------");
-}
+logfile("-- begin update -----------------------------------");
 
 $p = $kga['server_prefix'];
 
-//////// ---------------------------------------------------------------------------------------------------
 //////// ---------------------------------------------------------------------------------------------------
 // Backup Tables
 
@@ -807,7 +797,7 @@ if ((int)$revisionDB < 898) {
 //////// ---------------------------------------------------------------------------------------------------
 
 
-    
+    echo $kga['revision'];
 
 // ============================
 // = update DB version number =
@@ -817,7 +807,7 @@ if ((int)$revisionDB < $kga['revision']) {
     
     $versionDB_e[0] = 0;
     $versionDB_e[1] = 8;
-    $versionDB_e[2] = 1;
+    $versionDB_e[2] = 2;
     
     $query=sprintf("UPDATE `${p}var` SET value = '%s' WHERE var = 'version';", $kga['version']);
     exec_query($query,0);
