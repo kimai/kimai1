@@ -20,9 +20,20 @@
  */ 
  
 require('includes/basics.php');
+
+// require(sprintf("language/%s.php",$kga['language']));
+
+if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
+    $language = $kga['language'];
+} else {
+    $language = $kga['conf']['lang'];
+}
+require_once( "language/${language}.php" );
  
 if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
-    
+
+$RUsure = $kga['lang']['updater'][0];
+
 echo <<<EOD
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -54,8 +65,8 @@ echo <<<EOD
      <FORM action="" method="post">
      <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
      <h1>UPDATE</h1>
-     Yes, I have a backup of my Kimai database! Proceed updating!<br />
-     Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!<br /><br />
+     $RUsure
+     <br /><br />
      <INPUT type="hidden" name="a" value="1">
      <INPUT type="submit" value="START">
      
@@ -140,12 +151,12 @@ EOD;
 <table>
     <tr>
         <td colspan='2'>
-            <strong>Legende</strong>
+            <strong><?php echo $kga['lang']['updater'][10]; ?></strong>
         </td>
     </tr>
     <tr>
         <td>
-            Query wurde erfolgreich ausgeführt.
+			<?php echo $kga['lang']['updater'][20]; ?>
         </td>
         <td class='green'>
             &nbsp;&nbsp;
@@ -153,7 +164,7 @@ EOD;
     </tr>
     <tr>
         <td>
-            Query verursachte Fehler - sehr wahrscheinlich irrelevant.
+			<?php echo $kga['lang']['updater'][30]; ?>
         </td>
         <td class='orange'>
             &nbsp;&nbsp;
@@ -161,7 +172,7 @@ EOD;
     </tr>
     <tr>
         <td>
-            Query verursachte schweren Fehler.
+			<?php echo $kga['lang']['updater'][40]; ?>
         </td>
         <td class='red'>
             !
@@ -245,14 +256,6 @@ function exec_query($query,$errorProcessing=0) {
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
-
-if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-require_once( "language/${language}.php" );
-
 $version_temp  = get_DBversion();
 $versionDB  = $version_temp[0];
 $revisionDB = $version_temp[1];
@@ -287,21 +290,21 @@ if ((int)$revisionDB < $kga['revision']) {
     
     echo "</table>";
     
-    echo "<strong>Backup Log:</strong>";
+    echo "<strong>".$kga['lang']['updater'][50]."</strong>";
     echo "<table style='width:100%'>";
 
     while ($row = mysql_fetch_array($result_backup)) {
     	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
     		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . " SELECT * FROM " . $row[0] . ";";
     		exec_query($query,1);
-    		if ($errors) die("Backup nicht möglich - Update abgebrochen!");
+    		if ($errors) die($kga['lang']['updater'][60]);
     	}
     }
 
     logfile("-- backup finished -----------------------------------");
     
     echo "</table><br /><br />";
-    echo "<strong>Update Log:</strong>";
+    echo "<strong>".$kga['lang']['updater'][70]."</strong></br>";
     echo "<table style='width:100%'>";
 }
 //////// ---------------------------------------------------------------------------------------------------
@@ -822,27 +825,33 @@ logfile("-- update finished --------------------------------");
 if ((int)$revisionDB == $kga['revision']) {
     echo "<script type=\"text/javascript\">window.location.href = \"index.php\";</script>";
 } else {
-    
+
+    $l2 = $kga['lang']['login'];
+	$l3 = $kga['lang']['updater'][90];
+	
     if (!$errors) {
 
+		$l1 = $kga['lang']['updater'][80];
+		
 echo<<<EOD
 <script type="text/javascript">
-    $("#link").append("<p><strong>Datenbank wurde auf den neusten Stand gebracht. Ein Backup wurde angelegt.</strong></p>");
-    $("#link").append("<h1><a href='index.php'>Login</a></h1>");
+    $("#link").append("<p><strong>$l1</strong></p>");
+    $("#link").append("<h1><a href='index.php'>$l2</a></h1>");
     $("#link").addClass("success");
-    $("#queries").append("$executed_queries Queries ausgeführt.</p>");
-    
+    $("#queries").append("$executed_queries $l3</p>");
 </script>
 EOD;
 
     } else {
+	
+		$l1 = $kga['lang']['updater'][100];
+	
 echo<<<EOD
 <script type="text/javascript">
-    $("#link").append("<p><strong>Es wurde versucht die Datenbank auf den neusten Stand zu bringen. Dabei sind kritische Fehler aufgetreten. Ein Backup wurde angelegt. Wenn Kimai nicht richtig funktioniert können Sie damit die alte Datenbank wieder herstellen.</strong></p>");
-    $("#link").append("<h1><a href='index.php'>Login</a></h1>");
+    $("#link").append("<p><strong>$l1</strong></p>");
+    $("#link").append("<h1><a href='index.php'>$l2</a></h1>");
     $("#link").addClass("fail");
-    $("#queries").append("$executed_queries Queries ausgeführt.");
-
+    $("#queries").append("$executed_queries $l3");
 </script>
 EOD;
     }
@@ -852,9 +861,9 @@ EOD;
 
 </table>
 
-<?php echo "$executed_queries Queries ausgeführt."; ?>
+<?php echo "$executed_queries " . $kga['lang']['updater'][90]; ?>
 
-<h1><a href='index.php'>Login</a></h1>
+<h1><a href='index.php'><?php echo $kga['lang']['login']; ?></a></h1>
 
 </body></html>
 
