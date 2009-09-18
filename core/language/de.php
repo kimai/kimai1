@@ -209,9 +209,19 @@ $kga['lang']['months_short']   = array("Jan","Feb","Mär","Apr","Mai","Jun","Jul
 $kga['lang']['weekdays']       = array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
 $kga['lang']['weekdays_short'] = array("So","Mo","Di","Mi","Do","Fr","Sa");
 
-
 $kga['lang']['errors'][0]['hdl'] = "Datenbankverbindung verweigert!";
 $kga['lang']['errors'][0]['txt'] = "Bitte stellen Sie sicher das Datenbank und PDO-Erweiterung laufen und die Einstellungen in der Datei 'conf.php' im Ordner 'includes' richtig sind.";
 
+$kga['lang']['updater'][0]        = "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!";
+$kga['lang']['updater'][10]       = "Legende:";
+$kga['lang']['updater'][20]       = "Query wurde erfolgreich ausgeführt.";
+$kga['lang']['updater'][30]       = "Query verursachte Fehler - sehr wahrscheinlich irrelevant.";
+$kga['lang']['updater'][40]       = "Query verursachte schweren Fehler.";
+$kga['lang']['updater'][50]       = "Backup Log:";
+$kga['lang']['updater'][60]       = "Backup nicht möglich - Update abgebrochen!";
+$kga['lang']['updater'][70]       = "Update Log:";
+$kga['lang']['updater'][80]       = "Datenbank wurde auf den neusten Stand gebracht. Ein Backup wurde angelegt.";
+$kga['lang']['updater'][90]       = "Queries ausgeführt.";
+$kga['lang']['updater'][100]      = "Es wurde versucht die Datenbank auf den neusten Stand zu bringen. Dabei sind kritische Fehler aufgetreten. Ein Backup wurde angelegt. Wenn Kimai nicht richtig funktioniert können Sie damit die alte Datenbank wieder herstellen.";
 
 ?>

@@ -196,6 +196,12 @@ $kga['lang']= array(
 "testKND"           => "Test-Customer",
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
+
+"rate"              => "rate",
+"default_rate"      => "default rate",
+"my_rate"           => "my rate",
+
+"wage"              => "wage",
 );
 
 $kga['lang']['months']         = array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro");
@@ -206,5 +212,17 @@ $kga['lang']['weekdays_short'] = array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"
 
 $kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
 $kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'conf.php' in folder 'includes' are correct.";
+
+$kga['lang']['updater'][0]        = "Yes, I have a backup of my Kimai database! Proceed updating!";
+$kga['lang']['updater'][10]       = "Legend:";
+$kga['lang']['updater'][20]       = "Query was executed successfully.";
+$kga['lang']['updater'][30]       = "Query caused error - most likely irrelevant.";
+$kga['lang']['updater'][40]       = "Query caused fatal error.";
+$kga['lang']['updater'][50]       = "Backup Log:";
+$kga['lang']['updater'][60]       = "Backup failed - Update aborded!";
+$kga['lang']['updater'][70]       = "Update Log:";
+$kga['lang']['updater'][80]       = "The database was updated successfully and a backup was created.";
+$kga['lang']['updater'][90]       = "Queries processed.";
+$kga['lang']['updater'][100]      = "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.";
 
 ?>
