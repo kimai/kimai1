@@ -196,7 +196,7 @@ if (($_REQUEST['action']=="restore")&& isset($_REQUEST['dates'])) {
 			
 	if (count($dates)>1) 
 	{
-		echo "<h1 class='fail'>".$kga['lang']['backup'][0]."</h1>";
+		echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
 	}
 	else
 	{
