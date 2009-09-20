@@ -75,7 +75,7 @@ $kga['check_at_startup']   = 0;     // everytime the login-screen appears the ve
 
 $kga['show_daySeperatorLines'] = 1; // set to 0 to supress the black lines between days
 
-$kga['show_gabBreaks'] = 1;         // set to 1 to show lines between two records that are not perfectly continuous
+$kga['show_gabBreaks'] = 0;         // set to 1 to show lines between two records that are not perfectly continuous
 
 $kga['show_RecordAgain'] = 1;       // set to 0 to supress the 'record again' buttons in the timesheet table
                                      
