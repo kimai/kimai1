@@ -1987,9 +1987,9 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
 
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
@@ -2026,11 +2026,27 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     /* TODO: needs revision as foreach loop */
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $arr[$i]['zef_ID']           = $row['zef_ID'];
-        $arr[$i]['zef_in']           = $row['zef_in'];
-        $arr[$i]['zef_out']          = $row['zef_out'];
-        $arr[$i]['zef_time']         = $row['zef_time'];
-        $arr[$i]['zef_apos']         = intervallApos($row['zef_time']);
-        $arr[$i]['zef_coln']         = intervallColon($row['zef_time']);
+
+        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+          $arr[$i]['zef_in']            = $in;
+          $arr[$i]['zef_out']          = $row['zef_out'];
+        }
+        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+          $arr[$i]['zef_in']            = $in;
+          $arr[$i]['zef_out']          = $out;
+        }
+        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+          $arr[$i]['zef_in']            = $row['zef_in'];
+          $arr[$i]['zef_out']          = $row['zef_out'];
+        }
+        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+          $arr[$i]['zef_in']            = $row['zef_in'];
+          $arr[$i]['zef_out']          = $out;
+        }
+        $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in'];
+
+        $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
+        $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']);
         $arr[$i]['zef_pctID']        = $row['zef_pctID'];
         $arr[$i]['zef_evtID']        = $row['zef_evtID'];
         $arr[$i]['zef_usrID']        = $row['zef_usrID'];
@@ -2047,7 +2063,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $arr[$i]['zef_comment']      = $row['zef_comment'];
         $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
         $arr[$i]['usr_alias']        = $row['usr_alias'];
-        $arr[$i]['wage']             = sprintf("%01.2f",$row['zef_time']/3600*$row['zef_rate'],2);
+        $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
         $i++;
     }
     
@@ -2319,15 +2335,33 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
 
-    $pdo_query = $pdo_conn->prepare("SELECT zef_time FROM " . $kga['server_prefix'] . "zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_time FROM " . $kga['server_prefix'] . "zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
     $sum = 0;
+    $zef_in = 0;
+    $zef_out = 0;
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $sum+=(int)$row['zef_time'];
+      if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $out;
+      }
+      $sum+=(int)($zef_out - $zef_in);
     }
     return $sum;
 }
@@ -3049,54 +3083,15 @@ function stopRecorder() {
     $zef_ID = $last_task['zef_ID'];
     $zef_in = $last_task['zef_in'];
 
-    // ...in-zeitpunkt und jetzt-zeitpunkt werden an den EXPLODER gesendet
-    // der daraus ein mehrdimensionales array macht. die tage dieses arrays
-    // werden anschließend in die DB zurückgeschreiben
-    $records = explode_record($zef_in,$kga['now']);
 
-    $difference = $records[0]['diff'];
+    $difference = $kga['now']-$zef_in;
 
-    // hier wird sofort mal der erste ausgeworfene tag verarbeitet.
-    // wenn nur einer zurückgekommen ist, ist die verarbeitung danach direkt
-    // beendet.
-    // update zeitdifferenz in laufendem vorgang speichern
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_time = ? WHERE zef_ID = ?;");
     $pdo_query->execute(array($difference,$zef_ID));
 
     // update outPoint in laufendem vorgang speichern
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_out = ? WHERE zef_ID = ?;");
-    $pdo_query->execute(array($records[0]['out'],$zef_ID));
-
-    // noch mehr tage?
-    if (count($records)>1) {
-        save_further_records($user,$last_task,$records);
-    }
-}
-
-// -----------------------------------------------------------------------------------------------------------
-
-function save_further_records($user,$last_task,$records) {
-    global $kga, $pdo_conn;
-
-    // nur der zweite eintrag wird zusätzlich gespeichert
-    // TODO: schleife für alle einträge
-
-    $pctID = $last_task['zef_pctID'];
-    $evtID = $last_task['zef_evtID'];
-
-    if (count($records)>2) {
-        $type = 2;
-        $comment=$kga['lang']['ac_error']; // auto continued with error (entry too long).";
-    } else {
-        $type = 1;
-        $comment=$kga['lang']['ac']; // "auto continued.";
-    }
-
-	$pdo_query = $pdo_conn->prepare("INSERT INTO " . $kga['server_prefix'] . "zef 
-	(`zef_in`, `zef_out`, `zef_time`,`zef_usrID`,`zef_pctID`,`zef_evtID`,`zef_comment`,`zef_comment_type`)
-    VALUES (?,?,?,?,?,?,?,?);");
-
-    $pdo_query->execute(array($records[1]['in'],$records[1]['out'],$records[1]['diff'],$user,$pctID,$evtID,$comment,$type));
+    $pdo_query->execute(array($kga['now'],$zef_ID));
 }
 
 // -----------------------------------------------------------------------------------------------------------

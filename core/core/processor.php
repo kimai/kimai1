@@ -85,7 +85,10 @@ switch ($axAction) {
         // =======================================
         $wd       = $kga['lang']['weekdays_short'][date("w",time())];
         $today    = date($kga['date_format'][0],time());
-        $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));
+        if ($kga['calender_start']=="")
+          $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
+        else
+          $dp_start = $kga['calender_start'];
         $pd_today = date("d/m/Y",time());
         $nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . date($kga['date_format'][0],time()+86400);
 

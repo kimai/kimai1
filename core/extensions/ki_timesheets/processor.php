@@ -152,15 +152,16 @@ switch ($axAction) {
     	// check if the posted time values are possible
         $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
         
-        $edit_day       = expand_date_shortcut($_REQUEST['edit_day']);
+        $edit_in_day       = expand_date_shortcut($_REQUEST['edit_in_day']);
+        $edit_out_day      = expand_date_shortcut($_REQUEST['edit_out_day']);
         $edit_in_time   = expand_time_shortcut($_REQUEST['edit_in_time']);
         $edit_out_time  = expand_time_shortcut($_REQUEST['edit_out_time']);
                                                                                 // logfile("edit_in: ".$edit_in);
                                                                                 // logfile("edit_out: ".$edit_out);
                                                                                 // logfile("edit_in_time: ".$edit_in_time);
                                                                                 // logfile("edit_out_time: ".$edit_out_time);
-        $new_in  = "${edit_day}-${edit_in_time}";
-        $new_out = "${edit_day}-${edit_out_time}";
+        $new_in  = "${edit_in_day}-${edit_in_time}";
+        $new_out = "${edit_out_day}-${edit_out_time}";
                                                                                 // logfile("new_in: ".$new_in);
                                                                                 // logfile("new_out: ".$new_out);        
         
@@ -202,17 +203,10 @@ switch ($axAction) {
         } else {
             
             // TIME RIGHT !
-            
-            // the form deliverd correct time data.
-            // now we look if the timespan possibly crosses midnight
                                                                                 
-            $records = explode_record($new_time['in'],$new_time['out']);
-            $data['in']   = $records[0]['in'];
-            $data['out']  = $records[0]['out'];
-            $data['diff'] = $records[0]['diff'];
-        
-            // now that we know the timespan of the day this entry started
-            // we put it into the array which then will be written to the DB
+            $data['in']   = $new_time['in'];
+            $data['out']  = $new_time['out'];
+            $data['diff'] = $new_time['diff'];
                 
             if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
@@ -228,12 +222,6 @@ switch ($axAction) {
                 
             }
             
-            // Now finally we check if there is time left for a following day
-            if (count($records)>1) {
-                $this_record['zef_pctID'] = $pct_ID;
-                $this_record['zef_evtID'] = $evt_ID;
-                save_further_records($kga['usr']['usr_ID'],$this_record,$records);
-            }
             
         }
         

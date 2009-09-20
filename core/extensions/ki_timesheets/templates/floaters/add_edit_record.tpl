@@ -5,8 +5,8 @@
             $('#help').hide();
             $('#ts_ext_form_add_edit_record').ajaxForm(function() { 
                 
-                $edit_in_time = $('#edit_in_time').val();
-                $edit_out_time = $('#edit_out_time').val();
+                $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
+                $edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
                 
                 if ($edit_in_time == $edit_out_time) {
                     alert("{/literal}{$kga.lang.timediff_warn}{literal}");
@@ -87,17 +87,19 @@
 {* -------------------------------------------------------------------- *} 
 
                 <li>
-                     <label for="edit_day">{$kga.lang.day}:</label>
-                     <input id='edit_day' type='text' name='edit_day' value='{$edit_day}' maxlength='10' size='10' tabindex='5' {if $kga.conf.autoselection}onClick="this.select();"{/if} /> currently only this format works: DD.MM.YY
+                     <label for="edit_in_day">{$kga.lang.day}:</label>
+                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day}' maxlength='10' size='10' tabindex='5' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     -
+                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day}' maxlength='10' size='10' tabindex='6' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
                        <label for="time">{$kga.lang.timelabel}</label>
-                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='6' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
-                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='8' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a href="#" onClick="pasteNow(); return false;">{$kga.lang.now}</a>
                    </li>
 

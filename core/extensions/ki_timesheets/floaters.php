@@ -41,7 +41,8 @@ switch ($axAction) {
         
         $tpl->assign('rate', $zef_entry['zef_rate']);
     
-        $tpl->assign('edit_day', date("d.m.Y",$zef_entry['zef_in']));
+        $tpl->assign('edit_in_day', date("d.m.Y",$zef_entry['zef_in']));
+        $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));
     
         $tpl->assign('edit_in_time',  date("H:i:s",$zef_entry['zef_in']));
         $tpl->assign('edit_out_time', date("H:i:s",$zef_entry['zef_out']));
@@ -56,7 +57,8 @@ switch ($axAction) {
         
         $tpl->assign('id', 0);
         
-        $tpl->assign('edit_day', date("d.m.Y"));
+        $tpl->assign('edit_in_day', date("d.m.Y"));
+        $tpl->assign('edit_out_day', date("d.m.Y"));
     
         $tpl->assign('edit_in_time',  date("H:i:s"));
         $tpl->assign('edit_out_time', date("H:i:s"));

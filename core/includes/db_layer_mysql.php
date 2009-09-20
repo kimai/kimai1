@@ -2215,9 +2215,9 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
 
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
@@ -2248,11 +2248,26 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         while (! $conn->EndOfSeek()) {
             $row = $conn->Row();
             $arr[$i]['zef_ID']           = $row->zef_ID;
-            $arr[$i]['zef_in']           = $row->zef_in;
-            $arr[$i]['zef_out']          = $row->zef_out;
-            $arr[$i]['zef_time']         = $row->zef_time;
-            $arr[$i]['zef_apos']         = intervallApos($row->zef_time);
-            $arr[$i]['zef_coln']         = intervallColon($row->zef_time);
+            if ($row->zef_in <= $in && $row->zef_out < $out)  {
+              $arr[$i]['zef_in']         = $in;
+              $arr[$i]['zef_out']        = $row['zef_out'];
+            }
+            else if ($row->zef_in <= $in && $row->zef_out >= $out)  {
+              $arr[$i]['zef_in']         = $in;
+              $arr[$i]['zef_out']        = $out;
+            }
+            else if ($row->zef_in > $in && $row->zef_out < $out)  {
+              $arr[$i]['zef_in']         = $row['zef_in'];
+              $arr[$i]['zef_out']        = $row['zef_out'];
+            }
+            else if ($row->zef_in > $in && $row->zef_out >= $out)  {
+              $arr[$i]['zef_in']         = $row['zef_in'];
+              $arr[$i]['zef_out']        = $out;
+            }
+            $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in'];
+
+            $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
+            $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']);
             $arr[$i]['zef_pctID']        = $row->zef_pctID;
             $arr[$i]['zef_evtID']        = $row->zef_evtID;
             $arr[$i]['zef_usrID']        = $row->zef_usrID;
@@ -2266,7 +2281,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
             $arr[$i]['zef_trackingnr']   = $row->zef_trackingnr;
             $arr[$i]['zef_comment']      = $row->zef_comment;
             $arr[$i]['zef_comment_type'] = $row->zef_comment_type;
-            $arr[$i]['wage']             = sprintf("%01.2f",$row->zef_time/3600*$row->zef_rate,2);
+        $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
             $i++;
         }
         return $arr;
@@ -2563,16 +2578,39 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
     
-    $query = "SELECT SUM(`zef_time`) AS zeit FROM ${p}zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
+    $query = "SELECT zef_in,zef_out,zef_time AS zeit FROM ${p}zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
     $conn->Query($query);
 
-    $row = $conn->RowArray(0,MYSQL_ASSOC);
-    $zeit = $row['zeit'];
-    return $zeit;
+    $conn->MoveFirst();
+    $sum = 0;
+    $zef_in = 0;
+    $zef_out = 0;
+    while (! $conn->EndOfSeek()) {
+      $row = $conn->Row();
+      if ($row->zef_in <= $in && $row->zef_out < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row->zef_out;
+      }
+      else if ($row->zef_in <= $in && $row->zef_out >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row->zef_in > $in && $row->zef_out < $out)  {
+        $zef_in  = $row->zef_in;
+        $zef_out = $row->zef_out;
+      }
+      else if ($row->zef_in > $in && $row->zef_out >= $out)  {
+        $zef_in  = $row->zef_in;
+        $zef_out = $out;
+      }
+      $sum+=(int)($zef_out - $zef_in);
+
+    }
+    return $sum;
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -3254,57 +3292,16 @@ function stopRecorder() {
     $filter['zef_ID'] = $last_task['zef_ID'];
     $values['zef_in'] = $last_task['zef_in'];
     
-    // ...in-zeitpunkt und jetzt-zeitpunkt werden an den EXPLODER gesendet
-    // der daraus ein mehrdimensionales array macht. die tage dieses arrays
-    // werden anschließend in die DB zurückgeschreiben
-    $records = explode_record($values['zef_in'],$kga['now']);
     
-    $values['zef_out']  = $records[0]['out'];
-    $values['zef_time'] = $records[0]['diff'];
+    $values['zef_out']  = $kga['now'];
+    $values['zef_time'] = $kga['now']-$values['zef_in'];
 
-    // hier wird sofort mal der erste ausgeworfene tag verarbeitet.
-    // wenn nur einer zurückgekommen ist, ist die verarbeitung danach direkt
-    // beendet.
-    // zeitdifferenz und outPoint in laufendem vorgang speichern
     
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
     logfile($query);
     
     return $conn->Query($query);    
-
-    // noch mehr tage?
-    if (count($records)>1) {
-        save_further_records($user,$last_task,$records);
-    }
-}
-
-//-----------------------------------------------------------------------------------------------------------
-
-function save_further_records($user,$last_task,$records) {
-    global $kga, $conn;
-
-    // nur der zweite eintrag wird zusätzlich gespeichert
-    // TODO: schleife für alle einträge
-  
-    if (count($records)>2) {
-        $values['zef_comment']      = $kga['lang']['ac_error']; // auto continued with error (entry too long).";
-        $values['zef_comment_type'] = 2;
-    } else {
-        $values['zef_comment']      = $kga['lang']['ac']; // "auto continued.";
-        $values['zef_comment_type'] = 1;
-    }
-
-    $values['zef_in']    = MySQL::SQLValue($records[1]['in']      , MySQL::SQLVALUE_NUMBER);
-    $values['zef_out']   = MySQL::SQLValue($records[1]['out']     , MySQL::SQLVALUE_NUMBER);
-    $values['zef_time']  = MySQL::SQLValue($records[1]['diff']    , MySQL::SQLVALUE_NUMBER);
-    $values['zef_usrID'] = MySQL::SQLValue($user                  , MySQL::SQLVALUE_NUMBER);
-    $values['zef_pctID'] = MySQL::SQLValue($last_task['zef_pctID'], MySQL::SQLVALUE_NUMBER);
-    $values['zef_evtID'] = MySQL::SQLValue($last_task['zef_evtID'], MySQL::SQLVALUE_NUMBER);
-    
-    $table = $kga['server_prefix']."zef";
-    $query = MySQL::BuildSQLInsert($table, $values);
-    return $conn->Query($query);
 }
 
 // -----------------------------------------------------------------------------------------------------------
