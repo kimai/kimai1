@@ -225,7 +225,7 @@ $kga['lang']['updater'][80]       = "The database was updated successfully and a
 $kga['lang']['updater'][90]       = "Queries processed.";
 $kga['lang']['updater'][100]      = "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.";
 
-$kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use on your own risk!";
+$kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use at your own risk!";
 $kga['lang']['backup'][1]        = "Available backups:";
 $kga['lang']['backup'][2]        = "recover";
 $kga['lang']['backup'][3]        = "delete";
