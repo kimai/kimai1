@@ -292,7 +292,29 @@ if ((int)$revisionDB < $kga['revision']) {
 
     while ($row = mysql_fetch_array($result_backup)) {
     	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
-    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . " SELECT * FROM " . $row[0] . ";";
+	
+			$primaryKey = "";
+			
+			if (strlen(strstr($row[0],"evt"))>0) { $primaryKey = "evt_ID";}
+			if (strlen(strstr($row[0],"grp"))>0) { $primaryKey = "grp_ID";}
+			if (strlen(strstr($row[0],"knd"))>0) { $primaryKey = "knd_ID";}
+			if (strlen(strstr($row[0],"pct"))>0) { $primaryKey = "pct_ID";}
+			if (strlen(strstr($row[0],"zef"))>0) { $primaryKey = "zef_ID";}
+			if (strlen(strstr($row[0],"usr"))>0) { $primaryKey = "usr_name";}
+			if (strlen(strstr($row[0],"var"))>0) { $primaryKey = "var";}
+			if ( (strlen(strstr($row[0],"ldr"))>0) 
+				|| (strlen(strstr($row[0],"grp_evt"))>0) 
+				|| (strlen(strstr($row[0],"grp_knd"))>0) 
+				|| (strlen(strstr($row[0],"grp_pct"))>0)) 
+			{ 
+				$primaryKey = "uid";
+			}
+			
+			if ($primaryKey!="") {
+				$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
+			}
+			
+    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";
     		exec_query($query,1);
     		if ($errors) die($kga['lang']['updater'][60]);
     	}

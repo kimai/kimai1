@@ -80,7 +80,29 @@ if (isset($_REQUEST['submit']))
 	    $prefix_length = strlen($p);
 	    while ($row = mysql_fetch_array($result_backup)) {
 	    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
-	    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . " SELECT * FROM " . $row[0] . ";";
+
+				$primaryKey = "";
+
+				if (strlen(strstr($row[0],"evt"))>0) { $primaryKey = "evt_ID";}
+				if (strlen(strstr($row[0],"grp"))>0) { $primaryKey = "grp_ID";}
+				if (strlen(strstr($row[0],"knd"))>0) { $primaryKey = "knd_ID";}
+				if (strlen(strstr($row[0],"pct"))>0) { $primaryKey = "pct_ID";}
+				if (strlen(strstr($row[0],"zef"))>0) { $primaryKey = "zef_ID";}
+				if (strlen(strstr($row[0],"usr"))>0) { $primaryKey = "usr_name";}
+				if (strlen(strstr($row[0],"var"))>0) { $primaryKey = "var";}
+				if ( (strlen(strstr($row[0],"ldr"))>0) 
+					|| (strlen(strstr($row[0],"grp_evt"))>0) 
+					|| (strlen(strstr($row[0],"grp_knd"))>0) 
+					|| (strlen(strstr($row[0],"grp_pct"))>0)) 
+				{ 
+					$primaryKey = "uid";
+				}
+
+				if ($primaryKey!="") {
+					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
+				}
+
+	    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";
 	    		exec_query($query,1);
 	    		if ($errors) die($kga['lang']['updater'][60]);
 	    	}
@@ -257,9 +279,32 @@ if (isset($_REQUEST['submit']))
 			$i=0;
 			foreach($arr2 AS $newTable)
 			{
+				
+				$primaryKey = "";
+				
+				if (strlen(strstr($newTable,"evt"))>0) { $primaryKey = "evt_ID";}
+				if (strlen(strstr($newTable,"grp"))>0) { $primaryKey = "grp_ID";}
+				if (strlen(strstr($newTable,"knd"))>0) { $primaryKey = "knd_ID";}
+				if (strlen(strstr($newTable,"pct"))>0) { $primaryKey = "pct_ID";}
+				if (strlen(strstr($newTable,"zef"))>0) { $primaryKey = "zef_ID";}
+				if (strlen(strstr($newTable,"usr"))>0) { $primaryKey = "usr_name";}
+				if (strlen(strstr($newTable,"var"))>0) { $primaryKey = "var";}
+				if ( (strlen(strstr($newTable,"ldr"))>0) 
+					|| (strlen(strstr($newTable,"grp_evt"))>0) 
+					|| (strlen(strstr($newTable,"grp_knd"))>0) 
+					|| (strlen(strstr($newTable,"grp_pct"))>0)) 
+				{ 
+					$primaryKey = "uid";
+				}
+				
+				if ($primaryKey!="") {
+					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
+				}
+				
 				$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
-				$restorequery .= "CREATE TABLE " . $newTable .  " SELECT * FROM " .  $arr[$i] . ";\n";
+				$restorequery .= "CREATE TABLE " . $newTable . $primaryKey . " SELECT * FROM " .  $arr[$i] . ";\n";
 				$i++;
+				
 			}
 
 			if ($kga['server_conn'] == "pdo") {
@@ -343,7 +388,6 @@ EOD;
 </form>
 
 <p class="caution"><?php echo $kga['lang']['backup'][9]; ?></p>
-
 </div>
 </body>
 </html>
