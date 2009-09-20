@@ -65,36 +65,19 @@ require_once( "language/${language}.php" );
 
 
 
-if (isset($_REQUEST['action'])) 
+if (isset($_REQUEST['submit'])) 
 {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	if ($_REQUEST['action']=="backup") 
+	// backup
+	if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) 
 	{
 		$p = $kga['server_prefix'];
-
 	    logfile("-- begin backup -----------------------------------");
-
 	    $backup_stamp = time();  
-                      
 	    $query = ("SHOW TABLES;");
-                         
 	    $result_backup=@mysql_query($query); 
 	    logfile($query,$result_backup);
 	    $prefix_length = strlen($p);
-  
 	    while ($row = mysql_fetch_array($result_backup)) {
 	    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
 	    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . " SELECT * FROM " . $row[0] . ";";
@@ -102,37 +85,18 @@ if (isset($_REQUEST['action']))
 	    		if ($errors) die($kga['lang']['updater'][60]);
 	    	}
 	    }
-
 	    logfile("-- backup finished -----------------------------------");
-
 		header("location: db_restore.php");
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	if ($_REQUEST['action']=="delete") 
+	// delete
+	if ($_REQUEST['submit'] == $kga['lang']['backup'][3]) 
 	{
-	
 		$dates = $_REQUEST['dates'];
 
 		$query = ("SHOW TABLES;");
 		$result_backup=@mysql_query($query); 
-
 
 		while ($row = mysql_fetch_array($result_backup))
 		{
@@ -150,8 +114,6 @@ if (isset($_REQUEST['action']))
 		{
 			$query .= $row;
 		}
-
-		//echo $query;
 
 		if ($kga['server_conn'] == "pdo") 
 		{
@@ -228,6 +190,7 @@ echo<<<EOD
 			border:3px solid white;
 			padding:10px;
 			background-image: url('skins/standard/grfx/floaterborder.png');
+			margin-right:20px;
 		}
 		
 		h1.fail {
@@ -235,6 +198,15 @@ echo<<<EOD
 			padding:10px;
 			background-image: url('skins/standard/grfx/floaterborder.png');
 			color:red;
+			margin-right:20px;
+		}
+		p.submit {
+			margin-top:25px;
+		}
+		p.caution {
+			font-size:80%;
+			color:#136C00;
+			width:300px;
 		}
 	
 	</style>
@@ -243,91 +215,79 @@ echo<<<EOD
 <body>
 EOD;
 
-
 echo '<div class="warn">'.$kga['lang']['backup'][0].'</div>';
 echo '<div class="main">';
 
+// restore
 
-if (($_REQUEST['action']=="restore")&& isset($_REQUEST['dates'])) {
-	
-	$dates = $_REQUEST['dates'];
+if (isset($_REQUEST['submit'])) 
+{
+	if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
+	{
+		$dates = $_REQUEST['dates'];
 			
-	if (count($dates)>1) 
-	{
-		echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
-	}
-	else
-	{
-
-
-
-//// RESTORE ///
-
-		$query = ("SHOW TABLES;");
-
-		$result_backup=@mysql_query($query); 
-
-		$arr = array();
-		$arr2 = array();
-		$dropquery = "";
-		$restorequery = "";
-
-		while ($row = mysql_fetch_array($result_backup))
+		if (count($dates)>1) 
 		{
-			if ( (substr($row[0], 0, 10) == "kimai_bak_"))
+			echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
+		}
+		else
+		{
+			$query = ("SHOW TABLES;");
+
+			$result_backup=@mysql_query($query); 
+
+			$arr = array();
+			$arr2 = array();
+			$dropquery = "";
+			$restorequery = "";
+
+			while ($row = mysql_fetch_array($result_backup))
 			{
-				if ( in_array(substr($row[0], 10, 10),$dates) )
+				if ( (substr($row[0], 0, 10) == "kimai_bak_"))
 				{
-					$table = $row[0];
-					$arr[]=$table;
-					$arr2[]=substr($row[0], 21, 100);
+					if ( in_array(substr($row[0], 10, 10),$dates) )
+					{
+						$table = $row[0];
+						$arr[]=$table;
+						$arr2[]=substr($row[0], 21, 100);
+					}
 				}
 			}
-		}
 
+			$i=0;
+			foreach($arr2 AS $newTable)
+			{
+				$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
+				$restorequery .= "CREATE TABLE " . $newTable .  " SELECT * FROM " .  $arr[$i] . ";\n";
+				$i++;
+			}
 
+			if ($kga['server_conn'] == "pdo") {
+			        if (is_object($pdo_conn)) {
+			            $pdo_query = $pdo_conn->prepare($dropquery);
+			            $success = $pdo_query->execute(array());
+			        }
+			} else {
+			    if (is_object($conn)) {
+			        $success = $conn->Query($dropquery);
+			    }
+			}
 
-		$i=0;
-		foreach($arr2 AS $newTable)
-		{
-			$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
-			$restorequery .= "CREATE TABLE " . $newTable .  " SELECT * FROM " .  $arr[$i] . ";\n";
-			$i++;
-		}
-
-		// echo "<pre>";
-		// echo $dropquery;
-		// echo $restorequery;
-		// echo "</pre>";
-
-		if ($kga['server_conn'] == "pdo") {
-		        if (is_object($pdo_conn)) {
-		            $pdo_query = $pdo_conn->prepare($dropquery);
-		            $success = $pdo_query->execute(array());
-		        }
-		} else {
-		    if (is_object($conn)) {
-		        $success = $conn->Query($dropquery);
-		    }
-		}
-
-		if ($kga['server_conn'] == "pdo") {
-		        if (is_object($pdo_conn)) {
-		            $pdo_query = $pdo_conn->prepare($restorequery);
-		            $success = $pdo_query->execute(array());
-		        }
-		} else {
-		    if (is_object($conn)) {
-		        $success = $conn->Query($restorequery);
-		    }
-		}
+			if ($kga['server_conn'] == "pdo") {
+			        if (is_object($pdo_conn)) {
+			            $pdo_query = $pdo_conn->prepare($restorequery);
+			            $success = $pdo_query->execute(array());
+			        }
+			} else {
+			    if (is_object($conn)) {
+			        $success = $conn->Query($restorequery);
+			    }
+			}
 		
-		$date = date ("d. M Y, H:i:s", $dates[0]);
-		echo "<h1 class='message'>" .$kga['lang']['backup'][6]. " ".$date."<br>" . $kga['lang']['backup'][7] ."</h1>";
-
+			$date = date ("d. M Y, H:i:s", $dates[0]);
+			echo "<h1 class='message'>" .$kga['lang']['backup'][6]. " ".$date."<br>" . $kga['lang']['backup'][7] ."</h1>";
+		}
 	}
-
-
 }
 
 echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
@@ -347,7 +307,6 @@ while ($row = mysql_fetch_array($result_backup))
 		$arr[]=$time;
 	}
 }
-
 
 $neues_array = array_unique ($arr);
 
@@ -375,15 +334,16 @@ EOD;
 
 ?>
 
+<p class="submit">
+<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][2]; ?>"> <!-- restore -->
+<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][3]; ?>"> <!-- delete -->
+<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][8]; ?>"> <!-- backup -->
+</p>
 
-<p class="radio"><input type="radio" name="action" value="restore" checked="checked"> <?php echo $kga['lang']['backup'][2]; ?> </p>
-<p class="radio"><input type="radio" name="action" value="delete"> <?php echo $kga['lang']['backup'][3]; ?> </p>
-<p class="radio"><input type="radio" name="action" value="backup"> <?php echo $kga['lang']['backup'][8]; ?> </p>
-<p style="clear:both"><input type="submit" value="<?php echo $kga['lang']['backup'][4]; ?>"></p>
 </form>
 
+<p class="caution"><?php echo $kga['lang']['backup'][9]; ?></p>
 
 </div>
 </body>
 </html>
-

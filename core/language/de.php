@@ -233,5 +233,6 @@ $kga['lang']['backup'][5]        = "Es kann nur *ein* Backup wiederhergestellt w
 $kga['lang']['backup'][6]        = "Backup vom";
 $kga['lang']['backup'][7]        = "wurde wiederhergestellt.";
 $kga['lang']['backup'][8]        = "neues Backup erstellen";
+$kga['lang']['backup'][9]        = "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datanträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)";
 
 ?>

@@ -234,6 +234,6 @@ $kga['lang']['backup'][5]        = "You can only recover *one* backup at a time!
 $kga['lang']['backup'][6]        = "Backup from";
 $kga['lang']['backup'][7]        = "was recovered.";
 $kga['lang']['backup'][8]        = "create backup";
-
+$kga['lang']['backup'][9]        = "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)";
 
 ?>
