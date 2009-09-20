@@ -226,11 +226,12 @@ $kga['lang']['updater'][100]      = "Es wurde versucht die Datenbank auf den neu
 
 $kga['lang']['backup'][0]        = "Dieses Backup-Utility wurde noch nicht hinreichend getestet! Nutzung auf eigenes Risiko!";
 $kga['lang']['backup'][1]        = "Vorhandene Backups:";
-$kga['lang']['backup'][2]        = "Wiederherstellen";
-$kga['lang']['backup'][3]        = "Löschen";
+$kga['lang']['backup'][2]        = "wiederherstellen";
+$kga['lang']['backup'][3]        = "löschen";
 $kga['lang']['backup'][4]        = "OK";
 $kga['lang']['backup'][5]        = "Es kann nur *ein* Backup wiederhergestellt werden!";
 $kga['lang']['backup'][6]        = "Backup vom";
 $kga['lang']['backup'][7]        = "wurde wiederhergestellt.";
+$kga['lang']['backup'][8]        = "neues Backup erstellen";
 
 ?>

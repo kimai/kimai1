@@ -64,8 +64,67 @@ require_once( "language/${language}.php" );
 
 
 
+
 if (isset($_REQUEST['action'])) 
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	if ($_REQUEST['action']=="backup") 
+	{
+		$p = $kga['server_prefix'];
+
+	    logfile("-- begin backup -----------------------------------");
+
+	    $backup_stamp = time();  
+                      
+	    $query = ("SHOW TABLES;");
+                         
+	    $result_backup=@mysql_query($query); 
+	    logfile($query,$result_backup);
+	    $prefix_length = strlen($p);
+  
+	    while ($row = mysql_fetch_array($result_backup)) {
+	    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
+	    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . " SELECT * FROM " . $row[0] . ";";
+	    		exec_query($query,1);
+	    		if ($errors) die($kga['lang']['updater'][60]);
+	    	}
+	    }
+
+	    logfile("-- backup finished -----------------------------------");
+
+		header("location: db_restore.php");
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	if ($_REQUEST['action']=="delete") 
 	{
 	
@@ -189,7 +248,6 @@ echo '<div class="warn">'.$kga['lang']['backup'][0].'</div>';
 echo '<div class="main">';
 
 
-
 if (($_REQUEST['action']=="restore")&& isset($_REQUEST['dates'])) {
 	
 	$dates = $_REQUEST['dates'];
@@ -297,11 +355,20 @@ echo '<form method="post" accept-charset="utf-8">';
 	
 foreach($neues_array AS $date)
 {
-$label = date ("d. M Y, H:i:s", $date);
+$value = date ("d. M Y - H:i:s", $date);
+
+if ( date("dMY", $date) == date("dMY", time()) )
+{
+	$label = $kga['lang']['heute'] . date (" - H:i:s", $date);
+}
+else
+{
+	$label = $value; 
+}
 echo<<<EOD
 <p class="label_checkbox">
-<input type="checkbox" id="$label" name="dates[]" value="$date">
-<label for="$label">$label</label>
+<input type="checkbox" id="$value " name="dates[]" value="$date">
+<label for="$value">$label</label>
 </p>
 EOD;
 }
@@ -311,6 +378,7 @@ EOD;
 
 <p class="radio"><input type="radio" name="action" value="restore" checked="checked"> <?php echo $kga['lang']['backup'][2]; ?> </p>
 <p class="radio"><input type="radio" name="action" value="delete"> <?php echo $kga['lang']['backup'][3]; ?> </p>
+<p class="radio"><input type="radio" name="action" value="backup"> <?php echo $kga['lang']['backup'][8]; ?> </p>
 <p style="clear:both"><input type="submit" value="<?php echo $kga['lang']['backup'][4]; ?>"></p>
 </form>
 
