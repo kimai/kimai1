@@ -224,4 +224,13 @@ $kga['lang']['updater'][80]       = "Datenbank wurde auf den neusten Stand gebra
 $kga['lang']['updater'][90]       = "Queries ausgeführt.";
 $kga['lang']['updater'][100]      = "Es wurde versucht die Datenbank auf den neusten Stand zu bringen. Dabei sind kritische Fehler aufgetreten. Ein Backup wurde angelegt. Wenn Kimai nicht richtig funktioniert können Sie damit die alte Datenbank wieder herstellen.";
 
+$kga['lang']['backup'][0]        = "Dieses Backup-Utility wurde noch nicht hinreichend getestet! Nutzung auf eigenes Risiko!";
+$kga['lang']['backup'][1]        = "Vorhandene Backups:";
+$kga['lang']['backup'][2]        = "Wiederherstellen";
+$kga['lang']['backup'][3]        = "Löschen";
+$kga['lang']['backup'][4]        = "OK";
+$kga['lang']['backup'][5]        = "Es kann nur *ein* Backup wiederhergestellt werden!";
+$kga['lang']['backup'][6]        = "Backup vom";
+$kga['lang']['backup'][7]        = "wurde wiederhergestellt.";
+
 ?>

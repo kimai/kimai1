@@ -47,7 +47,6 @@ echo <<<EOD
        }
        div {
            background-image: url('skins/standard/grfx/floaterborder.png');
-
            position: absolute;
            top: 50%;
            left: 50%;
@@ -143,8 +142,6 @@ EOD;
 </head>
 <body>
 
-
-<img src="grfx/kimai.gif" style="float:right;"/>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>
 <div id="link"></div>
 <div id="queries"></div>
@@ -281,8 +278,8 @@ if ((int)$revisionDB < $kga['revision']) {
                                // by using this type of label we can also exactly identify when it was done
                                // may be shown by a recovering script in human-readable format
                         
-    $query = ("SHOW TABLES;"); // shows also views - but we can just drop them because they are easy to recover without a backup...
-                               // but what is CREATE TABLE doing when you try to create a table from a view?
+    $query = ("SHOW TABLES;");
+
                            
     $result_backup=@mysql_query($query); 
     logfile($query,$result_backup);
