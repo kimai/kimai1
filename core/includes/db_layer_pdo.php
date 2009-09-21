@@ -2339,7 +2339,17 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     if ($out)
       $whereClauses[]="zef_in < $out";
 
-    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_time FROM " . $kga['server_prefix'] . "zef ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+    if (!$kga['global']) {
+        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID ";
+    } else {
+        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
+    }
+
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_time FROM " . $kga['server_prefix'] . "zef 
+             Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
+             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
+             " . $not_global_query_extension . "
+             Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
     $sum = 0;
     $zef_in = 0;
@@ -2479,12 +2489,12 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
     
     
- $pdo_query = $pdo_conn->prepare("SELECT SUM(zef_time) as zeit, usr_ID
+ $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, usr_ID
              FROM " . $kga['server_prefix'] . "zef 
              Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
@@ -2494,10 +2504,30 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     
              $pdo_query->execute();
 
-    $arr = array();  
+    $arr = array();
+    $zef_in = 0;
+    $zef_out = 0;  
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (empty($row['usr_ID'])) break;
-        $arr[$row['usr_ID']] = $row['zeit'];
+      if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $out;
+      }
+      if (isset($arr[$row['usr_ID']]))
+        $arr[$row['usr_ID']]+= (int)($zef_out - $zef_in);
+      else 
+        $arr[$row['usr_ID']] = (int)($zef_out - $zef_in);
     }
     
     return $arr;
@@ -2540,20 +2570,39 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
     }  
     
     if ($in) 
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out) 
-      $whereClauses[]="zef_out < $out";
-    $arr = array();  
+      $whereClauses[]="zef_in < $out";
     
-    $pdo_query = $pdo_conn->prepare("SELECT SUM(zef_time) as zeit, knd_ID FROM " . $kga['server_prefix'] . "zef 
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, knd_ID FROM " . $kga['server_prefix'] . "zef 
             Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-            " GROUP BY knd_ID;");
+            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
-    
+
+    $arr = array();  
+    $zef_in = 0;
+    $zef_out = 0;
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (empty($row['knd_ID'])) break;
-        $arr[$row['knd_ID']] = $row['zeit'];
+      if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $out;
+      }
+      if (isset($arr[$row['knd_ID']]))
+        $arr[$row['knd_ID']]+= (int)($zef_out - $zef_in);
+      else 
+        $arr[$row['knd_ID']] = (int)($zef_out - $zef_in);
     }
     
     return $arr;
@@ -2596,19 +2645,39 @@ function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = 
     }   
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
+      $whereClauses[]="zef_in < $out";
     $arr = array();
-    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_pctID FROM " . $kga['server_prefix'] . "zef 
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_pctID FROM " . $kga['server_prefix'] . "zef 
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-       " GROUP BY zef_pctID;");
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
 
+    $arr = array();  
+    $zef_in = 0;
+    $zef_out = 0;
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (empty($row['zef_pctID'])) break;
-        $arr[$row['zef_pctID']] = $row['zeit'];
+      if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $out;
+      }
+      if (isset($arr[$row['zef_pctID']]))
+        $arr[$row['zef_pctID']]+= (int)($zef_out - $zef_in);
+      else 
+        $arr[$row['zef_pctID']] = (int)($zef_out - $zef_in);
     }
     return $arr;
 }
@@ -2675,18 +2744,38 @@ function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = n
     }  
 
     if ($in)
-      $whereClauses[]="zef_in > $in";
+      $whereClauses[]="zef_out > $in";
     if ($out)
-      $whereClauses[]="zef_out < $out";
-    $arr = array();    
-    $pdo_query = $pdo_conn->prepare("SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef 
+      $whereClauses[]="zef_in < $out";
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_evtID FROM " . $kga['server_prefix'] . "zef 
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-        " GROUP BY zef_evtID;");
+        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
+
+    $arr = array();  
+    $zef_in = 0;
+    $zef_out = 0;
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (empty($row['zef_evtID'])) break;
-        $arr[$row['zef_evtID']] = $row['zeit'];
+      if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
+        $zef_in  = $in;
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $in;
+        $zef_out = $out;
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $row['zef_out'];
+      }
+      else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
+        $zef_in  = $row['zef_in'];
+        $zef_out = $out;
+      }
+      if (isset($arr[$row['zef_evtID']]))
+        $arr[$row['zef_evtID']]+= (int)($zef_out - $zef_in);
+      else 
+        $arr[$row['zef_evtID']] = (int)($zef_out - $zef_in);
     }
     return $arr;
 }
