@@ -674,6 +674,7 @@ function lists_reload(subject) {
                     ($("#usr").innerHeight()-$("#usr table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#usr table").css("width",knd_w-scr);
                     lists_live_filter('usr', $('#filt_usr').val());
+		    lists_write_annotations('usr');
                 }
             );
     break;
@@ -684,6 +685,7 @@ function lists_reload(subject) {
                     ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#knd table").css("width",knd_w-scr);
                     lists_live_filter('knd', $('#filt_knd').val());
+		    lists_write_annotations('knd');
                 }
             );
     break;
@@ -695,6 +697,7 @@ function lists_reload(subject) {
                     $("#pct table").css("width",pct_w-scr);
                     $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
                     lists_live_filter('pct', $('#filt_pct').val());
+		    lists_write_annotations('pct');
                 }
             );
     break;
@@ -706,19 +709,12 @@ function lists_reload(subject) {
                     $("#evt table").css("width",evt_w-scr);
                     $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
                     lists_live_filter('evt', $('#filt_evt').val());
+		    lists_write_annotations('evt');
                 }
             );
     break;
     }
 }
-
-function lists_reloadAll() {
-    lists_reloadSubject("usr");
-    lists_reloadSubject("knd");
-    lists_reloadSubject("pct");
-    lists_reloadSubject("evt");
-}
-
 
 // ----------------------------------------------------------------------------------------
 //  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
@@ -773,36 +769,45 @@ function lists_change_color(tableRow,highLight) {
   }
 }
 
-function lists_write_annotations(usr,knd,pct,evt)
+function lists_update_annotations(id,usr,knd,pct,evt)
 {
-  $('#usr>table>tbody td.annotation').html("");
-  $('#knd>table>tbody td.annotation').html("");
-  $('#pct>table>tbody td.annotation').html("");
-  $('#evt>table>tbody td.annotation').html("");
+  lists_ann_usr[id] = usr;
+  lists_ann_knd[id] = knd;
+  lists_ann_pct[id] = pct;
+  lists_ann_evt[id] = evt;
 
-  if (usr != null)
-    for (var i in usr)
-    {
-      $('#row_usr'+i+'>td.annotation').html(usr[i]);
-    }
+  if ($('.menu dd#exttab_'+id).hasClass('act'))
+    lists_write_annotations();
+}
 
-  if (knd != null)
-    for (var i in knd)
-    {
-      $('#row_knd'+i+'>td.annotation').html(knd[i]);
-    }
+function lists_write_annotations(part)
+{
+  var id = parseInt($('.menu dd.act').attr('id').substring(7));
 
-  if (pct != null)
-    for (var i in pct)
-    {
-      $('#row_pct'+i+'>td.annotation').html(pct[i]);
-    }
-
-  if (evt != null)
-    for (var i in evt)
-    {
-      $('#row_evt'+i+'>td.annotation').html(evt[i]);
-    }
+  if (!part || part == 'usr') {
+    $('#usr>table>tbody td.annotation').html("");
+    if (lists_ann_usr[id] != null)
+      for (var i in lists_ann_usr[id])
+        $('#row_usr'+i+'>td.annotation').html(lists_ann_usr[id][i]);
+  }
+  if (!part || part == 'knd') {
+    $('#knd>table>tbody td.annotation').html("");
+    if (lists_ann_knd[id] != null)
+      for (var i in lists_ann_knd[id])
+        $('#row_knd'+i+'>td.annotation').html(lists_ann_knd[id][i]);
+  }
+  if (!part || part == 'pct') {
+    $('#pct>table>tbody td.annotation').html("");
+    if (lists_ann_pct[id] != null)
+      for (var i in lists_ann_pct[id])
+        $('#row_pct'+i+'>td.annotation').html(lists_ann_pct[id][i]);
+  }
+  if (!part || part == 'evt') {
+    $('#evt>table>tbody td.annotation').html("");
+    if (lists_ann_evt[id] != null)
+      for (var i in lists_ann_evt[id])
+        $('#row_evt'+i+'>td.annotation').html(lists_ann_evt[id][i]);
+  }
 }
 
 function lists_update_filter(subject,id) {

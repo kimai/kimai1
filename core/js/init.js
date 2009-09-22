@@ -40,6 +40,11 @@ var filterEvt = new Array();
 
 var lists_visibility = new Array();
 
+var lists_ann_usr = new Array();
+var lists_ann_knd = new Array();
+var lists_ann_pct = new Array();
+var lists_ann_evt = new Array();
+
 $(document).ready(function() {
   
     var preselected_knd = 0;

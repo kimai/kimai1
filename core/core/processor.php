@@ -139,7 +139,7 @@ switch ($axAction) {
     // = load customer table (knd) from DB =
     // =====================================
     case 'reload_knd':
-        $arr_knd = get_arr_knd_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+        $arr_knd = get_arr_knd($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
         if (count($arr_knd)>0) {
             $tpl->assign('arr_knd', $arr_knd);
         } else {
@@ -152,7 +152,7 @@ switch ($axAction) {
     // = load project table (pct) from DB =
     // ====================================
     case 'reload_pct':
-        $arr_pct = get_arr_pct_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+        $arr_pct = get_arr_pct($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
         if (count($arr_pct)>0) {
             $tpl->assign('arr_pct', $arr_pct);
         } else {
@@ -165,7 +165,7 @@ switch ($axAction) {
     // = load events table (evt) from DB =
     // ===================================
     case 'reload_evt':
-        $arr_evt = get_arr_evt_with_time($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+        $arr_evt = get_arr_evt($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
         if (count($arr_evt)>0) {
             $tpl->assign('arr_evt', $arr_evt);
         } else {

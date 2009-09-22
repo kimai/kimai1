@@ -323,9 +323,9 @@
     {/foreach}
     {/if}
     
-    {literal}if ($(".ki_timesheet").css("display") != "none"){
-    lists_write_annotations(ts_usr_ann,ts_knd_ann,ts_pct_ann,ts_evt_ann);
+    {literal}
+    lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_usr_ann,ts_knd_ann,ts_pct_ann,ts_evt_ann);
     $('#display_total').html(ts_total);
-    }{/literal}
+    {/literal}
     
 </script>
