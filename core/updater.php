@@ -57,22 +57,28 @@ echo <<<EOD
            border:6px solid white;
            padding:10px;
        }
+	
+	   #dbrecover {
+	   }
+	
 	</style>
 </head>
 <body>
-<div  align="center">
-     <FORM action="" method="post">
-     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
-     <h1>UPDATE</h1>
-     $RUsure
-     <br /><br />
-     <INPUT type="hidden" name="a" value="1">
-     <INPUT type="submit" value="START">
+	<div  align="center">
+	     <FORM action="" method="post">
+		     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
+		     <h1>UPDATE</h1>
+		     $RUsure
+		     <br /><br />
+		     <INPUT type="hidden" name="a" value="1">
+		     <INPUT type="submit" value="START UPDATE">
      
-     </FORM>
-     </div>
+	     </FORM>
+		 <a href="db_restore.php" id="dbrecover">Database Backup Recover Utility</a>
+	</div>
 </body>
 </html>
+
 EOD;
 
  } else {
@@ -141,7 +147,6 @@ EOD;
     <script src="libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
-
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>
 <div id="link"></div>
 <div id="queries"></div>
