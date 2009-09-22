@@ -206,7 +206,7 @@ $tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $pd_today);
 $tpl->assign('nextday', $nextday);
-$tpl->assign('total', intervallApos(get_zef_time($kga['usr']['usr_ID'],$in,$out)));
+$tpl->assign('total', intervallApos(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
 
 // ===========================
 // = DatePicker localization =
@@ -307,7 +307,7 @@ $tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
 // ==========================
 // = display customer table =
 // ==========================
-$arr_knd = get_arr_knd($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+$arr_knd = get_arr_knd($kga['usr']['usr_grp']);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -318,7 +318,7 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // =========================
 // = display project table =
 // =========================
-$arr_pct = get_arr_pct($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+$arr_pct = get_arr_pct($kga['usr']['usr_grp']);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -329,7 +329,7 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // ========================
 // = display events table =
 // ========================
-$arr_evt = get_arr_evt($kga['usr']['usr_grp'],$kga['usr']['usr_ID'],$in,$out);
+$arr_evt = get_arr_evt($kga['usr']['usr_grp']);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {
