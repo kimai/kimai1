@@ -26,7 +26,8 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
 
-    case "add_edit_record":    
+    case "add_edit_record":  
+        if (isset($kga['customer'])) die();  
     // ==============================================
     // = display edit dialog for timesheet record   =
     // ==============================================

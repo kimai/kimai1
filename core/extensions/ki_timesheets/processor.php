@@ -37,6 +37,7 @@ switch ($axAction) {
     // = record new event AGAIN =
     // ==========================
     case 'record':
+        if (isset($kga['customer'])) die();
         
         if (get_rec_state($kga['usr']['usr_ID'])) {
             stopRecorder($kga['usr']['usr_ID']);
@@ -64,6 +65,7 @@ switch ($axAction) {
     // = stop recording =
     // ==================
     case 'stop':
+        if (isset($kga['customer'])) die();
         stopRecorder($kga['usr']['usr_ID']);
         echo 1;
     break;
@@ -97,8 +99,11 @@ switch ($axAction) {
           $filterPct = explode(':',$filters[2]);
 
         // if no userfilter is set, set it to current user
-        if (count($filterUsr) == 0)
+        if (isset($kga['usr']) && count($filterUsr) == 0)
           array_push($filterUsr,$kga['usr']['usr_ID']);
+          
+        if (isset($kga['customer']))
+          $filterKnd = array($kga['customer']['knd_ID']);
 
         $arr_zef = get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,1);
         if (count($arr_zef)>0) {
@@ -131,7 +136,9 @@ switch ($axAction) {
     // =========================
     // = add / edit zef record =
     // =========================
-    case 'add_edit_record':   
+    case 'add_edit_record': 
+        if (isset($kga['customer'])) die();
+  
     	$data['pct_ID']          = $_REQUEST['pct_ID'];
     	$data['evt_ID']          = $_REQUEST['evt_ID'];
     	$data['zlocation']       = $_REQUEST['zlocation'];

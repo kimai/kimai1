@@ -46,6 +46,8 @@ switch ($axAction) {
     // = displays preferences dialog... =
     // ==================================
     case 'prefs':
+        if (isset($kga['customer'])) die();
+
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', langs());
         $tpl->assign('usr', $kga['usr']);
@@ -56,11 +58,14 @@ switch ($axAction) {
     // = displays knd/pct/evt dialogs... =
     // ===================================
     case 'add_edit_knd':
+        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+
         if ($id) {
             $data = knd_get_data($id);
             if ($data) {
                 $tpl->assign('knd_name'     , $data['knd_name'    ]);
                 $tpl->assign('knd_comment'  , $data['knd_comment' ]);
+                $tpl->assign('knd_password' , $data['knd_password']);
                 $tpl->assign('knd_company'  , $data['knd_company' ]);
                 $tpl->assign('knd_street'   , $data['knd_street'  ]);
                 $tpl->assign('knd_zipcode'  , $data['knd_zipcode' ]);
@@ -88,7 +93,9 @@ switch ($axAction) {
         $tpl->display("add_edit_knd.tpl");
     break;
         
-    case 'add_edit_pct':   
+    case 'add_edit_pct':
+        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+ 
         if ($id) {
             $data = pct_get_data($id);
             if ($data) {
@@ -124,6 +131,8 @@ switch ($axAction) {
     break;
     
     case 'add_edit_evt':
+        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+
         if ($id) {
             $data = evt_get_data($id);
             if ($data) {

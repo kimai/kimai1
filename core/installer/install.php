@@ -138,6 +138,8 @@ $query=
 "CREATE TABLE `" . $kga['server_prefix'] . "knd` (
   `knd_ID` int(10) NOT NULL auto_increment,
   `knd_name` varchar(255) NOT NULL,
+  `knd_password` varchar(255),
+  `knd_secure` varchar(60) NOT NULL default '0',
   `knd_comment` TEXT NOT NULL,
   `knd_visible` TINYINT(1) NOT NULL DEFAULT '1',
   `knd_filter` TINYINT(1) NOT NULL DEFAULT '0',

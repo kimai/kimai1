@@ -10,6 +10,10 @@
                     </label>
                     <input type='password' name='password' />
                     {$selectbox}
+                    <label for='kimaiisknd'>
+                        {$kga.lang.customerlogin}:
+                    </label>
+                    <input type='checkbox' name='is_knd' value='1' />
                     <button type='submit'>Submit</button>
                 </fieldset>
             </form>

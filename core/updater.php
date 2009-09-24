@@ -804,6 +804,12 @@ if ((int)$revisionDB < 898) {
     exec_query("ALTER TABLE `${p}zef` ADD `zef_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';",1);
 }
 
+if ((int)$revisionDB < 922) {
+    logfile("-- update to r922");
+    exec_query("ALTER TABLE `${p}knd` ADD `knd_password` VARCHAR(255);",1);
+    exec_query("ALTER TABLE `${p}knd` ADD `knd_secure` varchar(60) NOT NULL default '0';",1);
+}
+
 
 
 //////// ---------------------------------------------------------------------------------------------------

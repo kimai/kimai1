@@ -62,6 +62,7 @@ function knd_create($data) {
 
     $values     ['knd_name']        =     MySQL::SQLValue($data   ['knd_name']          );
     $values     ['knd_comment']     =     MySQL::SQLValue($data   ['knd_comment']       );
+    $values     ['knd_password']    =     MySQL::SQLValue($data   ['knd_password']      );
     $values     ['knd_company']     =     MySQL::SQLValue($data   ['knd_company']       );
     $values     ['knd_street']      =     MySQL::SQLValue($data   ['knd_street']        );
     $values     ['knd_zipcode']     =     MySQL::SQLValue($data   ['knd_zipcode']       );
@@ -150,6 +151,7 @@ function knd_edit($knd_id, $data) {
 
     $values['knd_name']     = MySQL::SQLValue($new_array['knd_name']    );
     $values['knd_comment']  = MySQL::SQLValue($new_array['knd_comment'] );
+    $values['knd_password'] = MySQL::SQLValue($new_array['knd_password']);
     $values['knd_company']  = MySQL::SQLValue($new_array['knd_company'] );
     $values['knd_street']   = MySQL::SQLValue($new_array['knd_street']  );
     $values['knd_zipcode']  = MySQL::SQLValue($new_array['knd_zipcode'] );
@@ -2138,14 +2140,14 @@ function get_arr_pct_by_knd($group, $knd_id) {
         $sort = "knd_name,pct_name";
     } else {
         $sort = "pct_name,knd_name";
-    }  
+    }
 
     $query = "SELECT * FROM ${p}pct JOIN ${p}knd 
                        ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct 
                        ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID 
-                       WHERE ${p}grp_pct.grp_ID = $group 
-                       AND ${p}pct.pct_kndID = $knd_id 
-                       ORDER BY $sort ;";        
+                       WHERE ${p}pct.pct_kndID = $knd_id ".
+                       ($group!="all"?"AND ${p}grp_pct.grp_ID = $group ":"").
+                       " ORDER BY $sort ;";        
     
     $conn->Query($query);
     
@@ -2353,13 +2355,16 @@ function checkUser() {
         $usr_sts  = 2; 
     }
     
-    if ($usr_ID<1) {
+    if ((isset($knd_ID) && $knd_ID<1) ||  (isset($usr_ID) && $usr_ID<1)) {
         kickUser();
     }
     
     // load configuration and language
     get_global_config();
-    get_user_config($usr_ID);
+    if (strncmp($kimai_usr, 'knd_', 4) == 0)
+      get_customer_config($knd_ID);
+    else  
+      get_user_config($usr_ID);
 
     // override conf.php language if user has chosen a language in the prefs
     if ($kga['conf']['lang'] != "") {
@@ -2367,7 +2372,7 @@ function checkUser() {
     }
     require(sprintf(WEBROOT."language/%s.php",$kga['language']));
     
-    return $kga['usr'];
+    return (isset($kga['usr'])?$kga['usr']:null);
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -2464,6 +2469,77 @@ function get_user_config($user) {
   foreach($rows as $key => $value) {
       $kga['conf'][$key] = $value;
   } 
+
+}
+
+//-----------------------------------------------------------------------------------------------------------
+
+/**
+ * write details of a specific customer into $kga
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array $kga 
+ * @author sl
+ *
+ */
+
+function get_customer_config($user) {
+  global $kga, $conn;
+        
+  if (!$user) return;
+  
+  $table = $kga['server_prefix']."knd";
+  $filter['usr_ID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+  
+  // get values from user record
+  $columns[] = "knd_ID";
+  $columns[] = "knd_name";
+  $columns[] = "knd_comment";
+  $columns[] = "knd_visible";
+  $columns[] = "knd_filter";
+  $columns[] = "knd_company";
+  $columns[] = "knd_street";
+  $columns[] = "knd_zipcode";
+  $columns[] = "knd_city";
+  $columns[] = "knd_tel";
+  $columns[] = "knd_fax";
+  $columns[] = "knd_mobile";
+  $columns[] = "knd_mail";
+  $columns[] = "knd_homepage";
+  $columns[] = "knd_logo";
+  $columns[] = "knd_trash";
+  $columns[] = "knd_password";
+  $columns[] = "knd_secure";
+
+  $conn->SelectRows($table, $filter, $columns);
+  $rows = $conn->RowArray(0,MYSQL_ASSOC);
+  foreach($rows as $key => $value) {
+      $kga['knd'][$key] = $value;
+  } 
+  
+  $kga['conf']['rowlimit'] = 100;
+  $kga['conf']['skin'] = 'standard';
+  $kga['conf']['lastProject'] = 1;
+  $kga['conf']['lastEvent'] = 1;
+  $kga['conf']['lastRecord'] = 0;
+  $kga['conf']['filter'] = 0;
+  $kga['conf']['filter_knd'] = 0;
+  $kga['conf']['filter_pct'] = 0;
+  $kga['conf']['filter_evt'] = 0;
+  $kga['conf']['view_knd'] = 0;
+  $kga['conf']['view_pct'] = 0;
+  $kga['conf']['view_evt'] = 0;
+  $kga['conf']['zef_anzahl'] = 0;
+  $kga['conf']['timespace_in'] = 0;
+  $kga['conf']['timespace_out'] = 0;
+  $kga['conf']['autoselection'] = 1;
+  $kga['conf']['quickdelete'] = 0;
+  $kga['conf']['allvisible'] = 1;
+  $kga['conf']['flip_pct_display'] = 0;
+  $kga['conf']['pct_comment_flag'] = 0;
+  $kga['conf']['showIDs'] = 0;
+  $kga['conf']['lang'] = '';
 
 }
 
@@ -2799,6 +2875,49 @@ function get_arr_evt($group) {
     }
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns list of events used with specified customer
+ *
+ * @param integer $customer filter for only this ID of a customer
+ * @global array $kga kimai-global-array
+ * @global array $pdo_conn PDO connection
+ * @return array
+ * @author sl
+ */
+function get_arr_evt_by_knd($customer_ID) {
+    global $kga, $pdo_conn;
+  
+    $p = $kga['server_prefix']; 
+    
+    $customer_ID = MySQL::SQLValue($customer_ID , MySQL::SQLVALUE_NUMBER); 
+    
+    $query = "SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = $customer_ID))");
+    
+    $result = $conn->Query($query);
+    if ($result == false) {
+        return false;
+    }
+
+    $arr = array();
+    $i = 0;
+    
+    if ($conn->RowCount()) {
+        $conn->MoveFirst();
+        while (! $conn->EndOfSeek()) {
+            $row = $conn->Row();
+            $arr[$i]['evt_ID']       = $row->evt_ID;   
+            $arr[$i]['evt_name']     = $row->evt_name;
+            $arr[$i]['evt_visible']  = $row->evt_visible;
+            $i++;
+        }
+        return $arr;
+    } else {
+        return false;
+    }
+}
+
 //-----------------------------------------------------------------------------------------------------------
 
 ## EVT time-sum
@@ -3111,9 +3230,16 @@ function get_DBversion() {
 function get_seq($user) {
     global $kga, $conn;
     
-    $filter['usr_name'] = MySQL::SQLValue($user);
-    $columns[] = "secure";
-    $table = $kga['server_prefix']."usr";
+    if (strncmp($user, 'knd_', 4) == 0) {
+      $filter['knd_name'] = MySQL::SQLValue($user);
+      $columns[] = "knd_secure";
+      $table = $kga['server_prefix']."knd";
+    }
+    else {
+      $filter['usr_name'] = MySQL::SQLValue($user);
+      $columns[] = "secure";
+      $table = $kga['server_prefix']."usr";
+    }
     
     $result = $conn->SelectRows($table, $filter, $columns);
     if ($result == false) {
@@ -3121,7 +3247,7 @@ function get_seq($user) {
     }
     
     $row = $conn->RowArray(0,MYSQL_ASSOC);
-    return $row['secure'];
+    return strncmp($user, 'knd_', 4)==0?$row['knd_secure']:$row['secure'];
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -3503,8 +3629,10 @@ function get_grp($id) {
 
 function get_timespace() {
     global $kga, $conn;
+
+    $timespace = array(null,null);
     
-    if (isset($kga['usr']['usr_ID'])) {
+    if (isset($kga['usr'])) {
         $filter ['usr_ID'] = $kga['usr']['usr_ID'];
         $columns[] = "timespace_in";
         $columns[] = "timespace_out";
@@ -3520,19 +3648,18 @@ function get_timespace() {
         $timespace[0] = $row['timespace_in'];
         $timespace[1] = $row['timespace_out'];
 
-        /* database has no entries? */
-        $mon = date("n"); $day = date("j"); $Y = date("Y");
-        if (!$timespace[0]) {
-            $timespace[0] = mktime(0,0,0,$mon,1,$Y);
-        }
-        if (!$timespace[1]) {
-            $timespace[1] = mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y);
-        }
-    
-        return $timespace;
-    } else {
-        return false;
     }
+
+    /* database has no entries? */
+    $mon = date("n"); $day = date("j"); $Y = date("Y");
+    if (!$timespace[0]) {
+        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
+    }
+    if (!$timespace[1]) {
+        $timespace[1] = mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y);
+    }
+    
+    return $timespace;
 }
 
 // -----------------------------------------------------------------------------------------------------------

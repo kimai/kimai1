@@ -33,6 +33,12 @@ if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = $_POST['password'];
 }
 
+if (!isset($_POST['is_knd']) || is_array($_POST['is_knd'])) {
+    $is_knd =false;
+} else {
+    $is_knd = true;
+}
+
 if (!isset($_POST['database']) || is_array($_POST['database'])) {
     $database = ""; 
 } else { 
@@ -161,57 +167,85 @@ case "checklogin":
     $name     = str_replace(" " , "" , strip_tags(trim($name)));
     $password = strip_tags(trim($password));
     
-    logfile("login: " . $name);
+    logfile("login: " . $name. ($is_knd?" as customer":" as user"));
 
     if ($kga['virtual_users']) { 
         header("Location: core/virtualUser.php");
         exit;
     }
 
-    $passCrypt = crypt($password,$kga['cryptmethod']);
-    $result = @mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],$name));
-    $row    = @mysql_fetch_assoc($result);
-    $id      = $row['usr_ID'];
-    $user    = $row['usr_name'];
-    $pass    = $row['pw'];        
-    $ban     = $row['ban'];
-    $banTime = $row['banTime'];   
-    
-    if ( ($name==$user) && ($pass==$password || $pass==$passCrypt) && $user!="") { 
-        if ($ban <= ($kga['conf']['loginTries']-2)) {
-                  // logintries not used up => grant access
-                  $keymai=random_code(30);        
-                  setcookie ("kimai_key",$keymai);
-                  setcookie ("kimai_usr",$user);
-                  @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
-                  header("Location: core/kimai.php");
-        } else {
-            if ((time() - $banTime) > $kga['conf']['loginBanTime']) {
-                  // logintries used up BUT bantime is over => grant access
-                  $keymai=random_code(30);        
-                  setcookie ("kimai_key",$keymai);
-                  setcookie ("kimai_usr",$user);
-                  @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
-                  header("Location: core/kimai.php");
-            } else {
-                  // login attempt even though logintries are used up and bantime is not over => deny
-                  setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-                  @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name='%s';",$kga['server_prefix'],$user));
-                  $tpl->assign('headline', $kga['lang']['banned']);
-                  $tpl->assign('message', $kga['lang']['tooManyLogins']); 
-                  $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-                  $tpl->display('misc/error.tpl');
-            }
-        }
-    } else {
-                  // wrong username/password => deny
-                  setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-                  @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name = '$user';"),$kga['server_prefix']);
-                  $tpl->assign('headline', $kga['lang']['accessDenied']); 
-                  $tpl->assign('message', $kga['lang']['wrongPass']);
-                  $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-                  $tpl->display('misc/error.tpl');
+    if ($is_knd) {
+      // perform login of customer
+      $result = @mysql_query(sprintf("SELECT * FROM %sknd WHERE knd_name ='%s';",$kga['server_prefix'],$name));
+      $row    = @mysql_fetch_assoc($result);
+      $id      = $row['knd_ID'];
+      $user    = $row['knd_name'];
+      $pass    = $row['knd_password'];
+      // TODO: add BAN support
+      if ( $name==$user && $pass==$password && $user!='' && $pass!='') { 
+        $keymai=random_code(30);        
+        setcookie ("kimai_key",$keymai);
+        setcookie ("kimai_usr",'knd_'.$user);
+        @mysql_query(sprintf("UPDATE %sknd SET knd_secure='%s' WHERE knd_name='%s';",$kga['server_prefix'],$keymai,$user));
+        header("Location: core/kimai.php");
+      }
+      else {
+        setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+        //@mysql_query(sprintf("UPDATE %sknd SET ban=ban+1 WHERE usr_name = '$user';"),$kga['server_prefix']);
+        $tpl->assign('headline', $kga['lang']['accessDenied']); 
+        $tpl->assign('message', $kga['lang']['wrongPass']);
+        $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
+        $tpl->display('misc/error.tpl');
+      }
     }
+    else
+    {
+      // perform login of user
+      $passCrypt = crypt($password,$kga['cryptmethod']);
+      $result = @mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],$name));
+      $row    = @mysql_fetch_assoc($result);
+      $id      = $row['usr_ID'];
+      $user    = $row['usr_name'];
+      $pass    = $row['pw'];        
+      $ban     = $row['ban'];
+      $banTime = $row['banTime'];   
+      
+      if ( ($name==$user) && ($pass==$password || $pass==$passCrypt) && $user!="") { 
+	  if ($ban <= ($kga['conf']['loginTries']-2)) {
+		    // logintries not used up => grant access
+		    $keymai=random_code(30);        
+		    setcookie ("kimai_key",$keymai);
+		    setcookie ("kimai_usr",$user);
+		    @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
+		    header("Location: core/kimai.php");
+	  } else {
+	      if ((time() - $banTime) > $kga['conf']['loginBanTime']) {
+		    // logintries used up BUT bantime is over => grant access
+		    $keymai=random_code(30);        
+		    setcookie ("kimai_key",$keymai);
+		    setcookie ("kimai_usr",$user);
+		    @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
+		    header("Location: core/kimai.php");
+	      } else {
+		    // login attempt even though logintries are used up and bantime is not over => deny
+		    setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+		    @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name='%s';",$kga['server_prefix'],$user));
+		    $tpl->assign('headline', $kga['lang']['banned']);
+		    $tpl->assign('message', $kga['lang']['tooManyLogins']); 
+		    $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
+		    $tpl->display('misc/error.tpl');
+	      }
+	  }
+      } else {
+		    // wrong username/password => deny
+		    setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+		    @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name = '$user';"),$kga['server_prefix']);
+		    $tpl->assign('headline', $kga['lang']['accessDenied']); 
+		    $tpl->assign('message', $kga['lang']['wrongPass']);
+		    $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
+		    $tpl->display('misc/error.tpl');
+      }
+      }
 break; 
 
 // ============================================

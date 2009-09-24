@@ -83,25 +83,28 @@ if ($handle = opendir('../extensions/')) {
                        	// logfile("****************** user status: " . $kga['usr']['usr_sts']);
                        	
                        	// Check if user has the correct rank to use this extension
-                       	switch ($kga['usr']['usr_sts']) {
-                       		case 0:
-                       		if ($settings['ADMIN_ALLOWED'] == "1") {
-                       			$extensions[] = $settings;
-                       		}
-                       		break;
-                       	
-                       		case 1:
-                       	    if ($settings['GROUP_LEADER_ALLOWED'] == "1") {
-                       			$extensions[] = $settings;
-                       		}
-                       		break;
-                       	
-                       		case 2:
-                       	    if ($settings['USER_ALLOWED'] == "1") {
-                       			$extensions[] = $settings;
-                       		}
-                       		break;
-                       	}
+                       	if (isset($kga['usr']))
+                          switch ($kga['usr']['usr_sts']) {
+                            case 0:
+                            if ($settings['ADMIN_ALLOWED'] == "1") {
+                              $extensions[] = $settings;
+                            }
+                            break;
+                          
+                            case 1:
+                              if ($settings['GROUP_LEADER_ALLOWED'] == "1") {
+                              $extensions[] = $settings;
+                            }
+                            break;
+                          
+                            case 2:
+                              if ($settings['USER_ALLOWED'] == "1") {
+                              $extensions[] = $settings;
+                            }
+                            break;
+                          }
+                       	else if ($settings['CUSTOMER_ALLOWED'] == "1")
+                       	  $extensions[] = $settings;
                        	
                        	foreach($settings as $key=>$value){
 							
@@ -185,18 +188,27 @@ $out = $timespace[1];
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
-$current_timer = get_current_timer();
+$current_timer = array();
+if (isset($kga['customer'])) {
+  $current_timer['all']  = 0;
+  $current_timer['hour'] = 0;
+  $current_timer['min']  = 0;
+  $current_timer['sec']  = 0;
+}
+else
+  $current_timer = get_current_timer();
 
 // =======================================
 // = Display date and time in the header =
 // =======================================
 $wd       = $kga['lang']['weekdays_short'][date("w",time())];
 
-if ($kga['calender_start']=="") {
+$dp_start = 0;
+if ($kga['calender_start']!="")
+    $dp_start = $kga['calender_start'];
+else if (isset($kga['usr']))
     $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
-} else {
-    $dp_start = $kga['calender_start'];    
-}
+    
 
 $pd_today = date("d/m/Y",time());
 $today    = date($kga['date_format'][0],time());
@@ -206,7 +218,10 @@ $tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $pd_today);
 $tpl->assign('nextday', $nextday);
-$tpl->assign('total', intervallApos(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
+if (isset($kga['customer']))
+  $tpl->assign('total', intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
+else
+  $tpl->assign('total', intervallApos(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
 
 // ===========================
 // = DatePicker localization =
@@ -247,13 +262,21 @@ $tpl->assign('js_extension_files', $js_extension_files);
 
 $tpl->assign('timespace_warning', timespace_warning($in,$out));
 
-$tpl->assign('recstate', get_rec_state($kga['usr']['usr_ID']));
+if (isset($kga['usr']))
+  $tpl->assign('recstate', get_rec_state($kga['usr']['usr_ID']));
+else
+  $tpl->assign('recstate', 0);
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 
-$lastZefRecord = zef_get_data(0);
-logfile($lastZefRecord['zef_pctID']);
-$last_pct = pct_get_data($lastZefRecord['zef_pctID']);
+if (isset($kga['customer']))
+  $last_pct = null;
+else {
+  $lastZefRecord = zef_get_data(0);
+  logfile($lastZefRecord['zef_pctID']);
+  $last_pct = pct_get_data($lastZefRecord['zef_pctID']);
+}
+
 if ($last_pct) {
     $tpl->assign('pct_data', $last_pct);
     $tpl->assign('knd_data', knd_get_data($last_pct['pct_kndID']));
@@ -296,7 +319,10 @@ if ($handle = opendir($extDir)) {
 // =======================
 // = display user table =
 // =======================
-$arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
+if (isset($kga['customer']))
+  $arr_usr = array();
+else
+  $arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
 if (count($arr_usr)>0) {
     $tpl->assign('arr_usr', $arr_usr);
 } else {
@@ -306,8 +332,14 @@ $tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
 
 // ==========================
 // = display customer table =
-// ==========================
-$arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+// ========================
+if (isset($kga['customer']))
+  $arr_knd = array(array(
+      'knd_ID'=>$kga['customer']['knd_ID'],
+      'knd_name'=>$kga['customer']['knd_name'],
+      'knd_visible'=>$kga['customer']['knd_visible']));
+else
+  $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -318,7 +350,10 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // =========================
 // = display project table =
 // =========================
-$arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+if (isset($kga['customer']))
+  $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+else
+  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -329,7 +364,10 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // ========================
 // = display events table =
 // ========================
-$arr_evt = get_arr_evt($kga['usr']['usr_grp']);
+if (isset($kga['customer']))
+  $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+else
+  $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {
@@ -418,5 +456,4 @@ $tpl->assign('hook_tss_inDisplay',0);
 
 $tpl->display('core/main.tpl');
 
-mysql_close();
 ?>

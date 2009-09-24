@@ -40,6 +40,9 @@
                                             {/if}
                     ">
 
+{* only users can see options *}
+{if $kga.usr}
+
                         
 {*Stop oder Record Button?*}
 {if $arr_zef[row].zef_out}
@@ -77,6 +80,8 @@
     {/if}
 
 {/if} 
+
+{/if}
 
 {*--/OPTIONS----------------------------------------------------*}
                     

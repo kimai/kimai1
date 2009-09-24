@@ -42,6 +42,11 @@
                          <label for="knd_comment">{$kga.lang.comment}:</label>
                          <textarea class='comment' name='knd_comment' cols='30' rows='3' >{$knd_comment}</textarea>
                     </li>
+
+                    <li class="extended">
+                         <label for="knd_password">{$kga.lang.password}:</label>
+                         <input name='knd_password' cols='30' rows='3' value="{$knd_password}"/>
+                    </li>
                     
 {if $sel_grp_IDs|@count gt 1}
                     <li class="extended">

@@ -49,9 +49,15 @@ $(document).ready(function() {
   
     var preselected_knd = 0;
 
-    // automatic tab-change on reload
-    ki_active_tab_target  = $.cookie('ki_active_tab_target_'+usr_ID);
-    ki_active_tab_path    = $.cookie('ki_active_tab_path_'+usr_ID);
+    if (usr_ID) {
+      // automatic tab-change on reload
+      ki_active_tab_target  = $.cookie('ki_active_tab_target_'+usr_ID);
+      ki_active_tab_path    = $.cookie('ki_active_tab_path_'+usr_ID);
+    }
+    else {
+      ki_active_tab_target  = null;
+      ki_active_tab_path    = null;
+    }
     if (ki_active_tab_target && ki_active_tab_path ) {
       changeTab(ki_active_tab_target,ki_active_tab_path);
     } else {

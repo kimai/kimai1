@@ -210,9 +210,10 @@ function changeTab(target,path) {
       // restore visibility of lists
       lists_visible(lists_visibility[$('dd.act').attr('id')]);
 	}
-
-	$.cookie('ki_active_tab_target_'+usr_ID, target);
-	$.cookie('ki_active_tab_path_'+usr_ID, path);
+        if (usr_ID) {
+	  $.cookie('ki_active_tab_target_'+usr_ID, target);
+	  $.cookie('ki_active_tab_path_'+usr_ID, path);
+	}
 }
 
 function kill_timeout(to) {

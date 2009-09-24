@@ -28,7 +28,7 @@
 
 
 
-{if $kga.usr.usr_sts != 2}
+{if $kga.usr && $kga.usr.usr_sts != 2}
                         <a href ="#" onClick="editSubject('knd',{$arr_knd[row].knd_ID});"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' /></a>
 {/if}  
 

@@ -39,6 +39,7 @@ switch ($axAction) {
     // = write user preferences to DB =
     // ================================
     case 'editPrefs':
+        if (isset($kga['customer'])) die();
     
         $usr_data['skin']               = $_REQUEST['skin'];
         $usr_data['autoselection']      = $_REQUEST['autoselection'];
@@ -74,7 +75,7 @@ switch ($axAction) {
         $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
         if ($timespace_out < 950000000) $timespace_out = $out;
         
-        $timespace_warning = save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']);
+        $timespace_warning = isset($kga['usr'])?save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']):'';
 
         $tpl->assign('timespace_warning', $timespace_warning);
         $tpl->assign('timespace_in',  $timespace_in);
@@ -85,10 +86,11 @@ switch ($axAction) {
         // =======================================
         $wd       = $kga['lang']['weekdays_short'][date("w",time())];
         $today    = date($kga['date_format'][0],time());
-        if ($kga['calender_start']=="")
-          $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
-        else
-          $dp_start = $kga['calender_start'];
+        $dp_start = 0;
+        if ($kga['calender_start']!="")
+            $dp_start = $kga['calender_start'];
+        else if (isset($kga['usr']))
+            $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
         $pd_today = date("d/m/Y",time());
         $nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . date($kga['date_format'][0],time()+86400);
 
@@ -105,6 +107,8 @@ switch ($axAction) {
     // = record new event =
     // ====================
     case 'startRecord':
+        if (isset($kga['customer'])) die();
+
         if (get_rec_state($kga['usr']['usr_ID'])) {
             stopRecorder();
         }
@@ -126,7 +130,11 @@ switch ($axAction) {
     // = load user table (usr) from DB =
     // =================================
     case 'reload_usr':
-        $arr_usr = get_arr_watchable_users($kga['usr']['usr_grp']);
+        if (isset($kga['customer']))
+          $arr_usr = array();
+        else
+          $arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
+
         if (count($arr_usr)>0) {
             $tpl->assign('arr_usr', $arr_usr);
         } else {
@@ -139,7 +147,14 @@ switch ($axAction) {
     // = load customer table (knd) from DB =
     // =====================================
     case 'reload_knd':
-        $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+        if (isset($kga['customer']))
+          $arr_knd = array(array(
+              'knd_ID'=>$kga['customer']['knd_ID'],
+              'knd_name'=>$kga['customer']['knd_name'],
+              'knd_visible'=>$kga['customer']['knd_visible']));
+        else
+          $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+
         if (count($arr_knd)>0) {
             $tpl->assign('arr_knd', $arr_knd);
         } else {
@@ -152,7 +167,11 @@ switch ($axAction) {
     // = load project table (pct) from DB =
     // ====================================
     case 'reload_pct':
-        $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+        if (isset($kga['customer']))
+          $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+        else
+          $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+
         if (count($arr_pct)>0) {
             $tpl->assign('arr_pct', $arr_pct);
         } else {
@@ -165,7 +184,10 @@ switch ($axAction) {
     // = load events table (evt) from DB =
     // ===================================
     case 'reload_evt':
-        $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
+        if (isset($kga['customer']))
+          $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+        else
+          $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
         if (count($arr_evt)>0) {
             $tpl->assign('arr_evt', $arr_evt);
         } else {
@@ -182,12 +204,13 @@ switch ($axAction) {
     
     case 'add_edit_KndPctEvt':
     
-        if($kga['usr']['usr_sts']==2) die(); // only admins and grpleaders can do this ...
+        if(isset($kga['customer']) || $kga['usr']['usr_sts']==2) die(); // only admins and grpleaders can do this ...
     	
         switch($axValue) {
             case "knd":
             	$data['knd_name']     = $_REQUEST['knd_name'];
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
+              $data['knd_password'] = $_REQUEST['knd_password'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
             	$data['knd_street']   = $_REQUEST['knd_street'];
             	$data['knd_zipcode']  = $_REQUEST['knd_zipcode'];

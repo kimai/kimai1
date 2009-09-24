@@ -52,7 +52,11 @@
 
         var recstate              = {$recstate};
         
-        var usr_ID                = {$kga.usr.usr_ID}
+        {if (isset($kga.usr))}
+        var usr_ID                = {$kga.usr.usr_ID};
+        {else}
+        var usr_ID                = null;
+        {/if}
        
         var timeoutTicktack       = 0;
         
@@ -89,7 +93,7 @@
     $('#extShrink').click(lists_shrinkExtToggle);
     $('#kndShrink').hover(lists_kndShrinkShow,lists_kndShrinkHide);
     $('#kndShrink').click(lists_shrinkKndToggle);
-  {/literal}{if $kga.usr.usr_sts < 2}
+  {/literal}{if !$kga.usr || $kga.usr.usr_sts < 2}
     $('#usrShrink').hover(lists_usrShrinkShow,lists_usrShrinkHide);
     $('#usrShrink').click(lists_shrinkUsrToggle);
   {else}
@@ -136,6 +140,8 @@
             {include file="core/display.tpl"}
         </div> 
         
+        {if $kga.usr}
+        
         <div id="selector">
             {include file="core/selector.tpl"}
         </div> 
@@ -151,6 +157,7 @@
         <div id="buzzer">
             <a href="#">Start</a>
         </div>
+        {/if}        
         
     </div>
 
@@ -202,7 +209,7 @@
     {$kga.lang.knds} 
     
         
-{if $kga.usr.usr_sts != 2 }    
+{if $kga.usr && $kga.usr.usr_sts != 2 }    
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>
@@ -214,7 +221,7 @@
     {$kga.lang.pcts}
     
     
-{if $kga.usr.usr_sts != 2 }  
+{if $kga.usr && $kga.usr.usr_sts != 2 }  
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>
@@ -226,7 +233,7 @@
     {$kga.lang.evts}
     
     
-{if $kga.usr.usr_sts != 2 } 
+{if $kga.usr && $kga.usr.usr_sts != 2 } 
     <div class="right">
         <a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;">{$kga.lang.add}</a>
     </div>
