@@ -210,7 +210,6 @@ switch ($axAction) {
             case "knd":
             	$data['knd_name']     = $_REQUEST['knd_name'];
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
-              $data['knd_password'] = $_REQUEST['knd_password'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
             	$data['knd_street']   = $_REQUEST['knd_street'];
             	$data['knd_zipcode']  = $_REQUEST['knd_zipcode'];
@@ -225,6 +224,11 @@ switch ($axAction) {
             	$data['knd_logo']     = $_REQUEST['knd_logo'];
             	
                 // logfile("knd_create (" .$kga['usr']['usr_name'] ."): " . $data['knd_name']);
+        
+              // if password field is empty => password unchanged (not overwritten with "")
+              if ($_REQUEST['knd_password'] != "") {
+                $data['knd_password'] = crypt($_REQUEST['knd_password'], $kga['cryptmethod']);
+              }
             	
             	if (!$id) {
                     $id = knd_create($data);

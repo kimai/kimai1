@@ -45,7 +45,14 @@
 
                     <li class="extended">
                          <label for="knd_password">{$kga.lang.password}:</label>
-                         <input name='knd_password' cols='30' rows='3' value="{$knd_password}"/>
+                         <input name='knd_password' cols='30' rows='3' value=""/>
+                   
+        {if !$knd_password}
+        
+                        <br/>
+                        <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" alt="Caution" valign=middle />
+                        <strong style="color:red">No password set yet!</strong>
+        {/if}
                     </li>
                     
 {if $sel_grp_IDs|@count gt 1}

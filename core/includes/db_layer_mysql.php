@@ -2543,6 +2543,28 @@ function get_customer_config($user) {
 
 }
 
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * checks if a customer with this name exists
+ *
+ * @param string name
+ * @global array $kga kimai-global-array
+ * @return integer
+ * @author sl
+ */
+function is_customer_name($name) {
+    global $kga, $conn;
+    
+    $name  = MySQL::SQLValue($name);
+    $p     = $kga['server_prefix'];
+
+    $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = $name";
+
+    $conn->Query($query);
+    return $conn->RowCount() == 1;
+}
+
 //-----------------------------------------------------------------------------------------------------------
 
 /**

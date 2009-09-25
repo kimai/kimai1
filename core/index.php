@@ -33,12 +33,6 @@ if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = $_POST['password'];
 }
 
-if (!isset($_POST['is_knd']) || is_array($_POST['is_knd'])) {
-    $is_knd =false;
-} else {
-    $is_knd = true;
-}
-
 if (!isset($_POST['database']) || is_array($_POST['database'])) {
     $database = ""; 
 } else { 
@@ -167,22 +161,25 @@ case "checklogin":
     $name     = str_replace(" " , "" , strip_tags(trim($name)));
     $password = strip_tags(trim($password));
     
-    logfile("login: " . $name. ($is_knd?" as customer":" as user"));
+    $is_customer = is_customer_name($name);
+    
+    logfile("login: " . $name. ($is_customer?" as customer":" as user"));
 
     if ($kga['virtual_users']) { 
         header("Location: core/virtualUser.php");
         exit;
     }
 
-    if ($is_knd) {
+    if ($is_customer) {
       // perform login of customer
+      $passCrypt = crypt($password,$kga['cryptmethod']);
       $result = @mysql_query(sprintf("SELECT * FROM %sknd WHERE knd_name ='%s';",$kga['server_prefix'],$name));
       $row    = @mysql_fetch_assoc($result);
       $id      = $row['knd_ID'];
       $user    = $row['knd_name'];
       $pass    = $row['knd_password'];
       // TODO: add BAN support
-      if ( $name==$user && $pass==$password && $user!='' && $pass!='') { 
+      if ( $name==$user && $pass==$passCrypt && $user!='' && $pass!='') { 
         $keymai=random_code(30);        
         setcookie ("kimai_key",$keymai);
         setcookie ("kimai_usr",'knd_'.$user);

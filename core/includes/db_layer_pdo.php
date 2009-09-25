@@ -2316,6 +2316,23 @@ function get_customer_config($customer_ID) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * checks if a customer with this name exists
+ *
+ * @param string name
+ * @global array $kga kimai-global-array
+ * @return integer
+ * @author sl
+ */
+function is_customer_name($name) {
+    global $kga, $pdo_conn;
+    $pdo_query = $pdo_conn->prepare("SELECT knd_ID FROM " . $kga['server_prefix'] . "knd WHERE knd_name = ?");
+    $pdo_query->execute(array($name));
+    return $pdo_query->rowCount() == 1;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * returns ID of running timesheet event for specific user
  *
  *
