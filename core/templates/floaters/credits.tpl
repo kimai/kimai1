@@ -11,7 +11,7 @@
 
         <h2>Kimai - Open Source Time Tracking</h2> 
         v{$kga.version}.{$kga.revision} - &copy; {$devtimespan} by the Kimai Core-Development-Team<br />
-        Torsten H&ouml;ltge, Oleg Britvin, Martin Klemkow<br />
+        Torsten H&ouml;ltge, Oleg Britvin, Martin Klemkow, Kevin Pabst, Severin Leonhardt und andere...<br />
         
         <br />
         
