@@ -315,11 +315,14 @@ if ((int)$revisionDB < $kga['revision']) {
 				$primaryKey = "uid";
 			}
 			
+			if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
+			
 			if ($primaryKey!="") {
 				$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
 			}
-			
-    		$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";
+
+	    	$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";				
+				
     		exec_query($query,1);
     		if ($errors) die($kga['lang']['updater'][60]);
     	}

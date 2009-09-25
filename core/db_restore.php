@@ -97,6 +97,8 @@ if (isset($_REQUEST['submit']))
 				{ 
 					$primaryKey = "uid";
 				}
+				
+				if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
 
 				if ($primaryKey!="") {
 					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
@@ -247,7 +249,7 @@ if (isset($_REQUEST['submit']))
 	if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
 	{
 		$dates = $_REQUEST['dates'];
-			
+
 		if (count($dates)>1) 
 		{
 			echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
@@ -275,6 +277,18 @@ if (isset($_REQUEST['submit']))
 					}
 				}
 			}
+			
+##################
+
+			// Bis rev 733 gab es in tabelle ldr keinen Primary Key ...
+			
+			$query = "SELECT value FROM kimai_bak_" . $dates[0] . "_kimai_var WHERE var = 'revision' LIMIT 0,1;";
+			$pdo_query = $pdo_conn->prepare($query);
+			$pdo_query->execute(array());
+			$revision = $pdo_query->fetch(PDO::FETCH_ASSOC);
+			$revision = $revision['value'];
+
+##################
 
 			$i=0;
 			foreach($arr2 AS $newTable)
@@ -299,6 +313,10 @@ if (isset($_REQUEST['submit']))
 				
 				if ($primaryKey!="") {
 					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
+				}
+				
+				if (    ((int)$revision < 733)    &&    (strlen(strstr($newTable,"ldr"))>0)    ) { 
+					$primaryKey = "";
 				}
 				
 				$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
@@ -386,8 +404,9 @@ EOD;
 </p>
 
 </form>
-
+<a href="index.php">Login</a>
 <p class="caution"><?php echo $kga['lang']['backup'][9]; ?></p>
 </div>
+
 </body>
 </html>
