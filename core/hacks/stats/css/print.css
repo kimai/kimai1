@@ -1,4 +1,3 @@
-
 body {
 	color: black;
 	font-family: Arial, Verdana, sans-serif;
@@ -14,7 +13,6 @@ th {
 	font-weight: normal;
 }
 
-
 td {
 	border-bottom: 1px solid #999;
 	font-family: Arial, Verdana, sans-serif;
@@ -27,4 +25,8 @@ td {
 
 #div_liste {
 	
+}
+
+#invertbtn, .invertclm {
+	display: none;
 }

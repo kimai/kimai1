@@ -1,0 +1,8 @@
+th {
+  text-align: left;
+  font-weight: bold;
+}
+th { border-right: 1px solid #999999; }
+th:first-child { border-left: 1px solid #999999; }
+td { border-right: 1px solid #999999; }
+td:first-child { border-left: 1px solid #999999; }

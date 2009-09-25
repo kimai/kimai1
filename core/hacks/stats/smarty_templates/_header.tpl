@@ -7,6 +7,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<link rel="stylesheet" type="text/css" href="css/screen.css" media="screen" />
 		<link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+		<link rel="stylesheet" type="text/css" href="css/all.css" media="all" />
+		
+		<script src="../../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+		
 		
 		{$xajax_js}
 		{literal}
@@ -53,4 +57,4 @@
 		{/literal}
 	</head>
 	<body>
-		
+		 {*$kga*}

@@ -1,0 +1,19 @@
+@tableborder: #999;
+
+th {
+	text-align:left;
+	font-weight:bold;
+}
+
+th,td {
+	border-right: 1px solid @tableborder;
+	
+	:first-child {
+		border-left: 1px solid @tableborder;
+	}
+	
+	:last-child {
+	}
+
+}
+
