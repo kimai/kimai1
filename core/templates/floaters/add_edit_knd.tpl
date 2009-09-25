@@ -45,7 +45,7 @@
 
                     <li class="extended">
                          <label for="knd_password">{$kga.lang.password}:</label>
-                         <input name='knd_password' cols='30' rows='3' value=""/>
+                         <input type="password" name='knd_password' cols='30' rows='3' value=""/>
                    
         {if !$knd_password}
         

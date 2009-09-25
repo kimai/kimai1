@@ -38,6 +38,11 @@
                     </li>
 
                     <li>
+                        <label for="rate">{$kga.lang.my_rate}:</label>
+                        <input type="text" name="rate" size="9" value="{$rate}"/>
+                    </li>
+
+                    <li>
                         <label for="rowlimit">{$kga.lang.rowlimit}:</label>
                         <input type="text" name="rowlimit" value="{$kga.conf.rowlimit}" size="9" />
                     </li>

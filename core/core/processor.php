@@ -51,6 +51,11 @@ switch ($axAction) {
         $usr_data['pct_comment_flag']   = $_REQUEST['pct_comment_flag'];
         $usr_data['showIDs']            = $_REQUEST['showIDs'];
         
+        if (is_numeric($_REQUEST['rate']))
+          save_rate($kga['usr']['usr_ID'],null,NULL,$_REQUEST['rate']);
+        else
+          remove_rate($kga['usr']['usr_ID'],null,NULL);
+        
         // if password field is empty => password unchanged (not overwritten with "")
         if ($_REQUEST['pw'] != "") {
         	$usr_data['pw'] = crypt($_REQUEST['pw'], $kga['cryptmethod']);

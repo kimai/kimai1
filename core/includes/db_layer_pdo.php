@@ -351,7 +351,7 @@ function pct_create($data) {
         if (is_numeric($data['pct_my_rate']))
           save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
         else
-          remove_rate(NULL,$pct_id,NULL);
+          remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
       }
         
         return $pct_id;
