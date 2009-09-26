@@ -81,6 +81,7 @@
         {literal}function hook_tss(){{/literal}{$hook_tss}{literal}}{/literal}
         {literal}function hook_bzzRec(){{/literal}{$hook_bzzRec}{literal}}{/literal}
         {literal}function hook_bzzStp(){{/literal}{$hook_bzzStp}{literal}}{/literal}
+        {literal}function hook_chgUsr(){lists_reload("usr");{/literal}{$hook_chgUsr}{literal}}{/literal}
         {literal}function hook_chgKnd(){lists_reload("knd");lists_reload("pct");{/literal}{$hook_chgKnd}{literal}}{/literal}
         {literal}function hook_chgPct(){lists_reload("pct");{/literal}{$hook_chgPct}{literal}}{/literal}
         {literal}function hook_chgEvt(){lists_reload("evt");{/literal}{$hook_chgEvt}{literal}}{/literal}

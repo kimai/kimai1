@@ -209,6 +209,7 @@ function changeTab(target,path) {
 	    $("#loader").hide();
       // restore visibility of lists
       lists_visible(lists_visibility[$('dd.act').attr('id')]);
+      lists_write_annotations();
 	}
         if (usr_ID) {
 	  $.cookie('ki_active_tab_target_'+usr_ID, target);

@@ -58,6 +58,7 @@ if ($handle = opendir('../extensions/')) {
     $tss_hooks           = array();
     $rec_hooks           = array();
     $stp_hooks           = array();
+    $chu_hooks           = array();
     $chk_hooks           = array();
     $chp_hooks           = array();
     $che_hooks           = array();
@@ -145,6 +146,7 @@ if ($handle = opendir('../extensions/')) {
                             if ($key == 'TIMESPACE_CHANGE_TRIGGER') { $tss_hooks[] = $value; }
                             if ($key == 'BUZZER_RECORD_TRIGGER')    { $rec_hooks[] = $value; }
                             if ($key == 'BUZZER_STOP_TRIGGER')      { $stp_hooks[] = $value; }
+                            if ($key == 'CHANGE_USR_TRIGGER')       { $chu_hooks[] = $value; }
                             if ($key == 'CHANGE_KND_TRIGGER')       { $chk_hooks[] = $value; }
                             if ($key == 'CHANGE_PCT_TRIGGER')       { $chp_hooks[] = $value; }
                             if ($key == 'CHANGE_EVT_TRIGGER')       { $che_hooks[] = $value; }
@@ -401,6 +403,13 @@ if(is_array($stp_hooks)){
     }
 }
 
+$hook_chgUsr="";
+if(is_array($chu_hooks)){
+    foreach ($chu_hooks as $hook) { 
+        $hook_chgUsr .= $hook; 
+    }
+}
+
 $hook_chgKnd="";
 if(is_array($chk_hooks)){
     foreach ($chk_hooks as $hook) { 
@@ -439,6 +448,7 @@ if(is_array($rsz_hooks)){
 $tpl->assign('hook_tss',      $hook_tss);
 $tpl->assign('hook_bzzRec',   $hook_bzzRec);
 $tpl->assign('hook_bzzStp',   $hook_bzzStp);
+$tpl->assign('hook_chgUsr',   $hook_chgUsr);
 $tpl->assign('hook_chgKnd',   $hook_chgKnd);
 $tpl->assign('hook_chgPct',   $hook_chgPct);
 $tpl->assign('hook_chgEvt',   $hook_chgEvt);
