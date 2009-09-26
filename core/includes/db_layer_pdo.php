@@ -1999,7 +1999,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     }  
 
     if ($in)
-      $whereClauses[]="zef_out > $in";
+      $whereClauses[]="(zef_out > $in || zef_out = 0)";
     if ($out)
       $whereClauses[]="zef_in < $out";
 
@@ -2038,7 +2038,6 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     /* TODO: needs revision as foreach loop */
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $arr[$i]['zef_ID']           = $row['zef_ID'];
-
         if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
           $arr[$i]['zef_in']            = $in;
           $arr[$i]['zef_out']          = $row['zef_out'];
@@ -2055,10 +2054,16 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
           $arr[$i]['zef_in']            = $row['zef_in'];
           $arr[$i]['zef_out']          = $out;
         }
-        $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in'];
 
-        $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
-        $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']);
+        if ($row['zef_out'] != 0) {
+          // only calculate time after recording is complete
+          $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in']; 
+          $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
+          $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']); 
+          $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
+        }
+        
+
         $arr[$i]['zef_pctID']        = $row['zef_pctID'];
         $arr[$i]['zef_evtID']        = $row['zef_evtID'];
         $arr[$i]['zef_usrID']        = $row['zef_usrID'];
@@ -2075,7 +2080,6 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $arr[$i]['zef_comment']      = $row['zef_comment'];
         $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
         $arr[$i]['usr_alias']        = $row['usr_alias'];
-        $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
         $i++;
     }
     

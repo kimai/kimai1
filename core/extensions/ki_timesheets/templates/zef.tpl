@@ -194,7 +194,7 @@
                         {/if}
                     ">
                     
-{if $arr_zef[row].wage != 0}
+{if $arr_zef[row].wage}
                     
                         {$arr_zef[row].wage}
                       
