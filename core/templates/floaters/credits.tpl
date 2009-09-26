@@ -22,11 +22,11 @@
         
         <br /><br />
          
-        <a href='http://www.kimai.de' target='_blank'>Official Website</a> | 
-        <a href='http://www.kimai.de/download_e.html' target='_blank'>Download</a> |
+        <a href='http://www.kimai.org' target='_blank'>Official Website</a> | 
+        <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='https://www.syncom.org/svn/kimai/' target='_blank'>Subversion Repository</a> |
-        <a href='https://www.syncom.org/projects/kimai/timeline' target='_blank'>Trac Timeline</a>
+        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Subversion Repository</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Trac Timeline</a>
         
         <br /><br />
 
