@@ -26,9 +26,9 @@ $tpl->compile_dir  = 'compile/';
 $tpl->assign('kga', $kga);
 
 if (isset($kga['usr'])) // user logged in
-  $arr_exp = get_arr_exp($in,$out,$kga['usr']['usr_ID'],null,null,1);
+  $arr_exp = get_arr_exp($in,$out,array($kga['usr']['usr_ID']),null,null,1);
 else // customer logged in
-  $arr_exp = get_arr_exp($in,$out,null,$kga['customer']['knd_ID'],null,1);
+  $arr_exp = get_arr_exp($in,$out,null,array($kga['customer']['knd_ID']),null,1);
 
 //$arr_exp = get_arr_exp($in,$out,1);
 
@@ -42,22 +42,22 @@ $tpl->assign('total', "");
 
 
 if (isset($kga['usr'])) // user logged in
-  $ann = get_arr_exp_usr($in,$out,$kga['usr']['usr_ID']);
+  $ann = get_arr_exp_usr($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
-  $ann = get_arr_exp_usr($in,$out,null,$kga['customer']['knd_ID']);
+  $ann = get_arr_exp_usr($in,$out,null,array($kga['customer']['knd_ID']));
 $tpl->assign('usr_ann',$ann);
 
 // TODO: function for loops or convert it in template with new function
 if (isset($kga['usr'])) // user logged in
-  $ann = get_arr_exp_knd($in,$out,$kga['usr']['usr_ID']);
+  $ann = get_arr_exp_knd($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
-  $ann = get_arr_exp_knd($in,$out,null,$kga['customer']['knd_ID']);
+  $ann = get_arr_exp_knd($in,$out,null,array($kga['customer']['knd_ID']));
 $tpl->assign('knd_ann',$ann);
 
 if (isset($kga['usr'])) // user logged in
-  $ann = get_arr_exp_pct($in,$out,$kga['usr']['usr_ID']);
+  $ann = get_arr_exp_pct($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
-  $ann = get_arr_exp_pct($in,$out,null,$kga['customer']['knd_ID']);
+  $ann = get_arr_exp_pct($in,$out,null,array($kga['customer']['knd_ID']));
 $tpl->assign('pct_ann',$ann);
 
 

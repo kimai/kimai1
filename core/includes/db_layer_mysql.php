@@ -1741,8 +1741,6 @@ function var_edit($data) {
 	    $query = MySQL::BuildSQLUpdate($table, $values, $filter);	
 
     	$result = $conn->Query($query);
-        
-        // $err = $pdo_query->errorInfo();
     
         if ($result == false) {
             return $result;
@@ -2193,11 +2191,11 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
@@ -2252,18 +2250,18 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
             $arr[$i]['zef_ID']           = $row->zef_ID;
             if ($row->zef_in <= $in && $row->zef_out < $out)  {
               $arr[$i]['zef_in']         = $in;
-              $arr[$i]['zef_out']        = $row['zef_out'];
+              $arr[$i]['zef_out']        = $row->zef_out;
             }
             else if ($row->zef_in <= $in && $row->zef_out >= $out)  {
               $arr[$i]['zef_in']         = $in;
               $arr[$i]['zef_out']        = $out;
             }
             else if ($row->zef_in > $in && $row->zef_out < $out)  {
-              $arr[$i]['zef_in']         = $row['zef_in'];
-              $arr[$i]['zef_out']        = $row['zef_out'];
+              $arr[$i]['zef_in']         = $row->zef_in;
+              $arr[$i]['zef_out']        = $row->zef_out;
             }
             else if ($row->zef_in > $in && $row->zef_out >= $out)  {
-              $arr[$i]['zef_in']         = $row['zef_in'];
+              $arr[$i]['zef_in']         = $row->zef_in;
               $arr[$i]['zef_out']        = $out;
             }
             $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in'];
@@ -2283,7 +2281,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
             $arr[$i]['zef_trackingnr']   = $row->zef_trackingnr;
             $arr[$i]['zef_comment']      = $row->zef_comment;
             $arr[$i]['zef_comment_type'] = $row->zef_comment_type;
-        $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
+            $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row->zef_rate,2);
             $i++;
         }
         return $arr;
@@ -2330,17 +2328,29 @@ function checkUser() {
             if (get_seq($kimai_usr) != $kimai_key) {
                 kickUser();
             } else {
-                $query = "SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = '$kimai_usr' AND usr_active = '1' AND NOT usr_trash = '1';";
-                $conn->Query($query);
-                $row = $conn->RowArray(0,MYSQL_ASSOC);
-                
-                $usr_ID   = $row['usr_ID'];
-                $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-                $usr_grp  = $row['usr_grp'];
-                $usr_name = $kimai_usr;
-                
-                if ($usr_ID < 1) {
-                    kickUser();
+              if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+                  $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';";
+                  $conn->Query($query);
+                  $row = $conn->RowArray(0,MYSQL_ASSOC);
+
+                  $knd_ID   = $row['knd_ID'];
+                  if ($knd_ID < 1) {
+                      kickUser();
+                  }
+                }
+                else {
+                  $query = "SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = '$kimai_usr' AND usr_active = '1' AND NOT usr_trash = '1';";
+                  $conn->Query($query);
+                  $row = $conn->RowArray(0,MYSQL_ASSOC);
+                  
+                  $usr_ID   = $row['usr_ID'];
+                  $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
+                  $usr_grp  = $row['usr_grp'];
+                  $usr_name = $kimai_usr;
+                  
+                  if ($usr_ID < 1) {
+                      kickUser();
+                  }
                 }
             }
             
@@ -2653,11 +2663,11 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
 
@@ -2769,94 +2779,6 @@ function get_arr_knd($group) {
     }
 }
 
-
-//-----------------------------------------------------------------------------------------------------------
-
-/**
- * returns list of time summary attached to customer ID's within specific timespace as array
- *
- * @param integer $user ID of user in table usr
- * @param integer $in start of timespace in unix seconds
- * @param integer $out end of timespace in unix seconds
- * @global array $kga kimai-global-array
- * @return array
- * @author th
- */
-
-// checked
-
-function get_arr_time_knd($user,$in,$out) {
-    global $kga, $conn;
-    
-    $in    = MySQL::SQLValue($in   , MySQL::SQLVALUE_NUMBER);
-    $out   = MySQL::SQLValue($out  , MySQL::SQLVALUE_NUMBER);
-    $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
-    
-    if ($in) $zeitraum = "AND zef_in > $in";
-    if ($in && $out) $zeitraum = "AND zef_in > $in AND zef_in < $out";
-    
-    $query = "SELECT SUM(zef_time) as zeit, knd_ID FROM ${p}zef 
-              Left Join ${p}pct ON zef_pctID = pct_ID
-              Left Join ${p}knd ON pct_kndID = knd_ID 
-              WHERE zef_usrID = $user $zeitraum 
-              GROUP BY knd_ID;";
-              
-    $conn->Query($query);
-    
-    $arr = array();  
-    $rows = $conn->RecordsArray(MYSQL_ASSOC);
-    if(is_array($rows) && sizeof($rows) > 0)
-    {
-	foreach($rows as $row) {
-        	$arr[$row['knd_ID']] = $row['zeit'];
-    	}
-    }
-    return $arr;
-}
-
-//-----------------------------------------------------------------------------------------------------------
-
-/**
- * returns list of time summary attached to project ID's within specific timespace as array
- *
- * @param integer $user ID of user in table usr
- * @param integer $in start time in unix seconds
- * @param integer $out end time in unix seconds
- * @global array $kga kimai-global-array
- * @return array
- * @author th
- */
- 
-// checked
-
-function get_arr_time_pct($user,$in,$out) {
-    global $kga, $conn;
-
-    $in    = MySQL::SQLValue($in   , MySQL::SQLVALUE_NUMBER);
-    $out   = MySQL::SQLValue($out  , MySQL::SQLVALUE_NUMBER);
-    $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
-    
-    if ($in) $zeitraum = "AND zef_in > $in";
-    if ($in && $out) $zeitraum = "AND zef_in > $in AND zef_in < $out";
-
-    $query = "SELECT sum(zef_time) as zeit,zef_pctID FROM ${p}zef WHERE zef_usrID = $user $zeitraum GROUP BY zef_pctID;";
-    
-    $conn->Query($query);
-
-    $i=0;
-    $arr = array();  
-    $conn->MoveFirst();
-    while (! $conn->EndOfSeek()) {
-        $row = $conn->Row();
-        $arr[$row->zef_pctID] = $row->zeit;
-        $i++;
-    }
-    
-    return $arr;
-}
-
 //-----------------------------------------------------------------------------------------------------------
 
 ## Load into Array: Events 
@@ -2865,8 +2787,8 @@ function get_arr_time_pct($user,$in,$out) {
  
 function get_arr_evt($group) {
     global $kga, $conn;
-	
-	$p = $kga['server_prefix']; 
+ 
+ $p = $kga['server_prefix']; 
 
     if ($group == "all") {
         $query = "SELECT * FROM ${p}evt ORDER BY evt_name;";
@@ -2897,6 +2819,7 @@ function get_arr_evt($group) {
     }
 }
 
+
 // -----------------------------------------------------------------------------------------------------------
 
 /**
@@ -2904,18 +2827,18 @@ function get_arr_evt($group) {
  *
  * @param integer $customer filter for only this ID of a customer
  * @global array $kga kimai-global-array
- * @global array $pdo_conn PDO connection
+ * @global array $conn MySQL connection
  * @return array
  * @author sl
  */
 function get_arr_evt_by_knd($customer_ID) {
-    global $kga, $pdo_conn;
+    global $kga, $conn;
   
     $p = $kga['server_prefix']; 
     
     $customer_ID = MySQL::SQLValue($customer_ID , MySQL::SQLVALUE_NUMBER); 
     
-    $query = "SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = $customer_ID))");
+    $query = "SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = $customer_ID))";
     
     $result = $conn->Query($query);
     if ($result == false) {
@@ -2938,37 +2861,6 @@ function get_arr_evt_by_knd($customer_ID) {
     } else {
         return false;
     }
-}
-
-//-----------------------------------------------------------------------------------------------------------
-
-## EVT time-sum
-
-// checked
-
-function get_arr_time_evt($user,$in,$out) {
-    global $kga, $conn;
-
-    $in    = MySQL::SQLValue($in   , MySQL::SQLVALUE_NUMBER);
-    $out   = MySQL::SQLValue($out  , MySQL::SQLVALUE_NUMBER);
-    $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
-    
-    if ($in) $zeitraum="AND zef_in > $in";
-    if ($in && $out) $zeitraum="AND zef_in > $in AND zef_in < $out";
-
-    $query = "SELECT sum(zef_time) as zeit,zef_evtID FROM ${p}zef WHERE zef_usrID = $user $zeitraum GROUP BY zef_evtID;";
-    
-    $conn->Query($query);
-    
-    $arr = array();  
-    if($rows = $conn->RecordsArray(MYSQL_ASSOC))
-    {
-	foreach($rows as $row) {
-     	   $arr[$row['zef_evtID']] = $row['zeit'];
-	    }
-	   }
-    return $arr;
 }
 
 //-----------------------------------------------------------------------------------------------------------
@@ -4009,11 +3901,11 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -4042,11 +3934,12 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
              Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID
              Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
-             .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;");
+             .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;";
     
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array();
     $zef_in = 0;
@@ -4081,7 +3974,6 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
 
 /**
  * returns list of time summary attached to customer ID's within specific timespace as array
- * !! becomes obsolete with new querys !!
  *
  * @param integer $in start of timespace in unix seconds
  * @param integer $out end of timespace in unix seconds
@@ -4094,7 +3986,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
  */
 function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
-    global $pdo_conn;
+    global $conn;
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -4103,11 +3995,11 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -4138,6 +4030,7 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array();   
     $zef_in = 0;
@@ -4172,7 +4065,6 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
 
 /**
  * returns list of time summary attached to project ID's within specific timespace as array
- * !! becomes obsolete with new querys !!
  *
  * @param integer $in start time in unix seconds
  * @param integer $out end time in unix seconds
@@ -4185,7 +4077,7 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
  */
 function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
-    global $pdo_conn;
+    global $conn;
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -4194,11 +4086,11 @@ function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects =
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -4228,6 +4120,7 @@ function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array(); 
     $zef_in = 0;
@@ -4273,7 +4166,7 @@ function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects =
  */
 function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects = null) {
     global $kga;
-    global $pdo_conn;
+    global $conn;
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -4282,11 +4175,11 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -4308,7 +4201,7 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
     if ($out)
       $whereClauses[]="zef_in < $out";
     
-    $query = "SELECT sum(zef_time) as zeit,zef_evtID FROM " . $kga['server_prefix'] . "zef 
+    $query = "SELECT zef_in, zef_out,zef_evtID FROM " . $kga['server_prefix'] . "zef 
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
         Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".
         (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
@@ -4316,6 +4209,7 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array(); 
     $zef_in = 0;
@@ -4352,12 +4246,12 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
  * Admin status will never be changed.
  * Calling function should start and end sql transaction.
  * 
- * @global array $kga              kimai global array
- * @global array $pdo_conn         PDO connection
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
  * @author sl
  */
 function update_leader_status() {
-    global $kga,$pdo_conn;
+    global $kga,$conn;
     $query = "UPDATE " . $kga['server_prefix'] . "usr," . $kga['server_prefix'] . "ldr SET usr_sts = 2 WHERE usr_sts = 1";
     $result = $conn->Query($query);
     if ($result == false) {
@@ -4378,12 +4272,12 @@ function update_leader_status() {
 /**
  * Save rate to database.
  * 
- * @global array $kga              kimai global array
- * @global array $pdo_conn         PDO connection
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
  * @author sl
  */
 function save_rate($user_id,$project_id,$event_id,$rate) {
-  global $kga,$pdo_conn;
+  global $kga,$conn;
   // validate input
   if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
   if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
@@ -4392,11 +4286,10 @@ function save_rate($user_id,$project_id,$event_id,$rate) {
 
 
   // build update or insert statement
-  $query_string = "";
   if (get_rate($user_id,$project_id,$event_id) === false)
-    $query_string = "INSERT INTO " . $kga['server_prefix'] . "rates VALUES($user_id,$project_id,$event_id,$rate);";
+    $query = "INSERT INTO " . $kga['server_prefix'] . "rates VALUES($user_id,$project_id,$event_id,$rate);";
   else
-    $query_string = "UPDATE " . $kga['server_prefix'] . "rates SET rate = $rate WHERE ".
+    $query = "UPDATE " . $kga['server_prefix'] . "rates SET rate = $rate WHERE ".
   (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
   (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
   (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
@@ -4415,11 +4308,11 @@ function save_rate($user_id,$project_id,$event_id,$rate) {
  * Read rate from database.
  * 
  * @global array $kga              kimai global array
- * @global array $pdo_conn         PDO connection
+ * @global array $conn         MySQL connection
  * @author sl
  */
 function get_rate($user_id,$project_id,$event_id) {
-  global $kga,$pdo_conn;
+  global $kga,$conn;
 
   // validate input
   if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
@@ -4427,7 +4320,7 @@ function get_rate($user_id,$project_id,$event_id) {
   if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
 
 
-  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE ".
+  $query = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE ".
   (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
   (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
   (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
@@ -4437,7 +4330,7 @@ function get_rate($user_id,$project_id,$event_id) {
   if ($conn->RowCount() == 0)
     return false;
 
-  $data = $query->rowArray(0,MYSQL_ASSOC);
+  $data = $conn->rowArray(0,MYSQL_ASSOC);
   return $data['rate'];
 }
 
@@ -4446,12 +4339,12 @@ function get_rate($user_id,$project_id,$event_id) {
 /**
  * Remove rate from database.
  * 
- * @global array $kga              kimai global array
- * @global array $pdo_conn         PDO connection
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
  * @author sl
  */
 function remove_rate($user_id,$project_id,$event_id) {
-  global $kga,$pdo_conn;
+  global $kga,$conn;
 
   // validate input
   if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
@@ -4459,7 +4352,7 @@ function remove_rate($user_id,$project_id,$event_id) {
   if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
 
 
-  $query_string = "DELETE FROM " . $kga['server_prefix'] . "rates WHERE ".
+  $query = "DELETE FROM " . $kga['server_prefix'] . "rates WHERE ".
   (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
   (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
   (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
@@ -4477,12 +4370,12 @@ function remove_rate($user_id,$project_id,$event_id) {
 /**
  * Query the database for the best fitting rate for the given user, project and event.
  * 
- * @global array $kga              kimai global array
- * @global array $pdo_conn         PDO connection
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
  * @author sl
  */
 function get_best_fitting_rate($user_id,$project_id,$event_id) {
-  global $kga,$pdo_conn;
+  global $kga,$conn;
 
   // validate input
   if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
@@ -4491,7 +4384,7 @@ function get_best_fitting_rate($user_id,$project_id,$event_id) {
 
 
 
-  $query_string = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE
+  $query = "SELECT rate FROM " . $kga['server_prefix'] . "rates WHERE
   (user_id = $user_id OR user_id IS NULL)  AND
   (project_id = $project_id OR project_id IS NULL)  AND
   (event_id = $event_id OR event_id IS NULL)
@@ -4500,10 +4393,10 @@ function get_best_fitting_rate($user_id,$project_id,$event_id) {
 
   $result = $conn->Query($query);
 
-  if ($query->RowCount() == 0)
+  if ($conn->RowCount() == 0)
     return false;
 
-  $data = $query->rowArray(0,MYSQL_ASSOC);
+  $data = $conn->rowArray(0,MYSQL_ASSOC);
   return $data['rate'];
 }
 

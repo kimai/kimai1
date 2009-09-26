@@ -40,17 +40,17 @@ function exp_delete_record($id) {
  */
 function exp_create_record($usr_ID,$data) {
     global $kga;
-    global $pdo_conn;
+    global $conn;
  
     $data = clean_data($data);
     
-    $values ['exp_pctID']        =   MySQL::SQLValue( $data ['exp_pctID'], MySQL::SQLVALUE_NUMBER );
+    $values ['exp_pctID']        =   MySQL::SQLValue( $data ['exp_pctID']        , MySQL::SQLVALUE_NUMBER );
     $values ['exp_designation']  =   MySQL::SQLValue( $data ['exp_designation'] );
     $values ['exp_comment']      =   MySQL::SQLValue( $data ['exp_comment'] );
     $values ['exp_comment_type'] =   MySQL::SQLValue( $data ['exp_comment_type'] , MySQL::SQLVALUE_NUMBER );
-    $values ['exp_timestamp']    =   MySQL::SQLValue( $data ['exp_timestamp']       , MySQL::SQLVALUE_NUMBER );
-    $values ['exp_value']        =   MySQL::SQLValue( $data ['exp_value']       , MySQL::SQLVALUE_NUMBER );
-    $values ['exp_usrID']        =   MySQL::SQLValue( $data ['exp_usrID'] , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_timestamp']    =   MySQL::SQLValue( $data ['exp_timestamp']    , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_value']        =   MySQL::SQLValue( $data ['exp_value']        , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_usrID']        =   MySQL::SQLValue( $usr_ID                    , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."exp";
     return $conn->InsertRow($table, $values);    
@@ -69,18 +69,18 @@ function exp_create_record($usr_ID,$data) {
 function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit) {
     global $kga,$conn;
     
-    if (!is_array($users)) $users = array($users);
-    if (!is_array($customers)) $customers = array($customers);
-    if (!is_array($projects)) $projects = array($projects);
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
     
     $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
     $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
@@ -120,7 +120,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
              Join " . $kga['server_prefix'] . "usr ON exp_usrID = usr_ID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY exp_timestamp DESC " . $limit . ";";
     
-             $conn->Query($query);
+    $conn->Query($query);
     
   
     
@@ -134,22 +134,19 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     $conn->MoveFirst();
     while (! $conn->EndOfSeek()) {
       $row = $conn->Row();
-
-    }
-    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $arr[$i]['exp_ID']           = $row->exp_ID;
-        $arr[$i]['exp_timestamp']    = $row->exp_timestamp;
-        $arr[$i]['exp_value']        = $row->exp_value;
-        $arr[$i]['exp_pctID']        = $row->exp_pctID;
-        $arr[$i]['exp_designation']  = $row->exp_designation;
-        $arr[$i]['exp_usrID']        = $row->exp_usrID;
-        $arr[$i]['pct_ID']           = $row->pct_ID;
-        $arr[$i]['knd_name']         = $row->knd_name;
-        $arr[$i]['pct_kndID']        = $row->pct_kndID;
-        $arr[$i]['pct_name']         = $row->pct_name;
-        $arr[$i]['exp_comment']      = $row->exp_comment;
-        $arr[$i]['exp_comment_type'] = $row->exp_comment_type;
-        $i++;
+      $arr[$i]['exp_ID']           = $row->exp_ID;
+      $arr[$i]['exp_timestamp']    = $row->exp_timestamp;
+      $arr[$i]['exp_value']        = $row->exp_value;
+      $arr[$i]['exp_pctID']        = $row->exp_pctID;
+      $arr[$i]['exp_designation']  = $row->exp_designation;
+      $arr[$i]['exp_usrID']        = $row->exp_usrID;
+      $arr[$i]['pct_ID']           = $row->pct_ID;
+      $arr[$i]['knd_name']         = $row->knd_name;
+      $arr[$i]['pct_kndID']        = $row->pct_kndID;
+      $arr[$i]['pct_name']         = $row->pct_name;
+      $arr[$i]['exp_comment']      = $row->exp_comment;
+      $arr[$i]['exp_comment_type'] = $row->exp_comment_type;
+      $i++;
     }
     
     return $arr;
@@ -281,11 +278,11 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -338,11 +335,11 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
@@ -391,11 +388,11 @@ function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects =
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[i], MySQL::SQLVALUE_NUMBER);
+      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[i], MySQL::SQLVALUE_NUMBER);
+      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[i], MySQL::SQLVALUE_NUMBER);
+      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
     $whereClauses = array();
