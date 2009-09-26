@@ -30,7 +30,7 @@
         
         <br /><br />
 
-        If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there.
+        If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there. Latest SVN Version can be downloaded <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">here</a> (download for testing purposes only!).
         
         <br /><br />
         
