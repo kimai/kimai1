@@ -26,11 +26,11 @@
             <tr>
                 <td class="option">&nbsp;</td>
                 <td class="date">{$kga.lang.datum}</td>
-                <td class="time">Zeit</td>
-                <td class="value">Betrag</td>
+                <td class="time">{$kga.lang.timelabel}</td>
+                <td class="value">{$kga.lang.expense}</td>
                 <td class="knd">{$kga.lang.knd}</td>
                 <td class="pct">{$kga.lang.pct}</td>
-                <td class="designation">Verwendung</td>
+                <td class="designation">{$kga.lang.designation}</td>
             </tr>
         </tbody>
     </table>

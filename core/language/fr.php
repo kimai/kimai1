@@ -204,6 +204,9 @@ $kga['lang']= array(
 "wage"              => "wage",
 
 "customerlogin"     => "customer login",
+
+"expense"           => "expense",
+"designation"       => "designation",
 );
 
 $kga['lang']['months']         = array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre");
