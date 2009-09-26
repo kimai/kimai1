@@ -813,6 +813,22 @@ if ((int)$revisionDB < 922) {
     exec_query("ALTER TABLE `${p}knd` ADD `knd_secure` varchar(60) NOT NULL default '0';",1);
 }
 
+if ((int)$revisionDB < 935) {
+    logfile("-- update to r935");
+    exec_query("CREATE TABLE `${p}exp` (
+  `exp_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `exp_timestamp` int(10) NOT NULL DEFAULT '0',
+  `exp_usrID` int(10) NOT NULL,
+  `exp_pctID` int(10) NOT NULL,
+  `exp_designation` text NOT NULL,
+  `exp_comment` text NOT NULL,
+  `exp_comment_type` tinyint(1) NOT NULL DEFAULT '0',
+  `exp_cleared` tinyint(1) NOT NULL DEFAULT '0',
+  `exp_value` decimal(10,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`exp_ID`)
+) AUTO_INCREMENT=1;");
+}
+
 
 
 //////// ---------------------------------------------------------------------------------------------------

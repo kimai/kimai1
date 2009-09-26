@@ -208,6 +208,21 @@ $query=
 );";
 exec_query($query);
 
+$query=
+"CREATE TABLE `" . $kga['server_prefix'] . "exp` (
+  `exp_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `exp_timestamp` int(10) NOT NULL DEFAULT '0',
+  `exp_usrID` int(10) NOT NULL,
+  `exp_pctID` int(10) NOT NULL,
+  `exp_designation` text NOT NULL,
+  `exp_comment` text NOT NULL,
+  `exp_comment_type` tinyint(1) NOT NULL DEFAULT '0',
+  `exp_cleared` tinyint(1) NOT NULL DEFAULT '0',
+  `exp_value` decimal(10,2) NOT NULL DEFAULT '0.00',
+  PRIMARY KEY (`exp_ID`)
+) AUTO_INCREMENT=1;";
+exec_query($query);
+
 
 
 // GROUPS
