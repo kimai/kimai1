@@ -19,6 +19,18 @@
  * 
  */ 
 
+require('includes/basics.php');
+// require(sprintf("language/%s.php",$kga['language']));
+
+if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
+    $language = $kga['language'];
+} else {
+    $language = $kga['conf']['lang'];
+}
+require_once( "language/${language}.php" );
+
+$p = $kga['server_prefix'];
+
 function exec_query($query) {
     global $conn, $pdo_conn, $kga, $errors, $executed_queries;
    
@@ -47,40 +59,22 @@ function exec_query($query) {
     }
 }
 
-
-
-
-
-require('includes/basics.php');
-// require(sprintf("language/%s.php",$kga['language']));
-
-if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-require_once( "language/${language}.php" );
-
-
-
-
-
 if (isset($_REQUEST['submit'])) 
 {
-
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// backup
 	if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) 
 	{
-		$p = $kga['server_prefix'];
 	    logfile("-- begin backup -----------------------------------");
 	    $backup_stamp = time();  
 	    $query = ("SHOW TABLES;");
 	    $result_backup=@mysql_query($query); 
 	    logfile($query,$result_backup);
 	    $prefix_length = strlen($p);
+	
 	    while ($row = mysql_fetch_array($result_backup)) {
 	    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
-
+		
 				$primaryKey = "";
 
 				if (strlen(strstr($row[0],"evt"))>0) { $primaryKey = "evt_ID";}
@@ -98,6 +92,11 @@ if (isset($_REQUEST['submit']))
 					$primaryKey = "uid";
 				}
 				
+				$query = "SELECT `".$primaryKey."` as `id` FROM `".$row[0]."` ORDER BY `".$primaryKey."` DESC LIMIT 0,1;   \n";
+				$id = mysql_fetch_array(mysql_query($query), MYSQL_ASSOC);
+				// echo $query;
+				// echo($id['id']);
+				
 				if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
 
 				if ($primaryKey!="") {
@@ -113,7 +112,7 @@ if (isset($_REQUEST['submit']))
 		header("location: db_restore.php");
 	}
 
-
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// delete
 	if ($_REQUEST['submit'] == $kga['lang']['backup'][3]) 
 	{
@@ -158,7 +157,6 @@ if (isset($_REQUEST['submit']))
 	}
 }
 
-
 echo<<<EOD
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -184,39 +182,29 @@ echo<<<EOD
 			border-top:2px solid red;
 			border-bottom:2px solid red;
 		}
-		
 		p.label_checkbox input {
 			float: left;
 		}
-		
 		p.label_checkbox label {
 			display: block;
 			float: left;
 			margin-left: 10px;
 			width: 300px;
 		}
-	
 		p.label_checkbox {
 			clear:left;
 			height:.6em;
 		}
-		
 		p.radio {
 			display: block;
 			float: left;
 		}
-		
-		pre {
-			font-size:80%;
-		}
-		
 		h1.message {
 			border:3px solid white;
 			padding:10px;
 			background-image: url('skins/standard/grfx/floaterborder.png');
 			margin-right:20px;
 		}
-		
 		h1.fail {
 			border:3px solid red;
 			padding:10px;
@@ -232,9 +220,7 @@ echo<<<EOD
 			color:#136C00;
 			width:300px;
 		}
-	
 	</style>
-
 </head>
 <body>
 EOD;
@@ -242,6 +228,7 @@ EOD;
 echo '<div class="warn">'.$kga['lang']['backup'][0].'</div>';
 echo '<div class="main">';
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // restore
 
 if (isset($_REQUEST['submit'])) 
@@ -264,6 +251,7 @@ if (isset($_REQUEST['submit']))
 			$arr2 = array();
 			$dropquery = "";
 			$restorequery = "";
+			// $restorequery = "SET SQL_MODE=\"NO_AUTO_VALUE_ON_ZERO\";";
 
 			while ($row = mysql_fetch_array($result_backup))
 			{
@@ -279,7 +267,6 @@ if (isset($_REQUEST['submit']))
 			}
 			
 ##################
-
 			// Bis rev 733 gab es in tabelle ldr keinen Primary Key ...
 			
 			$query = "SELECT value FROM kimai_bak_" . $dates[0] . "_kimai_var WHERE var = 'revision' LIMIT 0,1;";
@@ -287,7 +274,6 @@ if (isset($_REQUEST['submit']))
 			$pdo_query->execute(array());
 			$revision = $pdo_query->fetch(PDO::FETCH_ASSOC);
 			$revision = $revision['value'];
-
 ##################
 
 			$i=0;
@@ -295,14 +281,14 @@ if (isset($_REQUEST['submit']))
 			{
 				
 				$primaryKey = "";
-				
-				if (strlen(strstr($newTable,"evt"))>0) { $primaryKey = "evt_ID";}
-				if (strlen(strstr($newTable,"grp"))>0) { $primaryKey = "grp_ID";}
-				if (strlen(strstr($newTable,"knd"))>0) { $primaryKey = "knd_ID";}
-				if (strlen(strstr($newTable,"pct"))>0) { $primaryKey = "pct_ID";}
-				if (strlen(strstr($newTable,"zef"))>0) { $primaryKey = "zef_ID";}
-				if (strlen(strstr($newTable,"usr"))>0) { $primaryKey = "usr_name";}
-				if (strlen(strstr($newTable,"var"))>0) { $primaryKey = "var";}
+
+				if (strlen(strstr($newTable,"evt"))>0) { $primaryKey = "evt_ID";   }
+				if (strlen(strstr($newTable,"grp"))>0) { $primaryKey = "grp_ID";   }
+				if (strlen(strstr($newTable,"knd"))>0) { $primaryKey = "knd_ID";   }
+				if (strlen(strstr($newTable,"pct"))>0) { $primaryKey = "pct_ID";   }
+				if (strlen(strstr($newTable,"zef"))>0) { $primaryKey = "zef_ID";   }
+				if (strlen(strstr($newTable,"usr"))>0) { $primaryKey = "usr_name"; }
+				if (strlen(strstr($newTable,"var"))>0) { $primaryKey = "var";      }
 				if ( (strlen(strstr($newTable,"ldr"))>0) 
 					|| (strlen(strstr($newTable,"grp_evt"))>0) 
 					|| (strlen(strstr($newTable,"grp_knd"))>0) 
@@ -310,7 +296,7 @@ if (isset($_REQUEST['submit']))
 				{ 
 					$primaryKey = "uid";
 				}
-				
+								
 				if ($primaryKey!="") {
 					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
 				}
@@ -320,10 +306,22 @@ if (isset($_REQUEST['submit']))
 				}
 				
 				$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
-				$restorequery .= "CREATE TABLE " . $newTable . $primaryKey . " SELECT * FROM " .  $arr[$i] . ";\n";
-				$i++;
 				
+					$restorequery .= "CREATE TABLE " . $newTable . $primaryKey . " SELECT * FROM " .  $arr[$i] . ";\n";	
+				$i++;
 			}
+			
+			$restorequery .=  "ALTER TABLE `kimai_evt`     CHANGE `evt_ID` `evt_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_knd`     CHANGE `knd_ID` `knd_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_pct`     CHANGE `pct_ID` `pct_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_zef`     CHANGE `zef_ID` `zef_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_grp`     CHANGE `grp_ID` `grp_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_ldr`     CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_grp_pct` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_grp_knd` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
+			$restorequery .=  "ALTER TABLE `kimai_grp_evt` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
+			
+			// echo $restorequery;
 
 			if ($kga['server_conn'] == "pdo") {
 			        if (is_object($pdo_conn)) {
