@@ -4051,7 +4051,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     $arr = array();
     $zef_in = 0;
     $zef_out = 0;   
-    foreach($rows as $ow) {
+    foreach($rows as $row) {
       if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
         $zef_in  = $in;
         $zef_out = $row['zef_out'];
