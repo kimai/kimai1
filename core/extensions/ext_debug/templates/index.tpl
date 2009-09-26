@@ -10,13 +10,14 @@
 {/literal}
 
 <div id="deb_ext_kga_header">
-     <strong>KIMAI GLOBAL ARRAY ($kga)</strong>
+	<a href="#" title="Clear" onclick="deb_ext_reloadKGA();return false;"><img src="../extensions/ext_debug/grfx/action_refresh.png"  alt="Clear"></a>
+     <strong>KIMAI GLOBAL ARRAY ($kga)</strong> 
 </div>
 
 <div id="deb_ext_kga_wrap">
     <div id ="deb_ext_kga">
         <pre>
-            {$kga_display}
+{$kga_display}
         </pre>
     </div>
 </div>

@@ -79,9 +79,25 @@ switch ($axAction) {
         logfile("text: " .$axValue);
     break;
 
+    case "reloadKGA":    
+	// read kga --------------------------------------- 
+		$output = $kga;
+	    // clean out some data that is way too private to be shown in the frontend ...
 
-
-    
+	    if (!$kga['show_sensible_data']) {
+	    	$output['server_hostname'] = "xxx";
+	    	$output['server_database'] = "xxx";
+	    	$output['server_username'] = "xxx";
+	    	$output['server_password'] = "xxx";
+	    	$output['usr']['secure']   = "xxx";
+	    	$output['usr']['usr_ID']   = "xxx";
+	    	$output['usr']['pw']       = "xxx";
+	    }
+		echo"<pre>";
+	    print_r($output);
+		echo"</pre>";
+	// /read kga --------------------------------------
+    break;
 }
 
 ?>

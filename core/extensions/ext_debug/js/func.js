@@ -90,6 +90,14 @@ function deb_ext_reloadLogfileOnce() {
     });
 }
 
+function deb_ext_reloadKGA() {
+    $('a').blur();
+    $.post(deb_ext_path + "processor.php", { axAction: "reloadKGA", axValue: 0, id: 0 }, 
+    function(data) {
+        $("#deb_ext_kga").html(data);
+    });
+}
+
 function deb_ext_clearTimeout() {
     clearTimeout(deb_ext_refreshTimer);
 }
