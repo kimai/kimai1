@@ -10,7 +10,7 @@
 {/literal}
 
 <div id="deb_ext_kga_header">
-	<a href="#" title="Clear" onclick="deb_ext_reloadKGA();return false;"><img src="../extensions/ext_debug/grfx/action_refresh.png"  alt="Clear"></a>
+	<a href="#" title="Clear" onclick="deb_ext_reloadKGA();return false;"><img src="../extensions/ext_debug/grfx/action_refresh.png"  alt="Reload KGA"></a>
      <strong>KIMAI GLOBAL ARRAY ($kga)</strong> 
 </div>
 
