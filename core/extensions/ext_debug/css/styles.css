@@ -7,9 +7,10 @@
 
 #deb_ext_kga {
     padding:10px;
-    font-size:11px;
+    font-size:110%;
     font-family: monospace;
-    background-color: #fff;
+    background-color: #000;
+	color:#00D700;
     overflow:auto;
 }
 
@@ -43,9 +44,10 @@
 #deb_ext_logfile {
     border:1px solid #000;
     padding:10px;
-    font-size:11px;
+    font-size:110%;
     font-family: monospace;
-    background-color: #fff;
+    background-color: #000;
+	color:#00D700;
     overflow:auto;
 }
 
@@ -60,7 +62,7 @@
     width:150px;
     border:1px solid #555;
     height:12px;
-    margin:0;
+    margin:20px;
     padding:1px;
     color:#fff;
     font-size:9px;
