@@ -8,34 +8,18 @@
 #xp_panel .r .r 
 {background: url('../grfx/stats_panel.png');}
 
-#xp_panel .l,
-#xp_panel .r,
-#xp_panel .w 
-{ float: left; }
+#xp_panel .l,#xp_panel .r,#xp_panel .w 			{ float: left; }
+#xp_panel .l,#xp_panel .r,#xp_panel .c 			{ height: 49px; }
+#xp_panel .l .l,#xp_panel .r .l,#xp_panel .r .r	{width: 4px;}
+#xp_panel .l .w .c,#xp_panel .r .w .c  			{background-position: 0 98px;}
 
-#xp_panel .l,
-#xp_panel .r,
-#xp_panel .c 
-{ height: 49px; }
-
-#xp_panel .l { margin-left: -100%; }
-#xp_panel .w { width: 100%; }
-#xp_panel .w .c { margin: 0 111px 0 222px; }
-
-#xp_panel .l .l,
-#xp_panel .r .l,
-#xp_panel .r .r
-{width: 4px;}
-
-#xp_panel .l .w .c,
-#xp_panel .r .w .c  
-{background-position: 0 98px;}
-
-#xp_panel .w .c .w .c {margin: 0 8px 0 15px;background-position: 0 49px;}
-#xp_panel .w .c .l {background-position: -4px 0;width: 15px;}
-#xp_panel .w .c .r {background-position: -19px 0;width: 8px;margin-left: -10px;}
-#xp_panel .l { width: 222px; }
-#xp_panel .l .w .c {margin: 0 0 0 4px;}
-#xp_panel .r {width: 111px;margin-left: -111px;}
-#xp_panel .r .w .c {margin: 0 4px 0 4px;}
-#xp_panel .r .r {background-position: -27px 0;margin-left: -4px;}
+#xp_panel .l            						{ margin-left: -100%; width: 222px;}
+#xp_panel .r 									{ width: 111px;margin-left: -111px;}
+#xp_panel .r .r 								{ background-position: -27px 0;margin-left: -4px;}
+#xp_panel .w            						{ width: 100%; }
+#xp_panel .w .c         						{ margin: 0 111px 0 222px; }
+#xp_panel .w .c .w .c 							{ margin: 0 8px 0 15px;background-position: 0 49px;}
+#xp_panel .w .c .l 								{ background-position: -4px 0;width: 15px;}
+#xp_panel .w .c .r 								{ background-position: -19px 0;width: 8px;margin-left: -10px;}
+#xp_panel .l .w .c 								{ margin: 0 0 0 4px;}
+#xp_panel .r .w .c 								{ margin: 0 4px 0 4px;}
