@@ -26,7 +26,7 @@
 
 #xp_panel .select_btn {
 	position:relative;
-	text-indent:999em;
+	text-indent:-999em;
 	display:block;
 	width:41px;
 	height:42px;
