@@ -110,6 +110,8 @@ switch ($axAction) {
         $new_time = convert_time_strings($new,$new);        
         $data['exp_timestamp'] = $new_time['in'];
         //logfile("new_time: " .serialize($new_time));
+
+        $data['exp_value'] = str_replace(',','.',$data['exp_value']);
         
 	if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
