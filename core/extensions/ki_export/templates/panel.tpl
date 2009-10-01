@@ -1,7 +1,7 @@
 {literal}
     <script type="text/javascript"> 
         $(document).ready(function() {
-            tx_ext_onload();
+            xp_ext_onload();
         }); 
     </script>
 {/literal}

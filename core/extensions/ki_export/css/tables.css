@@ -1,32 +1,32 @@
-div.ki_timesheet table {
+div.ki_export table {
     border-collapse: collapse;
     font-size: 11px;
     color: #363636;
     border-bottom:1px solid #888;
 }
-div.ki_timesheet table a.preselect_lnk {
+div.ki_export table a.preselect_lnk {
     color: #363636;
     text-decoration:none;
     border-bottom:1px dotted #bbb;
 }
 
-div.ki_timesheet table a:hover {
+div.ki_export table a:hover {
     color: #0F9E00;
     border-bottom:none;
 }
 
-div.ki_timesheet table thead {
+div.ki_export table thead {
     height:25px;
     text-align:left;
     color:#FFF;
 }
 
-div.ki_timesheet table thead th {
+div.ki_export table thead th {
     background-image: url('../../../skins/standard/grfx/g3_table_header.png');
 }
 
-div.ki_timesheet tr.even td,
-div.ki_timesheet tr.odd td
+div.ki_export tr.even td,
+div.ki_export tr.odd td
 {
     border-bottom: none;
     border-left: none;
@@ -36,17 +36,17 @@ div.ki_timesheet tr.odd td
 }
 #zef_head td {padding: 3px 4px 4px 6px;}
 
-div.ki_timesheet tr.hover td {
+div.ki_export tr.hover td {
     background: #FFC !important;
 /*    border-top: 1px solid #666 !important;
     border-bottom: 1px solid #666 !important;*/
 }
 
-div.ki_timesheet tr.even td {
+div.ki_export tr.even td {
     background: #FFF;
 }
 
-div.ki_timesheet tr.odd td {
+div.ki_export tr.odd td {
     background: #EEE;
 }
 
@@ -66,20 +66,20 @@ div#zeftable tr.active td.time {
     background: #F00;
 }
 
-div.ki_timesheet tr td.option,
-div.ki_timesheet tr td.date,
-div.ki_timesheet tr td.from,
-div.ki_timesheet tr td.to,
-div.ki_timesheet tr td.time,
-div.ki_timesheet tr td.wage {
+div.ki_export tr td.option,
+div.ki_export tr td.date,
+div.ki_export tr td.from,
+div.ki_export tr td.to,
+div.ki_export tr td.time,
+div.ki_export tr td.wage {
     text-align:center;
 }
 
-div.ki_timesheet a {
+div.ki_export a {
     margin: 0 3px;
 }
 
-div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.evt {
+div.ki_export>div#zef>div#zeftable>table>tbody>tr>td.evt {
     border-right: none;
 }
 
