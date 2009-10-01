@@ -33,52 +33,52 @@
 	background: url('../grfx/select.png');
 }
 
-#xp_panel #select_filter             { top:3px; }
-#xp_panel #select_filter:hover       { background-position: 0 -42px; }
-#xp_panel #select_filter:active      { background-position: 0 -84px; }
-#xp_panel #select_filter .pressed    { background-position: 0 -84px; }
+#xp_panel #xp_ext_select_filter             { top:3px; }
+#xp_panel #xp_ext_select_filter:hover       { background-position: 0 -42px; }
+#xp_panel #xp_ext_select_filter:active      { background-position: 0 -84px; }
+#xp_panel #xp_ext_select_filter.pressed    { background-position: 0 -84px; }
 
-#xp_panel #select_location
+#xp_panel #xp_ext_select_location
 {
 	left:44px; top:-39px;
 	background-position: 204px 0;
 }
-#xp_panel #select_location:hover       { background-position: 204px -42px; }
-#xp_panel #select_location:active      { background-position: 204px -84px; }
-#xp_panel #select_location .pressed    { background-position: 204px -84px; }
+#xp_panel #xp_ext_select_location:hover       { background-position: 204px -42px; }
+#xp_panel #xp_ext_select_location:active      { background-position: 204px -84px; }
+#xp_panel #xp_ext_select_location.pressed    { background-position: 204px -84px; }
 
-#xp_panel #select_timeformat
+#xp_panel #xp_ext_select_timeformat
 {
 	left:88px; top:-81px;
 	background-position: 163px 0;
 }
-#xp_panel #select_timeformat:hover       { background-position: 163px -42px; }
-#xp_panel #select_timeformat:active      { background-position: 163px -84px; }
-#xp_panel #select_timeformat .pressed    { background-position: 163px -84px; }
+#xp_panel #xp_ext_select_timeformat:hover       { background-position: 163px -42px; }
+#xp_panel #xp_ext_select_timeformat:active      { background-position: 163px -84px; }
+#xp_panel #xp_ext_select_timeformat.pressed    { background-position: 163px -84px; }
 
-#xp_panel #export_pdf
+#xp_panel #xp_ext_export_pdf
 {
 	top:3px;
 	background-position: 122px 0;
 }
-#xp_panel #export_pdf:hover       { background-position: 122px -42px; }
-#xp_panel #export_pdf .pressed    { background-position: 122px -84px; }
+#xp_panel #xp_ext_export_pdf:hover       { background-position: 122px -42px; }
+#xp_panel #xp_ext_export_pdf.pressed    { background-position: 122px -84px; }
 
-#xp_panel #export_xls
+#xp_panel #xp_ext_export_xls
 {
 	left:44px; top:-39px;
 	background-position: 82px 0;
 }
-#xp_panel #export_xls:hover       { background-position: 82px -42px; }
-#xp_panel #export_xls .pressed    { background-position: 82px -84px; }
+#xp_panel #xp_ext_export_xls:hover       { background-position: 82px -42px; }
+#xp_panel #xp_ext_export_xls.pressed    { background-position: 82px -84px; }
 
-#xp_panel #print
+#xp_panel #xp_ext_print
 {
 	left:88px; top:-81px;
 	background-position: 41px 0;
 }
-#xp_panel #print:hover       { background-position: 41px -42px; }
-#xp_panel #print .pressed    { background-position: 41px -84px; }
+#xp_panel #xp_ext_print:hover       { background-position: 41px -42px; }
+#xp_panel #xp_ext_print.pressed    { background-position: 41px -84px; }
 
 
 

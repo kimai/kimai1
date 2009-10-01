@@ -10,7 +10,23 @@
 		<div class="c">
 			<div class="w">
 				<div class="c">
-					werte
+					
+					
+					
+					<div id="xp_ext_tab_timeformat">
+						<span>Zeitformat:</span>
+						<input type="text" name="time_format" value="H:i:s" id="xp_ext_timeformat">
+						<span>Datumsformat:</span>
+						<input type="text" name="date_format" value="d.m.Y" id="xp_ext_dateformat">
+					</div>
+					
+					<div id="xp_ext_tab_location">
+						<span>Standard-Ort:</span>
+						<input type="text" name="std_loc" value="H:i:s" id="xp_ext_timeformat">
+					</div>
+					
+					
+					
 				</div>
 			</div>
 			<div class="l">&nbsp;</div><div class="r">&nbsp;</div>
@@ -19,9 +35,9 @@
 	<div class="l">
 		<div class="w">
 			<div class="c">
-				<a href="#" class="select_btn" id="select_filter">Filter</a>
-				<a href="#" class="select_btn" id="select_location">Location</a>
-				<a href="#" class="select_btn" id="select_timeformat">Timeformat</a>
+				<a id="xp_ext_select_filter"     href="#" class="select_btn">Filter</a>
+				<a id="xp_ext_select_location"   href="#" class="select_btn">Location</a>
+				<a id="xp_ext_select_timeformat" href="#" class="select_btn">Timeformat</a>
 			</div>
 		</div>
 		<div class="l">&nbsp;</div>
@@ -30,9 +46,9 @@
 		<div class="w">
 			<div class="c">
 				
-				<a href="#" class="output_btn" id="export_pdf">PDF</a>
-				<a href="#" class="output_btn" id="export_xls">XLS</a>
-				<a href="#" class="output_btn" id="print">Print</a>
+				<a id="xp_ext_export_pdf" href="#" class="output_btn">PDF</a>
+				<a id="xp_ext_export_xls" href="#" class="output_btn">XLS</a>
+				<a id="xp_ext_print"      href="#" class="output_btn">Print</a>
 				
 			</div>
 		</div>

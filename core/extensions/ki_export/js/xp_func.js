@@ -22,11 +22,105 @@
 // XP EXT funcs
 // ============
 
+
+function clicktest() {
+	alert("clicked!");
+}
+
+
 function xp_ext_onload() {
     xp_ext_resize();
     $("#loader").hide();
     lists_visible(true);
+
+
+	$('#xp_ext_select_filter').click(function(){
+        xp_ext_select_filter();
+    });
+
+	$('#xp_ext_select_location').click(function(){
+        xp_ext_select_location();
+    });
+
+	$('#xp_ext_select_timeformat').click(function(){
+        xp_ext_select_timeformat();
+    });
+
+	$('#xp_ext_export_pdf').click(function(){
+        clicktest();
+    });
+
+	$('#xp_ext_export_xls').click(function(){
+        clicktest();
+    });
+
+	$('#xp_ext_print').click(function(){
+        clicktest();
+    });
 }
+
+
+function xp_ext_select_filter()
+{
+	$('#xp_ext_select_filter').addClass("pressed");
+	$('#xp_ext_tab_filter').css("display","block");
+	
+	$('#xp_ext_select_location').removeClass("pressed");
+	$('#xp_ext_tab_location').css("display","none");
+	$('#xp_ext_select_timeformat').removeClass("pressed");
+	$('#xp_ext_tab_timeformat').css("display","none");
+	
+}
+
+function xp_ext_select_location()
+{
+	$('#xp_ext_select_location').addClass("pressed");
+	$('#xp_ext_tab_location').css("display","block");
+
+	$('#xp_ext_select_filter').removeClass("pressed");
+	$('#xp_ext_tab_filter').css("display","none");
+	$('#xp_ext_select_timeformat').removeClass("pressed");
+	$('#xp_ext_tab_timeformat').css("display","none");
+}
+
+function xp_ext_select_timeformat()
+{
+	$('#xp_ext_select_timeformat').addClass("pressed");
+	$('#xp_ext_tab_timeformat').css("display","block");
+
+	$('#xp_ext_select_filter').removeClass("pressed");
+	$('#xp_ext_tab_filter').css("display","none");
+	$('#xp_ext_select_location').removeClass("pressed");
+	$('#xp_ext_tab_location').css("display","none");
+	
+}
+
+function xp_ext_export_pdf()
+{
+	
+}
+
+function xp_ext_export_xls()
+{
+	
+}
+
+function xp_ext_print()
+{
+	
+}
+
+
+
+
+
+/////////////////////////////////////////////////////
+// mitgebracht von ts_ext:
+
+
+
+
+
 
 function xp_ext_get_dimensions() {
     scroller_width = 17;

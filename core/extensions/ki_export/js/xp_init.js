@@ -30,19 +30,17 @@ var drittel;
 var zef_w;
 var zef_h;
 
-var ts_tss_hook_flag = 0;
-var ts_rec_hook_flag = 0;
-var ts_stp_hook_flag = 0;
-var ts_chk_hook_flag = 0;
-var ts_chp_hook_flag = 0;
-var ts_che_hook_flag = 0;
+var xp_tss_hook_flag = 0;
+var xp_rec_hook_flag = 0;
+var xp_stp_hook_flag = 0;
+var xp_chk_hook_flag = 0;
+var xp_chp_hook_flag = 0;
+var xp_che_hook_flag = 0;
 
 $(document).ready(function(){
-
     var xp_resizeTimer = null;
     $(window).bind('resize', function() {
        if (xp_resizeTimer) clearTimeout(xp_resizeTimer);
        xp_resizeTimer = setTimeout(xp_ext_resize, 500);
     });
-
 });
