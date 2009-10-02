@@ -33,7 +33,6 @@ function xp_ext_onload() {
     $("#loader").hide();
     lists_visible(true);
 
-
 	$('#xp_ext_select_filter').click(function(){
         xp_ext_select_filter();
     });
@@ -57,6 +56,8 @@ function xp_ext_onload() {
 	$('#xp_ext_print').click(function(){
         clicktest();
     });
+
+	xp_ext_select_timeformat();
 }
 
 
