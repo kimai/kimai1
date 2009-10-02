@@ -27,8 +27,8 @@ var xp_ext_path = "../extensions/ki_export/";
 
 var scroller_width;
 var drittel;
-var zef_w;
-var zef_h;
+var xp_w;
+var xp_h;
 
 var xp_tss_hook_flag = 0;
 var xp_rec_hook_flag = 0;

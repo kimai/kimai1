@@ -6,15 +6,11 @@
     </script>
 {/literal}
 
-<div id="zef_head">
+<div id="xp_head">
     <div class="left">
-    {if $kga.usr}
-        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_record',selected_pct+'|'+selected_evt,0,600,570); return false;">{$kga.lang.add}</a>
-    {/if}
     </div>
     <table>
         <colgroup>
-          <col class="options" />
           <col class="date" />
           <col class="from" />
           <col class="to" />
@@ -26,7 +22,6 @@
         </colgroup>
         <tbody>
             <tr>
-                <td class="option">&nbsp;</td>
                 <td class="date">{$kga.lang.datum}</td>
                 <td class="from">{$kga.lang.in}</td>
                 <td class="to">{$kga.lang.out}</td>
@@ -40,4 +35,4 @@
     </table>
 </div>
 
-<div id="zef">{$zef_display} </div>
+<div id="xp">{$table_display} </div>

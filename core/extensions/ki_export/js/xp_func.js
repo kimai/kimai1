@@ -132,30 +132,30 @@ function xp_ext_get_dimensions() {
     (kndShrinkMode)?subtableCount=2:subtableCount=3;
     subtableWidth = (pageWidth()-10)/subtableCount-7 ;
     
-    zef_w = pageWidth()-24;
-    zef_h = pageHeight()-224-headerHeight()-28;
+    xp_w = pageWidth()-24;
+    xp_h = pageHeight()-274-headerHeight()-28;
 }
 
 
 
 function xp_ext_resize() {
-    // xp_ext_set_tableWrapperWidths();
-    // xp_ext_set_heightTop();
+     xp_ext_set_tableWrapperWidths();
+     xp_ext_set_heightTop();
 }
 
 function xp_ext_set_tableWrapperWidths() {
     xp_ext_get_dimensions();
     // zef: set width of table and faked table head  
-    $("#zef_head,#zef").css("width",zef_w);
+    $("#xp_head,#xp").css("width",xp_w);
     xp_ext_set_TableWidths();
 }
 
 function xp_ext_set_heightTop() {
     xp_ext_get_dimensions();
     if (!extShrinkMode) {
-        $("#zef").css("height", zef_h);
+        $("#xp").css("height", xp_h);
     } else {
-        $("#zef").css("height", "70px");
+        $("#xp").css("height", "20px");
     }
     
     xp_ext_set_TableWidths();
@@ -164,30 +164,30 @@ function xp_ext_set_heightTop() {
 function xp_ext_set_TableWidths() {
     xp_ext_get_dimensions();
     // set table widths   
-    ($("#zef").innerHeight()-$("#zef table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
-    $("#zef table").css("width",zef_w-scr);
+    ($("#xp").innerHeight()-$("#xp table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
+    $("#xp table").css("width",xp_w-scr);
     // stretch customer column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.knd").css("width", $("div#zef > div > table > tbody > tr > td.knd").width());    
+    $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());    
     // stretch project column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.pct").css("width", $("div#zef > div > table > tbody > tr > td.pct").width());
+    $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
 }
 
 function xp_ext_triggerchange() {
-    if (ts_tss_hook_flag) {
+    if (xp_tss_hook_flag) {
         xp_ext_reload();
         xp_chk_hook_flag = 0;
         xp_chp_hook_flag = 0;
         xp_che_hook_flag = 0;
     }
-    if (ts_chk_hook_flag) {
+    if (xp_chk_hook_flag) {
         xp_ext_triggerCHK();
         xp_chp_hook_flag = 0;
         xp_che_hook_flag = 0;
     }
-    if (ts_chp_hook_flag) {
+    if (xp_chp_hook_flag) {
         xp_ext_triggerCHP();
     }
-    if (ts_che_hook_flag) {
+    if (xp_che_hook_flag) {
         xp_ext_triggerCHE();
     }
     
@@ -197,6 +197,7 @@ function xp_ext_triggerchange() {
     xp_chk_hook_flag = 0;
     xp_chp_hook_flag = 0;
     xp_che_hook_flag = 0;
+    xp_ext_reload();
 }
 
 function xp_ext_triggerTSS() {
@@ -238,17 +239,17 @@ function xp_ext_triggerCHE() {
 // reloads timesheet, customer, project and event tables
 //
 function xp_ext_reload() {
-            $.post(xp_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0 },
+            $.post(xp_ext_path + "processor.php", { axAction: "reload", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0 },
                 function(data) { 
-                    $("#zef").html(data);
+                    $("#xp").html(data);
                 
                     // set zef table width
-                    ($("#zef").innerHeight()-$("#zef table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of zef table depending on scrollbar or not
-                    $("#zef table").css("width",zef_w-scr);
+                    ($("#xp").innerHeight()-$("#xp table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of zef table depending on scrollbar or not
+                    $("#xp table").css("width",xp_w-scr);
                     // stretch customer column in faked zef table head
-                    $("#zef_head > table > tbody > tr > td.knd").css("width", $("div#zef > div > table > tbody > tr > td.knd").width());
+                    $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
                     // stretch project column in faked zef table head
-                    $("#zef_head > table > tbody > tr > td.pct").css("width", $("div#zef > div > table > tbody > tr > td.pct").width());
+                    $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
                 }
             );
 }

@@ -34,7 +34,7 @@ div.ki_export tr.odd td
 /*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
-#zef_head td {padding: 3px 4px 4px 6px;}
+#xp_head td {padding: 3px 4px 4px 6px;}
 
 div.ki_export tr.hover td {
     background: #FFC !important;
@@ -50,19 +50,19 @@ div.ki_export tr.odd td {
     background: #EEE;
 }
 
-div#zeftable tr td.time {
+div#xptable tr td.time {
     border-bottom:1px dotted white;;
 }
 
-div#zeftable tr.even td.time {
+div#xptable tr.even td.time {
     background: #A4E7A5;
 }
 
-div#zeftable tr.odd td.time {
+div#xptable tr.odd td.time {
     background: #64BF61;
 }
 
-div#zeftable tr.active td.time {
+div#xptable tr.active td.time {
     background: #F00;
 }
 
@@ -79,45 +79,45 @@ div.ki_export a {
     margin: 0 3px;
 }
 
-div.ki_export>div#zef>div#zeftable>table>tbody>tr>td.evt {
+div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
     border-right: none;
 }
 
 
 
-#zef_head td.option,
-#zef td.option
+#xp_head td.option,
+#xp td.option
 {
     width:70px;
 }
 
-#zef_head td.date,
-#zef td.date
+#xp_head td.date,
+#xp td.date
 {
     width:50px;
 }
 
-#zef_head td.time,
-#zef td.time
+#xp_head td.time,
+#xp td.time
 {
     width:40px;
 }
 
-#zef_head td.wage,
-#zef td.wage
+#xp_head td.wage,
+#xp td.wage
 {
     width:40px;
 }
 
-#zef_head td.from,
-#zef_head td.to,
-#zef td.from,
-#zef td.to
+#xp_head td.from,
+#xp_head td.to,
+#xp td.from,
+#xp td.to
 {
     width:50px;
 }
 
-div#zef_head div.left
+div#xp_head div.left
 { 
     position:absolute;
     overflow:hidden;
@@ -127,7 +127,7 @@ div#zef_head div.left
     left:3px;
 }
 
-div#zef_head div.left a
+div#xp_head div.left a
 { 
     background-image: url('../../../skins/standard/grfx/add.png');
     overflow:hidden;
@@ -137,7 +137,7 @@ div#zef_head div.left a
     text-indent:-500px;
 }
 
-div#zef_head td {padding: 3px 4px 4px 6px;}
+div#xp_head td {padding: 3px 4px 4px 6px;}
 
 
 tbody tr.comm0 td {

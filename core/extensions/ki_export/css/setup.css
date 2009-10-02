@@ -1,4 +1,4 @@
-/*#zef {
+#xp {
     border:1px solid black; 
     margin:0;
     padding:0;
@@ -8,12 +8,12 @@
     left:10px;
 }
 
-#zef { 
-    top:150px;
+#xp { 
+    top:200px;
     z-index:2;
 }
 
-#zef_head {
+#xp_head {
     border:1px solid black; 
     border-bottom:none;
     background-image: url('../../../skins/standard/grfx/g3_table_header.png');
@@ -26,11 +26,11 @@
     font-weight:bold;
 }
 
-#zef_head { top:125px; }
+#xp_head { top:175px; }
 
-#zef_head table { border:none; }
+#xp_head table { border:none; }
 
-#zef_head td {
+#xp_head td {
     font-weight:bold;
     color:white;
 }
