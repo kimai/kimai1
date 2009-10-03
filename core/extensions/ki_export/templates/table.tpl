@@ -73,7 +73,11 @@
                             {/if}
                         {/if}
                     ">
+                        { if $custom_dateformat }
+                        {$arr_data[row].time_in|date_format:$custom_dateformat}
+                        { else }
                         {$arr_data[row].time_in|date_format:$kga.date_format.1}
+                        { /if }
                     </td>
 
 {*in -----------------------------------------------------------*}
@@ -87,7 +91,11 @@
                             {/if}
                         {/if}
                     ">
+                        { if $custom_timeformat }
+                        {$arr_data[row].time_in|date_format:$custom_timeformat}
+                        { else }
                         {$arr_data[row].time_in|date_format:"%H:%M"}
+                        { /if }
                     </td>
 
 {*out ----------------------------------------------------------*}
@@ -103,7 +111,11 @@
                     ">
                     
 {if $arr_data[row].time_out}
+                        { if $custom_timeformat }
+                        {$arr_data[row].time_out|date_format:$custom_timeformat}
+                        { else }
                         {$arr_data[row].time_out|date_format:"%H:%M"}
+                        { /if }
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
 {/if}

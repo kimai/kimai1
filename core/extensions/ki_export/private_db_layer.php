@@ -11,7 +11,7 @@
 
 include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit,$default_location) {
     $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
     $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
     $result_arr = array();
@@ -40,6 +40,8 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
         $arr['comment']        = $zef_arr[$zef_arr_index]['zef_comment'];
         $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
+        if (empty($arr['location']))
+          $arr['location']     = $default_location;
         $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
         $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
         $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
@@ -84,6 +86,8 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
       $arr['comment']        = $zef_arr[$zef_arr_index]['zef_comment'];
       $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
+        if (empty($arr['location']))
+          $arr['location']     = $default_location;
       $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
       $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
       $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];

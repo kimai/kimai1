@@ -269,7 +269,7 @@ function xp_ext_triggerCHE() {
 // reloads timesheet, customer, project and event tables
 //
 function xp_ext_reload() {
-            $.post(xp_ext_path + "processor.php", { axAction: "reload", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0 },
+            $.post(xp_ext_path + "processor.php", { axAction: "reload", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0,timeformat: $("#xp_ext_timeformat").val(), dateformat: $("#xp_ext_dateformat").val(), default_location: $("#xp_ext_default_location").val() },
                 function(data) { 
                     $("#xp").html(data);
                 

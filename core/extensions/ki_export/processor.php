@@ -46,6 +46,14 @@ switch ($axAction) {
     // = Load data and return it =
     // ===========================
     case 'reload':
+        $timeformat       = isset($_REQUEST['timeformat']) ? strip_tags($_REQUEST['timeformat']) : null;
+        $dateformat       = isset($_REQUEST['dateformat']) ? strip_tags($_REQUEST['dateformat']) : null;
+        $default_location = isset($_REQUEST['dateformat']) ? strip_tags($_REQUEST['default_location']) : '';
+
+        // write format in smarty notation
+        $timeformat = preg_replace('/([A-Za-z])/','%$1',$timeformat);
+        $dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
+
         $filters = explode('|',$axValue);
         if ($filters[0] == "")
           $filterUsr = array();
@@ -69,7 +77,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $filterKnd = array($kga['customer']['knd_ID']);
 
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location);
 
 
         if (count($arr_data)>0) {
@@ -95,6 +103,8 @@ switch ($axAction) {
         $ann_new = intervallApos($ann);
         $tpl->assign('evt_ann',$ann_new);
 
+        $tpl->assign('custom_timeformat',$timeformat);
+        $tpl->assign('custom_dateformat',$dateformat);
         $tpl->display("table.tpl");
     break;
 
