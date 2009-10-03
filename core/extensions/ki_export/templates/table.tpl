@@ -228,9 +228,11 @@
                             {/if}
                         {/if}
                     ">
-	
+						{if $arr_data[row].zef_cleared}
 						<a class ="is_cleared" href ="#" onClick="alert('isnt cleared'); return false;"></a>
+						{else}
 						<a class ="isnt_cleared" href ="#" onClick="alert('cleared'); return false;"></a>
+						{/if}
 					</td>
 					
 
