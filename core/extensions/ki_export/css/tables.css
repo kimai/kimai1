@@ -79,7 +79,7 @@ div.ki_export a {
     margin: 0 3px;
 }
 
-div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
+div.ki_export>div#xp>div#xptable>table>tbody>tr>td.user {
     border-right: none;
 }
 
@@ -103,6 +103,18 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
     width:40px;
 }
 
+#xp_head td.dec_time,
+#xp td.dec_time
+{
+    width:40px;
+}
+
+#xp_head td.rate,
+#xp td.rate
+{
+    width:40px;
+}
+
 #xp_head td.wage,
 #xp td.wage
 {
@@ -115,6 +127,10 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
 #xp td.to
 {
     width:50px;
+}
+
+div.ki_export table td.disabled {
+  color:gray !important;
 }
 
 div.ki_export table td.cleared
@@ -166,34 +182,6 @@ div#xp_head div.right a
 }
 
 div#xp_head td {padding: 3px 4px 4px 6px;}
-
-
-tbody tr.comm0 td {
-    padding:5px;
-    background: #fff;
-    background-image:url(../../../skins/standard/grfx/schraff0.gif);
-}
-
-tbody tr.comm1 td {
-    padding:5px;
-    background: #ff9;
-    background-image:url(../../../skins/standard/grfx/schraff1.gif);
-}
-
-tbody tr.comm2 td {
-    padding:5px;
-    background: #f00;
-    background-image:url(../../../skins/standard/grfx/schraff2.gif);
-    font-weight:bold;
-    color:#fff;
-}
-
-.break_day {
-	border-top:1px solid black;
-}
-.break_gap {
-	border-top:2px dotted #FF6FCF; /* Kathrin wollte das Pink haben ... */
-}
 
 
 

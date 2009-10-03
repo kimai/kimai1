@@ -167,9 +167,39 @@ function xp_ext_set_TableWidths() {
     ($("#xp").innerHeight()-$("#xp table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
     $("#xp table").css("width",xp_w-scr);
     // stretch customer column in faked zef table head
+    headerWidth = $("#xp_head > table > tbody > tr > td.dec_time").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.dec_time").width();
+    $("#xp_head > table > tbody > tr > td.dec_time").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.dec_time").css("width", Math.max(headerWidth,contentWidth));
+
+    headerWidth = $("#xp_head > table > tbody > tr > td.rate").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
+    $("#xp_head > table > tbody > tr > td.rate").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.rate").css("width", Math.max(headerWidth,contentWidth));
+
+    headerWidth = $("#xp_head > table > tbody > tr > td.comment").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.comment").width();
+    $("#xp_head > table > tbody > tr > td.comment").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.comment").css("width", Math.max(headerWidth,contentWidth));
+
+    headerWidth = $("#xp_head > table > tbody > tr > td.location").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.location").width();
+    $("#xp_head > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
+
+    headerWidth = $("#xp_head > table > tbody > tr > td.trackingnr").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.trackingnr").width();
+    $("#xp_head > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
+
+    headerWidth = $("#xp_head > table > tbody > tr > td.user").width();
+    contentWidth = $("div#xp > div > table > tbody > tr > td.user").width();
+    $("#xp_head > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
+    $("div#xp > div > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
+
     $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());    
-    // stretch project column in faked zef table head
     $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
+    $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());
 }
 
 function xp_ext_triggerchange() {
@@ -250,9 +280,33 @@ function xp_ext_reload() {
                     $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
                     // stretch project column in faked zef table head
                     $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
+                xp_ext_resize();
                 }
             );
 }
 
 
 
+function xp_toggle_column(name) {
+  if ($("#xp_head > table > tbody > tr > td."+name).hasClass('disabled')) {
+    $("#xp_head > table > tbody > tr > td."+name).removeClass('disabled');
+    $("div#xp > div > table > tbody > tr > td."+name).removeClass('disabled');
+  }
+  else {
+    $("#xp_head > table > tbody > tr > td."+name).addClass('disabled');
+    $("div#xp > div > table > tbody > tr > td."+name).addClass('disabled');
+  }
+}
+
+function xp_toggle_cleared(id) {
+  path = "#xp"+id+">td.cleared>a";
+  if ($(path).hasClass("is_cleared")) {
+    $(path).removeClass("is_cleared");
+    $(path).addClass("isnt_cleared");
+  }
+  else {
+    $(path).removeClass("isnt_cleared");
+    $(path).addClass("is_cleared");
+  }
+  $(path).blur();
+}

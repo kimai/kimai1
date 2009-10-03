@@ -10,24 +10,29 @@
               <col class="from" />
               <col class="to" />
               <col class="time" />
+              <col class="dec_time" />
               <col class="wage" />
               <col class="client" />
               <col class="project" />
               <col class="action" />
+              <col class="comment" />
+              <col class="location" />
+              <col class="trackingnr" />
+              <col class="user" />
               <col class="cleared" />
             </colgroup>
 
             <tbody>
 
 {assign var="day_buffer" value="0"}
-{assign var="zef_in_buffer" value=0}
+{assign var="time_in_buffer" value=0}
                 
 {section name=row loop=$arr_data}
 
-{if $arr_data[row].zef_out}                
-                <tr id="zefEntry{$arr_data[row].zef_ID}" class="{cycle values="odd,even"}">
+{if $arr_data[row].time_out}                
+                <tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"}">
 {else}                    
-                <tr id="zefEntry{$arr_data[row].zef_ID}" class="{cycle values="odd,even"} active">
+                <tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"} active">
 {/if}
                
 
@@ -38,10 +43,10 @@
 
 {if $kga.global}
                     <td class="alias
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -60,45 +65,45 @@
 {*datum --------------------------------------------------------*}
 
                     <td class="date
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
                     ">
-                        {$arr_data[row].zef_in|date_format:$kga.date_format.1}
+                        {$arr_data[row].time_in|date_format:$kga.date_format.1}
                     </td>
 
 {*in -----------------------------------------------------------*}
 
                     <td class="from
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
                     ">
-                        {$arr_data[row].zef_in|date_format:"%H:%M"}
+                        {$arr_data[row].time_in|date_format:"%H:%M"}
                     </td>
 
 {*out ----------------------------------------------------------*}
 
                     <td class="to
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
                     ">
                     
-{if $arr_data[row].zef_out}
-                        {$arr_data[row].zef_out|date_format:"%H:%M"}
+{if $arr_data[row].time_out}
+                        {$arr_data[row].time_out|date_format:"%H:%M"}
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
 {/if}
@@ -107,10 +112,10 @@
 {*task time ----------------------------------------------------*}
 
                     <td class="time
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -127,13 +132,51 @@
 {/if}
                     </td>
 
+{*decimal time --------------------------------------------------*}
+
+                    <td class="dec_time
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    
+{if $arr_data[row].dec_zef_time}
+                    
+                        <a title='{$arr_data[row].zef_coln}'>
+                            {$arr_data[row].dec_zef_time}
+                        </a>
+                      
+{else}  
+                        &ndash;:&ndash;&ndash;
+{/if}
+                    </td>
+
+{*rate ---------------------------------------------------------*}
+
+                    <td class="rate
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    
+                            {$arr_data[row].zef_rate}
+                    </td>
+
 {*task wage ----------------------------------------------------*}
 
                     <td class="wage
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -151,10 +194,10 @@
 {*client name --------------------------------------------------*}
 
                     <td class="knd
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -165,10 +208,10 @@
 {*project name -------------------------------------------------*}
 
                     <td class="pct
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -190,10 +233,10 @@
 {*event name and comment bubble --------------------------------*}
 
                     <td class="evt
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
@@ -204,46 +247,91 @@
                             return false;">
                             {$arr_data[row].evt_name} 
                         </a>
-                        
-{if $arr_data[row].zef_comment}
-    {if $arr_data[row].zef_comment_type == '0'}
-                        <a href="#" onClick="comment({$arr_data[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_data[row].zef_comment}' border="0" /></a>
-    {/if}
-    {if $arr_data[row].zef_comment_type == '1'}
-                        <a href="#" onClick="comment({$arr_data[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_data[row].zef_comment}' border="0" /></a>
-    {/if}
-    {if $arr_data[row].zef_comment_type == '2'}
-                        <a href="#" onClick="comment({$arr_data[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_data[row].zef_comment}' border="0" /></a>
-    {/if}
-{/if}
                     </td>
 
+{*comment -----------------------------------------------------*}
 
-					<td class="cleared
-                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                    <td class="comment
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
-                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                            {if $arr_data[row].time_out != $time_in_buffer}
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
                     ">
-						{if $arr_data[row].zef_cleared}
-						<a class ="is_cleared" href ="#" onClick="alert('isnt cleared'); return false;"></a>
-						{else}
-						<a class ="isnt_cleared" href ="#" onClick="alert('cleared'); return false;"></a>
-						{/if}
+                        {$arr_data[row].comment|nl2br}
+                        
+                    </td>
+
+{*location ----------------------------------------------------*}
+
+                    <td class="location
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                        {$arr_data[row].location}
+                        
+                    </td>
+
+{*tracking number ---------------------------------------------*}
+
+                    <td class="trackingnr
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                        {$arr_data[row].trackingnr}
+                        
+                    </td>
+
+{*user --------------------------------------------------------*}
+
+                    <td class="user
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                        {$arr_data[row].username}
+                        
+                    </td>
+
+
+					<td class="cleared
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    " style="width:40px">
+                      <a class ="
+                      {if $arr_data[row].cleared}
+                       is_cleared
+                      {else}
+                       isnt_cleared
+                      {/if}" href ="#" onClick="xp_toggle_cleared('{$arr_data[row].type}{$arr_data[row].id}'); return false;"></a>
 					</td>
 					
 
                 </tr>
-                
-                <tr id="c{$arr_data[row].zef_ID}" class="comm{$arr_data[row].zef_comment_type}" style="display:none;">
-                    <td colspan=8>{$arr_data[row].zef_comment|nl2br}</td>
-                </tr>
 
-{assign var="day_buffer" value=$arr_data[row].zef_in|date_format:"%d"}
-{assign var="zef_in_buffer" value=$arr_data[row].zef_in}
+{assign var="day_buffer" value=$arr_data[row].time_in|date_format:"%d"}
+{assign var="time_in_buffer" value=$arr_data[row].time_in}
                
 {/section}
                 

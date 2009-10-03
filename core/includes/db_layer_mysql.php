@@ -2229,8 +2229,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $limit="";
     }
 
-    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias, zef_cleared
-					 
+    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
               FROM ${p}zef 
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
@@ -2268,6 +2267,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
 
             $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
             $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']);
+            $arr[$i]['zef_rate']         = $row->zef_rate;
             $arr[$i]['zef_pctID']        = $row->zef_pctID;
             $arr[$i]['zef_evtID']        = $row->zef_evtID;
             $arr[$i]['zef_usrID']        = $row->zef_usrID;
@@ -2283,6 +2283,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
             $arr[$i]['zef_cleared']      = $row->zef_cleared;
             $arr[$i]['zef_comment_type'] = $row->zef_comment_type;
             $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row->zef_rate,2);
+            $arr[$i]['usr_alias']        = $row->usr_alias;
+            $arr[$i]['usr_name']         = $row->usr_name;
             $i++;
         }
         return $arr;

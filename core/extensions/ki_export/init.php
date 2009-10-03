@@ -5,6 +5,8 @@
 // ==================================
 include('../../includes/basics.php');
 
+require("private_db_layer.php");
+
 $usr = checkUser();
 
 // ============================================
@@ -30,7 +32,7 @@ $tpl->display('panel.tpl');
 // ==========================
 $total = intervallApos(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 
-$arr_zef = get_arr_zef($in,$out,array($kga['usr']['usr_ID']),null,null,1);
+$arr_zef = xp_get_arr($in,$out,array($kga['usr']['usr_ID']),null,null,1);
 
 if (count($arr_zef)>0) {
     $tpl->assign('arr_data', $arr_zef);
@@ -39,19 +41,19 @@ if (count($arr_zef)>0) {
 }
 $tpl->assign('total', $total);
 
-$ann = get_arr_time_usr($in,$out,array($kga['usr']['usr_ID']));
+$ann = xp_get_arr_usr($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('usr_ann',$ann_new);
 
-$ann = get_arr_time_knd($in,$out,array($kga['usr']['usr_ID']));
+$ann = xp_get_arr_knd($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('knd_ann',$ann_new);
 
-$ann = get_arr_time_pct($in,$out,array($kga['usr']['usr_ID']));
+$ann = xp_get_arr_pct($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('pct_ann',$ann_new);
 
-$ann = get_arr_time_evt($in,$out,array($kga['usr']['usr_ID']));
+$ann = xp_get_arr_evt($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('evt_ann',$ann_new);
 

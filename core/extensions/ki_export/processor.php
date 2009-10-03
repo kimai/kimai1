@@ -28,6 +28,8 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
+require("private_db_layer.php");
+
 // ==================
 // = handle request =
 // ==================
@@ -67,7 +69,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $filterKnd = array($kga['customer']['knd_ID']);
 
-        $arr_data = get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,1);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1);
 
 
         if (count($arr_data)>0) {
@@ -77,19 +79,19 @@ switch ($axAction) {
         }
         $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
 
-        $ann = get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
         $ann_new = intervallApos($ann);
         $tpl->assign('usr_ann',$ann_new);
         
-        $ann = get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
         $ann_new = intervallApos($ann);
         $tpl->assign('knd_ann',$ann_new);
 
-        $ann = get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
         $ann_new = intervallApos($ann);
         $tpl->assign('pct_ann',$ann_new);
 
-        $ann = get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct);
         $ann_new = intervallApos($ann);
         $tpl->assign('evt_ann',$ann_new);
 
