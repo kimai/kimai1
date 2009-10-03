@@ -7,8 +7,10 @@
 {/literal}
 
 <div id="xp_head">
-    <div class="left">
+    <div class="right">
+	        <a href="#" onClick="alert('INVERT!'); return false;">invert</a>
     </div>
+
     <table>
         <colgroup>
           <col class="date" />
@@ -19,6 +21,7 @@
           <col class="knd" />
           <col class="pct" />
           <col class="evt" />
+          <!-- <col class="cleared" /> -->
         </colgroup>
         <tbody>
             <tr>
@@ -30,6 +33,7 @@
                 <td class="knd">{$kga.lang.knd}</td>
                 <td class="pct">{$kga.lang.pct}</td>
                 <td class="evt">{$kga.lang.evt}</td>
+                <!-- <td class="evt">cleared</td> -->
             </tr>
         </tbody>
     </table>

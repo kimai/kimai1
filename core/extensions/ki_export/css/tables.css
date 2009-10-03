@@ -119,14 +119,24 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
 
 div.ki_export table td.cleared
 {
-	width:20px;
+	width:40px;
 }
 div.ki_export table td.cleared a
 {
-background:url('../grfx/cleared.png') no-repeat;
 width:13px;
 height:13px;
 display:block;
+float:left;
+}
+
+div.ki_export table td.cleared a.is_cleared
+{
+background:url('../grfx/cleared.png') 0 -13px  no-repeat;
+}
+
+div.ki_export table td.cleared a.isnt_cleared
+{
+background:url('../grfx/cleared.png') no-repeat;
 }
 
 
@@ -151,6 +161,7 @@ div#xp_head div.right a
     width:22px;
     height:16px;
     text-indent:-500px;
+
 }
 
 div#xp_head td {padding: 3px 4px 4px 6px;}

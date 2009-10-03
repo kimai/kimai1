@@ -219,7 +219,10 @@
                     </td>
 
 
-					<td class="cleared"><a href ="#" onClick="alert('cleared'); return false;"></a></td>
+					<td class="cleared">
+						<a class ="is_cleared" href ="#" onClick="alert('isnt cleared'); return false;"></a>
+						<a class ="isnt_cleared" href ="#" onClick="alert('cleared'); return false;"></a>
+					</td>
 					
 
                 </tr>
