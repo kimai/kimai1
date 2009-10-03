@@ -131,18 +131,18 @@ if (isset($_REQUEST['submit']))
 				}
 			}
 		}
-
-		$query="";
-		foreach($arr2 AS $row)
-		{
-			$query .= $row;
-		}
-
 		if ($kga['server_conn'] == "pdo") 
 		{
 		        if (is_object($pdo_conn)) 
-				{
-		            $pdo_query = $pdo_conn->prepare($query);
+			{
+			
+
+			 $query="";
+			foreach($arr2 AS $row)
+			{
+				$query .= $row;
+			}
+			    $pdo_query = $pdo_conn->prepare($query);
 		            $success = $pdo_query->execute(array());
 		        }
 		} 
@@ -150,7 +150,13 @@ if (isset($_REQUEST['submit']))
 		{
 		    if (is_object($conn)) 
 			{
-		        $success = $conn->Query($query);
+			foreach($arr2 AS $row)
+			{
+				$success = $conn->Query($row);
+				if (!$success)
+					break;
+			
+			}
 		    }
 		}
 		header("location: db_restore.php");
