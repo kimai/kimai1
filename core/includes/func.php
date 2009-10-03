@@ -578,36 +578,57 @@ function get_cookie($cookie_name, $default=null) {
  */
 function check_zef_data($id, $zef_data) {
 
-if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
+	if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
 	
-	$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
-    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-    $zef_final_data['zef_location']     = $zef_data['zlocation'];
-    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-    $zef_final_data['zef_comment']      = $zef_data['comment'];
-    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-    $zef_final_data['zef_rate']         = $zef_data['rate'];
+		$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
+	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
+	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
+	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
+	    $zef_final_data['zef_comment']      = $zef_data['comment'];
+	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
+	    $zef_final_data['zef_rate']         = $zef_data['rate'];
     
-    return zef_edit_record($id,$zef_final_data);
+	    return zef_edit_record($id,$zef_final_data);
     
-} else {
+	} else {
 
-	$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
-    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-    $zef_final_data['zef_location']     = $zef_data['zlocation'];
-    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-    $zef_final_data['zef_comment']      = $zef_data['comment'];
-    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-    $zef_final_data['zef_in']           = $zef_data['in'];
-    $zef_final_data['zef_out']          = $zef_data['out'];
-    $zef_final_data['zef_time']         = $zef_data['diff'];
-    $zef_final_data['zef_rate']         = $zef_data['rate'];
+		$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
+	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
+	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
+	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
+	    $zef_final_data['zef_comment']      = $zef_data['comment'];
+	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
+	    $zef_final_data['zef_in']           = $zef_data['in'];
+	    $zef_final_data['zef_out']          = $zef_data['out'];
+	    $zef_final_data['zef_time']         = $zef_data['diff'];
+	    $zef_final_data['zef_rate']         = $zef_data['rate'];
     
-    return zef_edit_record($id,$zef_final_data);
+	    return zef_edit_record($id,$zef_final_data);
+
+	}
 
 }
 
 
+
+
+
+// http://www.alfasky.com/?p=20
+// This little function will help you truncate a string to a specified 
+// length when copying data to a place where you can only store or display 
+// a limited number of characters, then it will append “…” to it showing 
+// that some characters were removed from the original entry.
+
+function addEllipsis($string, $length, $end='…')
+{
+  if (strlen($string) > $length)
+  {
+    $length -=  strlen($end);  // $length =  $length - strlen($end);
+    $string  = substr($string, 0, $length);
+    $string .= $end;  //  $string =  $string . $end;
+  }
+  return $string;
 }
+
 
 ?>

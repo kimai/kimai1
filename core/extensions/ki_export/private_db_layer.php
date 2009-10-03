@@ -38,7 +38,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
         $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
         $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
-        $arr['comment']        = $zef_arr[$zef_arr_index]['zef_comment'];
+        $arr['comment']        = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
         $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
         if (empty($arr['location']))
           $arr['location']     = $default_location;
@@ -84,7 +84,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
       $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
       $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
-      $arr['comment']        = $zef_arr[$zef_arr_index]['zef_comment'];
+	  $arr['comment']        = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
       $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
         if (empty($arr['location']))
           $arr['location']     = $default_location;
@@ -112,6 +112,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $exp_arr_index++;
       $result_arr[] = $arr;
     }
+
     return $result_arr;
 }
 
