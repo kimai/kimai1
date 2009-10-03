@@ -2019,7 +2019,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
     }
     
-    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias
+    $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_alias, zef_cleared
 			
              FROM " . $kga['server_prefix'] . "zef
              Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
@@ -2078,6 +2078,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $arr[$i]['zef_location']     = $row['zef_location'];
         $arr[$i]['zef_trackingnr']   = $row['zef_trackingnr'];
         $arr[$i]['zef_comment']      = $row['zef_comment'];
+        $arr[$i]['zef_cleared']      = $row['zef_cleared'];
         $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
         $arr[$i]['usr_alias']        = $row['usr_alias'];
         $i++;
