@@ -117,19 +117,35 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.evt {
     width:50px;
 }
 
-div#xp_head div.left
+div.ki_export table td.cleared
+{
+	width:20px;
+}
+div.ki_export table td.cleared a
+{
+background:url('../grfx/cleared.png') no-repeat;
+width:13px;
+height:13px;
+display:block;
+}
+
+
+
+
+
+div#xp_head div.right
 { 
     position:absolute;
     overflow:hidden;
     width:32px;
     height:20px;
     top:3px;
-    left:3px;
+    right:3px;
 }
 
-div#xp_head div.left a
+div#xp_head div.right a
 { 
-    background-image: url('../../../skins/standard/grfx/add.png');
+    background-image: url('../grfx/invert.png');
     overflow:hidden;
     display:block;
     width:22px;

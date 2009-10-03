@@ -14,6 +14,7 @@
               <col class="client" />
               <col class="project" />
               <col class="action" />
+              <col class="cleared" />
             </colgroup>
 
             <tbody>
@@ -216,6 +217,10 @@
     {/if}
 {/if}
                     </td>
+
+
+					<td class="cleared"><a href ="#" onClick="alert('cleared'); return false;"></a></td>
+					
 
                 </tr>
                 
