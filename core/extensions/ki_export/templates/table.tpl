@@ -219,7 +219,16 @@
                     </td>
 
 
-					<td class="cleared">
+					<td class="cleared
+                        {if $arr_data[row].zef_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].zef_out != $zef_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+	
 						<a class ="is_cleared" href ="#" onClick="alert('isnt cleared'); return false;"></a>
 						<a class ="isnt_cleared" href ="#" onClick="alert('cleared'); return false;"></a>
 					</td>
