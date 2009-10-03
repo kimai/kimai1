@@ -51,6 +51,10 @@
 					function form_showUser() {
 						xajax_selectUser(xajax.getFormValues('selectform'));
 					}
+						
+					function form_exportExcell() {
+						xajax_exportExcell(xajax.getFormValues('selectform'));
+					}
 								
 				//-->
 			</script>

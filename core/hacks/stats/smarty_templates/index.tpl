@@ -1,7 +1,12 @@
 {include file="_header.tpl"}
 	<div id="div_selectform" style="float: left;width: 230px;background: #efefef; padding: 10px;margin-right: 20px;border: 1px solid #999;">
-		<form id="selectform" action="" method="post" onsubmit="return false;">
+		<form id="selectform" action="" method="post">
 			
+			<input type="submit" name="submit" value="Excell-Export" id="Excell-Export">
+			
+		<!-- <form id="selectform" action="" method="post" onsubmit="return false;"> -->
+			
+			<br />
 			<br />
 			
 			Filter:
@@ -12,7 +17,7 @@
 					<option value = "0">offen</option>
 				</select>
 			</div>
-
+			
 			<br />
 			
 			von:<br />
@@ -62,6 +67,7 @@
 				form_showEvents();
 				form_showUser();
 			</script>
+			
 		</form>
 
 	</div>

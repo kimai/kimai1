@@ -34,24 +34,45 @@
 	include('../../includes/basics.php');
 	
 	$p = $kga['server_prefix'];
+
+	if ($_REQUEST['submit']=="Excell-Export")
+	{
+		$formvalues['select_kunde']                  = $_REQUEST['select_kunde']             ;
+		$formvalues['select_projekt']                = $_REQUEST['select_projekt']           ;
+		$formvalues['select_events']                 = $_REQUEST['select_events']            ;
+
+		$formvalues['startdatum']['Date_Month']      = $_REQUEST['startdatum']['Date_Month'] ;
+		$formvalues['startdatum']['Date_Day']        = $_REQUEST['startdatum']['Date_Day']   ;
+		$formvalues['startdatum']['Date_Year']       = $_REQUEST['startdatum']['Date_Year']  ;
+		$formvalues['enddatum']['Date_Month']        = $_REQUEST['enddatum']['Date_Month']   ;
+		$formvalues['enddatum']['Date_Day']          = $_REQUEST['enddatum']['Date_Day']     ;
+		$formvalues['enddatum']['Date_Year']         = $_REQUEST['enddatum']['Date_Year']    ;
+
+		$formvalues['select_filter']                 = $_REQUEST['select_filter']            ;
+		$formvalues['select_user']                   = $_REQUEST['select_user']              ;
+		$formvalues['options_timeformat']            = $_REQUEST['options_timeformat']       ;
+		
+	}
+	else
+	{
+		// Xajax
+		require_once("../../libraries/xajax/xajax_core/xajax.inc.php");
+		$xajax = new xajax();
+		$xajax->configure("javascript URI","../../libraries/xajax/");
 	
-	// Xajax
-	require_once("../../libraries/xajax/xajax_core/xajax.inc.php");
-	$xajax = new xajax();
-	$xajax->configure("javascript URI","../../libraries/xajax/");
+		// Smarty
+		require('../../libraries/smarty/Smarty.class.php');
+		$smarty = new Smarty();
+		$smarty->template_dir = 'smarty_templates';
+		$smarty->compile_dir = '../../compile';
 	
-	// Smarty
-	require('../../libraries/smarty/Smarty.class.php');
-	$smarty = new Smarty();
-	$smarty->template_dir = 'smarty_templates';
-	$smarty->compile_dir = '../../compile';
-	
-	// xajax register functions	
-	$xajax->register(XAJAX_FUNCTION,'selectProjects');
-	$xajax->register(XAJAX_FUNCTION,'selectEvents');
-	$xajax->register(XAJAX_FUNCTION,'selectUser');
-	$xajax->register(XAJAX_FUNCTION,'showJobs');
-	$xajax->register(XAJAX_FUNCTION,'markCleared');
+		// xajax register functions	
+		$xajax->register(XAJAX_FUNCTION,'selectProjects');
+		$xajax->register(XAJAX_FUNCTION,'selectEvents');
+		$xajax->register(XAJAX_FUNCTION,'selectUser');
+		$xajax->register(XAJAX_FUNCTION,'showJobs');
+		$xajax->register(XAJAX_FUNCTION,'markCleared');
+	}
 	
 	function selectProjects($formvalues) {
 		global $p;
@@ -151,26 +172,39 @@
 		
 		#return $objResponse;
 	}
-	
+
+
+
 	function showJobs($formvalues) {
-		global $p, $standard_Location;
 	
-		#if($formvalues['select_kunde'] == "0"){
-		#	$where = "";
-		#} else {
-			$xwhere = "AND knd_ID = '".$formvalues['select_kunde']."'";
-		#}
+		$objResponse = new xajaxResponse();
+		
+		$return = generateTable($formvalues);
+		
+		$objResponse->assign("div_liste","innerHTML",$return);
+		return $objResponse;
+	}
+
+
+
+
+
+	function generateTable($formvalues,$screenmode=1) 
+	{
+		global $p, $standard_Location;
+			
+		$xwhere = "AND knd_ID = '".$formvalues['select_kunde']."'";
+
 		$query_projektinfos = "
 			SELECT * 
 			FROM ${p}knd 
 			WHERE 1 ".$xwhere." 
 		";
+		
 		#print $query_projektinfos;
 		$res_projektinfos = mysql_query($query_projektinfos);
 		print mysql_error();
 		$row_pi = mysql_fetch_assoc($res_projektinfos);
-		
-		$objResponse = new xajaxResponse();
 		
 		if(($formvalues['select_projekt'] == 0 OR $formvalues['select_projekt'] == "") AND $formvalues['select_kunde'] == "0"){
 			$where = "";
@@ -258,14 +292,14 @@
 		print mysql_error();
 		$return = "";
 		if($formvalues['select_kunde'] != "0"){
-			$return .= "<strong>Kunde: ".$row_pi['knd_name']."</strong><br />";
+			if ($screenmode) $return .= "<strong>Kunde: ".$row_pi['knd_name']."</strong><br />";
 		}
 		
 		// $return .= "<input type=\"button\" name=\"reload\" value=\"Reload\" onclick=\"form_showJobs();return false;\" />";
 				
-		$return .= "<h1>vom ".date("d.m.Y", $startdatum)." bis ".date("d.m.Y", $enddatum)."</h1>";
-		$return .="<form name=\"jobanzeige\" method=\"get\" action=\"\">";
-		$return .= "<table width=\"100%\" cellpadding=\"4\" cellspacing=\"0\">";
+		if ($screenmode) $return .= "<h1>vom ".date("d.m.Y", $startdatum)." bis ".date("d.m.Y", $enddatum)."</h1>";
+		if ($screenmode) $return .="<form name=\"jobanzeige\" method=\"get\" action=\"\">";
+		$return .= "<table>";
 		
 		$return .= "<tr>";
 		$return .= "<th>Tag</th>";
@@ -279,7 +313,7 @@
 		$return .= "<th>Beschreibung</th>";
 		$return .= "<th>Ort</th>";
 		$return .= "<th>ausgeführt&nbsp;von</th>";
-		$return .= "<th class=\"invertclm\">abgerechnet</th>";
+		if ($screenmode) $return .= "<th class=\"invertclm\">abgerechnet</th>";
 		$return .= "</tr>";
 		
 		$zeit_summe = 0;
@@ -307,21 +341,18 @@
 			$return .= "<td>".$row['zef_comment']."</td>";
 			$return .= "<td>".$ort."</td>";
 			
-			// $return .= "<td style=\"border-left: 1px solid #999;\">".$row['usr_name']."</td>";
 			if ($row['usr_alias'] != "") {
 				$ausgefuehrt_von = $row['usr_alias'];
 			} else {
 				$ausgefuehrt_von = $row['usr_name'];
 			}
 			
-			
 			$return .= "<td>".$ausgefuehrt_von."</td>";
 			
 			if($row['zef_cleared'] == 1){$selected="checked='checked'";} else {$selected="";}
-			$return .= "<td class=\"invertclm\"><input type=\"checkbox\" name=\"".$row['zef_ID']."\" class=\"clear_setter\"  id=\"".$row['zef_ID']."\" ".$selected." onchange=\"xajax_markCleared(".$row['zef_ID'].")\" /></td>";
+			if ($screenmode) $return .= "<td class=\"invertclm\"><input type=\"checkbox\" name=\"".$row['zef_ID']."\" class=\"clear_setter\"  id=\"".$row['zef_ID']."\" ".$selected." onchange=\"xajax_markCleared(".$row['zef_ID'].")\" /></td>";
 			$return .= "</tr>";
 		}
-		
 		
 		// $gesamt = number_format(round($row_gd['gesamtdauer']/3600, 2),2, ',', '.');
 		$gesamt = number_format($zeit_summe,2, ',', '.');
@@ -338,32 +369,41 @@
 			$return .= "<td>&nbsp;</td>";
 			$return .= "<td>&nbsp;</td>";
 			$return .= "<td>&nbsp;</td>";
-			$return .= "<td class=\"invertclm\"><input id=\"invertbtn\" type=\"button\" name=\"invertButton\" value=\"Invertieren\" onclick=\"$('.clear_setter').each(function(index){ this.click(); });\" /></td>";
+			if ($screenmode) $return .= "<td class=\"invertclm\"><input id=\"invertbtn\" type=\"button\" name=\"invertButton\" value=\"Invertieren\" onclick=\"$('.clear_setter').each(function(index){ this.click(); });\" /></td>";
 			$return .= "</tr>";
 		$return .= "</table>";
-		$return .= "</form>";
-		$objResponse->assign("div_liste","innerHTML",$return);
-		return $objResponse;
+		if ($screenmode) $return .= "</form>";
+		
+		return $return;
+	}
+
+	if ($_REQUEST['submit']=="Excell-Export")
+	{
+		header("Content-type: application/vnd-ms-excel"); 
+	 	header("Content-Disposition: attachment; filename=export.xls");
+        echo generateTable($_REQUEST,0);
+	}
+	else
+	{
+		$xajax->processRequest();
+		$js = $xajax->getJavascript();
+		$smarty->assign('xajax_js',$js);
+	
+		if (isset($formvalues['options_timeformat'])) {
+			$smarty->assign('options_timeformat',$formvalues['options_timeformat']);
+		}
+
+		// grab customers ---------------------------------------------------------------------------------------------------------------
+		$query = "SELECT * FROM ${p}knd ORDER BY knd_name";
+		$res = mysql_query($query);
+		$kunden = array();
+		while($row = mysql_fetch_assoc($res)){
+			$kunden[] = $row;
+		}
+		$smarty->assign('kunden', $kunden);
+		// $smarty->assign('kga', $kga);
+		$smarty->assign('kga', $p);
+		$smarty->display('index.tpl');
 	}
 	
-	$xajax->processRequest();
-	$js = $xajax->getJavascript();
-	$smarty->assign('xajax_js',$js);
-	
-	if (isset($formvalues['options_timeformat'])) {
-		$smarty->assign('options_timeformat',$formvalues['options_timeformat']);
-	}
-	
-	
-	// grab customers ---------------------------------------------------------------------------------------------------------------
-	$query = "SELECT * FROM ${p}knd ORDER BY knd_name";
-	$res = mysql_query($query);
-	$kunden = array();
-	while($row = mysql_fetch_assoc($res)){
-		$kunden[] = $row;
-	}
-	$smarty->assign('kunden', $kunden);
-	// $smarty->assign('kga', $kga);
-	$smarty->assign('kga', $p);
-	$smarty->display('index.tpl');
 ?>
