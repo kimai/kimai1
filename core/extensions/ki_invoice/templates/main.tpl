@@ -12,7 +12,9 @@
 
 <div id="iv_ext_wrap">
     <div id ="iv_ext">
-    	
+	
+    <img src="../extensions/ki_invoice/grfx/OpenOffice.png" width="341" height="450" alt="OpenOffice" id="iv_screenshot">	
+
 	<form id="iv_ext_form" method="post" action="../extensions/ki_invoice/print.php" target="_blank">
 		<div id="iv_ext_advanced">
 			<div id="iv_ext_form">

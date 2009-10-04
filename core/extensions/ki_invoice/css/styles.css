@@ -1,5 +1,6 @@
 #iv_ext_wrap {
     border:1px solid #000;
+border-top:none;
     position:absolute;
     overflow:hidden;
     margin:0;
@@ -8,8 +9,8 @@
 #iv_ext {
     padding:10px;
     font-size: 20px;
-    background-color: ddddcd;
-    color:#ddddcd;
+    background-color: #fff;
+    color:#000;
     overflow:auto;
 }
 
@@ -35,4 +36,10 @@
 
 #iv_button {
    padding: 20px 0px;
+}
+
+#iv_screenshot
+{
+float:left;	
+margin-right:10px;
 }
