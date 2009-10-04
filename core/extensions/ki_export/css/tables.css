@@ -80,6 +80,13 @@ div#xptable tr.even td.trackingnr,
 div#xptable tr.even td.location {
     background: #ECF7FD;
 }
+div#xptable tr.odd td.cleared {
+    background: #6E7882;
+}
+
+div#xptable tr.even td.cleared {
+    background: #86939F;
+}
 
 
 
@@ -98,8 +105,8 @@ div.ki_export a {
     margin: 0 3px;
 }
 
-div.ki_export>div#xp>div#xptable>table>tbody>tr>td.user {
-/*    border-right: none;*/
+div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
+    border-right: none;
 }
 
 #xp_head table {
