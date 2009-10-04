@@ -36,14 +36,22 @@
                 <td class="to"><a onClick="xp_toggle_column('to');">{$kga.lang.out}</a></td>
                 <td class="time"><a onClick="xp_toggle_column('time');">{$kga.lang.time}</a></td>
                 <td class="dec_time"><a onClick="xp_toggle_column('dec_time');">{$kga.lang.timelabel}</a></td>
-                <td class="rate"><a onClick="xp_toggle_column('rate');">{$kga.lang.rate}</a></td>
-                <td class="wage"><a onClick="xp_toggle_column('wage');">Euro</a></td>
+                <td class="cash"><a onClick="xp_toggle_column('cash');">Satz/ges.</a></td>
+                <!-- <td class="rate"><a onClick="xp_toggle_column('rate');">{$kga.lang.rate}</a></td>
+                <td class="wage"><a onClick="xp_toggle_column('wage');">Euro</a></td> -->
                 <td class="knd"><a onClick="xp_toggle_column('knd');">{$kga.lang.knd}</a></td>
                 <td class="pct"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
                 <td class="evt"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
-                <td class="comment"><a onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a></td>
-                <td class="location"><a onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a></td>
-                <td class="trackingnr"><a onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a></td>
+
+                <td class="comment" colspan="3">
+					<a onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a> /
+	                <a onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a> /
+	                <a onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a>
+				</td>
+				
+				
+
+
                 <td class="user"><a onClick="xp_toggle_column('user');">{$kga.lang.username}</a></td>
                 <!-- <td class="evt">cleared</td> -->
             </tr>

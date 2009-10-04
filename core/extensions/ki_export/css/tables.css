@@ -34,7 +34,10 @@ div.ki_export tr.odd td
 /*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
-#xp_head td {padding: 3px 4px 4px 6px;}
+#xp_head td {
+	overflow:hidden;
+	padding: 3px 4px 4px 6px;
+	}
 
 div.ki_export tr.hover td {
     background: #FFC !important;
@@ -66,6 +69,22 @@ div#xptable tr.active td.time {
     background: #F00;
 }
 
+div#xptable tr.odd td.comment,
+div#xptable tr.odd td.trackingnr,
+div#xptable tr.odd td.location {
+    background: #CFE3F5;
+}
+
+div#xptable tr.even td.comment,
+div#xptable tr.even td.trackingnr,
+div#xptable tr.even td.location {
+    background: #ECF7FD;
+}
+
+
+
+
+
 div.ki_export tr td.option,
 div.ki_export tr td.date,
 div.ki_export tr td.from,
@@ -80,10 +99,12 @@ div.ki_export a {
 }
 
 div.ki_export>div#xp>div#xptable>table>tbody>tr>td.user {
-    border-right: none;
+/*    border-right: none;*/
 }
 
-
+#xp_head table {
+	width:100%;
+}
 
 #xp_head td.option,
 #xp td.option
@@ -133,11 +154,23 @@ div.ki_export table td.disabled {
   color:gray !important;
 }
 
+div.ki_export table td.user
+{
+	width:50px;
+	text-align:left;
+}
+
+#xp_head td.user
+{
+	width:100px;
+}
+
+
 div.ki_export table td.cleared
 {
 	width:20px;
-	text-align:left;
 }
+
 div.ki_export table td.cleared a
 {
 width:13px;

@@ -330,7 +330,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
-                    " style="width:40px">
+                    ">
                       <a class ="
                       {if $arr_data[row].cleared}
                        is_cleared

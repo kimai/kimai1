@@ -164,42 +164,91 @@ function xp_ext_set_heightTop() {
 function xp_ext_set_TableWidths() {
     xp_ext_get_dimensions();
     // set table widths   
+
     ($("#xp").innerHeight()-$("#xp table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
     $("#xp table").css("width",xp_w-scr);
-    // stretch customer column in faked zef table head
-    headerWidth = $("#xp_head > table > tbody > tr > td.dec_time").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.dec_time").width();
-    $("#xp_head > table > tbody > tr > td.dec_time").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.dec_time").css("width", Math.max(headerWidth,contentWidth));
 
-    headerWidth = $("#xp_head > table > tbody > tr > td.rate").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
-    $("#xp_head > table > tbody > tr > td.rate").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.rate").css("width", Math.max(headerWidth,contentWidth));
+	$("#xp_head > table").css("width", "100%");
 
-    headerWidth = $("#xp_head > table > tbody > tr > td.comment").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.comment").width();
-    $("#xp_head > table > tbody > tr > td.comment").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.comment").css("width", Math.max(headerWidth,contentWidth));
 
-    headerWidth = $("#xp_head > table > tbody > tr > td.location").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.location").width();
-    $("#xp_head > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
+    cashWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
+	cashWidth += $("div#xp > div > table > tbody > tr > td.dec_time").width();
+	cashWidth +=3;
+    $("#xp_head > table > tbody > tr > td.cash").css("width", cashWidth);
 
-    headerWidth = $("#xp_head > table > tbody > tr > td.trackingnr").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.trackingnr").width();
-    $("#xp_head > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
 
-    headerWidth = $("#xp_head > table > tbody > tr > td.user").width();
-    contentWidth = $("div#xp > div > table > tbody > tr > td.user").width();
-    $("#xp_head > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
-    $("div#xp > div > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
+	headerWidth = $("#xp_head > table > tbody > tr > td.knd").width();
+	contentWidth = $("div#xp > div > table > tbody > tr > td.knd").width();
+	if (headerWidth>contentWidth) 
+	{
+		$("div#xp > div > table > tbody > tr > td.knd").css("width", headerWidth);   
+	} else {
+		$("#xp_head > table > tbody > tr > td.knd").css("width", contentWidth);
+	}
 
-    $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());    
-    $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
-    $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());
+	headerWidth = $("#xp_head > table > tbody > tr > td.pct").width();
+	contentWidth = $("div#xp > div > table > tbody > tr > td.pct").width();
+	if (headerWidth>contentWidth) 
+	{
+		$("div#xp > div > table > tbody > tr > td.pct").css("width", headerWidth);   
+	} else {
+		$("#xp_head > table > tbody > tr > td.pct").css("width", contentWidth);
+	}
+
+	headerWidth = $("#xp_head > table > tbody > tr > td.evt").width();
+	contentWidth = $("div#xp > div > table > tbody > tr > td.evt").width();
+	if (headerWidth>contentWidth) 
+	{
+		$("div#xp > div > table > tbody > tr > td.evt").css("width", headerWidth);   
+	} else {
+		$("#xp_head > table > tbody > tr > td.evt").css("width", contentWidth);
+	}
+       
+
+
+
+
+	// headerWidth = $("#xp_head > table > tbody > tr > td.comment").width();
+	// contentWidth = $("div#xp > div > table > tbody > tr > td.comment").width();
+	// 
+	// if ((headerWidth < 250) && (contentWidth < 250))
+	// {
+	// 	if (headerWidth>contentWidth) 
+	// 	{
+	// 		$("div#xp > div > table > tbody > tr > td.comment").css("width", headerWidth);   
+	// 	} else {
+	// 		$("#xp_head > table > tbody > tr > td.comment").css("width", contentWidth);
+	// 	}
+	// } else {
+	// 	$("#xp_head > table > tbody > tr > td.comment").css("width", 250);
+	// 	$("div#xp > div > table > tbody > tr > td.comment").css("width", 250);
+	// }
+	// 
+	// 
+	
+       
+
+
+
+ 
+
+    
+    
+    // headerWidth = $("#xp_head > table > tbody > tr > td.location").width();
+    // contentWidth = $("div#xp > div > table > tbody > tr > td.location").width();
+    // $("#xp_head > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
+    // $("div#xp > div > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
+    // 
+    // headerWidth = $("#xp_head > table > tbody > tr > td.trackingnr").width();
+    // contentWidth = $("div#xp > div > table > tbody > tr > td.trackingnr").width();
+    // $("#xp_head > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
+    // $("div#xp > div > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
+    // 
+    // headerWidth = $("#xp_head > table > tbody > tr > td.user").width();
+    // contentWidth = $("div#xp > div > table > tbody > tr > td.user").width();
+    // $("#xp_head > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
+    // $("div#xp > div > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
+    
 }
 
 function xp_ext_triggerchange() {
