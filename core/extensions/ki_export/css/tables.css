@@ -157,8 +157,11 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width:50px;
 }
 
-div.ki_export table td.disabled {
-  color:gray !important;
+div.ki_export table tr.odd td.disabled {
+  background-color:#FFC7BB !important;
+}
+div.ki_export table tr.even td.disabled {
+  background-color:#FFE1DB !important;
 }
 
 div.ki_export table td.user
