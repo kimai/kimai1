@@ -8,7 +8,7 @@
 
 <div id="xp_head">
     <div class="right">
-	        <a href="#" onClick="alert('INVERT!'); return false;">invert</a>
+	        <a href="#" onClick="$('#xptable td.cleared>a').click(); return false;">invert</a>
     </div>
 
     <table>

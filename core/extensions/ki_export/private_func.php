@@ -10,8 +10,9 @@
  */
 
 include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
+include('private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit,$default_location) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit,$default_location='') {
     $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
     $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
     $result_arr = array();
@@ -61,6 +62,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
         $arr['comment']        = $exp_arr[$exp_arr_index]['exp_comment'];
         $arr['username']       = $exp_arr[$exp_arr_index]['usr_name'];
+        $arr['cleared']        = $exp_arr[$exp_arr_index]['exp_cleared'];
         $exp_arr_index++;
       }
       $result_arr[] = $arr;
@@ -109,10 +111,10 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
       $arr['comment']        = $exp_arr[$exp_arr_index]['exp_comment'];
       $arr['username']       = $exp_arr[$exp_arr_index]['usr_name'];
+      $arr['cleared']        = $exp_arr[$exp_arr_index]['exp_cleared'];
       $exp_arr_index++;
       $result_arr[] = $arr;
     }
-
     return $result_arr;
 }
 

@@ -5,7 +5,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-require("private_db_layer.php");
+require("private_func.php");
 
 $usr = checkUser();
 

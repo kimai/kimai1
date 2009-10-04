@@ -331,12 +331,7 @@
                             {/if}
                         {/if}
                     ">
-                      <a class ="
-                      {if $arr_data[row].cleared}
-                       is_cleared
-                      {else}
-                       isnt_cleared
-                      {/if}" href ="#" onClick="xp_toggle_cleared('{$arr_data[row].type}{$arr_data[row].id}'); return false;"></a>
+                      <a class ="{if $arr_data[row].cleared}is_cleared{else}isnt_cleared{/if}" href ="#" onClick="xp_toggle_cleared('{$arr_data[row].type}{$arr_data[row].id}'); return false;"></a>
 					</td>
 					
 

@@ -113,7 +113,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-    $query = "SELECT exp_ID, exp_timestamp, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name
+    $query = "SELECT exp_ID, exp_timestamp, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
              FROM " . $kga['server_prefix'] . "exp 
              Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
@@ -147,6 +147,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
       $arr[$i]['exp_comment']      = $row->exp_comment;
       $arr[$i]['exp_comment_type'] = $row->exp_comment_type;
       $arr[$i]['usr_name']         = $row->usr_name;
+      $arr[$i]['exp_cleared']      = $row->exp_cleared;
       $i++;
     }
     

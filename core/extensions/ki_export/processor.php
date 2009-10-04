@@ -28,7 +28,7 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-require("private_db_layer.php");
+require("private_func.php");
 
 // ==================
 // = handle request =
@@ -41,6 +41,24 @@ switch ($axAction) {
         zef_delete_record($id);
         echo 1;
     break;*/
+    
+    
+
+    // ======================
+    // = set status cleared =
+    // ======================
+    case 'set_cleared':
+      // $axValue: 1 = cleared, 0 = not cleared
+      $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
+      $success = false;
+
+      if (strncmp($id,"zef",3) == 0)
+        $success = xp_zef_set_cleared(substr($id,3),$axValue==1);
+      else if (strncmp($id,"exp",3) == 0)
+        $success = xp_exp_set_cleared(substr($id,3),$axValue==1);
+
+      echo $success?1:0;
+    break;
 
     // ===========================
     // = Load data and return it =
