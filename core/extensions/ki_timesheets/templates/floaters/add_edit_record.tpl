@@ -34,6 +34,7 @@
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
+            <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a>
         </div>  
     </div>
 
@@ -106,18 +107,18 @@
                    
 {* -------------------------------------------------------------------- *}       
         
-                   <li>
+                   <li class="extended">
                         <label for="rate">{$kga.lang.rate}:</label>
                         <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
-                   <li>
+                   <li class="extended">
                         <label for="zlocation">{$kga.lang.zlocation}:</label>
                         <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
-                   <li>
+                   <li class="extended">
                         <label for="trackingnr">{$kga.lang.trackingnr}:</label>
                         <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
@@ -135,9 +136,14 @@
                        </select>
                    </li>
                    
-                    <li>
+                    <li class="extended">
                         <label for="erase">{$kga.lang.erase}:</label>
                         <input type='checkbox' id='erase' name='erase' tabindex='14'/>
+                   </li>
+
+                    <li class="extended">
+                        <label for="cleared">{$kga.lang.cleared}:</label>
+                        <input type='checkbox' id='cleared' name='cleared' tabindex='15'/>
                    </li>
         
                 </ul>
