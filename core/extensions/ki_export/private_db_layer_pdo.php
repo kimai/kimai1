@@ -15,9 +15,10 @@ function xp_zef_set_cleared($id,$cleared) {
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
-    if ($result == false) {
-        return $result;
-    }
+    if ($result)
+      return true;
+    else
+      return false;
     
 } 
 
@@ -35,9 +36,10 @@ function xp_exp_set_cleared($id,$cleared) {
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
-    if ($result == false) {
-        return $result;
-    }
+    if ($result)
+      return true;
+    else
+      return false;
     
 } 
 ?>
