@@ -7,18 +7,16 @@
 {/literal}
 
 <div id="iv_ext_header">
-     <strong>Rechnung Erstellen</strong> 
+     <strong>{$kga.langInvoice.invoiceTitle}</strong> 
 </div>
 
 <div id="iv_ext_wrap">
     <div id ="iv_ext">
-	
-    <img src="../extensions/ki_invoice/grfx/OpenOffice.png" width="341" height="450" alt="OpenOffice" id="iv_screenshot">	
-
+    	
 	<form id="iv_ext_form" method="post" action="../extensions/ki_invoice/print.php" target="_blank">
 		<div id="iv_ext_advanced">
 			<div id="iv_ext_form">
-			Projekt: <select id="iv_pct_ID" name="pct_ID" class="formfield">
+			{$kga.langInvoice.invoiceProject} <select id="iv_pct_ID" name="pct_ID" class="formfield">
 			  {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
 			</select>
 			</div>
@@ -26,11 +24,11 @@
 				{$timespan_display}
 			</div>
 			
-    		<input type=checkbox name="vat"> Abrechnung mit MWST<BR>
-    		<input type=checkbox name="short"> Kurze Abrechnung<BR>
+    		<input type=checkbox name="vat"> {$kga.langInvoice.invoiceOptionVat}<BR>
+    		<input type=checkbox name="short"> {$kga.langInvoice.invoiceOptionShort}<BR>
     
 	    	<div id="iv_button">	
-				<input type="submit" class="btn_ok" value="Erstellen"/>
+				<input type="submit" class="btn_ok" value={$kga.langInvoice.invoiceButton}>
 	    	</div>
 		</div>
 	</form>

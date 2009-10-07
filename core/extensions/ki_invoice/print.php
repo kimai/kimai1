@@ -52,6 +52,10 @@ if (count($timeArray) > 0) {
 	$customerStreet = $kndArray['knd_street'];
 	$customerTown = $kndArray['knd_zipcode'].' '.$kndArray['knd_city'];
 }
+else {
+   echo "<script language=\"javascript\">alert(\"In der Ausgewählten Zeitspanne sind keine Einträge!\")</script>";
+   return;
+}
     
 // MERGE SORT
 $time_index = 0;
