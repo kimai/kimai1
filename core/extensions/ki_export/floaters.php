@@ -24,36 +24,31 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/floaters/";
 require("../../includes/kspi.php");
 
+if (isset($kga['customer'])) die();
 
+switch ($axAction) {
 
+    // $selected = explode('|',$axValue);
 
-// some dummy output ...
+    case "PDF":  
+	    // $tpl->assign('comment_types', $comment_types);
+	    $tpl->assign('exportPDF', 'exportPDF');
+	    $tpl->display("export_PDF.tpl"); 
+    break;
 
-$tpl->assign('exportXLS', 'exportXLS');
-$tpl->display("export_XLS.tpl");
+    case "XLS":  
+	    // $tpl->assign('comment_types', $comment_types);
+	    $tpl->assign('exportXLS', 'exportXLS');
+	    $tpl->display("export_XLS.tpl"); 
+    break;
 
+    case "print":  
+	    // $tpl->assign('comment_types', $comment_types);
+	    $tpl->assign('print', 'print');
+	    $tpl->display("print.tpl"); 
+    break;
 
-
-
-
-// switch ($axAction) {
-// 
-//     case "XLS":  
-//         if (isset($kga['customer'])) die();  
-// 	    // ==============================================
-// 	    // = display edit dialog for timesheet record   =
-// 	    // ==============================================
-// 	    // $selected = explode('|',$axValue);
-// 
-// 	    // $tpl->assign('comment_types', $comment_types);
-// 
-// 	    $tpl->assign('exportXLS', 'exportXLS');
-// 
-// 	    $tpl->display("export_XLS.tpl"); 
-// 
-//     break;
-// 
-// }
+}
 
 ?>
 

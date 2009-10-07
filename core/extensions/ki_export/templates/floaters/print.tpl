@@ -4,7 +4,7 @@
         $(document).ready(function() {
             $('#help').hide();
 
-            $('#xp_ext_form_export_XLS').ajaxForm(function() { 
+            $('#xp_ext_form_print').ajaxForm(function() { 
                 
                 // $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
                 // $edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
@@ -23,7 +23,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$exportXLS}</span>
+        <span id="floater_title">{$print}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
@@ -39,7 +39,7 @@
 
     <div id="floater_content"><div id="floater_dimensions">
         
-        <form id="xp_ext_form_export_XLS" action="../extensions/ki_export/processor.php" method="post"> 
+        <form id="xp_ext_form_print" action="../extensions/ki_export/processor.php" method="post"> 
             <fieldset>
                 
                 <ul>
@@ -54,7 +54,7 @@
 {* -------------------------------------------------------------------- *} 
 
                 <!-- <input name="id" type="hidden" value="" /> -->
-                <input name="axAction" type="hidden" value="export_XLS" />
+                <input name="axAction" type="hidden" value="print" />
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
