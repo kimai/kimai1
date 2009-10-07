@@ -46,19 +46,21 @@ function xp_ext_onload() {
     });
 
 	$('#xp_ext_export_pdf').click(function(){
-        clicktest();
+        floaterShow('../extensions/ki_export/floaters.php','PDF',0,0,600,570);
     });
 
 	$('#xp_ext_export_xls').click(function(){
-        clicktest();
+        floaterShow('../extensions/ki_export/floaters.php','XLS',0,0,600,570);
     });
 
 	$('#xp_ext_print').click(function(){
-        clicktest();
+        floaterShow('../extensions/ki_export/floaters.php','print',0,0,600,570);
     });
 
 	xp_ext_select_timeformat();
 }
+
+
 
 
 function xp_ext_select_filter()
