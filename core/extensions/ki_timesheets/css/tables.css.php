@@ -1,3 +1,13 @@
+<?php
+  header('Content-type: text/css');
+
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+	$add =          "../../../skins/standard/grfx/add.png";
+	$schraff0 =     "../../../skins/standard/grfx/schraff0.gif";
+	$schraff1 =     "../../../skins/standard/grfx/schraff1.gif";
+	$schraff2 =     "../../../skins/standard/grfx/schraff2.gif";
+?>
+
 div.ki_timesheet table {
     border-collapse: collapse;
     font-size: 11px;
@@ -22,7 +32,7 @@ div.ki_timesheet table thead {
 }
 
 div.ki_timesheet table thead th {
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
 }
 
 div.ki_timesheet tr.even td,
@@ -129,7 +139,7 @@ div#zef_head div.left
 
 div#zef_head div.left a
 { 
-    background-image: url('../../../skins/standard/grfx/add.png');
+    background-image: url('<?php echo $add; ?>');
     overflow:hidden;
     display:block;
     width:22px;
@@ -143,19 +153,19 @@ div#zef_head td {padding: 3px 4px 4px 6px;}
 tbody tr.comm0 td {
     padding:5px;
     background: #fff;
-    background-image:url(../../../skins/standard/grfx/schraff0.gif);
+    background-image:url('<?php echo $schraff0; ?>');
 }
 
 tbody tr.comm1 td {
     padding:5px;
     background: #ff9;
-    background-image:url(../../../skins/standard/grfx/schraff1.gif);
+    background-image:url('<?php echo $schraff1; ?>');
 }
 
 tbody tr.comm2 td {
     padding:5px;
     background: #f00;
-    background-image:url(../../../skins/standard/grfx/schraff2.gif);
+    background-image:url('<?php echo $schraff2; ?>');
     font-weight:bold;
     color:#fff;
 }

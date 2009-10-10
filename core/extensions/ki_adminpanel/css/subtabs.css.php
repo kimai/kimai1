@@ -1,9 +1,15 @@
+<?php
+	header('Content-type: text/css');
+	$table_header         = "../../../skins/standard/grfx/g3_table_header.png";
+	$table_header_lighter = "../../../skins/standard/grfx/g3_table_header_lighter.png";
+?>
+
 .ap_ext_panel_header {
   margin: 0;
   padding: 0;
 }
 .ap_ext_panel_header a {
-  background-image: url('../../../skins/standard/grfx/g3_table_header_lighter.png');
+  background-image: url('<?php echo $table_header_lighter; ?>');
   height: 19px;
   text-align: left;
   color: #333333;
@@ -13,12 +19,12 @@
   height: 19px;
 }
 div.active .ap_ext_panel_header a {
-  background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+  background-image: url('<?php echo $table_header; ?>');
   color: #ffffff !important;
   font-weight: bold;
 }
 div.active .ap_ext_panel_header a:hover {
-  background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+  background-image: url('<?php echo $table_header; ?>');
   color: #ffffff;
 }
 div.active span.ap_ext_accordeon_triangle {
