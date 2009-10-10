@@ -4,7 +4,7 @@
     <meta content="">
     
 {literal}
-	<style type="text/css" media="screen">
+	<style type="text/css" media="all">
 		body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
 		  margin: 0;
 		  padding: 0;
@@ -47,7 +47,9 @@
 		  margin-bottom: 10px;
 		}
 		
+	</style>
 		
+	<style type="text/css" media="print">
 		
 		body {
 			color: black;
@@ -81,8 +83,37 @@
 		#invertbtn, .invertclm {
 			display: none;
 		}
+		
 	</style>
 
+	<style type="text/css" media="screen">
+		body {
+			color: black;
+			font-family: Arial, Verdana, sans-serif;
+			font-size: 11px;
+		}
+
+		th {
+			background: #ccc;
+			border-top: 1px solid #999;
+			border-bottom: 1px solid #999;
+			font-family: Arial, Verdana, sans-serif;
+			font-size: 11px;
+			font-weight: normal;
+		}
+
+		td {
+			border-bottom: 1px solid #999;
+			font-family: Arial, Verdana, sans-serif;
+			font-size: 11px;
+		}
+
+		#div_liste {
+			margin-top:10px;
+			float: left;
+			width: 600px;
+		}
+	</style>
 
 {/literal}
   </head>
@@ -93,21 +124,21 @@
 
 {*column headers------------------------------------------------*}
                 <tr>
-{ if $columns.date         } <td>{$kga.lang.datum}</td>       { /if }
-{ if $columns.from         } <td>{$kga.lang.in}</td>          { /if }
-{ if $columns.to           } <td>{$kga.lang.out}</td>         { /if }
-{ if $columns.time         } <td>{$kga.lang.time}</td>        { /if }
-{ if $columns.dec_time     } <td>{$kga.lang.timelabel}</td>   { /if }
-{ if $columns.rate         } <td>{$kga.lang.rate}</td>        { /if }
-{ if $columns.wage         } <td>Euro</td>                    { /if }
-{ if $columns.knd          } <td>{$kga.lang.knd}</td>         { /if }
-{ if $columns.pct          } <td>{$kga.lang.pct}</td>         { /if }
-{ if $columns.action       } <td>{$kga.lang.evt}</td>         { /if }
-{ if $columns.comment      } <td>{$kga.lang.comment}</td>     { /if }
-{ if $columns.location     } <td>{$kga.lang.location}</td>    { /if }
-{ if $columns.trackingnr   } <td>{$kga.lang.trackingnr}</td>  { /if }
-{ if $columns.user         } <td>{$kga.lang.user}</td>        { /if }
-{ if $columns.cleared      } <td>{$kga.lang.cleared}</td>     { /if }
+{ if $columns.date         } <th>{$kga.lang.datum}</th>       { /if }
+{ if $columns.from         } <th>{$kga.lang.in}</th>          { /if }
+{ if $columns.to           } <th>{$kga.lang.out}</th>         { /if }
+{ if $columns.time         } <th>{$kga.lang.time}</th>        { /if }
+{ if $columns.dec_time     } <th>{$kga.lang.timelabel}</th>   { /if }
+{ if $columns.rate         } <th>{$kga.lang.rate}</th>        { /if }
+{ if $columns.wage         } <th>Euro</th>                    { /if }
+{ if $columns.knd          } <th>{$kga.lang.knd}</th>         { /if }
+{ if $columns.pct          } <th>{$kga.lang.pct}</th>         { /if }
+{ if $columns.action       } <th>{$kga.lang.evt}</th>         { /if }
+{ if $columns.comment      } <th>{$kga.lang.comment}</th>     { /if }
+{ if $columns.location     } <th>{$kga.lang.location}</th>    { /if }
+{ if $columns.trackingnr   } <th>{$kga.lang.trackingnr}</th>  { /if }
+{ if $columns.user         } <th>{$kga.lang.user}</th>        { /if }
+{ if $columns.cleared      } <th>{$kga.lang.cleared}</th>     { /if }
 
                 </tr>
                
