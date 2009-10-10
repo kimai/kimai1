@@ -43,6 +43,7 @@
 			<div class="c">
 				<a id="xp_ext_export_pdf" href="#" class="output_btn">PDF</a>
 				<a id="xp_ext_export_xls" href="#" class="output_btn">XLS</a>
+				<a id="xp_ext_export_csv" href="#" class="output_btn">CSV</a>
 				<a id="xp_ext_print"      href="#" class="output_btn">Print</a>
 			</div>
 		</div>

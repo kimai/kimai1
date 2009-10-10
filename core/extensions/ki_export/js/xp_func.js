@@ -52,6 +52,9 @@ function xp_ext_onload() {
 	$('#xp_ext_export_xls').click(function(){
         floaterShow('../extensions/ki_export/floaters.php','XLS',0,0,600,570);
     });
+	$('#xp_ext_export_csv').click(function(){
+        floaterShow('../extensions/ki_export/floaters.php','CSV',0,0,600,570);
+    });
 
 	$('#xp_ext_print').click(function(){
         floaterShow('../extensions/ki_export/floaters.php','print',0,0,600,570);

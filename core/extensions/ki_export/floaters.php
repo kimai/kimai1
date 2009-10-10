@@ -42,6 +42,12 @@ switch ($axAction) {
 	    $tpl->display("export_XLS.tpl"); 
     break;
 
+    case "CSV":  
+	    // $tpl->assign('comment_types', $comment_types);
+	    $tpl->assign('exportCSV', 'exportCSV');
+	    $tpl->display("export_CSV.tpl"); 
+    break;
+
     case "print":  
 	    // $tpl->assign('comment_types', $comment_types);
 	    $tpl->assign('print', 'print');

@@ -6,6 +6,7 @@
     </script>
 {/literal}
 
+
 <div id="xp_head">
     <div class="right">
 	        <a href="#" onClick="$('#xptable td.cleared>a').click(); return false;">invert</a>
