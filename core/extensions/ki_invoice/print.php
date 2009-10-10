@@ -2,8 +2,9 @@
 
 include_once('../../includes/basics.php');
 
-include_once('TinyButStrong/tbs_class.php');
-include_once('TinyButStrong/tbsooo_class.php');
+// libs TinyButStrong
+include_once('TinyButStrong/tinyButStrong.class.php');
+include_once('TinyButStrong/tinyDoc.class.php');
 
 include_once('private_db_layer_pdo.php');
 
@@ -25,7 +26,6 @@ function array_event_exists($arrays, $event) {
    return -1;
 }
 
-
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
@@ -39,8 +39,8 @@ $out = $timespace[1];
 
 $timeArray = get_arr_zef($in,$out,null,null,array($_REQUEST['pct_ID']),1);
  
-$i_invoice  = '05123456';
-$d_invoice  = date("Y-m-d");
+$order  = '05123456';
+$date  = date("Y-m-d");
 $month  = $kga['lang']['months'][date("n",$out)-1];
 $year = date("Y", $out );
 
@@ -74,52 +74,50 @@ while ($time_index < count($timeArray)) {
       if ( $index >= 0 ) {
          $totalTime = $invoiceArray[$index]['hour'];
          $totalAmount = $invoiceArray[$index]['amount'];
-         $invoiceArray[$index] = array('key'=>$event, 'hour' => $totalTime+$time, "amount" => $totalAmount+$rate);
+         $invoiceArray[$index] = array('desc'=>$event, 'hour' => $totalTime+$time, "amount" => $totalAmount+$rate);
 	  }
 	  else {
-   	     $invoiceArray[] = array('key'=>$event, 'hour'=>$time, 'amount'=>$rate );
+   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$rate );
 	  }
    }
    else {
-      $invoiceArray[] = array('key'=>$event, 'hour'=>$time, 'amount'=>$rate );
+      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$rate );
    }
    $time_index++;   
 }
 
 // calculate invoice sum
-$f_total = 0;
+$total = 0;
 while (list($id, $fd) = each($invoiceArray)) {
-  $f_total+= $invoiceArray[$id]['amount'];
+  $total+= $invoiceArray[$id]['amount'];
 }
 
 $vat_rate = 7.6;
-$f_vat = $vat_rate*$f_total/100;
-$f_exctotal = $f_total-$f_vat;
+$vat = $vat_rate*$total/100;
+$gtotal = $total-$vat;
 
-$OOo = new clsTinyButStrongOOo;
-
-// setting the object
-$OOo->SetZipBinary('zip');
-$OOo->SetUnzipBinary('unzip');
-$OOo->SetProcessDir('tmp/');
-
-// create a new openoffice document from the template
+// create the document
+$doc = new tinyDoc();
+$doc->setZipMethod('shell');
+$doc->setZipBinary('zip');
+$doc->setUnzipBinary('unzip');
+$doc->setProcessDir('./tmp');
+  
 if ( $_REQUEST['vat'] ) {
-	$OOo->NewDocFromTpl('templates/rechnungVAT.sxw');
+   $doc->createFrom('templates/invoiceVAT.odt');   
 }
-else {
-	$OOo->NewDocFromTpl('templates/rechnung.sxw');
+else  {
+   $doc->createFrom('templates/invoice.odt');
 }
+$doc->loadXml('content.xml');
+  
+$doc->mergeXmlBlock('row', $invoiceArray);
+  
+$doc->saveXml();
+$doc->close();
 
-// merge data with openoffice file named 'content.xml'
-$OOo->LoadXmlFromDoc('content.xml');
-$OOo->MergeBlock('blk1',$invoiceArray) ;
-$OOo->SaveXmlToDoc();
-
-// display
-header('Content-type: '.$OOo->GetMimetypeDoc());
-header('Content-Length: '.filesize($OOo->GetPathnameDoc()));
-$OOo->FlushDoc();
-$OOo->RemoveDoc();
+// send and remove the document
+$doc->sendResponse();
+$doc->remove();
 
 ?>
