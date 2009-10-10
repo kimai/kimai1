@@ -51,6 +51,8 @@ if ($axAction == 'export_html' ||
   $dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
 
   $default_location = strip_tags($_REQUEST['default_location']);
+  
+  $filter_cleared = $_REQUEST['filter_cleared'];
 
   $filters = explode('|',$axValue);
 
@@ -108,7 +110,7 @@ switch ($axAction) {
     // ===========================
     case 'reload':
 
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
@@ -138,7 +140,7 @@ switch ($axAction) {
 
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -153,7 +155,7 @@ switch ($axAction) {
 
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);

@@ -13,8 +13,8 @@
 					
 					<div id="xp_ext_tab_filter">
 						<input type="radio" name="cleared" value="-1" id="xp_ext_cleared_0" onChange="xp_ext_reload()" checked="checked"/> alle
-						<input type="radio" name="cleared" value="1" id="xp_ext_cleared_1" onChange="xp_ext_reload()"/> nur abgerechnete
-						<input type="radio" name="cleared" value="0" id="xp_ext_cleared_2" onChange="xp_ext_reload()"/> nur offene
+						<input type="radio" name="cleared" value="0" id="xp_ext_cleared_1" onChange="xp_ext_reload()"/> nur abgerechnete
+						<input type="radio" name="cleared" value="1" id="xp_ext_cleared_2" onChange="xp_ext_reload()"/> nur offene
 					</div>
 					
 					<div id="xp_ext_tab_timeformat">
