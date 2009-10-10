@@ -1,3 +1,8 @@
+<?php
+	header('Content-type: text/css');
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+?>
+
 #exp {
     border:1px solid black; 
     margin:0;
@@ -18,7 +23,7 @@
 #exp_head {
     border:1px solid black; 
     border-bottom:none;
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
     position:absolute;
     height:25px;
     text-align:left;

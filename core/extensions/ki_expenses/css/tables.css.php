@@ -1,3 +1,9 @@
+<?php
+	header('Content-type: text/css');
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+	$add =          "../../../skins/standard/grfx/add.png";
+?>
+
 div.ki_expenses table {
     border-collapse: collapse;
     font-size: 11px;
@@ -22,7 +28,7 @@ div.ki_expenses table thead {
 }
 
 div.ki_expenses table thead th {
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
 }
 
 div.ki_expenses tr.even td,
@@ -121,7 +127,7 @@ div#exp_head div.left
 
 div#exp_head div.left a
 { 
-    background-image: url('../../../skins/standard/grfx/add.png');
+    background-image: url('<?php echo $add; ?>');
     overflow:hidden;
     display:block;
     width:22px;
