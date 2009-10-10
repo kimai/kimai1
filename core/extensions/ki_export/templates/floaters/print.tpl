@@ -23,7 +23,6 @@
     </script>
 {/literal}
 
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
