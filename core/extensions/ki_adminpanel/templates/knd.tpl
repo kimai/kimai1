@@ -1,4 +1,4 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;"><img src="../skins/standard/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_knd}"></a> {$kga.lang.new_knd}
+<a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;"><img src="../skins/{$kga.conf.skin}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_knd}"></a> {$kga.lang.new_knd}
 <br/><br/>
 
 {cycle values="odd,even" reset=true print=false}
