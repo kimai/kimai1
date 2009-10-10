@@ -33,6 +33,15 @@
 	background: url('../grfx/select.png');
 }
 
+#xp_panel a.helpfloater {
+	display:block;
+	float:left;
+	height:13px;
+	width:13px;
+	text-indent:-999em;
+	background: url('../grfx/help.png');
+}
+
 #xp_panel #xp_ext_select_filter             { top:3px; }
 #xp_panel #xp_ext_select_filter:hover       { background-position: 0 -42px; }
 #xp_panel #xp_ext_select_filter:active      { background-position: 0 -84px; }

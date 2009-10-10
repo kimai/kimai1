@@ -18,9 +18,9 @@
 					</div>
 					
 					<div id="xp_ext_tab_timeformat">
-						<span>Zeitformat:</span>
+						<span>Zeitformat:<a href="#" class="helpfloater">Datumsformat</a></span>
 						<input type="text" name="time_format" value="H:M" id="xp_ext_timeformat" onChange="xp_ext_reload()">
-						<span>Datumsformat:</span>
+						<span>Datumsformat:<a href="#" class="helpfloater">Datumsformat</a></span>
 						<input type="text" name="date_format" value="d.m." id="xp_ext_dateformat" onChange="xp_ext_reload()">
 					</div>
 					

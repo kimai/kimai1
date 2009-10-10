@@ -54,6 +54,12 @@ switch ($axAction) {
 	    $tpl->display("print.tpl"); 
     break;
 
+    case "help_timeformat":  
+	    // $tpl->assign('comment_types', $comment_types);
+	    // $tpl->assign('print', 'print');
+	    $tpl->display("help_timeformat.tpl"); 
+    break;
+
 }
 
 ?>
