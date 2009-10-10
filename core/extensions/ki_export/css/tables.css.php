@@ -1,3 +1,8 @@
+<?php
+	header('Content-type: text/css');
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+?>
+
 div.ki_export table {
     border-collapse: collapse;
     font-size: 11px;
@@ -22,7 +27,7 @@ div.ki_export table thead {
 }
 
 div.ki_export table thead th {
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
 }
 
 div.ki_export tr.even td,

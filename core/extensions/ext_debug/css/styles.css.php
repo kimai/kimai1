@@ -1,3 +1,9 @@
+<?php
+	header('Content-type: text/css');
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+	$filter_bg = "../../../skins/standard/grfx/filter_bg.jpg";
+?>
+
 #deb_ext_kga_wrap {
     border:1px solid #000;
     position:absolute;
@@ -23,7 +29,7 @@
 
 #deb_ext_logfile_header,
 #deb_ext_kga_header {
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
     border:1px solid #000;
     color:#fff;
     padding:5px 10px;
@@ -58,7 +64,7 @@
 }
     
 #deb_ext_shoutbox input {
-    background-image:url(../../../skins/standard/grfx/filter_bg.jpg);
+    background-image:url('<?php echo $filter_bg; ?>');
     width:150px;
     border:1px solid #555;
     height:12px;

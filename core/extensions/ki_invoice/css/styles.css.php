@@ -1,6 +1,11 @@
+<?php
+	header('Content-type: text/css');
+	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+?>
+
 #iv_ext_wrap {
     border:1px solid #000;
-border-top:none;
+	border-top:none;
     position:absolute;
     overflow:hidden;
     margin:0;
@@ -16,7 +21,7 @@ border-top:none;
 
 
 #iv_ext_header {
-    background-image: url('../../../skins/standard/grfx/g3_table_header.png');
+    background-image: url('<?php echo $table_header; ?>');
     border:1px solid #000;
     color:#fff;
     padding:5px 10px;
