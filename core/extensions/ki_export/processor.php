@@ -131,6 +131,7 @@ switch ($axAction) {
 
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
+        $tpl->assign('custom_filter',$filter);
         $tpl->display("table.tpl");
     break;
 
@@ -143,6 +144,7 @@ switch ($axAction) {
         $tpl->assign('columns',$columns);
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
+        $tpl->assign('custom_filter',$filter);
 
         header("Content-Type: text/html");
         $tpl->display("formats/html.tpl");
@@ -157,6 +159,7 @@ switch ($axAction) {
         $tpl->assign('columns',$columns);
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
+        $tpl->assign('custom_filter',$filter);
 
         header("Content-Disposition:attachment;filename=export.xls");
         header("Content-Type: application/vnd.ms-excel");

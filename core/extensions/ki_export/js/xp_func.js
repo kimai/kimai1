@@ -60,7 +60,7 @@ function xp_ext_onload() {
         floaterShow('../extensions/ki_export/floaters.php','print',0,0,600,570);
     });
 
-	xp_ext_select_timeformat();
+	xp_ext_select_filter();
 }
 
 
