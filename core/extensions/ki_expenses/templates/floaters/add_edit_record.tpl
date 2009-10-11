@@ -74,7 +74,7 @@
 
               
                    <li>
-                       <label for="edit_time">{$kga.lang.timelabel}</label>
+                       <label for="edit_time">{$kga.lang.timelabel}:</label>
                         <input id='edit_time' type='text' name='edit_time' value='{$edit_time}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a href="#" onClick="exp_pasteNow(); return false;">{$kga.lang.now}</a>
                    </li>
@@ -84,7 +84,7 @@
 
 
                    <li>
-                       <label for="edit_value">Betrag:</label>
+                       <label for="edit_value">{$kga.lang.expense}:</label>
                         <input id='edit_value' type='text' name='edit_value' value='{$edit_value}' maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
