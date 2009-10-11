@@ -212,11 +212,11 @@ switch ($axAction) {
         if ($columns['comment'])
           $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
         if ($columns['location'])
-          $row[] = csv_prepare_field($kga['lang']['location'],$column_delimiter,$quote_char);      
+          $row[] = csv_prepare_field($kga['lang']['zlocation'],$column_delimiter,$quote_char);      
         if ($columns['trackingnr'])
           $row[] = csv_prepare_field($kga['lang']['trackingnr'],$column_delimiter,$quote_char);    
         if ($columns['user'])
-          $row[] = csv_prepare_field($kga['lang']['user'],$column_delimiter,$quote_char);          
+          $row[] = csv_prepare_field($kga['lang']['username'],$column_delimiter,$quote_char);          
         if ($columns['cleared'])
           $row[] = csv_prepare_field($kga['lang']['cleared'],$column_delimiter,$quote_char);  
 

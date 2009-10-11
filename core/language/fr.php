@@ -220,6 +220,8 @@ $kga['lang']= array(
 "exportPDF"         => "PDF export",
 "exportXLS"         => "Excel export",
 "export_timeformat_help" => "help for timeformat",
+
+"cleared"           => "cleared",
 );
 
 $kga['lang']['months']         = array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre");

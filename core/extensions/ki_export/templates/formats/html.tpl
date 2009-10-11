@@ -135,9 +135,9 @@
 { if $columns.pct          } <th>{$kga.lang.pct}</th>         { /if }
 { if $columns.action       } <th>{$kga.lang.evt}</th>         { /if }
 { if $columns.comment      } <th>{$kga.lang.comment}</th>     { /if }
-{ if $columns.location     } <th>{$kga.lang.location}</th>    { /if }
+{ if $columns.location     } <th>{$kga.lang.zlocation}</th>   { /if }
 { if $columns.trackingnr   } <th>{$kga.lang.trackingnr}</th>  { /if }
-{ if $columns.user         } <th>{$kga.lang.user}</th>        { /if }
+{ if $columns.user         } <th>{$kga.lang.username}</th>    { /if }
 { if $columns.cleared      } <th>{$kga.lang.cleared}</th>     { /if }
 
                 </tr>
@@ -290,7 +290,7 @@
 {*cleared -----------------------------------------------------*}
 { if $columns.cleared }
 					<td>
-                      {if $arr_data[row].cleared}cleared{else}{/if}
+                      {if $arr_data[row].cleared}{$kga.lang.cleared}{else}{/if}
 					</td>
 {/if}
 					
