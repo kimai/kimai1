@@ -69,6 +69,8 @@
                        <label for="download_pdf">{$kga.lang.download_pdf}:</label>
                        <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
                    </li>
+
+                 </ul>
                    
 
 
@@ -86,7 +88,7 @@
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
-                    <input class='btn_ok' type='submit' value='{$kga.lang.submit}' />
+                    <input class='btn_ok' type='submit' value='{$kga.lang.submit}' onClick="floaterClose();"/>
                 </div>
 
 {* -------------------------------------------------------------------- *} 

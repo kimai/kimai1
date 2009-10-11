@@ -152,7 +152,17 @@ function xp_get_arr_evt($start,$end,$users = null,$customers = null,$projects = 
 }
 
 
+function csv_prepare_field($field,$column_delimiter,$quote_char) {
+  if (strpos($field,$column_delimiter) === false &&
+      strpos($field,$quote_char) === false &&
+      strpos($field,"\n") === false)
+    return $field;
 
+  $field = str_replace($quote_char,$quote_char.$quote_char,$field);
+  $field = $quote_char.$field.$quote_char;
+
+  return $field;
+}
 
 /*
 **  PDF Export

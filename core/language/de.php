@@ -50,7 +50,7 @@ $kga['lang'] = array(
 "def_pctID"         => "Default Projekt ID",
 "def_kndID"         => "Default Kunden ID",
 "def_evtID"         => "Default Event ID",
-"recommended"       => "Empfohlen",
+"recommended"       => "Empfohl4en",
 "submit"            => "OK",
 "cancel"            => "Abbrechen",
 "edit"              => "Eintrag bearbeiten",
@@ -212,6 +212,9 @@ $kga['lang'] = array(
 "print_summary"     => "Zusammenfassung ausgeben",
 "create_bookmarks"  => "Lesezeichen erstellen",
 "download_pdf"      => "PDF-Datei downloaden",
+
+"column_delimiter"  => "Trennzeichen für Spalten",
+"quote_char"        => "Begrenzungszeichen von Feldern",
 
 );
 

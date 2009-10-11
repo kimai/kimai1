@@ -35,7 +35,8 @@ require("private_func.php");
 // = parse general parameters =
 // ============================
 
-if ($axAction == 'export_pdf'  ||
+if ($axAction == 'export_csv'  ||
+    $axAction == 'export_pdf'  ||
     $axAction == 'export_html' ||
     $axAction == 'export_xls'  ||
     $axAction == 'reload') {
@@ -167,6 +168,98 @@ switch ($axAction) {
         header("Content-Disposition:attachment;filename=export.xls");
         header("Content-Type: application/vnd.ms-excel");
         $tpl->display("formats/excel.tpl");
+    break;
+
+
+    case 'export_csv':        
+       
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+        $column_delimiter = $_REQUEST['column_delimiter'];
+        $quote_char = $_REQUEST['quote_char'];
+        /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
+
+        $tpl->assign('columns',$columns);
+        $tpl->assign('custom_timeformat',$timeformat);
+        $tpl->assign('custom_dateformat',$dateformat);
+        $tpl->assign('custom_filter',$filter);*/
+
+        header("Content-Disposition:attachment;filename=export.csv");
+        header("Content-Type: text/csv ");
+
+        $row = array();
+        
+        // output of headers
+        if ($columns['date'])
+          $row[] = csv_prepare_field($kga['lang']['datum'],$column_delimiter,$quote_char);
+        if ($columns['from'])
+          $row[] = csv_prepare_field($kga['lang']['in'],$column_delimiter,$quote_char);            
+        if ($columns['to'])
+          $row[] = csv_prepare_field($kga['lang']['out'],$column_delimiter,$quote_char);           
+        if ($columns['time'])
+          $row[] = csv_prepare_field($kga['lang']['time'],$column_delimiter,$quote_char);          
+        if ($columns['dec_time'])
+          $row[] = csv_prepare_field($kga['lang']['timelabel'],$column_delimiter,$quote_char);     
+        if ($columns['rate'])
+          $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);          
+        if ($columns['wage'])
+          $row[] = csv_prepare_field('Euro',$column_delimiter,$quote_char);                      
+        if ($columns['knd'])
+          $row[] = csv_prepare_field($kga['lang']['knd'],$column_delimiter,$quote_char);           
+        if ($columns['pct'])
+          $row[] = csv_prepare_field($kga['lang']['pct'],$column_delimiter,$quote_char);           
+        if ($columns['action'])
+          $row[] = csv_prepare_field($kga['lang']['evt'],$column_delimiter,$quote_char);           
+        if ($columns['comment'])
+          $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
+        if ($columns['location'])
+          $row[] = csv_prepare_field($kga['lang']['location'],$column_delimiter,$quote_char);      
+        if ($columns['trackingnr'])
+          $row[] = csv_prepare_field($kga['lang']['trackingnr'],$column_delimiter,$quote_char);    
+        if ($columns['user'])
+          $row[] = csv_prepare_field($kga['lang']['user'],$column_delimiter,$quote_char);          
+        if ($columns['cleared'])
+          $row[] = csv_prepare_field($kga['lang']['cleared'],$column_delimiter,$quote_char);  
+
+        echo implode($column_delimiter,$row);
+        echo "\n";
+
+        // output of data
+        foreach ($arr_data as $data) {
+          $row = array();
+          if ($columns['date'])
+            $row[] = csv_prepare_field(strftime($dateformat,$data['time_in']),$column_delimiter,$quote_char);
+          if ($columns['from'])
+            $row[] = csv_prepare_field(strftime($timeformat,$data['time_in']),$column_delimiter,$quote_char);            
+          if ($columns['to'])
+            $row[] = csv_prepare_field(strftime($timeformat,$data['time_out']),$column_delimiter,$quote_char);           
+          if ($columns['time'])
+            $row[] = csv_prepare_field($data['zef_apos'],$column_delimiter,$quote_char);          
+          if ($columns['dec_time'])
+            $row[] = csv_prepare_field($data['dec_zef_time'],$column_delimiter,$quote_char);     
+          if ($columns['rate'])
+            $row[] = csv_prepare_field($data['zef_rate'],$column_delimiter,$quote_char);          
+          if ($columns['wage'])
+            $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                      
+          if ($columns['knd'])
+            $row[] = csv_prepare_field($data['knd_name'],$column_delimiter,$quote_char);           
+          if ($columns['pct'])
+            $row[] = csv_prepare_field($data['pct_name'],$column_delimiter,$quote_char);           
+          if ($columns['action'])
+            $row[] = csv_prepare_field($data['evt_name'],$column_delimiter,$quote_char);           
+          if ($columns['comment'])
+            $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
+          if ($columns['location'])
+            $row[] = csv_prepare_field($data['location'],$column_delimiter,$quote_char);      
+          if ($columns['trackingnr'])
+            $row[] = csv_prepare_field($data['trackingnr'],$column_delimiter,$quote_char);    
+          if ($columns['user'])
+            $row[] = csv_prepare_field($data['username'],$column_delimiter,$quote_char);          
+          if ($columns['cleared'])
+            $row[] = csv_prepare_field($data['cleared'],$column_delimiter,$quote_char);  
+
+        echo implode($column_delimiter,$row);
+        echo "\n";
+        }     
     break;
 
 

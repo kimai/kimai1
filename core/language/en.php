@@ -213,6 +213,9 @@ $kga['lang']= array(
 "print_summary"     => "print summary",
 "create_bookmarks"  => "create bookmarks",
 "download_pdf"      => "download pdf file",
+
+"column_delimiter"  => "delimiter for columns",
+"quote_char"        => "boundary character for fields",
 );
 
 $kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");
