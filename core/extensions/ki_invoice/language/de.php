@@ -11,6 +11,7 @@ $kga['langInvoice'] = array(
       "invoiceTimePeriod" => "Zeitspanne:",
       "invoiceOptionVat" => " Abrechnung mit MWST",
       "invoiceOptionShort" => "Kurze Abrechnung",
+      "invoiceOptionRound" => "Zeiten Runden",
       "invoiceButton" => "Erstellen"
       );
 

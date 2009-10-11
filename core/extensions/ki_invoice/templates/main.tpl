@@ -27,7 +27,7 @@
 			
     		<input type=checkbox name="vat"> {$kga.langInvoice.invoiceOptionVat}<BR>
     		<input type=checkbox name="short"> {$kga.langInvoice.invoiceOptionShort}<BR>
-    		<input type=checkbox name="round"> Zeiten Runden 
+    		<input type=checkbox name="round"> {$kga.langInvoice.invoiceOptionRound}Zeiten Runden 
     		<select id="iv_round_ID" name="pct_round" class="formfield">
 			  {html_options values=$sel_round_IDs output=$sel_round_names selected=$pres_round}
 			</select>
