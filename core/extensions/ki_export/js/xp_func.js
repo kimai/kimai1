@@ -285,7 +285,8 @@ function xp_ext_triggerchange() {
     xp_chk_hook_flag = 0;
     xp_chp_hook_flag = 0;
     xp_che_hook_flag = 0;
-    xp_ext_reload();
+    if ($('.ki_export').html() != '')
+      xp_ext_reload();
 }
 
 function xp_ext_triggerTSS() {
