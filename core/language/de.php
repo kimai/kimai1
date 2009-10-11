@@ -208,6 +208,11 @@ $kga['lang'] = array(
 "expense"           => "Betrag",
 "designation"       => "Verwendung",
 
+"print_comment"     => "Kommentare ausgeben",
+"print_summary"     => "Zusammenfassung ausgeben",
+"create_bookmarks"  => "Lesezeichen erstellen",
+"download_pdf"      => "PDF-Datei downloaden",
+
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");

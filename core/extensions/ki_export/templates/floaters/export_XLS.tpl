@@ -7,6 +7,7 @@
             $('#floater input#dateformat').attr('value',$('#xp_ext_dateformat').attr('value'));
             $('#floater input#default_location').attr('value',$('#default_location').attr('value'));
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"));
+            $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter input:checked').attr('value'));
 
             columns = new Array('date','from','to','time','dec_time','rate','wage','knd','pct','action','comment','location','trackingnr','user','cleared');
             axColumnsString = '';
@@ -55,9 +56,10 @@
                 <input name="axAction" type="hidden" value="export_xls" />
                 <input name="axValue" id="axValue" type="hidden" value="" />
                 <input name="axColumns"  id="axColumns" type="hidden" value=""/>
-                <input name="timeformat" id="timeformat" type="hidden" value="asd"/>
+                <input name="timeformat" id="timeformat" type="hidden" value=""/>
                 <input name="dateformat" id="dateformat" type="hidden" value=""/>
                 <input name="default_location" id="default_location" type="hidden" value=""/>
+                <input name="filter_cleared" id="filter_cleared" type="hidden" value=""/>
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />

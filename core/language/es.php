@@ -207,6 +207,11 @@ $kga['lang']= array(
 
 "expense"           => "expense",
 "designation"       => "designation",
+
+"print_comment"     => "print comment",
+"print_summary"     => "print summary",
+"create_bookmarks"  => "create bookmarks",
+"download_pdf"      => "download pdf file",
 );
 
 $kga['lang']['months']         = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
