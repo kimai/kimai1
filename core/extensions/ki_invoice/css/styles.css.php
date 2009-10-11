@@ -14,7 +14,7 @@
 #iv_ext {
     padding:10px;
     font-size: 20px;
-    background-color: #fff;
+    background-color: #eee;
     color:#000;
     overflow:auto;
 }

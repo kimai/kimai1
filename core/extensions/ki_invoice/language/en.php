@@ -11,6 +11,7 @@ $kga['langInvoice'] = array(
       "invoiceTimePeriod" => "Period of time:",
       "invoiceOptionVat" => " Invoice with VAT",
       "invoiceOptionShort" => "Short Invoice",
+      "invoiceOptionRound" => "Round time",
       "invoiceButton" => "Create"
       );
 

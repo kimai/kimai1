@@ -26,6 +26,17 @@ function array_event_exists($arrays, $event) {
    return -1;
 }
 
+function RoundValue( $value, $prec ) {
+   $precision = prec;
+
+   // suppress division by zero errror
+   if ($precision == 0.0) {
+      $precision = 1.0;
+   }
+
+   return floor($value / $precision + 0.5)*$precision;
+}
+
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
@@ -63,7 +74,7 @@ $invoiceArray = array();
 
 while ($time_index < count($timeArray)) {
 	
-    $rate  = $timeArray[$time_index]['wage'];
+    $wage  = $timeArray[$time_index]['wage'];
     $time  = $timeArray[$time_index]['zef_time']/3600;
     $event = $timeArray[$time_index]['evt_name'];
     
@@ -77,24 +88,40 @@ while ($time_index < count($timeArray)) {
          $invoiceArray[$index] = array('desc'=>$event, 'hour' => $totalTime+$time, "amount" => $totalAmount+$rate);
 	  }
 	  else {
-   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$rate );
+   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage );
 	  }
    }
    else {
-      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$rate );
+      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage );
    }
    $time_index++;   
 }
 
+$round = 0;
+// do we have to round the time ?
+if ( $_REQUEST['round'] ) {
+   $round = $_REQUEST['pct_round'];
+   $time_index = 0;
+   
+   while ($time_index < count($invoiceArray)) {
+
+      $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+      $invoiceArray[$time_index]['hour'] = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
+      $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
+      $time_index++;
+   }
+   
+}
+
 // calculate invoice sum
-$total = 0;
+$gtotal = 0;
 while (list($id, $fd) = each($invoiceArray)) {
-  $total+= $invoiceArray[$id]['amount'];
+  $gtotal += $invoiceArray[$id]['amount'];
 }
 
 $vat_rate = 7.6;
-$vat = $vat_rate*$total/100;
-$gtotal = $total-$vat;
+$vat = $vat_rate*$gtotal/100;
+$total = $gtotal-$vat;
 
 // create the document
 $doc = new tinyDoc();

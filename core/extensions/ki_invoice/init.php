@@ -35,6 +35,8 @@ $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
 $tpl->assign('sel_pct_names', $sel[0]);
 $tpl->assign('sel_pct_IDs',   $sel[1]);
 
+$tpl->assign('sel_round_names', array('0.5h', '1.0h') );
+$tpl->assign('sel_round_IDs',   array(5, 10) );
 
 $timespace = get_timespace();
 $tpl->assign('in', $timespace[0]);
