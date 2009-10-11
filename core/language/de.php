@@ -216,6 +216,10 @@ $kga['lang'] = array(
 "column_delimiter"  => "Trennzeichen für Spalten",
 "quote_char"        => "Begrenzungszeichen von Feldern",
 
+"exportCSV"         => "CSV Export",
+"exportPDF"         => "PDF Export",
+"exportXLS"         => "Excel Export",
+"export_timeformat_help" => "Zeitformat Hilfe",
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");

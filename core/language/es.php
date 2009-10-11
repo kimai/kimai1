@@ -215,6 +215,11 @@ $kga['lang']= array(
 
 "column_delimiter"  => "delimiter for columns",
 "quote_char"        => "boundary character for fields",
+
+"exportCSV"         => "CSV export",
+"exportPDF"         => "PDF export",
+"exportXLS"         => "Excel export",
+"export_timeformat_help" => "help for timeformat",
 );
 
 $kga['lang']['months']         = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
