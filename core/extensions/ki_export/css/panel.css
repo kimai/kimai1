@@ -81,8 +81,6 @@
 #xp_panel #xp_ext_export_xls:hover       { background-position: 82px -42px; }
 #xp_panel #xp_ext_export_xls.pressed     { background-position: 82px -84px; }
 
-
-
 #xp_panel #xp_ext_export_csv
 {
 	left:88px; top:-81px;
@@ -90,8 +88,6 @@
 }
 #xp_panel #xp_ext_export_csv:hover       { background-position: -41px -42px; }
 #xp_panel #xp_ext_export_csv.pressed     { background-position: -41px -84px; }
-
-
 
 #xp_panel #xp_ext_print
 {
