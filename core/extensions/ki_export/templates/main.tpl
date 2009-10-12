@@ -44,17 +44,13 @@
                 <td class="pct"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
                 <td class="evt"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
 
-                <td class="comment" colspan="3">
-					<a onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a> /
-	                <a onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a> /
+                <td class="comment nobreak" colspan="3">
+					<a onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a>,
+	                <a onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a>,
 	                <a onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a>
 				</td>
 				
-				
-
-
                 <td class="user"><a onClick="xp_toggle_column('user');">{$kga.lang.username}</a></td>
-                <!-- <td class="evt">cleared</td> -->
             </tr>
         </tbody>
     </table>
