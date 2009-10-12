@@ -39,3 +39,17 @@
     font-weight:bold;
     color:white;
 }
+
+.xp_time_help_table {
+  border-collapse:collapse;
+}
+
+.xp_time_description {
+    border-bottom:1px solid gray;
+}
+
+.xp_time_shortcut {
+    font-weight:bold;
+    border-bottom:1px solid gray;
+    padding-right:10px;
+}
