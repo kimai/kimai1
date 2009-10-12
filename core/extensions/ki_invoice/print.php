@@ -27,13 +27,13 @@ function array_event_exists($arrays, $event) {
 }
 
 function RoundValue( $value, $prec ) {
-   $precision = prec;
-
+   $precision = $prec;
+    
    // suppress division by zero errror
    if ($precision == 0.0) {
       $precision = 1.0;
    }
-
+  
    return floor($value / $precision + 0.5)*$precision;
 }
 
@@ -97,6 +97,8 @@ while ($time_index < count($timeArray)) {
    $time_index++;   
 }
 
+logfile( "ROUND 12.3 ". RoundValue(12.3,0.5) . " - 12.7 ". RoundValue(12.7,0.5) );
+
 $round = 0;
 // do we have to round the time ?
 if ( $_REQUEST['round'] ) {
@@ -105,6 +107,8 @@ if ( $_REQUEST['round'] ) {
    
    while ($time_index < count($invoiceArray)) {
 
+ logfile( "Round ".  $invoiceArray[$time_index]['hour'] . " to " . RoundValue( $invoiceArray[$time_index]['hour'], $round/10). " with ".  $round );
+ 
       $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
       $invoiceArray[$time_index]['hour'] = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
       $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
