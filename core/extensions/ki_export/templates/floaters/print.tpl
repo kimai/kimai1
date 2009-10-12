@@ -30,8 +30,8 @@
         <span id="floater_title">{$kga.lang.print}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
-			<a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a>
+            <!-- <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a> -->
+			<!-- <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a> -->
         </div>  
     </div>
 
