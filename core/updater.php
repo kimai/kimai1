@@ -149,6 +149,7 @@ EOD;
 <body>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>
 <div id="link"></div>
+<a href="db_restore.php" id="" title="db_restore">Database Utility</a>
 <div id="queries"></div>
 <table>
     <tr>
