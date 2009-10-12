@@ -172,16 +172,6 @@ div.ki_export table tr.even td.disabled {
   background-color:#FFE1DB !important;
 }
 
-div.ki_export table td.disabled a {
-  text-decoration: line-through;
-}
-div.ki_export table td.disabled {
-  text-decoration: line-through;
-}
-
-
-
-
 
 div.ki_export table td.user
 {
