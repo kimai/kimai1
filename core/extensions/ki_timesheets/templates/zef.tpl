@@ -230,7 +230,7 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="ts_ext_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name}'); 
+                            onClick="ts_ext_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name|replace:"'":"\\'"}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name}'); 
                             return false;">
                             {$arr_zef[row].pct_name}
                             {if $kga.conf.pct_comment_flag == 1}
@@ -255,7 +255,7 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="ts_ext_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name}',0,0); 
+                            onClick="ts_ext_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name|replace:"'":"\\'"}',0,0); 
                             return false;">
                             {$arr_zef[row].evt_name} 
                         </a>

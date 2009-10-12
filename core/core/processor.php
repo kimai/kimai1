@@ -213,7 +213,7 @@ switch ($axAction) {
     	
         switch($axValue) {
             case "knd":
-            	$data['knd_name']     = $_REQUEST['knd_name'];
+            	$data['knd_name']     = htmlspecialchars($_REQUEST['knd_name']);
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
             	$data['knd_street']   = $_REQUEST['knd_street'];
@@ -245,7 +245,7 @@ switch ($axAction) {
             break;
             
             case "pct":
-                $data['pct_name']         = $_REQUEST['pct_name'];
+                $data['pct_name']         = htmlspecialchars($_REQUEST['pct_name']);
                 $data['pct_kndID']        = $_REQUEST['pct_kndID'];
                 $data['pct_comment']      = $_REQUEST['pct_comment'];
                 $data['pct_visible']      = $_REQUEST['pct_visible'];
@@ -266,7 +266,7 @@ switch ($axAction) {
             break;
             
             case "evt":
-                $data['evt_name']         = $_REQUEST['evt_name'];
+                $data['evt_name']         = htmlspecialchars($_REQUEST['evt_name']);
                 $data['evt_comment']      = $_REQUEST['evt_comment'];
                 $data['evt_visible']      = $_REQUEST['evt_visible'];
                 $data['evt_filter']       = $_REQUEST['evt_filter'];
