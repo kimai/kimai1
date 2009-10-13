@@ -1,6 +1,7 @@
 <?php
 	header('Content-type: text/css');
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+	$schraff3 = "../../../skins/standard/grfx/schraff3.png";
 ?>
 
 div.ki_export table {
@@ -58,6 +59,49 @@ div.ki_export tr.odd td {
     background: #EEE;
 }
 
+
+div#xptable tr.odd td.comment,
+div#xptable tr.odd td.trackingnr,
+div#xptable tr.odd td.location {
+    background: #CFE3F5;
+}
+
+div#xptable tr.even td.comment,
+div#xptable tr.even td.trackingnr,
+div#xptable tr.even td.location {
+    background: #ECF7FD;
+}
+div#xptable tr.even.expense td {
+    background: #E5FFBF;
+}
+
+div#xptable tr.odd.expense td {
+    background: #DCF4B7;
+}
+
+div#xptable tr.odd.expense td.comment,
+div#xptable tr.odd.expense td.trackingnr,
+div#xptable tr.odd.expense td.location {
+    background: #A3F1A6;
+}
+
+div#xptable tr.even.expense td.comment,
+div#xptable tr.even.expense td.trackingnr,
+div#xptable tr.even.expense td.location {
+    background: #C8F1CC;
+}
+
+
+
+div#xptable tr.odd td.cleared {
+    background: #6E7882;
+}
+
+div#xptable tr.even td.cleared {
+    background: #86939F;
+}
+
+
 div#xptable tr td.time {
     border-bottom:1px dotted white;;
 }
@@ -74,26 +118,9 @@ div#xptable tr.active td.time {
     background: #F00;
 }
 
-div#xptable tr.odd td.comment,
-div#xptable tr.odd td.trackingnr,
-div#xptable tr.odd td.location {
-    background: #CFE3F5;
+div#xptable tr.expense td.time {
+    background-image:url('<?php echo $schraff3; ?>');
 }
-
-div#xptable tr.even td.comment,
-div#xptable tr.even td.trackingnr,
-div#xptable tr.even td.location {
-    background: #ECF7FD;
-}
-div#xptable tr.odd td.cleared {
-    background: #6E7882;
-}
-
-div#xptable tr.even td.cleared {
-    background: #86939F;
-}
-
-
 
 
 
