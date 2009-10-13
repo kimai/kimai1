@@ -29,11 +29,8 @@
                 
 {section name=row loop=$arr_data}
 
-{if $arr_data[row].time_out}                
-                <tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"}">
-{else}                    
-                <tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"} active">
-{/if}
+<tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"} {if !$arr_data[row].time_out}active{/if}
+ {if $arr_data[row].type=="exp"}expense{/if}">
                
 
 
