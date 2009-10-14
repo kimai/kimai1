@@ -57,7 +57,7 @@ $tpl->compile_dir  = 'compile/';
 
 if(!file_exists(realpath(dirname(__FILE__).'/includes/conf.php'))){
     require('includes/autoconf.php');
-    if (!$server_database) {
+    if (!isset($server_database)) {
         header("Location: installer/index.php");
         exit;
     }
