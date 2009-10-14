@@ -94,6 +94,8 @@ $(document).ready(function() {
        lists_resizeTimer = setTimeout(lists_resize, 500);
     });
 
+	$('#usr, #usr_head').hide(); // user subtab has to be hidden via jQat init for shrink FadeIn/FadeOut to work properly...
+
 });
 
 

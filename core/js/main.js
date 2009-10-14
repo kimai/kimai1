@@ -498,26 +498,30 @@ function lists_shrinkKndToggle() {
     logfile("kndshrink");
     (kndShrinkMode)?kndShrinkMode=0:kndShrinkMode=1;
     if (kndShrinkMode) {
-        $('#knd, #knd_head').hide();
+        // $('#knd, #knd_head').hide();
+        $('#knd, #knd_head').fadeOut("slow",lists_set_tableWrapperWidths);
         $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_right.png')");
     } else {
-        $('#knd, #knd_head').show();
+		lists_set_tableWrapperWidths();
+        // $('#knd, #knd_head').show();
+        $('#knd, #knd_head').fadeIn("slow");
         $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
     }
-    lists_set_tableWrapperWidths();
 }
 
 function lists_shrinkUsrToggle() {
     logfile("usrshrink");
     (usrShrinkMode)?usrShrinkMode=0:usrShrinkMode=1;
     if (usrShrinkMode) {
-        $('#usr, #usr_head').hide();
+        $('#usr, #usr_head').fadeOut("slow",lists_set_tableWrapperWidths);
+        // $('#usr, #usr_head').hide();
         $('#usrShrink').css("background-image","url('../skins/standard/grfx/kndShrink_right.png')");
     } else {
-        $('#usr, #usr_head').show();
+		lists_set_tableWrapperWidths();
+        $('#usr, #usr_head').fadeIn("slow");
+        // $('#usr, #usr_head').show();
         $('#usrShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
     }
-    lists_set_tableWrapperWidths();
 }
 
 function lists_get_dimensions() {
