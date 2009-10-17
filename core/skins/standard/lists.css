@@ -159,6 +159,12 @@ div#evt_head div.right a
     font-size:9px;
 }
 
+
+#filt_usr {
+	    margin-right:8px;
+}
+
+
 .livefilterfield:focus {
     background: #fff;
     color:#333;
