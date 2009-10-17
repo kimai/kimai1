@@ -180,7 +180,15 @@ function xp_ext_set_TableWidths() {
 	$("#xp_head > table").css("width", "100%");
 
 
-    cashWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
+  $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
+  $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
+  $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());
+  $("#xp_head > table > tbody > tr > td.comment").css("width",
+      $("div#xp > div > table > tbody > tr > td.comment").width()+
+      $("div#xp > div > table > tbody > tr > td.location").width()+
+      $("div#xp > div > table > tbody > tr > td.trackingnr").width()
+  );
+    /*cashWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
 	cashWidth += $("div#xp > div > table > tbody > tr > td.dec_time").width();
 	cashWidth +=3;
     $("#xp_head > table > tbody > tr > td.cash").css("width", cashWidth);
@@ -211,7 +219,7 @@ function xp_ext_set_TableWidths() {
 		$("div#xp > div > table > tbody > tr > td.evt").css("width", headerWidth);   
 	} else {
 		$("#xp_head > table > tbody > tr > td.evt").css("width", contentWidth);
-	}
+	}*/
        
 
 

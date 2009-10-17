@@ -169,13 +169,16 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width:40px;
 }
 
-#xp_head td.rate,
+#xp_head td.cash
+{
+    width: 90px;
+}
+
 #xp td.rate
 {
     width:40px;
 }
 
-#xp_head td.wage,
 #xp td.wage
 {
     width:40px;
@@ -190,6 +193,30 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
 #xp td.to
 {
     width:50px;
+}
+
+#xp td.knd {
+    min-width:50px;
+}
+
+#xp td.pct {
+    min-width:50px;
+}
+
+#xp td.evt {
+    min-width:60px;
+}
+
+#xp td.comment {
+    width:80px;
+}
+
+#xp td.location {
+    width:30px;
+}
+
+#xp td.trackingnr {
+    width:120px;
 }
 
 div.ki_export table tr.odd td.disabled {
