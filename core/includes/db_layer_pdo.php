@@ -1614,7 +1614,7 @@ function validate_zef() {
     $return_state = true;    
     
     // Lock tables
-    $pdo_query_l = $pdo_conn->prepare("LOCK TABLE " . $kga['server_prefix'] . "usr, " . $kga['server_prefix'] . "zef");
+    $pdo_query_l = $pdo_conn->prepare("LOCK TABLE " . $kga['server_prefix'] . "usr READ, " . $kga['server_prefix'] . "zef READ");
     $result_l = $pdo_query_l->execute();
     
     // case 1: scan for multiple running entries of the same user
@@ -1662,7 +1662,7 @@ function validate_zef() {
     }
     
     // Unlock tables
-    $pdo_query_ul = $pdo_conn->prepare("UNLOCK TABLE " . $kga['server_prefix'] . "usr, " . $kga['server_prefix'] . "zef");
+    $pdo_query_ul = $pdo_conn->prepare("UNLOCK TABLES");
     $result_ul = $pdo_query_ul->execute();
     
     return $return_state;
@@ -3240,8 +3240,9 @@ function get_arr_grp($trash=0) {
     
     // Lock tables
     $pdo_query_l = $pdo_conn->prepare("LOCK TABLE 
-    " . $kga['server_prefix'] . "usr, 
-    " . $kga['server_prefix'] . "grp     
+    " . $kga['server_prefix'] . "usr READ, 
+    " . $kga['server_prefix'] . "grp READ,      
+    " . $kga['server_prefix'] . "ldr READ
     ");
     $result_l = $pdo_query_l->execute();
     
@@ -3275,10 +3276,7 @@ function get_arr_grp($trash=0) {
     }
     
     // Unlock tables
-    $pdo_query_ul = $pdo_conn->prepare("UNLOCK TABLE 
-    " . $kga['server_prefix'] . "usr, 
-    " . $kga['server_prefix'] . "grp     
-    ");
+    $pdo_query_ul = $pdo_conn->prepare("UNLOCK TABLES");
     $result_ul = $pdo_query_ul->execute();
     
     // error_log("get_arr_grp: " . serialize($groups));

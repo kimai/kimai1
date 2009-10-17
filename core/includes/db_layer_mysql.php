@@ -1336,7 +1336,7 @@ function usr_delete($usr_id) {
     global $kga, $conn;
     
     $values['usr_trash'] = 1;    
-    $filter['usr_ID'] = MySQL::SQLValue($usr_ID, MySQL::SQLVALUE_NUMBER);
+    $filter['usr_ID'] = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."usr";
         
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -1604,9 +1604,10 @@ function grp_get_data($grp_id) {
 function grp_count_users($grp_id) {
     global $kga, $conn;
     $filter['usr_grp'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
+    $filter['usr_trash'] = 0;
     $table = $kga['server_prefix']."usr";
     $result = $conn->SelectRows($table, $filter);
-    return $conn->RowCount();
+    return $conn->RowCount()===false?0:$conn->RowCount();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1793,7 +1794,7 @@ function validate_zef() {
     $p = $kga['server_prefix'];
 	
     // Lock tables
-    $lock  = "LOCK TABLE ${p}usr, ${p}zef;";
+    $lock  = "LOCK TABLE ${p}usr READ, ${p}zef READ;";
     $conn->Query($lock);
 
 //------
@@ -1853,7 +1854,7 @@ function validate_zef() {
     }
     
     // Unlock tables
-    $unlock = "UNLOCK TABLE ${p}usr, ${p}zef ;";
+    $unlock = "UNLOCK TABLES";
     $conn->Query($unlock);
     
     return $return_state;
@@ -3268,16 +3269,17 @@ function get_arr_usr($trash=0) {
  *
  */
  
-// fail! 
+
  
 function get_arr_grp($trash=0) {
     global $kga, $conn;
     
     $p = $kga['server_prefix'];
 
-    // Lock tables
-    $lock  = "LOCK TABLE ${p}usr, ${p}grp;";
+    // Lock tables for alles queries executed until the end of this function
+    $lock  = "LOCK TABLE ${p}usr READ, ${p}grp READ, ${p}ldr READ;";
     $conn->Query($lock);
+    logfile($conn->Error());
 
 //------
 
@@ -3299,12 +3301,10 @@ function get_arr_grp($trash=0) {
 
         // append user count
         $groups[$i]['count_users'] = grp_count_users($row['grp_ID']);
-        
-        logfile($row['grp_ID']);
 
         // append leader array
         $ldr_id_array = grp_get_ldrs($row['grp_ID']);
-        
+        $ldr_name_array = array();
         $j = 0;
         foreach ($ldr_id_array as $ldr_id) {
             $ldr_name_array[$j] = usr_id2name($ldr_id);
@@ -3319,8 +3319,9 @@ function get_arr_grp($trash=0) {
 //------
 
     // Unlock tables
-    $unlock = "UNLOCK TABLE ${p}usr, ${p}grp;";
+    $unlock = "UNLOCK TABLES;";
     $conn->Query($unlock);
+    logfile($conn->Error());
     
     return $groups;    
 }
