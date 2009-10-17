@@ -506,6 +506,7 @@ function lists_shrinkKndToggle() {
         // $('#knd, #knd_head').show();
         $('#knd, #knd_head').fadeIn("slow");
         $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
+		lists_resize();
     }
 }
 
