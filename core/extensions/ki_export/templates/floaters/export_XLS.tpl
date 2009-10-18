@@ -50,7 +50,7 @@
                    
 				<ul>
 			        <li>
-				 		Click OK to download export-file.
+				 		{$kga.lang.dl_hint}
 					</li>
 				</ul>
 

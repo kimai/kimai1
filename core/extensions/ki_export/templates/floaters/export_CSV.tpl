@@ -61,7 +61,7 @@
                    </li>
 
                    <li>
-	      				Click OK to open a printable table.
+	      				{$kga.lang.dl_hint}
 					</li>
                  </ul>
                    

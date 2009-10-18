@@ -210,6 +210,9 @@ $kga['lang']= array(
 "expense"           => "Expense",
 "designation"       => "Designation",
 
+"print_hint"		=> "Click OK to open a printable table.",
+"dl_hint"			=> "Click OK to download export-file.",
+
 "print_comment"     => "print comment",
 "print_summary"     => "print summary",
 "create_bookmarks"  => "create bookmarks",

@@ -209,6 +209,9 @@ $kga['lang'] = array(
 "expense"           => "Betrag",
 "designation"       => "Verwendung",
 
+"print_hint"		=> "Klicken Sie OK um eine druckbare Tabelle anzuzeigen.",
+"dl_hint"			=> "Klicken Sie OK um den Download zu starten.",
+
 "print_comment"     => "Kommentare ausgeben",
 "print_summary"     => "Zusammenfassung ausgeben",
 "create_bookmarks"  => "Lesezeichen erstellen",

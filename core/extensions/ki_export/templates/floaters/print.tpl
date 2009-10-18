@@ -47,7 +47,7 @@
 
 		        <ul>
 			        <li>
-				      Click OK to open a printable table.
+				      {$kga.lang.print_hint}
 					</li>
 				</ul>
 {* -------------------------------------------------------------------- *} 

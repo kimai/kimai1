@@ -68,7 +68,7 @@
                        <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
                    </li>
                    <li>
-	 					Click OK to download export-file.
+	 					{$kga.lang.dl_hint}
 					</li>
                  </ul>
                    
