@@ -7,19 +7,19 @@ include('../../includes/basics.php');
 
 $usr = checkUser();
 
-// select language
-if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-   $language = $kga['conf']['lang'];
-}
-
-if ($language == "de") {
-   require_once( "language/${language}.php" );
-}
-else {
-   require_once( "language/en.php" );
-}
+// // select language
+// if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
+//     $language = $kga['language'];
+// } else {
+//    $language = $kga['conf']['lang'];
+// }
+// 
+// if ($language == "de") {
+//    require_once( "language/${language}.php" );
+// }
+// else {
+//    require_once( "language/en.php" );
+// }
 
 
 // set smarty config

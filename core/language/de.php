@@ -276,5 +276,19 @@ $kga['lang']['xp_ext'] = array(
 );
 
 
+$kga['lang']['ext_invoice'] = array(
+	
+"invoiceTitle" 				=> "Rechnung Erstellen",
+"invoiceProject" 			=> "Projekte:",
+"invoiceTimePeriod" 		=> "Zeitspanne:",
+"invoiceOptionVat" 			=> " Abrechnung mit MWST",
+"invoiceOptionShort" 		=> "Kurze Abrechnung",
+"invoiceOptionRound" 		=> "Zeiten Runden",
+"invoiceButton" 			=> "Erstellen"
+
+);
+
+
+
 
 ?>

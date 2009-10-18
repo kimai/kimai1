@@ -277,4 +277,19 @@ $kga['lang']['xp_ext'] = array(
 
 );
 
+
+
+$kga['lang']['ext_invoice'] = array(
+	
+"invoiceTitle" 			=> "Create invoice",
+"invoiceProject" 		=> "Projects:",
+"invoiceTimePeriod" 	=> "Period of time:",
+"invoiceOptionVat" 		=> " Invoice with VAT",
+"invoiceOptionShort" 	=> "Short Invoice",
+"invoiceOptionRound" 	=> "Round time",
+"invoiceButton" 		=> "Create"
+
+);
+
+
 ?>

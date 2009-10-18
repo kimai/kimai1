@@ -52,7 +52,7 @@ $kga['charset_descr']  = array('UTF-8','iso-8859-1');
 // $kga['customerhack']     = 1; // set to 1 to activate a temporary filter option for PDF printing 
                                  // [actually this is obsolete because PDF printing is not available in 0.8...]
 
-$kga['show_sensible_data'] = 0; // turn this on to display sensible data in the debug/developer extension 
+$kga['show_sensible_data'] = 1; // turn this on to display sensible data in the debug/developer extension 
                                 // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
                                 // DON'T BLAME US - YOU HAVE BEEN WARNED!
                                 
