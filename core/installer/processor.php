@@ -62,10 +62,32 @@ switch ($axAction) {
             $errors++;
             $javascript .= "$('span.ch_compile_tsext').addClass('fail');";
         }
+
         if (!$fp = @fopen("../extensions/ki_adminpanel/compile/".$filename ."_testfile.txt", "w")) {
             $errors++;
             $javascript .= "$('span.ch_compile_apext').addClass('fail');";
         }
+
+
+
+        if (!$fp = @fopen("../extensions/ki_expenses/compile/".$filename ."_testfile.txt", "w")) {
+            $errors++;
+            $javascript .= "$('span.ch_compile_epext').addClass('fail');";
+        }
+
+        if (!$fp = @fopen("../extensions/ki_export/compile/".$filename ."_testfile.txt", "w")) {
+            $errors++;
+            $javascript .= "$('span.ch_compile_xpext').addClass('fail');";
+        }
+
+        if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
+            $errors++;
+            $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
+        }
+
+
+
+
         if (!$fp = @fopen("../temporary/".$filename ."_testfile.txt", "w")) {
             $errors++;
             $javascript .= "$('span.ch_temporary').addClass('fail');";

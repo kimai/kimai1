@@ -126,6 +126,10 @@ function resetPermissionIndicators() {
     $('span.ch_temporary').removeClass("fail");
     $('span.ch_compile_tsext').removeClass("fail");
     $('span.ch_compile_apext').removeClass("fail");
+
+    $('span.ch_compile_epext').removeClass("fail");
+    $('span.ch_compile_xpext').removeClass("fail");
+    $('span.ch_compile_ivext').removeClass("fail");
     
     $('span.ch_compile').addClass("ok");
     $('span.ch_autoconf').addClass("ok");
@@ -134,6 +138,10 @@ function resetPermissionIndicators() {
     $('span.ch_compile_tsext').addClass("ok");
     $('span.ch_compile_apext').addClass("ok");
     
+    $('span.ch_compile_epext').addClass("ok");
+    $('span.ch_compile_xpext').addClass("ok");
+    $('span.ch_compile_ivext').addClass("ok");
+
     $('span.ch_correctit').fadeOut(500); 
 }
 
