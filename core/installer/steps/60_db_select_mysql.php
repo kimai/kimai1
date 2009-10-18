@@ -21,7 +21,7 @@ if ($con) {
             $result = mysql_query("SHOW DATABASES");
             $db_connection = array(); 
             while ( $row = mysql_fetch_row($result) ) {
-                if (($row[0] != "information_schema")&&($row[0] != "mysql")&&($row[0] != "test")) {
+                if (($row[0] != "information_schema")&&($row[0] != "mysql")) {
                     $db_connection[] = $row[0];
                 }
             }
@@ -60,7 +60,9 @@ if ($con) {
             if ($databases_can_be_created) {
                 ($lang=="de")?$return.="Neue Datenbank anlegen:<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>"
                              :$return.="Create a blank database:<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>";
-            } 
+            }
+            else
+              $return.="<input id='db_create' type='hidden' value=''/>"; 
 
             ($lang=="de")?$return.="Möchten Sie einen Tabellen-Prefix vergeben?<br/>(Wenn Sie nicht wissen was das ist, lassen Sie einfach 'kimai_' stehen...)<br/><input id='prefix' type='text' value='kimai_'/><br/><br/>"
                          :$return.="Would you like to assign a table-prefix?<br/>(If you don't know what this is - leave it as 'kimai_'...)<br/><input id='prefix' type='text' value='kimai_'/><br/><br/>";
