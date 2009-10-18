@@ -143,12 +143,22 @@ EOD;
 	       background-color:#0f0;
 	       border:1px solid black;
 	   }
+	
+	#logo {
+		width:135px;
+		height:52px;
+		position:absolute;
+		top:10px;
+		right:10px;
+		background-image:url('grfx/logo.png');
+	}
 	</style>
     <script src="libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>
-<div id="link"></div>
+<div id="logo">&nbsp;</div>
+<div id="link">&nbsp;</div>
 <a href="db_restore.php" id="" title="db_restore">Database Utility</a>
 <div id="queries"></div>
 <table>
