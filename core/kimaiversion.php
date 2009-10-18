@@ -84,6 +84,13 @@ $message[5]['en']<<<MSG
 MSG;
 
 
+// 0 -> critical bugs fixed. update!
+// 1 -> critical bugs & new features. update!
+// 2 -> new features. update.
+// 3 -> min0r bugfixes. update.
+// 4 -> nightly build available.
+// 5 -> latest version.
+
 
 if ($revision > 136) $i = 1;
 if ($revision < 138) $i = 4;
