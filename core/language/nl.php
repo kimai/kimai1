@@ -244,31 +244,35 @@ $kga['lang']['backup'][7]        = "was recovered.";
 $kga['lang']['backup'][8]        = "create backup";
 $kga['lang']['backup'][9]        = "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)";
 
-$kga['lang']['xp_ext']['print_hint'      		] = "Click OK to open a printable table.";
-$kga['lang']['xp_ext']['dl_hint'         		] = "Click OK to download export-file.";
-                                         		  
-$kga['lang']['xp_ext']['tab_filter'	 			] = "Filter";
-$kga['lang']['xp_ext']['tab_location'	 		] = "Location";
-$kga['lang']['xp_ext']['tab_timeformat'	 		] = "Timeformat";
-                                                  
-$kga['lang']['xp_ext']['cleared_all'	 		] = "all";
-$kga['lang']['xp_ext']['cleared_cleared' 		] = "only cleared";
-$kga['lang']['xp_ext']['cleared_open'	 		] = "only open";
-$kga['lang']['xp_ext']['stdrd_location'  		] = "Standard-Location";
-$kga['lang']['xp_ext']['timeformat'	     		] = "Timeformat";
-$kga['lang']['xp_ext']['dateformat'				] = "Dateformat";
-                                         		  
-$kga['lang']['xp_ext']['print_comment'   		] = "print comments";
-$kga['lang']['xp_ext']['print_summary'   		] = "print summary";
-$kga['lang']['xp_ext']['create_bookmarks'		] = "create bookmarks";
-$kga['lang']['xp_ext']['download_pdf'    		] = "download as PDF";
-                                         		  
-$kga['lang']['xp_ext']['column_delimiter'		] = "delimiter for columns";
-$kga['lang']['xp_ext']['quote_char'      		] = "boundary character for fields";
-                                                  
-$kga['lang']['xp_ext']['exportCSV'         	    ] = "CSV Export";
-$kga['lang']['xp_ext']['exportPDF'         	    ] = "PDF Export";
-$kga['lang']['xp_ext']['exportXLS'         	    ] = "Excel Export";
-$kga['lang']['xp_ext']['print'         	    	] = "Print";
-$kga['lang']['xp_ext']['export_timeformat_help' ] = "Timeformat help";
+$kga['lang']['xp_ext'] = array(
+	
+"print_hint"      		   => "Click OK to open a printable table.";
+"dl_hint"         		   => "Click OK to download export-file.";
+                              
+"tab_filter"	 		   => "Filter";
+"tab_location"	 		   => "Location";
+"tab_timeformat"	 	   => "Timeformat";
+                              
+"cleared_all"	 		   => "all";
+"cleared_cleared" 		   => "only cleared";
+"cleared_open"	 		   => "only open";
+"stdrd_location"  		   => "Standard-Location";
+"timeformat"	     	   => "Timeformat";
+"dateformat"			   => "Dateformat";
+                              
+"print_comment"   		   => "print comments";
+"print_summary"   		   => "print summary";
+"create_bookmarks"		   => "create bookmarks";
+"download_pdf"    		   => "download as PDF";
+                              
+"column_delimiter"		   => "delimiter for columns";
+"quote_char"      		   => "boundary character for fields";
+                              
+"exportCSV"         	   => "CSV Export";
+"exportPDF"         	   => "PDF Export";
+"exportXLS"         	   => "Excel Export";
+"print"         	       => "Print";
+"export_timeformat_help"   => "Timeformat help";
+
+);
 ?>
