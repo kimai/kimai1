@@ -29,7 +29,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.exportXLS}</span>
+        <span id="floater_title">{$kga.lang.xp_ext.exportXLS}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <!-- <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a> -->
@@ -50,7 +50,7 @@
                    
 				<ul>
 			        <li>
-				 		{$kga.lang.dl_hint}
+				 		{$kga.lang.xp_ext.dl_hint}
 					</li>
 				</ul>
 

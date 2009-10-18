@@ -27,7 +27,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.print}</span>
+        <span id="floater_title">{$kga.lang.xp_ext.print}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>  
@@ -47,7 +47,7 @@
 
 		        <ul>
 			        <li>
-				      {$kga.lang.print_hint}
+				      {$kga.lang.xp_ext.print_hint}
 					</li>
 				</ul>
 {* -------------------------------------------------------------------- *} 

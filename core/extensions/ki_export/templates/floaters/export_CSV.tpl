@@ -30,7 +30,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.exportCSV}</span>
+        <span id="floater_title">{$kga.lang.xp_ext.exportCSV}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>  
@@ -51,17 +51,17 @@
                 <ul>
                 
                    <li>
-                       <label for="print_comments">{$kga.lang.column_delimiter}:</label>
+                       <label for="print_comments">{$kga.lang.xp_ext.column_delimiter}:</label>
                        <input type="text" value="," name="column_delimiter" id="column_delimiter" size="1"/>
                    </li>
                 
                    <li>
-                       <label for="print_summary">{$kga.lang.quote_char}:</label>
+                       <label for="print_summary">{$kga.lang.xp_ext.quote_char}:</label>
                        <input type="text" value="&quot;" name="quote_char" id="quote_char" size="1">
                    </li>
 
                    <li>
-	      				{$kga.lang.dl_hint}
+	      				{$kga.lang.xp_ext.dl_hint}
 					</li>
                  </ul>
                    

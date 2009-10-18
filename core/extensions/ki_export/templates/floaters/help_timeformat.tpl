@@ -23,7 +23,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.export_timeformat_help}</span>
+        <span id="floater_title">{$kga.lang.xp_ext.export_timeformat_help}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>  

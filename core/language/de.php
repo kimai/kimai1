@@ -209,23 +209,7 @@ $kga['lang'] = array(
 "expense"           => "Betrag",
 "designation"       => "Verwendung",
 
-"print_hint"		=> "Klicken Sie OK um eine druckbare Tabelle anzuzeigen.",
-"dl_hint"			=> "Klicken Sie OK um den Download zu starten.",
-
-"print_comment"     => "Kommentare ausgeben",
-"print_summary"     => "Zusammenfassung ausgeben",
-"create_bookmarks"  => "Lesezeichen erstellen",
-"download_pdf"      => "PDF-Datei downloaden",
-
-"column_delimiter"  => "Trennzeichen für Spalten",
-"quote_char"        => "Begrenzungszeichen von Feldern",
-
-"exportCSV"         => "CSV Export",
-"exportPDF"         => "PDF Export",
-"exportXLS"         => "Excel Export",
-"export_timeformat_help" => "Zeitformat Hilfe",
-
-"cleared"           => "bezahlt",
+"cleared"           => "abgerechnet",
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");
@@ -258,5 +242,36 @@ $kga['lang']['backup'][6]        = "Backup vom";
 $kga['lang']['backup'][7]        = "wurde wiederhergestellt.";
 $kga['lang']['backup'][8]        = "neues Backup erstellen";
 $kga['lang']['backup'][9]        = "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datanträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)";
+
+
+$kga['lang']['xp_ext']['print_hint'      		] = "Klicken Sie OK um eine druckbare Tabelle anzuzeigen.";
+$kga['lang']['xp_ext']['dl_hint'         		] = "Klicken Sie OK um den Download zu starten.";
+                                         		  
+$kga['lang']['xp_ext']['tab_filter'	 			] = "Filter";
+$kga['lang']['xp_ext']['tab_location'	 		] = "Location";
+$kga['lang']['xp_ext']['tab_timeformat'	 		] = "Timeformat";
+                                                  
+$kga['lang']['xp_ext']['cleared_all'	 		] = "alle";
+$kga['lang']['xp_ext']['cleared_cleared' 		] = "nur abgerechnete";
+$kga['lang']['xp_ext']['cleared_open'	 		] = "nur offene";
+$kga['lang']['xp_ext']['stdrd_location'  		] = "Standard-Ort";
+$kga['lang']['xp_ext']['timeformat'	     		] = "Zeitformat";
+$kga['lang']['xp_ext']['dateformat'				] = "Datumsformat";
+                                         		  
+$kga['lang']['xp_ext']['print_comment'   		] = "Kommentare ausgeben";
+$kga['lang']['xp_ext']['print_summary'   		] = "Zusammenfassung ausgeben";
+$kga['lang']['xp_ext']['create_bookmarks'		] = "Lesezeichen erstellen";
+$kga['lang']['xp_ext']['download_pdf'    		] = "PDF-Datei downloaden";
+                                         		  
+$kga['lang']['xp_ext']['column_delimiter'		] = "Trennzeichen für Spalten";
+$kga['lang']['xp_ext']['quote_char'      		] = "Begrenzungszeichen von Feldern";
+                                                  
+$kga['lang']['xp_ext']['exportCSV'         	    ] = "CSV Export";
+$kga['lang']['xp_ext']['exportPDF'         	    ] = "PDF Export";
+$kga['lang']['xp_ext']['exportXLS'         	    ] = "Excel Export";
+$kga['lang']['xp_ext']['print'         	    	] = "Drucken";
+$kga['lang']['xp_ext']['export_timeformat_help' ] = "Zeitformat Hilfe";
+
+
 
 ?>

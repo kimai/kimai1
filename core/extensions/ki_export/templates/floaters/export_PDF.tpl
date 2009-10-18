@@ -29,7 +29,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.exportPDF}</span>
+        <span id="floater_title">{$kga.lang.xp_ext.exportPDF}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>  
@@ -49,26 +49,26 @@
                 <ul>
                 
                    <li>
-                       <label for="print_comments">{$kga.lang.print_comment}:</label>
+                       <label for="print_comments">{$kga.lang.xp_ext.print_comment}:</label>
                        <input type="checkbox" value="true" name="print_comments" id="print_comments" checked="checked"/>
                    </li>
                 
                    <li>
-                       <label for="print_summary">{$kga.lang.print_summary}:</label>
+                       <label for="print_summary">{$kga.lang.xp_ext.print_summary}:</label>
                        <input type="checkbox" value="true" name="print_summary" id="print_summary" checked="checked">
                    </li>
                 
                    <li>
-                       <label for="create_bookmarks">{$kga.lang.create_bookmarks}:</label>
+                       <label for="create_bookmarks">{$kga.lang.xp_ext.create_bookmarks}:</label>
                        <input type="checkbox" value="true" name="create_bookmarks" id="create_bookmarks" checked="checked"/>
                    </li>
                 
                    <li>
-                       <label for="download_pdf">{$kga.lang.download_pdf}:</label>
+                       <label for="download_pdf">{$kga.lang.xp_ext.download_pdf}:</label>
                        <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
                    </li>
                    <li>
-	 					{$kga.lang.dl_hint}
+	 					{$kga.lang.xp_ext.dl_hint}
 					</li>
                  </ul>
                    
