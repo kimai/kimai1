@@ -25,7 +25,7 @@
 $kga['lang'] = array(
 "countryCode"       => "de-DE",
 "preferences"       => "Einstellungen",
-"gesamtzeit"        => "Gesamt",
+"total"		        => "Gesamt",
 "monatzeit"         => "Monat",
 "heute"             => "heute",
 "gestern"           => "gestern",
@@ -198,6 +198,7 @@ $kga['lang'] = array(
 "testEVT"           => "testen",
 
 "rate"              => "Stundenlohn",
+"rate_short"        => "Satz",
 "default_rate"      => "Stundenlohn",
 "my_rate"           => "mein Stundenlohn",
 

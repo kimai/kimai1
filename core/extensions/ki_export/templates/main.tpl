@@ -38,10 +38,9 @@
                 <td class="time"><a onClick="xp_toggle_column('time');">{$kga.lang.time}</a></td>
                 <td class="dec_time"><a onClick="xp_toggle_column('dec_time');">{$kga.lang.timelabel}</a></td>
 
-                <td class="cash"><a onClick="xp_toggle_column('rate');">Satz</a>/<a onClick="xp_toggle_column('wage');">ges.</a></td>
-
-                <!-- <td class="rate"><a onClick="xp_toggle_column('rate');">{$kga.lang.rate}</a></td>
-                <td class="wage"><a onClick="xp_toggle_column('wage');">Euro</a></td> -->
+                <td class="cash">
+					<a onClick="xp_toggle_column('rate');">{$kga.lang.rate_short}</a>/<a onClick="xp_toggle_column('wage');">{$kga.lang.total}</a>
+				</td>
 
                 <td class="knd"><a onClick="xp_toggle_column('knd');">{$kga.lang.knd}</a></td>
                 <td class="pct"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>

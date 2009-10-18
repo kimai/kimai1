@@ -26,7 +26,7 @@
 $kga['lang']= array(
 "countryCode"       => "en-EN",
 "preferences"       => "Preferences",
-"gesamtzeit"        => "Total",
+"total"		        => "Total",
 "monatzeit"         => "Month",
 "heute"             => "today",
 "gestern"           => "yesterday",
@@ -198,16 +198,17 @@ $kga['lang']= array(
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
 
-"rate"              => "rate",
-"default_rate"      => "default rate",
-"my_rate"           => "my rate",
+"rate"              => "Rate (by hour)",
+"rate_short"        => "Rate",
+"default_rate"      => "Default rate",
+"my_rate"           => "My rate",
 
-"wage"              => "wage",
+"wage"              => "Wage",
 
 "customerlogin"     => "customer login",
 
-"expense"           => "expense",
-"designation"       => "designation",
+"expense"           => "Expense",
+"designation"       => "Designation",
 
 "print_comment"     => "print comment",
 "print_summary"     => "print summary",
