@@ -1,8 +1,7 @@
-<span style="color:red">This option is still under construction. Sorry... We may deliver this finally with v0.8.1 ...</span>
-
-<br /><br />
-
 {$kga.lang.DBname}: {$kga.server_database}
+<br />
+<br />
+<a href="../db_restore.php">Database Backup Utility</a>
 
 {*
 <br /><br />

@@ -34,6 +34,7 @@
                     {html_options values=$kga.charsets output=$kga.charset_descr selected=$kga.conf.charset}
                 </select> {$kga.lang.charset} {$kga.lang.charset_msg}
             </div>
+
             <div id="ap_ext_checkupdate">
                 <a href="javascript:ap_ext_checkupdate({$kga.revision});">{$kga.lang.checkupdate}</a>
             </div>
