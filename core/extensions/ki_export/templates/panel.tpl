@@ -25,7 +25,7 @@
 					</div>
 					
 					<div id="xp_ext_tab_location">
-						<span>Standard-Ort:</span>
+						<span>{$kga.lang.xp_ext.stdrd_location}</span>
 						<input type="text" name="std_loc" value="" id="xp_ext_default_location" onChange="xp_ext_reload()">
 					</div>
 					
