@@ -74,9 +74,6 @@ h1 {
 }
 
 #mysql {
-    opacity: 0.2;
-    -moz-opacity: 0.2;
-    filter:alpha(opacity=50);
     margin-right:20px;
     background: url(grfx/mysql.jpg);
 }
