@@ -32,13 +32,11 @@
         <span id="floater_title">{$kga.lang.exportPDF}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <!-- <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a> -->
-			<!-- <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a> -->
         </div>  
     </div>
 
     <div id="help">
-        <div class="content">        
+        <div class="content">
         </div>
     </div>
 
@@ -69,7 +67,9 @@
                        <label for="download_pdf">{$kga.lang.download_pdf}:</label>
                        <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
                    </li>
-
+                   <li>
+	 					Click OK to download export-file.
+					</li>
                  </ul>
                    
 

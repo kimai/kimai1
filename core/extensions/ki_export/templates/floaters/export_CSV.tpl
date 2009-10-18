@@ -33,20 +33,19 @@
         <span id="floater_title">{$kga.lang.exportCSV}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <!-- <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a> -->
-      		<!-- <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a> -->
         </div>  
     </div>
 
     <div id="help">
-        <div class="content">        
+        <div class="content">   
         </div>
     </div>
 
 
     <div id="floater_content"><div id="floater_dimensions">
         
-        <form id="xp_ext_form_export_CSV" action="../extensions/ki_export/processor.php" method="post"> 
+        <form id="xp_ext_form_export_CSV" action="../extensions/ki_export/processor.php" method="post">
+	
             <fieldset>
                 
                 <ul>
@@ -61,9 +60,11 @@
                        <input type="text" value="&quot;" name="quote_char" id="quote_char" size="1">
                    </li>
 
+                   <li>
+	      				Click OK to open a printable table.
+					</li>
                  </ul>
                    
-
 
 {* -------------------------------------------------------------------- *} 
 

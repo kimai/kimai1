@@ -38,17 +38,21 @@
     </div>
 
     <div id="help">
-        <div class="content">        
+        <div class="content">
         </div>
     </div>
 
 
     <div id="floater_content"><div id="floater_dimensions">
-        
+
         <form id="xp_ext_form_export_XLS" action="../extensions/ki_export/processor.php" method="post"> 
             <fieldset>
                    
-
+				<ul>
+			        <li>
+				 		Click OK to download export-file.
+					</li>
+				</ul>
 
 {* -------------------------------------------------------------------- *} 
 
