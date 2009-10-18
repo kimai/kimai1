@@ -247,33 +247,33 @@ $kga['lang']['backup'][9]        = "These backups are actually snapshots! Meanin
 
 $kga['lang']['xp_ext'] = array(
 	
-"print_hint"      		   => "Click OK to open a printable table.";
-"dl_hint"         		   => "Click OK to download export-file.";
+"print_hint"      		   => "Click OK to open a printable table.",
+"dl_hint"         		   => "Click OK to download export-file.",
                               
-"tab_filter"	 		   => "Filter";
-"tab_location"	 		   => "Location";
-"tab_timeformat"	 	   => "Timeformat";
+"tab_filter"	 		   => "Filter",
+"tab_location"	 		   => "Location",
+"tab_timeformat"	 	   => "Timeformat",
                               
-"cleared_all"	 		   => "all";
-"cleared_cleared" 		   => "only cleared";
-"cleared_open"	 		   => "only open";
-"stdrd_location"  		   => "Standard-Location";
-"timeformat"	     	   => "Timeformat";
-"dateformat"			   => "Dateformat";
+"cleared_all"	 		   => "all",
+"cleared_cleared" 		   => "only cleared",
+"cleared_open"	 		   => "only open",
+"stdrd_location"  		   => "Standard-Location",
+"timeformat"	     	   => "Timeformat",
+"dateformat"			   => "Dateformat",
                               
-"print_comment"   		   => "print comments";
-"print_summary"   		   => "print summary";
-"create_bookmarks"		   => "create bookmarks";
-"download_pdf"    		   => "download as PDF";
+"print_comment"   		   => "print comments",
+"print_summary"   		   => "print summary",
+"create_bookmarks"		   => "create bookmarks",
+"download_pdf"    		   => "download as PDF",
                               
-"column_delimiter"		   => "delimiter for columns";
-"quote_char"      		   => "boundary character for fields";
+"column_delimiter"		   => "delimiter for columns",
+"quote_char"      		   => "boundary character for fields",
                               
-"exportCSV"         	   => "CSV Export";
-"exportPDF"         	   => "PDF Export";
-"exportXLS"         	   => "Excel Export";
-"print"         	       => "Print";
-"export_timeformat_help"   => "Timeformat help";
+"exportCSV"         	   => "CSV Export",
+"exportPDF"         	   => "PDF Export",
+"exportXLS"         	   => "Excel Export",
+"print"         	       => "Print",
+"export_timeformat_help"   => "Timeformat help",
 
 );
 
