@@ -37,7 +37,7 @@ switch ($axAction) {
     // create new user account
         $randomUsrID = random_number(9);
         $usr_data['usr_ID'] = $randomUsrID;
-    	$usr_data['usr_name'] = $axValue;
+    	$usr_data['usr_name'] = htmlspecialchars(trim($axValue));
     	$usr_data['usr_grp'] = 1;
     	$usr_data['usr_sts'] = 2;
     	$usr_data['usr_active'] = 0;
@@ -51,7 +51,7 @@ switch ($axAction) {
     
     case "createGrp":
     // create new group
-		$grp_data['grp_name'] = $axValue;
+		$grp_data['grp_name'] = htmlspecialchars(trim($axValue));
 		$new_grp_id = grp_create($grp_data);
 		if ($new_grp_id != false) {
 			assign_grp2ldrs($new_grp_id, array($kga['usr']['usr_ID']));
@@ -151,7 +151,7 @@ switch ($axAction) {
     
     case "sendEditUsr":
     // process editUsr form
-        $usr_data['usr_name']  = $_REQUEST['usr_name'];
+        $usr_data['usr_name']  = htmlspecialchars(trim($_REQUEST['usr_name']));
         $usr_data['usr_grp']   = $_REQUEST['usr_grp'];
         $usr_data['usr_sts']   = $_REQUEST['usr_sts'];
         $usr_data['usr_mail']  = $_REQUEST['usr_mail'];
@@ -167,7 +167,7 @@ switch ($axAction) {
     
     case "sendEditGrp":
     // process editGrp form
-        $grp_data['grp_name'] = $_REQUEST['grp_name'];
+        $grp_data['grp_name'] = htmlspecialchars(trim($_REQUEST['grp_name']));
         grp_edit($id, $grp_data);
         
         $ldrs = $_REQUEST['grp_leader'];

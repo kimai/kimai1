@@ -158,8 +158,9 @@ $tpl->display('login/header.tpl');
 switch($_REQUEST['a']){
 
 case "checklogin":
-    $name     = str_replace(" " , "" , strip_tags(trim($name)));
-    $password = strip_tags(trim($password));
+    //$name     = str_replace(" " , "" , strip_tags(trim($name)));
+    $name = htmlspecialchars(trim($name));
+    //$password = strip_tags(trim($password));
     
     $is_customer = is_customer_name($name);
     
