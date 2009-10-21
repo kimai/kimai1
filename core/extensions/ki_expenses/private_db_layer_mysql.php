@@ -316,6 +316,7 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
    
 
     $arr = array(); 
@@ -371,6 +372,7 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array();
     foreach ($rows as $row) {
@@ -424,6 +426,7 @@ function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects =
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    if (!$rows) return array();
 
     $arr = array();
     foreach ($rows as $row) {
