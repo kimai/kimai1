@@ -220,6 +220,11 @@ $kga['lang']['weekdays_short'] = array("So","Mo","Di","Mi","Do","Fr","Sa");
 $kga['lang']['errors'][0]['hdl'] = "Datenbankverbindung verweigert!";
 $kga['lang']['errors'][0]['txt'] = "Bitte stellen Sie sicher das Datenbank und PDO-Erweiterung laufen und die Einstellungen in der Datei 'conf.php' im Ordner 'includes' richtig sind.";
 
+$kga['lang']['errors'][1]['hdl'] = "Fehler bei der Installation!";
+$kga['lang']['errors'][1]['txt'] = 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
+Falls Sie Kimai nur updaten wollen klicken Sie bitte <a href="../index.php">hier</a>.<br/>
+Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabellen mit diesem Präfix, damit Kimai eine Neuinstallation vornehmen kann.';
+
 $kga['lang']['updater'][0]        = "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!";
 $kga['lang']['updater'][10]       = "Legende:";
 $kga['lang']['updater'][20]       = "Query wurde erfolgreich ausgeführt.";

@@ -221,6 +221,11 @@ $kga['lang']['weekdays_short'] = array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"
 $kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
 $kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'conf.php' in folder 'includes' are correct.";
 
+$kga['lang']['errors'][1]['hdl'] = "Error during installation!";
+$kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+To update your existing installation please click <a href="../index.php">here</a>.<br/>
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
+
 $kga['lang']['updater'][0]        = "Yes, I have a backup of my Kimai database! Proceed updating!";
 $kga['lang']['updater'][10]       = "Legend:";
 $kga['lang']['updater'][20]       = "Query was executed successfully.";

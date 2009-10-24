@@ -35,7 +35,7 @@ function exec_query($query) {
         }
     }
     logfile($query,$success);
-    if (!$success) $errors++;
+    if (!$success) $errors=true;
 } 
 
 if (!isset($_REQUEST['accept'])) {
@@ -303,6 +303,8 @@ if ($errors) {
     $tpl = new Smarty();
     $tpl->template_dir = '../templates/';
     $tpl->compile_dir  = '../compile/';
+    $tpl->assign('headline',$kga['lang']['errors'][1]['hdl']);
+    $tpl->assign('message',$kga['lang']['errors'][1]['txt']);
     $tpl->display('misc/error.tpl');
     logfile("-- showing install error --------------------------");
 } else {
