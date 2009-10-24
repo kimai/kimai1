@@ -21,26 +21,6 @@ class MYPDF extends TCPDF {
     return str_replace(".",",",sprintf("%01.2f",$number)). " €";
   }
   
-  public function comment_type($type) {
-    //array('Comment', 'Help', 'Insert', 'Key', 'NewParagraph', 'Note', 'Paragraph')
-    //Kommentar 0   Notiz 1   Achtung 2
-    
-    return ($type == 0) ? 'Comment' : 'Note';
-  }
-  
-  public function comment_color($type) {
-    return ($type == 2) ? array(255,0,0) : array(255,255,0);
-  }
-  
-  public function comment_title($type) {
-    switch ($type) {
-      case 0:  return 'Kommentar:';
-      case 1:  return 'Notiz:';
-      case 2:  return 'Achtung:';
-      default: return '';
-    }
-  }
-  
 
   // Page footer 
   public function Footer() { 
@@ -90,8 +70,9 @@ class MYPDF extends TCPDF {
         $fill = 0; 
         $sum = 0;
         foreach($data as $row) { 
+            $show_comment = !empty($row['comment'])) && (isset($_REQUEST['print_comments']);
             // check if page break is nessessary
-            if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
+            if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
               $this->Cell(array_sum($w), 0, '', 'T'); 
               $this->Ln();  
               $this->Cell($w[0]+$w[1]+$w[2], 6, "Zwischensumme:", '', 0, 'R', false); 
@@ -106,26 +87,23 @@ class MYPDF extends TCPDF {
               $this->SetFont(''); 
             }
             $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-            $this->Cell($w[1], 6, $row['evt_name'], 'LR', 0, 'L', $fill);    
-            
-            
-            //Kommentar anzeigen:
-            if ( (!empty($row['comment'])) && (isset($_REQUEST['print_comments'])) ) {
-            $this->Annotation($w[0]+$w[1]+2.5,$this->getY()+0.45,10,10,
-                               $row['comment'], //Text
-                               array(
-                                 'Subtype'=>'Text', 
-                                 'name' => $this->comment_type($row['comment_type']), //Symbol  
-                                 'T' => $this->comment_title($row['comment_type']), //Titel 
-                                 'Subj' => '', 
-                                 'C' => $this->comment_color($row['comment_type']) //Farbe
-                               )
-                             ); 
-            }
+            $this->Cell($w[1], 6, htmlspecialchars_decode($row['evt_name']), 'LR', 0, 'L', $fill);    
             
             $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
             $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
             $this->Ln(); 
+            
+            
+            //Kommentar anzeigen:
+            if ( $show_comment ) {
+	      $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
+              $this->SetFont('', 'I'); 
+	      $this->Cell($w[1], 6, 'Kommentar: '.$row['comment'], 'LR', 0, 'L', $fill);
+	      $this->SetFont(''); 
+	      $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
+              $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
+	      $this->Ln(); 
+            }
             $fill=!$fill; 
             $sum+=$row['wage'];
             
