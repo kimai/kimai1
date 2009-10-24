@@ -67,6 +67,14 @@
                        <label for="download_pdf">{$kga.lang.xp_ext.download_pdf}:</label>
                        <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
                    </li>
+                
+                   <li>
+                       <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
+                       <select name="axAction" id="axAction">
+                         <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>
+                         <option value="export_pdf2">{$kga.lang.xp_ext.export_pdf2}</option>
+                       </select>
+                   </li>
                    <li>
 	 					{$kga.lang.xp_ext.dl_hint}
 					</li>
@@ -78,7 +86,6 @@
 {* -------------------------------------------------------------------- *} 
 
                 <!-- <input name="id" type="hidden" value="" /> -->
-                <input name="axAction" type="hidden" value="export_pdf" />
                 <input name="axValue" id="axValue" type="hidden" value="" />
                 <input name="axColumns"  id="axColumns" type="hidden" value=""/>
                 <input name="timeformat" id="timeformat" type="hidden" value=""/>

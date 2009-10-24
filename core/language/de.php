@@ -268,6 +268,9 @@ $kga['lang']['xp_ext'] = array(
 "print_summary"   		   => "Zusammenfassung ausgeben",
 "create_bookmarks"		   => "Lesezeichen erstellen",
 "download_pdf"    		   => "PDF-Datei downloaden",
+"pdf_format"             => "Format",
+"export_pdf"             => "tabelarisch",
+"export_pdf2"            => "Liste",
 
 "column_delimiter"		   => "Trennzeichen für Spalten",
 "quote_char"      		   => "Begrenzungszeichen von Feldern",

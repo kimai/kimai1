@@ -270,6 +270,9 @@ $kga['lang']['xp_ext'] = array(
 "print_summary"   		   => "print summary",
 "create_bookmarks"		   => "create bookmarks",
 "download_pdf"    		   => "download as PDF",
+"pdf_format"             => "format",
+"export_pdf"             => "table",
+"export_pdf2"            => "list",
                               
 "column_delimiter"		   => "delimiter for columns",
 "quote_char"      		   => "boundary character for fields",

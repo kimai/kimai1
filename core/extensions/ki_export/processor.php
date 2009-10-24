@@ -37,6 +37,7 @@ require("private_func.php");
 
 if ($axAction == 'export_csv'  ||
     $axAction == 'export_pdf'  ||
+    $axAction == 'export_pdf2' ||
     $axAction == 'export_html' ||
     $axAction == 'export_xls'  ||
     $axAction == 'reload') {
@@ -268,6 +269,33 @@ switch ($axAction) {
        
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
       require('export_pdf.php');
+    break;
+
+
+
+    case 'export_pdf2':
+       
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+
+      // sort data into new array, where first dimension is customer and second dimension is project
+      $pdf_arr_data = array();
+      foreach ($arr_data as $row) {
+        $knd_id = $row['pct_kndID'];
+        $pct_id = $row['pct_ID'];
+
+        // create key for customer, if not present
+        if (!array_key_exists($knd_id,$pdf_arr_data))
+          $pdf_arr_data[$knd_id] = array();
+
+        // create key for project, if not present
+        if (!array_key_exists($pct_id,$pdf_arr_data[$knd_id]))
+          $pdf_arr_data[$knd_id][$pct_id] = array();
+
+        // add row
+        $pdf_arr_data[$knd_id][$pct_id][] = $row;
+
+      }
+      require('export_pdf2.php');
       break;
 
 }
