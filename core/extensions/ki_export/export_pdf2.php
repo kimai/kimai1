@@ -36,7 +36,7 @@ class MYPDF extends TCPDF {
   
   // print page footer 
   public function Footer() { 
-        global $knd_data, $pct_data;
+        global $kga,$knd_data, $pct_data;
         
         // Position at 1.5 cm from bottom 
         $this->SetY(-15);
@@ -47,7 +47,7 @@ class MYPDF extends TCPDF {
         
         // Page number 
         $this->SetFont('helvetica', 'I', 8); // Set font 
-        $this->Cell(30, 10, 'Seite '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
+        $this->Cell(30, 10, $kga['lang']['xp_ext']['page'].' '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
         
         //Datum
         $this->SetFont('helvetica', '', 8); // Set font
@@ -71,6 +71,7 @@ class MYPDF extends TCPDF {
   }  
 
   function printExpenseRow($columns,$w,$row) {
+    global $kga;
     $date_string = '';
     if ($columns['date'])
       $date_string = $this->date($row['time_in']);
@@ -79,11 +80,11 @@ class MYPDF extends TCPDF {
 
 
     $event_string = ($columns['action'] && !empty($row['evt_name'])) ?
-        'Auslage: <i>'.$row['evt_name'].'</i>' : '';
+        $kga['lang']['xp_ext']['expense'].': <i>'.$row['evt_name'].'</i>' : '';
     $user_string = ($columns['user'] && !empty($row['username'])) ?
-        'von: <i>'.$row['username'].'</i>' : '';
+        $kga['lang']['xp_ext']['by'].': <i>'.$row['username'].'</i>' : '';
     $comment_string = ($columns['comment'] && !empty($row['comment'])) ?
-        "Kommentar: <i>".$row['comment'].'</i>' : '';
+        $kga['lang']['comment'].': <i>'.$row['comment'].'</i>' : '';
     $wage_string = '<b>'.$this->money($row['wage']).'</b>';
     
     $event_fills_row = empty($user_string) || ($this->GetStringWidth($event_string)+$this->GetStringWidth($user_string) > $w[1]);
@@ -102,7 +103,7 @@ class MYPDF extends TCPDF {
     // check if page break is nessessary
     if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+(3+$field_rows)*6) < 0) {
       $this->ln();    
-      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),"Zwischensumme:", '',0,0,true,'R');
+      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
       $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum),'',0,0,true,'R');
       $this->AddPage();      
     }
@@ -168,6 +169,7 @@ class MYPDF extends TCPDF {
   }
         
       function printTimeRow($columns,$w,$row) {
+    global $kga;
               $from_date_string = '';
               if ($columns['date'])
                 $from_date_string = $this->date($row['time_in']);
@@ -183,37 +185,37 @@ class MYPDF extends TCPDF {
 
                
               if ($columns['action'] && !empty($row['evt_name']))
-                $event_string =  'Tätigkeit: <i>'.$row['evt_name'].'</i>';
+                $event_string =  $kga['lang']['evt'].': <i>'.$row['evt_name'].'</i>';
               else
                 $event_string = '';
 
               if ($columns['user'] && !empty($row['username']))
-                $user_string =  'durchgeführt von: <i>'.$row['username'].'</i>';
+                $user_string =  $kga['lang']['xp_ext']['done_by'].': <i>'.$row['username'].'</i>';
               else
                 $user_string = '';
 
               if ($columns['location'] && !empty($row['location']))
-                $location_string =  "Ort: <i>".$row['location'].'</i>';
+                $location_string =  $kga['lang']['location'].': <i>'.$row['location'].'</i>';
               else
                 $location_string = '';
 
               if ($columns['trackingnr'] && !empty($row['trackingnr']))
-                $trackingnr_string = "Auftragsnummer: <i>".$row['trackingnr'].'</i>';
+                $trackingnr_string = $kga['lang']['trackingnr'].': <i>'.$row['trackingnr'].'</i>';
               else
                 $trackingnr_string = '';
 
               if ($columns['comment'] && !empty($row['comment']))
-                $comment_string = "Kommentar: <i>".$row['comment'].'</i>';
+                $comment_string = $kga['lang']['comment'].': <i>'.$row['comment'].'</i>';
               else
                 $comment_string = '';
 
               if ($columns['time'] && !empty($row['zef_apos']))
-                $time_string = "Dauer: <i>".$row['zef_apos'].'</i>';
+                $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_apos'].'</i>';
               else
                 $time_string = '';
 
               if ($columns['rate'] && !empty($row['zef_rate']))
-                $rate_string = "Stundensatz: <i>".$row['zef_rate'].'</i>';
+                $rate_string = $kga['lang']['rate'].': <i>'.$row['zef_rate'].'</i>';
               else
                 $rate_string = '';
 
@@ -244,7 +246,7 @@ class MYPDF extends TCPDF {
     // check if page break is nessessary
     if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+(3+$field_rows)*6) < 0) {
       $this->ln();    
-      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),"Zwischensumme:", '',0,0,true,'R');
+      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
       $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum), '',0,0,true,'R');
       $this->AddPage();
     }
@@ -356,20 +358,20 @@ $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
 
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle('Aufstellung zu Aufwänden und Auslagen');
+$pdf->SetTitle($kga['lang']['xp_ext']['pdf_headline']);
 $pdf->setPrintHeader(false); 
 $pdf->AddPage();
 
 $pdf->setFont('helvetica');
 
 if (isset($_REQUEST['create_bookmarks']))
-  $pdf->Bookmark('Aufstellung', 0, 0);
+  $pdf->Bookmark($kga['lang']['xp_ext']['pdf_headline'], 0, 0);
 
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); //Firmenlogo einbinden
 
 
 
-$pdf->WriteHtml("<h1>Aufstellung zu Aufwänden und Auslagen</h1>");
+$pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
 $pdf->ln();
 $pdf->ln();
 $pdf->ln();
@@ -422,7 +424,7 @@ foreach ($pdf_arr_data as $customer) {
 
     
     $pdf->ln();    
-    $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),"Summe:", '',0,0,true,'R');
+    $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
     $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->sum), '',0,0,true,'R');
   }
 

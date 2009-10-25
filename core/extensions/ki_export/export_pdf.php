@@ -24,7 +24,7 @@ class MYPDF extends TCPDF {
 
   // Page footer 
   public function Footer() { 
-        global $knd_data, $pct_data;
+        global $kga,$knd_data, $pct_data;
         
         // Position at 1.5 cm from bottom 
         $this->SetY(-15);
@@ -35,7 +35,7 @@ class MYPDF extends TCPDF {
         
         // Page number 
         $this->SetFont('helvetica', 'I', 8); // Set font 
-        $this->Cell(30, 10, 'Seite '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
+        $this->Cell(30, 10, $kga['lang']['xp_ext']['page'].' '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
         
         //Datum
         $this->SetFont('helvetica', '', 8); // Set font
@@ -57,6 +57,7 @@ class MYPDF extends TCPDF {
   }
 
   public function ColoredTable($header,$data) {
+        global $kga;
         $w = array(30, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-3*30,30,30); 
     
         // Header 
@@ -70,12 +71,12 @@ class MYPDF extends TCPDF {
         $fill = 0; 
         $sum = 0;
         foreach($data as $row) { 
-            $show_comment = !empty($row['comment'])) && (isset($_REQUEST['print_comments']);
+            $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
             // check if page break is nessessary
             if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
               $this->Cell(array_sum($w), 0, '', 'T'); 
               $this->Ln();  
-              $this->Cell($w[0]+$w[1]+$w[2], 6, "Zwischensumme:", '', 0, 'R', false); 
+              $this->Cell($w[0]+$w[1]+$w[2], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
               $this->Cell($w[3], 6, $this->money($sum), '', 0, 'R', true); //'LR' entfernt (border) 
               $this->Ln();  
               $this->AddPage();
@@ -98,7 +99,7 @@ class MYPDF extends TCPDF {
             if ( $show_comment ) {
 	      $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
               $this->SetFont('', 'I'); 
-	      $this->Cell($w[1], 6, 'Kommentar: '.$row['comment'], 'LR', 0, 'L', $fill);
+	      $this->Cell($w[1], 6, $kga['lang']['comment'].': '.$row['comment'], 'LR', 0, 'L', $fill);
 	      $this->SetFont(''); 
 	      $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
               $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
@@ -111,12 +112,13 @@ class MYPDF extends TCPDF {
         $this->Cell(array_sum($w), 0, '', 'T'); 
         $this->Ln();
 
-        $this->Cell($w[0]+$w[1]+$w[2], 6, "Endbetrag:", '', 0, 'R', false); 
+        $this->Cell($w[0]+$w[1]+$w[2], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
         $this->SetFont('', 'B'); 
         $this->Cell($w[3], 6, $this->money($sum), '', 0, 'R', true); 
     }
     
     public function ColoredTable_result($header,$data) {
+        global $kga;
         $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30,30,30); 
         
         // Header 
@@ -135,7 +137,7 @@ class MYPDF extends TCPDF {
             if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
               $this->Cell(array_sum($w), 0, '', 'T'); 
               $this->Ln();  
-              $this->Cell($w[0], 6, "Zwischensummen:", '', 0, 'R', false); 
+              $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
               $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
               $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
               $this->Ln();  
@@ -159,7 +161,7 @@ class MYPDF extends TCPDF {
         $this->Cell(array_sum($w), 0, '', 'T'); 
         $this->Ln();
 
-        $this->Cell($w[0], 6, "Endsummen:", '', 0, 'R', false); 
+        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
         $this->SetFont('', 'B'); 
         $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
         $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
@@ -174,18 +176,18 @@ $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
 
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle('Aufstellung zu Aufwänden und Auslagen');
+$pdf->SetTitle($kga['lang']['xp_ext']['pdf_headline']);
 $pdf->setPrintHeader(false); 
 $pdf->AddPage();
 
 if (isset($_REQUEST['create_bookmarks']))
-  $pdf->Bookmark('Aufstellung', 0, 0);
+  $pdf->Bookmark($kga['lang']['xp_ext']['pdf_headline'], 0, 0);
 
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); //Firmenlogo einbinden
 
 
 
-$pdf->WriteHtml("<h1>Aufstellung zu Aufwänden und Auslagen</h1>");
+$pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
 $pdf->ln();
 $customers = array();
 foreach ($filterKnd as $knd_id) {
@@ -193,7 +195,7 @@ foreach ($filterKnd as $knd_id) {
   $customers[] = $customer_info['knd_name'];
 }
 if (count($customers)>0) {
-  $pdf->cell(20,6,'Kunde:');
+  $pdf->cell(20,6,$kga['lang']['knd'].':');
   $pdf->cell(20,6,implode(',',$customers));
   $pdf->ln();
 }
@@ -204,13 +206,13 @@ foreach ($filterPct as $pct_id) {
   $projects[] = $project_info['pct_name'];
 }
 if (count($projects)>0) {
-  $pdf->cell(20,6,'Projekt:');
+  $pdf->cell(20,6,$kga['lang']['pct'].':');
   $pdf->cell(20,6,implode(',',$projects));
   $pdf->ln();
 }
 $pdf->ln();
 $pdf->ln();
-$pdf->ColoredTable(array("Datum","Tätigkeit","Dauer","Kosten"),$arr_data);
+$pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
 
 
 if (isset($_REQUEST['print_summary'])) {
@@ -231,7 +233,7 @@ if (isset($_REQUEST['print_summary'])) {
       }
     }
     else {
-      $exp_info['name']   = 'Auslage: '.$one_entry['evt_name'];
+      $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$one_entry['evt_name'];
       $exp_info['time']   = -1;
       $exp_info['wage'] = $one_entry['wage'];
       
@@ -244,12 +246,12 @@ if (isset($_REQUEST['print_summary'])) {
   $pdf->AddPage();
   
   if (isset($_REQUEST['create_bookmarks']))
-    $pdf->Bookmark('Zusammenfassung', 0, 0);
+    $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
   
-  $pdf->WriteHtml("<h1>Zusammenfassung</h1>");
+  $pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['summary'].'</h1>');
   $pdf->ln();
   $pdf->ln();
-  $pdf->ColoredTable_result(array("Tätigkeit","Dauer","Kosten"), $summary);
+  $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
   
 }
 

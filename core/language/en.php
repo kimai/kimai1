@@ -283,6 +283,17 @@ $kga['lang']['xp_ext'] = array(
 "print"         	       => "Print",
 "export_timeformat_help"   => "Timeformat help",
 
+'subtotal'              => 'Sub Total',
+'finalamount'           => 'Total',
+'pdf_headline'          => 'List of working time and expenses',
+'costs'                 => 'Costs',
+'expense'               => 'Expense',
+'summary'               => 'Summary',
+'page'                  => 'Page',
+'by'                    => 'by',
+'done_by'               => 'done by',
+'duration'              => 'Duration',
+
 );
 
 

@@ -281,6 +281,17 @@ $kga['lang']['xp_ext'] = array(
 "print"         	       => "Drucken",
 "export_timeformat_help"   => "Zeitformat Hilfe",
 
+'subtotal'              => 'Zwischensumme',
+'finalamount'           => 'Endbetrag',
+'pdf_headline'          => 'Aufstellung zu Aufwänden und Auslagen',
+'costs'                 => 'Kosten',
+'expense'               => 'Auslage',
+'summary'               => 'Zusammenfassung',
+'page'                  => 'Seite',
+'by'                    => 'von',
+'done_by'               => 'durchgeführt von',
+'duration'              => 'Dauer',
+
 );
 
 
