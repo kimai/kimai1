@@ -2221,7 +2221,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     }  
 
     if ($in)
-      $whereClauses[]="(zef_out > $in | zef_out = 0)";
+      $whereClauses[]="(zef_out > $in || zef_out = 0)";
     if ($out)
       $whereClauses[]="zef_in < $out";
 
