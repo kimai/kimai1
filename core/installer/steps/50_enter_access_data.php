@@ -16,9 +16,9 @@ $echo=<<<EOD
     
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Host:<br/><input id="host_en" type="text" value="$mysqlhost"/>   </td>
-            <td>User:<br/><input id="user_en" type="text" value="$mysqluser"/>   </td>
-            <td>Password:<br/><input id="pass_en" type="text" value="$mysqlpwd"/></td>
+            <td>Host:<br/><input id="host" type="text" value="$mysqlhost"/>   </td>
+            <td>User:<br/><input id="user" type="text" value="$mysqluser"/>   </td>
+            <td>Password:<br/><input id="pass" type="text" value="$mysqlpwd"/></td>
         </tr>
     </table>
     Installation may fail if the account has a blank password! <br />
@@ -36,9 +36,9 @@ $echo=<<<EOD
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Host:<br/><input id="host_de" type="text" value="$mysqlhost"/>    </td>
-            <td>Benutzer:<br/><input id="user_de" type="text" value="$mysqluser"/></td>
-            <td>Passwort:<br/><input id="pass_de" type="text" value="$mysqlpwd"/> </td>
+            <td>Host:<br/><input id="host" type="text" value="$mysqlhost"/>    </td>
+            <td>Benutzer:<br/><input id="user" type="text" value="$mysqluser"/></td>
+            <td>Passwort:<br/><input id="pass" type="text" value="$mysqlpwd"/> </td>
         </tr>
     </table>
     Die Installation kann fehlschlagen, wenn dem Konto kein Passwort zugewiesen ist! <br />

@@ -188,9 +188,9 @@ function pdo_proceed() {
 
 function host_proceed() {
 
-    hostname = $('#host_'+language).val();
-    username = $('#user_'+language).val();
-    password = $('#pass_'+language).val();
+    hostname = $('#host').val();
+    username = $('#user').val();
+    password = $('#pass').val();
     
     if (username == "") {
         
