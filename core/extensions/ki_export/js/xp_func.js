@@ -183,7 +183,7 @@ function xp_ext_set_TableWidths() {
   $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
   $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
   $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());
-  $("#xp_head > table > tbody > tr > td.comment").css("width",
+  $("#xp_head > table > tbody > tr > td.moreinfo").css("width",
       $("div#xp > div > table > tbody > tr > td.comment").width()+
       $("div#xp > div > table > tbody > tr > td.location").width()+
       $("div#xp > div > table > tbody > tr > td.trackingnr").width()
@@ -357,12 +357,12 @@ function xp_ext_reload() {
 
 
 function xp_toggle_column(name) {
-  if ($("#xp_head > table > tbody > tr > td."+name).hasClass('disabled')) {
-    $("#xp_head > table > tbody > tr > td."+name).removeClass('disabled');
+  if ($("#xp_head > table > tbody > tr ."+name).hasClass('disabled')) {
+    $("#xp_head > table > tbody > tr ."+name).removeClass('disabled');
     $("div#xp > div > table > tbody > tr > td."+name).removeClass('disabled');
   }
   else {
-    $("#xp_head > table > tbody > tr > td."+name).addClass('disabled');
+    $("#xp_head > table > tbody > tr ."+name).addClass('disabled');
     $("div#xp > div > table > tbody > tr > td."+name).addClass('disabled');
   }
 }
