@@ -51,7 +51,7 @@ switch ($axAction) {
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', langs());
         $tpl->assign('usr', $kga['usr']);
-        $tpl->assign('rate', get_rate($kga['usr']['usr_ID']));
+        $tpl->assign('rate', get_rate($kga['usr']['usr_ID'],NULL,NULL));
         $tpl->display("preferences.tpl");
     break;
     
