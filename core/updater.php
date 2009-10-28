@@ -131,6 +131,20 @@ EOD;
 	       padding:10px;
 	       margin-bottom:20px;
 	   }
+    #important_message {
+      background-color:red;
+          color: white;
+          font-weight:bold;
+          padding:10px;
+          margin-bottom:20px;
+          display:none;
+    }
+    .important_block_head {
+      background-color:red;
+          color: white;
+          font-weight:bold;
+          padding:10px;
+    }
 	   a {
 	       color:#0f0;
 	       text-decoration:none;
@@ -166,6 +180,7 @@ EOD;
 <div id="link">&nbsp;</div>
 <a href="db_restore.php" id="restore" title="db_restore">Database Utility</a>
 <div id="queries"></div>
+<div id="important_message"></div>
 <table>
     <tr>
         <td colspan='2'>
@@ -270,7 +285,7 @@ function exec_query($query,$errorProcessing=0) {
         logfile("Error text: $err");
     }
     
-} 
+}
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
@@ -845,7 +860,52 @@ if ((int)$revisionDB < 935) {
 ) AUTO_INCREMENT=1;");
 }
 
+if ((int)$revisionDB < 1067) {
 
+  /*
+   *  Write new config file with password salt
+   */
+    $kga['password_salt'] = createPassword(20);
+    if (write_config_file(
+        $kga['server_database'],
+        $kga['server_hostname'],
+        $kga['server_username'],
+        $kga['server_password'],
+        $kga['server_conn'],
+        $kga['server_type'],
+        $kga['server_prefix'],
+        $kga['language'],
+        $kga['password_salt']))
+      echo '<td>'.$kga['lang']['updater'][140].'</td><td class="green">&nbsp;&nbsp;</td>';   
+    else
+      die($kga['lang']['updater'][130]);
+      
+
+
+  /*
+   *  Reset all passwords
+   */
+  $new_passwords = array();
+
+  $result = mysql_query("SELECT * FROM ${p}usr");
+  
+  $users = array();
+  while ($row = mysql_fetch_assoc($result))
+    $users[] = $row;
+
+  foreach ($users as $user) {
+    if ($user['usr_name'] == 'admin')
+      $new_password = 'changeme';
+    else
+      $new_password = createPassword(8);
+    exec_query("UPDATE ${p}usr SET pw = '".
+        md5($kga['password_salt'].$new_password.$kga['password_salt']).
+        "' WHERE usr_ID = $user[usr_ID]");
+    if ($result)    
+      $new_passwords[$user['usr_name']] = $new_password;
+  }
+
+}
 
 //////// ---------------------------------------------------------------------------------------------------
 
@@ -919,10 +979,34 @@ echo<<<EOD
 EOD;
     }
 
+
 }
+
+
 ?>
 
 </table>
+
+<?php
+if (isset($new_passwords)) {
+?>
+<br/><br/>
+<script type="text/javascript">
+    $("#important_message").append("<?php echo $kga['lang']['updater'][120];?> <br/>");
+    $("#important_message").show();
+</script>
+<div class="important_block_head"> <?php echo $kga['lang']['updater'][110];?>: </div>
+<table style="width:100%">
+<tr><td><i> <?php echo $kga['lang']['username'];?> </i></td><td><i> <?php echo $kga['lang']['password'];?> </i></td></tr>
+<?php
+foreach ($new_passwords as $username => $password)
+  echo "<tr><td>$username</td><td>$password</td></tr>";
+?>
+</table><br/>
+<?php
+}
+?>
+
 
 <?php echo "$executed_queries " . $kga['lang']['updater'][90]; ?>
 

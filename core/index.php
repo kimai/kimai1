@@ -173,7 +173,7 @@ case "checklogin":
 
     if ($is_customer) {
       // perform login of customer
-      $passCrypt = crypt($password,$kga['cryptmethod']);
+      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
       $result = @mysql_query(sprintf("SELECT * FROM %sknd WHERE knd_name ='%s';",$kga['server_prefix'],$name));
       $row    = @mysql_fetch_assoc($result);
       $id      = $row['knd_ID'];
@@ -199,7 +199,7 @@ case "checklogin":
     else
     {
       // perform login of user
-      $passCrypt = crypt($password,$kga['cryptmethod']);
+      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
       $result = @mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],$name));
       $row    = @mysql_fetch_assoc($result);
       $id      = $row['usr_ID'];

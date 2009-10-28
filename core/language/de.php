@@ -236,6 +236,10 @@ $kga['lang']['updater'][70]       = "Update Log:";
 $kga['lang']['updater'][80]       = "Datenbank wurde auf den neusten Stand gebracht. Ein Backup wurde angelegt.";
 $kga['lang']['updater'][90]       = "Queries ausgeführt.";
 $kga['lang']['updater'][100]      = "Es wurde versucht die Datenbank auf den neusten Stand zu bringen. Dabei sind kritische Fehler aufgetreten. Ein Backup wurde angelegt. Wenn Kimai nicht richtig funktioniert können Sie damit die alte Datenbank wieder herstellen.";
+$kga['lang']['updater'][110]      = "Neue Passwörter";
+$kga['lang']['updater'][120]      = "Beachten Sie die neu gesetzten Passwörter weiter unten.";
+$kga['lang']['updater'][130]      = "autoconf.php konnte nicht geschrieben werden.";
+$kga['lang']['updater'][140]      = "Schreibe neue autoconf.php";
 
 $kga['lang']['backup'][0]        = "Dieses Backup-Utility wurde noch nicht hinreichend getestet! Nutzung auf eigenes Risiko!";
 $kga['lang']['backup'][1]        = "Vorhandene Backups:";

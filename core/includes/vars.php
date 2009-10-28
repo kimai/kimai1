@@ -30,17 +30,6 @@ $kga['virtual_users']  = 0;            // If this is set to 1 there is no login 
                                        // kimai then creates a virtual user that exists for that very session
                                        // and drops the user after the session is closed.
                                        // Use this for demo installments.
-                      
-$kga['cryptmethod']    = "CRYPT_MD5";  // Possible password encryption methods:
-                                       //
-                                       // CRYPT_STD_DES    Standard DES-based encryption with a two character salt
-                                       // CRYPT_EXT_DES    Extended DES-based encryption with a nine character salt
-                                       // CRYPT_MD5        MD5 encryption with a twelve character salt starting with $1$
-                                       // CRYPT_BLOWFISH   Blowfish encryption with a sixteen character salt 
-                                       //                  starting with $2$ or $2a$ 
-                                       //
-                                       // in the script the password is encrypted like this: 
-                                       // crypt($password,$kga['cryptmethod']);
                                        
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -136,5 +125,6 @@ $kga['server_password'] = $server_password; unset($server_password);
 $kga['server_type']     = $server_type;     unset($server_type);
 $kga['server_conn']     = $server_conn;     unset($server_conn);
 $kga['language']        = $language;        unset($language);
+$kga['password_salt']   = $password_salt;   unset($password_salt);
 
 ?>

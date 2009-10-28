@@ -237,6 +237,11 @@ $kga['lang']['updater'][70]       = "Update Log:";
 $kga['lang']['updater'][80]       = "The database was updated successfully and a backup was created.";
 $kga['lang']['updater'][90]       = "Queries processed.";
 $kga['lang']['updater'][100]      = "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.";
+$kga['lang']['updater'][110]      = "New Passwords";
+$kga['lang']['updater'][120]      = "See below for new passwords for every user.";
+$kga['lang']['updater'][130]      = "Could not write to autoconf.php.";
+$kga['lang']['updater'][140]      = "update file autoconf.php";
+
 
 $kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use at your own risk!";
 $kga['lang']['backup'][1]        = "Available backups:";
