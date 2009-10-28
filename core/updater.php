@@ -861,6 +861,7 @@ if ((int)$revisionDB < 935) {
 }
 
 if ((int)$revisionDB < 1067) {
+    logfile("-- update to r1067");
 
   /*
    *  Write new config file with password salt
@@ -905,6 +906,11 @@ if ((int)$revisionDB < 1067) {
       $new_passwords[$user['usr_name']] = $new_password;
   }
 
+}
+
+if ((int)$revisionDB < 1068) {
+    logfile("-- update to r1068");
+    exec_query("ALTER TABLE `${p}usr` CHANGE `autoselection` `autoselection` TINYINT( 1 ) NOT NULL default '0';");
 }
 
 //////// ---------------------------------------------------------------------------------------------------
