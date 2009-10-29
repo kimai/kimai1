@@ -107,7 +107,7 @@ switch ($axAction) {
     
     
     case ("write_config"):
-    
+    include("../includes/func.php");
     $database    = $_REQUEST['database'];
     $hostname    = $_REQUEST['hostname'];
     $username    = $_REQUEST['username'];

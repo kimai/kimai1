@@ -21,7 +21,8 @@
 
 // Require database layer functions
 // require('db_layer_pdo.php');
-require("db_layer_".$kga['server_conn'].".php");
+if (isset($kga['server_conn']))
+  require("db_layer_".$kga['server_conn'].".php");
 
 
 function kickUser() {
