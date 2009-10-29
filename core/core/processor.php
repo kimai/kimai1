@@ -58,7 +58,7 @@ switch ($axAction) {
         
         // if password field is empty => password unchanged (not overwritten with "")
         if ($_REQUEST['pw'] != "") {
-        	$usr_data['pw'] = crypt($_REQUEST['pw'], $kga['cryptmethod']);
+        	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
         }
         // $usr_data['pw']                 = $_REQUEST['pw'];
         
@@ -232,7 +232,7 @@ switch ($axAction) {
         
               // if password field is empty => password unchanged (not overwritten with "")
               if ($_REQUEST['knd_password'] != "") {
-                $data['knd_password'] = crypt($_REQUEST['knd_password'], $kga['cryptmethod']);
+                $data['knd_password'] = md5($kga['password_salt'].$_REQUEST['knd_password'].$kga['password_salt']);
               }
             	
             	if (!$id) {

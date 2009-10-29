@@ -160,7 +160,7 @@ switch ($axAction) {
         
         // if password field is empty => password unchanged (not overwritten with "")
         if ($_REQUEST['usr_pw'] != "") {
-        	$usr_data['pw'] = crypt($_REQUEST['usr_pw'], $kga['cryptmethod']);
+        	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['usr_pw'].$kga['password_salt']);
         }
         usr_edit($id, $usr_data); 
     break;

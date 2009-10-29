@@ -33,6 +33,7 @@ $GLOBALS['CONFIG_TYPES'] =
             'xml'           => array('Config/Container/XML.php', 'Config_Container_XML')
             );
 
+if (!class_exists("Config")) {
 /**
 * Config
 *
@@ -230,4 +231,5 @@ class Config {
         return $this->container->writeDatasrc($datasrc, $configType, $options);
     } // end func writeConfig
 } // end class Config
+}
 ?>
