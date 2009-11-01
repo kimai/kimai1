@@ -80,10 +80,10 @@ switch ($axAction) {
             $javascript .= "$('span.ch_compile_xpext').addClass('fail');";
         }
 
-        if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
-        }
+        // if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
+        //     $errors++;
+        //     $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
+        // }
 
 
 
