@@ -8,7 +8,7 @@ require('../includes/vars.php');
 require('../includes/func.php');   
 // check the latest stable version of Kimai on the web
 if ($kga['check_at_startup'] || $_REQUEST['versionping']) {
-    $request = join( '', file('http://versioncheck.kimai.org?revision='.$kga['revision']."&lang=".$kga['language']));
+    $request = join( '', file('http://versioncheck.kimai.de?revision='.$kga['revision']."&lang=".$kga['language']));
     echo $request;
 }
 ?>
