@@ -1039,6 +1039,11 @@ function grp_get_evts($grp_id) {
  */
 function usr_create($data) {
     global $kga, $pdo_conn;
+
+    // find random but unused user id
+    do {
+      $data['usr_ID'] = random_number(9);
+    } while (usr_get_data($data['usr_ID']));
     
     $data = clean_data($data);
 
@@ -1069,7 +1074,7 @@ function usr_create($data) {
           else
             remove_rate($usr_id,NULL,NULL);
         }
-        return true;
+        return $data['usr_ID'];
     } else {
         return false;
     }

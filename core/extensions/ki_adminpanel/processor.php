@@ -35,8 +35,6 @@ switch ($axAction) {
     
     case "createUsr":
     // create new user account
-        $randomUsrID = random_number(9);
-        $usr_data['usr_ID'] = $randomUsrID;
     	$usr_data['usr_name'] = htmlspecialchars(trim($axValue));
     	$usr_data['usr_grp'] = 1;
     	$usr_data['usr_sts'] = 2;
@@ -45,8 +43,7 @@ switch ($axAction) {
     	$usr_data['pw'] = "";
     	$usr_data['rowlimit'] = 100;
     	$usr_data['skin'] = "standard";
-    	usr_create($usr_data);
-		echo $randomUsrID;
+    	echo usr_create($usr_data);
     break;
     
     case "createGrp":

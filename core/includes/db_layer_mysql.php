@@ -1149,6 +1149,11 @@ function grp_get_evts($grp_id) {
 
 function usr_create($data) {
     global $kga, $conn;
+
+    // find random but unused user id
+    do {
+      $data['usr_ID'] = random_number(9);
+    } while (usr_get_data($data['usr_ID']));
     
     $data = clean_data($data);
 
@@ -1162,8 +1167,6 @@ function usr_create($data) {
                                                       
     $table  = $kga['server_prefix']."usr";
     $result = $conn->InsertRow($table, $values);
-
-
 /*
 
 $usr_name     =  MySQL::SQLValue($data ['usr_name']  );
@@ -1212,11 +1215,17 @@ EOD;
 
 
 
-
-    if (! $result) {
-    	return false;
-    } else {
-    	return true;
+    if ($result===false) {
+      return false;
+    }
+    else {
+        if (isset($data['usr_rate'])) {
+          if (is_numeric($data['usr_rate']))
+            save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+          else
+            remove_rate($usr_id,NULL,NULL);
+        }
+        return $data['usr_ID'];
     }
 }
 
