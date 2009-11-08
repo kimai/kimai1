@@ -877,7 +877,7 @@ if ((int)$revisionDB < 1067) {
         $kga['server_prefix'],
         $kga['language'],
         $kga['password_salt']))
-      echo '<td>'.$kga['lang']['updater'][140].'</td><td class="green">&nbsp;&nbsp;</td>';   
+      echo '<tr><td>'.$kga['lang']['updater'][140].'</td><td class="green">&nbsp;&nbsp;</td></tr>';   
     else
       die($kga['lang']['updater'][130]);
       
