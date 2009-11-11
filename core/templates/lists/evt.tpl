@@ -4,7 +4,7 @@
             <tbody>
 
 {section name=row loop=$arr_evt}
-{if $arr_evt[row].evt_visible || $arr_evt[row].zeit != "0:00"}
+{if $arr_evt[row].evt_visible}
             
                 <tr id="row_evt{$arr_evt[row].evt_ID}" class="{cycle values="odd,even"}" >
                     
@@ -30,9 +30,7 @@
                     </td>
 
                     <td nowrap class="annotation">
-                        {if $arr_evt[row].evt_visible != 1}<span style="color:#bbb">{/if}
                         {$arr_evt[row].zeit}
-                        {if $arr_evt[row].evt_visible != 1}</span>{/if}
                     </td>
 
                 </tr>

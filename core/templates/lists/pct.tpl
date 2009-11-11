@@ -10,7 +10,7 @@
             <tbody>
     
 {section name=row loop=$arr_pct}
-{if $arr_pct[row].pct_visible || $arr_pct[row].zeit != "0:00"}
+{if $arr_pct[row].pct_visible}
                 <tr id="row_pct{$arr_pct[row].pct_ID}" class="pct knd{$arr_pct[row].knd_ID} {cycle values="odd,even"}" >
                     
                     
@@ -44,9 +44,7 @@
 
 
                     <td class="annotation">
-                        {if $arr_pct[row].pct_visible != 1}<span style="color:#bbb">{/if}
                         {$arr_pct[row].zeit}
-                        {if $arr_pct[row].pct_visible != 1}</span>{/if}
                     </td>
 
                 </tr>

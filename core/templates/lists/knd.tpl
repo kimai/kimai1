@@ -11,7 +11,7 @@
             <tbody>
     
 {section name=row loop=$arr_knd}
-{if $arr_knd[row].knd_visible || $arr_knd[row].zeit != "0:00"}
+{if $arr_knd[row].knd_visible}
             
                     <tr id="row_knd{$arr_knd[row].knd_ID}" class="knd knd{$arr_knd[row].knd_ID} {cycle values="odd,even"}">
 
@@ -58,9 +58,7 @@
 
 {* --- annotation cell ---*}
                     <td nowrap class="annotation">
-                        {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
                         {$arr_knd[row].zeit}
-                        {if $arr_knd[row].knd_visible != 1}</span>{/if}
                     </td>
 
                 </tr>
