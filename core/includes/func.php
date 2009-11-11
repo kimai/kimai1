@@ -541,7 +541,7 @@ function timespace_warning($in,$out) {
         $time_err['in'] = false;
     }
 
-    if ($out<time()) {
+    if ($out!=0 && $out<time()) {
         $time_err['out'] = true;
     } else {
         $time_err['out'] = false;

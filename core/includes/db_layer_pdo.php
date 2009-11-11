@@ -1871,6 +1871,9 @@ function save_timespace($timespace_in,$timespace_out,$user) {
         $timespace_in  = mktime(0,0,0,$mon,$day,$Y);
         $timespace_out = mktime(23,59,59,$mon,$day,$Y);
     }
+
+    if ($timespace_out == mktime(23,59,59,date('n'),date('j'),date('Y')))
+      $timespace_out = 0;
        
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr SET timespace_in  = ? WHERE usr_ID = ?;");
     $pdo_query->execute(array($timespace_in ,$user));
@@ -3470,7 +3473,7 @@ function get_timespace() {
         $timespace[0] = mktime(0,0,0,$mon,1,$Y);
     }
     if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y);
+        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
     }
     
     return $timespace;

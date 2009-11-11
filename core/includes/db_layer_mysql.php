@@ -2055,6 +2055,9 @@ function save_timespace($timespace_in,$timespace_out,$user) {
         $timespace_out = mktime(23,59,59,$mon,$day,$Y);
     }
 
+    if ($timespace_out == mktime(23,59,59,date('n'),date('j'),date('Y')))
+      $timespace_out = 0;
+
     $values['timespace_in']  = MySQL::SQLValue($timespace_in  , MySQL::SQLVALUE_NUMBER );
     $values['timespace_out'] = MySQL::SQLValue($timespace_out , MySQL::SQLVALUE_NUMBER );
 
@@ -3593,7 +3596,7 @@ function get_timespace() {
         $timespace[0] = mktime(0,0,0,$mon,1,$Y);
     }
     if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y);
+        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
     }
     
     return $timespace;
