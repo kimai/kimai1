@@ -19,6 +19,25 @@
  * 
  */
 
+
+// from php documentation at http://www.php.net/manual/de/function.ini-get.php
+function return_bytes($val) {
+    $val = trim($val);
+    $last = strtolower($val[strlen($val)-1]);
+    switch($last) {
+        // The 'G' modifier is available since PHP 5.1.0
+        case 'g':
+            $val *= 1024;
+        case 'm':
+            $val *= 1024;
+        case 'k':
+            $val *= 1024;
+    }
+
+    return $val;
+}
+
+
 // stolen somewhere ... please forgive me - i don't know who wrote this .... O-o
 function getpass() {
     $newpass = "";
@@ -40,6 +59,37 @@ $javascript="";
 $errors=0;
 
 switch ($axAction) {
+
+
+
+    case "checkRequirements":
+       $version = explode('.',PHP_VERSION);
+       if ($version[0] < '5') {
+           $errors++;
+           $javascript .= "$('div.sp_phpversion').addClass('fail');";
+       }
+       
+       if (!extension_loaded('mysql') && !( extension_loaded('PDO') && extension_loaded('pdo_mysql')) ) {
+           $errors++;
+           $javascript .= "$('div.sp_mysql').addClass('fail');";
+       }
+       
+       if (return_bytes(ini_get('memory_limit')) < 20000000) {
+           $javascript .= "$('div.sp_memory').addClass('fail');";       
+       }
+
+        
+        if (empty($javascript)) {
+            $javascript = "$('#installsteps button.sp-button').hide();";
+        }
+
+        if (!$errors) {
+            $javascript .= "$('#installsteps button.proceed').show();";
+        }
+
+        echo $javascript;
+
+      break;
     
     case "checkRights":
         if (!$fp = @fopen("../includes/autoconf.php", "w")) {

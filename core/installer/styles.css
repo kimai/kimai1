@@ -112,6 +112,10 @@ h1 {
     color:#F00;
 }
 
+.note {
+    padding-left:20px;
+}
+
 span.lab {
     width:200px;
     height:20px;

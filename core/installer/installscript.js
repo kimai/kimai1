@@ -21,7 +21,8 @@ function step_ahead() {
 function step_back() {
     
     switch(current) {
-        case 30: target = "20_gpl"; break;
+        case 25: target = "20_gpl"; break;
+        case 30: target = "25_system_requirements"; break;
         case 40: target = "30_select_layer"; break;
         case 45: target = "40_permissions"; break;
         case 50:
@@ -78,6 +79,43 @@ function gpl_agreed() {
 }
 
 function gpl_proceed() {
+    step_ahead();
+    $('#installsteps').slideUp(500,function() {
+        target = "25_system_requirements";
+        $.post("steps/"+target+".php", {lang:language},
+            function(data) {
+                $('#installsteps').html(data);
+                $('#installsteps').slideDown(500);
+            }
+        );
+    });
+}
+
+// -------------------------------------------------
+// Check system requirements
+
+function check_system_requirements() {
+    $.post("processor.php", { axAction: 'checkRequirements' },
+        function(data) {
+            resetRequirementsIndicators();
+            eval(data);
+        }
+    );
+}
+
+
+
+function resetRequirementsIndicators() {
+    $('div.sp_phpversion').removeClass("fail");
+    $('div.sp_mysql').removeClass("fail");
+    $('div.sp_memory').removeClass("fail");
+    
+    $('div.sp_phpversion').addClass("ok");
+    $('div.sp_mysql').addClass("ok");
+    $('div.sp_memory').addClass("ok");
+}
+
+function system_requirements_proceed() {
     step_ahead();
     $('#installsteps').slideUp(500,function() {
         target = "30_select_layer";
