@@ -67,6 +67,14 @@ switch ($axAction) {
         $tpl->display("exp.tpl");
     break;
 
+    // =======================================
+    // = Erase expense entry via quickdelete =
+    // =======================================
+    case 'quickdelete':
+        exp_delete_record($id);
+        echo 1;
+    break;
+
     // =========================
     // = add / edit zef record =
     // =========================
