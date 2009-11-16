@@ -7,7 +7,7 @@
 
     <!-- Default Stylesheets -->
     <link rel="stylesheet" href="../skins/{$kga.conf.skin}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-    <link rel="stylesheet" href="../extensions/ki_timesheets/css/setup.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="../skins/{$kga.conf.skin}/jquery.jqplot.css" />
     <!-- /Default Stylesheets -->
     
     <!-- Extension Stylesheets -->
@@ -27,6 +27,9 @@
     <script src="../libraries/jQuery/idrag.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/iutil.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/date.js" type="text/javascript" charset="utf-8"></script>
+    <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
+    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
+    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
     <!-- /Libs -->
 
     <!-- Default JavaScripts -->
