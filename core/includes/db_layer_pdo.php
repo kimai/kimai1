@@ -1986,7 +1986,7 @@ function get_arr_pct_by_knd($group, $knd_id) {
  */
 
 // TODO: Test it!
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $limit) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $limit = false) {
     global $kga, $pdo_conn;
     
     if (!is_array($users)) $users = array();
@@ -2067,7 +2067,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
           $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in']; 
           $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
           $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']); 
-          $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['zef_time']/3600*$row['zef_rate'],2);
+          $arr[$i]['wage_decimal']     = round($arr[$i]['zef_time']/3600*$row['zef_rate'],2);
+          $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
         }
         
 
