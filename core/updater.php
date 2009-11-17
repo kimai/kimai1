@@ -921,6 +921,11 @@ if ((int)$revisionDB < 1077) {
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_comment` `zef_comment` TEXT NULL DEFAULT NULL");
 }
 
+if ((int)$revisionDB < 1086) {
+    logfile("-- update to r1086");
+    exec_query("ALTER TABLE `${p}pct` ADD `pct_budget` DECIMAL(10,2) NOT NULL DEFAULT 0.00");
+}
+
 //////// ---------------------------------------------------------------------------------------------------
 
 

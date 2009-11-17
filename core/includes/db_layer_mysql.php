@@ -321,7 +321,8 @@ function pct_create($data) {
         
     $values['pct_name']    = MySQL::SQLValue($data['pct_name']    );
     $values['pct_comment'] = MySQL::SQLValue($data['pct_comment'] );
-    $values['pct_logo']    = MySQL::SQLValue($data['pct_logo']    );    
+    $values['pct_logo']    = MySQL::SQLValue($data['pct_logo']    );
+    $values['pct_budget']  = MySQL::SQLValue($data['pct_budget']  , MySQL::SQLVALUE_NUMBER );
     $values['pct_kndID']   = MySQL::SQLValue($data['pct_kndID']   , MySQL::SQLVALUE_NUMBER );
     $values['pct_visible'] = MySQL::SQLValue($data['pct_visible'] , MySQL::SQLVALUE_NUMBER );
     $values['pct_filter']  = MySQL::SQLValue($data['pct_filter']  , MySQL::SQLVALUE_NUMBER );
@@ -420,6 +421,7 @@ function pct_edit($pct_id, $data) {
     $values ['pct_name']    = MySQL::SQLValue($new_array ['pct_name']      );
     $values ['pct_comment'] = MySQL::SQLValue($new_array ['pct_comment']   );
     $values ['pct_logo']    = MySQL::SQLValue($new_array ['pct_logo']      );
+    $values ['pct_budget']  = MySQL::SQLValue($new_array ['pct_budget']  , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_kndID']   = MySQL::SQLValue($new_array ['pct_kndID']   , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_visible'] = MySQL::SQLValue($new_array ['pct_visible'] , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_filter']  = MySQL::SQLValue($new_array ['pct_filter']  , MySQL::SQLVALUE_NUMBER  );

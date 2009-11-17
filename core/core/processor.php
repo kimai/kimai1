@@ -251,6 +251,7 @@ switch ($axAction) {
                 $data['pct_visible']      = $_REQUEST['pct_visible'];
                 $data['pct_filter']       = $_REQUEST['pct_filter'];
                 $data['pct_logo']         = $_REQUEST['pct_logo'];
+                $data['pct_budget']       = $_REQUEST['pct_budget'];
                 $data['pct_default_rate'] = $_REQUEST['pct_default_rate'];
                 $data['pct_my_rate']      = $_REQUEST['pct_my_rate'];
                 

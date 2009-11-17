@@ -67,6 +67,11 @@
 {/if}
 
                     <li class="extended">
+                         <label for="pct_budget">{$kga.lang.budget}:</label>
+                         <input type='text' name='pct_budget' cols='30' rows='5' value="{$pct_budget}"/>
+                    </li>
+
+                    <li class="extended">
                          <label for="pct_comment">{$kga.lang.comment}:</label>
                          <textarea class='comment' name='pct_comment' cols='30' rows='5' >{$pct_comment}</textarea>
                     </li>

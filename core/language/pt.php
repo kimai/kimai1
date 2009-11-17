@@ -197,6 +197,8 @@ $kga['lang']= array(
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
 
+
+"budget"            => "Budget",
 "rate"              => "Rate (by hour)",
 "rate_short"        => "Rate",
 "default_rate"      => "Default rate",

@@ -168,6 +168,7 @@ $query=
   `pct_filter` TINYINT(1) NOT NULL DEFAULT '0',
   `pct_logo` VARCHAR( 80 ),
   `pct_trash` TINYINT(1) NOT NULL DEFAULT '0',
+  `pct_budget` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY  (`pct_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);

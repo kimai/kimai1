@@ -16,7 +16,7 @@ $events = get_arr_evt("all");
  * ...
  */
 $event_id_to_pos_map = array();
-$i = 1;
+$i = 2;
 foreach ($events as $event) {
   $event_id_to_pos_map[$event['evt_ID']] = $i++;
 }
@@ -31,10 +31,17 @@ foreach ($exp_arr as $exp) {
 
   if (!isset($wages[$exp['exp_pctID']])) {
     // project doesn't exists.
-    $wages[$exp['exp_pctID']] = array_fill(0,count($events)+1,0);
+    $wages[$exp['exp_pctID']] = array_fill(0,count($events)+2,0);
+    $pct_data = pct_get_data($exp['exp_pctID']);
+    $wages[$exp['exp_pctID']][0] = $pct_data['pct_budget'];
   }
 
-  $wages[$exp['exp_pctID']][0] += $exp['exp_value'];
+  $wages[$exp['exp_pctID']][1] += $exp['exp_value'];
+  $wages[$exp['exp_pctID']][0] -= $exp['exp_value'];
+  if ($wages[$exp['exp_pctID']][0] < 0) {
+    //costs over budget
+    $wages[$exp['exp_pctID']][0] = 0;
+  }
 }
 
 
@@ -49,11 +56,20 @@ foreach ($zef_arr as $zef) {
 
   if (!isset($wages[$zef['zef_pctID']])) {
     // project doesn't exists.
-    $wages[$zef['zef_pctID']] = array_fill(0,count($events)+1,0);
+    $wages[$zef['zef_pctID']] = array_fill(0,count($events)+2,0);
+    $pct_data = pct_get_data($zef['zef_pctID']);
+    $wages[$zef['zef_pctID']][0] = $pct_data['pct_budget'];
   }
 
   $wages[$zef['zef_pctID']][$event_id_to_pos_map[$zef['zef_evtID']]] += $zef['wage_decimal'];
+  $wages[$zef['zef_pctID']][0] -= $zef['wage_decimal'];
+  if ($wages[$zef['zef_pctID']][0] < 0) {
+    //costs over budget
+    $wages[$zef['zef_pctID']][0] = 0;
+  }
 }
+
+
 
 /* 
  * convert array to javascript array

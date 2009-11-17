@@ -324,8 +324,9 @@ function pct_create($data) {
     pct_comment, 
     pct_visible, 
     pct_filter, 
-    pct_logo 
-    ) VALUES (?, ?, ?, ?, ?, ?);");
+    pct_logo, 
+    pct_budget
+    ) VALUES (?, ?, ?, ?, ?, ?, ?);");
 
     $result = $pdo_query->execute(array(
     $data['pct_kndID'], 
@@ -333,7 +334,8 @@ function pct_create($data) {
     $data['pct_comment'],
     $data['pct_visible'],
     $data['pct_filter'],
-    $data['pct_logo']
+    $data['pct_logo'],
+    $data['pct_budget']
     ));
     
     if ($result == true) {
@@ -426,7 +428,8 @@ function pct_edit($pct_id, $data) {
     pct_comment = ?,
     pct_visible = ?,
     pct_filter = ?,
-    pct_logo = ?
+    pct_logo = ?,
+    pct_budget = ?
     WHERE pct_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -436,6 +439,7 @@ function pct_edit($pct_id, $data) {
     $new_array['pct_visible'],
     $new_array['pct_filter'],
     $new_array['pct_logo'],
+    $new_array['pct_budget'],
     $pct_id  
     ));
     

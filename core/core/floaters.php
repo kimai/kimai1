@@ -105,6 +105,7 @@ switch ($axAction) {
                 $tpl->assign('pct_visible'     , $data['pct_visible'     ]);
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
                 $tpl->assign('pct_logo'        , $data['pct_logo'        ]);
+                $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);

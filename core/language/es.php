@@ -198,6 +198,8 @@ $kga['lang']= array(
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
 
+
+"budget"            => "Budget",
 "rate"              => "Importe (by hour)",
 "rate_short"        => "Importe",
 "default_rate"      => "Importe por defecto",
