@@ -77,7 +77,7 @@ function exp_create_record($usr_ID,$data) {
  */
 
 // TODO: Test it!
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit) {
+function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
     global $kga;
     global $pdo_conn;
     

@@ -38,8 +38,11 @@ require("private_func.php");
   $chartColors = array("#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
   $tpl->assign('chartColors',json_encode($chartColors));
   $legend = array();
+
+  $legend[] = array('color'=>$chartColors[0], 'name' => 'Auslagen');
+
   for ($i = 0;$i<count($events);$i++) {
-    $legend[] = array('color'=>$chartColors[$i%(count($chartColors)-1)], 'name' => $events[$i]['evt_name']);
+    $legend[] = array('color'=>$chartColors[($i+1)%(count($chartColors)-1)], 'name' => $events[$i]['evt_name']);
   }
 
   $tpl->assign('arr_legend',$legend);
