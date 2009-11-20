@@ -1307,6 +1307,7 @@ function usr_edit($usr_id, $data) {
     $values ['usr_sts']           = MySQL::SQLValue($new_array ['usr_sts']          , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_trash']         = MySQL::SQLValue($new_array ['usr_trash']        , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_active']        = MySQL::SQLValue($new_array ['usr_active']       , MySQL::SQLVALUE_NUMBER  );
+    $values ['noFading']          = MySQL::SQLValue($new_array ['noFading']         , MySQL::SQLVALUE_NUMBER  );
 
     $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     
@@ -2498,6 +2499,7 @@ function get_user_config($user) {
   $columns[] = "allvisible"; 
   $columns[] = "flip_pct_display"; 
   $columns[] = "showIDs"; 
+  $columns[] = "noFading"; 
   $columns[] = "pct_comment_flag"; 
   $columns[] = "lang"; 
 
@@ -2576,6 +2578,7 @@ function get_customer_config($user) {
   $kga['conf']['flip_pct_display'] = 0;
   $kga['conf']['pct_comment_flag'] = 0;
   $kga['conf']['showIDs'] = 0;
+  $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
 
 }

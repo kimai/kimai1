@@ -81,6 +81,10 @@
                         <label for="showIDs"></label>
                         <input type="checkbox" name="showIDs" value="1" {if $kga.conf.showIDs}checked{/if} /> {$kga.lang.showIDs}
                     </li>
+                    <li>
+                        <label for="noFading"></label>
+                        <input type="checkbox" name="noFading" value="1" {if $kga.conf.noFading}checked{/if} /> {$kga.lang.noFading}
+                    </li>
                     
                 </ul>
                 

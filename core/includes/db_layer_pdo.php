@@ -1155,7 +1155,8 @@ function usr_edit($usr_id, $data) {
     flip_pct_display = ?,
     pct_comment_flag = ?,
     showIDs = ?,
-    lang = ? 
+    lang = ? ,
+    noFading = ?
     WHERE usr_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -1177,6 +1178,7 @@ function usr_edit($usr_id, $data) {
     $new_array['pct_comment_flag'],
     $new_array['showIDs'],
     $new_array['lang'],
+    $new_array['noFading'],
     $usr_id
     ));
     
@@ -2271,6 +2273,7 @@ function get_user_config($user) {
   `flip_pct_display`,
   `pct_comment_flag`,
   `showIDs`,
+  `noFading`,
   `lang`
   FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
 
@@ -2328,6 +2331,7 @@ function get_customer_config($customer_ID) {
   $kga['conf']['flip_pct_display'] = 0;
   $kga['conf']['pct_comment_flag'] = 0;
   $kga['conf']['showIDs'] = 0;
+  $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
 
 }

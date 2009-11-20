@@ -926,6 +926,12 @@ if ((int)$revisionDB < 1086) {
     exec_query("ALTER TABLE `${p}pct` ADD `pct_budget` DECIMAL(10,2) NOT NULL DEFAULT 0.00");
 }
 
+if ((int)$revisionDB < 1088) {
+    logfile("-- update to r1088");
+    exec_query("ALTER TABLE `${p}usr` ADD `noFading` TINYINT(1) NOT NULL DEFAULT '0'");
+}
+
+  
 //////// ---------------------------------------------------------------------------------------------------
 
 

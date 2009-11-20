@@ -3,8 +3,8 @@
         function cb() {
             $("#ap_ext_form_editadv_submit").blur();
             $("#ap_ext_output").width($(".ap_ext_panel_header").width()-22);
-            $("#ap_ext_output").fadeIn(500,function(){
-                $("#ap_ext_output").fadeOut(4000);
+            $("#ap_ext_output").fadeIn(fading_enabled?500:0,function(){
+                $("#ap_ext_output").fadeOut(fading_enabled?4000:0);
             });
         }
         $(document).ready(function() {

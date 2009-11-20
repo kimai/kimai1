@@ -50,6 +50,7 @@ switch ($axAction) {
         $usr_data['flip_pct_display']   = $_REQUEST['flip_pct_display'];
         $usr_data['pct_comment_flag']   = $_REQUEST['pct_comment_flag'];
         $usr_data['showIDs']            = $_REQUEST['showIDs'];
+        $usr_data['noFading']           = $_REQUEST['noFading'];
         
         if (is_numeric($_REQUEST['rate']))
           save_rate($kga['usr']['usr_ID'],null,NULL,$_REQUEST['rate']);

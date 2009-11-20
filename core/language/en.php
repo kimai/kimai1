@@ -213,6 +213,8 @@ $kga['lang']= array(
 "designation"       => "Designation",
 
 "cleared"           => "cleared",
+
+"noFading"          => "no fading effect"
 );
 
 $kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");

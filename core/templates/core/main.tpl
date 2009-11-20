@@ -60,6 +60,11 @@
         {else}
         var usr_ID                = null;
         {/if}
+
+
+        {if ($kga.conf.noFading)}
+        fading_enabled = false;
+        {/if}
        
         var timeoutTicktack       = 0;
         
