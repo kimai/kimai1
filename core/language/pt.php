@@ -37,6 +37,7 @@ $kga['lang']= array(
 "out"               => "Fim",
 "time"              => "h'm",
 "timelabel"         => "Tempo",
+"durationlabel"     => "Duration",
 "knd"               => "Cliente",
 "pct"               => "Projecto",
 "evt"               => "Acção",

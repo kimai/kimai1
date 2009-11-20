@@ -37,6 +37,7 @@ $kga['lang']= array(
 "out"               => "tot",
 "time"              => "h'm",
 "timelabel"         => "Tijd",
+"durationlabel"     => "Duration",
 "knd"               => "Klant",
 "pct"               => "Projekt",
 "evt"               => "Aktie",

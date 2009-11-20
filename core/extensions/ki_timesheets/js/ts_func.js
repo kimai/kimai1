@@ -314,6 +314,112 @@ function pasteNow(value) {
     $("#edit_out_time").val(time);
 }
 
+//
+// Thanks to Tijl Vercaemer for the time duration field !
+//
+
+// ----------------------------------------------------------------------------------------
+// Returns a Date object, based on 2 strings
+//
+function ts_getDateFromStrings(dateStr,timeStr) {
+    result = new Date();
+    dateArray=dateStr.split(/\./);
+    timeArray=timeStr.split(/:/);
+    if(dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
+        return null;
+    }
+    result.setFullYear(dateArray[2],dateArray[1]-1,dateArray[0]);
+    result.setHours(timeArray[0]);
+    if(timeArray.length>1)
+        result.setMinutes(timeArray[1]);
+    else
+        result.setMinutes(0);
+    if(timeArray.length>2)
+        result.setSeconds(timeArray[2]);
+    else
+        result.setSeconds(0);
+    return result;
+}
+
+// ----------------------------------------------------------------------------------------
+// Gets the begin Date, while editing a timesheet record
+//
+function ts_getStartDate() {
+    return ts_getDateFromStrings($("#edit_in_day").val(),$("#edit_in_time").val());
+}
+
+// ----------------------------------------------------------------------------------------
+// Gets the end Date, while editing a timesheet record
+//
+function ts_getEndDate() {
+    return ts_getDateFromStrings($("#edit_out_day").val(),$("#edit_out_time").val());
+}
+
+// ----------------------------------------------------------------------------------------
+// Change the end time field, based on the duration, while editing a timesheet record
+//
+function ts_durationToTime() {
+    begin = ts_getStartDate();
+    durationArray=$("#edit_duration").val().split(/:/);
+    if(begin!=null && durationArray.length > 0 && durationArray.length < 4) {
+        secs = durationArray[0]*3600;
+        if(durationArray.length > 1)
+            secs += (durationArray[1]*60);
+        if(durationArray.length > 2)
+            secs += durationArray[2];
+        end = new Date();
+        end.setTime(begin.getTime()+(secs*1000));
+
+
+        H = end.getHours();
+        i = end.getMinutes();
+        s = end.getSeconds();
+
+        if (H<10) H = "0"+H;
+        if (i<10) i = "0"+i;
+        if (s<10) s = "0"+s;
+
+        $("#edit_out_time").val(H + ":" + i + ":" + s);
+
+        d = end.getDate();
+        m = end.getMonth() + 1;
+        y = end.getFullYear();
+        if (d<10) d = "0"+i;
+        if (m<10) m = "0"+s;
+
+        $("#edit_out_day").val(d + "." + m + "." + y);
+    }
+}
+
+// ----------------------------------------------------------------------------------------
+// Change the duration field, based on the time, while editing a timesheet record
+//
+function ts_timeToDuration() {
+    begin = ts_getStartDate();
+    end = ts_getEndDate();
+    if(begin==null || end==null) {
+        $("#edit_duration").val("");
+    } else {
+        beginSecs = Math.floor(begin.getTime() / 1000);
+        endSecs = Math.floor(end.getTime() / 1000);
+        durationSecs = endSecs - beginSecs;
+        if(durationSecs<0) {
+            $("#edit_duration").val("");
+        } else {
+            secs = durationSecs%60;
+            if(secs<10)
+                secs="0"+secs;
+            durationSecs = Math.floor(durationSecs/60);
+            mins = durationSecs%60;
+            if(mins<10)
+                mins="0"+mins;
+            hours = Math.floor(durationSecs / 60);
+            if(hours<10)
+                hours="0"+hours;
+            $("#edit_duration").val(hours+":"+mins+":"+secs);
+        }
+    }
+}
 
 // ----------------------------------------------------------------------------------------
 // filters project and task fields in add/edit record dialog

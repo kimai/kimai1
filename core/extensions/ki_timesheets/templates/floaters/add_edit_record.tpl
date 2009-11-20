@@ -21,6 +21,8 @@
             $("#add_edit_record_pct_ID").selectOptions(""+selected_pct+"");
             $("#add_edit_record_evt_ID").selectOptions(""+selected_evt+"");
             {/literal}{/if}{literal}
+
+            ts_timeToDuration();
         }); 
         
     </script>
@@ -89,61 +91,64 @@
 
                 <li>
                      <label for="edit_in_day">{$kga.lang.day}:</label>
-                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day}' maxlength='10' size='10' tabindex='5' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day}' maxlength='10' size='10' tabindex='5' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                      -
-                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day}' maxlength='10' size='10' tabindex='6' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
-                       <label for="time">{$kga.lang.timelabel}</label>
-                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                       <label for="time">{$kga.lang.timelabel}:</label>
+                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
-                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='8' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
-                        <a href="#" onClick="pasteNow(); return false;">{$kga.lang.now}</a>
+                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <a href="#" onClick="pasteNow(); ts_timeToDuration(); return false;">{$kga.lang.now}</a>
                    </li>
-
+                   <li>
+                       <label for="duration">{$kga.lang.durationlabel}:</label>
+                        <input id='edit_duration' type='text' name='edit_duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                   </li>
                    
 {* -------------------------------------------------------------------- *}       
         
                    <li class="extended">
                         <label for="rate">{$kga.lang.rate}:</label>
-                        <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    <li class="extended">
                         <label for="zlocation">{$kga.lang.zlocation}:</label>
-                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
                    <li class="extended">
                         <label for="trackingnr">{$kga.lang.trackingnr}:</label>
-                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
                            
                    <li>
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='12'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
                    </li>
                    
                    <li>
                        <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="13" >
+                       <select id="comment_type" class="formfield" name="comment_type" tabindex="14" >
                            {html_options values=$comment_values output=$comment_types selected=$comment_active}
                        </select>
                    </li>
                    
                     <li class="extended">
                         <label for="erase">{$kga.lang.erase}:</label>
-                        <input type='checkbox' id='erase' name='erase' tabindex='14'/>
+                        <input type='checkbox' id='erase' name='erase' tabindex='15'/>
                    </li>
 
                     <li class="extended">
                         <label for="cleared">{$kga.lang.cleared}:</label>
-                        <input type='checkbox' id='cleared' name='cleared' tabindex='15'/>
+                        <input type='checkbox' id='cleared' name='cleared' tabindex='16'/>
                    </li>
         
                 </ul>
