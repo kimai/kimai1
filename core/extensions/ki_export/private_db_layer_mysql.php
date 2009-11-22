@@ -44,4 +44,62 @@ function xp_exp_set_cleared($id,$cleared) {
     else
       return false;
 } 
+
+
+/**
+ * save deselection of columns
+ *
+ * @param string  $header -> header name
+ * @global array  $kga kimai-global-array
+ * @global array  $all_column_headers array containing all columns
+ * @author sl
+ */
+function xp_toggle_header($header) {
+    global $kga,$conn,$all_column_headers;    
+
+    $header_number = array_search($header,$all_column_headers);
+
+    $table                 = $kga['server_prefix']."usr";
+    $values['export_disabled_columns'] = "`export_disabled_columns`^POWER(2,$header_number)";
+    $filter['usr_ID']      = MySQL::SQLValue($kga['usr']['usr_ID'],MySQL::SQLVALUE_NUMBER);
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
+    if ($conn->Query($query))
+      return true;
+    else
+      return false;
+} 
+
+/**
+ * get list of deselected columns
+ *
+ * @param integer $user_id -> header name
+ * @global array  $kga kimai-global-array
+ * @global array  $all_column_headers array containing all columns
+ * @author sl
+ */
+function xp_get_disabled_headers($user_id) {
+    global $kga,$conn,$all_column_headers; 
+
+    $disabled_headers = array();
+
+    $filter['usr_ID'] = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
+    $table = $kga['server_prefix']."usr";
+
+    if (!$conn->SelectRows($table, $filter)) return 0;
+
+    $result_array = $conn->RowArray(0,MYSQL_ASSOC);
+    $code = $result_array['export_disabled_columns'];
+
+    $i = 0;
+    while ($code>0) {
+       if ($code%2==1) // bit set?
+        $disabled_headers[$all_column_headers[$i]] = true;
+
+       // next bit and array element
+       $code = $code/2;
+       $i++;
+    }
+    return $disabled_headers;
+}
 ?>

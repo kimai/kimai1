@@ -1,5 +1,8 @@
 <?php
 
+$all_column_headers = array('date','from','to','time','dec_time','rate','wage','knd','pct','evt','comment','location','trackingnr','user','cleared');
+
+
 /**
  * returns expenses for specific user as multidimensional array
  *

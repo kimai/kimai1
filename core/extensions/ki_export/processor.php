@@ -107,6 +107,16 @@ switch ($axAction) {
 
       echo $success?1:0;
     break;
+    
+
+    // =========================
+    // = save selected columns =
+    // =========================
+    case 'toggle_header':
+      // $axValue: header name
+      $success = xp_toggle_header($axValue);
+      echo $success?1:0;
+    break;
 
     // ===========================
     // = Load data and return it =

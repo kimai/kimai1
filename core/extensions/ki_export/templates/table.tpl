@@ -69,6 +69,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.date}disabled{/if}
                     ">
                         { if $custom_dateformat }
                         {$arr_data[row].time_in|date_format:$custom_dateformat}
@@ -87,6 +88,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.from}disabled{/if}
                     ">
                         { if $custom_timeformat }
                         {$arr_data[row].time_in|date_format:$custom_timeformat}
@@ -105,6 +107,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.to}disabled{/if}
                     ">
                     
 {if $arr_data[row].time_out}
@@ -128,6 +131,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.time}disabled{/if}
                     ">
                     
 {if $arr_data[row].zef_time}
@@ -151,6 +155,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.dec_time}disabled{/if}
                     ">
                     
 {if $arr_data[row].dec_zef_time}
@@ -174,6 +179,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.rate}disabled{/if}
                     ">
                     
                             {$arr_data[row].zef_rate}
@@ -189,6 +195,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.wage}disabled{/if}
                     ">
                     
 {if $arr_data[row].wage}
@@ -210,6 +217,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.knd}disabled{/if}
                     ">
                         {$arr_data[row].knd_name}
                     </td>
@@ -224,6 +232,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.pct}disabled{/if}
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
@@ -249,6 +258,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.evt}disabled{/if}
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
@@ -268,6 +278,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.comment}disabled{/if}
                     ">
                         {$arr_data[row].comment|nl2br}
                         
@@ -283,6 +294,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.location}disabled{/if}
                     ">
                         {$arr_data[row].location}
                         
@@ -298,6 +310,7 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.trackingnr}disabled{/if}
                     ">
                         {$arr_data[row].trackingnr}
                         
@@ -313,13 +326,14 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.user}disabled{/if}
                     ">
                         {$arr_data[row].username}
                         
                     </td>
 
 
-					<td class="cleared
+          <td class="cleared
                         {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
                             {if $kga.show_daySeperatorLines}break_day{/if}
                         {else}
@@ -327,10 +341,11 @@
                                 {if $kga.show_gabBreaks}break_gap{/if}
                             {/if}
                         {/if}
+                        {if $disabled_columns.cleared}disabled{/if}
                     ">
                       <a class ="{if $arr_data[row].cleared}is_cleared{else}isnt_cleared{/if}" href ="#" onClick="xp_toggle_cleared('{$arr_data[row].type}{$arr_data[row].id}'); return false;"></a>
-					</td>
-					
+          </td>
+          
 
                 </tr>
 

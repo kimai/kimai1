@@ -93,6 +93,7 @@ $query =
   `pct_comment_flag` TINYINT(1) NOT NULL DEFAULT '0',
   `showIDs` TINYINT(1) NOT NULL DEFAULT '0',
   `noFading` TINYINT(1) NOT NULL DEFAULT '0',
+  `export_disabled_columns` INT NOT NULL DEFAULT '0',
   PRIMARY KEY  (`usr_name`)
 );";
 exec_query($query);

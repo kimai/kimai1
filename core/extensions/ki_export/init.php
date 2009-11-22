@@ -57,6 +57,9 @@ $ann = xp_get_arr_evt($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('evt_ann',$ann_new);
 
+$disabled_columns = xp_get_disabled_headers($kga['usr']['usr_ID']);
+
+$tpl->assign('disabled_columns',$disabled_columns);
 
 $tpl->assign('table_display', $tpl->fetch("table.tpl"));
 

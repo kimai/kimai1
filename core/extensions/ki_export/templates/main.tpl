@@ -32,27 +32,27 @@
         </colgroup>
         <tbody>
             <tr>
-                <td class="date"><a onClick="xp_toggle_column('date');">{$kga.lang.datum}</a></td>
-                <td class="from"><a onClick="xp_toggle_column('from');">{$kga.lang.in}</a></td>
-                <td class="to"><a onClick="xp_toggle_column('to');">{$kga.lang.out}</a></td>
-                <td class="time"><a onClick="xp_toggle_column('time');">{$kga.lang.time}</a></td>
-                <td class="dec_time"><a onClick="xp_toggle_column('dec_time');">{$kga.lang.timelabel}</a></td>
+                <td class="date {if $disabled_columns.date}disabled{/if}"><a onClick="xp_toggle_column('date');">{$kga.lang.datum}</a></td>
+                <td class="from {if $disabled_columns.from}disabled{/if}"><a onClick="xp_toggle_column('from');">{$kga.lang.in}</a></td>
+                <td class="to {if $disabled_columns.to}disabled{/if}"><a onClick="xp_toggle_column('to');">{$kga.lang.out}</a></td>
+                <td class="time {if $disabled_columns.time}disabled{/if}"><a onClick="xp_toggle_column('time');">{$kga.lang.time}</a></td>
+                <td class="dec_time {if $disabled_columns.dec_time}disabled{/if}"><a onClick="xp_toggle_column('dec_time');">{$kga.lang.timelabel}</a></td>
 
                 <td class="cash">
-					<a class="rate" onClick="xp_toggle_column('rate');">{$kga.lang.rate_short}</a>/<a class="wage" onClick="xp_toggle_column('wage');">{$kga.lang.total}</a>
+					<a class="rate {if $disabled_columns.rate}disabled{/if}" onClick="xp_toggle_column('rate');">{$kga.lang.rate_short}</a>/<a class="wage {if $disabled_columns.wage}disabled{/if}" onClick="xp_toggle_column('wage');">{$kga.lang.total}</a>
 				</td>
 
-                <td class="knd"><a onClick="xp_toggle_column('knd');">{$kga.lang.knd}</a></td>
-                <td class="pct"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
-                <td class="evt"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
+                <td class="knd {if $disabled_columns.knd}disabled{/if}"><a onClick="xp_toggle_column('knd');">{$kga.lang.knd}</a></td>
+                <td class="pct {if $disabled_columns.pct}disabled{/if}"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
+                <td class="evt {if $disabled_columns.evt}disabled{/if}"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
 
                 <td class="moreinfo nobreak" colspan="3">
-					<a class="comment" onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a>,
-	                <a class="location" onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a>,
-	                <a class="trackingnr" onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a>
+					<a class="comment {if $disabled_columns.comment}disabled{/if}" onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a>,
+	                <a class="location {if $disabled_columns.location}disabled{/if}" onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a>,
+	                <a class="trackingnr {if $disabled_columns.trackingnr}disabled{/if}" onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a>
 				</td>
 				
-                <td class="user"><a onClick="xp_toggle_column('user');">{$kga.lang.username}</a></td>
+                <td class="user {if $disabled_columns.user}disabled{/if}"><a onClick="xp_toggle_column('user');">{$kga.lang.username}</a></td>
             </tr>
         </tbody>
     </table>
