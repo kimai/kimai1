@@ -2115,8 +2115,7 @@ function get_arr_pct($group) {
 
     $arr = array();
     $i = 0;
-    
-    if (count($rows)) {
+    if ($rows) {
         foreach ($rows as $row) {
             $arr[$i]['pct_ID']      = $row['pct_ID'];
             $arr[$i]['pct_name']    = $row['pct_name'];
@@ -2128,7 +2127,7 @@ function get_arr_pct($group) {
         }
         return $arr;
     } else {
-        return false;
+        return array();
     }
 }
 
@@ -2805,7 +2804,7 @@ function get_arr_knd($group) {
         }
         return $arr;
     } else {
-        return false;
+        return array();
     }
 }
 
@@ -2845,7 +2844,7 @@ function get_arr_evt($group) {
         }
         return $arr;
     } else {
-        return false;
+        return array();
     }
 }
 
