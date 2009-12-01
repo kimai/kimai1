@@ -387,6 +387,8 @@ function buzzer() {
         stopRecord();
         recstate=0;
     } else {
+        now = new Date();
+        setTimespace(0,0,0,now.getDate(),now.getMonth()+1,now.getFullYear());
         startRecord(selected_pct,selected_evt,usr_ID);
         recstate=1;
     }
