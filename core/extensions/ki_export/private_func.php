@@ -12,12 +12,18 @@ $all_column_headers = array('date','from','to','time','dec_time','rate','wage','
  * @author th 
  */
 
-include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
+$expense_ext_available = false;
+if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) {
+  include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
+  $expense_ext_available = true;
+}
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
 function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit,$default_location='',$filter_cleared=-1) {
+  global $expense_ext_available;
+
     $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
-    $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
+    $exp_arr = $expense_ext_available?get_arr_exp($start,$end,$users,$customers,$projects,$limit):array();
     $result_arr = array();
 
     $zef_arr_index = 0;
