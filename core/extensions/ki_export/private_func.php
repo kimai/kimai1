@@ -19,7 +19,7 @@ if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) 
 }
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit,$default_location='',$filter_cleared=-1) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit=false,$default_location='',$filter_cleared=-1) {
   global $expense_ext_available;
 
     $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);

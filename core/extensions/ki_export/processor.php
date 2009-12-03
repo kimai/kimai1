@@ -123,7 +123,7 @@ switch ($axAction) {
     // ===========================
     case 'reload':
 
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
@@ -153,7 +153,7 @@ switch ($axAction) {
 
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -168,7 +168,7 @@ switch ($axAction) {
 
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -184,7 +184,7 @@ switch ($axAction) {
 
     case 'export_csv':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
         /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
@@ -277,7 +277,7 @@ switch ($axAction) {
 
     case 'export_pdf':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
       require('export_pdf.php');
     break;
 
@@ -285,7 +285,7 @@ switch ($axAction) {
 
     case 'export_pdf2':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,1,$default_location,$filter_cleared);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
 
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();

@@ -32,7 +32,7 @@ $tpl->display('panel.tpl');
 // ==========================
 $total = intervallApos(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 
-$arr_zef = xp_get_arr($in,$out,array($kga['usr']['usr_ID']),null,null,1);
+$arr_zef = xp_get_arr($in,$out,array($kga['usr']['usr_ID']),null,null);
 
 if (count($arr_zef)>0) {
     $tpl->assign('arr_data', $arr_zef);
