@@ -30,6 +30,9 @@ $kga['virtual_users']  = 0;            // If this is set to 1 there is no login 
                                        // kimai then creates a virtual user that exists for that very session
                                        // and drops the user after the session is closed.
                                        // Use this for demo installments.
+
+$kga['currency_name'] = 'Euro';
+$kga['currency_sign'] = '€';
                                        
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------

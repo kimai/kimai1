@@ -25,7 +25,7 @@ class MYPDF extends TCPDF {
 
   // format wage
   public function money($number) {
-    return str_replace(".",",",sprintf("%01.2f",$number)). " €";
+    return str_replace(".",",",sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
 
   public function columnWidths($max_time_width,$max_money_width) {

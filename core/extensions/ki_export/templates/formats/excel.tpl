@@ -34,7 +34,7 @@ mso-number-format:Percent;
 { if $columns.time         } <td>{$kga.lang.time}</td>        { /if }
 { if $columns.dec_time     } <td>{$kga.lang.timelabel}</td>   { /if }
 { if $columns.rate         } <td>{$kga.lang.rate}</td>        { /if }
-{ if $columns.wage         } <td>Euro</td>                    { /if }
+{ if $columns.wage         } <td>{$kga.currency_name}</td>    { /if }
 { if $columns.knd          } <td>{$kga.lang.knd}</td>         { /if }
 { if $columns.pct          } <td>{$kga.lang.pct}</td>         { /if }
 { if $columns.action       } <td>{$kga.lang.evt}</td>         { /if }

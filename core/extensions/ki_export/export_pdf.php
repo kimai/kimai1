@@ -18,7 +18,7 @@ class MYPDF extends TCPDF {
   } 
 
   public function money($number) {
-    return str_replace(".",",",sprintf("%01.2f",$number)). " €";
+    return str_replace(".",",",sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
   
 

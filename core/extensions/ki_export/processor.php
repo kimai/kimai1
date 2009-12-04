@@ -213,7 +213,7 @@ switch ($axAction) {
         if ($columns['rate'])
           $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);          
         if ($columns['wage'])
-          $row[] = csv_prepare_field('Euro',$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['currency_name'],$column_delimiter,$quote_char);                      
         if ($columns['knd'])
           $row[] = csv_prepare_field($kga['lang']['knd'],$column_delimiter,$quote_char);           
         if ($columns['pct'])

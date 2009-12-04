@@ -130,7 +130,7 @@
 { if $columns.time         } <th>{$kga.lang.time}</th>        { /if }
 { if $columns.dec_time     } <th>{$kga.lang.timelabel}</th>   { /if }
 { if $columns.rate         } <th>{$kga.lang.rate}</th>        { /if }
-{ if $columns.wage         } <th>Euro</th>                    { /if }
+{ if $columns.wage         } <th>{$kga.currency_name}</th>    { /if }
 { if $columns.knd          } <th>{$kga.lang.knd}</th>         { /if }
 { if $columns.pct          } <th>{$kga.lang.pct}</th>         { /if }
 { if $columns.action       } <th>{$kga.lang.evt}</th>         { /if }
