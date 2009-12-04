@@ -1747,14 +1747,15 @@ function var_edit($data) {
 
     foreach ($new_array as $current_var_key => $current_var_value) {
     
-	    $filter['var'] = $current_var_key;
-	    $values ['value'] = $current_var_value;
+	    $filter['var'] = MySQL::SQLValue($current_var_key);
+	    $values ['value'] = MySQL::SQLValue($current_var_value);
 
 	    $query = MySQL::BuildSQLUpdate($table, $values, $filter);	
 
     	$result = $conn->Query($query);
+      logfile($conn->Error());
     
-        if ($result == false) {
+        if ($result === false) {
             return $result;
         }        
     }
@@ -2093,16 +2094,16 @@ function get_arr_pct($group) {
 
     if ($group == "all") {
         if ($kga['conf']['flip_pct_display']) {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY knd_name,pct_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY pct_visible DESC,knd_name,pct_name;";
         } else {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY pct_name,knd_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY pct_visible DESC,pct_name,knd_name;";
         }
     } else {
         $group = MySQL::SQLValue($group, MySQL::SQLVALUE_NUMBER);
         if ($kga['conf']['flip_pct_display']) {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY knd_name,pct_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY pct_visible DESC,knd_name,pct_name;";
         } else {                                                                                                                                                                                                                                                           
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY pct_name,knd_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY pct_visible DESC,pct_name,knd_name;";
         }
     }
     
@@ -2780,10 +2781,10 @@ function get_arr_knd($group) {
            
 
     if ($group == "all") {
-        $query = "SELECT * FROM ${p}knd  ORDER BY knd_name;";
+        $query = "SELECT * FROM ${p}knd  ORDER BY knd_visible DESC,knd_name;";
     } else {
         $group = MySQL::SQLValue($group , MySQL::SQLVALUE_NUMBER); 
-        $query = "SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = $group ORDER BY knd_name;";
+        $query = "SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = $group ORDER BY knd_visible DESC,knd_name;";
     }
     
     $result = $conn->Query($query);
@@ -2820,10 +2821,10 @@ function get_arr_evt($group) {
  $p = $kga['server_prefix']; 
 
     if ($group == "all") {
-        $query = "SELECT * FROM ${p}evt ORDER BY evt_name;";
+        $query = "SELECT * FROM ${p}evt ORDER BY evt_visible DESC,evt_name;";
     } else {
         $group = MySQL::SQLValue($group , MySQL::SQLVALUE_NUMBER); 
-        $query = "SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = $group  ORDER BY evt_name;";
+        $query = "SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = $group  ORDER BY evt_visible DESC,evt_name;";
     }
     
     $result = $conn->Query($query);

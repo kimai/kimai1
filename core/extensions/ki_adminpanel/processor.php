@@ -180,15 +180,12 @@ switch ($axAction) {
         $var_data['loginBanTime'] = $_REQUEST['loginbantime'];
         $var_data['charset']      = $_REQUEST['charset'];
         
-        var_edit($var_data);
+        $success = var_edit($var_data);
 
         // do whatever you like
         // and return one of these:
         
-        $return = $kga['lang']['error'];   // on error
-        $return = $kga['lang']['updated']; // on success;
-        
-        echo $return;
+        echo $success?$kga['lang']['updated']:$kga['lang']['error'];
     break;
     
 
