@@ -143,8 +143,8 @@ $kga['lang'] = array(
 "noItems"           => "Keine Einträge vorhanden",
 "DBname"            => "Name der Datenbank",
 "updated"           => "Daten wurden aktualisiert!",
-"autoselection"     => "Automatische Auswahl (Zeit/Datum-Felder)",
-"quickdelete"       => "Schnell löschen",
+"autoselection"     => "Inhalt von Zeit- und Datumsfelder beim Bearbeiten markieren",
+"quickdelete"       => "Einträge können direkt aus der Tabelle gelöscht werden",
 "tools"             => "Werkzeuge",
 "print"             => "Drucken",
 "save"              => "Sichern",
@@ -183,8 +183,8 @@ $kga['lang'] = array(
 "clock"             => "Uhr",
 "currSum"           => "Summe der aktuell angezeigten Einträge",
 "admWarn"           => "Sie sind Admin. Ihr Status kann nur von einem anderen Admin herabgesetzt werden.",
-"flip_pct_display"  => "Sortierung im Projektfenster nach Kunden",
-"pct_comment_flag"  => "Projekte immer mit Kommentar anzeigen",
+"flip_pct_display"  => "Im Projektfenster nach Kunden sortieren",
+"pct_comment_flag"  => "Projekte mit Kommentar anzeigen",
 "showIDs"           => "IDs anzeigen",
 "error"             => "Ein Fehler ist aufgetreten!",
 "checkupdate"       => "Nach Update suchen",
@@ -213,7 +213,7 @@ $kga['lang'] = array(
 
 "cleared"           => "abgerechnet",
 
-"noFading"          => "kein weiches Einblenden"
+"noFading"          => "Ein-/Ausblenden deaktivieren"
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");
