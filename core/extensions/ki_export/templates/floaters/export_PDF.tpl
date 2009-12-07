@@ -69,6 +69,11 @@
                    </li>
                 
                    <li>
+                       <label for="hide_cleared_entries">{$kga.lang.xp_ext.hide_cleared_entries}:</label>
+                       <input type="checkbox" value="true" name="hide_cleared_entries" id="hide_cleared_entries" checked="checked"/>
+                   </li>
+                
+                   <li>
                        <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
                        <select name="axAction" id="axAction">
                          <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>

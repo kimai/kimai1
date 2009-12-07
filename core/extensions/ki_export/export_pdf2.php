@@ -58,7 +58,9 @@ class MYPDF extends TCPDF {
   public function printRows($columns,$data,$widths) {
 
     $this->sum = 0;
-    foreach($data as $row) { 
+    foreach($data as $row) {
+      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
+        continue; 
       if ($row['type'] == "exp") {
         $this->printExpenseRow($columns,$widths,$row);
         $this->sum+=$row['wage'];

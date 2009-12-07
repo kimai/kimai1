@@ -302,6 +302,7 @@ $kga['lang']['xp_ext'] = array(
 'by'                    => 'por',
 'done_by'               => 'realizado por',
 'duration'              => 'Duración',
+'hide_cleared_entries'  => 'don\'t show cleared entries',
 
 );
 

@@ -70,7 +70,10 @@ class MYPDF extends TCPDF {
         // Data 
         $fill = 0; 
         $sum = 0;
-        foreach($data as $row) { 
+        foreach($data as $row) {
+            if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
+              continue;
+
             $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
             // check if page break is nessessary
             if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {

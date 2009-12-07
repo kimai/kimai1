@@ -578,6 +578,8 @@ $kga['lang']['xp_ext'] = array(
 
 'duration'              => 'Duração',
 
+'hide_cleared_entries'  => 'don\'t show cleared entries',
+
 );
 
 

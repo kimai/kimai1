@@ -299,6 +299,7 @@ $kga['lang']['xp_ext'] = array(
 'by'                    => 'von',
 'done_by'               => 'durchgeführt von',
 'duration'              => 'Dauer',
+'hide_cleared_entries'  => 'bezahlte Einträge nicht anzeigen',
 
 );
 
