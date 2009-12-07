@@ -42,13 +42,12 @@
 
 /**
 
- * portuguese
+ * Portuguese (Portugal)
 
- * by José Ricardo Cardoso
-
- * and Marco Rodrigues <gothicx@sapo.pt>
+ * by José Ricardo Cardoso and Marco Rodrigues <gothicx@sapo.pt>
 
  */
+
 
 $kga['lang']= array(
 
@@ -78,8 +77,7 @@ $kga['lang']= array(
 
 "timelabel"         => "Tempo",
 
-"durationlabel"     => "Duration",
-
+"durationlabel"     => "Duração",
 "knd"               => "Cliente",
 
 "pct"               => "Projecto",
@@ -142,15 +140,15 @@ $kga['lang']= array(
 
 "noEntries"         => "Não existem entradas registadas...",
 
-"recordAgain"       => "Gravar este evento novamente",
+"recordAgain"       => "Gravar esta tarefa novamente",
 
-"comment"           => "Comentário/notas",
+"comment"           => "Comentário",
 
 "zlocation"         => "Localização",
 
 "trackingnr"        => "Número de Processo",
 
-"cookiewarning"     => "Permissões de Cookies devem ser activadas! Por favor active esta opção no seu browser antes de continuar.",
+"cookiewarning"     => "Permissões de Cookies devem ser activadas! Por favor active esta opção no seu browser antes de ontinuar.",
 
 "JSwarning"         => "JavaScript deve estar ligado! Esta opção é indispensável para o funcionamento da aplicação..",
 
@@ -162,9 +160,9 @@ $kga['lang']= array(
 
 "accessDenied"      => "Acesso negado!",
 
-"wrongPass"         => "Wrong Username and/or Password",
+"wrongPass"         => "Username ou Senha estão errados!",
 
-"tryAgain"          => "Tente novamente/ perdeu a senha?",
+"tryAgain"          => "Tente novamente.. perdeu a senha?",
 
 "back"              => "Voltar à área de Login.",
 
@@ -242,11 +240,11 @@ $kga['lang']= array(
 
 "status"            => "Estado",
 
-"mode"              => "modo demo = 0 / modo normal (utilizadores têm de fazer o login) = 1",
+"mode"              => "modo demo = 0 / modo normal (utilizadores terão de fazer o login) = 1",
 
 "adminmail"         => "endereço de e-mail do administrador",
 
-"logintries"        => "number of false logins before user gets banned",
+"logintries"        => "número de falsos logins antes do utilizador ser banido",
 
 "bantime"           => "login bantime in seconds",
 
@@ -274,9 +272,9 @@ $kga['lang']= array(
 
 "delusr"            => "Apagar este utilizador",
 
-"bannedusr"         => "Utilizador banido - clicar para reactivar",
+"bannedusr"         => "Utilizador banido - clique para reactivar",
 
-"activeusr"         => "Utilizador activo - clicar para banir",
+"activeusr"         => "Utilizador activo - clique para banir",
 
 "changegrp"         => "Alterar grupo",
 
@@ -315,7 +313,6 @@ $kga['lang']= array(
 "showdeletedusers"  => "Mostrar utilizadores apagados",
 
 
-
 "month"             => "Mês",
 
 "day"               => "Dia",
@@ -323,13 +320,12 @@ $kga['lang']= array(
 "year"              => "Ano",
 
 
-
 "charset"           => "charset",
 
 "charset_msg"       => "(terá de ter o mesmo charset que a base de dados)",
 
-"lang"              => "Idioma",
 
+"lang"              => "Idioma",
 
 
 "ac"                => "Automatically continued entry.",
@@ -344,7 +340,7 @@ $kga['lang']= array(
 
 "ctype2"            => "Alerta!",
 
-"hint"              => "Sugestão:",
+"hint"              => "Dica:",
 
 "usr_caution1"      => "If you change the user-name of",
 
@@ -383,7 +379,6 @@ $kga['lang']= array(
 "checkupdate"       => "Verificar actualizações",
 
 
-
 "selectR"           => "Seleccionado para gravação:",
 
 "selectKND"         => "C:",
@@ -393,7 +388,6 @@ $kga['lang']= array(
 "selectEVT"         => "T:",
 
 
-
 "testKND"           => "Cliente-teste",
 
 "testPCT"           => "Projecto-teste",
@@ -401,8 +395,7 @@ $kga['lang']= array(
 "testEVT"           => "testar",
 
 
-"budget"            => "Budget",
-
+"budget"            => "Orçamento",
 "rate"              => "Preço (por hora)",
 
 "rate_short"        => "Preço",
@@ -412,13 +405,9 @@ $kga['lang']= array(
 "my_rate"           => "O meu Preço",
 
 
-
 "wage"              => "Preço",
 
-
-
-"customerlogin"     => "customer login",
-
+"customerlogin"     => "login de cliente",
 
 
 "expense"           => "Despesa",
@@ -426,12 +415,12 @@ $kga['lang']= array(
 "designation"       => "Designação",
 
 
-
 "cleared"           => "apuradas",
 
-"noFading"          => "no fading effect"
-
+"noFading"          => "sem efeito fading"
 );
+
+
 
 
 
@@ -444,28 +433,25 @@ $kga['lang']['weekdays']       = array("Domingo","Segunda","Terça","Quarta","Qu
 $kga['lang']['weekdays_short'] = array("Dom","Seg","Ter","Qua","Qui","Sex","Sáb");
 
 
-
-
-
 $kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
 
 $kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'conf.php' in folder 'includes' are correct.";
-
 
 
 $kga['lang']['errors'][1]['hdl'] = "Erro durante a instalação!";
 
 $kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 
+
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
+
 
 Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
 
 
-
 $kga['lang']['updater'][0]        = "Yes, I have a backup of my Kimai database! Proceed updating!";
 
-$kga['lang']['updater'][10]       = "Legend:";
+$kga['lang']['updater'][10]       = "Legenda:";
 
 $kga['lang']['updater'][20]       = "Query was executed successfully.";
 
@@ -494,10 +480,9 @@ $kga['lang']['updater'][130]      = "Could not write to autoconf.php.";
 $kga['lang']['updater'][140]      = "update file autoconf.php";
 
 
-
 $kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use at your own risk!";
 
-$kga['lang']['backup'][1]        = "Available backups:";
+$kga['lang']['backup'][1]        = "Backups disponíveis:";
 
 $kga['lang']['backup'][2]        = "recuperar";
 
@@ -516,24 +501,17 @@ $kga['lang']['backup'][8]        = "create backup";
 $kga['lang']['backup'][9]        = "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)";
 
 
-
 $kga['lang']['xp_ext'] = array(
 
-	
+"print_hint"      		   => "Clique em OK para abrir a tabela imprimida.",
 
-"print_hint"      		   => "Click OK to open a printable table.",
-
-"dl_hint"         		   => "Click OK to download export-file.",
-
-
+"dl_hint"         		   => "Clique em OK para descarregar o ficheiro exportado.",
 
 "tab_filter"	 		   => "Filtro",
 
 "tab_location"	 		   => "Localização",
 
 "tab_timeformat"	 	   => "Formato da hora",
-
-
 
 "cleared_all"	 		   => "todos",
 
@@ -547,15 +525,14 @@ $kga['lang']['xp_ext'] = array(
 
 "dateformat"			   => "Formato da data",
 
-
-
 "print_comment"   		   => "imprimir comentários",
 
-"print_summary"   		   => "print summary",
+"print_summary"   		   => "imprimir sumário",
 
 "create_bookmarks"		   => "create bookmarks",
 
 "download_pdf"    		   => "descarregar como PDF",
+
 
 "pdf_format"             => "formato",
 
@@ -564,11 +541,9 @@ $kga['lang']['xp_ext'] = array(
 "export_pdf2"            => "lista",
 
 
-
 "column_delimiter"		   => "delimiter for columns",
 
 "quote_char"      		   => "boundary character for fields",
-
 
 
 "exportCSV"         	   => "Exportar para CSV",
@@ -579,7 +554,7 @@ $kga['lang']['xp_ext'] = array(
 
 "print"         	       => "Imprimir",
 
-"export_timeformat_help"   => "Timeformat help",
+"export_timeformat_help"   => "Ajuda do Timeformat",
 
 
 
@@ -599,36 +574,30 @@ $kga['lang']['xp_ext'] = array(
 
 'by'                    => 'por',
 
-'done_by'               => 'feito por',
+'done_by'               => 'executado por',
 
 'duration'              => 'Duração',
-
-
 
 );
 
 
-
 $kga['lang']['ext_invoice'] = array(
-
-	
 
 "invoiceTitle" 			=> "Criar factura",
 
 "invoiceProject" 		=> "Projectos:",
 
-"invoiceTimePeriod" 	=> "Period of time:",
+"invoiceTimePeriod" 	=> "Período de tempo:",
 
-"invoiceOptionVat" 		=> " Invoice with VAT",
+"invoiceOptionVat" 		=> " Factura com IVA",
 
 "invoiceOptionShort" 	=> "Short Invoice",
 
-"invoiceOptionRound" 	=> "Round time",
+"invoiceOptionRound" 	=> "Arredondar tempo",
 
 "invoiceButton" 		=> "Criar"
 
-
-
 );
+
 
 ?>
