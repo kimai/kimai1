@@ -13,7 +13,7 @@
             axColumnsString = '';
             firstColumn = true;
             $(columns).each(function () {
-              if (!$('#xp_head td.'+this).hasClass('disabled')) {
+              if (!$('#xp_head .'+this).hasClass('disabled')) {
               axColumnsString += (firstColumn?'':'|') + this;
               firstColumn = false;
               }
