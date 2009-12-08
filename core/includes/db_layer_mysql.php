@@ -2357,7 +2357,8 @@ function checkUser() {
                 kickUser();
             } else {
               if (strncmp($kimai_usr, 'knd_', 4) == 0) {
-                  $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';";
+                  $knd_name = MySQL::SQLValue(substr($kimai_usr,4));
+                  $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = $knd_name AND NOT knd_trash = '1';";
                   $conn->Query($query);
                   $row = $conn->RowArray(0,MYSQL_ASSOC);
 
@@ -2529,7 +2530,7 @@ function get_customer_config($user) {
   if (!$user) return;
   
   $table = $kga['server_prefix']."knd";
-  $filter['usr_ID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+  $filter['knd_ID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
   
   // get values from user record
   $columns[] = "knd_ID";
@@ -2554,7 +2555,7 @@ function get_customer_config($user) {
   $conn->SelectRows($table, $filter, $columns);
   $rows = $conn->RowArray(0,MYSQL_ASSOC);
   foreach($rows as $key => $value) {
-      $kga['knd'][$key] = $value;
+      $kga['customer'][$key] = $value;
   } 
   
   $kga['conf']['rowlimit'] = 100;
@@ -3175,7 +3176,7 @@ function get_seq($user) {
     global $kga, $conn;
     
     if (strncmp($user, 'knd_', 4) == 0) {
-      $filter['knd_name'] = MySQL::SQLValue($user);
+      $filter['knd_name'] = MySQL::SQLValue(substr($user,4));
       $columns[] = "knd_secure";
       $table = $kga['server_prefix']."knd";
     }

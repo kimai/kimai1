@@ -81,7 +81,7 @@ switch ($axAction) {
         $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
         if ($timespace_out < 950000000) $timespace_out = $out;
         
-        $timespace_warning = isset($kga['usr'])?save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']):'';
+        $timespace_warning = isset($kga['usr'])?save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']):0;
 
         $tpl->assign('timespace_warning', $timespace_warning);
         $tpl->assign('timespace_in',  $timespace_in);
@@ -104,7 +104,10 @@ switch ($axAction) {
         $tpl->assign('dp_start', $dp_start);
         $tpl->assign('dp_today', $pd_today);
         $tpl->assign('nextday', $nextday);
-        $tpl->assign('total', intervallApos(get_zef_time($kga['usr']['usr_ID'],$timespace_in,$timespace_out)));
+        if (isset($kga['customer']))
+          $tpl->assign('total','-');
+        else
+          $tpl->assign('total', intervallApos(get_zef_time($kga['usr']['usr_ID'],$timespace_in,$timespace_out)));
         $tpl->assign('hook_tss_inDisplay',1);
         $tpl->display("display.tpl");
     break;
