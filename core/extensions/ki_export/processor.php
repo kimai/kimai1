@@ -96,6 +96,10 @@ switch ($axAction) {
     // = set status cleared =
     // ======================
     case 'set_cleared':
+      if (isset($kga['customer'])) {
+        echo 0;
+        break;
+      }
       // $axValue: 1 = cleared, 0 = not cleared
       $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
       $success = false;
