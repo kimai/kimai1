@@ -177,7 +177,6 @@ $kga['lang']= array(
 "showitem"          => "make visible",
 "hideitem"          => "make invisible",
 "checkUsername"     => "You must enter a username in the field left from the add-button!",
-"allvisible"        => "Show hidden when time-records exist",
 "clickToReload"     => "Click here to reload the GUI",
 "sure"              => "Sure?",
 "clock"             => "Clock",

@@ -177,7 +177,6 @@ $kga['lang'] = array(
 "showitem"          => "sichtbar machen",
 "hideitem"          => "unsichtbar machen",
 "checkUsername"     => "Bitte einen Usernamen in das Feld eintragen!",
-"allvisible"        => "Ausgeblendete zeigen, wenn Zeiteinträge",
 "clickToReload"     => "Klicken um die Seite neu zu laden",
 "sure"              => "Sicher?",
 "clock"             => "Uhr",

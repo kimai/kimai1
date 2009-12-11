@@ -46,7 +46,6 @@ switch ($axAction) {
         $usr_data['quickdelete']        = $_REQUEST['quickdelete'];
         $usr_data['rowlimit']           = $_REQUEST['rowlimit'];
         $usr_data['lang']               = $_REQUEST['lang'];
-        $usr_data['allvisible']         = $_REQUEST['allvisible'];
         $usr_data['flip_pct_display']   = $_REQUEST['flip_pct_display'];
         $usr_data['pct_comment_flag']   = $_REQUEST['pct_comment_flag'];
         $usr_data['showIDs']            = $_REQUEST['showIDs'];

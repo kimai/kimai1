@@ -936,6 +936,11 @@ if ((int)$revisionDB < 1089) {
     exec_query("ALTER TABLE `${p}usr` ADD `export_disabled_columns` INT NOT NULL DEFAULT '0'");
 }
 
+if ((int)$revisionDB < 1103) {
+    logfile("-- update to r1103");
+    exec_query("ALTER TABLE ${p}usr DROP `allvisible`");
+}
+
   
 //////// ---------------------------------------------------------------------------------------------------
 

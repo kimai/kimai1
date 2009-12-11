@@ -65,11 +65,6 @@
                     </li>
 
                     <li>
-                        <label for="allvisible"></label>
-                        <input type="checkbox" name="allvisible" value="1" {if $kga.conf.allvisible}checked{/if} /> {$kga.lang.allvisible}
-                    </li>
-
-                    <li>
                         <label for="flip_pct_display"></label>
                         <input type="checkbox" name="flip_pct_display" value="1" {if $kga.conf.flip_pct_display}checked{/if} /> {$kga.lang.flip_pct_display}
                     </li>

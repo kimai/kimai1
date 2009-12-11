@@ -178,7 +178,6 @@ $kga['lang']= array(
 "showitem"          => "hacer visible",
 "hideitem"          => "hacer invisible",
 "checkUsername"     => "¡Debe introducir un nombre de usuario en el campo de la izquierda del botón añadir!",
-"allvisible"        => "Ver ocultos cuando existan grabaciones de tiempo",
 "clickToReload"     => "Click aquí para recargar la GUI",
 "sure"              => "¿Seguro?",
 "clock"             => "Reloj",

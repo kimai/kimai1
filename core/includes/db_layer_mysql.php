@@ -1299,7 +1299,6 @@ function usr_edit($usr_id, $data) {
     $values ['rowlimit']          = MySQL::SQLValue($new_array ['rowlimit']         , MySQL::SQLVALUE_NUMBER  );
     $values ['autoselection']     = MySQL::SQLValue($new_array ['autoselection']    , MySQL::SQLVALUE_NUMBER  );
     $values ['quickdelete']       = MySQL::SQLValue($new_array ['quickdelete']      , MySQL::SQLVALUE_NUMBER  );
-    $values ['allvisible']        = MySQL::SQLValue($new_array ['allvisible']       , MySQL::SQLVALUE_NUMBER  );
     $values ['flip_pct_display']  = MySQL::SQLValue($new_array ['flip_pct_display'] , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_comment_flag']  = MySQL::SQLValue($new_array ['pct_comment_flag'] , MySQL::SQLVALUE_NUMBER  );
     $values ['showIDs']           = MySQL::SQLValue($new_array ['showIDs']          , MySQL::SQLVALUE_NUMBER  );
@@ -2497,7 +2496,6 @@ function get_user_config($user) {
   $columns[] = "timespace_out"; 
   $columns[] = "autoselection"; 
   $columns[] = "quickdelete"; 
-  $columns[] = "allvisible"; 
   $columns[] = "flip_pct_display"; 
   $columns[] = "showIDs"; 
   $columns[] = "noFading"; 
@@ -2575,7 +2573,6 @@ function get_customer_config($user) {
   $kga['conf']['timespace_out'] = 0;
   $kga['conf']['autoselection'] = 1;
   $kga['conf']['quickdelete'] = 0;
-  $kga['conf']['allvisible'] = 1;
   $kga['conf']['flip_pct_display'] = 0;
   $kga['conf']['pct_comment_flag'] = 0;
   $kga['conf']['showIDs'] = 0;

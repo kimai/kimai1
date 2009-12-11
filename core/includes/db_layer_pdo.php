@@ -1151,7 +1151,6 @@ function usr_edit($usr_id, $data) {
     filter = ?,
     autoselection = ?,
     quickdelete = ?,
-    allvisible = ?,
     flip_pct_display = ?,
     pct_comment_flag = ?,
     showIDs = ?,
@@ -1173,7 +1172,6 @@ function usr_edit($usr_id, $data) {
     $new_array['filter'],
     $new_array['autoselection'],
     $new_array['quickdelete'],
-    $new_array['allvisible'],
     $new_array['flip_pct_display'],
     $new_array['pct_comment_flag'],
     $new_array['showIDs'],
@@ -2269,7 +2267,6 @@ function get_user_config($user) {
   `timespace_out`,
   `autoselection`,
   `quickdelete`,
-  `allvisible`,
   `flip_pct_display`,
   `pct_comment_flag`,
   `showIDs`,
@@ -2327,7 +2324,6 @@ function get_customer_config($customer_ID) {
   $kga['conf']['timespace_out'] = 0;
   $kga['conf']['autoselection'] = 1;
   $kga['conf']['quickdelete'] = 0;
-  $kga['conf']['allvisible'] = 1;
   $kga['conf']['flip_pct_display'] = 0;
   $kga['conf']['pct_comment_flag'] = 0;
   $kga['conf']['showIDs'] = 0;

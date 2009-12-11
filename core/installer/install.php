@@ -87,7 +87,6 @@ $query =
   `timespace_out` varchar(60) NOT NULL default '0',
   `autoselection` tinyint(1) NOT NULL default '1',
   `quickdelete` tinyint(1) NOT NULL default '0',
-  `allvisible` tinyint(1) NOT NULL default '1',
   `lang` varchar(6) NOT NULL DEFAULT '',
   `flip_pct_display` tinyint(1) NOT NULL DEFAULT '0',
   `pct_comment_flag` TINYINT(1) NOT NULL DEFAULT '0',
