@@ -18,8 +18,8 @@
             });
             {/literal}{if $id}{literal}
             {/literal}{else}{literal}
-            $("#add_edit_record_pct_ID").selectOptions(""+selected_pct+"");
-            $("#add_edit_record_evt_ID").selectOptions(""+selected_evt+"");
+            $("#add_edit_zef_pct_ID").selectOptions(""+selected_pct+"");
+            $("#add_edit_zef_evt_ID").selectOptions(""+selected_evt+"");
             {/literal}{/if}{literal}
 
             ts_timeToDuration();
@@ -69,22 +69,22 @@
                 
                    <li>
                        <label for="pct_ID">{$kga.lang.pct}:</label>
-                       <select size = "5" name="pct_ID" id="add_edit_record_pct_ID" class="formfield" style="width:400px" tabindex="1" >
+                       <select size = "5" name="pct_ID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" >
                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
                        </select>
                        <br/>
-                       <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="2" size="10" maxlength="10" name="filter" id="filter" onkeyup="ts_filter_selects('add_edit_record_pct_ID', this.value);"/>
+                       <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="2" size="10" maxlength="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_pct_ID', this.value);"/>
                    </li>
                    
 
 
                    <li>
                        <label for="evt_ID">{$kga.lang.evt}:</label>
-                       <select size = "5" name="evt_ID" id="add_edit_record_evt_ID" class="formfield" style="width:400px" tabindex="3" >
+                       <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" >
                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
                        </select>
                        <br/>
-                      <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="4" size="10" maxlength="10" name="filter" id="filter" onkeyup="ts_filter_selects('add_edit_record_evt_ID', this.value);" />
+                      <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="4" size="10" maxlength="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_evt_ID', this.value);" />
                    </li>
                 
 {* -------------------------------------------------------------------- *} 

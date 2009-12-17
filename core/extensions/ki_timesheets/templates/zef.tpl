@@ -230,7 +230,7 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="ts_ext_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name|replace:"'":"\\'"}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name}'); 
+                            onClick="buzzer_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name|replace:"'":"\\'"}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name}'); 
                             return false;">
                             {$arr_zef[row].pct_name}
                             {if $kga.conf.pct_comment_flag == 1}
@@ -255,20 +255,20 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="ts_ext_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name|replace:"'":"\\'"}',0,0); 
+                            onClick="buzzer_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name|replace:"'":"\\'"}',0,0); 
                             return false;">
                             {$arr_zef[row].evt_name} 
                         </a>
                         
 {if $arr_zef[row].zef_comment}
     {if $arr_zef[row].zef_comment_type == '0'}
-                        <a href="#" onClick="comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '1'}
-                        <a href="#" onClick="comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '2'}
-                        <a href="#" onClick="comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
 {/if}
                     </td>

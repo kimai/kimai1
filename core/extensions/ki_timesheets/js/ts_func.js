@@ -158,33 +158,6 @@ function ts_ext_triggerCHE() {
     }
 }
 
-// preselections for buzzer
-function ts_ext_preselect(subject,id,name,kndID,kndName) {
-    $('a').blur();
-    switch (subject) {
-        case "knd":
-        // TODO: build filter for project selection (by customer)
-            // selected_knd = id;
-            // $("#sel_knd").html(name);
-            $("#sel_knd").html("select project");
-            $("#sel_knd").addClass("none");
-        break;
-        case "pct":
-            selected_knd = kndID;
-            selected_pct = id;
-            $("#sel_knd").html(kndName);
-            $("#sel_pct").html(name);
-            $("#sel_knd").removeClass("none");
-        break;
-        case "evt":
-            selected_evt = id;
-            $("#sel_evt").html(name);
-        break;
-    }
-    $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/standard/grfx/preselect_off.png');
-    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-}
-
 
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
@@ -211,7 +184,7 @@ function ts_ext_reload() {
 // and starts recording that event anew
 //
 function ts_ext_recordAgain(pct,evt,id) {
-    $('#zefEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/standard/grfx/loading13.gif");
+    $('#zefEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
     offset = now;
@@ -225,8 +198,8 @@ function ts_ext_recordAgain(pct,evt,id) {
         function(data) {
                 eval(data);
                 ts_ext_reload();
-                ts_ext_preselect('pct',pct,pct_name,0,knd_name);
-                ts_ext_preselect('evt',evt,evt_name,0,0);
+                buzzer_preselect('pct',pct,pct_name,0,knd_name);
+                buzzer_preselect('evt',evt,evt_name,0,0);
                 $("#ticker_knd").html(knd_name);
                 $("#ticker_pct").html(pct_name);
                 $("#ticker_evt").html(evt_name);
@@ -245,7 +218,7 @@ function ts_ext_stopRecord(id) {
     show_selectors();
     if (id) {
         $('#zefEntry'+id+'>td').css( "background-color", "#F00" );
-        $('#zefEntry'+id+'>td>a.stop>img').attr("src","../skins/standard/grfx/loading13_red.gif");     
+        $('#zefEntry'+id+'>td>a.stop>img').attr("src","../skins/"+skin+"/grfx/loading13_red.gif");     
         $('#zefEntry'+id+'>td>a').blur();
         $('#zefEntry'+id+'>td>a').removeAttr('onClick');
         $('#zefEntry'+id+'>td').css( "color", "#FFF" );
@@ -268,7 +241,7 @@ function ts_ext_stopRecord(id) {
 function quickdelete(id) {
     $('#zefEntry'+id+'>td>a').blur();
     $('#zefEntry'+id+'>td>a').removeAttr('onClick');
-    $('#zefEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
+    $('#zefEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     
     $.post(ts_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
         function(data){
@@ -421,30 +394,17 @@ function ts_timeToDuration() {
     }
 }
 
-// ----------------------------------------------------------------------------------------
-// filters project and task fields in add/edit record dialog
 
-function ts_filter_selects(id, needle) {
-	var n = new RegExp(needle, 'i');
-	
-	// cache initialisieren
-	if(typeof window['__cacheselect_'+id] == "undefined") {
-		window['__cacheselect_'+id] = [];
-		$('#'+id+' option ').each(function(index) {
-			window['__cacheselect_'+id].push({
-				'value':$(this).val()
-				, 'text':$(this).text()
-			})
-		})
-	}
-	
-	$('#'+id).removeOption(/./);
-	
-	var i, cs = window['__cacheselect_'+id];
-	for(i=0; i<cs.length; ++i) {
-		if(cs[i].text.match(n) !== null) $('#'+id).addOption(cs[i].value, cs[i].text);
-	}
+
+// ----------------------------------------------------------------------------------------
+// shows comment line for timesheet entry
+//
+function ts_comment(id) {
+    $('a').blur();
+    $('#c'+id).toggle();
+    return false;
 }
+
 
 
 

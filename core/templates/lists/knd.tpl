@@ -33,7 +33,7 @@
 {/if}  
 
 {*
-                        <a href ="#" onClick="lists_preselect('knd',{$arr_knd[row].knd_ID},'{$arr_knd[row].knd_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_knd[row].knd_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_knd[row].knd_ID})' border='0' /></a>
+                        <a href ="#" onClick="buzzer_preselect('knd',{$arr_knd[row].knd_ID},'{$arr_knd[row].knd_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_knd[row].knd_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_knd[row].knd_ID})' border='0' /></a>
 *}
                         <a href ="#" onClick="lists_update_filter('knd',{$arr_knd[row].knd_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 

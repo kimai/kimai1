@@ -25,7 +25,7 @@
 <div id="deb_ext_logfile_header">
     <div id="deb_ext_buttons">
 {if $kga.delete_logfile}
-        <a href="#" title="Clear" onclick="deb_ext_clearLogfile();return false;"><img src="../skins/standard/grfx/button_trashcan.png" width="13" height="13" alt="Clear"></a>
+        <a href="#" title="Clear" onclick="deb_ext_clearLogfile();return false;"><img src="../skins/{$kga.conf.skin}/grfx/button_trashcan.png" width="13" height="13" alt="Clear"></a>
 {/if}
     </div>
     <strong>DEBUG LOGFILE</strong> {$limitText}

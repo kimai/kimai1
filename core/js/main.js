@@ -163,17 +163,6 @@ function floaterClose() {
 
 
 // ----------------------------------------------------------------------------------------
-// shows comment line for timesheet entry
-//
-function comment(id) {
-    $('a').blur();
-    $('#c'+id).toggle();
-    return false;
-}
-
-
-
-// ----------------------------------------------------------------------------------------
 // change extension by tab
 //
 function changeTab(target,path) {
@@ -340,7 +329,7 @@ function startRecord(pct_ID,evt_ID,user_ID) {
 // stops the current recording task when the stop-buzzer is hidden
 //
 function stopRecord() {
-    $("#zeftable>table>tbody>tr>td>a.stop>img").attr("src","../skins/standard/grfx/loading13_red.gif");
+    $("#zeftable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
     $("#zeftable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
     $("#zeftable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: 0},
@@ -392,6 +381,33 @@ function buzzer() {
         startRecord(selected_pct,selected_evt,usr_ID);
         recstate=1;
     }
+}
+
+// preselections for buzzer
+function buzzer_preselect(subject,id,name,kndID,kndName) {
+    $('a').blur();
+    switch (subject) {
+        case "knd":
+        // TODO: build filter for project selection (by customer)
+            // selected_knd = id;
+            // $("#sel_knd").html(name);
+            $("#sel_knd").html("select project");
+            $("#sel_knd").addClass("none");
+        break;
+        case "pct":
+            selected_knd = kndID;
+            selected_pct = id;
+            $("#sel_knd").html(kndName);
+            $("#sel_pct").html(name);
+            $("#sel_knd").removeClass("none");
+        break;
+        case "evt":
+            selected_evt = id;
+            $("#sel_evt").html(name);
+        break;
+    }
+    $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
+    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
 }
 
 // ----------------------------------------------------------------------------------------
@@ -448,6 +464,32 @@ function editSubject(subject,id) {
      // floaterShow('phpFile', 'axAction', axValue, id, width, height)
 }
 
+
+// ----------------------------------------------------------------------------------------
+// filters project and task fields in add/edit record dialog
+
+function filter_selects(id, needle) {
+  var n = new RegExp(needle, 'i');
+  
+  // cache initialisieren
+  if(typeof window['__cacheselect_'+id] == "undefined") {
+    window['__cacheselect_'+id] = [];
+    $('#'+id+' option ').each(function(index) {
+      window['__cacheselect_'+id].push({
+        'value':$(this).val()
+        , 'text':$(this).text()
+      })
+    })
+  }
+  
+  $('#'+id).removeOption(/./);
+  
+  var i, cs = window['__cacheselect_'+id];
+  for(i=0; i<cs.length; ++i) {
+    if(cs[i].text.match(n) !== null) $('#'+id).addOption(cs[i].value, cs[i].text);
+  }
+}
+
 // -----------------------------------------------------------------------------
 
 function lists_visible(visible) {
@@ -488,9 +530,9 @@ function lists_shrinkExtToggle() {
     logfile("extshrink");
     (extShrinkMode)?extShrinkMode=0:extShrinkMode=1;
     if (extShrinkMode) {
-        $('#extShrink').css("background-image","url('../skins/standard/grfx/zefShrink_down.png')");
+        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/zefShrink_down.png')");
     } else {
-        $('#extShrink').css("background-image","url('../skins/standard/grfx/zefShrink_up.png')");
+        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/zefShrink_up.png')");
     }
     lists_set_heightTop();
     hook_resize();
@@ -502,12 +544,12 @@ function lists_shrinkKndToggle() {
     if (kndShrinkMode) {
         // $('#knd, #knd_head').hide();
         $('#knd, #knd_head').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_right.png')");
+        $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
     } else {
 		lists_set_tableWrapperWidths();
         // $('#knd, #knd_head').show();
         $('#knd, #knd_head').fadeIn(fading_enabled?"slow":0);
-        $('#kndShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
+        $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
 		lists_resize();
     }
 }
@@ -518,12 +560,12 @@ function lists_shrinkUsrToggle() {
     if (usrShrinkMode) {
         $('#usr, #usr_head').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         // $('#usr, #usr_head').hide();
-        $('#usrShrink').css("background-image","url('../skins/standard/grfx/kndShrink_right.png')");
+        $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
     } else {
 		lists_set_tableWrapperWidths();
         $('#usr, #usr_head').fadeIn(fading_enabled?"slow":0);
         // $('#usr, #usr_head').show();
-        $('#usrShrink').css("background-image","url('../skins/standard/grfx/kndShrink_left.png')");
+        $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
     }
 }
 
@@ -644,33 +686,6 @@ function lists_set_TableWidths() {
     $("#evt table").css("width",evt_w-scr);
 }
 
-// preselections for buzzer
-function lists_preselect(subject,id,name,kndID,kndName) {
-    $('a').blur();
-    switch (subject) {
-        case "knd":
-        // TODO: build filter for project selection (by customer)
-            // selected_knd = id;
-            // $("#sel_knd").html(name);
-            $("#sel_knd").html("select project");
-            $("#sel_knd").addClass("none");
-        break;
-        case "pct":
-            selected_knd = kndID;
-            selected_pct = id;
-            $("#sel_knd").html(kndName);
-            $("#sel_pct").html(name);
-            $("#sel_knd").removeClass("none");
-        break;
-        case "evt":
-            selected_evt = id;
-            $("#sel_evt").html(name);
-        break;
-    }
-    $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/standard/grfx/preselect_off.png');
-    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
-}
-
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
 //
@@ -704,7 +719,7 @@ function lists_reload(subject) {
                     $("#pct").html(data);
                     ($("#pct").innerHeight()-$("#pct table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#pct table").css("width",pct_w-scr);
-                    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
+                    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('pct', $('#filt_pct').val());
 		    lists_write_annotations('pct');
                 }
@@ -716,7 +731,7 @@ function lists_reload(subject) {
                     $("#evt").html(data);
                     ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#evt table").css("width",evt_w-scr);
-                    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/standard/grfx/preselect_on.png');
+                    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('evt', $('#filt_evt').val());
 		    lists_write_annotations('evt');
                 }

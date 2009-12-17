@@ -20,10 +20,10 @@
 {if $kga.usr && $kga.usr.usr_sts != 2}
                         <a href ="#" onClick="editSubject('evt',{$arr_evt[row].evt_ID});"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
 {/if}
-                        <a href ="#" class="preselect" onClick="lists_preselect('evt',{$arr_evt[row].evt_ID},'{$arr_evt[row].evt_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_evt[row].evt_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
+                        <a href ="#" class="preselect" onClick="buzzer_preselect('evt',{$arr_evt[row].evt_ID},'{$arr_evt[row].evt_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_evt[row].evt_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
                     </td>
 
-                    <td width="100%" class="events" onClick="lists_preselect('evt',{$arr_evt[row].evt_ID},'{$arr_evt[row].evt_name|replace:"'":"\\'"}',0,0); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
+                    <td width="100%" class="events" onClick="buzzer_preselect('evt',{$arr_evt[row].evt_ID},'{$arr_evt[row].evt_name|replace:"'":"\\'"}',0,0); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
                         {if $arr_evt[row].evt_visible != 1}<span style="color:#bbb">{/if}
                         {if $kga.conf.showIDs == 1}<span class="ids">{$arr_evt[row].evt_ID}</span> {/if}{$arr_evt[row].evt_name}
                         {if $arr_evt[row].evt_visible != 1}</span>{/if}

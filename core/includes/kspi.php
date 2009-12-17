@@ -74,9 +74,8 @@ if ( isset($_REQUEST['axAction']) && !is_array($_REQUEST['axAction']) && $_REQUE
     $axAction = '';
 }
 
-// TOTO: secure this variables:
 $axValue = isset($_REQUEST['axValue']) ? strip_tags($_REQUEST['axValue']) : '';
-$id = strip_tags($_REQUEST['id']);
+$id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
 
 
 // ============================================
