@@ -287,7 +287,7 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}usr.usr_trash = 0");
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
@@ -345,7 +345,7 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}knd.knd_trash = 0");
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
@@ -399,7 +399,7 @@ function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}pct.pct_trash = 0");
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";

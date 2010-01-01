@@ -23,6 +23,12 @@
                         <a href ="#" onClick="editSubject('knd',{$arr_knd[row].knd_ID});">
                             <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
+                        
+                        &nbsp;
+                        
+                        <a href="#" id="delete_knd{$arr_knd[row].knd_ID}" onClick="ap_ext_deleteCustomer({$arr_knd[row].knd_ID})">
+                          <img src="../skins/{$kga.conf.skin}/grfx/button_trashcan.png" title="{$kga.lang.delknd}" width="13" height="13" alt="{$kga.lang.delknd}" border="0">
+                        </a>
                     </td>
 
                     <td class="clients">

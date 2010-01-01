@@ -1029,12 +1029,15 @@ function assign_grp2evts($grp_id, $evt_array) {
 
 function grp_get_knds($grp_id) {
     global $kga, $conn;
+
+    $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
+    $p = $kga['server_prefix'];
     
-    $filter['grp_ID'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-    $columns[] = "knd_ID";
-    $table = $kga['server_prefix']."grp_knd";
+    $query = "SELECT knd_ID FROM ${p}grp_knd
+     JOIN ${p}knd USING (knd_ID)
+     WHERE ${p}knd.knd_trash = 0 AND grp_ID = ?;";
     
-    $result = $conn->SelectRows($table, $filter, $columns);
+    $result = $conn->Query($query);
     if ($result == false) {
         return false;
     }
@@ -1069,12 +1072,15 @@ function grp_get_knds($grp_id) {
 
 function grp_get_pcts($grp_id) {
     global $kga, $conn;
-    
-    $filter['grp_ID'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-    $columns[]        = "pct_ID";
-    $table = $kga['server_prefix']."grp_pct";
 
-    $result = $conn->SelectRows($table, $filter, $columns);
+    $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
+    $p = $kga['server_prefix'];
+    
+    $query = "SELECT pct_ID FROM ${p}grp_pct
+     JOIN ${p}pct USING(pct_ID)
+     WHERE ${p}evt.evt_trash=0 AND grp_ID = $grp_id;";
+    
+    $result = $conn->Query($query);
     if ($result == false) {
         return false;
     }
@@ -1111,11 +1117,14 @@ function grp_get_pcts($grp_id) {
 function grp_get_evts($grp_id) {
     global $kga, $conn;
 
-    $filter['grp_ID'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-    $columns[]        = "evt_ID";
-    $table = $kga['server_prefix']."grp_evt";
+    $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
+    $p = $kga['server_prefix'];
+    
+    $query = "SELECT evt_ID FROM ${p}grp_evt
+     JOIN ${p}evt USING(evt_ID)
+     WHERE ${p}evt.evt_trash=0 AND ${p}grp_evt.grp_ID = $grp_id;";
 
-    $result = $conn->SelectRows($table, $filter, $columns);
+    $result = $conn->Query($query);
     if ($result == false) {
         return false;
     }
@@ -1518,12 +1527,14 @@ function ldr_get_grps($ldr_id) {
 
 function grp_get_ldrs($grp_id) {
     global $kga, $conn;
-    
-    $filter['grp_ID'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-    $columns[]        = "grp_leader";
-    $table = $kga['server_prefix']."ldr";
-    
-    $result = $conn->SelectRows($table, $filter, $columns);
+
+    $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
+    $p = $kga['server_prefix'];
+
+    $query = "SELECT grp_leader FROM ${p}ldr
+    JOIN ${p}usr ON ${p}usr.usr_ID = ${p}ldr.grp_leader WHERE grp_ID = $grp_id AND usr_trash=0;";
+        
+    $result = $conn->Query($query);
     if ($result == false) {
         return false;
     }
@@ -2093,16 +2104,16 @@ function get_arr_pct($group) {
 
     if ($group == "all") {
         if ($kga['conf']['flip_pct_display']) {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY pct_visible DESC,knd_name,pct_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;";
         } else {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID ORDER BY pct_visible DESC,pct_name,knd_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;";
         }
     } else {
         $group = MySQL::SQLValue($group, MySQL::SQLVALUE_NUMBER);
         if ($kga['conf']['flip_pct_display']) {
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY pct_visible DESC,knd_name,pct_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;";
         } else {                                                                                                                                                                                                                                                           
-            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group ORDER BY pct_visible DESC,pct_name,knd_name;";
+            $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;";
         }
     }
     
@@ -2163,7 +2174,8 @@ function get_arr_pct_by_knd($group, $knd_id) {
     $query = "SELECT * FROM ${p}pct JOIN ${p}knd 
                        ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct 
                        ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID 
-                       WHERE ${p}pct.pct_kndID = $knd_id ".
+                       WHERE ${p}pct.pct_kndID = $knd_id 
+                       AND ${p}pct.pct_trash=0 ".
                        ($group!="all"?"AND ${p}grp_pct.grp_ID = $group ":"").
                        " ORDER BY $sort ;";        
     
@@ -2779,10 +2791,10 @@ function get_arr_knd($group) {
            
 
     if ($group == "all") {
-        $query = "SELECT * FROM ${p}knd  ORDER BY knd_visible DESC,knd_name;";
+        $query = "SELECT * FROM ${p}knd WHERE knd_trash=0 ORDER BY knd_visible DESC,knd_name;";
     } else {
         $group = MySQL::SQLValue($group , MySQL::SQLVALUE_NUMBER); 
-        $query = "SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = $group ORDER BY knd_visible DESC,knd_name;";
+        $query = "SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = $group AND knd_trash=0 ORDER BY knd_visible DESC,knd_name;";
     }
     
     $result = $conn->Query($query);
@@ -2819,10 +2831,10 @@ function get_arr_evt($group) {
  $p = $kga['server_prefix']; 
 
     if ($group == "all") {
-        $query = "SELECT * FROM ${p}evt ORDER BY evt_visible DESC,evt_name;";
+        $query = "SELECT * FROM ${p}evt WHERE evt_trash=0 ORDER BY evt_visible DESC,evt_name;";
     } else {
         $group = MySQL::SQLValue($group , MySQL::SQLVALUE_NUMBER); 
-        $query = "SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = $group  ORDER BY evt_visible DESC,evt_name;";
+        $query = "SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = $group AND evt_trash=0 ORDER BY evt_visible DESC,evt_name;";
     }
     
     $result = $conn->Query($query);
@@ -2866,7 +2878,7 @@ function get_arr_evt_by_knd($customer_ID) {
     
     $customer_ID = MySQL::SQLValue($customer_ID , MySQL::SQLVALUE_NUMBER); 
     
-    $query = "SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = $customer_ID))";
+    $query = "SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = $customer_ID)) AND evt_trash=0";
     
     $result = $conn->Query($query);
     if ($result == false) {
@@ -3892,11 +3904,11 @@ function get_arr_watchable_users($user_id) {
     $row = $conn->RowArray(0,MYSQL_ASSOC);
 
     if ($row['usr_sts'] == "0") { // if is admin
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr";
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0";
       $result = $conn->Query($query);
     }
     else {
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE grp_leader = $user_id";
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = $user_id";
       $result = $conn->Query($query);
     }
 
@@ -3938,7 +3950,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}usr.usr_trush=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -4032,7 +4044,7 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}knd.knd_trash=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -4123,7 +4135,7 @@ function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}pct.pct_trash=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -4212,7 +4224,7 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array();
+    $whereClauses = array("${p}evt.evt_trash = 0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -4231,9 +4243,10 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
     if ($out)
       $whereClauses[]="zef_in < $out";
     
-    $query = "SELECT zef_in, zef_out,zef_evtID FROM " . $kga['server_prefix'] . "zef 
-        Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-        Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".
+    $query = "SELECT zef_in, zef_out,zef_evtID FROM ${p}zef  
+        Left Join ${p}evt ON zef_evtID = evt_ID
+        Left Join ${p}pct ON zef_pctID = pct_ID
+        Left Join ${p}knd ON pct_kndID = knd_ID ".
         (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
     
     $result = $conn->Query($query);

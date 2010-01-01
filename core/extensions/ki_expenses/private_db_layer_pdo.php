@@ -309,7 +309,7 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'].'usr.usr_trash = 0');
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
@@ -354,7 +354,7 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'].'knd.knd_trash = 0');
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
@@ -395,7 +395,7 @@ function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = nu
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'].'pct.pct_trash = 0');
     
     if (count($users) > 0) {
       $whereClauses[] = "exp_usrID in (".implode(',',$users).")";

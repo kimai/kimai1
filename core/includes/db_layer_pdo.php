@@ -953,8 +953,12 @@ function assign_grp2evts($grp_id, $evt_array) {
  */
 function grp_get_knds($grp_id) {
     global $kga, $pdo_conn;
+
+    $p = $kga['server_prefix'];
     
-    $pdo_query = $pdo_conn->prepare("SELECT knd_ID FROM " . $kga['server_prefix'] . "grp_knd WHERE grp_ID = ?;");
+    $pdo_query = $pdo_conn->prepare("SELECT knd_ID FROM ${p}grp_knd
+     JOIN ${p}knd USING (knd_ID)
+     WHERE ${p}knd.knd_trash = 0 AND grp_ID = ?;");
     $result = $pdo_query->execute(array($grp_id));
     if ($result == false) {
         return false;
@@ -983,8 +987,12 @@ function grp_get_knds($grp_id) {
  */
 function grp_get_pcts($grp_id) {
     global $kga, $pdo_conn;
+
+    $p = $kga['server_prefix'];
     
-    $pdo_query = $pdo_conn->prepare("SELECT pct_ID FROM " . $kga['server_prefix'] . "grp_pct WHERE grp_ID = ?;");
+    $pdo_query = $pdo_conn->prepare("SELECT pct_ID FROM ${p}grp_pct
+     JOIN ${p}pct USING(pct_ID)
+     WHERE ${p}evt.evt_trash=0 AND grp_ID = ?;");
     $result = $pdo_query->execute(array($grp_id));
     if ($result == false) {
         return false;
@@ -1013,8 +1021,12 @@ function grp_get_pcts($grp_id) {
  */
 function grp_get_evts($grp_id) {
     global $kga, $pdo_conn;
+
+    $p = $kga['server_prefix'];
     
-    $pdo_query = $pdo_conn->prepare("SELECT evt_ID FROM " . $kga['server_prefix'] . "grp_evt WHERE grp_ID = ?;");
+    $pdo_query = $pdo_conn->prepare("SELECT evt_ID FROM ${p}grp_evt
+     JOIN ${p}evt USING(evt_ID)
+     WHERE ${p}evt.evt_trash=0 AND ${p}grp_evt.grp_ID = ?;");
     $result = $pdo_query->execute(array($grp_id));
     if ($result == false) {
         return false;
@@ -1351,8 +1363,11 @@ function ldr_get_grps($ldr_id) {
  */
 function grp_get_ldrs($grp_id) {
     global $kga, $pdo_conn;
+
+    $p = $kga['server_prefix'];
     
-    $pdo_query = $pdo_conn->prepare("SELECT grp_leader FROM " . $kga['server_prefix'] . "ldr WHERE grp_ID = ?;");
+    $pdo_query = $pdo_conn->prepare("SELECT grp_leader FROM ${p}ldr
+    JOIN ${p}usr ON ${p}usr.usr_ID = ${p}ldr.grp_leader WHERE grp_ID = ? AND usr_trash=0;");
     $result = $pdo_query->execute(array($grp_id));
     if ($result == false) {
         return false;
@@ -1431,7 +1446,7 @@ function grp_get_data($grp_id) {
 function grp_count_users($grp_id) {
     global $kga, $pdo_conn;
     
-    $pdo_query = $pdo_conn->prepare("SELECT COUNT(*) FROM " . $kga['server_prefix'] . "usr WHERE usr_grp = ?");
+    $pdo_query = $pdo_conn->prepare("SELECT COUNT(*) FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 AND usr_grp = ?");
     $result =  $pdo_query->execute(array($grp_id));
     
     if ($result == false) {
@@ -1905,16 +1920,16 @@ function get_arr_pct($group) {
 
     if ($group == "all") {
         if ($kga['conf']['flip_pct_display']) {
-            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID ORDER BY pct_visible DESC,knd_name,pct_name;");
+            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;");
         } else {
-            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID ORDER BY pct_visible DESC,pct_name,knd_name;");
+            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;");
         }
         $result = $pdo_query->execute();    
     } else {
         if ($kga['conf']['flip_pct_display']) {
-            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? ORDER BY pct_visible DESC,knd_name,pct_name;");
+            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;");
         } else {
-            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? ORDER BY pct_visible DESC,pct_name,knd_name;");
+            $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;");
         }
         $result = $pdo_query->execute(array($group));
     }
@@ -1950,16 +1965,16 @@ function get_arr_pct_by_knd($group, $knd_id) {
 
     if ($group == "all") {
       if ($kga['conf']['flip_pct_display']) {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "pct.pct_kndID = ? ORDER BY knd_name,pct_name;");
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "pct.pct_kndID = ? AND pct_trash=0 ORDER BY knd_name,pct_name;");
       } else {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "pct.pct_kndID = ? ORDER BY pct_name,knd_name;");        
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "pct.pct_kndID = ? AND pct_trash=0 ORDER BY pct_name,knd_name;");        
       }
       $result = $pdo_query->execute(array($knd_id));  
     } else {
       if ($kga['conf']['flip_pct_display']) {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND " . $kga['server_prefix'] . "pct.pct_kndID = ? ORDER BY knd_name,pct_name;");
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND " . $kga['server_prefix'] . "pct.pct_kndID = ? AND pct_trash=0 ORDER BY knd_name,pct_name;");
       } else {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND " . $kga['server_prefix'] . "pct.pct_kndID = ? ORDER BY pct_name,knd_name;");        
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct JOIN " . $kga['server_prefix'] . "knd ON " . $kga['server_prefix'] . "pct.pct_kndID = " . $kga['server_prefix'] . "knd.knd_ID JOIN " . $kga['server_prefix'] . "grp_pct ON " . $kga['server_prefix'] . "grp_pct.pct_ID = " . $kga['server_prefix'] . "pct.pct_ID WHERE " . $kga['server_prefix'] . "grp_pct.grp_ID = ? AND " . $kga['server_prefix'] . "pct.pct_kndID = ? AND pct_trash=0 ORDER BY pct_name,knd_name;");        
       }  
       $result = $pdo_query->execute(array($group, $knd_id));
     }
@@ -2507,10 +2522,10 @@ function get_arr_knd($group) {
         
     $arr = array();
     if ($group == "all") {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "knd ORDER BY knd_visible DESC,knd_name;");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "knd WHERE knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
         $pdo_query->execute();
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "knd JOIN " . $kga['server_prefix'] . "grp_knd ON `" . $kga['server_prefix'] . "grp_knd`.`knd_ID`=`" . $kga['server_prefix'] . "knd`.`knd_ID` WHERE `" . $kga['server_prefix'] . "grp_knd`.`grp_ID` = ? ORDER BY knd_visible DESC,knd_name;");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "knd JOIN " . $kga['server_prefix'] . "grp_knd ON `" . $kga['server_prefix'] . "grp_knd`.`knd_ID`=`" . $kga['server_prefix'] . "knd`.`knd_ID` WHERE `" . $kga['server_prefix'] . "grp_knd`.`grp_ID` = ? AND knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
         $pdo_query->execute(array($group));
     }
   
@@ -2547,11 +2562,11 @@ function get_arr_watchable_users($user_id) {
 
     // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
     if ($row['usr_sts'] == "0") { // if is admin
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr");
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0");
       $pdo_query->execute();
     }
     else {
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE grp_leader = ?");
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ?");
       $pdo_query->execute(array($user_id));
     }
     
@@ -2587,7 +2602,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'] . "usr.usr_trush=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -2668,7 +2683,7 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'] . "knd.knd_trash=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -2743,7 +2758,7 @@ function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = 
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'] . "pct.pct_trash=0");
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -2803,10 +2818,10 @@ function get_arr_evt($group) {
     
     $arr = array();
     if ($group == "all") {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt ORDER BY evt_visible DESC,evt_name;");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt WHERE evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
         $pdo_query->execute();
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt JOIN " . $kga['server_prefix'] . "grp_evt ON `" . $kga['server_prefix'] . "grp_evt`.`evt_ID`=`" . $kga['server_prefix'] . "evt`.`evt_ID` WHERE `" . $kga['server_prefix'] . "grp_evt`.`grp_ID` = ? ORDER BY evt_visible DESC,evt_name;");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt JOIN " . $kga['server_prefix'] . "grp_evt ON `" . $kga['server_prefix'] . "grp_evt`.`evt_ID`=`" . $kga['server_prefix'] . "evt`.`evt_ID` WHERE `" . $kga['server_prefix'] . "grp_evt`.`grp_ID` = ? AND evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
         $pdo_query->execute(array($group));
     }
     
@@ -2835,7 +2850,7 @@ function get_arr_evt($group) {
 function get_arr_evt_by_knd($customer_ID) {
     global $kga, $pdo_conn;
     
-    $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt WHERE evt_ID IN (SELECT zef_evtID FROM " . $kga['server_prefix'] . "zef WHERE zef_pctID IN (SELECT pct_ID FROM " . $kga['server_prefix'] . "pct WHERE pct_kndID = ?))");
+    $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "evt WHERE evt_ID IN (SELECT zef_evtID FROM " . $kga['server_prefix'] . "zef WHERE zef_pctID IN (SELECT pct_ID FROM " . $kga['server_prefix'] . "pct WHERE pct_kndID = ?)) AND evt_trash=0");
     $pdo_query->execute(array($customer_ID));
     
     $arr=array();
@@ -2871,7 +2886,7 @@ function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = n
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
+    $whereClauses = array($kga['server_prefix'] . 'evt.evt_trash = 0');
     
     if (count($users) > 0) {
       $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
@@ -2890,6 +2905,7 @@ function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = n
     if ($out)
       $whereClauses[]="zef_in < $out";
     $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_evtID FROM " . $kga['server_prefix'] . "zef 
+        Left Join " . $kga['server_prefix'] . "evt ON zef_evtID = evt_ID
         Left Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
         Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();

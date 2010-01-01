@@ -130,6 +130,48 @@ switch ($axAction) {
         }
     break;
 
+    case "deletePct":
+    // set the trashflag of a project
+        switch ($axValue) {
+            case 0:
+            // Fire JavaScript confirm when a project is about to be deleted
+            echo $kga['lang']['sure'];
+        break;
+            case 1: 
+            // If the confirmation is returned the project gets the trash-flag. 
+            pct_delete($id);
+        break;
+        }
+    break;
+
+    case "deleteKnd":
+    // set the trashflag of a customer
+        switch ($axValue) {
+            case 0:
+            // Fire JavaScript confirm when a customer is about to be deleted
+            echo $kga['lang']['sure'];
+        break;
+            case 1: 
+            // If the confirmation is returned the customer gets the trash-flag. 
+            knd_delete($id);
+        break;
+        }
+    break;
+
+    case "deleteEvt":
+    // set the trashflag of an event
+        switch ($axValue) {
+            case 0:
+            // Fire JavaScript confirm when an event is about to be deleted
+            echo $kga['lang']['sure'];
+        break;
+            case 1: 
+            // If the confirmation is returned the event gets the trash-flag. 
+            evt_delete($id);
+        break;
+        }
+    break;
+
     case "banUsr":
     // Ban a user from login
     $sts['usr_active'] = 0;

@@ -22,6 +22,12 @@
                         <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID});">
                             <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
+                        
+                        &nbsp;
+                        
+                        <a href="#" id="delete_pct{$arr_pct[row].pct_ID}" onClick="ap_ext_deleteProject({$arr_pct[row].pct_ID})">
+                          <img src="../skins/{$kga.conf.skin}/grfx/button_trashcan.png" title="{$kga.lang.delpct}" width="13" height="13" alt="{$kga.lang.delpct}" border="0">
+                        </a>
                     </td>
 
                     <td class="projects">

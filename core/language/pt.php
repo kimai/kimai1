@@ -264,6 +264,11 @@ $kga['lang']= array(
 
 "editgrp"           => "Editar grupo",
 
+"delgrp"            => "delete group",
+"delpct"            => "delete project",
+"delknd"            => "delete customer",
+"delevt"            => "delete task",
+
 "switchusr"         => "Mudar para este utilizador",
 
 "backupusr"         => "Make backup of this user",
