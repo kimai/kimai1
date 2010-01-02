@@ -271,29 +271,26 @@ else
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 
-if (isset($kga['customer']))
-  $last_pct = null;
-else {
-  $lastZefRecord = zef_get_data(0);
-  logfile($lastZefRecord['zef_pctID']);
-  $last_pct = pct_get_data($lastZefRecord['zef_pctID']);
-}
 
-if ($last_pct) {
-    $tpl->assign('pct_data', $last_pct);
-    $tpl->assign('knd_data', knd_get_data($last_pct['pct_kndID']));
-    $tpl->assign('evt_data', evt_get_data($kga['conf']['lastEvent']));
-} else {
-    $knd_data['knd_ID'] = 1;
-    $pct_data['pct_ID'] = 1;
-    $evt_data['evt_ID'] = 1;
-    $knd_data['knd_name'] = $kga['lang']['testKND'];
-    $pct_data['pct_name'] = $kga['lang']['testPCT'];
-    $evt_data['evt_name'] = $kga['lang']['testEVT'];
-    $tpl->assign('knd_data', $knd_data);
-    $tpl->assign('pct_data', $pct_data);
-    $tpl->assign('evt_data', $evt_data);
+$knd_data = array('knd_ID'=>false,'knd_name'=>'');
+$pct_data = array('pct_ID'=>false,'pct_name'=>'');
+$evt_data = array('evt_ID'=>false,'evt_name'=>'');
+
+if (!isset($kga['customer'])) {
+  //$lastZefRecord = zef_get_data(false);
+  $last_pct = pct_get_data($kga['conf']['lastProject']);
+  $last_evt = evt_get_data($kga['conf']['lastEvent']);
+  if (!$last_pct['pct_trash']) {
+    $pct_data = $last_pct;
+    $knd_data = knd_get_data($last_pct['pct_kndID']);
+  }
+  if (!$last_evt['evt_trash'])
+    $evt_data = $last_evt;    
 }
+$tpl->assign('knd_data', $knd_data);
+$tpl->assign('pct_data', $pct_data);
+$tpl->assign('evt_data', $evt_data);
+
 
 // =========================================
 // = INCLUDE EXTENSION PHP FILE            =

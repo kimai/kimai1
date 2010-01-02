@@ -77,10 +77,14 @@ $(document).ready(function() {
     $('#main_prefs_button').click(function(){
         floaterShow("floaters.php","prefs",0,0,450,300);
     });
+
     
-    $('#buzzer').click(function(){
+    if (selected_knd && selected_pct && selected_evt) {
+      $('#buzzer').click(function(){
         buzzer();
-    });
+      });
+      $('#buzzer').removeClass('disabled');
+    }
  
     n_uhr();
     

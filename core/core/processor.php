@@ -35,6 +35,21 @@ switch ($axAction) {
     break;
 
 
+
+
+    case 'saveBuzzerPreselection':
+      if (!isset($kga['usr'])) return;
+
+      $data= array();
+      if (isset($_REQUEST['project']))
+        $data['lastProject'] = $_REQUEST['project'];
+      if (isset($_REQUEST['event']))
+        $data['lastEvent']   = $_REQUEST['event'];
+
+      usr_edit($kga['usr']['usr_ID'],$data);
+    break;
+
+
     // ================================
     // = write user preferences to DB =
     // ================================

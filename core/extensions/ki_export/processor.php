@@ -151,6 +151,8 @@ switch ($axAction) {
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
         $tpl->assign('custom_filter',$filter);
+        if (isset($kga['usr']))
+          $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['usr_ID']));
         $tpl->display("table.tpl");
     break;
 

@@ -397,17 +397,26 @@ function buzzer_preselect(subject,id,name,kndID,kndName) {
         case "pct":
             selected_knd = kndID;
             selected_pct = id;
+            $.post("processor.php", { axAction: "saveBuzzerPreselection", project:id});
             $("#sel_knd").html(kndName);
             $("#sel_pct").html(name);
             $("#sel_knd").removeClass("none");
         break;
         case "evt":
             selected_evt = id;
+            $.post("processor.php", { axAction: "saveBuzzerPreselection", event:id});
             $("#sel_evt").html(name);
         break;
     }
     $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
     $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    
+    if (selected_knd && selected_pct && selected_evt) {
+      $('#buzzer').click(function(){
+        buzzer();
+      });
+      $('#buzzer').removeClass('disabled');
+    }
 }
 
 // ----------------------------------------------------------------------------------------

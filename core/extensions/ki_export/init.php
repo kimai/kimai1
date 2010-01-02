@@ -32,7 +32,10 @@ $tpl->display('panel.tpl');
 // ==========================
 $total = intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
 
-$arr_zef = xp_get_arr($in,$out,null,array($kga['customer']['knd_ID']),null);
+if (isset($kga['customer']))
+  $arr_zef = xp_get_arr($in,$out,null,array($kga['customer']['knd_ID']));
+else
+  $arr_zef = xp_get_arr($in,$out,array($kga['usr']['usr_ID']));
 
 if (count($arr_zef)>0) {
     $tpl->assign('arr_data', $arr_zef);
@@ -41,25 +44,36 @@ if (count($arr_zef)>0) {
 }
 $tpl->assign('total', $total);
 
-$ann = xp_get_arr_usr($in,$out,null,array($kga['customer']['knd_ID']));
+if (isset($kga['customer']))
+  $ann = xp_get_arr_usr($in,$out,null,array($kga['customer']['knd_ID']));
+else
+  $ann = xp_get_arr_knd($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('usr_ann',$ann_new);
 
-$ann = xp_get_arr_knd($in,$out,null,array($kga['customer']['knd_ID']));
+if (isset($kga['customer']))
+  $ann = xp_get_arr_knd($in,$out,null,array($kga['customer']['knd_ID']));
+else
+  $ann = xp_get_arr_knd($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('knd_ann',$ann_new);
 
-$ann = xp_get_arr_pct($in,$out,null,array($kga['customer']['knd_ID']));
+if (isset($kga['customer']))
+  $ann = xp_get_arr_pct($in,$out,null,array($kga['customer']['knd_ID']));
+else
+  $ann = xp_get_arr_pct($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('pct_ann',$ann_new);
 
-$ann = xp_get_arr_evt($in,$out,null,array($kga['customer']['knd_ID']));
+if (isset($kga['customer']))
+  $ann = xp_get_arr_evt($in,$out,null,array($kga['customer']['knd_ID']));
+else
+  $ann = xp_get_arr_evt($in,$out,array($kga['usr']['usr_ID']));
 $ann_new = intervallApos($ann);
 $tpl->assign('evt_ann',$ann_new);
 
-$disabled_columns = xp_get_disabled_headers($kga['usr']['usr_ID']);
-
-$tpl->assign('disabled_columns',$disabled_columns);
+if (isset($kga['usr']))
+  $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['usr_ID']));
 
 $tpl->assign('table_display', $tpl->fetch("table.tpl"));
 

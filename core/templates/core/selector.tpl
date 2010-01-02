@@ -1,21 +1,8 @@
 <div class="preselection">
     
-{if $knd_data.knd_ID || $pct_data.pct_ID || $evt_data.evt_ID}
     <strong>{$kga.lang.selectR}</strong><br />
 
     <strong class="short">{$kga.lang.selectKND}</strong><span class="selection" id="sel_knd">{$knd_data.knd_name}</span><br/>
     <strong class="short">{$kga.lang.selectPCT}</strong><span class="selection" id="sel_pct">{$pct_data.pct_name}</span><br/>    
     <strong class="short">{$kga.lang.selectEVT}</strong><span class="selection" id="sel_evt">{$evt_data.evt_name}</span><br/>    
-
-
-{else}
-
-
-    <span class="none">
-        <br />Please select Project / Task from<br />
-        the bottom tables and press start!
-    </span>
-    
-{/if}
-
 </div>

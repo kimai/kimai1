@@ -1316,6 +1316,8 @@ function usr_edit($usr_id, $data) {
     $values ['usr_trash']         = MySQL::SQLValue($new_array ['usr_trash']        , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_active']        = MySQL::SQLValue($new_array ['usr_active']       , MySQL::SQLVALUE_NUMBER  );
     $values ['noFading']          = MySQL::SQLValue($new_array ['noFading']         , MySQL::SQLVALUE_NUMBER  );
+    $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
+    $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
 
     $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     

@@ -1167,7 +1167,9 @@ function usr_edit($usr_id, $data) {
     pct_comment_flag = ?,
     showIDs = ?,
     lang = ? ,
-    noFading = ?
+    noFading = ?, 
+    lastProject = ?,
+    lastEvent = ?
     WHERE usr_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -1189,6 +1191,8 @@ function usr_edit($usr_id, $data) {
     $new_array['showIDs'],
     $new_array['lang'],
     $new_array['noFading'],
+    $new_array['lastProject'],
+    $new_array['lastEvent']
     $usr_id
     ));
     

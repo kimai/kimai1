@@ -116,6 +116,7 @@
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);
     clearTimeout(lists_resize);
+    
         }{/literal}
 
     </script>
@@ -163,8 +164,8 @@
             <ul id="ticker"><li id="ticker_knd">&nbsp;</li><li id="ticker_pct">&nbsp;</li><li id="ticker_evt">&nbsp;</li></ul>
         </div>
         
-        <div id="buzzer">
-            <a href="#">Start</a>
+        <div id="buzzer" class="disabled">
+            <div>&nbsp;</div>
         </div>
         {/if}        
         

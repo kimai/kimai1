@@ -7,7 +7,7 @@
     overflow: hidden;
 }
 
-#buzzer a {
+#buzzer div {
     display: block;
     background: url(grfx/g3_buzzer.png) no-repeat 0 0px;
     width: 75px;
@@ -15,16 +15,23 @@
     text-indent: -1000px;
 }
 
-#buzzer a:hover {    
+#buzzer div:hover {    
+    cursor: pointer;
     background: url(grfx/g3_buzzer.png) no-repeat 0 -75px;
 }
 
-#buzzer.act a {
+#buzzer.act div {
     background: url(grfx/g3_buzzer.png) no-repeat 0 -150px;
 }
 
-#buzzer.act a:hover {
+#buzzer.act div:hover {
+    cursor: pointer;
     background: url(grfx/g3_buzzer.png) no-repeat 0 -225px;
+}
+
+#buzzer.disabled div, #buzzer.disabled div:hover {
+    cursor: auto;
+    background: url(grfx/g3_buzzer.png) no-repeat 0 -300px;
 }
 
 #noclick {
