@@ -176,6 +176,8 @@ switch ($axAction) {
             // if this is TRUE the values PASSED the test! 
             $setTimeValue = 1;   
         }
+        else
+          break;
         
         $new_time = convert_time_strings($new_in,$new_out);
         
