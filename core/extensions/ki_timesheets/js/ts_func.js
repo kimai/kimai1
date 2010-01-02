@@ -302,7 +302,12 @@ function ts_getDateFromStrings(dateStr,timeStr) {
         return null;
     }
     result.setFullYear(dateArray[2],dateArray[1]-1,dateArray[0]);
-    result.setHours(timeArray[0]);
+    if (timeArray[0].length > 2) {
+      result.setHours(timeArray[0].substring(0,2));
+      result.setMinutes(timeArray[0].substring(2,4));
+    }
+    else
+      result.setHours(timeArray[0]);
     if(timeArray.length>1)
         result.setMinutes(timeArray[1]);
     else
