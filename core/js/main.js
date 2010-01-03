@@ -437,11 +437,11 @@ function ticktac() {
     else {
         $("#s").html(((sec<10)?"0":"")+sec);
     }
-    if (min==0) $("m").html("00");
+    if (min==0) $("#m").html("00");
     else {
         $("#m").html(((min<10)?"0":"")+min);
      }
-    if (hour==0) $("h").html("00");
+    if (hour==0) $("#h").html("00");
     else {
         $("#h").html(((hour<10)?"0":"")+hour);
     }
