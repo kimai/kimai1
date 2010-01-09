@@ -19,9 +19,9 @@
 					
 					<div id="xp_ext_tab_timeformat">
 						<span>{$kga.lang.xp_ext.timeformat}:<a href="#" class="helpfloater">{$kga.lang.xp_ext.export_timeformat_help}</a></span>
-						<input type="text" name="time_format" value="H:M" id="xp_ext_timeformat" onChange="xp_ext_reload()">
+						<input type="text" name="time_format" value="{$timeformat}" id="xp_ext_timeformat" onChange="xp_ext_reload()">
 						<span>{$kga.lang.xp_ext.dateformat}:<a href="#" class="helpfloater">{$kga.lang.xp_ext.export_timeformat_help}</a></span>
-						<input type="text" name="date_format" value="d.m." id="xp_ext_dateformat" onChange="xp_ext_reload()">
+						<input type="text" name="date_format" value="{$dateformat}" id="xp_ext_dateformat" onChange="xp_ext_reload()">
 					</div>
 					
 					<div id="xp_ext_tab_location">

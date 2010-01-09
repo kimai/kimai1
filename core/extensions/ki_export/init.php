@@ -24,8 +24,16 @@ $tpl->compile_dir  = 'compile/';
 
 $tpl->assign('kga', $kga);
 
+$timeformat = 'H:M';
+$dateformat = 'd.m.';
+$tpl->assign('timeformat',$timeformat);
+$tpl->assign('dateformat',$dateformat);
+
 $tpl->display('panel.tpl');
 
+
+$tpl->assign('timeformat',preg_replace('/([A-Za-z])/','%$1',$timeformat));
+$tpl->assign('dateformat',preg_replace('/([A-Za-z])/','%$1',$dateformat));
 
 // ==========================
 // = display timesheet area =
@@ -42,6 +50,7 @@ if (count($arr_zef)>0) {
 } else {
     $tpl->assign('arr_data', 0);
 }
+
 $tpl->assign('total', $total);
 
 if (isset($kga['customer']))
@@ -76,6 +85,7 @@ if (isset($kga['usr']))
   $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['usr_ID']));
 
 $tpl->assign('table_display', $tpl->fetch("table.tpl"));
+
 
 $tpl->display('main.tpl');
 

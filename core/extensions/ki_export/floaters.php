@@ -24,8 +24,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/floaters/";
 require("../../includes/kspi.php");
 
-if (isset($kga['customer'])) die();
-
 switch ($axAction) {
 
     // $selected = explode('|',$axValue);

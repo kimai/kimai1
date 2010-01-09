@@ -87,6 +87,11 @@ $timespace = get_timespace();
 $in = $timespace[0];
 $out = $timespace[1];
 
+  if ($_REQUEST['in'])
+    $in  = (int)$_REQUEST['in'];
+  if ($_REQUEST['out'])
+    $out = (int)$_REQUEST['out'];
+
 if ($axAction != "reloadLogfile") {
     logfile("KSPI axAction (".isset($kga['customer'])?$kga['customer']['knd_name']:$kga['usr']['usr_name']."): " . $axAction);
 }

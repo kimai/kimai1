@@ -71,11 +71,7 @@
                         {/if}
                         {if $disabled_columns.date}disabled{/if}
                     ">
-                        { if $custom_dateformat }
-                        {$arr_data[row].time_in|date_format:$custom_dateformat}
-                        { else }
-                        {$arr_data[row].time_in|date_format:$kga.date_format.1}
-                        { /if }
+                        {$arr_data[row].time_in|date_format:$dateformat}
                     </td>
 
 {*in -----------------------------------------------------------*}
@@ -90,11 +86,7 @@
                         {/if}
                         {if $disabled_columns.from}disabled{/if}
                     ">
-                        { if $custom_timeformat }
-                        {$arr_data[row].time_in|date_format:$custom_timeformat}
-                        { else }
-                        {$arr_data[row].time_in|date_format:"%H:%M"}
-                        { /if }
+                        {$arr_data[row].time_in|date_format:$timeformat}
                     </td>
 
 {*out ----------------------------------------------------------*}
@@ -111,11 +103,7 @@
                     ">
                     
 {if $arr_data[row].time_out}
-                        { if $custom_timeformat }
-                        {$arr_data[row].time_out|date_format:$custom_timeformat}
-                        { else }
-                        {$arr_data[row].time_out|date_format:"%H:%M"}
-                        { /if }
+                        {$arr_data[row].time_out|date_format:$timeformat}
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
 {/if}
