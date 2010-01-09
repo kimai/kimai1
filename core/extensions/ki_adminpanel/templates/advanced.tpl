@@ -38,6 +38,42 @@
             <div id="ap_ext_checkupdate">
                 <a href="javascript:ap_ext_checkupdate({$kga.revision});">{$kga.lang.checkupdate}</a>
             </div>
+
+            <div>
+               <input type="checkbox" name="show_sensible_data" {if $kga.show_sensible_data}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_sensible_data}
+            </div>
+
+            <div>
+               <input type="checkbox" name="show_update_warn" {if $kga.show_update_warn}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_update_warn}
+            </div>
+
+            <div>
+               <input type="checkbox" name="check_at_startup" {if $kga.check_at_startup}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.check_at_startup}
+            </div>
+
+            <div>
+               <input type="checkbox" name="show_daySeperatorLines" {if $kga.show_daySeperatorLines}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_daySeperatorLines}
+            </div>
+
+            <div>
+               <input type="checkbox" name="show_gabBreaks" {if $kga.show_gabBreaks}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_gabBreaks}
+            </div>
+
+            <div>
+               <input type="checkbox" name="show_RecordAgain" {if $kga.show_RecordAgain}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_RecordAgain}
+            </div>
+
+            <div>
+               <input type="checkbox" name="show_TrackingNr" {if $kga.show_TrackingNr}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_TrackingNr}
+            </div>
+
+            <div>
+               <input type="text" name="currency_name" size="8" value="{$kga.currency_name}" class="formfield"> {$kga.lang.currency_name}
+            </div>
+
+            <div>
+               <input type="text" name="currency_sign" size="2" value="{$kga.currency_sign}" class="formfield"> {$kga.lang.currency_sign}
+            </div>
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         

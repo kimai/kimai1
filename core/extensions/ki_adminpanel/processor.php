@@ -217,10 +217,19 @@ switch ($axAction) {
     case "sendEditAdvanced":
     // process AdvancedOptions form
     
-        $var_data['adminmail']    = $_REQUEST['adminmail'];
-        $var_data['loginTries']   = $_REQUEST['logintries'];
-        $var_data['loginBanTime'] = $_REQUEST['loginbantime'];
-        $var_data['charset']      = $_REQUEST['charset'];
+        $var_data['adminmail']              = $_REQUEST['adminmail'];
+        $var_data['loginTries']             = $_REQUEST['logintries'];
+        $var_data['loginBanTime']           = $_REQUEST['loginbantime'];
+        $var_data['charset']                = $_REQUEST['charset'];
+        $var_data['show_sensible_data']     = $_REQUEST['show_sensible_data']==1?1:0;
+        $var_data['show_update_warn']       = $_REQUEST['show_update_warn']==1?1:0;
+        $var_data['check_at_startup']       = $_REQUEST['check_at_startup']==1?1:0;
+        $var_data['show_daySeperatorLines'] = $_REQUEST['show_daySeperatorLines']==1?1:0;
+        $var_data['show_gabBreaks']         = $_REQUEST['show_gabBreaks']==1?1:0;
+        $var_data['show_RecordAgain']       = $_REQUEST['show_RecordAgain']==1?1:0;
+        $var_data['show_TrackingNr']        = $_REQUEST['show_TrackingNr']==1?1:0;
+        $var_data['currency_name']          = $_REQUEST['currency_name'];
+        $var_data['currency_sign']          = $_REQUEST['currency_sign'];
         
         $success = var_edit($var_data);
 

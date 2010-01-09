@@ -29,4 +29,16 @@ require('vars.php');
 require('func.php');
 require("connect_".$kga['server_conn'].".php");
 
+foreach (var_get_data() as $name => $value) {
+  if ($name == 'currency_name' ||
+      $name == 'currency_sign' ||
+      $name == 'show_sensible_data' ||
+      $name == 'show_update_warn' ||
+      $name == 'check_at_startup' ||
+      $name == 'show_daySeperatorLines' ||
+      $name == 'show_gabBreaks' ||
+      $name == 'show_RecordAgain' ||
+      $name == 'show_TrackingNr')
+    $kga[$name] = $value;
+}
 ?>

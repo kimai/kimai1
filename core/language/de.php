@@ -216,7 +216,17 @@ $kga['lang'] = array(
 
 "cleared"           => "abgerechnet",
 
-"noFading"          => "Ein-/Ausblenden deaktivieren"
+"noFading"          => "Ein-/Ausblenden deaktivieren",
+
+'show_sensible_data' => 'Zeige in der Debug Extension auch sensible Daten an.',
+'show_update_warn' => 'Warnung vor dem Update nicht mehr anzeigen.',
+'check_at_startup' => 'Auf der Login-Seite über eine neue Version informieren.',
+'show_daySeperatorLines' => 'Trennlinie zwischen Tagen in den Tabellen anzeigen.',
+'show_gabBreaks' => 'Linie zwischen zwei Einträgen zeichnen, wenn dort eine zeitliche Lücke ist.',
+'show_RecordAgain' => 'Den &quot;Erneut Aufnehmen&quot;-Button vor jedem Eintrag anzeigen.',
+'show_TrackingNr' => 'Das Feld Auftragsnummer ist bearbeitbar.',
+'currency_name' => 'Name der zu verwendenden Währung.',
+'currency_sign' => 'Symbol der zu verwendenden Währung.',
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");

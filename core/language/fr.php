@@ -217,7 +217,17 @@ $kga['lang']= array(
 
 "cleared"           => "cleared",
 
-"noFading"          => "no fading effect"
+"noFading"          => "no fading effect",
+
+'show_sensible_data' => 'Display sensible data as well in the debug extension.',
+'show_update_warn' => 'Turn off warning before an update.',
+'check_at_startup' => 'Show a message on the login page if a newer version is available.',
+'show_daySeperatorLines' => 'Draw a line between entries of different days.',
+'show_gabBreaks' => 'Draw a line between two records that are not perfectly continuous.',
+'show_RecordAgain' => 'Show the &quot;Record Again&quot; button in front of every entry.',
+'show_TrackingNr' => 'Allows to edit the field Tracking-Nr.',
+'currency_name' => 'Name of the currency to use.',
+'currency_sign' => 'Sign of the currency to use.',
 );
 
 $kga['lang']['months']         = array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre");

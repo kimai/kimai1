@@ -31,8 +31,8 @@ $kga['virtual_users']  = 0;            // If this is set to 1 there is no login 
                                        // and drops the user after the session is closed.
                                        // Use this for demo installments.
 
-$kga['currency_name'] = 'Euro';
-$kga['currency_sign'] = '€';
+//$kga['currency_name'] = 'Euro';
+//$kga['currency_sign'] = '€';
                                        
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,11 +40,8 @@ $kga['currency_sign'] = '€';
 $kga['charsets']       = array('utf-8','iso-8859-1');
 $kga['charset_descr']  = array('UTF-8','iso-8859-1');
 
-                          
-// $kga['customerhack']     = 1; // set to 1 to activate a temporary filter option for PDF printing 
-                                 // [actually this is obsolete because PDF printing is not available in 0.8...]
 
-$kga['show_sensible_data'] = 1; // turn this on to display sensible data in the debug/developer extension 
+//$kga['show_sensible_data'] = 1; // turn this on to display sensible data in the debug/developer extension 
                                 // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
                                 // DON'T BLAME US - YOU HAVE BEEN WARNED!
                                 
@@ -54,24 +51,21 @@ $kga['delete_logfile']     = 1;   // can the logfile be cleaned via debug_ext?
 $kga['utf8']               = 0;     // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case, 
                                     // depends on server preferences
                                     
-$kga['dbname_public']      = 0;     // allow/disallow to show the name of you database
-                                    // as tooltip when hovering over the Kimai logo
+//$kga['show_update_warn']   = 1;     // if you find the update warning page annoying - turn it off by setting this to 0
                                     
-$kga['show_update_warn']   = 1;     // if you find the update warning page annoying - turn it off by setting this to 0
-                                    
-$kga['check_at_startup']   = 0;     // everytime the login-screen appears the version-number will be checked against our
+//$kga['check_at_startup']   = 0;     // everytime the login-screen appears the version-number will be checked against our
                                     // server if this is set to 1. We do not transmit any personal data!
                                     // Only revision-number and language-preference (de, en, ...) are transmitted.
                                     // We only *count* the checkups for statistics. If you want to keep your installment
                                     // up-to-date you should activate this.
 
-$kga['show_daySeperatorLines'] = 1; // set to 0 to supress the black lines between days
+//$kga['show_daySeperatorLines'] = 1; // set to 0 to supress the black lines between days
 
-$kga['show_gabBreaks'] = 0;         // set to 1 to show lines between two records that are not perfectly continuous
+//$kga['show_gabBreaks'] = 0;         // set to 1 to show lines between two records that are not perfectly continuous
 
-$kga['show_RecordAgain'] = 1;       // set to 0 to supress the 'record again' buttons in the timesheet table
+//$kga['show_RecordAgain'] = 1;       // set to 0 to supress the 'record again' buttons in the timesheet table
                                      
-$kga['show_TrackingNr'] = 1;        // set to 1 to make the tracking number of timesheet records editable
+//$kga['show_TrackingNr'] = 1;        // set to 1 to make the tracking number of timesheet records editable
 
 $kga['global'] = 0;                 // set to 1 to make tracking records of all users visible for admins
 // not fully implemented yet!
@@ -88,10 +82,6 @@ $kga['date_format'][1]    = "%d.%m.";   // Here you can use Smarty date-notation
                                         // timesheet entry (you should only use day and month here).
                                         
 $kga['date_format'][2]    = "%d.%m.%Y"; // Another Smarty notation for the full date.
-
-
-//$kga['date_format'][3]    = "dmy";    // This sets the order of the date-picker fields in the timespace selector 
-                                        // (allowed values: dmy or mdy)  OUTDATED!!!
                                         
 $kga['calender_start']      = "0";      // here you can set a custom start day for the date-picker.
                                         // if this is not set the day of the users first day in the system will be taken
