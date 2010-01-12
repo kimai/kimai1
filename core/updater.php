@@ -952,7 +952,13 @@ if ((int)$revisionDB < 1112) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_gabBreaks','0')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_RecordAgain','1')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_TrackingNr','1')");
+}
 
+if ((int)$revisionDB < 1113) {
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_1','%d.%m.')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
+    exec_query("DELETE FROM ${p}var WHERE `var` = 'charset' LIMIT 1");
 }
 
   

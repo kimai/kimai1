@@ -105,14 +105,14 @@ switch ($axAction) {
         // = Display date and time in the header =
         // =======================================
         $wd       = $kga['lang']['weekdays_short'][date("w",time())];
-        $today    = date($kga['date_format'][0],time());
+        $today    = strftime($kga['date_format'][0],time());
         $dp_start = 0;
         if ($kga['calender_start']!="")
             $dp_start = $kga['calender_start'];
         else if (isset($kga['usr']))
             $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
         $pd_today = date("d/m/Y",time());
-        $nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . date($kga['date_format'][0],time()+86400);
+        $nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . strftime($kga['date_format'][0],time()+86400);
 
         $tpl->assign('today_display', "$wd. $today");
         $tpl->assign('dp_start', $dp_start);

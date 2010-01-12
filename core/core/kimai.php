@@ -213,8 +213,8 @@ else if (isset($kga['usr']))
     
 
 $pd_today = date("d/m/Y",time());
-$today    = date($kga['date_format'][0],time());
-$nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . date($kga['date_format'][0],time()+86400);
+$today    = strftime($kga['date_format'][0],time());
+$nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . strftime($kga['date_format'][0],time()+86400);
 
 $tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);

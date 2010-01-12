@@ -37,8 +37,8 @@ $kga['virtual_users']  = 0;            // If this is set to 1 there is no login 
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-$kga['charsets']       = array('utf-8','iso-8859-1');
-$kga['charset_descr']  = array('UTF-8','iso-8859-1');
+//$kga['charsets']       = array('utf-8','iso-8859-1');
+//$kga['charset_descr']  = array('UTF-8','iso-8859-1');
 
 
 //$kga['show_sensible_data'] = 1; // turn this on to display sensible data in the debug/developer extension 
@@ -67,21 +67,18 @@ $kga['utf8']               = 0;     // set to 1 if utf-8 CONVERSION (!) is neede
                                      
 //$kga['show_TrackingNr'] = 1;        // set to 1 to make the tracking number of timesheet records editable
 
-$kga['global'] = 0;                 // set to 1 to make tracking records of all users visible for admins
-// not fully implemented yet!
-
 
                                 
 // ------------------------------------------------------------------------------------------------------------------------------------------------                                
                                
 // german date format                           
-$kga['date_format'][0]    = "d.m.y";    // You can only use "d", "m" and either "Y" (2007) or "y" (07) - 
+/*$kga['date_format'][0]    = "%d.%m.%Y";    // You can only use "d", "m" and either "Y" (2007) or "y" (07) - 
                                         // also use whatever you like as seperators (PHP-format).
                                         
 $kga['date_format'][1]    = "%d.%m.";   // Here you can use Smarty date-notation - this appears before every 
                                         // timesheet entry (you should only use day and month here).
                                         
-$kga['date_format'][2]    = "%d.%m.%Y"; // Another Smarty notation for the full date.
+$kga['date_format'][2]    = "%d.%m.%Y"; // Another Smarty notation for the full date.*/
                                         
 $kga['calender_start']      = "0";      // here you can set a custom start day for the date-picker.
                                         // if this is not set the day of the users first day in the system will be taken

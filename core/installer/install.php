@@ -286,9 +286,6 @@ exec_query($query);
 $query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('lastdbbackup', '0');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('charset', 'utf-8');";
-exec_query($query);
-
 $query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
 exec_query($query);
 
@@ -301,6 +298,9 @@ exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUE
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_gabBreaks','0')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_RecordAgain','1')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_TrackingNr','1')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_1','%d.%m.')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
 
 
 

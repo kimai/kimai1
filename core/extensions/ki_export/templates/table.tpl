@@ -5,7 +5,6 @@
           <table>
               
             <colgroup>
-              {if $kga.global}<col class="alias" />{/if}
               <col class="date" />
               <col class="from" />
               <col class="to" />
@@ -38,19 +37,6 @@
 
 
 
-{if $kga.global}
-                    <td class="alias
-                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_data[row].time_out != $time_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
-                    ">
-                        {$arr_data[row].usr_alias}
-                    </td>
-{/if} 
 
 
 

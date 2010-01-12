@@ -2732,17 +2732,11 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     if ($out)
       $whereClauses[]="zef_in < $out";
 
-    if (!$kga['global']) {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID ";
-    } else {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
-    }
-    
     $query = "SELECT zef_in,zef_out,zef_time AS zeit FROM ${p}zef 
-             Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
-             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             " . $not_global_query_extension . "
-             Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
+             Join ${p}pct ON zef_pctID = pct_ID
+             Join ${p}knd ON pct_kndID = knd_ID
+             Join ${p}usr ON zef_usrID = usr_ID
+             Join ${p}evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
     $conn->Query($query);
 
     $conn->MoveFirst();

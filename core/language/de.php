@@ -163,8 +163,6 @@ $kga['lang'] = array(
 "day"               => "Tag",
 "year"              => "Jahr",
 
-"charset"           => "Zeichensatz",
-"charset_msg"       => "(muss dem Datenbank Zeichensatz entsprechen)",
 "lang"              => "Sprache",
 
 "ac"                => "Automatisch fortgesetzter Eintrag.",

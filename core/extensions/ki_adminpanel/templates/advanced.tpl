@@ -29,11 +29,6 @@
             <div>
                 <input type="text" name="loginbantime" size="4" value="{$kga.conf.loginBanTime}" class="formfield"> {$kga.lang.bantime}
             </div>
-            <div>
-                <select name="charset" class="formfield">
-                    {html_options values=$kga.charsets output=$kga.charset_descr selected=$kga.conf.charset}
-                </select> {$kga.lang.charset} {$kga.lang.charset_msg}
-            </div>
 
             <div id="ap_ext_checkupdate">
                 <a href="javascript:ap_ext_checkupdate({$kga.revision});">{$kga.lang.checkupdate}</a>
@@ -73,6 +68,18 @@
 
             <div>
                <input type="text" name="currency_sign" size="2" value="{$kga.currency_sign}" class="formfield"> {$kga.lang.currency_sign}
+            </div>
+
+            <div>
+               <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2}" class="formfield"> Format des Datums der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
+            </div>
+
+            <div>
+               <input type="text" name="date_format_0" size="8" value="{$kga.date_format.0}" class="formfield"> Format des Datums in dem Feld unterhalb der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
+            </div>
+
+            <div>
+               <input type="text" name="date_format_1" size="8" value="{$kga.date_format.1}" class="formfield"> Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
             </div>
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />

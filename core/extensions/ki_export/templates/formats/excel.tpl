@@ -5,9 +5,6 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <title></title> 
 <style> 
 {literal}
-.euro{ 
-mso-number-format:"\#\,\#\#0\.00\\ \[$EUR-1\]"; 
-} 
 .datum { 
 mso-number-format:"Short Date"; 
 } 

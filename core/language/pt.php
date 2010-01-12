@@ -325,9 +325,6 @@ $kga['lang']= array(
 "year"              => "Ano",
 
 
-"charset"           => "charset",
-
-"charset_msg"       => "(terá de ter o mesmo charset que a base de dados)",
 
 
 "lang"              => "Idioma",

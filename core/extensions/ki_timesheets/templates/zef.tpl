@@ -6,7 +6,6 @@
               
             <colgroup>
               <col class="option" />
-              {if $kga.global}<col class="alias" />{/if}
               <col class="date" />
               <col class="from" />
               <col class="to" />
@@ -91,19 +90,7 @@
 
 
 
-{if $kga.global}
-                    <td class="alias
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
-                    ">
-                        {$arr_zef[row].usr_alias}
-                    </td>
-{/if} 
+
 
 
 

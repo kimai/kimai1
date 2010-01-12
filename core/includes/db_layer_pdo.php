@@ -2044,17 +2044,11 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
         $limit="";
     }
 
-    if (!$kga['global']) {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID ";
-    } else {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
-    }
-    
     $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
              FROM " . $kga['server_prefix'] . "zef
              Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             " . $not_global_query_extension . "
+             Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID 
              Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC " . $limit . ";";
              
@@ -2471,16 +2465,10 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
     if ($out)
       $whereClauses[]="zef_in < $out";
 
-    if (!$kga['global']) {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID ";
-    } else {
-        $not_global_query_extension = " Join " . $kga['server_prefix'] . "usr ";
-    }
-
     $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_time FROM " . $kga['server_prefix'] . "zef 
              Join " . $kga['server_prefix'] . "pct ON zef_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             " . $not_global_query_extension . "
+             Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID
              Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
     $sum = 0;

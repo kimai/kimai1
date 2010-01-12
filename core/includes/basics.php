@@ -40,5 +40,11 @@ foreach (var_get_data() as $name => $value) {
       $name == 'show_RecordAgain' ||
       $name == 'show_TrackingNr')
     $kga[$name] = $value;
+  if ($name == 'date_format_0')
+    $kga['date_format'][0] = $value;
+  if ($name == 'date_format_1')
+    $kga['date_format'][1] = $value;
+  if ($name == 'date_format_2')
+    $kga['date_format'][2] = $value;    
 }
 ?>
