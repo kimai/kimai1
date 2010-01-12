@@ -87,10 +87,10 @@ $timespace = get_timespace();
 $in = $timespace[0];
 $out = $timespace[1];
 
-  if (isset($_REQUEST['in']))
-    $in  = (int)$_REQUEST['in'];
-  if (isset($_REQUEST['out']))
-    $out = (int)$_REQUEST['out'];
+  if (isset($_REQUEST['first_day']))
+    $in  = (int)$_REQUEST['first_day'];
+  if (isset($_REQUEST['last_day']))
+    $out = mktime(23,59,59,date("n",$_REQUEST['last_day']),date("j",$_REQUEST['last_day']),date("Y",$_REQUEST['last_day']));
 
 if ($axAction != "reloadLogfile") {
     logfile("KSPI axAction (".array_key_exists('customer',$kga)?$kga['customer']['knd_name']:$kga['usr']['usr_name']."): " . $axAction);

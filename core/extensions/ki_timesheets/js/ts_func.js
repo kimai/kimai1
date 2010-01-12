@@ -164,7 +164,7 @@ function ts_ext_triggerCHE() {
 //
 function ts_ext_reload() {
             $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0,
-                in: $('#pick_in').dpGetSelected()[0].getTime()/1000, out: $('#pick_out').dpGetSelected()[0].getTime()/1000  },
+                first_day: $('#pick_in').dpGetSelected()[0].getTime()/1000, last_day: $('#pick_out').dpGetSelected()[0].getTime()/1000  },
                 function(data) { 
                     $("#zef").html(data);
                 
