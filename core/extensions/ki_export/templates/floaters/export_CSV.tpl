@@ -8,17 +8,7 @@
             $('#floater input#default_location').attr('value',$('#default_location').attr('value'));
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter input:checked').attr('value'));
-
-            columns = new Array('date','from','to','time','dec_time','rate','wage','knd','pct','action','comment','location','trackingnr','user','cleared');
-            axColumnsString = '';
-            firstColumn = true;
-            $(columns).each(function () {
-              if (!$('#xp_head td.'+this).hasClass('disabled')) {
-              axColumnsString += (firstColumn?'':'|') + this;
-              firstColumn = false;
-              }
-            });
-            $('#floater input#axColumns').attr('value',axColumnsString);
+            $('#floater input#axColumns').attr('value',xp_enabled_columns());
             $('#floater_content fieldset label').css('width','200px');
 
         }); 

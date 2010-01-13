@@ -35,6 +35,12 @@
             </div>
 
             <div>
+                <select name="language" class="formfield">
+                    {html_options values=$languages output=$languages selected=$kga.language}
+                </select> {$kga.lang.language}
+            </div>
+
+            <div>
                <input type="checkbox" name="show_sensible_data" {if $kga.show_sensible_data}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.show_sensible_data}
             </div>
 

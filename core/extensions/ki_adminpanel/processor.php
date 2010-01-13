@@ -232,6 +232,7 @@ switch ($axAction) {
         $var_data['date_format_0']          = $_REQUEST['date_format_0'];
         $var_data['date_format_1']          = $_REQUEST['date_format_1'];
         $var_data['date_format_2']          = $_REQUEST['date_format_2'];
+        $var_data['language']               = $_REQUEST['language'];
         
         $success = var_edit($var_data);
 

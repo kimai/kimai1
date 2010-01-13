@@ -404,3 +404,16 @@ function xp_toggle_cleared(id) {
   }
   $(path).blur();
 }
+
+function xp_enabled_columns() {
+  columns = new Array('date','from','to','time','dec_time','rate','wage','knd','pct','action','comment','location','trackingnr','user','cleared');
+  columnsString = '';
+  firstColumn = true;
+  $(columns).each(function () {
+    if (!$('#xp_head .'+this).hasClass('disabled')) {
+    columnsString += (firstColumn?'':'|') + this;
+    firstColumn = false;
+    }
+  });
+  return columnsString;
+}

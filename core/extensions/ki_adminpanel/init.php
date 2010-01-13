@@ -58,6 +58,7 @@
     $tpl->assign('arr_usr', get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
     $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
     $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
+    $tpl->assign('languages', langs());
     $admin['users'] = $tpl->fetch("users.tpl");
     $admin['groups'] = $tpl->fetch("groups.tpl");
     $admin['advanced'] = $tpl->fetch("advanced.tpl");

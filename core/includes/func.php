@@ -109,7 +109,7 @@ function langs(){
     $arr_files = array();
     $arr_files[0] = "";
     $i=1;
-    $handle = opendir('../language/');
+    $handle = opendir(WEBROOT.'/language/');
         while (false !== ($readdir = readdir($handle))) {
             if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'  && $readdir != ("index.php") ) {
                 $readdir = str_replace(".php", "", $readdir);

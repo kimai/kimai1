@@ -301,6 +301,7 @@ exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUE
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_1','%d.%m.')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('language','$kga[language]')");
 
 
 

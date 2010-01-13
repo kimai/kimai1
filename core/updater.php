@@ -961,6 +961,10 @@ if ((int)$revisionDB < 1113) {
     exec_query("DELETE FROM ${p}var WHERE `var` = 'charset' LIMIT 1");
 }
 
+if ((int)$revisionDB < 1115) {
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('language','$kga[language]')");    
+}
+
   
 //////// ---------------------------------------------------------------------------------------------------
 
