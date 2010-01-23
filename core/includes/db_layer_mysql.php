@@ -1964,6 +1964,7 @@ function zef_create_record($usr_ID,$data) {
     $values ['zef_out']          =   MySQL::SQLValue( $data ['out']          , MySQL::SQLVALUE_NUMBER );
     $values ['zef_time']         =   MySQL::SQLValue( $data ['diff']         , MySQL::SQLVALUE_NUMBER );
     $values ['zef_rate']         =   MySQL::SQLValue( $data ['rate']         , MySQL::SQLVALUE_NUMBER );
+    $values ['zef_cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."zef";
     return $conn->InsertRow($table, $values);
@@ -1984,6 +1985,8 @@ function zef_create_record($usr_ID,$data) {
 function zef_edit_record($id,$data) {
     global $kga, $conn;
     
+    logfile(serialize($data));
+    
     $data = clean_data($data);
    
     $original_array = zef_get_data($id);
@@ -1996,6 +1999,7 @@ function zef_edit_record($id,$data) {
             $new_array[$key] = $original_array[$key];
         }
     }
+    logfile(serialize($new_array));
 
     $values ['zef_comment']      = MySQL::SQLValue($new_array ['zef_comment']                                );
     $values ['zef_location']     = MySQL::SQLValue($new_array ['zef_location']                               );
@@ -2010,6 +2014,7 @@ function zef_edit_record($id,$data) {
     $values ['zef_out']          = MySQL::SQLValue($new_array ['zef_out']           , MySQL::SQLVALUE_NUMBER );
     $values ['zef_time']         = MySQL::SQLValue($new_array ['zef_time']          , MySQL::SQLVALUE_NUMBER );
     $values ['zef_rate']         = MySQL::SQLValue($new_array ['zef_rate']          , MySQL::SQLVALUE_NUMBER );
+    $values ['zef_cleared']      = MySQL::SQLValue($new_array ['zef_cleared']?1:0   , MySQL::SQLVALUE_NUMBER );
                                    
     $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."zef";

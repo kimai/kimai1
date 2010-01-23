@@ -175,6 +175,11 @@ switch ($axAction) {
     case 'export_xls':        
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+        for ($i=0;$i<count($arr_data);$i++) {
+          $arr_data[$i]['dec_zef_time'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['dec_zef_time']);
+          $arr_data[$i]['zef_rate'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['zef_rate']);
+          $arr_data[$i]['wage'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['wage']);
+        }
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);

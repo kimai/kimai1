@@ -315,6 +315,8 @@ $kga['lang']['xp_ext'] = array(
 'duration'              => 'Duración',
 'hide_cleared_entries'  => 'don\'t show cleared entries',
 
+'decimal_separator'  => 'Decimal separator',
+
 );
 
 $kga['lang']['ext_invoice'] = array(

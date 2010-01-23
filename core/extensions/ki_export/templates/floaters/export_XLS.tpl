@@ -9,7 +9,7 @@
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter input:checked').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
-            $('#floater input#axColumns').attr('value',axColumnsString);
+            $('#floater_content fieldset label').css('width','200px');
 
         }); 
         
@@ -40,6 +40,12 @@
             <fieldset>
                    
 				<ul>
+                
+                   <li>
+                       <label for="print_comments">{$kga.lang.xp_ext.decimal_separator}:</label>
+                       <input type="text" value="," name="decimal_separator" id="decimal-separator" size="1"/>
+                   </li>
+
 			        <li>
 				 		{$kga.lang.xp_ext.dl_hint}
 					</li>

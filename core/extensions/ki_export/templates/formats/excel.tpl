@@ -1,24 +1,48 @@
 <html xmlns:o="urn:schemas-microsoft-com:office:office" 
 xmlns:x="urn:schemas-microsoft-com:office:excel" 
 xmlns="http://www.w3.org/TR/REC-html40"> 
+
 <head> 
-<title></title> 
+<meta http-equiv=Content-Type content="text/html; charset=utf8">
 <style> 
 {literal}
-.datum { 
+.date { 
 mso-number-format:"Short Date"; 
 } 
-.datum_ausf { 
-mso-number-format:"\[$-407\]d\/\\ mmmm\\ yyyy\;\@"; 
+.time { 
+mso-number-format:"h\:mm\:ss\;\@"; 
 } 
-.uhrzeit{ 
-mso-number-format:"h\:mm\;\@"; 
-} 
-.prozent { 
-mso-number-format:Percent; 
-} 
+.duration {
+mso-number-format:"h\:mm\;\@";
+}
+.decimal {
+mso-number-format:Fixed;
+}
 {/literal}
 </style> 
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>Tabelle1</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultColWidth>10</x:DefaultColWidth>
+     <x:Selected/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>4</x:ActiveRow>
+       <x:ActiveCol>3</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
 </head> 
 
 <body> 
@@ -46,7 +70,7 @@ mso-number-format:Percent;
 <tr> 
 {*datum --------------------------------------------------------*}
 { if $columns.date }
-                    <td>
+                    <td class=date>
                         { if $custom_dateformat }
                         {$arr_data[row].time_in|date_format:$custom_dateformat}
                         { else }
@@ -57,7 +81,7 @@ mso-number-format:Percent;
 
 {*in -----------------------------------------------------------*}
 { if $columns.from }
-                    <td>
+                    <td align=right class=time>
                         { if $custom_timeformat }
                         {$arr_data[row].time_in|date_format:$custom_timeformat}
                         { else }
@@ -68,7 +92,7 @@ mso-number-format:Percent;
 
 {*out ----------------------------------------------------------*}
 { if $columns.to }
-                    <td>
+                    <td align=right class=time>
                     
 {if $arr_data[row].time_out}
                         { if $custom_timeformat }
@@ -84,7 +108,7 @@ mso-number-format:Percent;
 
 {*task time ----------------------------------------------------*}
 { if $columns.time }
-                    <td>
+                    <td align=right class=duration>
                     
 {if $arr_data[row].zef_time}
 
@@ -98,7 +122,7 @@ mso-number-format:Percent;
 
 {*decimal time --------------------------------------------------*}
 { if $columns.dec_time }
-                    <td>
+                    <td align=right class=decimal>
                     
 {if $arr_data[row].dec_zef_time}
                             {$arr_data[row].dec_zef_time}
@@ -111,7 +135,7 @@ mso-number-format:Percent;
 
 {*rate ---------------------------------------------------------*}
 { if $columns.rate }
-                    <td>
+                    <td align=right class=decimal>
                     
                             {$arr_data[row].zef_rate}
                     </td>
@@ -119,7 +143,7 @@ mso-number-format:Percent;
 
 {*task wage ----------------------------------------------------*}
 { if $columns.wage }
-                    <td>
+                    <td align=right class=decimal>
                     
 {if $arr_data[row].wage}
                     

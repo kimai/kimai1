@@ -9,7 +9,6 @@
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter input:checked').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
-            $('#floater input#axColumns').attr('value',axColumnsString);
         }); 
         
     </script>

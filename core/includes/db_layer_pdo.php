@@ -1769,7 +1769,8 @@ function zef_create_record($usr_ID,$data) {
     `zef_out`,
     `zef_time`,
     `zef_usrID`,
-    `zef_rate`
+    `zef_rate`,
+    `zef_cleared`
     ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
     ;");
     
@@ -1784,7 +1785,8 @@ function zef_create_record($usr_ID,$data) {
     $data['out'],
     $data['diff'],
     $usr_ID,
-    $data['rate']
+    $data['rate'],
+    $data['cleared']?1:0
     ));
    logfile($pdo_query->errorInfo());
     if ($result == false) {
@@ -1827,7 +1829,8 @@ function zef_edit_record($id,$data) {
     zef_in = ?,
     zef_out = ?,
     zef_time = ?,
-    zef_rate = ?
+    zef_rate = ?,
+    zef_cleared= ?,
     WHERE zef_ID = ?;");    
     
     $result = $pdo_query->execute(array(
@@ -1841,6 +1844,7 @@ function zef_edit_record($id,$data) {
     $new_array['zef_out'],
     $new_array['zef_time'],
     $new_array['zef_rate'],
+    $new_array['zef_cleared'],
     $id
     ));
    

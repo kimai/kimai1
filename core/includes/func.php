@@ -588,6 +588,7 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_comment']      = $zef_data['comment'];
 	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
+      $zef_final_data['zef_cleared']      = $zef_data['cleared'];
     
 	    return zef_edit_record($id,$zef_final_data);
     
@@ -603,6 +604,7 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_out']          = $zef_data['out'];
 	    $zef_final_data['zef_time']         = $zef_data['diff'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
+      $zef_final_data['zef_cleared']         = $zef_data['cleared'];
     
 	    return zef_edit_record($id,$zef_final_data);
 

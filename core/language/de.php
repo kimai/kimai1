@@ -269,8 +269,8 @@ $kga['lang']['backup'][9]        = "Diese Backups sind genaugenommen Snapshots! 
 
 $kga['lang']['xp_ext'] = array(
 	
-"print_hint"      		   => "Klicken Sie OK um eine druckbare Tabelle anzuzeigen.",
-"dl_hint"         		   => "Klicken Sie OK um den Download zu starten.",
+"print_hint"      		   => "Klicken Sie auf OK um eine druckbare Tabelle anzuzeigen.",
+"dl_hint"         		   => "Klicken Sie auf OK um den Download zu starten.",
 
 "tab_filter"	 		   => "Filter",
 "tab_location"	 		   => "Location",
@@ -311,6 +311,8 @@ $kga['lang']['xp_ext'] = array(
 'done_by'               => 'durchgeführt von',
 'duration'              => 'Dauer',
 'hide_cleared_entries'  => 'bezahlte Einträge nicht anzeigen',
+
+'decimal_separator'  => 'Dezimal-Trennzeichen',
 
 );
 

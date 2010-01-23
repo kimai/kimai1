@@ -314,6 +314,8 @@ $kga['lang']['xp_ext'] = array(
 'duration'              => 'Duration',
 'hide_cleared_entries'  => 'don\'t show cleared entries',
 
+'decimal_separator'  => 'Decimal separator',
+
 );
 
 

@@ -41,6 +41,8 @@ switch ($axAction) {
         $tpl->assign('comment', $zef_entry['zef_comment']);
         
         $tpl->assign('rate', $zef_entry['zef_rate']);
+        
+        $tpl->assign('cleared', $zef_entry['zef_cleared']!=0);
     
         $tpl->assign('edit_in_day', date("d.m.Y",$zef_entry['zef_in']));
         $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));

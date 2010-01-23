@@ -148,7 +148,7 @@
 
                     <li class="extended">
                         <label for="cleared">{$kga.lang.cleared}:</label>
-                        <input type='checkbox' id='cleared' name='cleared' tabindex='16'/>
+                        <input type='checkbox' id='cleared' name='cleared' {if $cleared} checked="checked" {/if} tabindex='16'/>
                    </li>
         
                 </ul>
