@@ -386,6 +386,8 @@ function buzzer() {
 // preselections for buzzer
 function buzzer_preselect(subject,id,name,kndID,kndName) {
     $('a').blur();
+    if (recstate)
+      return;
     switch (subject) {
         case "knd":
         // TODO: build filter for project selection (by customer)

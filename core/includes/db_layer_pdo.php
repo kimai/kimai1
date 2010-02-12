@@ -1192,7 +1192,7 @@ function usr_edit($usr_id, $data) {
     $new_array['lang'],
     $new_array['noFading'],
     $new_array['lastProject'],
-    $new_array['lastEvent']
+    $new_array['lastEvent'],
     $usr_id
     ));
     
@@ -1771,7 +1771,7 @@ function zef_create_record($usr_ID,$data) {
     `zef_usrID`,
     `zef_rate`,
     `zef_cleared`
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?)
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
     ;");
     
     $result = $pdo_query->execute(array(
@@ -1830,7 +1830,7 @@ function zef_edit_record($id,$data) {
     zef_out = ?,
     zef_time = ?,
     zef_rate = ?,
-    zef_cleared= ?,
+    zef_cleared= ?
     WHERE zef_ID = ?;");    
     
     $result = $pdo_query->execute(array(
@@ -1849,6 +1849,8 @@ function zef_edit_record($id,$data) {
     ));
    
     if ($result == false) {
+        $err = $pdo_query->errorInfo();
+        error_log("ERROR: " . $err[2]);
         return $result;
     }
     

@@ -185,6 +185,11 @@ function ts_ext_reload() {
 // and starts recording that event anew
 //
 function ts_ext_recordAgain(pct,evt,id) {
+    $('#zefEntry'+id+'>td>a').blur();
+
+    if (recstate)
+      return;
+
     $('#zefEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
@@ -192,7 +197,6 @@ function ts_ext_recordAgain(pct,evt,id) {
     startsec = 0;
     recstate=1;
     show_stopwatch();
-    $('#zefEntry'+id+'>td>a').blur();
     $('#zefEntry'+id+'>td>a').removeAttr('onClick');
  
     $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: pct+"|"+evt, id: 0 },
