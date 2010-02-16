@@ -159,7 +159,7 @@ switch ($axAction) {
 
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -174,7 +174,7 @@ switch ($axAction) {
 
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
         for ($i=0;$i<count($arr_data);$i++) {
           $arr_data[$i]['dec_zef_time'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['dec_zef_time']);
           $arr_data[$i]['zef_rate'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['zef_rate']);
@@ -195,7 +195,7 @@ switch ($axAction) {
 
     case 'export_csv':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
         /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
@@ -288,7 +288,7 @@ switch ($axAction) {
 
     case 'export_pdf':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
       require('export_pdf.php');
     break;
 
@@ -296,7 +296,7 @@ switch ($axAction) {
 
     case 'export_pdf2':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
 
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();

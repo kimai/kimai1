@@ -86,7 +86,7 @@ class MYPDF extends TCPDF {
     $user_string = ($columns['user'] && !empty($row['username'])) ?
         $kga['lang']['xp_ext']['by'].': <i>'.$row['username'].'</i>' : '';
     $comment_string = ($columns['comment'] && !empty($row['comment'])) ?
-        $kga['lang']['comment'].': <i>'.$row['comment'].'</i>' : '';
+        $kga['lang']['comment'].': <i>'.nl2br($row['comment']).'</i>' : '';
     $wage_string = '<b>'.$this->money($row['wage']).'</b>';
     
     $event_fills_row = empty($user_string) || ($this->GetStringWidth($event_string)+$this->GetStringWidth($user_string) > $w[1]);
@@ -207,7 +207,7 @@ class MYPDF extends TCPDF {
                 $trackingnr_string = '';
 
               if ($columns['comment'] && !empty($row['comment']))
-                $comment_string = $kga['lang']['comment'].': <i>'.$row['comment'].'</i>';
+                $comment_string = $kga['lang']['comment'].': <i>'.nl2br($row['comment']).'</i>';
               else
                 $comment_string = '';
 
