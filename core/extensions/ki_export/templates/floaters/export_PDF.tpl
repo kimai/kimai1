@@ -64,6 +64,11 @@
                    </li>
                 
                    <li>
+                       <label for="customer_new_page">{$kga.lang.xp_ext.customer_new_page}:</label>
+                       <input type="checkbox" value="true" name="customer_new_page" id="customer_new_page"/>
+                   </li>
+                
+                   <li>
                        <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
                        <select name="axAction" id="axAction">
                          <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>

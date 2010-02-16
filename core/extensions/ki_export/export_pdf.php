@@ -18,6 +18,7 @@ class MYPDF extends TCPDF {
   } 
 
   public function money($number) {
+    global $kga;
     return str_replace(".",",",sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
   
@@ -102,7 +103,7 @@ class MYPDF extends TCPDF {
             if ( $show_comment ) {
 	      $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
               $this->SetFont('', 'I'); 
-	      $this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br($row['comment']), 'LR', 0, 'L', $fill);
+	      $this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
 	      $this->SetFont(''); 
 	      $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
               $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 

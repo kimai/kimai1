@@ -592,6 +592,8 @@ $kga['lang']['xp_ext'] = array(
 
 'decimal_separator'  => 'Decimal separator',
 
+'customer_new_page'     => 'new page for each customer',
+
 );
 
 

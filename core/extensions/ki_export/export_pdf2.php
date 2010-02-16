@@ -378,7 +378,15 @@ $pdf->ln();
 $pdf->ln();
 $pdf->ln();
 
+$firstRun = true;
+
 foreach ($pdf_arr_data as $customer) {
+
+  if ($firstRun)
+    $firstRun = false;
+  else if (isset($_REQUEST['customer_new_page']))
+    $pdf->AddPage();
+
   // process each customer in first dimension
 
   $project_ids = array_keys($customer);

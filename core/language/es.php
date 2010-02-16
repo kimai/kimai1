@@ -314,6 +314,7 @@ $kga['lang']['xp_ext'] = array(
 'done_by'               => 'realizado por',
 'duration'              => 'Duración',
 'hide_cleared_entries'  => 'don\'t show cleared entries',
+'customer_new_page'     => 'new page for each customer',
 
 'decimal_separator'  => 'Decimal separator',
 

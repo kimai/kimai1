@@ -311,6 +311,7 @@ $kga['lang']['xp_ext'] = array(
 'done_by'               => 'durchgeführt von',
 'duration'              => 'Dauer',
 'hide_cleared_entries'  => 'bezahlte Einträge nicht anzeigen',
+'customer_new_page'     => 'Kunden jeweils auf neue Seite',
 
 'decimal_separator'  => 'Dezimal-Trennzeichen',
 
