@@ -85,7 +85,7 @@ while ($time_index < count($timeArray)) {
       if ( $index >= 0 ) {
          $totalTime = $invoiceArray[$index]['hour'];
          $totalAmount = $invoiceArray[$index]['amount'];
-         $invoiceArray[$index] = array('desc'=>$event, 'hour' => $totalTime+$time, "amount" => $totalAmount+$rate);
+         $invoiceArray[$index] = array('desc'=>$event, 'hour' => $totalTime+$time, "amount" => $totalAmount+$wage);
 	  }
 	  else {
    	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage );
