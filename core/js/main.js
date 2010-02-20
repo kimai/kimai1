@@ -371,6 +371,8 @@ function show_selectors() {
 }
 
 function buzzer() {
+    if ( !(selected_knd && selected_pct && selected_evt) ) return;
+
     $('#noclick').show();
     if (recstate) {
         stopRecord();
@@ -414,9 +416,6 @@ function buzzer_preselect(subject,id,name,kndID,kndName) {
     $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
     
     if (selected_knd && selected_pct && selected_evt) {
-      $('#buzzer').click(function(){
-        buzzer();
-      });
       $('#buzzer').removeClass('disabled');
     }
 }

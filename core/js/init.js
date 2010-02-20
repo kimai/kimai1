@@ -79,10 +79,11 @@ $(document).ready(function() {
     });
 
     
+    $('#buzzer').click(function(){
+      buzzer();
+    });
+
     if (selected_knd && selected_pct && selected_evt) {
-      $('#buzzer').click(function(){
-        buzzer();
-      });
       $('#buzzer').removeClass('disabled');
     }
  
