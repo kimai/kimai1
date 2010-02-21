@@ -87,6 +87,7 @@ switch ($axAction) {
             $javascript .= "$('#installsteps button.proceed').show();";
         }
 
+        $javascript .= "resetRequirementsIndicators();".$javascript;
         echo $javascript;
 
       break;

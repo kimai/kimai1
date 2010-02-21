@@ -97,7 +97,6 @@ function gpl_proceed() {
 function check_system_requirements() {
     $.post("processor.php", { axAction: 'checkRequirements' },
         function(data) {
-            resetRequirementsIndicators();
             eval(data);
         }
     );
