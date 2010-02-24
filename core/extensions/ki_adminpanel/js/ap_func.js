@@ -275,6 +275,11 @@ function ap_ext_deleteProject(id) {
     $.post(ap_ext_path + "processor.php", { axAction: "deletePct", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
+                if (recstate!=1 && selected_pct == id) {
+                  $('#buzzer').addClass('disabled');
+                }
+                selected_pct = false;
+                $("#sel_pct").html('');
                 $.post(ap_ext_path + "processor.php", {axAction: "deletePct", axValue: 1, id: id }, 
                     function() { ap_ext_refreshSubtab('pct');
                  hook_chgPct(); }
@@ -291,6 +296,11 @@ function ap_ext_deleteCustomer(id) {
     $.post(ap_ext_path + "processor.php", { axAction: "deleteKnd", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
+                if (recstate!=1 && selected_knd == id) {
+                  $('#buzzer').addClass('disabled');
+                }
+                selected_knd = false;
+                $("#sel_knd").html('');
                 $.post(ap_ext_path + "processor.php", {axAction: "deleteKnd", axValue: 1, id: id }, 
                     function() { ap_ext_refreshSubtab('knd');
                  hook_chgKnd(); }
@@ -307,6 +317,11 @@ function ap_ext_deleteEvent(id) {
     $.post(ap_ext_path + "processor.php", { axAction: "deleteEvt", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
+                if (recstate!=1 && selected_evt == id) {
+                  $('#buzzer').addClass('disabled');
+                }
+                selected_evt = false;
+                $("#sel_evt").html('');
                 $.post(ap_ext_path + "processor.php", {axAction: "deleteEvt", axValue: 1, id: id }, 
                     function() { ap_ext_refreshSubtab('evt');
                  hook_chgEvt(); }

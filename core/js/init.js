@@ -83,7 +83,7 @@ $(document).ready(function() {
       buzzer();
     });
 
-    if (selected_knd && selected_pct && selected_evt) {
+    if (recstate==1 || (selected_knd && selected_pct && selected_evt)) {
       $('#buzzer').removeClass('disabled');
     }
  

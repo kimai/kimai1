@@ -7,8 +7,9 @@
                 
                 $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
                 $edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
+                $delete = $('#erase').is(':checked');
                 
-                if ($edit_in_time == $edit_out_time) {
+                if (!$delete && $edit_in_time == $edit_out_time) {
                     alert("{/literal}{$kga.lang.timediff_warn}{literal}");
                 } else {
                     floaterClose();

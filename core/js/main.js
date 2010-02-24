@@ -368,10 +368,13 @@ function show_selectors() {
     $("#stopwatch_ticker").css('display','none');
     // $("#button_comment").css('display','none');
     $("#buzzer").removeClass("act");
+    if (!(selected_knd && selected_pct && selected_evt)) {
+      $('#buzzer').addClass('disabled');
+    }
 }
 
 function buzzer() {
-    if ( !(selected_knd && selected_pct && selected_evt) ) return;
+    if ( recstate!=1 && !(selected_knd && selected_pct && selected_evt) ) return;
 
     $('#noclick').show();
     if (recstate) {
