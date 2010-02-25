@@ -326,7 +326,8 @@ $kga['lang']['ext_invoice'] = array(
 "invoiceOptionVat" 			=> " Abrechnung mit MWST",
 "invoiceOptionShort" 		=> "Kurze Abrechnung",
 "invoiceOptionRound" 		=> "Zeiten Runden",
-"invoiceButton" 			=> "Erstellen"
+"invoiceButton" 			=> "Erstellen",
+'noPDOerror'            => 'Diese Erweiterung funktioniert nur, wenn PDO als Datenbankverbindung benutzt wird.'
 
 );
 

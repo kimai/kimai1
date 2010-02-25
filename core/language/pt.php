@@ -611,7 +611,9 @@ $kga['lang']['ext_invoice'] = array(
 
 "invoiceOptionRound" 	=> "Arredondar tempo",
 
-"invoiceButton" 		=> "Criar"
+"invoiceButton" 		=> "Criar",
+
+'noPDOerror'            => 'This extension only works with a PDO database connection.'
 
 );
 

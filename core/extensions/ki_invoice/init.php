@@ -15,6 +15,8 @@ $tpl->compile_dir  = 'compile/';
 
 $tpl->assign('kga', $kga);
 
+if ($kga['server_conn'] == 'pdo') {
+
 // select for projects
 $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
 $tpl->assign('sel_pct_names', $sel[0]);
@@ -30,5 +32,11 @@ $tpl->assign('out', $timespace[1]);
 $tpl->assign('timespan_display', $tpl->fetch("timespan.tpl"));
 
 $tpl->display('main.tpl');
+
+}
+
+else {
+$tpl->display('unusable.tpl');
+}
 
 ?>

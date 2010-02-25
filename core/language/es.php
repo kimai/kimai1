@@ -328,7 +328,7 @@ $kga['lang']['ext_invoice'] = array(
 "invoiceOptionVat" 		=> " Factura con impuesto",
 "invoiceOptionShort" 	=> "Factura corta",
 "invoiceOptionRound" 	=> "Redondear tiempo",
-"invoiceButton" 		=> "Crear"
-
+"invoiceButton" 		=> "Crear",
+'noPDOerror'            => 'This extension only works with a PDO database connection.'
 );
 ?>
