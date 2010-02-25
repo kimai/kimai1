@@ -120,19 +120,19 @@ $query=
 exec_query($query);
 
 // leader/group cross-table (leaders n:m groups)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "ldr` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` int(10) NOT NULL, `grp_leader` int(10) NOT NULL);";
+$query="CREATE TABLE `" . $kga['server_prefix'] . "ldr` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` int(10) NOT NULL, `grp_leader` int(10) NOT NULL, UNIQUE (`grp_ID` ,`grp_leader`));";
 exec_query($query);
 
 // group/customer cross-table (groups n:m customers)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_knd` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `knd_ID` INT NOT NULL);";
+$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_knd` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `knd_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`knd_ID`));";
 exec_query($query);
 
 // group/project cross-table (groups n:m projects)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_pct` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `pct_ID` INT NOT NULL);";
+$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_pct` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `pct_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`pct_ID`));";
 exec_query($query);
 
 // group/event cross-table (groups n:m events)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `evt_ID` INT NOT NULL);";
+$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`evt_ID`)) ;";
 exec_query($query);
 
 $query=

@@ -966,6 +966,16 @@ if ((int)$revisionDB < 1115) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('language','$kga[language]')");    
 }
 
+if ((int)$revisionDB < 1126) {
+    logfile("-- update to r1126");
+    exec_query("ALTER TABLE `${p}grp_evt` ADD UNIQUE (`grp_ID` ,`evt_ID`);");
+    exec_query("ALTER TABLE `${p}grp_knd` ADD UNIQUE (`grp_ID` ,`knd_ID`);");
+    exec_query("ALTER TABLE `${p}grp_pct` ADD UNIQUE (`grp_ID` ,`pct_ID`);");
+    exec_query("ALTER TABLE `${p}ldr` ADD UNIQUE (`grp_ID` ,`grp_leader`);");
+}
+
+
+
   
 //////// ---------------------------------------------------------------------------------------------------
 
