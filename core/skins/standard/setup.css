@@ -15,6 +15,12 @@ body {
     margin:0; padding:0;
 }
 
+select,
+input {
+  background-color:white;
+  color:black;
+}
+
 #loader {
     position:absolute;
     margin-top:30px;

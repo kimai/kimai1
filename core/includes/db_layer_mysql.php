@@ -1555,7 +1555,7 @@ function grp_get_ldrs($grp_id) {
         }
         return $return_ldrs;
     } else {
-        return false;
+        return array();
     }
 }
 
