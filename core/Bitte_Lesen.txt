@@ -24,43 +24,44 @@ Sollten trotzdem Probleme bei der Installation auftauchen, lesen Sie
 bitte im Forum unter http://forum.kimai.org (Rubrik 'Support').
 
 
-Updates:
---------
-
-ES KÖNNEN NUR VERSIONEN HÖHER ALS 7.0 UPGEDATET WERDEN!
-
-Es sind zwei neue Variablen in der Grundkonfiguration dazugekommen.
-Wenn mit einer alten conf.php upgedatet werden soll, muss diese um
-folgende Eintraege ergaenzt werden:
-
-$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
-						  // check the PHP PDO manual if you are using a different
-						  // database
-$server_conn = "mysql";
-
-Die Installation laeuft dann NICHT mit PDO. Soll PDO genutzt werden,
-muss $server_conn = "pdo" gesetzt werden.
-
-
 Eine neue Version aktualisiert, falls notwendig, selbstaendig die
 Datenbankstruktur. Vorher wird jeweils ein Backup angelegt.
 Sollte dabei mal etwas schief laufen, koennen die Daten per phpMyAdmin
 (wir arbeiten an einem Tool mit dem Sie das direkt in Kimai machen koennen)
 wieder hergestellt werden.
 
+
+Updates:
+--------
+
+ES KÖNNEN NUR VERSIONEN HÖHER ALS 7.0 UPGEDATET WERDEN!
+
 Um eine neue Version zu installieren, ersetzen Sie einfach das gesamte
 Kimai-Verzeichnis durch das neue Package. Sie muessen dabei lediglich
-die Datei '/includes/conf.php' von der alten Version behalten.
+die Datei '/includes/autoconf.php' von der alten Version behalten.
 Zusätzlich muessen die 'compile'-Verzeichnisse (auch in den Unterordnern
 der Extensions!) für PHP schreibbar gemacht werden. Ebenso das
 Verzeichnis 'temporary' und die darin enthaltene Datei 'logfile.txt'.
 
-Bei kommenden Versionen (>0.8.0) muessen sie die Datei ‘autoconf.php’
-behalten, wenn Sie per Step-By-Step Installer installiert haben (und
-nicht durch editieren der ‘conf.php’). Falls Sie Aenderungen in der
-Datei '/includes/vars.php' vorgenommen haben, muessen Sie diese
-natuerlich auch in das neue Package kopieren. Ggf. muessen noch wie oben
-beschrieben die Rechte neu gesetzt werden.
+
+=== Update wenn noch keine autoconf.php existiert ===
+
+Existiert bereits eine autoconf.php sind diese Schritte nicht durchzuführen.
+
+Die Datei conf.php in autoconf.php umbenennen.
+
+Anschließend müssen 3 Variablen zu autoconf.php hinzugefügt werden:
+
+$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
+						  // check the PHP PDO manual if you are using a different
+						  // database
+$server_conn = "mysql";
+
+$password_salt = "";
+
+Die Installation laeuft dann nicht mit PDO. Soll PDO genutzt werden,
+muss $server_conn = "pdo" gesetzt werden.
+
 
 
 Noch ein Hinweis: 
@@ -74,40 +75,5 @@ nutzen Sie Kimai NICHT. Wir muessen das hier leider aus gegebenem Anlass
 hinschreiben ...
 
 
-Installation per conf.php:
---------------------------
-
-Hinweis: Dies ist die *alte* Installationsvariante. Man *kann* Kimai so
-installieren, muss man aber nicht. Der Step-by-Step Installer ist bequemer...
-
-# Datenbankname, Server, Host, etc. in Datei /includes/conf.php eintragen.
-  (benennen Sie dazu die Datei 'conf.default.php' in 'conf.php' um).
-  
-# Stellen Sie sicher, dass PHP Schreibrechte fuer das Verzeichnis 'temporary' 
-  und auch fuer die bereits enthaltene Datei 'logfile.txt' hat.
- 
-# Stellen Sie sicher, dass PHP Schreibrechte fuer das Verzeichnis 
-  'compile' hat.
-
-# Jede Extension hat ihren eigenen 'compile' Ordner. Diese muessen alle
-  ebenfalls schreibbar sein. Sie finden im Kimai-Ordner ein Shell-
-  Script, das diese Aenderungen unter Unix oder Linux automatisch fuer Sie
-  erledigt. Natuerlich koennen Sie die Rechte auch einzeln manuell setzen.
-  
-# Kimai-Verzeichnis im Browser aufrufen 
-  (die Datenbank-Tabellen werden dann automatisch erstellt).
-  
-# Der '/includes' Ordner sollte aus Sicherheitsgruenden vor fremdem Zugriff
-  geschuetzt werden. Auf Apache Servern erreichen Sie das mit der bereits
-  vorinstallierten '.htaccess' Datei. Stellen Sie sicher, dass Ihr FTP Client
-  diese Datei mit kopiert!
-  
-# Installation fertig!
-
-In der Datei 'includes/vars.php' koennen Sie ggf. noch weitere Einstellungen
-vornehmen. Sie finden Erlaeuterungen dazu direkt in der Datei.
-
-SQL zum erstellen der Kimai-Datenbank: 
-CREATE DATABASE `kimai` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 Have Fun!
