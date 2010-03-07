@@ -13,6 +13,7 @@ echo<<<EOD
 
     <span class="ch_compile_epext"><strong>/extensions/ki_expenses/compile</strong> <span class="gray">(Directory)</span></span><br/>
     <span class="ch_compile_xpext"><strong>/extensions/ki_export/compile</strong> <span class="gray">(Directory)</span></span><br/>
+    <span class="ch_compile_xpext"><strong>/extensions/ki_budget/compile</strong> <span class="gray">(Directory)</span></span><br/>
     <!--<span class="ch_compile_ivext"><strong>/extensions/ki_invoice/compile</strong> <span class="gray">(Directory)</span></span><br/>-->
 
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Directory)</span></span><br/>
@@ -36,6 +37,7 @@ echo<<<EOD
 
     <span class="ch_compile_epext"><strong>/extensions/ki_expenses/compile</strong> <span class="gray">(Verzeichnis)</span></span><br/>
     <span class="ch_compile_xpext"><strong>/extensions/ki_export/compile</strong>   <span class="gray">(Verzeichnis)</span></span><br/>
+    <span class="ch_compile_bgtext"><strong>/extensions/ki_budget/compile</strong> <span class="gray">(Directory)</span></span><br/>
     <!--<span class="ch_compile_ivext"><strong>/extensions/ki_invoice/compile</strong>  <span class="gray">(Verzeichnis)</span></span><br/>-->
 
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Verzeichnis)</span></span><br/>

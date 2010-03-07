@@ -119,8 +119,6 @@ switch ($axAction) {
             $javascript .= "$('span.ch_compile_apext').addClass('fail');";
         }
 
-
-
         if (!$fp = @fopen("../extensions/ki_expenses/compile/".$filename ."_testfile.txt", "w")) {
             $errors++;
             $javascript .= "$('span.ch_compile_epext').addClass('fail');";
@@ -129,6 +127,11 @@ switch ($axAction) {
         if (!$fp = @fopen("../extensions/ki_export/compile/".$filename ."_testfile.txt", "w")) {
             $errors++;
             $javascript .= "$('span.ch_compile_xpext').addClass('fail');";
+        }
+
+        if (!$fp = @fopen("../extensions/ki_budget/compile/".$filename ."_testfile.txt", "w")) {
+            $errors++;
+            $javascript .= "$('span.ch_compile_bgtext').addClass('fail');";
         }
 
         // if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
