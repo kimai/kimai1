@@ -1413,6 +1413,8 @@ function assign_ldr2grps($ldr_id, $grp_array) {
         }
     }
 
+    update_leader_status();
+
     if ($conn->TransactionEnd() == true) {
         return true;
     } else {
@@ -1468,6 +1470,8 @@ function assign_grp2ldrs($grp_id, $ldr_array) {
             }
         }
     }
+
+    update_leader_status();
     
     if ($conn->TransactionEnd() == true) {
         return true;
