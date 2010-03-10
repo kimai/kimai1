@@ -974,6 +974,14 @@ if ((int)$revisionDB < 1126) {
     exec_query("ALTER TABLE `${p}ldr` ADD UNIQUE (`grp_ID` ,`grp_leader`);");
 }
 
+if ((int)$revisionDB < 1132) {
+    logfile("-- update to r1132");
+    if ($kga['server_conn'] == "mysql") {
+       exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
+       exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
+    }
+}
+
 
 
   
