@@ -328,7 +328,8 @@ $kga['lang']['ext_invoice'] = array(
 "invoiceOptionShort" 	=> "Short Invoice",
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 		=> "Create",
-'noPDOerror'            => 'This extension only works with a PDO database connection.'
+'noPDOerror'            => 'This extension only works with a PDO database connection.',
+'noData'                => 'There are no time entries for the selected project & time period.'
 
 );
 ?>

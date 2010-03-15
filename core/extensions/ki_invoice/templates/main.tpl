@@ -25,9 +25,18 @@
 				{$timespan_display}
 			</div>
 			
-    		<input type=checkbox name="vat"> {$kga.lang.ext_invoice.invoiceOptionVat}<BR>
-    		<input type=checkbox name="short"> {$kga.lang.ext_invoice.invoiceOptionShort}<BR>
-    		<input type=checkbox name="round"> {$kga.lang.ext_invoice.invoiceOptionRound}
+<!--Work in Progress: Select box for form type-->
+			Invoice Form:
+			<select id="iv_form_docs" name="ivform_file" class="formfield">
+			 {html_options values=$sel_form_files output=$sel_form_files selected=$pres_form}
+			</select><br/><br/>
+
+
+<!-- Some boxes below are checked by default. Delete "checked" to set default to unchecked condition -->
+
+   		<input type=checkbox name="vat"> {$kga.lang.ext_invoice.invoiceOptionVat}<br/>
+		<input type=checkbox name="short" checked> {$kga.lang.ext_invoice.invoiceOptionShort}<br/>
+    		<input type=checkbox name="round" checked> {$kga.lang.ext_invoice.invoiceOptionRound}
     		<select id="iv_round_ID" name="pct_round" class="formfield">
 			  {html_options values=$sel_round_IDs output=$sel_round_names selected=$pres_round}
 			</select>

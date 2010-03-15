@@ -327,7 +327,8 @@ $kga['lang']['ext_invoice'] = array(
 "invoiceOptionShort" 		=> "Kurze Abrechnung",
 "invoiceOptionRound" 		=> "Zeiten Runden",
 "invoiceButton" 			=> "Erstellen",
-'noPDOerror'            => 'Diese Erweiterung funktioniert nur, wenn PDO als Datenbankverbindung benutzt wird.'
+'noPDOerror'            => 'Diese Erweiterung funktioniert nur, wenn PDO als Datenbankverbindung benutzt wird.',
+'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!'
 
 );
 
