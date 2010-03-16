@@ -349,7 +349,7 @@ function ts_durationToTime() {
         if(durationArray.length > 1)
             secs += (durationArray[1]*60);
         if(durationArray.length > 2)
-            secs += durationArray[2];
+            secs += parseInt(durationArray[2]);
         end = new Date();
         end.setTime(begin.getTime()+(secs*1000));
 
@@ -367,8 +367,8 @@ function ts_durationToTime() {
         d = end.getDate();
         m = end.getMonth() + 1;
         y = end.getFullYear();
-        if (d<10) d = "0"+i;
-        if (m<10) m = "0"+s;
+        if (d<10) d = "0"+d;
+        if (m<10) m = "0"+m;
 
         $("#edit_out_day").val(d + "." + m + "." + y);
     }
