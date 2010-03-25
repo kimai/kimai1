@@ -408,39 +408,33 @@ function expand_date_shortcut($date) {
  */
 function expand_time_shortcut($time) {
     $time  = str_replace(" ","",$time);
-    $time  = str_replace(":","",$time);
-    $return = $time;
-    
-    $length = strlen($time);
-    
-    switch ($length) {
+
+    // empty string can't be a time value
+    if (strlen($time)==0)
+      return false;
+
+    // get the parts
+    $parts = explode(":",$time);
+
+    for ($i=0;$i<count($parts);$i++) {
+      switch (strlen($parts[$i])) {
+        case 0:
+          return false;
         case 1:
-            $return = "0${time}:00:00";
-        break;
-        
-        case 2:
-            if ((int)$time<24) $return = "${time}:00:00";
-            else $return = false;
-        break;
-        
-        case 4:
-            $hours = substr($time,0,2);
-            $minutes = substr($time,2,2);
-            if ((int)$hours<24 && (int)$minutes<60) $return = "${hours}:${minutes}:00";
-            else $return = false;
-        break;
-        
-        case 6:
-            $hours = substr($time,0,2);
-            $minutes = substr($time,2,2);
-            $seconds = substr($time,4,2);
-            if ((int)$hours<24 && (int)$minutes<60 && (int)$seconds<60) $return = "${hours}:${minutes}:${seconds}";
-            else $return = false;
-        break;
-        
+          $parts[$i] = "0".$parts[$i];
+      }
     }
     
-    if (!ereg("([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",$return)) $return = false;
+    // fill unsued parts (eg. 12:00 given but 12:00:00 is needed)
+    while (count($parts) < 3) {
+      $parts[] = "00";
+    }
+
+    $return = implode(":",$parts);
+    
+    $regex23 = '([0-1][0-9])|(2[0-3])'; // regular expression for hours
+    $regex59 = '([0-5][0-9])'; // regular expression for minutes and seconds
+    if (!preg_match("/^($regex23):($regex59):($regex59)$/",$return)) $return = false;
     return $return;
 }
 
