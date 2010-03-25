@@ -3484,6 +3484,7 @@ function get_usr($usr_id) {
 
     $arr['usr_ID']     = $row['usr_ID'];
     $arr['usr_name']   = $row['usr_name'];
+    $arr['usr_alias']  = $row['usr_alias'];
     $arr['usr_grp']    = $row['usr_grp'];
     $arr['usr_sts']    = $row['usr_sts'];
     $arr['grp_name']   = $row['grp_name'];
