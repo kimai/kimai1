@@ -65,6 +65,7 @@ switch ($axAction) {
         $usr_data['pct_comment_flag']   = $_REQUEST['pct_comment_flag'];
         $usr_data['showIDs']            = $_REQUEST['showIDs'];
         $usr_data['noFading']           = $_REQUEST['noFading'];
+        $usr_data['user_list_hidden']   = $_REQUEST['user_list_hidden'];
         
         if (is_numeric($_REQUEST['rate']))
           save_rate($kga['usr']['usr_ID'],null,NULL,$_REQUEST['rate']);

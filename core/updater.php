@@ -982,6 +982,11 @@ if ((int)$revisionDB < 1132) {
     }
 }
 
+if ((int)$revisionDB < 1138) {
+    logfile("-- update to r1138");
+    exec_query("ALTER TABLE `${p}usr` ADD `user_list_hidden` INT NOT NULL DEFAULT '0'");
+}
+
 
 
   

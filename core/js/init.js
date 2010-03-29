@@ -33,7 +33,7 @@ var fading_enabled = true;
 
 var extShrinkMode = 0; // 0 = show, 1 = hide
 var kndShrinkMode = 0; 
-var usrShrinkMode = 1; 
+var usrShrinkMode = 0; 
 
 var filterUsr = new Array();
 var filterKnd = new Array();
@@ -101,7 +101,7 @@ $(document).ready(function() {
        lists_resizeTimer = setTimeout(lists_resize, 500);
     });
 
-	$('#usr, #usr_head').hide(); // user subtab has to be hidden via jQat init for shrink FadeIn/FadeOut to work properly...
+	//$('#usr, #usr_head').hide(); // user subtab has to be hidden via jQat init for shrink FadeIn/FadeOut to work properly...
 
 });
 

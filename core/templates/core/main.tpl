@@ -108,7 +108,12 @@
     $('#usrShrink').click(lists_shrinkUsrToggle);
   {else}
     $('#usrShrink').hide();
-  {/if}{literal}
+  {/if}
+
+  {if $kga.conf.user_list_hidden}
+    lists_shrinkUsrToggle();
+  {/if}
+  {literal}
     $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
     $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
     

@@ -1318,6 +1318,7 @@ function usr_edit($usr_id, $data) {
     $values ['noFading']          = MySQL::SQLValue($new_array ['noFading']         , MySQL::SQLVALUE_NUMBER  );
     $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
     $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
+    $values ['user_list_hidden']  = MySQL::SQLValue($new_array ['user_list_hidden'] , MySQL::SQLVALUE_NUMBER  );
 
     $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     
@@ -2524,6 +2525,7 @@ function get_user_config($user) {
   $columns[] = "noFading"; 
   $columns[] = "pct_comment_flag"; 
   $columns[] = "lang"; 
+  $columns[] = "user_list_hidden";
 
   $conn->SelectRows($table, $filter, $columns);
   $rows = $conn->RowArray(0,MYSQL_ASSOC);
@@ -2601,6 +2603,7 @@ function get_customer_config($user) {
   $kga['conf']['showIDs'] = 0;
   $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
+  $kga['conf']['user_list_hidden'] = 0;
 
 }
 

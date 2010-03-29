@@ -1169,7 +1169,8 @@ function usr_edit($usr_id, $data) {
     lang = ? ,
     noFading = ?, 
     lastProject = ?,
-    lastEvent = ?
+    lastEvent = ?,
+    user_list_hidden = ?
     WHERE usr_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -1193,6 +1194,7 @@ function usr_edit($usr_id, $data) {
     $new_array['noFading'],
     $new_array['lastProject'],
     $new_array['lastEvent'],
+    $new_array['user_list_hidden'],
     $usr_id
     ));
     
@@ -2290,7 +2292,8 @@ function get_user_config($user) {
   `pct_comment_flag`,
   `showIDs`,
   `noFading`,
-  `lang`
+  `lang`,
+  `user_list_hidden`
   FROM " . $kga['server_prefix'] . "usr WHERE usr_ID = ?;");
 
   $result = $pdo_query->execute(array($user));
@@ -2348,6 +2351,7 @@ function get_customer_config($customer_ID) {
   $kga['conf']['showIDs'] = 0;
   $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
+  $kga['conf']['user_list_hidden'] = 0;
 
 }
 

@@ -226,6 +226,7 @@ $kga['lang']= array(
 "cleared"           => "Slett innhold",
 
 "noFading"          => "no fading effect",
+"user_list_hidden"  => "hide user list by default",
 
 'show_sensible_data' => 'Display sensible data as well in the debug extension.',
 'show_update_warn' => 'Turn off warning before an update.',

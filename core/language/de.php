@@ -215,6 +215,7 @@ $kga['lang'] = array(
 "cleared"           => "abgerechnet",
 
 "noFading"          => "Ein-/Ausblenden deaktivieren",
+"user_list_hidden"  => "standardmäßig Liste mit Benutzern ausblenden",
 
 'show_sensible_data' => 'Zeige in der Debug Extension auch sensible Daten an.',
 'show_update_warn' => 'Warnung vor dem Update nicht mehr anzeigen.',

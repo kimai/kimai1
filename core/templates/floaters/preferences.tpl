@@ -80,6 +80,10 @@
                         <label for="noFading"></label>
                         <input type="checkbox" name="noFading" value="1" {if $kga.conf.noFading}checked{/if} /> {$kga.lang.noFading}
                     </li>
+                    <li>
+                        <label for="user_list_hidden"></label>
+                        <input type="checkbox" name="user_list_hidden" value="1" {if $kga.conf.user_list_hidden}checked{/if} /> {$kga.lang.user_list_hidden}
+                    </li>
                     
                 </ul>
                 
