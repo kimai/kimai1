@@ -33,6 +33,18 @@ class MYPDF extends TCPDF {
         $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-$max_time_width-$max_money_width,
         $max_money_width); 
   }
+
+
+  // split the string in lines and check if a line would overflow and cause more lines
+  public function getHtmlStringLines($string,$line_width) {
+    $htmlLines = split("<br />",$string);
+    $lineCount = count($htmlLines);
+    foreach ($htmlLines as $line) {
+      $lineCount += ceil($this->GetStringWidth($line)/$line_width);
+    }
+    return $lineCount;
+  }
+
   
   // print page footer 
   public function Footer() { 
@@ -102,8 +114,10 @@ class MYPDF extends TCPDF {
     if (empty($comment_string))
       $field_rows--;
 
+    $probable_comment_lines = $this->GetHtmlStringLines($comment_string,$w[1]);
+
     // check if page break is nessessary
-    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+(3+$field_rows)*6) < 0) {
+    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
       $this->ln();    
       $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
       $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum),'',0,0,true,'R');
@@ -141,7 +155,7 @@ class MYPDF extends TCPDF {
         break;
 
         case 2: // row with comment
-          if (!empty($comment_string) && empty($trackingnr_string)) {
+          if (!empty($comment_string)) {
               $this->WriteHtmlCell($w[1], 6, $this->getX(),$this->getY(),$comment_string, 'L');   
               $handled_row = true;
           }
@@ -153,10 +167,11 @@ class MYPDF extends TCPDF {
         $field_rows--;
 
         if ($field_rows == 0) { // if this is the last row
-          $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$wage_string, '',0,0,true,'R');
-          $this->ln();
+          $this->ln($this->getLastH());
           $this->Cell($w[0], 6, ''); 
           $this->Cell($w[1], 6, '','T'); 
+          $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY()-$this->getLastH(),$wage_string, '',0,0,true,'R');
+          $this->ln();
           //$this->ln();
           break; // leave for loop
         }
@@ -245,8 +260,10 @@ class MYPDF extends TCPDF {
     if (empty($time_string) && empty($rate_string))
       $field_rows--;
 
+    $probable_comment_lines = $this->getHtmlStringLines($comment_string,$w[1]);
+
     // check if page break is nessessary
-    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+(3+$field_rows)*6) < 0) {
+    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
       $this->ln();    
       $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
       $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum), '',0,0,true,'R');
@@ -302,7 +319,7 @@ class MYPDF extends TCPDF {
         break;
 
         case 3: // row with comment
-          if (!empty($comment_string) && empty($trackingnr_string)) {
+          if (!empty($comment_string)) {
               $this->WriteHtmlCell($w[1], 6, $this->getX(),$this->getY(),$comment_string, 'L');   
               $handled_row = true;
           }
@@ -330,10 +347,11 @@ class MYPDF extends TCPDF {
         $field_rows--;
 
         if ($field_rows == 0) { // if this is the last row
-          $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$wage_string, '',0,0,true,'R');
-          $this->ln();
+          $this->ln($this->getLastH());
           $this->Cell($w[0], 6, ''); 
           $this->Cell($w[1], 6, '','T'); 
+          $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY()-$this->getLastH(),$wage_string, '',0,0,true,'R');
+          $this->ln();
           //$this->ln();
           break; // leave for loop
         }
