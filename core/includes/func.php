@@ -414,7 +414,7 @@ function expand_time_shortcut($time) {
       return false;
 
     // get the parts
-    $parts = explode(":",$time);
+    $parts = preg_split("/:|\./",$time);
 
     for ($i=0;$i<count($parts);$i++) {
       switch (strlen($parts[$i])) {

@@ -302,7 +302,7 @@ function pasteNow(value) {
 function ts_getDateFromStrings(dateStr,timeStr) {
     result = new Date();
     dateArray=dateStr.split(/\./);
-    timeArray=timeStr.split(/:/);
+    timeArray=timeStr.split(/:|\./);
     if(dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
         return null;
     }
@@ -343,7 +343,7 @@ function ts_getEndDate() {
 //
 function ts_durationToTime() {
     begin = ts_getStartDate();
-    durationArray=$("#edit_duration").val().split(/:/);
+    durationArray=$("#edit_duration").val().split(/:|\./);
     if(begin!=null && durationArray.length > 0 && durationArray.length < 4) {
         secs = durationArray[0]*3600;
         if(durationArray.length > 1)
