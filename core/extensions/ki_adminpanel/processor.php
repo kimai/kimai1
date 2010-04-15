@@ -220,19 +220,20 @@ switch ($axAction) {
         $var_data['adminmail']              = $_REQUEST['adminmail'];
         $var_data['loginTries']             = $_REQUEST['logintries'];
         $var_data['loginBanTime']           = $_REQUEST['loginbantime'];
-        $var_data['show_sensible_data']     = $_REQUEST['show_sensible_data']==1?1:0;
-        $var_data['show_update_warn']       = $_REQUEST['show_update_warn']==1?1:0;
-        $var_data['check_at_startup']       = $_REQUEST['check_at_startup']==1?1:0;
-        $var_data['show_daySeperatorLines'] = $_REQUEST['show_daySeperatorLines']==1?1:0;
-        $var_data['show_gabBreaks']         = $_REQUEST['show_gabBreaks']==1?1:0;
-        $var_data['show_RecordAgain']       = $_REQUEST['show_RecordAgain']==1?1:0;
-        $var_data['show_TrackingNr']        = $_REQUEST['show_TrackingNr']==1?1:0;
+        $var_data['show_sensible_data']     = isset($_REQUEST['show_sensible_data']);
+        $var_data['show_update_warn']       = isset($_REQUEST['show_update_warn']);
+        $var_data['check_at_startup']       = isset($_REQUEST['check_at_startup']);
+        $var_data['show_daySeperatorLines'] = isset($_REQUEST['show_daySeperatorLines']);
+        $var_data['show_gabBreaks']         = isset($_REQUEST['show_gabBreaks']);
+        $var_data['show_RecordAgain']       = isset($_REQUEST['show_RecordAgain']);
+        $var_data['show_TrackingNr']        = isset($_REQUEST['show_TrackingNr']);
         $var_data['currency_name']          = $_REQUEST['currency_name'];
         $var_data['currency_sign']          = $_REQUEST['currency_sign'];
         $var_data['date_format_0']          = $_REQUEST['date_format_0'];
         $var_data['date_format_1']          = $_REQUEST['date_format_1'];
         $var_data['date_format_2']          = $_REQUEST['date_format_2'];
         $var_data['language']               = $_REQUEST['language'];
+        $var_data['roundPrecision']         = $_REQUEST['roundPrecision'];
         
         $success = var_edit($var_data);
 

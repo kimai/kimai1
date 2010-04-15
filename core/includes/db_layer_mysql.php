@@ -3388,11 +3388,12 @@ function stopRecorder() {
     $last_task        = get_event_last($kga['usr']['usr_ID']); // aktuelle vorgangs-ID auslesen
     
     $filter['zef_ID'] = $last_task['zef_ID'];
-    $values['zef_in'] = $last_task['zef_in'];
-    
-    
-    $values['zef_out']  = $kga['now'];
-    $values['zef_time'] = $kga['now']-$values['zef_in'];
+
+    $rounded = roundTimespan($last_task['zef_in'],$kga['now'],$kga['conf']['roundPrecision']);
+
+    $values['zef_in'] = $rounded['start'];
+    $values['zef_out']  = $rounded['end'];
+    $values['zef_time'] = $values['zef_out']-$values['zef_in'];
 
     
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);

@@ -226,6 +226,11 @@ $kga['lang'] = array(
 'show_TrackingNr' => 'Das Feld Auftragsnummer ist bearbeitbar.',
 'currency_name' => 'Name der zu verwendenden Währung.',
 'currency_sign' => 'Symbol der zu verwendenden Währung.',
+'display_date_format' => 'Format des Datums der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
+'display_currentDate_format' => 'Format des Datums in dem Feld unterhalb der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
+'table_date_format' => ' Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
+'round_time' => 'Zeit runden auf ',
+'round_time_minute' => ' Minute(n).',
 );
 
 $kga['lang']['months']         = array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");

@@ -77,15 +77,27 @@
             </div>
 
             <div>
-               <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2}" class="formfield"> Format des Datums der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
+               <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2}" class="formfield"> {$kga.lang.display_date_format}
             </div>
 
             <div>
-               <input type="text" name="date_format_0" size="8" value="{$kga.date_format.0}" class="formfield"> Format des Datums in dem Feld unterhalb der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
+               <input type="text" name="date_format_0" size="8" value="{$kga.date_format.0}" class="formfield"> {$kga.lang.display_currentDate_format}
             </div>
 
             <div>
-               <input type="text" name="date_format_1" size="8" value="{$kga.date_format.1}" class="formfield"> Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)
+               <input type="text" name="date_format_1" size="8" value="{$kga.date_format.1}" class="formfield"> {$kga.lang.table_date_format}
+            </div>
+
+            <div>
+               {$kga.lang.round_time} <select name="roundPrecision" class="formfield">
+                 <option value="0" {if $kga.conf.roundPrecision==0}selected="selected"{/if}>-</option>
+                 <option value="1" {if $kga.conf.roundPrecision==1}selected="selected"{/if}>1</option>
+                 <option value="5" {if $kga.conf.roundPrecision==5}selected="selected"{/if}>5</option>
+                 <option value="10" {if $kga.conf.roundPrecision==10}selected="selected"{/if}>10</option>
+                 <option value="15" {if $kga.conf.roundPrecision==15}selected="selected"{/if}>15</option>
+                 <option value="15" {if $kga.conf.roundPrecision==20}selected="selected"{/if}>20</option>
+                 <option value="30" {if $kga.conf.roundPrecision==30}selected="selected"{/if}>30</option>
+               </select> {$kga.lang.round_time_minute}
             </div>
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />

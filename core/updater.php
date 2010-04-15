@@ -987,6 +987,11 @@ if ((int)$revisionDB < 1138) {
     exec_query("ALTER TABLE `${p}usr` ADD `user_list_hidden` INT NOT NULL DEFAULT '0'");
 }
 
+if ((int)$revisionDB < 1142) {
+    logfile("-- update to r1142");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('roundPrecision','0')");
+}
+
 
 
   

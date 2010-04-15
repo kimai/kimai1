@@ -3336,17 +3336,13 @@ function stopRecorder() {
     $last_task = get_event_last($kga['usr']['usr_ID']);      // aktuelle vorgangs-ID auslesen
     
     $zef_ID = $last_task['zef_ID'];
-    $zef_in = $last_task['zef_in'];
 
 
-    $difference = $kga['now']-$zef_in;
+    $rounded = roundTimespan($last_task['zef_in'],$kga['now'],$kga['conf']['roundPrecision']);
+    $difference = $rounded['end']-$rounded['start'];
 
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_time = ? WHERE zef_ID = ?;");
-    $pdo_query->execute(array($difference,$zef_ID));
-
-    // update outPoint in laufendem vorgang speichern
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_out = ? WHERE zef_ID = ?;");
-    $pdo_query->execute(array($kga['now'],$zef_ID));
+    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
+    $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$zef_ID));
 }
 
 // -----------------------------------------------------------------------------------------------------------
