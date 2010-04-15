@@ -232,6 +232,7 @@ $kga['lang']= array(
 'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'round_time' => 'Round time to ',
 'round_time_minute' => ' minute(s).',
+'logged_in_as' => 'logged in as:',
 );
 
 $kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");

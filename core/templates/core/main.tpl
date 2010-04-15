@@ -142,6 +142,7 @@
         <div id="menu">
             <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/{$kga.conf.skin}/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
             <a id="main_tools_button" href="#" ><img src="../skins/{$kga.conf.skin}/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
+            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.usr_name}</b>
         </div>
         
         <div id="main_tools_menu">
