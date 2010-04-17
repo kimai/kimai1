@@ -337,6 +337,7 @@ $kga['lang']['ext_invoice'] = array(
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 		=> "Create",
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
+'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
 
 );

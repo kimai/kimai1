@@ -13,7 +13,13 @@
 <div id="iv_ext_wrap">
     <div id ="iv_ext">
     	
-	{$kga.lang.ext_invoice.noPDOerror}
+	{if in_array('nopdo',$problems)}
+	 {$kga.lang.ext_invoice.noPDOerror}
+<br/>
+	{/if}
+	{if in_array('nozip',$problems)}
+	 {$kga.lang.ext_invoice.noZIPerror}
+	{/if}
 
     </div>
 </div>

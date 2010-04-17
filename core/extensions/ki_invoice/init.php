@@ -1,9 +1,45 @@
 <?php
 
+/**
+ * Check if PHP zip extension is present or
+ * a shell zip program can be used.
+ * Also PDO has to be used.
+ * 
+ * @return <code>true</code> if this extension definitley won't work,
+ * 	   <code>false</code> otherwise
+ */
+function invoiceExtProblems() {
+   global $kga;
+   $problems = array();
+
+  // create a document
+  $doc = new tinyDoc();
+
+  if (!class_exists('ZipArchive')) {
+    try {
+      $doc->setZipBinary('zip2');
+      $doc->setUnzipBinary('unzip');
+    }
+    catch (tinyDocException $e) {
+      $problems[] = "nozip";
+    }
+  }
+
+  if ($kga['server_conn'] != 'pdo')
+    $problems[] = "nopdo";
+  
+  return $problems;
+      
+}
+
 // ==================================
 // = implementing standard includes =
 // ==================================
 include('../../includes/basics.php');
+
+// libs TinyButStrong
+include_once('TinyButStrong/tinyButStrong.class.php');
+include_once('TinyButStrong/tinyDoc.class.php');
 
 $usr = checkUser();
 
@@ -15,7 +51,9 @@ $tpl->compile_dir  = 'compile/';
 
 $tpl->assign('kga', $kga);
 
-if ($kga['server_conn'] != 'pdo') {
+$problems = invoiceExtProblems();
+if (count($problems) > 0 ) {
+  $tpl->assign('problems',$problems);
   $tpl->display('unusable.tpl');
   return;
 }

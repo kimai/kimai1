@@ -159,9 +159,22 @@ $total = $gtotal-$vat;
 
 // create the document
 $doc = new tinyDoc();
-$doc->setZipMethod('shell');
-$doc->setZipBinary('zip');
-$doc->setUnzipBinary('unzip');
+
+// use zip extension if available
+if (class_exists('ZipArchive')) {
+  $doc->setZipMethod('ziparchive');
+}
+else {
+  $doc->setZipMethod('shell');
+  try {
+    $doc->setZipBinary('zip');
+    $doc->setUnzipBinary('unzip');
+  }
+  catch (tinyDocException $e) {
+    echo "PHP zip extension missing and zip binary can't be used.";
+    exit;
+  }
+}
 $doc->setProcessDir('./tmp');
 
 //This is where the template is selected
