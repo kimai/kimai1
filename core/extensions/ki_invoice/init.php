@@ -17,7 +17,7 @@ function invoiceExtProblems() {
 
   if (!class_exists('ZipArchive')) {
     try {
-      $doc->setZipBinary('zip2');
+      $doc->setZipBinary('zip');
       $doc->setUnzipBinary('unzip');
     }
     catch (tinyDocException $e) {
