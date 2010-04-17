@@ -229,6 +229,7 @@ switch ($axAction) {
         $var_data['show_TrackingNr']        = isset($_REQUEST['show_TrackingNr']);
         $var_data['currency_name']          = $_REQUEST['currency_name'];
         $var_data['currency_sign']          = $_REQUEST['currency_sign'];
+        $var_data['currency_first']         = isset($_REQUEST['currency_sign']);
         $var_data['date_format_0']          = $_REQUEST['date_format_0'];
         $var_data['date_format_1']          = $_REQUEST['date_format_1'];
         $var_data['date_format_2']          = $_REQUEST['date_format_2'];

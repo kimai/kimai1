@@ -992,6 +992,11 @@ if ((int)$revisionDB < 1142) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('roundPrecision','0')");
 }
 
+if ((int)$revisionDB < 1145) {
+    logfile("-- update to r1145");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_first','0')");
+}
+
 
 
   

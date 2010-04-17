@@ -19,7 +19,10 @@ class MYPDF extends TCPDF {
 
   public function money($number) {
     global $kga;
-    return str_replace(".",",",sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
+    if ($kga['conf']['currency_first'])
+      return $kga['currency_sign']." ".str_replace(".",",",sprintf("%01.2f",$number));
+    else
+      return str_replace(".",",",sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
   
 

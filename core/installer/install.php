@@ -292,6 +292,7 @@ exec_query($query);
 
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_name','Euro')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_sign','€')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_first','0')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_sensible_data','1')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_update_warn','1')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('check_at_startup','0')");

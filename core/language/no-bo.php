@@ -237,6 +237,7 @@ $kga['lang']= array(
 'show_TrackingNr' => 'Allows to edit the field Tracking-Nr.',
 'currency_name' => 'Name of the currency to use.',
 'currency_sign' => 'Sign of the currency to use.',
+'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
 'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'display_currentDate_format' => 'Date format for the field below the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',

@@ -77,6 +77,10 @@
             </div>
 
             <div>
+               <input type="checkbox" name="currency_first" {if $kga.currency_first}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.currency_first}
+            </div>
+
+            <div>
                <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2}" class="formfield"> {$kga.lang.display_date_format}
             </div>
 
