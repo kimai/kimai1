@@ -602,6 +602,10 @@ $kga['lang']['xp_ext'] = array(
 
 'customer_new_page'     => 'new page for each customer',
 
+'times_and_expenses' => 'times and expenses',
+'times' => 'times',
+'expenses' => 'expenses',
+
 );
 
 

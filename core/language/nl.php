@@ -320,6 +320,10 @@ $kga['lang']['xp_ext'] = array(
 
 'decimal_separator'  => 'Decimal separator',
 
+'times_and_expenses' => 'times and expenses',
+'times' => 'times',
+'expenses' => 'expenses',
+
 );
 
 $kga['lang']['ext_invoice'] = array(

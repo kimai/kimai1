@@ -38,7 +38,10 @@ $tpl->assign('dateformat',preg_replace('/([A-Za-z])/','%$1',$dateformat));
 // ==========================
 // = display timesheet area =
 // ==========================
-$total = intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
+if (isset($kga['customer']))
+  $total = intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
+else
+  $total = intervallApos(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 
 if (isset($kga['customer']))
   $arr_zef = xp_get_arr($in,$out,null,array($kga['customer']['knd_ID']));

@@ -12,9 +12,16 @@
 				<div class="c">
 					
 					<div id="xp_ext_tab_filter">
-						<input type="radio" name="cleared" value="-1" id="xp_ext_cleared_0" onChange="xp_ext_reload()" checked="checked"/> {$kga.lang.xp_ext.cleared_all}
-						<input type="radio" name="cleared" value="0" id="xp_ext_cleared_1" onChange="xp_ext_reload()"/> {$kga.lang.xp_ext.cleared_cleared}
-						<input type="radio" name="cleared" value="1" id="xp_ext_cleared_2" onChange="xp_ext_reload()"/> {$kga.lang.xp_ext.cleared_open}
+						<select id="xp_ext_tab_filter_cleared" name="cleared" onChange="xp_ext_reload()">
+						  <option value="-1" selected="selected">{$kga.lang.xp_ext.cleared_all}</option>
+						  <option value="0">{$kga.lang.xp_ext.cleared_cleared}</option>
+						  <option value="1">{$kga.lang.xp_ext.cleared_open}</option>
+						</select>
+            <select id="xp_ext_tab_filter_type" name="type" onChange="xp_ext_reload()">
+              <option value="-1" selected="selected">{$kga.lang.xp_ext.times_and_expenses}</option>
+              <option value="0">{$kga.lang.xp_ext.times}</option>
+              <option value="1">{$kga.lang.xp_ext.expenses}</option>
+            </select>
 					</div>
 					
 					<div id="xp_ext_tab_timeformat">

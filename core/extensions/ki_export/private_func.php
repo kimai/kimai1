@@ -19,11 +19,18 @@ if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) 
 }
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit=false,$default_location='',$filter_cleared=-1,$limitCommentSize=true) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
   global $expense_ext_available;
 
-    $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
-    $exp_arr = $expense_ext_available?get_arr_exp($start,$end,$users,$customers,$projects,$limit):array();
+    $zef_arr = array();
+    $exp_arr = array();
+    
+    if ($filter_type != 1)
+      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
+    
+    if ($filter_type != 0 && $expense_ext_available)
+      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
+
     $result_arr = array();
 
     $zef_arr_index = 0;
@@ -72,9 +79,9 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
         $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
         if ($limitCommentSize)
-          $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['pct_comment'],150);
+          $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
         else
-          $arr['comment']      = $exp_arr[$exp_arr_index]['pct_comment'];
+          $arr['comment']      = $exp_arr[$exp_arr_index]['exp_comment'];
         $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
         $arr['comment']        = $exp_arr[$exp_arr_index]['exp_comment'];
         $arr['comment_type']   = $exp_arr[$exp_arr_index]['exp_comment_type'];
@@ -133,9 +140,9 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
       $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
       if ($limitCommentSize)
-        $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['pct_comment'],150);
+        $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
       else
-        $arr['comment']      = $exp_arr[$exp_arr_index]['pct_comment'];
+        $arr['comment']      = $exp_arr[$exp_arr_index]['exp_comment'];
       $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
       $arr['comment']        = $exp_arr[$exp_arr_index]['exp_comment'];
       $arr['comment_type']   = $exp_arr[$exp_arr_index]['exp_comment_type'];

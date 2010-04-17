@@ -323,6 +323,10 @@ $kga['lang']['xp_ext'] = array(
 
 'decimal_separator'  => 'Dezimal-Trennzeichen',
 
+'times_and_expenses' => 'Zeiten und Auslagen',
+'times' => 'Zeiten',
+'expenses' => 'Auslagen',
+
 );
 
 

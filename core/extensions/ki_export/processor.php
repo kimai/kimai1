@@ -56,6 +56,7 @@ if ($axAction == 'export_csv'  ||
   $default_location = strip_tags($_REQUEST['default_location']);
   
   $filter_cleared = $_REQUEST['filter_cleared'];
+  $filter_type    = $_REQUEST['filter_type'];
 
   $filters = explode('|',$axValue);
 
@@ -127,7 +128,7 @@ switch ($axAction) {
     // ===========================
     case 'reload':
 
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
@@ -150,7 +151,6 @@ switch ($axAction) {
 
         $tpl->assign('timeformat',$timeformat);
         $tpl->assign('dateformat',$dateformat);
-        $tpl->assign('custom_filter',$filter);
         if (isset($kga['usr']))
           $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['usr_ID']));
         $tpl->display("table.tpl");
@@ -159,13 +159,12 @@ switch ($axAction) {
 
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
-        $tpl->assign('custom_filter',$filter);
 
         header("Content-Type: text/html");
         $tpl->display("formats/html.tpl");
@@ -174,7 +173,7 @@ switch ($axAction) {
 
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
         for ($i=0;$i<count($arr_data);$i++) {
           $arr_data[$i]['dec_zef_time'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['dec_zef_time']);
           $arr_data[$i]['zef_rate'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['zef_rate']);
@@ -185,7 +184,6 @@ switch ($axAction) {
         $tpl->assign('columns',$columns);
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
-        $tpl->assign('custom_filter',$filter);
 
         header("Content-Disposition:attachment;filename=export.xls");
         header("Content-Type: application/vnd.ms-excel");
@@ -195,7 +193,7 @@ switch ($axAction) {
 
     case 'export_csv':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
         /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
@@ -288,7 +286,7 @@ switch ($axAction) {
 
     case 'export_pdf':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
       require('export_pdf.php');
     break;
 
@@ -296,7 +294,7 @@ switch ($axAction) {
 
     case 'export_pdf2':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,false);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
 
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();
