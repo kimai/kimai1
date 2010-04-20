@@ -2003,6 +2003,55 @@ function get_arr_pct_by_knd($group, $knd_id) {
     return $arr;
 }
 
+//-----------------------------------------------------------------------------------------------------------
+
+
+
+/**
+ *  Creates an array of clauses which can be joined together in the WHERE part
+ *  of a sql query. The clauses describe whether a line should be included
+ *  depending on the filters set.
+ *  
+ *
+ * @param Array list of IDs of users to include
+ * @param Array list of IDs of customers to include
+ * @param Array list of IDs of projects to include
+ * @param Array list of IDs of events to include
+ * @return Array list of where clauses to include in the query
+ *
+ */
+
+function zef_whereClausesFromFilters($users, $customers , $projects , $events ) {
+    
+    if (!is_array($users)) $users = array();
+    if (!is_array($customers)) $customers = array();
+    if (!is_array($projects)) $projects = array();
+    if (!is_array($events)) $events = array();
+
+
+    $whereClauses = array();
+    
+    if (count($users) > 0) {
+      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
+    }
+    
+    if (count($customers) > 0) {
+      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+    }
+    
+    if (count($projects) > 0) {
+      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+    }  
+    
+    if (count($events) > 0) {
+      $whereClauses[] = "evt_ID in (".implode(',',$events).")";
+    }  
+
+    return $whereClauses;
+
+
+}
+
 // -----------------------------------------------------------------------------------------------------------
 
 /**
@@ -2017,25 +2066,10 @@ function get_arr_pct_by_knd($group, $knd_id) {
  */
 
 // TODO: Test it!
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $limit = false) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false) {
     global $kga, $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = zef_whereClausesFromFilters($users, $customers , $projects , $events );
 
     if ($in)
       $whereClauses[]="(zef_out > $in || zef_out = 0)";
@@ -2450,25 +2484,10 @@ function get_entry_zef($id) {
 // }
 // th: solving this by doing a loop and add the seconds manually...
 //     btw - using the rowlimit is not correct here because we want the time for the timespace, not for the rows in the timesheet ... my fault
-function get_zef_time($in,$out,$users = null, $customers = null, $projects = null) {
+function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null) {
     global $kga, $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array();
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
 
     if ($in)
       $whereClauses[]="zef_out > $in";
@@ -2597,26 +2616,13 @@ function get_arr_watchable_users($user_id) {
  * @return array
  * @author sl
  */
-function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects = null) {
+function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects = null,$events = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'] . "usr.usr_trush=0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+
+    $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
+    $whereClauses[] = $kga['server_prefix'] . "usr.usr_trush=0";
 
     if ($in)
       $whereClauses[]="zef_out > $in";
@@ -2678,26 +2684,12 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
  * @return array
  * @author sl
  */
-function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects = null) {
+function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects = null, $events = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'] . "knd.knd_trash=0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
+    $whereClauses[] = $kga['server_prefix'] . "knd.knd_trash=0";
     
     if ($in) 
       $whereClauses[]="zef_out > $in";
@@ -2753,26 +2745,12 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
  * @return array
  * @author sl
  */
-function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = null) {
+function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = null, $events = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'] . "pct.pct_trash=0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }   
+
+    $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
+    $whereClauses[] = $kga['server_prefix'] . "pct.pct_trash=0";
 
     if ($in)
       $whereClauses[]="zef_out > $in";
@@ -2881,26 +2859,12 @@ function get_arr_evt_by_knd($customer_ID) {
  * @return array
  * @author sl
  */
-function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = null) {
+function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = null, $events = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'] . 'evt.evt_trash = 0');
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
+    $whereClauses[] = $kga['server_prefix'] . 'evt.evt_trash = 0';
 
     if ($in)
       $whereClauses[]="zef_out > $in";

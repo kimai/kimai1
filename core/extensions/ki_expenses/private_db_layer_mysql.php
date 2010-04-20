@@ -56,34 +56,35 @@ function exp_create_record($usr_ID,$data) {
     return $conn->InsertRow($table, $values);    
 } 
 
+
+
 /**
- * returns expenses for specific user as multidimensional array
+ *  Creates an array of clauses which can be joined together in the WHERE part
+ *  of a sql query. The clauses describe whether a line should be included
+ *  depending on the filters set.
+ *  
+ *  This method also makes the values SQL-secure.
  *
- * @param integer $user ID of user in table usr
- * @global array $kga kimai-global-array
- * @return array
- * @author th 
+ * @param Array list of IDs of users to include
+ * @param Array list of IDs of customers to include
+ * @param Array list of IDs of projects to include
+ * @param Array list of IDs of events to include
+ * @return Array list of where clauses to include in the query
+ *
  */
 
-// TODO: Test it!
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
-    global $kga,$conn;
+function exp_whereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
-    
-    $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
-    $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
+
     for ($i = 0;$i<count($users);$i++)
       $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($customers);$i++)
       $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
     for ($i = 0;$i<count($projects);$i++)
       $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-    $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
-
-    $p     = $kga['server_prefix'];
 
     $whereClauses = array();
     
@@ -98,6 +99,31 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     if (count($projects) > 0) {
       $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
+
+    return $whereClauses;
+
+}
+
+/**
+ * returns expenses for specific user as multidimensional array
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author th 
+ */
+
+// TODO: Test it!
+function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
+    global $kga,$conn;
+    
+    $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
+    $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
+    $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
+
+    $p     = $kga['server_prefix'];
+
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
 
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";
@@ -273,33 +299,12 @@ function exp_edit_record($id,$data) {
 function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array("${p}usr.usr_trash = 0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}usr.usr_trash = 0";
 
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";
@@ -331,33 +336,13 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
 function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array("${p}knd.knd_trash = 0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}knd.knd_trash = 0";
 
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";
@@ -385,33 +370,12 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
 function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($users);$i++)
-      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($customers);$i++)
-      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0;$i<count($projects);$i++)
-      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = array("${p}pct.pct_trash = 0");
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}pct.pct_trash = 0";
 
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";

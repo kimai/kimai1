@@ -42,10 +42,12 @@ if ($axAction == 'export_csv'  ||
     $axAction == 'export_xls'  ||
     $axAction == 'reload') {
 
-  $axColumns = explode('|',$_REQUEST['axColumns']);
-  $columns = array();
-  foreach ($axColumns as $column)
-    $columns[$column] = true;
+  if (isset($_REQUEST['axColumns'])) {
+    $axColumns = explode('|',$_REQUEST['axColumns']);
+    $columns = array();
+    foreach ($axColumns as $column)
+      $columns[$column] = true;
+  }
 
   $timeformat = strip_tags($_REQUEST['timeformat']);
   $timeformat = preg_replace('/([A-Za-z])/','%$1',$timeformat);
@@ -74,6 +76,11 @@ if ($axAction == 'export_csv'  ||
     $filterPct = array();
   else
     $filterPct = explode(':',$filters[2]);
+
+  if ($filters[3] == "")
+    $filterEvt = array();
+  else
+    $filterEvt = explode(':',$filters[3]);
 
   // if no userfilter is set, set it to current user
   if (isset($kga['usr']) && count($filterUsr) == 0)
@@ -128,24 +135,24 @@ switch ($axAction) {
     // ===========================
     case 'reload':
 
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
-        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
+        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
 
-        $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('usr_ann',$ann_new);
         
-        $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('knd_ann',$ann_new);
 
-        $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('pct_ann',$ann_new);
 
-        $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('evt_ann',$ann_new);
 
@@ -159,7 +166,7 @@ switch ($axAction) {
 
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type,false);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -173,7 +180,7 @@ switch ($axAction) {
 
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type,false);
         for ($i=0;$i<count($arr_data);$i++) {
           $arr_data[$i]['dec_zef_time'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['dec_zef_time']);
           $arr_data[$i]['zef_rate'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['zef_rate']);
@@ -193,7 +200,7 @@ switch ($axAction) {
 
     case 'export_csv':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type,false);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
         /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
@@ -286,7 +293,7 @@ switch ($axAction) {
 
     case 'export_pdf':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type,false);
       require('export_pdf.php');
     break;
 
@@ -294,7 +301,7 @@ switch ($axAction) {
 
     case 'export_pdf2':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,false,$default_location,$filter_cleared,$filter_type,false);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$default_location,$filter_cleared,$filter_type,false);
 
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();

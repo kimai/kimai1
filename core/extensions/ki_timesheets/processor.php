@@ -98,6 +98,11 @@ switch ($axAction) {
         else
           $filterPct = explode(':',$filters[2]);
 
+        if ($filters[3] == "")
+          $filterEvt = array();
+        else
+          $filterEvt = explode(':',$filters[3]);
+
         // if no userfilter is set, set it to current user
         if (isset($kga['usr']) && count($filterUsr) == 0)
           array_push($filterUsr,$kga['usr']['usr_ID']);
@@ -105,27 +110,27 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $filterKnd = array($kga['customer']['knd_ID']);
 
-        $arr_zef = get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,1);
+        $arr_zef = get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,1);
         if (count($arr_zef)>0) {
             $tpl->assign('arr_zef', $arr_zef);
         } else {
             $tpl->assign('arr_zef', 0);
         }
-        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct)));
+        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
 
-        $ann = get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('usr_ann',$ann_new);
         
-        $ann = get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('knd_ann',$ann_new);
 
-        $ann = get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('pct_ann',$ann_new);
 
-        $ann = get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct);
+        $ann = get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = intervallApos($ann);
         $tpl->assign('evt_ann',$ann_new);
 

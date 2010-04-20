@@ -19,14 +19,14 @@ if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) 
 }
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$limit=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
   global $expense_ext_available;
 
     $zef_arr = array();
     $exp_arr = array();
     
     if ($filter_type != 1)
-      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$limit);
+      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit);
     
     if ($filter_type != 0 && $expense_ext_available)
       $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
@@ -157,24 +157,24 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
 }
 
 
-function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = null) {
-    $arr = get_arr_time_usr($start,$end,$users,$customers,$projects);
+function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+    $arr = get_arr_time_usr($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
 
-function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = null) {
-    $arr = get_arr_time_knd($start,$end,$users,$customers,$projects);
+function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+    $arr = get_arr_time_knd($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
-function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = null) {
-    $arr = get_arr_time_pct($start,$end,$users,$customers,$projects);
+function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+    $arr = get_arr_time_pct($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
-function xp_get_arr_evt($start,$end,$users = null,$customers = null,$projects = null) {
-    $arr = get_arr_time_evt($start,$end,$users,$customers,$projects);
+function xp_get_arr_evt($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+    $arr = get_arr_time_evt($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 

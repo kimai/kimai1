@@ -67,23 +67,31 @@ function exp_create_record($usr_ID,$data) {
     
 } 
 
+
+
+
+
 /**
- * returns expenses for specific user as multidimensional array
+ *  Creates an array of clauses which can be joined together in the WHERE part
+ *  of a sql query. The clauses describe whether a line should be included
+ *  depending on the filters set.
+ *  
  *
- * @param integer $user ID of user in table usr
- * @global array $kga kimai-global-array
- * @return array
- * @author th 
+ * @param Array list of IDs of users to include
+ * @param Array list of IDs of customers to include
+ * @param Array list of IDs of projects to include
+ * @param Array list of IDs of events to include
+ * @return Array list of where clauses to include in the query
+ *
  */
 
-// TODO: Test it!
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
-    global $kga;
-    global $pdo_conn;
+function exp_whereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
     if (!is_array($projects)) $projects = array();
+
+
     $whereClauses = array();
     
     if (count($users) > 0) {
@@ -97,6 +105,30 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     if (count($projects) > 0) {
       $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
     }  
+    return $whereClauses;
+
+
+}
+
+
+
+
+/**
+ * returns expenses for specific user as multidimensional array
+ *
+ * @param integer $user ID of user in table usr
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author th 
+ */
+
+// TODO: Test it!
+function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
+    global $kga;
+    global $pdo_conn;
+
+    
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
 
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";
@@ -305,23 +337,9 @@ function exp_edit_record($id,$data) {
 function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'].'usr.usr_trash = 0');
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = $kga['server_prefix'].'usr.usr_trash = 0';
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
@@ -350,23 +368,9 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
 function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'].'knd.knd_trash = 0');
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = $kga['server_prefix'].'knd.knd_trash = 0';
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
@@ -391,23 +395,9 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
 function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-    $whereClauses = array($kga['server_prefix'].'pct.pct_trash = 0');
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
-    }  
+
+    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = $kga['server_prefix'].'pct.pct_trash = 0';
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
