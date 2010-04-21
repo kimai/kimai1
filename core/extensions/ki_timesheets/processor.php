@@ -78,6 +78,18 @@ switch ($axAction) {
         echo 1;
     break;
 
+    // ===============================================
+    // = Get the best rate for the project and event =
+    // ===============================================
+    case 'bestFittingRate':
+        if (isset($kga['customer'])) die();
+        $rate = get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']);
+        if (rate === false)
+          echo -1;
+        else
+	  echo $rate;
+    break;
+
     // ===================================================
     // = Load timesheet data (zef) from DB and return it =
     // ===================================================

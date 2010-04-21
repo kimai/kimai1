@@ -266,6 +266,26 @@ function editRecord(id) {
     floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,700,600);
 }
 
+// ----------------------------------------------------------------------------------------
+// refresh the rate with a new value, if this is a new entry
+//
+function getBestRate() {
+
+    if ($("#ts_ext_form_add_edit_record input[name='id']").val() != 0) {
+      // this means we are editing an entry
+      return;
+    }
+    
+    $.post(ts_ext_path + "processor.php", { axAction: "bestFittingRate", axValue: 0,
+        project_id: $("#add_edit_zef_pct_ID").val(), event_id: $("#add_edit_zef_evt_ID").val()},
+        function(data){
+            if (data != -1) {
+                $("#ts_ext_form_add_edit_record #rate").val(data);
+            }
+        }
+    );
+}
+
 
 
 // ----------------------------------------------------------------------------------------
