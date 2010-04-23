@@ -555,13 +555,11 @@ function lists_shrinkKndToggle() {
     logfile("kndshrink");
     (kndShrinkMode)?kndShrinkMode=0:kndShrinkMode=1;
     if (kndShrinkMode) {
-        // $('#knd, #knd_head').hide();
-        $('#knd, #knd_head').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
+        $('#knd, #knd_head, #knd_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
     } else {
 		lists_set_tableWrapperWidths();
-        // $('#knd, #knd_head').show();
-        $('#knd, #knd_head').fadeIn(fading_enabled?"slow":0);
+        $('#knd, #knd_head, #knd_foot').fadeIn(fading_enabled?"slow":0);
         $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
 		lists_resize();
     }
@@ -571,13 +569,11 @@ function lists_shrinkUsrToggle() {
     logfile("usrshrink");
     (usrShrinkMode)?usrShrinkMode=0:usrShrinkMode=1;
     if (usrShrinkMode) {
-        $('#usr, #usr_head').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        // $('#usr, #usr_head').hide();
+        $('#usr, #usr_head, #usr_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
     } else {
 		lists_set_tableWrapperWidths();
-        $('#usr, #usr_head').fadeIn(fading_enabled?"slow":0);
-        // $('#usr, #usr_head').show();
+        $('#usr, #usr_head, #usr_foot').fadeIn(fading_enabled?"slow":0);
         $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
     }
 }
@@ -612,10 +608,10 @@ function lists_set_tableWrapperWidths() {
     lists_get_dimensions();
     $('#extShrink').css("width",pageWidth()-22);
     // set width of faked table heads of subtables -----------------
-    $("#usr_head").css("width",usr_w-5);
-    $("#knd_head").css("width",knd_w-5); // subtract the left padding inside the header
-    $("#pct_head").css("width",pct_w-5); // which is 5px
-    $("#evt_head").css("width",evt_w-5);
+    $("#usr_head, #usr_foot").css("width",usr_w-5);
+    $("#knd_head, #knd_foot").css("width",knd_w-5); // subtract the left padding inside the header
+    $("#pct_head, #pct_foot").css("width",pct_w-5); // which is 5px
+    $("#evt_head, #evt_foot").css("width",evt_w-5);
     $("#usr").css("width",usr_w);
     $("#knd").css("width",knd_w);
     $("#pct").css("width",pct_w);
@@ -637,7 +633,7 @@ function lists_set_left() {
       usrShrinkPos+=subtableWidth+7;
     }
 
-    $("#knd_head,#knd").css("left",leftmargin+rightmargin+10);
+    $("#knd, #knd_head, #knd_foot").css("left",leftmargin+rightmargin+10);
     $('#usrShrink').css("left",usrShrinkPos);
     
     kndShrinkPos=usrShrinkPos;
@@ -648,9 +644,9 @@ function lists_set_left() {
       kndShrinkPos+=subtableWidth+7;
     }
 
-    $("#pct_head,#pct").css("left",leftmargin+rightmargin+10);
+    $("#pct, #pct_head, #pct_foot").css("left",leftmargin+rightmargin+10);
     
-    $("#evt_head,#evt").css("left",subtableWidth+leftmargin+rightmargin+15); //22
+    $("#evt, #evt_head, #evt_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
     $('#kndShrink').css("left",kndShrinkPos);
     
 }
@@ -658,10 +654,11 @@ function lists_set_left() {
 function lists_set_heightTop() {
     lists_get_dimensions();
     if (!extShrinkMode) {
-        $('#gui>div').css("height",pageHeight()-headerHeight()-175-40);
-        $("#usr,#knd,#pct,#evt").css("height","175px");
-        $('#usrShrink').css("height","201px");
-        $('#kndShrink').css("height","201px");
+        $('#gui>div').css("height",pageHeight()-headerHeight()-150-40);
+        $("#usr,#knd,#pct,#evt").css("height","160px");
+        $("#usr_foot, #knd_foot, #pct_foot, #evt_foot").css("top",pageHeight()-30);
+        $('#usrShrink').css("height","211px");
+        $('#kndShrink').css("height","211px");
         // push knd/pct/evt subtables in place TOP
         var subs = pageHeight()-headerHeight()-90+25;
         $("#usr,#knd,#pct,#evt").css("top",subs);
@@ -675,9 +672,9 @@ function lists_set_heightTop() {
         $("#gui>div").css("height","105px");
         $("#usr_head,#knd_head,#pct_head,#evt_head").css("top",headerHeight()+107);
         $("#usr,#knd,#pct,#evt").css("top",headerHeight()+135);
-        $("#usr,#knd,#pct,#evt").css("height",pageHeight()-headerHeight()-150);
-        $('#kndShrink').css("height",pageHeight()-headerHeight()-119);
-        $('#usrShrink').css("height",pageHeight()-headerHeight()-119);
+        $("#usr,#knd,#pct,#evt").css("height",pageHeight()-headerHeight()-165);
+        $('#kndShrink').css("height",pageHeight()-headerHeight()-110);
+        $('#usrShrink').css("height",pageHeight()-headerHeight()-110);
         $('#extShrink').css("top",headerHeight()+97);
         $('#kndShrink').css("top",headerHeight()+105);
         $('#usrShrink').css("top",headerHeight()+105);
@@ -847,7 +844,29 @@ function lists_write_annotations(part)
   }
 }
 
-function lists_update_filter(subject,id) {
+function lists_filter_select_all(subject) {
+  $('#'+subject+' tr').each(function(index) {
+    if ( !$(this).hasClass('fhighlighted') )
+      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+  });
+    hook_filter();
+}
+function lists_filter_deselect_all(subject) {
+  $('#'+subject+' tr').each(function(index) {
+    if ( $(this).hasClass('fhighlighted') )
+      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+  });
+    hook_filter();
+}
+
+function lists_filter_select_invert(subject) {
+  $('#'+subject+' tr').each(function(index) {
+    lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+  });
+    hook_filter();
+}
+
+function lists_toggle_filter(subject,id) {
     $('a').blur();
     alreadySelected = $('#row_'+subject+id).hasClass('fhighlighted');
     $('#row_'+subject+id).removeClass('fhighlighted');
@@ -887,7 +906,10 @@ function lists_update_filter(subject,id) {
         break;
       }
     }
+}
 
+function lists_update_filter(subject,id) {
+    lists_toggle_filter(subject,id);
     // let tab update its data
     hook_filter();
     // finally update timetable

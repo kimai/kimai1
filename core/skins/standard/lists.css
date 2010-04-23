@@ -25,6 +25,20 @@
     padding:3px 0 0 5px;
 }
 
+#usr_foot, #knd_foot, #pct_foot, #evt_foot {
+    border:1px solid black; 
+    border-top:none;
+    background-image: url('grfx/g3_table_header.png');
+    position:absolute;
+    height:20px;
+    text-align:left;
+    color:#FFF;
+    left:10px;
+    font-size:11px;
+    font-weight:bold;
+    padding:3px 0 0 5px;
+}
+
 #kndShrink {
     cursor: pointer;
     background-color:transparent;
@@ -46,7 +60,7 @@
 #usrShrink {
     cursor: pointer;
     background-color:transparent;
-    background-image:url('grfx/kndShrink_right.png');
+    background-image:url('grfx/kndShrink_left.png');
     background-position:center;
     background-repeat:no-repeat;
     position:absolute;
@@ -119,31 +133,53 @@ div#evt td
     border-right:none;
 }
 
-div#usr_head div.right,
-div#knd_head div.right,
-div#pct_head div.right,
-div#evt_head div.right 
-{ 
-    position:absolute;
-    overflow:hidden;
-    width:32px;
-    height:20px;
-    top:3px;
-    right:0;
-/*    background-color:red;*/
-}
 
-div#usr_head div.right a,
-div#knd_head div.right a,
-div#pct_head div.right a,
-div#evt_head div.right a 
+a.addLink
 { 
     background-image: url('grfx/add.png');
     overflow:hidden;
     display:block;
     width:22px;
     height:16px;
-    text-indent:-500px;
+    float:left;
+    margin-right:5px;
+    /*text-indent:-500px;*/
+}
+
+a.selectAllLink
+{ 
+    background-image: url('grfx/select_all.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+    /*text-indent:-500px;*/
+}
+
+a.deselectAllLink
+{ 
+    background-image: url('grfx/deselect_all.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+    /*text-indent:-500px;*/
+}
+
+a.selectInvertLink
+{ 
+    background-image: url('grfx/invert_select.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+    /*text-indent:-500px;*/
 }
 
 .livefilterfield {
@@ -154,15 +190,12 @@ div#evt_head div.right a
     margin:0;
     padding:1px;
     margin-left:10px;
-    margin-right:38px;
+    margin-right:8px;
     color:#fff;
     font-size:9px;
 }
 
 
-#filt_usr {
-	    margin-right:8px;
-}
 
 
 .livefilterfield:focus {

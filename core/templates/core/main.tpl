@@ -224,13 +224,7 @@
 <div id="knd_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('knd', this.value);" type="text" id="filt_knd" name="filt_knd"/>
     {$kga.lang.knds} 
-    
-        
-{if $kga.usr && $kga.usr.usr_sts != 2 }    
-    <div class="right">
-        <a href="#" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;">{$kga.lang.add}</a>
-    </div>
-{/if}
+
 </div>
 
 <div id="pct_head">
@@ -238,11 +232,6 @@
     {$kga.lang.pcts}
     
     
-{if $kga.usr && $kga.usr.usr_sts != 2 }  
-    <div class="right">
-        <a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;">{$kga.lang.add}</a>
-    </div>
-{/if}
 </div>
 
 <div id="evt_head">
@@ -250,17 +239,49 @@
     {$kga.lang.evts}
     
     
-{if $kga.usr && $kga.usr.usr_sts != 2 } 
-    <div class="right">
-        <a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;">{$kga.lang.add}</a>
-    </div>
-{/if}
 </div>
 
 <div id="usr">{$usr_display}</div>
 <div id="knd">{$knd_display}</div>
 <div id="pct">{$pct_display}</div>
 <div id="evt">{$evt_display}</div>
+
+<div id="usr_foot">
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('usr');return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('usr');return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('usr');return false;"></a>
+<div style="clear:both"></div>
+</div>
+
+<div id="knd_foot">    
+{if $kga.usr && $kga.usr.usr_sts != 2 }    
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;"></a>
+{/if}
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('knd');return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('knd');return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('knd');return false;"></a>
+<div style="clear:both"></div>
+</div>
+
+<div id="pct_foot">
+{if $kga.usr && $kga.usr.usr_sts != 2 }  
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;"></a>
+{/if}
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct');return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('pct');return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('pct');return false;"></a>
+<div style="clear:both"></div>
+</div>
+
+<div id="evt_foot">
+{if $kga.usr && $kga.usr.usr_sts != 2 } 
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;"></a>
+{/if}
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('evt');return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('evt');return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('evt');return false;"></a>
+<div style="clear:both"></div>
+</div>
 
 <div id="extShrink">&nbsp;</div>
 <div id="usrShrink">&nbsp;</div>
