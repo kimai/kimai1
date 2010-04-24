@@ -18,9 +18,9 @@
                         <a href ="#" onClick="filterSubject('evt',{$arr_evt[row].evt_ID});"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
 *}
 {if $kga.usr && $kga.usr.usr_sts != 2}
-                        <a href ="#" onClick="editSubject('evt',{$arr_evt[row].evt_ID});"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
+                        <a href ="#" onClick="editSubject('evt',{$arr_evt[row].evt_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
 {/if}
-                        <a href ="#" onClick="lists_update_filter('evt',{$arr_evt[row].evt_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+                        <a href ="#" onClick="lists_update_filter('evt',{$arr_evt[row].evt_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                         <a href ="#" class="preselect" onClick="buzzer_preselect('evt',{$arr_evt[row].evt_ID},'{$arr_evt[row].evt_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_evt[row].evt_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_evt[row].evt_ID})' border='0' /></a>
                     </td>

@@ -71,10 +71,12 @@ $(document).ready(function() {
     });
 
     $('#main_credits_button').click(function(){
+        this.blur();
         floaterShow("floaters.php","credits",0,0,650,400);
     });
     
     $('#main_prefs_button').click(function(){
+        this.blur();
         floaterShow("floaters.php","prefs",0,0,450,300);
     });
 

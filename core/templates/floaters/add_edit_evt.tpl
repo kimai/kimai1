@@ -15,7 +15,7 @@
         <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.evt}{else}{$kga.lang.new_evt}{/if}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a>
+            <a href="#" class="options down" onClick="floaterOptions(); $(this).blur();">{$kga.lang.options}</a>
         </div>       
     </div>
 

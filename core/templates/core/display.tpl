@@ -40,6 +40,7 @@
                             setTimespace(0,0,0,toDay,toMonth,toYear);
                         break;
                     }
+                    this.blur();
                 }
         );
 

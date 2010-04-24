@@ -55,7 +55,7 @@
 {*########## Option cells ##########*}
         <td>
             
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); return false;">
+            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin}/grfx/edit2.gif" title="{$kga.lang.editusr}" width="13" height="13" alt="{$kga.lang.editusr}" border="0">
             </a>
             
@@ -143,7 +143,7 @@
             &nbsp;
             
 {if $arr_usr[userarray].usr_pw == "no"}
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); return false;">
+            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" width="16" height="16" title='{$kga.lang.nopassword}' border="0">
             </a>
 {/if}

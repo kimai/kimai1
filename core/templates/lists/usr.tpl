@@ -19,7 +19,7 @@
 {* --- option cell ---*}
 
                     <td nowrap class="option">
-                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].usr_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].usr_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                     </td>
 

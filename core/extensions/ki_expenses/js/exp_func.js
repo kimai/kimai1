@@ -211,7 +211,6 @@ function exp_editRecord(id) {
 // shows comment line for expense entry
 //
 function exp_comment(id) {
-    $('a').blur();
     $('#exp_c'+id).toggle();
     return false;
 }
@@ -222,7 +221,6 @@ function exp_comment(id) {
 //         $tpl->assign('pasteValue', date("d.m.Y - H:i:s",$kga['now']));
 //
 function exp_pasteNow(value) {
-    $('a').blur();
     
     now = new Date();
 

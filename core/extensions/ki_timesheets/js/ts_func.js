@@ -295,7 +295,6 @@ function getBestRate() {
 //         $tpl->assign('pasteValue', date("d.m.Y - H:i:s",$kga['now']));
 //
 function pasteNow(value) {
-    $('a').blur();
     
     now = new Date();
 
@@ -430,7 +429,6 @@ function ts_timeToDuration() {
 // shows comment line for timesheet entry
 //
 function ts_comment(id) {
-    $('a').blur();
     $('#c'+id).toggle();
     return false;
 }

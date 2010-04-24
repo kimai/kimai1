@@ -29,7 +29,7 @@
 
         
         <td>{strip}
-            <a href="#" onClick="ap_ext_editGroup('{$arr_grp[grouparray].grp_ID}'); return false;">
+            <a href="#" onClick="ap_ext_editGroup('{$arr_grp[grouparray].grp_ID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin}/grfx/edit2.gif" title="{$kga.lang.editgrp}" width="13" height="13" alt="{$kga.lang.editgrp}" border="0">
             </a>
             

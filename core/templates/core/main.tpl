@@ -247,39 +247,39 @@
 <div id="evt">{$evt_display}</div>
 
 <div id="usr_foot">
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('usr');return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('usr');return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('usr');return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('usr'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('usr'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('usr'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
 <div id="knd_foot">    
 {if $kga.usr && $kga.usr.usr_sts != 2 }    
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); return false;"></a>
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('knd');return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('knd');return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('knd');return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('knd'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('knd'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('knd'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
 <div id="pct_foot">
 {if $kga.usr && $kga.usr.usr_sts != 2 }  
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;"></a>
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct');return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('pct');return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('pct');return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('pct'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('pct'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
 <div id="evt_foot">
 {if $kga.usr && $kga.usr.usr_sts != 2 } 
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); return false;"></a>
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('evt');return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('evt');return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('evt');return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('evt'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('evt'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('evt'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 

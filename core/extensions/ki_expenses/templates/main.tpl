@@ -9,7 +9,7 @@
 <div id="exp_head">
     <div class="left">
     {if $kga.usr}
-        <a href="#" onClick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600,570); return false;">{$kga.lang.add}</a>
+        <a href="#" onClick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600,570); $(this).blur(); return false;">{$kga.lang.add}</a>
     {/if}
     </div>
     <table>

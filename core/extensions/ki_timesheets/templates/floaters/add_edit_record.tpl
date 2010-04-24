@@ -37,7 +37,7 @@
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
-            <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a>
+            <a href="#" class="options down" onClick="floaterOptions(); $(this).blur();">{$kga.lang.options}</a>
         </div>  
     </div>
 
@@ -104,7 +104,7 @@
                         <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
                         <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
-                        <a href="#" onClick="pasteNow(); ts_timeToDuration(); return false;">{$kga.lang.now}</a>
+                        <a href="#" onClick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
                    <li>
                        <label for="duration">{$kga.lang.durationlabel}:</label>

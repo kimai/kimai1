@@ -1,4 +1,4 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); return false;"><img src="../skins/{$kga.conf.skin}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_pct}"></a> {$kga.lang.new_pct}
+<a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_pct}"></a> {$kga.lang.new_pct}
 <br/><br/>
 
 {cycle values="odd,even" reset=true print=false}
@@ -19,7 +19,7 @@
                 <tr class="{cycle values="odd,even"}">
 
                     <td class="option">
-                        <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID});">
+                        <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID}); $(this).blur(); return false;">
                             <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
                         

@@ -66,7 +66,7 @@
                         
 {*Edit Record Button - nur einblenden wenn fertig recorded*}
 {if $arr_zef[row].zef_out}
-                        {strip}<a href ='#' onClick="editRecord({$arr_zef[row].zef_ID}); return false;" title='{$kga.lang.edit}'>
+                        {strip}<a href ='#' onClick="editRecord({$arr_zef[row].zef_ID}); $(this).blur(); return false;" title='{$kga.lang.edit}'>
                             <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>{/strip}
                         
@@ -249,13 +249,13 @@
                         
 {if $arr_zef[row].zef_comment}
     {if $arr_zef[row].zef_comment_type == '0'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '1'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '2'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
     {/if}
 {/if}
                     </td>

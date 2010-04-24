@@ -83,7 +83,6 @@ function floaterDragable() {
 // shows floating dialog windows based on processor data
 //
 function floaterShow(phpFile, axAction, axValue, id, width, height) {
-    $('a').blur();    
     if ($('#floater').css("display") == "block") {
         $("#floater").fadeOut(fading_enabled?500:0, function() {
             floaterLoadContent(phpFile, axAction, axValue, id, width, height);
@@ -100,7 +99,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
             id: id
         },
         function() {
-          $('a').blur();
           floaterDragable();
           
           $('#floater').css({width: width+"px"});
@@ -141,7 +139,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
 }    
 
 function floaterOptions() {
-    $('a').blur();
     $('.extended').toggle();
     height = $('#floater_dimensions').outerHeight()+5;
     $('#floater_content').css("height",height);
@@ -292,7 +289,6 @@ function logfile(entry) {
 // after that it reloads all 4 tables
 //
 function setTimespace(fromDay,fromMonth,fromYear,toDay,toMonth,toYear) {
-    $('a').blur();
     timespace = fromMonth +"-"+ fromDay +"-"+ fromYear +"|"+ toMonth +"-"+ toDay +"-"+ toYear;
     $.post("processor.php", { axAction: "setTimespace", axValue: timespace, id: 0 }, 
         function(response) {
@@ -390,7 +386,6 @@ function buzzer() {
 
 // preselections for buzzer
 function buzzer_preselect(subject,id,name,kndID,kndName) {
-    $('a').blur();
     if (recstate)
       return;
     switch (subject) {
@@ -417,6 +412,7 @@ function buzzer_preselect(subject,id,name,kndID,kndName) {
     }
     $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
     $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id).blur();
     
     if (selected_knd && selected_pct && selected_evt) {
       $('#buzzer').removeClass('disabled');
@@ -765,7 +761,6 @@ function lists_live_filter(div_list, needle) {
 
 
 function lists_knd_prefilter(knd,type) {
-    $('a').blur();
     if (type=="highlight") {
         
         $(".knd").removeClass("filterPctForPreselection");
@@ -867,7 +862,6 @@ function lists_filter_select_invert(subject) {
 }
 
 function lists_toggle_filter(subject,id) {
-    $('a').blur();
     alreadySelected = $('#row_'+subject+id).hasClass('fhighlighted');
     $('#row_'+subject+id).removeClass('fhighlighted');
     if (alreadySelected) {
