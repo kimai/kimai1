@@ -3927,11 +3927,11 @@ function get_arr_watchable_users($user_id) {
     $row = $conn->RowArray(0,MYSQL_ASSOC);
 
     if ($row['usr_sts'] == "0") { // if is admin
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0";
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name";
       $result = $conn->Query($query);
     }
     else {
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = $user_id";
+      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = $user_id ORDER BY usr_name";
       $result = $conn->Query($query);
     }
 

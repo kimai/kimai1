@@ -2583,11 +2583,11 @@ function get_arr_watchable_users($user_id) {
 
     // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
     if ($row['usr_sts'] == "0") { // if is admin
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0");
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name");
       $pdo_query->execute();
     }
     else {
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ?");
+      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ? ORDER BY usr_name");
       $pdo_query->execute(array($user_id));
     }
     
