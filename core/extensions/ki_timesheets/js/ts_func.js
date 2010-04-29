@@ -203,6 +203,7 @@ function ts_ext_recordAgain(pct,evt,id) {
         function(data) {
                 eval(data);
                 ts_ext_reload();
+                $("#stopwatch_edit_comment").show();
                 buzzer_preselect('pct',pct,pct_name,0,knd_name);
                 buzzer_preselect('evt',evt,evt_name,0,0);
                 $("#ticker_knd").html(knd_name);
