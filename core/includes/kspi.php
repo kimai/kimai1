@@ -96,4 +96,8 @@ if ($axAction != "reloadLogfile") {
     logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['knd_name']:$kga['usr']['usr_name'])."): " . $axAction);
 }
 
+
+// prevent browsers from caching the requests
+header("Pragma: no-cache");
+
 ?>
