@@ -166,6 +166,10 @@
         <div id="stopwatch">
             <span class="watch"><span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span></span>
         </div>
+
+        <div id="stopwatch_edit_comment">
+            <a href="#" onclick="edit_running_comment();$(this).blur();return false;"><img src="../skins/{$kga.conf.skin}/grfx/blase.gif"/></a>
+        </div>
         
         <div id="stopwatch_ticker">
             <ul id="ticker"><li id="ticker_knd">&nbsp;</li><li id="ticker_pct">&nbsp;</li><li id="ticker_evt">&nbsp;</li></ul>

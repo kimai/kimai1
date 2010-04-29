@@ -70,6 +70,19 @@ switch ($axAction) {
         echo 1;
     break;
 
+    // ===================================
+    // = set comment for a running event =
+    // ===================================
+    case 'edit_running_comment':
+        if (isset($kga['customer'])) die();
+
+        zef_edit_comment(
+            $axValue,
+            $_REQUEST['comment_type'],
+            $_REQUEST['comment']);
+        echo 1;
+    break;
+
     // =========================================
     // = Erase timesheet entry via quickdelete =
     // =========================================

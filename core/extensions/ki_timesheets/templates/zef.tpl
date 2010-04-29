@@ -263,7 +263,7 @@
                 </tr>
                 
                 <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type}" style="display:none;">
-                    <td colspan=8>{$arr_zef[row].zef_comment|nl2br}</td>
+                    <td colspan="9">{$arr_zef[row].zef_comment|nl2br}</td>
                 </tr>
 
 {assign var="day_buffer" value=$arr_zef[row].zef_in|date_format:"%d"}

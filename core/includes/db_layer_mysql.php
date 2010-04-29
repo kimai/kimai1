@@ -2692,7 +2692,7 @@ function get_event_last($user) {
     
     $lastRecord = $kga['conf']['lastRecord'];
     
-    $query = "SELECT zef_ID,zef_in,zef_pctID,zef_evtID FROM ${p}zef WHERE zef_ID = $lastRecord ;";
+    $query = "SELECT * FROM ${p}zef WHERE zef_ID = $lastRecord ;";
 
     $conn->Query($query);
     return $conn->RowArray(0,MYSQL_ASSOC);
@@ -3467,6 +3467,38 @@ function startRecorder($pct_ID,$evt_ID,$user) {
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
     }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Just edit the comment an entry. This is used for editing the comment
+ * of a running entry.
+ * 
+ * @param $zef_ID id of the timesheet entry
+ * @param $comment_type new type of the comment
+ * @param $comment the comment text
+ */
+function zef_edit_comment($zef_ID,$comment_type,$comment) {
+    global $kga, $conn;
+
+    $pct_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
+    $comment_type = MySQL::SQLValue($comment_type );
+    $comment      = MySQL::SQLValue($comment );
+    
+    $table = $kga['server_prefix']."zef";
+    
+    $filter['zef_ID'] = $zef_ID;
+
+    $values['zef_comment_type'] = $comment_type;
+    $values['zef_comment']      = $comment;
+
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    
+    logfile($query);
+    
+    return $conn->Query($query);    
+
 }
 
 // -----------------------------------------------------------------------------------------------------------

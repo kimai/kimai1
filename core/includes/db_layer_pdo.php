@@ -2429,7 +2429,7 @@ function is_customer_name($name) {
 function get_event_last($user) {
     global $kga, $pdo_conn;
     $lastRecord = $kga['conf']['lastRecord'];
-    $pdo_query = $pdo_conn->prepare("SELECT zef_ID,zef_in,zef_pctID,zef_evtID FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
+    $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "zef WHERE zef_ID = ?");
     $pdo_query->execute(array($lastRecord));
     $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
     return $row;
@@ -3328,6 +3328,26 @@ function startRecorder($pct_ID,$evt_ID,$user) {
     
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
     $pdo_query->execute(array($user));
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Just edit the comment an entry. This is used for editing the comment
+ * of a running entry.
+ * 
+ * @param $zef_ID id of the timesheet entry
+ * @param $comment_type new type of the comment
+ * @param $comment the comment text
+ */
+function zef_edit_comment($zef_ID,$comment_type,$comment) {
+    global $kga, $pdo_conn;
+    
+    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef 
+    SET zef_comment_type = ?, zef_comment = ? WHERE zef_ID = ?");
+
+    $pdo_query->execute(array($comment_type,$comment,$zef_ID));
+
 }
 
 // -----------------------------------------------------------------------------------------------------------

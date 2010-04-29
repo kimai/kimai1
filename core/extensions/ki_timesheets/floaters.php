@@ -25,6 +25,22 @@ $dir_templates = "templates/floaters/";
 require("../../includes/kspi.php");
 
 switch ($axAction) {
+   
+    // =================================================
+    // = displays edit comment dialog for running task =
+    // =================================================
+    case 'edit_running_comment':
+        if (isset($kga['customer'])) die();
+
+        $tpl->assign('langs', langs());
+        $last_event = get_event_last($kga['usr']['usr_ID']);
+        $tpl->assign('id', $last_event['zef_ID']);
+        $tpl->assign('comment', $last_event['zef_comment']);
+        $tpl->assign('comment_active', $last_event['zef_comment_type']);
+        $tpl->assign('comment_types', $comment_types);
+        $tpl->assign('comment_values', array('0','1','2'));
+        $tpl->display("edit_running_comment.tpl");
+    break;
 
     case "add_edit_record":  
         if (isset($kga['customer'])) die();  

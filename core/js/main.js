@@ -315,6 +315,7 @@ function startRecord(pct_ID,evt_ID,user_ID) {
         function(response){
             ts_ext_reload();
             $('#noclick').hide();
+            $("#stopwatch_edit_comment").show();
         }
     );
 }
@@ -361,12 +362,18 @@ function show_selectors() {
     // $("#s").html("00");
     $("#selector").css('display','block');
     $("#stopwatch").css('display','none');
+    $("#stopwatch_edit_comment").css('display','none');
     $("#stopwatch_ticker").css('display','none');
     // $("#button_comment").css('display','none');
     $("#buzzer").removeClass("act");
     if (!(selected_knd && selected_pct && selected_evt)) {
       $('#buzzer').addClass('disabled');
     }
+}
+
+function edit_running_comment() {
+  floaterShow('../extensions/ki_timesheets/floaters.php',
+      'edit_running_comment',0,0,600,200);
 }
 
 function buzzer() {
