@@ -47,3 +47,10 @@ function iv_ext_triggerchange() {
 	iv_ext_resize();
 }
 
+function iv_ext_triggerTSS() {
+   $.post(iv_ext_path + "processor.php", { axAction: "reload_timespan" },
+                function(data) { 
+                    $("#iv_timespan").html(data);
+                }
+            );
+}

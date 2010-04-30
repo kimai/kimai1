@@ -1,13 +1,8 @@
 <?php
 
-// ================
-// = TS PROCESSOR =
-// ================
-
-// ==================================
-// = implementing standard includes =
-// ==================================
-include('../../includes/basics.php');
+// =====================
+// = INVOICE PROCESSOR =
+// =====================
 
 // insert KSPI
 $isCoreProcessor = 0;
@@ -19,9 +14,9 @@ require("../../includes/kspi.php");
 // ==================
 switch ($axAction) {
 
-    // ===================================================
-    // = Load timesheet data (zef) from DB and return it =
-    // ===================================================
+    // =====================================
+    // = Reload the timespan and return it =
+    // =====================================
     case 'reload_timespan':
         
         $timespace = get_timespace();
