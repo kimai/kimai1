@@ -49,13 +49,13 @@ switch ($axAction) {
         startRecorder($IDs[0],$IDs[1],$kga['usr']['usr_ID']);
         
         $pctdata = pct_get_data($IDs[0]);        
-        $return =  "pct_name = '" . $pctdata['pct_name'] ."'; ";
+        $return =  'pct_name = "' . $pctdata['pct_name'] .'"; ';
         
         $knddata = knd_get_data($pctdata['pct_kndID']);        
-        $return .=  "knd_name = '" . $knddata['knd_name'] ."'; ";
+        $return .=  'knd_name = "' . $knddata['knd_name'] .'"; ';
                 
         $evtdata = evt_get_data($IDs[1]);
-        $return .= "evt_name = '" . $evtdata['evt_name'] ."'; ";
+        $return .= 'evt_name = "' . $evtdata['evt_name'] .'"; ';
 
         echo $return;
         // TODO return false if error
