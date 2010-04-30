@@ -498,12 +498,14 @@ function filter_selects(id, needle) {
     })
   }
   
+  var selectedValue = $('#'+id).val();
   $('#'+id).removeOption(/./);
   
   var i, cs = window['__cacheselect_'+id];
   for(i=0; i<cs.length; ++i) {
     if(cs[i].text.match(n) !== null) $('#'+id).addOption(cs[i].value, cs[i].text);
   }
+  $('#'+id).val(selectedValue);
 }
 
 // -----------------------------------------------------------------------------
