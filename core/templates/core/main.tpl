@@ -25,8 +25,8 @@
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.datePicker.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/idrag.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/iutil.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/ui.core.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/ui.draggable.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/date.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>

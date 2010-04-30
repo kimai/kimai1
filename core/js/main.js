@@ -68,12 +68,12 @@ function headerHeight() {
 // makes floating dialog windows dragable
 //
 function floaterDragable() {
-    $('#floater').DraggableDestroy();
-	$('#floater').Draggable({  
+    $('#floater').draggable('destroy'); 
+	$('#floater').draggable({  
 			zIndex:20,
 			ghosting:false,
 			opacity:0.7,
-			handle:'#floater_handle'
+      cursor:'move'
 		});  	
 }
 
@@ -109,11 +109,11 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
           // $('#floater').css({width: width+"px"});
           // $('#floater_content').css({height: height+"px"});
           
-          x = ($(document).width()-(width+10))/2 +"px";
-          y = ($(document).height()-(height+80))/2 +"px";
+          x = ($(document).width()-(width+10))/2;
+          y = ($(document).height()-(height+80))/2;
           if (y<0) y=0;
           if (x<0) x=0;
-          $("#floater").css({left:x,top:y});
+          $("#floater").css({left:x+"px",top:y+"px"});
           $("#floater").fadeIn(fading_enabled?200:0);
           
           $('#focus').focus();
@@ -154,7 +154,7 @@ function floaterOptions() {
 // hides dialog again
 //
 function floaterClose() {
-    $('#floater').DraggableDestroy();
+    $('#floater').draggable('destroy');
     $("#floater").fadeOut(fading_enabled?500:0);
 }
 
