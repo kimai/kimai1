@@ -122,9 +122,11 @@ class MYPDF extends TCPDF {
 
     // check if page break is nessessary
     if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
-      $this->ln();    
-      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
-      $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum),'',0,0,true,'R');
+      if ($columns['wage']) {
+        $this->ln();
+        $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
+        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum),'',0,0,true,'R');
+      }
       $this->AddPage();      
     }
 
@@ -174,7 +176,9 @@ class MYPDF extends TCPDF {
           $this->ln($this->getLastH());
           $this->Cell($w[0], 6, ''); 
           $this->Cell($w[1], 6, '','T'); 
-          $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY()-$this->getLastH(),$wage_string, '',0,0,true,'R');
+          if ($columns['wage']) {
+            $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY()-$this->getLastH(),$wage_string, '',0,0,true,'R');
+          }
           $this->ln();
           //$this->ln();
           break; // leave for loop
@@ -268,9 +272,11 @@ class MYPDF extends TCPDF {
 
     // check if page break is nessessary
     if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
-      $this->ln();    
-      $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
-      $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum), '',0,0,true,'R');
+      if ($columns['wage']) {
+        $this->ln();    
+        $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
+        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum), '',0,0,true,'R');
+      }
       $this->AddPage();
     }
 
@@ -455,9 +461,11 @@ foreach ($pdf_arr_data as $customer) {
     $pdf->printRows($columns,$customer[$project_id],$widths);
 
     
-    $pdf->ln();    
-    $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
-    $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->sum), '',0,0,true,'R');
+    if ($columns['wage']) {
+      $pdf->ln();    
+      $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
+      $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->sum), '',0,0,true,'R');
+    }
   }
 
 
