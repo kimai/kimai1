@@ -330,6 +330,8 @@ $kga['lang']['xp_ext'] = array(
 'times' => 'times',
 'expenses' => 'expenses',
 
+'reverse_order' => 'older entries first',
+
 );
 
 $kga['lang']['ext_invoice'] = array(

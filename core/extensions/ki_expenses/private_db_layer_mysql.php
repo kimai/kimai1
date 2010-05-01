@@ -114,7 +114,7 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
  */
 
 // TODO: Test it!
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false) {
+function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order=false) {
     global $kga,$conn;
     
     $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
@@ -144,7 +144,8 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
              Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
              Join " . $kga['server_prefix'] . "usr ON exp_usrID = usr_ID "
-              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY exp_timestamp DESC " . $limit . ";";
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+             ' ORDER BY exp_timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";";
     
     $conn->Query($query);
     

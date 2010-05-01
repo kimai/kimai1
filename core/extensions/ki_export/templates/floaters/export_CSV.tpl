@@ -50,6 +50,11 @@
                        <label for="print_summary">{$kga.lang.xp_ext.quote_char}:</label>
                        <input type="text" value="&quot;" name="quote_char" id="quote_char" size="1">
                    </li>
+                
+                   <li>
+                       <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                   </li>
 
                    <li>
 	      				{$kga.lang.xp_ext.dl_hint}

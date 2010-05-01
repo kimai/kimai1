@@ -2066,7 +2066,7 @@ function zef_whereClausesFromFilters($users, $customers , $projects , $events ) 
  */
 
 // TODO: Test it!
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false) {
     global $kga, $pdo_conn;
 
     $whereClauses = zef_whereClausesFromFilters($users, $customers , $projects , $events );
@@ -2092,7 +2092,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
              Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID 
              Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
-              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC " . $limit . ";";
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+             ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit . ';';
              
     $pdo_query = $pdo_conn->prepare($query);
     

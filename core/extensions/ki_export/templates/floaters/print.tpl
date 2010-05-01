@@ -10,6 +10,7 @@
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter_cleared').attr('value'));
             $('#floater input#filter_type').attr('value',$('#xp_ext_tab_filter_type').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
+            $('#floater_content fieldset label').css('width','200px');
         }); 
         
     </script>
@@ -39,7 +40,12 @@
 		        <ul>
 			        <li>
 				      {$kga.lang.xp_ext.print_hint}
-					</li>
+              </li>
+                
+                   <li>
+                       <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                   </li>
 				</ul>
 {* -------------------------------------------------------------------- *} 
 

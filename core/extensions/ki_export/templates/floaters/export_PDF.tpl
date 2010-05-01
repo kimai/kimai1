@@ -70,6 +70,11 @@
                    </li>
                 
                    <li>
+                       <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                   </li>
+                
+                   <li>
                        <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
                        <select name="axAction" id="axAction">
                          <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>

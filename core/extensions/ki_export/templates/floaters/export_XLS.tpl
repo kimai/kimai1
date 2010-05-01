@@ -46,6 +46,11 @@
                        <label for="print_comments">{$kga.lang.xp_ext.decimal_separator}:</label>
                        <input type="text" value="," name="decimal_separator" id="decimal-separator" size="1"/>
                    </li>
+                
+                   <li>
+                       <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                   </li>
 
 			        <li>
 				 		{$kga.lang.xp_ext.dl_hint}

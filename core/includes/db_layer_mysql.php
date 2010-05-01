@@ -2282,7 +2282,7 @@ function zef_whereClausesFromFilters($users, $customers , $projects , $events ) 
  
 // checked 
 
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false) {
     global $kga, $conn;
     
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
@@ -2314,7 +2314,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
               Join ${p}knd ON pct_kndID = knd_ID
               Join ${p}usr ON zef_usrID = usr_ID
               Join ${p}evt ON evt_ID    = zef_evtID "
-              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC $limit;";
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+              ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit.';';
     
     $conn->Query($query);
     

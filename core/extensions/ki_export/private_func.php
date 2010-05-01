@@ -19,17 +19,17 @@ if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) 
 }
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$reverse_order=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
   global $expense_ext_available;
 
     $zef_arr = array();
     $exp_arr = array();
     
     if ($filter_type != 1)
-      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit);
+      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order);
     
     if ($filter_type != 0 && $expense_ext_available)
-      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit);
+      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order);
 
     $result_arr = array();
 
@@ -37,7 +37,8 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
     $exp_arr_index = 0;
     while ($zef_arr_index < count($zef_arr) && $exp_arr_index < count($exp_arr)) {
       $arr = array();
-      if ($zef_arr[$zef_arr_index]['zef_in'] > $exp_arr[$exp_arr_index]['exp_timestamp']) {
+      if ( (!$reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] > $exp_arr[$exp_arr_index]['exp_timestamp']) ) ||
+           ( $reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] < $exp_arr[$exp_arr_index]['exp_timestamp']) ) ) {
         $arr['type']           = 'zef';
         $arr['id']             = $zef_arr[$zef_arr_index]['zef_ID'];
         $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
