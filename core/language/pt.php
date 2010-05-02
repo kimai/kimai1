@@ -607,6 +607,7 @@ $kga['lang']['xp_ext'] = array(
 'expenses' => 'expenses',
 
 'reverse_order' => 'older entries first',
+'time_period'  => 'time period',
 
 );
 

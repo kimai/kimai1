@@ -75,6 +75,11 @@
                    </li>
                 
                    <li>
+                       <label for="reverse_order">{$kga.lang.comment}:</label>
+                       <textarea name="document_comment" id="document_comment"></textarea>
+                   </li>
+                
+                   <li>
                        <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
                        <select name="axAction" id="axAction">
                          <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>

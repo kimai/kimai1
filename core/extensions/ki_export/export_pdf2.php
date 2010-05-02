@@ -403,7 +403,14 @@ if (isset($_REQUEST['create_bookmarks']))
 
 $pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
 $pdf->ln();
-$pdf->ln();
+
+$pdf->WriteHtml('<b>'.$kga['lang']['xp_ext']['time_period'].':</b> '.
+strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
+
+if (!empty($_REQUEST['document_comment'])) {
+  $pdf->ln();
+  $pdf->WriteHtml($_REQUEST['document_comment']);
+}
 $pdf->ln();
 
 $firstRun = true;
