@@ -377,6 +377,84 @@ class MYPDF extends TCPDF {
            
   }
 
+
+
+
+  public function timespan($number) {
+    if ($number == -1)
+      return "-------";
+    else
+      return str_replace(".",",",sprintf("%01.2f",$number))." Std.";
+  } 
+
+
+  public function printHeader($w,$header) {
+
+        // Colors, line width and bold font 
+        $this->SetFillColor(240, 240, 240); 
+        $this->SetTextColor(0); 
+        $this->SetDrawColor(0,0,0); 
+        $this->SetLineWidth(0.3); 
+        $this->SetFont('', 'B'); 
+        
+
+
+    for($i = 0; $i < count($header); $i++) 
+          $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1); 
+    $this->Ln(); 
+  }
+  
+    public function ColoredTable_result($header,$data) {
+        global $kga;
+        $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30,30,30); 
+        
+        // Header 
+        $this->printHeader($w,$header);
+
+        // Color and font restoration 
+        $this->SetFillColor(224, 235, 255); 
+        $this->SetTextColor(0); 
+        $this->SetFont(''); 
+        // Data 
+        $fill = 0; 
+        $sum = 0;
+        $sum_time = 0;
+        foreach($data as $row) { 
+            // check if page break is nessessary
+            if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
+              $this->Cell(array_sum($w), 0, '', 'T'); 
+              $this->Ln();  
+              $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
+              $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
+              $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
+              $this->Ln();  
+              $this->AddPage();
+              $this->printHeader($w,$header);
+
+              // Color and font restoration 
+              $this->SetFillColor(224, 235, 255); 
+              $this->SetTextColor(0); 
+              $this->SetFont(''); 
+            }
+            $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
+            $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+            $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
+            $this->Ln(); 
+            $fill=!$fill; 
+            $sum+=$row['wage'];
+            $sum_time += $row['time']==-1?0:$row['time']; 
+            
+        }
+        $this->Cell(array_sum($w), 0, '', 'T'); 
+        $this->Ln();
+
+        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
+        $this->SetFont('', 'B'); 
+        $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', false);
+        $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', false); 
+        $this->SetFont(''); 
+    }
+
 }
 
  
@@ -415,6 +493,11 @@ $pdf->ln();
 
 $firstRun = true;
 
+
+// arrays for keeping track to print summary
+$zef_summary = array();
+$exp_summary = array();
+
 foreach ($pdf_arr_data as $customer) {
 
   if ($firstRun)
@@ -443,8 +526,14 @@ foreach ($pdf_arr_data as $customer) {
     $max_money_width = 0;
     $max_time_width = 0;
     // calculate maximum width for time and money
+    // and add to summary array
     foreach ($customer[$project_id] as $row) {
-      //logfile(serialize($row));
+
+      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
+        continue;
+
+
+      // maximum width calculation
       $max_money_width = max($max_money_width,$pdf->GetStringWidth($pdf->money($row['wage'])));
 
       $time_width = 0;
@@ -460,6 +549,27 @@ foreach ($pdf_arr_data as $customer) {
 
 
       $max_time_width = max($max_time_width,$time_width);
+
+
+      // summary aggregation
+      if ($row['type'] == 'zef') {
+        if (isset($zef_summary[$row['zef_evtID']])) {
+          $zef_summary[$row['zef_evtID']]['time']   += $row['dec_zef_time']; //Sekunden
+          $zef_summary[$row['zef_evtID']]['wage']   += $row['wage']; //Euro
+        }
+        else {
+          $zef_summary[$row['zef_evtID']]['name']         = $row['evt_name'];
+          $zef_summary[$row['zef_evtID']]['time']         = $row['dec_zef_time'];
+          $zef_summary[$row['zef_evtID']]['wage']         = $row['wage'];
+        }
+      }
+      else {
+        $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['evt_name'];
+        $exp_info['time']   = -1;
+        $exp_info['wage'] = $row['wage'];
+        
+        $exp_summary[] = $exp_info;
+      }
     }
    $max_time_width+=10;
    $max_money_width+=10;
@@ -473,10 +583,31 @@ foreach ($pdf_arr_data as $customer) {
       $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
       $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->sum), '',0,0,true,'R');
     }
+
   }
 
 
 }
+
+
+
+if (isset($_REQUEST['print_summary'])) {
+  
+  $summary = array_merge($zef_summary,$exp_summary);
+  
+  $pdf->AddPage();
+  
+  
+  if (isset($_REQUEST['create_bookmarks']))
+    $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
+  
+
+
+  $pdf->WriteHtml('<h4>'.$kga['lang']['xp_ext']['summary'].'</h4>');
+  $pdf->ln();
+  $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
+
+}  
 
 
 
