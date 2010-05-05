@@ -69,7 +69,7 @@ switch ($axAction) {
            $javascript .= "$('div.sp_phpversion').addClass('fail');";
        }
        
-       if (!extension_loaded('mysql') && !( extension_loaded('PDO') && extension_loaded('pdo_mysql')) ) {
+       if (!extension_loaded('mysql')) {
            $errors++;
            $javascript .= "$('div.sp_mysql').addClass('fail');";
        }

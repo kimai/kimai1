@@ -1,43 +1,42 @@
 <?php
-$echo = '<script type="text/javascript" charset="utf-8">current=30;</script>';
+echo '<script type="text/javascript" charset="utf-8">current=30;</script>';
+$pdo_available = extension_loaded('PDO') && extension_loaded('pdo_mysql');
 
 if ($_REQUEST['lang']=="en") {
-echo<<<EOD
-<h2>Select Database-Layer</h2>
-If you're unsure try to install the MySQL version.
-<!--MySQL-DB-Layer is currently not available! In this version you can only use MySQL via PDO. -->
-EOD;
+  $header = 'Select Database-Layer';
+  if ($pdo_available)
+    $infoText = 'If you\'re unsure try to install the MySQL version.';
+  else
+    $infoText = 'PDO is not available as the modules are not loaded.';
+
 } else {
-echo<<<EOD
-<h2>Datenbank-Verbindungsart auswählen</h2>
-Wenn Sie unsicher sind versuchen Sie die MySQL-Version.
-<!--Der MySQL-DB-Layer ist in dieser Version nicht lauffähig! Sie können MySQL in dieser Version nur über PDO ansteuern. -->
-EOD;
+  $header = 'Datenbank-Verbindungsart auswählen';
+  if ($pdo_available)
+    $infoText = 'Wenn Sie unsicher sind versuchen Sie die MySQL-Version.';
+  else
+    $infoText = 'PDO ist nicht verfügbar da die Module dafür nicht aktiviert sind.';
 }
 
-echo<<<EOD
+echo "<h2>$header</h2>
+$infoText";
+
+echo '
     <form id="layer" >
         <div id="layer_sel">
-        <input type="image" class="layer" id="mysql" value="" onClick="layer_selected('mysql'); return false;"/>
-        <input type="image" class="layer" id="pdo"   value="" onClick="layer_selected('pdo'); return false;"/>  
+        <input type="image" class="layer" id="mysql" value="" onClick="layer_selected(\'mysql\'); return false;"/>';
+
+if ($pdo_available)
+  echo '
+        <input type="image" class="layer" id="pdo"   value="" onClick="layer_selected(\'pdo\'); return false;"/>';
+else
+  echo '
+        <input type="image" class="layer" id="pdo_disabled"  value="" onClick="$(this).blur();return false;"/>';
+
+echo '
         </div>
     </form>
     
-    <div style="clear:both;"></div>
-    
-EOD;
+    <div style="clear:both;"></div>';
 
-
-/*
-if ($_REQUEST['lang']=="en") {
-echo<<<EOD
-<button onClick="step_back(); return false;" class="">Back</button>
-EOD;
-} else {
-echo<<<EOD
-<button onClick="step_back(); return false;" class="">Zurück</button>
-EOD;
-}
-*/
 
 ?>

@@ -82,6 +82,11 @@ h1 {
     background: url(grfx/pdo.jpg);
 }
 
+#pdo_disabled {
+    background: url(grfx/pdo_disabled.jpg);
+    cursor:default;
+}
+
 
 
 .gpl {

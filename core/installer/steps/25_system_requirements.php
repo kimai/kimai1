@@ -9,7 +9,8 @@ if ($_REQUEST['lang']=="en") {
     The following conditions must be met:<br/>
 
 <div class="sp_phpversion fail">at least PHP Major version 5</div>
-<div class="sp_mysql">Extension for <b>MySQL</b> or <b>PDO with MySQL</b> has to be installed.</div>
+<div class="sp_mysql">The <b>MySQL</b> extension for PHP has to be loaded.</div>
+<div class="note gray">For PDO the extensions pdo and pdo_mysql are required.</div>
 
 <br/><br/>
 For PDF export the following requirement must be met:<br/>
@@ -30,7 +31,8 @@ else {
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
 
 <div class="sp_phpversion fail">mindestens PHP Hauptversion 5</div>
-<div class="sp_mysql">Die Erweiterung f&uuml;r <b>MySQL</b> oder <b>PDO inkl. MySQL</b> muss installiert sein.</div>
+<div class="sp_mysql">Die <b>MySQL</b> Erweiterung f&uuml;r PHP muss aktiviert sein.</div>
+<div class="note gray">Für PDO werden die Erweiterungen pdo und pdo_mysql benötigt.</div>
 
 <br/><br/>
 Damit der PDF Export zuverl&auml;ssig funktioniert m&uuml;ssen folgende Punkte erf&uuml;llt sein:<br/>
