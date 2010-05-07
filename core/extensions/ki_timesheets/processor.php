@@ -73,6 +73,34 @@ switch ($axAction) {
     // ===================================
     // = set comment for a running event =
     // ===================================
+    case 'edit_running_project':
+        if (isset($kga['customer'])) die();
+
+        $last_event = get_event_last($kga['usr']['usr_ID']);
+
+        zef_edit_pct(
+            $last_event['zef_ID'],
+            $_REQUEST['project']);
+        echo 1;
+    break;
+
+    // ===================================
+    // = set comment for a running event =
+    // ===================================
+    case 'edit_running_task':
+        if (isset($kga['customer'])) die();
+
+        $last_event = get_event_last($kga['usr']['usr_ID']);
+
+        zef_edit_evt(
+            $last_event['zef_ID'],
+            $_REQUEST['task']);
+        echo 1;
+    break;
+
+    // ===================================
+    // = set comment for a running event =
+    // ===================================
     case 'edit_running_comment':
         if (isset($kga['customer'])) die();
 

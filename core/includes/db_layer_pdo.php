@@ -3334,6 +3334,44 @@ function startRecorder($pct_ID,$evt_ID,$user) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Just edit the project for an entry. This is used for changing the project
+ * of a running entry.
+ * 
+ * @param $zef_id of the timesheet entry
+ * @param $pct_id id of the project to change to
+ */
+function zef_edit_pct($zef_id,$pct_id) {
+    global $kga, $pdo_conn;
+    
+    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef 
+    SET zef_pctID = ? WHERE zef_ID = ?");
+
+    $pdo_query->execute(array($pct_id,$zef_id));
+
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Just edit the task for an entry. This is used for changing the task
+ * of a running entry.
+ * 
+ * @param $zef_id of the timesheet entry
+ * @param $evt_id id of the task to change to
+ */
+function zef_edit_evt($zef_id,$evt_id) {
+    global $kga, $pdo_conn;
+    
+    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef 
+    SET zef_evtID = ? WHERE zef_ID = ?");
+
+    $pdo_query->execute(array($evt_id,$zef_id));
+
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * Just edit the comment an entry. This is used for editing the comment
  * of a running entry.
  * 

@@ -3473,6 +3473,64 @@ function startRecorder($pct_ID,$evt_ID,$user) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Just edit the project for an entry. This is used for changing the project
+ * of a running entry.
+ * 
+ * @param $zef_id id of the timesheet entry
+ * @param $pct_id id of the project to change to
+ */
+function zef_edit_pct($zef_id,$pct_id) {
+    global $kga, $conn;
+
+    $zef_id = MySQL::SQLValue($zef_id, MySQL::SQLVALUE_NUMBER  );
+    $pct_id = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER );
+    
+    $table = $kga['server_prefix']."zef";
+    
+    $filter['zef_id'] = $zef_id;
+
+    $values['zef_pctID'] = $pct_id;
+
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    
+    logfile($query);
+    
+    return $conn->Query($query);    
+
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Just edit the task for an entry. This is used for changing the task
+ * of a running entry.
+ * 
+ * @param $zef_id id of the timesheet entry
+ * @param $evt_id id of the task to change to
+ */
+function zef_edit_evt($zef_id,$evt_id) {
+    global $kga, $conn;
+
+    $zef_id = MySQL::SQLValue($zef_id, MySQL::SQLVALUE_NUMBER  );
+    $evt_id = MySQL::SQLValue($evt_id, MySQL::SQLVALUE_NUMBER );
+    
+    $table = $kga['server_prefix']."zef";
+    
+    $filter['zef_id'] = $zef_id;
+
+    $values['zef_evtID'] = $evt_id;
+
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    
+    logfile($query);
+    
+    return $conn->Query($query);    
+
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * Just edit the comment an entry. This is used for editing the comment
  * of a running entry.
  * 
@@ -3483,7 +3541,7 @@ function startRecorder($pct_ID,$evt_ID,$user) {
 function zef_edit_comment($zef_ID,$comment_type,$comment) {
     global $kga, $conn;
 
-    $pct_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
+    $zef_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
     $comment_type = MySQL::SQLValue($comment_type );
     $comment      = MySQL::SQLValue($comment );
     

@@ -393,8 +393,6 @@ function buzzer() {
 
 // preselections for buzzer
 function buzzer_preselect(subject,id,name,kndID,kndName) {
-    if (recstate)
-      return;
     switch (subject) {
         case "knd":
         // TODO: build filter for project selection (by customer)
@@ -423,6 +421,31 @@ function buzzer_preselect(subject,id,name,kndID,kndName) {
     
     if (selected_knd && selected_pct && selected_evt) {
       $('#buzzer').removeClass('disabled');
+    }
+
+    if (recstate) {
+
+
+      switch (subject) {
+          case "pct":
+              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", project:id},
+                function(data) {
+                    ts_ext_reload();
+                  }
+                );
+          break;
+          case "evt":
+              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", task:id},
+                function(data) {
+                    ts_ext_reload();
+                  }
+              );
+          break;
+      }
+
+      $("#ticker_knd").html($("#sel_knd").html());
+      $("#ticker_pct").html($("#sel_pct").html());
+      $("#ticker_evt").html($("#sel_evt").html());
     }
 }
 
