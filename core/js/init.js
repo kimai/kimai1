@@ -99,6 +99,9 @@ $(document).ready(function() {
 
     var lists_resizeTimer = null;
     $(window).bind('resize', function() {
+
+	resize_menu();
+
        if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
        lists_resizeTimer = setTimeout(lists_resize, 500);
     });

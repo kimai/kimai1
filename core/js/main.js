@@ -942,6 +942,14 @@ function lists_update_filter(subject,id) {
     //ts_ext_reloadSubject('zef');
 }
 
+function resize_menu() {
+  $('#menu').css('width',
+    $('#display').position()['left']
+    -$('#menu').position()['left']
+    -20
+    +parseInt($('#display').css('margin-left')));
+}
+
 // // ----------------------------------------------------------------------------------------
 // // called up when the add/edit evt floater sends data
 // //

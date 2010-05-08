@@ -122,6 +122,8 @@
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);
     clearTimeout(lists_resize);
+
+	resize_menu();
     
         }{/literal}
 
