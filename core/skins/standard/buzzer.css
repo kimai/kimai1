@@ -33,13 +33,3 @@
     cursor: auto;
     background: url(grfx/g3_buzzer.png) no-repeat 0 -300px;
 }
-
-#noclick {
-    background: transparent;    
-    display:block;
-    position:absolute;
-    top:0;
-    right:5px;
-    width:80px;
-    height:80px;
-}

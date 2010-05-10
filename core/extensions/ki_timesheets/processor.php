@@ -51,6 +51,8 @@ switch ($axAction) {
         $pctdata = pct_get_data($IDs[0]);        
         $return =  'pct_name = "' . $pctdata['pct_name'] .'"; ';
         
+        $return .=  'knd = "' . $pctdata['pct_kndID'] .'"; ';
+        
         $knddata = knd_get_data($pctdata['pct_kndID']);        
         $return .=  'knd_name = "' . $knddata['knd_name'] .'"; ';
                 

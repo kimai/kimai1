@@ -314,7 +314,6 @@ function startRecord(pct_ID,evt_ID,user_ID) {
     $.post("processor.php", { axAction: "startRecord", axValue: value, id: user_ID},
         function(response){
             ts_ext_reload();
-            $('#noclick').hide();
             $("#stopwatch_edit_comment").show();
         }
     );
@@ -329,12 +328,13 @@ function stopRecord() {
     $("#zeftable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
     $("#zeftable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
     $("#zeftable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
+    show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: 0},
         function(){
-            show_selectors();
-            ts_ext_reload();
-            $('#noclick').hide();
-            document.title = default_title;
+            if (recstate == 0) {
+              ts_ext_reload();
+              document.title = default_title;
+            }
         }
     );
 }
@@ -379,10 +379,10 @@ function edit_running_comment() {
 function buzzer() {
     if ( recstate!=1 && !(selected_knd && selected_pct && selected_evt) ) return;
 
-    $('#noclick').show();
+
     if (recstate) {
-        stopRecord();
         recstate=0;
+        stopRecord();
     } else {
         now = new Date();
         setTimespace(0,0,0,now.getDate(),now.getMonth()+1,now.getFullYear());
@@ -392,7 +392,12 @@ function buzzer() {
 }
 
 // preselections for buzzer
-function buzzer_preselect(subject,id,name,kndID,kndName) {
+function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
+  
+    if (updateRecording == undefined) {
+      updateRecording = true;
+    }
+    
     switch (subject) {
         case "knd":
         // TODO: build filter for project selection (by customer)
@@ -423,7 +428,7 @@ function buzzer_preselect(subject,id,name,kndID,kndName) {
       $('#buzzer').removeClass('disabled');
     }
 
-    if (recstate) {
+    if (recstate && updateRecording) {
 
 
       switch (subject) {
