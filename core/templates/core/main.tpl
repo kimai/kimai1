@@ -110,7 +110,7 @@
     $('#usrShrink').hide();
   {/if}
 
-  {if $kga.conf.user_list_hidden}
+  {if $kga.conf.user_list_hidden || $kga.usr.usr_sts == 2}
     lists_shrinkUsrToggle();
   {/if}
   {literal}
