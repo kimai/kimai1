@@ -11,6 +11,11 @@
             $('#floater input#filter_type').attr('value',$('#xp_ext_tab_filter_type').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
             $('#floater_content fieldset label').css('width','200px');
+            
+            $('#floater input#first_day').attr('value',
+              ($('#pick_in').dpGetSelected()[0].getTime()/1000));
+            $('#floater input#last_day').attr('value',
+              ($('#pick_out').dpGetSelected()[0].getTime()/1000));
 
         }); 
         
@@ -67,6 +72,8 @@
                 <!-- <input name="id" type="hidden" value="" /> -->
                 <input name="axAction" type="hidden" value="export_csv" />
                 <input name="axValue" id="axValue" type="hidden" value="" />
+                <input name="first_day" id="first_day" type="hidden" value="" />
+                <input name="last_day" id="last_day" type="hidden" value="" />
                 <input name="axColumns"  id="axColumns" type="hidden" value=""/>
                 <input name="timeformat" id="timeformat" type="hidden" value=""/>
                 <input name="dateformat" id="dateformat" type="hidden" value=""/>
