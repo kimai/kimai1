@@ -175,6 +175,8 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "pct` ADD INDEX ( `pct_kndID` ) ");
+
 $query=
 "CREATE TABLE `" . $kga['server_prefix'] . "zef` (
   `zef_ID` int(10) NOT NULL auto_increment,
@@ -193,6 +195,10 @@ $query=
   PRIMARY KEY  (`zef_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
+
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_usrID` ) ");
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_pctID` ) ");
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_evtID` ) ");
 
 $query=
 "CREATE TABLE `" . $kga['server_prefix'] . "var` (
@@ -225,6 +231,9 @@ $query=
   PRIMARY KEY (`exp_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
+
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "exp` ADD INDEX ( `exp_usrID` ) ");
+exec_query("ALTER TABLE `" . $kga['server_prefix'] . "exp` ADD INDEX ( `exp_pctID` ) ");
 
 
 

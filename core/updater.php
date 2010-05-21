@@ -997,6 +997,16 @@ if ((int)$revisionDB < 1145) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_first','0')");
 }
 
+if ((int)$revisionDB < 1176) {
+    logfile("-- update to r1176");
+    exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_usrID` ) ");
+    exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_pctID` ) ");
+    exec_query("ALTER TABLE `${p}pct` ADD INDEX ( `pct_kndID` ) ");
+    exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_usrID` ) ");
+    exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_pctID` ) ");
+    exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_evtID` ) ");
+}
+
 
 
   
