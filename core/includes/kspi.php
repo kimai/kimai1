@@ -27,14 +27,9 @@ if(file_exists(realpath(dirname(__FILE__).'/conf.php')))
 	require_once(realpath(dirname(__FILE__).'/conf.php'));
 require("autoconf.php");
 
-require_once(WEBROOT."/libraries/Config.php");
-
 if (!$isCoreProcessor) {
     $datasrc = "config.ini";
-    $phpIni = new Config();
-    $root =& $phpIni->parseConfig($datasrc, 'inicommented');
-    $settings = $root->toArray();
-    $settings = $settings['root'];
+    $settings = parse_ini_file($datasrc);
     $dir_ext = $settings['EXTENSION_DIR'];
 }
 

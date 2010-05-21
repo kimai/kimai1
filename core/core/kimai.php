@@ -50,8 +50,6 @@ $tpl->assign('browser', get_agent());
 // =========================================
 // = PARSE EXTENSION CONFIGS (ext_configs) =
 // =========================================
-$path = realpath(dirname(__FILE__)).'/../libraries';
-require_once($path."/Config.php");
 
 if ($handle = opendir('../extensions/')) {
     chdir("../extensions/");
@@ -79,10 +77,7 @@ if ($handle = opendir('../extensions/')) {
                 while (false !== ($configfile = readdir($subhandle))) {
                     if($configfile == "config.ini") {
                         $datasrc = $file."/".$configfile;
-                        $phpIni = new Config();
-                        $root =& $phpIni->parseConfig($datasrc, 'inicommented');
-                        $settings = $root->toArray();
-                       	$settings = $settings['root'];
+                        $settings = parse_ini_file($datasrc);
                        	
                        	// logfile("*************** ADMIN ALLOWED: " . $settings['ADMIN_ALLOWED']);
                        	// logfile("*************** GROUP LEADER ALLOWED: " . $settings['GROUP_LEADER_ALLOWED']);
