@@ -316,10 +316,10 @@ function checkDBversion($path) {
  */
 function get_agent() {
     @$agent=$_SERVER["HTTP_USER_AGENT"];
-    if(eregi("opera",$agent)) $browser = "Opera";
-    else if(eregi("msie",$agent)) $browser = "msie";
-    else if(eregi("Safari",$agent)) $browser = "Safari";
-    else if(eregi("mozilla",$agent) && !eregi("Safari",$agent)) $browser = "Mozilla";
+    if(strpos($agent,"opera") !== false) $browser = "Opera";
+    else if(strpos($agent,"msie") !== false) $browser = "msie";
+    else if(strpos($agent,"Safari") !== false) $browser = "Safari";
+    else if(strpos($agent,"mozilla") !== false) $browser = "Mozilla";
     else $browser = "?";
     return $browser;
 }
@@ -393,7 +393,7 @@ function expand_date_shortcut($date) {
         break;
     }
     
-    if (!ereg("([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})",$return))  $return = false;
+    if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/",$return))  $return = false;
     return $return;
 }
 
@@ -447,7 +447,7 @@ function expand_time_shortcut($time) {
  * @author th
  */
 function check_time_format($timestring) {
-    if (!ereg("([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})-([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})",$timestring)) {
+    if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})-([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/",$timestring)) {
         return false; // WRONG format
     } else {
         $ok = 1;

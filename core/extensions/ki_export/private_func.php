@@ -132,7 +132,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
     while ($exp_arr_index < count($exp_arr)) {
       $arr = array();
       $arr['type']           = 'exp';
-      $arr['id']             = $zef_arr[$zef_arr_index]['exp_ID'];
+      $arr['id']             = $zef_arr[$exp_arr_index]['exp_ID'];
       $arr['time_in']        = $exp_arr[$exp_arr_index]['exp_timestamp'];
       $arr['time_out']       = $exp_arr[$exp_arr_index]['exp_timestamp'];
       $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value'];

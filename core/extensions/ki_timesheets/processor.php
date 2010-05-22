@@ -205,9 +205,9 @@ switch ($axAction) {
     	$data['trackingnr']      = $_REQUEST['trackingnr'];
     	$data['comment']         = $_REQUEST['comment'];
     	$data['comment_type']    = $_REQUEST['comment_type'];
-    	$data['erase']           = $_REQUEST['erase'];
+    	$data['erase']           = isset($_REQUEST['erase']);
       $data['rate']            = $_REQUEST['rate'];
-      $data['cleared']         = $_REQUEST['cleared'];
+      $data['cleared']         = isset($_REQUEST['cleared']);
     	
         if ($data['erase']) {
     	    // delete checkbox set ?

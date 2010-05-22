@@ -2,7 +2,7 @@
 /**
  * Ultimate MySQL Wrapper Class
  *
- * @version 2.4.1
+ * @version 2.5
  * @author Jeff L. Williams
  * @link http://www.phpclasses.org/ultimatemysql
  *
@@ -11,12 +11,13 @@
  *   Larry Wakeman
  *   Nicola Abbiuso
  *   Douglas Gintz
+ *   Emre Erkan
  */
 class MySQL
 {
 	// SET THESE VALUES TO MATCH YOUR DATA CONNECTION
 	private $db_host    = "localhost";  // server name
-	private $db_user    = "root";       // user name
+	private $db_user    = "";       // user name
 	private $db_pass    = "";           // password
 	private $db_dbname  = "";           // database name
 	private $db_charset = "";           // optional character set (i.e. utf8)
@@ -62,16 +63,17 @@ class MySQL
 	 * @param string $password (Optional) Password
 	 * @param string $charset  (Optional) Character set
 	 */
-	public function __construct($connect=true, $database="", $server="", $username="", $password="", $charset="") {
-		if (strlen($database) > 0) $this->db_dbname  = $database;
-		if (strlen($server)   > 0) $this->db_host    = $server;
-		if (strlen($username) > 0) $this->db_user    = $username;
-		if (strlen($password) > 0) $this->db_pass    = $password;
-		if (strlen($charset)  > 0) $this->db_charset = $charset;
+	public function __construct($connect = true, $database = null, $server = null,
+								$username = null, $password = null, $charset = null) {
+
+		if ($database !== null) $this->db_dbname  = $database;
+		if ($server   !== null) $this->db_host    = $server;
+		if ($username !== null) $this->db_user    = $username;
+		if ($password !== null) $this->db_pass    = $password;
+		if ($charset  !== null) $this->db_charset = $charset;
 
 		if (strlen($this->db_host) > 0 &&
-			strlen($this->db_user) > 0 &&
-			strlen($this->db_pass) > 0) {
+			strlen($this->db_user) > 0) {
 			if ($connect) $this->Open();
 		}
 	}
@@ -751,6 +753,34 @@ class MySQL
 	}
 
 	/**
+	* Returns the last query as a JSON document
+	*
+	* @return string JSON containing all records listed
+	*/
+	public function GetJSON() {
+		if ($this->last_result) {
+			if ($this->RowCount() > 0) {
+				for ($i = 0, $il = mysql_num_fields($this->last_result); $i < $il; $i++) {
+					$types[$i] = mysql_field_type($this->last_result, $i);
+				}
+				$json = '[';
+				$this->MoveFirst();
+				while ($member = mysql_fetch_object($this->last_result)) {
+					$json .= json_encode($member) . ",";
+				}
+				$json .= ']';
+				$json = str_replace("},]", "}]", $json);
+			} else {
+				$json = 'null';
+			}
+		} else {
+			$this->active_row = -1;
+			$json = 'null';
+		}
+		return $json;
+	}
+
+	/**
 	 * Returns the last autonumber ID field from a previous INSERT query
 	 *
 	 * @return  integer ID number from previous INSERT query
@@ -794,6 +824,66 @@ class MySQL
 				return FALSE;
 			}
 		}
+	}
+
+	/**
+	 * Returns the last query as an XML Document
+	 *
+	 * @return string XML containing all records listed
+	 */
+	public function GetXML() {
+		// Create a new XML document
+		$doc = new DomDocument('1.0'); // ,'UTF-8');
+
+		// Create the root node
+		$root = $doc->createElement('root');
+		$root = $doc->appendChild($root);
+
+		// If there was a result set
+		if (is_resource($this->last_result)) {
+
+			// Show the row count and query
+			$root->setAttribute('rows',
+				($this->RowCount() ? $this->RowCount() : 0));
+			$root->setAttribute('query', $this->last_sql);
+			$root->setAttribute('error', "");
+
+			// process one row at a time
+			$rowCount = 0;
+			while ($row = mysql_fetch_assoc($this->last_result)) {
+
+				// Keep the row count
+				$rowCount = $rowCount + 1;
+
+				// Add node for each row
+				$element = $doc->createElement('row');
+				$element = $root->appendChild($element);
+				$element->setAttribute('index', $rowCount);
+
+				// Add a child node for each field
+				foreach ($row as $fieldname => $fieldvalue) {
+					$child = $doc->createElement($fieldname);
+					$child = $element->appendChild($child);
+
+					// $fieldvalue = iconv("ISO-8859-1", "UTF-8", $fieldvalue);
+					$fieldvalue = htmlspecialchars($fieldvalue);
+					$value = $doc->createTextNode($fieldvalue);
+					$value = $child->appendChild($value);
+				} // foreach
+			} // while
+		} else {
+			// Process any errors
+			$root->setAttribute('rows', 0);
+			$root->setAttribute('query', $this->last_sql);
+			if ($this->Error()) {
+				$root->setAttribute('error', $this->Error());
+			} else {
+				$root->setAttribute('error', "No query has been executed.");
+			}
+		}
+
+		// Show the XML document
+		return $doc->saveXML();
 	}
 
 	/**
@@ -873,7 +963,7 @@ class MySQL
 	 * Stop executing (die/exit) and show last MySQL error message
 	 *
 	 */
-	public function Kill($message='') {
+	public function Kill($message = "") {
 		if (strlen($message) > 0) {
 			exit($message);
 		} else {
@@ -927,25 +1017,27 @@ class MySQL
 	 * @param boolean $pcon    (Optional) Persistant connection
 	 * @return boolean Returns TRUE on success or FALSE on error
 	 */
-	public function Open($database="", $server="", $username="",
-						 $password="", $charset="", $pcon=false) {
+	public function Open($database = null, $server = null, $username = null,
+						 $password = null, $charset = null, $pcon = false) {
 		$this->ResetError();
 
 		// Use defaults?
-		if (strlen($database) == 0) $database = $this->db_dbname;
-		if (strlen($server)   == 0) $server   = $this->db_host;
-		if (strlen($username) == 0) $username = $this->db_user;
-		if (strlen($password) == 0) $password = $this->db_pass;
-		if (strlen($charset)  == 0) $charset  = $this->db_charset;
-		if (strlen($pcon)     == 0) $pcon     = $this->db_pcon;
+		if ($database !== null) $this->db_dbname  = $database;
+		if ($server   !== null) $this->db_host    = $server;
+		if ($username !== null) $this->db_user    = $username;
+		if ($password !== null) $this->db_pass    = $password;
+		if ($charset  !== null) $this->db_charset = $charset;
+		if (is_bool($pcon))     $this->db_pcon    = $pcon;
 
 		$this->active_row = -1;
 
 		// Open persistent or normal connection
 		if ($pcon) {
-			$this->mysql_link = @mysql_pconnect($server, $username, $password);
+			$this->mysql_link = @mysql_pconnect(
+				$this->db_host, $this->db_user, $this->db_pass);
 		} else {
-			$this->mysql_link = @mysql_connect ($server, $username, $password);
+			$this->mysql_link = @mysql_connect (
+				$this->db_host, $this->db_user, $this->db_pass);
 		}
 		// Connect to mysql server failed?
 		if (! $this->IsConnected()) {
@@ -953,15 +1045,16 @@ class MySQL
 			return false;
 		} else {
 			// Select a database (if specified)
-			if (strlen($database) > 0) {
-				if (strlen($charset) == 0) {
-					if (! $this->SelectDatabase($database)) {
+			if (strlen($this->db_dbname) > 0) {
+				if (strlen($this->db_charset) == 0) {
+					if (! $this->SelectDatabase($this->db_dbname)) {
 						return false;
 					} else {
 						return true;
 					}
 				} else {
-					if (! $this->SelectDatabase($database, $charset)) {
+					if (! $this->SelectDatabase(
+						$this->db_dbname, $this->db_charset)) {
 						return false;
 					} else {
 						return true;
@@ -991,7 +1084,7 @@ class MySQL
 			$this->SetError();
 			return false;
 		} else {
-			if (ereg("^insert", strtolower($sql))) {
+      if (strpos(strtolower($sql),"insert")===0) {
 				$this->last_insert_id = mysql_insert_id();
 				if ($this->last_insert_id === false) {
 					$this->SetError();
@@ -1001,7 +1094,7 @@ class MySQL
 					$this->active_row = -1;
 					return $this->last_result;
 				}
-			} else if(ereg("^select", strtolower($sql))) {
+      } else if(strpos(strtolower($sql),"select")===0) {
 				$numrows = mysql_num_rows($this->last_result);
 				if ($numrows > 0) {
 					$this->active_row = 0;
@@ -1119,15 +1212,15 @@ class MySQL
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return Records in array form
 	 */
-	public function RecordsArray($resultType=MYSQL_BOTH) {
+	public function RecordsArray($resultType = MYSQL_BOTH) {
 		$this->ResetError();
-		if ($this->last_result && mysql_num_rows($this->last_result) > 0) {
+		if ($this->last_result) {
 			if (! mysql_data_seek($this->last_result, 0)) {
 				$this->SetError();
 				return false;
 			} else {
 				//while($member = mysql_fetch_object($this->last_result)){
-				while($member = mysql_fetch_array($this->last_result, $resultType)){
+				while ($member = mysql_fetch_array($this->last_result, $resultType)){
 					$members[] = $member;
 				}
 				mysql_data_seek($this->last_result, 0);
@@ -1385,7 +1478,7 @@ class MySQL
 	 * @param string $errorMessage The error description
 	 * @param integer $errorNumber The error number
 	 */
-	private function SetError($errorMessage = '', $errorNumber = 0) {
+	private function SetError($errorMessage = "", $errorNumber = 0) {
 		try {
 			if (strlen($errorMessage) > 0) {
 				$this->error_desc = $errorMessage;
@@ -1474,28 +1567,31 @@ class MySQL
 			case "string":
 			case "varchar":
 			case "char":
-				// wolfgang@sybermon.com disabled because of kimai db structure
-				// I had to disable the following as kimai db structure
-				// does not allow NULL values
-//				if (strlen($value) == 0) {
-//					$return_value = "NULL";
-//				} else {
+        // wolfgang@sybermon.com disabled because of kimai db structure
+        // I had to disable the following as kimai db structure
+        // does not allow NULL values
+				//if (strlen($value) == 0) {
+				//	$return_value = "NULL";
+				//} else {
+					if (get_magic_quotes_gpc()) {
+						$value = stripslashes($value);
+					}
 					$return_value = "'" . str_replace("'", "''", $value) . "'";
-//				}
+				//}
 				break;
 			case "number":
 			case "integer":
 			case "int":
 			case "double":
 			case "float":
-				// wolfgang@sybermon.com disabled because of kimai db structure
-				// I had to disable the following as kimai db structure
-				// does not allow NULL values
+        // wolfgang@sybermon.com disabled because of kimai db structure
+        // I had to disable the following as kimai db structure
+        // does not allow NULL values
 				if (is_numeric($value)) {
 					$return_value = $value;
 				} else {
-//					$return_value = "NULL";
-					$return_value = 0;
+					//$return_value = "NULL";
+          $return_value = 0;
 				}
 				break;
 			case "boolean":  //boolean to use this with a bit field
