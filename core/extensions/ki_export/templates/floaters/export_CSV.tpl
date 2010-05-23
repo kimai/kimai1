@@ -6,7 +6,7 @@
             $('#floater input#timeformat').attr('value',$('#xp_ext_timeformat').attr('value'));
             $('#floater input#dateformat').attr('value',$('#xp_ext_dateformat').attr('value'));
             $('#floater input#default_location').attr('value',$('#default_location').attr('value'));
-            $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"));
+            $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":")+'|'+filterEvt.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter_cleared').attr('value'));
             $('#floater input#filter_type').attr('value',$('#xp_ext_tab_filter_type').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
