@@ -518,35 +518,6 @@ function lastday($month = '', $year = '') {
    return date('d', $result);
 }
 
-/**
- * lookup if either in or out timespace fields has to be highlighted red
- *
- * @param integer $in unix seconds
- * @param integer $out unix seconds
- * @return array
- *
- * @author th
- */
-function timespace_warning($in,$out) {
- 
-    if ($in>time()) {
-        $time_err['in'] = true;
-    } else {
-        $time_err['in'] = false;
-    }
-
-    if ($out!=0 && $out<time()) {
-        $time_err['out'] = true;
-    } else {
-        $time_err['out'] = false;
-    }
-  
-    if (!$time_err['out'] && !$time_err['in']) { return 0; } // both correct
-    if ( $time_err['out'] && !$time_err['in']) { return 1; } // out wrong
-    if (!$time_err['out'] &&  $time_err['in']) { return 2; } // in wrong
-    if ( $time_err['out'] &&  $time_err['in']) { return 3; } // both wrong
-}
-
 
 /**
  * read a cookie or return a default value, if cookie is not set

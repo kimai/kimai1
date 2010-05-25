@@ -41,7 +41,7 @@ class MYPDF extends TCPDF {
 
   // split the string in lines and check if a line would overflow and cause more lines
   public function getHtmlStringLines($string,$line_width) {
-    $htmlLines = split("<br />",$string);
+    $htmlLines = explode("<br />",$string);
     $lineCount = count($htmlLines);
     foreach ($htmlLines as $line) {
       $lineCount += ceil($this->GetStringWidth($line)/$line_width);

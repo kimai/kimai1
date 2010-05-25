@@ -27,17 +27,11 @@
                     switch (pickerClicked) {
 
                         case 'pick_in':
-                            fromDay   = selectedDate.getDate();
-                            fromMonth = selectedDate.getMonth()+1;
-                            fromYear  = selectedDate.getFullYear();
-                            setTimespace(fromDay,fromMonth,fromYear,0,0,0);
+                            setTimespace(selectedDate,undefined);
                         break;
 
                         case 'pick_out':
-                            toDay     = selectedDate.getDate();
-                            toMonth   = selectedDate.getMonth()+1;
-                            toYear    = selectedDate.getFullYear();
-                            setTimespace(0,0,0,toDay,toMonth,toYear);
+                            setTimespace(undefined,selectedDate);
                         break;
                     }
                     this.blur();
@@ -48,26 +42,9 @@
         $('#pick_in').dpSetSelected('{/literal}{$timespace_in|date_format:'%d/%m/%Y'}{literal}');
         $('#pick_out').dpSetSelected('{/literal}{$timespace_out|date_format:'%d/%m/%Y'}{literal}');        
         
-        switch ({/literal}{$timespace_warning}{literal}) {
-            case 0: 
-                $('#ts_in').removeClass('datewarning');  // in_ok
-                $('#ts_out').removeClass('datewarning'); // out_ok
-        break;
-            case 1:
-                $('#ts_in').removeClass('datewarning');  // in_ok
-                $('#ts_out').addClass('datewarning');    // out_bad
-        break;
-            case 2:
-                $('#ts_in').addClass('datewarning');     // in_bad
-                $('#ts_out').removeClass('datewarning'); // out_ok
-        break;
-            case 3:
-                $('#ts_in').addClass('datewarning');     // in_bad
-                $('#ts_out').addClass('datewarning');    // out_bad
-        break;
-        }
-        
-        {/literal}{if $hook_tss_inDisplay}hook_tss();{/if}{literal}
+        setTimespaceStart(new Date({/literal}{$timespace_in*1000}{literal}));
+        setTimespaceEnd(new Date({/literal}{$timespace_out*1000}{literal}));
+        updateTimespaceWarning();
              
     });
 </script>
@@ -75,8 +52,8 @@
 
 
 <div id="dates">
-    <a href="#" id="pick_in" class="date-pick" title="{$kga.lang.in}"><span id="ts_in">{$timespace_in|date_format:$kga.date_format.2}</span></a> - 
-    <a href="#" id="pick_out" class="date-pick" title="{$kga.lang.out}"><span id="ts_out">{$timespace_out|date_format:$kga.date_format.2}</span></a>
+    <a href="#" id="pick_in" class="date-pick" title="{$kga.lang.in}"><span id="ts_in"></span></a> - 
+    <a href="#" id="pick_out" class="date-pick" title="{$kga.lang.out}"><span id="ts_out"></span></a>
 </div>
 
 

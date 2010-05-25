@@ -1911,8 +1911,6 @@ function save_timespace($timespace_in,$timespace_out,$user) {
     
     $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "usr SET timespace_out = ? WHERE usr_ID = ?;");
     $pdo_query->execute(array($timespace_out ,$user));
-    
-    return timespace_warning($timespace_in,$timespace_out);
 }
 
 // -----------------------------------------------------------------------------------------------------------

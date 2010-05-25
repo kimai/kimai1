@@ -2092,7 +2092,6 @@ function save_timespace($timespace_in,$timespace_out,$user) {
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
     if (! $conn->Query($query)) $conn->Kill();
-    return timespace_warning($timespace_in,$timespace_out);
 }
 
 // -----------------------------------------------------------------------------------------------------------

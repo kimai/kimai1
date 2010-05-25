@@ -31,6 +31,7 @@
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
+    <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
     <!-- /Libs -->
 
     <!-- Default JavaScripts -->
@@ -79,6 +80,7 @@
         var nextday               = "{$nextday}";
         var default_title         = "{$kga.uer.usr_name} - Kimai";
         var revision              = {$kga.revision};
+        var timespaceDateFormat   = "{$kga.date_format.2}";
 
         var selected_knd  = '{$knd_data.knd_ID}';
         var selected_pct  = '{$pct_data.pct_ID}';

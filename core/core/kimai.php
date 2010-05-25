@@ -263,8 +263,6 @@ $tpl->assign('extensions', $extensions);
 $tpl->assign('css_extension_files', $css_extension_files);
 $tpl->assign('js_extension_files', $js_extension_files);
 
-$tpl->assign('timespace_warning', timespace_warning($in,$out));
-
 if (isset($kga['usr']))
   $tpl->assign('recstate', get_rec_state($kga['usr']['usr_ID']));
 else
@@ -458,9 +456,6 @@ foreach ($timeouts as $timeout) {
     $timeoutlist .=  "kill_timeout('" . $timeout . "');" ;
 }
 $tpl->assign('timeoutlist', $timeoutlist);
-
-// the TSS hook is not required at first insert of the display
-$tpl->assign('hook_tss_inDisplay',0);
 
 $tpl->display('core/main.tpl');
 

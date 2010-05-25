@@ -286,15 +286,64 @@ function logfile(entry) {
 
 // ----------------------------------------------------------------------------------------
 // grabs entered timespace and writes it to database
-// after that it reloads all 4 tables
+// after that it reloads all tables
 //
-function setTimespace(fromDay,fromMonth,fromYear,toDay,toMonth,toYear) {
-    timespace = fromMonth +"-"+ fromDay +"-"+ fromYear +"|"+ toMonth +"-"+ toDay +"-"+ toYear;
+function setTimespace(fromDate,toDate) {
+    
+    timespace = '';
+    
+    if (fromDate != undefined) {
+      setTimespaceStart(fromDate);
+      timespace += strftime('%m-%d-%Y',fromDate);
+    }
+    else {
+      timespace += "0-0-0";
+    }
+    
+    timespace += "|";
+    
+    if (toDate != undefined) {
+      setTimespaceEnd(toDate);
+      timespace += strftime('%m-%d-%Y',toDate);
+    }
+    else {
+      timespace += "0-0-0";
+    }
+    
     $.post("processor.php", { axAction: "setTimespace", axValue: timespace, id: 0 }, 
         function(response) {
-            $("#display").html(response);
+            hook_tss();
         }
     );
+    
+    updateTimespaceWarning();
+}
+
+function setTimespaceStart(fromDate) {
+  $('#ts_in').html(strftime(timespaceDateFormat,fromDate));
+  $('#pick_out').dpSetStartDate(strftime('%d/%m/%Y',fromDate));
+}
+
+function setTimespaceEnd(toDate) {
+  $('#ts_out').html(strftime(timespaceDateFormat,toDate));
+  $('#pick_in').dpSetEndDate(strftime('%d/%m/%Y',toDate));
+}
+
+function updateTimespaceWarning() {
+    
+    today = new Date();
+    today.setMilliseconds(0);
+    today.setSeconds(0);
+    today.setMinutes(0);
+    today.setHours(0);
+      
+    if ($('#pick_out').dpGetSelected()[0] < today) {
+      $('#ts_out').addClass('datewarning')
+    }
+    else {
+      $('#ts_out').removeClass('datewarning')
+    }
+  
 }
 
 

@@ -73,7 +73,7 @@ $iv_tmp_arr = Array();
 $handle = opendir('templates/'); 
 while (false!== ($file = readdir($handle))) { 
  if ($file!= "." && $file!= ".." &&!is_dir($file)) { 
- $namearr = split('\.',$file); 
+ $namearr = explode('.',$file); 
  if ($namearr[count($namearr)-1] == 'odt') $iv_tmp_arr[] = $file; 
  if ($namearr[count($namearr)-1] == 'ods') $iv_tmp_arr[] = $file;
  } 
