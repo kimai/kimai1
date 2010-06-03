@@ -57,7 +57,7 @@
                 
                    <li>
                        <label for="pct_ID">{$kga.lang.pct}:</label>
-                       <select size = "5" name="pct_ID" id="add_edit_exp_pct_ID" class="formfield" style="width:400px" tabindex="1" >
+                       <select size = "5" name="pct_ID" id="add_edit_exp_pct_ID" class="formfield" style="width:400px" tabindex="1" onchange="exp_add_edit_validate();">
                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
                        </select>
                        <br/>
