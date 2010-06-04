@@ -235,7 +235,7 @@ class MYPDF extends TCPDF {
                 $comment_string = '';
 
               if ($columns['time'] && !empty($row['zef_apos']))
-                $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_apos'].'</i>';
+                $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_apos'].' '.$kga['lang']['xp_ext']['duration_unit'].'</i>';
               else
                 $time_string = '';
 
@@ -381,10 +381,11 @@ class MYPDF extends TCPDF {
 
 
   public function timespan($number) {
+    global $kga;
     if ($number == -1)
       return "-------";
     else
-      return str_replace(".",",",sprintf("%01.2f",$number))." Std.";
+      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
 

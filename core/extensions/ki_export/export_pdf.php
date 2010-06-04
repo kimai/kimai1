@@ -13,10 +13,11 @@ class MYPDF extends TCPDF {
   } 
 
   public function timespan($number) {
+    global $kga;
     if ($number == -1)
       return "-------";
     else
-      return str_replace(".",",",sprintf("%01.2f",$number))." Std.";
+      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
   public function money($number) {

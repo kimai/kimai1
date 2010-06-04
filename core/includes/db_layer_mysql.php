@@ -1960,7 +1960,7 @@ function zef_create_record($usr_ID,$data) {
     if ($data ['trackingnr'] == '')
       $values ['zef_trackingnr'] = 'NULL';
     else
-      $values ['zef_trackingnr'] =   MySQL::SQLValue( $data ['trackingnr']   , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_trackingnr'] =   MySQL::SQLValue( $data ['trackingnr'] );
     $values ['zef_usrID']        =   MySQL::SQLValue( $usr_ID                , MySQL::SQLVALUE_NUMBER );
     $values ['zef_pctID']        =   MySQL::SQLValue( $data ['pct_ID']       , MySQL::SQLVALUE_NUMBER );
     $values ['zef_evtID']        =   MySQL::SQLValue( $data ['evt_ID']       , MySQL::SQLVALUE_NUMBER );
@@ -2011,7 +2011,7 @@ function zef_edit_record($id,$data) {
     if ($new_array ['zef_trackingnr'] == '')
       $values ['zef_trackingnr'] = 'NULL';
     else
-      $values ['zef_trackingnr'] = MySQL::SQLValue($new_array ['zef_trackingnr']    , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_trackingnr'] = MySQL::SQLValue($new_array ['zef_trackingnr']                             );
     $values ['zef_pctID']        = MySQL::SQLValue($new_array ['zef_pctID']         , MySQL::SQLVALUE_NUMBER );
     $values ['zef_evtID']        = MySQL::SQLValue($new_array ['zef_evtID']         , MySQL::SQLVALUE_NUMBER );
     $values ['zef_comment_type'] = MySQL::SQLValue($new_array ['zef_comment_type']  , MySQL::SQLVALUE_NUMBER );

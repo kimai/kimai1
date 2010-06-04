@@ -337,6 +337,8 @@ $kga['lang']['xp_ext'] = array(
 'reverse_order' => 'older entries first',
 'time_period'  => 'time period',
 
+'duration_unit' => 'h',
+
 );
 
 

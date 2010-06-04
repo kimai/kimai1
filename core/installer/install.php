@@ -190,7 +190,7 @@ $query=
   `zef_comment_type` TINYINT(1) NOT NULL DEFAULT '0',
   `zef_cleared` TINYINT(1) NOT NULL DEFAULT '0',
   `zef_location` VARCHAR(50),
-  `zef_trackingnr` int(20),
+  `zef_trackingnr` varchar(30),
   `zef_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`zef_ID`)
 ) AUTO_INCREMENT=1;";

@@ -1007,6 +1007,11 @@ if ((int)$revisionDB < 1176) {
     exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_evtID` ) ");
 }
 
+if ((int)$revisionDb < 1183) {
+    logfile("-- update to r1183");
+    exec_query("ALTER TABLE `${p}zef` CHANGE `zef_trackingnr` `zef_trackingnr` varchar(30) DEFAULT ''");
+}
+
 
 
   
