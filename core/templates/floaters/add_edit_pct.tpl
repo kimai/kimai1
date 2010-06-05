@@ -42,12 +42,12 @@
 
                     <li>
                         <label for="pct_default_rate" >{$kga.lang.default_rate}:</label>
-                        <input type="text" name="pct_default_rate" value="{$pct_default_rate}" />
+                        <input type="text" name="pct_default_rate" value="{$pct_default_rate|replace:'.':$kga.conf.decimalSeparator}" />
                     </li>
 
                     <li>
                         <label for="pct_my_rate" >{$kga.lang.my_rate}:</label>
-                        <input type="text" name="pct_my_rate" value="{$pct_my_rate}" />
+                        <input type="text" name="pct_my_rate" value="{$pct_my_rate|replace:'.':$kga.conf.decimalSeparator}" />
                     </li>
                     
                     <li class="extended">

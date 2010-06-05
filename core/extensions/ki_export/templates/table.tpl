@@ -135,7 +135,7 @@
 {if $arr_data[row].dec_zef_time}
                     
                         <a title='{$arr_data[row].zef_coln}'>
-                            {$arr_data[row].dec_zef_time}
+                            {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator}
                         </a>
                       
 {else}  
@@ -156,7 +156,7 @@
                         {if $disabled_columns.rate}disabled{/if}
                     ">
                     
-                            {$arr_data[row].zef_rate}
+                            {$arr_data[row].zef_rate|replace:'.':$kga.conf.decimalSeparator}
                     </td>
 
 {*task wage ----------------------------------------------------*}
@@ -174,7 +174,7 @@
                     
 {if $arr_data[row].wage}
                     
-                        {$arr_data[row].wage}
+                        {$arr_data[row].wage|replace:'.':$kga.conf.decimalSeparator}
                       
 {else}  
                         &ndash;

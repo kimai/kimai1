@@ -235,6 +235,7 @@ switch ($axAction) {
         $var_data['date_format_2']          = $_REQUEST['date_format_2'];
         $var_data['language']               = $_REQUEST['language'];
         $var_data['roundPrecision']         = $_REQUEST['roundPrecision'];
+        $var_data['decimalSeparator']       = $_REQUEST['decimalSeparator'];
         
         $success = var_edit($var_data);
 

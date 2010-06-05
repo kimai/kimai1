@@ -236,6 +236,8 @@ $kga['lang']= array(
 'round_time' => 'Round time to ',
 'round_time_minute' => ' minute(s).',
 'logged_in_as' => 'logged in as:',
+
+'decimal_separator'   => 'Decimal separerare',
 );
 
 $kga['lang']['months']         = array("January","February","Mars","April","May","Juni","Juli","Augusti","September","Oktober","November","December");
@@ -324,8 +326,6 @@ $kga['lang']['xp_ext'] = array(
 'duration'              => 'Varaktighet',
 'hide_cleared_entries'  => 'visa inte markerade poster',
 'customer_new_page'     => 'ny sida för varje kund',
-
-'decimal_separator'  	=> 'Decimal separerare',
  
 'times_and_expenses' => 'times and expenses',
 'times' => 'times',

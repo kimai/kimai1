@@ -183,7 +183,7 @@
                     
 {if $arr_zef[row].wage}
                     
-                        {$arr_zef[row].wage}
+                        {$arr_zef[row].wage|replace:'.':$kga.conf.decimalSeparator}
                       
 {else}  
                         &ndash;

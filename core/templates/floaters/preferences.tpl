@@ -39,7 +39,7 @@
 
                     <li>
                         <label for="rate">{$kga.lang.my_rate}:</label>
-                        <input type="text" name="rate" size="9" value="{$rate}"/>
+                        <input type="text" name="rate" size="9" value="{$rate|replace:'.':$kga.conf.decimalSeparator}"/>
                     </li>
 
                     <li>

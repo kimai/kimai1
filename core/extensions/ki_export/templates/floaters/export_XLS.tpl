@@ -48,8 +48,8 @@
 				<ul>
                 
                    <li>
-                       <label for="print_comments">{$kga.lang.xp_ext.decimal_separator}:</label>
-                       <input type="text" value="," name="decimal_separator" id="decimal-separator" size="1"/>
+                       <label for="print_comments">{$kga.lang.decimal_separator}:</label>
+                       <input type="text" value="{$kga.conf.decimal_separator}" name="decimal_separator" id="decimal-separator" size="1"/>
                    </li>
                 
                    <li>

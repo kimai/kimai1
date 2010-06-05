@@ -103,6 +103,11 @@
                  <option value="30" {if $kga.conf.roundPrecision==30}selected="selected"{/if}>30</option>
                </select> {$kga.lang.round_time_minute}
             </div>
+
+            <div>
+               {$kga.lang.decimal_separator}: <input type="text" name="decimalSeparator" size="1" value="{$kga.conf.decimalSeparator}" class="formfield">
+            </div>
+
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         

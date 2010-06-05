@@ -66,9 +66,10 @@ switch ($axAction) {
         $usr_data['showIDs']            = $_REQUEST['showIDs'];
         $usr_data['noFading']           = $_REQUEST['noFading'];
         $usr_data['user_list_hidden']   = $_REQUEST['user_list_hidden'];
-        
-        if (is_numeric($_REQUEST['rate']))
-          save_rate($kga['usr']['usr_ID'],null,NULL,$_REQUEST['rate']);
+        $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+
+        if (is_numeric($rate))
+          save_rate($kga['usr']['usr_ID'],null,NULL,$rate);
         else
           remove_rate($kga['usr']['usr_ID'],null,NULL);
         
@@ -245,8 +246,10 @@ switch ($axAction) {
                 $data['pct_filter']       = $_REQUEST['pct_filter'];
                 $data['pct_logo']         = $_REQUEST['pct_logo'];
                 $data['pct_budget']       = $_REQUEST['pct_budget'];
-                $data['pct_default_rate'] = $_REQUEST['pct_default_rate'];
-                $data['pct_my_rate']      = $_REQUEST['pct_my_rate'];
+                $data['pct_default_rate'] = 
+                    str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
+                $data['pct_my_rate']      = 
+                    str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_my_rate']);
                 
                 // logfile("pct_create (" .$kga['usr']['usr_name'] ."): " . $data['pct_name']);
                 
@@ -265,8 +268,10 @@ switch ($axAction) {
                 $data['evt_visible']      = $_REQUEST['evt_visible'];
                 $data['evt_filter']       = $_REQUEST['evt_filter'];
                 $data['evt_logo']         = $_REQUEST['evt_logo'];
-                $data['evt_default_rate'] = $_REQUEST['evt_default_rate'];
-                $data['evt_my_rate']      = $_REQUEST['evt_my_rate'];
+                $data['evt_default_rate'] = 
+                    str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_default_rate']);
+                $data['evt_my_rate']      = 
+                    str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_my_rate']);
                 
                 // logfile("evt_create (" .$kga['usr']['usr_name'] ."): " . $data['evt_name']);
                 

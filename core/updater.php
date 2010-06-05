@@ -1012,6 +1012,11 @@ if ((int)$revisionDb < 1183) {
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_trackingnr` `zef_trackingnr` varchar(30) DEFAULT ''");
 }
 
+if ((int)$revisionDb < 1184) {
+    logfile("-- update to r1184");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('decimalSeparator',',')");
+}
+
 
 
   

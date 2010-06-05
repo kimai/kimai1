@@ -62,7 +62,7 @@
 {*value --------------------------------------------------------*}
 
                     <td class="value">
-                        {$arr_exp[row].exp_value}
+                        {$arr_exp[row].exp_value|replace:'.':$kga.conf.decimalSeparator}
                     </td>
 
 {*client name --------------------------------------------------*}
