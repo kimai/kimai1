@@ -185,6 +185,9 @@ switch ($axAction) {
     case 'reload_evt':
         if (isset($kga['customer']))
           $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+        else if (isset($_REQUEST['pct']))
+          $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],
+              $_REQUEST['pct']);
         else
           $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
         if (count($arr_evt)>0) {
@@ -281,7 +284,9 @@ switch ($axAction) {
             	    evt_edit($id, $data);
             	}
                 $grp_array = $_REQUEST['evt_grp'];
+                $pct_array = $_REQUEST['evt_pct'];
                 assign_evt2grps($id, $grp_array);
+                assign_evt2pcts($id, $pct_array);
             break;
         }
     break;

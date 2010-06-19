@@ -364,6 +364,8 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // ========================
 if (isset($kga['customer']))
   $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+else if ($pct_data['pct_ID'])
+  $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],$pct_data['pct_ID']);
 else
   $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
 if (count($arr_evt)>0) {

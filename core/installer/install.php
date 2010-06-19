@@ -136,6 +136,10 @@ exec_query($query);
 $query="CREATE TABLE `" . $kga['server_prefix'] . "grp_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`evt_ID`)) ;";
 exec_query($query);
 
+// project/event cross-table (projects n:m events)
+$query="CREATE TABLE `" . $kga['server_prefix'] . "pct_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;";
+exec_query($query);
+
 $query=
 "CREATE TABLE `" . $kga['server_prefix'] . "knd` (
   `knd_ID` int(10) NOT NULL auto_increment,

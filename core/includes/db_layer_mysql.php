@@ -785,6 +785,101 @@ function assign_evt2grps($evt_id, $grp_array) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Assigns an event to 1-n projects by adding entries to the cross table
+ *
+ * @param int $evt_id         id of the event to which projects will be assigned
+ * @param array $gpct_array    contains one or more pct_IDs
+ * @global array $kga         kimai-global-array
+ * @return boolean            true on success, false on failure
+ * @author ob/th
+ */
+
+function assign_evt2pcts($evt_id, $pct_array) {
+    global $kga, $conn;
+    
+    if (! $conn->TransactionBegin()) $conn->Kill();        
+
+    $table = $kga['server_prefix']."pct_evt";
+    $filter['evt_ID'] = MySQL::SQLValue($evt_id, MySQL::SQLVALUE_NUMBER);
+    $d_query = MySQL::BuildSQLDelete($table, $filter);
+    $d_result = $conn->Query($d_query);    
+
+    if ($d_result == false) {
+        $conn->TransactionRollback();
+        return false;
+    }
+
+    foreach ($pct_array as $current_pct) {
+        
+        $filter['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+        $filter['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
+        $c_query = MySQL::BuildSQLSelect($table, $filter);
+        $conn->Query($c_query);
+        
+        if ($conn->RowCount() == 0) {
+            $values['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+            $values['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
+            $query = MySQL::BuildSQLInsert($table, $values);
+            $result = $conn->Query($query);            
+            
+            if ($result == false) {
+                $conn->TransactionRollback();
+                return false;
+            }
+        }
+    }
+    
+    if ($conn->TransactionEnd() == true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns all the projects to which the event was assigned
+ *
+ * @param array $evt_id  evt_id of the project
+ * @global array $kga    kimai-global-array
+ * @return array         contains the pct_IDs of the projects or false on error
+ * @author th
+ */
+ 
+// checked 
+ 
+function evt_get_pcts($evt_id) {
+    global $kga, $conn;
+
+    $filter ['evt_ID'] = MySQL::SQLValue($evt_id, MySQL::SQLVALUE_NUMBER);
+    $columns[]         = "pct_ID";
+    $table = $kga['server_prefix']."pct_evt";
+    
+    $result = $conn->SelectRows($table, $filter, $columns);
+    if ($result == false) {
+        return false;
+    }
+
+    $return_grps = array();
+    $counter     = 0;
+    
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    
+    if ($conn->RowCount()) {
+        foreach ($rows as $current_grp) {
+            $return_grps[$counter] = $current_grp['pct_ID'];
+            $counter++;   
+        }
+        return $return_grps;
+    } else {
+        return false;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * returns all the groups of the given event
  *
  * @param array $evt_id  evt_id of the project
@@ -2858,6 +2953,66 @@ function get_arr_evt($group) {
         $query = "SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = $group AND evt_trash=0 ORDER BY evt_visible DESC,evt_name;";
     }
     
+    $result = $conn->Query($query);
+    if ($result == false) {
+        return false;
+    }
+
+    $arr = array();
+    $i = 0;
+    if ($conn->RowCount()) {
+        $conn->MoveFirst();
+        while (! $conn->EndOfSeek()) {
+            $row = $conn->Row();
+            $arr[$i]['evt_ID']       = $row->evt_ID;   
+            $arr[$i]['evt_name']     = $row->evt_name;
+            $arr[$i]['evt_visible']  = $row->evt_visible;
+            $i++;
+        }
+        return $arr;
+    } else {
+        return array();
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------
+
+/**
+ * Get an array of events, which should be displayed for a specific project.
+ * Those are events which were assigned to the project or which are assigned to
+ * no project.
+ * 
+ * Two joins can occur:
+ *  The JOIN is for filtering the events by groups.
+ *  
+ *  The LEFT JOIN gives each event row the project id which it has been assigned
+ *  to via the pct_evt table or NULL when there is no assignment. So we only
+ *  take rows which have NULL or the project id in that column.
+ *  
+ *  @author sl
+ */
+ 
+function get_arr_evt_by_pct($group,$pct) {
+    global $kga, $conn;
+    $pct = MySQL::SQLValue($pct , MySQL::SQLVALUE_NUMBER); 
+ 
+    $p = $kga['server_prefix'];
+
+    if ($group == "all") {
+        $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
+ LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
+ WHERE evt_trash=0 AND (pct_ID = $pct OR pct_ID IS NULL)
+ ORDER BY evt_visible DESC,evt_name;";
+    } else {
+        $group = MySQL::SQLValue($group , MySQL::SQLVALUE_NUMBER); 
+        $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
+ JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
+ LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
+ WHERE `${p}grp_evt`.`grp_ID` = $group AND evt_trash=0
+ AND (pct_ID = $pct OR pct_ID IS NULL)
+ ORDER BY evt_visible DESC,evt_name;";
+    }
+    logfile($query);
     $result = $conn->Query($query);
     if ($result == false) {
         return false;

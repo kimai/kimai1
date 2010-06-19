@@ -180,6 +180,22 @@ function ts_ext_reload() {
             );
 }
 
+
+// ----------------------------------------------------------------------------------------
+// reloads timesheet, customer, project and event tables
+//
+function ts_ext_reload_evt(pct) {
+  var selected_evt = $('#add_edit_zef_evt_ID').val();
+            $.post(ts_ext_path + "processor.php", { axAction: "reload_evt_options", axValue: 0, id: 0, pct:pct },
+                function(data) { 
+                    $("#add_edit_zef_evt_ID").html(data);
+                    $("#add_edit_zef_evt_ID").val(selected_evt);
+                    getBestRate();
+                    ts_add_edit_validate();
+                }
+            );
+}
+
 // ----------------------------------------------------------------------------------------
 // this function is attached to the little green arrows in front of each timesheet record
 // and starts recording that event anew

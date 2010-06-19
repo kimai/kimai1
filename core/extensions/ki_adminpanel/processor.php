@@ -89,12 +89,34 @@ switch ($axAction) {
                 break;
                 
             case "evt": 
-                $arr_evt = get_arr_evt("all");
+                if (!isset($_REQUEST['evt_filter']))
+                  $arr_evt = get_arr_evt("all");
+                else
+                  switch ($_REQUEST['evt_filter']) {
+                      case -1:
+                      $arr_evt = get_arr_evt("all");
+                      break;
+                    case -2:
+                      // -2 is to get unassigned events. As -2 is never
+                      // an id of a project this will give us all unassigned
+                      // events.
+                    default:
+                      $arr_evt = 
+                        get_arr_evt_by_pct("all",$_REQUEST['evt_filter']);
+                  }
+                  
                 if (count($arr_evt)>0) {
                 $tpl->assign('arr_evt', $arr_evt);
                 } else {
                 $tpl->assign('arr_evt', '0');
                 }
+                
+                
+                $arr_pct = get_arr_pct("all");
+                $tpl->assign('arr_pct', $arr_pct);
+                
+                $tpl->assign('selected_evt_filter',$_REQUEST['evt_filter']);
+                
                 $tpl->display("evt.tpl");
                 break;
         }

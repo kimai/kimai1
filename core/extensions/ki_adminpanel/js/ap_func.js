@@ -223,7 +223,11 @@ function ap_ext_editGroup(id) {
 // refreshes either user/group/advanced/DB subtab
 //
 function ap_ext_refreshSubtab(tab) {
-    $.post(ap_ext_path + "processor.php", { axAction: "refreshSubtab", axValue: tab, id: 0 }, 
+    options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
+    if (tab = 'evt') {
+      options.evt_filter = $('#evt_pct_filter').val();
+    }
+    $.post(ap_ext_path + "processor.php", options, 
     function(data) {
         switch(tab) {
             case "usr":  target = "#ap_ext_s1"; break

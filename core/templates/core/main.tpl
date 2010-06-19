@@ -125,6 +125,11 @@
     setTimeout(lists_resize,500);
     clearTimeout(lists_resize);
 
+
+        if ($('#row_evt'+selected_evt).length == 0) {
+          $('#buzzer').addClass('disabled');
+        }
+
 	resize_menu();
     
         }{/literal}

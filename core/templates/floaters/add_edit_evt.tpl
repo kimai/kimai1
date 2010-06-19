@@ -62,7 +62,14 @@
                     </li>
 {else}
                     <input name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
-{/if}
+{/if}              
+
+                    <li class="extended">
+                        <label for="evt_pct" >{$kga.lang.pcts}:</label>
+                        <select class="formfield" name="evt_pct[]" multiple size='5' style="width:255px">
+                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pct_selection}
+                        </select>
+                    </li>
 
 
                     

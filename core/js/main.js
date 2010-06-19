@@ -426,7 +426,7 @@ function edit_running_comment() {
 }
 
 function buzzer() {
-    if ( recstate!=1 && !(selected_knd && selected_pct && selected_evt) ) return;
+    if ( recstate!=1 && $('#buzzer').hasClass('disabled') ) return;
 
 
     if (recstate) {
@@ -818,7 +818,7 @@ function lists_reload(subject) {
             );
     break;
         case "evt": 
-            $.post("processor.php", { axAction: "reload_evt", axValue: 0, id: 0 },
+            $.post("processor.php", { axAction: "reload_evt", axValue: 0, id: 0, pct:selected_pct },
                 function(data) { 
                     $("#evt").html(data);
                     ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
@@ -826,6 +826,9 @@ function lists_reload(subject) {
                     $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('evt', $('#filt_evt').val());
 		    lists_write_annotations('evt');
+        if ($('#row_evt'+selected_evt).length == 0) {
+          $('#buzzer').addClass('disabled');
+        }
                 }
             );
     break;

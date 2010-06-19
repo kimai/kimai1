@@ -25,7 +25,7 @@
 {/if}
                         <a href ="#" onClick="lists_update_filter('pct',{$arr_pct[row].pct_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
-                        <a href ="#" class="preselect" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); return false;" id="ps{$arr_pct[row].pct_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
+                        <a href ="#" class="preselect" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); lists_reload('evt'); return false;" id="ps{$arr_pct[row].pct_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
                     </td>
 
                     <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); return false;">

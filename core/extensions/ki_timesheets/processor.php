@@ -133,6 +133,21 @@ switch ($axAction) {
 	  echo $rate;
     break;
 
+    // ===============================================
+    // = Get the best rate for the project and event =
+    // ===============================================
+    case 'reload_evt_options':
+        if (isset($kga['customer'])) die();
+        $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],
+              $_REQUEST['pct']);
+        foreach ($arr_evt as $event) {
+          if (!$event['evt_visible'])
+            continue;
+          echo '<option value="'.$event['evt_ID'].'">'.
+          $event['evt_name'].'</option>\n';
+        }
+    break;
+
     // ===================================================
     // = Load timesheet data (zef) from DB and return it =
     // ===================================================

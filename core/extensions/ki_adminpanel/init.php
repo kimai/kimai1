@@ -45,13 +45,14 @@
     // ========================
     // = display events table =
     // ========================
-    $arr_evt = get_arr_evt("all");
+    $arr_evt = get_arr_evt_by_pct("all",-2);
     if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
     } else {
     $tpl->assign('arr_evt', '0');
     }
     $tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
+    $tpl->assign('selected_evt_filter',-2);
 
     $tpl->assign('curr_user', $kga['usr']['usr_name']);
     $tpl->assign('arr_grp', get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));

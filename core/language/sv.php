@@ -238,6 +238,10 @@ $kga['lang']= array(
 'logged_in_as' => 'logged in as:',
 
 'decimal_separator'   => 'Decimal separerare',
+
+'view_filter' => 'view filter',
+'unassigned' => 'unassigned',
+'all_events' => '&lt;&lt;all&gt;&gt;',
 );
 
 $kga['lang']['months']         = array("January","February","Mars","April","May","Juni","Juli","Augusti","September","Oktober","November","December");

@@ -146,12 +146,20 @@ switch ($axAction) {
                 $tpl->assign('evt_default_rate', $data['evt_default_rate']);
                 $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
                 $tpl->assign('grp_selection', evt_get_grps($id));
+                $tpl->assign('pct_selection', evt_get_pcts($id));
                 $tpl->assign('id', $id);
+        
             }
         }
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
+
+        // select for projects
+        $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+        $tpl->assign('sel_pct_names', $sel[0]);
+        $tpl->assign('sel_pct_IDs',   $sel[1]);
+
         if (!$id) {
             $grp_selection[]=$kga['usr']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);

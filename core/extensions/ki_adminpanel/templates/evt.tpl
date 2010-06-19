@@ -1,4 +1,15 @@
+
 <a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_evt}"></a> {$kga.lang.new_evt}
+
+&nbsp;&nbsp;&nbsp;{$kga.lang.view_filter}:
+        <select size="1" id="evt_pct_filter" onchange="ap_ext_refreshSubtab('evt');">
+          <option value="-2" {if $selected_evt_filter==-2}selected="selected"{/if}>{$kga.lang.unassigned}</option>
+          <option value="-1" {if $selected_evt_filter==-1}selected="selected"{/if}>{$kga.lang.all_events}</option>
+          {section name=row loop=$arr_pct}
+          <option value="{$arr_pct[row].pct_ID}"
+             {if $selected_evt_filter==$arr_pct[row].pct_ID}selected="selected"{/if}>{$arr_pct[row].pct_name} ({$arr_pct[row].knd_name|truncate:30:"..."})</option>
+          {/section}
+        </select>
 <br/><br/>
 
 {cycle values="odd,even" reset=true print=false}
