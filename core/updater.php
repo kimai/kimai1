@@ -1007,17 +1007,17 @@ if ((int)$revisionDB < 1176) {
     exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_evtID` ) ");
 }
 
-if ((int)$revisionDb < 1183) {
+if ((int)$revisionDB < 1183) {
     logfile("-- update to r1183");
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_trackingnr` `zef_trackingnr` varchar(30) DEFAULT ''");
 }
 
-if ((int)$revisionDb < 1184) {
+if ((int)$revisionDB < 1184) {
     logfile("-- update to r1184");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('decimalSeparator',',')");
 }
 
-if ((int)$revisionDb < 1185) {
+if ((int)$revisionDB < 1185) {
     logfile("-- update to r1185");
     exec_query("CREATE TABLE ${p}pct_evt (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;");
 }

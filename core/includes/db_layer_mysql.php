@@ -3012,7 +3012,6 @@ function get_arr_evt_by_pct($group,$pct) {
  AND (pct_ID = $pct OR pct_ID IS NULL)
  ORDER BY evt_visible DESC,evt_name;";
     }
-    logfile($query);
     $result = $conn->Query($query);
     if ($result == false) {
         return false;

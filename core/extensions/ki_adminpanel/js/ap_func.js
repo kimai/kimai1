@@ -224,7 +224,7 @@ function ap_ext_editGroup(id) {
 //
 function ap_ext_refreshSubtab(tab) {
     options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
-    if (tab = 'evt') {
+    if (tab == 'evt') {
       options.evt_filter = $('#evt_pct_filter').val();
     }
     $.post(ap_ext_path + "processor.php", options, 
