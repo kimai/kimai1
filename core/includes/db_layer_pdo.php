@@ -2817,6 +2817,40 @@ function get_arr_evt($group) {
 
 // -----------------------------------------------------------------------------------------------------------
 
+## Load into Array: Events 
+function get_arr_evt_by_pct($group,$pct) {
+    global $kga, $pdo_conn;
+    
+    $arr = array();
+    if ($group == "all") {
+        $pdo_query = $pdo_conn->prepare("SELECT " . $kga['server_prefix'] . "evt.evt_ID,evt_name,evt_visible FROM " . $kga['server_prefix'] . "evt
+ LEFT JOIN " . $kga['server_prefix'] . "pct_evt ON `" . $kga['server_prefix'] . "pct_evt`.`evt_ID`=`" . $kga['server_prefix'] . "evt`.`evt_ID`
+ WHERE evt_trash=0 AND (pct_ID = ? OR pct_ID IS NULL)
+ ORDER BY evt_visible DESC,evt_name;");
+        $pdo_query->execute(array($pct));
+    } else {
+        $pdo_query = $pdo_conn->prepare("SELECT " . $kga['server_prefix'] . "evt.evt_ID,evt_name,evt_visible FROM " . $kga['server_prefix'] . "evt
+ JOIN " . $kga['server_prefix'] . "grp_evt ON `" . $kga['server_prefix'] . "grp_evt`.`evt_ID`=`" . $kga['server_prefix'] . "evt`.`evt_ID`
+ LEFT JOIN " . $kga['server_prefix'] . "pct_evt ON `" . $kga['server_prefix'] . "pct_evt`.`evt_ID`=`" . $kga['server_prefix'] . "evt`.`evt_ID`
+ WHERE `" . $kga['server_prefix'] . "grp_evt`.`grp_ID` = ? AND evt_trash=0
+ AND (pct_ID = ? OR pct_ID IS NULL)
+ ORDER BY evt_visible DESC,evt_name;");
+        $pdo_query->execute(array($group,$pct));
+    }
+    
+    $i=0;
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        $arr[$i]['evt_ID'] = $row['evt_ID'];
+        $arr[$i]['evt_name'] = $row['evt_name'];
+        $arr[$i]['evt_visible'] = $row['evt_visible'];
+        $i++;
+    }
+ 
+    return $arr;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
 /**
  * returns list of events used with specified customer
  *
