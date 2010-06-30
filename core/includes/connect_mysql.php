@@ -63,6 +63,14 @@ if (isset($_REQUEST['database'])) {
 
 include(WEBROOT."libraries/mysql.class.php");
 
-$conn = new MySQL(true, $kga['server_database'], $kga['server_hostname'], $kga['server_username'], $kga['server_password'],"utf8");  
+if (isset($utf8)) {
+    if ($utf8) {
+        $conn = new MySQL(true, $kga['server_database'], $kga['server_hostname'], $kga['server_username'], $kga['server_password'],"utf-8");   
+    } else {
+        $conn = new MySQL(true, $kga['server_database'], $kga['server_hostname'], $kga['server_username'], $kga['server_password']);    
+    }
+} else {
+    $conn = new MySQL(true, $kga['server_database'], $kga['server_hostname'], $kga['server_username'], $kga['server_password']);    
+}
 if ($conn->Error()) $conn->Kill();
 ?>

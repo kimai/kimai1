@@ -85,7 +85,6 @@ try {
     header("Location: error.php");
 }
 
-$pdo_conn->query("SET CHARACTER SET utf-8");
 // logfile("******************** PDO database connection established.");
 
 
