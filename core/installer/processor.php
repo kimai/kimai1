@@ -162,13 +162,14 @@ switch ($axAction) {
     
     case ("write_config"):
     include("../includes/func.php");
-    $database    = $_REQUEST['database'];
-    $hostname    = $_REQUEST['hostname'];
-    $username    = $_REQUEST['username'];
-    $password    = $_REQUEST['password'];
+     // special characters " and $ are escaped
+    $database    = addcslashes($_REQUEST['database'],'"$');
+    $hostname    = addcslashes($_REQUEST['hostname'],'"$');
+    $username    = addcslashes($_REQUEST['username'],'"$');
+    $password    = addcslashes($_REQUEST['password'],'"$');
     $db_layer    = $_REQUEST['db_layer'];
     $db_type     = $_REQUEST['db_type'];
-    $prefix      = $_REQUEST['prefix'];
+    $prefix      = addcslashes($_REQUEST['prefix'],'"$');
     $lang        = $_REQUEST['lang'];
     $salt        = createPassword(20);
 
