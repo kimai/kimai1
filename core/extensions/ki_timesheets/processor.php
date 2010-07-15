@@ -127,7 +127,7 @@ switch ($axAction) {
     case 'bestFittingRate':
         if (isset($kga['customer'])) die();
         $rate = get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']);
-        if (rate === false)
+        if ($rate === false)
           echo -1;
         else
 	  echo $rate;

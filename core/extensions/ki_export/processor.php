@@ -218,35 +218,35 @@ switch ($axAction) {
         $row = array();
         
         // output of headers
-        if ($columns['date'])
+        if (isset($columns['date']))
           $row[] = csv_prepare_field($kga['lang']['datum'],$column_delimiter,$quote_char);
-        if ($columns['from'])
+        if (isset($columns['from']))
           $row[] = csv_prepare_field($kga['lang']['in'],$column_delimiter,$quote_char);            
-        if ($columns['to'])
+        if (isset($columns['to']))
           $row[] = csv_prepare_field($kga['lang']['out'],$column_delimiter,$quote_char);           
-        if ($columns['time'])
+        if (isset($columns['time']))
           $row[] = csv_prepare_field($kga['lang']['time'],$column_delimiter,$quote_char);          
-        if ($columns['dec_time'])
+        if (isset($columns['dec_time']))
           $row[] = csv_prepare_field($kga['lang']['timelabel'],$column_delimiter,$quote_char);     
-        if ($columns['rate'])
+        if (isset($columns['rate']))
           $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);          
-        if ($columns['wage'])
+        if (isset($columns['wage']))
           $row[] = csv_prepare_field($kga['currency_name'],$column_delimiter,$quote_char);                      
-        if ($columns['knd'])
+        if (isset($columns['knd']))
           $row[] = csv_prepare_field($kga['lang']['knd'],$column_delimiter,$quote_char);           
-        if ($columns['pct'])
+        if (isset($columns['pct']))
           $row[] = csv_prepare_field($kga['lang']['pct'],$column_delimiter,$quote_char);           
-        if ($columns['action'])
+        if (isset($columns['action']))
           $row[] = csv_prepare_field($kga['lang']['evt'],$column_delimiter,$quote_char);           
-        if ($columns['comment'])
+        if (isset($columns['comment']))
           $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
-        if ($columns['location'])
+        if (isset($columns['location']))
           $row[] = csv_prepare_field($kga['lang']['zlocation'],$column_delimiter,$quote_char);      
-        if ($columns['trackingnr'])
+        if (isset($columns['trackingnr']))
           $row[] = csv_prepare_field($kga['lang']['trackingnr'],$column_delimiter,$quote_char);    
-        if ($columns['user'])
+        if (isset($columns['user']))
           $row[] = csv_prepare_field($kga['lang']['username'],$column_delimiter,$quote_char);          
-        if ($columns['cleared'])
+        if (isset($columns['cleared']))
           $row[] = csv_prepare_field($kga['lang']['cleared'],$column_delimiter,$quote_char);  
 
         echo implode($column_delimiter,$row);
@@ -255,35 +255,35 @@ switch ($axAction) {
         // output of data
         foreach ($arr_data as $data) {
           $row = array();
-          if ($columns['date'])
+          if (isset($columns['date']))
             $row[] = csv_prepare_field(strftime($dateformat,$data['time_in']),$column_delimiter,$quote_char);
-          if ($columns['from'])
+          if (isset($columns['from']))
             $row[] = csv_prepare_field(strftime($timeformat,$data['time_in']),$column_delimiter,$quote_char);            
-          if ($columns['to'])
+          if (isset($columns['to']))
             $row[] = csv_prepare_field(strftime($timeformat,$data['time_out']),$column_delimiter,$quote_char);           
-          if ($columns['time'])
+          if (isset($columns['time']))
             $row[] = csv_prepare_field($data['zef_apos'],$column_delimiter,$quote_char);          
-          if ($columns['dec_time'])
+          if (isset($columns['dec_time']))
             $row[] = csv_prepare_field($data['dec_zef_time'],$column_delimiter,$quote_char);     
-          if ($columns['rate'])
+          if (isset($columns['rate']))
             $row[] = csv_prepare_field($data['zef_rate'],$column_delimiter,$quote_char);          
-          if ($columns['wage'])
+          if (isset($columns['wage']))
             $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                      
-          if ($columns['knd'])
+          if (isset($columns['knd']))
             $row[] = csv_prepare_field(htmlspecialchars_decode($data['knd_name']),$column_delimiter,$quote_char);           
-          if ($columns['pct'])
+          if (isset($columns['pct']))
             $row[] = csv_prepare_field(htmlspecialchars_decode($data['pct_name']),$column_delimiter,$quote_char);           
-          if ($columns['action'])
+          if (isset($columns['action']))
             $row[] = csv_prepare_field(htmlspecialchars_decode($data['evt_name']),$column_delimiter,$quote_char);           
-          if ($columns['comment'])
+          if (isset($columns['comment']))
             $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
-          if ($columns['location'])
+          if (isset($columns['location']))
             $row[] = csv_prepare_field($data['location'],$column_delimiter,$quote_char);      
-          if ($columns['trackingnr'])
+          if (isset($columns['trackingnr']))
             $row[] = csv_prepare_field($data['trackingnr'],$column_delimiter,$quote_char);    
-          if ($columns['user'])
+          if (isset($columns['user']))
             $row[] = csv_prepare_field($data['username'],$column_delimiter,$quote_char);          
-          if ($columns['cleared'])
+          if (isset($columns['cleared']))
             $row[] = csv_prepare_field($data['cleared'],$column_delimiter,$quote_char);  
 
         echo implode($column_delimiter,$row);

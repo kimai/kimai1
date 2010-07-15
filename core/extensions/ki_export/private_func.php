@@ -74,11 +74,17 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['id']             = $exp_arr[$exp_arr_index]['exp_ID'];
         $arr['time_in']        = $exp_arr[$exp_arr_index]['exp_timestamp'];
         $arr['time_out']       = $exp_arr[$exp_arr_index]['exp_timestamp'];
+        $arr['zef_time']       = null;
+        $arr['zef_apos']       = null;
+        $arr['zef_coln']       = null;
+        $arr['dec_zef_time']   = null;
+        $arr['zef_rate']       = null;
         $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value'];
         $arr['pct_kndID']      = $exp_arr[$exp_arr_index]['pct_kndID'];
         $arr['knd_name']       = $exp_arr[$exp_arr_index]['knd_name'];
         $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
         $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
+        $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
         if ($limitCommentSize)
           $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
         else
@@ -86,6 +92,8 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
         $arr['comment']        = $exp_arr[$exp_arr_index]['exp_comment'];
         $arr['comment_type']   = $exp_arr[$exp_arr_index]['exp_comment_type'];
+	$arr['location']       = $default_location;
+        $arr['trackingnr']     = null;
         $arr['username']       = $exp_arr[$exp_arr_index]['usr_name'];
         $arr['cleared']        = $exp_arr[$exp_arr_index]['exp_cleared'];
         $exp_arr_index++;
