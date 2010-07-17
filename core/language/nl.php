@@ -1,24 +1,24 @@
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
- 
+
 /**
  * nederlands
  * by Paul Brand and Vasilis van Gemert
@@ -26,7 +26,7 @@
 $kga['lang']= array(
 "countryCode"       => "dutch",
 "preferences"       => "Voorkeuren",
-"total"		        => "Totaal",
+"total"             => "Totaal",
 "monatzeit"         => "Maand",
 "heute"             => "vandaag",
 "gestern"           => "gisteren",
@@ -37,7 +37,7 @@ $kga['lang']= array(
 "out"               => "tot",
 "time"              => "h'm",
 "timelabel"         => "Tijd",
-"durationlabel"     => "Duration",
+"durationlabel"     => "Tijdsduur",
 "knd"               => "Klant",
 "pct"               => "Project",
 "evt"               => "Aktie",
@@ -55,7 +55,7 @@ $kga['lang']= array(
 "recommended"       => "standaard",
 "submit"            => "OK",
 "cancel"            => "Annuleer",
-"edit"              => "Bewerk entry",
+"edit"              => "Bewerk invoer",
 "construction"      => "werk in uitvoering...",
 "about"             => "Over",
 "hours"             => "uren",
@@ -212,18 +212,18 @@ $kga['lang']= array(
 
 "cleared"           => "Betaald",
 
-"noFading"          => "no fading effect",
+"noFading"          => "geen vervagings effect",
 "user_list_hidden"  => "hide user list by default",
 
-'show_sensible_data' => 'Display sensible data as well in the debug extension.',
-'show_update_warn' => 'Turn off warning before an update.',
-'check_at_startup' => 'Show a message on the login page if a newer version is available.',
-'show_daySeperatorLines' => 'Draw a line between entries of different days.',
-'show_gabBreaks' => 'Draw a line between two records that are not perfectly continuous.',
-'show_RecordAgain' => 'Show the &quot;Record Again&quot; button in front of every entry.',
-'show_TrackingNr' => 'Allows to edit the field Tracking-Nr.',
-'currency_name' => 'Name of the currency to use.',
-'currency_sign' => 'Sign of the currency to use.',
+'show_sensible_data         => 'Toon zinnige gegevens ook in de debug extentie.',
+'show_update_warn'          => 'Schakel waarschuwingen uit voordat de update plaatsvindt.',
+'check_at_startup'          => 'Toon bericht op loginpagina als er een nieuwe update beschikbaar is.',
+'show_daySeperatorLines'    => 'Trek een lijn tussen gegevens van verschillende dagen.',
+'show_gabBreaks'            => 'Trek een lijn tussen twee record wanneer deze niet naadloos op elkaar aansluiten.',
+'show_RecordAgain'          => 'Toon de &quot;Nogmaals Opnemen&quot; knoop voor elke invoer.',
+'show_TrackingNr'           => 'Sta toe dat het veld Tracking-Nr. bewerkt wordt.',
+'currency_name'             => 'Naam van de te gebruiken munteenheid.',
+'currency_sign'             => 'Symbool van te gebruiken munteenheid.',
 'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
 'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'display_currentDate_format' => 'Date format for the field below the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
@@ -279,36 +279,36 @@ $kga['lang']['backup'][8]        = "maak backup";
 $kga['lang']['backup'][9]        = "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een schte backup op het fysieke ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken ;)";
 
 $kga['lang']['xp_ext'] = array(
-	
-"print_hint"      		   => "Klik op OK om een tabel te openen die je kunt printen.",
-"dl_hint"         		   => "Klik op OK om bestand te downloaden.",
 
-"tab_filter"	 		   => "Filter",
-"tab_location"	 		   => "Locatie",
-"tab_timeformat"	 	   => "TijdFormat",
+"print_hint"               => "Klik op OK om een tabel te openen die je kunt printen.",
+"dl_hint"                  => "Klik op OK om bestand te downloaden.",
 
-"cleared_all"	 		   => "Alles",
-"cleared_cleared" 		   => "Alleen Betaald",
-"cleared_open"	 		   => "Alleen Openstaand",
-"stdrd_location"  		   => "Standard-Location",
-"timeformat"	     	   => "TijdFormat",
-"dateformat"			   => "Datumformat",
+"tab_filter"               => "Filter",
+"tab_location"             => "Locatie",
+"tab_timeformat"           => "TijdFormat",
 
-"print_comment"   		   => "print Opmerking",
-"print_summary"   		   => "print Samenvatting",
-"create_bookmarks"		   => "maak bookmarks",
-"download_pdf"    		   => "download als PDF",
+"cleared_all"              => "Alles",
+"cleared_cleared"          => "Alleen Betaald",
+"cleared_open"             => "Alleen Openstaand",
+"stdrd_location"           => "Standard-Location",
+"timeformat"               => "TijdFormat",
+"dateformat"               => "Datumformat",
+
+"print_comment"            => "print Opmerking",
+"print_summary"            => "print Samenvatting",
+"create_bookmarks"         => "maak bookmarks",
+"download_pdf"             => "download als PDF",
 "pdf_format"               => "format",
 "export_pdf"               => "tabel",
 "export_pdf2"              => "lijst",
 
-"column_delimiter"		   => "scheidingsteken voor kolommen",
-"quote_char"      		   => "grensteken voor velden",
+"column_delimiter"         => "scheidingsteken voor kolommen",
+"quote_char"               => "grensteken voor velden",
 
-"exportCSV"         	   => "CSV Export",
-"exportPDF"         	   => "PDF Export",
-"exportXLS"         	   => "Excel Export",
-"print"         	       => "Print",
+"exportCSV"                => "CSV Export",
+"exportPDF"                => "PDF Export",
+"exportXLS"                => "Excel Export",
+"print"                    => "Print",
 "export_timeformat_help"   => "Tijdformat help",
 
 'subtotal'              => 'Sub Totaal',
@@ -321,8 +321,8 @@ $kga['lang']['xp_ext'] = array(
 'by'                    => 'door',
 'done_by'               => 'gedaan door',
 'duration'              => 'Tijdsduur',
-'hide_cleared_entries'  => 'don\'t show cleared entries',
-'customer_new_page'     => 'new page for each customer',
+'hide_cleared_entries'  => 'verberg betaalde invoer',
+'customer_new_page'     => 'nieuwe pagina voor elke klant',
 
 'times_and_expenses' => 'times and expenses',
 'times' => 'times',
@@ -336,17 +336,15 @@ $kga['lang']['xp_ext'] = array(
 );
 
 $kga['lang']['ext_invoice'] = array(
-	
-"invoiceTitle" 			=> "Maak factuur",
-"invoiceProject" 		=> "Projecten:",
-"invoiceTimePeriod" 		=> "Periode:",
-"invoiceOptionVat" 		=> " Factuur met BTW",
-"invoiceOptionShort" 		=> "Korte factuur",
-"invoiceOptionRound" 		=> "Tijd afronden",
-"invoiceButton" 		=> "Maken"
+"invoiceTitle"          => "Maak factuur",
+"invoiceProject"        => "Projecten:",
+"invoiceTimePeriod"     => "Periode:",
+"invoiceOptionVat"      => " Factuur met BTW",
+"invoiceOptionShort"    => "Korte factuur",
+"invoiceOptionRound"    => "Tijd afronden",
+"invoiceButton"         => "Maken"
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
-
 );
 ?>
