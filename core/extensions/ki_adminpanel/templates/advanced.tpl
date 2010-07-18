@@ -35,9 +35,9 @@
             </div>
 
             <div>
-                <select name="language" class="formfield">
+                {$kga.lang.lang}: <select name="language" class="formfield">
                     {html_options values=$languages output=$languages selected=$kga.language}
-                </select> {$kga.lang.language}
+                </select>
             </div>
 
             <div>

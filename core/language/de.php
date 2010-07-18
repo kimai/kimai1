@@ -121,7 +121,7 @@ $kga['lang'] = array(
 "mode"              => "demo mode = 0 / normal mode (Benutzer müssen sich Anmelden) = 1",
 "adminmail"         => "eMail-Adresse des Administrators",
 "logintries"        => "Mögliche Loginversuche, bevor der Account gesperrt wird",
-"bantime"           => "Zeitraum für den der Account gesperrt wird",
+"bantime"           => "Zeit in Sekunden für die der Account gesperrt wird",
 "lastdbbackup"      => "Letztes Backup",
 "runbackup"         => "Backup starten",
 "defaultgrp"        => "Standard (0)",

@@ -140,6 +140,8 @@ function makeSelectBox($subject,$user){
     global $kga;
 
     $sel = array();
+    $sel[0] = array();
+    $sel[1] = array();
 
     switch ($subject) {
         case 'pct':
