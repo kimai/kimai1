@@ -8,7 +8,7 @@ if ($_REQUEST['lang']=="en") {
 <h2>System Requirements</h2>
     The following conditions must be met:<br/>
 
-<div class="sp_phpversion fail">at least PHP Major version 5</div>
+<div class="sp_phpversion fail">at least PHP Major version 5.2</div>
 <div class="sp_mysql">The <b>MySQL</b> extension for PHP has to be loaded.</div>
 <div class="note gray">For PDO the extensions pdo and pdo_mysql are required.</div>
 
@@ -30,7 +30,7 @@ else {
 <h2>Systemanforderungen</h2>
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
 
-<div class="sp_phpversion fail">mindestens PHP Hauptversion 5</div>
+<div class="sp_phpversion fail">mindestens PHP Hauptversion 5.2</div>
 <div class="sp_mysql">Die <b>MySQL</b> Erweiterung f&uuml;r PHP muss aktiviert sein.</div>
 <div class="note gray">Für PDO werden die Erweiterungen pdo und pdo_mysql benötigt.</div>
 
