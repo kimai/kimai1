@@ -1,22 +1,22 @@
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
 
 // Require database layer functions
@@ -31,7 +31,7 @@ function kickUser() {
 
 /**
  * returns formatted time string -> h:mm
- * input: number of seconds 
+ * input: number of seconds
  *
  * @param integer $sek seconds to extract the time from
  * @return string
@@ -52,7 +52,7 @@ function intervallApos($sek) {
 
 /**
  * returns formatted time string -> h:mm:ss
- * input: number of seconds 
+ * input: number of seconds
  *
  * @param integer $sek seconds to extract the time from
  * @return string
@@ -70,9 +70,9 @@ function intervallColon($sek) {
  * @return array
  * @author th
  */
-function hourminsec($sek) {  
+function hourminsec($sek) {
     $i['h']   = $sek / 3600 % 24;
-    $i['i']   = $sek / 60 % 60; 
+    $i['i']   = $sek / 60 % 60;
     $i['s']   = $sek % 60;
     return $i;
 }
@@ -123,7 +123,7 @@ function langs(){
 
 
 /**
- * returns array for smarty's html_options funtion
+ * Returns array for smarty's html_options funtion.
  *
  * <pre>
  * returns:
@@ -131,16 +131,18 @@ function langs(){
  * [1] -> values as IDs
  * </pre>
  *
- * @param string either 'pct' or 'evt'
+ * @param string either 'pct', 'evt', 'knd', 'grp'
  * @return array
- * @author th
+ * @author th, sl, kp
  */
 function makeSelectBox($subject,$user){
-  
+
     global $kga;
 
+    $sel = array();
+
     switch ($subject) {
-        case('pct'):
+        case 'pct':
             $arr_pct = get_arr_pct($user);
             $i=0;
             foreach ($arr_pct as $pct) {
@@ -160,8 +162,9 @@ function makeSelectBox($subject,$user){
                     $i++;
                 }
             }
-    break;
-        case('evt'):
+            break;
+
+        case 'evt':
             $arr_evt = get_arr_evt($user);
             $i=0;
             foreach ($arr_evt as $evt) {
@@ -171,8 +174,9 @@ function makeSelectBox($subject,$user){
                     $i++;
                 }
             }
-    break;
-        case('knd'):
+            break;
+
+        case 'knd':
             $arr_knd = get_arr_knd($user);
             $i=0;
             foreach ($arr_knd as $knd) {
@@ -182,8 +186,9 @@ function makeSelectBox($subject,$user){
                     $i++;
                 }
             }
-    break;
-        case('grp'):
+            break;
+
+        case 'grp':
             $arr_grp = get_arr_grp();
             $i=0;
             foreach ($arr_grp as $grp) {
@@ -193,19 +198,22 @@ function makeSelectBox($subject,$user){
                     $i++;
                 }
             }
-    break;
+            break;
 
+        default:
+            // TODO leave default options empty ???
+            break;
     }
 
     return $sel;
-    
+
 }
 
 
 /**
  * returns list of projects and their time summary within zef_entry timespace as array
  *
- * OLD VERSION THAT MERGES TWO QUERYS - bad bad stuff ... 
+ * OLD VERSION THAT MERGES TWO QUERYS - bad bad stuff ...
  * TODO: [tom] revise with join query!
  *
  * @param integer $group ID of group in table grp
@@ -217,13 +225,13 @@ function makeSelectBox($subject,$user){
  * @author th
  */
 function get_arr_pct_with_time($group,$user,$in,$out) {
-    global $kga; 
+    global $kga;
     //TODO: [tom] Functions results with 1 query
     $arr_pcts = get_arr_pct($group);
     $arr_time = get_arr_time_pct($user,$in,$out);
     //TODO END
-    $arr = array(); 
-    
+    $arr = array();
+
     $i=0;
     foreach ($arr_pcts as $pct) {
         $arr[$i]['pct_ID']      = $pct['pct_ID'];
@@ -235,7 +243,7 @@ function get_arr_pct_with_time($group,$user,$in,$out) {
         $arr[$i]['zeit']        = @intervallApos($arr_time[$pct['pct_ID']]);
         $i++;
     }
-    
+
     return $arr;
 }
 
@@ -247,15 +255,15 @@ function get_arr_pct_with_time($group,$user,$in,$out) {
  * @return array
  * @author th
  */
-function random_code($length) { 
-    $code = ""; 
+function random_code($length) {
+    $code = "";
     $string="ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
-    mt_srand((double)microtime()*1000000); 
-    for ($i=1; $i <= $length; $i++) { 
-        $code .= substr($string, mt_rand(0,strlen($string)-1), 1); 
-    } 
-    return $code; 
-} 
+    mt_srand((double)microtime()*1000000);
+    for ($i=1; $i <= $length; $i++) {
+        $code .= substr($string, mt_rand(0,strlen($string)-1), 1);
+    }
+    return $code;
+}
 
 /**
  * returns a random number with X digits
@@ -264,18 +272,18 @@ function random_code($length) {
  * @return array
  * @author th
  */
-function random_number($length) { 
-    $number = ""; 
+function random_number($length) {
+    $number = "";
     $string="0123456789";
-    mt_srand((double)microtime()*1000000); 
-    for ($i=1; $i <= $length; $i++) { 
-        $number .= substr($string, mt_rand(0,strlen($string)-1), 1); 
-    } 
-    return $number; 
-} 
+    mt_srand((double)microtime()*1000000);
+    for ($i=1; $i <= $length; $i++) {
+        $number .= substr($string, mt_rand(0,strlen($string)-1), 1);
+    }
+    return $number;
+}
 
 /**
- * checks if the database structure needs to be updated for new Kimai version. 
+ * checks if the database structure needs to be updated for new Kimai version.
  * if yes the function redirects to /admin/updater.php
  *
  * @param string $path path to admin dir relative to the document that calls this function (usually "." or "..")
@@ -285,7 +293,7 @@ function random_number($length) {
  */
 function checkDBversion($path) {
     global $kga;
-    
+
     // check for versions before 0.7.13r96
     $installedVersion = get_DBversion();
     $checkVersion = $installedVersion[0];
@@ -294,7 +302,7 @@ function checkDBversion($path) {
         header("Location: $path/updater.php");
         exit;
     }
-    
+
     // the check for revision is much simpler ...
     if ( (int)$installedVersion[1] < (int)$kga['revision']) {
         header("Location: $path/updater.php");
@@ -304,14 +312,14 @@ function checkDBversion($path) {
 
 /**
  * returns browser name
- * 
+ *
  * returns: "Opera", "msie", "Safari", "Mozilla" or "?"
  *
  * TODO: [togi] check if this still is really needed anywhere
  * Smarty has a browser value by itself!!!
  *
  *
- * @return string 
+ * @return string
  * @author th
  */
 function get_agent() {
@@ -326,7 +334,7 @@ function get_agent() {
 
 /**
  * writes errors during install or update to the logfile stored in temporary
- * 
+ *
  * @param string $value message
  * @param string $path relative path to temporary directory
  * @param boolean $success
@@ -334,13 +342,13 @@ function get_agent() {
  */
 // function logfile($value,$success=1) {
 function logfile($value) {
-    
+
     $value = str_replace("\n", "", $value);
     $value = str_replace("  ", " ", $value);
     $value = str_replace("  ", " ", $value);
-    
+
     $logdatei=fopen(WEBROOT."temporary/logfile.txt","a");
-    
+
     // $success = ($success==1) ? "success: " : "error:   ";
     // fputs($logdatei, date("d.m.Y, H:i:s",time()) .", " . $success . $value ."\n");
     fputs($logdatei, date("[d.m.Y H:i:s] ",time()) . $value ."\n");
@@ -351,32 +359,32 @@ function logfile($value) {
  * preprocess shortcut for date entries
  *
  * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
- * 
+ *
  * @param string $date shortcut date
- * @return string 
+ * @return string
  * @author th
  */
 function expand_date_shortcut($date) {
-    
+
     $date  = str_replace(" ","",strip_tags($date));
 
     $return = $date;
-    
+
     $length = strlen($date);
-    
+
     switch ($length) {
         case 1:
             $return = "0" . $date .".". date("m") .".". date("Y");
-        break;        
-        
+        break;
+
         case 2:
             $return = $date .".". date("m") .".". date("Y");
         break;
-        
-        case 4: 
+
+        case 4:
             $return = substr($date,0,2) .".". substr($date,2,2) .".". date("Y");
         break;
-    
+
         case 6:
             $return = substr($date,0,2) .".". substr($date,2,2);
             $year=(int)substr($date,4,2);
@@ -384,7 +392,7 @@ function expand_date_shortcut($date) {
 				$year = "19".$year;
 			} else {
 				if ($year<10) {
-					$year = "200".$year;	
+					$year = "200".$year;
 				} else {
 					$year = "20".$year;
 				}
@@ -392,7 +400,7 @@ function expand_date_shortcut($date) {
             $return = "$return.$year";
         break;
     }
-    
+
     if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/",$return))  $return = false;
     return $return;
 }
@@ -401,9 +409,9 @@ function expand_date_shortcut($date) {
  * preprocess shortcut for time entries
  *
  * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
- * 
+ *
  * @param string $date shortcut time
- * @return string 
+ * @return string
  * @author th
  */
 function expand_time_shortcut($time) {
@@ -424,14 +432,14 @@ function expand_time_shortcut($time) {
           $parts[$i] = "0".$parts[$i];
       }
     }
-    
+
     // fill unsued parts (eg. 12:00 given but 12:00:00 is needed)
     while (count($parts) < 3) {
       $parts[] = "00";
     }
 
     $return = implode(":",$parts);
-    
+
     $regex23 = '([0-1][0-9])|(2[0-3])'; // regular expression for hours
     $regex59 = '([0-5][0-9])'; // regular expression for minutes and seconds
     if (!preg_match("/^($regex23):($regex59):($regex59)$/",$return)) $return = false;
@@ -439,11 +447,11 @@ function expand_time_shortcut($time) {
 }
 
 /**
- * check if a parset string matches with the following time-formatting: 20.08.2008-19:00:00 
+ * check if a parset string matches with the following time-formatting: 20.08.2008-19:00:00
  * returns true if string is ok
  *
  * @param string $timestring
- * @return boolean 
+ * @return boolean
  * @author th
  */
 function check_time_format($timestring) {
@@ -451,25 +459,25 @@ function check_time_format($timestring) {
         return false; // WRONG format
     } else {
         $ok = 1;
-        
+
         $hours   = substr($timestring,11,2);
         $minutes = substr($timestring,14,2);
         $seconds = substr($timestring,17,2);
-        
+
         if ((int)$hours>=24)  $ok=0;
         if ((int)$minutes>=60) $ok=0;
         if ((int)$seconds>=60) $ok=0;
-        
+
         logfile("timecheck: ".$ok);
-        
+
         $day   = substr($timestring,0,2);
         $month = substr($timestring,3,2);
-        $year  = substr($timestring,6,4);        
-        
+        $year  = substr($timestring,6,4);
+
         if (!checkdate( (int)$month, (int)$day, (int)$year) ) $ok=0;
-        
+
         logfile("time/datecheck: ".$ok);
-        
+
         if ($ok) {
             return true;
         } else {
@@ -479,7 +487,7 @@ function check_time_format($timestring) {
 }
 
 function convert_time_strings($in,$out) {
-    
+
     $explode_in  = explode("-",$in);
     $explode_out = explode("-",$out);
 
@@ -490,7 +498,7 @@ function convert_time_strings($in,$out) {
     $time_out = explode(":",$explode_out[1]);
 
     $time['in']   = mktime($time_in[0], $time_in[1], $time_in[2], $date_in[1], $date_in[0], $date_in[2]);
-    $time['out']  = mktime($time_out[0],$time_out[1],$time_out[2],$date_out[1],$date_out[0],$date_out[2]); 
+    $time['out']  = mktime($time_out[0],$time_out[1],$time_out[2],$date_out[1],$date_out[0],$date_out[2]);
     $time['diff'] = (int)$time['out']-(int)$time['in'];
 
     return $time;
@@ -534,7 +542,7 @@ function get_cookie($cookie_name, $default=null) {
 
 
 /**
- * check if there are 0s (erroneuos entries) in the zef data while editing and prevent overwriting old data in this case 
+ * check if there are 0s (erroneuos entries) in the zef data while editing and prevent overwriting old data in this case
  *
  * @param int $id the id of the entry to be edited
  * @param array $zef_data
@@ -545,8 +553,8 @@ function get_cookie($cookie_name, $default=null) {
 function check_zef_data($id, $zef_data) {
 
 	if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
-	
-		$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
+
+		$zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
 	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
 	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
 	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
@@ -554,12 +562,12 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
       $zef_final_data['zef_cleared']      = $zef_data['cleared'];
-    
+
 	    return zef_edit_record($id,$zef_final_data);
-    
+
 	} else {
 
-		$zef_final_data['zef_pctID']        = $zef_data['pct_ID']; 
+		$zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
 	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
 	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
 	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
@@ -570,7 +578,7 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_time']         = $zef_data['diff'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
       $zef_final_data['zef_cleared']         = $zef_data['cleared'];
-    
+
 	    return zef_edit_record($id,$zef_final_data);
 
 	}
@@ -582,9 +590,9 @@ function check_zef_data($id, $zef_data) {
 
 
 // http://www.alfasky.com/?p=20
-// This little function will help you truncate a string to a specified 
-// length when copying data to a place where you can only store or display 
-// a limited number of characters, then it will append “…” to it showing 
+// This little function will help you truncate a string to a specified
+// length when copying data to a place where you can only store or display
+// a limited number of characters, then it will append “…” to it showing
 // that some characters were removed from the original entry.
 
 function addEllipsis($string, $length, $end='…')
@@ -614,38 +622,38 @@ function createPassword($length) {
 function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt) {
   $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
   if (!$file) return false;
-        
+
 $config=<<<EOD
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
 
 // This file was automatically generated by the installer
 
-\$server_hostname = "$hostname"; 
+\$server_hostname = "$hostname";
 \$server_database = "$database";
-\$server_username = "$username";     
+\$server_username = "$username";
 \$server_password = "$password";
-\$server_conn     = "$db_layer";   
-\$server_type     = "$db_type";        
-\$server_prefix   = "$prefix";   
+\$server_conn     = "$db_layer";
+\$server_type     = "$db_type";
+\$server_prefix   = "$prefix";
 \$language        = "$lang";
 \$password_salt   = "$salt";
 
@@ -655,7 +663,7 @@ if (!defined('WEBROOT')) {
 
 ?>
 EOD;
-        
+
   fputs($file, $config);
   fclose($file);
   return true;
@@ -685,7 +693,7 @@ function roundTimespanCheckIfBetter(&$bestTime,$newStart,$newEnd,$realStart,$rea
     // it is not
     return;
   }
-  
+
   // new time is better, update array
   $bestTime['start']    = $newStart;
   $bestTime['end']      = $newEnd;
@@ -703,7 +711,7 @@ function roundTimespanCheckIfBetter(&$bestTime,$newStart,$newEnd,$realStart,$rea
  *@param $start the beginning of the timespan
  *@param $end   the end of the timespan
  *@param $steps the steps in minutes (has to divide an hour, e.g. 5 is valid while 7 is not)
- * 
+ *
  */
 function roundTimespan($start,$end,$steps) {
   // calculate how long a steps is (e.g. 15 second steps are 900 seconds long)
@@ -715,9 +723,9 @@ function roundTimespan($start,$end,$steps) {
     $bestTime['end']      = $end;
     return $bestTime;
   }
-  
 
-  // calculate how many seconds we are over the previous full step  
+
+  // calculate how many seconds we are over the previous full step
   $startSecondsOver = $start%$stepWidth;
   $endSecondsOver   = $end%$stepWidth;
 
@@ -726,7 +734,7 @@ function roundTimespan($start,$end,$steps) {
   $earlierEnd   = $end-$endSecondsOver;
   $laterStart   = $start+($stepWidth-$startSecondsOver);
   $laterEnd     = $end+($stepWidth-$endSecondsOver);
-  
+
 
   // assuming the earlier start end end time are the best (likely not always true)
   $bestTime = array();
