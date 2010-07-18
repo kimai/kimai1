@@ -1,22 +1,22 @@
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
 
 
@@ -49,7 +49,7 @@ function getpass() {
     for ($i=1; $i <= $laenge; $i++) {
         $newpass .= substr($string, mt_rand(0,strlen($string)-1), 1);
     }
-    
+
     return $newpass;
 }
 
@@ -63,22 +63,21 @@ switch ($axAction) {
 
 
     case "checkRequirements":
-       $version = explode('.',PHP_VERSION);
-       if ($version[0] < '5') {
+       if (version_compare(PHP_VERSION, '5.2') < 0) {
            $errors++;
            $javascript .= "$('div.sp_phpversion').addClass('fail');";
        }
-       
+
        if (!extension_loaded('mysql')) {
            $errors++;
            $javascript .= "$('div.sp_mysql').addClass('fail');";
        }
-       
+
        if (return_bytes(ini_get('memory_limit')) < 20000000) {
-           $javascript .= "$('div.sp_memory').addClass('fail');";       
+           $javascript .= "$('div.sp_memory').addClass('fail');";
        }
 
-        
+
         if (empty($javascript)) {
             $javascript = "$('#installsteps button.sp-button').hide();";
         }
@@ -91,7 +90,7 @@ switch ($axAction) {
         echo $javascript;
 
       break;
-    
+
     case "checkRights":
         if (!$fp = @fopen("../includes/autoconf.php", "w")) {
             $errors++;
@@ -155,11 +154,11 @@ switch ($axAction) {
 
         echo $javascript;
     break;
-    
-    
-////////////////////////////////////////////////////////////////////////////////////////    
-    
-    
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
     case ("write_config"):
     include("../includes/func.php");
      // special characters " and $ are escaped
@@ -174,13 +173,13 @@ switch ($axAction) {
     $salt        = createPassword(20);
 
     write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt);
-    
+
     break;
-    
+
     case ("make_database");
-    
+
     error_log("make database ###################");
-    
+
         $database     = $_REQUEST['database'];
         $hostname     = $_REQUEST['hostname'];
         $username     = $_REQUEST['username'];
@@ -192,7 +191,7 @@ switch ($axAction) {
         $result = false;
 
         if ($db_layer == "pdo") {
-                
+
                 $pdo_dsn = $server_type . ':host=' . $hostname;
                 try {
                     $pdo_conn = @new PDO($pdo_dsn, $username, $password);
@@ -204,14 +203,14 @@ switch ($axAction) {
                 }
 
         } else {
-            
+
                 $con = mysql_connect($hostname,$username,$password);
                 $query = "CREATE DATABASE " . $database . " DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
                 $result = mysql_query($query);
-            
+
         }
 
-    
+
         if ($result != false) {
             echo "1"; // <-- hat geklappt
         } else {
@@ -219,9 +218,9 @@ switch ($axAction) {
             // $err_msg = $err[2];
             echo "0"; // <-- schief gegangen
         }
-    
+
     break;
-    
+
 }
 
 ?>
