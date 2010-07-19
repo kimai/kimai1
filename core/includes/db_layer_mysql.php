@@ -4209,7 +4209,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
     $p     = $kga['server_prefix'];
     
     $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
-    $whereClauses[] = "${p}usr.usr_trush=0";
+    $whereClauses[] = "${p}usr.usr_trash=0";
 
     if ($in)
       $whereClauses[]="zef_out > $in";
@@ -4224,7 +4224,6 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
              Join " . $kga['server_prefix'] . "usr ON zef_usrID = usr_ID
              Join " . $kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;";
-    
     $result = $conn->Query($query);
     if (! $result) return array();
     $rows = $conn->RecordsArray(MYSQL_ASSOC);

@@ -2621,7 +2621,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
 
 
     $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
-    $whereClauses[] = $kga['server_prefix'] . "usr.usr_trush=0";
+    $whereClauses[] = $kga['server_prefix'] . "usr.usr_trash=0";
 
     if ($in)
       $whereClauses[]="zef_out > $in";
