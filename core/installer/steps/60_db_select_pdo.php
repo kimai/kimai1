@@ -68,9 +68,21 @@ if (is_array($db_connection)) {
 
 
 
+        
+            // can new database be created?
+            $create_query = $pdo_conn->prepare("CREATE DATABASE kimai_permission_check;");
+            $drop_query = $pdo_conn->prepare("DROP DATABASE kimai_permission_check;");
+            if ($create_query->execute()) {
+              $databases_can_be_created = 1;
+              $drop_query->execute();
+            } else {
+              $databases_can_be_created = 0;
+            }
 
-    // ($lang=="de")?$return.="Neue Datenbank anlegen: (der angegebene DB-Nutzer muss die entspr. Rechte besitzen!)<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>"
-    //              :$return.="Create a blank database: (the db-user you entered must have appropriate rights!)<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>";
+    if ($databases_can_be_created) {
+      ($lang=="de")?$return.="Neue Datenbank anlegen: (der angegebene DB-Nutzer muss die entspr. Rechte besitzen!)<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>"
+		    :$return.="Create a blank database: (the db-user you entered must have appropriate rights!)<br/><input id='db_create' type='text' value=''/> <strong id='db_create_label'></strong><br/><br/>";
+    }
 
     $return.="<input id='db_create' type='hidden' value=''/>";
 
