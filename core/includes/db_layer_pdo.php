@@ -1543,13 +1543,12 @@ function var_get_data() {
     
     $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "var;");
     $result = $pdo_query->execute();
-    $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
     
     $var_data = array();
         
-    do { 
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $var_data[$row['var']] = $row['value']; 
-    } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
+    } 
     
     return $var_data;
 }
