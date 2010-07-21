@@ -105,8 +105,18 @@ $(document).ready(function() {
        if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
        lists_resizeTimer = setTimeout(lists_resize, 500);
     });
-
-	//$('#usr, #usr_head').hide(); // user subtab has to be hidden via jQat init for shrink FadeIn/FadeOut to work properly...
+    
+    // Implement missing method for browsers like IE.
+    // thanks to http://stellapower.net/content/javascript-support-and-arrayindexof-ie
+    if (!Array.indexOf) {
+      Array.prototype.indexOf = function (obj, start) {
+        for (var i = (start || 0); i < this.length; i++) {
+          if (this[i] == obj) {
+            return i;
+          }
+        }
+      }
+    }
 
 });
 
