@@ -86,6 +86,7 @@ if (isset($_REQUEST['submit']))
 				if (strlen(strstr($row[0],"var"))>0) { $primaryKey = "var";}
 				if ( (strlen(strstr($row[0],"ldr"))>0) 
 					|| (strlen(strstr($row[0],"grp_evt"))>0) 
+          || (strlen(strstr($row[0],"pct_evt"))>0) 
 					|| (strlen(strstr($row[0],"grp_knd"))>0) 
 					|| (strlen(strstr($row[0],"grp_pct"))>0)) 
 				{ 
