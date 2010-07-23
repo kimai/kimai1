@@ -765,6 +765,85 @@ function assign_evt2grps($evt_id, $grp_array) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Assigns an event to 1-n projects by adding entries to the cross table
+ *
+ * @param int $evt_id         id of the event to which projects will be assigned
+ * @param array $gpct_array    contains one or more pct_IDs
+ * @global array $kga         kimai-global-array
+ * @return boolean            true on success, false on failure
+ * @author ob/th
+ */
+
+function assign_evt2pcts($evt_id, $pct_array) {
+    global $kga, $pdo_conn;
+    
+    $pdo_conn->beginTransaction();
+    
+    $pdo_query = $pdo_conn->prepare("DELETE FROM " . $kga['server_prefix'] . "pct_evt WHERE evt_ID=?;");    
+    $d_result = $pdo_query->execute(array($evt_id));
+    if ($d_result == false) {
+        $pdo_conn->rollBack();
+        return false;
+    }
+    
+    foreach ($pct_array as $current_pct) {
+        
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "pct_evt WHERE pct_ID=? AND evt_ID=?;");
+        $c_result = $pdo_query->execute(array($current_pct,$evt_id));
+        if (count($pdo_query->fetchAll()) == 0) {
+            $pdo_query = $pdo_conn->prepare("INSERT INTO " . $kga['server_prefix'] . "pct_evt (pct_ID,evt_ID) VALUES (?,?);");
+            $result = $pdo_query->execute(array($current_pct,$evt_id));
+            if ($result == false) {
+                $pdo_conn->rollBack();
+                return false;
+            }
+        }
+    }
+    
+    if ($pdo_conn->commit() == true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns all the projects to which the event was assigned
+ *
+ * @param array $evt_id  evt_id of the project
+ * @global array $kga    kimai-global-array
+ * @return array         contains the pct_IDs of the projects or false on error
+ * @author th
+ */
+ 
+// checked 
+ 
+function evt_get_pcts($evt_id) {
+    global $kga, $pdo_conn;
+    
+    $pdo_query = $pdo_conn->prepare("SELECT pct_ID FROM " . $kga['server_prefix'] . "pct_evt WHERE evt_ID = ?;");
+    
+    $result = $pdo_query->execute(array($evt_id));
+    if ($result == false) {
+        return false;
+    }
+    
+    $return_pcts = array();
+    $counter = 0;
+    
+    while ($current_pct = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        $return_pcts[$counter] = $current_pct['pct_ID'];
+        $counter++;
+    }
+    
+    return $return_pcts;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * returns all the groups of the given event
  *
  * @param array $evt_id        evt_id of the project
