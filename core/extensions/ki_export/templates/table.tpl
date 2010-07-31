@@ -110,9 +110,7 @@
                     
 {if $arr_data[row].zef_time}
                     
-                        <a title='{$arr_data[row].zef_coln}'>
-                            {$arr_data[row].zef_apos}
-                        </a>
+                        {$arr_data[row].zef_duration}
                       
 {else}  
                         &ndash;:&ndash;&ndash;
@@ -134,9 +132,7 @@
                     
 {if $arr_data[row].dec_zef_time}
                     
-                        <a title='{$arr_data[row].zef_coln}'>
-                            {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator}
-                        </a>
+                        {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator}
                       
 {else}  
                         &ndash;:&ndash;&ndash;

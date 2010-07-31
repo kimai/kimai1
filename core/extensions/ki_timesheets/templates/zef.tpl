@@ -160,9 +160,7 @@
                     
 {if $arr_zef[row].zef_time}
                     
-                        <a title='{$arr_zef[row].zef_coln}'>
-                            {$arr_zef[row].zef_apos}
-                        </a>
+                        {$arr_zef[row].zef_duration}
                       
 {else}  
                         &ndash;:&ndash;&ndash;

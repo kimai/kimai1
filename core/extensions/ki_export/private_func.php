@@ -44,8 +44,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
         $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
         $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
-        $arr['zef_apos']       = $zef_arr[$zef_arr_index]['zef_apos'];
-        $arr['zef_coln']       = $zef_arr[$zef_arr_index]['zef_coln'];
+        $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
         $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
         $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
         $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
@@ -76,7 +75,6 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['time_out']       = $exp_arr[$exp_arr_index]['exp_timestamp'];
         $arr['zef_time']       = null;
         $arr['zef_apos']       = null;
-        $arr['zef_coln']       = null;
         $arr['dec_zef_time']   = null;
         $arr['zef_rate']       = null;
         $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value'];
@@ -109,8 +107,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
       $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
       $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
-      $arr['zef_apos']       = $zef_arr[$zef_arr_index]['zef_apos'];
-      $arr['zef_coln']       = $zef_arr[$zef_arr_index]['zef_coln'];
+      $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
       $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
       $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
       $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];

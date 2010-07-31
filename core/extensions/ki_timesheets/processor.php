@@ -186,22 +186,22 @@ switch ($axAction) {
         } else {
             $tpl->assign('arr_zef', 0);
         }
-        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
+        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
 
         $ann = get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('usr_ann',$ann_new);
         
         $ann = get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('knd_ann',$ann_new);
 
         $ann = get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('pct_ann',$ann_new);
 
         $ann = get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('evt_ann',$ann_new);
 
         $tpl->display("zef.tpl");

@@ -191,7 +191,7 @@
                     
 {if $arr_data[row].zef_time}
 
-                            {$arr_data[row].zef_apos}
+                            {$arr_data[row].zef_duration}
                       
 {else}  
                         &ndash;:&ndash;&ndash;

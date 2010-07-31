@@ -140,22 +140,22 @@ switch ($axAction) {
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
-        $tpl->assign('total', intervallApos(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
+        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
 
         $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('usr_ann',$ann_new);
         
         $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('knd_ann',$ann_new);
 
         $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('pct_ann',$ann_new);
 
         $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = intervallApos($ann);
+        $ann_new = formatDuration($ann);
         $tpl->assign('evt_ann',$ann_new);
 
         $tpl->assign('timeformat',$timeformat);
@@ -262,7 +262,7 @@ switch ($axAction) {
           if (isset($columns['to']))
             $row[] = csv_prepare_field(strftime($timeformat,$data['time_out']),$column_delimiter,$quote_char);           
           if (isset($columns['time']))
-            $row[] = csv_prepare_field($data['zef_apos'],$column_delimiter,$quote_char);          
+            $row[] = csv_prepare_field($data['zef_duration'],$column_delimiter,$quote_char);          
           if (isset($columns['dec_time']))
             $row[] = csv_prepare_field($data['dec_zef_time'],$column_delimiter,$quote_char);     
           if (isset($columns['rate']))

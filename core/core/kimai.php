@@ -222,9 +222,9 @@ $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $pd_today);
 $tpl->assign('nextday', $nextday);
 if (isset($kga['customer']))
-  $tpl->assign('total', intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
+  $tpl->assign('total', formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
 else
-  $tpl->assign('total', intervallApos(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
+  $tpl->assign('total', formatDuration(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
 
 // ===========================
 // = DatePicker localization =

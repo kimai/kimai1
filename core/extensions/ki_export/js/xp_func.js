@@ -186,6 +186,7 @@ function xp_ext_set_TableWidths() {
 	$("#xp_head > table").css("width", "100%");
 
 
+  $("#xp_head > table > tbody > tr > td.time").css("width", $("div#xp > div > table > tbody > tr > td.time").width());
   $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
   $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
   $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());

@@ -240,6 +240,8 @@ $kga['lang']= array(
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
 'all_events' => '&lt;&lt;all&gt;&gt;',
+
+'durationWithSeconds' => 'Show duration exact to the second.',
 );
 
 $kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");

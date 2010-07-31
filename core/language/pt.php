@@ -442,6 +442,8 @@ $kga['lang']= array(
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
 'all_events' => '&lt;&lt;all&gt;&gt;',
+
+'durationWithSeconds' => 'Show duration exact to the second.',
 );
 
 

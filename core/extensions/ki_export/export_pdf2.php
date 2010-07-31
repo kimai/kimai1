@@ -234,8 +234,8 @@ class MYPDF extends TCPDF {
               else
                 $comment_string = '';
 
-              if ($columns['time'] && !empty($row['zef_apos']))
-                $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_apos'].' '.$kga['lang']['xp_ext']['duration_unit'].'</i>';
+              if ($columns['time'] && !empty($row['zef_duration']))
+                $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_duration'].' '.$kga['lang']['xp_ext']['duration_unit'].'</i>';
               else
                 $time_string = '';
 

@@ -36,6 +36,7 @@ function kickUser() {
  * @param integer $sek seconds to extract the time from
  * @return string
  * @author th
+ * @deprecated use formatDuration instead
  */
 function intervallApos($sek) {
   if (is_array($sek)) {
@@ -57,9 +58,38 @@ function intervallApos($sek) {
  * @param integer $sek seconds to extract the time from
  * @return string
  * @author th
+ * @deprecated use formatDuration instead
  */
 function intervallColon($sek) {
     return sprintf('%d:%02d:%02d', $sek / 3600, $sek / 60 % 60, $sek % 60);
+}
+
+/**
+ * Format a duration given in seconds according to the global setting. Either
+ * seconds are shown or not.
+ * 
+ * @param integer|array one value in seconds or an array of values in seconds
+ * @return integer|array depending on the $sek param which contains the formatted duration
+ * @author sl
+ */
+function formatDuration($sek) {
+  global $kga;
+  if (is_array($sek)) {
+    // Convert all values of the array.
+    $arr = array();
+    foreach ($sek as $key=>$value)
+    {
+      $arr[$key] = formatDuration($value);
+    }
+    return $arr;
+  }
+  else {
+    // Format accordingly.
+    if ($kga['conf']['durationWithSeconds'] == 0)
+      return sprintf('%d:%02d', $sek / 3600, $sek / 60 % 60);
+    else
+      return sprintf('%d:%02d:%02d', $sek / 3600, $sek / 60 % 60, $sek % 60);
+  }
 }
 
 /**
@@ -242,7 +272,7 @@ function get_arr_pct_with_time($group,$user,$in,$out) {
 		$arr[$i]['pct_comment'] = $pct['pct_comment'];
         $arr[$i]['knd_name']    = $pct['knd_name'];
         $arr[$i]['pct_visible'] = $pct['pct_visible'];
-        $arr[$i]['zeit']        = @intervallApos($arr_time[$pct['pct_ID']]);
+        $arr[$i]['zeit']        = @formatDuration($arr_time[$pct['pct_ID']]);
         $i++;
     }
 

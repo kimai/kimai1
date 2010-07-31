@@ -133,10 +133,6 @@ div.ki_export tr td.wage {
     text-align:center;
 }
 
-div.ki_export a {
-    margin: 0 3px;
-}
-
 div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     border-right: none;
 }

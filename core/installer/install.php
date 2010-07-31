@@ -319,6 +319,7 @@ exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUE
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('language','$kga[language]')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('decimalSeparator',',')");
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('durationWithSeconds','0')");
 
 
 

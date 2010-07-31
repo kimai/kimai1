@@ -2441,8 +2441,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
             if ($row->zef_out != 0) {
               // only calculate time after recording is complete
               $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in']; 
-              $arr[$i]['zef_apos']         = intervallApos($arr[$i]['zef_time']);
-              $arr[$i]['zef_coln']         = intervallColon($arr[$i]['zef_time']); 
+              $arr[$i]['zef_duration']     = formatDuration($arr[$i]['zef_time']);
               $arr[$i]['wage_decimal']     = round($arr[$i]['zef_time']/3600*$row->zef_rate,2);
               $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
             }
@@ -3096,8 +3095,8 @@ function get_arr_evt_with_time($group,$user,$in,$out) {
         $arr[$i]['evt_ID']      = $evt['evt_ID'];
         $arr[$i]['evt_name']    = $evt['evt_name'];
         $arr[$i]['evt_visible'] = $evt['evt_visible'];
-        if (isset($arr_time[$evt['evt_ID']])) $arr[$i]['zeit'] = intervallApos($arr_time[$evt['evt_ID']]);
-        else $arr[$i]['zeit']   = intervallApos(0);
+        if (isset($arr_time[$evt['evt_ID']])) $arr[$i]['zeit'] = formatDuration($arr_time[$evt['evt_ID']]);
+        else $arr[$i]['zeit']   = formatDuration(0);
         $i++;
     }
     return $arr;
@@ -3121,8 +3120,8 @@ function get_arr_knd_with_time($group,$user,$in,$out) {
         $arr[$i]['knd_ID']      = $knd['knd_ID'];
         $arr[$i]['knd_name']    = $knd['knd_name'];
         $arr[$i]['knd_visible'] = $knd['knd_visible'];
-        if (isset($arr_time[$knd['knd_ID']])) $arr[$i]['zeit'] = intervallApos($arr_time[$knd['knd_ID']]);
-        else $arr[$i]['zeit']   = intervallApos(0);
+        if (isset($arr_time[$knd['knd_ID']])) $arr[$i]['zeit'] = formatDuration($arr_time[$knd['knd_ID']]);
+        else $arr[$i]['zeit']   = formatDuration(0);
         $i++;
     }
     return $arr;

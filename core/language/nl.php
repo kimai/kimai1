@@ -215,7 +215,7 @@ $kga['lang']= array(
 "noFading"          => "geen vervagings effect",
 "user_list_hidden"  => "hide user list by default",
 
-'show_sensible_data         => 'Toon zinnige gegevens ook in de debug extentie.',
+'show_sensible_data'         => 'Toon zinnige gegevens ook in de debug extentie.',
 'show_update_warn'          => 'Schakel waarschuwingen uit voordat de update plaatsvindt.',
 'check_at_startup'          => 'Toon bericht op loginpagina als er een nieuwe update beschikbaar is.',
 'show_daySeperatorLines'    => 'Trek een lijn tussen gegevens van verschillende dagen.',
@@ -237,6 +237,8 @@ $kga['lang']= array(
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
 'all_events' => '&lt;&lt;all&gt;&gt;',
+
+'durationWithSeconds' => 'Show duration exact to the second.',
 );
 
 $kga['lang']['months']         = array("Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December");

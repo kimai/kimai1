@@ -93,6 +93,10 @@
             </div>
 
             <div>
+               <input type="checkbox" name="durationWithSeconds" {if $kga.conf.durationWithSeconds}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.durationWithSeconds}
+            </div>
+
+            <div>
                {$kga.lang.round_time} <select name="roundPrecision" class="formfield">
                  <option value="0" {if $kga.conf.roundPrecision==0}selected="selected"{/if}>-</option>
                  <option value="1" {if $kga.conf.roundPrecision==1}selected="selected"{/if}>1</option>

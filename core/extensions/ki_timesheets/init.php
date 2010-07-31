@@ -74,9 +74,9 @@ header("Pragma: no-cache");
 // = display timesheet area =
 // ==========================
 if (isset($kga['customer']))
-  $total = intervallApos(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
+  $total = formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
 else
-  $total = intervallApos(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
+  $total = formatDuration(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 
 if (isset($kga['customer']))
   $arr_zef = get_arr_zef($in,$out,null,array($kga['customer']['knd_ID']),null,1);
@@ -93,28 +93,28 @@ if (isset($kga['customer']))
   $ann = get_arr_time_usr($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = get_arr_time_usr($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = intervallApos($ann);
+$ann_new = formatDuration($ann);
 $tpl->assign('usr_ann',$ann_new);
 
 if (isset($kga['customer']))
   $ann = get_arr_time_knd($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = get_arr_time_knd($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = intervallApos($ann);
+$ann_new = formatDuration($ann);
 $tpl->assign('knd_ann',$ann_new);
 
 if (isset($kga['customer']))
   $ann = get_arr_time_pct($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = get_arr_time_pct($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = intervallApos($ann);
+$ann_new = formatDuration($ann);
 $tpl->assign('pct_ann',$ann_new);
 
 if (isset($kga['customer']))
   $ann = get_arr_time_evt($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = get_arr_time_evt($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = intervallApos($ann);
+$ann_new = formatDuration($ann);
 $tpl->assign('evt_ann',$ann_new);
 
 

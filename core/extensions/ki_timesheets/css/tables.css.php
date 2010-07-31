@@ -85,10 +85,6 @@ div.ki_timesheet tr td.wage {
     text-align:center;
 }
 
-div.ki_timesheet a {
-    margin: 0 3px;
-}
-
 div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.evt {
     border-right: none;
 }

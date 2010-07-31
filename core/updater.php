@@ -1023,6 +1023,11 @@ if ((int)$revisionDB < 1185) {
     exec_query("CREATE TABLE ${p}pct_evt (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;");
 }
 
+if ((int)$revisionDB < 1206) {
+    logfile("-- update to r1206");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('durationWithSeconds','0')");
+}
+
   
 //////// ---------------------------------------------------------------------------------------------------
 
