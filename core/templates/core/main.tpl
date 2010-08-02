@@ -23,11 +23,10 @@
     <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.datePicker.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/ui.core.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/ui.draggable.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/date.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/ui.datepicker.min.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
@@ -87,6 +86,25 @@
         var selected_evt  = '{$evt_data.evt_ID}';
 
         var pickerClicked = '';
+
+        $.datepicker.setDefaults(
+          {literal}{{/literal} showOtherMonths :true,
+            selectOtherMonths : true,
+            nextText: '',
+            prevText: '',
+            {if ($kga.conf.noFading)}
+              showAnim: '',
+            {/if}
+            dateFormat : 'dd.mm.yy', // TODO use correct format depending on admin panel setting
+            dayNames: {$weekdays_array},
+            dayNamesMin:{$weekdays_short_array},
+            dayNamesShort: {$weekdays_short_array},
+            monthNames: {$months_array},
+            monthNamesShort: {$months_short_array},
+            firstDay:1 //TODO should also be depending on user setting
+          {literal}}{/literal}
+          );
+
         
         // HOOKS
         {literal}function hook_tss(){{/literal}{$hook_tss}{literal}}{/literal}

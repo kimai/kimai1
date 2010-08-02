@@ -3,6 +3,19 @@
         
         $(document).ready(function() {
             $('#help').hide();
+
+
+        $('#edit_in_day').datepicker({
+          onSelect: function(dateText, instance) {
+            $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
+          }
+         });
+        $('#edit_out_day').datepicker({
+          onSelect: function(dateText, instance) {
+            $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
+          }
+         });
+
             $('#ts_ext_form_add_edit_record').ajaxForm(function() { 
                 
                 $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();

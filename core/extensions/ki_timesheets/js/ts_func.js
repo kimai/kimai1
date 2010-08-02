@@ -166,7 +166,7 @@ function ts_ext_triggerCHE() {
 //
 function ts_ext_reload() {
             $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":")+'|'+filterEvt.join(":"), id: 0,
-                first_day: $('#pick_in').dpGetSelected()[0].getTime()/1000, last_day: $('#pick_out').dpGetSelected()[0].getTime()/1000  },
+                first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000  },
                 function(data) { 
                     $("#zef").html(data);
                 
@@ -381,35 +381,35 @@ function ts_getEndDate() {
 // Change the end time field, based on the duration, while editing a timesheet record
 //
 function ts_durationToTime() {
-    begin = ts_getStartDate();
+    end = ts_getEndDate();
     durationArray=$("#edit_duration").val().split(/:|\./);
-    if(begin!=null && durationArray.length > 0 && durationArray.length < 4) {
+    if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
         secs = durationArray[0]*3600;
         if(durationArray.length > 1)
             secs += (durationArray[1]*60);
         if(durationArray.length > 2)
             secs += parseInt(durationArray[2]);
-        end = new Date();
-        end.setTime(begin.getTime()+(secs*1000));
+        begin = new Date();
+        begin.setTime(end.getTime()-(secs*1000));
 
 
-        H = end.getHours();
-        i = end.getMinutes();
-        s = end.getSeconds();
+        H = begin.getHours();
+        i = begin.getMinutes();
+        s = begin.getSeconds();
 
         if (H<10) H = "0"+H;
         if (i<10) i = "0"+i;
         if (s<10) s = "0"+s;
 
-        $("#edit_out_time").val(H + ":" + i + ":" + s);
+        $("#edit_in_time").val(H + ":" + i + ":" + s);
 
-        d = end.getDate();
-        m = end.getMonth() + 1;
-        y = end.getFullYear();
+        d = begin.getDate();
+        m = begin.getMonth() + 1;
+        y = begin.getFullYear();
         if (d<10) d = "0"+d;
         if (m<10) m = "0"+m;
 
-        $("#edit_out_day").val(d + "." + m + "." + y);
+        $("#edit_in_day").val(d + "." + m + "." + y);
     }
 }
 

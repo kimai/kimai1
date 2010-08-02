@@ -2,45 +2,21 @@
 <script type="text/javascript" charset="utf-8">
     $(function()
     {
-        $('.date-pick').datePicker(
-
-          {
-                createButton:false,
-                createButton:false,
-                startDate:'{/literal}{$dp_start}{literal}',
-                endDate:'{/literal}{$dp_today}{literal}'
+        $('.date-pick').datepicker(
+          {dateFormat:'mm/dd/yy',
+          onSelect: function(dateText, instance) {
+            if (this == $('#pick_in')[0]) {
+              setTimespace(new Date(dateText),undefined);
             }
-
-        ).bind(
-                'click',
-                function() {
-                    $(this).dpDisplay();
-                    pickerClicked = $(this).attr('id');
-                    this.blur();
-                    return false;
-                }
-
-        ).bind(
-                'dateSelected',
-                function(e, selectedDate, $td) {
-
-                    switch (pickerClicked) {
-
-                        case 'pick_in':
-                            setTimespace(selectedDate,undefined);
-                        break;
-
-                        case 'pick_out':
-                            setTimespace(undefined,selectedDate);
-                        break;
-                    }
-                    this.blur();
-                }
-        );
+            if (this == $('#pick_out')[0]) {
+              setTimespace(undefined,new Date(dateText));
+            }
+          }
+        });
 
        
-        $('#pick_in').dpSetSelected('{/literal}{$timespace_in|date_format:'%d/%m/%Y'}{literal}');
-        $('#pick_out').dpSetSelected('{/literal}{$timespace_out|date_format:'%d/%m/%Y'}{literal}');        
+        /*$('#pick_in').dpSetSelected('{/literal}{$timespace_in|date_format:'%d/%m/%Y'}{literal}');
+        $('#pick_out').dpSetSelected('{/literal}{$timespace_out|date_format:'%d/%m/%Y'}{literal}');        */
         
         setTimespaceStart(new Date({/literal}{$timespace_in*1000}{literal}));
         setTimespaceEnd(new Date({/literal}{$timespace_out*1000}{literal}));
@@ -52,8 +28,10 @@
 
 
 <div id="dates">
-    <a href="#" id="pick_in" class="date-pick" title="{$kga.lang.in}"><span id="ts_in"></span></a> - 
-    <a href="#" id="pick_out" class="date-pick" title="{$kga.lang.out}"><span id="ts_out"></span></a>
+        <input type="hidden" id="pick_in" class="date-pick"/>
+        <a href="#" id="ts_in" onClick="$('#pick_in').datepicker('show');return false"></a> - 
+        <input type="hidden" id="pick_out" class="date-pick"/>
+        <a href="#" id="ts_out" onClick="$('#pick_out').datepicker('show');return false"></a>
 </div>
 
 

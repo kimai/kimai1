@@ -12,10 +12,8 @@
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
             $('#floater_content fieldset label').css('width','200px');
             
-            $('#floater input#first_day').attr('value',
-              ($('#pick_in').dpGetSelected()[0].getTime()/1000));
-            $('#floater input#last_day').attr('value',
-              ($('#pick_out').dpGetSelected()[0].getTime()/1000));
+            $('#floater input#first_day').attr('value',new Date($('#pick_in').val()).getTime()/1000);
+            $('#floater input#last_day').attr('value',new Date($('#pick_out').val()).getTime()/1000);
         }); 
         
     </script>

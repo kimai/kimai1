@@ -352,7 +352,7 @@ function xp_ext_reload() {
                   id: 0, timeformat: $("#xp_ext_timeformat").val(), dateformat: $("#xp_ext_dateformat").val(), default_location: $("#xp_ext_default_location").val(),
                   filter_cleared:$('#xp_ext_tab_filter_cleared').attr('value'),
                   filter_type:$('#xp_ext_tab_filter_type').attr('value'),
-                first_day: $('#pick_in').dpGetSelected()[0].getTime()/1000, last_day: $('#pick_out').dpGetSelected()[0].getTime()/1000  },
+                first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000  },
                 function(data) { 
                     $("#xp").html(data);
                 

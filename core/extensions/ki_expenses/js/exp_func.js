@@ -164,7 +164,7 @@ function exp_ext_triggerCHE() {
 //
 function exp_ext_reload() {
             $.post(exp_ext_path + "processor.php", { axAction: "reload_exp", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0,
-                first_day: $('#pick_in').dpGetSelected()[0].getTime()/1000, last_day: $('#pick_out').dpGetSelected()[0].getTime()/1000 },
+                first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000 },
                 function(data) { 
                     $("#exp").html(data);
                 

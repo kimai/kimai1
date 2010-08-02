@@ -1,18 +1,13 @@
-div#dp-popup {
-    font-size: 13px;
-    position: absolute;
-    padding: 0 4px 4px 4px;
-    width:  298px;
-    background-color: #333;
-    border: 1px solid #000;
-    border-top: none;  
-    z-index: 500;
-    top:82px !important;
-    left:50% !important;
-    margin-left:-155px;
+
+.ui-datepicker {
+  width:  298px;
+  background-color: #333;
+  border: 1px solid #000;
+  z-index:500;
+  display:none;
 }
 
-div#dp-popup h2 {
+.ui-datepicker-title {
     color: #FFF;
     font-size: 14px;
     text-align: center;
@@ -22,23 +17,7 @@ div#dp-popup h2 {
     width: 302px;
 }
 
-a#dp-close {
-   display: none;
-}
-
-a#dp-close:hover {
-   text-decoration: underline;
-}
-
-div#dp-popup a {
-    color: #000;
-    padding: 0;
-    font-size: 0;
-    text-indent: -24px;
-    overflow: hidden;
-}
-
-div#dp-popup div#dp-nav-prev {
+.ui-datepicker-prev {
     position: absolute;
     top: 0;
     left: 6px;
@@ -48,20 +27,24 @@ div#dp-popup div#dp-nav-prev {
     margin-left: 1px;
 }
 
-div#dp-popup div#dp-nav-prev a {
+.ui-datepicker-prev {
     float: left;
     width: 15px;
     height: 15px;
 }
+
 /* Opera needs the rules to be this specific otherwise it doesn't change the cursor back to pointer after you have disabled and re-enabled a link */
-div#dp-popup div#dp-nav-prev a, div#dp-popup div#dp-nav-next a {
+.ui-datepicker-prev,
+.ui-datepicker-next {
    cursor: pointer;
 }
-div#dp-popup div#dp-nav-prev a.disabled, div#dp-popup div#dp-nav-next a.disabled {
+.ui-datepicker-prev .disabled,
+.ui-datepicker-next .disabled {
    cursor: default;
 }
 
-div#dp-popup div#dp-nav-next {
+
+.ui-datepicker-next {
     position: absolute;
     top: 0px;
     right: 5px;
@@ -71,13 +54,13 @@ div#dp-popup div#dp-nav-next {
     margin-right: 1px;
 }
 
-div#dp-popup div#dp-nav-next a {
+.ui-datepicker-next {
     float: right;
     width: 15px;
     height: 15px;
 }
 
-div#dp-popup a.disabled {
+.ui-state-disabled {
    cursor: default;
    color: #aaa;
    opacity: 0.3;
@@ -85,38 +68,16 @@ div#dp-popup a.disabled {
    filter:alpha(opacity=30);
 }
 
-div#dp-popup td {
-    cursor: pointer;
-}
 
-div#dp-popup td.disabled {
-   cursor: default;
-}
 
-div#dp-popup a#dp-nav-prev-year {
-    background: url(grfx/picker_buttons.png) no-repeat;
-    margin-top: 0;
-    padding-top: 5px;
-    padding-right: 5px;
-    margin-right:3px;
-}
-
-div#dp-popup a#dp-nav-prev-month {
+.ui-datepicker-prev {
     background: url(grfx/picker_buttons.png) no-repeat -40px 0;
     display: block;
     padding-top: 5px;
     padding-right: 25px;
 }
 
-div#dp-popup a#dp-nav-next-year {
-    background: url(grfx/picker_buttons.png) no-repeat -20px 0;
-    display: block;
-    padding-top: 5px;
-    padding-right: 5px;
-    margin-right: 1px;
-}
-
-div#dp-popup a#dp-nav-next-month {
+.ui-datepicker-next {
     background: url(grfx/picker_buttons.png) no-repeat -80px 0;
     display: block;
     padding-top: 5px;
@@ -127,9 +88,13 @@ div#dp-popup a#dp-nav-next-month {
 }
 
 
-table.jCalendar { }
 
-table.jCalendar th {
+
+.ui-datepicker-calendar td {
+    cursor: pointer;
+}
+
+.ui-datepicker-calendar th {
     background: url(grfx/picker_bg_weekdays.png) no-repeat;
     width: 40px;
     height: 40px;
@@ -137,11 +102,11 @@ table.jCalendar th {
    font-weight: bold;
 }
 
-table.jCalendar th.weekend {
+.ui-datepicker-calendar th.ui-datepicker-week-end {
     background: url(grfx/picker_bg_weekend.png) no-repeat;
 }
 
-table.jCalendar td {
+.ui-datepicker-calendar td {
     background: url(grfx/picker_bg_norm.png) no-repeat;
     width: 40px;
     height: 40px;
@@ -149,35 +114,53 @@ table.jCalendar td {
     text-align: center;
 }
 
-table.jCalendar td.other-month {
+
+.ui-datepicker-calendar td.ui-datepicker-other-month {
     background: url(grfx/picker_bg_otherMonth.png) no-repeat;
     color: #aaa;
 }
 
-table.jCalendar td.today {
-    background: url(grfx/picker_bg_today.png) no-repeat;
-    color: #fff;
-    font-weight: bold;
+.ui-datepicker-calendar td.ui-datepicker-other-month:hover {
+    background: url(grfx/picker_bg_otherMonth.png) no-repeat;
+    color: #888;
 }
 
-table.jCalendar td.today:hover {
-    background: url(grfx/picker_bg_today_hover.png) no-repeat;
-}
-
-table.jCalendar td.selected,
-table.jCalendar td.selected:hover
-{
-    background: url(grfx/picker_bg_selected.png) no-repeat;
-    color: #fff;
+.ui-datepicker-calendar td.ui-datepicker-unselectable {
+   cursor: default;
 }
 
 
-table.jCalendar td:hover, table.jCalendar td.dp-hover {
+.ui-datepicker-calendar a {
+    color: #000;
+    text-decoration:none;
+}
+
+.ui-datepicker-calendar td:hover {
     background: url(grfx/picker_bg_hover.png) no-repeat;
     color: #000;
 }
 
-table.jCalendar td.disabled, table.jCalendar td.disabled:hover {
-    background: url(grfx/picker_bg_otherMonth.png) no-repeat;
-    color: #888;
+
+.ui-datepicker-calendar td.ui-datepicker-today {
+    background: url(grfx/picker_bg_today.png) no-repeat;
+    font-weight: bold;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today:hover {
+    background: url(grfx/picker_bg_today_hover.png) no-repeat;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today a {
+    color: #fff;
+}
+
+
+.ui-datepicker-calendar td.ui-datepicker-current-day,
+.ui-datepicker-calendar td.ui-datepicker-current-day:hover
+{
+    background: url(grfx/picker_bg_selected.png) no-repeat;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-current-day a {
+  color:#fff;
 }

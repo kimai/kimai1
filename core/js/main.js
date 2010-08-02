@@ -321,12 +321,14 @@ function setTimespace(fromDate,toDate) {
 
 function setTimespaceStart(fromDate) {
   $('#ts_in').html(strftime(timespaceDateFormat,fromDate));
-  $('#pick_out').dpSetStartDate(strftime('%d/%m/%Y',fromDate));
+  $('#pick_in').val(strftime('%m/%d/%Y',fromDate));
+  $('#pick_out').datepicker( "option", "minDate", fromDate );
 }
 
 function setTimespaceEnd(toDate) {
   $('#ts_out').html(strftime(timespaceDateFormat,toDate));
-  $('#pick_in').dpSetEndDate(strftime('%d/%m/%Y',toDate));
+  $('#pick_out').val(strftime('%m/%d/%Y',toDate));
+  $('#pick_in').datepicker( "option", "maxDate", toDate );
 }
 
 function updateTimespaceWarning() {
@@ -337,7 +339,7 @@ function updateTimespaceWarning() {
     today.setMinutes(0);
     today.setHours(0);
       
-    if ($('#pick_out').dpGetSelected()[0] < today) {
+    if (new Date($('#pick_out').val()) < today) {
       $('#ts_out').addClass('datewarning')
     }
     else {
