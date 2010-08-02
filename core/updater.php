@@ -1028,6 +1028,11 @@ if ((int)$revisionDB < 1206) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('durationWithSeconds','0')");
 }
 
+if ((int)$revisionDB < 1207) {
+    logfile("-- update to r1207");
+    exec_query("ALTER TABLE `${p}exp` ADD `exp_multiplier` INT NOT NULL DEFAULT '1'");
+}
+
   
 //////// ---------------------------------------------------------------------------------------------------
 

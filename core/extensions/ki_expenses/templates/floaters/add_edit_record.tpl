@@ -84,8 +84,17 @@
 
 
                    <li>
+                       <label for="multiplier">{$kga.lang.multiplier}:</label>
+                        <input id='multiplier' type='text' name='multiplier' value='{$multiplier}' maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                   </li>
+
+                   
+{* -------------------------------------------------------------------- *}
+
+
+                   <li>
                        <label for="edit_value">{$kga.lang.expense}:</label>
-                        <input id='edit_value' type='text' name='edit_value' value='{$edit_value}' maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_value' type='text' name='edit_value' value='{$edit_value}' maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    
@@ -94,7 +103,7 @@
 
                    <li>
                        <label for="designation">{$kga.lang.designation}:</label>
-                        <input id='designation' type='text' name='designation' value='{$designation}' maxlength='20'  size='20'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='designation' type='text' name='designation' value='{$designation}' maxlength='20'  size='20'  tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    

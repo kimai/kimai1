@@ -43,6 +43,8 @@ switch ($axAction) {
     
         $tpl->assign('edit_time',  date("H:i:s",$exp_entry['exp_timestamp']));
     
+        $tpl->assign('multiplier',  $exp_entry['exp_multiplier']);
+    
         $tpl->assign('edit_value',  $exp_entry['exp_value']);
     
         $tpl->assign('designation', $exp_entry['exp_designation']);

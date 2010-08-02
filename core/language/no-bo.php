@@ -252,6 +252,8 @@ $kga['lang']= array(
 'all_events' => '&lt;&lt;all&gt;&gt;',
 
 'durationWithSeconds' => 'Show duration exact to the second.',
+
+'multiplier' => 'Multiplier',
 );
 
 $kga['lang']['months']         = array("Januar","Februar","Mars","April","Mai","Juni","Juli","August","September","Oktober","November","Desember");

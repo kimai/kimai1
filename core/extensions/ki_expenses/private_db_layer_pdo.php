@@ -43,6 +43,7 @@ function exp_create_record($usr_ID,$data) {
     `exp_comment`,
     `exp_comment_type`,
     `exp_timestamp`,
+    `exp_multiplier`,
     `exp_value`,
     `exp_usrID`
     ) VALUES (?,?,?,?,?,?,?)
@@ -54,6 +55,7 @@ function exp_create_record($usr_ID,$data) {
     $data['exp_comment'],
     $data['exp_comment_type'] ,
     $data['exp_timestamp'],
+    $data['exp_multiplier'],
     $data['exp_value'],
     $usr_ID
     ));
@@ -151,7 +153,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
 //             Left Join %sgrp ON grp_ID    = pct_grpID
 //             Left Join %sevt ON evt_ID    = zef_evtID
 //             WHERE zef_pctID > 0 AND zef_evtID > 0 AND zef_usrID = '%s' %s ORDER BY zef_in DESC %s;"
-    $pdo_query = $pdo_conn->prepare("SELECT exp_ID, exp_timestamp, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
+    $pdo_query = $pdo_conn->prepare("SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
              FROM " . $kga['server_prefix'] . "exp 
              Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
@@ -173,6 +175,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $arr[$i]['exp_ID']          = $row['exp_ID'];
         $arr[$i]['exp_timestamp']   = $row['exp_timestamp'];
+        $arr[$i]['exp_multiplier']  = $row['exp_multiplier'];
         $arr[$i]['exp_value']       = $row['exp_value'];
         $arr[$i]['exp_pctID']       = $row['exp_pctID'];
         $arr[$i]['exp_designation'] = $row['exp_designation'];
@@ -286,6 +289,7 @@ function exp_edit_record($id,$data) {
     exp_comment = ?,
     exp_comment_type = ?,
     exp_timestamp = ?,
+    exp_multiplier = ?,
     exp_value = ?
     WHERE exp_id = ?;");    
     
@@ -295,6 +299,7 @@ function exp_edit_record($id,$data) {
     $new_array['exp_comment'],
     $new_array['exp_comment_type'] ,
     $new_array['exp_timestamp'],
+    $new_array['exp_multiplier'],
     $new_array['exp_value'],
     $id
     ));

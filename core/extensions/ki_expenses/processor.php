@@ -84,6 +84,7 @@ switch ($axAction) {
     
 	$data['exp_pctID']       = $_REQUEST['pct_ID'];
     	$data['exp_designation']  = $_REQUEST['designation'];
+      $data['exp_multiplier']        = $_REQUEST['multiplier'];
     	$data['exp_value']        = $_REQUEST['edit_value'];
     	$data['exp_comment']      = $_REQUEST['comment'];
     	$data['exp_comment_type'] = $_REQUEST['comment_type'];
@@ -119,7 +120,8 @@ switch ($axAction) {
         $data['exp_timestamp'] = $new_time['in'];
         //logfile("new_time: " .serialize($new_time));
 
-        $data['exp_value'] = str_replace(',','.',$data['exp_value']);
+        $data['exp_multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_multiplier']);
+        $data['exp_value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_value']);
         
 	if ($id) { // TIME RIGHT - NEW OR EDIT ?
 

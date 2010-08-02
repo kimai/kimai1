@@ -49,6 +49,7 @@ function exp_create_record($usr_ID,$data) {
     $values ['exp_comment']      =   MySQL::SQLValue( $data ['exp_comment'] );
     $values ['exp_comment_type'] =   MySQL::SQLValue( $data ['exp_comment_type'] , MySQL::SQLVALUE_NUMBER );
     $values ['exp_timestamp']    =   MySQL::SQLValue( $data ['exp_timestamp']    , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_multiplier']   =   MySQL::SQLValue( $data ['exp_multiplier']   , MySQL::SQLVALUE_NUMBER );
     $values ['exp_value']        =   MySQL::SQLValue( $data ['exp_value']        , MySQL::SQLVALUE_NUMBER );
     $values ['exp_usrID']        =   MySQL::SQLValue( $usr_ID                    , MySQL::SQLVALUE_NUMBER );
     
@@ -139,7 +140,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-    $query = "SELECT exp_ID, exp_timestamp, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
+    $query = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
              FROM " . $kga['server_prefix'] . "exp 
              Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
              Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
@@ -163,6 +164,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
       $row = $conn->Row();
       $arr[$i]['exp_ID']           = $row->exp_ID;
       $arr[$i]['exp_timestamp']    = $row->exp_timestamp;
+      $arr[$i]['exp_multiplier']   = $row->exp_multiplier;
       $arr[$i]['exp_value']        = $row->exp_value;
       $arr[$i]['exp_pctID']        = $row->exp_pctID;
       $arr[$i]['exp_designation']  = $row->exp_designation;
@@ -266,6 +268,7 @@ function exp_edit_record($id,$data) {
     $values ['exp_comment']      = MySQL::SQLValue($new_array ['exp_comment']                              );
     $values ['exp_comment_type'] = MySQL::SQLValue($new_array ['exp_comment_type'], MySQL::SQLVALUE_NUMBER );
     $values ['exp_timestamp']    = MySQL::SQLValue($new_array ['exp_timestamp']   , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_multiplier']   = MySQL::SQLValue($new_array ['exp_multiplier']  , MySQL::SQLVALUE_NUMBER );
     $values ['exp_value']        = MySQL::SQLValue($new_array ['exp_value']       , MySQL::SQLVALUE_NUMBER );
                                    
     $filter ['exp_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
