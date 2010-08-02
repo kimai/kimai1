@@ -3,15 +3,7 @@
 $all_column_headers = array('date','from','to','time','dec_time','rate','wage','knd','pct','evt','comment','location','trackingnr','user','cleared');
 
 
-/**
- * returns expenses for specific user as multidimensional array
- *
- * @param integer $user ID of user in table usr
- * @global array $kga kimai-global-array
- * @return array
- * @author th 
- */
-
+// Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) {
   include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
@@ -19,6 +11,23 @@ if (file_exists('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php')) 
 }
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
+/**
+ * Get a combined array with time recordings and expenses to export.
+ *
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $users Array of user IDs to filter by.
+ * @param array $customers Array of customer IDs to filter by.
+ * @param array $projects Array of project IDs to filter by.
+ * @param array $events Array of event IDs to filter by.
+ * @param bool $limit sbould the amount of entries be limited
+ * @param bool $reverse_order should the entries be put out in reverse order
+ * @param string $default_location use this string if no location is set for the entry
+ * @param int $filter_cleared (-1: show all, 0:only cleared 1: only not cleared) entries
+ * @param int $filter_type (-1 show time and expenses, 0: only show time entries, 1: only show expenses)
+ * @param int $limitCommentSize should comments be cut off, when they are too long
+ * @return array with time recordings and expenses chronologically sorted
+ */
 function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$reverse_order=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
   global $expense_ext_available;
 
@@ -162,29 +171,83 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
     return $result_arr;
 }
 
-
+/**
+ * Get annotations for the user sub list. Currently it's just the time, like
+ * in the timesheet extension.
+ * 
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $users Array of user IDs to filter by.
+ * @param array $customers Array of customer IDs to filter by.
+ * @param array $projects Array of project IDs to filter by.
+ * @param array $events Array of event IDs to filter by.
+ * @return array Array which assigns every user (via his ID) the data to show.
+ */
 function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
     $arr = get_arr_time_usr($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
 
+/**
+ * Get annotations for the customer sub list. Currently it's just the time, like
+ * in the timesheet extension.
+ * 
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $users Array of user IDs to filter by.
+ * @param array $customers Array of customer IDs to filter by.
+ * @param array $projects Array of project IDs to filter by.
+ * @param array $events Array of event IDs to filter by.
+ * @return array Array which assigns every customer (via his ID) the data to show.
+ */
 function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
     $arr = get_arr_time_knd($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
+/**
+ * Get annotations for the project sub list. Currently it's just the time, like
+ * in the timesheet extension.
+ * 
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $users Array of user IDs to filter by.
+ * @param array $customers Array of customer IDs to filter by.
+ * @param array $projects Array of project IDs to filter by.
+ * @param array $events Array of event IDs to filter by.
+ * @return array Array which assigns every project (via his ID) the data to show.
+ */
 function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
     $arr = get_arr_time_pct($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
+/**
+ * Get annotations for the task sub list. Currently it's just the time, like
+ * in the timesheet extension.
+ * 
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $users Array of user IDs to filter by.
+ * @param array $customers Array of customer IDs to filter by.
+ * @param array $projects Array of project IDs to filter by.
+ * @param array $events Array of event IDs to filter by.
+ * @return array Array which assigns every taks (via his ID) the data to show.
+ */
 function xp_get_arr_evt($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
     $arr = get_arr_time_evt($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 
 
+/**
+ * Prepare a string to be printed as a single field in the csv file.
+ * @param string $field String to prepare.
+ * @param string $column_delimiter Character used to delimit columns.
+ * @param string $quote_char Character used to quote strings.
+ * @return string Correctly formatted string.
+ */
 function csv_prepare_field($field,$column_delimiter,$quote_char) {
   if (strpos($field,$column_delimiter) === false &&
       strpos($field,$quote_char) === false &&

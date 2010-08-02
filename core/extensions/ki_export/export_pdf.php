@@ -9,10 +9,20 @@ class MYPDF extends TCPDF {
 
   var $columns = array();
 
+  /**
+   * Format a Unix timestamp to a date.
+   * @param int $number unix timestamp
+   * @return string formatted as date
+   */
   public function dateformat($number) {
       return strftime($this->date_format,$number);
   } 
 
+  /**
+   * Format the duration.
+   * @param int $number number to format (usually in hours)
+   * @return string formatted string
+   */
   public function timespan($number) {
     global $kga;
     if ($number == -1)
@@ -21,6 +31,11 @@ class MYPDF extends TCPDF {
       return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
+  /**
+   * Format a number as a money value.
+   * @param int $number amount of money
+   * @return string formatted string
+   */
   public function money($number) {
     global $kga;
     if ($kga['conf']['currency_first'])
@@ -30,14 +45,16 @@ class MYPDF extends TCPDF {
   }
   
 
-  // Page footer 
+  /**
+   * Print a footer on every page.
+   */
   public function Footer() { 
         global $kga,$knd_data, $pct_data;
         
         // Position at 1.5 cm from bottom 
         $this->SetY(-15);
          
-        //Kundendaten
+        // customer data
         //$this->SetFont('helvetica', '', 8); // Set font
         //$this->Cell(80, 10, $knd_data['knd_name'].' ('.$pct_data['pct_name'].')', 0, 0, 'L');
         
@@ -45,11 +62,16 @@ class MYPDF extends TCPDF {
         $this->SetFont('helvetica', 'I', 8); // Set font 
         $this->Cell(30, 10, $kga['lang']['xp_ext']['page'].' '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
         
-        //Datum
+        //Date
         $this->SetFont('helvetica', '', 8); // Set font
         $this->Cell(0, 10, date('d.m.Y H:i:s', $this->print_time), 0, 0, 'R');
   } 
 
+  /**
+   * Print the header of the table.
+   * @param array $w widths of the table columns
+   * @param array $header string with the column headers
+   */
   public function printHeader($w,$header) {
 
         // Colors, line width and bold font 
@@ -64,152 +86,162 @@ class MYPDF extends TCPDF {
     $this->Ln(); 
   }
 
+  /**
+   * Print the table containing the detailed information.
+   * @param array $header String with the column headers.
+   * @param array $data Data to print.
+   */
   public function ColoredTable($header,$data) {
-        global $kga;
-        $dateWidth = max(
-	  $this->GetStringWidth($header[0]),
-	  $this->GetStringWidth($this->dateformat(mktime(0,0,0,12,31,2000)))
-	  );
-	$dateWidth += 4;
-        if ($this->columns['wage']) {
-          $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30-$dateWidth,30,30); 
+    global $kga;
+    $dateWidth = max(
+    $this->GetStringWidth($header[0]),
+    $this->GetStringWidth($this->dateformat(mktime(0,0,0,12,31,2000)))
+    );
+    $dateWidth += 4;
+    if ($this->columns['wage']) {
+      $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30-$dateWidth,30,30); 
+    }
+    else {
+      $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-1*30-$dateWidth,30); 
+    }
+
+    // Header 
+    $this->printHeader($w,$header);
+
+    // Color and font restoration 
+    $this->SetFillColor(224, 235, 255); 
+    $this->SetTextColor(0); 
+    $this->SetFont(''); 
+    // Data 
+    $fill = 0; 
+    $moneySum = 0;
+    $timeSum = 0;
+    foreach($data as $row) {
+      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
+        continue;
+
+      $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
+      // check if page break is nessessary
+      if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
+        $this->Cell(array_sum($w), 0, '', 'T');
+        if ($this->columns['wage']) { 
+          $this->Ln();  
+          $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
+          $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
+          $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
         }
-        else {
-          $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-1*30-$dateWidth,30); 
-        }
-    
-        // Header 
+        $this->Ln();  
+        $this->AddPage();
         $this->printHeader($w,$header);
 
         // Color and font restoration 
         $this->SetFillColor(224, 235, 255); 
         $this->SetTextColor(0); 
         $this->SetFont(''); 
-        // Data 
-        $fill = 0; 
-        $moneySum = 0;
-        $timeSum = 0;
-        foreach($data as $row) {
-            if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
-              continue;
-
-            $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
-            // check if page break is nessessary
-            if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
-              $this->Cell(array_sum($w), 0, '', 'T');
-              if ($this->columns['wage']) { 
-                $this->Ln();  
-                $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
-                $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
-                $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
-              }
-              $this->Ln();  
-              $this->AddPage();
-              $this->printHeader($w,$header);
-
-              // Color and font restoration 
-              $this->SetFillColor(224, 235, 255); 
-              $this->SetTextColor(0); 
-              $this->SetFont(''); 
-            }
-            $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-            $this->Cell($w[1], 6, htmlspecialchars_decode($row['evt_name']), 'LR', 0, 'L', $fill);    
-            
-            $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
-            if ($this->columns['wage']) {
-              $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-            }
-            $this->Ln(); 
-            
-            
-            //Kommentar anzeigen:
-            if ( $show_comment ) {
-	      $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
+      }
+      $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
+      $this->Cell($w[1], 6, htmlspecialchars_decode($row['evt_name']), 'LR', 0, 'L', $fill);    
+      
+      $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
+      if ($this->columns['wage']) {
+        $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
+      }
+      $this->Ln(); 
+        
+        
+      //Kommentar anzeigen:
+      if ( $show_comment ) {
+        $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
         $this->SetFont('', 'I'); 
-	      $this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
-	      $this->SetFont(''); 
-	      $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
+        $this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
+        $this->SetFont(''); 
+        $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
 
         if ($this->columns['wage']) {
           $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
         }
-	      $this->Ln(); 
-            }
-            $fill=!$fill; 
-            $moneySum+=$row['wage'];
-            $timeSum += $row['dec_zef_time']==-1?0:$row['dec_zef_time']; 
-            
-        } 
-        $this->Cell(array_sum($w), 0, '', 'T'); 
-        $this->Ln();
-
-        if ($this->columns['wage']) {
-          $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
-          $this->SetFont('', 'B'); 
-          $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
-          $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
+        $this->Ln(); 
         }
-    }
-    
-    public function ColoredTable_result($header,$data) {
-        global $kga;
-        if ($this->columns['wage']) {
-          $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30,30,30); 
-        }
-        else {
-          $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-30,30);         
-        }
+      $fill=!$fill; 
+      $moneySum+=$row['wage'];
+      $timeSum += $row['dec_zef_time']==-1?0:$row['dec_zef_time']; 
         
-        // Header 
+    } 
+    $this->Cell(array_sum($w), 0, '', 'T'); 
+    $this->Ln();
+
+    if ($this->columns['wage']) {
+      $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
+      $this->SetFont('', 'B'); 
+      $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
+      $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
+    }
+  }
+
+  /**
+    * Print the table containing the summarized information.
+    * @param array $header String with the column headers.
+    * @param array $data Data to print.
+    */
+  public function ColoredTable_result($header,$data) {
+    global $kga;
+    if ($this->columns['wage']) {
+      $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30,30,30); 
+    }
+    else {
+      $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-30,30);         
+    }
+        
+    // Header 
+    $this->printHeader($w,$header);
+
+    // Color and font restoration 
+    $this->SetFillColor(224, 235, 255); 
+    $this->SetTextColor(0); 
+    $this->SetFont(''); 
+    // Data 
+    $fill = 0; 
+    $sum = 0;
+    $sum_time = 0;
+    foreach($data as $row) { 
+      // check if page break is nessessary
+      if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
+        $this->Cell(array_sum($w), 0, '', 'T'); 
+        $this->Ln();  
+        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
+        $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
+        if ($this->columns['wage'])
+          $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
+        $this->Ln();  
+        $this->AddPage();
         $this->printHeader($w,$header);
 
         // Color and font restoration 
         $this->SetFillColor(224, 235, 255); 
         $this->SetTextColor(0); 
         $this->SetFont(''); 
-        // Data 
-        $fill = 0; 
-        $sum = 0;
-        $sum_time = 0;
-        foreach($data as $row) { 
-            // check if page break is nessessary
-            if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
-              $this->Cell(array_sum($w), 0, '', 'T'); 
-              $this->Ln();  
-              $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
-              $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
-              if ($this->columns['wage'])
-                $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-              $this->Ln();  
-              $this->AddPage();
-              $this->printHeader($w,$header);
-
-              // Color and font restoration 
-              $this->SetFillColor(224, 235, 255); 
-              $this->SetTextColor(0); 
-              $this->SetFont(''); 
-            }
-            $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
-            $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
-            if ($this->columns['wage']) {
-              $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-            }
-            $this->Ln(); 
-            $fill=!$fill; 
-            $sum+=$row['wage'];
-            $sum_time += $row['time']==-1?0:$row['time']; 
-            
-        }
-        $this->Cell(array_sum($w), 0, '', 'T'); 
-        $this->Ln();
-
-        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
-        $this->SetFont('', 'B'); 
-        $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
-        if ($this->columns['wage']) {
-          $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-        }
+      }
+      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
+      $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+      if ($this->columns['wage']) {
+        $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
+      }
+      $this->Ln(); 
+      $fill=!$fill; 
+      $sum+=$row['wage'];
+      $sum_time += $row['time']==-1?0:$row['time']; 
+        
     }
+    $this->Cell(array_sum($w), 0, '', 'T'); 
+    $this->Ln();
+
+    $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
+    $this->SetFont('', 'B'); 
+    $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
+    if ($this->columns['wage']) {
+      $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
+    }
+  }
 
 }
 
@@ -229,7 +261,7 @@ $pdf->AddPage();
 if (isset($_REQUEST['create_bookmarks']))
   $pdf->Bookmark($kga['lang']['xp_ext']['pdf_headline'], 0, 0);
 
-//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); //Firmenlogo einbinden
+//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
 
 
 
@@ -246,7 +278,7 @@ if (!empty($_REQUEST['document_comment'])) {
 
 if (isset($_REQUEST['print_summary'])) {
   
-  //Zeiteinheiten zusammenfassen:
+  //Create the summary.
   $zef_summary = array();
   $exp_summary = array();
   foreach ($arr_data as $one_entry) {
@@ -288,6 +320,7 @@ if (isset($_REQUEST['print_summary'])) {
   
 }
 
+// Write to the PDF document which, if any, customer filters were applied.
 $customers = array();
 foreach ($filterKnd as $knd_id) {
   $customer_info = knd_get_data($knd_id);
@@ -299,6 +332,7 @@ if (count($customers)>0) {
   $pdf->ln();
 }
 
+// Write to the PDF document which, if any, project filters were applied.
 $projects = array();
 foreach ($filterPct as $pct_id) {
   $project_info = pct_get_data($pct_id);

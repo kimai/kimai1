@@ -459,7 +459,7 @@ $kga['lang']['weekdays_short'] = array("Dom","Seg","Ter","Qua","Qui","Sex","Sáb
 
 $kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
 
-$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'conf.php' in folder 'includes' are correct.";
+$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct.";
 
 
 $kga['lang']['errors'][1]['hdl'] = "Erro durante a instalação!";

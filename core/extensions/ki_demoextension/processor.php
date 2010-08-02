@@ -1,5 +1,5 @@
 <?php
-// always put in this standard processor initialization!
+// Always include the Kimai Standard Processor Initialization!
 
 // insert KSPI
 $isCoreProcessor = 0;

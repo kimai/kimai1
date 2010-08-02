@@ -54,6 +54,10 @@ function ap_ext_resize() {
     ap_ext_subtab_autoexpand();
 }
 
+/**
+ * Show one of the subtabs. All others are collapsed, so only their header
+ * is visible.
+ */
 function ap_ext_subtab_expand(id) {
 	$("#ap_ext_sub1").removeClass("active");
 	$("#ap_ext_sub2").removeClass("active");
@@ -74,6 +78,10 @@ function ap_ext_subtab_expand(id) {
 	$.cookie('ap_ext_activePanel_'+usr_ID, id);
 }
 
+/**
+ * Show the last subtab, the user has seen. This information is stored in a
+ * cookie. If we're unable to read it show the first subtab.
+ */
 function ap_ext_subtab_autoexpand() {
 	ap_ext_activePanel  = $.cookie('ap_ext_activePanel_'+usr_ID);
     if (ap_ext_activePanel) {
@@ -113,17 +121,6 @@ function ap_ext_triggerchange() {
     ap_chp_hook_flag = 0;
     ap_che_hook_flag = 0;
 }
-
-
-
-// function ap_ext_triggerTSS() {
-// }
-// function ap_ext_triggerREC() {
-//     logfile("AP: triggerREC");
-// }
-// function ap_ext_triggerSTP() {
-//     logfile("AP: triggerSTP");
-// }
 
 function ap_ext_triggerCHK() {
     if ($('.ap_ext').css('display') == "block") {
@@ -366,59 +363,10 @@ function ap_ext_banUser(id) {
 }
 
 function ap_ext_checkupdate() {
-    $.post("checkupdate.php", { versionping:1 },
+    $.post("checkupdate.php",
         function(data) {
            $('#ap_ext_checkupdate').html(data);
         }
     );
     
 }
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-// everything below this line needs revision for some coming version ...
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-/*
-
-
-// ----------------------------------------------------------------------------------------
-// if the RETURN key is hit inside a add or edit dialogue this function 
-// triggers the OK button
-//
-function checkKeyPressed(evt,func,params){
-  evt = (evt) ? evt : (window.event) ? event : null;
-  if (evt) {
-    var charCode = (evt.charCode) ? evt.charCode :
-                   ((evt.keyCode) ? evt.keyCode :
-                   ((evt.which) ? evt.which : 0));
-    if (charCode == 13) {
-        if (params) func = func+"('"+params+"');";
-        eval(func);
-    }
-  }    
-}
-
-function switchUsr(id) {
-    alert("Under construction...\nUser to switch to: "+id);
-}
-
-function backupUsr(id) {
-    alert("Under construction...\nUser to backup: "+id);
-}
-
-function backupAll() {
-    alert("Under construction...");
-}
-
-function switchGrp(id) {
-    alert("Under construction...\nGroup to switch to: "+id);
-}
-
-function backupGrp(id) {
-    alert("Under construction...\nGroup to backup: "+id);
-}
-
-
-*/

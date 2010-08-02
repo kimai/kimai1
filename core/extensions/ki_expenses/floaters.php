@@ -28,39 +28,39 @@ include('private_db_layer_'.$kga['server_conn'].'.php');
 
 switch ($axAction) {
 
-    case "add_edit_record":  
-        if (isset($kga['customer'])) die();  
+  case "add_edit_record":  
+    if (isset($kga['customer'])) die();  
     // ==============================================
     // = display edit dialog for timesheet record   =
     // ==============================================
     $selected = explode('|',$axValue);
     if ($id) {
-        $exp_entry = get_entry_exp($id);
-        $tpl->assign('id', $id);
-        $tpl->assign('comment', $exp_entry['exp_comment']);
-    
-        $tpl->assign('edit_day', date("d.m.Y",$exp_entry['exp_timestamp']));
-    
-        $tpl->assign('edit_time',  date("H:i:s",$exp_entry['exp_timestamp']));
-    
-        $tpl->assign('multiplier',  $exp_entry['exp_multiplier']);
-    
-        $tpl->assign('edit_value',  $exp_entry['exp_value']);
-    
-        $tpl->assign('designation', $exp_entry['exp_designation']);
+      $exp_entry = get_entry_exp($id);
+      $tpl->assign('id', $id);
+      $tpl->assign('comment', $exp_entry['exp_comment']);
+  
+      $tpl->assign('edit_day', date("d.m.Y",$exp_entry['exp_timestamp']));
+  
+      $tpl->assign('edit_time',  date("H:i:s",$exp_entry['exp_timestamp']));
+  
+      $tpl->assign('multiplier',  $exp_entry['exp_multiplier']);
+  
+      $tpl->assign('edit_value',  $exp_entry['exp_value']);
+  
+      $tpl->assign('designation', $exp_entry['exp_designation']);
 
-        // preselected
-        $tpl->assign('pres_pct', $exp_entry['pct_ID']);
-    
-        $tpl->assign('comment_active', $exp_entry['exp_comment_type']);
+      // preselected
+      $tpl->assign('pres_pct', $exp_entry['pct_ID']);
+  
+      $tpl->assign('comment_active', $exp_entry['exp_comment_type']);
 
     } else {
-        
-        $tpl->assign('id', 0);
-        
-        $tpl->assign('edit_day', date("d.m.Y"));
-    
-        $tpl->assign('edit_time',  date("H:i:s"));
+      
+      $tpl->assign('id', 0);
+      
+      $tpl->assign('edit_day', date("d.m.Y"));
+  
+      $tpl->assign('edit_time',  date("H:i:s"));
 
     }
 

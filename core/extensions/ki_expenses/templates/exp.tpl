@@ -113,6 +113,7 @@
 </div>
 {/if}
 
+{*Annotations for sublists to set-------------------------------*}
 <script type="text/javascript"> 
     exp_usr_ann = null;
     exp_knd_ann = null;

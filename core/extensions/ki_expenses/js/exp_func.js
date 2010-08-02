@@ -1,27 +1,10 @@
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * Javascript functions for the timesheet extension are defined here.
  */
 
-// ============
-// TS EXT funcs
-// ============
-
+/**
+ * Called when the extension loaded. Do some initial stuff.
+ */
 function exp_ext_onload() {
     exp_ext_applyHoverIntent2expRows();
     exp_ext_resize();
@@ -29,6 +12,9 @@ function exp_ext_onload() {
     lists_visible(true);
 }
 
+/**
+ * Update the dimension variables to reflect new height and width.
+ */
 function exp_ext_get_dimensions() {
     scroller_width = 17;
     if (navigator.platform.substr(0,3)=='Mac') {
@@ -42,6 +28,9 @@ function exp_ext_get_dimensions() {
     exp_h = pageHeight()-224-headerHeight()-28;
 }
 
+/**
+ * Hover a row if the mouse is over it for more than half a second.
+ */
 function exp_ext_applyHoverIntent2expRows() {
     $('#exp tr').hoverIntent({
         sensitivity: 1,
@@ -57,18 +46,27 @@ function exp_ext_applyHoverIntent2expRows() {
     });
 }
 
+/**
+ * The window has been resized, we have to adjust to the new space.
+ */
 function exp_ext_resize() {
     exp_ext_set_tableWrapperWidths();
     exp_ext_set_heightTop();
 }
 
+/**
+ * Set width of table and faked table head.
+ */
 function exp_ext_set_tableWrapperWidths() {
     exp_ext_get_dimensions();
-    // exp: set width of table and faked table head  
     $("#exp_head,#exp").css("width",exp_w);
     exp_ext_set_TableWidths();
 }
 
+/**
+ * If the extension is being shrinked so the sublists are shown larger
+ * adjust to that.
+ */
 function exp_ext_set_heightTop() {
     exp_ext_get_dimensions();
     if (!extShrinkMode) {
@@ -80,6 +78,9 @@ function exp_ext_set_heightTop() {
     exp_ext_set_TableWidths();
 }
 
+/**
+ * Set the width of the table.
+ */
 function exp_ext_set_TableWidths() {
     exp_ext_get_dimensions();
     // set table widths   
@@ -125,14 +126,6 @@ function exp_ext_triggerTSS() {
         exp_tss_hook_flag++;
     }
 }
-
-// function ts_ext_triggerREC() {
-//     logfile("TS: triggerREC");
-// }
-// 
-// function ts_ext_triggerSTP() {
-//     logfile("TS: triggerSTP");
-// }
 
 function exp_ext_triggerCHK() {
     if ($('.ki_expenses').css('display') == "block") {

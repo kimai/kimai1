@@ -252,7 +252,7 @@ $kga['lang']['weekdays']       = array("Söndag","Måndag","Tisdag","Onsdag","To
 $kga['lang']['weekdays_short'] = array("Sön","Mon","Tis","Ons","Tor","Fri","Lör");
 
 $kga['lang']['errors'][0]['hdl'] = "Kunde inte koppla till databasen!";
-$kga['lang']['errors'][0]['txt'] = "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'conf.php' i mappen 'includes' �r korrekta.";
+$kga['lang']['errors'][0]['txt'] = "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta.";
 
 $kga['lang']['errors'][1]['hdl'] = "Fel vid installation!";
 $kga['lang']['errors'][1]['txt'] = 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>

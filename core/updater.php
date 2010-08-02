@@ -1,27 +1,10 @@
 <?php
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * This script performs updates of the database from any version
+ * to the current version. 
  */ 
  
 require('includes/basics.php');
-
-// require(sprintf("language/%s.php",$kga['language']));
 
 if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
     $language = $kga['language'];
@@ -34,7 +17,7 @@ if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) {
 
 $RUsure = $kga['lang']['updater'][0];
 
-echo <<<EOD
+?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -69,7 +52,7 @@ echo <<<EOD
 	     <FORM action="" method="post">
 		     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
 		     <h1>UPDATE</h1>
-		     $RUsure
+		     <?=$RUsure?>
 		     <br /><br />
 		     <INPUT type="hidden" name="a" value="1">
 		     <INPUT type="submit" value="START UPDATE">
@@ -80,7 +63,7 @@ echo <<<EOD
 </body>
 </html>
 
-EOD;
+<?php
 
  } else {
      
@@ -217,11 +200,18 @@ EOD;
 <br />
 <br />
 
+<table cellspacing='0' cellpadding='2'>
 <?php
 
-echo "<table cellspacing='0' cellpadding='2'>";
 
-function exec_query($query,$errorProcessing=0) {
+/**
+ * Execute an sql query in the database. The correct database connection
+ * will be chosen and the query will be logged with the success status.
+ * 
+ * @param $query query to execute as string
+ * @param $errorProcessing true if it's an error when the query fails.
+ */
+function exec_query($query,$errorProcessing=false) {
     global $conn, $pdo_conn, $kga, $errors, $executed_queries;
     
     $executed_queries++;
@@ -305,10 +295,10 @@ logfile("-- begin update -----------------------------------");
 
 $p = $kga['server_prefix'];
 
-//////// ---------------------------------------------------------------------------------------------------
-// Backup Tables
-
 if ((int)$revisionDB < $kga['revision']) {
+    /**
+     * Perform an backup (or snapshot) of the current tables.
+     */
     logfile("-- begin backup -----------------------------------");
 
     $backup_stamp = time();    // as an individual backup label the timestamp should be enough for now...
@@ -1031,25 +1021,15 @@ if ((int)$revisionDB < 1206) {
 if ((int)$revisionDB < 1207) {
     logfile("-- update to r1207");
     exec_query("ALTER TABLE `${p}exp` ADD `exp_multiplier` INT NOT NULL DEFAULT '1'");
+
 }
 
-  
-//////// ---------------------------------------------------------------------------------------------------
-
-
-// if ((int)$revisionDB < 001) {
-// 
-//     logfile("-- update to 0.8.1");
-// 
-//     // table usr
-//         // drop "lastProject"
-//         // drop "lastEvent"
-//         // drop "lastRecord"
-//         // drop "recordingstate"
-//         // add "showIDs"
-// }
-
-//////// ---------------------------------------------------------------------------------------------------
+if ((int)$revisionDB < 1213) {
+    logfile("-- update to r1213");
+    exec_query("ALTER TABLE ${p}knd DROP `knd_logo`");
+    exec_query("ALTER TABLE ${p}pct DROP `pct_logo`");
+    exec_query("ALTER TABLE ${p}evt DROP `evt_logo`");
+}
 
 
 // ============================

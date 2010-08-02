@@ -1,24 +1,15 @@
 <?php
 /**
- * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- *
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- *
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * Perform the installation by creating all necessary tables
+ * and some basic entries.
  */
  
+/**
+ * Execute an sql query in the database. The correct database connection
+ * will be chosen and the query will be logged with the success status.
+ * 
+ * @param $query query to execute as string
+ */
 function exec_query($query) {
     global $conn, $pdo_conn, $errors, $db_layer;
     if ($db_layer == "pdo") {
@@ -105,7 +96,6 @@ $query=
   `evt_comment` TEXT NOT NULL,
   `evt_visible` TINYINT(1) NOT NULL DEFAULT '1',
   `evt_filter` TINYINT(1) NOT NULL DEFAULT '0',
-  `evt_logo` VARCHAR( 80 ),
   `evt_trash` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`evt_ID`)
 ) AUTO_INCREMENT=1;";
@@ -158,7 +148,6 @@ $query=
   `knd_mobile` varchar(255) NOT NULL,
   `knd_mail` varchar(255) NOT NULL,
   `knd_homepage` varchar(255) NOT NULL,
-  `knd_logo` VARCHAR( 80 ),
   `knd_trash` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`knd_ID`)
 ) AUTO_INCREMENT=1;";
@@ -172,7 +161,6 @@ $query=
   `pct_comment` TEXT NOT NULL,
   `pct_visible` TINYINT(1) NOT NULL DEFAULT '1',
   `pct_filter` TINYINT(1) NOT NULL DEFAULT '0',
-  `pct_logo` VARCHAR( 80 ),
   `pct_trash` TINYINT(1) NOT NULL DEFAULT '0',
   `pct_budget` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY  (`pct_ID`)
@@ -253,7 +241,7 @@ exec_query($query);
 $query="INSERT INTO `" . $kga['server_prefix'] . "evt` (`evt_ID`, `evt_name`, `evt_comment`) VALUES (1, '".$kga['lang']['testEVT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`, `knd_logo`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '', '');";
+$query="INSERT INTO `" . $kga['server_prefix'] . "knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '');";
 exec_query($query);
 
 $query="INSERT INTO `" . $kga['server_prefix'] . "pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";

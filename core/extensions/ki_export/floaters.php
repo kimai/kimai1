@@ -26,35 +26,27 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
 
-    // $selected = explode('|',$axValue);
-
     case "PDF":  
-	    // $tpl->assign('comment_types', $comment_types);
 	    $tpl->assign('exportPDF', 'exportPDF');
 	    $tpl->display("export_PDF.tpl"); 
     break;
 
     case "XLS":  
-	    // $tpl->assign('comment_types', $comment_types);
 	    $tpl->assign('exportXLS', 'exportXLS');
 	    $tpl->display("export_XLS.tpl"); 
     break;
 
     case "CSV":  
-	    // $tpl->assign('comment_types', $comment_types);
 	    $tpl->assign('exportCSV', 'exportCSV');
 	    $tpl->display("export_CSV.tpl"); 
     break;
 
     case "print":  
-	    // $tpl->assign('comment_types', $comment_types);
 	    $tpl->assign('print', 'print');
 	    $tpl->display("print.tpl"); 
     break;
 
     case "help_timeformat":  
-	    // $tpl->assign('comment_types', $comment_types);
-	    // $tpl->assign('print', 'print');
 	    $tpl->display("help_timeformat.tpl"); 
     break;
 

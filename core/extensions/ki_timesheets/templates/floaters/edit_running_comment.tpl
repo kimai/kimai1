@@ -15,7 +15,6 @@
         <span id="floater_title">{$kga.lang.comment}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <!--<a href="#" class="options down" onClick="floaterOptions(); $(this).blur();">{$kga.lang.options}</a>-->
         </div>       
     </div>
 

@@ -1,26 +1,11 @@
 <?php
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * This file allows the user to create and restore backups. The backups are
+ * kept within the database, so they aren't true backups but more like
+ * snapshots.
  */ 
 
 require('includes/basics.php');
-// require(sprintf("language/%s.php",$kga['language']));
 
 if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
     $language = $kga['language'];
@@ -31,6 +16,12 @@ require_once( "language/${language}.php" );
 
 $p = $kga['server_prefix'];
 
+/**
+ * Execute an sql query in the database. The correct database connection
+ * will be chosen and the query will be logged with the success status.
+ * 
+ * @param $query query to execute as string
+ */
 function exec_query($query) {
     global $conn, $pdo_conn, $kga, $errors, $executed_queries;
    
@@ -61,11 +52,13 @@ function exec_query($query) {
 
 if (isset($_REQUEST['submit'])) 
 {
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// backup
 	if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) 
 	{
-	    logfile("-- begin backup -----------------------------------");
+      /**
+       * Create a backup.
+       */
+      
+      logfile("-- begin backup -----------------------------------");
 	    $backup_stamp = time();  
 	    $query = ("SHOW TABLES;");
 	    $result_backup=@mysql_query($query); 
@@ -95,8 +88,6 @@ if (isset($_REQUEST['submit']))
 				
 				$query = "SELECT `".$primaryKey."` as `id` FROM `".$row[0]."` ORDER BY `".$primaryKey."` DESC LIMIT 0,1;   \n";
 				$id = mysql_fetch_array(mysql_query($query), MYSQL_ASSOC);
-				// echo $query;
-				// echo($id['id']);
 				
 				if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
 
@@ -113,10 +104,11 @@ if (isset($_REQUEST['submit']))
 		header("location: db_restore.php");
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// delete
 	if ($_REQUEST['submit'] == $kga['lang']['backup'][3]) 
 	{
+      /**
+       * Delete backups.
+       */
 		$dates = $_REQUEST['dates'];
 
 		$query = ("SHOW TABLES;");
@@ -164,7 +156,7 @@ if (isset($_REQUEST['submit']))
 	}
 }
 
-echo<<<EOD
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -231,11 +223,11 @@ echo<<<EOD
 	</style>
 </head>
 <body>
-EOD;
 
-echo '<div class="warn">'.$kga['lang']['backup'][0].'</div>';
-echo '<div class="main">';
 
+<div class="warn"><?=$kga['lang']['backup'][0]?></div>
+<div class="main">
+<?php
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // restore
 
@@ -259,7 +251,6 @@ if (isset($_REQUEST['submit']))
 			$arr2 = array();
 			$dropquery = "";
 			$restorequery = "";
-			// $restorequery = "SET SQL_MODE=\"NO_AUTO_VALUE_ON_ZERO\";";
 
 			while ($row = mysql_fetch_array($result_backup))
 			{

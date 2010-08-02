@@ -1,22 +1,7 @@
 <?php
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * Show an login window or process the login request. On succes the user
+ * will be redirected to core/kimai.php.
  */
 
 if (!isset($_REQUEST['a'])) $_REQUEST['a'] = '';
@@ -55,23 +40,12 @@ $tpl->compile_dir  = 'compile/';
 // = standard includes =
 // =====================
 
-if(!file_exists(realpath(dirname(__FILE__).'/includes/conf.php'))){
-    require('includes/autoconf.php');
-    if (!isset($server_database)) {
-        header("Location: installer/index.php");
-        exit;
-    }
-}
-
-if(file_exists(realpath(dirname(__FILE__).'/includes/conf.php')) || file_exists('includes/autoconf.php')){
-	if(file_exists(realpath(dirname(__FILE__).'/includes/conf.php')))
-	    require_once(realpath(dirname(__FILE__).'/includes/conf.php'));
+if (file_exists(realpath(dirname(__FILE__).'/includes/autoconf.php'))) {
     require('includes/autoconf.php');
     require('includes/vars.php');
     require('includes/func.php');   
     require("includes/connect_".$kga['server_conn'].".php");
     require(sprintf("language/%s.php",$kga['language']));
-    include('includes/func.login.php');
 }else{
     header("Location: error.php");
     exit;
@@ -121,17 +95,6 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
     }
 }
 
-// ====================================================
-// = load background depending on demo or normal mode =
-// ====================================================
-if (!$kga['virtual_users']) {
-    $bgcss = "login_bg.gif";
-    $tpl->assign('bgcss', $bgcss);
-} else {
-    $bgcss = "demo_login_bg.gif";
-    $tpl->assign('bgcss', $bgcss);
-}
-
 // ==============================================
 // = Login active? If not redirect to interface =
 // ==============================================
@@ -158,18 +121,11 @@ $tpl->display('login/header.tpl');
 switch($_REQUEST['a']){
 
 case "checklogin":
-    //$name     = str_replace(" " , "" , strip_tags(trim($name)));
     $name = htmlspecialchars(trim($name));
-    //$password = strip_tags(trim($password));
     
     $is_customer = is_customer_name($name);
     
     logfile("login: " . $name. ($is_customer?" as customer":" as user"));
-
-    if ($kga['virtual_users']) { 
-        header("Location: core/virtualUser.php");
-        exit;
-    }
 
     if ($is_customer) {
       // perform login of customer
@@ -189,7 +145,6 @@ case "checklogin":
       }
       else {
         setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-        //@mysql_query(sprintf("UPDATE %sknd SET ban=ban+1 WHERE usr_name = '$user';"),$kga['server_prefix']);
         $tpl->assign('headline', $kga['lang']['accessDenied']); 
         $tpl->assign('message', $kga['lang']['wrongPass']);
         $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
@@ -280,11 +235,7 @@ default:
 
     $tpl->assign('devtimespan', '2006-'.date('y'));
 
-    if (!$kga['virtual_users']) {
-      $tpl->display('login/panel.tpl');
-    } else {
-      $tpl->display('login/demopanel.tpl');
-    }
+    $tpl->display('login/panel.tpl');
 break;
 }
 if(isset($link))

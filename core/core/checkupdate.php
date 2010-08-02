@@ -1,14 +1,12 @@
 <?php
++/**
++ * Query the Kimai project server for information about a new version.
++ * The response will simply be passed through.
++ */
 error_reporting(0);
+require('../includes/basics.php');
 
-if(file_exists(realpath(dirname(__FILE__).'/../includes/conf.php')))
-	require_once(realpath(dirname(__FILE__).'/../includes/conf.php'));
-require('../includes/autoconf.php');
-require('../includes/vars.php');
-require('../includes/func.php');   
 // check the latest stable version of Kimai on the web
-if ($kga['check_at_startup'] || $_REQUEST['versionping']) {
-    $request = join( '', file('http://versioncheck.kimai.de?revision='.$kga['revision']."&lang=".$kga['language']));
-    echo $request;
-}
+$request = join( '', file('http://versioncheck.kimai.de?revision='.$kga['revision']."&lang=".$kga['language']));
+echo $request;
 ?>

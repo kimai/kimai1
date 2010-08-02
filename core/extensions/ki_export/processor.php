@@ -1,27 +1,7 @@
 <?php
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * Export Processor.
  */
-
-// ================
-// = EX PROCESSOR =
-// ================
 
 // insert KSPI
 $isCoreProcessor = 0;
@@ -166,6 +146,9 @@ switch ($axAction) {
     break;
 
 
+    /**
+     * Exort as html file.
+     */
     case 'export_html':       
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
@@ -180,6 +163,9 @@ switch ($axAction) {
     break;
 
 
+    /**
+     * Exort as excel file.
+     */
     case 'export_xls':        
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
@@ -200,17 +186,14 @@ switch ($axAction) {
     break;
 
 
+    /**
+     * Exort as csv file.
+     */
     case 'export_csv':        
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
-        /*$tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
-
-        $tpl->assign('columns',$columns);
-        $tpl->assign('custom_timeformat',$timeformat);
-        $tpl->assign('custom_dateformat',$dateformat);
-        $tpl->assign('custom_filter',$filter);*/
 
         header("Content-Disposition:attachment;filename=export.csv");
         header("Content-Type: text/csv ");
@@ -293,6 +276,9 @@ switch ($axAction) {
 
 
 
+    /**
+     * Export as tabular PDF document.
+     */
     case 'export_pdf':
        
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
@@ -301,6 +287,9 @@ switch ($axAction) {
 
 
 
+    /**
+     * Export as a PDF document in a list format.
+     */
     case 'export_pdf2':
        
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);

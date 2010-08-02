@@ -1,22 +1,6 @@
 <?php
 /**
- * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- *
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- *
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * Handle all AJAX calls from the installer.
  */
 
 
@@ -61,7 +45,12 @@ $errors=0;
 switch ($axAction) {
 
 
-
+    /**
+     * Check for the requirements of Kimai:
+     *  - PHP major version >= 5
+     *  - MySQL extension available
+     *  - memory limit should be at least 20 MB for reliable PDF export
+     */
     case "checkRequirements":
        if (version_compare(PHP_VERSION, '5.2') < 0) {
            $errors++;
@@ -91,6 +80,10 @@ switch ($axAction) {
 
       break;
 
+    /**
+     * Check access rights to autoconf.php, the logfile, the temporary folder
+     * and all compile folders (also for the extensions).
+     */
     case "checkRights":
         if (!$fp = @fopen("../includes/autoconf.php", "w")) {
             $errors++;
@@ -158,7 +151,9 @@ switch ($axAction) {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
-
+    /**
+     * Create the autoconf.php file.
+     */
     case ("write_config"):
     include("../includes/func.php");
      // special characters " and $ are escaped
@@ -175,7 +170,10 @@ switch ($axAction) {
     write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt);
 
     break;
-
+    
+    /**
+     * Create the database.
+     */
     case ("make_database");
 
     error_log("make database ###################");

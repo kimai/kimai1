@@ -12,7 +12,9 @@
 function xp_zef_set_cleared($id,$cleared) {
     global $kga;
     global $pdo_conn;
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
+    $p = $kga['server_prefix'];
+
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -33,7 +35,9 @@ function xp_zef_set_cleared($id,$cleared) {
 function xp_exp_set_cleared($id,$cleared) {
     global $kga;
     global $pdo_conn;
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
+    $p = $kga['server_prefix'];
+
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -55,11 +59,13 @@ function xp_exp_set_cleared($id,$cleared) {
  */
 function xp_toggle_header($header) {
     global $kga,$pdo_conn,$all_column_headers;    
+    $p = $kga['server_prefix'];
+
 
     $header_number = array_search($header,$all_column_headers);
 
     $pdo_query = $pdo_conn->prepare(
-      "UPDATE " . $kga['server_prefix'] . "usr SET 
+      "UPDATE ${p}usr SET 
           export_disabled_columns = `export_disabled_columns`^POWER(2,?) 
        WHERE `usr_ID` = ?;");
     $result = $pdo_query->execute(array($header_number,$kga['usr']['usr_ID']));
@@ -80,11 +86,12 @@ function xp_toggle_header($header) {
  */
 function xp_get_disabled_headers($user_id) {
     global $kga,$pdo_conn,$all_column_headers; 
+    $p = $kga['server_prefix'];
 
     $disabled_headers = array();
 
     $pdo_query = $pdo_conn->prepare(
-      "SELECT export_disabled_columns FROM " . $kga['server_prefix'] . "usr
+      "SELECT export_disabled_columns FROM ${p}usr
        WHERE `usr_ID` = ?;");
     
     if (!$pdo_query->execute(array($user_id))) return 0;

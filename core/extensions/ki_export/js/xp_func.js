@@ -1,33 +1,12 @@
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * Javascript functions used in the export extension.
  */
 
-// ============
-// XP EXT funcs
-// ============
 
 
-function clicktest() {
-	alert("clicked!");
-}
-
-
+/**
+ * The extension was loaded, do some setup stuff.
+ */
 function xp_ext_onload() {
     xp_ext_resize();
     $("#loader").hide();
@@ -75,7 +54,9 @@ function xp_ext_onload() {
 
 
 
-
+/**
+ * Show the tab which allows filtering.
+ */
 function xp_ext_select_filter()
 {
 	$('#xp_ext_select_filter').addClass("pressed");
@@ -88,6 +69,9 @@ function xp_ext_select_filter()
 	
 }
 
+/**
+ * Show the tab via which the default location can be set.
+ */
 function xp_ext_select_location()
 {
 	$('#xp_ext_select_location').addClass("pressed");
@@ -99,6 +83,9 @@ function xp_ext_select_location()
 	$('#xp_ext_tab_timeformat').css("display","none");
 }
 
+/**
+ * Show the tab which lets the user define the date and time format.
+ */
 function xp_ext_select_timeformat()
 {
 	$('#xp_ext_select_timeformat').addClass("pressed");
@@ -111,21 +98,6 @@ function xp_ext_select_timeformat()
 	
 }
 
-function xp_ext_export_pdf()
-{
-	
-}
-
-function xp_ext_export_xls()
-{
-	
-}
-
-function xp_ext_print()
-{
-	
-}
-
 
 
 
@@ -134,10 +106,9 @@ function xp_ext_print()
 // mitgebracht von ts_ext:
 
 
-
-
-
-
+/**
+ * Update the dimension variables to reflect new height and width.
+ */
 function xp_ext_get_dimensions() {
     scroller_width = 17;
     if (navigator.platform.substr(0,3)=='Mac') {
@@ -153,11 +124,17 @@ function xp_ext_get_dimensions() {
 
 
 
+/**
+ * The window has been resized, we have to adjust to the new space.
+ */
 function xp_ext_resize() {
      xp_ext_set_tableWrapperWidths();
      xp_ext_set_heightTop();
 }
 
+/**
+ * Set width of table and faked table head.
+ */
 function xp_ext_set_tableWrapperWidths() {
     xp_ext_get_dimensions();
     // zef: set width of table and faked table head  
@@ -165,6 +142,10 @@ function xp_ext_set_tableWrapperWidths() {
     xp_ext_set_TableWidths();
 }
 
+/**
+ * If the extension is being shrinked so the sublists are shown larger
+ * adjust to that.
+ */
 function xp_ext_set_heightTop() {
     xp_ext_get_dimensions();
     if (!extShrinkMode) {
@@ -176,6 +157,9 @@ function xp_ext_set_heightTop() {
     xp_ext_set_TableWidths();
 }
 
+/**
+ * Set the width of the table.
+ */
 function xp_ext_set_TableWidths() {
     xp_ext_get_dimensions();
     // set table widths   
@@ -195,84 +179,6 @@ function xp_ext_set_TableWidths() {
       $("div#xp > div > table > tbody > tr > td.location").width()+
       $("div#xp > div > table > tbody > tr > td.trackingnr").width()
   );
-    /*cashWidth = $("div#xp > div > table > tbody > tr > td.rate").width();
-	cashWidth += $("div#xp > div > table > tbody > tr > td.dec_time").width();
-	cashWidth +=3;
-    $("#xp_head > table > tbody > tr > td.cash").css("width", cashWidth);
-
-
-	headerWidth = $("#xp_head > table > tbody > tr > td.knd").width();
-	contentWidth = $("div#xp > div > table > tbody > tr > td.knd").width();
-	if (headerWidth>contentWidth) 
-	{
-		$("div#xp > div > table > tbody > tr > td.knd").css("width", headerWidth);   
-	} else {
-		$("#xp_head > table > tbody > tr > td.knd").css("width", contentWidth);
-	}
-
-	headerWidth = $("#xp_head > table > tbody > tr > td.pct").width();
-	contentWidth = $("div#xp > div > table > tbody > tr > td.pct").width();
-	if (headerWidth>contentWidth) 
-	{
-		$("div#xp > div > table > tbody > tr > td.pct").css("width", headerWidth);   
-	} else {
-		$("#xp_head > table > tbody > tr > td.pct").css("width", contentWidth);
-	}
-
-	headerWidth = $("#xp_head > table > tbody > tr > td.evt").width();
-	contentWidth = $("div#xp > div > table > tbody > tr > td.evt").width();
-	if (headerWidth>contentWidth) 
-	{
-		$("div#xp > div > table > tbody > tr > td.evt").css("width", headerWidth);   
-	} else {
-		$("#xp_head > table > tbody > tr > td.evt").css("width", contentWidth);
-	}*/
-       
-
-
-
-
-	// headerWidth = $("#xp_head > table > tbody > tr > td.comment").width();
-	// contentWidth = $("div#xp > div > table > tbody > tr > td.comment").width();
-	// 
-	// if ((headerWidth < 250) && (contentWidth < 250))
-	// {
-	// 	if (headerWidth>contentWidth) 
-	// 	{
-	// 		$("div#xp > div > table > tbody > tr > td.comment").css("width", headerWidth);   
-	// 	} else {
-	// 		$("#xp_head > table > tbody > tr > td.comment").css("width", contentWidth);
-	// 	}
-	// } else {
-	// 	$("#xp_head > table > tbody > tr > td.comment").css("width", 250);
-	// 	$("div#xp > div > table > tbody > tr > td.comment").css("width", 250);
-	// }
-	// 
-	// 
-	
-       
-
-
-
- 
-
-    
-    
-    // headerWidth = $("#xp_head > table > tbody > tr > td.location").width();
-    // contentWidth = $("div#xp > div > table > tbody > tr > td.location").width();
-    // $("#xp_head > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
-    // $("div#xp > div > table > tbody > tr > td.location").css("width", Math.max(headerWidth,contentWidth));
-    // 
-    // headerWidth = $("#xp_head > table > tbody > tr > td.trackingnr").width();
-    // contentWidth = $("div#xp > div > table > tbody > tr > td.trackingnr").width();
-    // $("#xp_head > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
-    // $("div#xp > div > table > tbody > tr > td.trackingnr").css("width", Math.max(headerWidth,contentWidth));
-    // 
-    // headerWidth = $("#xp_head > table > tbody > tr > td.user").width();
-    // contentWidth = $("div#xp > div > table > tbody > tr > td.user").width();
-    // $("#xp_head > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
-    // $("div#xp > div > table > tbody > tr > td.user").css("width", Math.max(headerWidth,contentWidth));
-    
 }
 
 function xp_ext_triggerchange() {
@@ -370,6 +276,9 @@ function xp_ext_reload() {
 
 
 
+/**
+ * Toggle the enabled state of a column.
+ */
 function xp_toggle_column(name) {
   if ($("#xp_head > table > tbody > tr ."+name).hasClass('disabled')) {
     returnfunction = new Function("data","if (data!=1) return;\
@@ -390,6 +299,9 @@ function xp_toggle_column(name) {
   }
 }
 
+/**
+ * Toggle the cleared state of an entry.
+ */
 function xp_toggle_cleared(id) {
   path = "#xp"+id+">td.cleared>a";
   if ($(path).hasClass("is_cleared")) {
@@ -412,6 +324,9 @@ function xp_toggle_cleared(id) {
   $(path).blur();
 }
 
+/**
+ * Create a list of enabled columns.
+ */
 function xp_enabled_columns() {
   columns = new Array('date','from','to','time','dec_time','rate','wage','knd','pct','action','comment','location','trackingnr','user','cleared');
   columnsString = '';

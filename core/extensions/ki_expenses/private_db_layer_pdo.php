@@ -12,7 +12,9 @@
 function exp_delete_record($id) {
     global $kga;
     global $pdo_conn;
-    $pdo_query = $pdo_conn->prepare("DELETE FROM " . $kga['server_prefix'] . "exp WHERE `exp_ID` = ? LIMIT 1;");
+    $p = $kga['server_prefix'];
+
+    $pdo_query = $pdo_conn->prepare("DELETE FROM ${p}exp WHERE `exp_ID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($id));
     
     if ($result == false) {
@@ -32,12 +34,9 @@ function exp_delete_record($id) {
 function exp_create_record($usr_ID,$data) {
     global $kga;
     global $pdo_conn;
-    
-    // logfile("DBL:zef_create_record:id:".$usr_ID);
-    // logfile("DBL:zef_create_record:data:".serialize($data));
-    // logfile("DBL:zef_create_record:diff:".$data['diff']);
+    $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("INSERT INTO " . $kga['server_prefix'] . "exp (  
+    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}exp (  
     `exp_pctID`, 
     `exp_designation`,
     `exp_comment`,
@@ -86,7 +85,6 @@ function exp_create_record($usr_ID,$data) {
  * @return Array list of where clauses to include in the query
  *
  */
-
 function exp_whereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
@@ -124,10 +122,11 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
  * @author th 
  */
 
-// TODO: Test it!
 function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false) {
     global $kga;
     global $pdo_conn;
+    $p = $kga['server_prefix'];
+
 
     
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
@@ -146,28 +145,16 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-//    $query = sprintf("SELECT zef_ID, zef_in, zef_out, zef_time, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, grp_name, pct_grpID, pct_kndID, evt_name, pct_name, zef_comment, zef_comment_type
-//             FROM %szef 
-//             Left Join %spct ON zef_pctID = pct_ID
-//             Left Join %sknd ON pct_kndID = knd_ID
-//             Left Join %sgrp ON grp_ID    = pct_grpID
-//             Left Join %sevt ON evt_ID    = zef_evtID
-//             WHERE zef_pctID > 0 AND zef_evtID > 0 AND zef_usrID = '%s' %s ORDER BY zef_in DESC %s;"
     $pdo_query = $pdo_conn->prepare("SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
-             FROM " . $kga['server_prefix'] . "exp 
-             Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
-             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             Join " . $kga['server_prefix'] . "usr ON exp_usrID = usr_ID "
+             FROM ${p}exp 
+             Join ${p}pct ON exp_pctID = pct_ID
+             Join ${p}knd ON pct_kndID = knd_ID
+             Join ${p}usr ON exp_usrID = usr_ID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
              ' ORDER BY exp_timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";");
     
-             $pdo_query->execute();
-    
+             $pdo_query->execute();  
   
-    
-//    logfile("********************* USER ID:" . $user);
-//    logfile("********************* QUERY: $query");
-//    logfile("*********************" . mysql_error());
     
     $i=0;
     $arr=array();
@@ -205,10 +192,12 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
  */
 function get_entry_exp($id) {
     global $kga;
-    global $pdo_conn;     
-    $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "exp 
-    Left Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID 
-    Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID 
+    global $pdo_conn;   
+    $p = $kga['server_prefix'];
+  
+    $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp 
+    Left Join ${p}pct ON exp_pctID = pct_ID 
+    Left Join ${p}knd ON pct_kndID = knd_ID 
     WHERE exp_ID = ? LIMIT 1;");
   
     $pdo_query->execute(array($id));
@@ -230,12 +219,12 @@ function exp_get_data($exp_id) {
 
     global $kga;
     global $pdo_conn;
+    $p = $kga['server_prefix'];
 
     if ($exp_id) {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "exp WHERE exp_ID = ?");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp WHERE exp_ID = ?");
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "exp WHERE exp_usrID = ".$kga['usr']['usr_ID']." ORDER BY exp_ID DESC LIMIT 1");
-        // logfile("SELECT * FROM " . $kga['server_prefix'] . "zef ORDER BY zef_ID DESC LIMIT 1");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp WHERE exp_usrID = ".$kga['usr']['usr_ID']." ORDER BY exp_ID DESC LIMIT 1");
     }
     
     $result = $pdo_query->execute(array($exp_id));
@@ -261,13 +250,7 @@ function exp_get_data($exp_id) {
 function exp_edit_record($id,$data) {
     global $kga;
     global $pdo_conn;
-    
-    // logfile("editrecord####################");
-        
-        
-    // logfile("DBL:zef_create_record:id:".$usr_ID);
-    // logfile("DBL:zef_create_record:data:".serialize($data));
-    // logfile("DBL:zef_create_record:diff:".$data['diff']);
+    $p = $kga['server_prefix'];
     
     $original_array = exp_get_data($id);
     $new_array = array();
@@ -283,7 +266,7 @@ function exp_edit_record($id,$data) {
 
 
 
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "exp SET
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET
     exp_pctID = ?,
     exp_designation = ?,
     exp_comment = ?,
@@ -313,39 +296,24 @@ function exp_edit_record($id,$data) {
 
 
 
-
-    
-    // $data['pct_ID']       
-    // $data['evt_ID']       
-    // $data['comment']      
-    // $data['comment_type'] 
-    // $data['erase']        
-    // $data['in']           
-    // $data['out']          
-    // $data['diff']    
-    
-    // if wrong time values have been entered in the edit window
-    // the following 3 variables arrive as zeros - like so:
-
-    // $data['in']   = 0;
-    // $data['out']  = 0;
-    // $data['diff'] = 0;   
-    
-    // in this case the record has to be edited WITHOUT setting new time values
-    
-
-     // @oleg: ein zef-eintrag muss auch ohne die zeiten aktualisierbar sein weil die ggf. bei der prüfung durchfallen.
-
-
-
 } 
 
+/**
+ * Get the sum of expenses for every user.
+ * @param int $in Time from which to take the expenses into account.
+ * @param int $out Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every user (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
+    $p = $kga['server_prefix'];
 
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = $kga['server_prefix'].'usr.usr_trash = 0';
+    $whereClauses[] = "${p}usr.usr_trash = 0";
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
@@ -353,10 +321,10 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
       $whereClauses[]="exp_timestamp <= $out"; 
 
    $pdo_query = $pdo_conn->prepare("SELECT sum(exp_value) as expenses, usr_ID
-             FROM " . $kga['server_prefix'] . "exp 
-             Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
-             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             Join " . $kga['server_prefix'] . "usr ON exp_usrID = usr_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+             FROM ${p}exp 
+             Join ${p}pct ON exp_pctID = pct_ID
+             Join ${p}knd ON pct_kndID = knd_ID
+             Join ${p}usr ON exp_usrID = usr_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
              " ORDER BY exp_timestamp DESC;");
              $pdo_query->execute();
    
@@ -371,21 +339,31 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
 }
 
 
+/**
+ * Get the sum of expenses for every customer.
+ * @param int $in Time from which to take the expenses into account.
+ * @param int $out Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every customer (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
+    $p = $kga['server_prefix'];
 
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = $kga['server_prefix'].'knd.knd_trash = 0';
+    $whereClauses[] = "${p}knd.knd_trash = 0";
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
     if ($out)
       $whereClauses[]="exp_timestamp <= $out"; 
     
-    $pdo_query = $pdo_conn->prepare("SELECT SUM(exp_value) as expenses, knd_ID FROM " . $kga['server_prefix'] . "exp 
-            Left Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
-            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+    $pdo_query = $pdo_conn->prepare("SELECT SUM(exp_value) as expenses, knd_ID FROM ${p}exp 
+            Left Join ${p}pct ON exp_pctID = pct_ID
+            Left Join ${p}knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
             " GROUP BY knd_ID;");
     $pdo_query->execute();
 
@@ -398,20 +376,31 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
     return $arr;
 }
 
+/**
+ * Get the sum of expenses for every project.
+ * @param int $in Time from which to take the expenses into account.
+ * @param int $out Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every project (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga;
     global $pdo_conn;
+    $p = $kga['server_prefix'];
+
 
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = $kga['server_prefix'].'pct.pct_trash = 0';
+    $whereClauses[] = "${p}pct.pct_trash = 0";
 
     if ($in)
       $whereClauses[]="exp_timestamp >= $in";
     if ($out)
       $whereClauses[]="exp_timestamp <= $out"; 
-    $pdo_query = $pdo_conn->prepare("SELECT sum(exp_value) as expenses,exp_pctID FROM " . $kga['server_prefix'] . "exp
-            Left Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
-            Left Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+    $pdo_query = $pdo_conn->prepare("SELECT sum(exp_value) as expenses,exp_pctID FROM ${p}exp
+            Left Join ${p}pct ON exp_pctID = pct_ID
+            Left Join ${p}knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
        " GROUP BY exp_pctID;");
     $pdo_query->execute();
 

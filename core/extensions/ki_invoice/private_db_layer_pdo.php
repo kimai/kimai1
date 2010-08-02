@@ -9,9 +9,10 @@
  * @author AA
  */
 function get_entry_knd($id) {
-    global $kga;
-    global $pdo_conn;
-    $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "knd 
+    global $kga, $pdo_conn;
+    $p = $kga['server_prefix'];
+
+    $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}knd 
     WHERE knd_name = ? LIMIT 1;");
   
     $pdo_query->execute(array($id));

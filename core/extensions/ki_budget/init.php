@@ -12,7 +12,7 @@ $tpl = new Smarty();
 $tpl->template_dir = 'templates/';
 $tpl->compile_dir  = 'compile/';
 
-
+// Get all project for the logged in customer or the current user.
 if (isset($kga['customer']))
   $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
 else
@@ -20,6 +20,7 @@ else
 
 $usedEvents = array();
 
+// If there are any projects create the plot data.
 if (count($arr_pct)>0) {
     $arr_plotdata = budget_plot_data($arr_pct,$usedEvents);
     $tpl->assign('arr_plotdata', $arr_plotdata);
@@ -31,14 +32,15 @@ if (count($arr_pct)>0) {
 $chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
 $tpl->assign('chartColors',json_encode($chartColors));
 
-$legend = array();
-$legend[] = array('color'=>$chartColors[0], 'name' => 'frei');
-$legend[] = array('color'=>$chartColors[1], 'name' => 'Auslagen');
+// Create the keys which explain to the user which color means what.
+$keys = array();
+$keys[] = array('color'=>$chartColors[0], 'name' => 'frei');
+$keys[] = array('color'=>$chartColors[1], 'name' => 'Auslagen');
 for ($i = 0;$i<count($usedEvents);$i++) {
-  $legend[] = array('color'=>$chartColors[($i+2)%(count($chartColors)-1)], 'name' => $usedEvents[$i]['evt_name']);
+  $keys[] = array('color'=>$chartColors[($i+2)%(count($chartColors)-1)], 'name' => $usedEvents[$i]['evt_name']);
 }
 
-$tpl->assign('arr_legend',$legend);
+$tpl->assign('arr_keys',$keys);
       
 $tpl->display('index.tpl');
 

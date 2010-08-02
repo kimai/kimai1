@@ -1,6 +1,6 @@
 <?php
-	header('Content-type: text/css');
-	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
+  header('Content-type: text/css');
+  $table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
 #demo_ext_header {

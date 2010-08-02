@@ -32,6 +32,9 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
     
+    /**
+     * Return the logfile in reverse order, so the last entries are shown first.
+     */
     case "reloadLogfile":    
         $logdatei=WEBROOT."temporary/logfile.txt";
         $fh = fopen($logdatei, 'r');
@@ -64,6 +67,9 @@ switch ($axAction) {
         echo $theData;
     break;
     
+    /**
+     * Empty the logfile.
+     */
     case "clearLogfile":
         if ($kga['delete_logfile']) {
             $logdatei=fopen(WEBROOT."temporary/logfile.txt","w");
@@ -75,10 +81,17 @@ switch ($axAction) {
         }
     break;
 
+    /**
+     * Write some message to the logfile.
+     */
     case "shoutbox":
         logfile("text: " .$axValue);
     break;
 
+    /**
+     * Return the $kga variable (Kimai Global Array). Strip out some sensitive
+     * information if not configured otherwise.
+     */
     case "reloadKGA":    
 	// read kga --------------------------------------- 
 		$output = $kga;

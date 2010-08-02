@@ -111,7 +111,7 @@ foreach ($events as $event) {
 
 
 /* 
- * convert array to javascript array
+ * Convert array of wages to javascript array for every project.
  */
 $plot_data = array();
 foreach ($wages as $project_id => $wage_array) {

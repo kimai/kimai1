@@ -1,7 +1,3 @@
-{*     IMPORTANT NOTE:
-       Javascript or jQuery stuff that should run when your extension *has finished loading*  
-       should sit in an special onload function like this:
-*}
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
@@ -23,11 +19,11 @@
 
 <div id="bgt">
 
-<div class="legend">
-{section name=row loop=$arr_legend}
-<div class="legend_entry"><div class="legend_color" style="background-color:{$arr_legend[row].color}"></div>{$arr_legend[row].name}</div>
+<div class="keys">
+{section name=row loop=$arr_keys}
+<div class="key"><div class="key_color" style="background-color:{$arr_keys[row].color}"></div>{$arr_keys[row].name}</div>
 {/section}
-<div class="legend_entry_end"/>
+<div class="key_end"/>
 </div>
 
 {section name=row loop=$arr_pct}

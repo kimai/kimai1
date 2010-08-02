@@ -1,19 +1,5 @@
 <?php
 
-
-function exp_clean_data($data) {
-    global $kga;   
-    foreach ($data as $key => $value) {
-        $return[$key] = urldecode(strip_tags($data[$key]));
-        $return[$key] = str_replace('"','_',$data[$key]);
-        $return[$key] = str_replace("'",'_',$data[$key]);
-        $return[$key] = str_replace('\\','',$data[$key]);
-    if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
-    }
-    
-    return $return;
-}
-
 /**
  * delete exp entry 
  *
@@ -149,12 +135,6 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
              ' ORDER BY exp_timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";";
     
     $conn->Query($query);
-    
-  
-    
-//    logfile("********************* USER ID:" . $user);
-//    logfile("********************* QUERY: $query");
-//    logfile("*********************" . mysql_error());
     
     $i=0;
     $arr=array();
@@ -300,6 +280,15 @@ function exp_edit_record($id,$data) {
     }
 } 
 
+/**
+ * Get the sum of expenses for every user.
+ * @param int $start Time from which to take the expenses into account.
+ * @param int $end Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every user (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     
@@ -337,6 +326,15 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
 }
 
 
+/**
+ * Get the sum of expenses for every customer.
+ * @param int $start Time from which to take the expenses into account.
+ * @param int $end Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every customer (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     
@@ -371,6 +369,15 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
     return $arr;
 }
 
+/**
+ * Get the sum of expenses for every project.
+ * @param int $start Time from which to take the expenses into account.
+ * @param int $end Time until which to take the expenses into account.
+ * @param array $users Array of user IDs to filter the expenses by.
+ * @param array $customers Array of customer IDs to filter the expenses by.
+ * @param array $projects Array of project IDs to filter the expenses by.
+ * @return array Array which assigns every project (via his ID) the sum of his expenses.
+ */
 function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga,$conn;
     

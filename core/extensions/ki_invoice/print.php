@@ -55,7 +55,6 @@ $timeArray = get_arr_zef($in,$out,null,null,array($_REQUEST['pct_ID']),1);
 	usr_name, usr_alias, zef_cleared
 */
 
-//$order  = '05123456';
 $date  = date("m-d-Y");
 $month  = $kga['lang']['months'][date("n",$out)-1];
 $year = date("Y", $out );
@@ -100,9 +99,6 @@ while ($time_index < count($timeArray)) {
 	$event = $timeArray[$time_index]['evt_name'];
 	$comment = $timeArray[$time_index]['zef_comment'];
 	$evtdt = date("m/d/Y", $timeArray[$time_index]['zef_in']);
-//	$usrname = $timeArray[$time_index]['usr_name'];
-//	$usralias = $timeArray[$time_index]['usr_alias'];
-//	$rate = $timeArray[$time_index]['zef_rate'];
     
    // do we have to create a short form?
    if ( $_REQUEST['short'] ) {
@@ -142,8 +138,6 @@ if ( $_REQUEST['round'] ) {
    
 }
 
-// This writes a logfile entry demonstrating the RoundValue function, which is used to round time (if "Round" is selected).
-logfile( "ROUNDED 12.33 to ". RoundValue(12.33,$round/10) . "and ROUNDED - 12.26 ". RoundValue(12.26,$round/10) ); 
 
 // calculate invoice sums
 $ttltime = 0;
@@ -182,16 +176,6 @@ $doc->setProcessDir('./tmp');
 $templateform = "templates/" . $_REQUEST['ivform_file'];
 $doc->createFrom($templateform);
 
-/* OLD METHOD OF SELECTING TEMPLATE 
-if ( $_REQUEST['vat'] ) {
-   $doc->createFrom($templateform);   //'templates/invoiceVAT.odt'
-}
-else if ( $_REQUEST['short'] ) {
-   $doc->createFrom('templates/Short_invoice.odt');
-}
-else {
-   $doc->createFrom('templates/Long_invoice.odt');
-}*/
 
 $doc->loadXml('content.xml');
   

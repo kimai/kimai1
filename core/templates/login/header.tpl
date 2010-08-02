@@ -11,10 +11,7 @@
 {if $kga.check_at_startup}
 <script type="text/javascript" src="js/main.js"></script>
 {/if}
-{if not $kga.virtual_users}
-{literal}<script type='text/javascript'>function setfocus() { document.form1.name.focus(); }</script>{/literal}
-{/if}
-{literal}
+{literal}<script type='text/javascript'>function setfocus() { document.form1.name.focus(); }</script>
 <script type='text/javascript'>
     $(function(){
         $("#JSwarning").remove();

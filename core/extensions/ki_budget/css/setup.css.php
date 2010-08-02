@@ -38,20 +38,20 @@
   clear:both;
 }
 
-.legend {
+.keys {
   background-color:#fafafa;
   border:1px solid black;  
   margin:5px;
 }
 
-.legend_entry {
+.key {
   float:left;
   white-space:nowrap;
   padding:5px;
   font-size: smaller;
 }
 
-.legend_color {
+.key_color {
   float:left;
   width:1em;
   height:1em;
@@ -59,6 +59,6 @@
   border: 1px solid black;
 }
 
-.legend_entry_end {
+.key_end {
   clear:both;
 }

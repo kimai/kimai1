@@ -29,9 +29,7 @@ $tpl = new Smarty();
 $tpl->template_dir = 'templates/misc/';
 $tpl->compile_dir  = 'compile/';
 
-if(file_exists('includes/conf.php') || file_exists('includes/autoconf.php')){
-	if(file_exists('includes/conf.php'))
-    	include('includes/conf.php');
+if(file_exists('includes/autoconf.php')){
     require('includes/autoconf.php');
     require('includes/vars.php');
     include(sprintf("language/%s.php",$kga['language']));
@@ -53,7 +51,7 @@ $tpl->assign('message', $message);
 // if the language-file could not be loaded this is a sure sign that something is wrong with the config...
 if (!is_array($kga['language'])) {
     $tpl->assign('headline', "Fatal Error!");
-    $tpl->assign('message', "No config-file found or it doesn't contain any data. Make sure your conf.php or autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.");
+    $tpl->assign('message', "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.");
 }
 
 $tpl->display('error.tpl');

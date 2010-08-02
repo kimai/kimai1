@@ -45,7 +45,5 @@ $(document).ready(function(){
        ts_resizeTimer = setTimeout(ts_ext_resize, 500);
     });
 
-    // $('#buzzer a').click(buzzer);
-
     
 });

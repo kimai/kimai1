@@ -248,7 +248,7 @@ $kga['lang']['weekdays_short'] = array("zo","ma","di","wo","do","vr","za");
 
 
 $kga['lang']['errors'][0]['hdl'] = "Database kon niet verbinden!";
-$kga['lang']['errors'][0]['txt'] = "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'conf.php' in folder 'includes' correct zijn.";
+$kga['lang']['errors'][0]['txt'] = "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'autoconf.php' in folder 'includes' correct zijn.";
 
 $kga['lang']['errors'][1]['hdl'] = "Fout tijdens installatie!";
 $kga['lang']['errors'][1]['txt'] = 'Kimai kon geen tabellen aanmaken in de database omdat deze al bestonden.<br/>Om de bestaande installatie te update klik <a href="../index.php">hier</a>.<br/>Kies een andre tabel prefix of gooi de bestaande met de huidige prefix tabellen weg om een Kamai geheel opnieuw te installeren.';

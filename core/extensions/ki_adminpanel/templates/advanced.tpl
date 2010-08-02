@@ -35,7 +35,7 @@
             </div>
 
             <div id="ap_ext_checkupdate">
-                <a href="javascript:ap_ext_checkupdate({$kga.revision});">{$kga.lang.checkupdate}</a>
+                <a href="javascript:ap_ext_checkupdate();">{$kga.lang.checkupdate}</a>
             </div>
 
             <div>

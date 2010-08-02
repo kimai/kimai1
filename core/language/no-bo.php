@@ -259,7 +259,7 @@ $kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul"
 $kga['lang']['weekdays']       = array("Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag");
 $kga['lang']['weekdays_short'] = array("Søn","Man","Tir","Ons","Tor","Fre","Lør");
 $kga['lang']['errors'][0]['hdl'] = "Kunne ikke koble til databasen!";
-$kga['lang']['errors'][0]['txt'] = "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'conf.php' i mappen 'includes' er korrekte.";
+$kga['lang']['errors'][0]['txt'] = "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'autoconf.php' i mappen 'includes' er korrekte.";
 
 $kga['lang']['errors'][1]['hdl'] = "Feil under installasjonen!";
 $kga['lang']['errors'][1]['txt'] = 'Kimai klarer ikke å opprette nødvendige oppføringer i databasen fordi gjeldende oppføringer med samme navn finnes fra før.<br/> For å oppdatere din gjeldende installasjon vær så snill å trykk  å <a href="../index.php">her</a>.<br/> Velg et annet fortegn til tabellene eller slett gjeldende tabeller med dette fortegnet slik at Kimai får anledning til å utføre en basis installasjon.';

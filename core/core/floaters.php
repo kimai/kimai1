@@ -1,50 +1,34 @@
 <?php
 /**
- * This file is part of 
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * =============================
+ * = Floating Window Generator =
+ * =============================
  * 
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- * 
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ * Called via AJAX from the Kimai user interface. Depending on $axAction
+ * some HTML will be returned, which will then be shown in a floater.
  */
-
-// =============================
-// = Floating Window Generator =
-// =============================
 
 // insert KSPI
 $isCoreProcessor = 1;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates/floaters/"; // folder of the template files
 require("../includes/kspi.php");
 
 
-// ==================
-// = handle request =
-// ==================
 switch ($axAction) {
 
-    // ====================
-    // = displays credits =
-    // ====================
+    /**
+     * Display the credits floater. The copyright will automatically be
+     * set from 2006 to the current year.
+     */
     case 'credits':
         $tpl->assign('devtimespan', '2006-'.date('y'));
+
         $tpl->display("credits.tpl");
     break;
    
-    // ==================================
-    // = displays preferences dialog... =
-    // ==================================
+    /**
+     * Display the preferences dialog.
+     */
     case 'prefs':
         if (isset($kga['customer'])) die();
 
@@ -52,16 +36,19 @@ switch ($axAction) {
         $tpl->assign('langs', langs());
         $tpl->assign('usr', $kga['usr']);
         $tpl->assign('rate', get_rate($kga['usr']['usr_ID'],NULL,NULL));
+
         $tpl->display("preferences.tpl");
     break;
     
-    // ===================================
-    // = displays knd/pct/evt dialogs... =
-    // ===================================
+    /**
+     * Display the dialog to add or edit a customer.
+     */
     case 'add_edit_knd':
         if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
 
         if ($id) {
+            // Edit mode. Fill the dialog with the data of the customer.
+
             $data = knd_get_data($id);
             if ($data) {
                 $tpl->assign('knd_name'     , $data['knd_name'    ]);
@@ -83,17 +70,24 @@ switch ($axAction) {
                 $tpl->assign('id', $id);
             }
         }
+        // create the <select> element for the groups
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
+
+        // A new customer is assigned to the group of the current user by default.
         if (!$id) {
             $grp_selection[]=$kga['usr']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
             $tpl->assign('id', 0);
         }
+
         $tpl->display("add_edit_knd.tpl");
     break;
         
+    /**
+     * Display the dialog to add or edit a project.
+     */
     case 'add_edit_pct':
         if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
  
@@ -113,25 +107,31 @@ switch ($axAction) {
                 $tpl->assign('id', $id);
             }
         }
-    // select for customers
+        // Create a <select> element to chosse the customer.
         $sel = makeSelectBox("knd",$kga['usr']['usr_grp']);
         $tpl->assign('sel_knd_names', $sel[0]);
         $tpl->assign('sel_knd_IDs',   $sel[1]);
         
+        // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
+        
+        // Set defaults for a new project.
         if (!$id) {
             $grp_selection[]=$kga['usr']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
-            if(!isset($knd_selection))
-            	$knd_selection = null;
-            $tpl->assign('knd_selection', $knd_selection);
+
+            $tpl->assign('knd_selection', null);
             $tpl->assign('id', 0);
         }
+
         $tpl->display("add_edit_pct.tpl");
     break;
     
+    /**
+     * Display the dialog to add or edit an event.
+     */
     case 'add_edit_evt':
         if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
 
@@ -151,20 +151,24 @@ switch ($axAction) {
         
             }
         }
+
+        // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
 
-        // select for projects
+        // Create a <select> element to chosse the projects.
         $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
         $tpl->assign('sel_pct_names', $sel[0]);
         $tpl->assign('sel_pct_IDs',   $sel[1]);
 
+        // Set defaults for a new project.
         if (!$id) {
             $grp_selection[]=$kga['usr']['usr_grp'];
             $tpl->assign('grp_selection', $grp_selection);
             $tpl->assign('id', 0);
         }
+
         $tpl->display("add_edit_evt.tpl");
     break;
     

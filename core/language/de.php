@@ -250,7 +250,7 @@ $kga['lang']['weekdays']       = array("Sonntag","Montag","Dienstag","Mittwoch",
 $kga['lang']['weekdays_short'] = array("So","Mo","Di","Mi","Do","Fr","Sa");
 
 $kga['lang']['errors'][0]['hdl'] = "Datenbankverbindung verweigert!";
-$kga['lang']['errors'][0]['txt'] = "Bitte stellen Sie sicher das Datenbank und PDO-Erweiterung laufen und die Einstellungen in der Datei 'conf.php' im Ordner 'includes' richtig sind.";
+$kga['lang']['errors'][0]['txt'] = "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind.";
 
 $kga['lang']['errors'][1]['hdl'] = "Fehler bei der Installation!";
 $kga['lang']['errors'][1]['txt'] = 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>

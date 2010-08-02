@@ -69,12 +69,6 @@
 
 
     <div id="floater_content"><div id="floater_dimensions">
-        
-{*        This function is *currently* under development! *}
-
-
-
-
 
         <form id="ts_ext_form_add_edit_record" action="../extensions/ki_timesheets/processor.php" method="post"> 
             <fieldset>

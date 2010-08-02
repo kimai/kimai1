@@ -12,6 +12,5 @@
         <a href="http://xajaxproject.org//" target="_blank">xajax</a> | 
         <a href="http://smarty.php.net/" target="_blank">Smarty</a> | 
         <a href="http://php.net/" target="_blank">PHP</a> |  
-        <a href="http://mysql.com/" target="_blank">MySQL</a><br /><br />
-        <span id="checkupdate"></span>
+        <a href="http://mysql.com/" target="_blank">MySQL</a>
 </p>

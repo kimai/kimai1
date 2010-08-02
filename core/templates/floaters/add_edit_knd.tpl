@@ -114,7 +114,6 @@
                 </ul>
                 
                 <input name="knd_filter"   type="hidden" value="0" />
-                <input name="knd_logo"     type="hidden" value="" />
  
                 <input name="axAction"     type="hidden" value="add_edit_KndPctEvt" />   
                 <input name="axValue"      type="hidden" value="knd" />   

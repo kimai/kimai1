@@ -1,30 +1,16 @@
 <?php
 /**
- * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
- *
- * Kimai is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
- *
- * Kimai is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Kimai; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
+ * This file contains all functions which access the database directly.
  */
 
-// =============================================================
-// = various functions for working with the kimai database     =
-// =============================================================
 
-// checked 
-
+/**
+ * Prepare all values of the array so it's save to put them into an sql query.
+ * The conversion to utf8 is done here as well, if configured.
+ * 
+ * @param array $data Array which values are being prepared.
+ * @return array The same array, except all values are being escaped correctly.
+ */
 function clean_data($data) {
     global $kga;   
     foreach ($data as $key => $value) {
@@ -42,18 +28,14 @@ function clean_data($data) {
     return $return;
 }
 
-// -----------------------------------------------------------------------------------------------------------
-
 /**
- * Adds a new customer
+ * Add a new customer to the database.
  *
  * @param array $data  name, address and other data of the new customer
  * @global array $kga  kimai-global-array
  * @return int         the knd_ID of the new customer, false on failure
  * @author th
  */
- 
-// checked 
  
 function knd_create($data) {
     global $kga, $conn;
@@ -72,7 +54,6 @@ function knd_create($data) {
     $values     ['knd_mobile']      =     MySQL::SQLValue($data   ['knd_mobile']        );
     $values     ['knd_mail']        =     MySQL::SQLValue($data   ['knd_mail']          );
     $values     ['knd_homepage']    =     MySQL::SQLValue($data   ['knd_homepage']      );
-    $values     ['knd_logo']        =     MySQL::SQLValue($data   ['knd_logo']          );
     
     $values['knd_visible'] = MySQL::SQLValue($data['knd_visible'] , MySQL::SQLVALUE_NUMBER  );
     $values['knd_filter']  = MySQL::SQLValue($data['knd_filter']  , MySQL::SQLVALUE_NUMBER  );
@@ -99,8 +80,6 @@ function knd_create($data) {
  * @return array         the customer's data (name, address etc) as array, false on failure
  * @author th
  */
- 
-// checked 
   
 function knd_get_data($knd_id) {
     global $kga, $conn;
@@ -128,8 +107,6 @@ function knd_get_data($knd_id) {
  * @return boolean       true on success, false on failure
  * @author ob/th
  */
- 
-// checked 
  
 function knd_edit($knd_id, $data) {
     global $kga, $conn;
@@ -161,7 +138,6 @@ function knd_edit($knd_id, $data) {
     $values['knd_mobile']   = MySQL::SQLValue($new_array['knd_mobile']  );
     $values['knd_mail']     = MySQL::SQLValue($new_array['knd_mail']    );
     $values['knd_homepage'] = MySQL::SQLValue($new_array['knd_homepage']);
-    $values['knd_logo']     = MySQL::SQLValue($new_array['knd_logo']    );
     $values['knd_visible']  = MySQL::SQLValue($new_array['knd_visible'] , MySQL::SQLVALUE_NUMBER );
     $values['knd_filter']   = MySQL::SQLValue($new_array['knd_filter']  , MySQL::SQLVALUE_NUMBER );
     $filter['knd_ID']       = MySQL::SQLValue($knd_id, MySQL::SQLVALUE_NUMBER);
@@ -321,7 +297,6 @@ function pct_create($data) {
         
     $values['pct_name']    = MySQL::SQLValue($data['pct_name']    );
     $values['pct_comment'] = MySQL::SQLValue($data['pct_comment'] );
-    $values['pct_logo']    = MySQL::SQLValue($data['pct_logo']    );
     $values['pct_budget']  = MySQL::SQLValue($data['pct_budget']  , MySQL::SQLVALUE_NUMBER );
     $values['pct_kndID']   = MySQL::SQLValue($data['pct_kndID']   , MySQL::SQLVALUE_NUMBER );
     $values['pct_visible'] = MySQL::SQLValue($data['pct_visible'] , MySQL::SQLVALUE_NUMBER );
@@ -420,7 +395,6 @@ function pct_edit($pct_id, $data) {
 
     $values ['pct_name']    = MySQL::SQLValue($new_array ['pct_name']      );
     $values ['pct_comment'] = MySQL::SQLValue($new_array ['pct_comment']   );
-    $values ['pct_logo']    = MySQL::SQLValue($new_array ['pct_logo']      );
     $values ['pct_budget']  = MySQL::SQLValue($new_array ['pct_budget']  , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_kndID']   = MySQL::SQLValue($new_array ['pct_kndID']   , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_visible'] = MySQL::SQLValue($new_array ['pct_visible'] , MySQL::SQLVALUE_NUMBER  );
@@ -564,8 +538,6 @@ function pct_get_grps($pct_id) {
  * @author th
  */
 
-// not implemented yet 
-
 function pct_delete($pct_id) {
     global $kga, $conn;
 
@@ -597,7 +569,6 @@ function evt_create($data) {
     
     $values['evt_name']    = MySQL::SQLValue($data['evt_name']    );
     $values['evt_comment'] = MySQL::SQLValue($data['evt_comment'] );
-    $values['evt_logo']    = MySQL::SQLValue($data['evt_logo']    );
     $values['evt_visible'] = MySQL::SQLValue($data['evt_visible'] , MySQL::SQLVALUE_NUMBER );
     $values['evt_filter']  = MySQL::SQLValue($data['evt_filter']  , MySQL::SQLVALUE_NUMBER );
 
@@ -692,7 +663,6 @@ function evt_edit($evt_id, $data) {
 
     $values  ['evt_name']        =   MySQL::SQLValue($new_array   ['evt_name']      );
     $values  ['evt_comment']     =   MySQL::SQLValue($new_array   ['evt_comment']   );
-    $values  ['evt_logo']        =   MySQL::SQLValue($new_array   ['evt_logo']      );
     $values  ['evt_visible']     =   MySQL::SQLValue($new_array   ['evt_visible'] , MySQL::SQLVALUE_NUMBER  );
     $values  ['evt_filter']      =   MySQL::SQLValue($new_array   ['evt_filter']  , MySQL::SQLVALUE_NUMBER  );
 
@@ -2500,53 +2470,44 @@ function checkUser() {
     global $kga, $conn;
 
 	$p = $kga['server_prefix'];
-    
-    if (!$kga['virtual_users']) {
         
-        if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
-            $kimai_usr = addslashes($_COOKIE['kimai_usr']);
-            $kimai_key = addslashes($_COOKIE['kimai_key']);
-            
-            if (get_seq($kimai_usr) != $kimai_key) {
+  if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
+      $kimai_usr = addslashes($_COOKIE['kimai_usr']);
+      $kimai_key = addslashes($_COOKIE['kimai_key']);
+      
+      if (get_seq($kimai_usr) != $kimai_key) {
+          kickUser();
+      } else {
+        if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+            $knd_name = MySQL::SQLValue(substr($kimai_usr,4));
+            $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = $knd_name AND NOT knd_trash = '1';";
+            $conn->Query($query);
+            $row = $conn->RowArray(0,MYSQL_ASSOC);
+
+            $knd_ID   = $row['knd_ID'];
+            if ($knd_ID < 1) {
                 kickUser();
-            } else {
-              if (strncmp($kimai_usr, 'knd_', 4) == 0) {
-                  $knd_name = MySQL::SQLValue(substr($kimai_usr,4));
-                  $query = "SELECT knd_ID FROM ${p}knd WHERE knd_name = $knd_name AND NOT knd_trash = '1';";
-                  $conn->Query($query);
-                  $row = $conn->RowArray(0,MYSQL_ASSOC);
-
-                  $knd_ID   = $row['knd_ID'];
-                  if ($knd_ID < 1) {
-                      kickUser();
-                  }
-                }
-                else {
-                  $query = "SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = '$kimai_usr' AND usr_active = '1' AND NOT usr_trash = '1';";
-                  $conn->Query($query);
-                  $row = $conn->RowArray(0,MYSQL_ASSOC);
-                  
-                  $usr_ID   = $row['usr_ID'];
-                  $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-                  $usr_grp  = $row['usr_grp'];
-                  $usr_name = $kimai_usr;
-                  
-                  if ($usr_ID < 1) {
-                      kickUser();
-                  }
-                }
             }
+          }
+          else {
+            $query = "SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = '$kimai_usr' AND usr_active = '1' AND NOT usr_trash = '1';";
+            $conn->Query($query);
+            $row = $conn->RowArray(0,MYSQL_ASSOC);
             
-        } else {
-            kickUser();
-        }
-
-    } else {
-        $usr_ID   = $_SESSION['user']; 
-        $usr_grp  = $_SESSION['user'];  
-        $usr_name = $_SESSION['user'];  
-        $usr_sts  = 2; 
-    }
+            $usr_ID   = $row['usr_ID'];
+            $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
+            $usr_grp  = $row['usr_grp'];
+            $usr_name = $kimai_usr;
+            
+            if ($usr_ID < 1) {
+                kickUser();
+            }
+          }
+      }
+      
+  } else {
+      kickUser();
+  }
     
     if ((isset($knd_ID) && $knd_ID<1) ||  (isset($usr_ID) && $usr_ID<1)) {
         kickUser();
@@ -2559,7 +2520,7 @@ function checkUser() {
     else  
       get_user_config($usr_ID);
 
-    // override conf.php language if user has chosen a language in the prefs
+    // override default language if user has chosen a language in the prefs
     if ($kga['conf']['lang'] != "") {
       $kga['language'] = $kga['conf']['lang'];
     }
@@ -2701,7 +2662,6 @@ function get_customer_config($user) {
   $columns[] = "knd_mobile";
   $columns[] = "knd_mail";
   $columns[] = "knd_homepage";
-  $columns[] = "knd_logo";
   $columns[] = "knd_trash";
   $columns[] = "knd_password";
   $columns[] = "knd_secure";

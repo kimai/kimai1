@@ -103,11 +103,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
           
           $('#floater').css({width: width+"px"});
           $('#floater_content').css({height: height+"px"});
-                   
-          // width = $('#floater_dimensions').innerWidth()+20;
-          // height = $('#floater_dimensions').outerHeight()+5;
-          // $('#floater').css({width: width+"px"});
-          // $('#floater_content').css({height: height+"px"});
           
           x = ($(document).width()-(width+10))/2;
           y = ($(document).height()-(height+80))/2;
@@ -218,24 +213,12 @@ function hideTools() {
   $('#main_tools_menu').fadeOut(fading_enabled?200:0);
 }
 
-// $('#main_tools_button').click(function(){
-//     $('a').blur();
-//     $('#main_tools_menu').fadeIn(200, function() {
-//         $("#main_tools_button > img").attr({ src: "../skins/"+skin+"/grfx/g3_menu_dropdown_close.png", width:"16"});
-//         $('#main_tools_button').click(function(){
-//             $('#main_tools_menu').fadeOut(200);
-//         });
-//     });
-// });
-
-
-
 
 // ----------------------------------------------------------------------------------------
 // checks if a new stable Kimai version is available for download
 //
 function checkupdate(path){
-    $.post(path+'checkupdate.php', { versionping: 1 },
+    $.post('core/checkupdate.php',
         function(response){
             $('#checkupdate').html(response);
         }
@@ -394,10 +377,6 @@ function show_stopwatch() {
     $("#selector").css('display','none');
     $("#stopwatch").css('display','block');
     $("#stopwatch_ticker").css('display','block');
-    // $("#h").html("00");
-    // $("#m").html("00");
-    // $("#s").html("00");
-    // $("#button_comment").css('display','block');  
     $("#buzzer").addClass("act");
     $("#ticker_knd").html($("#sel_knd").html());
     $("#ticker_pct").html($("#sel_pct").html());
@@ -408,14 +387,10 @@ function show_stopwatch() {
 
 function show_selectors() {
     ticktack_off();
-    // $("#h").html("00");
-    // $("#m").html("00");
-    // $("#s").html("00");
     $("#selector").css('display','block');
     $("#stopwatch").css('display','none');
     $("#stopwatch_edit_comment").css('display','none');
     $("#stopwatch_ticker").css('display','none');
-    // $("#button_comment").css('display','none');
     $("#buzzer").removeClass("act");
     if (!(selected_knd && selected_pct && selected_evt)) {
       $('#buzzer').addClass('disabled');
@@ -452,8 +427,6 @@ function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
     switch (subject) {
         case "knd":
         // TODO: build filter for project selection (by customer)
-            // selected_knd = id;
-            // $("#sel_knd").html(name);
             $("#sel_knd").html("select project");
             $("#sel_knd").addClass("none");
         break;
@@ -556,7 +529,6 @@ function ticktack_off() {
 //
 function editSubject(subject,id) {
         floaterShow('floaters.php','add_edit_'+subject,0,id,450,200); return false;
-     // floaterShow('phpFile', 'axAction', axValue, id, width, height)
 }
 
 
@@ -998,7 +970,6 @@ function lists_update_filter(subject,id) {
     // let tab update its data
     hook_filter();
     // finally update timetable
-    //ts_ext_reloadSubject('zef');
 }
 
 function resize_menu() {
@@ -1008,62 +979,3 @@ function resize_menu() {
     -20
     +parseInt($('#display').css('margin-left')));
 }
-
-// // ----------------------------------------------------------------------------------------
-// // called up when the add/edit evt floater sends data
-// //
-// function edit_evt_success() {
-//     floaterClose();
-//     hook_chgEvt();
-//     return false;
-// }
-
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-// everything below this line needs revision for 0.8
-/////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////
-/*
-// ----------------------------------------------------------------------------------------
-// displays the hourglass in the upper right corner when the buzzer is hidden
-//
-function Eieruhr() {
-    $("#buzzer").attr("onClick","return false;");
-    $("#buzzer").blur();
-    $("#buzzer").css( { background: "url(../skins/" + skin + "/grfx/eieruhr.gif) no-repeat" } )
-}
-// ----------------------------------------------------------------------------------------
-// process hide/show toggle in specify dialogue
-//
-function hide_item(subject,id) {
-    $("#item"+id).blur();
-    $("#item"+id).html("<img border='0' width='16' height='13' src='../skins/"+skin+"/grfx/auge_half.png'/>");
-    $.post("processor.php", {ax: "specify", subject: subject, hide: id}, 
-        function(data) {
-            $("#item"+id).html(data);
-            $("#item"+id).attr({ onclick: "show_item('"+subject+"',"+id+"); return false;" });
-        }
-    );
-}
-function show_item(subject,id) {
-    $("#item"+id).blur();
-    $("#item"+id).html("<img border='0' width='16' height='13' src='../skins/"+skin+"/grfx/auge_half.png'/>");
-    $.post("processor.php", {ax: "specify", subject: subject, show: id}, 
-        function(data) {
-            $("#item"+id).html(data);
-            $("#item"+id).attr({ onclick: "hide_item('"+subject+"',"+id+"); return false;" });
-        }
-    );
-}
-// ----------------------------------------------------------------------------------------
-// opens dialogue to toggle item visibility in customer, project and event lists 
-//
-// overlay_show(source,id,width,height)
-// in this case the 'id' parameter is abused to commit the 'subject'!
-// TODO: change 'id' to 'parameter' or 'value' in overlay_show funktion ...
-//
-function specify(subject) {
-    $('a').blur();
-    overlay_show('specList',subject,600,380);
-}
-*/

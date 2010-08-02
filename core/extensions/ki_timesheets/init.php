@@ -29,55 +29,14 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 
-// @Oleg: ich brauche bitte ein Array:
-// [kndID][pctID, pctID, pctID, pctID, pctID....]
-// [kndID][pctID, pctID, pctID, pctID, pctID....]
-// [kndID][pctID, pctID, pctID, pctID, pctID....]
-// ....
-// Format der Ausgabe bitte so:
-// js_arr_knd = "[],[],[23,45,43,56],[65,44,2],[],[44,32,4]";
-// wobei dann die erste Klammer natürlich immer leer wäre.
-// in javascript würde variable[2][0] dann 23 ausspucken
-
-// ahh - ich brauche nochwas ...
-// an position 0 je kunde soll bitte das letzte gelogte projekt
-// stehen. also: 
-// js_arr_knd = "[],[*0*],[*43*,45,43,56],[*2*,65,44,2],[*0*],[*4*,49,32,4]";
-// (sternchen natürlich weglassen ;)
-
-// wäre natürlich extrem cremig wenn das ganze einfach eine
-// function im core wäre da ich das ja im processor auch nochmal
-// brauche...
-
-// $tpl->assign('jsArrKndPct', knd_pct_arr());
-//$tpl->assign('jsArrKndPct', "");
-
-
-
-
-// @Oleg: hier bitte so:
-// [pctID][kndID, kndID, kndID, kndID, kndID....]
-// (js_arr_pct)
-//
-// hier brauche ich dann an pos 0 die letzte gelogte
-// tätigkeit des projekts
-
-
-
-
-// @Oleg: und hier bitte einfach nur
-// 
-// [evtID, evtID, evtID, evtID, evtID....]
-// (js_arr_evt )
-
-// ==========================
-// = display timesheet area =
-// ==========================
+// Get the total time displayed in the table.
 if (isset($kga['customer']))
   $total = formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
 else
   $total = formatDuration(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
+$tpl->assign('total', $total);
 
+// Get the array of timesheet entries.
 if (isset($kga['customer']))
   $arr_zef = get_arr_zef($in,$out,null,array($kga['customer']['knd_ID']),null,1);
 else
@@ -87,8 +46,8 @@ if (count($arr_zef)>0) {
 } else {
     $tpl->assign('arr_zef', 0);
 }
-$tpl->assign('total', $total);
 
+// Get the annotations for the user sub list.
 if (isset($kga['customer']))
   $ann = get_arr_time_usr($in,$out,null,array($kga['customer']['knd_ID']));
 else
@@ -96,6 +55,7 @@ else
 $ann_new = formatDuration($ann);
 $tpl->assign('usr_ann',$ann_new);
 
+// Get the annotations for the customer sub list.
 if (isset($kga['customer']))
   $ann = get_arr_time_knd($in,$out,null,array($kga['customer']['knd_ID']));
 else
@@ -103,6 +63,7 @@ else
 $ann_new = formatDuration($ann);
 $tpl->assign('knd_ann',$ann_new);
 
+// Get the annotations for the project sub list.
 if (isset($kga['customer']))
   $ann = get_arr_time_pct($in,$out,null,array($kga['customer']['knd_ID']));
 else
@@ -110,6 +71,7 @@ else
 $ann_new = formatDuration($ann);
 $tpl->assign('pct_ann',$ann_new);
 
+// Get the annotations for the task sub list.
 if (isset($kga['customer']))
   $ann = get_arr_time_evt($in,$out,null,array($kga['customer']['knd_ID']));
 else
@@ -125,30 +87,30 @@ $tpl->assign('browser', get_agent());
 
 // select for projects
 if (isset($kga['customer'])) {
-      $tpl->assign('sel_pct_names', array());
-      $tpl->assign('sel_pct_IDs',   array());
+  $tpl->assign('sel_pct_names', array());
+  $tpl->assign('sel_pct_IDs',   array());
 }
 else {
-      $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
-      $tpl->assign('sel_pct_names', $sel[0]);
-      $tpl->assign('sel_pct_IDs',   $sel[1]);
+  $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+  $tpl->assign('sel_pct_names', $sel[0]);
+  $tpl->assign('sel_pct_IDs',   $sel[1]);
 }
 
 // select for events
 if (isset($kga['customer'])) {
-      $tpl->assign('sel_evt_names', array());
-      $tpl->assign('sel_evt_IDs',   array());
+  $tpl->assign('sel_evt_names', array());
+  $tpl->assign('sel_evt_IDs',   array());
 }
 else {
-      $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
-      $tpl->assign('sel_evt_names', $sel[0]);
-      $tpl->assign('sel_evt_IDs',   $sel[1]);
+  $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
+  $tpl->assign('sel_evt_names', $sel[0]);
+  $tpl->assign('sel_evt_IDs',   $sel[1]);
 }
 
-// preselected
-      $tpl->assign('lastProject', $kga['conf']['lastProject']);
-      $tpl->assign('lastEvent',   $kga['conf']['lastEvent']);
+  // preselected
+  $tpl->assign('lastProject', $kga['conf']['lastProject']);
+  $tpl->assign('lastEvent',   $kga['conf']['lastEvent']);
 
-      $tpl->display('main.tpl');
+  $tpl->display('main.tpl');
 
 ?>

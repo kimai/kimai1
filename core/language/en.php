@@ -250,7 +250,7 @@ $kga['lang']['weekdays']       = array("Sunday","Monday","Tuesday","Wednesday","
 $kga['lang']['weekdays_short'] = array("Sun","Mon","Tue","Wed","Thu","Fri","Sat");
 
 $kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
-$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'conf.php' in folder 'includes' are correct.";
+$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct.";
 
 $kga['lang']['errors'][1]['hdl'] = "Error during installation!";
 $kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>

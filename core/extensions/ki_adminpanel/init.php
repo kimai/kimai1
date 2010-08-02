@@ -15,8 +15,6 @@
     $tpl = new Smarty();
     $tpl->template_dir = 'templates/';
     $tpl->compile_dir  = 'compile/';
-    // $tpl->cache_dir    = 'smarty/cache';
-    // $tpl->config_dir   = 'smarty/configs';
 
     $tpl->assign('kga', $kga);
 
@@ -28,9 +26,9 @@
     else
       $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
     if (count($arr_knd)>0) {
-    $tpl->assign('arr_knd', $arr_knd);
+      $tpl->assign('arr_knd', $arr_knd);
     } else {
-    $tpl->assign('arr_knd', '0');
+      $tpl->assign('arr_knd', '0');
     }
     $tpl->assign('knd_display', $tpl->fetch("knd.tpl"));
 
@@ -42,9 +40,9 @@
     else
       $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
     if (count($arr_pct)>0) {
-    $tpl->assign('arr_pct', $arr_pct);
+      $tpl->assign('arr_pct', $arr_pct);
     } else {
-    $tpl->assign('arr_pct', '0');
+      $tpl->assign('arr_pct', '0');
     }
     $tpl->assign('pct_display', $tpl->fetch("pct.tpl"));
 
@@ -56,9 +54,9 @@
     else
       $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],-2);
     if (count($arr_evt)>0) {
-    $tpl->assign('arr_evt', $arr_evt);
+      $tpl->assign('arr_evt', $arr_evt);
     } else {
-    $tpl->assign('arr_evt', '0');
+      $tpl->assign('arr_evt', '0');
     }
     $tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
     $tpl->assign('selected_evt_filter',-2);
@@ -78,6 +76,7 @@
     $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
     $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
     $tpl->assign('languages', langs());
+
     $admin['users'] = $tpl->fetch("users.tpl");
     $admin['groups'] = $tpl->fetch("groups.tpl");
     $admin['advanced'] = $tpl->fetch("advanced.tpl");
