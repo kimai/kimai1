@@ -479,7 +479,6 @@ if (isset($_REQUEST['create_bookmarks']))
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); //Firmenlogo einbinden
 
 
-
 $pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
 $pdf->ln();
 
@@ -490,14 +489,65 @@ if (!empty($_REQUEST['document_comment'])) {
   $pdf->ln();
   $pdf->WriteHtml($_REQUEST['document_comment']);
 }
+
 $pdf->ln();
+
+
+if (isset($_REQUEST['print_summary'])) {
+
+  // arrays for keeping track to print summary
+  $zef_summary = array();
+  $exp_summary = array();
+
+  foreach ($pdf_arr_data as $customer) {
+    $project_ids = array_keys($customer);
+    foreach ($project_ids as $project_id) {
+      foreach ($customer[$project_id] as $row) {
+      
+	// summary aggregation
+	if ($row['type'] == 'zef') {
+	  if (isset($zef_summary[$row['zef_evtID']])) {
+	  $zef_summary[$row['zef_evtID']]['time']   += $row['dec_zef_time']; //Sekunden
+	  $zef_summary[$row['zef_evtID']]['wage']   += $row['wage']; //Euro
+	}
+	else {
+	  $zef_summary[$row['zef_evtID']]['name']         = $row['evt_name'];
+	  $zef_summary[$row['zef_evtID']]['time']         = $row['dec_zef_time'];
+	  $zef_summary[$row['zef_evtID']]['wage']         = $row['wage'];
+	}
+	}
+	else {
+	  $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['evt_name'];
+	  $exp_info['time']   = -1;
+	  $exp_info['wage'] = $row['wage'];
+	  $exp_summary[] = $exp_info;
+	}
+      }
+    }
+  }
+  
+  $summary = array_merge($zef_summary,$exp_summary);
+  
+  
+  if (isset($_REQUEST['create_bookmarks']))
+    $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
+  
+
+
+  $pdf->WriteHtml('<h4>'.$kga['lang']['xp_ext']['summary'].'</h4>');
+  $pdf->ln();
+  $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
+  
+  $pdf->AddPage();
+
+}  
+
+$pdf->WriteHtml('<h4>'.$kga['lang']['xp_ext']['full_list'].'</h4>');
+$pdf->ln();
+
 
 $firstRun = true;
 
-
-// arrays for keeping track to print summary
-$zef_summary = array();
-$exp_summary = array();
 
 foreach ($pdf_arr_data as $customer) {
 
@@ -552,25 +602,7 @@ foreach ($pdf_arr_data as $customer) {
       $max_time_width = max($max_time_width,$time_width);
 
 
-      // summary aggregation
-      if ($row['type'] == 'zef') {
-        if (isset($zef_summary[$row['zef_evtID']])) {
-          $zef_summary[$row['zef_evtID']]['time']   += $row['dec_zef_time']; //Sekunden
-          $zef_summary[$row['zef_evtID']]['wage']   += $row['wage']; //Euro
-        }
-        else {
-          $zef_summary[$row['zef_evtID']]['name']         = $row['evt_name'];
-          $zef_summary[$row['zef_evtID']]['time']         = $row['dec_zef_time'];
-          $zef_summary[$row['zef_evtID']]['wage']         = $row['wage'];
-        }
-      }
-      else {
-        $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['evt_name'];
-        $exp_info['time']   = -1;
-        $exp_info['wage'] = $row['wage'];
-        
-        $exp_summary[] = $exp_info;
-      }
+      
     }
    $max_time_width+=10;
    $max_money_width+=10;
@@ -590,25 +622,6 @@ foreach ($pdf_arr_data as $customer) {
 
 }
 
-
-
-if (isset($_REQUEST['print_summary'])) {
-  
-  $summary = array_merge($zef_summary,$exp_summary);
-  
-  $pdf->AddPage();
-  
-  
-  if (isset($_REQUEST['create_bookmarks']))
-    $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
-  
-
-
-  $pdf->WriteHtml('<h4>'.$kga['lang']['xp_ext']['summary'].'</h4>');
-  $pdf->ln();
-  $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
-
-}  
 
 
 

@@ -256,8 +256,6 @@ $kga['lang']= array(
 
 "regusr"            => "Utilizador Normal",
 
-"leaderusr"         => "Utilizador Líder",
-
 "adminusr"          => "Utilizador Admin",
 
 "editusr"           => "Editar utilizador",
@@ -597,6 +595,8 @@ $kga['lang']['xp_ext'] = array(
 'expense'               => 'Despesa',
 
 'summary'               => 'Sumário',
+
+'full_list'             => 'Full List',
 
 'page'                  => 'Página',
 

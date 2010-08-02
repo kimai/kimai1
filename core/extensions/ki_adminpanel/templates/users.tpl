@@ -115,7 +115,7 @@
 {/if}
 
 {if $arr_usr[userarray].usr_sts == 1}
-            <img src='../skins/{$kga.conf.skin}/grfx/leader.gif' alt='{$kga.lang.leaderusr}' title='{$kga.lang.leaderusr}' border="0">
+            <img src='../skins/{$kga.conf.skin}/grfx/leader.gif' alt='{$kga.lang.groupleader}' title='{$kga.lang.groupleader}' border="0">
 {/if}
 
 {if $arr_usr[userarray].usr_sts == 2}

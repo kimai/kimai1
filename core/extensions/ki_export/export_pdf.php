@@ -233,32 +233,6 @@ if (!empty($_REQUEST['document_comment'])) {
   $pdf->WriteHtml($_REQUEST['document_comment']);
 }
 
-$customers = array();
-foreach ($filterKnd as $knd_id) {
-  $customer_info = knd_get_data($knd_id);
-  $customers[] = $customer_info['knd_name'];
-}
-if (count($customers)>0) {
-  $pdf->cell(20,6,$kga['lang']['knd'].':');
-  $pdf->cell(20,6,implode(',',$customers));
-  $pdf->ln();
-}
-
-$projects = array();
-foreach ($filterPct as $pct_id) {
-  $project_info = pct_get_data($pct_id);
-  $projects[] = $project_info['pct_name'];
-}
-if (count($projects)>0) {
-  $pdf->cell(20,6,$kga['lang']['pct'].':');
-  $pdf->cell(20,6,implode(',',$projects));
-  $pdf->ln();
-}
-$pdf->ln();
-$pdf->ln();
-$pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
-
-
 if (isset($_REQUEST['print_summary'])) {
   
   //Zeiteinheiten zusammenfassen:
@@ -291,17 +265,44 @@ if (isset($_REQUEST['print_summary'])) {
   
   $summary = array_merge($zef_summary,$exp_summary);
   
-  $pdf->AddPage();
-  
   if (isset($_REQUEST['create_bookmarks']))
     $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
   
-  $pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['summary'].'</h1>');
   $pdf->ln();
+  $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['summary'].'</h3>');
   $pdf->ln();
   $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
   
+  $pdf->AddPage();
+  
 }
+
+$customers = array();
+foreach ($filterKnd as $knd_id) {
+  $customer_info = knd_get_data($knd_id);
+  $customers[] = $customer_info['knd_name'];
+}
+if (count($customers)>0) {
+  $pdf->cell(20,6,$kga['lang']['knd'].':');
+  $pdf->cell(20,6,implode(',',$customers));
+  $pdf->ln();
+}
+
+$projects = array();
+foreach ($filterPct as $pct_id) {
+  $project_info = pct_get_data($pct_id);
+  $projects[] = $project_info['pct_name'];
+}
+if (count($projects)>0) {
+  $pdf->cell(20,6,$kga['lang']['pct'].':');
+  $pdf->cell(20,6,implode(',',$projects));
+  $pdf->ln();
+}
+$pdf->ln();
+$pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
+$pdf->ln();
+$pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
+
 
 $pdf->Output('invoice_'.date('Y-m-d_H-i-s', $pdf->print_time).'.pdf', ( (isset($_REQUEST['download_pdf'])) ? 'D' : 'I' ) ); // D=Download I=Eingebunden
 ?>

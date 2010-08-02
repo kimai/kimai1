@@ -2659,11 +2659,11 @@ function get_arr_watchable_users($user_id) {
 
     // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
     if ($row['usr_sts'] == "0") { // if is admin
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name");
+      $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name");
       $pdo_query->execute();
     }
     else {
-      $pdo_query = $pdo_conn->prepare("SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ? ORDER BY usr_name");
+      $pdo_query = $pdo_conn->prepare("SELECT * FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ? ORDER BY usr_name");
       $pdo_query->execute(array($user_id));
     }
     
@@ -3373,6 +3373,87 @@ function get_arr_grp($trash=0) {
         foreach ($ldr_id_array as $ldr_id) {
         	$ldr_name_array[$j] = usr_id2name($ldr_id);
         	$j++;
+        }
+        
+        $groups[$i]['leader_name'] = $ldr_name_array;
+        
+        $i++;
+    }
+    
+    // Unlock tables
+    $pdo_query_ul = $pdo_conn->prepare("UNLOCK TABLES");
+    $result_ul = $pdo_query_ul->execute();
+    
+    // error_log("get_arr_grp: " . serialize($groups));
+    
+    return $groups;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns array of all groups 
+ *
+ * [0]=>  array(6) {
+ *     ["grp_ID"]=>  string(1) "1" 
+ *      ["grp_name"]=>  string(5) "admin" 
+ *      ["grp_leader"]=>  string(9) "1234" 
+ *      ["grp_trash"]=>  string(1) "0" 
+ *      ["count_users"]=>  string(1) "2" 
+ *      ["leader_name"]=>  string(5) "user1" 
+ * } 
+ * 
+ * [1]=>  array(6) { 
+ *      ["grp_ID"]=>  string(1) "2" 
+ *      ["grp_name"]=>  string(4) "Test" 
+ *      ["grp_leader"]=>  string(9) "12345" 
+ *      ["grp_trash"]=>  string(1) "0" 
+ *      ["count_users"]=>  string(1) "1" 
+ *      ["leader_name"]=>  string(7) "user2" 
+ *  } 
+ *
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author th 
+ *
+ */
+function get_arr_grp_by_leader($leader_id,$trash=0) {
+    global $kga, $pdo_conn;
+    
+    // Lock tables
+    $pdo_query_l = $pdo_conn->prepare("LOCK TABLE 
+    " . $kga['server_prefix'] . "usr READ, 
+    " . $kga['server_prefix'] . "grp READ,      
+    " . $kga['server_prefix'] . "ldr READ
+    ");
+    $result_l = $pdo_query_l->execute();
+    
+    if (!$trash) {
+        $trashoption = "AND grp_trash !=1";
+    }
+    $pdo_query = $pdo_conn->prepare(
+"SELECT " . $kga['server_prefix'] . "grp.* 
+    FROM " . $kga['server_prefix'] . "grp JOIN " . $kga['server_prefix'] . "ldr ON " . $kga['server_prefix'] . "grp.grp_ID =" . $kga['server_prefix'] . "ldr.grp_ID 
+    WHERE grp_leader = ? $trashoption ORDER BY grp_name");
+
+    $result = $pdo_query->execute($leader_id);
+    
+    // rows into array
+    $groups = array();
+    $i=0;
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)){
+        $groups[] = $row;
+        
+        // append user count
+      $groups[$i]['count_users'] = grp_count_users($row['grp_ID']); 
+        
+        // append leader array
+        $ldr_id_array = grp_get_ldrs($row['grp_ID']);
+        $j = 0;
+        $ldr_name_array = array();
+        foreach ($ldr_id_array as $ldr_id) {
+          $ldr_name_array[$j] = usr_id2name($ldr_id);
+          $j++;
         }
         
         $groups[$i]['leader_name'] = $ldr_name_array;

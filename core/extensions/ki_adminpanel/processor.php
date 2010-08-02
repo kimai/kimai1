@@ -36,7 +36,7 @@ switch ($axAction) {
     case "createUsr":
     // create new user account
     	$usr_data['usr_name'] = htmlspecialchars(trim($axValue));
-    	$usr_data['usr_grp'] = 1;
+    	$usr_data['usr_grp'] = $kga['usr']['usr_grp'];
     	$usr_data['usr_sts'] = 2;
     	$usr_data['usr_active'] = 0;
     	$usr_data['usr_mail'] = "";
@@ -58,8 +58,17 @@ switch ($axAction) {
     case "refreshSubtab":
     // builds either user/group/advanced/DB subtab
         $tpl->assign('curr_user', $kga['usr']['usr_name']);
-        $tpl->assign('arr_grp',  get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
-        $tpl->assign('arr_usr',  get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+
+        if ($kga['usr']['usr_sts']==0)
+          $tpl->assign('arr_grp', get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
+        else
+          $tpl->assign('arr_grp', get_arr_grp_by_leader($kga['usr']['usr_ID'],
+            get_cookie('ap_ext_show_deleted_groups',0)));
+
+        if ($kga['usr']['usr_sts']==0)
+          $tpl->assign('arr_usr',  get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+        else
+          $tpl->assign('arr_usr',get_arr_watchable_users($kga['usr']['usr_ID']));
         $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
         $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
         switch ($axValue) {
@@ -69,7 +78,10 @@ switch ($axAction) {
             case "db":  $tpl->display("database.tpl"); break;
             
             case "knd":
-                $arr_knd = get_arr_knd("all");
+		if ($kga['usr']['usr_sts']==0)
+		  $arr_knd = get_arr_knd("all");
+		else
+		  $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
                 if (count($arr_knd)>0) {
                 $tpl->assign('arr_knd', $arr_knd);
                 } else {
@@ -79,7 +91,10 @@ switch ($axAction) {
                 break;
                 
             case "pct":
-                $arr_pct = get_arr_pct("all");
+		if ($kga['usr']['usr_sts']==0)
+		  $arr_pct = get_arr_pct("all");
+		else
+		  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
                 if (count($arr_pct)>0) {
                 $tpl->assign('arr_pct', $arr_pct);
                 } else {
@@ -89,12 +104,16 @@ switch ($axAction) {
                 break;
                 
             case "evt": 
+		if ($kga['usr']['usr_sts']==0)
+		  $group = "all";
+		else
+		  $group = $kga['usr']['usr_grp'];
                 if (!isset($_REQUEST['evt_filter']))
-                  $arr_evt = get_arr_evt("all");
+                  $arr_evt = get_arr_evt($group);
                 else
                   switch ($_REQUEST['evt_filter']) {
                       case -1:
-                      $arr_evt = get_arr_evt("all");
+                      $arr_evt = get_arr_evt($group);
                       break;
                     case -2:
                       // -2 is to get unassigned events. As -2 is never
@@ -102,7 +121,7 @@ switch ($axAction) {
                       // events.
                     default:
                       $arr_evt = 
-                        get_arr_evt_by_pct("all",$_REQUEST['evt_filter']);
+                        get_arr_evt_by_pct($group,$_REQUEST['evt_filter']);
                   }
                   
                 if (count($arr_evt)>0) {
@@ -112,7 +131,7 @@ switch ($axAction) {
                 }
                 
                 
-                $arr_pct = get_arr_pct("all");
+                $arr_pct = get_arr_pct($group);
                 $tpl->assign('arr_pct', $arr_pct);
                 
                 $tpl->assign('selected_evt_filter',$_REQUEST['evt_filter']);

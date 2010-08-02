@@ -3531,6 +3531,93 @@ function get_arr_grp($trash=0) {
 //-----------------------------------------------------------------------------------------------------------
 
 /**
+ * returns array of all groups of a group leader
+ *
+ * [0]=> array(6) {
+ *      ["grp_ID"]      =>  string(1) "1" 
+ *      ["grp_name"]    =>  string(5) "admin" 
+ *      ["grp_leader"]  =>  string(9) "1234" 
+ *      ["grp_trash"]   =>  string(1) "0" 
+ *      ["count_users"] =>  string(1) "2" 
+ *      ["leader_name"] =>  string(5) "user1" 
+ * } 
+ * 
+ * [1]=> array(6) { 
+ *      ["grp_ID"]      =>  string(1) "2" 
+ *      ["grp_name"]    =>  string(4) "Test" 
+ *      ["grp_leader"]  =>  string(9) "12345" 
+ *      ["grp_trash"]   =>  string(1) "0" 
+ *      ["count_users"] =>  string(1) "1" 
+ *      ["leader_name"] =>  string(7) "user2" 
+ *  } 
+ *
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author sl
+ *
+ */
+ function get_arr_grp_by_leader($leader_id,$trash=0) {
+    global $kga, $conn;
+
+    $leader_id = MySQL::SQLValue($leader_id, MySQL::SQLVALUE_NUMBER  );
+    
+    $p = $kga['server_prefix'];
+
+    // Lock tables for alles queries executed until the end of this function
+    $lock  = "LOCK TABLE ${p}usr READ, ${p}grp READ, ${p}ldr READ;";
+    $conn->Query($lock);
+    logfile($conn->Error());
+
+//------
+
+    if (!$trash) {
+        $trashoption = "AND grp_trash !=1";
+    } 
+    $query = "SELECT ${p}grp.* 
+    FROM ${p}grp JOIN ${p}ldr ON ${p}grp.grp_ID =${p}ldr.grp_ID 
+    WHERE grp_leader = $leader_id $trashoption ORDER BY grp_name";
+    logfile($query);
+    $conn->Query($query);
+
+    // rows into array
+    $groups = array();
+    $i=0;
+    
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+
+    foreach ($rows as $row){
+        $groups[] = $row;
+
+        // append user count
+        $groups[$i]['count_users'] = grp_count_users($row['grp_ID']);
+
+        // append leader array
+        $ldr_id_array = grp_get_ldrs($row['grp_ID']);
+        $ldr_name_array = array();
+        $j = 0;
+        foreach ($ldr_id_array as $ldr_id) {
+            $ldr_name_array[$j] = usr_id2name($ldr_id);
+            $j++;
+        }
+        
+        $groups[$i]['leader_name'] = $ldr_name_array;
+
+        $i++;
+    }
+
+//------
+
+    // Unlock tables
+    $unlock = "UNLOCK TABLES;";
+    $conn->Query($unlock);
+    logfile($conn->Error());
+    
+    return $groups;    
+}
+
+//-----------------------------------------------------------------------------------------------------------
+
+/**
  * performed when the stop buzzer is hit.
  * Checks which record is currently recording and
  * writes the end time into that entry.
@@ -4170,11 +4257,11 @@ function get_arr_watchable_users($user_id) {
     $row = $conn->RowArray(0,MYSQL_ASSOC);
 
     if ($row['usr_sts'] == "0") { // if is admin
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name";
+      $query = "SELECT * FROM " . $kga['server_prefix'] . "usr WHERE usr_trash=0 ORDER BY usr_name";
       $result = $conn->Query($query);
     }
     else {
-      $query = "SELECT usr_ID,usr_name FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = $user_id ORDER BY usr_name";
+      $query = "SELECT * FROM " . $kga['server_prefix'] . "usr INNER JOIN " . $kga['server_prefix'] . "ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = $user_id ORDER BY usr_name";
       $result = $conn->Query($query);
     }
 
