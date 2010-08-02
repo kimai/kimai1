@@ -148,7 +148,6 @@ $kga['lang']= array(
 "nopassword"        => "Inget lösenord angivet",
 "noItems"           => "Inga Poster",
 "DBname"            => "Namn på databas",
-"updated"           => "Uppgift(er) uppdaterad!",
 "autoselection"     => "Autoval",
 "quickdelete"       => "Snabb-Radera",
 "tools"             => "Verktyg",

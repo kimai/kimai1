@@ -8,7 +8,8 @@ class MYPDF extends TCPDF {
   var $date_format;
   var $time_format;
 
-  var $sum;
+  var $moneySum;
+  var $timeSum;
 
   // format date
   public function date($number) {
@@ -21,6 +22,15 @@ class MYPDF extends TCPDF {
       return "-------";
     else
       return strftime($this->time_format,$number);
+  } 
+
+  // format decimal time
+  public function timespan($number) {
+    global $kga;
+    if ($number == -1)
+      return "-------";
+    else
+      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
   // format wage
@@ -73,17 +83,19 @@ class MYPDF extends TCPDF {
 
   public function printRows($columns,$data,$widths) {
 
-    $this->sum = 0;
+    $this->moneySum = 0;
+    $this->timeSum = 0;
     foreach($data as $row) {
       if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
         continue; 
       if ($row['type'] == "exp") {
         $this->printExpenseRow($columns,$widths,$row);
-        $this->sum+=$row['wage'];
+        $this->moneySum+=$row['wage'];
       }
       else {
         $this->printTimeRow($columns,$widths,$row);
-        $this->sum+=$row['wage'];            
+        $this->moneySum+=$row['wage'];
+        $this->timeSum +=$row['dec_zef_time']==-1?0:$row['dec_zef_time'];
       }
     }
   }  
@@ -121,11 +133,13 @@ class MYPDF extends TCPDF {
     $probable_comment_lines = $this->GetHtmlStringLines($comment_string,$w[1]);
 
     // check if page break is nessessary
-    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
+    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+4)*6) < 0) {
       if ($columns['wage']) {
         $this->ln();
+        $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum),'',0,0,true,'R');
+        $this->ln();
         $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
-        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum),'',0,0,true,'R');
+        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->moneySum),'',0,0,true,'R');
       }
       $this->AddPage();      
     }
@@ -209,42 +223,42 @@ class MYPDF extends TCPDF {
               }
 
                
-              if ($columns['action'] && !empty($row['evt_name']))
+              if (isset($columns['action']) && !empty($row['evt_name']))
                 $event_string =  $kga['lang']['evt'].': <i>'.$row['evt_name'].'</i>';
               else
                 $event_string = '';
 
-              if ($columns['user'] && !empty($row['username']))
+              if (isset($columns['user']) && !empty($row['username']))
                 $user_string =  $kga['lang']['xp_ext']['done_by'].': <i>'.$row['username'].'</i>';
               else
                 $user_string = '';
 
-              if ($columns['location'] && !empty($row['location']))
+              if (isset($columns['location']) && !empty($row['location']))
                 $location_string =  $kga['lang']['location'].': <i>'.$row['location'].'</i>';
               else
                 $location_string = '';
 
-              if ($columns['trackingnr'] && !empty($row['trackingnr']))
+              if (isset($columns['trackingnr']) && !empty($row['trackingnr']))
                 $trackingnr_string = $kga['lang']['trackingnr'].': <i>'.$row['trackingnr'].'</i>';
               else
                 $trackingnr_string = '';
 
-              if ($columns['comment'] && !empty($row['comment']))
+              if (isset($columns['comment']) && !empty($row['comment']))
                 $comment_string = $kga['lang']['comment'].': <i>'.nl2br($row['comment']).'</i>';
               else
                 $comment_string = '';
 
-              if ($columns['time'] && !empty($row['zef_duration']))
+              if (isset($columns['time']) && !empty($row['zef_duration']))
                 $time_string = $kga['lang']['xp_ext']['duration'].': <i>'.$row['zef_duration'].' '.$kga['lang']['xp_ext']['duration_unit'].'</i>';
               else
                 $time_string = '';
 
-              if ($columns['rate'] && !empty($row['zef_rate']))
+              if (isset($columns['rate']) && !empty($row['zef_rate']))
                 $rate_string = $kga['lang']['rate'].': <i>'.$row['zef_rate'].'</i>';
               else
                 $rate_string = '';
 
-              if ($columns['wage'] && !empty($row['wage']))
+              if (isset($columns['wage']) && !empty($row['wage']))
                 $wage_string = '<b>'.$this->money($row['wage']).'</b>';
               else
                 $wage_string = '';
@@ -271,11 +285,13 @@ class MYPDF extends TCPDF {
     $probable_comment_lines = $this->getHtmlStringLines($comment_string,$w[1]);
 
     // check if page break is nessessary
-    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+2)*6) < 0) {
+    if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+($field_rows+$probable_comment_lines+4)*6) < 0) {
       if ($columns['wage']) {
-        $this->ln();    
+        $this->ln();   
+        $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum), '',0,0,true,'R'); 
+        $this->ln();   
         $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['xp_ext']['subtotal'].':', '',0,0,true,'R');
-        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->sum), '',0,0,true,'R');
+        $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->money($this->moneySum), '',0,0,true,'R');
       }
       $this->AddPage();
     }
@@ -376,17 +392,6 @@ class MYPDF extends TCPDF {
 
            
   }
-
-
-
-
-  public function timespan($number) {
-    global $kga;
-    if ($number == -1)
-      return "-------";
-    else
-      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
-  } 
 
 
   public function printHeader($w,$header) {
@@ -613,8 +618,10 @@ foreach ($pdf_arr_data as $customer) {
     
     if ($columns['wage']) {
       $pdf->ln();    
+      $pdf->WriteHtmlCell($widths[0]+$widths[1]+$widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->timespan($pdf->timeSum), '',0,0,true,'R');
+      $pdf->ln();    
       $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
-      $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->sum), '',0,0,true,'R');
+      $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->moneySum), '',0,0,true,'R');
     }
 
   }

@@ -156,7 +156,6 @@ $kga['lang']= array(
 "nopassword"        => "ikke angitt passord",
 "noItems"           => "ingen oppføringer",
 "DBname"            => "Navn på database",
-"updated"           => "Oppføring(er) oppdatert!",
 "autoselection"     => "Automatisk valg",
 "quickdelete"       => "Rask sletting",
 "tools"             => "Verktøy",

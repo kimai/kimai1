@@ -145,7 +145,6 @@ $kga['lang'] = array(
 "nopassword"        => "Kein Passwort gesetzt",
 "noItems"           => "Keine Einträge vorhanden",
 "DBname"            => "Name der Datenbank",
-"updated"           => "Daten wurden aktualisiert!",
 "autoselection"     => "Inhalt von Zeit- und Datumsfelder beim Bearbeiten markieren",
 "quickdelete"       => "Einträge können direkt aus der Tabelle gelöscht werden",
 "tools"             => "Werkzeuge",

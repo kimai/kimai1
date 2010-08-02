@@ -141,7 +141,6 @@ $kga['lang']= array(
 "nopassword"        => "geen wachtwoord ingegeven",
 "noItems"           => "Geen input",
 "DBname"            => "Name of database",
-"updated"           => "Record(s) updated!",
 "autoselection"     => "Autoselection",
 "quickdelete"       => "Snel-verwijderen",
 "tools"             => "Tools",

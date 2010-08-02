@@ -146,7 +146,6 @@ $kga['lang']= array(
 "nopassword"        => "sin contraseña establecida",
 "noItems"           => "sin entradas",
 "DBname"            => "Nombre de la base de datos",
-"updated"           => "¡Grabación(es) actualizadas!",
 "autoselection"     => "Autoselección",
 "quickdelete"       => "Eliminación rápida",
 "tools"             => "Herramientas",

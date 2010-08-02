@@ -1,6 +1,10 @@
 {literal}    
     <script type="text/javascript">
-        function cb() {
+        function cb(data) {
+            if (data=="ok") {
+              window.location.reload();
+              return;
+            }
             $("#ap_ext_form_editadv_submit").blur();
             $("#ap_ext_output").width($(".ap_ext_panel_header").width()-22);
             $("#ap_ext_output").fadeIn(fading_enabled?500:0,function(){

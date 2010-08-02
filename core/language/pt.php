@@ -291,8 +291,6 @@ $kga['lang']= array(
 
 "DBname"            => "Nome da Base de dados",
 
-"updated"           => "Alteração feita com sucesso!",
-
 "autoselection"     => "Selecção automática",
 
 "quickdelete"       => "Quick-Delete",

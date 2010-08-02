@@ -284,7 +284,7 @@ switch ($axAction) {
         // do whatever you like
         // and return one of these:
         
-        echo $success?$kga['lang']['updated']:$kga['lang']['error'];
+        echo $success?"ok":$kga['lang']['error'];
     break;
     
 
