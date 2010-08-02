@@ -46,12 +46,16 @@ function bgt_ext_resize() {
 function bgt_ext_plot(plotdata) {
     for (var i in plotdata) {
         if ($('#bgt_chartdiv_'+i).length == 0) continue;
-        $.jqplot('bgt_chartdiv_'+i,  [plotdata[i]], {              
-            seriesDefaults:{renderer:$.jqplot.PieRenderer,
-                rendererOptions: {padding:10},
-            },
-            seriesColors:chartColors,
-            grid:{background:$('#bgt_chartdiv_'+i).css("background-color"), borderWidth:0, shadow:false}
-        });
+        try {
+          $.jqplot('bgt_chartdiv_'+i,  [plotdata[i]], {              
+              seriesDefaults:{renderer:$.jqplot.PieRenderer,
+                  rendererOptions: {padding:10},
+              },
+              seriesColors:chartColors,
+              grid:{background:$('#bgt_chartdiv_'+i).css("background-color"), borderWidth:0, shadow:false}
+          });
+        }
+        catch (err) {
+        }
     }
 }

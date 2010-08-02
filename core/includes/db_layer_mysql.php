@@ -2240,6 +2240,7 @@ function get_arr_pct($group) {
             $arr[$i]['knd_name']    = $row['knd_name'];
             $arr[$i]['knd_ID']      = $row['knd_ID'];
             $arr[$i]['pct_visible'] = $row['pct_visible'];
+            $arr[$i]['pct_budget'] = $row['pct_budget'];
             $i++;
         }
         return $arr;
@@ -2298,6 +2299,7 @@ function get_arr_pct_by_knd($group, $knd_id) {
         $arr[$i]['knd_name']    = $row->knd_name;
         $arr[$i]['knd_ID']      = $row->knd_ID;
         $arr[$i]['pct_visible'] = $row->pct_visible;
+        $arr[$i]['pct_budget']  = $row->pct_budget;
         $i++;
     }
     

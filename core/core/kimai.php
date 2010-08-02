@@ -73,11 +73,8 @@ if ($handle = opendir('../extensions/')) {
     while (false !== ($file = readdir($handle))) {
 
         if (is_dir($file) AND ($file != ".") AND ($file != "..") AND (substr($file,0) != ".") AND (substr($file,0,1) != "#")) {
-            if ($subhandle = opendir("../extensions/".$file)) {
-                while (false !== ($configfile = readdir($subhandle))) {
-                    if($configfile == "config.ini") {
-                        $datasrc = $file."/".$configfile;
-                        $settings = parse_ini_file($datasrc);
+                    if (file_exists($file.'/config.ini')) {
+                        $settings = parse_ini_file($file.'/config.ini');
                        	
                        	// logfile("*************** ADMIN ALLOWED: " . $settings['ADMIN_ALLOWED']);
                        	// logfile("*************** GROUP LEADER ALLOWED: " . $settings['GROUP_LEADER_ALLOWED']);
@@ -173,9 +170,6 @@ if ($handle = opendir('../extensions/')) {
                             
                         }
                     }
-                }
-                closedir($subhandle);
-            }
         }
     }
     closedir($handle);

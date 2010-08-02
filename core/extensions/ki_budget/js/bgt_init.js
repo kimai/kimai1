@@ -39,6 +39,7 @@ $(document).ready(function(){
     });
 
     // $('#buzzer a').click(buzzer);
+    $.jqplot.config.enablePlugins = true;
 
     
 });

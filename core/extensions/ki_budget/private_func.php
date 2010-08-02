@@ -2,70 +2,109 @@
 
 include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
 
-function budget_plot_data($projects) {
 
-$wages = array(); // pct_ID => array(expenses,costs of evt1,costs of evt2,...)
+/**
+ * Sum up expenses for the project.
+ */
+function calculate_expenses_sum($projectId) {
+  $expSum = 0;
+  $exp_arr = get_arr_exp(0,time(),null,null,array($projectId));
+
+  foreach ($exp_arr as $exp) {
+    $expSum += $exp['exp_value'];
+  }
+
+  return $expSum;
+}
+
+/**
+ * Create an array of arrays which hold the size of the pie chart elements
+ * for every projects.
+ * The first element in the inner arrays represents the unused budget costs,
+ * the second element in the inner arrays represents the expense costs,
+ * the third and all other elements in the inner arrays represents the
+ * costs for individual events.
+ * 
+ * An visual example for two projects with the ID 2 and 5:
+ * $array = {
+ *   2 => array (budget left , expenses cost, task1, task2 ),
+ *   5 => array (budget left , expenses cost, task1, task2 ),
+ * };
+ * 
+ * @param array $projects IDs of all projects to include in the plot data
+ * @param array $usedEvents array of all used events (each as an array of its data)
+ * @return array containing arrays for every project which hold the size of the pie chart elements
+ * 
+ */
+function budget_plot_data($projects,&$usedEvents) {
+
+$wages = array();
+$eventUsage = array(); // track what events are used
+$usedEvents = array(); 
 
 
 $events = get_arr_evt("all");
 
+ /*
+  * sum up expenses
+  */
+foreach ($projects as $project) {
+  
+  $pctId = $project['pct_ID'];
+  $wages[$pctId]['budget']   = $project['pct_budget'];
+  $wages[$pctId]['expenses'] =
+      calculate_expenses_sum($project['pct_ID']);
 
-/* create mapping from event id to position in array
- * 0 = expenses
- * 1 = first event
- * ...
- */
-$event_id_to_pos_map = array();
-$i = 2;
-foreach ($events as $event) {
-  $event_id_to_pos_map[$event['evt_ID']] = $i++;
-}
-unset($i);
-
-
-/*
- * sum up expenses
- */
-$exp_arr = get_arr_exp(0,time());
-foreach ($exp_arr as $exp) {
-
-  if (!isset($wages[$exp['exp_pctID']])) {
-    // project doesn't exists.
-    $wages[$exp['exp_pctID']] = array_fill(0,count($events)+2,0);
-    $pct_data = pct_get_data($exp['exp_pctID']);
-    $wages[$exp['exp_pctID']][0] = $pct_data['pct_budget'];
+  if ($wages[$pctId]['budget'] < 0) {
+    //Costs over budget, set remaining budget to 0.
+    $wages[$pctId]['budget'] = 0;
   }
 
-  $wages[$exp['exp_pctID']][1] += $exp['exp_value'];
-  $wages[$exp['exp_pctID']][0] -= $exp['exp_value'];
-  if ($wages[$exp['exp_pctID']][0] < 0) {
-    //costs over budget
-    $wages[$exp['exp_pctID']][0] = 0;
+  // initialize entries for every event using its ID
+  foreach($events as $event) {
+    $wages[$pctId][$event['evt_ID']] = 0;
   }
+
 }
 
 
 /*
  * sum up wages for every project and every event
  */
-$zef_arr = get_arr_zef(0,time());
-foreach ($zef_arr as $zef) {
+foreach ($projects as $project) {
+  $projectId = $project['pct_ID'];
+  $zef_arr = get_arr_zef(0,time(),null,null,array($projectId));
 
-  if ($zef['wage_decimal'] == 0.00)
+  foreach ($zef_arr as $zef) {
+    $pctId = $zef['zef_pctID'];
+
+    if ($zef['wage_decimal'] == 0.00)
+      continue;
+
+    if (key_exists($zef['zef_evtID'],$wages[$pctId])) {
+      $eventUsage[$zef['zef_evtID']] = true;
+      $wages[$pctId][$zef['zef_evtID']] += $zef['wage_decimal'];
+      $wages[$pctId]['budget']          -= $zef['wage_decimal'];
+    }
+
+    if ($wages[$pctId]['budget'] < 0) {
+      //Costs over budget, set remaining budget to 0.
+      $wages[$pctId]['budget'] = 0;
+    }
+  }
+}
+
+/*
+ * Delete unused events.
+ */
+foreach ($events as $event) {
+  if (isset($eventUsage[$event['evt_ID']])) {
+    $usedEvents[] = $event;
     continue;
-
-  if (!isset($wages[$zef['zef_pctID']])) {
-    // project doesn't exists.
-    $wages[$zef['zef_pctID']] = array_fill(0,count($events)+2,0);
-    $pct_data = pct_get_data($zef['zef_pctID']);
-    $wages[$zef['zef_pctID']][0] = $pct_data['pct_budget'];
   }
 
-  $wages[$zef['zef_pctID']][$event_id_to_pos_map[$zef['zef_evtID']]] += $zef['wage_decimal'];
-  $wages[$zef['zef_pctID']][0] -= $zef['wage_decimal'];
-  if ($wages[$zef['zef_pctID']][0] < 0) {
-    //costs over budget
-    $wages[$zef['zef_pctID']][0] = 0;
+  foreach ($wages as $projectData) {
+    unset($projectData[$event['evt_ID']]);
   }
 }
 
