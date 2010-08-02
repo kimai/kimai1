@@ -42,6 +42,8 @@
 
         <strong>Special thanks</strong> to all beta testers, which are way to many to mention them all - you know who you are! ;)<br /><br />
 
+        The invoice extension uses the PclZip Library, which can be found at <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
+
         Version 0.8 was emerged with the kind support of RRZE (Regionales Rechenzentrum Erlangen)<br /><br />
         <br />
         

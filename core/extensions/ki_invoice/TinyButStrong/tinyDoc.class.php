@@ -164,6 +164,13 @@ class tinyDoc extends clsTinyButStrong
         }
         break;
 
+      case 'pclzip':
+        require_once('pclzip.lib.php');
+        $zip = new PclZip($this->getPathname());
+        $zip->extract(PCLZIP_OPT_PATH,$this->getProcessDir().DIRECTORY_SEPARATOR.$this->getBasename().DIRECTORY_SEPARATOR,
+            PCLZIP_OPT_BY_NAME,$this->getXmlFilename());
+        break;
+
       case 'shell':
       default:
         $cmd = $this->getUnzipBinary();
@@ -272,6 +279,24 @@ class tinyDoc extends clsTinyButStrong
           $zip->addFromString($this->getXmlFilename(), $this->Source);
           $zip->close();
         }
+        break;
+
+      case 'pclzip':
+        require_once('pclzip.lib.php');
+        // save the merged result
+        $fdw = fopen($this->getProcessDir().DIRECTORY_SEPARATOR.$this->getBasename().DIRECTORY_SEPARATOR.$this->getXmlFilename(), "w");
+        fwrite($fdw, $this->Source, strlen($this->Source));
+        fclose ($fdw);
+
+        // change the current directory to basename in process dir
+        $cwd = getcwd();
+        chdir($this->getProcessDir().DIRECTORY_SEPARATOR.$this->getBasename().DIRECTORY_SEPARATOR);
+
+        $zip = new PclZip($this->getPathname());
+        $zip->add($this->getXmlFilename());
+
+        // get back current directory
+        chdir($cwd);
         break;
 
       case 'shell':
@@ -468,6 +493,14 @@ class tinyDoc extends clsTinyButStrong
             $zip->close();
           }
 
+          break;
+
+        case 'pclzip':
+          require_once('pclzip.lib.php');
+          $zip = new PclZip($this->getPathname());
+          $zip->add($sourcePathname,
+            PCLZIP_OPT_ADD_PATH,$archivePathname,
+            PCLZIP_OPT_REMOVE_ALL_PATH);
           break;
 
         case 'shell':
@@ -937,7 +970,7 @@ class tinyDoc extends clsTinyButStrong
   {
     $method = strtolower($zipMethod);
 
-    if (!in_array($method, array('shell', 'ziparchive')))
+    if (!in_array($method, array('shell', 'ziparchive', 'pclzip')))
     {
       throw new tinyDocException(sprintf('Zip method "%s" need to be \'shell\' or \'ziparchive\'', $method));
     }

@@ -171,10 +171,10 @@ else {
     $doc->setUnzipBinary('unzip');
   }
   catch (tinyDocException $e) {
-    echo "PHP zip extension missing and zip binary can't be used.";
-    exit;
+    $doc->setZipMethod('pclzip');
   }
 }
+
 $doc->setProcessDir('./tmp');
 
 //This is where the template is selected
