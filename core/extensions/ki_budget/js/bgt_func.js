@@ -49,7 +49,7 @@ function bgt_ext_plot(plotdata) {
         try {
           $.jqplot('bgt_chartdiv_'+i,  [plotdata[i]], {              
               seriesDefaults:{renderer:$.jqplot.PieRenderer,
-                  rendererOptions: {padding:10},
+                  rendererOptions: {padding:10}
               },
               seriesColors:chartColors,
               grid:{background:$('#bgt_chartdiv_'+i).css("background-color"), borderWidth:0, shadow:false}

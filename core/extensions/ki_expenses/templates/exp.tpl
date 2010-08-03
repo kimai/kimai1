@@ -16,12 +16,22 @@
 
             <tbody>
                 
+{assign var="day_buffer" value="0"}
+
 {section name=row loop=$arr_exp}
 
                 <tr id="expEntry{$arr_exp[row].exp_ID}" class="{cycle values="odd,even"}">
                
 {*--OPTIONS-----------------------------------------------------*}
-                    <td nowrap class="option">
+                    <td nowrap class="option
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
 
 {* only users can see options *}
 {if $kga.usr}
@@ -49,38 +59,86 @@
 
 {*datum --------------------------------------------------------*}
 
-                    <td class="date">
+                    <td class="date
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                         {$arr_exp[row].exp_timestamp|date_format:$kga.date_format.1}
                     </td>
 
 {*time ---------------------------------------------------------*}
 
-                    <td class="time">
+                    <td class="time
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                         {$arr_exp[row].exp_timestamp|date_format:"%H:%M"}
                     </td>
 
 {*value --------------------------------------------------------*}
 
-                    <td class="value">
+                    <td class="value
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                         {$arr_exp[row].exp_value*$arr_exp[row].exp_multiplier|number_format:2:$kga.conf.decimalSeparator:""}
                     </td>
 
 {*client name --------------------------------------------------*}
 
-                    <td class="knd">
+                    <td class="knd
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                         {$arr_exp[row].knd_name}
                     </td>
 
 {*project name -------------------------------------------------*}
 
-                    <td class="pct">
+                    <td class="pct
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                             {$arr_exp[row].pct_name}
                     </td>
 
 
 {*designation and comment bubble -------------------------------*}
 
-                    <td class="designation">
+                    <td class="designation
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
                             {$arr_exp[row].exp_designation}
                         
 {if $arr_exp[row].exp_comment}
@@ -99,8 +157,10 @@
                 </tr>
                 
                 <tr id="exp_c{$arr_exp[row].exp_ID}" class="comm{$arr_exp[row].exp_comment_type}" style="display:none;">
-                    <td colspan=8>{$arr_exp[row].exp_comment|nl2br}</td>
+                    <td colspan="8">{$arr_exp[row].exp_comment|nl2br}</td>
                 </tr>
+
+{assign var="day_buffer" value=$arr_exp[row].exp_timestamp|date_format:"%d"}
                
 {/section}
                 

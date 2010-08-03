@@ -21,7 +21,6 @@ $echo=<<<EOD
             <td>Password:<br/><input id="pass" type="password" value="$mysqlpwd"/></td>
         </tr>
     </table>
-    Installation may fail if the account has a blank password! <br />
     <span id='caution'></span><br />
     <button onClick="step_back(); return false;">Back</button>
     <button onClick="host_proceed(); return false;" class="proceed">Proceed</button>
@@ -41,7 +40,6 @@ $echo=<<<EOD
             <td>Passwort:<br/><input id="pass" type="password" value="$mysqlpwd"/> </td>
         </tr>
     </table>
-    Die Installation kann fehlschlagen, wenn dem Konto kein Passwort zugewiesen ist! <br />
     <span id='caution'></span><br /><br />
     <button onClick="step_back(); return false;">Zurück</button>
     <button onClick="host_proceed(); return false;" class="proceed">Fortfahren</button>

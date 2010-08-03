@@ -28,14 +28,6 @@ $kga['calender_start']      = "0";      // here you can set a custom start day f
                                         // if this is not set the day of the users first day in the system will be taken
                                         // Format: ... = "DD/MM/YYYY"; 
 
-                                        
-// ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-if ($kga['virtual_users']) {
-    session_start();
-    session_register("user");
-}
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 // write vars from autoconf.php into kga

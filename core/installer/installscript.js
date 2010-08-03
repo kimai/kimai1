@@ -290,7 +290,7 @@ function db_proceed() {
         step_ahead();
     
         $('#installsteps').slideUp(500,function(){
-            $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language},
+            $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, prefix:prefix},
                 function(data) {
                     $('#installsteps').html(data);
                     $('td.use_db').html(database);
