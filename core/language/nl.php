@@ -23,7 +23,7 @@
  * nederlands
  * by Paul Brand and Vasilis van Gemert
  */
-$kga['lang']= array(
+return array(
 "countryCode"       => "dutch",
 "preferences"       => "Voorkeuren",
 "total"             => "Totaal",
@@ -138,7 +138,7 @@ $kga['lang']= array(
 "changegrp"         => "Wissel van groep",
 "members"           => "Leden",
 "groupleader"       => "Groepshoofd",
-"nopassword"        => "geen wachtwoord ingegeven",
+"nopassword"        => "Geen wachtwoord ingegeven!",
 "noItems"           => "Geen input",
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",
@@ -239,48 +239,51 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December");
-$kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-$kga['lang']['weekdays']       = array("zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag");
-$kga['lang']['weekdays_short'] = array("zo","ma","di","wo","do","vr","za");
+'months'         => array("Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"),
+'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
+'weekdays'       => array("zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"),
+'weekdays_short' => array("zo","ma","di","wo","do","vr","za"),
 
+'errors' => array(
+  0 => array('hdl' => "Database kon niet verbinden!",
+            'txt' => "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'autoconf.php' in folder 'includes' correct zijn."),
 
-$kga['lang']['errors'][0]['hdl'] = "Database kon niet verbinden!";
-$kga['lang']['errors'][0]['txt'] = "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'autoconf.php' in folder 'includes' correct zijn.";
+  1 => array ('hdl' => "Fout tijdens installatie!",
+              'txt' => 'Kimai kon geen tabellen aanmaken in de database omdat deze al bestonden.<br/>Om de bestaande installatie te update klik <a href="../index.php">hier</a>.<br/>Kies een andre tabel prefix of gooi de bestaande met de huidige prefix tabellen weg om een Kamai geheel opnieuw te installeren.')
+),
 
-$kga['lang']['errors'][1]['hdl'] = "Fout tijdens installatie!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai kon geen tabellen aanmaken in de database omdat deze al bestonden.<br/>Om de bestaande installatie te update klik <a href="../index.php">hier</a>.<br/>Kies een andre tabel prefix of gooi de bestaande met de huidige prefix tabellen weg om een Kamai geheel opnieuw te installeren.';
+'updater' => array(
+0        => "Ja, er is een backup van mijn Kimai database! Ga door met updaten!",
+10       => "Legende:",
+20       => "Query met succes uitgevoerd.",
+30       => "Query veroorzaakte een fout- waarschijnlijk nie belangrijk.",
+40       => "Query veroorzaakte een fatale fout.",
+50       => "Backup Log:",
+60       => "Backup mislukt - Update afgebroken!",
+70       => "Update Log:",
+80       => "De database is met succes ge-update en er is een backup gemaakt.",
+90       => "Queries uitgevoerd.",
+100      => "De database-update is mislukt door fatale fout(en). Een backup is gemaakt die gebruikt kan worden om de database opnieuw te herstellen voor het geval Kimai niet goed werkt.",
+110      => "Nieuw wachtwoord",
+120      => "Zie hieronder voor een nieuw wachtwoord voro elke gebruiker.",
+130      => "Kon niet schijven naar  autoconf.php.",
+140      => "update bestand autoconf.php",
+),
 
-$kga['lang']['updater'][0]        = "Ja, er is een backup van mijn Kimai database! Ga door met updaten!";
-$kga['lang']['updater'][10]       = "Legende:";
-$kga['lang']['updater'][20]       = "Query met succes uitgevoerd.";
-$kga['lang']['updater'][30]       = "Query veroorzaakte een fout- waarschijnlijk nie belangrijk.";
-$kga['lang']['updater'][40]       = "Query veroorzaakte een fatale fout.";
-$kga['lang']['updater'][50]       = "Backup Log:";
-$kga['lang']['updater'][60]       = "Backup mislukt - Update afgebroken!";
-$kga['lang']['updater'][70]       = "Update Log:";
-$kga['lang']['updater'][80]       = "De database is met succes ge-update en er is een backup gemaakt.";
-$kga['lang']['updater'][90]       = "Queries uitgevoerd.";
-$kga['lang']['updater'][100]      = "De database-update is mislukt door fatale fout(en). Een backup is gemaakt die gebruikt kan worden om de database opnieuw te herstellen voor het geval Kimai niet goed werkt.";
-$kga['lang']['updater'][110]      = "Nieuw wachtwoord";
-$kga['lang']['updater'][120]      = "Zie hieronder voor een nieuw wachtwoord voro elke gebruiker.";
-$kga['lang']['updater'][130]      = "Kon niet schijven naar  autoconf.php.";
-$kga['lang']['updater'][140]      = "update bestand autoconf.php";
+'backup' => array(
+0        => "Dit programma om de backup terig te zetten is nog niet getest. Gebruik op eigen risico!",
+1        => "Beschikbare updates:",
+2        => "terugzetten",
+3        => "verwijderen",
+4        => "OK",
+5        => "Je kan slechts 1 backup tegelijk terugzetten!",
+6        => "Backup van",
+7        => "is teruggezet recovered.",
+8        => "maak backup",
+9        => "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een schte backup op het fysieke ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken ;)"),
 
-$kga['lang']['backup'][0]        = "Dit programma om de backup terig te zetten is nog niet getest. Gebruik op eigen risico!";
-$kga['lang']['backup'][1]        = "Beschikbare updates:";
-$kga['lang']['backup'][2]        = "terugzetten";
-$kga['lang']['backup'][3]        = "verwijderen";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "Je kan slechts 1 backup tegelijk terugzetten!";
-$kga['lang']['backup'][6]        = "Backup van";
-$kga['lang']['backup'][7]        = "is teruggezet recovered.";
-$kga['lang']['backup'][8]        = "maak backup";
-$kga['lang']['backup'][9]        = "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een schte backup op het fysieke ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken ;)";
-
-$kga['lang']['xp_ext'] = array(
+'xp_ext' => array(
 
 "print_hint"               => "Klik op OK om een tabel te openen die je kunt printen.",
 "dl_hint"                  => "Klik op OK om bestand te downloaden.",
@@ -336,9 +339,9 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 "invoiceTitle"          => "Maak factuur",
 "invoiceProject"        => "Projecten:",
 "invoiceTimePeriod"     => "Periode:",
@@ -349,5 +352,6 @@ $kga['lang']['ext_invoice'] = array(
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
+)
 );
 ?>

@@ -49,7 +49,7 @@
  */
 
 
-$kga['lang']= array(
+return array(
 
 "countryCode"       => "pt-PT",
 
@@ -285,7 +285,7 @@ $kga['lang']= array(
 
 "groupleader"       => "Líder do Grupo",
 
-"nopassword"        => "nenhuma senha definida",
+"nopassword"        => "Nenhuma senha definida!",
 
 "noItems"           => "sem Entradas",
 
@@ -442,90 +442,82 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
 
 
+'months'         => array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"),
+
+'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
+
+'weekdays'       => array("Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"),
+
+'weekdays_short' => array("Dom","Seg","Ter","Qua","Qui","Sex","Sáb"),
 
 
-$kga['lang']['months']         = array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro");
+'errors' => array (
+  0 => array ('hdl' => "Database could not be connected!",
+              'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
 
-$kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-
-$kga['lang']['weekdays']       = array("Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado");
-
-$kga['lang']['weekdays_short'] = array("Dom","Seg","Ter","Qua","Qui","Sex","Sáb");
-
-
-$kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
-
-$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct.";
-
-
-$kga['lang']['errors'][1]['hdl'] = "Erro durante a instalação!";
-
-$kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
-
-
+  1 => array('hdl' => "Erro durante a instalação!",
+              'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+),
+
+'updater' => array (
+0        => "Yes, I have a backup of my Kimai database! Proceed updating!",
+
+10       => "Legenda:",
+
+20       => "Query was executed successfully.",
+
+30       => "Query caused error - most likely irrelevant.",
+
+40       => "Query caused fatal error.",
+
+50       => "Backup Log:",
+
+60       => "Backup failed - Update aborded!",
+
+70       => "Update Log:",
+
+80       => "The database was updated successfully and a backup was created.",
+
+90       => "Queries processed.",
+
+100      => "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.",
+
+110      => "New Passwords",
+
+120      => "See below for new passwords for every user.",
+
+130      => "Could not write to autoconf.php.",
+
+140      => "update file autoconf.php"),
+
+'backup' => array(
+0        => "This backup restore utility is not yet tested! Use at your own risk!",
+
+1        => "Backups disponíveis:",
+
+2        => "recuperar",
+
+3        => "remover",
+
+4        => "OK",
+
+5        => "You can only recover *one* backup at a time!",
+
+6        => "Backup from",
+
+7        => "was recovered.",
+
+8        => "create backup",
+
+9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
 
 
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
-
-
-$kga['lang']['updater'][0]        = "Yes, I have a backup of my Kimai database! Proceed updating!";
-
-$kga['lang']['updater'][10]       = "Legenda:";
-
-$kga['lang']['updater'][20]       = "Query was executed successfully.";
-
-$kga['lang']['updater'][30]       = "Query caused error - most likely irrelevant.";
-
-$kga['lang']['updater'][40]       = "Query caused fatal error.";
-
-$kga['lang']['updater'][50]       = "Backup Log:";
-
-$kga['lang']['updater'][60]       = "Backup failed - Update aborded!";
-
-$kga['lang']['updater'][70]       = "Update Log:";
-
-$kga['lang']['updater'][80]       = "The database was updated successfully and a backup was created.";
-
-$kga['lang']['updater'][90]       = "Queries processed.";
-
-$kga['lang']['updater'][100]      = "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.";
-
-$kga['lang']['updater'][110]      = "New Passwords";
-
-$kga['lang']['updater'][120]      = "See below for new passwords for every user.";
-
-$kga['lang']['updater'][130]      = "Could not write to autoconf.php.";
-
-$kga['lang']['updater'][140]      = "update file autoconf.php";
-
-
-$kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use at your own risk!";
-
-$kga['lang']['backup'][1]        = "Backups disponíveis:";
-
-$kga['lang']['backup'][2]        = "recuperar";
-
-$kga['lang']['backup'][3]        = "remover";
-
-$kga['lang']['backup'][4]        = "OK";
-
-$kga['lang']['backup'][5]        = "You can only recover *one* backup at a time!";
-
-$kga['lang']['backup'][6]        = "Backup from";
-
-$kga['lang']['backup'][7]        = "was recovered.";
-
-$kga['lang']['backup'][8]        = "create backup";
-
-$kga['lang']['backup'][9]        = "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)";
-
-
-$kga['lang']['xp_ext'] = array(
+'xp_ext' => array(
 
 "print_hint"      		   => "Clique em OK para abrir a tabela imprimida.",
 
@@ -617,10 +609,10 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 
 "invoiceTitle" 			=> "Criar factura",
 
@@ -642,6 +634,7 @@ $kga['lang']['ext_invoice'] = array(
 
 'noData'                => 'There are no time entries for the selected project & time period.'
 
+)
 );
 
 

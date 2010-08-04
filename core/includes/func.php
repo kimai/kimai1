@@ -674,10 +674,6 @@ $config=<<<EOD
 \$language        = "$lang";
 \$password_salt   = "$salt";
 
-if (!defined('WEBROOT')) {
-    define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-}
-
 ?>
 EOD;
 

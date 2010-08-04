@@ -38,8 +38,6 @@ include('../includes/basics.php');
 $db_layer = $kga['server_conn'];
 if ($db_layer == '') $db_layer = $_REQUEST['db_layer'];
 
-require(sprintf("../language/%s.php",$kga['language']));
-
 $randomAdminID = random_number(9);
 
 logfile("-- begin install ----------------------------------");

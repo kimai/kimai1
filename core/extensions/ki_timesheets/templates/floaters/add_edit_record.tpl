@@ -56,14 +56,7 @@
 
     <div id="help">
         <div class="content">        
-            <strong>Times and dates can be entered in short notations:</strong><br />
-            Dates: 5 &rarr; 05.{$smarty.now|date_format:"%m"}.{$smarty.now|date_format:"%Y"} &nbsp;&nbsp; 
-            1004 &rarr; 10.04.{$smarty.now|date_format:"%Y"} &nbsp;&nbsp; 
-            100406 &rarr; 10.04.2006<br />
-            Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
-            14 &rarr; 14:00:00  &nbsp;&nbsp;
-            0910 &rarr; 09:10:00  &nbsp;&nbsp;
-            091020 &rarr; 09:10:20 &nbsp;&nbsp;
+            {$kga.lang.dateAndTimeHelp}
         </div>
     </div>
 

@@ -287,7 +287,7 @@ $tpl->assign('evt_data', $evt_data);
 // =========================================
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
-$extDir = realpath(dirname(__FILE__)).'/../extensions';
+$extDir = WEBROOT.'extensions';
 if ($handle = opendir($extDir)) {
     chdir($extDir);
     $ext_configs = array();

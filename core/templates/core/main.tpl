@@ -215,7 +215,12 @@
            	<dd class="tab act" id="exttab_0">
            	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); ts_ext_triggerchange();">
            	        <span class="aa">&nbsp;</span>
-           	        <span class="bb">Timesheet</span>
+           	        <span class="bb">
+                    {if isset($kga.lang.extensions.ki_timesheet)}
+                    {$kga.lang.extensions.ki_timesheet}
+                    {else}
+                    Timesheet
+                    {/if}</span>
            	        <span class="cc">&nbsp;</span>
            	    </a>
            	</dd>
@@ -225,7 +230,12 @@
             <dd class="tab norm" id="exttab_{$smarty.foreach.tabloop.iteration}">
                 <a href="javascript:void(0);" onclick="changeTab({$smarty.foreach.tabloop.iteration}, '{$object.EXTENSION_INIT_FILE}'); {$object.TAB_CHANGE_TRIGGER};">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb">{$object.EXTENSION_NAME}</span>
+                    <span class="bb">
+                    {if isset($kga.lang.extensions[$object.EXTENSION_KEY])}
+                    {$kga.lang.extensions[$object.EXTENSION_KEY]}
+                    {else}
+                    {$object.EXTENSION_NAME}
+                    {/if}</span>
                     <span class="cc">&nbsp;</span>
                 </a>
             </dd>

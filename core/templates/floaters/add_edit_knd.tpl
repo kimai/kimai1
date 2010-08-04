@@ -51,7 +51,7 @@
         
                         <br/>
                         <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" alt="Caution" valign=middle />
-                        <strong style="color:red">No password set yet!</strong>
+                        <strong style="color:red">{$kga.lang.nopassword}</strong>
         {/if}
                     </li>
                     

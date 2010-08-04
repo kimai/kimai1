@@ -2314,8 +2314,8 @@ function checkUser() {
     // override default language if user has chosen a language in the prefs
     if ($kga['conf']['lang'] != "") {
       $kga['language'] = $kga['conf']['lang'];
+      $kga['lang'] = array_replace($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
     }
-    require(sprintf(WEBROOT."language/%s.php",$kga['language']));
     
     return (isset($kga['usr'])?$kga['usr']:null);
 }

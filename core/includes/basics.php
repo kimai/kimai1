@@ -8,12 +8,15 @@
  */
 
 
-require('autoconf.php');
-if (!$server_hostname) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
-require('vars.php');
+if (!defined('WEBROOT'))
+    define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
-require('func.php');
-require("connect_".$kga['server_conn'].".php");
+require(WEBROOT.'includes/autoconf.php');
+if (!$server_hostname) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
+require(WEBROOT.'includes/vars.php');
+
+require(WEBROOT.'includes/func.php');
+require(WEBROOT."includes/connect_".$kga['server_conn'].".php");
 
 $vars = var_get_data();
 if (!empty($vars)) {
@@ -31,5 +34,13 @@ if (!empty($vars)) {
   $kga['date_format'][2]         = $vars['date_format_2'];
   if ($vars['language'] != '')
     $kga['language']             = $vars['language'];
+  else if ($kga['language'] != '')
+    $kga['language'] = 'en';
 }
+
+// load language file
+$kga['lang'] = require(WEBROOT.'language/en.php');
+
+if ($kga['language'] != 'en') 
+ $kga['lang'] =  array_replace($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
 ?>

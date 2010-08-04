@@ -25,7 +25,7 @@
  * By Conny Sjölund
  * We take no responsibility for any consequence.
  */
-$kga['lang']= array(
+return array(
 "countryCode"       => "sv-SV",
 "preferences"       => "Inställningar",
 "total"		    => "Totalt",
@@ -145,7 +145,7 @@ $kga['lang']= array(
 "changegrp"         => "ändra grupp",
 "members"           => "Medlemmar",
 "groupleader"       => "Grupp ledare",
-"nopassword"        => "Inget lösenord angivet",
+"nopassword"        => "Inget lösenord angivet!",
 "noItems"           => "Inga Poster",
 "DBname"            => "Namn på databas",
 "autoselection"     => "Autoval",
@@ -244,50 +244,53 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("January","February","Mars","April","May","Juni","Juli","Augusti","September","Oktober","November","December");
-$kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Okt","Nov","Dec");
-$kga['lang']['weekdays']       = array("Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag");
-$kga['lang']['weekdays_short'] = array("Sön","Mon","Tis","Ons","Tor","Fri","Lör");
+'months'         => array("January","February","Mars","April","May","Juni","Juli","Augusti","September","Oktober","November","December"),
+'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Okt","Nov","Dec"),
+'weekdays'       => array("Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag"),
+'weekdays_short' => array("Sön","Mon","Tis","Ons","Tor","Fri","Lör"),
 
-$kga['lang']['errors'][0]['hdl'] = "Kunde inte koppla till databasen!";
-$kga['lang']['errors'][0]['txt'] = "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta.";
+'errors' => array(
+  0 => array ('hdl' => "Kunde inte koppla till databasen!",
+            'txt' => "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta."),
 
-$kga['lang']['errors'][1]['hdl'] = "Fel vid installation!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>
+  1 => array('hdl' => "Fel vid installation!",
+            'txt' => 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+),
 
-$kga['lang']['updater'][0]        = "Ja, jag har en säkerhetskopia av min Kimai databas! Fortsätt uppdateringen!";
-$kga['lang']['updater'][10]       = "Förklaring:";
-$kga['lang']['updater'][20]       = "Förfrågan utfördes framgångsrikt.";
-$kga['lang']['updater'][30]       = "Förfrågan orsakade fel - sannolikt irrelevant.";
-$kga['lang']['updater'][40]       = "Förfrågan orsakade allvarligt fel.";
-$kga['lang']['updater'][50]       = "Säkerhetskopiera Logg:";
-$kga['lang']['updater'][60]       = "Säkerhetskopia misslyckades - Uppdatering avbruten!";
-$kga['lang']['updater'][70]       = "Uppdaterings logg:";
-$kga['lang']['updater'][80]       = "Databasen uppdaterades med lyckat resultat och en säkerhetskopia skapades.";
-$kga['lang']['updater'][90]       = "Förfrågan processad.";
-$kga['lang']['updater'][100]      = "Uppdateringen av databasen misslyckades pga allvarligt fel. En säkerhetskopia skapades som kan anv�ndas f�r att �terskapa databasen ifall Kimai inte fungerar korrekt.";
-$kga['lang']['updater'][110]      = "Nya Lösenord";
-$kga['lang']['updater'][120]      = "Se nedan för nya lösenord för varje användare.";
-$kga['lang']['updater'][130]      = "Kunde inte skriva till autoconf.php.";
-$kga['lang']['updater'][140]      = "uppdatera filen autoconf.php";
+'updater' => array(
+0        => "Ja, jag har en säkerhetskopia av min Kimai databas! Fortsätt uppdateringen!",
+10       => "Förklaring:",
+20       => "Förfrågan utfördes framgångsrikt.",
+30       => "Förfrågan orsakade fel - sannolikt irrelevant.",
+40       => "Förfrågan orsakade allvarligt fel.",
+50       => "Säkerhetskopiera Logg:",
+60       => "Säkerhetskopia misslyckades - Uppdatering avbruten!",
+70       => "Uppdaterings logg:",
+80       => "Databasen uppdaterades med lyckat resultat och en säkerhetskopia skapades.",
+90       => "Förfrågan processad.",
+100      => "Uppdateringen av databasen misslyckades pga allvarligt fel. En säkerhetskopia skapades som kan anv�ndas f�r att �terskapa databasen ifall Kimai inte fungerar korrekt.",
+110      => "Nya Lösenord",
+120      => "Se nedan för nya lösenord för varje användare.",
+130      => "Kunde inte skriva till autoconf.php.",
+140      => "uppdatera filen autoconf.php"),
 
-$kga['lang']['backup'][0]        = "Detta säkerhetskopieringsverktyg är inte ännu testat! Används på egen risk!";
-$kga['lang']['backup'][1]        = "Tillgängliga säkerhetskopior:";
-$kga['lang']['backup'][2]        = "återställ";
-$kga['lang']['backup'][3]        = "radera";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "Du kan endast återställa *en* säkerhetskopia åt gången!";
-$kga['lang']['backup'][6]        = "Säkerhetskopia från";
-$kga['lang']['backup'][7]        = "blev återställd.";
-$kga['lang']['backup'][8]        = "skapa säkerhetskopia";
-$kga['lang']['backup'][9]        = "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)";
+'backup' => array(
+0        => "Detta säkerhetskopieringsverktyg är inte ännu testat! Används på egen risk!",
+1        => "Tillgängliga säkerhetskopior:",
+2        => "återställ",
+3        => "radera",
+4        => "OK",
+5        => "Du kan endast återställa *en* säkerhetskopia åt gången!",
+6        => "Säkerhetskopia från",
+7        => "blev återställd.",
+8        => "skapa säkerhetskopia",
+9        => "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)"),
 
 
-$kga['lang']['xp_ext'] = array(
+'xp_ext' => array(
 	
 "print_hint"      	 => "Klicka OK för att öppna en skrivbar tabell.",
 "dl_hint"         	 => "Klikcka OK för att ladda ner en exporterad fil.",
@@ -343,11 +346,11 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
 
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 	
 "invoiceTitle" 		=> "Create invoice",
 "invoiceProject" 	=> "Projects:",
@@ -359,6 +362,8 @@ $kga['lang']['ext_invoice'] = array(
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
+
+)
 
 );
 

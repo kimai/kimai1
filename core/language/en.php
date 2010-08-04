@@ -23,7 +23,7 @@
  * english
  *
  */
-$kga['lang']= array(
+return array(
 "countryCode"       => "en-EN",
 "preferences"       => "Preferences",
 "total"		        => "Total",
@@ -143,7 +143,7 @@ $kga['lang']= array(
 "changegrp"         => "Change group",
 "members"           => "Members",
 "groupleader"       => "Group leader",
-"nopassword"        => "no password set",
+"nopassword"        => "No password set!",
 "noItems"           => "no Entries",
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",
@@ -242,50 +242,105 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("January","February","March","April","May","June","July","August","September","October","November","December");
-$kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-$kga['lang']['weekdays']       = array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
-$kga['lang']['weekdays_short'] = array("Sun","Mon","Tue","Wed","Thu","Fri","Sat");
+'dateAndTimeHelp' => '<strong>Times and dates can be entered in short notations:</strong><br />
+            Dates: 5 &rarr; 5th of the current month &nbsp;&nbsp; 
+            1004 &rarr; 10.04. of the current year &nbsp;&nbsp; 
+            100406 &rarr; 10.04.2006<br />
+            Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
+            14 &rarr; 14:00:00  &nbsp;&nbsp;
+            0910 &rarr; 09:10:00  &nbsp;&nbsp;
+            091020 &rarr; 09:10:20 &nbsp;&nbsp;',
 
-$kga['lang']['errors'][0]['hdl'] = "Database could not be connected!";
-$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct.";
 
-$kga['lang']['errors'][1]['hdl'] = "Error during installation!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+
+'credits' => <<<EOF
+        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
+        
+        <br />
+        
+        <strong>This program is free software and published 'AS IS' without any kind of warranty</strong> under the terms of the
+        <a href="../COPYING">GPL Version 3</a>. 
+        
+        <br /><br />
+         
+        <a href='http://www.kimai.org' target='_blank'>Official Website</a> | 
+        <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge Project page</a> | 
+        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Subversion Repository</a> |
+        <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
+        
+        <br /><br />
+
+        If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there. Latest SVN Version can be downloaded <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">here</a> (download for testing purposes only!).
+        
+        <br /><br />
+        
+        Please support further development of Kimai with a <a href="http://www.kimai.org/en/donate.html">donation</a> or by extending its <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">language library</a>.
+
+        If you find bugs or have ideas for features, feel free to contact us through the forum. Or even better: create a <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+
+        <strong>Further thanks for support to:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
+        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
+        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
+
+        <strong>Special thanks</strong> to all beta testers, which are way to many to mention them all - you know who you are! ;)<br /><br />
+
+        The invoice extension uses the PclZip Library, which can be found at <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
+
+        Version 0.8 was emerged with the kind support of RRZE (Regionales Rechenzentrum Erlangen).<br /><br />
+        <br />
+EOF
+,
+
+
+
+'months'         => array("January","February","March","April","May","June","July","August","September","October","November","December"),
+'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
+'weekdays'       => array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"),
+'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
+
+'errors' => array (
+  0 => array ('hdl' => "Database could not be connected!",
+              'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
+
+  1 => array ('hdl' => "Error during installation!",
+              'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+  ),
 
-$kga['lang']['updater'][0]        = "Yes, I have a backup of my Kimai database! Proceed updating!";
-$kga['lang']['updater'][10]       = "Legend:";
-$kga['lang']['updater'][20]       = "Query was executed successfully.";
-$kga['lang']['updater'][30]       = "Query caused error - most likely irrelevant.";
-$kga['lang']['updater'][40]       = "Query caused fatal error.";
-$kga['lang']['updater'][50]       = "Backup Log:";
-$kga['lang']['updater'][60]       = "Backup failed - Update aborded!";
-$kga['lang']['updater'][70]       = "Update Log:";
-$kga['lang']['updater'][80]       = "The database was updated successfully and a backup was created.";
-$kga['lang']['updater'][90]       = "Queries processed.";
-$kga['lang']['updater'][100]      = "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.";
-$kga['lang']['updater'][110]      = "New Passwords";
-$kga['lang']['updater'][120]      = "See below for new passwords for every user.";
-$kga['lang']['updater'][130]      = "Could not write to autoconf.php.";
-$kga['lang']['updater'][140]      = "update file autoconf.php";
+'updater' => array (
+0        => "Yes, I have a backup of my Kimai database! Proceed updating!",
+10       => "Legend:",
+20       => "Query was executed successfully.",
+30       => "Query caused error - most likely irrelevant.",
+40       => "Query caused fatal error.",
+50       => "Backup Log:",
+60       => "Backup failed - Update aborded!",
+70       => "Update Log:",
+80       => "The database was updated successfully and a backup was created.",
+90       => "Queries processed.",
+100      => "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.",
+110      => "New Passwords",
+120      => "See below for new passwords for every user.",
+130      => "Could not write to autoconf.php.",
+140      => "update file autoconf.php"),
 
-$kga['lang']['backup'][0]        = "This backup restore utility is not yet tested! Use at your own risk!";
-$kga['lang']['backup'][1]        = "Available backups:";
-$kga['lang']['backup'][2]        = "recover";
-$kga['lang']['backup'][3]        = "delete";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "You can only recover *one* backup at a time!";
-$kga['lang']['backup'][6]        = "Backup from";
-$kga['lang']['backup'][7]        = "was recovered.";
-$kga['lang']['backup'][8]        = "create backup";
-$kga['lang']['backup'][9]        = "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)";
+'backup' => array(
+0        => "This backup restore utility is not yet tested! Use at your own risk!",
+1        => "Available backups:",
+2        => "recover",
+3        => "delete",
+4        => "OK",
+5        => "You can only recover *one* backup at a time!",
+6        => "Backup from",
+7        => "was recovered.",
+8        => "create backup",
+9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
 
 
-$kga['lang']['xp_ext'] = array(
+'xp_ext' => array(
 	
 "print_hint"      		   => "Click OK to open a printable table.",
 "dl_hint"         		   => "Click OK to download export-file.",
@@ -341,11 +396,11 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
 
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 	
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
@@ -357,6 +412,10 @@ $kga['lang']['ext_invoice'] = array(
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
+
+),
+
+'extensions' => array()
 
 );
 

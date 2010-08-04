@@ -5,13 +5,6 @@
  */ 
  
 require('includes/basics.php');
-
-if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-require_once( "language/${language}.php" );
  
 if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
 

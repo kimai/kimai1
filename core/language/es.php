@@ -24,7 +24,7 @@
  * by Miguel Carmona
  * http://miguelcarmona.name
  */
-$kga['lang']= array(
+return array(
 "countryCode"       => "es-ES",
 "preferences"       => "Preferencias",
 "total"		        => "Total",
@@ -143,7 +143,7 @@ $kga['lang']= array(
 "changegrp"         => "Cambiar grupo",
 "members"           => "Miembros",
 "groupleader"       => "Grupo líder",
-"nopassword"        => "sin contraseña establecida",
+"nopassword"        => "Sin contraseña establecida!",
 "noItems"           => "sin entradas",
 "DBname"            => "Nombre de la base de datos",
 "autoselection"     => "Autoselección",
@@ -243,50 +243,54 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre");
-$kga['lang']['months_short']   = array("Ene","Feb","Mar","Apr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-$kga['lang']['weekdays']       = array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
-$kga['lang']['weekdays_short'] = array("Dom","Lun","Mar","Mie","Jue","Vie","Sab");
+'months'         => array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"),
+'months_short'   => array("Ene","Feb","Mar","Apr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic"),
+'weekdays'       => array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"),
+'weekdays_short' => array("Dom","Lun","Mar","Mie","Jue","Vie","Sab"),
 
 
-$kga['lang']['errors'][0]['hdl'] = "¡No se puede conectar con la base de datos!";
-$kga['lang']['errors'][0]['txt'] = "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct.";
+'errors' => array (
+  0 => array ('hdl' => "¡No se puede conectar con la base de datos!",
+              'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
 
-$kga['lang']['errors'][1]['hdl'] = "Error durante la instalación!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai no puede crear las tablas necesarias porque existen tablas con el mismo nombre.<br/>
+  1 => array ('hdl' => "Error durante la instalación!",
+        'txt' => 'Kimai no puede crear las tablas necesarias porque existen tablas con el mismo nombre.<br/>
 Para actualizar su instalación existente, haga click <a href="../index.php">aquí</a>.<br/>
-Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo para permitir una instalación límpia de esta versión de Kimai.';
+Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo para permitir una instalación límpia de esta versión de Kimai.')
+),
 
-$kga['lang']['updater'][0]        = "Si, tengo una copia de seguridad de la base de datos de mi instalación. ¡Proceder la actualización!";
-$kga['lang']['updater'][10]       = "Leyenda:";
-$kga['lang']['updater'][20]       = "Consulta ejecutada con éxito.";
-$kga['lang']['updater'][30]       = "Error causado en consulta - la mayoría de veces es irrelevante.";
-$kga['lang']['updater'][40]       = "Error fatal causado en la consulta.";
-$kga['lang']['updater'][50]       = "Registro de la copia de seguridad:";
-$kga['lang']['updater'][60]       = "¡Fallo en la copia de seguridad! - Actualización abortada";
-$kga['lang']['updater'][70]       = "Registro de actualización:";
-$kga['lang']['updater'][80]       = "La base de datos se ha actualizado correctamente y una copia de seguridad fue creada.";
-$kga['lang']['updater'][90]       = "Consultas procesadas.";
-$kga['lang']['updater'][100]      = "La actualización de la base de datos falló debido a error(es) fatal(es). Se hizo una copia de seguridad para restaurar la base de datos en caso de que kimai no funcione correctamente.";
-$kga['lang']['updater'][110]      = "Nuevas contraseñas";
-$kga['lang']['updater'][120]      = "Véase más abajo las nuevas contraseñas para cada usuario.";
-$kga['lang']['updater'][130]      = "No se puede escribir en autoconf.php.";
-$kga['lang']['updater'][140]      = "Archivo autoconf.php actualizado";
+'updater' => array (
+0        => "Si, tengo una copia de seguridad de la base de datos de mi instalación. ¡Proceder la actualización!",
+10       => "Leyenda:",
+20       => "Consulta ejecutada con éxito.",
+30       => "Error causado en consulta - la mayoría de veces es irrelevante.",
+40       => "Error fatal causado en la consulta.",
+50       => "Registro de la copia de seguridad:",
+60       => "¡Fallo en la copia de seguridad! - Actualización abortada",
+70       => "Registro de actualización:",
+80       => "La base de datos se ha actualizado correctamente y una copia de seguridad fue creada.",
+90       => "Consultas procesadas.",
+100      => "La actualización de la base de datos falló debido a error(es) fatal(es). Se hizo una copia de seguridad para restaurar la base de datos en caso de que kimai no funcione correctamente.",
+110      => "Nuevas contraseñas",
+120      => "Véase más abajo las nuevas contraseñas para cada usuario.",
+130      => "No se puede escribir en autoconf.php.",
+140      => "Archivo autoconf.php actualizado"),
 
-$kga['lang']['backup'][0]        = "¡Esta utilidad de restauración de copia de seguridad no está testeada! ¡Utilícela bajo su propio riesgo!";
-$kga['lang']['backup'][1]        = "Copias de seguridad disponibles:";
-$kga['lang']['backup'][2]        = "restaurar";
-$kga['lang']['backup'][3]        = "eliminar";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "¡Sólo puede restaurar una copia de seguridad a la misma vez!";
-$kga['lang']['backup'][6]        = "Copia de seguridad de";
-$kga['lang']['backup'][7]        = "fue restaurada.";
-$kga['lang']['backup'][8]        = "crear copia de seguridad";
-$kga['lang']['backup'][9]        = "¡Estas copias de seguridad en realidad son instantáneas! Lo que significa que aún \"viven\" en la misma base de datos como los datos reales de su trabajo en Kimai. Las copias de seguridad a través de esta utilidad no son la sustitución de las copias de seguridad reales en un medio físico de datos diferentes. Hay un montón de herramientas para copias de seguridad de bases de datos disponibles en la web. ;)";
 
-$kga['lang']['xp_ext'] = array(
+'backup' => array(
+0        => "¡Esta utilidad de restauración de copia de seguridad no está testeada! ¡Utilícela bajo su propio riesgo!",
+1        => "Copias de seguridad disponibles:",
+2        => "restaurar",
+3        => "eliminar",
+4        => "OK",
+5        => "¡Sólo puede restaurar una copia de seguridad a la misma vez!",
+6        => "Copia de seguridad de",
+7        => "fue restaurada.",
+8        => "crear copia de seguridad",
+9        => "¡Estas copias de seguridad en realidad son instantáneas! Lo que significa que aún \"viven\" en la misma base de datos como los datos reales de su trabajo en Kimai. Las copias de seguridad a través de esta utilidad no son la sustitución de las copias de seguridad reales en un medio físico de datos diferentes. Hay un montón de herramientas para copias de seguridad de bases de datos disponibles en la web. ;)"),
+
+'xp_ext' => array(
 	
 "print_hint"      		   => "Acepte para abrir una tabla imprimible.",
 "dl_hint"         		   => "Acepte para descargar un archivo exportable.",
@@ -342,9 +346,9 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 	
 "invoiceTitle" 			=> "Crear factura",
 "invoiceProject" 		=> "Proyectos:",
@@ -356,5 +360,8 @@ $kga['lang']['ext_invoice'] = array(
 'noPDOerror'            => 'This extension only works with a PDO database connection.',
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
+)
+
 );
+
 ?>

@@ -23,7 +23,7 @@
  * français
  * by Willem van Gemert
  */
-$kga['lang']= array( 
+return array( 
 "countryCode"       => "fr-FR",
 "preferences"       => "Pr&eacute;f&eacute;rences",
 "total"		        => "Total",
@@ -142,7 +142,7 @@ $kga['lang']= array(
 "changegrp"         => "Modifier le groupe",
 "members"           => "Membres",
 "groupleader"       => "Responsable du groupe",
-"nopassword"        => "aucun mot de passe",
+"nopassword"        => "Aucun mot de passe!",
 "noItems"           => "pas d'entr&eacute;es",
 "DBname"            => "Nom de la base de donnes",
 "autoselection"     => "S&eacute;lection automatique",
@@ -242,50 +242,53 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre");
-$kga['lang']['months_short']   = array("Jan","F&eacute;v","Mar","Avr","Mai","Jn","Jl","Ao&ucirc;","Sep","Oct","Nov","D&eacute;c");
-$kga['lang']['weekdays']       = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi");
-$kga['lang']['weekdays_short'] = array("Sun","Mon","Tue","Wed","Thu","Fri","Sat");
+'months'         => array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre"),
+'months_short'   => array("Jan","F&eacute;v","Mar","Avr","Mai","Jn","Jl","Ao&ucirc;","Sep","Oct","Nov","D&eacute;c"),
+'weekdays'       => array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
+'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
 
 
-$kga['lang']['errors'][0]['hdl'] = "Impossible de se connecter a la base de donn&eacute;es!";
-$kga['lang']['errors'][0]['txt'] = "V&eacute;rifier que la base de donn&eacute;es fonctionne, possede un connecteur PDO actif et que les entr&eacute;es dans le fichier 'autoconf.php' du r&eacute;pertoire 'includes' sont correctes.";
+'errors' => array(
+  0 => array('hdl' => "Impossible de se connecter a la base de donn&eacute;es!",
+              'txt' => "V&eacute;rifier que la base de donn&eacute;es fonctionne, possede un connecteur PDO actif et que les entr&eacute;es dans le fichier 'autoconf.php' du r&eacute;pertoire 'includes' sont correctes."),
 
-$kga['lang']['errors'][1]['hdl'] = "Error during installation!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+  1 => array('hdl' => "Error during installation!",
+              'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.';
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+),
 
-$kga['lang']['updater'][0]        = "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise &agrave; jour!";
-$kga['lang']['updater'][10]       = "L&eacute;gende:";
-$kga['lang']['updater'][20]       = "La requete a &eacute;t&eacute; correctement.";
-$kga['lang']['updater'][30]       = "La requete a caus&eacute; une erreur - tres certainement mineure.";
-$kga['lang']['updater'][40]       = "La requete a cause une erreur fatale.";
-$kga['lang']['updater'][50]       = "Fichier de log de la sauvegarde:";
-$kga['lang']['updater'][60]       = "La sauvegarde a echou&eacute; - Mise &agrave; jour annul&eacute;e!";
-$kga['lang']['updater'][70]       = "Fichier de  log de la mise a jour:";
-$kga['lang']['updater'][80]       = "La base de donn&eacute;es a &eacute;t&eacute; mise a jour et une copie de sauvegarde a &eacute;t&eacute;cr&eacute;&eacute;e.";
-$kga['lang']['updater'][90]       = "Requetes execut&eacute;es.";
-$kga['lang']['updater'][100]      = "Les mise a jour de la base de donn&eacute;es a &eacute;chou&eacute; a cause d'une erreur fatale. Une sauvegarde a &eacute;t&eacute; cre&eacute;&eacute;e au cas ou Kimai ne fonctinnerait plus correctement.";
-$kga['lang']['updater'][110]      = "Nouveau mot de passe";
-$kga['lang']['updater'][120]      = "Voir ci-dessous pour les mots de passe de tous les utilisateurs.";
-$kga['lang']['updater'][130]      = "Impossible d'&eacute;crire dans autoconf.php.";
-$kga['lang']['updater'][140]      = "mise a jour du fichier autoconf.php";
+'updater' => array (
+0        => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise &agrave; jour!",
+10       => "L&eacute;gende:",
+20       => "La requete a &eacute;t&eacute; correctement.",
+30       => "La requete a caus&eacute; une erreur - tres certainement mineure.",
+40       => "La requete a cause une erreur fatale.",
+50       => "Fichier de log de la sauvegarde:",
+60       => "La sauvegarde a echou&eacute; - Mise &agrave; jour annul&eacute;e!",
+70       => "Fichier de  log de la mise a jour:",
+80       => "La base de donn&eacute;es a &eacute;t&eacute; mise a jour et une copie de sauvegarde a &eacute;t&eacute;cr&eacute;&eacute;e.",
+90       => "Requetes execut&eacute;es.",
+100      => "Les mise a jour de la base de donn&eacute;es a &eacute;chou&eacute; a cause d'une erreur fatale. Une sauvegarde a &eacute;t&eacute; cre&eacute;&eacute;e au cas ou Kimai ne fonctinnerait plus correctement.",
+110      => "Nouveau mot de passe",
+120      => "Voir ci-dessous pour les mots de passe de tous les utilisateurs.",
+130      => "Impossible d'&eacute;crire dans autoconf.php.",
+140      => "mise a jour du fichier autoconf.php"),
 
-$kga['lang']['backup'][0]        = "L'outil de sauvegarde/restauration n' a pas encore &eacute;t&eacute; test&eacute;! A utiliser a vos propres risques!";
-$kga['lang']['backup'][1]        = "Sauvegardes disponibles:";
-$kga['lang']['backup'][2]        = "restaur&eacute;";
-$kga['lang']['backup'][3]        = "supprim&eacute;";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "You can only recover *one* backup at a time!";
-$kga['lang']['backup'][6]        = "Sauvegarde du";
-$kga['lang']['backup'][7]        = "a &eacute;t&eacute; restaur&eacute;.";
-$kga['lang']['backup'][8]        = "Faire une sauvegarde";
-$kga['lang']['backup'][9]        = "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de donn&eacute;es actuelle dans laquelle Kimai stocke ces donnees. Les sauvegardes via cet utilitaire ne remplacent pas sont pas les sauvegardes sur un media physique s&eacute;par&eacute;. Il y a plein d'outils de sauvegarde de base de donnes sur le web ;)";
+'backup' => array(
+0        => "L'outil de sauvegarde/restauration n' a pas encore &eacute;t&eacute; test&eacute;! A utiliser a vos propres risques!",
+1        => "Sauvegardes disponibles:",
+2        => "restaur&eacute;",
+3        => "supprim&eacute;",
+4        => "OK",
+5        => "You can only recover *one* backup at a time!",
+6        => "Sauvegarde du",
+7        => "a &eacute;t&eacute; restaur&eacute;.",
+8        => "Faire une sauvegarde",
+9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de donn&eacute;es actuelle dans laquelle Kimai stocke ces donnees. Les sauvegardes via cet utilitaire ne remplacent pas sont pas les sauvegardes sur un media physique s&eacute;par&eacute;. Il y a plein d'outils de sauvegarde de base de donnes sur le web ;)"),
 
-$kga['lang']['xp_ext'] = array(
+'xp_ext' => array(
 	
 "print_hint"      		   => "Cliquer sur OK pour ouvrir un tableau imprimable.",
 "dl_hint"         		   => "Cliquer sur OK pour t&eacute;l&eacute;charger le fichier export&eacute;.",
@@ -341,9 +344,9 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 	
 "invoiceTitle" 			=> "Cr&eacute;er une facture",
 "invoiceProject" 		=> "Activit&eacute;s:",
@@ -356,5 +359,6 @@ $kga['lang']['ext_invoice'] = array(
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
 
+)
 );
 ?>

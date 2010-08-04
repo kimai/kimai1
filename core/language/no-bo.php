@@ -34,7 +34,7 @@
  * Use it on your own risk.
  * We take no responsibility for any consequence.
  */
-$kga['lang']= array(
+return array(
 "countryCode"       => "no",
 "preferences"       => "Innstillinger",
 "total"		        => "Totalt",
@@ -153,7 +153,7 @@ $kga['lang']= array(
 "changegrp"         => "Endre gruppe",
 "members"           => "Medlem",
 "groupleader"       => "Gruppesjef",
-"nopassword"        => "ikke angitt passord",
+"nopassword"        => "Ikke angitt passord!",
 "noItems"           => "ingen oppføringer",
 "DBname"            => "Navn på database",
 "autoselection"     => "Automatisk valg",
@@ -252,45 +252,50 @@ $kga['lang']= array(
 'durationWithSeconds' => 'Show duration exact to the second.',
 
 'multiplier' => 'Multiplier',
-);
 
-$kga['lang']['months']         = array("Januar","Februar","Mars","April","Mai","Juni","Juli","August","September","Oktober","November","Desember");
-$kga['lang']['months_short']   = array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Okt","Nov","Des");
-$kga['lang']['weekdays']       = array("Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag");
-$kga['lang']['weekdays_short'] = array("Søn","Man","Tir","Ons","Tor","Fre","Lør");
-$kga['lang']['errors'][0]['hdl'] = "Kunne ikke koble til databasen!";
-$kga['lang']['errors'][0]['txt'] = "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'autoconf.php' i mappen 'includes' er korrekte.";
+'months'         => array("Januar","Februar","Mars","April","Mai","Juni","Juli","August","September","Oktober","November","Desember"),
+'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Okt","Nov","Des"),
+'weekdays'       => array("Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag"),
+'weekdays_short' => array("Søn","Man","Tir","Ons","Tor","Fre","Lør"),
 
-$kga['lang']['errors'][1]['hdl'] = "Feil under installasjonen!";
-$kga['lang']['errors'][1]['txt'] = 'Kimai klarer ikke å opprette nødvendige oppføringer i databasen fordi gjeldende oppføringer med samme navn finnes fra før.<br/> For å oppdatere din gjeldende installasjon vær så snill å trykk  å <a href="../index.php">her</a>.<br/> Velg et annet fortegn til tabellene eller slett gjeldende tabeller med dette fortegnet slik at Kimai får anledning til å utføre en basis installasjon.';
-$kga['lang']['updater'][0]        = "Ja, jeg har en sikkerhetskopi av min Kimai database! Fortsett med oppdateringen!";
-$kga['lang']['updater'][10]       = "Tegnforklaring:";
-$kga['lang']['updater'][20]       = "Spørringen var vellykket.";
-$kga['lang']['updater'][30]       = "Det oppsto en feil under spørringen - mest trolig uviktig.";
-$kga['lang']['updater'][40]       = "Spørringen førte til en skjebnesvanger feil.";
-$kga['lang']['updater'][50]       = "Logg over sikkerhetskopi:";
-$kga['lang']['updater'][60]       = "Sikkerhetskopieringen mislyktes - Oppdateringen avbrutt!";
-$kga['lang']['updater'][70]       = "Oppdateringslogg:";
-$kga['lang']['updater'][80]       = "Oppdateringen av databasen var vellykket og sikkerhetskopi er tatt.";
-$kga['lang']['updater'][90]       = "Spørringer utført.";
-$kga['lang']['updater'][100]      = "Oppdateringen av databasen mislyktes. En sikkerhetskopi ble tatt. Denne kan brukes til å gjenskape databasen i fall Kimai ikke fungerer tilfredsstillende.";
-$kga['lang']['updater'][110]      = "Nye passord";
-$kga['lang']['updater'][120]      = "Se nedenfor om nye passord for den enkelte bruker.";
-$kga['lang']['updater'][130]      = "Kunne ikke skrive til filen autoconf.php.";
-$kga['lang']['updater'][140]      = "oppdaterer filen autoconf.php";
+'errors' => array(
+  0 => array ('hdl' => "Kunne ikke koble til databasen!",
+            'txt' => "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'autoconf.php' i mappen 'includes' er korrekte."),
 
-$kga['lang']['backup'][0]        = "Dette verktøyet for sikkerhetskopierings- og gjenoppretting er ikke ferdig testet! Bruk det på eget ansvar!";
-$kga['lang']['backup'][1]        = "Tilgjengelige sikkerhetskopier:";
-$kga['lang']['backup'][2]        = "Gjenopprett";
-$kga['lang']['backup'][3]        = "Slett";
-$kga['lang']['backup'][4]        = "OK";
-$kga['lang']['backup'][5]        = "Du kan bare gjenopprette en sikkerhetskopi om gangen!";
-$kga['lang']['backup'][6]        = "Sikkerhetskopier fra";
-$kga['lang']['backup'][7]        = "ble gjenopprettet.";
-$kga['lang']['backup'][8]        = "opprett sikkerhetskopi";
-$kga['lang']['backup'][9]        = "Disse sikkerhetskopiene er egentlig øyeblikksbilder! Det vil si at de eksisterer som en del av samme database som Kimai benytter. Sikkerhetskopi med dette verktøyet er IKKE en erstatning for skikkelige sikkerhetskopier over på et annet fysisk medium. Det finnes rikelig med verktøy for sikkerhetskopiering av databaser på nettet;)";
+  1 => array('hdl' => "Feil under installasjonen!",
+        'txt' => 'Kimai klarer ikke å opprette nødvendige oppføringer i databasen fordi gjeldende oppføringer med samme navn finnes fra før.<br/> For å oppdatere din gjeldende installasjon vær så snill å trykk  å <a href="../index.php">her</a>.<br/> Velg et annet fortegn til tabellene eller slett gjeldende tabeller med dette fortegnet slik at Kimai får anledning til å utføre en basis installasjon.')
+),
 
-$kga['lang']['xp_ext'] = array(
+'updater' => array(
+0        => "Ja, jeg har en sikkerhetskopi av min Kimai database! Fortsett med oppdateringen!",
+10       => "Tegnforklaring:",
+20       => "Spørringen var vellykket.",
+30       => "Det oppsto en feil under spørringen - mest trolig uviktig.",
+40       => "Spørringen førte til en skjebnesvanger feil.",
+50       => "Logg over sikkerhetskopi:",
+60       => "Sikkerhetskopieringen mislyktes - Oppdateringen avbrutt!",
+70       => "Oppdateringslogg:",
+80       => "Oppdateringen av databasen var vellykket og sikkerhetskopi er tatt.",
+90       => "Spørringer utført.",
+100      => "Oppdateringen av databasen mislyktes. En sikkerhetskopi ble tatt. Denne kan brukes til å gjenskape databasen i fall Kimai ikke fungerer tilfredsstillende.",
+110      => "Nye passord",
+120      => "Se nedenfor om nye passord for den enkelte bruker.",
+130      => "Kunne ikke skrive til filen autoconf.php.",
+140      => "oppdaterer filen autoconf.php"),
+
+'backup' => array(
+0        => "Dette verktøyet for sikkerhetskopierings- og gjenoppretting er ikke ferdig testet! Bruk det på eget ansvar!",
+1        => "Tilgjengelige sikkerhetskopier:",
+2        => "Gjenopprett",
+3        => "Slett",
+4        => "OK",
+5        => "Du kan bare gjenopprette en sikkerhetskopi om gangen!",
+6        => "Sikkerhetskopier fra",
+7        => "ble gjenopprettet.",
+8        => "opprett sikkerhetskopi",
+9        => "Disse sikkerhetskopiene er egentlig øyeblikksbilder! Det vil si at de eksisterer som en del av samme database som Kimai benytter. Sikkerhetskopi med dette verktøyet er IKKE en erstatning for skikkelige sikkerhetskopier over på et annet fysisk medium. Det finnes rikelig med verktøy for sikkerhetskopiering av databaser på nettet;)"),
+
+'xp_ext' => array(
 	
 "print_hint"      		   => "Trykk OK for å opprette en ny utskriftsvennlig side i tabellformat.",
 "dl_hint"         		   => "Trykk OK for å opprette og laste ned dokumentet.",
@@ -346,11 +351,11 @@ $kga['lang']['xp_ext'] = array(
 
 'duration_unit' => 'h',
 
-);
+),
 
 
 
-$kga['lang']['ext_invoice'] = array(
+'ext_invoice' => array(
 	
 "invoiceTitle" 			=> "Lag faktura",
 "invoiceProject" 		=> "Prosjekter:",
@@ -363,6 +368,7 @@ $kga['lang']['ext_invoice'] = array(
 'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
 
+)
 );
 
 

@@ -7,13 +7,6 @@
 
 require('includes/basics.php');
 
-if (!isset($kga['conf']['lang']) || $kga['conf']['lang'] == "") {
-    $language = $kga['language'];
-} else {
-    $language = $kga['conf']['lang'];
-}
-require_once( "language/${language}.php" );
-
 $p = $kga['server_prefix'];
 
 /**

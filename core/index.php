@@ -39,17 +39,7 @@ $tpl->compile_dir  = 'compile/';
 // =====================
 // = standard includes =
 // =====================
-
-if (file_exists(realpath(dirname(__FILE__).'/includes/autoconf.php'))) {
-    require('includes/autoconf.php');
-    require('includes/vars.php');
-    require('includes/func.php');   
-    require("includes/connect_".$kga['server_conn'].".php");
-    require(sprintf("language/%s.php",$kga['language']));
-}else{
-    header("Location: error.php");
-    exit;
-}
+require('includes/basics.php');
 
 // =====================================
 // = send kimai-global-array to smarty =

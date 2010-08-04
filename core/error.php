@@ -29,13 +29,7 @@ $tpl = new Smarty();
 $tpl->template_dir = 'templates/misc/';
 $tpl->compile_dir  = 'compile/';
 
-if(file_exists('includes/autoconf.php')){
-    require('includes/autoconf.php');
-    require('includes/vars.php');
-    include(sprintf("language/%s.php",$kga['language']));
-}else{
-    die("no config file!");
-}
+require('includes/basics.php');
 
 //switch ($_REQUEST['err']) {
     
