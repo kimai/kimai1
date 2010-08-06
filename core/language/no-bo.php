@@ -339,7 +339,6 @@ return array(
 'by'                    => 'av',
 'done_by'               => 'utført av',
 'duration'              => 'Varighet',
-'hide_cleared_entries'  => 'don\'t show cleared entries',
 'customer_new_page'     => 'new page for each customer',
 
 'times_and_expenses' => 'times and expenses',

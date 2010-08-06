@@ -28,7 +28,7 @@ include('private_db_layer_'.$kga['server_conn'].'.php');
  * @param int $limitCommentSize should comments be cut off, when they are too long
  * @return array with time recordings and expenses chronologically sorted
  */
-function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$reverse_order=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true) {
+function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$reverse_order=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true,$filter_refundable=-1) {
   global $expense_ext_available;
 
     $zef_arr = array();
@@ -38,7 +38,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order);
     
     if ($filter_type != 0 && $expense_ext_available)
-      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order);
+      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order,$filter_refundable);
 
     $result_arr = array();
 
@@ -91,7 +91,6 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['knd_name']       = $exp_arr[$exp_arr_index]['knd_name'];
         $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
         $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
-        $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
         if ($limitCommentSize)
           $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
         else
@@ -149,6 +148,10 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['id']             = $exp_arr[$exp_arr_index]['exp_ID'];
       $arr['time_in']        = $exp_arr[$exp_arr_index]['exp_timestamp'];
       $arr['time_out']       = $exp_arr[$exp_arr_index]['exp_timestamp'];
+      $arr['zef_time']       = null;
+      $arr['zef_apos']       = null;
+      $arr['dec_zef_time']   = null;
+      $arr['zef_rate']       = null;
       $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value']*$exp_arr[$exp_arr_index]['exp_multiplier'];
       $arr['pct_kndID']      = $exp_arr[$exp_arr_index]['pct_kndID'];
       $arr['knd_name']       = $exp_arr[$exp_arr_index]['knd_name'];

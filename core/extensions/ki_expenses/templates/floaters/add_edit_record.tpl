@@ -94,23 +94,33 @@
                    </li>
 
                    
-{* -------------------------------------------------------------------- *}       
-        
+{* -------------------------------------------------------------------- *}
+
+
+					<li>
+                        <label for="erase">{$kga.lang.refundable_long}:</label>
+                        <input type='checkbox' id='refundable' name='refundable' {if $refundable} checked="checked" {/if} tabindex='12'/>
+                   </li>
+                   
+                   
+{* -------------------------------------------------------------------- *}    
+
+
                    <li>
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='12'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
                    </li>
                    
                    <li>
                        <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="13" >
+                       <select id="comment_type" class="formfield" name="comment_type" tabindex="14" >
                            {html_options values=$comment_values output=$comment_types selected=$comment_active}
                        </select>
                    </li>
                    
                     <li>
                         <label for="erase">{$kga.lang.erase}:</label>
-                        <input type='checkbox' id='erase' name='erase' tabindex='14'/>
+                        <input type='checkbox' id='erase' name='erase' tabindex='15'/>
                    </li>
         
                 </ul>

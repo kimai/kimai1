@@ -216,6 +216,7 @@ $query=
   `exp_designation` text NOT NULL,
   `exp_comment` text NOT NULL,
   `exp_comment_type` tinyint(1) NOT NULL DEFAULT '0',
+  `exp_refundable` tinyint(1) unsigned NOT NULL default '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)',
   `exp_cleared` tinyint(1) NOT NULL DEFAULT '0',
   `exp_multiplier` decimal(10,2) NOT NULL DEFAULT '1',
   `exp_value` decimal(10,2) NOT NULL DEFAULT '0.00',

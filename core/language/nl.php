@@ -327,7 +327,6 @@ return array(
 'by'                    => 'door',
 'done_by'               => 'gedaan door',
 'duration'              => 'Tijdsduur',
-'hide_cleared_entries'  => 'verberg betaalde invoer',
 'customer_new_page'     => 'nieuwe pagina voor elke klant',
 
 'times_and_expenses' => 'times and expenses',

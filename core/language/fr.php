@@ -332,7 +332,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'by'                    => 'par',
 'done_by'               => 'r&eacute;alise par',
 'duration'              => 'Dur&eacute;e',
-'hide_cleared_entries'  => 'don\'t show cleared entries',
 'customer_new_page'     => 'new page for each customer',
 
 'times_and_expenses' => 'times and expenses',

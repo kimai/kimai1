@@ -39,9 +39,10 @@ if ($axAction == 'export_csv'  ||
 
   $reverse_order = isset($_REQUEST['reverse_order']);
   
-  $filter_cleared = $_REQUEST['filter_cleared'];
-  $filter_type    = $_REQUEST['filter_type'];
-
+  $filter_cleared     = $_REQUEST['filter_cleared'];
+  $filter_refundable  = $_REQUEST['filter_refundable'];
+  $filter_type        = $_REQUEST['filter_type'];
+  
   $filters = explode('|',$axValue);
 
   if ($filters[0] == "")
@@ -116,8 +117,7 @@ switch ($axAction) {
     // = Load data and return it =
     // ===========================
     case 'reload':
-
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type);
+    	$arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
@@ -151,7 +151,7 @@ switch ($axAction) {
      */
     case 'export_html':       
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
@@ -168,7 +168,7 @@ switch ($axAction) {
      */
     case 'export_xls':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         for ($i=0;$i<count($arr_data);$i++) {
           $arr_data[$i]['dec_zef_time'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['dec_zef_time']);
           $arr_data[$i]['zef_rate'] = str_replace(".",$_REQUEST['decimal_separator'],$arr_data[$i]['zef_rate']);
@@ -191,7 +191,7 @@ switch ($axAction) {
      */
     case 'export_csv':        
        
-        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
+        $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
 
@@ -280,8 +280,8 @@ switch ($axAction) {
      * Export as tabular PDF document.
      */
     case 'export_pdf':
-       
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
+
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
       require('export_pdf.php');
     break;
 
@@ -292,7 +292,7 @@ switch ($axAction) {
      */
     case 'export_pdf2':
        
-      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false);
+      $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();

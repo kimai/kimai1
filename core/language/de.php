@@ -165,6 +165,10 @@ return array(
 
 "ac"                => "Automatisch fortgesetzter Eintrag.",
 "ac_error"          => "Automatisch fortgesetzter Eintrag mit Fehler (Zeitraum zu lang).",
+"refundable_long"   => "Rückerstattbar (Mitarbeiter)",
+"refundable"        => "Rückerstattbar",
+"yes"               => "ja",
+"no"                => "nein",
 "comment_type"      => "Kommentar-Art",
 "ctype0"            => "Kommentar",
 "ctype1"            => "Notiz",
@@ -345,13 +349,19 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "timeformat"	     	   => "Zeitformat",
 "dateformat"			   => "Datumsformat",
 
+"filter"	 		       => "Filter",
+
+"refundable_all"	 	   => "alle",
+"refundable_refundable"    => "nur rückerstattbare",
+"refundable_not_refundable"=> "nur nicht rückerstattbare",
+
 "print_comment"   		   => "Kommentare ausgeben",
 "print_summary"   		   => "Zusammenfassung ausgeben",
 "create_bookmarks"		   => "Lesezeichen erstellen",
 "download_pdf"    		   => "PDF-Datei downloaden",
-"pdf_format"             => "Format",
-"export_pdf"             => "tabelarisch",
-"export_pdf2"            => "Liste",
+"pdf_format"               => "Format",
+"export_pdf"               => "tabelarisch",
+"export_pdf2"              => "Liste",
 
 "column_delimiter"		   => "Trennzeichen für Spalten",
 "quote_char"      		   => "Begrenzungszeichen von Feldern",
@@ -365,6 +375,8 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 'subtotal'              => 'Zwischensumme',
 'finalamount'           => 'Endbetrag',
 'pdf_headline'          => 'Aufstellung zu Aufwänden und Auslagen',
+'pdf_headline_only_times'   => 'Aufstellung zu Aufwänden',
+'pdf_headline_only_expenses'=> 'Aufstellung zu Auslagen',
 'costs'                 => 'Kosten',
 'expense'               => 'Auslage',
 'summary'               => 'Zusammenfassung',
@@ -373,7 +385,6 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 'by'                    => 'von',
 'done_by'               => 'durchgeführt von',
 'duration'              => 'Dauer',
-'hide_cleared_entries'  => 'bezahlte Einträge nicht anzeigen',
 'customer_new_page'     => 'Kunden jeweils auf neue Seite',
 
 'times_and_expenses' => 'Zeiten und Auslagen',

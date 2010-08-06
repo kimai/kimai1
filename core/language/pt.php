@@ -596,8 +596,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 'duration'              => 'Duração',
 
-'hide_cleared_entries'  => 'don\'t show cleared entries',
-
 'customer_new_page'     => 'new page for each customer',
 
 'times_and_expenses' => 'times and expenses',

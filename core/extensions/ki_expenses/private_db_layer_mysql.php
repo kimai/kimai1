@@ -38,6 +38,7 @@ function exp_create_record($usr_ID,$data) {
     $values ['exp_multiplier']   =   MySQL::SQLValue( $data ['exp_multiplier']   , MySQL::SQLVALUE_NUMBER );
     $values ['exp_value']        =   MySQL::SQLValue( $data ['exp_value']        , MySQL::SQLVALUE_NUMBER );
     $values ['exp_usrID']        =   MySQL::SQLValue( $usr_ID                    , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_refundable']   =   MySQL::SQLValue( $data ['exp_refundable']   , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."exp";
     return $conn->InsertRow($table, $values);    
@@ -101,8 +102,9 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
  */
 
 // TODO: Test it!
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order=false) {
+function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null, $limit=false, $reverse_order=false, $filter_refundable = -1) {
     global $kga,$conn;
+    $p     = $kga['server_prefix'];
     
     $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
     $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
@@ -117,6 +119,17 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     if ($end)
       $whereClauses[]="exp_timestamp <= $end";
 
+    switch ($filter_refundable) {
+    	case 0:
+    		$whereClauses[] = "exp_refundable > 0";
+    		break;
+    	case 1:
+    		$whereClauses[] = "exp_refundable <= 0";
+    		break;
+    	case -1:
+    	default:
+    		// return all expenses - refundable and non refundable
+    }
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
             $limit = "LIMIT " .$kga['conf']['rowlimit'];
@@ -126,11 +139,13 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-    $query = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, usr_name, exp_cleared
-             FROM " . $kga['server_prefix'] . "exp 
-             Join " . $kga['server_prefix'] . "pct ON exp_pctID = pct_ID
-             Join " . $kga['server_prefix'] . "knd ON pct_kndID = knd_ID
-             Join " . $kga['server_prefix'] . "usr ON exp_usrID = usr_ID "
+    $query = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID,
+              knd_name, pct_kndID, pct_name, exp_comment, exp_refundable,
+              exp_comment_type, usr_name, exp_cleared
+             FROM ${p}exp 
+             Join ${p}pct ON exp_pctID = pct_ID
+             Join ${p}knd ON pct_kndID = knd_ID
+             Join ${p}usr ON exp_usrID = usr_ID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
              ' ORDER BY exp_timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";";
     
@@ -142,21 +157,22 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     $conn->MoveFirst();
     while (! $conn->EndOfSeek()) {
       $row = $conn->Row();
-      $arr[$i]['exp_ID']           = $row->exp_ID;
-      $arr[$i]['exp_timestamp']    = $row->exp_timestamp;
-      $arr[$i]['exp_multiplier']   = $row->exp_multiplier;
-      $arr[$i]['exp_value']        = $row->exp_value;
-      $arr[$i]['exp_pctID']        = $row->exp_pctID;
-      $arr[$i]['exp_designation']  = $row->exp_designation;
-      $arr[$i]['exp_usrID']        = $row->exp_usrID;
-      $arr[$i]['pct_ID']           = $row->pct_ID;
-      $arr[$i]['knd_name']         = $row->knd_name;
-      $arr[$i]['pct_kndID']        = $row->pct_kndID;
-      $arr[$i]['pct_name']         = $row->pct_name;
-      $arr[$i]['exp_comment']      = $row->exp_comment;
-      $arr[$i]['exp_comment_type'] = $row->exp_comment_type;
-      $arr[$i]['usr_name']         = $row->usr_name;
-      $arr[$i]['exp_cleared']      = $row->exp_cleared;
+      $arr[$i]['exp_ID']             = $row->exp_ID;
+      $arr[$i]['exp_timestamp']      = $row->exp_timestamp;
+      $arr[$i]['exp_multiplier']     = $row->exp_multiplier;
+      $arr[$i]['exp_value']          = $row->exp_value;
+      $arr[$i]['exp_pctID']          = $row->exp_pctID;
+      $arr[$i]['exp_designation']    = $row->exp_designation;
+      $arr[$i]['exp_usrID']          = $row->exp_usrID;
+      $arr[$i]['pct_ID']             = $row->pct_ID;
+      $arr[$i]['knd_name']           = $row->knd_name;
+      $arr[$i]['pct_kndID']          = $row->pct_kndID;
+      $arr[$i]['pct_name']           = $row->pct_name;
+      $arr[$i]['exp_comment']        = $row->exp_comment;
+      $arr[$i]['exp_comment_type']   = $row->exp_comment_type;
+      $arr[$i]['exp_refundable']     = $row->exp_refundable;
+      $arr[$i]['usr_name']           = $row->usr_name;
+      $arr[$i]['exp_cleared']        = $row->exp_cleared;
       $i++;
     }
     
@@ -250,6 +266,7 @@ function exp_edit_record($id,$data) {
     $values ['exp_timestamp']    = MySQL::SQLValue($new_array ['exp_timestamp']   , MySQL::SQLVALUE_NUMBER );
     $values ['exp_multiplier']   = MySQL::SQLValue($new_array ['exp_multiplier']  , MySQL::SQLVALUE_NUMBER );
     $values ['exp_value']        = MySQL::SQLValue($new_array ['exp_value']       , MySQL::SQLVALUE_NUMBER );
+    $values ['exp_refundable']   = MySQL::SQLValue($new_array ['exp_refundable']  , MySQL::SQLVALUE_NUMBER );
                                    
     $filter ['exp_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."exp";

@@ -9,6 +9,7 @@
               <col class="date" />
               <col class="time" />
               <col class="value" />
+              <col class="refundable" />
               <col class="client" />
               <col class="project" />
               <col class="designation" />
@@ -98,6 +99,22 @@
                     ">
                         {$arr_exp[row].exp_value*$arr_exp[row].exp_multiplier|number_format:2:$kga.conf.decimalSeparator:""}
                     </td>
+                    
+
+{*refundable -------------------------------------------------*}
+
+                    <td class="refundable
+                                            {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                                                {if $kga.show_daySeperatorLines}break_day{/if}
+                                            {else}
+                                                {if $arr_exp[row].zef_out != $exp_timestamp_buffer}
+                                                    {if $kga.show_gabBreaks}break_gap{/if}
+                                                {/if}
+                                            {/if}
+                    ">
+                            {if $arr_exp[row].exp_refundable} {$kga.lang.yes} {else} {$kga.lang.no} {/if}
+                    </td>
+
 
 {*client name --------------------------------------------------*}
 
@@ -153,7 +170,7 @@
     {/if}
 {/if}
                     </td>
-
+                    
                 </tr>
                 
                 <tr id="exp_c{$arr_exp[row].exp_ID}" class="comm{$arr_exp[row].exp_comment_type}" style="display:none;">

@@ -28,7 +28,7 @@ class MYPDF extends TCPDF {
     if ($number == -1)
       return "-------";
     else
-      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
+      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
   /**
@@ -39,7 +39,7 @@ class MYPDF extends TCPDF {
   public function money($number) {
     global $kga;
     if ($kga['conf']['currency_first'])
-      return $kga['currency_sign']." ".str_replace(".",",",sprintf("%01.2f",$number));
+      return $kga['currency_sign']." ".str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number));
     else
       return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
@@ -117,8 +117,6 @@ class MYPDF extends TCPDF {
     $moneySum = 0;
     $timeSum = 0;
     foreach($data as $row) {
-      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
-        continue;
 
       $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
       // check if page break is nessessary
@@ -140,7 +138,7 @@ class MYPDF extends TCPDF {
         $this->SetFont(''); 
       }
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-      $this->Cell($w[1], 6, htmlspecialchars_decode($row['evt_name']), 'LR', 0, 'L', $fill);    
+      $this->Cell($w[1], 6, htmlspecialchars_decode($row['knd_name'] . ' - ' . $row['evt_name']), 'LR', 0, 'L', $fill);    
       
       $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
       if ($this->columns['wage']) {
@@ -151,18 +149,34 @@ class MYPDF extends TCPDF {
         
       //Kommentar anzeigen:
       if ( $show_comment ) {
-        $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
-        $this->SetFont('', 'I'); 
-        $this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
-        $this->SetFont(''); 
-        $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
-
-        if ($this->columns['wage']) {
-          $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
-        }
-        $this->Ln(); 
-        }
-      $fill=!$fill; 
+             // comment line width
+             $comment_line_width = 58;
+             // split comment in lines
+             $comment_lines = explode("\n", wordwrap(stripslashes($row['comment']), $comment_line_width, "\n", true));
+       // loop through all comment lines an add a cell for each line
+             if (is_array($comment_lines)) {
+               // determine font sizes to work with
+               $current_font_size = $this->getFontSizePt();
+               if ($current_font_size <= 0) {
+                 $current_font_size = 12;
+               }
+               $comment_font_size = $current_font_size - 2;
+               foreach ($comment_lines as $comment_line) {
+                 $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
+           $this->SetFont('', 'I', $comment_font_size); 
+           //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
+           $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
+           $this->SetFont('', '', $current_font_size); 
+           $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
+           
+           if ($this->columns['wage']) {
+             $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
+           }
+           $this->Ln();
+               }
+             }
+     }
+     $fill=!$fill; 
       $moneySum+=$row['wage'];
       $timeSum += $row['dec_zef_time']==-1?0:$row['dec_zef_time']; 
         
@@ -253,23 +267,59 @@ $pdf->columns = $columns;
 $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
 
+// determine page title
+switch ($filter_type) {
+ case 0:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_times'];
+   break;
+ case 1:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_expenses'];
+   break;
+ case -1:
+ default:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline'];
+}
+// determine filter values
+switch ($filter_cleared) {
+ case 0:
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_cleared'];
+   break;
+ case 1:
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_open'];
+   break;
+}
+
+switch ($filter_refundable) {
+ case 0:
+   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_refundable'];
+   break;
+ case 1:
+   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_not_refundable'];
+   break;
+}
+
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle($kga['lang']['xp_ext']['pdf_headline']);
+$pdf->SetTitle($pdf_title);
 $pdf->setPrintHeader(false); 
 $pdf->AddPage();
 
 if (isset($_REQUEST['create_bookmarks']))
-  $pdf->Bookmark($kga['lang']['xp_ext']['pdf_headline'], 0, 0);
+  $pdf->Bookmark($pdf_title, 0, 0);
 
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
 
 
 
-$pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
+$pdf->WriteHtml('<h1>' . $pdf_title . '</h1>');
 $pdf->ln();
 
 $pdf->WriteHtml('<b>'.$kga['lang']['xp_ext']['time_period'].':</b> '.
 strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
+
+if (isset($pdf_filter)) {
+  $pdf->ln();
+  $pdf->WriteHtml('<b>' . $kga['lang']['xp_ext']['filter'] . ':</b> ' . implode(' | ', $pdf_filter));
+}
 
 if (!empty($_REQUEST['document_comment'])) {
   $pdf->ln();
@@ -283,16 +333,13 @@ if (isset($_REQUEST['print_summary'])) {
   $exp_summary = array();
   foreach ($arr_data as $one_entry) {
 
-    if (isset($_POST['hide_cleared_entries']) && $one_entry['cleared'])
-      continue;
-
     if ($one_entry['type'] == 'zef') {
       if (isset($zef_summary[$one_entry['zef_evtID']])) {
         $zef_summary[$one_entry['zef_evtID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
         $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Euro
       }
       else {
-        $zef_summary[$one_entry['zef_evtID']]['name']         = $one_entry['evt_name'];
+        $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
         $zef_summary[$one_entry['zef_evtID']]['time']         = $one_entry['dec_zef_time'];
         $zef_summary[$one_entry['zef_evtID']]['wage']         = $one_entry['wage'];
       }

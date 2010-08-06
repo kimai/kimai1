@@ -1024,6 +1024,12 @@ if ((int)$revisionDB < 1213) {
     exec_query("ALTER TABLE ${p}evt DROP `evt_logo`");
 }
 
+if ((int)$revisionDB < 1216) {
+    logfile("-- update to r1216");
+    exec_query("ALTER TABLE `${p}exp`
+  ADD `exp_refundable` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)' AFTER `exp_comment_type`;");
+}
+
 
 // ============================
 // = update DB version number =

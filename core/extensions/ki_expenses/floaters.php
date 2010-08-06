@@ -53,6 +53,7 @@ switch ($axAction) {
       $tpl->assign('pres_pct', $exp_entry['pct_ID']);
   
       $tpl->assign('comment_active', $exp_entry['exp_comment_type']);
+      $tpl->assign('refundable', $exp_entry['exp_refundable']);
 
     } else {
       
@@ -63,7 +64,7 @@ switch ($axAction) {
       $tpl->assign('edit_time',  date("H:i:s"));
 
     }
-
+    
     $tpl->assign('comment_types', $comment_types);
     $tpl->assign('comment_values', array('0','1','2'));
 

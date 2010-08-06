@@ -17,11 +17,16 @@
 						  <option value="0">{$kga.lang.xp_ext.cleared_cleared}</option>
 						  <option value="1">{$kga.lang.xp_ext.cleared_open}</option>
 						</select>
-            <select id="xp_ext_tab_filter_type" name="type" onChange="xp_ext_reload()">
-              <option value="-1" selected="selected">{$kga.lang.xp_ext.times_and_expenses}</option>
-              <option value="0">{$kga.lang.xp_ext.times}</option>
-              <option value="1">{$kga.lang.xp_ext.expenses}</option>
-            </select>
+						<select id="xp_ext_tab_filter_refundable" name="refundable" onChange="xp_ext_reload()">
+						  <option value="-1" selected="selected">{$kga.lang.xp_ext.refundable_all}</option>
+						  <option value="0">{$kga.lang.xp_ext.refundable_refundable}</option>
+						  <option value="1">{$kga.lang.xp_ext.refundable_not_refundable}</option>
+						</select>
+                        <select id="xp_ext_tab_filter_type" name="type" onChange="xp_ext_reload()">
+                         <option value="-1" selected="selected">{$kga.lang.xp_ext.times_and_expenses}</option>
+                         <option value="0">{$kga.lang.xp_ext.times}</option>
+                         <option value="1">{$kga.lang.xp_ext.expenses}</option>
+                       </select>
 					</div>
 					
 					<div id="xp_ext_tab_timeformat">

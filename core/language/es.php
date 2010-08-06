@@ -334,7 +334,6 @@ Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo pa
 'by'                    => 'por',
 'done_by'               => 'realizado por',
 'duration'              => 'Duración',
-'hide_cleared_entries'  => 'don\'t show cleared entries',
 'customer_new_page'     => 'new page for each customer',
 
 'times_and_expenses' => 'times and expenses',

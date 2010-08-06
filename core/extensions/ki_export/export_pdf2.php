@@ -30,16 +30,7 @@ class MYPDF extends TCPDF {
       return "-------";
     else
       return strftime($this->time_format,$number);
-  } 
-
-  // format decimal time
-  public function timespan($number) {
-    global $kga;
-    if ($number == -1)
-      return "-------";
-    else
-      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
-  } 
+  }
 
 
   /**
@@ -52,7 +43,7 @@ class MYPDF extends TCPDF {
     if ($number == -1)
       return "-------";
     else
-      return str_replace(".",",",sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
+      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
   } 
 
   /**
@@ -63,7 +54,7 @@ class MYPDF extends TCPDF {
   public function money($number) {
     global $kga;
     if ($kga['conf']['currency_first'])
-      return $kga['currency_sign']." ".str_replace(".",",",sprintf("%01.2f",$number));
+      return $kga['currency_sign']." ".str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number));
     else
       return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
   }
@@ -133,8 +124,6 @@ class MYPDF extends TCPDF {
     $this->moneySum = 0;
     $this->timeSum = 0;
     foreach($data as $row) {
-      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
-        continue; 
       if ($row['type'] == "exp") {
         $this->printExpenseRow($columns,$widths,$row);
         $this->moneySum+=$row['wage'];
@@ -533,24 +522,60 @@ $pdf->time_format = $timeformat;
 $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
 
+// determine page title
+switch ($filter_type) {
+ case 0:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_times'];
+   break;
+ case 1:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_expenses'];
+   break;
+ case -1:
+ default:
+   $pdf_title = $kga['lang']['xp_ext']['pdf_headline'];
+}
+// determine filter values
+switch ($filter_cleared) {
+ case 0:
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_cleared'];
+   break;
+ case 1:
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_open'];
+   break;
+}
+
+switch ($filter_refundable) {
+ case 0:
+   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_refundable'];
+   break;
+ case 1:
+   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_not_refundable'];
+   break;
+}
+
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle($kga['lang']['xp_ext']['pdf_headline']);
+$pdf->SetTitle($pdf_title);
 $pdf->setPrintHeader(false); 
 $pdf->AddPage();
 
 $pdf->setFont('helvetica');
 
 if (isset($_REQUEST['create_bookmarks']))
-  $pdf->Bookmark($kga['lang']['xp_ext']['pdf_headline'], 0, 0);
+  $pdf->Bookmark($pdf_title, 0, 0);
 
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
 
 
-$pdf->WriteHtml('<h1>'.$kga['lang']['xp_ext']['pdf_headline'].'</h1>');
+$pdf->WriteHtml('<h1>'.$pdf_title.'</h1>');
 $pdf->ln();
 
 $pdf->WriteHtml('<b>'.$kga['lang']['xp_ext']['time_period'].':</b> '.
 strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
+
+if (isset($pdf_filter)) {
+  $pdf->ln();
+  $pdf->WriteHtml('<b>' . $kga['lang']['xp_ext']['filter'] . ':</b> ' . implode(' | ', $pdf_filter));
+}
 
 if (!empty($_REQUEST['document_comment'])) {
   $pdf->ln();
@@ -646,10 +671,6 @@ foreach ($pdf_arr_data as $customer) {
     // calculate maximum width for time and money
     // and add to summary array
     foreach ($customer[$project_id] as $row) {
-
-      if (isset($_POST['hide_cleared_entries']) && $row['cleared'])
-        continue;
-
 
       // maximum width calculation
       $max_money_width = max($max_money_width,$pdf->GetStringWidth($pdf->money($row['wage'])));

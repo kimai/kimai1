@@ -166,6 +166,10 @@ return array(
 
 "ac"                => "Automatically continued entry.",
 "ac_error"          => "Automatically continued entry with error (timespan too long).",
+"refundable_long"   => "Refundable (to employee)",
+"refundable"        => "Refundable",
+"yes"               => "yes",
+"no"                => "no",
 "comment_type"      => "Comment type",
 "ctype0"            => "Comment",
 "ctype1"            => "Notice",
@@ -355,14 +359,20 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "stdrd_location"  		   => "Standard-Location",
 "timeformat"	     	   => "Timeformat",
 "dateformat"			   => "Dateformat",
+
+"filter"	 		       => "Filter",
+
+"refundable_all"	 	   => "all",
+"refundable_refundable"    => "only refundable",
+"refundable_not_refundable"=> "only non refundable",
                               
 "print_comment"   		   => "print comments",
 "print_summary"   		   => "print summary",
 "create_bookmarks"		   => "create bookmarks",
 "download_pdf"    		   => "download as PDF",
-"pdf_format"             => "format",
-"export_pdf"             => "table",
-"export_pdf2"            => "list",
+"pdf_format"               => "format",
+"export_pdf"               => "table",
+"export_pdf2"              => "list",
                               
 "column_delimiter"		   => "delimiter for columns",
 "quote_char"      		   => "boundary character for fields",
@@ -376,6 +386,8 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'subtotal'              => 'Sub Total',
 'finalamount'           => 'Total',
 'pdf_headline'          => 'List of working time and expenses',
+'pdf_headline_only_times'   => 'List of working time',
+'pdf_headline_only_expenses'=> 'List of expenses',
 'costs'                 => 'Costs',
 'expense'               => 'Expense',
 'summary'               => 'Summary',
@@ -384,7 +396,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'by'                    => 'by',
 'done_by'               => 'done by',
 'duration'              => 'Duration',
-'hide_cleared_entries'  => 'don\'t show cleared entries',
 'customer_new_page'     => 'new page for each customer',
 
 'times_and_expenses' => 'times and expenses',
@@ -392,7 +403,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'expenses' => 'expenses',
 
 'reverse_order' => 'older entries first',
-'time_period'  => 'time period',
+'time_period'  => 'Time period',
 
 'duration_unit' => 'h',
 

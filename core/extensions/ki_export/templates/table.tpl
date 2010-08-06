@@ -10,6 +10,7 @@
               <col class="to" />
               <col class="time" />
               <col class="dec_time" />
+              <col class="rate" />
               <col class="wage" />
               <col class="client" />
               <col class="project" />

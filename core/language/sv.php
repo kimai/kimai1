@@ -334,7 +334,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'by'                    => 'av',
 'done_by'               => 'utförd av',
 'duration'              => 'Varaktighet',
-'hide_cleared_entries'  => 'visa inte markerade poster',
 'customer_new_page'     => 'ny sida för varje kund',
  
 'times_and_expenses' => 'times and expenses',

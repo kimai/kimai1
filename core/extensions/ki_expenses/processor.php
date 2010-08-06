@@ -81,6 +81,7 @@ switch ($axAction) {
       $data['exp_value']        = $_REQUEST['edit_value'];
       $data['exp_comment']      = $_REQUEST['comment'];
       $data['exp_comment_type'] = $_REQUEST['comment_type'];
+      $data['exp_refundable']   = isset($_REQUEST['refundable']);
       $data['erase']            = isset($_REQUEST['erase']);
 
 
