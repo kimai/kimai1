@@ -118,7 +118,6 @@ return array(
 "database"          => "Database",
 "options"           => "Opties",
 "status"            => "Status",
-"mode"              => "demo mode = 0 / normal mode (users have to logon) = 1",
 "adminmail"         => "E-mailadres van de administrator",
 "logintries"        => "aantal foutieve inlogpogingne voordat gebruiker wordt geblokkeerd",
 "bantime"           => "login geblokkeerd in seconden",

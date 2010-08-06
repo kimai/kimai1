@@ -118,7 +118,6 @@ return array(
 "database"          => "Datenbank",
 "options"           => "Optionen",
 "status"            => "Status",
-"mode"              => "demo mode = 0 / normal mode (Benutzer müssen sich Anmelden) = 1",
 "adminmail"         => "eMail-Adresse des Administrators",
 "logintries"        => "Mögliche Loginversuche, bevor der Account gesperrt wird",
 "bantime"           => "Zeit in Sekunden für die der Account gesperrt wird",

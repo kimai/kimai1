@@ -65,7 +65,6 @@ switch ($axAction) {
                 $tpl->assign('knd_homepage' , $data['knd_homepage']);
                 $tpl->assign('knd_visible'  , $data['knd_visible' ]);
                 $tpl->assign('knd_filter'   , $data['knd_filter'  ]);
-                $tpl->assign('knd_logo'     , $data['knd_logo'    ]);
                 $tpl->assign('grp_selection', knd_get_grps($id));
                 $tpl->assign('id', $id);
             }
@@ -98,7 +97,6 @@ switch ($axAction) {
                 $tpl->assign('pct_comment'     , $data['pct_comment'     ]);
                 $tpl->assign('pct_visible'     , $data['pct_visible'     ]);
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
-                $tpl->assign('pct_logo'        , $data['pct_logo'        ]);
                 $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
@@ -142,7 +140,6 @@ switch ($axAction) {
                 $tpl->assign('evt_comment'     , $data['evt_comment'     ]);
                 $tpl->assign('evt_visible'     , $data['evt_visible'     ]);
                 $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
-                $tpl->assign('evt_logo'        , $data['evt_logo'        ]);
                 $tpl->assign('evt_default_rate', $data['evt_default_rate']);
                 $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
                 $tpl->assign('grp_selection', evt_get_grps($id));

@@ -130,7 +130,6 @@ return array(
 "database"          => "Database",
 "options"           => "Alternativer",
 "status"            => "Status",
-"mode"              => "test modus = 0 / normal modus (brukere må logge på) = 1",
 "adminmail"         => "e-post adressen til administrator",
 "logintries"        => "antall mislykkede pålogginger før brukeren blir utestengt",
 "bantime"           => "sperret for adgang til å logge inn i sekunder",

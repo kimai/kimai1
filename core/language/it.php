@@ -118,7 +118,6 @@ return array(
 "database"          => "Database",
 "options"           => "Options",
 "status"            => "Status",
-"mode"              => "demo mode = 0 / normal mode (users have to logon) = 1",
 "adminmail"         => "email address of administrator",
 "logintries"        => "number of false logins before user gets banned",
 "bantime"           => "login bantime in seconds",

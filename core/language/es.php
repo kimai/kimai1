@@ -119,7 +119,6 @@ return array(
 "database"          => "Base de datos",
 "options"           => "Opciones",
 "status"            => "Estado",
-"mode"              => "modo demo = 0 / modo normal (usuarios pueden entrar) = 1",
 "adminmail"         => "dirección de email del administrador",
 "logintries"        => "Número de intentos de inicio en el sistema antes de banear el usuario",
 "bantime"           => "Tiempo de baneo de sesión en segundos",

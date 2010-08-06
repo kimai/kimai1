@@ -219,7 +219,6 @@ switch ($axAction) {
             	$data['knd_homepage'] = $_REQUEST['knd_homepage'];
             	$data['knd_visible']  = $_REQUEST['knd_visible'];
             	$data['knd_filter']   = $_REQUEST['knd_filter'];
-            	$data['knd_logo']     = $_REQUEST['knd_logo'];
         
               // If password field is empty dont overwrite the password.
               if ($_REQUEST['knd_password'] != "") {
@@ -247,7 +246,6 @@ switch ($axAction) {
               $data['pct_comment']      = $_REQUEST['pct_comment'];
               $data['pct_visible']      = $_REQUEST['pct_visible'];
               $data['pct_filter']       = $_REQUEST['pct_filter'];
-              $data['pct_logo']         = $_REQUEST['pct_logo'];
               $data['pct_budget']       = $_REQUEST['pct_budget'];
               $data['pct_default_rate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
@@ -274,7 +272,6 @@ switch ($axAction) {
               $data['evt_comment']      = $_REQUEST['evt_comment'];
               $data['evt_visible']      = $_REQUEST['evt_visible'];
               $data['evt_filter']       = $_REQUEST['evt_filter'];
-              $data['evt_logo']         = $_REQUEST['evt_logo'];
               $data['evt_default_rate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_default_rate']);
               $data['evt_my_rate']      = 

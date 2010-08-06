@@ -118,7 +118,6 @@ return array(
 "database"          => "Base de donn&eacute;es",
 "options"           => "Options",
 "status"            => "Etat",
-"mode"              => "mode d&eacute;mo = 0 / mode normal (les utilisateurs doivent se connecter) = 1",
 "adminmail"         => "adresse email de l'administrateur",
 "logintries"        => "nombre de mauvaises tentatives de connexion autoris&eacute; avant de bloquer l'utilisateur",
 "bantime"           => "dur&eacute;e du bloquage en secondes",

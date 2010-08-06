@@ -410,8 +410,7 @@ function buzzer() {
         recstate=0;
         stopRecord();
     } else {
-        now = new Date();
-        setTimespace(0,0,0,now.getDate(),now.getMonth()+1,now.getFullYear());
+        setTimespace(undefined,new Date());
         startRecord(selected_pct,selected_evt,usr_ID);
         recstate=1;
     }

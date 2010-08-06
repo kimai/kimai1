@@ -240,8 +240,6 @@ return array(
 
 "status"            => "Estado",
 
-"mode"              => "modo demo = 0 / modo normal (utilizadores terão de fazer o login) = 1",
-
 "adminmail"         => "endereço de e-mail do administrador",
 
 "logintries"        => "número de falsos logins antes do utilizador ser banido",

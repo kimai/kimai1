@@ -121,7 +121,6 @@ return array(
 "database"          => "Databas",
 "options"           => "Alternativ",
 "status"            => "Status",
-"mode"              => "demonstrations läge = 0 / normalt läge (användare måste logga in) = 1",
 "adminmail"         => "mejl adress till administratören",
 "logintries"        => "antal felaktiga inloggningar inan användaren blir bannlyst",
 "bantime"           => "Bannlyst inloggning i sekunder",
