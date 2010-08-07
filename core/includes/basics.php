@@ -11,6 +11,8 @@
 if (!defined('WEBROOT'))
     define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
+require(WEBROOT.'includes/5.3.functions.php');
+
 require(WEBROOT.'includes/autoconf.php');
 if (!$server_hostname) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
 require(WEBROOT.'includes/vars.php');
