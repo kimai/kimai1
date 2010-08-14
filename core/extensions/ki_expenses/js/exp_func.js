@@ -94,6 +94,7 @@ function exp_ext_set_TableWidths() {
 }
 
 function exp_ext_triggerchange() {
+    $('#display_total').html(exp_total);
     if (exp_tss_hook_flag) {
         exp_ext_reload();
         exp_chk_hook_flag = 0;

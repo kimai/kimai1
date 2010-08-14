@@ -86,7 +86,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['zef_apos']       = null;
         $arr['dec_zef_time']   = null;
         $arr['zef_rate']       = null;
-        $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value']*$exp_arr[$exp_arr_index]['exp_multiplier'];
+        $arr['wage']           = sprintf("%01.2f",$exp_arr[$exp_arr_index]['exp_value']*$exp_arr[$exp_arr_index]['exp_multiplier']);
         $arr['pct_kndID']      = $exp_arr[$exp_arr_index]['pct_kndID'];
         $arr['knd_name']       = $exp_arr[$exp_arr_index]['knd_name'];
         $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
@@ -152,7 +152,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['zef_apos']       = null;
       $arr['dec_zef_time']   = null;
       $arr['zef_rate']       = null;
-      $arr['wage']           = $exp_arr[$exp_arr_index]['exp_value']*$exp_arr[$exp_arr_index]['exp_multiplier'];
+      $arr['wage']           = sprintf("%01.2f",$exp_arr[$exp_arr_index]['exp_value']*$exp_arr[$exp_arr_index]['exp_multiplier']);
       $arr['pct_kndID']      = $exp_arr[$exp_arr_index]['pct_kndID'];
       $arr['knd_name']       = $exp_arr[$exp_arr_index]['knd_name'];
       $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];

@@ -2385,8 +2385,6 @@ function get_user_config($user) {
       $kga['usr'][$key] = $value;
   }
 
-  $pdo_query->fetchAll();
-
   // get values from user configuration (user-preferences)
   $pdo_query = $pdo_conn->prepare("SELECT 
   `rowlimit`,
@@ -2422,8 +2420,6 @@ function get_user_config($user) {
   }
 
   date_default_timezone_set($kga['conf']['timezone']);
-
-            $pdo_query->fetchAll();
 }
 
 // -----------------------------------------------------------------------------------------------------------

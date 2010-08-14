@@ -13,6 +13,12 @@ if (!defined('WEBROOT'))
 
 require(WEBROOT.'includes/5.3.functions.php');
 
+if (!file_exists(WEBROOT.'includes/autoconf.php')) {
+  if (preg_match('|core/[^?]*\.php|',$_SERVER['PHP_SELF'])>0)
+    header('location:../error.php');
+  else
+    header('location:error.php');
+}
 require(WEBROOT.'includes/autoconf.php');
 if (!$server_hostname) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
 require(WEBROOT.'includes/vars.php');

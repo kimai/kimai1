@@ -207,7 +207,7 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('pct',{$arr_data[row].pct_ID},'{$arr_data[row].pct_name|replace:"'":"\\'"}',{$arr_data[row].pct_kndID},'{$arr_data[row].knd_name}'); 
+                            onClick="buzzer_preselect('pct',{$arr_data[row].pct_ID},'{$arr_data[row].pct_name|replace:"'":"\\'"}',{$arr_data[row].pct_kndID},'{$arr_data[row].knd_name|replace:"'":"\\'"}'); 
                             return false;">
                             {$arr_data[row].pct_name}
                             {if $kga.conf.pct_comment_flag == 1}

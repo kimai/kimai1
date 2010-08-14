@@ -4,10 +4,10 @@
  * This is used by all processor.php files. General setup stuff is done here.
  */
 
-// ==============
-// = Get config =
-// ==============
-require("autoconf.php");
+// ==================================
+// = implementing standard includes =
+// ==================================
+require("basics.php");
 
 if (!$isCoreProcessor) {
   $datasrc = "config.ini";
@@ -28,10 +28,6 @@ if ($isCoreProcessor) {
   $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';
 }
 
-// ==================================
-// = implementing standard includes =
-// ==================================
-include(WEBROOT . 'includes/basics.php');
 
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =

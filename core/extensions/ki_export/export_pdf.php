@@ -3,6 +3,9 @@ include('../../libraries/tcpdf/tcpdf.php');
 
 class MYPDF extends TCPDF { 
 
+  /**
+   * Widths of all columns
+   */
   var $w = array(); 
   var $print_time;
   var $date_format;
@@ -81,8 +84,10 @@ class MYPDF extends TCPDF {
         $this->SetLineWidth(0.3); 
         $this->SetFont('', 'B'); 
 
-    for($i = 0; $i < count($w); $i++) 
+    for($i = 0; $i < count($w); $i++) {
+          if ($w[$i] <= 0) continue;
           $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1); 
+     }
     $this->Ln(); 
   }
 
@@ -98,11 +103,14 @@ class MYPDF extends TCPDF {
     $this->GetStringWidth($this->dateformat(mktime(0,0,0,12,31,2000)))
     );
     $dateWidth += 4;
-    if ($this->columns['wage']) {
-      $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30-$dateWidth,30,30); 
+    $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-$dateWidth,0,0);
+    if (isset($this->columns['wage'])) {
+      $w[3] = 30;
+      $w[1] -= 30; 
     }
-    else {
-      $w = array($dateWidth, $this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-1*30-$dateWidth,30); 
+    if (isset($this->columns['dec_time'])) {
+      $w[2] = 30;
+      $w[1] -= 30; 
     }
 
     // Header 
@@ -122,11 +130,13 @@ class MYPDF extends TCPDF {
       // check if page break is nessessary
       if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
         $this->Cell(array_sum($w), 0, '', 'T');
-        if ($this->columns['wage']) { 
+        if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) { 
           $this->Ln();  
           $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
-          $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
-          $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
+          if (isset($this->columns['dec_time']))
+            $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
+          if (isset($this->columns['wage']))
+            $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
         }
         $this->Ln();  
         $this->AddPage();
@@ -140,10 +150,10 @@ class MYPDF extends TCPDF {
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
       $this->Cell($w[1], 6, htmlspecialchars_decode($row['knd_name'] . ' - ' . $row['evt_name']), 'LR', 0, 'L', $fill);    
       
-      $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
-      if ($this->columns['wage']) {
+      if (isset($this->columns['dec_time']))
+        $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
+      if (isset($this->columns['wage']))
         $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-      }
       $this->Ln(); 
         
         
@@ -167,11 +177,10 @@ class MYPDF extends TCPDF {
            //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
            $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
            $this->SetFont('', '', $current_font_size); 
-           $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
-           
-           if ($this->columns['wage']) {
-             $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
-           }
+            if (isset($this->columns['dec_time']))
+              $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
+            if (isset($this->columns['wage']))
+              $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
            $this->Ln();
                }
              }
@@ -184,11 +193,13 @@ class MYPDF extends TCPDF {
     $this->Cell(array_sum($w), 0, '', 'T'); 
     $this->Ln();
 
-    if ($this->columns['wage']) {
+    if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) {
       $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
       $this->SetFont('', 'B'); 
-      $this->Cell($w[2], 6, $this->timespan($timeSum), 'R', 0, 'R', true); 
-      $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
+      if (isset($this->columns['dec_time']))
+        $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
+      if (isset($this->columns['wage']))
+        $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
     }
   }
 
@@ -199,11 +210,14 @@ class MYPDF extends TCPDF {
     */
   public function ColoredTable_result($header,$data) {
     global $kga;
-    if ($this->columns['wage']) {
-      $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-2*30,30,30); 
+    $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm'],0,0);
+    if (isset($this->columns['wage'])) {
+      $w[2] = 30;
+      $w[0] -= 30;
     }
-    else {
-      $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm']-30,30);         
+    if (isset($this->columns['dec_time'])) {
+      $w[1] = 30;
+      $w[0] -= 30;
     }
         
     // Header 
@@ -223,8 +237,9 @@ class MYPDF extends TCPDF {
         $this->Cell(array_sum($w), 0, '', 'T'); 
         $this->Ln();  
         $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
-        $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
-        if ($this->columns['wage'])
+        if (isset($this->columns['dec_time']))
+          $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
+        if (isset($this->columns['wage']))
           $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
         $this->Ln();  
         $this->AddPage();
@@ -236,10 +251,10 @@ class MYPDF extends TCPDF {
         $this->SetFont(''); 
       }
       $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
-      $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
-      if ($this->columns['wage']) {
+      if (isset($this->columns['dec_time']))
+        $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+      if (isset($this->columns['wage']))
         $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-      }
       $this->Ln(); 
       $fill=!$fill; 
       $sum+=$row['wage'];
@@ -251,10 +266,10 @@ class MYPDF extends TCPDF {
 
     $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
     $this->SetFont('', 'B'); 
-    $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
-    if ($this->columns['wage']) {
+    if (isset($this->columns['dec_time']))
+      $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
+    if (isset($this->columns['wage']))
       $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-    }
   }
 
 }

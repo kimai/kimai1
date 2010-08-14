@@ -19,8 +19,6 @@
  * 
  */
 
-ob_start();
-
 // =============================
 // = Smarty (initialize class) =
 // =============================
@@ -29,27 +27,32 @@ $tpl = new Smarty();
 $tpl->template_dir = 'templates/misc/';
 $tpl->compile_dir  = 'compile/';
 
-require('includes/basics.php');
+if (!file_exists('includes/autoconf.php')) {
+       $headline = "Fatal Error!";
+       $message = "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.";
+}
+else {
+  if (!isset($_REQUEST['err']))
+    $_REQUEST['err'] = '';
 
-//switch ($_REQUEST['err']) {
-    
-//    default:
+  switch ($_REQUEST['err']) {
+
+    case 'db':
         $headline = $kga['lang']['errors'][0]['hdl'];
         $message  = $kga['lang']['errors'][0]['txt'];
-//    break;
-//}
+    break;
+      
+    default:
+        $headline = "Unknown Error";
+        $message = "No error information was specified.";
+    break;
+  }
+}
 
 $tpl->assign('headline', $headline);
 $tpl->assign('message', $message);
 
-// if the language-file could not be loaded this is a sure sign that something is wrong with the config...
-if (!is_array($kga['language'])) {
-    $tpl->assign('headline', "Fatal Error!");
-    $tpl->assign('message', "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.");
-}
-
 $tpl->display('error.tpl');
 
-ob_end_flush();
 
 ?>

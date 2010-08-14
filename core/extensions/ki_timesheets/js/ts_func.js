@@ -96,6 +96,7 @@ function ts_ext_set_TableWidths() {
 }
 
 function ts_ext_triggerchange() {
+    $('#display_total').html(ts_total);
     if (ts_tss_hook_flag) {
         ts_ext_reload();
         ts_chk_hook_flag = 0;
