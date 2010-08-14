@@ -116,6 +116,12 @@
                {$kga.lang.decimal_separator}: <input type="text" name="decimalSeparator" size="1" value="{$kga.conf.decimalSeparator}" class="formfield">
             </div>
 
+            <div>
+               <select name="defaultTimezone">
+                    {html_options values=$timezones output=$timezones selected=$kga.conf.defaultTimezone}
+                </select> {$kga.lang.defaultTimezone}
+            </div>
+
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         

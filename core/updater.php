@@ -58,8 +58,66 @@ $RUsure = $kga['lang']['updater'][0];
 
 <?php
 
- } else {
+} else if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone'])) {
+?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="robots" value="noindex,nofollow" />
+  <title>Kimai Update</title>
+  <style type="text/css" media="screen">
+     body {
+         background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+         font-family: sans-serif;
+           color:#333;
+       }
+       div {
+           background-image: url('skins/standard/grfx/floaterborder.png');
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           width:500px;
+           height:250px;
+           margin-left:-250px;
+           margin-top:-125px;
+           border:6px solid white;
+           padding:10px;
+       }
+  
+     #dbrecover {
+     }
+  
+  </style>
+</head>
+<body>
+  <div  align="center">
+       <FORM action="" method="post">
+         <h1> <?=$kga['lang']['timezone']?></h1>
+         <?=$kga['lang']['updater']['timezone'] ?>
+         <br/><br/>
+         <select name="timezone">
+          <?php
+          $serverZone = @date_default_timezone_get();
+
+          foreach (timezoneList() as $name) {
+            if ($name == $serverZone)
+              echo "<option selected=\"selected\">$name</option>";
+            else
+              echo "<option>$name</option>";
+          }
+          ?>
+          </select>
+         <br /><br />
+         <INPUT type="hidden" name="a" value="1">
+         <INPUT type="submit" value="START UPDATE">
      
+       </FORM>
+  </div>
+</body>
+</html>
+
+<?php
+} else {     
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1028,6 +1086,16 @@ if ((int)$revisionDB < 1216) {
     logfile("-- update to r1216");
     exec_query("ALTER TABLE `${p}exp`
   ADD `exp_refundable` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)' AFTER `exp_comment_type`;");
+}
+
+if ((int)$revisionDB < 1219) {
+    $timezone = mysql_real_escape_string($_REQUEST['timezone']);
+    logfile("-- update to r1219");
+    exec_query("ALTER TABLE `${p}usr`
+  ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
+    exec_query("UPDATE `${p}usr`
+  SET `timezone` = '$timezone'");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone','$timezone')");
 }
 
 

@@ -55,6 +55,13 @@
                     </li>
 
                     <li>
+                        <label for="timezone">{$kga.lang.timezone}:</label>
+                        <select name="timezone">
+                            {html_options values=$timezones output=$timezones selected=$kga.conf.timezone}
+                        </select>
+                    </li>
+
+                    <li>
                         <label for="autoselection"></label>
                         <input type="checkbox" name="autoselection" value="1" {if $kga.conf.autoselection}checked{/if} /> {$kga.lang.autoselection}
                     </li>

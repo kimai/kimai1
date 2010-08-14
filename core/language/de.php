@@ -245,6 +245,9 @@ return array(
 
 'multiplier' => 'Multiplikator',
 
+'timezone' => 'Zeitzone',
+'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
+
 
 
 'credits' => <<<EOF
@@ -318,7 +321,9 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 110      => "Neue Passwörter",
 120      => "Beachten Sie die neu gesetzten Passwörter weiter unten.",
 130      => "autoconf.php konnte nicht geschrieben werden.",
-140      => "Schreibe neue autoconf.php"),
+140      => "Schreibe neue autoconf.php",
+'timezone' => 'Kimai unterstützt jetzt Zeitzonen. Bitte wählen sie ihre Standardzeitzone. Diese gilt für alle Benutzer und Kunden. Benutzer können ihre Zeitzone später ändern.',
+),
 
 'backup' => array(
 0        => "Dieses Backup-Utility wurde noch nicht hinreichend getestet! Nutzung auf eigenes Risiko!",

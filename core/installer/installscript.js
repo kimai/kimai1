@@ -22,7 +22,8 @@ function step_back() {
     
     switch(current) {
         case 25: target = "20_gpl"; break;
-        case 30: target = "25_system_requirements"; break;
+        case 28: target = "25_system_requirements"; break;
+        case 30: target = "28_timezone"; break;
         case 40: target = "30_select_layer"; break;
         case 45: target = "40_permissions"; break;
         case 50:
@@ -116,6 +117,24 @@ function resetRequirementsIndicators() {
 
 function system_requirements_proceed() {
     step_ahead();
+    $('#installsteps').slideUp(500,function() {
+        target = "28_timezone";
+        $.post("steps/"+target+".php", {lang:language},
+            function(data) {
+                $('#installsteps').html(data);
+                $('#installsteps').slideDown(500);
+            }
+        );
+    });
+}
+
+// -------------------------------------------------
+// Timezone selection
+
+
+function timezone_proceed() {
+    step_ahead();
+    timezone = $('#timezone').val();
     $('#installsteps').slideUp(500,function() {
         target = "30_select_layer";
         $.post("steps/"+target+".php", {lang:language},
@@ -345,7 +364,7 @@ function write_config() {
         function(data) {
             $('#wrapper').fadeOut(2000);
             $('#footer').fadeOut(2000, function() {
-                window.location.href='install.php?accept=1&db_layer='+db_layer;
+                window.location.href='install.php?accept=1&db_layer='+db_layer+'&timezone='+timezone;
             });
         }
     );

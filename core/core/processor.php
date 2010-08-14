@@ -56,6 +56,7 @@ switch ($axAction) {
         $usr_data['showIDs']            = $_REQUEST['showIDs'];
         $usr_data['noFading']           = $_REQUEST['noFading'];
         $usr_data['user_list_hidden']   = $_REQUEST['user_list_hidden'];
+        $usr_data['timezone']           = $_REQUEST['timezone'];
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))

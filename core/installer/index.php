@@ -1,5 +1,5 @@
 <?php
-$installsteps=8;
+$installsteps=9;
 $kga = array();
 require("../includes/version.php");
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -25,6 +25,7 @@ require("../includes/version.php");
         var hostname     = "";
         var username     = "";
         var password     = "";
+        var timezone     = "";
     </script>
 </head>
 

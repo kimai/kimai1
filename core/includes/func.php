@@ -136,6 +136,15 @@ function langs(){
     closedir($handle);
 }
 
+/**
+ * Get a list of available time zones. This is directly taken from PHP.
+ * 
+ * @return array of timezone names
+ */
+function timezoneList() {
+  return DateTimeZone::listIdentifiers();
+}
+
 
 /**
  * Returns array for smarty's html_options funtion.

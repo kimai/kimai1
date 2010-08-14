@@ -1384,6 +1384,7 @@ function usr_edit($usr_id, $data) {
     $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
     $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
     $values ['user_list_hidden']  = MySQL::SQLValue($new_array ['user_list_hidden'] , MySQL::SQLVALUE_NUMBER  );
+    $values ['timezone']          = MySQL::SQLValue($new_array ['timezone']  );
 
     $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     
@@ -2618,13 +2619,15 @@ function get_user_config($user) {
   $columns[] = "pct_comment_flag"; 
   $columns[] = "lang"; 
   $columns[] = "user_list_hidden";
+  $columns[] = "timezone";
 
   $conn->SelectRows($table, $filter, $columns);
   $rows = $conn->RowArray(0,MYSQL_ASSOC);
   foreach($rows as $key => $value) {
       $kga['conf'][$key] = $value;
-  } 
-
+  }
+ 
+  date_default_timezone_set($kga['conf']['timezone']);
 }
 
 //-----------------------------------------------------------------------------------------------------------

@@ -1234,7 +1234,8 @@ function usr_edit($usr_id, $data) {
     noFading = ?, 
     lastProject = ?,
     lastEvent = ?,
-    user_list_hidden = ?
+    user_list_hidden = ?,
+    timezone = ?
     WHERE usr_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -1259,6 +1260,7 @@ function usr_edit($usr_id, $data) {
     $new_array['lastProject'],
     $new_array['lastEvent'],
     $new_array['user_list_hidden'],
+    $new_array['timezone'],
     $usr_id
     ));
     
@@ -2409,7 +2411,8 @@ function get_user_config($user) {
   `showIDs`,
   `noFading`,
   `lang`,
-  `user_list_hidden`
+  `user_list_hidden`,
+  `timezone`
   FROM ${p}usr WHERE usr_ID = ?;");
 
   $result = $pdo_query->execute(array($user));
@@ -2417,6 +2420,8 @@ function get_user_config($user) {
   foreach( $row as $key => $value) {
       $kga['conf'][$key] = $value;
   }
+
+  date_default_timezone_set($kga['conf']['timezone']);
 
             $pdo_query->fetchAll();
 }

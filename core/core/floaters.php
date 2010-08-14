@@ -34,6 +34,7 @@ switch ($axAction) {
 
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', langs());
+        $tpl->assign('timezones', timezoneList());
         $tpl->assign('usr', $kga['usr']);
         $tpl->assign('rate', get_rate($kga['usr']['usr_ID'],NULL,NULL));
 

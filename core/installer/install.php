@@ -38,6 +38,8 @@ include('../includes/basics.php');
 $db_layer = $kga['server_conn'];
 if ($db_layer == '') $db_layer = $_REQUEST['db_layer'];
 
+date_default_timezone_set($_REQUEST['timezone']);
+
 $randomAdminID = random_number(9);
 
 logfile("-- begin install ----------------------------------");
@@ -83,6 +85,7 @@ $query =
   `noFading` TINYINT(1) NOT NULL DEFAULT '0',
   `export_disabled_columns` INT NOT NULL DEFAULT '0',
   `user_list_hidden` INT NOT NULL DEFAULT '0',
+  `timezone` VARCHAR( 40 ) NOT NULL DEFAULT '',
   PRIMARY KEY  (`usr_name`)
 );";
 exec_query($query);
@@ -246,7 +249,7 @@ exec_query($query);
 $query="INSERT INTO `" . $kga['server_prefix'] . "pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts`, `rowlimit`, `skin`,`lang`) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0', 100, 'standard','');";
+$query="INSERT INTO `" . $kga['server_prefix'] . "usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts`, `rowlimit`, `skin`,`lang`,`timezone`) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0', 100, 'standard','','".mysql_real_escape_string($_REQUEST['timezone'])."');";
 exec_query($query);
 
 $query="INSERT INTO `" . $kga['server_prefix'] . "ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
@@ -308,7 +311,7 @@ exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUE
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('decimalSeparator',',')");
 exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('durationWithSeconds','0')");
-
+exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
 
 
 // init timespace for admin user to current month

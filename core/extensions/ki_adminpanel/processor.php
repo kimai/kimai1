@@ -278,6 +278,7 @@ switch ($axAction) {
         $var_data['roundPrecision']         = $_REQUEST['roundPrecision'];
         $var_data['decimalSeparator']       = $_REQUEST['decimalSeparator'];
         $var_data['durationWithSeconds']    = $_REQUEST['durationWithSeconds'];
+        $var_data['defaultTimezone']        = $_REQUEST['defaultTimezone'];
         
         $success = var_edit($var_data);
 

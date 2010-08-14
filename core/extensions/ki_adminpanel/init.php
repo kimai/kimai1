@@ -77,6 +77,8 @@
     $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
     $tpl->assign('languages', langs());
 
+    $tpl->assign('timezones', timezoneList());
+
     $admin['users'] = $tpl->fetch("users.tpl");
     $admin['groups'] = $tpl->fetch("groups.tpl");
     $admin['advanced'] = $tpl->fetch("advanced.tpl");

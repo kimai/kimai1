@@ -255,6 +255,9 @@ return array(
             0910 &rarr; 09:10:00  &nbsp;&nbsp;
             091020 &rarr; 09:10:20 &nbsp;&nbsp;',
 
+'timezone' => 'time zone',
+'defaultTimezone' => 'time zone for new users and customers',
+
 
 
 'credits' => <<<EOF
@@ -328,7 +331,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
 110      => "New Passwords",
 120      => "See below for new passwords for every user.",
 130      => "Could not write to autoconf.php.",
-140      => "update file autoconf.php"),
+140      => "update file autoconf.php",
+'timezone' => 'Kimai now supports timezones. Please select your default time zone. It will be used for all users and customers. Users can change their time zone.',
+),
 
 'backup' => array(
 0        => "This backup restore utility is not yet tested! Use at your own risk!",
