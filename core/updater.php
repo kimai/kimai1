@@ -5,6 +5,14 @@
  */ 
  
 require('includes/basics.php');
+
+
+if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
+
+$version_temp  = get_DBversion();
+$versionDB  = $version_temp[0];
+$revisionDB = $version_temp[1];
+unset($version_temp);
  
 if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
 
@@ -329,12 +337,6 @@ function exec_query($query,$errorProcessing=false) {
     
 }
 
-if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
-
-$version_temp  = get_DBversion();
-$versionDB  = $version_temp[0];
-$revisionDB = $version_temp[1];
-unset($version_temp);
 
 $version_e   = explode(".",$kga['version']);
 $versionDB_e = explode(".",$versionDB);
