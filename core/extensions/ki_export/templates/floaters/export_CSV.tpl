@@ -8,6 +8,7 @@
             $('#floater input#default_location').attr('value',$('#default_location').attr('value'));
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":")+'|'+filterEvt.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter_cleared').attr('value'));
+            $('#floater input#filter_refundable').attr('value',$('#xp_ext_tab_filter_refundable').attr('value'));
             $('#floater input#filter_type').attr('value',$('#xp_ext_tab_filter_type').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
             $('#floater_content fieldset label').css('width','200px');
@@ -77,6 +78,7 @@
                 <input name="dateformat" id="dateformat" type="hidden" value=""/>
                 <input name="default_location" id="default_location" type="hidden" value=""/>
                 <input name="filter_cleared" id="filter_cleared" type="hidden" value=""/>
+                <input name="filter_refundable" id="filter_refundable" type="hidden" value=""/>
                 <input name="filter_type" id="filter_type" type="hidden" value=""/>
 
                 <div id="formbuttons">

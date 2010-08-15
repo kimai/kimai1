@@ -390,7 +390,7 @@ foreach ($filterKnd as $knd_id) {
 }
 if (count($customers)>0) {
   $pdf->cell(20,6,$kga['lang']['knd'].':');
-  $pdf->cell(20,6,implode(',',$customers));
+  $pdf->cell(20,6,implode(', ',$customers));
   $pdf->ln();
 }
 
@@ -402,7 +402,7 @@ foreach ($filterPct as $pct_id) {
 }
 if (count($projects)>0) {
   $pdf->cell(20,6,$kga['lang']['pct'].':');
-  $pdf->cell(20,6,implode(',',$projects));
+  $pdf->cell(20,6,implode(', ',$projects));
   $pdf->ln();
 }
 $pdf->ln();

@@ -20,10 +20,14 @@
 		}
 		ol, ul { list-style: none; }
 		caption, th { text-align: left; }
-		h1, h2, h3, h4, h5, h6 {
+    h2 {
+      margin-top:40px;
+      margin-bottom:10px;
+    }
+		/*h1, h2, h3, h4, h5, h6 {
 		  font-size: 100%;
 		  font-weight: normal;
-		}
+		}*/
 		q:before { content: ''; }
 		q:after { content: ''; }
 		abbr, acronym { border: 0; }
@@ -118,6 +122,62 @@
 {/literal}
   </head>
   <body>
+
+{ if $customersFilter != "" }
+<br/><b>{$kga.lang.knds}</b>: {$customersFilter}
+{/if}
+{ if $projectsFilter != "" }
+<br/><b>{$kga.lang.pcts}</b>: {$projectsFilter}
+{/if}
+
+{if $summary != 0}
+
+  <h2>{$kga.lang.xp_ext.summary}</h2>
+
+
+  <table border="1">
+    <tbody>
+      <tr>
+        <th>{$kga.lang.evt}</th>
+  { if $columns.dec_time }
+        <th>{$kga.lang.xp_ext.duration}</th>
+  {/if}
+  { if $columns.wage }
+        <th>{$kga.lang.xp_ext.costs}</th>
+  {/if}
+      </tr>
+
+  {section name=row loop=$summary}
+      <tr>
+        <td>{$summary[row].name}</td>
+  { if $columns.dec_time }
+        <td>{if $summary[row].time != -1}
+          {$summary[row].time}
+        {/if}</td>
+  {/if}
+  { if $columns.wage }
+        <td>{$summary[row].wage}</td>
+  {/if}
+      </tr>
+  {/section}
+
+      <tr>
+        <td>
+          <i>{$kga.lang.xp_ext.finalamount}</i>
+        </td>
+  { if $columns.dec_time }
+        <td>{$timeSum}</td>
+  {/if}
+  { if $columns.wage }
+        <td>{$wageSum}</td>
+  {/if}
+      </tr>
+
+    </tbody>
+  </table>
+{/if}
+
+<h2>{$kga.lang.xp_ext.full_list}</h2>
 
           <table border="1">
             <tbody>
@@ -298,9 +358,36 @@
                 </tr>
                
 {/section}
-                
+
+{if $timeSum > 0 || $wageSum > 0}
+<tr>
+<td colspan="{$columns|@count}">
+{$kga.lang.xp_ext.finalamount}
+</td>
+</tr>
+<tr>
+  { if $columns.date } <td></td> {/if}
+  { if $columns.from } <td></td> {/if}
+  { if $columns.to    }<td></td> {/if}
+  { if $columns.time } <td></td> {/if}
+  { if $columns.dec_time } <td>
+    {$timeSum}
+  </td> {/if}
+  { if $columns.rate } <td></td> {/if}
+  { if $columns.wage } <td>
+    {$wageSum}
+  </td>{/if}
+  { if $columns.knd } <td></td> {/if}
+  { if $columns.pct } <td></td> {/if}
+  { if $columns.action } <td></td> {/if}
+  { if $columns.comment } <td></td> {/if}
+  { if $columns.location } <td></td> {/if}
+  { if $columns.trackingnr } <td></td> {/if}
+  { if $columns.user } <td></td> {/if}
+  { if $columns.cleared } <td></td> {/if}
+</tr>
+{/if}
             </tbody>   
         </table>
-
 </body>
 </html>

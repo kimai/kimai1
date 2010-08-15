@@ -152,11 +152,68 @@ switch ($axAction) {
     case 'export_html':       
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
+        $timeSum = 0;
+        $wageSum = 0;
+        foreach ($arr_data as $data) {
+          $timeSum += $data['dec_zef_time'];
+          $wageSum += $data['wage'];
+        }
+
+        if ($_REQUEST['print_summary']) {
+          //Create the summary. Same as in PDF export
+          $zef_summary = array();
+          $exp_summary = array();
+          foreach ($arr_data as $one_entry) {
+
+            if ($one_entry['type'] == 'zef') {
+              if (isset($zef_summary[$one_entry['zef_evtID']])) {
+                $zef_summary[$one_entry['zef_evtID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
+                $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Euro
+              }
+              else {
+                $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
+                $zef_summary[$one_entry['zef_evtID']]['time']         = $one_entry['dec_zef_time'];
+                $zef_summary[$one_entry['zef_evtID']]['wage']         = $one_entry['wage'];
+              }
+            }
+            else {
+              $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$one_entry['evt_name'];
+              $exp_info['time']   = -1;
+              $exp_info['wage'] = $one_entry['wage'];
+              
+              $exp_summary[] = $exp_info;
+            }
+          }
+          
+          $summary = array_merge($zef_summary,$exp_summary);
+          $tpl->assign('summary',$summary);
+        }
+        else
+          $tpl->assign('summary',0);
+
+
+        // Create filter descirption, Same is in PDF export
+        $customers = array();
+        foreach ($filterKnd as $knd_id) {
+          $customer_info = knd_get_data($knd_id);
+          $customers[] = $customer_info['knd_name'];
+        }
+        $tpl->assign('customersFilter',implode(', ',$customers));
+
+        $projects = array();
+        foreach ($filterPct as $pct_id) {
+          $project_info = pct_get_data($pct_id);
+          $projects[] = $project_info['pct_name'];
+        }
+        $tpl->assign('projectsFilter',implode(', ',$projects));
+
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
         $tpl->assign('columns',$columns);
         $tpl->assign('custom_timeformat',$timeformat);
         $tpl->assign('custom_dateformat',$dateformat);
+        $tpl->assign('timeSum',$timeSum);
+        $tpl->assign('wageSum',$wageSum);
 
         header("Content-Type: text/html");
         $tpl->display("formats/html.tpl");
