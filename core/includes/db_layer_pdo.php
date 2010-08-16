@@ -3,22 +3,7 @@
  * This file contains all functions which access the database directly.
  */
 
-function clean_data($data) {
-    global $kga;   
-    foreach ($data as $key => $value) {
-        if ($key != "pw") { 
-            $return[$key] = urldecode(strip_tags($data[$key]));
-    		$return[$key] = str_replace('"','_',$data[$key]);
-    		$return[$key] = str_replace("'",'_',$data[$key]);
-    		$return[$key] = str_replace('\\','',$data[$key]);
-        } else {
-            $return[$key] = $data[$key];
-        }
-		if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
-    }
-    
-    return $return;
-}
+
 
 
 // -----------------------------------------------------------------------------------------------------------
@@ -3524,7 +3509,7 @@ function stopRecorder() {
     $zef_ID = $last_task['zef_ID'];
 
 
-    $rounded = roundTimespan($last_task['zef_in'],$kga['now'],$kga['conf']['roundPrecision']);
+    $rounded = roundTimespan($last_task['zef_in'],time(),$kga['conf']['roundPrecision']);
     $difference = $rounded['end']-$rounded['start'];
 
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
@@ -3547,7 +3532,7 @@ function startRecorder($pct_ID,$evt_ID,$user) {
     $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}zef 
     (zef_pctID,zef_evtID,zef_in,zef_usrID,zef_rate) VALUES 
     (?, ?, ?, ?, ?);");
-    $pdo_query->execute(array($pct_ID,$evt_ID,$kga['now'],$user,get_best_fitting_rate($user,$pct_ID,$evt_ID)));
+    $pdo_query->execute(array($pct_ID,$evt_ID,time(),$user,get_best_fitting_rate($user,$pct_ID,$evt_ID)));
     
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
     $pdo_query->execute(array($user));

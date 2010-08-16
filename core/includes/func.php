@@ -7,6 +7,31 @@
 if (isset($kga['server_conn']))
   require("db_layer_".$kga['server_conn'].".php");
 
+
+/**
+ * Prepare all values of the array so it's save to put them into an sql query.
+ * The conversion to utf8 is done here as well, if configured.
+ * 
+ * @param array $data Array which values are being prepared.
+ * @return array The same array, except all values are being escaped correctly.
+ */
+function clean_data($data) {
+    global $kga;   
+    foreach ($data as $key => $value) {
+        if ($key != "pw") { 
+            $return[$key] = urldecode(strip_tags($data[$key]));
+        $return[$key] = str_replace('"','_',$data[$key]);
+        $return[$key] = str_replace("'",'_',$data[$key]);
+        $return[$key] = str_replace('\\','',$data[$key]);
+        } else {
+            $return[$key] = $data[$key];
+        }
+    if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
+    }
+    
+    return $return;
+}
+
 /**
  * Kill the current users session by redirecting him to the logout page.
  */

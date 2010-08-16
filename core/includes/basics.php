@@ -20,7 +20,7 @@ if (!file_exists(WEBROOT.'includes/autoconf.php')) {
     header('location:error.php');
 }
 require(WEBROOT.'includes/autoconf.php');
-if (!$server_hostname) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
+if (!isset($server_hostname)) die("Error: Something is wrong with the file 'includes/conf.php' or 'includes/autoconf.php'!");
 require(WEBROOT.'includes/vars.php');
 
 require(WEBROOT.'includes/func.php');

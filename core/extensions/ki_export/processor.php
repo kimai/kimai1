@@ -159,7 +159,7 @@ switch ($axAction) {
           $wageSum += $data['wage'];
         }
 
-        if ($_REQUEST['print_summary']) {
+        if (isset($_REQUEST['print_summary'])) {
           //Create the summary. Same as in PDF export
           $zef_summary = array();
           $exp_summary = array();

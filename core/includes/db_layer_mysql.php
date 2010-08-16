@@ -5,30 +5,6 @@
 
 
 /**
- * Prepare all values of the array so it's save to put them into an sql query.
- * The conversion to utf8 is done here as well, if configured.
- * 
- * @param array $data Array which values are being prepared.
- * @return array The same array, except all values are being escaped correctly.
- */
-function clean_data($data) {
-    global $kga;   
-    foreach ($data as $key => $value) {
-        if ($key != "pw") { 
-            $return[$key] = urldecode(strip_tags($data[$key]));
-    		$return[$key] = str_replace('"','_',$data[$key]);
-    		$return[$key] = str_replace("'",'_',$data[$key]);
-    		$return[$key] = str_replace('\\','',$data[$key]);
-        } else {
-            $return[$key] = $data[$key];
-        }
-		if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
-    }
-    
-    return $return;
-}
-
-/**
  * Add a new customer to the database.
  *
  * @param array $data  name, address and other data of the new customer
@@ -3607,7 +3583,7 @@ function stopRecorder() {
     
     $filter['zef_ID'] = $last_task['zef_ID'];
 
-    $rounded = roundTimespan($last_task['zef_in'],$kga['now'],$kga['conf']['roundPrecision']);
+    $rounded = roundTimespan($last_task['zef_in'],time(),$kga['conf']['roundPrecision']);
 
     $values['zef_in'] = $rounded['start'];
     $values['zef_out']  = $rounded['end'];
@@ -3644,7 +3620,7 @@ function startRecorder($pct_ID,$evt_ID,$user) {
         
     $values ['zef_pctID'] = $pct_ID;
     $values ['zef_evtID'] = $evt_ID;
-    $values ['zef_in']    = $kga['now'];
+    $values ['zef_in']    = time();
     $values ['zef_usrID'] = $user;
     $rate = get_best_fitting_rate($user,$pct_ID,$evt_ID);
     if ($rate)
