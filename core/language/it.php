@@ -255,7 +255,7 @@ return array(
                 'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
 Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-)
+),
 
 'updater' => array(
 0        => "Yes, I have a backup of my Kimai database! Proceed updating!",
@@ -272,7 +272,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 110      => "New Passwords",
 120      => "See below for new passwords for every user.",
 130      => "Could not write to autoconf.php.",
-140      => "update file autoconf.php")
+140      => "update file autoconf.php"),
 
 'backup' => array(
 0        => "This backup restore utility is not yet tested! Use at your own risk!",

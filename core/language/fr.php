@@ -37,7 +37,7 @@ return array(
 "out"               => "Sortie",
 "time"              => "h'm",
 "timelabel"         => "Temps",
-"durationlabel"     => "Duration",
+"durationlabel"     => "Dur&eacute;e",
 "knd"               => "Client",
 "pct"               => "Activit&eacute;",
 "evt"               => "Tache",
@@ -63,9 +63,9 @@ return array(
 "secs"              => "secondes",
 "skin"              => "Th&egrave;me",
 "erase"             => "Effacer entr&eacute;e",
-"new_knd"           => "ajouter client",
-"new_pct"           => "ajouter projet",
-"new_evt"           => "ajouter &eacute;v&eacute;nement",
+"new_knd"           => "Ajouter un client",
+"new_pct"           => "Ajouter un projet",
+"new_evt"           => "Ajouter une tache",
 "day_summary"       => "R&eacute;sum&eacute; heures",
 "plzChoose"         => "Choisissez svp",
 "noEntries"         => "Pas d'entr&eacute;es enr&eacute;gistr&eacute;es pour le moment...",
@@ -75,7 +75,7 @@ return array(
 "trackingnr"        => "Numero de suivi",
 "cookiewarning"     => "Les cookies doivent acceptes! Autoriser les cookies avant de continuer.",
 "JSwarning"         => "JavaScript doit etre active! Cette version ne fonctionne pas sans.",
-"designation"       => "designation",
+"designation"       => "D&eacute;signation",
 "banned"            => "Bloqu&eacute; (Compte bloqu&eacute;)",
 "tooManyLogins"     => "Trop de mauvaises tentatives de connexion - utilisateur bloque.",
 "accessDenied"      => "Acces refus&eacute; !",
@@ -86,7 +86,7 @@ return array(
 "login"             => "Connexion",
 "logout"            => "D&eacute;connexion",
 "loggedon"          => "Connect&eacute; en tant que:",
-"username"          => "Nom utilisateur",
+"username"          => "Nom",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
 "minLength"         => "min. 5 characteres!",
@@ -96,8 +96,8 @@ return array(
 "start"             => "Start!",
 "setTimespace"      => "choisir plage",
 "now"               => "Maintenant",
-"specify"           => "specify list",
-"add"               => "ajouter",
+"specify"           => "Indiquer",
+"add"               => "Ajouter",
 "running"           => "Running...",
 "company"           => "Societ&eacute;",
 "street"            => "Rue",
@@ -118,8 +118,8 @@ return array(
 "database"          => "Base de donn&eacute;es",
 "options"           => "Options",
 "status"            => "Etat",
-"adminmail"         => "adresse email de l'administrateur",
-"logintries"        => "nombre de mauvaises tentatives de connexion autoris&eacute; avant de bloquer l'utilisateur",
+"adminmail"         => "Adresse email de l'administrateur",
+"logintries"        => "Nombre de mauvaises tentatives de connexion autoris&eacute;es avant de bloquer l'utilisateur",
 "bantime"           => "dur&eacute;e du bloquage en secondes",
 "lastdbbackup"      => "Derniere sauvegarde",
 "runbackup"         => "Sauvegarde immediate",
@@ -128,10 +128,10 @@ return array(
 "adminusr"          => "Administrateur",
 "editusr"           => "Editer l'utilisateur",
 "editgrp"           => "Editer le groupe",
-"delgrp"            => "delete group",
-"delpct"            => "delete project",
-"delknd"            => "delete customer",
-"delevt"            => "delete task",
+"delgrp"            => "Supprimer groupe",
+"delpct"            => "Supprimer tache",
+"delknd"            => "Supprimer client",
+"delevt"            => "Supprimer activit&eacute;",
 "switchusr"         => "Basculer vers cet utilisateur",
 "backupusr"         => "Faire une sauvegarde de cet utilisateur",
 "mailusr"           => "Envoyer un email a cet utilisateur",
@@ -141,7 +141,7 @@ return array(
 "changegrp"         => "Modifier le groupe",
 "members"           => "Membres",
 "groupleader"       => "Responsable du groupe",
-"nopassword"        => "Aucun mot de passe!",
+"nopassword"        => "Aucun mot de passe",
 "noItems"           => "pas d'entr&eacute;es",
 "DBname"            => "Nom de la base de donnes",
 "autoselection"     => "S&eacute;lection automatique",
@@ -156,21 +156,21 @@ return array(
 "hidedeletedusers"  => "Cacher les utilisateurs supprim&eacute;s",
 "showdeletedusers"  => "Afficher les utilisateurs supprim&eacute;s",
 
-"month"             => "Mos",
+"month"             => "Mois",
 "day"               => "Jour",
 "year"              => "Ann&eacute;e",
 
 "lang"              => "Langue",
 
-"ac"                => "Automatically continued entry.",
-"ac_error"          => "Automatically continued entry with error (timespan too long).",
+"ac"                => "Saisie automatique continue.",
+"ac_error"          => "Saisie automatique continue avec erreur (echelle temps trop longue).",
 "comment_type"      => "Type de commentaire",
 "ctype0"            => "Commentaire",
 "ctype1"            => "Note",
 "ctype2"            => "Attention!",
 "hint"              => "Truc:",
-"usr_caution1"      => "Si vous modifier le nom d'utilisateur de",
-"usr_caution2"      => "vous devrez vous reconnecter imm&eacute;diatement avec le nouvel utilisateur!",
+"usr_caution1"      => "Si vous modifiez le nom d'utilisateur ",
+"usr_caution2"      => "Vous devrez vous reconnecter imm&eacute;diatement avec le nouvel utilisateur!",
 "timediff_warn"     => "Vous devez saisir des heures diff&eacute;rentes dans ces champs!",
 "visibility"        => "Visible",
 "showitem"          => "rendre visible",
@@ -178,7 +178,7 @@ return array(
 "checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champs gauche du bouton Ajouter!",
 "clickToReload"     => "Cliquer ici pour relancer l'interface graphique",
 "sure"              => "Etes-vous sur?",
-"clock"             => "Clock",
+"clock"             => "Horloge",
 "currSum"           => "Synthese horaire",
 "admWarn"           => "Vous etes Admin. Ce statut ne peut etre abaisser que par un autre admin.",
 "flip_pct_display"  => "Trier la table des activit&eacute;s par client",
@@ -187,7 +187,7 @@ return array(
 "error"             => "Une erreur est survenue!",
 "checkupdate"       => "V&eacute;rifier si une mise &agrave; jour est disponible",
 
-"selectR"           => "S&eacute;lection en cours pour saisie:",
+"selectR"           => "Filtre de la saisie en cours:",
 "selectKND"         => "C:",
 "selectPCT"         => "A:",
 "selectEVT"         => "T:",
@@ -212,51 +212,49 @@ return array(
 
 "cleared"           => "valid&eacute;",
 
-"noFading"          => "no fading effect",
-"user_list_hidden"  => "hide user list by default",
+"noFading"          => "Pas d'effet fondu",
+"user_list_hidden"  => "Cacher par d&eacute;faut la liste des utilisateurs",
 
-'show_sensible_data' => 'Display sensible data as well in the debug extension.',
-'show_update_warn' => 'Turn off warning before an update.',
-'check_at_startup' => 'Show a message on the login page if a newer version is available.',
-'show_daySeperatorLines' => 'Draw a line between entries of different days.',
-'show_gabBreaks' => 'Draw a line between two records that are not perfectly continuous.',
-'show_RecordAgain' => 'Show the &quot;Record Again&quot; button in front of every entry.',
-'show_TrackingNr' => 'Allows to edit the field Tracking-Nr.',
-'currency_name' => 'Name of the currency to use.',
-'currency_sign' => 'Sign of the currency to use.',
-'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
-'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'display_currentDate_format' => 'Date format for the field below the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'round_time' => 'Round time to ',
+'show_sensible_data' => 'Afficher les donn&eacute;es sensibles meme en mode debug.',
+'show_update_warn' => 'D&eacute;sactiver les alertes avant une mise a jour.',
+'check_at_startup' => 'Afficher un message sur la page d accueil si une nouvelle version est disponible.',
+'show_daySeperatorLines' => 'Afficher une s&eacute;paration entre les enregistrements sur des jours diff&eacute;rents.',
+'show_gabBreaks' => 'Afficher une s&eacute;paration entre deux enregistrements non contigus.',
+'show_RecordAgain' => 'Afficher le bouton &quot;Record Again&quot; avant chaque enter&eacute;es.',
+'show_TrackingNr' => 'Permettre l edition du champs Tracking-Nr.',
+'currency_name' => 'Nom de la devise a utiliser.',
+'currency_sign' => 'Symbole de la devise a utiliser.',
+'currency_first' => 'Afficher la devise avant la valeur (ex. &euro; 100,00)',
+'display_date_format' => 'Format date pour la plage horaire (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+'display_currentDate_format' => 'Format date pour le champs sous la plage horaire (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+'table_date_format' => 'Format date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+'round_time' => 'Arrondir la dur&eacute;e a ',
 'round_time_minute' => ' minute(s).',
-'logged_in_as' => 'logged in as:',
+'logged_in_as' => 'Utilisateur connect&eacute;:',
 
-'decimal_separator'  => 'Decimal separator',
+'decimal_separator'  => 'S&eacute;parateur d&eacute;cimal',
 
-'view_filter' => 'view filter',
-'unassigned' => 'unassigned',
-'all_events' => '&lt;&lt;all&gt;&gt;',
-
-'durationWithSeconds' => 'Show duration exact to the second.',
-
-'multiplier' => 'Multiplier',
+'view_filter' => 'Filtre d affichage',
+'unassigned' => 'non affect&eacute;',
+'all_events' => '&lt;&lt;tout&gt;&gt;',
 
 'months'         => array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre"),
-'months_short'   => array("Jan","F&eacute;v","Mar","Avr","Mai","Jn","Jl","Ao&ucirc;","Sep","Oct","Nov","D&eacute;c"),
-'weekdays'       => array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
-'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
+'months_short'         => array("Jan","F&eacute;v","Mar","Avr","Mai","Jn","Jl","Ao&ucirc;","Sep","Oct","Nov","D&eacute;c"),
+'weekdays'=> array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
+'weekdays_short' => array("Dim","Lun","Mar","Mer","Jeu","Ven","Sam"),
+
 
 
 'errors' => array(
   0 => array('hdl' => "Impossible de se connecter a la base de donn&eacute;es!",
               'txt' => "V&eacute;rifier que la base de donn&eacute;es fonctionne, possede un connecteur PDO actif et que les entr&eacute;es dans le fichier 'autoconf.php' du r&eacute;pertoire 'includes' sont correctes."),
 
-  1 => array('hdl' => "Error during installation!",
-              'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
-To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+  1 => array('hdl' => "Erreur pendant l'installation!",
+              'txt' => 'Kimai n est pas mesure de cr&eacute;er les tables n&eacute;cessaires car des tables avec le meme pr&eacute;fixe existentent.<br/>
+Pour mettre a jour une installation existante <a href="../index.php">cliquer ici</a>.<br/>
+Choisir un autre pr&eacute;fixe de table ou supprimer les tables utilisant le meme pr&eacute;fixe pour permettre a Kimai de r&eacute;aliser une installation propre.')
 ),
+
 
 'updater' => array (
 0        => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise &agrave; jour!",
@@ -274,6 +272,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 120      => "Voir ci-dessous pour les mots de passe de tous les utilisateurs.",
 130      => "Impossible d'&eacute;crire dans autoconf.php.",
 140      => "mise a jour du fichier autoconf.php"),
+
 
 'backup' => array(
 0        => "L'outil de sauvegarde/restauration n' a pas encore &eacute;t&eacute; test&eacute;! A utiliser a vos propres risques!",
@@ -294,14 +293,14 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 "tab_filter"	 		   => "Filtre",
 "tab_location"	 		   => "Lieu",
-"tab_timeformat"	 	   => "Timeformat",
+"tab_timeformat"	 	   => "Format horaire",
 
 "cleared_all"	 		   => "tous",
 "cleared_cleared" 		   => "seuls les valid&eacute;s",
 "cleared_open"	 		   => "seuls les ouverts",
 "stdrd_location"  		   => "Lieu standard",
-"timeformat"	     	   => "Timeformat",
-"dateformat"			   => "Dateformat",
+"timeformat"	     	   => "Format horaire",
+"dateformat"			   => "Format date",
 
 "print_comment"   		   => "imprimer les commentaires",
 "print_summary"   		   => "imprimer les resum&eacute;s",
@@ -326,19 +325,18 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'costs'                 => 'Couts',
 'expense'               => 'D&eacute;pense',
 'summary'               => 'R&eacute;sum&eacute;',
-'full_list'             => 'Full List',
 'page'                  => 'Page',
 'by'                    => 'par',
 'done_by'               => 'r&eacute;alise par',
 'duration'              => 'Dur&eacute;e',
-'customer_new_page'     => 'new page for each customer',
+'customer_new_page'     => 'une nouvelle page par client',
 
-'times_and_expenses' => 'times and expenses',
-'times' => 'times',
-'expenses' => 'expenses',
+'times_and_expenses' => 'dur&eacute;es et d&eacute;penses',
+'times' => 'dur&eacute;es',
+'expenses' => 'd&eacute;penses',
 
-'reverse_order' => 'older entries first',
-'time_period'  => 'time period',
+'reverse_order' => 'anciennes entr&eacute;es en premier',
+'time_period'  => 'p&eacute;riode horaire',
 
 'duration_unit' => 'h',
 
@@ -347,15 +345,15 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'ext_invoice' => array(
 	
 "invoiceTitle" 			=> "Cr&eacute;er une facture",
-"invoiceProject" 		=> "Activit&eacute;s:",
+"invoiceProject" 		=> "Activit&eacute;:",
 "invoiceTimePeriod" 	=> "P&eacute;riode:",
-"invoiceOptionVat" 		=> " Facture avec TVA",
+"invoiceOptionVat" 		=> "Facture avec TVA",
 "invoiceOptionShort" 	=> "Facture synth&eacute;tique",
-"invoiceOptionRound" 	=> "Dur&eacute;e arrondie",
+"invoiceOptionRound" 	=> "Arrondi horaire",
 "invoiceButton" 		=> "Cr&eacute;er",
-'noPDOerror'            => 'This extension only works with a PDO database connection.',
-'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
-'noData'                => 'There are no time entries for the selected project & time period.'
+'noPDOerror'            => 'Cette extension ne fonctionne qu avec une connexion PDO sur la base de donn&eacute;es.',
+'noZIPerror'            => 'Cette extension n&eacute;cessite soit <a href="http://php.net/manual/en/book.zip.php">l extnesion PHP zip</a> soit d ex&eacute;cuter un programme zip sur le serveur.',
+'noData'                => 'Il n y a pas d enregistrements pour cette activit&eacute; sur la p&eacute;riode concern&eacute;e.'
 
 )
 );
