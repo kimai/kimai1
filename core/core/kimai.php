@@ -270,8 +270,8 @@ $evt_data = array('evt_ID'=>false,'evt_name'=>'');
 
 if (!isset($kga['customer'])) {
   //$lastZefRecord = zef_get_data(false);
-  $last_pct = pct_get_data($kga['conf']['lastProject']);
-  $last_evt = evt_get_data($kga['conf']['lastEvent']);
+  $last_pct = pct_get_data($kga['usr']['lastProject']);
+  $last_evt = evt_get_data($kga['usr']['lastEvent']);
   if (!$last_pct['pct_trash']) {
     $pct_data = $last_pct;
     $knd_data = knd_get_data($last_pct['pct_kndID']);

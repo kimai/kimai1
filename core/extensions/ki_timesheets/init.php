@@ -107,10 +107,6 @@ else {
   $tpl->assign('sel_evt_IDs',   $sel[1]);
 }
 
-  // preselected
-  $tpl->assign('lastProject', $kga['conf']['lastProject']);
-  $tpl->assign('lastEvent',   $kga['conf']['lastEvent']);
-
   $tpl->display('main.tpl');
 
 ?>

@@ -1115,9 +1115,7 @@ function usr_create($data) {
     `usr_name`,
     `usr_grp`,
     `usr_sts`,
-    `usr_active`,
-    `rowlimit`,
-    `skin`
+    `usr_active`
     ) VALUES (?, ?, ?, ?, ?, ?, ?)");
     
     $result = $pdo_query->execute(array(
@@ -1125,9 +1123,7 @@ function usr_create($data) {
     $data['usr_name'],
     $data['usr_grp'],
     $data['usr_sts'],
-    $data['usr_active'],
-    $data['rowlimit'],
-    $data['skin']   
+    $data['usr_active']
     ));
             
     if ($result == true) {
@@ -1171,7 +1167,7 @@ function usr_get_data($usr_id) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
- * Edits a user by replacing his data by the new array
+ * Edits a user by replacing his data and preferences by the new array
  *
  * @param array $usr_id       usr_id of the user to be edited
  * @param array $data         username, email, and other new data of the user
@@ -1207,20 +1203,8 @@ function usr_edit($usr_id, $data) {
     usr_mail = ?,
     usr_alias = ?,
     pw = ?,
-    rowlimit = ?,
-    skin = ?,
-    filter = ?,
-    autoselection = ?,
-    quickdelete = ?,
-    flip_pct_display = ?,
-    pct_comment_flag = ?,
-    showIDs = ?,
-    lang = ? ,
-    noFading = ?, 
     lastProject = ?,
-    lastEvent = ?,
-    user_list_hidden = ?,
-    timezone = ?
+    lastEvent = ?
     WHERE usr_id = ?;");
     
     $result = $pdo_query->execute(array(
@@ -1232,26 +1216,52 @@ function usr_edit($usr_id, $data) {
     $new_array['usr_mail'],
     $new_array['usr_alias'],
     $new_array['pw'],
-    $new_array['rowlimit'],
-    $new_array['skin'],
-    $new_array['filter'],
-    $new_array['autoselection'],
-    $new_array['quickdelete'],
-    $new_array['flip_pct_display'],
-    $new_array['pct_comment_flag'],
-    $new_array['showIDs'],
-    $new_array['lang'],
-    $new_array['noFading'],
     $new_array['lastProject'],
     $new_array['lastEvent'],
-    $new_array['user_list_hidden'],
-    $new_array['timezone'],
     $usr_id
     ));
     
     if ($result == false) {
-        return $result;
+        $pdo_conn->rollBack();
+        return false;
     }
+
+
+    // preferences direkt aus $data, nur bei verändert schreiben
+
+    $preferences = array(
+      'rowlimit',
+      'autoselection',
+      'quickdelete',
+      'flip_pct_display',
+      'pct_comment_flag',
+      'showIDs',
+      'noFading',
+      'user_list_hidden',
+      'timezone',
+      'lang',
+      'skin'
+    );
+    $table = $kga['server_prefix']."preferences";
+    // filter same as above
+    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}preferences (`usr_id`,`var`,`value`)
+    VALUES(?,?,?) ON DUPLICATE KEY UPDATE ${p}preferences SET  
+        value = ?
+        WHERE var = ? AND userID = ?;");
+
+    foreach ($preferences as $preference => $type) {
+      if (!isset($data[$preference]) || $data[$preference] == $kga['conf'][$preference])
+        continue;
+      
+      $result = $pdo_query->execute(array(
+        $usr_id,$preference,$data[$preference],
+        $data[$preference],$preference,$usr_id));
+      if (! $result) {
+        $pdo_conn->rollBack();
+        return false;
+      }      
+    }
+
 
     if (isset($data['usr_rate'])) {
       if (is_numeric($data['usr_rate']))
@@ -1976,7 +1986,7 @@ function save_timespace($timespace_in,$timespace_out,$user) {
        
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}usr SET timespace_in  = ? WHERE usr_ID = ?;");
     $pdo_query->execute(array($timespace_in ,$user));
-    
+     
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}usr SET timespace_out = ? WHERE usr_ID = ?;");
     $pdo_query->execute(array($timespace_out ,$user));
 }
@@ -2310,7 +2320,7 @@ function checkUser() {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
- * write global configuration into $kga
+ * Write global configuration into $kga including defaults for user settings.
  *
  * @param integer $user ID of user in table usr
  * @global array $kga kimai-global-array
@@ -2330,6 +2340,17 @@ function get_global_config() {
   do { 
       $kga['conf'][$row['var']] = $row['value']; 
   } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
+
+  $kga['conf']['rowlimit'] = 100;
+  $kga['conf']['skin'] = 'standard';
+  $kga['conf']['autoselection'] = 1;
+  $kga['conf']['quickdelete'] = 0;
+  $kga['conf']['flip_pct_display'] = 0;
+  $kga['conf']['pct_comment_flag'] = 0;
+  $kga['conf']['showIDs'] = 0;
+  $kga['conf']['noFading'] = 0;
+  $kga['conf']['lang'] = '';
+  $kga['conf']['user_list_hidden'] = 0;
 }
 
 
@@ -2361,7 +2382,14 @@ function get_user_config($user) {
   `pw`,
   `ban`,
   `banTime`,
-  `secure`
+  `secure`,
+
+  `lastProject`,
+  `lastEvent`,
+  `lastRecord`,
+  `timespace_in`,
+  `timespace_out`
+
   FROM ${p}usr WHERE usr_ID = ?;");
 
   $result = $pdo_query->execute(array($user));
@@ -2371,39 +2399,14 @@ function get_user_config($user) {
   }
 
   // get values from user configuration (user-preferences)
-  $pdo_query = $pdo_conn->prepare("SELECT 
-  `rowlimit`,
-  `skin`,
-  `lastProject`,
-  `lastEvent`,
-  `lastRecord`,
-  `filter`,
-  `filter_knd`,
-  `filter_pct`,
-  `filter_evt`,
-  `view_knd`,
-  `view_pct`,
-  `view_evt`,
-  `zef_anzahl`,
-  `timespace_in`,
-  `timespace_out`,
-  `autoselection`,
-  `quickdelete`,
-  `flip_pct_display`,
-  `pct_comment_flag`,
-  `showIDs`,
-  `noFading`,
-  `lang`,
-  `user_list_hidden`,
-  `timezone`
-  FROM ${p}usr WHERE usr_ID = ?;");
+  $pdo_query = $pdo_conn->prepare("SELECT `var`, `value` FROM ${p}preferences WHERE userID = ?;");
 
   $result = $pdo_query->execute(array($user));
-  $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-  foreach( $row as $key => $value) {
-      $kga['conf'][$key] = $value;
-  }
+  while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+    $kga['conf'][$row['var']] = $row['value'];
 
+  }
+  
   date_default_timezone_set($kga['conf']['timezone']);
 }
 
@@ -2431,30 +2434,6 @@ function get_customer_config($customer_ID) {
   foreach( $row as $key => $value) {
       $kga['customer'][$key] = $value;
   }
-
-  $kga['conf']['rowlimit'] = 100;
-  $kga['conf']['skin'] = 'standard';
-  $kga['conf']['lastProject'] = 1;
-  $kga['conf']['lastEvent'] = 1;
-  $kga['conf']['lastRecord'] = 0;
-  $kga['conf']['filter'] = 0;
-  $kga['conf']['filter_knd'] = 0;
-  $kga['conf']['filter_pct'] = 0;
-  $kga['conf']['filter_evt'] = 0;
-  $kga['conf']['view_knd'] = 0;
-  $kga['conf']['view_pct'] = 0;
-  $kga['conf']['view_evt'] = 0;
-  $kga['conf']['zef_anzahl'] = 0;
-  $kga['conf']['timespace_in'] = 0;
-  $kga['conf']['timespace_out'] = 0;
-  $kga['conf']['autoselection'] = 1;
-  $kga['conf']['quickdelete'] = 0;
-  $kga['conf']['flip_pct_display'] = 0;
-  $kga['conf']['pct_comment_flag'] = 0;
-  $kga['conf']['showIDs'] = 0;
-  $kga['conf']['noFading'] = 0;
-  $kga['conf']['lang'] = '';
-  $kga['conf']['user_list_hidden'] = 0;
 
 }
 
@@ -2492,16 +2471,15 @@ function is_customer_name($name) {
  * ['zef_evtID']
  * </pre>
  *
- * @param integer $user ID of user in table usr
  * @global array $kga kimai-global-array
  * @return integer
  * @author th
  */
-function get_event_last($user) {
+function get_event_last() {
     global $kga, $pdo_conn;
     $p = $kga['server_prefix'];
 
-    $lastRecord = $kga['conf']['lastRecord'];
+    $lastRecord = $kga['usr']['lastRecord'];
     $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}zef WHERE zef_ID = ?");
     $pdo_query->execute(array($lastRecord));
     $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -3504,7 +3482,7 @@ function stopRecorder() {
     global $kga, $pdo_conn;
     $p = $kga['server_prefix'];
     
-    $last_task = get_event_last($kga['usr']['usr_ID']);      // aktuelle vorgangs-ID auslesen
+    $last_task = get_event_last();      // aktuelle vorgangs-ID auslesen
     
     $zef_ID = $last_task['zef_ID'];
 
@@ -3690,49 +3668,6 @@ function usr_id2name($id) {
  */
 function get_grp($id) {
     return grp_get_data($id);
-}
-
-// -----------------------------------------------------------------------------------------------------------
-
-/**
- * get in and out unix seconds of specific user
- *
- * <pre>
- * returns:
- * [0] -> in
- * [1] -> out
- * </pre>
- *
- * @param string $user ID of user
- * @global array $kga kimai-global-array
- * @return array
- * @author th
- */
-function get_timespace() {
-    global $kga,$pdo_conn;
-    $p = $kga['server_prefix'];
-
-    $timespace = array(null,null);
-    
-    if (isset($kga['usr'])) {
-        $pdo_query = $pdo_conn->prepare("SELECT timespace_in, timespace_out FROM ${p}usr WHERE usr_ID = ?;");
-        $pdo_query->execute(array($kga['usr']['usr_ID']));
-    
-        $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        //die ($query);
-        $timespace[0] = $row['timespace_in'];
-        $timespace[1] = $row['timespace_out'];
-    }
-    /* database has no entries or it's a customer */
-    $mon = date("n"); $day = date("j"); $Y = date("Y");
-    if (!$timespace[0]) {
-        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
-    }
-    if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
-    }
-    
-    return $timespace;
 }
 
 // -----------------------------------------------------------------------------------------------------------

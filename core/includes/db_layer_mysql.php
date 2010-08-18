@@ -1210,8 +1210,6 @@ function usr_create($data) {
     $data = clean_data($data);
 
     $values ['usr_name']     =  MySQL::SQLValue($data ['usr_name']  );
-    $values ['skin']         =  MySQL::SQLValue($data ['skin']      );
-    $values ['rowlimit']     =  MySQL::SQLValue($data ['rowlimit']    , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_ID']       =  MySQL::SQLValue($data ['usr_ID']      , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_grp']      =  MySQL::SQLValue($data ['usr_grp']     , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_sts']      =  MySQL::SQLValue($data ['usr_sts']     , MySQL::SQLVALUE_NUMBER  );
@@ -1219,52 +1217,6 @@ function usr_create($data) {
                                                       
     $table  = $kga['server_prefix']."usr";
     $result = $conn->InsertRow($table, $values);
-/*
-
-$usr_name     =  MySQL::SQLValue($data ['usr_name']  );
-$usr_mail     =  "";
-$pw           =  "";
-$skin         =  MySQL::SQLValue($data ['skin']      );
-                                         
-$rowlimit     =  MySQL::SQLValue($data ['rowlimit']    , MySQL::SQLVALUE_NUMBER  );
-$usr_ID       =  MySQL::SQLValue($data ['usr_ID']      , MySQL::SQLVALUE_NUMBER  );
-$usr_grp      =  MySQL::SQLValue($data ['usr_grp']     , MySQL::SQLVALUE_NUMBER  );
-$usr_sts      =  MySQL::SQLValue($data ['usr_sts']     , MySQL::SQLVALUE_NUMBER  );
-$usr_active   =  MySQL::SQLValue($data ['usr_active']  , MySQL::SQLVALUE_NUMBER  );
-*/
-
-/*
-    
-    $p = $kga['server_prefix'];
-
-$query=<<<EOD
-    INSERT INTO ${p}usr 
-    (`usr_ID`,`usr_name`,`usr_grp`,`usr_sts`,`usr_active`,`rowlimit`,`skin`) VALUES
-    ( $usr_ID,$usr_name,$usr_grp,$usr_sts,$usr_active,$rowlimit,$skin );
-EOD;
-
-    
-    $result = $conn->Query($query);
-
-*/
-
-
-/*   
-    logfile("create:".$query);
-    logfile("create:".$result);
-    
-    logfile("create:".$values ['usr_name']   );
-    logfile("create:".$values ['usr_mail']   );
-    logfile("create:".$values ['pw']         );
-    logfile("create:".$values ['skin']       );
-                                             
-    logfile("create:".$values ['rowlimit']   );
-    logfile("create:".$values ['usr_ID']     );
-    logfile("create:".$values ['usr_grp']    );
-    logfile("create:".$values ['usr_sts']    );
-    logfile("create:".$values ['usr_active'] );
-*/
-
 
 
     if ($result===false) {
@@ -1312,7 +1264,7 @@ function usr_get_data($usr_id) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
- * Edits a user by replacing his data by the new array
+ * Edits a user by replacing his data and preferences by the new array
  *
  * @param array $usr_id  usr_id of the user to be edited
  * @param array $data    username, email, and other new data of the user
@@ -1338,38 +1290,62 @@ function usr_edit($usr_id, $data) {
         }
     }
 
+
+    $success = true;
+
+    $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
+
     $values ['usr_name']          = MySQL::SQLValue($new_array ['usr_name']  );
     $values ['usr_mail']          = MySQL::SQLValue($new_array ['usr_mail']  );
-    $values ['usr_alias']          = MySQL::SQLValue($new_array ['usr_alias']  );
+    $values ['usr_alias']         = MySQL::SQLValue($new_array ['usr_alias']  );
     $values ['pw']                = MySQL::SQLValue($new_array ['pw']        );
-    $values ['skin']              = MySQL::SQLValue($new_array ['skin']      );
-    $values ['lang']              = MySQL::SQLValue($new_array ['lang']      );
-                                                               
-    $values ['filter']            = MySQL::SQLValue($new_array ['filter']           , MySQL::SQLVALUE_NUMBER  );
-    $values ['rowlimit']          = MySQL::SQLValue($new_array ['rowlimit']         , MySQL::SQLVALUE_NUMBER  );
-    $values ['autoselection']     = MySQL::SQLValue($new_array ['autoselection']    , MySQL::SQLVALUE_NUMBER  );
-    $values ['quickdelete']       = MySQL::SQLValue($new_array ['quickdelete']      , MySQL::SQLVALUE_NUMBER  );
-    $values ['flip_pct_display']  = MySQL::SQLValue($new_array ['flip_pct_display'] , MySQL::SQLVALUE_NUMBER  );
-    $values ['pct_comment_flag']  = MySQL::SQLValue($new_array ['pct_comment_flag'] , MySQL::SQLVALUE_NUMBER  );
-    $values ['showIDs']           = MySQL::SQLValue($new_array ['showIDs']          , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_grp']           = MySQL::SQLValue($new_array ['usr_grp']          , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_sts']           = MySQL::SQLValue($new_array ['usr_sts']          , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_trash']         = MySQL::SQLValue($new_array ['usr_trash']        , MySQL::SQLVALUE_NUMBER  );
     $values ['usr_active']        = MySQL::SQLValue($new_array ['usr_active']       , MySQL::SQLVALUE_NUMBER  );
-    $values ['noFading']          = MySQL::SQLValue($new_array ['noFading']         , MySQL::SQLVALUE_NUMBER  );
     $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
     $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
-    $values ['user_list_hidden']  = MySQL::SQLValue($new_array ['user_list_hidden'] , MySQL::SQLVALUE_NUMBER  );
-    $values ['timezone']          = MySQL::SQLValue($new_array ['timezone']  );
-
-    $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
     
     $table = $kga['server_prefix']."usr";
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-    $success = true;
-
     if (! $conn->Query($query)) $success = false;
+
+
+    if ($success) {
+      // preferences direkt aus $data, nur bei verändert schreiben
+
+      $preferences = array(
+        'rowlimit'          => MySQL::SQLVALUE_NUMBER,
+        'autoselection'     => MySQL::SQLVALUE_NUMBER,
+        'quickdelete'       => MySQL::SQLVALUE_NUMBER,
+        'flip_pct_display'  => MySQL::SQLVALUE_NUMBER,
+        'pct_comment_flag'  => MySQL::SQLVALUE_NUMBER,
+        'showIDs'           => MySQL::SQLVALUE_NUMBER,
+        'noFading'          => MySQL::SQLVALUE_NUMBER,
+        'user_list_hidden'  => MySQL::SQLVALUE_NUMBER,
+        'timezone'          => MySQL::SQLVALUE_TEXT,
+        'lang'              => MySQL::SQLVALUE_TEXT,
+        'skin'              => MySQL::SQLVALUE_TEXT,
+      );
+      $table = $kga['server_prefix']."preferences";
+      unset($filter);
+      $filter ['userID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
+
+      foreach ($preferences as $preference => $type) {
+        if (!isset($data[$preference]) || $data[$preference] == $kga['conf'][$preference])
+          continue;
+        
+        $values         = array('value' => MySQL::SQLValue($data[$preference], $type));
+        $filter ['var'] = MySQL::SQLValue($preference);
+
+        if (! $conn->AutoInsertUpdate($table, $values, $filter)) {
+          $success = false;
+          break;
+        }      
+      }
+
+    }
 
     if ($success) {
 
@@ -2129,11 +2105,15 @@ function save_timespace($timespace_in,$timespace_out,$user) {
     $values['timespace_in']  = MySQL::SQLValue($timespace_in  , MySQL::SQLVALUE_NUMBER );
     $values['timespace_out'] = MySQL::SQLValue($timespace_out , MySQL::SQLVALUE_NUMBER );
 
-    $filter  ['usr_ID']          =   MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."usr";
+    $filter  ['usr_ID']          =   MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+
+
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
     if (! $conn->Query($query)) $conn->Kill();
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -2509,7 +2489,7 @@ function checkUser() {
 //-----------------------------------------------------------------------------------------------------------
 
 /**
- * write global configuration into $kga
+ * write global configuration into $kga including defaults for user settings.
  *
  * @param integer $user ID of user in table usr
  * @global array $kga kimai-global-array
@@ -2531,6 +2511,17 @@ function get_global_config() {
       $row = $conn->Row();
       $kga['conf'][$row->var] = $row->value;
   }
+  
+  $kga['conf']['rowlimit'] = 100;
+  $kga['conf']['skin'] = 'standard';
+  $kga['conf']['autoselection'] = 1;
+  $kga['conf']['quickdelete'] = 0;
+  $kga['conf']['flip_pct_display'] = 0;
+  $kga['conf']['pct_comment_flag'] = 0;
+  $kga['conf']['showIDs'] = 0;
+  $kga['conf']['noFading'] = 0;
+  $kga['conf']['lang'] = '';
+  $kga['conf']['user_list_hidden'] = 0;
 }
 
 /**
@@ -2564,6 +2555,12 @@ function get_user_config($user) {
   $columns[] = "banTime";
   $columns[] = "secure";
 
+  $columns[] = "lastProject";
+  $columns[] = "lastEvent";
+  $columns[] = "lastRecord";
+  $columns[] = "timespace_in";
+  $columns[] = "timespace_out";
+
   $conn->SelectRows($table, $filter, $columns);
   $rows = $conn->RowArray(0,MYSQL_ASSOC);
   foreach($rows as $key => $value) {
@@ -2572,35 +2569,19 @@ function get_user_config($user) {
   
   // get values from user configuration (user-preferences)
   unset($columns);
-  $columns[] = "rowlimit"; 
-  $columns[] = "skin"; 
-  $columns[] = "lastProject"; 
-  $columns[] = "lastEvent"; 
-  $columns[] = "lastRecord"; 
-  $columns[] = "filter"; 
-  $columns[] = "filter_knd"; 
-  $columns[] = "filter_pct"; 
-  $columns[] = "filter_evt"; 
-  $columns[] = "view_knd"; 
-  $columns[] = "view_pct"; 
-  $columns[] = "view_evt"; 
-  $columns[] = "zef_anzahl"; 
-  $columns[] = "timespace_in"; 
-  $columns[] = "timespace_out"; 
-  $columns[] = "autoselection"; 
-  $columns[] = "quickdelete"; 
-  $columns[] = "flip_pct_display"; 
-  $columns[] = "showIDs"; 
-  $columns[] = "noFading"; 
-  $columns[] = "pct_comment_flag"; 
-  $columns[] = "lang"; 
-  $columns[] = "user_list_hidden";
-  $columns[] = "timezone";
+  unset($filter);
+
+  $table = $kga['server_prefix']."preferences";
+  $filter['userID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+  $columns[] = "var"; 
+  $columns[] = "value"; 
 
   $conn->SelectRows($table, $filter, $columns);
-  $rows = $conn->RowArray(0,MYSQL_ASSOC);
-  foreach($rows as $key => $value) {
-      $kga['conf'][$key] = $value;
+
+  $conn->MoveFirst();
+  while (! $conn->EndOfSeek()) {
+    $row = $conn->Row();
+    $kga['conf'][$row->var] = $row->value;
   }
  
   date_default_timezone_set($kga['conf']['timezone']);
@@ -2650,30 +2631,6 @@ function get_customer_config($user) {
   foreach($rows as $key => $value) {
       $kga['customer'][$key] = $value;
   } 
-  
-  $kga['conf']['rowlimit'] = 100;
-  $kga['conf']['skin'] = 'standard';
-  $kga['conf']['lastProject'] = 1;
-  $kga['conf']['lastEvent'] = 1;
-  $kga['conf']['lastRecord'] = 0;
-  $kga['conf']['filter'] = 0;
-  $kga['conf']['filter_knd'] = 0;
-  $kga['conf']['filter_pct'] = 0;
-  $kga['conf']['filter_evt'] = 0;
-  $kga['conf']['view_knd'] = 0;
-  $kga['conf']['view_pct'] = 0;
-  $kga['conf']['view_evt'] = 0;
-  $kga['conf']['zef_anzahl'] = 0;
-  $kga['conf']['timespace_in'] = 0;
-  $kga['conf']['timespace_out'] = 0;
-  $kga['conf']['autoselection'] = 1;
-  $kga['conf']['quickdelete'] = 0;
-  $kga['conf']['flip_pct_display'] = 0;
-  $kga['conf']['pct_comment_flag'] = 0;
-  $kga['conf']['showIDs'] = 0;
-  $kga['conf']['noFading'] = 0;
-  $kga['conf']['lang'] = '';
-  $kga['conf']['user_list_hidden'] = 0;
 
 }
 
@@ -2711,7 +2668,6 @@ function is_customer_name($name) {
  * ['zef_evtID']
  * </pre>
  *
- * @param integer $user ID of user in table usr <------ NOT TRUE - gets the last record from the usr-conf! - FIXME
  * @global array $kga kimai-global-array
  * @return integer
  * @author th
@@ -2719,13 +2675,13 @@ function is_customer_name($name) {
  
 // checked 
 
-function get_event_last($user) {
+function get_event_last() {
     global $kga, $conn;
     
     $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
-	$p     = $kga['server_prefix'];
+    $p     = $kga['server_prefix'];
     
-    $lastRecord = $kga['conf']['lastRecord'];
+    $lastRecord = $kga['usr']['lastRecord'];
     
     $query = "SELECT * FROM ${p}zef WHERE zef_ID = $lastRecord ;";
 
@@ -3579,7 +3535,7 @@ function stopRecorder() {
     
     $table = $kga['server_prefix']."zef";
 
-    $last_task        = get_event_last($kga['usr']['usr_ID']); // aktuelle vorgangs-ID auslesen
+    $last_task        = get_event_last(); // aktuelle vorgangs-ID auslesen
     
     $filter['zef_ID'] = $last_task['zef_ID'];
 
@@ -3856,60 +3812,6 @@ function usr_id2name($id) {
 
 function get_grp($id) {
     return grp_get_data($id);
-}
-
-// -----------------------------------------------------------------------------------------------------------
-
-/**
- * get in and out unix seconds of specific user
- *
- * <pre>
- * returns:
- * [0] -> in
- * [1] -> out
- * </pre>
- *
- * @param string $user ID of user
- * @global array $kga kimai-global-array
- * @return array
- * @author th
- */
-
-// checked
-
-function get_timespace() {
-    global $kga, $conn;
-
-    $timespace = array(null,null);
-    
-    if (isset($kga['usr'])) {
-        $filter ['usr_ID'] = $kga['usr']['usr_ID'];
-        $columns[] = "timespace_in";
-        $columns[] = "timespace_out";
-        $table = $kga['server_prefix']."usr";
-    
-        $result = $conn->SelectRows($table, $filter, $columns);
-        if ($result == false) {
-            return false;
-        }
-    
-        $row = $conn->RowArray(0,MYSQL_ASSOC);
-
-        $timespace[0] = $row['timespace_in'];
-        $timespace[1] = $row['timespace_out'];
-
-    }
-
-    /* database has no entries? */
-    $mon = date("n"); $day = date("j"); $Y = date("Y");
-    if (!$timespace[0]) {
-        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
-    }
-    if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
-    }
-    
-    return $timespace;
 }
 
 // -----------------------------------------------------------------------------------------------------------

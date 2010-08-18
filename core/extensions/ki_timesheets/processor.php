@@ -78,7 +78,7 @@ switch ($axAction) {
     case 'edit_running_project':
         if (isset($kga['customer'])) die();
 
-        $last_event = get_event_last($kga['usr']['usr_ID']);
+        $last_event = get_event_last();
 
         zef_edit_pct(
             $last_event['zef_ID'],
@@ -92,7 +92,7 @@ switch ($axAction) {
     case 'edit_running_task':
         if (isset($kga['customer'])) die();
 
-        $last_event = get_event_last($kga['usr']['usr_ID']);
+        $last_event = get_event_last();
 
         zef_edit_evt(
             $last_event['zef_ID'],

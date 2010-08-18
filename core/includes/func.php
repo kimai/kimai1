@@ -799,4 +799,47 @@ function roundTimespan($start,$end,$steps) {
 }
 
 
+
+/**
+ * get in and out unix seconds of specific user
+ *
+ * <pre>
+ * returns:
+ * [0] -> in
+ * [1] -> out
+ * </pre>
+ *
+ * @param string $user ID of user
+ * @global array $kga kimai-global-array
+ * @return array
+ * @author th
+ */
+
+// checked
+
+function get_timespace() {
+    global $kga, $conn;
+
+    $timespace = array(null,null);
+    
+    if (isset($kga['usr'])) {
+
+        $timespace[0] = $kga['usr']['timespace_in'];
+        $timespace[1] = $kga['usr']['timespace_out'];
+
+    }
+
+    /* database has no entries? */
+    $mon = date("n"); $day = date("j"); $Y = date("Y");
+    if (!$timespace[0]) {
+        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
+    }
+    if (!$timespace[1]) {
+        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
+    }
+    
+    return $timespace;
+}
+
+
 ?>

@@ -47,15 +47,15 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
     
         $usr_data['skin']               = $_REQUEST['skin'];
-        $usr_data['autoselection']      = isset($_REQUEST['autoselection']);
-        $usr_data['quickdelete']        = isset($_REQUEST['quickdelete']);
+        $usr_data['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
+        $usr_data['quickdelete']        = isset($_REQUEST['quickdelete'])?1:0;
         $usr_data['rowlimit']           = $_REQUEST['rowlimit'];
         $usr_data['lang']               = $_REQUEST['lang'];
-        $usr_data['flip_pct_display']   = isset($_REQUEST['flip_pct_display']);
-        $usr_data['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag']);
-        $usr_data['showIDs']            = isset($_REQUEST['showIDs']);
-        $usr_data['noFading']           = isset($_REQUEST['noFading']);
-        $usr_data['user_list_hidden']   = isset($_REQUEST['user_list_hidden']);
+        $usr_data['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
+        $usr_data['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
+        $usr_data['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
+        $usr_data['noFading']           = isset($_REQUEST['noFading'])?1:0;
+        $usr_data['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
         $usr_data['timezone']           = $_REQUEST['timezone'];
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);

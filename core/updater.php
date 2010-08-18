@@ -1100,6 +1100,34 @@ if ((int)$revisionDB < 1219) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone','$timezone')");
 }
 
+if ((int)$revisionDB < 1225) {
+    logfile("-- update to r1225");
+    exec_query("CREATE TABLE `${p}preferences` (
+  `userID` int(10) NOT NULL,
+  `var` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY (`userID`,`var`)
+  );");
+
+  $columns = array('rowlimit','skin','autoselection','quickdelete',
+    'lang','flip_pct_display','pct_comment_flag','showIDs','noFading',
+    'export_disabled_columns','user_list_hidden','timezone');
+
+  // move user configuration over to preferences table, which are still in use
+  foreach ($columns as $column) {
+    exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) SELECT `usr_ID` , \"$column\", `$column` FROM `${p}usr`");
+  }
+
+
+  // add unused columns and drop all in usr table
+  $columns = array_merge($columns,array('zef_anzahl','filter','filter_knd','filter_pct','filter_evt','view_knd','view_pct','view_evt'));
+  foreach ($columns as $column) {
+    exec_query("ALTER TABLE ${p}usr DROP $column");
+  }
+
+
+}
+
 
 // ============================
 // = update DB version number =

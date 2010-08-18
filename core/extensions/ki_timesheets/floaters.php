@@ -33,7 +33,7 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
 
         $tpl->assign('langs', langs());
-        $last_event = get_event_last($kga['usr']['usr_ID']);
+        $last_event = get_event_last();
         $tpl->assign('id', $last_event['zef_ID']);
         $tpl->assign('comment', $last_event['zef_comment']);
         $tpl->assign('comment_active', $last_event['zef_comment_type']);

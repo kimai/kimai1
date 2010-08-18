@@ -47,8 +47,10 @@ logfile("-- begin install ----------------------------------");
 // if any of the queries fails, this will be true
 $errors=false;
 
+$p = $kga['server_prefix'];
+
 $query =
-"CREATE TABLE `" . $kga['server_prefix'] . "usr` (
+"CREATE TABLE `${p}usr` (
   `usr_ID` int(10) NOT NULL,
   `usr_name` varchar(160) NOT NULL,
   `usr_alias` varchar(10),
@@ -61,37 +63,25 @@ $query =
   `ban` int(1) NOT NULL default '0',
   `banTime` int(7) NOT NULL default '0',
   `secure` varchar(60) NOT NULL default '0',
-  `rowlimit` int(3) NOT NULL,
-  `skin` varchar(20) NOT NULL,
   `lastProject` int(10) NOT NULL default '1',
   `lastEvent` int(10) NOT NULL default '1',
   `lastRecord` int(10) NOT NULL default '0',
-  `filter` int(10) NOT NULL default '0',
-  `filter_knd` int(10) NOT NULL default '0',
-  `filter_pct` int(10) NOT NULL default '0',
-  `filter_evt` int(10) NOT NULL default '0',
-  `view_knd` int(10) NOT NULL default '0',
-  `view_pct` int(10) NOT NULL default '0',
-  `view_evt` int(10) NOT NULL default '0',
-  `zef_anzahl` int(10) NOT NULL default '0',
   `timespace_in` varchar(60) NOT NULL default '0',
   `timespace_out` varchar(60) NOT NULL default '0',
-  `autoselection` tinyint(1) NOT NULL default '1',
-  `quickdelete` tinyint(1) NOT NULL default '0',
-  `lang` varchar(6) NOT NULL DEFAULT '',
-  `flip_pct_display` tinyint(1) NOT NULL DEFAULT '0',
-  `pct_comment_flag` TINYINT(1) NOT NULL DEFAULT '0',
-  `showIDs` TINYINT(1) NOT NULL DEFAULT '0',
-  `noFading` TINYINT(1) NOT NULL DEFAULT '0',
-  `export_disabled_columns` INT NOT NULL DEFAULT '0',
-  `user_list_hidden` INT NOT NULL DEFAULT '0',
-  `timezone` VARCHAR( 40 ) NOT NULL DEFAULT '',
   PRIMARY KEY  (`usr_name`)
 );";
 exec_query($query);
 
+$query = "CREATE TABLE `${p}preferences` (
+  `userID` int(10) NOT NULL,
+  `var` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY (`userID`,`var`)
+);";
+exec_query($query);
+
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "evt` (
+"CREATE TABLE `${p}evt` (
   `evt_ID` int(10) NOT NULL auto_increment,
   `evt_name` varchar(255) NOT NULL,
   `evt_comment` TEXT NOT NULL,
@@ -103,7 +93,7 @@ $query=
 exec_query($query);
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "grp` (
+"CREATE TABLE `${p}grp` (
   `grp_ID` int(10) NOT NULL auto_increment,
   `grp_name` varchar(160) NOT NULL,
   `grp_trash` TINYINT(1) NOT NULL DEFAULT '0',
@@ -112,27 +102,27 @@ $query=
 exec_query($query);
 
 // leader/group cross-table (leaders n:m groups)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "ldr` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` int(10) NOT NULL, `grp_leader` int(10) NOT NULL, UNIQUE (`grp_ID` ,`grp_leader`));";
+$query="CREATE TABLE `${p}ldr` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` int(10) NOT NULL, `grp_leader` int(10) NOT NULL, UNIQUE (`grp_ID` ,`grp_leader`));";
 exec_query($query);
 
 // group/customer cross-table (groups n:m customers)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_knd` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `knd_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`knd_ID`));";
+$query="CREATE TABLE `${p}grp_knd` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `knd_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`knd_ID`));";
 exec_query($query);
 
 // group/project cross-table (groups n:m projects)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_pct` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `pct_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`pct_ID`));";
+$query="CREATE TABLE `${p}grp_pct` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `pct_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`pct_ID`));";
 exec_query($query);
 
 // group/event cross-table (groups n:m events)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "grp_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`evt_ID`)) ;";
+$query="CREATE TABLE `${p}grp_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `grp_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`grp_ID` ,`evt_ID`)) ;";
 exec_query($query);
 
 // project/event cross-table (projects n:m events)
-$query="CREATE TABLE `" . $kga['server_prefix'] . "pct_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;";
+$query="CREATE TABLE `${p}pct_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;";
 exec_query($query);
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "knd` (
+"CREATE TABLE `${p}knd` (
   `knd_ID` int(10) NOT NULL auto_increment,
   `knd_name` varchar(255) NOT NULL,
   `knd_password` varchar(255),
@@ -155,7 +145,7 @@ $query=
 exec_query($query);
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "pct` (
+"CREATE TABLE `${p}pct` (
   `pct_ID` int(10) NOT NULL auto_increment,
   `pct_kndID` int(3) NOT NULL,
   `pct_name` varchar(255) NOT NULL,
@@ -168,10 +158,10 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "pct` ADD INDEX ( `pct_kndID` ) ");
+exec_query("ALTER TABLE `${p}pct` ADD INDEX ( `pct_kndID` ) ");
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "zef` (
+"CREATE TABLE `${p}zef` (
   `zef_ID` int(10) NOT NULL auto_increment,
   `zef_in` int(10) NOT NULL default '0',
   `zef_out` int(10) NOT NULL default '0',
@@ -189,12 +179,12 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_usrID` ) ");
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_pctID` ) ");
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "zef` ADD INDEX ( `zef_evtID` ) ");
+exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_usrID` ) ");
+exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_pctID` ) ");
+exec_query("ALTER TABLE `${p}zef` ADD INDEX ( `zef_evtID` ) ");
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "var` (
+"CREATE TABLE `${p}var` (
   `var` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY  (`var`)
@@ -202,7 +192,7 @@ $query=
 exec_query($query);
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "rates` (
+"CREATE TABLE `${p}rates` (
   `user_id` int(10) DEFAULT NULL,
   `project_id` int(10) DEFAULT NULL,
   `event_id` int(10) DEFAULT NULL,
@@ -211,7 +201,7 @@ $query=
 exec_query($query);
 
 $query=
-"CREATE TABLE `" . $kga['server_prefix'] . "exp` (
+"CREATE TABLE `${p}exp` (
   `exp_ID` int(10) NOT NULL AUTO_INCREMENT,
   `exp_timestamp` int(10) NOT NULL DEFAULT '0',
   `exp_usrID` int(10) NOT NULL,
@@ -227,91 +217,95 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "exp` ADD INDEX ( `exp_usrID` ) ");
-exec_query("ALTER TABLE `" . $kga['server_prefix'] . "exp` ADD INDEX ( `exp_pctID` ) ");
+exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_usrID` ) ");
+exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_pctID` ) ");
 
 
 
 // GROUPS
 $defaultgrp=$kga['lang']['defaultgrp'];
-$query="INSERT INTO `" . $kga['server_prefix'] . "grp` (`grp_name`) VALUES ('admin');";
+$query="INSERT INTO `${p}grp` (`grp_name`) VALUES ('admin');";
 exec_query($query);
 
 
 
 // MISC
-$query="INSERT INTO `" . $kga['server_prefix'] . "evt` (`evt_ID`, `evt_name`, `evt_comment`) VALUES (1, '".$kga['lang']['testEVT']."', '');";
+$query="INSERT INTO `${p}evt` (`evt_ID`, `evt_name`, `evt_comment`) VALUES (1, '".$kga['lang']['testEVT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '');";
+$query="INSERT INTO `${p}knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
+$query="INSERT INTO `${p}pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts`, `rowlimit`, `skin`,`lang`,`timezone`) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0', 100, 'standard','','".mysql_real_escape_string($_REQUEST['timezone'])."');";
+$query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
+$query="INSERT INTO `${p}preferences` (`userID`,`var`,`value`) VALUES ('$randomAdminID','rowlimit','100'),
+('$randomAdminID','skin','standard'),('$randomAdminID','timezone','".mysql_real_escape_string($_REQUEST['timezone'])."');";
+exec_query($query);
+
+$query="INSERT INTO `${p}ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
 exec_query($query);
 
 
 
 // CROSS TABLES
-$query="INSERT INTO `" . $kga['server_prefix'] . "grp_evt` (`grp_ID`, `evt_ID`) VALUES (1, 1);";
+$query="INSERT INTO `${p}grp_evt` (`grp_ID`, `evt_ID`) VALUES (1, 1);";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "grp_knd` (`grp_ID`, `knd_ID`) VALUES (1, 1);";
+$query="INSERT INTO `${p}grp_knd` (`grp_ID`, `knd_ID`) VALUES (1, 1);";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "grp_pct` (`grp_ID`, `pct_ID`) VALUES (1, 1);";
+$query="INSERT INTO `${p}grp_pct` (`grp_ID`, `pct_ID`) VALUES (1, 1);";
 exec_query($query);
 
 
 
 // VARS
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('version', '" . $kga['version'] . "');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('version', '" . $kga['version'] . "');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('login', '1');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('login', '1');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('kimail', 'kimai@yourwebspace.com');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('kimail', 'kimai@yourwebspace.com');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('adminmail', 'admin@yourwebspace.com');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('adminmail', 'admin@yourwebspace.com');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('loginTries', '3');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('loginTries', '3');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('loginBanTime', '900');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('loginBanTime', '900');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('lastdbbackup', '0');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('lastdbbackup', '0');";
 exec_query($query);
 
-$query="INSERT INTO `" . $kga['server_prefix'] . "var` (`var`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
+$query="INSERT INTO `${p}var` (`var`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
 exec_query($query);
 
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_name','Euro')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_sign','€')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('currency_first','0')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_sensible_data','1')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_update_warn','1')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('check_at_startup','0')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_daySeperatorLines','1')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_gabBreaks','0')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_RecordAgain','1')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('show_TrackingNr','1')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_1','%d.%m.')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('language','$kga[language]')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('roundPrecision','0')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('decimalSeparator',',')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('durationWithSeconds','0')");
-exec_query("INSERT INTO `" . $kga['server_prefix'] . "var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_name','Euro')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_sign','€')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_first','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_sensible_data','1')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_update_warn','1')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('check_at_startup','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_daySeperatorLines','1')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_gabBreaks','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_RecordAgain','1')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_TrackingNr','1')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_1','%d.%m.')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('language','$kga[language]')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('roundPrecision','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('decimalSeparator',',')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
 
 
 // init timespace for admin user to current month

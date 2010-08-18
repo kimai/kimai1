@@ -8,7 +8,7 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
     case 'test':
-        echo $kga['conf']['timespace_in'];
+        echo $kga['usr']['timespace_in'];
     break;
 }
 
