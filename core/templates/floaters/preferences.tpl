@@ -91,6 +91,10 @@
                         <label for="user_list_hidden"></label>
                         <input type="checkbox" name="user_list_hidden" value="1" {if $kga.conf.user_list_hidden}checked{/if} /> {$kga.lang.user_list_hidden}
                     </li>
+                    <li>
+                        <label for="hideClearedEntries"></label>
+                        <input type="checkbox" name="hideClearedEntries" value="1" {if $kga.conf.hideClearedEntries}checked{/if} /> {$kga.lang.hideClearedEntries}
+                    </li>
                     
                 </ul>
                 

@@ -41,18 +41,9 @@
 
 {* --- name cell ---*}
                     <td width="100%" class="clients" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="lists_knd_prefilter({$arr_knd[row].knd_ID},'highlight'); $(this).blur(); return false;">
-{if $kga.customerhack}
-{if $filter == $arr_knd[row].knd_ID}
-                        <a href ="#" onClick="filter(0); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/printer_indicator.png' width='13' height='11' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' />
-                        </a>
-{/if}
-{/if}
-                        {*if $kga.customerhack}<a href ="#" onClick="filter({$arr_knd[row].knd_ID}); return false;">{/if*}
-                            {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
-                            {if $kga.conf.showIDs == 1}<span class="ids">{$arr_knd[row].knd_ID}</span> {/if}{$arr_knd[row].knd_name}
-                            {if $arr_knd[row].knd_visible != 1}</span>{/if}
-                        {*if $kga.customerhack}</a>{/if*}
+                        {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
+                        {if $kga.conf.showIDs == 1}<span class="ids">{$arr_knd[row].knd_ID}</span> {/if}{$arr_knd[row].knd_name}
+                        {if $arr_knd[row].knd_visible != 1}</span>{/if}
                     </td>
 
 

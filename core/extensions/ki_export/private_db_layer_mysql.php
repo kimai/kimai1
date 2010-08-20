@@ -59,14 +59,15 @@ function xp_toggle_header($header) {
 
     $header_number = array_search($header,$all_column_headers);
 
-    $table                 = $kga['server_prefix']."usr";
-    $values['export_disabled_columns'] = "`export_disabled_columns`^POWER(2,$header_number)";
-    $filter['usr_ID']      = MySQL::SQLValue($kga['usr']['usr_ID'],MySQL::SQLVALUE_NUMBER);
+    $table                 = $kga['server_prefix']."preferences";
+    $values['value']       = "`value`^POWER(2,$header_number)";
+    $filter['userID']      = MySQL::SQLValue($kga['usr']['usr_ID'],MySQL::SQLVALUE_NUMBER);
+    $filter['var']         = MySQL::SQLValue('export_disabled_columns');
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
       return true;
-    else
+    else 
       return false;
 } 
 
@@ -83,13 +84,14 @@ function xp_get_disabled_headers($user_id) {
 
     $disabled_headers = array();
 
-    $filter['usr_ID'] = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
-    $table = $kga['server_prefix']."usr";
+    $filter['userID'] = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
+    $filter['var']    = MySQL::SQLValue('export_disabled_columns');
+    $table = $kga['server_prefix']."preferences";
 
     if (!$conn->SelectRows($table, $filter)) return 0;
 
     $result_array = $conn->RowArray(0,MYSQL_ASSOC);
-    $code = $result_array['export_disabled_columns'];
+    $code = $result_array['value'];
 
     $i = 0;
     while ($code>0) {

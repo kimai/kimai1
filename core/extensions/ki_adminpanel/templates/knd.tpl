@@ -32,13 +32,6 @@
                     </td>
 
                     <td class="clients">
-{if $kga.customerhack}
-{if $filter == $arr_knd[row].knd_ID}
-                        <a href ="#" onClick="filter(0); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/printer_indicator.png' width='13' height='11' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' />
-                        </a>
-{/if}
-{/if}
                             {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
                             {$arr_knd[row].knd_name}
                             {if $arr_knd[row].knd_visible != 1}</span>{/if}

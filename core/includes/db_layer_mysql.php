@@ -1324,22 +1324,26 @@ function usr_edit($usr_id, $data) {
         'showIDs'           => MySQL::SQLVALUE_NUMBER,
         'noFading'          => MySQL::SQLVALUE_NUMBER,
         'user_list_hidden'  => MySQL::SQLVALUE_NUMBER,
+        'hideClearedEntries'=> MySQL::SQLVALUE_NUMBER,
         'timezone'          => MySQL::SQLVALUE_TEXT,
         'lang'              => MySQL::SQLVALUE_TEXT,
         'skin'              => MySQL::SQLVALUE_TEXT,
       );
       $table = $kga['server_prefix']."preferences";
       unset($filter);
-      $filter ['userID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
+      $filter ['userID']  = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
+      $values             = array('userID' => MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER));
 
       foreach ($preferences as $preference => $type) {
-        if (!isset($data[$preference]) || $data[$preference] == $kga['conf'][$preference])
+        if (!isset($data[$preference]) || (isset($kga['conf'][$preference]) && $data[$preference] == $kga['conf'][$preference]))
           continue;
         
-        $values         = array('value' => MySQL::SQLValue($data[$preference], $type));
-        $filter ['var'] = MySQL::SQLValue($preference);
+        $values['value'] = MySQL::SQLValue($data[$preference], $type);
+        $values['var']   = MySQL::SQLValue($preference);
+        $filter['var']   = MySQL::SQLValue($preference);
 
         if (! $conn->AutoInsertUpdate($table, $values, $filter)) {
+          logfile(serialize($conn->Error()));
           $success = false;
           break;
         }      
@@ -2298,6 +2302,7 @@ function zef_whereClausesFromFilters($users, $customers , $projects , $events ) 
  * @param integer $user ID of user in table usr
  * @param integer $in start of timespace in unix seconds
  * @param integer $out end of timespace in unix seconds
+ * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
  * @global array $kga kimai-global-array
  * @return array
  * @author th 
@@ -2305,11 +2310,16 @@ function zef_whereClausesFromFilters($users, $customers , $projects , $events ) 
  
 // checked 
 
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null) {
     global $kga, $conn;
+
+    if (!is_numeric($filterCleared)) {
+      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+    }
     
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
+    $filterCleared   = MySQL::SQLValue($filterCleared , MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
@@ -2320,6 +2330,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
       $whereClauses[]="(zef_out > $in || zef_out = 0)";
     if ($out)
       $whereClauses[]="zef_in < $out";
+    if ($filterCleared > -1)
+      $whereClauses[] = "zef_cleared = $filterCleared";
 
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
@@ -2522,6 +2534,7 @@ function get_global_config() {
   $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
   $kga['conf']['user_list_hidden'] = 0;
+  $kga['conf']['hideClearedEntries'] = 0;
 }
 
 /**

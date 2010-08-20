@@ -248,6 +248,8 @@ return array(
 'timezone' => 'Zeitzone',
 'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
 
+'hideClearedEntries' => 'abgerechnete Einträge verstecken',
+
 
 
 'credits' => <<<EOF
@@ -412,8 +414,6 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "invoiceOptionShort" 		=> "Kurze Abrechnung",
 "invoiceOptionRound" 		=> "Zeiten Runden",
 "invoiceButton" 			=> "Erstellen",
-'noPDOerror'            => 'Diese Erweiterung funktioniert nur, wenn PDO als Datenbankverbindung benutzt wird.',
-'noZIPerror'            => 'Diese Erweiterung benötigt entweder die <a href="http://de3.php.net/manual/de/book.zip.php">PHP zip Erweiterung</a> oder muss das Programm &quot;zip&quot; auf dem Server ausführen können.',
 'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!'
 
 ),

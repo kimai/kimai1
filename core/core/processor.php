@@ -56,6 +56,7 @@ switch ($axAction) {
         $usr_data['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
         $usr_data['noFading']           = isset($_REQUEST['noFading'])?1:0;
         $usr_data['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
+        $usr_data['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
         $usr_data['timezone']           = $_REQUEST['timezone'];
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);

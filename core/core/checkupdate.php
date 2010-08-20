@@ -8,5 +8,5 @@ require('../includes/basics.php');
 
 // check the latest stable version of Kimai on the web
 $request = join( '', file('http://versioncheck.kimai.de?revision='.$kga['revision']."&lang=".$kga['language']));
-echo $request;
+echo strip_tags($request, '<span><a>');
 ?>

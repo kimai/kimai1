@@ -65,9 +65,9 @@ function xp_toggle_header($header) {
     $header_number = array_search($header,$all_column_headers);
 
     $pdo_query = $pdo_conn->prepare(
-      "UPDATE ${p}usr SET 
-          export_disabled_columns = `export_disabled_columns`^POWER(2,?) 
-       WHERE `usr_ID` = ?;");
+      "UPDATE ${p}preferences SET 
+          `value` = `value`^POWER(2,?) 
+       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
     $result = $pdo_query->execute(array($header_number,$kga['usr']['usr_ID']));
     
     if ($result)
@@ -91,14 +91,14 @@ function xp_get_disabled_headers($user_id) {
     $disabled_headers = array();
 
     $pdo_query = $pdo_conn->prepare(
-      "SELECT export_disabled_columns FROM ${p}usr
-       WHERE `usr_ID` = ?;");
+      "SELECT value FROM ${p}preferences
+       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
     
     if (!$pdo_query->execute(array($user_id))) return 0;
 
     
     $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
-    $code = $result_array['export_disabled_columns'];
+    $code = $result_array['value'];
 
     $i = 0;
     while ($code>0) {

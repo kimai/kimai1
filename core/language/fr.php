@@ -351,8 +351,6 @@ Choisir un autre pr&eacute;fixe de table ou supprimer les tables utilisant le me
 "invoiceOptionShort" 	=> "Facture synth&eacute;tique",
 "invoiceOptionRound" 	=> "Arrondi horaire",
 "invoiceButton" 		=> "Cr&eacute;er",
-'noPDOerror'            => 'Cette extension ne fonctionne qu avec une connexion PDO sur la base de donn&eacute;es.',
-'noZIPerror'            => 'Cette extension n&eacute;cessite soit <a href="http://php.net/manual/en/book.zip.php">l extnesion PHP zip</a> soit d ex&eacute;cuter un programme zip sur le serveur.',
 'noData'                => 'Il n y a pas d enregistrements pour cette activit&eacute; sur la p&eacute;riode concern&eacute;e.'
 
 )

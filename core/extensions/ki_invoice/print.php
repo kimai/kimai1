@@ -6,7 +6,7 @@ include_once('../../includes/basics.php');
 include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
-include_once('private_db_layer_pdo.php');
+include_once('private_db_layer_'.$kga['server_conn'].'.php');
 
 /**
  * returns true if event is in the arrays
@@ -63,8 +63,8 @@ if (count($timeArray) > 0) {
 	
 	$kndArray = get_entry_knd($timeArray[0]['knd_name']);
 // customer data
-	$project = $timeArray[0]['pct_name'];
-	$customerName = $timeArray[0]['knd_name']; 
+	$project = html_entity_decode($timeArray[0]['pct_name']);
+	$customerName = html_entity_decode($timeArray[0]['knd_name']); 
 	$companyName = $kndArray['knd_company']; 
 	$customerStreet = $kndArray['knd_street'];
 	$customerCity = $kndArray['knd_city'];
@@ -77,7 +77,7 @@ if (count($timeArray) > 0) {
 	$customerContact = $kndArray['knd_homepage']; //I'm using the "homepage" field to store client contact name
 	$beginDate = date("F j, Y", $in);
 	$endDate = date("F j, Y", $out);
-	$invoiceID = $kndArray['knd_name']. "-" . date("y", $in). "-" . date("m", $in);
+	$invoiceID = $customerName. "-" . date("y", $in). "-" . date("m", $in);
 	$today = date("F j, Y");
 	$dueDate = date("F j, Y", mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y")));
 
@@ -96,7 +96,7 @@ while ($time_index < count($timeArray)) {
 	
 	$wage  = $timeArray[$time_index]['wage'];
 	$time  = $timeArray[$time_index]['zef_time']/3600;
-	$event = $timeArray[$time_index]['evt_name'];
+	$event = html_entity_decode($timeArray[$time_index]['evt_name']);
 	$comment = $timeArray[$time_index]['zef_comment'];
 	$evtdt = date("m/d/Y", $timeArray[$time_index]['zef_in']);
     

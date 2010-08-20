@@ -258,6 +258,8 @@ return array(
 'timezone' => 'time zone',
 'defaultTimezone' => 'time zone for new users and customers',
 
+'hideClearedEntries' => 'hide cleared entries',
+
 
 
 'credits' => <<<EOF
@@ -424,8 +426,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "invoiceOptionShort" 	=> "Short Invoice",
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 		=> "Create",
-'noPDOerror'            => 'This extension only works with a PDO database connection.',
-'noZIPerror'            => 'This extension requires either the <a href="http://php.net/manual/en/book.zip.php">PHP zip Extension</a> or needs to execute a zip program on the server.',
 'noData'                => 'There are no time entries for the selected project & time period.'
 
 ),

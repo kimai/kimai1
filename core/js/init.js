@@ -77,7 +77,7 @@ $(document).ready(function() {
     
     $('#main_prefs_button').click(function(){
         this.blur();
-        floaterShow("floaters.php","prefs",0,0,450,300);
+        floaterShow("floaters.php","prefs",0,0,450,530);
     });
 
     

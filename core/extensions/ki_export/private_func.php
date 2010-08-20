@@ -35,10 +35,10 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
     $exp_arr = array();
     
     if ($filter_type != 1)
-      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order);
+      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order,$filter_cleared);
     
     if ($filter_type != 0 && $expense_ext_available)
-      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order,$filter_refundable);
+      $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order,$filter_refundable,$filter_cleared);
 
     $result_arr = array();
 

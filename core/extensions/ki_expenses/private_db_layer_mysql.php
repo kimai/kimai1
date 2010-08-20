@@ -102,9 +102,13 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
  */
 
 // TODO: Test it!
-function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null, $limit=false, $reverse_order=false, $filter_refundable = -1) {
+function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
     global $kga,$conn;
     $p     = $kga['server_prefix'];
+
+    if (!is_numeric($filterCleared)) {
+      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+    }
     
     $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
     $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
@@ -118,6 +122,8 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
       $whereClauses[]="exp_timestamp >= $start";
     if ($end)
       $whereClauses[]="exp_timestamp <= $end";
+    if ($filterCleared > -1)
+      $whereClauses[] = "exp_cleared = $filterCleared";
 
     switch ($filter_refundable) {
     	case 0:

@@ -1238,24 +1238,23 @@ function usr_edit($usr_id, $data) {
       'showIDs',
       'noFading',
       'user_list_hidden',
+      'hideClearedEntries',
       'timezone',
       'lang',
       'skin'
     );
     $table = $kga['server_prefix']."preferences";
     // filter same as above
-    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}preferences (`usr_id`,`var`,`value`)
-    VALUES(?,?,?) ON DUPLICATE KEY UPDATE ${p}preferences SET  
-        value = ?
-        WHERE var = ? AND userID = ?;");
+    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}preferences (`userID`,`var`,`value`)
+    VALUES(?,?,?) ON DUPLICATE KEY UPDATE value = ?;");
 
-    foreach ($preferences as $preference => $type) {
-      if (!isset($data[$preference]) || $data[$preference] == $kga['conf'][$preference])
+    foreach ($preferences as $preference) {
+        if (!isset($data[$preference]) || (isset($kga['conf'][$preference]) && $data[$preference] == $kga['conf'][$preference]))
         continue;
       
       $result = $pdo_query->execute(array(
         $usr_id,$preference,$data[$preference],
-        $data[$preference],$preference,$usr_id));
+        $data[$preference]));
       if (! $result) {
         $pdo_conn->rollBack();
         return false;
@@ -2146,9 +2145,13 @@ function zef_whereClausesFromFilters($users, $customers , $projects , $events ) 
  */
 
 // TODO: Test it!
-function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false) {
+function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null) {
     global $kga, $pdo_conn;
     $p = $kga['server_prefix'];
+
+    if (!is_numeric($filterCleared)) {
+      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+    }
 
     $whereClauses = zef_whereClausesFromFilters($users, $customers , $projects , $events );
 
@@ -2156,6 +2159,8 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
       $whereClauses[]="(zef_out > $in || zef_out = 0)";
     if ($out)
       $whereClauses[]="zef_in < $out";
+    if ($filterCleared > -1)
+      $whereClauses[] = "zef_cleared = $filterCleared";
 
     if ($limit) {
         if (isset($kga['conf']['rowlimit'])) {
@@ -2179,8 +2184,6 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     $pdo_query = $pdo_conn->prepare($query);
     
              $pdo_query->execute();
-                
-                logfile($query);
     $i=0;
     $arr=array();
     /* TODO: needs revision as foreach loop */
@@ -2351,6 +2354,7 @@ function get_global_config() {
   $kga['conf']['noFading'] = 0;
   $kga['conf']['lang'] = '';
   $kga['conf']['user_list_hidden'] = 0;
+  $kga['conf']['hideClearedEntries'] = 0;
 }
 
 

@@ -1,36 +1,5 @@
 <?php
 
-/**
- * Check if PHP zip extension is present or
- * a shell zip program can be used.
- * Also PDO has to be used.
- * 
- * @return <code>true</code> if this extension definitley won't work,
- * 	   <code>false</code> otherwise
- */
-function invoiceExtProblems() {
-   global $kga;
-   $problems = array();
-
-  // create a document
-  $doc = new tinyDoc();
-
-  if (!class_exists('ZipArchive')) {
-    try {
-      $doc->setZipBinary('zip');
-      $doc->setUnzipBinary('unzip');
-    }
-    catch (tinyDocException $e) {
-      $problems[] = "nozip";
-    }
-  }
-
-  if ($kga['server_conn'] != 'pdo')
-    $problems[] = "nopdo";
-  
-  return $problems;
-      
-}
 
 // ==================================
 // = implementing standard includes =
@@ -50,13 +19,6 @@ $tpl->template_dir = 'templates/';
 $tpl->compile_dir  = 'compile/';
 
 $tpl->assign('kga', $kga);
-
-$problems = invoiceExtProblems();
-if (count($problems) > 0 ) {
-  $tpl->assign('problems',$problems);
-  $tpl->display('unusable.tpl');
-  return;
-}
 
 // get list of projects for select box
 $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);  
