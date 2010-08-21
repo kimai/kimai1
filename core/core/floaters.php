@@ -56,6 +56,8 @@ switch ($axAction) {
                 $tpl->assign('knd_comment'  , $data['knd_comment' ]);
                 $tpl->assign('knd_password' , $data['knd_password']);
                 $tpl->assign('knd_company'  , $data['knd_company' ]);
+                $tpl->assign('knd_vat'      , $data['knd_vat'     ]);
+                $tpl->assign('knd_contact'  , $data['knd_contact' ]);
                 $tpl->assign('knd_street'   , $data['knd_street'  ]);
                 $tpl->assign('knd_zipcode'  , $data['knd_zipcode' ]);
                 $tpl->assign('knd_city'     , $data['knd_city'    ]);

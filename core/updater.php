@@ -1128,6 +1128,14 @@ if ((int)$revisionDB < 1225) {
 
 }
 
+if ((int)$revisionDB < 1227) {
+    logfile("-- update to r1227");
+    exec_query("ALTER TABLE `${p}knd`
+  ADD `knd_vat` VARCHAR( 255 ) NOT NULL");
+    exec_query("ALTER TABLE `${p}knd`
+  ADD `knd_contact` VARCHAR( 255 ) NOT NULL");
+}
+
 
 // ============================
 // = update DB version number =

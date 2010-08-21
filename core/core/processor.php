@@ -211,6 +211,8 @@ switch ($axAction) {
             	$data['knd_name']     = htmlspecialchars($_REQUEST['knd_name']);
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
+              $data['knd_vat']      = $_REQUEST['knd_vat'];
+              $data['knd_contact']  = $_REQUEST['knd_contact'];
             	$data['knd_street']   = $_REQUEST['knd_street'];
             	$data['knd_zipcode']  = $_REQUEST['knd_zipcode'];
             	$data['knd_city']     = $_REQUEST['knd_city'];

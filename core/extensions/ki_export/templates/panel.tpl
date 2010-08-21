@@ -13,9 +13,9 @@
 					
 					<div id="xp_ext_tab_filter">
 						<select id="xp_ext_tab_filter_cleared" name="cleared" onChange="xp_ext_reload()">
-						  <option value="-1" selected="selected">{$kga.lang.xp_ext.cleared_all}</option>
-						  <option value="0">{$kga.lang.xp_ext.cleared_cleared}</option>
-						  <option value="1">{$kga.lang.xp_ext.cleared_open}</option>
+						  <option value="-1" {if !$kga.conf.hideClearedEntries}selected="selected"{/if}>{$kga.lang.xp_ext.cleared_all}</option>
+						  <option value="1">{$kga.lang.xp_ext.cleared_cleared}</option>
+						  <option value="0" {if $kga.conf.hideClearedEntries}selected="selected"{/if}>{$kga.lang.xp_ext.cleared_open}</option>
 						</select>
 						<select id="xp_ext_tab_filter_refundable" name="refundable" onChange="xp_ext_reload()">
 						  <option value="-1" selected="selected">{$kga.lang.xp_ext.refundable_all}</option>

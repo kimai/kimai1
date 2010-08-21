@@ -100,6 +100,10 @@ return array(
 "add"               => "add",
 "running"           => "Running...",
 "company"           => "Company",
+
+"vat"               => "VAT",
+"contactPerson"     => "Contact person",
+
 "street"            => "Street",
 "zipcode"           => "Zipcode",
 "city"              => "City",

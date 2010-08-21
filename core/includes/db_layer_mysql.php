@@ -22,6 +22,8 @@ function knd_create($data) {
     $values     ['knd_comment']     =     MySQL::SQLValue($data   ['knd_comment']       );
     $values     ['knd_password']    =     MySQL::SQLValue($data   ['knd_password']      );
     $values     ['knd_company']     =     MySQL::SQLValue($data   ['knd_company']       );
+    $values     ['knd_vat']         =     MySQL::SQLValue($data   ['knd_vat']           );
+    $values     ['knd_contact']     =     MySQL::SQLValue($data   ['knd_contact']       );
     $values     ['knd_street']      =     MySQL::SQLValue($data   ['knd_street']        );
     $values     ['knd_zipcode']     =     MySQL::SQLValue($data   ['knd_zipcode']       );
     $values     ['knd_city']        =     MySQL::SQLValue($data   ['knd_city']          );
@@ -106,6 +108,8 @@ function knd_edit($knd_id, $data) {
     $values['knd_comment']  = MySQL::SQLValue($new_array['knd_comment'] );
     $values['knd_password'] = MySQL::SQLValue($new_array['knd_password']);
     $values['knd_company']  = MySQL::SQLValue($new_array['knd_company'] );
+    $values['knd_vat']      = MySQL::SQLValue($new_array['knd_vat'    ] );
+    $values['knd_contact']  = MySQL::SQLValue($new_array['knd_contact'] );
     $values['knd_street']   = MySQL::SQLValue($new_array['knd_street']  );
     $values['knd_zipcode']  = MySQL::SQLValue($new_array['knd_zipcode'] );
     $values['knd_city']     = MySQL::SQLValue($new_array['knd_city']    );
@@ -2351,7 +2355,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
               Join ${p}evt ON evt_ID    = zef_evtID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
               ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit.';';
-    
+
     $conn->Query($query);
     
     $i=0;

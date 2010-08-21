@@ -99,6 +99,10 @@ return array(
 "add"               => "Hinzufügen",
 "running"           => "Messung läuft...",
 "company"           => "Firma",
+
+"vat"               => "Umsatzsteuer",
+"contactPerson"     => "Ansprechpartner",
+
 "street"            => "Straße",
 "zipcode"           => "PLZ",
 "city"              => "Ort",

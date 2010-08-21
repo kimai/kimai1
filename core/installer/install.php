@@ -12,21 +12,33 @@
  */
 function exec_query($query) {
     global $conn, $pdo_conn, $errors, $db_layer;
+    
+    $success = false;
+    
     if ($db_layer == "pdo") {
         
         if (is_object($pdo_conn)) {
             $pdo_query = $pdo_conn->prepare($query);
             $success = $pdo_query->execute(array());
+            $errorInfo = serialize($pdo_query->errorInfo());
         }
+        else
+          $errorInfo = "No connection object.";
         
     } else {
         
         if (is_object($conn)) {
             $success = $conn->Query($query);
+            $errorInfo = serialize($conn->Error());
         }
+        else
+          $errorInfo = "No connection object.";
     }
-    logfile($query,$success);
-    if (!$success) $errors=true;
+    logfile($query);
+    if (!$success) {
+      logfile($errorInfo);
+      $errors=true;
+    }
 } 
 
 if (!isset($_REQUEST['accept'])) {
@@ -131,6 +143,8 @@ $query=
   `knd_visible` TINYINT(1) NOT NULL DEFAULT '1',
   `knd_filter` TINYINT(1) NOT NULL DEFAULT '0',
   `knd_company` varchar(255) NOT NULL,
+  `knd_vat` varchar(255) NOT NULL,
+  `knd_contact` varchar(255) NOT NULL,
   `knd_street` varchar(255) NOT NULL,
   `knd_zipcode` varchar(255) NOT NULL,
   `knd_city` varchar(255) NOT NULL,

@@ -104,8 +104,6 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['cleared']        = $exp_arr[$exp_arr_index]['exp_cleared'];
         $exp_arr_index++;
       }
-      if ($arr['cleared']==$filter_cleared)
-        continue;
       $result_arr[] = $arr;
     }
     while ($zef_arr_index < count($zef_arr)) {
@@ -138,8 +136,6 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
       $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
       $zef_arr_index++;
-      if ($arr['cleared']==$filter_cleared)
-        continue;
       $result_arr[] = $arr;
     }
     while ($exp_arr_index < count($exp_arr)) {
@@ -167,8 +163,6 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['username']       = $exp_arr[$exp_arr_index]['usr_name'];
       $arr['cleared']        = $exp_arr[$exp_arr_index]['exp_cleared'];
       $exp_arr_index++;
-      if ($arr['cleared']==$filter_cleared)
-        continue;
       $result_arr[] = $arr;
     }
     return $result_arr;

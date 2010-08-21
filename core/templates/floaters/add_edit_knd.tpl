@@ -70,6 +70,16 @@
                         <label for="knd_company" >{$kga.lang.company}:</label>
                         <input type="text" name="knd_company"  value="{$knd_company}" />
                     </li>
+
+                    <li class="extended">
+                        <label for="knd_vat" >{$kga.lang.vat}:</label>
+                        <input type="text" name="knd_vat"  value="{$knd_vat}" />
+                    </li>
+
+                    <li class="extended">
+                        <label for="knd_contact" >{$kga.lang.contactPerson}:</label>
+                        <input type="text" name="knd_contact"  value="{$knd_contact}" />
+                    </li>
                                       
                     <li class="extended">
                         <label for="knd_street" >{$kga.lang.street}:</label>

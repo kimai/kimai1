@@ -7,6 +7,10 @@
 
 require('includes/basics.php');
 
+$version_temp  = get_DBversion();
+$versionDB  = $version_temp[0];
+$revisionDB = $version_temp[1];
+
 $p = $kga['server_prefix'];
 
 /**
@@ -17,29 +21,27 @@ $p = $kga['server_prefix'];
  */
 function exec_query($query) {
     global $conn, $pdo_conn, $kga, $errors, $executed_queries;
+    
+    $success = false;
    
     if ($kga['server_conn'] == "pdo") {
             if (is_object($pdo_conn)) {
                 $pdo_query = $pdo_conn->prepare($query);
                 $success = $pdo_query->execute(array());
-            }
+        }
+        else
+          $errorInfo = "No connection object.";
     } else {
         if (is_object($conn)) {
             $success = $conn->Query($query);
         }
+        else
+          $errorInfo = "No connection object.";
     }
-    
-    logfile($query,$success);
-    
-    if ($kga['server_conn'] == "pdo") {
-        if (is_object($pdo_conn)) {
-            $err = $pdo_query->errorInfo();
-            $err = serialize($err);
-        }
-    } else {
-        if (is_object($conn)) {
-            $err = $conn->Error();
-        }
+    logfile($query);
+    if (!$success) {
+      logfile($errorInfo);
+      $errors=true;
     }
 }
 
@@ -54,11 +56,22 @@ if (isset($_REQUEST['submit']))
       logfile("-- begin backup -----------------------------------");
 	    $backup_stamp = time();  
 	    $query = ("SHOW TABLES;");
-	    $result_backup=@mysql_query($query); 
-	    logfile($query,$result_backup);
+      
+      if ($kga['server_conn'] == "pdo") {
+              if (is_object($pdo_conn)) {
+                  $pdo_query = $pdo_conn->prepare($query);
+                  $success = $pdo_query->execute(array());
+            $tables = $pdo_query->fetchAll();
+              }
+      } else {
+          if (is_object($conn)) {
+              $success = $conn->Query($query);
+        $tables = $conn->RecordsArray();
+          }
+      }
 	    $prefix_length = strlen($p);
 	
-	    while ($row = mysql_fetch_array($result_backup)) {
+	    foreach($tables as $row) {
 	    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
 		
 				$primaryKey = "";
@@ -78,9 +91,7 @@ if (isset($_REQUEST['submit']))
 				{ 
 					$primaryKey = "uid";
 				}
-				
-				$query = "SELECT `".$primaryKey."` as `id` FROM `".$row[0]."` ORDER BY `".$primaryKey."` DESC LIMIT 0,1;   \n";
-				$id = mysql_fetch_array(mysql_query($query), MYSQL_ASSOC);
+        if (strlen(strstr($row[0],"preferences"))>0) { $primaryKey = "userID`,`var";      }
 				
 				if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
 
@@ -105,9 +116,21 @@ if (isset($_REQUEST['submit']))
 		$dates = $_REQUEST['dates'];
 
 		$query = ("SHOW TABLES;");
-		$result_backup=@mysql_query($query); 
+      
+      if ($kga['server_conn'] == "pdo") {
+              if (is_object($pdo_conn)) {
+                  $pdo_query = $pdo_conn->prepare($query);
+                  $success = $pdo_query->execute(array());
+            $tables = $pdo_query->fetchAll();
+              }
+      } else {
+          if (is_object($conn)) {
+              $success = $conn->Query($query);
+        $tables = $conn->RecordsArray();
+          }
+      }
 
-		while ($row = mysql_fetch_array($result_backup))
+		foreach ($tables as $row)
 		{
 			if ((substr($row[0], 0, 10) == "kimai_bak_"))
 			{
@@ -237,15 +260,24 @@ if (isset($_REQUEST['submit']))
 		else
 		{
 			$query = ("SHOW TABLES;");
-
-			$result_backup=@mysql_query($query); 
+			
+			if ($kga['server_conn'] == "pdo") {
+			        if (is_object($pdo_conn)) {
+			            $pdo_query = $pdo_conn->prepare($query);
+			            $success = $pdo_query->execute(array());
+				    $tables = $pdo_query->fetchAll();
+			        }
+			} else {
+			    if (is_object($conn)) {
+			        $success = $conn->Query($query);
+				$tables = $conn->RecordsArray();
+			    }
+			}
 
 			$arr = array();
 			$arr2 = array();
-			$dropquery = "";
-			$restorequery = "";
 
-			while ($row = mysql_fetch_array($result_backup))
+			foreach ($tables as $row)
 			{
 				if ( (substr($row[0], 0, 10) == "kimai_bak_"))
 				{
@@ -262,9 +294,18 @@ if (isset($_REQUEST['submit']))
 			// Bis rev 733 gab es in tabelle ldr keinen Primary Key ...
 			
 			$query = "SELECT value FROM kimai_bak_" . $dates[0] . "_kimai_var WHERE var = 'revision' LIMIT 0,1;";
-			$pdo_query = $pdo_conn->prepare($query);
-			$pdo_query->execute(array());
-			$revision = $pdo_query->fetch(PDO::FETCH_ASSOC);
+			if ($kga['server_conn'] == "pdo") {
+			        if (is_object($pdo_conn)) {
+			            $pdo_query = $pdo_conn->prepare($query);
+			            $success = $pdo_query->execute(array());
+				    $revision = $pdo_query->fetch(PDO::FETCH_ASSOC);
+			        }
+			} else {
+			    if (is_object($conn)) {
+			        $success = $conn->Query($query);
+				$revision = $conn->RowArray(0,MYSQL_ASSOC);
+			    }
+			}
 			$revision = $revision['value'];
 ##################
 
@@ -283,11 +324,13 @@ if (isset($_REQUEST['submit']))
 				if (strlen(strstr($newTable,"var"))>0) { $primaryKey = "var";      }
 				if ( (strlen(strstr($newTable,"ldr"))>0) 
 					|| (strlen(strstr($newTable,"grp_evt"))>0) 
+          || (strlen(strstr($newTable,"pct_evt"))>0) 
 					|| (strlen(strstr($newTable,"grp_knd"))>0) 
 					|| (strlen(strstr($newTable,"grp_pct"))>0)) 
 				{ 
 					$primaryKey = "uid";
 				}
+        if (strlen(strstr($newTable,"preferences"))>0) { $primaryKey = "userID`,`var";      }
 								
 				if ($primaryKey!="") {
 					$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
@@ -297,47 +340,27 @@ if (isset($_REQUEST['submit']))
 					$primaryKey = "";
 				}
 				
-				$dropquery .= "DROP TABLE `".$arr2[$i]."`;\n";
+				exec_query("DROP TABLE `".$arr2[$i]."`;\n");
 				
-					$restorequery .= "CREATE TABLE " . $newTable . $primaryKey . " SELECT * FROM " .  $arr[$i] . ";\n";	
+					exec_query("CREATE TABLE " . $newTable . $primaryKey . " SELECT * FROM " .  $arr[$i] . ";\n");
 				$i++;
 			}
 			
-			$restorequery .=  "ALTER TABLE `kimai_evt`     CHANGE `evt_ID` `evt_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_knd`     CHANGE `knd_ID` `knd_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_pct`     CHANGE `pct_ID` `pct_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_zef`     CHANGE `zef_ID` `zef_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_grp`     CHANGE `grp_ID` `grp_ID` INT( 10 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_ldr`     CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_grp_pct` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_grp_knd` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
-			$restorequery .=  "ALTER TABLE `kimai_grp_evt` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT";
+			exec_query("ALTER TABLE `kimai_evt`     CHANGE `evt_ID` `evt_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_knd`     CHANGE `knd_ID` `knd_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_pct`     CHANGE `pct_ID` `pct_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_zef`     CHANGE `zef_ID` `zef_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_grp`     CHANGE `grp_ID` `grp_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_ldr`     CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_grp_pct` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_grp_knd` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_grp_evt` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
 			
 			// echo $restorequery;
 
-			if ($kga['server_conn'] == "pdo") {
-			        if (is_object($pdo_conn)) {
-			            $pdo_query = $pdo_conn->prepare($dropquery);
-			            $success = $pdo_query->execute(array());
-			        }
-			} else {
-			    if (is_object($conn)) {
-			        $success = $conn->Query($dropquery);
-			    }
-			}
-
-			if ($kga['server_conn'] == "pdo") {
-			        if (is_object($pdo_conn)) {
-			            $pdo_query = $pdo_conn->prepare($restorequery);
-			            $success = $pdo_query->execute(array());
-			        }
-			} else {
-			    if (is_object($conn)) {
-			        $success = $conn->Query($restorequery);
-			    }
-			}
+			
 		
-			$date = date ("d. M Y, H:i:s", $dates[0]);
+			$date = @date ("d. M Y, H:i:s", $dates[0]);
 			echo "<h1 class='message'>" .$kga['lang']['backup'][6]. " ".$date."<br>" . $kga['lang']['backup'][7] ."</h1>";
 		}
 	}
@@ -367,11 +390,11 @@ echo '<form method="post" accept-charset="utf-8">';
 	
 foreach($neues_array AS $date)
 {
-$value = date ("d. M Y - H:i:s", $date);
+$value = @date ("d. M Y - H:i:s", $date);
 
-if ( date("dMY", $date) == date("dMY", time()) )
+if ( @date("dMY", $date) == @date("dMY", time()) )
 {
-	$label = $kga['lang']['heute'] . date (" - H:i:s", $date);
+	$label = $kga['lang']['heute'] . @date (" - H:i:s", $date);
 }
 else
 {
