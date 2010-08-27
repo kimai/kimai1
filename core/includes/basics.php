@@ -42,7 +42,7 @@ if (!empty($vars)) {
   $kga['date_format'][2]         = $vars['date_format_2'];
   if ($vars['language'] != '')
     $kga['language']             = $vars['language'];
-  else if ($kga['language'] != '')
+  else if ($kga['language'] == '')
     $kga['language'] = 'en';
 
   if ($vars['defaultTimezone'])

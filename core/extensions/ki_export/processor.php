@@ -120,7 +120,7 @@ switch ($axAction) {
     	$arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
-        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
+        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
 
         $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         $ann_new = formatDuration($ann);

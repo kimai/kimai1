@@ -2541,9 +2541,13 @@ function get_entry_zef($id) {
 // }
 // th: solving this by doing a loop and add the seconds manually...
 //     btw - using the rowlimit is not correct here because we want the time for the timespace, not for the rows in the timesheet ... my fault
-function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null) {
+function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null, $filterCleared = null) {
     global $kga, $pdo_conn;
     $p = $kga['server_prefix'];
+
+    if (!is_numeric($filterCleared)) {
+      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+    }
 
     $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
 
@@ -2551,6 +2555,8 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
       $whereClauses[]="zef_out > $in";
     if ($out)
       $whereClauses[]="zef_in < $out";
+    if ($filterCleared > -1)
+      $whereClauses[] = "zef_cleared = $filterCleared";
 
     $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_time FROM ${p}zef 
              Join ${p}pct ON zef_pctID = pct_ID

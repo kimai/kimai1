@@ -2750,8 +2750,12 @@ function get_entry_zef($id) {
  
 // checked 
  
-function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null) {
+function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null,$filter_cleared = null) {
     global $kga, $conn;
+
+    if (!is_numeric($filterCleared)) {
+      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+    }
     
     $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
     $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
@@ -2764,6 +2768,8 @@ function get_zef_time($in,$out,$users = null, $customers = null, $projects = nul
       $whereClauses[]="zef_out > $in";
     if ($out)
       $whereClauses[]="zef_in < $out";
+    if ($filterCleared > -1)
+      $whereClauses[] = "zef_cleared = $filterCleared";
 
     $query = "SELECT zef_in,zef_out,zef_time AS zeit FROM ${p}zef 
              Join ${p}pct ON zef_pctID = pct_ID

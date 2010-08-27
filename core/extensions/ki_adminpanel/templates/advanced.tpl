@@ -40,7 +40,7 @@
 
             <div>
                 {$kga.lang.lang}: <select name="language" class="formfield">
-                    {html_options values=$languages output=$languages selected=$kga.language}
+                    {html_options values=$languages output=$languages selected=$kga.conf.language}
                 </select>
             </div>
 
