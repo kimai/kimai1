@@ -158,6 +158,8 @@ switch ($axAction) {
           $timeSum += $data['dec_zef_time'];
           $wageSum += $data['wage'];
         }
+        
+        $tpl->assign('timespan',strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
 
         if (isset($_REQUEST['print_summary'])) {
           //Create the summary. Same as in PDF export

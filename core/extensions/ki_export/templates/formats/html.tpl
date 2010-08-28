@@ -12,6 +12,7 @@
 		table {
 		  border-collapse: collapse;
 		  border-spacing: 0;
+      margin-bottom:30px;
 		}
 		fieldset, img { border: 0; }
 		address, caption, cite, code, dfn, em, strong, th, var {
@@ -21,7 +22,6 @@
 		ol, ul { list-style: none; }
 		caption, th { text-align: left; }
     h2 {
-      margin-top:40px;
       margin-bottom:10px;
     }
 		/*h1, h2, h3, h4, h5, h6 {
@@ -95,6 +95,7 @@
 			color: black;
 			font-family: Arial, Verdana, sans-serif;
 			font-size: 11px;
+      padding:10px;
 		}
 
 		th {
@@ -123,15 +124,17 @@
   </head>
   <body>
 
+<h2> {$kga.lang.xp_ext.time_period}: {$timespan} </h2>
+
 { if $customersFilter != "" }
 <br/><b>{$kga.lang.knds}</b>: {$customersFilter}
 {/if}
 { if $projectsFilter != "" }
 <br/><b>{$kga.lang.pcts}</b>: {$projectsFilter}
 {/if}
+<br/>
 
 {if $summary != 0}
-
   <h2>{$kga.lang.xp_ext.summary}</h2>
 
 

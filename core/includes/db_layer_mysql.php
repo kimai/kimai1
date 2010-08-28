@@ -2497,7 +2497,8 @@ function checkUser() {
     if ($kga['conf']['lang'] != "") {
       $kga['language'] = $kga['conf']['lang'];
       $kga['lang'] = array_replace($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
-    
+    }
+
     return (isset($kga['usr'])?$kga['usr']:null);
 }
 
