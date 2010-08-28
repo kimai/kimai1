@@ -73,7 +73,7 @@ $query =
   `usr_mail` varchar(160) NOT NULL DEFAULT '',
   `pw` varchar(254) NULL DEFAULT NULL,
   `ban` int(1) NOT NULL default '0',
-  `banTime` int(7) NOT NULL default '0',
+  `banTime` int(10) NOT NULL default '0',
   `secure` varchar(60) NOT NULL default '0',
   `lastProject` int(10) NOT NULL default '1',
   `lastEvent` int(10) NOT NULL default '1',

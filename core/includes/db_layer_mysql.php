@@ -2497,7 +2497,6 @@ function checkUser() {
     if ($kga['conf']['lang'] != "") {
       $kga['language'] = $kga['conf']['lang'];
       $kga['lang'] = array_replace($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
-    }
     
     return (isset($kga['usr'])?$kga['usr']:null);
 }
@@ -2750,7 +2749,7 @@ function get_entry_zef($id) {
  
 // checked 
  
-function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null,$filter_cleared = null) {
+function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null,$filterCleared = null) {
     global $kga, $conn;
 
     if (!is_numeric($filterCleared)) {
@@ -4579,6 +4578,52 @@ function get_best_fitting_rate($user_id,$project_id,$event_id) {
 
   $data = $conn->rowArray(0,MYSQL_ASSOC);
   return $data['rate'];
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save a new secure key for a user to the database. This key is stored in the users cookie and used
+ * to reauthenticate the user.
+ * 
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
+ * @author sl
+ */
+function loginSetKey($userId,$keymai) {
+  global $kga,$conn;
+  $p = $kga['server_prefix'];
+
+  $query = "UPDATE ${p}usr SET secure='$keymai',ban=0,banTime=0 WHERE usr_ID='".
+    mysql_real_escape_string($userId)."';";
+  mysql_query($query);
+
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Update the ban status of a user. This increments the ban counter.
+ * Optionally it sets the start time of the ban to the current time.
+ * 
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
+ * @author sl
+ */
+function loginUpdateBan($userId,$resetTime = false) {
+  global $kga,$conn;
+    $table = $kga['server_prefix']."usr";
+
+    $filter ['usr_ID']  = MySQL::SQLValue($userId);
+
+    $values ['ban']       = "ban+1";
+    if ($resetTime)
+      $values ['banTime'] = MySQL::SQLValue(time(),MySQL::SQLVALUE_NUMBER);
+    
+    $table = $kga['server_prefix']."usr";
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
+    $conn->Query($query);
 }
 
 ?>

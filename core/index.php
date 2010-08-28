@@ -41,6 +41,13 @@ $tpl->compile_dir  = 'compile/';
 // =====================
 require('includes/basics.php');
 
+
+// =========================
+// = authentication method =
+// =========================
+require(WEBROOT.'auth/kimai.php');
+$authPlugin = new KimaiAuth();
+
 // =====================================
 // = send kimai-global-array to smarty =
 // =====================================
@@ -104,6 +111,31 @@ $tpl->assign('browser', get_agent());
 // ===========================
 $tpl->display('login/header.tpl');
 
+
+// ======================================
+// = if possible try an automatic login =
+// ======================================
+if ($authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
+
+  if ($userId === false) {
+    $userId   = usr_create(array(
+                'usr_name' => $name,
+                'usr_grp' => $authPlugin->getDefaultGroupId(),
+                'usr_sts' => 2,
+                'usr_active' => 1
+              ));
+  }
+  $userData = usr_get_data($userId);
+
+  $keymai=random_code(30);        
+  setcookie ("kimai_key",$keymai);
+  setcookie ("kimai_usr",$userData['usr_name']);
+
+  loginSetKey($userId,$keymai);
+
+  header("Location: core/kimai.php");
+}
+
 // =================================================================
 // = processing login and displaying either login screen or errors =
 // =================================================================
@@ -144,51 +176,56 @@ case "checklogin":
     else
     {
       // perform login of user
-      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-      $result = @mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],$name));
-      $row    = @mysql_fetch_assoc($result);
-      $id      = $row['usr_ID'];
-      $user    = $row['usr_name'];
-      $pass    = $row['pw'];        
-      $ban     = $row['ban'];
-      $banTime = $row['banTime'];   
-      
-      if ( ($name==$user) && ($pass==$password || $pass==$passCrypt) && $user!="") { 
-	  if ($ban <= ($kga['conf']['loginTries']-2)) {
-		    // logintries not used up => grant access
-		    $keymai=random_code(30);        
-		    setcookie ("kimai_key",$keymai);
-		    setcookie ("kimai_usr",$user);
-		    @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
-		    header("Location: core/kimai.php");
-	  } else {
-	      if ((time() - $banTime) > $kga['conf']['loginBanTime']) {
-		    // logintries used up BUT bantime is over => grant access
-		    $keymai=random_code(30);        
-		    setcookie ("kimai_key",$keymai);
-		    setcookie ("kimai_usr",$user);
-		    @mysql_query(sprintf("UPDATE %susr SET secure='%s',ban=0,banTime=0 WHERE usr_name='%s';",$kga['server_prefix'],$keymai,$user));
-		    header("Location: core/kimai.php");
-	      } else {
-		    // login attempt even though logintries are used up and bantime is not over => deny
-		    setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-		    @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name='%s';",$kga['server_prefix'],$user));
-		    $tpl->assign('headline', $kga['lang']['banned']);
-		    $tpl->assign('message', $kga['lang']['tooManyLogins']); 
-		    $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-		    $tpl->display('misc/error.tpl');
-	      }
-	  }
-      } else {
-		    // wrong username/password => deny
-		    setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-		    @mysql_query(sprintf("UPDATE %susr SET ban=ban+1 WHERE usr_name = '$user';"),$kga['server_prefix']);
-		    $tpl->assign('headline', $kga['lang']['accessDenied']); 
-		    $tpl->assign('message', $kga['lang']['wrongPass']);
-		    $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-		    $tpl->display('misc/error.tpl');
+      if ($authPlugin->authenticate($name,$password,$userId)) {
+        
+        if ($userId === false) {
+          $userId   = usr_create(array(
+                      'usr_name' => $name,
+                      'usr_grp' => $authPlugin->getDefaultGroupId(),
+                      'usr_sts' => 2,
+                      'usr_active' => 1
+                    ));
+        }
+
+        $userData = usr_get_data($userId);
+
+        if ($userData['ban'] < ($kga['conf']['loginTries']) ||
+            (time() - $userData['banTime']) > $kga['conf']['loginBanTime']) {
+
+          // logintries not used up OR
+          // bantime is over
+          // => grant access
+
+          $keymai=random_code(30);        
+          setcookie ("kimai_key",$keymai);
+          setcookie ("kimai_usr",$userData['usr_name']);
+
+          loginSetKey($userId,$keymai);
+
+          header("Location: core/kimai.php");
+        } else {
+          // login attempt even though logintries are used up and bantime is not over => deny
+          setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+          loginUpdateBan($userId);
+
+          $tpl->assign('headline', $kga['lang']['banned']);
+          $tpl->assign('message', $kga['lang']['tooManyLogins']); 
+          $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
+          $tpl->display('misc/error.tpl');
+        }
       }
+      else {
+        // wrong username/password => deny
+        setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+        if ($userId !== false)
+          loginUpdateBan($userId,true);
+
+        $tpl->assign('headline', $kga['lang']['accessDenied']); 
+        $tpl->assign('message', $kga['lang']['wrongPass']);
+        $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
+        $tpl->display('misc/error.tpl');      
       }
+    }
 break; 
 
 // ============================================

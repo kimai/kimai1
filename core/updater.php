@@ -1136,6 +1136,11 @@ if ((int)$revisionDB < 1227) {
   ADD `knd_contact` VARCHAR( 255 ) NOT NULL");
 }
 
+if ((int)$revisionDB < 1229) {
+    logfile("-- update to r1229");
+    exec_query("ALTER TABLE `${p}usr` CHANGE `banTime` `banTime` int(10) NOT NULL DEFAULT 0");
+}
+
 
 // ============================
 // = update DB version number =

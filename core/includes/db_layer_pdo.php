@@ -3916,6 +3916,49 @@ function get_best_fitting_rate($user_id,$project_id,$event_id) {
 }
 
 // -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save a new secure key for a user to the database. This key is stored in the users cookie and used
+ * to reauthenticate the user.
+ * 
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
+ * @author sl
+ */
+function loginSetKey($userId,$keymai) {
+  global $kga,$pdo_conn;
+  $p = $kga['server_prefix'];
+
+  $query = "UPDATE ${p}usr SET secure=?, ban=0, banTime=0 WHERE usr_ID=?;";
+  $query = $pdo_conn->prepare($query);
+  $query->execute(array($keymai,$userId));
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Update the ban status of a user. This increments the ban counter.
+ * Optionally it sets the start time of the ban to the current time.
+ * 
+ * @global array $kga          kimai global array
+ * @global array $conn         MySQL connection
+ * @author sl
+ */
+function loginUpdateBan($userId,$resetTime = false) {
+  global $kga,$pdo_conn;
+  $p = $kga['server_prefix'];
+
+
+  $query = "UPDATE ${p}usr SET ban=ban+1 ";
+  if ($resetTime)
+    $query .= ",banTime = ".time()." ";
+  $query .= "WHERE usr_ID = ?";
+
+  $query = $pdo_conn->prepare($query);
+  $query->execute(array($userId));
+}
+
+// -----------------------------------------------------------------------------------------------------------
 // TODO
 
 

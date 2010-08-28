@@ -39,10 +39,6 @@ switch ($axAction) {
     	$usr_data['usr_grp'] = $kga['usr']['usr_grp'];
     	$usr_data['usr_sts'] = 2;
     	$usr_data['usr_active'] = 0;
-    	$usr_data['usr_mail'] = "";
-    	$usr_data['pw'] = "";
-    	$usr_data['rowlimit'] = 100;
-    	$usr_data['skin'] = "standard";
     	echo usr_create($usr_data);
     break;
     
