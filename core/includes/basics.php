@@ -57,5 +57,5 @@ if (!empty($vars)) {
 $kga['lang'] = require(WEBROOT.'language/en.php');
 
 if ($kga['language'] != 'en') 
- $kga['lang'] =  array_replace($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
+ $kga['lang'] =  array_replace_recursive($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
 ?>
