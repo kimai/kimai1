@@ -102,7 +102,8 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
           floaterDragable();
           
           $('#floater').css({width: width+"px"});
-          $('#floater_content').css({height: height+"px"});
+          
+          $('#floater_tabs').css({height: height+"px"});
           
           x = ($(document).width()-(width+10))/2;
           y = ($(document).height()-(height+80))/2;
@@ -131,16 +132,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
           
         }
     );  
-}    
-
-function floaterOptions() {
-    $('.extended').toggle();
-    height = $('#floater_dimensions').outerHeight()+5;
-    $('#floater_content').css("height",height);
-    y = ($(document).height()-(height+80))/2 +"px";
-    if (y<0) y=0;
-    if (x<0) x=0;
-    $("#floater").css({top:y});
 }
 
 // ----------------------------------------------------------------------------------------
@@ -164,11 +155,11 @@ function changeTab(target,path) {
   
   if ($("#loader").is(':hidden')) {
     // if previous extension was loaded save visibility of lists
-    lists_visibility[$('dd.act').attr('id')] = $('body>.lists').is(':visible');
+    lists_visibility[$('#fliptabs li.act').attr('id')] = $('body>.lists').is(':visible');
   }
     
-	$('dd').removeClass('act');
-	$('dd').addClass('norm');
+	$('#fliptabs li').removeClass('act');
+	$('#fliptabs li').addClass('norm');
 	
 	tab='#exttab_'+target;
 	$(tab).removeClass('norm');
@@ -189,7 +180,7 @@ function changeTab(target,path) {
 	} else {
 	    $("#loader").hide();
       // restore visibility of lists
-      lists_visible(lists_visibility[$('dd.act').attr('id')]);
+      lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
       lists_write_annotations();
 	}
         if (usr_ID) {
@@ -527,7 +518,10 @@ function ticktack_off() {
 // shows dialogue for editing an item in either customer, project or event list
 //
 function editSubject(subject,id) {
-        floaterShow('floaters.php','add_edit_'+subject,0,id,450,200); return false;
+    var height = 180;
+    if (subject == 'pct')
+      height = 210;
+    floaterShow('floaters.php','add_edit_'+subject,0,id,450,height); return false;
 }
 
 
@@ -873,7 +867,7 @@ function lists_update_annotations(id,usr,knd,pct,evt)
 
 function lists_write_annotations(part)
 {
-  var id = parseInt($('.menu dd.act').attr('id').substring(7));
+  var id = parseInt($('#fliptabs li.act').attr('id').substring(7));
 
   if (!part || part == 'usr') {
     $('#usr>table>tbody td.annotation').html("");

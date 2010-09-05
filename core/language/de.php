@@ -254,6 +254,10 @@ return array(
 
 'hideClearedEntries' => 'abgerechnete Einträge verstecken',
 
+'general' => 'Allgemein',
+'address' => 'Adresse',
+'contact' => 'Kontakt',
+
 
 
 'credits' => <<<EOF

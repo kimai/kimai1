@@ -18,7 +18,7 @@
         </div>       
     </div>
 
-    <div id="floater_content"><div id="floater_dimensions">
+    <div class="floater_content">
 
     {* send to CORE (!!!) processor *}
     
@@ -52,5 +52,5 @@
             </fieldset>
         </form>
         
-    </div></div>
+    </div>
 </div>

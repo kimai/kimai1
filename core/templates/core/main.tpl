@@ -18,15 +18,13 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libs -->
-    <script src="../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/ui.core.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/ui.draggable.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/ui.datepicker.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-ui-1.8.4.custom.min.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
@@ -209,10 +207,10 @@
         
     </div>
 
-    <div id="fliptabs">
-        <dl class="menu">
+    <div id="fliptabs" class="menuBackground">
+        <ul class="menu">
             
-           	<dd class="tab act" id="exttab_0">
+           	<li class="tab act" id="exttab_0">
            	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); ts_ext_triggerchange();">
            	        <span class="aa">&nbsp;</span>
            	        <span class="bb">
@@ -223,11 +221,11 @@
                     {/if}</span>
            	        <span class="cc">&nbsp;</span>
            	    </a>
-           	</dd>
+           	</li>
            	        
 {foreach name="tabloop" from=$extensions item="object"}
 {if $object.EXTENSION_NAME AND $object.EXTENSION_KEY != "ki_timesheet"}
-            <dd class="tab norm" id="exttab_{$smarty.foreach.tabloop.iteration}">
+            <li class="tab norm" id="exttab_{$smarty.foreach.tabloop.iteration}">
                 <a href="javascript:void(0);" onclick="changeTab({$smarty.foreach.tabloop.iteration}, '{$object.EXTENSION_INIT_FILE}'); {$object.TAB_CHANGE_TRIGGER};">
                     <span class="aa">&nbsp;</span>
                     <span class="bb">
@@ -238,11 +236,11 @@
                     {/if}</span>
                     <span class="cc">&nbsp;</span>
                 </a>
-            </dd>
+            </li>
 {/if}
 {/foreach}
 
-        </dl>
+        </ul>
     </div>
     
     <div id="gui">

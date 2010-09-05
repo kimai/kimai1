@@ -215,7 +215,7 @@ $RUsure = $kga['lang']['updater'][0];
 		width:100px;
 	}
 	</style>
-    <script src="libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="libraries/jQuery/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>

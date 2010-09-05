@@ -36,6 +36,7 @@
             $("#add_edit_zef_evt_ID").selectOptions(""+selected_evt+"");
             {/literal}{/if}{literal}
 
+            $('#floater_innerwrap').tabs({ selected: 0 });
             ts_timeToDuration();
         }); 
         
@@ -50,7 +51,6 @@
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
-            <a href="#" class="options down" onClick="floaterOptions(); $(this).blur();">{$kga.lang.options}</a>
         </div>  
     </div>
 
@@ -59,12 +59,30 @@
             {$kga.lang.dateAndTimeHelp}
         </div>
     </div>
+    
+    <div class="menuBackground">
+
+      <ul class="menu tabSelection">
+          <li class="tab norm"><a href="#general">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.general}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
+          <li class="tab norm"><a href="#extended">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.advanced}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
+      </ul>
+    </div>
+
+    <form id="ts_ext_form_add_edit_record" action="../extensions/ki_timesheets/processor.php" method="post"> 
+    <input name="id" type="hidden" value="{$id}" />
+    <input name="axAction" type="hidden" value="add_edit_record" />
 
 
-    <div id="floater_content"><div id="floater_dimensions">
-
-        <form id="ts_ext_form_add_edit_record" action="../extensions/ki_timesheets/processor.php" method="post"> 
-            <fieldset>
+    <div id="floater_tabs" class="floater_content">
+            <fieldset id="general">
                 
                 <ul>
                 
@@ -110,27 +128,28 @@
                        <label for="duration">{$kga.lang.durationlabel}:</label>
                         <input id='edit_duration' type='text' name='edit_duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
-                   
-{* -------------------------------------------------------------------- *}       
-        
-                   <li class="extended">
+                   <li>
                         <label for="rate">{$kga.lang.rate}:</label>
                         <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
+               </ul>
+             </fieldset>
+{* -------------------------------------------------------------------- *}       
+            <fieldset id="extended">
+                
+                <ul>
 
-                   <li class="extended">
+                   <li>
                         <label for="zlocation">{$kga.lang.zlocation}:</label>
                         <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
-                   <li class="extended">
+                   <li>
                         <label for="trackingnr">{$kga.lang.trackingnr}:</label>
                         <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
-                           
-                   <li>
                         <label for="comment">{$kga.lang.comment}:</label>
                         <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
                    </li>
@@ -142,22 +161,23 @@
                        </select>
                    </li>
                    
-                    <li class="extended">
+                    <li>
                         <label for="erase">{$kga.lang.erase}:</label>
                         <input type='checkbox' id='erase' name='erase' tabindex='15'/>
                    </li>
 
-                    <li class="extended">
+                    <li>
                         <label for="cleared">{$kga.lang.cleared}:</label>
                         <input type='checkbox' id='cleared' name='cleared' {if $cleared} checked="checked" {/if} tabindex='16'/>
+                           
                    </li>
         
                 </ul>
 
 {* -------------------------------------------------------------------- *} 
+            </fieldset>
 
-                <input name="id" type="hidden" value="{$id}" />
-                <input name="axAction" type="hidden" value="add_edit_record" />
+        </div>
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
@@ -166,8 +186,6 @@
 
 {* -------------------------------------------------------------------- *} 
 
-            </fieldset>
         </form>
 
-    </div></div>
 </div>

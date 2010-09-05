@@ -7,83 +7,84 @@
 	display:none;
 }
 
+.floater_content {
+    color: #FFFFFF;
+  font-size:11px;
+}
+
+.floater_content a, 
+.floater_content a:visited {
+  color:#fff;
+}
+
 #floater_innerwrap {
     background-color:#444;
     border: 1px solid #222;
 }
 
-#floater_handle {
-    background: url("grfx/g3_table_header.png");
-    border-bottom:1px solid #555;
-    padding:2px;
-    padding-left:10px;
-    font-weight:bold;
-    line-height:18px;
-    color: #FFFFFF;
-    height:20px;
-}
-
-#floater_handle:hover {
-    cursor: move;
-}
-
-#floater_content {
-    color: #FFFFFF;
+#floater_tabs {
 	padding:10px;
-	font-size:11px;
 	overflow: auto;
+  /*height:180px;*/
 }
 
-#floater_content h2 { 
+/*#floater_content h2 { 
     color: #0BE400; 
-}
+}*/
     
-#floater_content a, 
+/*#floater_content a, 
 #floater_content a:visited {
 	color:#fff;
-}
+}*/
 
 
 /* forms */
+#floater_innerwrap form {
+  clear:both; /* because of tab selection */
+  margin:5px;
+}
 
-#floater_content fieldset {
+#floater_innerwrap fieldset {
     border:none;
 }
-#floater_content fieldset label {
+#floater_innerwrap fieldset label {
     margin-right:5px;
     width:110px;
     float:left;
     text-align:right;
 }
-#floater_content fieldset ul {
+#floater_innerwrap fieldset ul {
     margin:0;
     padding:0;
     list-style:none;
 }
-#floater_content fieldset li {
+#floater_innerwrap fieldset li {
     border-bottom:1px dotted #666;
     padding: 5px 0;
 }
-#floater_content fieldset select,
-#floater_content fieldset input,
-#floater_content fieldset textarea
+#floater_innerwrap select,
+#floater_innerwrap input,
+#floater_innerwrap textarea
 {
     background-color:#fff;
     border:3px double #bbb;
 }
 
-#floater_content #formbuttons {
+
+/* BUTTONS */
+
+#formbuttons {
     margin-top:10px;
 }
 
-#floater_content #formbuttons .btn_ok {
+#formbuttons .btn_ok {
     cursor: pointer;
     background-color:#4AA917;
     font-weight:bold;
     color:#fff;
 }
 
-#floater_content #formbuttons .btn_norm {
+#formbuttons .btn_norm {
     cursor: pointer;
     background-color:#B72917;
     font-weight:bold;
@@ -101,6 +102,24 @@
 #floater div#help div.content {
     padding:10px;
     color:#fff; 
+}
+
+/* Floater Handle */
+
+
+#floater_handle {
+    background: url("grfx/g3_table_header.png");
+    border-bottom:1px solid #555;
+    padding:2px;
+    padding-left:10px;
+    font-weight:bold;
+    line-height:18px;
+    color: #FFFFFF;
+    height:20px;
+}
+
+#floater_handle:hover {
+    cursor: move;
 }
 
 #floater_handle div.right { 
@@ -141,8 +160,9 @@
 }
 
 
-
-
+.ui-tabs .ui-tabs-hide {
+  display:none;
+}
 
 /*
 #floater_content a.options.down {

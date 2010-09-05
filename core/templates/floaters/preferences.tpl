@@ -18,7 +18,7 @@
         </div>       
     </div>
     
-    <div id="floater_content"><div id="floater_dimensions">
+    <div class="floater_content">
 
         <form id="core_prefs" action="processor.php" method="post"> 
             <fieldset>
@@ -109,5 +109,5 @@
             </fieldset>
         </form>
         
-    </div></div>
+    </div>
 </div>

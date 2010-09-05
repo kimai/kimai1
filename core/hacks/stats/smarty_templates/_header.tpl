@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
 		<link rel="stylesheet" type="text/css" href="css/all.css" media="all" />
 		
-		<script src="../../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../libraries/jQuery/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
 		
 		
 		{$xajax_js}

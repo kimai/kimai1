@@ -41,12 +41,6 @@ input {
     height: 89px;
 }
 
-#fliptabs {
-    background:url("grfx/g3_tab_bar.png") repeat-x;
-    background-color:#0f0;
-    height:23px;
-}
-
 #logo {
      position:absolute;
      width:151px;

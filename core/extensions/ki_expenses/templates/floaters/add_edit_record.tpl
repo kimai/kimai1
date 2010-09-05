@@ -12,6 +12,7 @@
             {/literal}{else}{literal}
             $("#add_edit_exp_pct_ID").selectOptions(""+selected_pct+"");
             {/literal}{/if}{literal}
+            $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
         
     </script>
@@ -33,12 +34,31 @@
             {$kga.lang.dateAndTimeHelp}
         </div>
     </div>
+    
+    <div class="menuBackground">
+
+      <ul class="menu tabSelection">
+          <li class="tab norm"><a href="#general">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.general}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
+          <li class="tab norm"><a href="#extended">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.advanced}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
+      </ul>
+    </div>
+
+    <form id="exp_ext_form_add_edit_record" action="../extensions/ki_expenses/processor.php" method="post"> 
+                <input name="id" type="hidden" value="{$id}" />
+                <input name="axAction" type="hidden" value="add_edit_record" />
 
 
-    <div id="floater_content"><div id="floater_dimensions">
+    <div id="floater_tabs" class="floater_content">
 
-        <form id="exp_ext_form_add_edit_record" action="../extensions/ki_expenses/processor.php" method="post"> 
-            <fieldset>
+            <fieldset id="general">
                 
                 <ul>
                 
@@ -97,14 +117,16 @@
 {* -------------------------------------------------------------------- *}
 
 
-					<li>
+                   
+          </ul>
+          </fieldset>
+{* -------------------------------------------------------------------- *}    
+          <fieldset id="extended">
+            <ul>
+          <li>
                         <label for="erase">{$kga.lang.refundable_long}:</label>
                         <input type='checkbox' id='refundable' name='refundable' {if $refundable} checked="checked" {/if} tabindex='12'/>
                    </li>
-                   
-                   
-{* -------------------------------------------------------------------- *}    
-
 
                    <li>
                         <label for="comment">{$kga.lang.comment}:</label>
@@ -124,11 +146,12 @@
                    </li>
         
                 </ul>
+            </fieldset>
 
 {* -------------------------------------------------------------------- *} 
 
-                <input name="id" type="hidden" value="{$id}" />
-                <input name="axAction" type="hidden" value="add_edit_record" />
+    </div>
+
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
@@ -137,8 +160,5 @@
 
 {* -------------------------------------------------------------------- *} 
 
-            </fieldset>
         </form>
-
-    </div></div>
 </div>

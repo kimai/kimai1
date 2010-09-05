@@ -9,7 +9,7 @@ require("../includes/version.php");
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="styles.css" type="text/css" media="screen" title="no title" charset="utf-8">
-    <script src="../libraries/jQuery/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="installscript.js" type="text/javascript" charset="utf-8"></script>
     <title>Kimai Installation</title>
     

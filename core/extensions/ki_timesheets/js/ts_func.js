@@ -277,7 +277,7 @@ function quickdelete(id) {
 // edit a timesheet record
 //
 function editRecord(id) {
-    floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,700,600);
+    floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,700,350);
 }
 
 // ----------------------------------------------------------------------------------------

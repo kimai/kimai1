@@ -7,11 +7,11 @@
         </div>       
     </div>
 
-    <div id="floater_content"><div id="floater_dimensions">
+    <div class="floater_content">
 
         <h2>Kimai - Open Source Time Tracking</h2> 
         v{$kga.version}.{$kga.revision} - &copy; {$devtimespan} by the Kimai Core-Development-Team<br />
         {$kga.lang.credits}
         
-    </div></div>
+    </div>
 </div>

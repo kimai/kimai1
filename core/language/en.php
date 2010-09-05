@@ -264,6 +264,10 @@ return array(
 
 'hideClearedEntries' => 'hide cleared entries',
 
+'general' => 'General',
+'address' => 'Address',
+'contact' => 'Contact',
+
 
 
 'credits' => <<<EOF

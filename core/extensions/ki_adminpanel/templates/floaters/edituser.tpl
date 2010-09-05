@@ -20,7 +20,7 @@
         </div>       
     </div>
 
-    <div id="floater_content"><div id="floater_dimensions">
+    <div class="floater_content">
 
         <form id="ap_ext_form_editusr" action="../extensions/ki_adminpanel/processor.php" method="post"> 
             <fieldset>
@@ -105,5 +105,5 @@
 
             </fieldset>
         </form>
-    </div></div>
+    </div>
 </div>
