@@ -38,7 +38,6 @@ $(document).ready(function(){
        bgt_resizeTimer = setTimeout(bgt_ext_resize, 500);
     });
 
-    // $('#buzzer a').click(buzzer);
     $.jqplot.config.enablePlugins = true;
 
     

@@ -13,10 +13,6 @@
             }
           }
         });
-
-       
-        /*$('#pick_in').dpSetSelected('{/literal}{$timespace_in|date_format:'%d/%m/%Y'}{literal}');
-        $('#pick_out').dpSetSelected('{/literal}{$timespace_out|date_format:'%d/%m/%Y'}{literal}');        */
         
         setTimespaceStart(new Date({/literal}{$timespace_in*1000}{literal}));
         setTimespaceEnd(new Date({/literal}{$timespace_out*1000}{literal}));

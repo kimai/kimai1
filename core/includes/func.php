@@ -391,7 +391,6 @@ function get_agent() {
  * @param boolean $success
  * @author th
  */
-// function logfile($value,$success=1) {
 function logfile($value) {
 
     $value = str_replace("\n", "", $value);
@@ -400,8 +399,6 @@ function logfile($value) {
 
     $logdatei=fopen(WEBROOT."temporary/logfile.txt","a");
 
-    // $success = ($success==1) ? "success: " : "error:   ";
-    // fputs($logdatei, date("d.m.Y, H:i:s",time()) .", " . $success . $value ."\n");
     fputs($logdatei, date("[d.m.Y H:i:s] ",time()) . $value ."\n");
     fclose($logdatei);
 }

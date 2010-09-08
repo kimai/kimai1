@@ -25,17 +25,7 @@
 #floater_tabs {
 	padding:10px;
 	overflow: auto;
-  /*height:180px;*/
 }
-
-/*#floater_content h2 { 
-    color: #0BE400; 
-}*/
-    
-/*#floater_content a, 
-#floater_content a:visited {
-	color:#fff;
-}*/
 
 
 /* forms */
@@ -129,7 +119,6 @@
     height:16px;
     top:9px;
     right:10px;
-/*    background-color:red;*/
 }
 
 #floater_handle div.right a {
@@ -163,30 +152,3 @@
 .ui-tabs .ui-tabs-hide {
   display:none;
 }
-
-/*
-#floater_content a.options.down {
-    display:block;
-    text-decoration:none;
-    float:right;
-    color:#aaa;
-    width:100px;
-    height:13px;
-    padding-right:20px;
-    text-align:right;
-    background: url("grfx/options.png") no-repeat 105px 0;
-}
-
-#floater_content a.options.up {
-    display:block;
-    text-decoration:none;
-    float:right;
-    color:#aaa;
-    width:100px;
-    height:13px;
-    padding-right:20px;
-    text-align:right;
-    background: url("grfx/options.png") no-repeat 105px -20px;
-}
-*/
-

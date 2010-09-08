@@ -32,11 +32,13 @@
                       <span class="bb">{$kga.lang.pcts}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
+{if $sel_grp_IDs|@count gt 1}
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb">{$kga.lang.groups}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
+{/if}
           <li class="tab norm"><a href="#comment">
                       <span class="aa">&nbsp;</span>
                       <span class="bb">{$kga.lang.comment}</span>
@@ -93,21 +95,21 @@
                 </ul>
             </fieldset>
 
+{if $sel_grp_IDs|@count gt 1}   
     <fieldset id="groups">
                 <ul>
-
-{if $sel_grp_IDs|@count gt 1}                    
+                 
                     <li>
                         <label for="evt_grp" >{$kga.lang.groups}:</label>
                         <select class="formfield" name="evt_grp[]" multiple size='5' style="width:255px">
                             {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
                         </select>
-                    </li>
-{else}
-                    <input name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
-{/if}              
+                    </li>      
                 </ul>
             </fieldset>
+{else}
+                    <input name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
+{/if}        
 
     <fieldset id="projects">
                 <ul>

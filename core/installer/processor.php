@@ -126,10 +126,10 @@ switch ($axAction) {
             $javascript .= "$('span.ch_compile_bgtext').addClass('fail');";
         }
 
-        // if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
-        //     $errors++;
-        //     $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
-        // }
+         if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
+             $errors++;
+             $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
+         }
 
 
 
@@ -212,8 +212,6 @@ switch ($axAction) {
         if ($result != false) {
             echo "1"; // <-- hat geklappt
         } else {
-            //error_log(serialize($pdo_query->errorInfo()));
-            // $err_msg = $err[2];
             echo "0"; // <-- schief gegangen
         }
 

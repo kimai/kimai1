@@ -1,25 +1,3 @@
-{literal}    
-    <script type="text/javascript"> 
-        
-        $(document).ready(function() {
-            // $('#help').hide();
-
-            $('#xp_ext_form_export_PDF').ajaxForm(function() { 
-                
-                // $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
-                // $edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
-                
-				// floaterClose();
-				// xp_ext_reload();
-                
-            });
-
-        }); 
-        
-    </script>
-{/literal}
-
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
@@ -29,7 +7,7 @@
         </div>  
     </div>
 
-    <div id="floater_content"><div id="floater_dimensions" style="height:400px;overflow:auto">
+    <div class="floater_content">
 	
      <table class="xp_time_help_table">
      <tr> <td class="xp_time_shortcut">a</td> <td class="xp_time_description">abbreviated weekday name according to the current locale</td> </tr>

@@ -16,10 +16,6 @@
                     
                     <td nowrap class="option">
 
-{*
-                        <a href ="#" onClick="filterSubject('pct',{$arr_pct[row].pct_ID});"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
-*}
-
 {if $kga.usr && $kga.usr.usr_sts != 2}
                         <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
 {/if}

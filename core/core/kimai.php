@@ -76,11 +76,6 @@ if ($handle = opendir('../extensions/')) {
                     if (file_exists($file.'/config.ini')) {
                         $settings = parse_ini_file($file.'/config.ini');
                        	
-                       	// logfile("*************** ADMIN ALLOWED: " . $settings['ADMIN_ALLOWED']);
-                       	// logfile("*************** GROUP LEADER ALLOWED: " . $settings['GROUP_LEADER_ALLOWED']);
-                       	// logfile("*************** USER ALLOWED: " . $settings['USER_ALLOWED']);                      	
-                       	// logfile("****************** user status: " . $kga['usr']['usr_sts']);
-                       	
                        	// Check if user has the correct rank to use this extension
                        	if (isset($kga['usr']))
                           switch ($kga['usr']['usr_sts']) {

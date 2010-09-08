@@ -28,9 +28,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-// logfile("AP: processor triggered");   
-// logfile("AP: axAction: " . $axAction);     
-
 switch ($axAction) {
     
     case "createUsr":

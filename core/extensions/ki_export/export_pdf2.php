@@ -733,13 +733,6 @@ foreach ($pdf_arr_data as $customer) {
     $pdf->printRows($customer[$project_id],$widths);
 
     
-    /*if ($columns['wage']) {
-      $pdf->ln();    
-      $pdf->WriteHtmlCell($widths[0]+$widths[1]+$widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->timespan($pdf->timeSum), '',0,0,true,'R');
-      $pdf->ln();    
-      $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['xp_ext']['finalamount'].':', '',0,0,true,'R');
-      $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->money($pdf->moneySum), '',0,0,true,'R');
-    }*/
     if (isset($columns['wage']) && isset($columns['dec_time'])) {
         $pdf->ln();
         $pdf->WriteHtmlCell($widths[0]+$widths[1]+$widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->timespan($pdf->timeSum),'',0,0,true,'R');

@@ -11,7 +11,7 @@
             $('#floater input#filter_refundable').attr('value',$('#xp_ext_tab_filter_refundable').attr('value'));
             $('#floater input#filter_type').attr('value',$('#xp_ext_tab_filter_type').attr('value'));
             $('#floater input#axColumns').attr('value',xp_enabled_columns());
-            $('#floater_content fieldset label').css('width','200px');
+            $('.floater_content fieldset label').css('width','200px');
             
             $('#floater input#first_day').attr('value',new Date($('#pick_in').val()).getTime()/1000);
             $('#floater input#last_day').attr('value',new Date($('#pick_out').val()).getTime()/1000);
@@ -28,8 +28,6 @@
         <span id="floater_title">{$kga.lang.xp_ext.exportXLS}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
-            <!-- <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a> -->
-			<!-- <a href="#" class="options down" onClick="floaterOptions();">{$kga.lang.options}</a> -->
         </div>  
     </div>
 
@@ -39,7 +37,7 @@
     </div>
 
 
-    <div id="floater_content"><div id="floater_dimensions">
+    <div class="floater_content">
 
         <form id="xp_ext_form_export_XLS" action="../extensions/ki_export/processor.php" method="post"> 
             <fieldset>
@@ -63,7 +61,6 @@
 
 {* -------------------------------------------------------------------- *} 
 
-                <!-- <input name="id" type="hidden" value="" /> -->
                 <input name="axAction" type="hidden" value="export_xls" />
                 <input name="axValue" id="axValue" type="hidden" value="" />
                 <input name="first_day" id="first_day" type="hidden" value="" />
@@ -86,5 +83,5 @@
             </fieldset>
         </form>
 
-    </div></div>
+    </div>
 </div>

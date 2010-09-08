@@ -19,22 +19,12 @@
 {* --- option cell ---*}
 
                     <td nowrap class="option">
-                        
-                        
-
-{*
-                        <a href ="#" onClick="filterSubject('knd',{$arr_knd[row].knd_ID});"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
-*}
-
-
+                    
 
 {if $kga.usr && $kga.usr.usr_sts != 2}
                         <a href ="#" onClick="editSubject('knd',{$arr_knd[row].knd_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' /></a>
 {/if}  
 
-{*
-                        <a href ="#" onClick="buzzer_preselect('knd',{$arr_knd[row].knd_ID},'{$arr_knd[row].knd_name|replace:"'":"\\'"}',0,0); return false;" id="ps{$arr_knd[row].knd_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit} (ID:{$arr_knd[row].knd_ID})' border='0' /></a>
-*}
                         <a href ="#" onClick="lists_update_filter('knd',{$arr_knd[row].knd_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                     </td>

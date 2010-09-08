@@ -11,7 +11,6 @@ function step_ahead() {
     $('#progressbar>span').addClass('step_nope');
     
     for (i=1;i<step+1;i++) {
-        // $evalstring="$('#progressbar>span:eq("+(i-1)+")').removeClass('step_nope');$('#progressbar>span:eq("+(i-1)+")').addClass('step_yap');"
         $evalstring="$('#progressbar>span:eq("+(i-1)+")').addClass('step_yap');"
         eval($evalstring);
     }
@@ -186,7 +185,7 @@ function resetPermissionIndicators() {
     $('span.ch_compile_epext').removeClass("fail");
     $('span.ch_compile_xpext').removeClass("fail");
     $('span.ch_compile_bgtext').removeClass("fail");
-    // $('span.ch_compile_ivext').removeClass("fail");
+    $('span.ch_compile_ivext').removeClass("fail");
     
     $('span.ch_compile').addClass("ok");
     $('span.ch_autoconf').addClass("ok");
@@ -198,7 +197,7 @@ function resetPermissionIndicators() {
     $('span.ch_compile_epext').addClass("ok");
     $('span.ch_compile_xpext').addClass("ok");
     $('span.ch_compile_bgtext').addClass("ok");
-    // $('span.ch_compile_ivext').addClass("ok");
+    $('span.ch_compile_ivext').addClass("ok");
 
     $('span.ch_correctit').fadeOut(500); 
 }

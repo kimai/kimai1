@@ -100,14 +100,6 @@ div#evt>table>tbody>tr>td.annotation {
     border-right: none;
 }
 
-div#usr td.option,
-div#knd td.option,
-div#pct td.option,
-div#evt td.option 
-{ 
-/*    width:70px;*/
-}
-
 div#usr td.option img,
 div#knd td.option img,
 div#pct td.option img,
@@ -143,7 +135,6 @@ a.addLink
     height:16px;
     float:left;
     margin-right:5px;
-    /*text-indent:-500px;*/
 }
 
 a.selectAllLink
@@ -155,7 +146,6 @@ a.selectAllLink
     height:16px;
     float:left;
     margin-right:5px;
-    /*text-indent:-500px;*/
 }
 
 a.deselectAllLink
@@ -167,7 +157,6 @@ a.deselectAllLink
     height:16px;
     float:left;
     margin-right:5px;
-    /*text-indent:-500px;*/
 }
 
 a.selectInvertLink
@@ -179,7 +168,6 @@ a.selectInvertLink
     height:16px;
     float:left;
     margin-right:5px;
-    /*text-indent:-500px;*/
 }
 
 .livefilterfield {
@@ -270,14 +258,11 @@ div.lists tr.odd td
     border-bottom: none;
     border-left: none;
     border-right: 1px dotted #CCC;
-/*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
 
 div.lists tr.hover td {
     background: #FFC !important;
-/*    border-top: 1px solid #666 !important;
-    border-bottom: 1px solid #666 !important;*/
 }
 
 div.lists tr.even td {

@@ -29,12 +29,6 @@ function bgt_ext_onload() {
 }
 
 function bgt_ext_get_dimensions() {
-    /*scroller_width = 17;
-    if (navigator.platform.substr(0,3)=='Mac') {
-        scroller_width = 16;
-    }*/
-
-    //exp_w = pageWidth()-24;
     bgt_h = pageHeight()-224;//-headerHeight()-28;
 }
 

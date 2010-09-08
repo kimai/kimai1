@@ -73,7 +73,6 @@ function deb_ext_resize() {
 }
 
 function deb_ext_triggerchange() {
-    // deb_ext_reloadLogfileOnce();
     deb_ext_reloadLogfileLoop();
 }
 

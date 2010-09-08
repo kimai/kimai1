@@ -28,7 +28,6 @@
           <col class="location" />
           <col class="trackingnr" />
           <col class="user" />
-          <!-- <col class="cleared" /> -->
         </colgroup>
         <tbody>
             <tr>

@@ -25,8 +25,6 @@
 function ap_ext_onload() {
     ap_ext_resize();  
 	subactivelink = "#ap_ext_sub1";
-    // $(subactivelink).addClass("active"); 
-    // $("div#ap_ext_sub1 > div.ap_ext_panel_header").click(ap_ext_subtab_expand(1));
     $("#loader").hide();
 }
 
@@ -74,7 +72,6 @@ function ap_ext_subtab_expand(id) {
 	subtab="#ap_ext_s"+id;
 	$(subtab).css("display", "block");
 	
-    // ap_ext_activePanel = id;
 	$.cookie('ap_ext_activePanel_'+usr_ID, id);
 }
 

@@ -49,7 +49,6 @@
             {else}                
                         <select name="usr_sts">
                             <option value="0" {if $usr_details.usr_sts == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
-                            <!-- <option value="1" {if $usr_details.usr_sts == 1}selected{/if}>{$kga.lang.groupleader}</option> -->
                             <option value="2" {if $usr_details.usr_sts == 2}selected{/if}>{$kga.lang.regusr}</option>
                         </select>
             {/if}              
