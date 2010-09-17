@@ -3,7 +3,7 @@
   width:  298px;
   background-color: #333;
   border: 1px solid #000;
-  z-index:500;
+  z-index:500 !important;
   display:none;
 }
 

@@ -24,6 +24,7 @@
 
 // set path of extension
 var ts_ext_path = "../extensions/ki_timesheets/";
+var ts_total = '';
 
 var scroller_width;
 var drittel;

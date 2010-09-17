@@ -861,7 +861,7 @@ function lists_update_annotations(id,usr,knd,pct,evt)
   lists_ann_pct[id] = pct;
   lists_ann_evt[id] = evt;
 
-  if ($('.menu dd#exttab_'+id).hasClass('act'))
+  if ($('.menu li#exttab_'+id).hasClass('act'))
     lists_write_annotations();
 }
 

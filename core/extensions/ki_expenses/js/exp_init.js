@@ -7,6 +7,7 @@
 
 // set path of extension
 var exp_ext_path = "../extensions/ki_expenses/";
+var exp_total = '';
 
 var scroller_width;
 var drittel;

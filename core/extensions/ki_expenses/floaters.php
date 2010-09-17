@@ -62,6 +62,10 @@ switch ($axAction) {
       $tpl->assign('edit_day', date("d.m.Y"));
   
       $tpl->assign('edit_time',  date("H:i:s"));
+  
+      $tpl->assign('multiplier',  '1'.$kga['conf']['decimalSeparator'].'0');
+
+
 
     }
     
