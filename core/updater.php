@@ -1141,6 +1141,12 @@ if ((int)$revisionDB < 1229) {
     exec_query("ALTER TABLE `${p}usr` CHANGE `banTime` `banTime` int(10) NOT NULL DEFAULT 0");
 }
 
+if ((int)$revisionDB < 1236) {
+    logfile("-- update to r1236");
+    exec_query("ALTER TABLE `${p}pct`
+  ADD `pct_internal` TINYINT( 1 ) NOT NULL DEFAULT 0");
+}
+
 
 // ============================
 // = update DB version number =

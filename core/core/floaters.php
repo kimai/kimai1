@@ -99,6 +99,7 @@ switch ($axAction) {
                 $tpl->assign('pct_name'        , $data['pct_name'        ]);
                 $tpl->assign('pct_comment'     , $data['pct_comment'     ]);
                 $tpl->assign('pct_visible'     , $data['pct_visible'     ]);
+                $tpl->assign('pct_internal'    , $data['pct_internal'    ]);
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
                 $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);

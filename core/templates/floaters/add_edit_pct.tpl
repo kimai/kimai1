@@ -27,6 +27,11 @@
                       <span class="bb">{$kga.lang.general}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
+          <li class="tab norm"><a href="#money">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.budget}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
 {if $sel_grp_IDs|@count gt 1}
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
@@ -72,6 +77,16 @@
                          <input name="pct_visible" type="checkbox" value='1' {if $pct_visible || !$id}checked="checked"{/if} />
                     </li>
 
+                    <li>
+                        <label for="pct_internal" >{$kga.lang.internalProject}:</label>
+                        <input type="checkbox" name="pct_internal" value='1' {if $pct_internal}checked="checked"{/if} />
+                    </li>
+                  </ul>
+            </fieldset>
+
+            <fieldset id ="money">
+
+                <ul>
                     <li>
                         <label for="pct_default_rate" >{$kga.lang.default_rate}:</label>
                         <input type="text" name="pct_default_rate" value="{$pct_default_rate|replace:'.':$kga.conf.decimalSeparator}" />

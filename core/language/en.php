@@ -268,6 +268,8 @@ return array(
 'address' => 'Address',
 'contact' => 'Contact',
 
+'internalProject' => 'internal project',
+
 
 
 'credits' => <<<EOF

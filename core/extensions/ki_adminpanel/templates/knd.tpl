@@ -8,6 +8,8 @@
                   <tr class='headerrow'>
                       <th>{$kga.lang.options}</th>
                       <th>{$kga.lang.knds}</th>
+                      <th>{$kga.lang.contactPerson}</th>
+                      <th>{$kga.lang.groups}</th>
                   </tr>
               </thead>
               
@@ -35,6 +37,14 @@
                             {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
                             {$arr_knd[row].knd_name}
                             {if $arr_knd[row].knd_visible != 1}</span>{/if}
+                    </td>
+                    
+                    <td>
+                      {$arr_knd[row].knd_contact}
+                    </td>
+                    
+                    <td>
+                        {$arr_knd[row].groups}
                     </td>
 
                 </tr>

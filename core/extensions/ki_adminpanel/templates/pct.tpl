@@ -8,6 +8,7 @@
                   <tr class='headerrow'>
                       <th>{$kga.lang.options}</th>
                       <th>{$kga.lang.pcts}</th>
+                      <th>{$kga.lang.groups}</th>
                   </tr>
               </thead>
               
@@ -38,6 +39,10 @@
                         {$arr_pct[row].pct_name} <span class="lighter">({$arr_pct[row].knd_name|truncate:30:"..."})</span>
                         {/if}
                         {if $arr_pct[row].pct_visible != 1}</span>{/if}
+                    </td>
+                    
+                    <td>
+                        {$arr_pct[row].groups}
                     </td>
 
                 </tr>

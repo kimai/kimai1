@@ -19,6 +19,7 @@
                   <tr class='headerrow'>
                       <th>{$kga.lang.options}</th>
                       <th>{$kga.lang.evts}</th>
+                      <th>{$kga.lang.groups}</th>
                   </tr>
               </thead>
               
@@ -46,6 +47,10 @@
                         {if $arr_evt[row].evt_visible != 1}<span style="color:#bbb">{/if}
                         {$arr_evt[row].evt_name}
                         {if $arr_evt[row].evt_visible != 1}</span>{/if}
+                    </td>
+                    
+                    <td>
+                        {$arr_evt[row].groups}
                     </td>
 
                 </tr>

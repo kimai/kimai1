@@ -280,6 +280,7 @@ function pct_create($data) {
     $values['pct_budget']  = MySQL::SQLValue($data['pct_budget']  , MySQL::SQLVALUE_NUMBER );
     $values['pct_kndID']   = MySQL::SQLValue($data['pct_kndID']   , MySQL::SQLVALUE_NUMBER );
     $values['pct_visible'] = MySQL::SQLValue($data['pct_visible'] , MySQL::SQLVALUE_NUMBER );
+    $values['pct_internal']= MySQL::SQLValue($data['pct_internal'], MySQL::SQLVALUE_NUMBER );
     $values['pct_filter']  = MySQL::SQLValue($data['pct_filter']  , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."pct";
@@ -378,6 +379,7 @@ function pct_edit($pct_id, $data) {
     $values ['pct_budget']  = MySQL::SQLValue($new_array ['pct_budget']  , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_kndID']   = MySQL::SQLValue($new_array ['pct_kndID']   , MySQL::SQLVALUE_NUMBER  );
     $values ['pct_visible'] = MySQL::SQLValue($new_array ['pct_visible'] , MySQL::SQLVALUE_NUMBER  );
+    $values ['pct_internal']= MySQL::SQLValue($new_array ['pct_internal'], MySQL::SQLVALUE_NUMBER  );
     $values ['pct_filter']  = MySQL::SQLValue($new_array ['pct_filter']  , MySQL::SQLVALUE_NUMBER  );
 
     $filter ['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
@@ -2213,13 +2215,11 @@ function get_arr_pct_by_knd($group, $knd_id) {
         $sort = "pct_name,knd_name";
     }
 
-    $query = "SELECT * FROM ${p}pct JOIN ${p}knd 
-                       ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct 
-                       ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID 
-                       WHERE ${p}pct.pct_kndID = $knd_id 
-                       AND ${p}pct.pct_trash=0 ".
-                       ($group!="all"?"AND ${p}grp_pct.grp_ID = $group ":"").
-                       " ORDER BY $sort ;";        
+    if ($group == "all") {
+      $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND ${p}pct.pct_kndID = $knd_id AND pct_trash=0 ORDER BY $sort;";
+    } else {
+      $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = $group AND ${p}pct.pct_kndID = $knd_id AND pct_trash=0 ORDER BY $sort;";
+    }     
     
     $conn->Query($query);
     
@@ -2329,6 +2329,9 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     $p     = $kga['server_prefix'];
 
     $whereClauses = zef_whereClausesFromFilters($users,$customers,$projects,$events);
+
+    if (isset($kga['customer']))
+      $whereClauses[] = "${p}pct.pct_internal = 0";
 
     if ($in)
       $whereClauses[]="(zef_out > $in || zef_out = 0)";
@@ -2845,6 +2848,7 @@ function get_arr_knd($group) {
             $row = $conn->Row();
             $arr[$i]['knd_ID']       = $row->knd_ID;   
             $arr[$i]['knd_name']     = $row->knd_name;
+            $arr[$i]['knd_contact']  = $row->knd_contact;
             $arr[$i]['knd_visible']  = $row->knd_visible;
             $i++;
         }

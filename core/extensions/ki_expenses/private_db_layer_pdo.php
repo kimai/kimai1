@@ -137,6 +137,9 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
 
+    if (isset($kga['customer']))
+      $whereClauses[] = "${p}pct.pct_internal = 0";
+
     if ($start)
       $whereClauses[]="exp_timestamp >= $start";
     if ($end)

@@ -249,6 +249,7 @@ switch ($axAction) {
               $data['pct_kndID']        = $_REQUEST['pct_kndID'];
               $data['pct_comment']      = $_REQUEST['pct_comment'];
               $data['pct_visible']      = $_REQUEST['pct_visible'];
+              $data['pct_internal']     = $_REQUEST['pct_internal'];
               $data['pct_filter']       = $_REQUEST['pct_filter'];
               $data['pct_budget']       = $_REQUEST['pct_budget'];
               $data['pct_default_rate'] = 

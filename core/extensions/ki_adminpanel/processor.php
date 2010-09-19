@@ -75,6 +75,16 @@ switch ($axAction) {
 		  $arr_knd = get_arr_knd("all");
 		else
 		  $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+
+    foreach ($arr_knd as $row=>$knd_data) {
+      $grp_names = array();
+      foreach (knd_get_grps($knd_data['knd_ID']) as $grp_id) {
+        $data = grp_get_data($grp_id);
+         $grp_names[] = $data['grp_name'];
+      }
+      $arr_knd[$row]['groups'] = implode(", ",$grp_names);
+    }
+
                 if (count($arr_knd)>0) {
                 $tpl->assign('arr_knd', $arr_knd);
                 } else {
@@ -88,6 +98,16 @@ switch ($axAction) {
 		  $arr_pct = get_arr_pct("all");
 		else
 		  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+
+
+    foreach ($arr_pct as $row=>$pct_data) {
+      $grp_names = array();
+      foreach (pct_get_grps($pct_data['pct_ID']) as $grp_id) {
+        $data = grp_get_data($grp_id);
+         $grp_names[] = $data['grp_name'];
+      }
+      $arr_pct[$row]['groups'] = implode(", ",$grp_names);
+    }
                 if (count($arr_pct)>0) {
                 $tpl->assign('arr_pct', $arr_pct);
                 } else {
@@ -116,6 +136,15 @@ switch ($axAction) {
                       $arr_evt = 
                         get_arr_evt_by_pct($group,$_REQUEST['evt_filter']);
                   }
+
+                foreach ($arr_evt as $row=>$evt_data) {
+                  $grp_names = array();
+                  foreach (evt_get_grps($evt_data['evt_ID']) as $grp_id) {
+                    $data = grp_get_data($grp_id);
+                    $grp_names[] = $data['grp_name'];
+                  }
+                  $arr_evt[$row]['groups'] = implode(", ",$grp_names);
+                }
                   
                 if (count($arr_evt)>0) {
                 $tpl->assign('arr_evt', $arr_evt);

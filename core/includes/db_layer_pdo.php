@@ -288,6 +288,7 @@ function pct_create($data) {
     pct_name, 
     pct_comment, 
     pct_visible, 
+    pct_internal,
     pct_filter,
     pct_budget
     ) VALUES (?, ?, ?, ?, ?, ?);");
@@ -297,6 +298,7 @@ function pct_create($data) {
     $data['pct_name'],
     $data['pct_comment'],
     $data['pct_visible'],
+    $data['pct_internal'],
     $data['pct_filter'],
     $data['pct_budget']
     ));
@@ -391,6 +393,7 @@ function pct_edit($pct_id, $data) {
     pct_name = ?,
     pct_comment = ?,
     pct_visible = ?,
+    pct_internal = ?,
     pct_filter = ?,
     pct_budget = ?
     WHERE pct_id = ?;");
@@ -400,6 +403,7 @@ function pct_edit($pct_id, $data) {
     $new_array['pct_name'], 
     $new_array['pct_comment'],
     $new_array['pct_visible'],
+    $new_array['pct_internal'],
     $new_array['pct_filter'],
     $new_array['pct_budget'],
     $pct_id  
@@ -2055,16 +2059,16 @@ function get_arr_pct_by_knd($group, $knd_id) {
 
     if ($group == "all") {
       if ($kga['conf']['flip_pct_display']) {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}pct.pct_kndID = ? AND pct_trash=0 ORDER BY knd_name,pct_name;");
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY knd_name,pct_name;");
       } else {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}pct.pct_kndID = ? AND pct_trash=0 ORDER BY pct_name,knd_name;");        
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY pct_name,knd_name;");        
       }
       $result = $pdo_query->execute(array($knd_id));  
     } else {
       if ($kga['conf']['flip_pct_display']) {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_trash=0 ORDER BY knd_name,pct_name;");
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY knd_name,pct_name;");
       } else {
-          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_trash=0 ORDER BY pct_name,knd_name;");        
+          $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY pct_name,knd_name;");        
       }  
       $result = $pdo_query->execute(array($group, $knd_id));
     }
@@ -2154,6 +2158,9 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
     }
 
     $whereClauses = zef_whereClausesFromFilters($users, $customers , $projects , $events );
+
+    if (isset($kga['customer']))
+      $whereClauses[] = "${p}pct.pct_internal = 0";
 
     if ($in)
       $whereClauses[]="(zef_out > $in || zef_out = 0)";
@@ -2619,6 +2626,7 @@ function get_arr_knd($group) {
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $arr[$i]['knd_ID']      = $row['knd_ID'];
         $arr[$i]['knd_name']    = $row['knd_name'];
+        $arr[$i]['knd_contact'] = $row['knd_contact'];
         $arr[$i]['knd_visible'] = $row['knd_visible'];
         $i++;
     }
