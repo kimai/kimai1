@@ -25,6 +25,17 @@ switch ($axAction) {
 
         $tpl->display("credits.tpl");
     break;
+
+    /**
+     * Display the credits floater. The copyright will automatically be
+     * set from 2006 to the current year.
+     */
+    case 'securityWarning':
+        if ($axValue == 'installer') {
+
+          $tpl->display("security_warning.tpl");
+        }
+    break;
    
     /**
      * Display the preferences dialog.
@@ -103,6 +114,7 @@ switch ($axAction) {
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
                 $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
+                $tpl->assign('evt_selection'   , pct_get_evts($id)        );
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
                 $tpl->assign('grp_selection', pct_get_grps($id));
@@ -110,9 +122,14 @@ switch ($axAction) {
             }
         }
         // Create a <select> element to chosse the customer.
-        $sel = makeSelectBox("knd",$kga['usr']['usr_grp']);
+        $sel = makeSelectBox("knd",$kga['usr']['usr_grp'],isset($id)?$data['pct_kndID']:null);
         $tpl->assign('sel_knd_names', $sel[0]);
         $tpl->assign('sel_knd_IDs',   $sel[1]);
+
+        // Create a <select> element to chosse the events.
+        $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
+        $tpl->assign('sel_evt_names', $sel[0]);
+        $tpl->assign('sel_evt_IDs',   $sel[1]);
         
         // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);

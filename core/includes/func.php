@@ -184,7 +184,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$user){
+function makeSelectBox($subject,$user,$selection=null){
 
     global $kga;
 
@@ -230,12 +230,20 @@ function makeSelectBox($subject,$user){
         case 'knd':
             $arr_knd = get_arr_knd($user);
             $i=0;
+            $selectionFound = false;
             foreach ($arr_knd as $knd) {
                 if ($knd['knd_visible']) {
                     $sel[0][$i] = $knd['knd_name'];
                     $sel[1][$i] = $knd['knd_ID'];
                     $i++;
+                    if ($selection == $knd['knd_ID'])
+                      $selectionFound = true;
                 }
+            }
+            if ($selection != null && !$selectionFound) {
+              $data = knd_get_data($selection);
+              $sel[0][$i] = $data['knd_name'];
+              $sel[1][$i] = $data['knd_ID'];
             }
             break;
 

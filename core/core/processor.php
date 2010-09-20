@@ -266,7 +266,9 @@ switch ($axAction) {
 
               // set the project group mappings
               $grp_array = $_REQUEST['pct_grp'];
+              $evt_array = $_REQUEST['pct_evt'];
               assign_pct2grps($id, $grp_array);
+              assign_pct2evts($id, $evt_array);
             break;
             
             /**

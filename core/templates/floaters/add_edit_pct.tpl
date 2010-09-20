@@ -4,6 +4,7 @@
             $('#addPct').ajaxForm(function() { 
                 floaterClose();
                 hook_chgPct();
+                hook_chgEvt();
             });
              $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
@@ -30,6 +31,11 @@
           <li class="tab norm"><a href="#money">
                       <span class="aa">&nbsp;</span>
                       <span class="bb">{$kga.lang.budget}</span>
+                      <span class="cc">&nbsp;</span>
+                      </a></li>
+          <li class="tab norm"><a href="#evts">
+                      <span class="aa">&nbsp;</span>
+                      <span class="bb">{$kga.lang.evts}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
 {if $sel_grp_IDs|@count gt 1}
@@ -102,6 +108,17 @@
                          <input type='text' name='pct_budget' cols='30' rows='5' value="{$pct_budget}"/>
                     </li>
                   </ul>
+            </fieldset>
+            
+            <fieldset id="evts">
+              <ul>
+                    <li>
+                         <label for="pct_comment">{$kga.lang.evts}:</label>
+                        <select class="formfield" name="pct_evt[]" multiple size='5' style="width:255px">
+                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$evt_selection}
+                        </select>
+                    </li>
+              </ul>
             </fieldset>
                     
 {if $sel_grp_IDs|@count gt 1}

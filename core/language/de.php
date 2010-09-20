@@ -260,6 +260,10 @@ return array(
 
 'internalProject' => 'internes Projekt',
 
+'securityWarning' => 'Sicherheitswarnung',
+'installerWarningHeadline' => 'installer Ordner noch vorhanden!',
+'installerWarningText' => 'Sie sollten den Ordner löschen, damit niemand anderes Kimai neu installieren kann.',
+
 
 
 'credits' => <<<EOF

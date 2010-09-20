@@ -145,7 +145,10 @@
         }
 
 	resize_menu();
-    
+
+        {/literal}{if $showInstallWarning}
+        floaterShow("floaters.php","securityWarning","installer",0,450,200);
+        {/if}{literal}
         }{/literal}
 
     </script>

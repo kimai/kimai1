@@ -796,6 +796,9 @@ function lists_reload(subject) {
         if ($('#row_evt'+selected_evt).length == 0) {
           $('#buzzer').addClass('disabled');
         }
+        else {
+          $('#buzzer').removeClass('disabled');
+        }
                 }
             );
     break;

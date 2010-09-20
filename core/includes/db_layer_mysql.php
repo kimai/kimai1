@@ -791,6 +791,60 @@ function assign_evt2pcts($evt_id, $pct_array) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Assigns 1-n events to a project by adding entries to the cross table
+ *
+ * @param int $pct_id         id of the project to which events will be assigned
+ * @param array $evt_array    contains one or more evt_IDs
+ * @global array $kga         kimai-global-array
+ * @return boolean            true on success, false on failure
+ * @author sl
+ */
+
+function assign_pct2evts($pct_id, $evt_array) {
+    global $kga, $conn;
+    
+    if (! $conn->TransactionBegin()) $conn->Kill();        
+
+    $table = $kga['server_prefix']."pct_evt";
+    $filter['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
+    $d_query = MySQL::BuildSQLDelete($table, $filter);
+    $d_result = $conn->Query($d_query);    
+
+    if ($d_result == false) {
+        $conn->TransactionRollback();
+        return false;
+    }
+
+    foreach ($evt_array as $current_evt) {
+        
+        $filter['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+        $filter['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
+        $c_query = MySQL::BuildSQLSelect($table, $filter);
+        $conn->Query($c_query);
+        
+        if ($conn->RowCount() == 0) {
+            $values['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+            $values['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
+            $query = MySQL::BuildSQLInsert($table, $values);
+            $result = $conn->Query($query);            
+            
+            if ($result == false) {
+                $conn->TransactionRollback();
+                return false;
+            }
+        }
+    }
+    
+    if ($conn->TransactionEnd() == true) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * returns all the projects to which the event was assigned
  *
  * @param array $evt_id  evt_id of the project
@@ -824,6 +878,45 @@ function evt_get_pcts($evt_id) {
             $counter++;   
         }
         return $return_grps;
+    } else {
+        return false;
+    }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * returns all the events which were assigned to a project
+ *
+ * @param integer $pct_id  pct_id of the project
+ * @global array $kga    kimai-global-array
+ * @return array         contains the evt_IDs of the events or false on error
+ * @author sl
+ */
+ 
+function pct_get_evts($pct_id) {
+    global $kga, $conn;
+
+    $filter ['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
+    $columns[]         = "evt_ID";
+    $table = $kga['server_prefix']."pct_evt";
+    
+    $result = $conn->SelectRows($table, $filter, $columns);
+    if ($result == false) {
+        return false;
+    }
+
+    $return_evts = array();
+    $counter     = 0;
+    
+    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    
+    if ($conn->RowCount()) {
+        foreach ($rows as $current_evt) {
+            $return_evts[$counter] = $current_evt['evt_ID'];
+            $counter++;   
+        }
+        return $return_evts;
     } else {
         return false;
     }

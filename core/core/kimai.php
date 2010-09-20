@@ -363,6 +363,11 @@ if (count($arr_evt)>0) {
 }
 $tpl->assign('evt_display', $tpl->fetch("lists/evt.tpl"));
 
+if (isset($kga['usr']))
+  $tpl->assign('showInstallWarning',$kga['usr']['usr_sts']==0 && file_exists(WEBROOT.'installer'));
+else
+  $tpl->assign('showInstallWarning',false);
+
 
 // ========================
 // = BUILD HOOK FUNCTIONS =

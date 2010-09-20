@@ -270,6 +270,10 @@ return array(
 
 'internalProject' => 'internal project',
 
+'securityWarning' => 'security warning',
+'installerWarningHeadline' => 'installer folder still present!',
+'installerWarningText' => 'You should delete the installer folder so nobody else can reinstall Kimai.',
+
 
 
 'credits' => <<<EOF
