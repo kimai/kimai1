@@ -23,6 +23,7 @@
           <col class="knd" />
           <col class="pct" />
           <col class="evt" />
+          <col class="trackingnumber" />
         </colgroup>
         <tbody>
             <tr>
@@ -35,6 +36,7 @@
                 <td class="knd">{$kga.lang.knd}</td>
                 <td class="pct">{$kga.lang.pct}</td>
                 <td class="evt">{$kga.lang.evt}</td>
+                <td class="trackingnumber">{$kga.lang.trackingnr}</td>
             </tr>
         </tbody>
     </table>

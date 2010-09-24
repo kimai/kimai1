@@ -14,6 +14,7 @@
               <col class="client" />
               <col class="project" />
               <col class="action" />
+              <col class="trackingnumber" />
             </colgroup>
 
             <tbody>
@@ -258,10 +259,22 @@
 {/if}
                     </td>
 
+                    <td class="trackingnumber
+                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_zef[row].zef_out != $zef_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    {$arr_zef[row].zef_trackingnr}
+                    </td>
+
                 </tr>
                 
                 <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type}" style="display:none;">
-                    <td colspan="9">{$arr_zef[row].zef_comment|nl2br}</td>
+                    <td colspan="10">{$arr_zef[row].zef_comment|nl2br}</td>
                 </tr>
 
 {assign var="day_buffer" value=$arr_zef[row].zef_in|date_format:"%d"}

@@ -115,6 +115,7 @@ $(document).ready(function() {
             return i;
           }
         }
+        return -1;
       }
     }
 

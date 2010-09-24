@@ -64,20 +64,6 @@ function headerHeight() {
 }
 
 
-// ----------------------------------------------------------------------------------------
-// makes floating dialog windows dragable
-//
-function floaterDragable() {
-    $('#floater').draggable('destroy'); 
-	$('#floater').draggable({  
-			zIndex:20,
-			ghosting:false,
-			opacity:0.7,
-      cursor:'move'
-		});  	
-}
-
-
 
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
@@ -99,7 +85,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
             id: id
         },
         function() {
-          floaterDragable();
           
           $('#floater').css({width: width+"px"});
           
@@ -140,7 +125,7 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
 // hides dialog again
 //
 function floaterClose() {
-    $('#floater').draggable('destroy');
+    //$('#floater').draggable('destroy');
     $("#floater").fadeOut(fading_enabled?500:0);
 }
 

@@ -24,7 +24,7 @@
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery-ui-1.8.4.custom.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-ui-1.8.5.custom.min.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
@@ -134,6 +134,13 @@
   {literal}
     $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
     $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+
+    $('#floater').draggable({  
+        zIndex:20,
+        ghosting:false,
+        opacity:0.7,
+        cursor:'move'
+      });   
     
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);
