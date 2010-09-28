@@ -432,6 +432,10 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 
 ),
 
+'ext_budget' => array(
+  'unusedBudget' => 'frei'
+),
+
 'extensions' => array(
 'ki_timesheet' => 'Zeiterfassung',
 'ki_expenses' => 'Auslagen',

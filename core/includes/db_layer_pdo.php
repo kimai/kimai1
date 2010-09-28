@@ -1949,9 +1949,10 @@ function zef_create_record($usr_ID,$data) {
     $data['cleared']?1:0
     ));
    logfile($pdo_query->errorInfo());
-    if ($result == false) {
-        return $result;
-    }
+    if ($result === false)
+        return false;
+    else
+      return $pdo_conn->lastInsertId();
 } 
 
 // -----------------------------------------------------------------------------------------------------------

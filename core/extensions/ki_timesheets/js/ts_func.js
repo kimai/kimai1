@@ -208,7 +208,7 @@ function ts_ext_recordAgain(pct,evt,id) {
     show_stopwatch();
     $('#zefEntry'+id+'>td>a').removeAttr('onClick');
  
-    $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: pct+"|"+evt, id: 0 },
+    $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: 0, id: id },
         function(data) {
                 eval(data);
                 ts_ext_reload();

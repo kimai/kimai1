@@ -29,6 +29,8 @@ var knd_w;
 var pct_w;
 var evt_w;
 
+var currentDay = (new Date()).getDate();
+
 var fading_enabled = true;
 
 var extShrinkMode = 0; // 0 = show, 1 = hide

@@ -32,7 +32,7 @@
 
 
 <div id="infos">
-    {$today_display} &nbsp; 
+    <span id="n_date"></span> &nbsp; 
     <img src="../skins/{$kga.conf.skin}/grfx/g3_display_smallclock.png" width="13" height="13" alt="Display Smallclock" />
     <span id="n_uhr">00:00</span> &nbsp; 
     <img src="../skins/{$kga.conf.skin}/grfx/g3_display_eye.png" width="15" height="12" alt="Display Eye" /> 

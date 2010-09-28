@@ -1404,6 +1404,7 @@ function usr_edit($usr_id, $data) {
     $values ['usr_active']        = MySQL::SQLValue($new_array ['usr_active']       , MySQL::SQLVALUE_NUMBER  );
     $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
     $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
+    $values ['lastRecord']        = MySQL::SQLValue($new_array ['lastRecord']       , MySQL::SQLVALUE_NUMBER  );
     
     $table = $kga['server_prefix']."usr";
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -2093,7 +2094,11 @@ function zef_create_record($usr_ID,$data) {
     $values ['zef_cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."zef";
-    return $conn->InsertRow($table, $values);
+    $success =  $conn->InsertRow($table, $values);
+    if ($success)
+      return  $conn->GetLastInsertID();
+    else
+      return false;
     
 } 
 
@@ -2791,7 +2796,6 @@ function is_customer_name($name) {
 function get_event_last() {
     global $kga, $conn;
     
-    $user  = MySQL::SQLValue($user , MySQL::SQLVALUE_NUMBER);
     $p     = $kga['server_prefix'];
     
     $lastRecord = $kga['usr']['lastRecord'];

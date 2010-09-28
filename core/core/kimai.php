@@ -202,14 +202,11 @@ else if (isset($kga['usr']))
     $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
     
 
-$pd_today = date("d/m/Y",time());
-$today    = strftime($kga['date_format'][0],time());
-$nextday  = $kga['lang']['weekdays_short'][date("w",time()+86400)] . ". " . strftime($kga['date_format'][0],time()+86400);
+$dp_today = date("d/m/Y",time());
 
-$tpl->assign('today_display', "$wd. $today");
 $tpl->assign('dp_start', $dp_start);
-$tpl->assign('dp_today', $pd_today);
-$tpl->assign('nextday', $nextday);
+$tpl->assign('dp_today', $dp_today);
+
 if (isset($kga['customer']))
   $tpl->assign('total', formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
 else

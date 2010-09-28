@@ -74,8 +74,8 @@
         var now                   = {$current_time};
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
-        var nextday               = "{$nextday}";
-        var default_title         = "{$kga.uer.usr_name} - Kimai";
+
+        var default_title         = "{$kga.usr.usr_name} - Kimai";
         var revision              = {$kga.revision};
         var timespaceDateFormat   = "{$kga.date_format.2}";
 
@@ -141,6 +141,8 @@
         opacity:0.7,
         cursor:'move'
       });   
+
+    $('#n_date').html(strftime(timespaceDateFormat,new Date()));
     
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);

@@ -33,9 +33,9 @@ require("../../includes/kspi.php");
 // ==================
 switch ($axAction) {
     
-    // ==========================
-    // = record new event AGAIN =
-    // ==========================
+    // =========================
+    // = record an event AGAIN =
+    // =========================
     case 'record':
         if (isset($kga['customer'])) die();
         
@@ -43,12 +43,32 @@ switch ($axAction) {
             stopRecorder($kga['usr']['usr_ID']);
         }
         
-        // IDs -> pctID|evtID
-        //
-        $IDs = explode('|',$axValue);
-        startRecorder($IDs[0],$IDs[1],$kga['usr']['usr_ID']);
+        $zefData = zef_get_data($id);
+
+        $zefData['in'] = time();
+        $zefData['out'] = 0;
+        $zefData['diff'] = 0;
+
+        // copied from check_zef_data and inverted assignments
+        $zefData['pct_ID'] = $zefData['zef_pctID'];
+        $zefData['evt_ID'] = $zefData['zef_evtID'];
+        $zefData['zlocation'] = $zefData['zef_location'];
+        $zefData['trackingnr'] = $zefData['zef_trackingnr'];
+        $zefData['comment'] = $zefData['zef_comment'];
+        $zefData['comment_type'] = $zefData['zef_comment_type'];
+        $zefData['rate'] = $zefData['zef_rate'];
+        $zefData['cleared'] = $zefData['zef_cleared'];
+
+        $newZefId = zef_create_record($kga['usr']['usr_ID'],$zefData);
         
-        $pctdata = pct_get_data($IDs[0]);        
+        $usrData = array();
+        $usrData['lastRecord'] = $newZefId;
+        $usrData['lastProject'] = $zefData['pct_ID'];
+        $usrData['lastEvent'] = $zefData['evt_ID'];
+        usr_edit($kga['usr']['usr_ID'], $usrData);
+        
+        
+        $pctdata = pct_get_data($zefData['zef_pctID']);        
         $return =  'pct_name = "' . $pctdata['pct_name'] .'"; ';
         
         $return .=  'knd = "' . $pctdata['pct_kndID'] .'"; ';
@@ -56,7 +76,7 @@ switch ($axAction) {
         $knddata = knd_get_data($pctdata['pct_kndID']);        
         $return .=  'knd_name = "' . $knddata['knd_name'] .'"; ';
                 
-        $evtdata = evt_get_data($IDs[1]);
+        $evtdata = evt_get_data($zefData['zef_evtID']);
         $return .= 'evt_name = "' . $evtdata['evt_name'] .'"; ';
 
         echo $return;

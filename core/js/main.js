@@ -213,10 +213,16 @@ function n_uhr() {
         Minuten = Jetzt.getMinutes();
         Sekunden = Jetzt.getSeconds();
         
-        // um 00:00 neues Datum zeigen
-        trigger = Stunden+Minuten+Sekunden;
-        if (trigger==0) {
-            $('#display_day').html(nextday);
+        if (currentDay != Jetzt.getDate()) {
+          // it's the next day
+          $('#n_date').html(strftime(timespaceDateFormat,Jetzt));
+          currentDay = Jetzt.getDate();
+          
+          // If the difference to the datepicker end date is less than one and a half day.
+          // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
+          if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
+            setTimespace(undefined,Jetzt);
+          }
         }
         
         ZeitString = Stunden;
