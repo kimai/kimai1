@@ -350,13 +350,13 @@ if (isset($_REQUEST['print_summary'])) {
 
     if ($one_entry['type'] == 'zef') {
       if (isset($zef_summary[$one_entry['zef_evtID']])) {
-        $zef_summary[$one_entry['zef_evtID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
-        $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Euro
+        $zef_summary[$one_entry['zef_evtID']]['time']   += ($kga['conf']['exactSums'] == 1)?$one_entry['zef_time']/3600:$one_entry['dec_zef_time']; //Sekunden
+        $zef_summary[$one_entry['zef_evtID']]['wage']   += ($kga['conf']['exactSums'] == 1)?$one_entry['wage_decimal']:$one_entry['wage']; //Euro
       }
       else {
         $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
-        $zef_summary[$one_entry['zef_evtID']]['time']         = $one_entry['dec_zef_time'];
-        $zef_summary[$one_entry['zef_evtID']]['wage']         = $one_entry['wage'];
+        $zef_summary[$one_entry['zef_evtID']]['time']         = ($kga['conf']['exactSums'] == 1)?$one_entry['zef_time']/3600:$one_entry['dec_zef_time'];
+        $zef_summary[$one_entry['zef_evtID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$one_entry['wage_decimal']:$one_entry['wage'];
       }
     }
     else {

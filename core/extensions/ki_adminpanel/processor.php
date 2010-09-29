@@ -301,6 +301,7 @@ switch ($axAction) {
         $var_data['decimalSeparator']       = $_REQUEST['decimalSeparator'];
         $var_data['durationWithSeconds']    = $_REQUEST['durationWithSeconds'];
         $var_data['defaultTimezone']        = $_REQUEST['defaultTimezone'];
+        $var_data['exactSums']              = $_REQUEST['exactSums'];
         
         $success = var_edit($var_data);
 

@@ -122,6 +122,10 @@
                 </select> {$kga.lang.defaultTimezone}
             </div>
 
+            <div>
+               <input type="checkbox" name="exactSums" {if $kga.conf.exactSums}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.exactSums}
+            </div>
+
         
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         

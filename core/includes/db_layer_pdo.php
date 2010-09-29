@@ -1286,6 +1286,7 @@ function usr_edit($usr_id, $data) {
     usr_mail = ?,
     usr_alias = ?,
     pw = ?,
+    lastRecord = ?,
     lastProject = ?,
     lastEvent = ?
     WHERE usr_id = ?;");
@@ -1299,6 +1300,7 @@ function usr_edit($usr_id, $data) {
     $new_array['usr_mail'],
     $new_array['usr_alias'],
     $new_array['pw'],
+    $new_array['lastRecord'],
     $new_array['lastProject'],
     $new_array['lastEvent'],
     $usr_id
@@ -2297,7 +2299,7 @@ function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null
           // only calculate time after recording is complete
           $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in']; 
           $arr[$i]['zef_duration']     = formatDuration($arr[$i]['zef_time']);
-          $arr[$i]['wage_decimal']     = round($arr[$i]['zef_time']/3600*$row['zef_rate'],2);
+          $arr[$i]['wage_decimal']     = $arr[$i]['zef_time']/3600*$row['zef_rate'];
           $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
         }
         

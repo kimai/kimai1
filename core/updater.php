@@ -1147,6 +1147,11 @@ if ((int)$revisionDB < 1236) {
   ADD `pct_internal` TINYINT( 1 ) NOT NULL DEFAULT 0");
 }
 
+if ((int)$revisionDB < 1240) {
+    logfile("-- update to r1240");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('exactSums','0')");
+}
+
 
 // ============================
 // = update DB version number =

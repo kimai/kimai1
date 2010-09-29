@@ -57,6 +57,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
         $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
         $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
+        $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
         $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
         $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
         $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];
@@ -117,6 +118,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
       $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
       $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
+      $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
       $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
       $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
       $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];

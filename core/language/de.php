@@ -260,6 +260,8 @@ return array(
 
 'internalProject' => 'internes Projekt',
 
+'exactSums' => 'Exakte Summen bilden statt die angezeigten gerundeten Werte zu addieren.',
+
 'securityWarning' => 'Sicherheitswarnung',
 'installerWarningHeadline' => 'installer Ordner noch vorhanden!',
 'installerWarningText' => 'Sie sollten den Ordner löschen, damit niemand anderes Kimai neu installieren kann.',

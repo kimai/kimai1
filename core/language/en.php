@@ -270,6 +270,8 @@ return array(
 
 'internalProject' => 'internal project',
 
+'exactSums' => 'Use exact sums instead of adding the shown rounded values.',
+
 'securityWarning' => 'security warning',
 'installerWarningHeadline' => 'installer folder still present!',
 'installerWarningText' => 'You should delete the installer folder so nobody else can reinstall Kimai.',
