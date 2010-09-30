@@ -30,9 +30,6 @@
     </target>
 	
     <target name="prepare">
-        <mkdir dir="${workspace}/build/api"/>
-        <mkdir dir="${workspace}/build/code-browser"/>
-        <mkdir dir="${workspace}/build/coverage"/>
         <mkdir dir="${workspace}/build/logs"/>
         <mkdir dir="${workspace}/build/artifacts"/>
     </target>
