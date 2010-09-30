@@ -42,12 +42,8 @@
 	-->
 	<target name="hudson-nightly">
 	    <antcall target="nightly"></antcall>
-		<move todir="${workspace}/build/artifacts">
-			<fileset>
-				<include name="${target.release.zip}"/>
-                <include name="${target.release.bz2}"/>
-			</fileset>
-		</move>
+		<move todir="${workspace}/build/artifacts" file="${target.release.zip}" />
+        <move todir="${workspace}/build/artifacts" file="${target.release.bz2}" />
 	</target>
 		
 	<!--
