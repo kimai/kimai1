@@ -1,4 +1,4 @@
-<project name="Kimai-Hudson" default="hudson">
+<project name="Kimai-Hudson" default="hudson" basedir="../../../">
 
 	<!--
 	    #########################################################
