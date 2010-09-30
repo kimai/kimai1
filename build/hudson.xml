@@ -1,4 +1,4 @@
-<project name="Kimai-Hudson" default="hudson" basedir="../../../">
+<project name="Kimai-Hudson" default="hudson">
 
 	<!--
 	    #########################################################
@@ -7,7 +7,10 @@
 		 $Id: $ 
 	    ##########################################################
 	-->
-	<import file="${basedir}/svn/kimai/build/build.xml"/>
+	<import file="${basedir}/build.xml"/>
+    
+	<!-- The build directory for all tasks -->
+    <property location="${basedir}/../../" name="workspace" />
 
     <description>
         Hudson Build File for the Kimai - Time Tracking Software.
@@ -19,7 +22,7 @@
     </description>
 	
     <target name="clean" depends="cleanup">
-        <delete dir="${basedir}/build"/>
+        <delete dir="${workspace}/build"/>
     </target>
 
     <target name="cleanup">
@@ -27,11 +30,11 @@
     </target>
 	
     <target name="prepare">
-        <mkdir dir="${basedir}/build/api"/>
-        <mkdir dir="${basedir}/build/code-browser"/>
-        <mkdir dir="${basedir}/build/coverage"/>
-        <mkdir dir="${basedir}/build/logs"/>
-        <mkdir dir="${basedir}/build/artifacts"/>
+        <mkdir dir="${workspace}/build/api"/>
+        <mkdir dir="${workspace}/build/code-browser"/>
+        <mkdir dir="${workspace}/build/coverage"/>
+        <mkdir dir="${workspace}/build/logs"/>
+        <mkdir dir="${workspace}/build/artifacts"/>
     </target>
 
 	<!-- 
@@ -39,7 +42,7 @@
 	-->
 	<target name="hudson-nightly">
 	    <antcall target="nightly"></antcall>
-		<move todir="${basedir}/build/artifacts">
+		<move todir="${workspace}/build/artifacts">
 			<fileset>
 				<include name="${target.release.zip}"/>
                 <include name="${target.release.bz2}"/>
@@ -53,20 +56,20 @@
 	
     <!-- phpcpd: Copy and Paste Detection -->
     <target name="phpcpd">
-        <exec dir="${basedir}" executable="phpcpd">
+        <exec dir="${workspace}" executable="phpcpd">
             <arg line="--exclude svn/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/core"/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend">
-        <exec dir="${basedir}" executable="pdepend">
+        <exec dir="${workspace}" executable="pdepend">
             <arg line="--ignore=svn/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/core"/>
         </exec>
     </target>
 
     <target name="phpmd">
-        <exec executable="phpmd">
+        <exec dir="${workspace}" executable="phpmd">
             <arg line="svn/core xml codesize,unusedcode --exclude svn/core/libraries/ --reportfile ${basedir}/build/logs/pmd.xml" />
         </exec>
     </target>
