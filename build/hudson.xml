@@ -57,14 +57,14 @@
     <!-- phpcpd: Copy and Paste Detection -->
     <target name="phpcpd">
         <exec dir="${workspace}" executable="phpcpd">
-            <arg line="--exclude svn/kimai/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/core"/>
+            <arg line="--exclude svn/kimai/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/kimai/core"/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend">
         <exec dir="${workspace}" executable="pdepend">
-            <arg line="--ignore=svn/kimai/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/core"/>
+            <arg line="--ignore=svn/kimai/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/kimai/core"/>
         </exec>
     </target>
 
