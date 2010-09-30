@@ -27,12 +27,24 @@
     </target>
 	
     <target name="prepare">
+        <mkdir dir="${basedir}/build/api"/>
+        <mkdir dir="${basedir}/build/code-browser"/>
+        <mkdir dir="${basedir}/build/coverage"/>
+        <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/artifacts"/>
     </target>
-	
+
+	<!-- 
+	   Creates the Kimai nightly build and moves the files to artifacts folder
+	-->
 	<target name="hudson-nightly">
 	    <antcall target="nightly"></antcall>
-		<!-- Copy to artifacts -->
+		<move todir="${basedir}/build/artifacts">
+			<fileset>
+				<include name="${target.release.zip}"/>
+                <include name="${target.release.bz2}"/>
+			</fileset>
+		</move>
 	</target>
 		
 	<!--

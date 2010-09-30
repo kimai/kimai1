@@ -4,7 +4,7 @@
 	    #########################################################
 		 Loads the main XML file to have a proper build         
 		 environment. Adjust the settings in there, NOT HERE!
-		 $Id: $ 
+		 $Id$ 
 	    ##########################################################
 	-->
 	<import file="./environment.xml"/>
@@ -22,7 +22,7 @@
         Creates a Kimai ZIP release.
         After checking dependencies and creating the file release, a ZIP archive will be created.
     -->
-    <target name="build" depends="nightly" description="Creates a Kimai release ZIP archive.">
+    <target name="release" depends="nightly" description="Creates a Kimai release ZIP archive.">
     </target>
 
 	<!--

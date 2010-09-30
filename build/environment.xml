@@ -2,8 +2,9 @@
 
 	<!--
 	    ##########################################################
-		Loads all required Properties from the Properties file.
-		Adjust the settings in there, NOT HERE!
+		Fetched required settings from the build.properties file.
+		Adjust the settings in there, NOT here.
+		$Id$
 	    ##########################################################
 	-->
 	<loadproperties srcfile="build/build.properties" />
