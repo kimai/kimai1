@@ -1,9 +1,9 @@
-<project name="KIMAI-Env" default="help" basedir="..">
+<project name="Kimai-Env" default="help" basedir="..">
 
 	<!--
 	    ##########################################################
-		# Loads all required Properties from the Properties file.#
-		# Adjust the settings in there, NOT HERE!                #
+		Loads all required Properties from the Properties file.
+		Adjust the settings in there, NOT HERE!
 	    ##########################################################
 	-->
 	<loadproperties srcfile="build/build.properties" />
@@ -66,7 +66,7 @@
 KIMAI - Time Tracking Software.
 
 Copyright (C) Kimai Team.
-See http://www.kikmai.org for further information.
+See http://www.kimai.org for further information.
 Distributed under the terms of the GNU General Public License.
 
 This files has no executable tasks, please run the build.xml file!
