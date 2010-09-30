@@ -1,0 +1,80 @@
+<project name="Kimai-Hudson" default="hudson">
+
+	<!--
+	    #########################################################
+		 This is the Hudson Build file for Kimai.
+		 Do not use manually!
+		 $Id: $ 
+	    ##########################################################
+	-->
+	<import file="${basedir}/svn/kimai/build/build.xml"/>
+
+    <description>
+        Hudson Build File for the Kimai - Time Tracking Software.
+        
+        Copyright (C) Kimai Team.
+        See http://www.kimai.org/ for further informations.
+        
+        Distributed under the terms of the GNU General Public License.
+    </description>
+	
+    <target name="clean" depends="cleanup">
+        <delete dir="${basedir}/build"/>
+    </target>
+
+    <target name="cleanup">
+        <delete dir="${target.release.dir}"/>
+    </target>
+	
+    <target name="prepare">
+        <mkdir dir="${basedir}/build/artifacts"/>
+    </target>
+	
+	<target name="hudson-nightly">
+	    <antcall target="nightly"></antcall>
+		<!-- Copy to artifacts -->
+	</target>
+		
+	<!--
+	   ################ [Start] QM Tools ##################
+	-->
+	
+    <!-- phpcpd: Copy and Paste Detection -->
+    <target name="phpcpd">
+        <exec dir="${basedir}" executable="phpcpd">
+            <arg line="--exclude svn/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/core"/>
+        </exec>
+    </target>
+    
+    <!-- pDepend: Static Code Analysis -->
+    <target name="pdepend">
+        <exec dir="${basedir}" executable="pdepend">
+            <arg line="--ignore=svn/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/core"/>
+        </exec>
+    </target>
+
+    <target name="phpmd">
+        <exec executable="phpmd">
+            <arg line="svn/core xml codesize,unusedcode --exclude svn/core/libraries/ --reportfile ${basedir}/build/logs/pmd.xml" />
+        </exec>
+    </target>
+
+	<!-- The main build task -->
+    <target name="hudson" depends="clean,prepare,pdepend,phpcpd,phpmd,hudson-nightly,cleanup" />	
+
+	<target name="help" description="Show help">
+		<echo taskname="INFO" level="info">
+==============================================================
+KIMAI - Time Tracking Software.
+
+Copyright (C) Kimai Team.
+See http://www.kikmai.org for further information.
+Distributed under the terms of the GNU General Public License.
+==============================================================
+			
+This build file is not meant to be executed manually!
+
+		</echo>
+	</target>
+	
+</project>
