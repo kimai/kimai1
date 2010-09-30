@@ -1,4 +1,4 @@
-<project name="Kimai" default="help" basedir="..">
+<project name="Kimai" default="help">
 
 	<!--
 	    #########################################################
@@ -7,7 +7,7 @@
 		 $Id$ 
 	    ##########################################################
 	-->
-	<import file="./environment.xml"/>
+	<import file="${basedir}/environment.xml"/>
 
 	<description>
         Build File for the Kimai - Time Tracking Software.

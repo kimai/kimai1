@@ -1,4 +1,4 @@
-<project name="Kimai-Env" default="help" basedir="..">
+<project name="Kimai-Env" default="help">
 
 	<!--
 	    ##########################################################
@@ -7,7 +7,7 @@
 		$Id$
 	    ##########################################################
 	-->
-	<loadproperties srcfile="build/build.properties" />
+	<loadproperties srcfile="${basedir}/build.properties" />
 
 	<description>
         Creates the environment for the Kimai - Time Tracking Software.
@@ -19,8 +19,7 @@
     </description>
 
 	<!-- Kimai Directories -->
-	<property name="core.src" location="core"/>
-	<property name="upgrade.src" location="upgrade"/>
+	<property name="core.src" location="../core"/>
 
 	<!-- Excludes files for test deploys, which would overwrite settings of an existing installation -->
 	<patternset id="exclude.test.files" description="Files to be excluded from the copy tasks for local deployments">
