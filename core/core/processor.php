@@ -48,7 +48,7 @@ switch ($axAction) {
     
         $usr_data['skin']               = $_REQUEST['skin'];
         $usr_data['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
-        $usr_data['quickdelete']        = isset($_REQUEST['quickdelete'])?1:0;
+        $usr_data['quickdelete']        = $_REQUEST['quickdelete'];
         $usr_data['rowlimit']           = $_REQUEST['rowlimit'];
         $usr_data['lang']               = $_REQUEST['lang'];
         $usr_data['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;

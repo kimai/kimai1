@@ -45,7 +45,7 @@
                         
 
     {* quick erase trashcan *}
-    {if $kga.conf.quickdelete == 1}
+    {if $kga.conf.quickdelete > 0}
                         {strip}<a href ='#' class='quickdelete' onClick="exp_quickdelete({$arr_exp[row].exp_ID}); return false;">
                             <img src='../skins/{$kga.conf.skin}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
                         </a>{/strip}

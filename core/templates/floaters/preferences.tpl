@@ -67,8 +67,12 @@
                     </li>
 
                     <li>
-                        <label for="quickdelete"></label>
-                        <input type="checkbox" name="quickdelete" value="1" {if $kga.conf.quickdelete}checked{/if} /> {$kga.lang.quickdelete}
+                        {$kga.lang.quickdelete}:
+                        <select name="quickdelete">
+                            <option value="0" {if $kga.conf.quickdelete==0}selected="selected"{/if}>{$kga.lang.quickdeleteHide}</option>
+                            <option value="1" {if $kga.conf.quickdelete==1}selected="selected"{/if}>{$kga.lang.quickdeleteShow}</option>
+                            <option value="2" {if $kga.conf.quickdelete==2}selected="selected"{/if}>{$kga.lang.quickdeleteShowConfirm}</option>
+                        </select>
                     </li>
 
                     <li>

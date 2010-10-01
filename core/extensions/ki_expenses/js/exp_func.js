@@ -181,6 +181,12 @@ function exp_ext_reload() {
 //
 function exp_quickdelete(id) {
     $('#expEntry'+id+'>td>a').blur();
+    
+    if (confirmText != undefined) {
+      var check = confirm(confirmText);
+      if (check == false) return;
+    }
+    
     $('#expEntry'+id+'>td>a').removeAttr('onClick');
     $('#expEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
     

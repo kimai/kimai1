@@ -53,6 +53,12 @@
         var lang_checkUsername    = "{$kga.lang.checkUsername}";
 
         var recstate              = {$recstate};
+
+        {if $kga.conf.quickdelete == 2}
+        var confirmText           = "{$kga.lang.sure}";
+        {else}
+        var confirmText           = undefined;
+        {/if}
         
         {if (isset($kga.usr))}
         var usr_ID                = {$kga.usr.usr_ID};
