@@ -1387,6 +1387,147 @@ function usr_delete($usr_id) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Get a preference for a user. If no user ID is given the current user is used.
+ * 
+ * @param string  $key     name of the preference to fetch
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return string value of the preference or null if there is no such preference
+ * @author sl
+ */
+
+function usr_get_preference($key,$userId=null) {
+    global $kga, $pdo_conn;
+    $p = $kga['server_prefix'];
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+
+    $pdo_query = $pdo_conn->prepare("SELECT var,value FROM ${p}preferences WHERE usr_ID = ? AND var = ?");
+
+    $result = $pdo_query->execute(array($userId,$key));
+
+    $data = $pdo_query->fetch();
+
+    if (!$data)
+      return null;
+
+    return $data['value'];
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Get several preferences for a user. If no user ID is given the current user is used.
+ * 
+ * @param array   $keys    names of the preference to fetch in an array
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return array  with keys for every found preference and the found value
+ * @author sl
+ */
+
+function usr_get_preferences(array $keys,$userId=null) {
+    global $kga, $pdo_conn;
+    $p = $kga['server_prefix'];
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+    
+    $placeholders = implode(",",array_fill(0,count($keys),'?'));
+
+    $pdo_query = $pdo_conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var IN ($placeholders)");
+    $pdo_query->execute(array_merge(array($userId,$prefix),$keys));
+
+    $preferences = array();
+
+    while ($row = $pdo_query->fetch()) {
+      $preferences[$row['var']] = $row['value'];
+    }
+
+    return $preferences;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Get several preferences for a user which have a common prefix. The returned preferences are striped off
+ * the prefix.
+ * If no user ID is given the current user is used.
+ * 
+ * @param string  $prefix   prefix all preferenc keys to fetch have in common
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return array  with keys for every found preference and the found value
+ * @author sl
+ */
+
+function usr_get_preferences_by_prefix($prefix,$userId=null) {
+    global $kga, $pdo_conn;
+    $p = $kga['server_prefix'];
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+
+    $prefixLength = strlen($prefix);
+    //$prefix .= '%';
+
+    $pdo_query = $pdo_conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var LIKE ?");
+       
+    $pdo_query->execute(array($userId,"$prefix%"));
+
+    $preferences = array();
+
+    while ($row = $pdo_query->fetch()) {
+      $key = substr($row['var'],$prefixLength);
+      $preferences[$key] = $row['value'];
+    }
+
+    return $preferences;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save one or more preferences for a user. If no user ID is given the current user is used.
+ * The array has to assign every preference key a value to store.
+ * Example: array ( 'setting1' => 'value1', 'setting2' => 'value2');
+ * 
+ * A prefix can be specified, which will be prepended to every preference key.
+ *
+ * @param array   $data   key/value pairs to store
+ * @param string  $prefix prefix for all preferences
+ * @param integer $userId (optional) id of another user than the current 
+ * @global array $kga     kimai-global-array
+ * @return boolean        true on success, false on failure
+ * @author sl
+ */
+
+function usr_set_preferences(array $data,$prefix='',$userId=null) {
+    global $kga, $pdo_conn;
+    $p = $kga['server_prefix'];
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+    
+    $pdo_conn->beginTransaction();
+
+    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}preferences (`userID`,`var`,`value`)
+    VALUES(?,?,?) ON DUPLICATE KEY UPDATE value = ?;");
+
+    foreach ($data as $key=>$value) {
+      $key = $prefix.$key;
+      $result = $pdo_query->execute(array(
+        $userId,$key,$value,$value));
+      if (! $result) {
+        $pdo_conn->rollBack();
+        return false;
+      }      
+    }
+    
+    return $pdo_conn->commit();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * Assigns a leader to 1-n groups by adding entries to the cross table
  *
  * @param int $ldr_id        usr_id of the group leader to whom the groups will be assigned

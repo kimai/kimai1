@@ -26,23 +26,36 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
 
-    case "PDF":  
-	    $tpl->assign('exportPDF', 'exportPDF');
+    case "PDF":
+      $defaults = array('print_comments'=>1, 'print_summary'=>1, 'create_bookmarks'=>1, 'download_pdf'=>1,
+           'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf');
+      $prefs = usr_get_preferences_by_prefix('ki_export.pdf.');
+      $tpl->assign('prefs', array_merge($defaults,$prefs));
+      
 	    $tpl->display("export_PDF.tpl"); 
     break;
 
     case "XLS":  
-	    $tpl->assign('exportXLS', 'exportXLS');
+      $defaults = array('reverse_order'=>0);
+      $prefs = usr_get_preferences_by_prefix('ki_export.xls.');
+      $tpl->assign('prefs', array_merge($defaults,$prefs));
+
 	    $tpl->display("export_XLS.tpl"); 
     break;
 
     case "CSV":  
-	    $tpl->assign('exportCSV', 'exportCSV');
+      $defaults = array('column_delimiter'=>',','quote_char'=>'"','reverse_order'=>0);
+      $prefs = usr_get_preferences_by_prefix('ki_export.csv.');
+      $tpl->assign('prefs', array_merge($defaults,$prefs));
+
 	    $tpl->display("export_CSV.tpl"); 
     break;
 
     case "print":  
-	    $tpl->assign('print', 'print');
+      $defaults = array('print_summary'=>1,'reverse_order'=>0);
+      $prefs = usr_get_preferences_by_prefix('ki_export.print.');
+      $tpl->assign('prefs', array_merge($defaults,$prefs));
+
 	    $tpl->display("print.tpl"); 
     break;
 

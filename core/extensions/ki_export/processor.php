@@ -149,7 +149,13 @@ switch ($axAction) {
     /**
      * Exort as html file.
      */
-    case 'export_html':       
+    case 'export_html':   
+
+        usr_set_preferences(array(
+          'print_summary' => isset($_REQUEST['print_summary'])?1:0,
+          'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
+          'ki_export.print.');
+          
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $timeSum = 0;
@@ -225,7 +231,12 @@ switch ($axAction) {
     /**
      * Exort as excel file.
      */
-    case 'export_xls':        
+    case 'export_xls':
+
+        usr_set_preferences(array(
+          'decimal_separator' => $_REQUEST['decimal_separator'],
+          'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
+          'ki_export.xls.');      
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         for ($i=0;$i<count($arr_data);$i++) {
@@ -248,7 +259,13 @@ switch ($axAction) {
     /**
      * Exort as csv file.
      */
-    case 'export_csv':        
+    case 'export_csv':
+
+        usr_set_preferences(array(
+          'column_delimiter' => $_REQUEST['column_delimiter'],
+          'quote_char' => $_REQUEST['quote_char'],
+          'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
+          'ki_export.csv.');      
        
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $column_delimiter = $_REQUEST['column_delimiter'];
@@ -340,6 +357,16 @@ switch ($axAction) {
      */
     case 'export_pdf':
 
+        usr_set_preferences(array(
+          'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
+          'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
+          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
+          'download_pdf'=>isset($_REQUEST['download_pdf'])?1:0,
+          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0, 
+          'reverse_order'=>isset($_REQUEST['reverse_order'])?1:0,
+          'pdf_format'=>'export_pdf'),
+          'ki_export.pdf.');    
+
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
       require('export_pdf.php');
     break;
@@ -350,6 +377,16 @@ switch ($axAction) {
      * Export as a PDF document in a list format.
      */
     case 'export_pdf2':
+
+        usr_set_preferences(array(
+          'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
+          'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
+          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
+          'download_pdf'=>isset($_REQUEST['download_pdf'])?1:0,
+          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0, 
+          'reverse_order'=>isset($_REQUEST['reverse_order'])?1:0,
+          'pdf_format'=>'export_pdf2'),
+          'ki_export.pdf.');    
        
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 

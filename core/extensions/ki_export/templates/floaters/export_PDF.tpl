@@ -45,32 +45,32 @@
                 
                    <li>
                        <label for="print_comments">{$kga.lang.xp_ext.print_comment}:</label>
-                       <input type="checkbox" value="true" name="print_comments" id="print_comments" checked="checked"/>
+                       <input type="checkbox" value="true" name="print_comments" id="print_comments" {if $prefs.print_comments}checked="checked"{/if}/>
                    </li>
                 
                    <li>
                        <label for="print_summary">{$kga.lang.xp_ext.print_summary}:</label>
-                       <input type="checkbox" value="true" name="print_summary" id="print_summary" checked="checked">
+                       <input type="checkbox" value="true" name="print_summary" id="print_summary" {if $prefs.print_summary}checked="checked"{/if}>
                    </li>
                 
                    <li>
                        <label for="create_bookmarks">{$kga.lang.xp_ext.create_bookmarks}:</label>
-                       <input type="checkbox" value="true" name="create_bookmarks" id="create_bookmarks" checked="checked"/>
+                       <input type="checkbox" value="true" name="create_bookmarks" id="create_bookmarks" {if $prefs.create_bookmarks}checked="checked"{/if}/>
                    </li>
                 
                    <li>
                        <label for="download_pdf">{$kga.lang.xp_ext.download_pdf}:</label>
-                       <input type="checkbox" value="true" name="download_pdf" id="download_pdf" checked="checked"/>
+                       <input type="checkbox" value="true" name="download_pdf" id="download_pdf" {if $prefs.download_pdf}checked="checked"{/if}/>
                    </li>
                 
                    <li>
                        <label for="customer_new_page">{$kga.lang.xp_ext.customer_new_page}:</label>
-                       <input type="checkbox" value="true" name="customer_new_page" id="customer_new_page"/>
+                       <input type="checkbox" value="true" name="customer_new_page" id="customer_new_page" {if $prefs.customer_new_page}checked="checked"{/if}/>
                    </li>
                 
                    <li>
                        <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
-                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order" {if $prefs.reverse_order}checked="checked"{/if}/>
                    </li>
                 
                    <li>
@@ -81,8 +81,8 @@
                    <li>
                        <label for="axAction">{$kga.lang.xp_ext.pdf_format}:</label>
                        <select name="axAction" id="axAction">
-                         <option value="export_pdf">{$kga.lang.xp_ext.export_pdf}</option>
-                         <option value="export_pdf2">{$kga.lang.xp_ext.export_pdf2}</option>
+                         <option value="export_pdf" {if $prefs.pdf_format=='export_pdf'}selected="selected"{/if}>{$kga.lang.xp_ext.export_pdf}</option>
+                         <option value="export_pdf2" {if $prefs.pdf_format=='export_pdf2'}selected="selected"{/if}>{$kga.lang.xp_ext.export_pdf2}</option>
                        </select>
                    </li>
                    <li>

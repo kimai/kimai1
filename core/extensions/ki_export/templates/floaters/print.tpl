@@ -48,12 +48,12 @@
                 
                    <li>
                        <label for="print_summary">{$kga.lang.xp_ext.print_summary}:</label>
-                       <input type="checkbox" value="true" name="print_summary" id="print_summary" checked="checked">
+                       <input type="checkbox" value="true" name="print_summary" id="print_summary" {if $prefs.print_summary}checked="checked"{/if}>
                    </li>
                 
                    <li>
                        <label for="reverse_order">{$kga.lang.xp_ext.reverse_order}:</label>
-                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order" {if $prefs.reverse_order}checked="checked"{/if}/>
                    </li>
 				</ul>
 {* -------------------------------------------------------------------- *} 

@@ -1491,6 +1491,159 @@ function usr_delete($usr_id) {
 // -----------------------------------------------------------------------------------------------------------
 
 /**
+ * Get a preference for a user. If no user ID is given the current user is used.
+ * 
+ * @param string  $key     name of the preference to fetch
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return string value of the preference or null if there is no such preference
+ * @author sl
+ */
+
+function usr_get_preference($key,$userId=null) {
+    global $kga, $conn;
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+
+    $table  = $kga['server_prefix']."preferences";
+    $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
+    $key    = MySQL::SQLValue($key);
+    
+    $query = "SELECT var,value FROM $table WHERE usr_ID = $userId AND var = $key";
+    
+    $conn->Query($query);
+
+    if ($conn->RowCount() == 0)
+      return null;
+
+    if ($conn->RowCount() == 1) {
+      $row = $conn->RowArray(0,MYSQL_NUM);
+      return $row[1];
+    }    
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Get several preferences for a user. If no user ID is given the current user is used.
+ * 
+ * @param array   $keys    names of the preference to fetch in an array
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return array  with keys for every found preference and the found value
+ * @author sl
+ */
+
+function usr_get_preferences(array $keys,$userId=null) {
+    global $kga, $conn;
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+
+    $table  = $kga['server_prefix']."preferences";
+    $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
+    
+    $preparedKeys = array();
+    foreach ($keys as $key)
+      $preparedKeys[] = MySQL::SQLValue($key);
+
+    $keysString = implode(",",$preparedKeys);
+    
+    $query = "SELECT var,value FROM $table WHERE userID = $userId AND var IN ($keysString)";
+    
+    $conn->Query($query);
+
+    $preferences = array();
+
+    while (!$conn->EndOfSeek()) {
+      $row = $conn->RowArray();
+      $preferences[$row['var']] = $row['value'];
+    }
+
+    return $preferences;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Get several preferences for a user which have a common prefix. The returned preferences are striped off
+ * the prefix.
+ * If no user ID is given the current user is used.
+ * 
+ * @param string  $prefix   prefix all preferenc keys to fetch have in common
+ * @param integer $userId  (optional) id of the user to fetch the preference for
+ * @return array  with keys for every found preference and the found value
+ * @author sl
+ */
+
+function usr_get_preferences_by_prefix($prefix,$userId=null) {
+    global $kga, $conn;
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+
+    $prefixLength = strlen($prefix);
+
+    $table  = $kga['server_prefix']."preferences";
+    $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
+    $prefix = MySQL::SQLValue($prefix.'%');
+    
+    $query = "SELECT var,value FROM $table WHERE userID = $userId AND var LIKE $prefix";
+    $conn->Query($query);
+
+    $preferences = array();
+
+    while (!$conn->EndOfSeek()) {
+      $row = $conn->RowArray();
+      $key = substr($row['var'],$prefixLength);
+      $preferences[$key] = $row['value'];
+    }
+
+    return $preferences;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Save one or more preferences for a user. If no user ID is given the current user is used.
+ * The array has to assign every preference key a value to store.
+ * Example: array ( 'setting1' => 'value1', 'setting2' => 'value2');
+ * 
+ * A prefix can be specified, which will be prepended to every preference key.
+ *
+ * @param array   $data   key/value pairs to store
+ * @param string  $prefix prefix for all preferences
+ * @param integer $userId (optional) id of another user than the current 
+ * @global array $kga     kimai-global-array
+ * @return boolean        true on success, false on failure
+ * @author sl
+ */
+
+function usr_set_preferences(array $data,$prefix='',$userId=null) {
+    global $kga, $conn;
+
+    if ($userId === null)
+      $userId = $kga['usr']['usr_ID'];
+    
+    if (! $conn->TransactionBegin()) $conn->Kill();  
+
+    $table  = $kga['server_prefix']."preferences";
+
+    $filter['userID']  = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
+    $values['userID']  = $filter['userID'];
+    foreach ($data as $key=>$value) {
+      $values['var']   = MySQL::SQLValue($prefix.$key);
+      $values['value'] = MySQL::SQLValue($value);
+      $filter['var']   = $values['var'];
+
+      $conn->AutoInsertUpdate($table, $values, $filter);
+    }
+
+    return $conn->TransactionEnd();
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
  * Assigns a leader to 1-n groups by adding entries to the cross table
  *
  * @param int $ldr_id        usr_id of the group leader to whom the groups will be assigned
