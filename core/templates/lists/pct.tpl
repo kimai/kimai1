@@ -24,7 +24,7 @@
                         <a href ="#" class="preselect" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); lists_reload('evt'); return false;" id="ps{$arr_pct[row].pct_ID}"><img src='../skins/{$kga.conf.skin}/grfx/preselect_off.png' width='13' height='13' alt='{$kga.lang.select}' title='{$kga.lang.select} (ID:{$arr_pct[row].pct_ID})' border='0' /></a>
                     </td>
 
-                    <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); return false;">
+                    <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="buzzer_preselect('pct',{$arr_pct[row].pct_ID},'{$arr_pct[row].pct_name|replace:"'":"\\'"}',{$arr_pct[row].knd_ID},'{$arr_pct[row].knd_name|replace:"'":"\\'"}'); lists_reload('evt'); return false;">
                         {if $arr_pct[row].pct_visible != 1}<span style="color:#bbb">{/if}
                         {if $kga.conf.flip_pct_display}    
                             {if $kga.conf.showIDs == 1}<span class="ids">{$arr_pct[row].pct_ID}</span> {/if}<span class="lighter">{$arr_pct[row].knd_name|truncate:30:"..."}:</span> {$arr_pct[row].pct_name}

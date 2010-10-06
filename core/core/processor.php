@@ -64,18 +64,20 @@ switch ($axAction) {
     case 'editPrefs':
         if (isset($kga['customer'])) die();
     
-        $usr_data['skin']               = $_REQUEST['skin'];
-        $usr_data['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
-        $usr_data['quickdelete']        = $_REQUEST['quickdelete'];
-        $usr_data['rowlimit']           = $_REQUEST['rowlimit'];
-        $usr_data['lang']               = $_REQUEST['lang'];
-        $usr_data['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
-        $usr_data['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
-        $usr_data['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
-        $usr_data['noFading']           = isset($_REQUEST['noFading'])?1:0;
-        $usr_data['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
-        $usr_data['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
-        $usr_data['timezone']           = $_REQUEST['timezone'];
+        $preferences['skin']               = $_REQUEST['skin'];
+        $preferences['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
+        $preferences['quickdelete']        = $_REQUEST['quickdelete'];
+        $preferences['rowlimit']           = $_REQUEST['rowlimit'];
+        $preferences['lang']               = $_REQUEST['lang'];
+        $preferences['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
+        $preferences['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
+        $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
+        $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
+        $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
+        $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
+        $preferences['timezone']           = $_REQUEST['timezone'];
+
+        usr_set_preferences($preferences);
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))
@@ -86,9 +88,10 @@ switch ($axAction) {
         // If the password field is empty don't overwrite the old password.
         if ($_REQUEST['pw'] != "") {
         	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
+          usr_edit($kga['usr']['usr_ID'], $usr_data);
         }
         
-        usr_edit($kga['usr']['usr_ID'], $usr_data);
+        
     break;
     
     /**
@@ -267,7 +270,7 @@ switch ($axAction) {
               $data['pct_kndID']        = $_REQUEST['pct_kndID'];
               $data['pct_comment']      = $_REQUEST['pct_comment'];
               $data['pct_visible']      = $_REQUEST['pct_visible'];
-              $data['pct_internal']     = $_REQUEST['pct_internal'];
+              $data['pct_internal']     = isset($_REQUEST['pct_internal'])?1:0;
               $data['pct_filter']       = $_REQUEST['pct_filter'];
               $data['pct_budget']       = $_REQUEST['pct_budget'];
               $data['pct_default_rate'] = 
@@ -283,10 +286,10 @@ switch ($axAction) {
             	}
 
               // set the project group mappings
-              $grp_array = $_REQUEST['pct_grp'];
-              $evt_array = $_REQUEST['pct_evt'];
-              assign_pct2grps($id, $grp_array);
-              assign_pct2evts($id, $evt_array);
+              if (isset($_REQUEST['pct_grp']))
+                assign_pct2grps($id, $_REQUEST['pct_grp']);
+              if (isset($_REQUEST['pct_evt']))
+                assign_pct2evts($id, $_REQUEST['pct_evt']);
             break;
             
             /**

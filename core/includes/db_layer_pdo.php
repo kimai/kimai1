@@ -309,7 +309,7 @@ function pct_create($data) {
     pct_internal,
     pct_filter,
     pct_budget
-    ) VALUES (?, ?, ?, ?, ?, ?);");
+    ) VALUES (?, ?, ?, ?, ?, ?, ?);");
 
     $result = $pdo_query->execute(array(
     $data['pct_kndID'], 
@@ -1328,42 +1328,6 @@ function usr_edit($usr_id, $data) {
         $pdo_conn->rollBack();
         return false;
     }
-
-
-    // preferences direkt aus $data, nur bei verändert schreiben
-
-    $preferences = array(
-      'rowlimit',
-      'autoselection',
-      'quickdelete',
-      'flip_pct_display',
-      'pct_comment_flag',
-      'showIDs',
-      'noFading',
-      'user_list_hidden',
-      'hideClearedEntries',
-      'timezone',
-      'lang',
-      'skin'
-    );
-    $table = $kga['server_prefix']."preferences";
-    // filter same as above
-    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}preferences (`userID`,`var`,`value`)
-    VALUES(?,?,?) ON DUPLICATE KEY UPDATE value = ?;");
-
-    foreach ($preferences as $preference) {
-        if (!isset($data[$preference]) || (isset($kga['conf'][$preference]) && $data[$preference] == $kga['conf'][$preference]))
-        continue;
-      
-      $result = $pdo_query->execute(array(
-        $usr_id,$preference,$data[$preference],
-        $data[$preference]));
-      if (! $result) {
-        $pdo_conn->rollBack();
-        return false;
-      }      
-    }
-
 
     if (isset($data['usr_rate'])) {
       if (is_numeric($data['usr_rate']))

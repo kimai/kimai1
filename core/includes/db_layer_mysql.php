@@ -1429,46 +1429,6 @@ function usr_edit($usr_id, $data) {
 
     if (! $conn->Query($query)) $success = false;
 
-
-    if ($success) {
-      // preferences direkt aus $data, nur bei verändert schreiben
-
-      $preferences = array(
-        'rowlimit'          => MySQL::SQLVALUE_NUMBER,
-        'autoselection'     => MySQL::SQLVALUE_NUMBER,
-        'quickdelete'       => MySQL::SQLVALUE_NUMBER,
-        'flip_pct_display'  => MySQL::SQLVALUE_NUMBER,
-        'pct_comment_flag'  => MySQL::SQLVALUE_NUMBER,
-        'showIDs'           => MySQL::SQLVALUE_NUMBER,
-        'noFading'          => MySQL::SQLVALUE_NUMBER,
-        'user_list_hidden'  => MySQL::SQLVALUE_NUMBER,
-        'hideClearedEntries'=> MySQL::SQLVALUE_NUMBER,
-        'timezone'          => MySQL::SQLVALUE_TEXT,
-        'lang'              => MySQL::SQLVALUE_TEXT,
-        'skin'              => MySQL::SQLVALUE_TEXT,
-      );
-      $table = $kga['server_prefix']."preferences";
-      unset($filter);
-      $filter ['userID']  = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
-      $values             = array('userID' => MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER));
-
-      foreach ($preferences as $preference => $type) {
-        if (!isset($data[$preference]) || (isset($kga['conf'][$preference]) && $data[$preference] == $kga['conf'][$preference]))
-          continue;
-        
-        $values['value'] = MySQL::SQLValue($data[$preference], $type);
-        $values['var']   = MySQL::SQLValue($preference);
-        $filter['var']   = MySQL::SQLValue($preference);
-
-        if (! $conn->AutoInsertUpdate($table, $values, $filter)) {
-          logfile(serialize($conn->Error()));
-          $success = false;
-          break;
-        }      
-      }
-
-    }
-
     if ($success) {
 
         if (isset($data['usr_rate'])) {

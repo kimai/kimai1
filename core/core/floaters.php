@@ -140,7 +140,7 @@ switch ($axAction) {
             }
         }
         // Create a <select> element to chosse the customer.
-        $sel = makeSelectBox("knd",$kga['usr']['usr_grp'],isset($id)?$data['pct_kndID']:null);
+        $sel = makeSelectBox("knd",$kga['usr']['usr_grp'],isset($data)?$data['pct_kndID']:null);
         $tpl->assign('sel_knd_names', $sel[0]);
         $tpl->assign('sel_knd_IDs',   $sel[1]);
 
