@@ -596,8 +596,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 "invoiceTimePeriod" 	=> "Período de tempo:",
 
-"invoiceOptionVat" 		=> " Factura com IVA",
-
 "invoiceOptionShort" 	=> "Short Invoice",
 
 "invoiceOptionRound" 	=> "Arredondar tempo",

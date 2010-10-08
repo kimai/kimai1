@@ -345,7 +345,6 @@ Choisir un autre pr&eacute;fixe de table ou supprimer les tables utilisant le me
 "invoiceTitle" 			=> "Cr&eacute;er une facture",
 "invoiceProject" 		=> "Activit&eacute;:",
 "invoiceTimePeriod" 	=> "P&eacute;riode:",
-"invoiceOptionVat" 		=> "Facture avec TVA",
 "invoiceOptionShort" 	=> "Facture synth&eacute;tique",
 "invoiceOptionRound" 	=> "Arrondi horaire",
 "invoiceButton" 		=> "Cr&eacute;er",

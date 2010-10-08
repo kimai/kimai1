@@ -351,7 +351,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "invoiceTitle" 		=> "Create invoice",
 "invoiceProject" 	=> "Projects:",
 "invoiceTimePeriod" 	=> "Period of time:",
-"invoiceOptionVat" 	=> " Invoice with VAT",
 "invoiceOptionShort" 	=> "Short Invoice",
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 	=> "Create",

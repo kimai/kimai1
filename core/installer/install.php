@@ -340,6 +340,7 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('decimalSeparator',',')
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
 
 
 // init timespace for admin user to current month

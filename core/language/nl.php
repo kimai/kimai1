@@ -341,7 +341,6 @@ return array(
 "invoiceTitle"          => "Maak factuur",
 "invoiceProject"        => "Projecten:",
 "invoiceTimePeriod"     => "Periode:",
-"invoiceOptionVat"      => " Factuur met BTW",
 "invoiceOptionShort"    => "Korte factuur",
 "invoiceOptionRound"    => "Tijd afronden",
 "invoiceButton"         => "Maken"

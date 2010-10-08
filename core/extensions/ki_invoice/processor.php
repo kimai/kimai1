@@ -43,6 +43,22 @@ switch ($axAction) {
         $tpl->display("timespan.tpl");
     break;
 
+    // ==========================
+    // = Change the default vat =
+    // ==========================
+    case 'editVat':
+        
+        $vat = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['vat']);
+        
+        if (!is_numeric($vat)) {
+          echo "0";
+          return;
+        }
+
+        var_edit(array('defaultVat'=>$vat));
+        echo "1";
+    break;
+
 }
 
 ?>

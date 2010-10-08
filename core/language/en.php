@@ -277,6 +277,8 @@ return array(
 'installerWarningHeadline' => 'installer folder still present!',
 'installerWarningText' => 'You should delete the installer folder so nobody else can reinstall Kimai.',
 
+'change' => 'change',
+
 
 
 'credits' => <<<EOF
@@ -439,12 +441,11 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
 "invoiceTimePeriod" 	=> "Period of time:",
-"invoiceOptionVat" 		=> " Invoice with VAT",
 "invoiceOptionShort" 	=> "Short Invoice",
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 		=> "Create",
-'noData'                => 'There are no time entries for the selected project & time period.'
-
+'noData'                => 'There are no time entries for the selected project & time period.',
+'defaultVat'        => 'default VAT'
 ),
 
 'ext_budget' => array(

@@ -349,7 +349,6 @@ Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo pa
 "invoiceTitle" 			=> "Crear factura",
 "invoiceProject" 		=> "Proyectos:",
 "invoiceTimePeriod" 	=> "Periodo de tiempo:",
-"invoiceOptionVat" 		=> " Factura con impuesto",
 "invoiceOptionShort" 	=> "Factura corta",
 "invoiceOptionRound" 	=> "Redondear tiempo",
 "invoiceButton" 		=> "Crear",

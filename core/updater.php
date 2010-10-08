@@ -1170,6 +1170,12 @@ if ((int)$revisionDB < 1240) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('exactSums','0')");
 }
 
+if ((int)$revisionDB < 1256) {
+    logfile("-- update to r1256");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultVat','0')");
+}
+
+
 
 // ============================
 // = update DB version number =

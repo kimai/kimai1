@@ -356,7 +356,6 @@ return array(
 "invoiceTitle" 			=> "Lag faktura",
 "invoiceProject" 		=> "Prosjekter:",
 "invoiceTimePeriod" 	=> "Tidsperiode:",
-"invoiceOptionVat" 		=> " Faktura med MVA",
 "invoiceOptionShort" 	=> "Kort faktura",
 "invoiceOptionRound" 	=> "Rundetid",
 "invoiceButton" 		=> "Lag",

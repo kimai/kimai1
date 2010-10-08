@@ -2,6 +2,10 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
             iv_ext_onload();
+            $('#editVatLink').click(function () {
+              this.blur();
+              floaterShow(iv_ext_path + "floaters.php","editVat",0,0,250,100);
+            });
         }); 
     </script>
 {/literal}
@@ -34,7 +38,7 @@
 
 <!-- Some boxes below are checked by default. Delete "checked" to set default to unchecked condition -->
 
-   		<input type=checkbox name="vat"> {$kga.lang.ext_invoice.invoiceOptionVat}<br/>
+   		{$kga.lang.ext_invoice.defaultVat}: <span id="defaultVat">{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator}</span> % <a id="editVatLink" href="#">({$kga.lang.change})</a> <br/>
 		<input type=checkbox name="short" checked> {$kga.lang.ext_invoice.invoiceOptionShort}<br/>
     		<input type=checkbox name="round" checked> {$kga.lang.ext_invoice.invoiceOptionRound}
     		<select id="iv_round_ID" name="pct_round" class="formfield">

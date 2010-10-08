@@ -164,7 +164,10 @@ while (list($id, $fd) = each($invoiceArray)) {
   $ttltime += $invoiceArray[$id]['hour'];
 }
 
-$vat_rate = 7.6;
+$vat_rate = $kndArray['knd_vat'];
+if (!is_numeric($vat_rate))
+  $vat_rate = $kga['conf']['defaultVat'];
+
 $vat = $vat_rate*$gtotal/100;
 $total = $gtotal-$vat;
 

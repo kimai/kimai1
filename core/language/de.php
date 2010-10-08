@@ -267,6 +267,8 @@ return array(
 'installerWarningHeadline' => 'installer Ordner noch vorhanden!',
 'installerWarningText' => 'Sie sollten den Ordner löschen, damit niemand anderes Kimai neu installieren kann.',
 
+'change' => 'ändern',
+
 
 
 'credits' => <<<EOF
@@ -427,11 +429,11 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "invoiceTitle" 				=> "Rechnung Erstellen",
 "invoiceProject" 			=> "Projekte:",
 "invoiceTimePeriod" 		=> "Zeitspanne:",
-"invoiceOptionVat" 			=> " Abrechnung mit MWST",
 "invoiceOptionShort" 		=> "Kurze Abrechnung",
 "invoiceOptionRound" 		=> "Zeiten Runden",
 "invoiceButton" 			=> "Erstellen",
-'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!'
+'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!',
+'defaultVat'        => 'Standard-Mehrwertsteuer'
 
 ),
 
