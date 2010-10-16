@@ -90,6 +90,8 @@
         var selected_evt  = '{$evt_data.evt_ID}';
 
         var pickerClicked = '';
+        
+        var weekdayNames = {$weekdays_short_array};
 
         $.datepicker.setDefaults(
           {literal}{{/literal} showOtherMonths :true,
@@ -148,7 +150,7 @@
         cursor:'move'
       });   
 
-    $('#n_date').html(strftime(timespaceDateFormat,new Date()));
+    $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timespaceDateFormat,new Date()));
     
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);

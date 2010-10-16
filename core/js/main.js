@@ -213,7 +213,7 @@ function n_uhr() {
         
         if (currentDay != Jetzt.getDate()) {
           // it's the next day
-          $('#n_date').html(strftime(timespaceDateFormat,Jetzt));
+          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timespaceDateFormat,Jetzt));
           currentDay = Jetzt.getDate();
           
           // If the difference to the datepicker end date is less than one and a half day.
@@ -223,16 +223,26 @@ function n_uhr() {
           }
         }
         
-        ZeitString = Stunden;
+        var ZeitString = "";
         
         if (Stunden < 10) {
-            ZeitString = "0" + Stunden;
+            ZeitString += "0" + Stunden;
+        }
+        else {
+            ZeitString += Stunden;
         }
         
         if (Sekunden%2==0) {
-            ZeitString += ((Minuten < 10) ? n_seperator + "0" : n_seperator) + Minuten;
+          ZeitString += n_seperator;
+        }
+        else {
+          ZeitString += ":";
+        }
+        
+        if (Minuten < 10) {
+          ZeitString += "0" + Minuten;
         } else {
-            ZeitString += ((Minuten < 10) ? ":0" : ":") + Minuten;
+          ZeitString +=  Minuten;
         }
 
         $('#n_uhr').html(ZeitString);

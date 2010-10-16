@@ -1384,7 +1384,7 @@ function usr_get_preference($key,$userId=null) {
     if ($userId === null)
       $userId = $kga['usr']['usr_ID'];
 
-    $pdo_query = $pdo_conn->prepare("SELECT var,value FROM ${p}preferences WHERE usr_ID = ? AND var = ?");
+    $pdo_query = $pdo_conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var = ?");
 
     $result = $pdo_query->execute(array($userId,$key));
 
@@ -2614,7 +2614,7 @@ function get_user_config($user) {
       $kga['usr'][$key] = $value;
   }
 
-  $kga['conf'] = usr_get_preferences_by_prefix('ui.',$kga['usr']['usr_ID']);
+  $kga['conf'] = array_merge($kga['conf'],usr_get_preferences_by_prefix('ui.',$kga['usr']['usr_ID']));
   $kga['conf']['timezone'] = usr_get_preference('timezone',$kga['usr']['usr_ID']);
   
   date_default_timezone_set($kga['conf']['timezone']);

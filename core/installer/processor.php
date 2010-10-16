@@ -211,7 +211,7 @@ switch ($axAction) {
                 $pdo_dsn = $server_type . ':host=' . $hostname;
                 try {
                     $pdo_conn = @new PDO($pdo_dsn, $username, $password);
-                    $pdo_query = $pdo_conn->prepare("CREATE DATABASE " . $database . " DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+                    $pdo_query = $pdo_conn->prepare("CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
                     $result = $pdo_query->execute();
                 } catch (PDOException $pdo_ex) {
                     error_log('PDO CONNECTION FAILED: ' . $pdo_ex->getMessage());
@@ -221,7 +221,7 @@ switch ($axAction) {
         } else {
 
                 $con = mysql_connect($hostname,$username,$password);
-                $query = "CREATE DATABASE " . $database . " DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+                $query = "CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
                 $result = mysql_query($query);
 
         }

@@ -75,9 +75,9 @@ switch ($axAction) {
         $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
         $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
         $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
-        $preferences['timezone']           = $_REQUEST['timezone'];
 
-        usr_set_preferences($preferences);
+        usr_set_preferences($preferences,'ui.');
+        usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))

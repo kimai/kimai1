@@ -1487,7 +1487,7 @@ function usr_get_preference($key,$userId=null) {
     $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
     $key    = MySQL::SQLValue($key);
     
-    $query = "SELECT var,value FROM $table WHERE usr_ID = $userId AND var = $key";
+    $query = "SELECT var,value FROM $table WHERE userID = $userId AND var = $key";
     
     $conn->Query($query);
 
@@ -2820,8 +2820,8 @@ function get_user_config($user) {
   unset($columns);
   unset($filter);
 
-  $kga['conf'] = usr_get_preferences_by_prefix('ui.',$kga['usr']['usr_ID']);
-  $kga['conf']['timezone'] = usr_get_preference('timezone',$kga['usr']['usr_ID']);
+  $kga['conf'] = array_merge($kga['conf'],usr_get_preferences_by_prefix('ui.'));
+  $kga['conf']['timezone'] = usr_get_preference('timezone');
  
   date_default_timezone_set($kga['conf']['timezone']);
 }
