@@ -2820,18 +2820,8 @@ function get_user_config($user) {
   unset($columns);
   unset($filter);
 
-  $table = $kga['server_prefix']."preferences";
-  $filter['userID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
-  $columns[] = "var"; 
-  $columns[] = "value"; 
-
-  $conn->SelectRows($table, $filter, $columns);
-
-  $conn->MoveFirst();
-  while (! $conn->EndOfSeek()) {
-    $row = $conn->Row();
-    $kga['conf'][$row->var] = $row->value;
-  }
+  $kga['conf'] = usr_get_preferences_by_prefix('ui.',$kga['usr']['usr_ID']);
+  $kga['conf']['timezone'] = usr_get_preference('timezone',$kga['usr']['usr_ID']);
  
   date_default_timezone_set($kga['conf']['timezone']);
 }

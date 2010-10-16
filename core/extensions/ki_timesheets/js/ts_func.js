@@ -407,9 +407,9 @@ function ts_durationToTime() {
         begin.setTime(end.getTime()-(secs*1000));
 
 
-        H = begin.getHours();
-        i = begin.getMinutes();
-        s = begin.getSeconds();
+        var H = begin.getHours();
+        var i = begin.getMinutes();
+        var s = begin.getSeconds();
 
         if (H<10) H = "0"+H;
         if (i<10) i = "0"+i;
@@ -417,9 +417,9 @@ function ts_durationToTime() {
 
         $("#edit_in_time").val(H + ":" + i + ":" + s);
 
-        d = begin.getDate();
-        m = begin.getMonth() + 1;
-        y = begin.getFullYear();
+        var d = begin.getDate();
+        var m = begin.getMonth() + 1;
+        var y = begin.getFullYear();
         if (d<10) d = "0"+d;
         if (m<10) m = "0"+m;
 

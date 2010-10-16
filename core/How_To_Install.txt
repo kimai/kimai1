@@ -70,14 +70,11 @@ Finally visit your Kimai installation with your web browser and the
 auto update process will perform all further necessary updates.
 
 
-CAUTION:
---------
+Some final words:
+-----------------
 
-This software is free of charge. That doesn't mean, that you are allowed to
-remove copyright-notes. Neither on the login-panel nor in the credits-window.
-Of course you're not allowed to remove the link to the credits... If those
-notes are bothing you and you do not agree with this rules - DON'T use
-Kimai. 
+This software is free of charge. We ask you to NOT remove the copyright-notes
+on the login-panel and in the credits-window.
 
 
 

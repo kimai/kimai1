@@ -1175,6 +1175,13 @@ if ((int)$revisionDB < 1256) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultVat','0')");
 }
 
+if ((int)$revisionDB < 1257) {
+    logfile("-- update to r1257");
+    exec_query("UPDATE ${p}preferences SET var = CONCAT('ui.',var) WHERE var 
+    IN ('skin', 'rowlimit', 'lang', 'autoselection', 'quickdelete', 'flip_pct_display',
+    'pct_comment_flag', 'showIDs', 'noFading', 'user_list_hidden', 'hideClearedEntries')");
+}
+
 
 
 // ============================

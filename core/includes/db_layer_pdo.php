@@ -2614,14 +2614,8 @@ function get_user_config($user) {
       $kga['usr'][$key] = $value;
   }
 
-  // get values from user configuration (user-preferences)
-  $pdo_query = $pdo_conn->prepare("SELECT `var`, `value` FROM ${p}preferences WHERE userID = ?;");
-
-  $result = $pdo_query->execute(array($user));
-  while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-    $kga['conf'][$row['var']] = $row['value'];
-
-  }
+  $kga['conf'] = usr_get_preferences_by_prefix('ui.',$kga['usr']['usr_ID']);
+  $kga['conf']['timezone'] = usr_get_preference('timezone',$kga['usr']['usr_ID']);
   
   date_default_timezone_set($kga['conf']['timezone']);
 }

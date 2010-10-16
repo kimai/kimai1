@@ -66,13 +66,8 @@ muss $server_conn = "pdo" gesetzt werden.
 
 Noch ein Hinweis: 
 -----------------
-Diese Software ist kostenlos. Das bedeutet nicht, dass
-Sie Copyright-Vermerke entfernen duerfen. Weder im Login-Screen noch im 
-About-Fenster duerfen diese Vermerke geloescht werden! Das About-Fenster
-darf ebenfalls nicht *entfernt* werden. Wenn Sie sich durch die Credits
-'gestoert' fuehlen und mit dieser Regel nicht einverstanden sind, 
-nutzen Sie Kimai NICHT. Wir muessen das hier leider aus gegebenem Anlass
-hinschreiben ...
+Diese Software ist kostenlos. Wir bitten Sie die Copyright-Vermerke auf dem
+Login-Screen und im About-Fenster nicht zu entfernen.
 
 
 

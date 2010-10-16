@@ -275,8 +275,8 @@ exec_query($query);
 $query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0');";
 exec_query($query);
 
-$query="INSERT INTO `${p}preferences` (`userID`,`var`,`value`) VALUES ('$randomAdminID','rowlimit','100'),
-('$randomAdminID','skin','standard'),('$randomAdminID','timezone','".mysql_real_escape_string($_REQUEST['timezone'])."');";
+$query="INSERT INTO `${p}preferences` (`userID`,`var`,`value`) VALUES ('$randomAdminID','ui.rowlimit','100'),
+('$randomAdminID','ui.skin','standard'),('$randomAdminID','timezone','".mysql_real_escape_string($_REQUEST['timezone'])."');";
 exec_query($query);
 
 $query="INSERT INTO `${p}ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
