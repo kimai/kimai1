@@ -440,40 +440,44 @@ function logfile($value) {
  */
 function expand_date_shortcut($date) {
 
-    $date  = str_replace(" ","",strip_tags($date));
+    $date  = str_replace(" ","",$date);
 
-    $return = $date;
+    // empty string can't be a time value
+    if (strlen($date)==0)
+      return false;
 
-    $length = strlen($date);
+    // get the parts
+    $parts = preg_split("/\./",$date);
 
-    switch ($length) {
-        case 1:
-            $return = "0" . $date .".". date("m") .".". date("Y");
-        break;
+    if (count($parts) == 0 || count($parts) > 3)
+      return false;
 
-        case 2:
-            $return = $date .".". date("m") .".". date("Y");
-        break;
+    // check day
+    if (strlen($parts[0]) == 1)
+      $parts[0] = "0".$parts[0];
 
-        case 4:
-            $return = substr($date,0,2) .".". substr($date,2,2) .".". date("Y");
-        break;
+    // check month
+    if (!isset($parts[1]))
+      $parts[1] = date("m");
+    else if (strlen($parts[1]) == 1)
+      $parts[1] = "0".$parts[1];
 
-        case 6:
-            $return = substr($date,0,2) .".". substr($date,2,2);
-            $year=(int)substr($date,4,2);
-            if ($year>70) {
-				$year = "19".$year;
-			} else {
-				if ($year<10) {
-					$year = "200".$year;
-				} else {
-					$year = "20".$year;
-				}
-			}
-            $return = "$return.$year";
-        break;
+    // check year
+    if (!isset($parts[2]))
+      $parts[2] = date("Y");
+    else if (strlen($parts[2]) == 2) {
+      if ($parts[2] > 70)
+        $parts[2] = "19".$parts[2];
+      else {
+        if ($parts[2] < 10)
+          $parts[2] = "200".$parts[2];
+        else
+          $parts[2] = "20".$parts[2];
+      }
     }
+    
+    $return = implode(".",$parts);
+
 
     if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/",$return))  $return = false;
     return $return;

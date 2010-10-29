@@ -77,4 +77,5 @@ abstract class AuthBase {
   }
 }
 
-?> 
+// There should be NO trailing whitespaces.
+?>

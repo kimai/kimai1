@@ -44,4 +44,5 @@ class KimaiAuth extends AuthBase {
   }
 }
 
-?> 
+// There should be NO trailing whitespaces.
+?>

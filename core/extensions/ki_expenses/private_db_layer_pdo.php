@@ -63,7 +63,7 @@ function exp_create_record($usr_ID,$data) {
     `exp_value`,
     `exp_usrID`,
     `exp_refundable`
-    ) VALUES (?,?,?,?,?,?,?,?)
+    ) VALUES (?,?,?,?,?,?,?,?,?)
     ;");
     
     $result = $pdo_query->execute(array(
