@@ -108,50 +108,30 @@ function knd_edit($knd_id, $data) {
     global $kga, $conn;
     
     $data = clean_data($data);
-    
-    if (! $conn->TransactionBegin()) $conn->Kill();
 
-    $original_array = knd_get_data($knd_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
+    $values = array();
+
+    $strings = array(
+      'knd_name'    ,'knd_comment','knd_password' ,'knd_company','knd_vat',
+      'knd_contact' ,'knd_street' ,'knd_zipcode'  ,'knd_city'   ,'knd_tel',
+      'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage');
+    foreach ($strings as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key]);
     }
 
-    $values['knd_name']     = MySQL::SQLValue($new_array['knd_name']    );
-    $values['knd_comment']  = MySQL::SQLValue($new_array['knd_comment'] );
-    $values['knd_password'] = MySQL::SQLValue($new_array['knd_password']);
-    $values['knd_company']  = MySQL::SQLValue($new_array['knd_company'] );
-    $values['knd_vat']      = MySQL::SQLValue($new_array['knd_vat'    ] );
-    $values['knd_contact']  = MySQL::SQLValue($new_array['knd_contact'] );
-    $values['knd_street']   = MySQL::SQLValue($new_array['knd_street']  );
-    $values['knd_zipcode']  = MySQL::SQLValue($new_array['knd_zipcode'] );
-    $values['knd_city']     = MySQL::SQLValue($new_array['knd_city']    );
-    $values['knd_tel']      = MySQL::SQLValue($new_array['knd_tel']     );
-    $values['knd_fax']      = MySQL::SQLValue($new_array['knd_fax']     );
-    $values['knd_mobile']   = MySQL::SQLValue($new_array['knd_mobile']  );
-    $values['knd_mail']     = MySQL::SQLValue($new_array['knd_mail']    );
-    $values['knd_homepage'] = MySQL::SQLValue($new_array['knd_homepage']);
-    $values['knd_visible']  = MySQL::SQLValue($new_array['knd_visible'] , MySQL::SQLVALUE_NUMBER );
-    $values['knd_filter']   = MySQL::SQLValue($new_array['knd_filter']  , MySQL::SQLVALUE_NUMBER );
+    $numbers = array('knd_visible','knd_filter');
+    foreach ($numbers as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
+    }
+
     $filter['knd_ID']       = MySQL::SQLValue($knd_id, MySQL::SQLVALUE_NUMBER);
     
     $table = $kga['server_prefix']."knd";
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
-    $success = true;
-    
-    if (! $conn->Query($query)) $success = false;
-    
-    if ($success) {
-        if (! $conn->TransactionEnd()) $conn->Kill();
-    } else {
-        if (! $conn->TransactionRollback()) $conn->Kill();
-    }
+    return $conn->Query($query);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -184,22 +164,14 @@ function assign_knd2grps($knd_id, $grp_array) {
     }
 
     foreach ($grp_array as $current_grp) {
-        
-        $filter['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-        $filter['knd_ID'] = MySQL::SQLValue($knd_id      , MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-            $values['knd_ID'] = MySQL::SQLValue($knd_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
+        $values['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+        $values['knd_ID'] = MySQL::SQLValue($knd_id      , MySQL::SQLVALUE_NUMBER);
+        $query = MySQL::BuildSQLInsert($table, $values);
+        $result = $conn->Query($query);            
 
-            if ($result == false) {
-                    $conn->TransactionRollback();
-                    return false;
-            }
+        if ($result == false) {
+                $conn->TransactionRollback();
+                return false;
         }
     }
 
@@ -378,37 +350,29 @@ function pct_edit($pct_id, $data) {
     global $kga, $conn;
     
     $data = clean_data($data);
-    
-    if (! $conn->TransactionBegin()) $conn->Kill();
 
-    $original_array = pct_get_data($pct_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
+    $strings = array('pct_name', 'pct_comment');
+    foreach ($strings as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key]);
     }
 
-    $values ['pct_name']    = MySQL::SQLValue($new_array ['pct_name']      );
-    $values ['pct_comment'] = MySQL::SQLValue($new_array ['pct_comment']   );
-    $values ['pct_budget']  = MySQL::SQLValue($new_array ['pct_budget']  , MySQL::SQLVALUE_NUMBER  );
-    $values ['pct_kndID']   = MySQL::SQLValue($new_array ['pct_kndID']   , MySQL::SQLVALUE_NUMBER  );
-    $values ['pct_visible'] = MySQL::SQLValue($new_array ['pct_visible'] , MySQL::SQLVALUE_NUMBER  );
-    $values ['pct_internal']= MySQL::SQLValue($new_array ['pct_internal'], MySQL::SQLVALUE_NUMBER  );
-    $values ['pct_filter']  = MySQL::SQLValue($new_array ['pct_filter']  , MySQL::SQLVALUE_NUMBER  );
+    $numbers = array(
+        'pct_budget', 'pct_kndID', 'pct_visible', 'pct_internal', 'pct_filter');
+    foreach ($numbers as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
+    }
 
     $filter ['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."pct";
+
+
+    if (! $conn->TransactionBegin()) $conn->Kill();
+
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
-    $success = true;
-    
-    if (! $conn->Query($query)) $success = false;
-    
-    if ($success) {
+    if ($conn->Query($query)) {
     
         if (isset($data['pct_default_rate'])) {
           if (is_numeric($data['pct_default_rate']))
@@ -425,8 +389,10 @@ function pct_edit($pct_id, $data) {
         }
     
         if (! $conn->TransactionEnd()) $conn->Kill();
+        return true;
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
+        return false;
     }
 }
 
@@ -461,22 +427,15 @@ function assign_pct2grps($pct_id, $grp_array) {
 
     foreach ($grp_array as $current_grp) {
         
-        $filter['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-        $filter['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID']   = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-            $values['pct_ID']   = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);
-            
-            if ($result == false) {
-                    $conn->TransactionRollback();
-                    return false;
-            }
-        }
+      $values['grp_ID']   = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+      $values['pct_ID']   = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);
+      
+      if ($result == false) {
+              $conn->TransactionRollback();
+              return false;
+      }
     }
 
     if ($conn->TransactionEnd() == true) {
@@ -648,33 +607,27 @@ function evt_edit($evt_id, $data) {
     
     $data = clean_data($data);
     
-    if (! $conn->TransactionBegin()) $conn->Kill();
 
-    $original_array = evt_get_data($evt_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
+    $strings = array('evt_name', 'evt_comment');
+    foreach ($strings as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key]);
     }
 
-    $values  ['evt_name']        =   MySQL::SQLValue($new_array   ['evt_name']      );
-    $values  ['evt_comment']     =   MySQL::SQLValue($new_array   ['evt_comment']   );
-    $values  ['evt_visible']     =   MySQL::SQLValue($new_array   ['evt_visible'] , MySQL::SQLVALUE_NUMBER  );
-    $values  ['evt_filter']      =   MySQL::SQLValue($new_array   ['evt_filter']  , MySQL::SQLVALUE_NUMBER  );
+    $numbers = array('evt_visible', 'evt_filter');
+    foreach ($numbers as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
+    }
 
     $filter  ['evt_ID']          =   MySQL::SQLValue($evt_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."evt";
+
+    if (! $conn->TransactionBegin()) $conn->Kill();
+
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
-    $success = true;
-    
-    if (! $conn->Query($query)) $success = false;
-    
-    if ($success) {
+    if ($conn->Query($query)) {
 
         if (isset($data['evt_default_rate'])) {
           if (is_numeric($data['evt_default_rate']))
@@ -691,8 +644,10 @@ function evt_edit($evt_id, $data) {
         }
 
         if (! $conn->TransactionEnd()) $conn->Kill();
+        return true;
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
+        return false;
     }
 }
 
@@ -726,23 +681,15 @@ function assign_evt2grps($evt_id, $grp_array) {
     }
 
     foreach ($grp_array as $current_grp) {
-        
-        $filter['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-        $filter['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-            $values['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
-            
-            if ($result == false) {
-                $conn->TransactionRollback();
-                return false;
-            }
-        }
+      $values['grp_ID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+      $values['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
+      
+      if ($result == false) {
+          $conn->TransactionRollback();
+          return false;
+      }
     }
     
     if ($conn->TransactionEnd() == true) {
@@ -780,23 +727,15 @@ function assign_evt2pcts($evt_id, $pct_array) {
     }
 
     foreach ($pct_array as $current_pct) {
-        
-        $filter['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
-        $filter['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
-            $values['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
-            
-            if ($result == false) {
-                $conn->TransactionRollback();
-                return false;
-            }
-        }
+      $values['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+      $values['evt_ID'] = MySQL::SQLValue($evt_id      , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
+      
+      if ($result == false) {
+          $conn->TransactionRollback();
+          return false;
+      }
     }
     
     if ($conn->TransactionEnd() == true) {
@@ -834,23 +773,15 @@ function assign_pct2evts($pct_id, $evt_array) {
     }
 
     foreach ($evt_array as $current_evt) {
-        
-        $filter['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
-        $filter['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
-            $values['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
-            
-            if ($result == false) {
-                $conn->TransactionRollback();
-                return false;
-            }
-        }
+      $values['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+      $values['pct_ID'] = MySQL::SQLValue($pct_id      , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
+      
+      if ($result == false) {
+          $conn->TransactionRollback();
+          return false;
+      }
     }
     
     if ($conn->TransactionEnd() == true) {
@@ -1037,24 +968,15 @@ function assign_grp2knds($grp_id, $knd_array) {
     }
     
     foreach ($knd_array as $current_knd) {
-        
-        $filter['grp_ID'] = MySQL::SQLValue($grp_id     , MySQL::SQLVALUE_NUMBER);
-        $filter['knd_ID'] = MySQL::SQLValue($current_knd, MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID']       = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
-            $values['knd_ID']       = MySQL::SQLValue($current_knd , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
-            
-            if ($result == false) {
-                    $conn->TransactionRollback();
-                    return false;
-            }
-            
-        }
+      $values['grp_ID']       = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
+      $values['knd_ID']       = MySQL::SQLValue($current_knd , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
+      
+      if ($result == false) {
+              $conn->TransactionRollback();
+              return false;
+      }
     }
     
     if ($conn->TransactionEnd() == true) {
@@ -1092,23 +1014,15 @@ function assign_grp2pcts($grp_id, $pct_array) {
     }
     
     foreach ($pct_array as $current_pct) {
-        
-        $filter['grp_ID'] = MySQL::SQLValue($grp_id     , MySQL::SQLVALUE_NUMBER);
-        $filter['pct_ID'] = MySQL::SQLValue($current_pct, MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID'] = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
-            $values['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
+      $values['grp_ID'] = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
+      $values['pct_ID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
 
-            if ($result == false) {
-                $conn->TransactionRollback();
-                return false;
-            }
-        }
+      if ($result == false) {
+          $conn->TransactionRollback();
+          return false;
+      }
     }
 
     if ($conn->TransactionEnd() == true) {
@@ -1146,23 +1060,15 @@ function assign_grp2evts($grp_id, $evt_array) {
     }
 
     foreach ($evt_array as $current_evt) {
-        
-        $filter['grp_ID'] = MySQL::SQLValue($grp_id     , MySQL::SQLVALUE_NUMBER);
-        $filter['evt_ID'] = MySQL::SQLValue($current_evt, MySQL::SQLVALUE_NUMBER);
-        $c_query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($c_query);        
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID'] = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
-            $values['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
-            $result = $conn->Query($query);            
+      $values['grp_ID'] = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
+      $values['evt_ID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
+      $result = $conn->Query($query);            
 
-            if ($result == false) {
-                $conn->TransactionRollback();
-                return false;
-            }
-        }
+      if ($result == false) {
+          $conn->TransactionRollback();
+          return false;
+      }
     }
 
     if ($conn->TransactionEnd() == true) {
@@ -1393,43 +1299,29 @@ function usr_edit($usr_id, $data) {
     global $kga, $conn;
     
     $data = clean_data($data);
-    
-    if (! $conn->TransactionBegin()) $conn->Kill();
-    
-    $original_array = usr_get_data($usr_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
+
+    $strings = array('usr_name', 'usr_mail', 'usr_alias', 'pw');
+    foreach ($strings as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key]);
     }
 
-
-    $success = true;
+    $numbers = array(
+          'usr_grp'     ,'usr_sts'   ,'usr_trash' ,'usr_active',
+          'lastProject' ,'lastEvent' ,'lastRecord');
+    foreach ($numbers as $key) {
+      if (isset($data[$key]))
+        $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
+    }
 
     $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
-
-    $values ['usr_name']          = MySQL::SQLValue($new_array ['usr_name']  );
-    $values ['usr_mail']          = MySQL::SQLValue($new_array ['usr_mail']  );
-    $values ['usr_alias']         = MySQL::SQLValue($new_array ['usr_alias']  );
-    $values ['pw']                = MySQL::SQLValue($new_array ['pw']        );
-    $values ['usr_grp']           = MySQL::SQLValue($new_array ['usr_grp']          , MySQL::SQLVALUE_NUMBER  );
-    $values ['usr_sts']           = MySQL::SQLValue($new_array ['usr_sts']          , MySQL::SQLVALUE_NUMBER  );
-    $values ['usr_trash']         = MySQL::SQLValue($new_array ['usr_trash']        , MySQL::SQLVALUE_NUMBER  );
-    $values ['usr_active']        = MySQL::SQLValue($new_array ['usr_active']       , MySQL::SQLVALUE_NUMBER  );
-    $values ['lastProject']       = MySQL::SQLValue($new_array ['lastProject']      , MySQL::SQLVALUE_NUMBER  );
-    $values ['lastEvent']         = MySQL::SQLValue($new_array ['lastEvent']        , MySQL::SQLVALUE_NUMBER  );
-    $values ['lastRecord']        = MySQL::SQLValue($new_array ['lastRecord']       , MySQL::SQLVALUE_NUMBER  );
-    
     $table = $kga['server_prefix']."usr";
+    
+    if (! $conn->TransactionBegin()) $conn->Kill();
+
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-    if (! $conn->Query($query)) $success = false;
-
-    if ($success) {
+    if ($conn->Query($query)) {
 
         if (isset($data['usr_rate'])) {
           if (is_numeric($data['usr_rate']))
@@ -1439,8 +1331,12 @@ function usr_edit($usr_id, $data) {
         }
 
         if (! $conn->TransactionEnd()) $conn->Kill();
+
+        return true;
     } else {
         if (! $conn->TransactionRollback()) $conn->Kill();
+
+        return false;
     }
 }
 
@@ -1647,24 +1543,16 @@ function assign_ldr2grps($ldr_id, $grp_array) {
     }
     
     foreach ($ldr_array as $current_grp) {
-        
-        $filter['grp_ID']     = MySQL::SQLValue($current_grp,  MySQL::SQLVALUE_NUMBER);
-        $filter['grp_leader'] = MySQL::SQLValue($ldr_id,       MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID']       = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-            $values['grp_leader']   = MySQL::SQLValue($ldr_id      , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
+      $values['grp_ID']       = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+      $values['grp_leader']   = MySQL::SQLValue($ldr_id      , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
 
-            $result = $conn->Query($query);
-            
-            if ($result == false) {
-                    $conn->TransactionRollback();
-                    return false;
-            }
-        }
+      $result = $conn->Query($query);
+      
+      if ($result == false) {
+              $conn->TransactionRollback();
+              return false;
+      }
     }
 
     update_leader_status();
@@ -1705,24 +1593,16 @@ function assign_grp2ldrs($grp_id, $ldr_array) {
     }
     
     foreach ($ldr_array as $current_ldr) {
-        
-        $filter['grp_ID']     = MySQL::SQLValue($grp_id,      MySQL::SQLVALUE_NUMBER);
-        $filter['grp_leader'] = MySQL::SQLValue($current_ldr, MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLSelect($table, $filter);
-        $conn->Query($query);
-        
-        if ($conn->RowCount() == 0) {
-            $values['grp_ID']       = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
-            $values['grp_leader']   = MySQL::SQLValue($current_ldr , MySQL::SQLVALUE_NUMBER);
-            $query = MySQL::BuildSQLInsert($table, $values);
+      $values['grp_ID']       = MySQL::SQLValue($grp_id      , MySQL::SQLVALUE_NUMBER);
+      $values['grp_leader']   = MySQL::SQLValue($current_ldr , MySQL::SQLVALUE_NUMBER);
+      $query = MySQL::BuildSQLInsert($table, $values);
 
-            $result = $conn->Query($query);
-            
-            if ($result == false) {
-                    $conn->TransactionRollback();
-                    return false;
-            }
-        }
+      $result = $conn->Query($query);
+      
+      if ($result == false) {
+              $conn->TransactionRollback();
+              return false;
+      }
     }
 
     update_leader_status();
@@ -1907,34 +1787,15 @@ function grp_edit($grp_id, $data) {
     global $kga, $conn;
     
     $data = clean_data($data);
-        
-    if (! $conn->TransactionBegin()) $conn->Kill();
-    
-    $original_array = grp_get_data($grp_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
    
     $values ['grp_name'] = MySQL::SQLValue($new_array ['grp_name'] );
+
     $filter ['grp_ID']   = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."grp";
+
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
    
-    $success = true;
-
-    if (! $conn->Query($query)) $success = false;
-
-    if ($success) {
-        if (! $conn->TransactionEnd()) $conn->Kill();
-    } else {
-        if (! $conn->TransactionRollback()) $conn->Kill();
-    }
+    return $conn->Query($query);
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1986,7 +1847,6 @@ function var_get_data() {
 }
 
 // -----------------------------------------------------------------------------------------------------------
-// // Still under development!!! DO NOT USE YET!
 /**
  * Edits a configuration variables by replacing the data by the new array
  *
@@ -2003,31 +1863,18 @@ function var_edit($data) {
     $table = $kga['server_prefix']."var";
     
     if (! $conn->TransactionBegin()) $conn->Kill();
-    
-    $original_array = var_get_data();
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
 
-    foreach ($new_array as $current_var_key => $current_var_value) {
-    
-	    $filter['var'] = MySQL::SQLValue($current_var_key);
-	    $values ['value'] = MySQL::SQLValue($current_var_value);
+    foreach ($data as $key => $value) {
+      $filter['var'] = MySQL::SQLValue($key);
+      $values ['value'] = MySQL::SQLValue($value);
 
-	    $query = MySQL::BuildSQLUpdate($table, $values, $filter);	
+      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-    	$result = $conn->Query($query);
-      logfile($conn->Error());
-    
-        if ($result === false) {
-            return $result;
-        }        
+      $result = $conn->Query($query);
+      
+      if ($result === false) {
+          return false;
+      }
     }
     
     if (! $conn->TransactionEnd()) $conn->Kill();

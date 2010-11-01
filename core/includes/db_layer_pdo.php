@@ -23,6 +23,58 @@
 
 
 
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Create the set part of an SQL update query depending on which keys are possible
+ * and which are available from the data. Only if a key is possible and data is
+ * available for that key (i.e. a value is set for that key in the data array)
+ * it will be included.
+ * 
+ * @param array $keys list of keys which are possible
+ * @param array $data array containing data, keys are looked at.
+ * @return string the set part of the sql query
+ * @author sl
+ */
+function buildSQLUpdateSet(&$keys,&$data) {
+    $firstRun = true;
+    $query = '';
+
+    foreach ($keys as $key) {
+      if (!isset($data[$key]))
+        continue;
+
+      if ($firstRun)
+        $firstRun = false;
+      else
+        $query .= ', ';
+
+      $query .= "$key = :$key";
+      
+    }
+    return $query;
+}
+
+// -----------------------------------------------------------------------------------------------------------
+
+/**
+ * Bind all values from the data array to the sql query.
+ * If the data array contains keys which are not present in the query you will get
+ * an error when executing the statement.
+ * 
+ * @param PDOStatement PDO statement object
+ * @param array &$data array containing all data to set
+ * @return true on success, false otherwise
+ */
+function bindValues(&$statement,&$data) {
+    foreach ($data as $key => $value) {
+      if (!$statement->bindValue(":$key",$value)) {
+        logfile("failed binding ".$key." to ".$value);
+        return false;
+      }
+    }
+    return true;
+}
 
 // -----------------------------------------------------------------------------------------------------------
 
@@ -124,64 +176,24 @@ function knd_edit($knd_id, $data) {
     global $kga, $pdo_conn;
     
     $data = clean_data($data);
-        
-    $pdo_conn->beginTransaction();
-    
-    $original_array = knd_get_data($knd_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
 
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "knd SET 
-    knd_name = ?, 
-    knd_comment = ?,
-    knd_password = ?,
-    knd_company = ?,
-    knd_street = ?,
-    knd_zipcode = ?,
-    knd_city = ?,
-    knd_tel = ?,
-    knd_fax = ?,
-    knd_mobile = ?,
-    knd_mail = ?,
-    knd_homepage = ?,
-    knd_visible = ?,
-    knd_filter = ?
-    WHERE knd_id = ?;");
-    
-    $result = $pdo_query->execute(array(
-    $new_array['knd_name'], 
-    $new_array['knd_comment'], 
-    $new_array['knd_password'], 
-    $new_array['knd_company'],
-    $new_array['knd_street'],
-    $new_array['knd_zipcode'],
-    $new_array['knd_city'],
-    $new_array['knd_tel'],
-    $new_array['knd_fax'],
-    $new_array['knd_mobile'],
-    $new_array['knd_mail'],
-    $new_array['knd_homepage'],
-    $new_array['knd_visible'], 
-    $new_array['knd_filter'],
-    $knd_id
-    ));
-    
-    if ($result == false) {
-        return $result;
-    }
-    
-    if ($pdo_conn->commit() == true) {
-        return true;
-    } else {
-        return false;
-    }
+    $keys = array(
+      'knd_name'    ,'knd_comment','knd_password' ,'knd_company','knd_vat',
+      'knd_contact' ,'knd_street' ,'knd_zipcode'  ,'knd_city'   ,'knd_tel',
+      'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage',
+      'knd_visible','knd_filter');
+
+    $query = 'UPDATE ' . $kga['server_prefix'] . 'knd SET ';
+    $query .= buildSQLUpdateSet($keys,$data);
+    $query .= ' WHERE knd_id = :customerId;';
+
+    $statement = $pdo_conn->prepare($query);
+
+    bindValues($statement,$data);
+
+    $statement->bindValue(":customerId", $knd_id);
+
+    return $statement->execute();
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -210,17 +222,12 @@ function assign_knd2grps($knd_id, $grp_array) {
     }
     
     foreach ($grp_array as $current_grp) {
-        
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_knd WHERE grp_ID=? AND knd_ID=?;");
-        $c_result = $pdo_query->execute(array($current_grp,$knd_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_grp,$knd_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_grp,$knd_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -395,47 +402,12 @@ function pct_edit($pct_id, $data) {
         
     $pdo_conn->beginTransaction();
     
-    $original_array = pct_get_data($pct_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
-    
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "pct SET 
-    pct_kndID = ?, 
-    pct_name = ?,
-    pct_comment = ?,
-    pct_visible = ?,
-    pct_internal = ?,
-    pct_filter = ?,
-    pct_budget = ?
-    WHERE pct_id = ?;");
-    
-    $result = $pdo_query->execute(array(
-    $new_array['pct_kndID'], 
-    $new_array['pct_name'], 
-    $new_array['pct_comment'],
-    $new_array['pct_visible'],
-    $new_array['pct_internal'],
-    $new_array['pct_filter'],
-    $new_array['pct_budget'],
-    $pct_id  
-    ));
-    
-    if ($result == false) {
-        return $result;
-    }
-    
     if (isset($data['pct_default_rate'])) {
       if (is_numeric($data['pct_default_rate']))
         save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
       else
         remove_rate(NULL,$pct_id,NULL);
+      unset($data['pct_default_rate']);
     }
 
     if (isset($data['pct_my_rate'])) {
@@ -443,7 +415,25 @@ function pct_edit($pct_id, $data) {
         save_rate($kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
       else
         remove_rate($kga['usr']['usr_ID'],$pct_id,NULL);
+      unset($data['pct_my_rate']);
     }
+
+    $keys = array(
+      'pct_kndID', 'pct_name', 'pct_comment', 'pct_visible', 'pct_internal',
+      'pct_filter', 'pct_budget');
+
+    $query = 'UPDATE ' . $kga['server_prefix'] . 'pct SET ';
+    $query .= buildSQLUpdateSet($keys,$data);
+    $query .= ' WHERE pct_id = :projectId;';
+
+    $statement = $pdo_conn->prepare($query);
+
+    bindValues($statement,$data);
+
+    $statement->bindValue(":projectId", $pct_id);
+
+    if (!$statement->execute())
+      return false;
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -477,16 +467,12 @@ function assign_pct2grps($pct_id, $grp_array) {
     }
     
     foreach ($grp_array as $current_grp) {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_pct WHERE grp_ID=? AND pct_ID=?;");
-        $c_result = $pdo_query->execute(array($current_grp,$pct_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_grp,$pct_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_grp,$pct_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -650,42 +636,13 @@ function evt_edit($evt_id, $data) {
     $data = clean_data($data);
         
     $pdo_conn->beginTransaction();
-    
-    $original_array = evt_get_data($evt_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
-    
-    $pdo_query = $pdo_conn->prepare("UPDATE " . $kga['server_prefix'] . "evt SET  
-    evt_name = ?,
-    evt_comment = ?,
-    evt_visible = ?,
-    evt_filter = ?
-    WHERE evt_id = ?;");
-    
-    $result = $pdo_query->execute(array(
-    $new_array['evt_name'], 
-    $new_array['evt_comment'],
-    $new_array['evt_visible'],
-    $new_array['evt_filter'],
-    $evt_id
-    ));
-    
-    if ($result == false) {
-        return $result;
-    }
 
     if (isset($data['evt_default_rate'])) {
       if (is_numeric($data['evt_default_rate']))
         save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
       else
         remove_rate(NULL,NULL,$evt_id);
+      unset($data['evt_default_rate']);
     }
 
     if (isset($data['evt_my_rate'])) {
@@ -693,7 +650,23 @@ function evt_edit($evt_id, $data) {
         save_rate($kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
       else
         remove_rate($kga['usr']['usr_ID'],NULL,$evt_id);
+      unset($data['evt_my_rate']);
     }
+
+    $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter');
+
+    $query = 'UPDATE ' . $kga['server_prefix'] . 'evt SET ';
+    $query .= buildSQLUpdateSet($keys,$data);
+    $query .= ' WHERE evt_id = :eventId;';
+
+    $statement = $pdo_conn->prepare($query);
+
+    bindValues($statement,$data);
+
+    $statement->bindValue(":eventId", $evt_id);
+
+    if (!$statement->execute())
+      return false;
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -727,17 +700,12 @@ function assign_evt2grps($evt_id, $grp_array) {
     }
     
     foreach ($grp_array as $current_grp) {
-        
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_evt WHERE grp_ID=? AND evt_ID=?;");
-        $c_result = $pdo_query->execute(array($current_grp,$evt_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_grp,$evt_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_grp,$evt_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -773,17 +741,12 @@ function assign_evt2pcts($evt_id, $pct_array) {
     }
     
     foreach ($pct_array as $current_pct) {
-        
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct_evt WHERE pct_ID=? AND evt_ID=?;");
-        $c_result = $pdo_query->execute(array($current_pct,$evt_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}pct_evt (pct_ID,evt_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_pct,$evt_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}pct_evt (pct_ID,evt_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_pct,$evt_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -819,17 +782,12 @@ function assign_pct2evts($pct_id, $evt_array) {
     }
     
     foreach ($evt_array as $current_evt) {
-        
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}pct_evt WHERE evt_ID=? AND pct_ID=?;");
-        $c_result = $pdo_query->execute(array($current_evt,$pct_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}pct_evt (evt_ID,pct_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_evt,$pct_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}pct_evt (evt_ID,pct_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_evt,$pct_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -987,15 +945,11 @@ function assign_grp2knds($grp_id, $knd_array) {
     }
     
     foreach ($knd_array as $current_knd) {
-        $c_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_knd WHERE grp_ID=? AND knd_ID=?;");
-        $c_result = $c_query->execute(array($grp_id,$current_knd));
-        if (count($c_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($grp_id,$current_knd));
-            if ($result == false) {
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($grp_id,$current_knd));
+      if ($result == false) {
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -1030,15 +984,11 @@ function assign_grp2pcts($grp_id, $pct_array) {
     }
     
     foreach ($pct_array as $current_pct) {
-        $c_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_pct WHERE grp_ID=? AND pct_ID=?;");
-        $c_result = $c_query->execute(array($grp_id,$current_pct));
-        if (count($c_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($grp_id,$current_pct));
-            if ($result == false) {
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($grp_id,$current_pct));
+      if ($result == false) {
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -1073,15 +1023,11 @@ function assign_grp2evts($grp_id, $evt_array) {
     }
     
     foreach ($evt_array as $current_evt) {
-        $c_query = $pdo_conn->prepare("SELECT * FROM ${p}grp_evt WHERE grp_ID=? AND evt_ID=?;");
-        $c_result = $c_query->execute(array($grp_id,$current_evt));
-        if (count($c_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
-            $result = $pdo_query->execute(array($grp_id,$current_evt));
-            if ($result == false) {
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
+      $result = $pdo_query->execute(array($grp_id,$current_evt));
+      if ($result == false) {
+          return false;
+      }
     }
     
     if ($pdo_conn->commit() == true) {
@@ -1283,51 +1229,23 @@ function usr_edit($usr_id, $data) {
     $data = clean_data($data);
             
     $pdo_conn->beginTransaction();
-    
-    $original_array = usr_get_data($usr_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
-    
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}usr SET  
-    usr_name = ?,
-    usr_grp = ?,
-    usr_sts = ?,
-    usr_trash = ?,
-    usr_active = ?,
-    usr_mail = ?,
-    usr_alias = ?,
-    pw = ?,
-    lastRecord = ?,
-    lastProject = ?,
-    lastEvent = ?
-    WHERE usr_id = ?;");
-    
-    $result = $pdo_query->execute(array(
-    $new_array['usr_name'],
-    $new_array['usr_grp'],
-    $new_array['usr_sts'],
-    $new_array['usr_trash'],
-    $new_array['usr_active'],
-    $new_array['usr_mail'],
-    $new_array['usr_alias'],
-    $new_array['pw'],
-    $new_array['lastRecord'],
-    $new_array['lastProject'],
-    $new_array['lastEvent'],
-    $usr_id
-    ));
-    
-    if ($result == false) {
-        $pdo_conn->rollBack();
-        return false;
-    }
+
+    $keys = array(
+      'usr_name', 'usr_grp', 'usr_sts', 'usr_trash', 'usr_active', 'usr_mail',
+      'usr_alias', 'pw', 'lastRecord', 'lastProject', 'lastEvent');
+
+    $query = 'UPDATE ' . $kga['server_prefix'] . 'usr SET ';
+    $query .= buildSQLUpdateSet($keys,$data);
+    $query .= ' WHERE usr_id = :userId;';
+
+    $statement = $pdo_conn->prepare($query);
+
+    bindValues($statement,$data);
+
+    $statement->bindValue(":userId", $usr_id);
+
+    if (!$statement->execute())
+      return false;
 
     if (isset($data['usr_rate'])) {
       if (is_numeric($data['usr_rate']))
@@ -1532,16 +1450,12 @@ function assign_ldr2grps($ldr_id, $grp_array) {
     }
     
     foreach ($grp_array as $current_grp) {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}ldr WHERE grp_ID=? AND grp_leader=?;");
-        $c_result = $pdo_query->execute(array($current_grp,$ldr_id));
-        if (count($pdo_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}ldr(grp_ID,grp_leader) VALUES (?,?);");
-            $result = $pdo_query->execute(array($current_grp,$ldr_id));
-            if ($result == false) {
-                $pdo_conn->rollBack();
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}ldr(grp_ID,grp_leader) VALUES (?,?);");
+      $result = $pdo_query->execute(array($current_grp,$ldr_id));
+      if ($result == false) {
+          $pdo_conn->rollBack();
+          return false;
+      }
     }
     
     update_leader_status();
@@ -1578,15 +1492,11 @@ function assign_grp2ldrs($grp_id, $ldr_array) {
     }
     
     foreach ($ldr_array as $current_ldr) {
-        $c_query = $pdo_conn->prepare("SELECT * FROM ${p}ldr WHERE grp_ID=? AND grp_leader=?;");
-        $c_result = $c_query->execute(array($grp_id,$current_ldr));
-        if (count($c_query->fetchAll()) == 0) {
-            $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}ldr (grp_ID,grp_leader) VALUES (?,?);");
-            $result = $pdo_query->execute(array($grp_id,$current_ldr));
-            if ($result == false) {
-                return false;
-            }
-        }
+      $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}ldr (grp_ID,grp_leader) VALUES (?,?);");
+      $result = $pdo_query->execute(array($grp_id,$current_ldr));
+      if ($result == false) {
+          return false;
+      }
     }
     
     update_leader_status();
@@ -1753,32 +1663,9 @@ function grp_edit($grp_id, $data) {
     $p = $kga['server_prefix'];
     
     $data = clean_data($data); 
-       
-    $pdo_conn->beginTransaction();
-    
-    $original_array = grp_get_data($grp_id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
     
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}grp SET grp_name = ? WHERE grp_ID = ?;");
-    $result = $pdo_query->execute(array($new_array['grp_name'],$grp_id));
-    
-    if ($result == false) {
-        return $result;
-    }
-    
-    if ($pdo_conn->commit() == true) {
-        return true;
-    } else {
-        return false;
-    }
+    return $pdo_query->execute(array($data['grp_name'],$grp_id));
 }
 
 // -----------------------------------------------------------------------------------------------------------
@@ -1831,9 +1718,6 @@ function var_get_data() {
 }
 
 // -----------------------------------------------------------------------------------------------------------
-
-// Still under development!!! DO NOT USE YET!
-
 /**
  * Edits a configuration variables by replacing the data by the new array
  *
@@ -1849,28 +1733,15 @@ function var_edit($data) {
     $data = clean_data($data);
         
     $pdo_conn->beginTransaction();
+
+    $statement = $pdo_conn->prepare("UPDATE ${p}var SET value = ? WHERE var = ?");
     
-    $original_array = var_get_data();
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    }
-    
-    foreach ($new_array as $current_var_key => $current_var_value) {
-    
-        $pdo_query = $pdo_conn->prepare("UPDATE ${p}var SET value = ? WHERE var = ?");
-        $result = $pdo_query->execute(array($current_var_value, $current_var_key));
-        
-        $err = $pdo_query->errorInfo();
-    
-        if ($result == false) {
-            return $result;
-        }        
+    foreach ($data as $key => $value) {
+      $statement->bindValue(1,$value);
+      $statement->bindValue(2,$key);
+
+      if (!$statement->execute())
+        return false;
     }
     
     if ($pdo_conn->commit() == false) {

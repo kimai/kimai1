@@ -304,12 +304,6 @@ function editRecord(id) {
 // refresh the rate with a new value, if this is a new entry
 //
 function getBestRate() {
-
-    if ($("#ts_ext_form_add_edit_record input[name='id']").val() != 0) {
-      // this means we are editing an entry
-      return;
-    }
-    
     $.post(ts_ext_path + "processor.php", { axAction: "bestFittingRate", axValue: 0,
         project_id: $("#add_edit_zef_pct_ID").val(), event_id: $("#add_edit_zef_evt_ID").val()},
         function(data){

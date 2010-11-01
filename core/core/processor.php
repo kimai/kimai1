@@ -314,10 +314,15 @@ switch ($axAction) {
             	}
 
               // set the task group and task project mappings
-              $grp_array = $_REQUEST['evt_grp'];
-              $pct_array = $_REQUEST['evt_pct'];
-              assign_evt2grps($id, $grp_array);
-              assign_evt2pcts($id, $pct_array);
+              if (isset($_REQUEST['evt_grp']))
+                assign_evt2grps($id, $_REQUEST['evt_grp']);
+              else
+                assign_evt2grps($id, array());
+
+              if (isset($_REQUEST['evt_pct']))
+                assign_evt2pcts($id, $_REQUEST['evt_pct']);
+              else
+                assign_evt2pcts($id, array());
             break;
         }
     break;
