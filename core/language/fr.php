@@ -1,29 +1,40 @@
 <?php
 /**
- * This file is part of
+ * This file is part of 
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- *
+ * 
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- *
+ * 
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ * along with Kimai; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  */
  
 /**
  * français
  * by Willem van Gemert
+ * et diaoul 02/11/10 encodé en ANSI AS UTF-8 rev 394
  */
-return array( 
+return array(
 "countryCode"       => "fr-FR",
-"preferences"       => "Pr&eacute;f&eacute;rences",
+"preferences"       => "Préférences",
 "total"		        => "Total",
 "monatzeit"         => "Mois",
 "heute"             => "aujourd'hui",
@@ -31,285 +42,375 @@ return array(
 "autoOn"            => "Auto On",
 "autoOff"           => "Auto Off",
 "datum"             => "Date",
-"in"                => "Entr&eacute;e",
+"in"                => "Entrée",
 "out"               => "Sortie",
-"time"              => "h'm",
+"time"              => "h mn",
 "timelabel"         => "Temps",
-"durationlabel"     => "Dur&eacute;e",
+"durationlabel"     => "Durée",
 "knd"               => "Client",
-"pct"               => "Activit&eacute;",
-"evt"               => "Tache",
+"pct"               => "Projet",
+"evt"               => "Tâche",
 "knds"              => "Clients",
-"pcts"              => "Activit&eacute;s",
-"evts"              => "Taches",
+"pcts"              => "Projet",
+"evts"              => "Tâches",
 "admin"             => "Admin",
 "rowlimit"          => "Nombre maximum de lignes",
 "breiteZeitspalte"  => "largeur colonne heure",
 "breiteUhrspalte"   => "largeur colonne montre",
 "breiteDatumspalte" => "largeur colonne date",
-"def_pctID"         => "Identifiant activit&eacute; par d&eacute;fault",
-"def_kndID"         => "Identifiant client par d&eacute;fault",
-"def_evtID"         => "Identifiant &eacute;v&eacute;nement par d&eacute;fault",
-"recommended"       => "recommend&eacute;",
+"def_pctID"         => "Identifiant Projet par défaut",
+"def_kndID"         => "Identifiant Client par défaut",
+"def_evtID"         => "Identifiant Tâche par défaut",
+"recommended"       => "recommendé",
 "submit"            => "OK",
 "cancel"            => "Annuler",
-"edit"              => "Modifier Entr&eacute;e",
+"edit"              => "Modifier Entrée",
 "construction"      => "en construction...",
-"about"             => "&Agrave; propos de",
+"about"             => "A propos de",
 "hours"             => "heures",
 "mins"              => "minutes",
 "secs"              => "secondes",
-"skin"              => "Th&egrave;me",
-"erase"             => "Effacer entr&eacute;e",
-"new_knd"           => "Ajouter un client",
-"new_pct"           => "Ajouter un projet",
-"new_evt"           => "Ajouter une tache",
-"day_summary"       => "R&eacute;sum&eacute; heures",
+"skin"              => "Thème",
+"erase"             => "Effacer entrée",
+"new_knd"           => "Ajouter client",
+"new_pct"           => "Ajouter projet",
+"new_evt"           => "Ajouter tâche",
+"day_summary"       => "Résumé heures",
 "plzChoose"         => "Choisissez svp",
-"noEntries"         => "Pas d'entr&eacute;es enr&eacute;gistr&eacute;es pour le moment...",
-"recordAgain"       => "Enr&eacute;gistrer cet &eacute;v&eacute;nement de nouveau",
-"comment"           => "Commenter",
+"noEntries"         => "Pas d'entrées enregistrées pour le moment...",
+"recordAgain"       => "Enregistrer cette tâche de nouveau",
+"comment"           => "Commentaire",
 "zlocation"         => "Lieu",
-"trackingnr"        => "Numero de suivi",
-"cookiewarning"     => "Les cookies doivent acceptes! Autoriser les cookies avant de continuer.",
-"JSwarning"         => "JavaScript doit etre active! Cette version ne fonctionne pas sans.",
-"designation"       => "D&eacute;signation",
-"banned"            => "Bloqu&eacute; (Compte bloqu&eacute;)",
-"tooManyLogins"     => "Trop de mauvaises tentatives de connexion - utilisateur bloque.",
-"accessDenied"      => "Acces refus&eacute; !",
+"trackingnr"        => "N°",
+"cookiewarning"     => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
+"JSwarning"         => "JavaScript doit être activé! Cette version ne fonctionne pas sans.",
+"designation"       => "désignation",
+"banned"            => "Bloqué (Compte bloqué)",
+"tooManyLogins"     => "Trop de mauvaises tentatives de connexion - utilisateur bloqué.",
+"accessDenied"      => "Accès refusé !",
 "wrongPass"         => "Mauvais utilisateur et/ou mot de passe",
-"tryAgain"          => "R&eacute;essayer / mot de passe oubli&eacute;?",
-"back"              => "Retour a la fenetre de connexion",
+"tryAgain"          => "Réessayer / mot de passe oublié?",
+"back"              => "Retour à la fenetre de connexion",
 "bye"               => "Au revoir!",
 "login"             => "Connexion",
-"logout"            => "D&eacute;connexion",
-"loggedon"          => "Connect&eacute; en tant que:",
-"username"          => "Nom",
+"logout"            => "Déconnexion",
+"loggedon"          => "Connecté en tant que:",
+"username"          => "Login",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
-"minLength"         => "min. 5 characteres!",
-"update"            => "La structure de la base de donn&eacute;es de la version Kimai install&eacute;e a &eacute;t&eacute; mise a jour.<br />Nous recommandons de sauvegarder vos donn&eacute;es pour &eacute;vitert toute perte<br />durant la procedure de mise a jour.",
-"updateNow"         => "Mise &agrave; jour de la base de donn&eacute;es en cours!",
+"minLength"         => "min. 5 caractères!",
+"update"            => "La structure de la base de données de la version Kimai installée a été mise à jour.<br />Nous recommandons de sauvegarder vos données pour éviter toute perte<br />durant la procédure de mise a jour.",
+"updateNow"         => "Mise à jour de la base de données en cours!",
 "stop"              => "Stop!",
-"start"             => "Start!",
-"setTimespace"      => "choisir plage",
+"start"             => "Démarre!",
+"setTimespace"      => "Choisir plage",
 "now"               => "Maintenant",
-"specify"           => "Indiquer",
+"specify"           => "Spécifier la liste",
 "add"               => "Ajouter",
-"running"           => "Running...",
-"company"           => "Societ&eacute;",
+"running"           => "En cours...",
+"company"           => "Societé",
+
+"vat"               => "TVA",
+"contactPerson"     => "Contact:",
+
 "street"            => "Rue",
 "zipcode"           => "Code postal",
 "city"              => "Ville",
-"telephon"          => "T&eacute;l&eacute;phone",
+"telephon"          => "Téléphone",
 "fax"               => "Fax",
 "mobilephone"       => "Mobile",
 "mail"              => "E-Mail",
-"homepage"          => "Internet",
+"homepage"          => "Site",
 "users"             => "Utilisateurs",
 "name"              => "Nom",
+"alias"             => "Alias",
 "adduser"           => "Ajouter utilisateur",
 "addgroup"          => "Ajouter groupe",
 "group"             => "Groupe",
 "groups"            => "Groupes",
-"advanced"          => "Avanc&eacute;",
-"database"          => "Base de donn&eacute;es",
+"advanced"          => "Avancé",
+"database"          => "Base de données",
 "options"           => "Options",
 "status"            => "Etat",
-"adminmail"         => "Adresse email de l'administrateur",
-"logintries"        => "Nombre de mauvaises tentatives de connexion autoris&eacute;es avant de bloquer l'utilisateur",
-"bantime"           => "dur&eacute;e du bloquage en secondes",
-"lastdbbackup"      => "Derniere sauvegarde",
-"runbackup"         => "Sauvegarde immediate",
-"defaultgrp"        => "Default (0)",
+"adminmail"         => "adresse email de l'administrateur",
+"logintries"        => "nombre de mauvaises tentatives de connexions autorisées avant de bloquer l'utilisateur",
+"bantime"           => "durée du bloquage en secondes",
+"lastdbbackup"      => "Dernière sauvegarde",
+"runbackup"         => "Sauvegarde immédiate",
+"defaultgrp"        => "Défaut (0)",
 "regusr"            => "Utilisateur standard",
 "adminusr"          => "Administrateur",
 "editusr"           => "Editer l'utilisateur",
 "editgrp"           => "Editer le groupe",
 "delgrp"            => "Supprimer groupe",
-"delpct"            => "Supprimer tache",
+"delpct"            => "Supprimer projet",
 "delknd"            => "Supprimer client",
-"delevt"            => "Supprimer activit&eacute;",
+"delevt"            => "Supprimer tâche",
 "switchusr"         => "Basculer vers cet utilisateur",
 "backupusr"         => "Faire une sauvegarde de cet utilisateur",
-"mailusr"           => "Envoyer un email a cet utilisateur",
+"mailusr"           => "Envoyer un email à cet utilisateur",
 "delusr"            => "Supprimer cet utilisateur",
-"bannedusr"         => "Utilisateur desactiv&eacute; - cliquer pour r&eacute;activer",
-"activeusr"         => "Utilisateur actif - cliquer pour d&eacute;sactiver",
+"bannedusr"         => "Utilisateur désactivé - cliquer pour réactiver",
+"activeusr"         => "Utilisateur actif - cliquer pour désactiver",
 "changegrp"         => "Modifier le groupe",
 "members"           => "Membres",
 "groupleader"       => "Responsable du groupe",
-"nopassword"        => "Aucun mot de passe",
-"noItems"           => "pas d'entr&eacute;es",
-"DBname"            => "Nom de la base de donnes",
-"autoselection"     => "S&eacute;lection automatique",
-"quickdelete"       => "Suppression rapide",
+"nopassword"        => "Aucun mot de passe enregistré",
+"noItems"           => "Pas d'entrées",
+"DBname"            => "Nom de la base de données",
+"autoselection"     => "Sélection automatique",
+"quickdelete"       => "Suppression rapide des données dans les tables",
+"quickdeleteHide"   => "Non",
+"quickdeleteShow"   => "Oui, sans dialogue de confirmation",
+"quickdeleteShowConfirm" => "Oui, avec dialogue de confirmation",
 "tools"             => "Outils",
 "print"             => "Imprimer",
 "save"              => "Sauvegarder",
 "export"            => "Exporter",
 "groupname"         => "Nom du groupe",
 "help"              => "Aider",
-"select"            => "S&eacute;lectionner",
-"hidedeletedusers"  => "Cacher les utilisateurs supprim&eacute;s",
-"showdeletedusers"  => "Afficher les utilisateurs supprim&eacute;s",
+"select"            => "Sélectionner",
+"hidedeletedusers"  => "Cacher les utilisateurs supprimés",
+"showdeletedusers"  => "Afficher les utilisateurs supprimés",
 
 "month"             => "Mois",
 "day"               => "Jour",
-"year"              => "Ann&eacute;e",
+"year"              => "Année",
 
 "lang"              => "Langue",
 
-"ac"                => "Saisie automatique continue.",
-"ac_error"          => "Saisie automatique continue avec erreur (echelle temps trop longue).",
+"ac"                => "Entrée automatiquement continuée.",
+"ac_error"          => "Entrée automatiquement continuée avec erreur (intervalle trop long).",
+"refundable_long"   => "Remboursable (à l'employé)",
+"refundable"        => "Remboursable",
+"yes"               => "oui",
+"no"                => "non",
 "comment_type"      => "Type de commentaire",
 "ctype0"            => "Commentaire",
 "ctype1"            => "Note",
 "ctype2"            => "Attention!",
 "hint"              => "Truc:",
-"usr_caution1"      => "Si vous modifiez le nom d'utilisateur ",
-"usr_caution2"      => "Vous devrez vous reconnecter imm&eacute;diatement avec le nouvel utilisateur!",
-"timediff_warn"     => "Vous devez saisir des heures diff&eacute;rentes dans ces champs!",
-"visibility"        => "Visible",
-"showitem"          => "rendre visible",
-"hideitem"          => "rendre invisible",
-"checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champs gauche du bouton Ajouter!",
+"usr_caution1"      => "Si vous modifiez le nom d'utilisateur de",
+"usr_caution2"      => "vous devrez vous reconnecter immédiatement avec le nouvel utilisateur!",
+"timediff_warn"     => "Vous devez saisir des heures différentes dans ces champs!",
+"visibility"        => "Visibilité",
+"showitem"          => "Rendre visible",
+"hideitem"          => "Rendre invisible",
+"checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champ è gauche du bouton Ajouter!",
 "clickToReload"     => "Cliquer ici pour relancer l'interface graphique",
-"sure"              => "Etes-vous sur?",
+"sure"              => "Etes-vous sûr?",
 "clock"             => "Horloge",
-"currSum"           => "Synthese horaire",
-"admWarn"           => "Vous etes Admin. Ce statut ne peut etre abaisser que par un autre admin.",
-"flip_pct_display"  => "Trier la table des activit&eacute;s par client",
-"pct_comment_flag"  => "Toujours afficher les commentaires a cot&eacute; des activit&eacute;s",
+"currSum"           => "Synthèse horaire",
+"admWarn"           => "Vous êtes Admin. Ce statut ne peut être abaissé que par un autre admin.",
+"flip_pct_display"  => "Trier la table des tâches par client",
+"pct_comment_flag"  => "Toujours afficher les commentaires à coté des tâches",
 "showIDs"           => "Montrer les IDs",
 "error"             => "Une erreur est survenue!",
-"checkupdate"       => "V&eacute;rifier si une mise &agrave; jour est disponible",
+"checkupdate"       => "Vérifier si une mise à jour est disponible",
 
-"selectR"           => "Filtre de la saisie en cours:",
+"selectR"           => "Sélection en cours pour saisie:",
 "selectKND"         => "C:",
-"selectPCT"         => "A:",
+"selectPCT"         => "P:",
 "selectEVT"         => "T:",
 
 "testKND"           => "Client-Test",
-"testPCT"           => "Activit&eacute;-Test",
-"testEVT"           => "test",
-
+"testPCT"           => "Projet-Test",
+"testEVT"           => "Tâche-test",
 
 "budget"            => "Budget",
 "rate"              => "Taux horaire (par heure)",
 "rate_short"        => "Taux",
-"default_rate"      => "Taux par d&eacute;faut",
+"default_rate"      => "Taux par défaut",
 "my_rate"           => "Mon taux",
 
-"wage"              => "Cout",
+"wage"              => "Coût",
 
-"customerlogin"     => "login client",
+"customerlogin"     => "Login client",
 
-"expense"           => "D&eacute;pense",
-"designation"       => "D&eacute;signation",
+"expense"           => "Dép.",
+"designation"       => "Désignation",
 
-"cleared"           => "valid&eacute;",
+"cleared"           => "validé",
 
-"noFading"          => "Pas d'effet fondu",
-"user_list_hidden"  => "Cacher par d&eacute;faut la liste des utilisateurs",
+"noFading"          => "Pas d'effet fading ",
+"user_list_hidden"  => "Cacher la liste util. par défaut",
 
-'show_sensible_data' => 'Afficher les donn&eacute;es sensibles meme en mode debug.',
-'show_update_warn' => 'D&eacute;sactiver les alertes avant une mise a jour.',
-'check_at_startup' => 'Afficher un message sur la page d accueil si une nouvelle version est disponible.',
-'show_daySeperatorLines' => 'Afficher une s&eacute;paration entre les enregistrements sur des jours diff&eacute;rents.',
-'show_gabBreaks' => 'Afficher une s&eacute;paration entre deux enregistrements non contigus.',
-'show_RecordAgain' => 'Afficher le bouton &quot;Record Again&quot; avant chaque enter&eacute;es.',
-'show_TrackingNr' => 'Permettre l edition du champs Tracking-Nr.',
-'currency_name' => 'Nom de la devise a utiliser.',
-'currency_sign' => 'Symbole de la devise a utiliser.',
-'currency_first' => 'Afficher la devise avant la valeur (ex. &euro; 100,00)',
-'display_date_format' => 'Format date pour la plage horaire (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'display_currentDate_format' => 'Format date pour le champs sous la plage horaire (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'table_date_format' => 'Format date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-'round_time' => 'Arrondir la dur&eacute;e a ',
+'show_sensible_data' => 'Montrer les données sensibles aussi dans l\'extension Debug.',
+'show_update_warn' => 'Désactiver le warning avant une mise à jour.',
+'check_at_startup' => 'Montrer un message sur la page Login si une nouvelle version est disponible.',
+'show_daySeperatorLines' => 'Tirer une ligne entre les entrées de jours différents.',
+'show_gabBreaks' => 'Tirer une ligne entre deux enregistrements qui ne sont pas parfaitement jointifs.',
+'show_RecordAgain' => 'Montrer le bouton &quot;Réenregistrer&quot; en face de chaque saisie.',
+'show_TrackingNr' => 'Autoriser l\' édition du champ N°-Suivi.',
+'currency_name' => 'Nom de la monnaie à utiliser.',
+'currency_sign' => 'Symbole de la monnaie à utiliser.',
+'currency_first' => 'Indiquer la monnaie avant la valeur (ex: &euro; 100,00)',
+'display_date_format' => 'Format de la date pour la notation de la plage de temps (<a href="http://php.net/manual/en/function.strftime.php" target="_blank"> pour la fonction strftime()</a>)',
+'display_currentDate_format' => 'Format de la date pour le champ sous la plage de temps (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
+'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
+'round_time' => 'Arrondir le temps à ',
 'round_time_minute' => ' minute(s).',
-'logged_in_as' => 'Utilisateur connect&eacute;:',
+'logged_in_as' => 'Votre login:',
 
-'decimal_separator'  => 'S&eacute;parateur d&eacute;cimal',
+'decimal_separator'  => 'Séparateur décimal',
 
-'view_filter' => 'Filtre d affichage',
-'unassigned' => 'non affect&eacute;',
-'all_events' => '&lt;&lt;tout&gt;&gt;',
+'view_filter' => 'Voir le filtre',
+'unassigned' => 'Aucun',
+'all_events' => '&lt;&lt;Tous&gt;&gt;',
 
-'months'         => array("Janvier","F&eacute;vrier","Mars","Avril","Mai","Juin","Juillet","Ao&ucirc;t","Septembre","Octobre","Novembre","D&eacute;cembre"),
-'months_short'         => array("Jan","F&eacute;v","Mar","Avr","Mai","Jn","Jl","Ao&ucirc;","Sep","Oct","Nov","D&eacute;c"),
-'weekdays'=> array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
+'durationWithSeconds' => 'Montrer la durée à la seconde près.',
+
+'multiplier' => 'Multiplicateur',
+
+'dateAndTimeHelp' => '<strong>Les temps et dates peuvent être entrés avec la notation courte:</strong><br />
+            Dates: 5 &rarr; le 5 du mois courant &nbsp;&nbsp; 
+            1004 &rarr; le 10.04. de l\'année en cours &nbsp;&nbsp; 
+            100406 &rarr; 10.04.2006<br />
+            Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
+            14 &rarr; 14:00:00  &nbsp;&nbsp;
+            0910 &rarr; 09:10:00  &nbsp;&nbsp;
+            091020 &rarr; 09:10:20 &nbsp;&nbsp;',
+
+'timezone' => 'fuseau horaire',
+'defaultTimezone' => 'fuseau horaire pour les nouveaux utilisateurs et clients',
+
+'hideClearedEntries' => 'cacher les données supprimées',
+
+'general' => 'General',
+'address' => 'Address',
+'contact' => 'Contact',
+
+'internalProject' => 'Project interne',
+
+'exactSums' => 'Utiliser les sommes exactes au lieu d\' additionner les valeurs arrondies indiquées.',
+
+'securityWarning' => 'Alerte de sécurité',
+'installerWarningHeadline' => 'Le dossier d\'installation (INSTALL) est toujours présent!',
+'installerWarningText' => 'Vous devez supprimer le dossier d\'installation (INSTALL) afin que personne ne puisse ré-installer KIMAI.',
+
+'change' => 'change',
+
+'credits' => <<<EOF
+        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow et autres...<br />
+        
+        <br />
+        
+        <strong>Ce logiciel est un logiciel libre et publié 'EN L'ETAT' sans aucune espèce de garantie</strong> sous les conditions de la
+        <a href="../COPYING">Version GPL 3</a>. 
+        
+        <br /><br />
+         
+        <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> | 
+        <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Page du Projet Sourceforge </a> | 
+        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Subversion Repository</a> |
+        <a href='http://www.kimai.org/en/download.html' target='_blank'>Telechargement</a>
+        
+        <br /><br />
+
+        Si vous faites des modifications, nous aprecierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" . La dernière version SVN peut être téléchargée <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">Ici</a> (Pour les test seulement!).
+        
+        <br /><br />
+        
+        SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a> ou en étendant sa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">bibliothèque de langues</a>.
+
+        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\heitez pas à nous contacter sur le forum. Ou encor emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+
+        <strong>Des remerciement aussi pour le support à:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
+        Torben Boe et HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
+        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
+
+        <strong>Remerciement spéciaux</strong> à tous les beta-testeurs, qui sont trop nombreux pour les citer tous - Vous savez de qui on parle! ;)<br /><br />
+
+        L'extension Invoice utilise la bibliothèque PclZip , qui peût être trouvée à <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
+
+        La Version 0.8 a été créée avec le support aimable de RRZE (Regionales Rechenzentrum Erlangen).<br /><br />
+        <br />
+EOF
+,
+
+
+
+'months'		 => array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"),
+'months_short' 	 => array("Jan","Fév","Mar","Avr","Mai","Jn","Jl","Aoû","Sep","Oct","Nov","Déc"),
+'weekdays'       => array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
 'weekdays_short' => array("Dim","Lun","Mar","Mer","Jeu","Ven","Sam"),
 
+'errors' => array (
+  0 => array ('hdl' => "Impossible de se connecter à la base de données!",
+			  'txt' => "Vérifier que la base de données fonctionne, possède un connecteur PDO actif et que les entrées dans le fichier 'conf.php' du répertoire 'includes' sont correctes."),
 
+  1 => array ('hdl' => "Erreur durant l'installation!",
+			  'txt' => 'Kimai ne peut créer les tables neccessaires car des tables avec ce nom de préfixe existent déjà.<br/>
+Pour mettre à jour l\'installation existante, merci de cliquer <a href="../index.php">Ici</a>.<br/>
+Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce préfixe pour permettre à Kimai une installation correcte.')
+   ),
 
-'errors' => array(
-  0 => array('hdl' => "Impossible de se connecter a la base de donn&eacute;es!",
-              'txt' => "V&eacute;rifier que la base de donn&eacute;es fonctionne, possede un connecteur PDO actif et que les entr&eacute;es dans le fichier 'autoconf.php' du r&eacute;pertoire 'includes' sont correctes."),
-
-  1 => array('hdl' => "Erreur pendant l'installation!",
-              'txt' => 'Kimai n est pas mesure de cr&eacute;er les tables n&eacute;cessaires car des tables avec le meme pr&eacute;fixe existentent.<br/>
-Pour mettre a jour une installation existante <a href="../index.php">cliquer ici</a>.<br/>
-Choisir un autre pr&eacute;fixe de table ou supprimer les tables utilisant le meme pr&eacute;fixe pour permettre a Kimai de r&eacute;aliser une installation propre.')
+'updater'	=> array (
+0   => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise à jour!",
+10  => "Légende",
+20  => "La requête a été exécutée correctement.",
+30  => "La requête a causé une erreur - tr鳠certainement mineure.",
+40  => "La requête a causé une erreur fatale.",
+50  => "Fichier de log de la sauvegarde:",
+60  => "La sauvegarde a échoué - Mise à jour annulée!",
+70  => "Fichier de  log de la mise a jour:",
+80  => "La base de données a été mise à jour et une copie de sauvegarde a été créée.",
+90  => "Requêtes exécutées.",
+100 => "La mise a jour de la base de données a échoué à cause d'une erreur fatale. Une sauvegarde a été créée au cas o&ugrave; Kimai ne fonctionnerait plus correctement.",
+110 => "Nouveau mot de passe",
+120 => "Voir ci-dessous pour les mots de passe de tous les utilisateurs.",
+130 => "Impossible d'écrire dans autoconf.php.",
+140 => "Mise a jour du fichier autoconf.php",
+'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau hotzire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
 ),
 
 
-'updater' => array (
-0        => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise &agrave; jour!",
-10       => "L&eacute;gende:",
-20       => "La requete a &eacute;t&eacute; correctement.",
-30       => "La requete a caus&eacute; une erreur - tres certainement mineure.",
-40       => "La requete a cause une erreur fatale.",
-50       => "Fichier de log de la sauvegarde:",
-60       => "La sauvegarde a echou&eacute; - Mise &agrave; jour annul&eacute;e!",
-70       => "Fichier de  log de la mise a jour:",
-80       => "La base de donn&eacute;es a &eacute;t&eacute; mise a jour et une copie de sauvegarde a &eacute;t&eacute;cr&eacute;&eacute;e.",
-90       => "Requetes execut&eacute;es.",
-100      => "Les mise a jour de la base de donn&eacute;es a &eacute;chou&eacute; a cause d'une erreur fatale. Une sauvegarde a &eacute;t&eacute; cre&eacute;&eacute;e au cas ou Kimai ne fonctinnerait plus correctement.",
-110      => "Nouveau mot de passe",
-120      => "Voir ci-dessous pour les mots de passe de tous les utilisateurs.",
-130      => "Impossible d'&eacute;crire dans autoconf.php.",
-140      => "mise a jour du fichier autoconf.php"),
-
-
 'backup' => array(
-0        => "L'outil de sauvegarde/restauration n' a pas encore &eacute;t&eacute; test&eacute;! A utiliser a vos propres risques!",
+0        => "L'outil de sauvegarde/restauration n' a pas encore été testé! A utiliser à vos propres risques!",
 1        => "Sauvegardes disponibles:",
-2        => "restaur&eacute;",
-3        => "supprim&eacute;",
+2        => "restauré",
+3        => "supprimé",
 4        => "OK",
-5        => "You can only recover *one* backup at a time!",
-6        => "Sauvegarde du",
-7        => "a &eacute;t&eacute; restaur&eacute;.",
+5        => "Vous pouvez seulement retrouver *une* sauvegarde à la fois!",
+6        => "Sauvegarde du ",
+7        => "a été restauré.",
 8        => "Faire une sauvegarde",
-9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de donn&eacute;es actuelle dans laquelle Kimai stocke ces donnees. Les sauvegardes via cet utilitaire ne remplacent pas sont pas les sauvegardes sur un media physique s&eacute;par&eacute;. Il y a plein d'outils de sauvegarde de base de donnes sur le web ;)"),
+9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas sont pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)"),
+
 
 'xp_ext' => array(
 	
 "print_hint"      		   => "Cliquer sur OK pour ouvrir un tableau imprimable.",
-"dl_hint"         		   => "Cliquer sur OK pour t&eacute;l&eacute;charger le fichier export&eacute;.",
+"dl_hint"         		   => "Cliquer sur OK pour télécharger le fichier exporté.",
 
 "tab_filter"	 		   => "Filtre",
 "tab_location"	 		   => "Lieu",
-"tab_timeformat"	 	   => "Format horaire",
+"tab_timeformat"	 	   => "Format des temps",
 
-"cleared_all"	 		   => "tous",
-"cleared_cleared" 		   => "seuls les valid&eacute;s",
-"cleared_open"	 		   => "seuls les ouverts",
+"cleared_all"	 		   => "Tous",
+"cleared_cleared" 		   => "Seuls les validés",
+"cleared_open"	 		   => "Seuls les ouverts",
 "stdrd_location"  		   => "Lieu standard",
-"timeformat"	     	   => "Format horaire",
+"timeformat"	     	   => "Format temps",
 "dateformat"			   => "Format date",
 
-"print_comment"   		   => "imprimer les commentaires",
-"print_summary"   		   => "imprimer les resum&eacute;s",
-"create_bookmarks"		   => "cr&eacute;er un bookmark",
-"download_pdf"    		   => "t&eacute;l&eacute;charger comme PDF",
-"pdf_format"             => "format",
-"export_pdf"             => "table",
-"export_pdf2"            => "liste",
+"filter"	 		       => "Filtre",
 
-"column_delimiter"		   => "s&eacute;parateur de colonnes",
-"quote_char"      		   => "s&eacute;parateur de champs",
+"refundable_all"	 	   => "Tous",
+"refundable_refundable"    => "Frais remboursables seulement",
+"refundable_not_refundable"=> "Frais nonremboursables seulement",
+
+"print_comment"   		   => "Imprimer les commentaires",
+"print_summary"   		   => "Imprimer les resumés",
+"create_bookmarks"		   => "créer un marque-page",
+"download_pdf"    		   => "télécharger comme PDF",
+"pdf_format"               => "format",
+"export_pdf"               => "table",
+"export_pdf2"              => "liste",
+
+"column_delimiter"		   => "séparateur de colonnes",
+"quote_char"      		   => "séparateur de champs",
 
 "exportCSV"         	   => "Export CSV",
 "exportPDF"         	   => "Export PDF",
@@ -319,37 +420,49 @@ Choisir un autre pr&eacute;fixe de table ou supprimer les tables utilisant le me
 
 'subtotal'              => 'Sous Total',
 'finalamount'           => 'Total',
-'pdf_headline'          => 'Liste des temps et des d&eacute;penses',
-'costs'                 => 'Couts',
-'expense'               => 'D&eacute;pense',
-'summary'               => 'R&eacute;sum&eacute;',
+'pdf_headline'          => 'Liste des temps et des dépenses',
+'pdf_headline_only_times'   => 'Liste des temps de travail',
+'pdf_headline_only_expenses'=> 'Liste des dépenses',
+'costs'                 => 'Coûts',
+'expense'               => 'Dépense',
+'summary'               => 'Résumé',
+'full_list'             => 'Liste comlète',
 'page'                  => 'Page',
 'by'                    => 'par',
-'done_by'               => 'r&eacute;alise par',
-'duration'              => 'Dur&eacute;e',
-'customer_new_page'     => 'une nouvelle page par client',
+'done_by'               => 'réalisé par',
+'duration'              => 'Durée',
+'customer_new_page'     => 'Nouvelle page pour chaque client',
 
-'times_and_expenses' => 'dur&eacute;es et d&eacute;penses',
-'times' => 'dur&eacute;es',
-'expenses' => 'd&eacute;penses',
+'times_and_expenses' => 'Temps et dépenses',
+'times' => 'Temps',
+'expenses' => 'Dépenses',
 
-'reverse_order' => 'anciennes entr&eacute;es en premier',
-'time_period'  => 'p&eacute;riode horaire',
+'reverse_order' => 'Entrées anciennes en premier',
+'time_period'  => 'Période de temps',
 
 'duration_unit' => 'h',
 
 ),
 
+
+
 'ext_invoice' => array(
 	
-"invoiceTitle" 			=> "Cr&eacute;er une facture",
-"invoiceProject" 		=> "Activit&eacute;:",
-"invoiceTimePeriod" 	=> "P&eacute;riode:",
-"invoiceOptionShort" 	=> "Facture synth&eacute;tique",
-"invoiceOptionRound" 	=> "Arrondi horaire",
-"invoiceButton" 		=> "Cr&eacute;er",
-'noData'                => 'Il n y a pas d enregistrements pour cette activit&eacute; sur la p&eacute;riode concern&eacute;e.'
+"invoiceTitle" 			=> "Créer une facture",
+"invoiceProject" 		=> "Tâches:",
+"invoiceTimePeriod" 	=> "Période:",
+"invoiceOptionShort" 	=> "Facture synthétique",
+"invoiceOptionRound" 	=> "Durée arrondie",
+"invoiceButton" 		=> "Créer",
+'noData'                => 'Il n\' y a pas de données de temps pour le projet et la période choisis.',
+'defaultVat'        => 'TVA par défaut'
+),
 
-)
+'ext_budget' => array(
+  'unusedBudget' => 'Inutilisé'
+),
+
+'extensions' => array()
+
 );
 ?>
