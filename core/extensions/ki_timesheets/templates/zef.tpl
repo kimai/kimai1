@@ -301,28 +301,28 @@
     { if $usr_ann }
     ts_usr_ann = new Array();
     {foreach key=id item=value from=$usr_ann}
-      ts_usr_ann[{$id}] = "{$value}";
+      ts_usr_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $knd_ann }
     ts_knd_ann = new Array();
     {foreach key=id item=value from=$knd_ann}
-      ts_knd_ann[{$id}] = "{$value}";
+      ts_knd_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $pct_ann }
     ts_pct_ann = new Array();
     {foreach key=id item=value from=$pct_ann}
-      ts_pct_ann[{$id}] = "{$value}";
+      ts_pct_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $evt_ann }
     ts_evt_ann = new Array();
     {foreach key=id item=value from=$evt_ann}
-      ts_evt_ann[{$id}] = "{$value}";
+      ts_evt_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
     

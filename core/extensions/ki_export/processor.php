@@ -141,20 +141,20 @@ switch ($axAction) {
         $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
 
         $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = formatDuration($ann);
-        $tpl->assign('usr_ann',$ann_new);
+        formatAnnotations($ann);
+        $tpl->assign('usr_ann',$ann);
         
         $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = formatDuration($ann);
-        $tpl->assign('knd_ann',$ann_new);
+        formatAnnotations($ann);
+        $tpl->assign('knd_ann',$ann);
 
         $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = formatDuration($ann);
-        $tpl->assign('pct_ann',$ann_new);
+        formatAnnotations($ann);
+        $tpl->assign('pct_ann',$ann);
 
         $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        $ann_new = formatDuration($ann);
-        $tpl->assign('evt_ann',$ann_new);
+        formatAnnotations($ann);
+        $tpl->assign('evt_ann',$ann);
 
         $tpl->assign('timeformat',$timeformat);
         $tpl->assign('dateformat',$dateformat);

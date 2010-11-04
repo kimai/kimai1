@@ -279,6 +279,8 @@ return array(
 
 'change' => 'change',
 
+'sublistAnnotations' => 'sublist annotations',
+
 
 
 'credits' => <<<EOF

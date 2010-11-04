@@ -269,6 +269,8 @@ return array(
 
 'change' => 'ändern',
 
+'sublistAnnotations' => 'Anmerkungen bei den Listen',
+
 
 
 'credits' => <<<EOF

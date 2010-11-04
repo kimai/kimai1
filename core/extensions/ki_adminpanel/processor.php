@@ -290,16 +290,16 @@ switch ($axAction) {
         $var_data['show_TrackingNr']        = isset($_REQUEST['show_TrackingNr']);
         $var_data['currency_name']          = $_REQUEST['currency_name'];
         $var_data['currency_sign']          = $_REQUEST['currency_sign'];
-        $var_data['currency_first']         = isset($_REQUEST['currency_sign']);
+        $var_data['currency_first']         = isset($_REQUEST['currency_first']);
         $var_data['date_format_0']          = $_REQUEST['date_format_0'];
         $var_data['date_format_1']          = $_REQUEST['date_format_1'];
         $var_data['date_format_2']          = $_REQUEST['date_format_2'];
         $var_data['language']               = $_REQUEST['language'];
         $var_data['roundPrecision']         = $_REQUEST['roundPrecision'];
         $var_data['decimalSeparator']       = $_REQUEST['decimalSeparator'];
-        $var_data['durationWithSeconds']    = $_REQUEST['durationWithSeconds'];
+        $var_data['durationWithSeconds']    = isset($_REQUEST['durationWithSeconds']);
         $var_data['defaultTimezone']        = $_REQUEST['defaultTimezone'];
-        $var_data['exactSums']              = $_REQUEST['exactSums'];
+        $var_data['exactSums']              = isset($_REQUEST['exactSums']);
         
         $success = var_edit($var_data);
 

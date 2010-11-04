@@ -58,11 +58,7 @@ class MYPDF extends TCPDF {
    * @return string formatted string
    */
   public function money($number) {
-    global $kga;
-    if ($kga['conf']['currency_first'])
-      return $kga['currency_sign']." ".str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number));
-    else
-      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number)). " ".$kga['currency_sign'];
+    return formatCurrency($number,false);
   }
   
 

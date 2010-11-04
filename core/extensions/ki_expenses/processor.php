@@ -63,13 +63,16 @@ switch ($axAction) {
 
 
       $ann = get_arr_exp_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = formatCurrency($ann);
       $tpl->assign('usr_ann',$ann);
 
       // TODO: function for loops or convert it in template with new function
       $ann = get_arr_exp_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = formatCurrency($ann);
       $tpl->assign('knd_ann',$ann);
 
       $ann = get_arr_exp_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = formatCurrency($ann);
       $tpl->assign('pct_ann',$ann);
 
       $tpl->assign('evt_ann',array());

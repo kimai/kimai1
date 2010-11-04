@@ -81,7 +81,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="currency_first" {if $kga.currency_first}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.currency_first}
+               <input type="checkbox" name="currency_first" {if $kga.conf.currency_first}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.currency_first}
             </div>
 
             <div>

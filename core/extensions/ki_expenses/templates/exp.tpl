@@ -201,28 +201,28 @@
     { if $usr_ann }
     exp_usr_ann = new Array();
     {foreach key=id item=value from=$usr_ann}
-      exp_usr_ann[{$id}] = "{$value}";
+      exp_usr_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $knd_ann }
     exp_knd_ann = new Array();
     {foreach key=id item=value from=$knd_ann}
-      exp_knd_ann[{$id}] = "{$value}";
+      exp_knd_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $pct_ann }
     exp_pct_ann = new Array();
     {foreach key=id item=value from=$pct_ann}
-      exp_pct_ann[{$id}] = "{$value}";
+      exp_pct_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
 
     { if $evt_ann }
     exp_evt_ann = new Array();
     {foreach key=id item=value from=$evt_ann}
-      exp_evt_ann[{$id}] = "{$value}";
+      exp_evt_ann[{$id}] = '{$value}';
     {/foreach}
     {/if}
     

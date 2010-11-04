@@ -188,6 +188,24 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
 }
 
 /**
+ * Merge the expense annotations with the timesheet annotations. The result will
+ * be the timesheet array, which has to be passed as the first argument.
+ * 
+ * @param array the timesheet annotations array
+ * @param array the expense annotations array
+ */
+function merge_annotations(&$zef_arr,&$exp_arr) {
+
+  foreach ($exp_arr as $id => $costs) {
+    if (!isset($zef_arr[$id]))
+      $zef_arr[$id]['costs'] = $costs;
+    else
+      $zef_arr[$id]['costs'] += $costs;
+  }
+}
+
+
+/**
  * Get annotations for the user sub list. Currently it's just the time, like
  * in the timesheet extension.
  * 
@@ -200,7 +218,15 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
  * @return array Array which assigns every user (via his ID) the data to show.
  */
 function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+  global $expense_ext_available;
+
     $arr = get_arr_time_usr($start,$end,$users,$customers,$projects,$events);
+    
+    if ($expense_ext_available) {
+      $exp_arr = get_arr_exp_usr($start,$end,$users,$customers,$projects);
+      merge_annotations($arr,$exp_arr);
+    }
+
     return $arr;
 }
 
@@ -218,7 +244,14 @@ function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = 
  * @return array Array which assigns every customer (via his ID) the data to show.
  */
 function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+  global $expense_ext_available;
+
     $arr = get_arr_time_knd($start,$end,$users,$customers,$projects,$events);
+    
+    if ($expense_ext_available) {
+      $exp_arr = get_arr_exp_knd($start,$end,$users,$customers,$projects);
+      merge_annotations($arr,$exp_arr);
+    }
     return $arr;
 }
 
@@ -235,7 +268,14 @@ function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = 
  * @return array Array which assigns every project (via his ID) the data to show.
  */
 function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
+  global $expense_ext_available;
+
     $arr = get_arr_time_pct($start,$end,$users,$customers,$projects,$events);
+    
+    if ($expense_ext_available) {
+      $exp_arr = get_arr_exp_pct($start,$end,$users,$customers,$projects);
+      merge_annotations($arr,$exp_arr);
+    }
     return $arr;
 }
 

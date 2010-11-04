@@ -2774,7 +2774,7 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
       $whereClauses[]="zef_in < $out";
     
     
- $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, usr_ID
+ $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, usr_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
              FROM ${p}zef 
              Join ${p}pct ON zef_pctID = pct_ID
              Join ${p}knd ON pct_kndID = knd_ID
@@ -2804,10 +2804,15 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
         $zef_in  = $row['zef_in'];
         $zef_out = $out;
       }
-      if (isset($arr[$row['usr_ID']]))
-        $arr[$row['usr_ID']]+= (int)($zef_out - $zef_in);
-      else 
-        $arr[$row['usr_ID']] = (int)($zef_out - $zef_in);
+
+      if (isset($arr[$row['usr_ID']])) {
+        $arr[$row['usr_ID']]['time']  += (int)($zef_out - $zef_in);
+        $arr[$row['usr_ID']]['costs'] += (int)$row['costs'];
+      }
+      else  {
+        $arr[$row['usr_ID']]['time']  = (int)($zef_out - $zef_in);
+        $arr[$row['usr_ID']]['costs'] = (int)$row['costs'];
+      }
     }
     
     return $arr;
@@ -2840,7 +2845,8 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
     if ($out) 
       $whereClauses[]="zef_in < $out";
     
-    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, knd_ID FROM ${p}zef 
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out, knd_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
+            FROM ${p}zef 
             Left Join ${p}pct ON zef_pctID = pct_ID
             Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
@@ -2865,10 +2871,15 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
         $zef_in  = $row['zef_in'];
         $zef_out = $out;
       }
-      if (isset($arr[$row['knd_ID']]))
-        $arr[$row['knd_ID']]+= (int)($zef_out - $zef_in);
-      else 
-        $arr[$row['knd_ID']] = (int)($zef_out - $zef_in);
+
+      if (isset($arr[$row['knd_ID']])) {
+        $arr[$row['knd_ID']]['time']  += (int)($zef_out - $zef_in);
+        $arr[$row['knd_ID']]['costs'] += (int)$row['costs'];
+      }
+      else {
+        $arr[$row['knd_ID']]['time']  = (int)($zef_out - $zef_in);
+        $arr[$row['knd_ID']]['costs'] = (int)$row['costs'];
+      }
     }
     
     return $arr;
@@ -2901,7 +2912,8 @@ function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = 
     if ($out)
       $whereClauses[]="zef_in < $out";
     $arr = array();
-    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_pctID FROM ${p}zef 
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_pctID, (zef_out - zef_in) / 3600 * zef_rate AS costs
+        FROM ${p}zef 
         Left Join ${p}pct ON zef_pctID = pct_ID
         Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
     $pdo_query->execute();
@@ -2926,10 +2938,15 @@ function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = 
         $zef_in  = $row['zef_in'];
         $zef_out = $out;
       }
-      if (isset($arr[$row['zef_pctID']]))
-        $arr[$row['zef_pctID']]+= (int)($zef_out - $zef_in);
-      else 
-        $arr[$row['zef_pctID']] = (int)($zef_out - $zef_in);
+
+      if (isset($arr[$row['zef_pctID']])) {
+        $arr[$row['zef_pctID']]['time']  += (int)($zef_out - $zef_in);
+        $arr[$row['zef_pctID']]['costs'] += (int)$row['costs'];
+      }
+      else {
+        $arr[$row['zef_pctID']]['time']  = (int)($zef_out - $zef_in);
+        $arr[$row['zef_pctID']]['costs'] = (int)$row['costs'];
+      }
     }
     return $arr;
 }
@@ -3051,7 +3068,8 @@ function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = n
       $whereClauses[]="zef_out > $in";
     if ($out)
       $whereClauses[]="zef_in < $out";
-    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_evtID FROM ${p}zef 
+    $pdo_query = $pdo_conn->prepare("SELECT zef_in,zef_out,zef_evtID, (zef_out - zef_in) / 3600 * zef_rate AS costs
+        FROM ${p}zef 
         Left Join ${p}evt ON zef_evtID = evt_ID
         Left Join ${p}pct ON zef_pctID = pct_ID
         Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
@@ -3077,10 +3095,15 @@ function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = n
         $zef_in  = $row['zef_in'];
         $zef_out = $out;
       }
-      if (isset($arr[$row['zef_evtID']]))
-        $arr[$row['zef_evtID']]+= (int)($zef_out - $zef_in);
-      else 
-        $arr[$row['zef_evtID']] = (int)($zef_out - $zef_in);
+
+      if (isset($arr[$row['zef_evtID']])) {
+        $arr[$row['zef_evtID']]['time']  += (int)($zef_out - $zef_in);
+        $arr[$row['zef_evtID']]['costs'] += (int)$row['costs'];
+      }
+      else {
+        $arr[$row['zef_evtID']]['time'] = (int)($zef_out - $zef_in);
+        $arr[$row['zef_evtID']]['costs'] = (int)$row['costs'];
+      }
     }
     return $arr;
 }

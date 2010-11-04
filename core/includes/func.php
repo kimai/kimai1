@@ -107,7 +107,7 @@ function formatDuration($sek) {
     $arr = array();
     foreach ($sek as $key=>$value)
     {
-      $arr[$key] = formatDuration($value);
+        $arr[$key] = formatDuration($value);
     }
     return $arr;
   }
@@ -117,6 +117,76 @@ function formatDuration($sek) {
       return sprintf('%d:%02d', $sek / 3600, $sek / 60 % 60);
     else
       return sprintf('%d:%02d:%02d', $sek / 3600, $sek / 60 % 60, $sek % 60);
+  }
+}
+
+/**
+ * Format a currency or an array of currencies accordingly.
+ * 
+ * @param integer|array one value or an array of decimal numbers
+ * @return integer|array formatted string(s)
+ * @author sl
+ */
+function formatCurrency($number,$htmlNoWrap = true) {
+  global $kga;
+  if (is_array($number)) {
+    // Convert all values of the array.
+    $arr = array();
+    foreach ($number as $key=>$value)
+    {
+        $arr[$key] = formatCurrency($value);
+    }
+    return $arr;
+  }
+  else {
+    $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f",$number) );
+    if ($kga['conf']['currency_first'])
+      $value = $kga['currency_sign']." ".$value;
+    else
+      $value = $value." ".$kga['currency_sign'];
+
+    if ($htmlNoWrap)
+      return "<span style=\"white-space: nowrap;\">$value</span>";
+    else
+      return $value;
+  }
+}
+
+/**
+ * Format the annotations and only include data which the user wants to see. 
+ * The array which is passed to the method will be modified.
+ *
+ * @param $ann array the annotation array (userid => (time, costs) )
+ */
+function formatAnnotations(&$ann) {
+  $type = usr_get_preference('ui.sublistAnnotations');
+  $userIds = array_keys($ann);
+
+  if ($type == null)
+    $type = 0;
+
+  switch ($type) {
+  case 0:
+    // just time
+    foreach ($userIds as $userId) {
+      $ann[$userId] = formatDuration($ann[$userId]['time']);
+    }
+    break;
+  case 1:
+    // just costs
+    foreach ($userIds as $userId) {
+      $ann[$userId] = formatCurrency($ann[$userId]['costs']);
+    }
+    break;
+  case 2:
+  default:
+    // both
+    foreach ($userIds as $userId) {
+      $time = formatDuration($ann[$userId]['time']);
+      $costs = formatCurrency($ann[$userId]['costs']);
+      $ann[$userId] =  "<span style=\"white-space: nowrap;\">$time |</span>  $costs";
+    }
+
   }
 }
 

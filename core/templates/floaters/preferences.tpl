@@ -62,6 +62,15 @@
                     </li>
 
                     <li>
+                        {$kga.lang.sublistAnnotations}:
+                        <select name="sublistAnnotations">
+                            <option value="0" {if $kga.conf.sublistAnnotations==0}selected="selected"{/if}>{$kga.lang.timelabel}</option>
+                            <option value="1" {if $kga.conf.sublistAnnotations==1}selected="selected"{/if}>{$kga.lang.xp_ext.costs}</option>
+                            <option value="2" {if $kga.conf.sublistAnnotations==2}selected="selected"{/if}>{$kga.lang.timelabel} &amp; {$kga.lang.xp_ext.costs}</option>
+                        </select>
+                    </li>
+
+                    <li>
                         <label for="autoselection"></label>
                         <input type="checkbox" name="autoselection" value="1" {if $kga.conf.autoselection}checked{/if} /> {$kga.lang.autoselection}
                     </li>

@@ -82,32 +82,32 @@ if (isset($kga['customer']))
   $ann = xp_get_arr_usr($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_usr($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = formatDuration($ann);
-$tpl->assign('usr_ann',$ann_new);
+formatAnnotations($ann);
+$tpl->assign('usr_ann',$ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
   $ann = xp_get_arr_knd($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_knd($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = formatDuration($ann);
-$tpl->assign('knd_ann',$ann_new);
+formatAnnotations($ann);
+$tpl->assign('knd_ann',$ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
   $ann = xp_get_arr_pct($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_pct($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = formatDuration($ann);
-$tpl->assign('pct_ann',$ann_new);
+formatAnnotations($ann);
+$tpl->assign('pct_ann',$ann);
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
   $ann = xp_get_arr_evt($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_evt($in,$out,array($kga['usr']['usr_ID']));
-$ann_new = formatDuration($ann);
-$tpl->assign('evt_ann',$ann_new);
+formatAnnotations($ann);
+$tpl->assign('evt_ann',$ann);
 
 // Get the columns the user had disabled last time.
 if (isset($kga['usr']))
