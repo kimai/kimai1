@@ -1163,7 +1163,7 @@ function usr_create($data) {
     `usr_grp`,
     `usr_sts`,
     `usr_active`
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    ) VALUES (?, ?, ?, ?, ?)");
     
     $result = $pdo_query->execute(array(
     $data['usr_ID'],
