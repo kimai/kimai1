@@ -1788,7 +1788,7 @@ function grp_edit($grp_id, $data) {
     
     $data = clean_data($data);
    
-    $values ['grp_name'] = MySQL::SQLValue($new_array ['grp_name'] );
+    $values ['grp_name'] = MySQL::SQLValue($data ['grp_name'] );
 
     $filter ['grp_ID']   = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."grp";
