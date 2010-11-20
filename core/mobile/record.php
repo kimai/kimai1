@@ -30,6 +30,11 @@ if (isset($_REQUEST['startRecord']) &&
   startRecorder($_REQUEST['project'],$_REQUEST['event'],$kga['usr']['usr_ID']);
 }
 
+if (isset($_REQUEST['updateComment'])) {
+  $data = get_event_last();
+  zef_edit_comment($data['zef_ID'],$_REQUEST['comment_type'],$_REQUEST['comment']);
+}
+
 ?>
 <html>
   <head>
@@ -86,7 +91,6 @@ for ($i=0;$i<count($eventSel[0]);$i++) {
 }
 else {
 ?>
-<form method="post">
 
 <label><?= $kga['lang']['pct']?></label>
 <?php
@@ -98,12 +102,39 @@ else {
   $last_evt = evt_get_data($kga['usr']['lastEvent']);
   echo "<b>".$last_evt['evt_name']."</b>";
 ?>
-  
 <br/>
-<br/>
+<form method="post">
+
 <input type="submit" name="stopRecord" value="<?= $kga['lang']['stop']?>"/>
 
 </form>
+
+<b><?= $kga['lang']['comment']?>:</b>
+<?php
+  $last_event = get_event_last();
+?>
+<form method="post">
+<textarea name="comment"><?= $last_event['zef_comment']?></textarea>
+
+<br/>
+<?= $kga['lang']['comment_type']?> 
+<select size="1" name="comment_type">
+  <?php
+  $comment_types = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
+  $i = 0;
+  foreach ($comment_types as $comment_type) {
+    if ($i == $last_event['zef_comment_type'])
+      echo "<option selected=\"selected\" value=\"$i\">$comment_type</option>";
+    else
+      echo "<option value=\"$i\">$comment_type</option>";
+    $i++;
+  }
+  ?>
+</select>
+
+<input type="submit" name="updateComment" value="<?= $kga['lang']['submit']?>"/>
+</form>
+
 <?php
 }
 ?>
