@@ -343,7 +343,7 @@ return array(
 "invoiceTimePeriod"     => "Periode:",
 "invoiceOptionShort"    => "Korte factuur",
 "invoiceOptionRound"    => "Tijd afronden",
-"invoiceButton"         => "Maken"
+"invoiceButton"         => "Maken",
 'noData'                => 'There are no time entries for the selected project & time period.'
 )
 );
