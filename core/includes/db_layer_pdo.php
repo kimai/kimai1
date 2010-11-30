@@ -66,8 +66,13 @@ function buildSQLUpdateSet(&$keys,&$data) {
  * @param array &$data array containing all data to set
  * @return true on success, false otherwise
  */
-function bindValues(&$statement,&$data) {
-    foreach ($data as $key => $value) {
+function bindValues(&$statement,$keys,&$data) {
+    foreach ($keys as $key) {
+      if (!isset($data[$key]))
+        continue;
+
+      $value = $data[$key];
+
       if (!$statement->bindValue(":$key",$value)) {
         logfile("failed binding ".$key." to ".$value);
         return false;
@@ -189,7 +194,7 @@ function knd_edit($knd_id, $data) {
 
     $statement = $pdo_conn->prepare($query);
 
-    bindValues($statement,$data);
+    bindValues($statement,$keys,$data);
 
     $statement->bindValue(":customerId", $knd_id);
 
@@ -428,7 +433,7 @@ function pct_edit($pct_id, $data) {
 
     $statement = $pdo_conn->prepare($query);
 
-    bindValues($statement,$data);
+    bindValues($statement,$keys,$data);
 
     $statement->bindValue(":projectId", $pct_id);
 
@@ -661,7 +666,7 @@ function evt_edit($evt_id, $data) {
 
     $statement = $pdo_conn->prepare($query);
 
-    bindValues($statement,$data);
+    bindValues($statement,$keys,$data);
 
     $statement->bindValue(":eventId", $evt_id);
 
@@ -1240,7 +1245,7 @@ function usr_edit($usr_id, $data) {
 
     $statement = $pdo_conn->prepare($query);
 
-    bindValues($statement,$data);
+    bindValues($statement,$keys,$data);
 
     $statement->bindValue(":userId", $usr_id);
 
