@@ -301,7 +301,7 @@ class MYPDF extends TCPDF {
       $user_string = '';
 
     if (isset($this->columns['location']) && !empty($row['location']))
-      $location_string =  $kga['lang']['location'].': <i>'.$row['location'].'</i>';
+      $location_string =  $kga['lang']['zlocation'].': <i>'.$row['location'].'</i>';
     else
       $location_string = '';
 

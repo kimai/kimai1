@@ -5,7 +5,7 @@
             $('#help').hide();
             $('#floater input#timeformat').attr('value',$('#xp_ext_timeformat').attr('value'));
             $('#floater input#dateformat').attr('value',$('#xp_ext_dateformat').attr('value'));
-            $('#floater input#default_location').attr('value',$('#default_location').attr('value'));
+            $('#floater input#default_location').attr('value',$('#xp_ext_default_location').attr('value'));
             $('#floater input#axValue').attr('value',filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":")+'|'+filterEvt.join(":"));
             $('#floater input#filter_cleared').attr('value',$('#xp_ext_tab_filter_cleared').attr('value'));
             $('#floater input#filter_refundable').attr('value',$('#xp_ext_tab_filter_refundable').attr('value'));
