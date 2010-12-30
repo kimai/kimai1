@@ -271,6 +271,8 @@ return array(
 
 'sublistAnnotations' => 'Anmerkungen bei den Listen',
 
+'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
+
 
 
 'credits' => <<<EOF

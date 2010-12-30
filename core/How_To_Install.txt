@@ -37,11 +37,20 @@ YOU CAN ONLY UPDATE VERSIONS HIGHER THAN 7.0!
 
 To install a new version just replace the entire directory with the new
 package EXCEPT the file 'autoconf.php' which sits inside the 'includes' folder.
-Additionally you have to set the writing permissions of the directory 'compile' and 
-the 'autoconf.php' file so that PHP can write to it. Additionally you need to make
-all 'compile' folders  (also inside all extension subfolders!).
-Writing permission must also be granted to the 'temporary' folder and
-the included 'logfile.txt'.
+
+Additionally you have to make sure the permissions are still correct. The following
+folders and files need to be writeable for the webserver:
+/compile
+/extensions/ki_timesheets/compile
+/extensions/ki_adminpanel/compile
+/extensions/ki_expenses/compile
+/extensions/ki_export/compile
+/extensions/ki_budget/compile
+/extensions/ki_invoice/compile
+/temporary
+/temporary/logfile.txt
+/includes/autoconf.php
+
 
 Once again: Kimai will NOT work with wrong writing permissions!
 

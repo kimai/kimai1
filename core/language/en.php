@@ -251,14 +251,9 @@ return array(
 
 'multiplier' => 'Multiplier',
 
-'dateAndTimeHelp' => '<strong>Times and dates can be entered in short notations:</strong><br />
-            Dates: 5 &rarr; 5th of the current month &nbsp;&nbsp; 
-            1004 &rarr; 10.04. of the current year &nbsp;&nbsp; 
-            100406 &rarr; 10.04.2006<br />
-            Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
-            14 &rarr; 14:00:00  &nbsp;&nbsp;
-            0910 &rarr; 09:10:00  &nbsp;&nbsp;
-            091020 &rarr; 09:10:20 &nbsp;&nbsp;',
+'dateAndTimeHelp' => '<strong>Times and dates have to be entered in the following form:</strong><br />
+            Dates: DD.MM.YYYY<br />
+            Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
 
 'timezone' => 'time zone',
 'defaultTimezone' => 'time zone for new users and customers',
@@ -280,6 +275,8 @@ return array(
 'change' => 'change',
 
 'sublistAnnotations' => 'sublist annotations',
+
+'TimeDateInputError' => 'The time or date you entered is not valid.',
 
 
 

@@ -184,6 +184,8 @@ function exp_ext_reload() {
                     // set exp table width
                     ($("#exp").innerHeight()-$("#exp table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of exp table depending on scrollbar or not
                     $("#exp table").css("width",exp_w-scr);
+                    // stretch refundable column in faked exp table head
+                    $("#exp_head > table > tbody > tr > td.refundable").css("width", $("div#exp > div > table > tbody > tr > td.refundable").width());
                     // stretch customer column in faked exp table head
                     $("#exp_head > table > tbody > tr > td.knd").css("width", $("div#exp > div > table > tbody > tr > td.knd").width());
                     // stretch project column in faked exp table head
@@ -223,7 +225,7 @@ function exp_quickdelete(id) {
 // edit a timesheet record
 //
 function exp_editRecord(id) {
-    floaterShow(exp_ext_path + "floaters.php","add_edit_record",0,id,700,600);
+    floaterShow(exp_ext_path + "floaters.php","add_edit_record",0,id,600,300);
 }
 
 // ----------------------------------------------------------------------------------------

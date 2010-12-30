@@ -189,7 +189,7 @@ else {
   }
 }
 
-$doc->setProcessDir('./tmp');
+$doc->setProcessDir('../../temporary');
 
 //This is where the template is selected
 

@@ -8,21 +8,33 @@
         $('#edit_in_day').datepicker({
           onSelect: function(dateText, instance) {
             $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
+            ts_timeToDuration();
           }
          });
         $('#edit_out_day').datepicker({
           onSelect: function(dateText, instance) {
             $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
+            ts_timeToDuration();
           }
          });
 
             $('#ts_ext_form_add_edit_record').ajaxForm(function() { 
+
+
+                if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
+                    !$('#edit_out_day').val().match(ts_dayFormatExp) ||
+                    !$('#edit_in_time').val().match(ts_timeFormatExp) ||
+                    !$('#edit_out_time').val().match(ts_timeFormatExp)) {
+                  alert("{/literal}{$kga.lang.TimeDateInputError}{literal}");
+                  return;
+                }
                 
-                $edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
-                $edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
-                $delete = $('#erase').is(':checked');
                 
-                if (!$delete && $edit_in_time == $edit_out_time) {
+                var edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
+                var edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
+                var deleted = $('#erase').is(':checked');
+                
+                if (!deleted && edit_in_time == edit_out_time) {
                     alert("{/literal}{$kga.lang.timediff_warn}{literal}");
                 } else {
                     floaterClose();

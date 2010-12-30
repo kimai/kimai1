@@ -39,9 +39,19 @@ ES KÖNNEN NUR VERSIONEN HÖHER ALS 7.0 UPGEDATET WERDEN!
 Um eine neue Version zu installieren, ersetzen Sie einfach das gesamte
 Kimai-Verzeichnis durch das neue Package. Sie muessen dabei lediglich
 die Datei '/includes/autoconf.php' von der alten Version behalten.
-Zusätzlich muessen die 'compile'-Verzeichnisse (auch in den Unterordnern
-der Extensions!) für PHP schreibbar gemacht werden. Ebenso das
-Verzeichnis 'temporary' und die darin enthaltene Datei 'logfile.txt'.
+
+Zusätzlich müssen sie sicherstellen, dass die Berechtigungen noch stimmen. Die folgenden
+Ordner und Dateien müssen für den Webserver schreibbar sein:
+/compile
+/extensions/ki_timesheets/compile
+/extensions/ki_adminpanel/compile
+/extensions/ki_expenses/compile
+/extensions/ki_export/compile
+/extensions/ki_budget/compile
+/extensions/ki_invoice/compile
+/temporary
+/temporary/logfile.txt
+/includes/autoconf.php
 
 
 === Update wenn noch keine autoconf.php existiert ===
