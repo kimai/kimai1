@@ -53,10 +53,10 @@
         	   <exclude name="__reinstall/**"/>
         	</fileset>
     	</delete>
+    	<unzip dest="${target.nightly.dir}" src="${workspace}/build/artifacts/${target.release.zip}" />
         <exec dir="${target.nightly.dir}/__reinstall/" executable="php">
             <arg line="reinstall.php"/>
         </exec>
-    	<!-- unzip dest="${target.nightly.dir}" src="${workspace}/build/artifacts/${target.release.zip}" / -->
     	<delete dir="${target.nightly.dir}/installer/" />
         <!-- copy file="${target.nightly.dir}/__reinstall/autoconf.php" todir="${target.nightly.dir}/includes/" /-->
     </target>
