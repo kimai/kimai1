@@ -53,7 +53,7 @@
         	   <exclude name="__reinstall/**"/>
         	</fileset>
     	</delete>
-        <exec dir="${target.nightly.dir}" executable="php">
+        <exec dir="${target.nightly.dir}/__reinstall/" executable="php">
             <arg line="reinstall.php"/>
         </exec>
     	<!-- unzip dest="${target.nightly.dir}" src="${workspace}/build/artifacts/${target.release.zip}" / -->
