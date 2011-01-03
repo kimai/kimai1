@@ -46,7 +46,7 @@
        Creates the Kimai demo, hosted at demo.kimai.org.
        This task is run standalone.
     -->
-    <target name="nightly" depends="artifacts">
+    <target name="nightly" depends="prepare">
     	<antcall target="artifacts"></antcall>
         <delete>
         	<fileset dir="${target.nightly.dir}">
