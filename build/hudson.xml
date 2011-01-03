@@ -21,54 +21,69 @@
         Distributed under the terms of the GNU General Public License.
     </description>
 	
+    <target name="cleanup">
+        <delete dir="${target.release.dir}"/>
+    </target>
+    
     <target name="clean" depends="cleanup">
         <delete dir="${workspace}/build"/>
     </target>
 
-    <target name="cleanup">
-        <delete dir="${target.release.dir}"/>
-    </target>
-	
-    <target name="prepare">
+    <target name="prepare" depends="clean">
         <mkdir dir="${workspace}/build/logs"/>
         <mkdir dir="${workspace}/build/artifacts"/>
     </target>
 
 	<!-- 
-	   Creates the Kimai nightly build and moves the files to artifacts folder
+	   Creates the Kimai release and moves the files to artifacts folder.
 	-->
-	<target name="hudson-nightly">
-	    <antcall target="nightly"></antcall>
+	<target name="artifacts" depends="release">
 		<move todir="${workspace}/build/artifacts" file="${target.release.zip}" />
         <move todir="${workspace}/build/artifacts" file="${target.release.bz2}" />
 	</target>
-		
-	<!--
-	   ################ [Start] QM Tools ##################
-	-->
-	
+
+   <!-- 
+       Creates the Kimai demo, hosted at demo.kimai.org.
+       This task is run standalone.
+    -->
+    <target name="nightly" depends="artifacts">
+    	<antcall target="artifacts"></antcall>
+        <delete>
+        	<fileset dir="${target.nightly.dir}">
+        	   <exclude name="__reinstall/**"/>
+        	</fileset>
+    	</delete>
+        <exec dir="${target.nightly.dir}" executable="php">
+            <arg line="reinstall.php"/>
+        </exec>
+    	<!-- unzip dest="${target.nightly.dir}" src="${workspace}/build/artifacts/${target.release.zip}" / -->
+    	<delete dir="${target.nightly.dir}/installer/" />
+        <!-- copy file="${target.nightly.dir}/__reinstall/autoconf.php" todir="${target.nightly.dir}/includes/" /-->
+    </target>
+
     <!-- phpcpd: Copy and Paste Detection -->
-    <target name="phpcpd">
+    <target name="phpcpd" depends="prepare">
         <exec dir="${workspace}" executable="phpcpd">
             <arg line="--exclude svn/kimai/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/kimai/core"/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
-    <target name="pdepend">
+    <target name="pdepend" depends="prepare">
         <exec dir="${workspace}" executable="pdepend">
             <arg line="--ignore=svn/kimai/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/kimai/core"/>
         </exec>
     </target>
 
-    <target name="phpmd">
+	<!-- PHPMD: Mess detection - code analysis -->
+    <target name="phpmd" depends="prepare">
         <exec dir="${workspace}" executable="phpmd">
             <arg line="svn/kimai xml codesize,unusedcode --exclude svn/kimai/core/libraries/ --reportfile build/logs/pmd.xml" />
         </exec>
     </target>
 
 	<!-- The main build task -->
-    <target name="hudson" depends="clean,prepare,pdepend,phpcpd,phpmd,hudson-nightly,cleanup" />	
+    <target name="hudson" depends="clean,prepare,pdepend,phpcpd,phpmd,artifacts,cleanup" />	
 
 	<target name="help" description="Show help">
 		<echo taskname="INFO" level="info">

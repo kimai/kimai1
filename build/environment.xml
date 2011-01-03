@@ -52,6 +52,7 @@
 	<property name="release.tar.filename" 	value="kimai_${release.version}.tar"/>
 	<property name="release.bz2.filename" 	value="${release.tar.filename}.bz2"/>
 	
+    <property name="target.nightly.dir"     location="${nightly.directory}/"/>
 	<property name="target.extensions.dir" 	location="${extensions.directory}/"/>
 	<property name="target.release.dir"  	location="${release.directory}/temp/"/>
 	<property name="target.install.file" 	location="${release.directory}/${install.zip.filename}"/>

@@ -18,18 +18,12 @@
 		Distributed under the terms of the GNU General Public License.
     </description>
 
-    <!--
-        Creates a Kimai ZIP release.
-        After checking dependencies and creating the file release, a ZIP archive will be created.
-    -->
-    <target name="release" depends="nightly" description="Creates a Kimai release ZIP archive.">
-    </target>
-
 	<!--
-	   Creates a nightly build version of Kimai, which is more or less just
-	   a copy of the "core" folder.
+        Creates a Kimai ZIP release.
+	    This is more or less a copy of the "core" folder.
+        After checking dependencies and creating the file release, a ZIP archive will be created.
 	-->
-	<target name="nightly" description="Creates a nightly build release">
+	<target name="release" description="Creates a Kimai release ZIP archive.">
         <antcall target="copy-core">
             <param name="release.path" value="${target.release.dir}"/>
         </antcall>
