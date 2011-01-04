@@ -40,7 +40,7 @@
 	<patternset id="release.exclude.files" description="Files to be excluded from release tasks">
 	  	<exclude name="test_umysql_layer"/>
 	  	<exclude name="updater_old.php"/>
-	  	<exclude name="kimaiversion.php"/>
+	  	<!-- exclude name="kimaiversion.php"/ -->
 	  	<exclude name="todo.txt"/>
 	</patternset>
 
