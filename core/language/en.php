@@ -186,6 +186,7 @@ return array(
 "showitem"          => "make visible",
 "hideitem"          => "make invisible",
 "checkUsername"     => "You must enter a username in the field left from the add-button!",
+"checkGroupname"    => "You must enter a group name in the field left from the add-button!",
 "clickToReload"     => "Click here to reload the GUI",
 "sure"              => "Sure?",
 "clock"             => "Clock",

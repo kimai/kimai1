@@ -252,6 +252,7 @@ else
   $tpl->assign('recstate', 0);
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
+$tpl->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
 
 
 $knd_data = array('knd_ID'=>false,'knd_name'=>'');

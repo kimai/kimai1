@@ -46,6 +46,7 @@
             {/literal}{else}{literal}
             $("#add_edit_zef_pct_ID").selectOptions(""+selected_pct+"");
             $("#add_edit_zef_evt_ID").selectOptions(""+selected_evt+"");
+            ts_ext_reload_evt(selected_pct);
             {/literal}{/if}{literal}
 
             $('#floater_innerwrap').tabs({ selected: 0 });

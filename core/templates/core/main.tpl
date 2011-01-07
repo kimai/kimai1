@@ -51,6 +51,7 @@
         var skin ="{$kga.conf.skin}";
 
         var lang_checkUsername    = "{$kga.lang.checkUsername}";
+        var lang_checkGroupname   = "{$kga.lang.checkGroupname}";
 
         var recstate              = {$recstate};
 

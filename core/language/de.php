@@ -185,6 +185,7 @@ return array(
 "showitem"          => "sichtbar machen",
 "hideitem"          => "unsichtbar machen",
 "checkUsername"     => "Bitte einen Usernamen in das Feld eintragen!",
+"checkGroupname"    => "Bitte einen Gruppennamen in das Feld eintragen!",
 "clickToReload"     => "Klicken um die Seite neu zu laden",
 "sure"              => "Sicher?",
 "clock"             => "Uhr",

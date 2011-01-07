@@ -186,7 +186,7 @@ function ap_ext_hideDeletedUsers() {
 function ap_ext_newGroup() {
     newgroup = $("#newgroup").val();
     if (newgroup == "") {
-        alert("muh!"); // TODO
+        alert(lang_checkGroupname);
         return false;
     }
     $.post(ap_ext_path + "processor.php", { axAction: "createGrp", axValue: newgroup, id: 0 }, 
