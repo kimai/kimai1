@@ -53,12 +53,12 @@ function calculate_expenses_sum($projectId) {
  * @return array containing arrays for every project which hold the size of the pie chart elements
  * 
  */
-function budget_plot_data($projects,&$usedEvents) {
+function budget_plot_data($projects,&$usedEvents,&$expensesOccured) {
 
 $wages = array();
 $eventUsage = array(); // track what events are used
 $usedEvents = array(); 
-
+$expensesOccured = false;
 
 $events = get_arr_evt("all");
 
@@ -71,6 +71,9 @@ foreach ($projects as $project) {
   $wages[$pctId]['budget']   = $project['pct_budget'];
   $wages[$pctId]['expenses'] =
       calculate_expenses_sum($project['pct_ID']);
+
+  if ($wages[$pctId]['expenses'] != 0)
+    $expensesOccured = true;
 
   if ($wages[$pctId]['budget'] < 0) {
     //Costs over budget, set remaining budget to 0.

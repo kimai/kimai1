@@ -37,10 +37,11 @@ else
   $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
 
 $usedEvents = array();
+$xpensesOccured = false;
 
 // If there are any projects create the plot data.
 if (count($arr_pct)>0) {
-    $arr_plotdata = budget_plot_data($arr_pct,$usedEvents);
+    $arr_plotdata = budget_plot_data($arr_pct,$usedEvents,$expensesOccured);
     $tpl->assign('arr_plotdata', $arr_plotdata);
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -53,7 +54,8 @@ $tpl->assign('chartColors',json_encode($chartColors));
 // Create the keys which explain to the user which color means what.
 $keys = array();
 $keys[] = array('color'=>$chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
-$keys[] = array('color'=>$chartColors[1], 'name' => $kga['lang']['xp_ext']['expenses']);
+if ($expensesOccured)
+  $keys[] = array('color'=>$chartColors[1], 'name' => $kga['lang']['xp_ext']['expenses']);
 for ($i = 0;$i<count($usedEvents);$i++) {
   $keys[] = array('color'=>$chartColors[($i+2)%(count($chartColors)-1)], 'name' => $usedEvents[$i]['evt_name']);
 }
