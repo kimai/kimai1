@@ -194,13 +194,14 @@ function ts_ext_reload() {
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
 //
-function ts_ext_reload_evt(pct) {
+function ts_ext_reload_evt(pct,noUpdateRate) {
   var selected_evt = $('#add_edit_zef_evt_ID').val();
             $.post(ts_ext_path + "processor.php", { axAction: "reload_evt_options", axValue: 0, id: 0, pct:pct },
                 function(data) { 
                     $("#add_edit_zef_evt_ID").html(data);
                     $("#add_edit_zef_evt_ID").val(selected_evt);
-                    getBestRate();
+                    if (noUpdateRate == undefined)
+		      getBestRate();
                     ts_add_edit_validate();
                 }
             );

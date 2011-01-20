@@ -2,6 +2,12 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
             $('#add_edit_knd').ajaxForm(function() { 
+
+                if ($('#knd_grps').val() == null) {
+                  alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
+                  return;
+                }
+
                 floaterClose();
                 hook_chgKnd();
             });
@@ -117,7 +123,7 @@
                     
                     <li>
                         <label for="knd_grp" >{$kga.lang.groups}:</label>
-                        <select class="formfield" name="knd_grp[]" multiple size='3' style="width:255px">
+                        <select class="formfield" id ="knd_grps" name="knd_grp[]" multiple size='3' style="width:255px">
                             {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
                         </select>
                     </li>
@@ -126,7 +132,7 @@
                 
             </fieldset>
 {else}
-                    <input name="knd_grp[]" type="hidden" value="{$grp_selection.0}" />
+                    <input id="knd_grps" name="knd_grp[]" type="hidden" value="{$grp_selection.0}" />
 {/if}  
 
             <fieldset id="address">

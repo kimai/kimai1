@@ -2,6 +2,12 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
              $('#add_edit_evt').ajaxForm(function() {
+
+                if ($('#evt_grps').val() == null) {
+                  alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
+                  return;
+                }
+
                  floaterClose();
                  hook_chgEvt();
              });
@@ -101,14 +107,14 @@
                  
                     <li>
                         <label for="evt_grp" >{$kga.lang.groups}:</label>
-                        <select class="formfield" name="evt_grp[]" multiple size='5' style="width:255px">
+                        <select class="formfield" id="evt_grps" name="evt_grp[]" multiple size='5' style="width:255px">
                             {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
                         </select>
                     </li>      
                 </ul>
             </fieldset>
 {else}
-                    <input name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
+                    <input id="evt_grps" name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
 {/if}        
 
     <fieldset id="projects">

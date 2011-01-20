@@ -2,6 +2,12 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
             $('#addPct').ajaxForm(function() { 
+
+                if ($('#pct_grps').val() == null) {
+                  alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
+                  return;
+                }
+
                 floaterClose();
                 hook_chgPct();
                 hook_chgEvt();
@@ -126,14 +132,14 @@
               <ul>
                     <li>
                         <label for="pct_grp" >{$kga.lang.groups}:</label>
-                        <select class="formfield" name="pct_grp[]" multiple size='5' style="width:255px">
+                        <select class="formfield" id="pct_grps" name="pct_grp[]" multiple size='5' style="width:255px">
                             {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
                         </select>
                     </li>
                   </ul>
             </fieldset>
 {else}
-            <input name="pct_grp[]" type="hidden" value="{$grp_selection.0}" />
+            <input id="pct_grps" name="pct_grp[]" type="hidden" value="{$grp_selection.0}" />
 {/if}
             
             <fieldset id="comment">

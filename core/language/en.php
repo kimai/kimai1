@@ -222,6 +222,8 @@ return array(
 
 "cleared"           => "cleared",
 
+"atLeastOneGroup" => 'At least one group has to be selected.',
+
 "noFading"          => "no fading effect",
 "user_list_hidden"  => "hide user list by default",
 

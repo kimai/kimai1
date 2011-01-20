@@ -224,16 +224,18 @@ switch ($axAction) {
     case 'add_edit_KndPctEvt':
     
         if(isset($kga['customer']) || $kga['usr']['usr_sts']==2) die(); // only admins and grpleaders can do this ...
+        
     	
         switch($axValue) {
             /**
              * add or edit a customer
              */
             case "knd":
+              if (count($_REQUEST['knd_grp']) == 0) die(); // no group would mean it is never accessable
+
             	$data['knd_name']     = htmlspecialchars($_REQUEST['knd_name']);
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
-              if (is_numeric($_REQUEST['knd_vat']))
                 $data['knd_vat']      = $_REQUEST['knd_vat'];
               $data['knd_contact']  = $_REQUEST['knd_contact'];
             	$data['knd_street']   = $_REQUEST['knd_street'];
@@ -268,6 +270,8 @@ switch ($axAction) {
              * add or edit a project
              */
             case "pct":
+              if (count($_REQUEST['pct_grp']) == 0) die(); // no group would mean it is never accessable
+
               $data['pct_name']         = htmlspecialchars($_REQUEST['pct_name']);
               $data['pct_kndID']        = $_REQUEST['pct_kndID'];
               $data['pct_comment']      = $_REQUEST['pct_comment'];
@@ -298,6 +302,8 @@ switch ($axAction) {
              * add or edit a task
              */
             case "evt":
+              if (count($_REQUEST['evt_grp']) == 0) die(); // no group would mean it is never accessable
+
               $data['evt_name']         = htmlspecialchars($_REQUEST['evt_name']);
               $data['evt_comment']      = $_REQUEST['evt_comment'];
               $data['evt_visible']      = $_REQUEST['evt_visible'];
