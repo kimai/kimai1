@@ -1182,6 +1182,12 @@ if ((int)$revisionDB < 1257) {
     'pct_comment_flag', 'showIDs', 'noFading', 'user_list_hidden', 'hideClearedEntries')");
 }
 
+if ((int)$revisionDB < 1284) {
+    logfile("-- update to r1284");
+    exec_query("ALTER TABLE `${p}exp` CHANGE `exp_multiplier`
+    `exp_multiplier` decimal(10,2) NOT NULL DEFAULT '1.00'");
+}
+
 
 
 // ============================

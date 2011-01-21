@@ -368,6 +368,7 @@ if (isset($_REQUEST['submit']))
 			exec_query("ALTER TABLE `kimai_knd`     CHANGE `knd_ID` `knd_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
 			exec_query("ALTER TABLE `kimai_pct`     CHANGE `pct_ID` `pct_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
 			exec_query("ALTER TABLE `kimai_zef`     CHANGE `zef_ID` `zef_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
+			exec_query("ALTER TABLE `kimai_exp`     CHANGE `exp_ID` `exp_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
 			exec_query("ALTER TABLE `kimai_grp`     CHANGE `grp_ID` `grp_ID` INT( 10 ) NOT NULL AUTO_INCREMENT");
 			exec_query("ALTER TABLE `kimai_ldr`     CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
 			exec_query("ALTER TABLE `kimai_grp_pct` CHANGE `uid`    `uid`    INT( 11 ) NOT NULL AUTO_INCREMENT");
