@@ -30,6 +30,8 @@
         <antcall target="empty-directories">
             <param name="release.path" value="${target.release.dir}"/>
         </antcall>
+    	<rename dest="${target.release.dir}/extensions/#ext_debug/" src="${target.release.dir}/extensions/ext_debug/"/>
+    	<rename dest="${target.release.dir}/extensions/#ki_demoextension/" src="${target.release.dir}/extensions/ki_demoextension/"/>
         <antcall target="create-archives" />
 	</target>
 
