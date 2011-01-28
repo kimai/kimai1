@@ -369,7 +369,7 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
              Join ${p}pct ON exp_pctID = pct_ID
              Join ${p}knd ON pct_kndID = knd_ID
              Join ${p}usr ON exp_usrID = usr_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-             " ORDER BY exp_timestamp DESC;");
+             " GROUP BY usr_ID;");
              $pdo_query->execute();
    
 
