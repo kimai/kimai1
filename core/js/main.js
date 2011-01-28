@@ -974,3 +974,16 @@ function resize_menu() {
     -20
     +parseInt($('#display').css('margin-left')));
 }
+
+function validatePassword(password,retypePassword) {
+    if (password != retypePassword) {
+        alert(lang_passwordsDontMatch);
+        return false;
+    }
+    else if (password.length < 5) {
+        alert(lang_passwordTooShort);
+        return false;
+    }
+    else
+        return true;
+}

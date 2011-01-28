@@ -6,7 +6,7 @@
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; Version 3, 29 June 2007
+ * the Free Software Foundration; Version 3, 29 June 2007
  *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -86,6 +86,9 @@ return array(
 "username"          => "Benutzer",
 "password"          => "Passwort",
 "newPassword"       => "Neues Passwort",
+"retypePassword"    => "Passwort bestätigen",
+"passwordsDontMatch"=> "Die beiden eingegebenen Passwörter stimmen nicht überein.",
+"passwordTooShort"  => "Das eingegebene Passwort hat nicht mindestens 5 Zeichen.",
 "minLength"         => "min. 5 Zeichen!",
 "update"            => "Die Datenbank-Struktur der installierten Kimai Version muss aktualisiert werden.<br />Wir empfehlen, vor der Aktualisierung ein Backup Ihrer gespeicherten Zeiterfassung<br />zu machen, um sicher zu gehen, dass Ihre Zeitdaten nicht beschädigt werden.",
 "updateNow"         => "Datenbank-Aktualisierung jetzt durchführen!",

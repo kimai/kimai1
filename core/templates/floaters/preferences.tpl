@@ -1,10 +1,20 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#core_prefs').ajaxForm(function() { 
-                //floaterClose();
-                window.location.reload();
-            }); 
+
+
+	 var options = { 
+		beforeSubmit:  function() { 
+
+                	if (!validatePassword($('#password').val(),$('#retypePassword').val()))
+                	    return false;
+                
+                	window.location.reload();
+            	}
+	    }; 
+	 
+	    $('#core_prefs').ajaxForm(options); 
+
         }); 
     </script>
 {/literal}
@@ -34,7 +44,12 @@
 
                     <li>
                         <label for="pw">{$kga.lang.newPassword}:</label>
-                        <input type="password" name="pw" size="9" id="focus" /> {$kga.lang.minLength}
+                        <input type="password" name="pw" size="9" id="password" /> {$kga.lang.minLength}
+                    </li>
+
+                    <li>
+                        <label for="pw">{$kga.lang.retypePassword}:</label>
+                        <input type="password" name="retypePassword" size="9" id="retypePassword" />
                     </li>
 
                     <li>

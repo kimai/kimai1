@@ -52,6 +52,8 @@
 
         var lang_checkUsername    = "{$kga.lang.checkUsername}";
         var lang_checkGroupname   = "{$kga.lang.checkGroupname}";
+        var lang_passwordsDontMatch   = "{$kga.lang.passwordsDontMatch}";
+        var lang_passwordTooShort = "{$kga.lang.passwordTooShort}";
 
         var recstate              = {$recstate};
 

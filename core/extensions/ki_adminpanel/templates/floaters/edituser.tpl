@@ -1,12 +1,22 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#ap_ext_form_editusr').ajaxForm(function() { 
+
+	 var options = { 
+		beforeSubmit:  function() { 
+
+                	if (!validatePassword($('#password').val(),$('#retypePassword').val()))
+                	    return false;
+
                 floaterClose();
                 ap_ext_refreshSubtab('usr');
                 ap_ext_refreshSubtab('grp');
                 hook_chgUsr();
-            }); 
+            	}
+	    }; 
+	 
+	    $('#ap_ext_form_editusr').ajaxForm(options); 
+
         }); 
     </script>
 {/literal}
@@ -59,13 +69,19 @@
 
                     <li>
                         <label for="usr_pw">{$kga.lang.newPassword}:</label>
-                        <input class="formfield" type="password" name="usr_pw" size="9" /> {$kga.lang.minLength}
+                        <input class="formfield" type="password" name="usr_pw" size="9" id="password" /> {$kga.lang.minLength}
         {if $usr_details.usr_pw == "no"}
         
                         <br/>
                         <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" alt="Caution" valign=middle />
                         <strong style="color:red">{$kga.lang.nopassword}</strong>
         {/if}
+                    </li>
+
+
+                    <li>
+                        <label for="usr_pw">{$kga.lang.retypePassword}:</label>
+                        <input class="formfield" type="password" name="retypePassword" id="retypePassword" size="9" />
                     </li>
 
 
