@@ -272,7 +272,8 @@ exec_query($query);
 $query="INSERT INTO `${p}pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','changeme','0');";
+$adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
+$query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0');";
 exec_query($query);
 
 $query="INSERT INTO `${p}preferences` (`userID`,`var`,`value`) VALUES ('$randomAdminID','ui.rowlimit','100'),

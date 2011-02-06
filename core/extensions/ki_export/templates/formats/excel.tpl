@@ -180,7 +180,7 @@ mso-number-format:Fixed;
 {*comment -----------------------------------------------------*}
 { if $columns.comment }
                     <td>
-                        {$arr_data[row].comment|nl2br}
+                        {$arr_data[row].comment|replace:"\n":"&#10;"}
                     </td>
 {/if}
 

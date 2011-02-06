@@ -285,10 +285,15 @@ $RUsure = $kga['lang']['updater'][0];
  * Execute an sql query in the database. The correct database connection
  * will be chosen and the query will be logged with the success status.
  * 
+ * As third parameter an alternative query can be passed, which should be
+ * displayed instead of the executed query. This prevents leakage of
+ * confidential information like password salts. The logfile will still
+ * contain the executed query.
+ * 
  * @param $query query to execute as string
  * @param $errorProcessing true if it's an error when the query fails.
  */
-function exec_query($query,$errorProcessing=false) {
+function exec_query($query,$errorProcessing=false,$displayQuery=null) {
     global $conn, $pdo_conn, $kga, $errors, $executed_queries;
     
     $executed_queries++;
@@ -320,7 +325,7 @@ function exec_query($query,$errorProcessing=false) {
     }
     
     
-    echo "<td>".$query ."<br/>";
+    echo "<td>".($displayQuery==null?$query:$displayQuery) ."<br/>";
     echo "<span class='error_info'>" . $err . "</span>";
     echo "</td>";
     
@@ -1186,6 +1191,13 @@ if ((int)$revisionDB < 1284) {
     logfile("-- update to r1284");
     exec_query("ALTER TABLE `${p}exp` CHANGE `exp_multiplier`
     `exp_multiplier` decimal(10,2) NOT NULL DEFAULT '1.00'");
+}
+
+if ((int)$revisionDB < 1291) {
+    logfile("-- update to r1291");
+    $salt = $kga['password_salt'];
+    $query = "UPDATE `${p}usr` SET pw=MD5(CONCAT('${salt}',pw,'${salt}')) WHERE pw REGEXP '^[0-9a-f]{32}$' = 0 AND pw != ''";
+    exec_query($query,false,str_replace($salt,'salt was stripped',$query));
 }
 
 

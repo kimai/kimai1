@@ -40,7 +40,7 @@ class KimaiAuth extends AuthBase {
       $banTime = $row['banTime'];   
       $userId  = $row['usr_ID'];
       
-      return ($pass==$password || $pass==$passCrypt) && $username!="";
+      return $pass==$passCrypt && $username!="";
   }
 }
 
