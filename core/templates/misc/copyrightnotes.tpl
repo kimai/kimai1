@@ -5,7 +5,7 @@
     
 *}
 <p>
-    <strong>Kimai <span style="color:red">{$kga.status}</span> {$kga.version}.{$kga.revision}</strong> - &copy; {$devtimespan} the Kimai Core-Development-Team<br />
+    <strong><a hrefKimai <span style="color:red">{$kga.status}</span> {$kga.version}.{$kga.revision}</strong> - &copy; {$devtimespan} the <a href="http://www.kimai.org" target="_blank">Kimai Team</a><br />
     This software is provided under the terms and conditions of the <a href="COPYING">General Public License Version 3</a><br />
     Powered by 
         <a href="http://www.jquery.com" target="_blank">jQuery</a> |  
