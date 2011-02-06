@@ -275,7 +275,7 @@ switch ($axAction) {
               $data['pct_name']         = htmlspecialchars($_REQUEST['pct_name']);
               $data['pct_kndID']        = $_REQUEST['pct_kndID'];
               $data['pct_comment']      = $_REQUEST['pct_comment'];
-              $data['pct_visible']      = $_REQUEST['pct_visible'];
+              $data['pct_visible']      = isset($_REQUEST['pct_visible'])?1:0;
               $data['pct_internal']     = isset($_REQUEST['pct_internal'])?1:0;
               $data['pct_filter']       = $_REQUEST['pct_filter'];
               $data['pct_budget']       = $_REQUEST['pct_budget'];

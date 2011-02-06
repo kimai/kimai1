@@ -111,8 +111,10 @@ function knd_create($data) {
     knd_mail, 
     knd_homepage,
     knd_visible,
-    knd_filter
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+    knd_filter,
+    knd_vat,
+    knd_contact
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
     
     $result = $pdo_query->execute(
     array(
@@ -129,7 +131,9 @@ function knd_create($data) {
     $data['knd_mail'],
     $data['knd_homepage'],
     $data['knd_visible'], 
-    $data['knd_filter']
+    $data['knd_filter'],
+    $data['knd_vat'],
+    $data['knd_contact']
     ));
       
     $err = $pdo_query->errorInfo();
@@ -324,13 +328,13 @@ function pct_create($data) {
     ) VALUES (?, ?, ?, ?, ?, ?, ?);");
 
     $result = $pdo_query->execute(array(
-    $data['pct_kndID'], 
+    (int)$data['pct_kndID'], 
     $data['pct_name'],
     $data['pct_comment'],
-    $data['pct_visible'],
-    $data['pct_internal'],
-    $data['pct_filter'],
-    $data['pct_budget']
+    (int)$data['pct_visible'],
+    (int)$data['pct_internal'],
+    (int)$data['pct_filter'],
+    doubleval($data['pct_budget'])
     ));
     
     if ($result == true) {
@@ -437,8 +441,10 @@ function pct_edit($pct_id, $data) {
 
     $statement->bindValue(":projectId", $pct_id);
 
-    if (!$statement->execute())
+    if ($statement->execute() === false) {
+      $pdo_conn->rollBack();
       return false;
+    }
     
     if ($pdo_conn->commit() == true) {
         return true;
@@ -1936,20 +1942,20 @@ function zef_create_record($usr_ID,$data) {
     ;");
     
     $result = $pdo_query->execute(array(
-    $data['pct_ID'],
-    $data['evt_ID'] ,
+    (int)$data['pct_ID'],
+    (int)$data['evt_ID'] ,
     $data['zlocation'],
     $data['trackingnr']==''?null:$data['trackingnr'],
     $data['comment'],
-    $data['comment_type'] ,
-    $data['in'],
-    $data['out'],
-    $data['diff'],
-    $usr_ID,
-    $data['rate'],
+    (int)$data['comment_type'] ,
+    (int)$data['in'],
+    (int)$data['out'],
+    (int)$data['diff'],
+    (int)$usr_ID,
+    (int)$data['rate'],
     $data['cleared']?1:0
     ));
-   logfile($pdo_query->errorInfo());
+   logfile(serialize($pdo_query->errorInfo()));
     if ($result === false)
         return false;
     else
@@ -1997,17 +2003,17 @@ function zef_edit_record($id,$data) {
     WHERE zef_ID = ?;");    
     
     $result = $pdo_query->execute(array(
-    $new_array['zef_pctID'],
-    $new_array['zef_evtID'] ,
+    (int)$new_array['zef_pctID'],
+    (int)$new_array['zef_evtID'] ,
     $new_array['zef_location'],
     $new_array['zef_trackingnr']==''?null:$new_array['zef_trackingnr'],
     $new_array['zef_comment'],
-    $new_array['zef_comment_type'] ,
-    $new_array['zef_in'],
-    $new_array['zef_out'],
-    $new_array['zef_time'],
-    $new_array['zef_rate'],
-    $new_array['zef_cleared'],
+    (int)$new_array['zef_comment_type'] ,
+    (int)$new_array['zef_in'],
+    (int)$new_array['zef_out'],
+    (int)$new_array['zef_time'],
+    (int)$new_array['zef_rate'],
+    (int)$new_array['zef_cleared'],
     $id
     ));
    

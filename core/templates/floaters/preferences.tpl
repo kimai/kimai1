@@ -6,7 +6,8 @@
 	 var options = { 
 		beforeSubmit:  function() { 
 
-                	if (!validatePassword($('#password').val(),$('#retypePassword').val()))
+                	if ( ($('#password').val() != "" || $('#retypePassword').val() != "")
+			      && !validatePassword($('#password').val(),$('#retypePassword').val()))
                 	    return false;
                 
                 	window.location.reload();

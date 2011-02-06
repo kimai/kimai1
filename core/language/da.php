@@ -88,7 +88,7 @@ return array(
 "password"          => "Adgangskode",
 "newPassword"       => "Ny adgangskode",
 "minLength"         => "min. 5 tegn!",
-"update"            => "En opdatering af databasestrukturen i den installerede Kimai-version er påkrævet.<br/>Vi anbefaler sikkerhedskopiering af de registrerede data for at sikre, at<br/>ingen data går tabt under opdatering."
+"update"            => "En opdatering af databasestrukturen i den installerede Kimai-version er påkrævet.<br/>Vi anbefaler sikkerhedskopiering af de registrerede data for at sikre, at<br/>ingen data går tabt under opdatering.",
 "updateNow"         => "Opdater databasen nu!",
 "stop"              => "Stop!",
 "start"             => "Start!",

@@ -235,18 +235,17 @@ function ls($dir){
  */
 function langs(){
     $arr_files = array();
-    $arr_files[0] = "";
-    $i=1;
+    $arr_files[] = "";
     $handle = opendir(WEBROOT.'/language/');
-        while (false !== ($readdir = readdir($handle))) {
-            if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'  && $readdir != ("index.php") ) {
-                $readdir = str_replace(".php", "", $readdir);
-                $arr_files[$i] = $readdir;
-                $i++;
-            }
-        }
-    return isset($arr_files)?$arr_files:false;
+    while (false !== ($readdir = readdir($handle))) {
+      if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'
+        && endsWith($readdir,'.php') ) {
+        $arr_files[] = str_replace(".php", "", $readdir);
+      }
+    }
     closedir($handle);
+    sort($arr_files);
+    return $arr_files;
 }
 
 /**
@@ -934,6 +933,10 @@ function get_timespace() {
     }
     
     return $timespace;
+}
+
+function endsWith($haystack,$needle) {
+  return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
 }
 
 
