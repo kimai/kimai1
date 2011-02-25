@@ -239,7 +239,7 @@ switch ($axAction) {
       $data['comment']         = $_REQUEST['comment'];
       $data['comment_type']    = $_REQUEST['comment_type'];
       $data['erase']           = isset($_REQUEST['erase']);
-      $data['rate']            = $_REQUEST['rate'];
+      $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
 
       if ($data['erase']) {

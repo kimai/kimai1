@@ -4090,11 +4090,11 @@ function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects =
 
       if (isset($arr[$row['usr_ID']])) {
         $arr[$row['usr_ID']]['time']  += (int)($zef_out - $zef_in);
-        $arr[$row['usr_ID']]['costs'] += (int)$row['costs'];
+        $arr[$row['usr_ID']]['costs'] += (double)$row['costs'];
       }
       else  {
         $arr[$row['usr_ID']]['time']  = (int)($zef_out - $zef_in);
-        $arr[$row['usr_ID']]['costs'] = (int)$row['costs'];
+        $arr[$row['usr_ID']]['costs'] = (double)$row['costs'];
       }
     }
     
@@ -4167,11 +4167,11 @@ function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects =
 
       if (isset($arr[$row['knd_ID']])) {
         $arr[$row['knd_ID']]['time']  += (int)($zef_out - $zef_in);
-        $arr[$row['knd_ID']]['costs'] += (int)$row['costs'];
+        $arr[$row['knd_ID']]['costs'] += (double)$row['costs'];
       }
       else {
         $arr[$row['knd_ID']]['time']  = (int)($zef_out - $zef_in);
-        $arr[$row['knd_ID']]['costs'] = (int)$row['costs'];
+        $arr[$row['knd_ID']]['costs'] = (double)$row['costs'];
       }
     }
     
@@ -4243,11 +4243,11 @@ function get_arr_time_pct($in,$out,$users = null, $customers = null, $projects =
 
       if (isset($arr[$row['zef_pctID']])) {
         $arr[$row['zef_pctID']]['time']  += (int)($zef_out - $zef_in);
-        $arr[$row['zef_pctID']]['costs'] += (int)$row['costs'];
+        $arr[$row['zef_pctID']]['costs'] += (double)$row['costs'];
       }
       else {
         $arr[$row['zef_pctID']]['time']  = (int)($zef_out - $zef_in);
-        $arr[$row['zef_pctID']]['costs'] = (int)$row['costs'];
+        $arr[$row['zef_pctID']]['costs'] = (double)$row['costs'];
       }
     }
     return $arr;
@@ -4319,11 +4319,11 @@ function get_arr_time_evt($in,$out,$users = null, $customers = null, $projects =
 
       if (isset($arr[$row['zef_evtID']])) {
         $arr[$row['zef_evtID']]['time']  += (int)($zef_out - $zef_in);
-        $arr[$row['zef_evtID']]['costs'] += (int)$row['costs'];
+        $arr[$row['zef_evtID']]['costs'] += (double)$row['costs'];
       }
       else {
         $arr[$row['zef_evtID']]['time'] = (int)($zef_out - $zef_in);
-        $arr[$row['zef_evtID']]['costs'] = (int)$row['costs'];
+        $arr[$row['zef_evtID']]['costs'] = (double)$row['costs'];
       }
     }
     return $arr;
