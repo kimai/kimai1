@@ -386,6 +386,22 @@ switch ($axAction) {
           'ki_export.pdf.');    
 
       $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
+
+      $knd_arr_data = array();
+      if (isset($_REQUEST['customer_new_page'])) {
+        foreach ($arr_data as $row) {
+          $knd_id = $row['pct_kndID'];
+
+          // create key for customer, if not present
+          if (!array_key_exists($knd_id,$knd_arr_data))
+            $knd_arr_data[$knd_id] = array();
+
+          // add row
+          $knd_arr_data[$knd_id][] = $row;
+
+        }
+      }
+
       require('export_pdf.php');
     break;
 

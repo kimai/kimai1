@@ -419,10 +419,27 @@ if (count($projects)>0) {
   $pdf->cell(20,6,implode(', ',$projects));
   $pdf->ln();
 }
-$pdf->ln();
-$pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
-$pdf->ln();
-$pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
+
+
+if (isset($_REQUEST['customer_new_page'])) {
+  $firstRun = true;
+  foreach ($knd_arr_data as $arr_data) {
+    if ($firstRun)
+      $firstRun = false;
+    else
+      $pdf->AddPage();
+    $pdf->ln();
+    $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
+    $pdf->ln();
+    $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
+  }
+}
+else {
+  $pdf->ln();
+  $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
+  $pdf->ln();
+  $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
+}
 
 
 $pdf->Output('invoice_'.date('Y-m-d_H-i-s', $pdf->print_time).'.pdf', ( (isset($_REQUEST['download_pdf'])) ? 'D' : 'I' ) ); // D=Download I=Eingebunden

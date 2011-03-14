@@ -51,7 +51,7 @@
 </div>
 
 {* edit users *}
-
+{ if $kga.usr.usr_sts == 0 }
 	<div id="ap_ext_sub1">
 		<div class="ap_ext_panel_header">
 			<a onClick="ap_ext_subtab_expand(1)">
@@ -63,7 +63,7 @@
 			{$admin.users}
 		</div>
 	</div>
-
+{/if}
 {* edit groups *}
 
 	<div id="ap_ext_sub2">
@@ -79,7 +79,7 @@
 	</div>
 
 {* advanced *}
-
+{ if $kga.usr.usr_sts == 0 }
 	<div id="ap_ext_sub3">
 		<div class="ap_ext_panel_header">
 			<a onClick="ap_ext_subtab_expand(3)">
@@ -91,9 +91,10 @@
 			{$admin.advanced}
 		</div>
 	</div>
+{ /if}
 
 {* DB *}
-
+{ if $kga.usr.usr_sts == 0 }
     <div id="ap_ext_sub4">
         <div class="ap_ext_panel_header">
             <a onClick="ap_ext_subtab_expand(4)">
@@ -106,5 +107,6 @@
         </div>
     </div>
 
+{ /if}
 
 </div>
