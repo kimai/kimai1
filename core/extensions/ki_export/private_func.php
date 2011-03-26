@@ -65,34 +65,38 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr = array();
       if ( (!$reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] > $exp_arr[$exp_arr_index]['exp_timestamp']) ) ||
            ( $reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] < $exp_arr[$exp_arr_index]['exp_timestamp']) ) ) {
-        $arr['type']           = 'zef';
-        $arr['id']             = $zef_arr[$zef_arr_index]['zef_ID'];
-        $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
-        $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
-        $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
-        $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
-        $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
-        $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
-        $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
-        $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
-        $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
-        $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
-        $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];
-        $arr['pct_name']       = $zef_arr[$zef_arr_index]['pct_name'];
-        $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
-        $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
-        $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
-        if ($limitCommentSize)
-          $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
-        else
-          $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
-        $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
-        $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
-        if (empty($arr['location']))
-          $arr['location']     = $default_location;
-        $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
-        $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
-        $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
+
+        if ($zef_arr[$zef_arr_index]['zef_out'] != 0) {
+          // active recordings will be omitted
+          $arr['type']           = 'zef';
+          $arr['id']             = $zef_arr[$zef_arr_index]['zef_ID'];
+          $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
+          $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
+          $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
+          $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
+          $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
+          $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
+          $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
+          $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
+          $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
+          $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
+          $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];
+          $arr['pct_name']       = $zef_arr[$zef_arr_index]['pct_name'];
+          $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
+          $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
+          $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
+          if ($limitCommentSize)
+            $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+          else
+            $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
+          $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
+          $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
+          if (empty($arr['location']))
+            $arr['location']     = $default_location;
+          $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
+          $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
+          $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
+        }
         $zef_arr_index++;
       }
       else {
@@ -125,37 +129,40 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $result_arr[] = $arr;
     }
     while ($zef_arr_index < count($zef_arr)) {
-      $arr = array();
-      $arr['type']           = 'zef';
-      $arr['id']             = $zef_arr[$zef_arr_index]['zef_ID'];
-      $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
-      $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
-      $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
-      $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
-      $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
-      $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
-      $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
-      $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
-      $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
-      $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
-      $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];
-      $arr['pct_name']       = $zef_arr[$zef_arr_index]['pct_name'];
-      $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
-      $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
-      $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
-      if ($limitCommentSize)
-        $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
-      else
-        $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
-      $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
-      $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
-        if (empty($arr['location']))
-          $arr['location']     = $default_location;
-      $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
-      $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
-      $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
+      if ($zef_arr[$zef_arr_index]['zef_out'] != 0) {
+          // active recordings will be omitted
+        $arr = array();
+        $arr['type']           = 'zef';
+        $arr['id']             = $zef_arr[$zef_arr_index]['zef_ID'];
+        $arr['time_in']        = $zef_arr[$zef_arr_index]['zef_in'];
+        $arr['time_out']       = $zef_arr[$zef_arr_index]['zef_out'];
+        $arr['zef_time']       = $zef_arr[$zef_arr_index]['zef_time'];
+        $arr['zef_duration']   = $zef_arr[$zef_arr_index]['zef_duration'];
+        $arr['dec_zef_time']   = sprintf("%01.2f",$zef_arr[$zef_arr_index]['zef_time']/3600);
+        $arr['zef_rate']       = $zef_arr[$zef_arr_index]['zef_rate'];
+        $arr['wage']           = $zef_arr[$zef_arr_index]['wage'];
+        $arr['wage_decimal']   = $zef_arr[$zef_arr_index]['wage_decimal'];
+        $arr['pct_kndID']      = $zef_arr[$zef_arr_index]['pct_kndID'];
+        $arr['knd_name']       = $zef_arr[$zef_arr_index]['knd_name'];
+        $arr['pct_ID']         = $zef_arr[$zef_arr_index]['pct_ID'];
+        $arr['pct_name']       = $zef_arr[$zef_arr_index]['pct_name'];
+        $arr['pct_comment']    = $zef_arr[$zef_arr_index]['pct_comment'];
+        $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
+        $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
+        if ($limitCommentSize)
+          $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+        else
+          $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
+        $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
+        $arr['location']       = $zef_arr[$zef_arr_index]['zef_location'];
+          if (empty($arr['location']))
+            $arr['location']     = $default_location;
+        $arr['trackingnr']     = $zef_arr[$zef_arr_index]['zef_trackingnr'];
+        $arr['username']       = $zef_arr[$zef_arr_index]['usr_name'];
+        $arr['cleared']        = $zef_arr[$zef_arr_index]['zef_cleared'];
+        $result_arr[] = $arr;
+      }
       $zef_arr_index++;
-      $result_arr[] = $arr;
     }
     while ($exp_arr_index < count($exp_arr)) {
       $arr = array();

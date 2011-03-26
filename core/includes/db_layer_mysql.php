@@ -2607,6 +2607,8 @@ function get_global_config() {
       $kga['conf'][$row->var] = $row->value;
   }
   
+
+  $kga['conf']['timezone'] = $kga['conf']['defaultTimezone'];
   $kga['conf']['rowlimit'] = 100;
   $kga['conf']['skin'] = 'standard';
   $kga['conf']['autoselection'] = 1;
@@ -2668,7 +2670,9 @@ function get_user_config($user) {
   unset($filter);
 
   $kga['conf'] = array_merge($kga['conf'],usr_get_preferences_by_prefix('ui.'));
-  $kga['conf']['timezone'] = usr_get_preference('timezone');
+  $userTimezone = usr_get_preference('timezone');
+  if ($userTimezone != '')
+    $kga['conf']['timezone'] = $userTimezone;
  
   date_default_timezone_set($kga['conf']['timezone']);
 }
