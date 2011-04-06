@@ -311,10 +311,10 @@ switch ($filter_type) {
 // determine filter values
 switch ($filter_cleared) {
  case 0:
-   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_cleared'];
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_open'];
    break;
  case 1:
-   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_open'];
+   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_cleared'];
    break;
 }
 
