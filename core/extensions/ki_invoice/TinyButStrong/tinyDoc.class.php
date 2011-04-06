@@ -433,7 +433,11 @@ class tinyDoc extends clsTinyButStrong
    */
   private function deltree($dir)
   {
-    if (realpath($dir) == realpath(DIRECTORY_SEPARATOR))
+      // changed by kevin - makes no sense on shared hosting.
+      // for example open basedir settings restrict access to /
+      // if (realpath($dir) == realpath(DIRECTORY_SEPARATOR))
+
+    if (realpath($dir) == DIRECTORY_SEPARATOR)
     {
       return false;
     }
@@ -891,7 +895,10 @@ class tinyDoc extends clsTinyButStrong
    */
   public function setProcessDir($processDir = 'tmp')
   {
-    if (realpath($processDir) == realpath(DIRECTORY_SEPARATOR))
+      // changed by kevin - makes no sense on shared hosting.
+      // for example open basedir settings restrict access to /
+      // if (realpath($processDir) == realpath(DIRECTORY_SEPARATOR))
+    if (realpath($processDir) == DIRECTORY_SEPARATOR)
     {
       throw new tinyDocException(sprintf('Could not use the root for the process directory "%s"', $processDir));
     }
