@@ -26,6 +26,7 @@ var ap_stp_hook_flag = 0;
 var ap_chk_hook_flag = 0;
 var ap_chp_hook_flag = 0;
 var ap_che_hook_flag = 0;
+var ap_usr_hook_flag = 0;
 
 $(document).ready(function(){
 	

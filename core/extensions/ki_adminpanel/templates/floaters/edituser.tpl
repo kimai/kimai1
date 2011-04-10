@@ -5,14 +5,16 @@
 	 var options = { 
 		beforeSubmit:  function() { 
 
-                	if (!validatePassword($('#password').val(),$('#retypePassword').val()))
+                	if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
                 	    return false;
 
                 floaterClose();
-                ap_ext_refreshSubtab('usr');
-                ap_ext_refreshSubtab('grp');
-                hook_chgUsr();
-            	}
+            	},
+    success: function() {
+          hook_chgUsr();
+          ap_ext_refreshSubtab('grp');
+          return false;
+          }
 	    }; 
 	 
 	    $('#ap_ext_form_editusr').ajaxForm(options); 

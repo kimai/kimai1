@@ -108,6 +108,9 @@ function ap_ext_triggerchange() {
     if (ap_che_hook_flag) {
         ap_ext_triggerCHE();
     }
+    if (ap_usr_hook_flag) {
+        ap_ext_triggerUSR();
+    }
     
     ap_tss_hook_flag = 0;
     ap_rec_hook_flag = 0;
@@ -115,6 +118,7 @@ function ap_ext_triggerchange() {
     ap_chk_hook_flag = 0;
     ap_chp_hook_flag = 0;
     ap_che_hook_flag = 0;
+    ap_usr_hook_flag = 0;
 }
 
 function ap_ext_triggerCHK() {
@@ -139,6 +143,14 @@ function ap_ext_triggerCHE() {
         ap_ext_refreshSubtab('evt');
     } else {
         ap_che_hook_flag++;
+    }
+}
+
+function ap_ext_triggerUSR() {
+    if ($('.ap_ext').css('display') == "block") {
+        ap_ext_refreshSubtab('usr');
+    } else {
+        ap_usr_hook_flag++;
     }
 }
 
