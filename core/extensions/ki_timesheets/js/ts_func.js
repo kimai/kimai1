@@ -335,6 +335,18 @@ function pasteNow(value) {
     if (i<10) i = "0"+i;
     if (s<10) s = "0"+s;
     
+    day  = H + ":" + i + ":" + s;
+    
+    $("#edit_out_day").datepicker( "setDate" , now );
+
+    H = now.getHours();
+    i = now.getMinutes();
+    s = now.getSeconds();
+    
+    if (H<10) H = "0"+H;
+    if (i<10) i = "0"+i;
+    if (s<10) s = "0"+s;
+    
     time  = H + ":" + i + ":" + s;
     
     $("#edit_out_time").val(time);
