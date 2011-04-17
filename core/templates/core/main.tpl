@@ -150,7 +150,8 @@
         zIndex:20,
         ghosting:false,
         opacity:0.7,
-        cursor:'move'
+        cursor:'move',
+        handle: '#floater_handle'
       });   
 
     $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timespaceDateFormat,new Date()));
