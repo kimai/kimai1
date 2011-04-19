@@ -180,7 +180,7 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width:40px;
 }
 
-#xp_head td.nobreak { white-space:nowrap; }
+#xp_head td { white-space:nowrap; }
 
 
 #xp_head td.from,

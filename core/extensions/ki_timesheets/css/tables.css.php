@@ -89,7 +89,7 @@ div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.evt {
     border-right: none;
 }
 
-
+#zef_head td { white-space:nowrap; }
 
 #zef_head td.option,
 #zef td.option

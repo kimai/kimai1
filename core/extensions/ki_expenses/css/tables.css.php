@@ -84,6 +84,7 @@ div.ki_expenses>div#exp>div#exptable>table>tbody>tr>td.evt {
 }
 
 
+#exp_head td { white-space:nowrap; }
 
 #exp_head td.option,
 #exp td.option

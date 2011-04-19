@@ -42,7 +42,7 @@
                 <td class="pct {if $disabled_columns.pct}disabled{/if}"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
                 <td class="evt {if $disabled_columns.evt}disabled{/if}"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
 
-                <td class="moreinfo nobreak" colspan="3">
+                <td class="moreinfo" colspan="3">
 					<a class="comment {if $disabled_columns.comment}disabled{/if}" onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a>,
 	                <a class="location {if $disabled_columns.location}disabled{/if}" onClick="xp_toggle_column('location');">{$kga.lang.zlocation}</a>,
 	                <a class="trackingnr {if $disabled_columns.trackingnr}disabled{/if}" onClick="xp_toggle_column('trackingnr');">{$kga.lang.trackingnr}</a>
