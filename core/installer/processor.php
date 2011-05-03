@@ -80,6 +80,11 @@ switch ($axAction) {
            $javascript .= "$('div.sp_mysql').addClass('fail');";
        }
 
+       if (get_magic_quotes_gpc() == 1 || get_magic_quotes_runtime() == 1) {
+           $errors++;
+           $javascript .= "$('div.sp_magicquotes').addClass('fail');";
+       }
+
        if (return_bytes(ini_get('memory_limit')) < 20000000) {
            $javascript .= "$('div.sp_memory').addClass('fail');";
        }
