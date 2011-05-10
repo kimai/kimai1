@@ -72,9 +72,9 @@ mso-number-format:Fixed;
 { if $columns.date }
                     <td class=date>
                         { if $custom_dateformat }
-                        {$arr_data[row].time_in|date_format:$custom_dateformat}
+                        {$arr_data[row].time_in|date_format:$custom_dateformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:$kga.date_format.1}
+                        {$arr_data[row].time_in|date_format:$kga.date_format.1|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -83,9 +83,9 @@ mso-number-format:Fixed;
 { if $columns.from }
                     <td align=right class=time>
                         { if $custom_timeformat }
-                        {$arr_data[row].time_in|date_format:$custom_timeformat}
+                        {$arr_data[row].time_in|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:"%H:%M"}
+                        {$arr_data[row].time_in|date_format:"%H:%M"|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -96,9 +96,9 @@ mso-number-format:Fixed;
                     
 {if $arr_data[row].time_out}
                         { if $custom_timeformat }
-                        {$arr_data[row].time_out|date_format:$custom_timeformat}
+                        {$arr_data[row].time_out|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_out|date_format:"%H:%M"}
+                        {$arr_data[row].time_out|date_format:"%H:%M"|escape:'html'}
                         { /if }
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
@@ -158,14 +158,14 @@ mso-number-format:Fixed;
 {*client name --------------------------------------------------*}
 { if $columns.knd }
                     <td>
-                        {$arr_data[row].knd_name}
+                        {$arr_data[row].knd_name|escape:'html'}
                     </td>
 {/if}
 
 {*project name -------------------------------------------------*}
 { if $columns.pct }
                     <td>
-                            {$arr_data[row].pct_name}
+                            {$arr_data[row].pct_name|escape:'html'}
                     </td>
 {/if}
 
@@ -173,21 +173,21 @@ mso-number-format:Fixed;
 {*event name and comment bubble --------------------------------*}
 { if $columns.action }
                     <td>
-                            {$arr_data[row].evt_name} 
+                            {$arr_data[row].evt_name|escape:'html'} 
                     </td>
 {/if}
 
 {*comment -----------------------------------------------------*}
 { if $columns.comment }
                     <td>
-                        {$arr_data[row].comment|replace:"\n":"&#10;"}
+                        {$arr_data[row].comment|escape:'html'|replace:"\n":"&#10;"}
                     </td>
 {/if}
 
 {*location ----------------------------------------------------*}
 { if $columns.location }
                     <td>
-                        {$arr_data[row].location}
+                        {$arr_data[row].location|escape:'html'}
                         
                     </td>
 {/if}
@@ -195,7 +195,7 @@ mso-number-format:Fixed;
 {*tracking number ---------------------------------------------*}
 { if $columns.trackingnr }
                     <td>
-                        {$arr_data[row].trackingnr}
+                        {$arr_data[row].trackingnr|escape:'html'}
                         
                     </td>
 {/if}
@@ -203,7 +203,7 @@ mso-number-format:Fixed;
 {*user --------------------------------------------------------*}
 { if $columns.user }
                     <td>
-                        {$arr_data[row].username}
+                        {$arr_data[row].username|escape:'html'}
                         
                     </td>
 {/if}

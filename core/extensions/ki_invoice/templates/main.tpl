@@ -38,7 +38,7 @@
 
 <!-- Some boxes below are checked by default. Delete "checked" to set default to unchecked condition -->
 
-   		{$kga.lang.ext_invoice.defaultVat}: <span id="defaultVat">{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator}</span> % <a id="editVatLink" href="#">({$kga.lang.change})</a> <br/>
+   		{$kga.lang.ext_invoice.defaultVat}: <span id="defaultVat">{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator|escape:'html'}</span> % <a id="editVatLink" href="#">({$kga.lang.change})</a> <br/>
 		<input type=checkbox name="short" checked> {$kga.lang.ext_invoice.invoiceOptionShort}<br/>
     		<input type=checkbox name="round" checked> {$kga.lang.ext_invoice.invoiceOptionRound}
     		<select id="iv_round_ID" name="pct_round" class="formfield">

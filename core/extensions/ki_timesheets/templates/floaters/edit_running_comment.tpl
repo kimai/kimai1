@@ -29,7 +29,7 @@
                 
                     <li>
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment|escape:'html'}</textarea>
                    </li>
                    
                    <li>

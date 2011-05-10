@@ -1,4 +1,4 @@
-{$kga.lang.DBname}: {$kga.server_database}
+{$kga.lang.DBname}: {$kga.server_database|escape:'html'}
 <br />
 <br />
 <a href="../db_restore.php">Database Backup Utility</a>

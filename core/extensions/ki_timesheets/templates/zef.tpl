@@ -51,7 +51,7 @@
 {*--OPTIONS----------------------------------------------------*}
 
                         {if $kga.show_RecordAgain}{strip}<a href ='#' class='recordAgain' onClick="ts_ext_recordAgain({$arr_zef[row].zef_pctID},{$arr_zef[row].zef_evtID},{$arr_zef[row].zef_ID}); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/button_recordthis.gif' width='13' height='13' alt='{$kga.lang.recordAgain}' title='{$kga.lang.recordAgain} (ID:{$arr_zef[row].zef_ID})' border='0' />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_recordthis.gif' width='13' height='13' alt='{$kga.lang.recordAgain}' title='{$kga.lang.recordAgain} (ID:{$arr_zef[row].zef_ID})' border='0' />
                         </a>{/strip}{/if}
 
 
@@ -59,7 +59,7 @@
 
 
                         {strip}<a href ='#' class='stop' onClick="ts_ext_stopRecord({$arr_zef[row].zef_ID}); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/button_stopthis.gif' width='13' height='13' alt='{$kga.lang.stop}' title='{$kga.lang.stop} (ID:{$arr_zef[row].zef_ID})' border='0' />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_stopthis.gif' width='13' height='13' alt='{$kga.lang.stop}' title='{$kga.lang.stop} (ID:{$arr_zef[row].zef_ID})' border='0' />
                         </a>{/strip}
 
 {/if}
@@ -68,14 +68,14 @@
 {*Edit Record Button - nur einblenden wenn fertig recorded*}
 {if $arr_zef[row].zef_out}
                         {strip}<a href ='#' onClick="editRecord({$arr_zef[row].zef_ID}); $(this).blur(); return false;" title='{$kga.lang.edit}'>
-                            <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>{/strip}
                         
 
     {* quick erase trashcan *}
     {if $kga.conf.quickdelete > 0}
                         {strip}<a href ='#' class='quickdelete' onClick="quickdelete({$arr_zef[row].zef_ID}); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
                         </a>{/strip}
     {/if}
 
@@ -111,7 +111,7 @@
                             {/if}
                         {/if}
                     ">
-                        {$arr_zef[row].zef_in|date_format:$kga.date_format.1}
+                        {$arr_zef[row].zef_in|date_format:$kga.date_format.1|escape:'html'}
                     </td>
 
 {*in -----------------------------------------------------------*}
@@ -125,7 +125,7 @@
                             {/if}
                         {/if}
                     ">
-                        {$arr_zef[row].zef_in|date_format:"%H:%M"}
+                        {$arr_zef[row].zef_in|date_format:"%H:%M"|escape:'html'}
                     </td>
 
 {*out ----------------------------------------------------------*}
@@ -141,7 +141,7 @@
                     ">
                     
 {if $arr_zef[row].zef_out}
-                        {$arr_zef[row].zef_out|date_format:"%H:%M"}
+                        {$arr_zef[row].zef_out|date_format:"%H:%M"|escape:'html'}
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
 {/if}
@@ -182,7 +182,7 @@
                     
 {if $arr_zef[row].wage}
                     
-                        {$arr_zef[row].wage|replace:'.':$kga.conf.decimalSeparator}
+                        {$arr_zef[row].wage|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;
@@ -200,7 +200,7 @@
                             {/if}
                         {/if}
                     ">
-                        {$arr_zef[row].knd_name}
+                        {$arr_zef[row].knd_name|escape:'html'}
                     </td>
 
 {*project name -------------------------------------------------*}
@@ -216,12 +216,12 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name|replace:"'":"\\'"}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name|replace:"'":"\\'"}'); 
+                            onClick="buzzer_preselect('pct',{$arr_zef[row].pct_ID},'{$arr_zef[row].pct_name|replace:"'":"\\'"|escape:'html'}',{$arr_zef[row].pct_kndID},'{$arr_zef[row].knd_name|replace:"'":"\\'"|escape:'html'}'); 
                             return false;">
-                            {$arr_zef[row].pct_name}
+                            {$arr_zef[row].pct_name|escape:'html'}
                             {if $kga.conf.pct_comment_flag == 1}
                                 {if $arr_zef[row].pct_comment}
-                                    <span class="lighter">({$arr_zef[row].pct_comment})</span>
+                                    <span class="lighter">({$arr_zef[row].pct_comment|escape:'html'})</span>
                                 {/if}
                             {/if}
                         </a>
@@ -241,20 +241,20 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name|replace:"'":"\\'"}',0,0); 
+                            onClick="buzzer_preselect('evt',{$arr_zef[row].zef_evtID},'{$arr_zef[row].evt_name|replace:"'":"\\'"|escape:'html'}',0,0); 
                             return false;">
-                            {$arr_zef[row].evt_name} 
+                            {$arr_zef[row].evt_name|escape:'html'} 
                         </a>
                         
 {if $arr_zef[row].zef_comment}
     {if $arr_zef[row].zef_comment_type == '0'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase.gif' width="12" height="13" title='{$arr_zef[row].zef_comment|escape:'html'}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '1'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_zef[row].zef_comment|escape:'html'}' border="0" /></a>
     {/if}
     {if $arr_zef[row].zef_comment_type == '2'}
-                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment}' border="0" /></a>
+                        <a href="#" onClick="ts_comment({$arr_zef[row].zef_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_zef[row].zef_comment|escape:'html'}' border="0" /></a>
     {/if}
 {/if}
                     </td>
@@ -268,13 +268,13 @@
                             {/if}
                         {/if}
                     ">
-                    {$arr_zef[row].zef_trackingnr}
+                    {$arr_zef[row].zef_trackingnr|escape:'html'}
                     </td>
 
                 </tr>
                 
-                <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type}" style="display:none;">
-                    <td colspan="10">{$arr_zef[row].zef_comment|nl2br}</td>
+                <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type|escape:'html'}" style="display:none;">
+                    <td colspan="10">{$arr_zef[row].zef_comment|escape:'html'|nl2br}</td>
                 </tr>
 
 {assign var="day_buffer" value=$arr_zef[row].zef_in|date_format:"%d"}

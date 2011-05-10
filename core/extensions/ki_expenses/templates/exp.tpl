@@ -40,14 +40,14 @@
                         
 {*Edit Record Button *}
                         {strip}<a href ='#' onClick="exp_editRecord({$arr_exp[row].exp_ID}); $(this).blur(); return false;" title='{$kga.lang.edit}'>
-                            <img src='../skins/{$kga.conf.skin}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>{/strip}
                         
 
     {* quick erase trashcan *}
     {if $kga.conf.quickdelete > 0}
                         {strip}<a href ='#' class='quickdelete' onClick="exp_quickdelete({$arr_exp[row].exp_ID}); return false;">
-                            <img src='../skins/{$kga.conf.skin}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
+                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
                         </a>{/strip}
     {/if}
 
@@ -69,7 +69,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                        {$arr_exp[row].exp_timestamp|date_format:$kga.date_format.1}
+                        {$arr_exp[row].exp_timestamp|date_format:$kga.date_format.1|escape:'html'}
                     </td>
 
 {*time ---------------------------------------------------------*}
@@ -83,7 +83,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                        {$arr_exp[row].exp_timestamp|date_format:"%H:%M"}
+                        {$arr_exp[row].exp_timestamp|date_format:$kga.date_format.2|escape:'html'}
                     </td>
 
 {*value --------------------------------------------------------*}
@@ -97,7 +97,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                        {$arr_exp[row].exp_value*$arr_exp[row].exp_multiplier|number_format:2:$kga.conf.decimalSeparator:""}
+                        {$arr_exp[row].exp_value*$arr_exp[row].exp_multiplier|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}
                     </td>
                     
 
@@ -127,7 +127,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                        {$arr_exp[row].knd_name}
+                        {$arr_exp[row].knd_name|escape:'html'}
                     </td>
 
 {*project name -------------------------------------------------*}
@@ -141,7 +141,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                            {$arr_exp[row].pct_name}
+                            {$arr_exp[row].pct_name|escape:'html'}
                     </td>
 
 
@@ -156,17 +156,17 @@
                                                 {/if}
                                             {/if}
                     ">
-                            {$arr_exp[row].exp_designation}
+                            {$arr_exp[row].exp_designation|escape:'html'}
                         
 {if $arr_exp[row].exp_comment}
     {if $arr_exp[row].exp_comment_type == '0'}
-                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase.gif' width="12" height="13" title='{$arr_exp[row].exp_comment}' border="0" /></a>
+                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase.gif' width="12" height="13" title='{$arr_exp[row].exp_comment|escape:'html'}' border="0" /></a>
     {/if}
     {if $arr_exp[row].exp_comment_type == '1'}
-                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_exp[row].exp_comment}' border="0" /></a>
+                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase_sys.gif' width="12" height="13" title='{$arr_exp[row].exp_comment|escape:'html'}' border="0" /></a>
     {/if}
     {if $arr_exp[row].exp_comment_type == '2'}
-                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_exp[row].exp_comment}' border="0" /></a>
+                        <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_exp[row].exp_comment|escape:'html'}' border="0" /></a>
     {/if}
 {/if}
                     </td>
@@ -174,7 +174,7 @@
                 </tr>
                 
                 <tr id="exp_c{$arr_exp[row].exp_ID}" class="comm{$arr_exp[row].exp_comment_type}" style="display:none;">
-                    <td colspan="8">{$arr_exp[row].exp_comment|nl2br}</td>
+                    <td colspan="8">{$arr_exp[row].exp_comment|escape:'html'|nl2br}</td>
                 </tr>
 
 {assign var="day_buffer" value=$arr_exp[row].exp_timestamp|date_format:"%d"}

@@ -347,11 +347,11 @@ switch ($axAction) {
           if (isset($columns['wage']))
             $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                      
           if (isset($columns['knd']))
-            $row[] = csv_prepare_field(htmlspecialchars_decode($data['knd_name']),$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['knd_name'],$column_delimiter,$quote_char);           
           if (isset($columns['pct']))
-            $row[] = csv_prepare_field(htmlspecialchars_decode($data['pct_name']),$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['pct_name'],$column_delimiter,$quote_char);           
           if (isset($columns['action']))
-            $row[] = csv_prepare_field(htmlspecialchars_decode($data['evt_name']),$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['evt_name'],$column_delimiter,$quote_char);           
           if (isset($columns['comment']))
             $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
           if (isset($columns['location']))

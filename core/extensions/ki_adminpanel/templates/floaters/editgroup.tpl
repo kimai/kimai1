@@ -25,7 +25,7 @@
                 <ul>
                     <li>
                         <label for="grp_name">{$kga.lang.groupname}:</label>
-                        <input class="formfield" type="text" name="grp_name" value="{$grp_details.grp_name}" size=35 />
+                        <input class="formfield" type="text" name="grp_name" value="{$grp_details.grp_name|escape:'html'}" size=35 />
                     </li>
 
                     <li>

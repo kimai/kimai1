@@ -22,7 +22,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{if $id}{$kga.lang.edit}{else}{$kga.lang.add}{/if} {$pres_evt}</span>
+        <span id="floater_title">{if $id}{$kga.lang.edit}{else}{$kga.lang.add}{/if} {$pres_evt|escape:'html'}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
@@ -75,14 +75,14 @@
 
                 <li>
                      <label for="edit_day">{$kga.lang.day}:</label>
-                     <input id='edit_day' type='text' name='edit_day' value='{$edit_day}' maxlength='10' size='10' tabindex='5' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='edit_day' type='text' name='edit_day' value='{$edit_day|escape:'html'}' maxlength='10' size='10' tabindex='5' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
                        <label for="edit_time">{$kga.lang.timelabel}:</label>
-                        <input id='edit_time' type='text' name='edit_time' value='{$edit_time}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_time' type='text' name='edit_time' value='{$edit_time|escape:'html'}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a href="#" onClick="exp_pasteNow(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
 
@@ -92,7 +92,7 @@
 
                    <li>
                        <label for="multiplier">{$kga.lang.multiplier}:</label>
-                        <input id='multiplier' type='text' name='multiplier' value='{$multiplier}' maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='multiplier' type='text' name='multiplier' value='{$multiplier|escape:'html'}' maxlength='8'  size='8'  tabindex='9' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    
@@ -101,7 +101,7 @@
 
                    <li>
                        <label for="edit_value">{$kga.lang.expense}:</label>
-                        <input id='edit_value' type='text' name='edit_value' value='{$edit_value}' maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_value' type='text' name='edit_value' value='{$edit_value|escape:'html'}' maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    
@@ -110,7 +110,7 @@
 
                    <li>
                        <label for="designation">{$kga.lang.designation}:</label>
-                        <input id='designation' type='text' name='designation' value='{$designation}' maxlength='20'  size='20'  tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='designation' type='text' name='designation' value='{$designation|escape:'html'}' maxlength='20'  size='20'  tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
                    
@@ -130,7 +130,7 @@
 
                    <li>
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment|escape:'html'}</textarea>
                    </li>
                    
                    <li>

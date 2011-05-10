@@ -162,7 +162,7 @@ class MYPDF extends TCPDF {
         $this->SetFont(''); 
       }
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-      $this->Cell($w[1], 6, htmlspecialchars_decode($row['knd_name'] . ' - ' . $row['evt_name']), 'LR', 0, 'L', $fill);    
+      $this->Cell($w[1], 6, $row['knd_name'] . ' - ' . $row['evt_name'], 'LR', 0, 'L', $fill);    
       
       if (isset($this->columns['dec_time']))
         $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 

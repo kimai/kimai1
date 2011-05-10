@@ -46,7 +46,7 @@
 
                 
                 <label for="vat">{$kga.lang.vat}</label>
-                <input size="4" name="vat" id="vat" type="text" value="{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator}"/> % 
+                <input size="4" name="vat" id="vat" type="text" value="{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator|escape:'html'}"/> % 
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />

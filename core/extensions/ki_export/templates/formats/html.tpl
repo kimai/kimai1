@@ -120,13 +120,13 @@
   </head>
   <body>
 
-<h2> {$kga.lang.xp_ext.time_period}: {$timespan} </h2>
+<h2> {$kga.lang.xp_ext.time_period}: {$timespan|escape:'html'} </h2>
 
 { if $customersFilter != "" }
-<br/><b>{$kga.lang.knds}</b>: {$customersFilter}
+<br/><b>{$kga.lang.knds}</b>: {$customersFilter|escape:'html'}
 {/if}
 { if $projectsFilter != "" }
-<br/><b>{$kga.lang.pcts}</b>: {$projectsFilter}
+<br/><b>{$kga.lang.pcts}</b>: {$projectsFilter|escape:'html'}
 {/if}
 <br/>
 
@@ -148,14 +148,14 @@
 
   {section name=row loop=$summary}
       <tr>
-        <td>{$summary[row].name}</td>
+        <td>{$summary[row].name|escape:'html'}</td>
   { if $columns.dec_time }
         <td>{if $summary[row].time != -1}
-          {$summary[row].time}
+          {$summary[row].time|escape:'html'}
         {/if}</td>
   {/if}
   { if $columns.wage }
-        <td>{$summary[row].wage}</td>
+        <td>{$summary[row].wage|escape:'html'}</td>
   {/if}
       </tr>
   {/section}
@@ -165,10 +165,10 @@
           <i>{$kga.lang.xp_ext.finalamount}</i>
         </td>
   { if $columns.dec_time }
-        <td>{$timeSum}</td>
+        <td>{$timeSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
   {/if}
   { if $columns.wage }
-        <td>{$wageSum}</td>
+        <td>{$wageSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
   {/if}
       </tr>
 
@@ -210,9 +210,9 @@
 { if $columns.date }
                     <td>
                         { if $custom_dateformat }
-                        {$arr_data[row].time_in|date_format:$custom_dateformat}
+                        {$arr_data[row].time_in|date_format:$custom_dateformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:$kga.date_format.1}
+                        {$arr_data[row].time_in|date_format:$kga.date_format.1|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -221,9 +221,9 @@
 { if $columns.from }
                     <td>
                         { if $custom_timeformat }
-                        {$arr_data[row].time_in|date_format:$custom_timeformat}
+                        {$arr_data[row].time_in|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:"%H:%M"}
+                        {$arr_data[row].time_in|date_format:"%H:%M"|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -234,9 +234,9 @@
                     
 {if $arr_data[row].time_out}
                         { if $custom_timeformat }
-                        {$arr_data[row].time_out|date_format:$custom_timeformat}
+                        {$arr_data[row].time_out|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_out|date_format:"%H:%M"}
+                        {$arr_data[row].time_out|date_format:"%H:%M"|escape:'html'}
                         { /if }
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
@@ -263,7 +263,7 @@
                     <td>
                     
 {if $arr_data[row].dec_zef_time}
-                            {$arr_data[row].dec_zef_time}
+                            {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;:&ndash;&ndash;
@@ -275,7 +275,7 @@
 { if $columns.rate }
                     <td>
                     
-                            {$arr_data[row].zef_rate}
+                            {$arr_data[row].zef_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                     </td>
 {/if}
 
@@ -285,7 +285,7 @@
                     
 {if $arr_data[row].wage}
                     
-                        {$arr_data[row].wage}
+                        {$arr_data[row].wage|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;
@@ -296,14 +296,14 @@
 {*client name --------------------------------------------------*}
 { if $columns.knd }
                     <td>
-                        {$arr_data[row].knd_name}
+                        {$arr_data[row].knd_name|escape:'html'}
                     </td>
 {/if}
 
 {*project name -------------------------------------------------*}
 { if $columns.pct }
                     <td>
-                            {$arr_data[row].pct_name}
+                            {$arr_data[row].pct_name|escape:'html'}
                     </td>
 {/if}
 
@@ -311,21 +311,21 @@
 {*event name and comment bubble --------------------------------*}
 { if $columns.action }
                     <td>
-                            {$arr_data[row].evt_name} 
+                            {$arr_data[row].evt_name|escape:'html'} 
                     </td>
 {/if}
 
 {*comment -----------------------------------------------------*}
 { if $columns.comment }
                     <td>
-                        {$arr_data[row].comment|nl2br}
+                        {$arr_data[row].comment|escape:'html'|nl2br}
                     </td>
 {/if}
 
 {*location ----------------------------------------------------*}
 { if $columns.location }
                     <td>
-                        {$arr_data[row].location}
+                        {$arr_data[row].location|escape:'html'}
                         
                     </td>
 {/if}
@@ -333,7 +333,7 @@
 {*tracking number ---------------------------------------------*}
 { if $columns.trackingnr }
                     <td>
-                        {$arr_data[row].trackingnr}
+                        {$arr_data[row].trackingnr|escape:'html'}
                         
                     </td>
 {/if}
@@ -341,7 +341,7 @@
 {*user --------------------------------------------------------*}
 { if $columns.user }
                     <td>
-                        {$arr_data[row].username}
+                        {$arr_data[row].username|escape:'html'}
                         
                     </td>
 {/if}
@@ -370,11 +370,11 @@
   { if $columns.to    }<td></td> {/if}
   { if $columns.time } <td></td> {/if}
   { if $columns.dec_time } <td>
-    {$timeSum}
+    {$timeSum|escape:'html'}
   </td> {/if}
   { if $columns.rate } <td></td> {/if}
   { if $columns.wage } <td>
-    {$wageSum}
+    {$wageSum|escape:'html'}
   </td>{/if}
   { if $columns.knd } <td></td> {/if}
   { if $columns.pct } <td></td> {/if}

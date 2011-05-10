@@ -324,7 +324,9 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
         }
     }
     
-    
+    $query = htmlspecialchars($query);
+    $displayQuery = htmlspecialchars($displayQuery);
+
     echo "<td>".($displayQuery==null?$query:$displayQuery) ."<br/>";
     echo "<span class='error_info'>" . $err . "</span>";
     echo "</td>";
@@ -1198,6 +1200,81 @@ if ((int)$revisionDB < 1291) {
     $salt = $kga['password_salt'];
     $query = "UPDATE `${p}usr` SET pw=MD5(CONCAT('${salt}',pw,'${salt}')) WHERE pw REGEXP '^[0-9a-f]{32}$' = 0 AND pw != ''";
     exec_query($query,false,str_replace($salt,'salt was stripped',$query));
+}
+
+if ((int)$revisionDB < 1305) {
+    logfile("-- update to r1305");
+
+    // update knd_name
+    $result = mysql_query("SELECT knd_ID,knd_name FROM ${p}knd");
+    
+    while ($customer = mysql_fetch_assoc($result)) {
+      $name = htmlspecialchars_decode($customer['knd_name']);
+
+      if ($name == $customer['knd_name'])
+        continue;
+
+      exec_query("UPDATE ${p}knd SET knd_name = '".
+          mysql_real_escape_string($name).
+          "' WHERE knd_ID = $customer[knd_ID]");
+    }
+
+    // update pct_name
+    $result = mysql_query("SELECT pct_ID,pct_name FROM ${p}pct");
+    
+    while ($project = mysql_fetch_assoc($result)) {
+      $name = htmlspecialchars_decode($project['pct_name']);
+
+      if ($name == $project['pct_name'])
+        continue;
+
+      exec_query("UPDATE ${p}pct SET pct_name = '".
+          mysql_real_escape_string($name).
+          "' WHERE pct_ID = $project[pct_ID]");
+    }
+
+    // update evt_name
+    $result = mysql_query("SELECT evt_ID,evt_name FROM ${p}evt");
+    
+    while ($event = mysql_fetch_assoc($result)) {
+      $name = htmlspecialchars_decode($event['evt_name']);
+
+      if ($name == $event['evt_name'])
+        continue;
+
+      exec_query("UPDATE ${p}evt SET evt_name = '".
+          mysql_real_escape_string($name).
+          "' WHERE evt_ID = $event[evt_ID]");
+    }
+
+    // update usr_name
+    $result = mysql_query("SELECT usr_ID,usr_name FROM ${p}usr");
+    
+    while ($user = mysql_fetch_assoc($result)) {
+      $name = htmlspecialchars_decode($user['usr_name']);
+
+      if ($name == $user['usr_name'])
+        continue;
+
+      exec_query("UPDATE ${p}usr SET usr_name = '".
+          mysql_real_escape_string($name).
+          "' WHERE usr_ID = $user[usr_ID]");
+    }
+
+    // update grp_name
+    $result = mysql_query("SELECT grp_ID,grp_name FROM ${p}grp");
+    
+    while ($group = mysql_fetch_assoc($result)) {
+      $name = htmlspecialchars_decode($group['grp_name']);
+
+      if ($name == $group['grp_name'])
+        continue;
+
+      exec_query("UPDATE ${p}grp SET grp_name = '".
+          mysql_real_escape_string($name).
+          "' WHERE grp_ID = $group[grp_ID]");
+    }
+    
 }
 
 

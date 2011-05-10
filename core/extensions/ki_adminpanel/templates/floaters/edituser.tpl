@@ -41,7 +41,7 @@
                     
                     <li>
                         <label for="usr_name">{$kga.lang.username}:</label>
-                        <input class="formfield" type="text" name="usr_name" value="{$usr_details.usr_name}" maxlength=20 size=20 />
+                        <input class="formfield" type="text" name="usr_name" value="{$usr_details.usr_name|escape:'html'}" maxlength=20 size=20 />
                     </li> 
 
                     <li>
@@ -75,7 +75,7 @@
         {if $usr_details.usr_pw == "no"}
         
                         <br/>
-                        <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" alt="Caution" valign=middle />
+                        <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />
                         <strong style="color:red">{$kga.lang.nopassword}</strong>
         {/if}
                     </li>
@@ -89,18 +89,18 @@
 
                     <li>
                         <label for="usr_rate">{$kga.lang.rate}:</label>
-                        <input class="formfield" type="text" name="usr_rate" value="{$usr_details.usr_rate}" />
+                        <input class="formfield" type="text" name="usr_rate" value="{$usr_details.usr_rate|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}" />
                     </li>
 
 
                     <li>
                         <label for="usr_mail">{$kga.lang.mail}:</label>
-                        <input class="formfield" type="text" name="usr_mail" value="{$usr_details.usr_mail}" />
+                        <input class="formfield" type="text" name="usr_mail" value="{$usr_details.usr_mail|escape:'html'}" />
                     </li>
 
                     <li>
                         <label for="usr_alias">{$kga.lang.alias}:</label>
-                        <input class="formfield" type="text" name="usr_alias" value="{$usr_details.usr_alias}" />
+                        <input class="formfield" type="text" name="usr_alias" value="{$usr_details.usr_alias|escape:'html'}" />
                     </li>
 
                     <li>

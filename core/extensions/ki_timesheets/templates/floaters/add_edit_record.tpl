@@ -124,18 +124,18 @@
 
                 <li>
                      <label for="edit_in_day">{$kga.lang.day}:</label>
-                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day}' maxlength='10' size='10' tabindex='5' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day|escape:'html'}' maxlength='10' size='10' tabindex='5' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                      -
-                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day|escape:'html'}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
                        <label for="time">{$kga.lang.timelabel}:</label>
-                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time}' maxlength='8'  size='8'  tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time|escape:'html'}' maxlength='8'  size='8'  tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
-                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time|escape:'html'}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a href="#" onClick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
                    <li>
@@ -144,7 +144,7 @@
                    </li>
                    <li>
                         <label for="rate">{$kga.lang.rate}:</label>
-                        <input id='rate' type='text' name='rate' value='{$rate}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
                </ul>
              </fieldset>
@@ -155,17 +155,17 @@
 
                    <li>
                         <label for="zlocation">{$kga.lang.zlocation}:</label>
-                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
                    <li>
                         <label for="trackingnr">{$kga.lang.trackingnr}:</label>
-                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr|escape:'html'}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
                         <label for="comment">{$kga.lang.comment}:</label>
-                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment}</textarea>
+                        <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'>{$comment|escape:'html'}</textarea>
                    </li>
                    
                    <li>

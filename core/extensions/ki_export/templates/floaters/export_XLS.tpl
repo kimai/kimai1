@@ -46,7 +46,7 @@
                 
                    <li>
                        <label for="decimal_separator">{$kga.lang.decimal_separator}:</label>
-                       <input type="text" value="{$kga.conf.decimalSeparator}" name="decimal_separator" id="decimal-separator" size="1"/>
+                       <input type="text" value="{$kga.conf.decimalSeparator|escape:'html'}" name="decimal_separator" id="decimal-separator" size="1"/>
                    </li>
                 
                    <li>

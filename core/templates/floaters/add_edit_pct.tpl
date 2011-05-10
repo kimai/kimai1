@@ -74,7 +74,7 @@
                 
                     <li>
                         <label for="pct_name" >{$kga.lang.pct}:</label>
-                        <input type="text" name="pct_name" id="focus" value="{$pct_name}" />
+                        <input type="text" name="pct_name" id="focus" value="{$pct_name|escape:'html'}" />
                     </li>
 
                     <li>
@@ -101,17 +101,17 @@
                 <ul>
                     <li>
                         <label for="pct_default_rate" >{$kga.lang.default_rate}:</label>
-                        <input type="text" name="pct_default_rate" value="{$pct_default_rate|replace:'.':$kga.conf.decimalSeparator}" />
+                        <input type="text" name="pct_default_rate" value="{$pct_default_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
                     <li>
                         <label for="pct_my_rate" >{$kga.lang.my_rate}:</label>
-                        <input type="text" name="pct_my_rate" value="{$pct_my_rate|replace:'.':$kga.conf.decimalSeparator}" />
+                        <input type="text" name="pct_my_rate" value="{$pct_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
                     <li>
                          <label for="pct_budget">{$kga.lang.budget}:</label>
-                         <input type='text' name='pct_budget' cols='30' rows='5' value="{$pct_budget}"/>
+                         <input type='text' name='pct_budget' cols='30' rows='5' value="{$pct_budget|replace:'.':$kga.conf.decimalSeparator|escape:'html'}"/>
                     </li>
                   </ul>
             </fieldset>
@@ -139,14 +139,14 @@
                   </ul>
             </fieldset>
 {else}
-            <input id="pct_grps" name="pct_grp[]" type="hidden" value="{$grp_selection.0}" />
+            <input id="pct_grps" name="pct_grp[]" type="hidden" value="{$grp_selection.0|escape:'html'}" />
 {/if}
             
             <fieldset id="comment">
               <ul>
                     <li>
                          <label for="pct_comment">{$kga.lang.comment}:</label>
-                         <textarea class='comment' name='pct_comment' cols='30' rows='5' >{$pct_comment}</textarea>
+                         <textarea class='comment' name='pct_comment' cols='30' rows='5' >{$pct_comment|escape:'html'}</textarea>
                     </li>
               </ul>
             </fieldset>

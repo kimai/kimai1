@@ -47,12 +47,12 @@
                 
                    <li>
                        <label for="column_delimiter">{$kga.lang.xp_ext.column_delimiter}:</label>
-                       <input type="text" value="{$prefs.column_delimiter|escape:'htmlall'}" name="column_delimiter" id="column_delimiter" size="1"/>
+                       <input type="text" value="{$prefs.column_delimiter|escape:'html'}" name="column_delimiter" id="column_delimiter" size="1"/>
                    </li>
                 
                    <li>
                        <label for="quote_char">{$kga.lang.xp_ext.quote_char}:</label>
-                       <input type="text" value="{$prefs.quote_char|escape:'htmlall'}" name="quote_char" id="quote_char" size="1">
+                       <input type="text" value="{$prefs.quote_char|escape:'html'}" name="quote_char" id="quote_char" size="1">
                    </li>
                 
                    <li>

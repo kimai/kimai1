@@ -25,13 +25,13 @@
         
         <fieldset class="ap_ext_advanced">
             <div>
-                <input type="text" name="adminmail" size="20" value="{$kga.conf.adminmail}" class="formfield"> {$kga.lang.adminmail}
+                <input type="text" name="adminmail" size="20" value="{$kga.conf.adminmail|escape:'html'}" class="formfield"> {$kga.lang.adminmail}
             </div>
             <div>
-                <input type="text" name="logintries" size="2" value="{$kga.conf.loginTries}" class="formfield"> {$kga.lang.logintries}
+                <input type="text" name="logintries" size="2" value="{$kga.conf.loginTries|escape:'html'}" class="formfield"> {$kga.lang.logintries}
             </div>
             <div>
-                <input type="text" name="loginbantime" size="4" value="{$kga.conf.loginBanTime}" class="formfield"> {$kga.lang.bantime}
+                <input type="text" name="loginbantime" size="4" value="{$kga.conf.loginBanTime|escape:'html'}" class="formfield"> {$kga.lang.bantime}
             </div>
 
             <div id="ap_ext_checkupdate">
@@ -73,11 +73,11 @@
             </div>
 
             <div>
-               <input type="text" name="currency_name" size="8" value="{$kga.currency_name}" class="formfield"> {$kga.lang.currency_name}
+               <input type="text" name="currency_name" size="8" value="{$kga.currency_name|escape:'html'}" class="formfield"> {$kga.lang.currency_name}
             </div>
 
             <div>
-               <input type="text" name="currency_sign" size="2" value="{$kga.currency_sign}" class="formfield"> {$kga.lang.currency_sign}
+               <input type="text" name="currency_sign" size="2" value="{$kga.currency_sign|escape:'html'}" class="formfield"> {$kga.lang.currency_sign}
             </div>
 
             <div>
@@ -85,15 +85,15 @@
             </div>
 
             <div>
-               <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2}" class="formfield"> {$kga.lang.display_date_format}
+               <input type="text" name="date_format_2" size="8" value="{$kga.date_format.2|escape:'html'}" class="formfield"> {$kga.lang.display_date_format}
             </div>
 
             <div>
-               <input type="text" name="date_format_0" size="8" value="{$kga.date_format.0}" class="formfield"> {$kga.lang.display_currentDate_format}
+               <input type="text" name="date_format_0" size="8" value="{$kga.date_format.0|escape:'html'}" class="formfield"> {$kga.lang.display_currentDate_format}
             </div>
 
             <div>
-               <input type="text" name="date_format_1" size="8" value="{$kga.date_format.1}" class="formfield"> {$kga.lang.table_date_format}
+               <input type="text" name="date_format_1" size="8" value="{$kga.date_format.1|escape:'html'}" class="formfield"> {$kga.lang.table_date_format}
             </div>
 
             <div>
@@ -113,7 +113,7 @@
             </div>
 
             <div>
-               {$kga.lang.decimal_separator}: <input type="text" name="decimalSeparator" size="1" value="{$kga.conf.decimalSeparator}" class="formfield">
+               {$kga.lang.decimal_separator}: <input type="text" name="decimalSeparator" size="1" value="{$kga.conf.decimalSeparator|escape:'html'}" class="formfield">
             </div>
 
             <div>

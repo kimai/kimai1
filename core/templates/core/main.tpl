@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" value="noindex,nofollow" />
 
-    <title>{$kga.usr.usr_name} - Kimai</title>
+    <title>{$kga.usr.usr_name|escape:'html'} - Kimai</title>
 
     <!-- Default Stylesheets -->
-    <link rel="stylesheet" href="../skins/{$kga.conf.skin}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="../skins/{$kga.conf.skin}/jquery.jqplot.css" />
+    <link rel="stylesheet" href="../skins/{$kga.conf.skin|escape:'html'}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="../skins/{$kga.conf.skin|escape:'html'}/jquery.jqplot.css" />
     <!-- /Default Stylesheets -->
     
     <!-- Extension Stylesheets -->
 {foreach from=$css_extension_files item="object"}
-    <link rel="stylesheet" href="{$object}" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="{$object|escape:'html'}" type="text/css" media="screen" title="no title" charset="utf-8" />
 {/foreach}
     <!-- /Extension Stylesheets -->
 
@@ -38,17 +38,14 @@
 
     <!-- Extension JavaScripts -->
 {foreach from=$js_extension_files item="object"}
-    <script src="{$object}" type="text/javascript" charset="utf-8"></script>
+    <script src="{$object|escape:'html'}" type="text/javascript" charset="utf-8"></script>
 {/foreach}
     <!-- /Extension JavaScripts -->
 
-    <!-- xajax -->
-        {$xajax_js}
-    <!-- // xajax -->
 
     <script type="text/javascript"> 
     
-        var skin ="{$kga.conf.skin}";
+        var skin ="{$kga.conf.skin|escape:'html'}";
 
         var lang_checkUsername    = "{$kga.lang.checkUsername}";
         var lang_checkGroupname   = "{$kga.lang.checkGroupname}";
@@ -77,16 +74,16 @@
         var timeoutTicktack       = 0;
         
         var hour                  = {$current_timer_hour};
-        var min                   = {$current_timer_min };
-        var sec                   = {$current_timer_sec };
+        var min                   = {$current_timer_min};
+        var sec                   = {$current_timer_sec};
         var startsec              = {$current_timer_start};
         var now                   = {$current_time};
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
 
-        var default_title         = "{$kga.usr.usr_name} - Kimai";
+        var default_title         = "{$kga.usr.usr_name|escape:'html'} - Kimai";
         var revision              = {$kga.revision};
-        var timespaceDateFormat   = "{$kga.date_format.2}";
+        var timespaceDateFormat   = "{$kga.date_format.2|escape:'html'}";
 
         var selected_knd  = '{$knd_data.knd_ID}';
         var selected_pct  = '{$pct_data.pct_ID}';
@@ -183,13 +180,13 @@
     <div id="top">
         
         <div id="logo">
-            <img src="../skins/{$kga.conf.skin}/grfx/g3_logo.png" width="151" height="52" alt="Logo" />
+            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_logo.png" width="151" height="52" alt="Logo" />
         </div>
         
         <div id="menu">
-            <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/{$kga.conf.skin}/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
-            <a id="main_tools_button" href="#" ><img src="../skins/{$kga.conf.skin}/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
-            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.usr_name}</b>
+            <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
+            <a id="main_tools_button" href="#" ><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
+            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.usr_name|escape:'html'}</b>
         </div>
         
         <div id="main_tools_menu">
@@ -215,7 +212,7 @@
         </div>
 
         <div id="stopwatch_edit_comment">
-            <a href="#" onclick="edit_running_comment();$(this).blur();return false;"><img src="../skins/{$kga.conf.skin}/grfx/blase.gif"/></a>
+            <a href="#" onclick="edit_running_comment();$(this).blur();return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/blase.gif"/></a>
         </div>
         
         <div id="stopwatch_ticker">
@@ -254,7 +251,7 @@
                     {if isset($kga.lang.extensions[$object.EXTENSION_KEY])}
                     {$kga.lang.extensions[$object.EXTENSION_KEY]}
                     {else}
-                    {$object.EXTENSION_NAME}
+                    {$object.EXTENSION_NAME|escape:'html'}
                     {/if}</span>
                     <span class="cc">&nbsp;</span>
                 </a>

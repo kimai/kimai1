@@ -21,7 +21,7 @@
 
 <div class="keys">
 {section name=row loop=$arr_keys}
-<div class="key"><div class="key_color" style="background-color:{$arr_keys[row].color}"></div>{$arr_keys[row].name}</div>
+<div class="key"><div class="key_color" style="background-color:{$arr_keys[row].color}"></div>{$arr_keys[row].name|escape:'html'}</div>
 {/section}
 <div class="key_end"/>
 </div>
@@ -29,7 +29,7 @@
 {section name=row loop=$arr_pct}
 <div class="bgt_project">
 <div class="project_head">
-{$arr_pct[row].pct_name}
+{$arr_pct[row].pct_name|escape:'html'}
 </div>
 <div id="bgt_chartdiv_{$arr_pct[row].pct_ID}" style="height:140px;width:150px; "></div> 
 </div>

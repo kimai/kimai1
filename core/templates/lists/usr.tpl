@@ -1,10 +1,3 @@
-{literal}    
-<script type="text/javascript">
-    //logfile("{/literal}{$jsArrKndPct}{literal}");
-    //var ts_ext_ArrKndPct = new Array({/literal}{$jsArrKndPct}{literal});
-</script>
-{/literal}
-
 {cycle values="odd,even" reset=true print=false}
           <table>
     
@@ -19,13 +12,13 @@
 {* --- option cell ---*}
 
                     <td nowrap class="option">
-                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].usr_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].usr_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                     </td>
 
 {* --- name cell ---*}
                     <td width="100%" class="clients">
-                            {$arr_usr[row].usr_name}
+                            {$arr_usr[row].usr_name|escape:'html'}
                     </td>
 
 

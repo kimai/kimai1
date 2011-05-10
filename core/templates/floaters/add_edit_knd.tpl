@@ -74,12 +74,12 @@
                 
                     <li>
                         <label for="knd_name" >{$kga.lang.knd}:</label>
-                        <input type="text" name="knd_name" id="focus" value="{$knd_name}" />
+                        <input type="text" name="knd_name" id="focus" value="{$knd_name|escape:'html'}" />
                     </li>
 
                     <li>
                         <label for="knd_vat" >{$kga.lang.vat}:</label>
-                        <input type="text" name="knd_vat"  value="{$knd_vat}" />
+                        <input type="text" name="knd_vat"  value="{$knd_vat|escape:'html'}" />
                     </li> 
 
                     <li>
@@ -94,7 +94,7 @@
         {if !$knd_password}
         
                         <br/>
-                        <img src="../skins/{$kga.conf.skin}/grfx/caution_mini.png" alt="Caution" valign=middle />
+                        <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />
                         <strong style="color:red">{$kga.lang.nopassword}</strong>
         {/if}
                     </li> 
@@ -109,7 +109,7 @@
 
                     <li>
                          <label for="knd_comment">{$kga.lang.comment}:</label>
-                         <textarea class='comment' name='knd_comment' cols='30' rows='3' >{$knd_comment}</textarea>
+                         <textarea class='comment' name='knd_comment' cols='30' rows='3' >{$knd_comment|escape:'html'}</textarea>
                     </li>   
 
                 </ul>
@@ -132,7 +132,7 @@
                 
             </fieldset>
 {else}
-                    <input id="knd_grps" name="knd_grp[]" type="hidden" value="{$grp_selection.0}" />
+                    <input id="knd_grps" name="knd_grp[]" type="hidden" value="{$grp_selection.0|escape:'html'}" />
 {/if}  
 
             <fieldset id="address">
@@ -141,27 +141,27 @@
 
                     <li>
                         <label for="knd_company" >{$kga.lang.company}:</label>
-                        <input type="text" name="knd_company"  value="{$knd_company}" />
+                        <input type="text" name="knd_company"  value="{$knd_company|escape:'html'}" />
                     </li>
 
                     <li>
                         <label for="knd_contact" >{$kga.lang.contactPerson}:</label>
-                        <input type="text" name="knd_contact"  value="{$knd_contact}" />
+                        <input type="text" name="knd_contact"  value="{$knd_contact|escape:'html'}" />
                     </li>
                                       
                     <li>
                         <label for="knd_street" >{$kga.lang.street}:</label>
-                        <input type="text" name="knd_street"  value="{$knd_street}" />
+                        <input type="text" name="knd_street"  value="{$knd_street|escape:'html'}" />
                     </li>
                           
                     <li>
                         <label for="knd_zipcode" >{$kga.lang.zipcode}:</label>
-                        <input type="text" name="knd_zipcode"  value="{$knd_zipcode}" />
+                        <input type="text" name="knd_zipcode"  value="{$knd_zipcode|escape:'html'}" />
                     </li>
                           
                     <li>
                         <label for="knd_city" >{$kga.lang.city}:</label>
-                        <input type="text" name="knd_city"  value="{$knd_city}" />
+                        <input type="text" name="knd_city"  value="{$knd_city|escape:'html'}" />
                     </li>     
 
                 </ul>
@@ -174,27 +174,27 @@
                           
                     <li>
                         <label for="knd_tel" >{$kga.lang.telephon}:</label>
-                        <input type="text" name="knd_tel"  value="{$knd_tel}" />
+                        <input type="text" name="knd_tel"  value="{$knd_tel|escape:'html'}" />
                     </li>        
                           
                     <li>
                         <label for="knd_fax" >{$kga.lang.fax}:</label>
-                        <input type="text" name="knd_fax"  value="{$knd_fax}" />
+                        <input type="text" name="knd_fax"  value="{$knd_fax|escape:'html'}" />
                     </li>        
                           
                     <li>
                         <label for="knd_mobile" >{$kga.lang.mobilephone}:</label>
-                        <input type="text" name="knd_mobile"  value="{$knd_mobile}" />
+                        <input type="text" name="knd_mobile"  value="{$knd_mobile|escape:'html'}" />
                     </li>        
                           
                     <li>
                         <label for="knd_mail" >{$kga.lang.mail}:</label>
-                        <input type="text" name="knd_mail"  value="{$knd_mail}" />
+                        <input type="text" name="knd_mail"  value="{$knd_mail|escape:'html'}" />
                     </li>        
                           
                     <li>
                         <label for="knd_homepage" >{$kga.lang.homepage}:</label>
-                        <input type="text" name="knd_homepage"  value="{$knd_homepage}" />
+                        <input type="text" name="knd_homepage"  value="{$knd_homepage|escape:'html'}" />
                     </li>        
 
                 </ul>

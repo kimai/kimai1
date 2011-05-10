@@ -71,17 +71,17 @@
                 
                     <li>
                         <label for="evt_name" >{$kga.lang.evt}:</label>
-                        <input type="text" name="evt_name" id="focus" value="{$evt_name}" />
+                        <input type="text" name="evt_name" id="focus" value="{$evt_name|escape:'html'}" />
                     </li>
                 
                     <li>
                         <label for="evt_default_rate" >{$kga.lang.default_rate}:</label>
-                        <input type="text" name="evt_default_rate" value="{$evt_default_rate|replace:'.':$kga.conf.decimalSeparator}" />
+                        <input type="text" name="evt_default_rate" value="{$evt_default_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
                 
                     <li>
                         <label for="evt_my_rate" >{$kga.lang.my_rate}:</label>
-                        <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator}" />
+                        <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
                     <li>
@@ -96,7 +96,7 @@
                 <ul>
                     <li>
                          <label for="evt_comment">{$kga.lang.comment}:</label>
-                         <textarea class='comment' name='evt_comment' cols='30' rows='5' >{$evt_comment}</textarea>
+                         <textarea class='comment' name='evt_comment' cols='30' rows='5' >{$evt_comment|escape:'html'}</textarea>
                     </li>
                 </ul>
             </fieldset>
@@ -114,7 +114,7 @@
                 </ul>
             </fieldset>
 {else}
-                    <input id="evt_grps" name="evt_grp[]" type="hidden" value="{$grp_selection.0}" />
+                    <input id="evt_grps" name="evt_grp[]" type="hidden" value="{$grp_selection.0|escape:'html'}" />
 {/if}        
 
     <fieldset id="projects">

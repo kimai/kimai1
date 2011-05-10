@@ -58,7 +58,7 @@
                         {/if}
                         {if $disabled_columns.date}disabled{/if}
                     ">
-                        {$arr_data[row].time_in|date_format:$dateformat}
+                        {$arr_data[row].time_in|date_format:$dateformat|escape:'html'}
                     </td>
 
 {*in -----------------------------------------------------------*}
@@ -73,7 +73,7 @@
                         {/if}
                         {if $disabled_columns.from}disabled{/if}
                     ">
-                        {$arr_data[row].time_in|date_format:$timeformat}
+                        {$arr_data[row].time_in|date_format:$timeformat|escape:'html'}
                     </td>
 
 {*out ----------------------------------------------------------*}
@@ -90,7 +90,7 @@
                     ">
                     
 {if $arr_data[row].time_out}
-                        {$arr_data[row].time_out|date_format:$timeformat}
+                        {$arr_data[row].time_out|date_format:$timeformat|escape:'html'}
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
 {/if}
@@ -133,7 +133,7 @@
                     
 {if $arr_data[row].dec_zef_time}
                     
-                        {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator}
+                        {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;:&ndash;&ndash;
@@ -153,7 +153,7 @@
                         {if $disabled_columns.rate}disabled{/if}
                     ">
                     
-                            {$arr_data[row].zef_rate|replace:'.':$kga.conf.decimalSeparator}
+                            {$arr_data[row].zef_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                     </td>
 
 {*task wage ----------------------------------------------------*}
@@ -171,7 +171,7 @@
                     
 {if $arr_data[row].wage}
                     
-                        {$arr_data[row].wage|replace:'.':$kga.conf.decimalSeparator}
+                        {$arr_data[row].wage|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;
@@ -190,7 +190,7 @@
                         {/if}
                         {if $disabled_columns.knd}disabled{/if}
                     ">
-                        {$arr_data[row].knd_name}
+                        {$arr_data[row].knd_name|escape:'html'}
                     </td>
 
 {*project name -------------------------------------------------*}
@@ -207,12 +207,12 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('pct',{$arr_data[row].pct_ID},'{$arr_data[row].pct_name|replace:"'":"\\'"}',{$arr_data[row].pct_kndID},'{$arr_data[row].knd_name|replace:"'":"\\'"}'); 
+                            onClick="buzzer_preselect('pct',{$arr_data[row].pct_ID},'{$arr_data[row].pct_name|replace:"'":"\\'"|escape:'html'}',{$arr_data[row].pct_kndID},'{$arr_data[row].knd_name|replace:"'":"\\'"|escape:'html'}'); 
                             return false;">
-                            {$arr_data[row].pct_name}
+                            {$arr_data[row].pct_name|escape:'html'}
                             {if $kga.conf.pct_comment_flag == 1}
                                 {if $arr_data[row].pct_comment}
-                                    <span class="lighter">({$arr_data[row].pct_comment})</span>
+                                    <span class="lighter">({$arr_data[row].pct_comment|escape:'html'})</span>
                                 {/if}
                             {/if}
                         </a>
@@ -233,9 +233,9 @@
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('evt',{$arr_data[row].zef_evtID},'{$arr_data[row].evt_name|replace:"'":"\\'"}',0,0); 
+                            onClick="buzzer_preselect('evt',{$arr_data[row].zef_evtID},'{$arr_data[row].evt_name|replace:"'":"\\'"|escape:'html'}',0,0); 
                             return false;">
-                            {$arr_data[row].evt_name} 
+                            {$arr_data[row].evt_name|escape:'html'} 
                         </a>
                     </td>
 
@@ -251,7 +251,7 @@
                         {/if}
                         {if $disabled_columns.comment}disabled{/if}
                     ">
-                        {$arr_data[row].comment|nl2br}
+                        {$arr_data[row].comment|escape:'html'|nl2br}
                         
                     </td>
 
@@ -267,7 +267,7 @@
                         {/if}
                         {if $disabled_columns.location}disabled{/if}
                     ">
-                        {$arr_data[row].location}
+                        {$arr_data[row].location|escape:'html'}
                         
                     </td>
 
@@ -283,7 +283,7 @@
                         {/if}
                         {if $disabled_columns.trackingnr}disabled{/if}
                     ">
-                        {$arr_data[row].trackingnr}
+                        {$arr_data[row].trackingnr|escape:'html'}
                         
                     </td>
 
@@ -299,7 +299,7 @@
                         {/if}
                         {if $disabled_columns.user}disabled{/if}
                     ">
-                        {$arr_data[row].username}
+                        {$arr_data[row].username|escape:'html'}
                         
                     </td>
 

@@ -233,7 +233,7 @@ switch ($axAction) {
             case "knd":
               if (count($_REQUEST['knd_grp']) == 0) die(); // no group would mean it is never accessable
 
-            	$data['knd_name']     = htmlspecialchars($_REQUEST['knd_name']);
+            	$data['knd_name']     = $_REQUEST['knd_name'];
             	$data['knd_comment']  = $_REQUEST['knd_comment'];
             	$data['knd_company']  = $_REQUEST['knd_company'];
                 $data['knd_vat']      = $_REQUEST['knd_vat'];
@@ -272,13 +272,14 @@ switch ($axAction) {
             case "pct":
               if (count($_REQUEST['pct_grp']) == 0) die(); // no group would mean it is never accessable
 
-              $data['pct_name']         = htmlspecialchars($_REQUEST['pct_name']);
+              $data['pct_name']         = $_REQUEST['pct_name'];
               $data['pct_kndID']        = $_REQUEST['pct_kndID'];
               $data['pct_comment']      = $_REQUEST['pct_comment'];
               $data['pct_visible']      = isset($_REQUEST['pct_visible'])?1:0;
               $data['pct_internal']     = isset($_REQUEST['pct_internal'])?1:0;
               $data['pct_filter']       = $_REQUEST['pct_filter'];
-              $data['pct_budget']       = $_REQUEST['pct_budget'];
+              $data['pct_budget']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_budget']);
               $data['pct_default_rate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
               $data['pct_my_rate']      = 
@@ -304,7 +305,7 @@ switch ($axAction) {
             case "evt":
               if (count($_REQUEST['evt_grp']) == 0) die(); // no group would mean it is never accessable
 
-              $data['evt_name']         = htmlspecialchars($_REQUEST['evt_name']);
+              $data['evt_name']         = $_REQUEST['evt_name'];
               $data['evt_comment']      = $_REQUEST['evt_comment'];
               $data['evt_visible']      = $_REQUEST['evt_visible'];
               $data['evt_filter']       = $_REQUEST['evt_filter'];
