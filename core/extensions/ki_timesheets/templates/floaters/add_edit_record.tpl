@@ -18,7 +18,7 @@
           }
          });
 
-            $('#ts_ext_form_add_edit_record').ajaxForm(function() { 
+            $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
 
 
                 if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
@@ -26,8 +26,34 @@
                     !$('#edit_in_time').val().match(ts_timeFormatExp) ||
                     !$('#edit_out_time').val().match(ts_timeFormatExp)) {
                   alert("{/literal}{$kga.lang.TimeDateInputError}{literal}");
-                  return;
+                  return false;
                 }
+
+                // test if start time is before end time
+                var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
+                var outTimeMatches = $('#edit_out_time').val().match(ts_timeFormatExp);
+                for (var i = 1;i<=3;i++) {
+                  var inVal = inTimeMatches[i];
+                  var outVal = outTimeMatches[i];
+                  
+                  if (inVal[0] == ":")
+                    inVal = inVal.substr(1);
+                  if (outVal[0] == ":")
+                    outVal = outVal.substr(1);
+                  
+                  if (inVal == undefined)
+                    inVal = 0;
+                  if (outVal == undefined)
+                    outVal = 0;
+                  
+                  if (inVal > outVal) {
+                    alert("{/literal}{$kga.lang.StartTimeBeforeEndTime}{literal}");
+                    return false;
+                  }
+                  else if (inVal < outVal)
+                    break; // if this part is smaller we don't care for the other parts
+                }
+                
                 
                 
                 var edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
@@ -40,8 +66,8 @@
                     floaterClose();
                     ts_ext_reload();
                 }
-                
-            });
+              return true;
+            }});
             {/literal}{if $id}
             ts_ext_reload_evt({$pres_pct},true);
             {else}{literal}

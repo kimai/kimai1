@@ -39,7 +39,7 @@ var ts_che_hook_flag = 0;
 
 
 var ts_dayFormatExp = new RegExp("^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})$");
-var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2}){1,2}$");
+var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2}){0,2}$");
 
 $(document).ready(function(){
 

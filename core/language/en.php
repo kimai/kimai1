@@ -284,6 +284,8 @@ return array(
 
 'TimeDateInputError' => 'The time or date you entered is not valid.',
 
+'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
+
 
 
 'credits' => <<<EOF

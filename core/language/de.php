@@ -279,6 +279,8 @@ return array(
 
 'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
 
+'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
+
 
 
 'credits' => <<<EOF
