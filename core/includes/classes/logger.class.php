@@ -5,8 +5,25 @@
  */
 class Logger {
 
+  private static $instance = null;
+  private $file;
+
   /**
-  * writes errors during install or update to the logfile stored in temporary
+   * Create a new logger instance.
+   */
+  private function __construct() {
+    $this->file=fopen(WEBROOT."temporary/logfile.txt","a");
+  }
+
+  /**
+   * Close the file if the instance is destroyed.
+   */
+  function __destruct() {
+    fclose($this->file);
+  }
+
+  /**
+  * Simple static method to log lines to the logfile.
   *
   * @param string $value message
   * @param string $path relative path to temporary directory
@@ -14,12 +31,22 @@ class Logger {
   * @author sl
   */
   public static function logfile($value) {
+      if (self::$instance == null)
+        self::$instance = new Logger();
+
       $value = preg_replace('/\\n|\\s{2,}/i','',$value);
+      self::$instance->log($value);
+  }
 
-      $logdatei=fopen(WEBROOT."temporary/logfile.txt","a");
+  /**
+   * Write a line to the logfile.
+   * 
+   * @param string $line line to log
+   * @author sl
+   */
+  public function log($line) {
+      fputs($this->file, date("[d.m.Y H:i:s] ",time()) . $line ."\n");
 
-      fputs($logdatei, date("[d.m.Y H:i:s] ",time()) . $value ."\n");
-      fclose($logdatei);
   }
 
 
