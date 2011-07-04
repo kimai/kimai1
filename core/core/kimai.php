@@ -43,8 +43,6 @@ $usr = $database->checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$tpl->assign('browser', get_agent());
-
 // =========================================
 // = PARSE EXTENSION CONFIGS (ext_configs) =
 // =========================================

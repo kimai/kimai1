@@ -100,7 +100,6 @@ $tpl->assign('evt_ann',$ann);
 $tpl->assign('zef_display', $tpl->fetch("zef.tpl"));
 
 $tpl->assign('buzzerAction', "startRecord()");
-$tpl->assign('browser', get_agent());
 
 // select for projects
 if (isset($kga['customer'])) {

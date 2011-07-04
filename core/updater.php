@@ -294,34 +294,28 @@ $RUsure = $kga['lang']['updater'][0];
  * @param $errorProcessing true if it's an error when the query fails.
  */
 function exec_query($query,$errorProcessing=false,$displayQuery=null) {
-    global $conn, $pdo_conn, $kga, $errors, $executed_queries;
+    global $database, $kga, $errors, $executed_queries;
+    
+    $conn = $database->getConnectionHandler();
     
     $executed_queries++;
     
     echo "<tr>";
 
     if ($kga['server_conn'] == "pdo") {
-            if (is_object($pdo_conn)) {
-                $pdo_query = $pdo_conn->prepare($query);
-                $success = $pdo_query->execute(array());
-            }
+      $pdo_query = $conn->prepare($query);
+      $success = $pdo_query->execute(array());
     } else {
-        if (is_object($conn)) {
-            $success = $conn->Query($query);
-        }
+      $success = $conn->Query($query);
     }
     
-    Logger::logfile($query,$success);
+    Logger::logfile($query);
     
     if ($kga['server_conn'] == "pdo") {
-        if (is_object($pdo_conn)) {
-            $err = $pdo_query->errorInfo();
-            $err = serialize($err);
-        }
+      $err = $pdo_query->errorInfo();
+      $err = serialize($err);
     } else {
-        if (is_object($conn)) {
-            $err = $conn->Error();
-        }
+      $err = $conn->Error();
     }
     
     $query = htmlspecialchars($query);
@@ -347,14 +341,10 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
         Logger::logfile("An error has occured in query: $query");
 
         if ($kga['server_conn'] == "pdo") {
-            if (is_object($pdo_conn)) {
-                $err = $pdo_query->errorInfo();
-                $err = serialize($err);
-            }
+          $err = $pdo_query->errorInfo();
+          $err = serialize($err);
         } else {
-            if (is_object($conn)) {
-                $err = $conn->Error();
-            }
+          $err = $conn->Error();
         }
 
         Logger::logfile("Error text: $err");

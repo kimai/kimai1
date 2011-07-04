@@ -14,7 +14,7 @@ class Logger {
   * @author sl
   */
   public static function logfile($value) {
-      $value = preg_replace('/[\\n\\s]/i','',$value);
+      $value = preg_replace('/\\n|\\s{2,}/i','',$value);
 
       $logdatei=fopen(WEBROOT."temporary/logfile.txt","a");
 

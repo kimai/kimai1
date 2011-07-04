@@ -29,41 +29,6 @@ function kickUser() {
 }
 
 /**
- * returns formatted time string -> h:mm
- * input: number of seconds
- *
- * @param integer $sek seconds to extract the time from
- * @return string
- * @author th
- * @deprecated use formatDuration instead
- */
-function intervallApos($sek) {
-  if (is_array($sek)) {
-    $arr = array();
-    foreach ($sek as $key=>$value)
-    {
-      $arr[$key] = intervallApos($value);
-    }
-    return $arr;
-  }
-  else
-    return sprintf('%d:%02d', $sek / 3600, $sek / 60 % 60);
-}
-
-/**
- * returns formatted time string -> h:mm:ss
- * input: number of seconds
- *
- * @param integer $sek seconds to extract the time from
- * @return string
- * @author th
- * @deprecated use formatDuration instead
- */
-function intervallColon($sek) {
-    return sprintf('%d:%02d:%02d', $sek / 3600, $sek / 60 % 60, $sek % 60);
-}
-
-/**
  * returns array of subdirectorys - needed for skin selector
  *
  * @param string $dir Directory to list subdirectorys from
@@ -193,44 +158,6 @@ function makeSelectBox($subject,$user,$selection=null){
 
 
 /**
- * returns list of projects and their time summary within zef_entry timespace as array
- *
- * OLD VERSION THAT MERGES TWO QUERYS - bad bad stuff ...
- * TODO: [tom] revise with join query!
- *
- * @param integer $group ID of group in table grp
- * @param integer $user ID of user in table usr
- * @param integer $in start time in unix seconds
- * @param integer $out end time in unix seconds
- * @global array $kga kimai-global-array
- * @return array
- * @author th
- */
-function get_arr_pct_with_time($group,$user,$in,$out) {
-    global $kga, $database;
-    //TODO: [tom] Functions results with 1 query
-    $arr_pcts = $database->get_arr_pct($group);
-    $arr_time = $database->get_arr_time_pct($user,$in,$out);
-    //TODO END
-    $arr = array();
-
-    $i=0;
-    foreach ($arr_pcts as $pct) {
-        $arr[$i]['pct_ID']      = $pct['pct_ID'];
-        $arr[$i]['knd_ID']      = $pct['knd_ID'];
-        $arr[$i]['pct_name']    = $pct['pct_name'];
-		$arr[$i]['pct_comment'] = $pct['pct_comment'];
-        $arr[$i]['knd_name']    = $pct['knd_name'];
-        $arr[$i]['pct_visible'] = $pct['pct_visible'];
-        $arr[$i]['zeit']        = @Format::formatDuration($arr_time[$pct['pct_ID']]);
-        $i++;
-    }
-
-    return $arr;
-}
-
-
-/**
  * returns a random code with given length
  *
  * @global integer $length length of the code
@@ -292,28 +219,6 @@ function checkDBversion($path) {
     }
 }
 
-/**
- * returns browser name
- *
- * returns: "Opera", "msie", "Safari", "Mozilla" or "?"
- *
- * TODO: [togi] check if this still is really needed anywhere
- * Smarty has a browser value by itself!!!
- *
- *
- * @return string
- * @author th
- */
-function get_agent() {
-    @$agent=$_SERVER["HTTP_USER_AGENT"];
-    if(strpos($agent,"opera") !== false) $browser = "Opera";
-    else if(strpos($agent,"msie") !== false) $browser = "msie";
-    else if(strpos($agent,"Safari") !== false) $browser = "Safari";
-    else if(strpos($agent,"mozilla") !== false) $browser = "Mozilla";
-    else $browser = "?";
-    return $browser;
-}
-
 function convert_time_strings($in,$out) {
 
     $explode_in  = explode("-",$in);
@@ -331,29 +236,6 @@ function convert_time_strings($in,$out) {
 
     return $time;
 }
-
-
-/**
- * returns last day (..30..31) of given month
- *
- * @param integer $month
- * @param integer $year
- * @return integer number of day
- *
- * @author http://lutrov.com/blog/php-last-day-of-the-month-calculation/
- */
-function lastday($month = '', $year = '') {
-   if (empty($month)) {
-      $month = date('m');
-   }
-   if (empty($year)) {
-      $year = date('Y');
-   }
-   $result = strtotime("{$year}-{$month}-01");
-   $result = strtotime('-1 second', strtotime('+1 month', $result));
-   return date('d', $result);
-}
-
 
 /**
  * read a cookie or return a default value, if cookie is not set

@@ -34,6 +34,11 @@
   padding:2px;
 }
 
+.bgt_plot_area {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .bgt_project_end {
   clear:both;
 }

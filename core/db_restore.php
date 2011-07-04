@@ -38,23 +38,17 @@ $p = $kga['server_prefix'];
  * @param $query query to execute as string
  */
 function exec_query($query) {
-    global $conn, $pdo_conn, $kga, $errors, $executed_queries;
+    global $database, $kga, $errors, $executed_queries;
+    
+    $conn = $database->getConnectionHandler();
     
     $success = false;
    
     if ($kga['server_conn'] == "pdo") {
-            if (is_object($pdo_conn)) {
-                $pdo_query = $pdo_conn->prepare($query);
-                $success = $pdo_query->execute(array());
-        }
-        else
-          $errorInfo = "No connection object.";
+      $pdo_query = $pdo_conn->prepare($query);
+      $success = $pdo_query->execute(array());
     } else {
-        if (is_object($conn)) {
-            $success = $conn->Query($query);
-        }
-        else
-          $errorInfo = "No connection object.";
+      $success = $conn->Query($query);
     }
     Logger::logfile($query);
     if (!$success) {

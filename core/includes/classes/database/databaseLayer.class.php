@@ -695,12 +695,6 @@ abstract class DatabaseLayer {
   */
   public abstract function get_arr_evt_by_knd($customer_ID);
 
-  ## Load into Array: Events with attached time-sums
-  public abstract function get_arr_evt_with_time($group,$user,$in,$out);
-
-  ## Load into Array: Customers with attached time-sums
-  public abstract function get_arr_knd_with_time($group,$user,$in,$out);
-
   /**
   * returns time of currently running event recording as array
   *
@@ -718,45 +712,6 @@ abstract class DatabaseLayer {
   * @return array
   */
   public abstract function get_current_timer();
-
-  /**
-  * returns the total worktime of a zef_entry day
-  *
-  * WARNING: $inPoint has to be *exactly* the first second of the day 
-  *
-  * @param integer $inPoint begin of the day in unix seconds
-  * @param integer $user ID of user in table usr
-  * @return string
-  */
-  public abstract function get_zef_time_day($inPoint,$user);
-
-  /**
-  * returns the total worktime of a zef_entry month
-  *
-  * WARNING: $inPoint has to be *exactly* the first second of any day in the wanted month 
-  *
-  * @param integer $inPoint begin of one day of desired month in unix seconds
-  * @param integer $user ID of user in table usr
-  * @return string
-  */
-  public abstract function get_zef_time_mon($inPoint,$user);
-
-  /**
-  * returns the total worktime in database
-  *
-  * @param integer $user ID of user in table usr
-  * @return string
-  */
-  public abstract function get_zef_time_all($user);
-
-  /**
-  * returns the total worktime of a zef_entry year
-  *
-  * @param integer $year 4 digit year (not sure yet if 2 digits work...)
-  * @param integer $user ID of user in table usr
-  * @return string
-  */
-  public abstract function get_zef_time_year($year,$user);
 
   /**
   * returns the version of the installed Kimai database to compare it with the package version

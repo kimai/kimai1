@@ -66,7 +66,7 @@ EOD;
         }
 
         echo "</select>";
-        echo "<br /><br /><button onClick='step_back(); return false;'>Zurück</button> <button onClick='pdo_proceed(); return false;'>Fortsetzen</button>";
+        echo "<br /><br /><button onClick='step_back(); return false;'>Zurück</button> <button onClick='pdo_proceed(); return false;'>Fortfahren</button>";
 
     }
     

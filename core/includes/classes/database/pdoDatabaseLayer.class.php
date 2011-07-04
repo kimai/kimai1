@@ -2849,46 +2849,6 @@ class PDODatabaseLayer extends DatabaseLayer {
       return $arr;
   }
 
-  ## Load into Array: Events with attached time-sums
-  public function get_arr_evt_with_time($group,$user,$in,$out) {
-      $arr_evts = $this->get_arr_evt($group);
-      $arr_time = $this->get_arr_time_evt($user,$in,$out);
-      
-      $arr = array(); 
-      
-      $i=0;
-      foreach ($arr_evts as $evt) {
-          $arr[$i]['evt_ID']      = $evt['evt_ID'];
-          $arr[$i]['evt_name']    = $evt['evt_name'];
-          $arr[$i]['evt_visible'] = $evt['evt_visible'];
-          if (isset($arr_time[$evt['evt_ID']])) $arr[$i]['zeit'] = Format::formatDuration($arr_time[$evt['evt_ID']]);
-          else $arr[$i]['zeit']   = Format::formatDuration(0);
-          $i++;
-      }
-      
-      return $arr;
-  }
-
-  ## Load into Array: Customers with attached time-sums
-  public function get_arr_knd_with_time($group,$user,$in,$out) {
-      $arr_knds = $this->get_arr_knd($group);
-      $arr_time = $this->get_arr_time_knd($user,$in,$out);
-      
-      $arr = array(); 
-      
-      $i=0;
-      foreach ($arr_knds as $knd) {
-          $arr[$i]['knd_ID']      = $knd['knd_ID'];
-          $arr[$i]['knd_name']    = $knd['knd_name'];
-          $arr[$i]['knd_visible'] = $knd['knd_visible'];
-          if (isset($arr_time[$knd['knd_ID']])) $arr[$i]['zeit'] = Format::formatDuration($arr_time[$knd['knd_ID']]);
-          else $arr[$i]['zeit']   = Format::formatDuration(0);
-          $i++;
-      }
-      
-      return $arr;
-  }
-
   /**
   * returns time of currently running event recording as array
   *
@@ -2929,91 +2889,6 @@ class PDODatabaseLayer extends DatabaseLayer {
           $current_timer['sec']  = 0;
       }
       return $current_timer;
-  }
-
-  /**
-  * returns the total worktime of a zef_entry day
-  *
-  * WARNING: $inPoint has to be *exactly* the first second of the day 
-  *
-  * @param integer $inPoint begin of the day in unix seconds
-  * @param integer $user ID of user in table usr
-  * @global array $this->kga kimai-global-array
-  * @return string
-  * @author th 
-  */
-  public function get_zef_time_day($inPoint,$user) {
-      $p = $this->kga['server_prefix'];
-        
-      $outPoint=$inPoint+86399;
-      $pdo_query = $this->conn->prepare("SELECT sum(zef_time) as zeit FROM ${p}zef WHERE zef_in > ? AND zef_out < ? AND zef_usrID = ?;");
-      $pdo_query->execute(array($inPoint,$outPoint,$user));
-      $row   = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['zeit'];
-  }
-
-  /**
-  * returns the total worktime of a zef_entry month
-  *
-  * WARNING: $inPoint has to be *exactly* the first second of any day in the wanted month 
-  *
-  * @param integer $inPoint begin of one day of desired month in unix seconds
-  * @param integer $user ID of user in table usr
-  * @global array $this->kga kimai-global-array
-  * @return string
-  * @author th 
-  */
-  public function get_zef_time_mon($inPoint,$user) {
-      $p = $this->kga['server_prefix'];
-      
-      $inDatum_m = date("m",$inPoint);
-      $inDatum_Y = date("Y",$inPoint);
-      $inDatum_t = date("t",$inPoint);
-      
-      $inPoint  = mktime(0,0,0,$inDatum_m,1,$inDatum_Y);
-      $outPoint = mktime(23,59,59,$inDatum_m,$inDatum_t,$inDatum_Y);
-
-      $pdo_query = $this->conn->prepare("SELECT sum(zef_time) as zeit FROM ${p}zef WHERE zef_in > ? AND zef_out < ? AND zef_usrID = ?;");
-      $pdo_query->execute(array($inPoint,$outPoint,$user));
-      $row   = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['zeit'];
-  }
-
-  /**
-  * returns the total worktime in database
-  *
-  * @param integer $user ID of user in table usr
-  * @global array $this->kga kimai-global-array
-  * @return string
-  * @author th 
-  */
-  public function get_zef_time_all($user) {
-      $p = $this->kga['server_prefix'];
-      
-      $pdo_query = $this->conn->prepare("SELECT sum(zef_time) as zeit FROM ${p}zef WHERE zef_usrID = ?");
-      $pdo_query->execute(array($user));
-      $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['zeit'];
-  }
-
-  /**
-  * returns the total worktime of a zef_entry year
-  *
-  * @param integer $year 4 digit year (not sure yet if 2 digits work...)
-  * @param integer $user ID of user in table usr
-  * @global array $this->kga kimai-global-array
-  * @return string
-  * @author th 
-  */
-  public function get_zef_time_year($year,$user) {
-      $p = $this->kga['server_prefix'];
-
-      $in  = (int)mktime(0,0,0,1,1,$year); 
-      $out = (int)mktime(23,59,59,12,(int)date("t"),$year);
-      $pdo_query = $this->conn->prepare("SELECT sum(zef_time) as zeit FROM ${p}zef WHERE zef_in > ? AND zef_out < ? AND zef_usrID = ?");
-      $pdo_query->execute(array($in,$out,$user));
-      $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['zeit'];
   }
 
   /**

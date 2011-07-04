@@ -29,28 +29,20 @@
  * @param $query query to execute as string
  */
 function exec_query($query) {
-    global $conn, $pdo_conn, $errors, $db_layer;
+    global $database, $errors, $db_layer;
+    
+    $conn = $database->getConnectionHandler();
     
     $success = false;
     
     if ($db_layer == "pdo") {
-        
-        if (is_object($pdo_conn)) {
-            $pdo_query = $pdo_conn->prepare($query);
-            $success = $pdo_query->execute(array());
-            $errorInfo = serialize($pdo_query->errorInfo());
-        }
-        else
-          $errorInfo = "No connection object.";
+      $pdo_query = $conn->prepare($query);
+      $success = $pdo_query->execute(array());
+      $errorInfo = serialize($pdo_query->errorInfo());
         
     } else {
-        
-        if (is_object($conn)) {
-            $success = $conn->Query($query);
-            $errorInfo = serialize($conn->Error());
-        }
-        else
-          $errorInfo = "No connection object.";
+      $success = $conn->Query($query);
+      $errorInfo = serialize($conn->Error());
     }
     Logger::logfile($query);
     if (!$success) {
@@ -342,13 +334,6 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
-
-
-// init timespace for admin user to current month
-$mon = date("n"); $day = date("j"); $Y = date("Y");
-$database->save_timespace(mktime(0,0,0,$mon,1,$Y),mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y),$randomAdminID);
-
-
 
 if ($errors) {
     require_once('../libraries/smarty/Smarty.class.php');

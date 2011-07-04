@@ -2,7 +2,9 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
             deb_ext_onload();
-            {/literal}{if $browser == "Safari"}{literal}
+            {/literal}
+            {browser_is vendor="safari" assign=isSafari}
+            {if $isSafari}{literal}
             $('#deb_ext_shoutbox').css('margin-top', '-3px');   
             {/literal}{/if}{literal}
         }); 

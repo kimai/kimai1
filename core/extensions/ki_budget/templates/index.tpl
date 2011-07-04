@@ -31,7 +31,7 @@
 <div class="project_head">
 {$arr_pct[row].pct_name|escape:'html'}
 </div>
-<div id="bgt_chartdiv_{$arr_pct[row].pct_ID}" style="height:140px;width:150px; "></div> 
+<div id="bgt_chartdiv_{$arr_pct[row].pct_ID}" class="bgt_plot_area" style="height:140px;width:150px; "></div> 
 </div>
 {/section}
 <div class="bgt_project_end"/>

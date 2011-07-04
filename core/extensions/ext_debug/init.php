@@ -51,7 +51,6 @@
     $kga_display = print_r($output,true);
     $tpl->assign('kga', $kga);
     $tpl->assign('kga_display', $kga_display);
-    $tpl->assign('browser', get_agent());
 // /read kga -------------------------------------- 
 
     if ($kga['logfile_lines'] =="@") {

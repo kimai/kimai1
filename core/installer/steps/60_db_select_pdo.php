@@ -146,7 +146,7 @@ if (is_array($db_connection)) {
                      :$return.="No databases to choose from!<br/><br/>";
     } else {
         ($lang=="de")?$return.="Datenbank hat Zugriff verweigert. Gehen Sie zurück.<br/><br/><button onClick='step_back(); return false;'>Zurück</button>"
-                     :$return.="The database refused access. Please go back.<br/><br/><button onClick='step_back(); return false;'>Go back</button>";
+                     :$return.="The database refused access. Please go back.<br/><br/><button onClick='step_back(); return false;'>Back</button>";
         echo $return;
     }
     
