@@ -261,6 +261,7 @@ function get_cookie($cookie_name, $default=null) {
  * @author Oleg
  */
 function check_zef_data($id, $zef_data) {
+  global $database;
 
 	if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
 

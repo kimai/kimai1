@@ -1,11 +1,14 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#ap_ext_form_editgrp').ajaxForm(function() { 
+            $('#ap_ext_form_editgrp').ajaxForm( { 'beforeSubmit' :function() { 
                 floaterClose();
+                return true;
+            },
+            'success': function () {
                 ap_ext_refreshSubtab('grp');
                 ap_ext_refreshSubtab('usr');
-            }); 
+            }}); 
         }); 
     </script>
 {/literal}

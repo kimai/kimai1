@@ -62,12 +62,14 @@
                 
                 if (!deleted && edit_in_time == edit_out_time) {
                     alert("{/literal}{$kga.lang.timediff_warn}{literal}");
-                } else {
-                    floaterClose();
-                    ts_ext_reload();
+                    return false;
                 }
+
+              floaterClose();
               return true;
-            }});
+            },
+              'success' : ts_ext_reload
+            });
             {/literal}{if $id}
             ts_ext_reload_evt({$pres_pct},true);
             {else}{literal}

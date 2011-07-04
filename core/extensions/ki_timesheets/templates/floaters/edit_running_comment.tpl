@@ -1,9 +1,10 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#edit_running_comment').ajaxForm(function() { 
+            $('#edit_running_comment').ajaxForm( { 'beforeSubmit' :function() { 
                 floaterClose();
-                ts_ext_reload();
+            },
+            'success' : ts_ext_reload
             });
         }); 
     </script>

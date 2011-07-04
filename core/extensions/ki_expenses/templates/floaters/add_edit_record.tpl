@@ -3,11 +3,13 @@
         
         $(document).ready(function() {
             $('#help').hide();
-            $('#exp_ext_form_add_edit_record').ajaxForm(function() { 
-                    floaterClose();
-                    exp_ext_reload();
-             
+            $('#exp_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
+              floaterClose();
+              return;
+            },
+              'success' : exp_ext_reload
             });
+
             {/literal}{if $id}{literal}
             {/literal}{else}{literal}
             $("#add_edit_exp_pct_ID").selectOptions(""+selected_pct+"");
