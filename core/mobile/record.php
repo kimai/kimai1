@@ -4,7 +4,7 @@
 // =====================
 require('../includes/basics.php');
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // select for projects
 $projectSel = makeSelectBox("pct",$kga['usr']['usr_grp']);
@@ -14,7 +14,7 @@ $eventSel = makeSelectBox("evt",$kga['usr']['usr_grp']);
 
 
 if (isset($_REQUEST['stopRecord'])) {
-  stopRecorder();
+  $database->stopRecorder();
 }
 if (isset($_REQUEST['startRecord']) &&
     isset($_REQUEST['project']) &&
@@ -23,16 +23,16 @@ if (isset($_REQUEST['startRecord']) &&
   $data= array();
   $data['lastProject'] = $_REQUEST['project'];
   $data['lastEvent']   = $_REQUEST['event'];
-  usr_edit($kga['usr']['usr_ID'],$data);
+  $database->usr_edit($kga['usr']['usr_ID'],$data);
   $kga['usr']['lastProject'] = $data['lastProject'];
   $kga['usr']['lastEvent'] = $data['lastEvent'];
 
-  startRecorder($_REQUEST['project'],$_REQUEST['event'],$kga['usr']['usr_ID']);
+  $database->startRecorder($_REQUEST['project'],$_REQUEST['event'],$kga['usr']['usr_ID']);
 }
 
 if (isset($_REQUEST['updateComment'])) {
-  $data = get_event_last();
-  zef_edit_comment($data['zef_ID'],$_REQUEST['comment_type'],$_REQUEST['comment']);
+  $data = $database->get_event_last();
+  $database->zef_edit_comment($data['zef_ID'],$_REQUEST['comment_type'],$_REQUEST['comment']);
 }
 
 ?>
@@ -56,7 +56,7 @@ if (isset($_REQUEST['updateComment'])) {
   <body>
 
 <?php
-if (get_rec_state($kga['usr']['usr_ID']) == 0) {
+if ($database->get_rec_state($kga['usr']['usr_ID']) == 0) {
 ?>
 <form method="post">
 
@@ -94,12 +94,12 @@ else {
 
 <label><?= $kga['lang']['pct']?></label>
 <?php
-  $last_pct = pct_get_data($kga['usr']['lastProject']);
+  $last_pct = $database->pct_get_data($kga['usr']['lastProject']);
   echo "<b>".$last_pct['pct_name']."</b>";
 ?>
 <label><?= $kga['lang']['evt']?></label>
 <?php
-  $last_evt = evt_get_data($kga['usr']['lastEvent']);
+  $last_evt = $database->evt_get_data($kga['usr']['lastEvent']);
   echo "<b>".$last_evt['evt_name']."</b>";
 ?>
 <br/>
@@ -111,7 +111,7 @@ else {
 
 <b><?= $kga['lang']['comment']?>:</b>
 <?php
-  $last_event = get_event_last();
+  $last_event = $database->get_event_last();
 ?>
 <form method="post">
 <textarea name="comment"><?= $last_event['zef_comment']?></textarea>

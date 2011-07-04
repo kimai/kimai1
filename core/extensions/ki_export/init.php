@@ -24,7 +24,7 @@ include('../../includes/basics.php');
 
 require("private_func.php");
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -60,9 +60,9 @@ $tpl->assign('dateformat',preg_replace('/([A-Za-z])/','%$1',$dateformat));
 
 // Get the total amount of time shown in the table.
 if (isset($kga['customer']))
-  $total = formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
+  $total = Format::formatDuration($database->get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
 else
-  $total = formatDuration(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
+  $total = Format::formatDuration($database->get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 
 if (isset($kga['customer']))
   $arr_zef = xp_get_arr($in,$out,null,array($kga['customer']['knd_ID']));
@@ -82,7 +82,7 @@ if (isset($kga['customer']))
   $ann = xp_get_arr_usr($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_usr($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+Format::formatAnnotations($ann);
 $tpl->assign('usr_ann',$ann);
 
 // Get the annotations for the customer sub list.
@@ -90,7 +90,7 @@ if (isset($kga['customer']))
   $ann = xp_get_arr_knd($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_knd($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+Format::formatAnnotations($ann);
 $tpl->assign('knd_ann',$ann);
 
 // Get the annotations for the project sub list.
@@ -98,7 +98,7 @@ if (isset($kga['customer']))
   $ann = xp_get_arr_pct($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_pct($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+Format::formatAnnotations($ann);
 $tpl->assign('pct_ann',$ann);
 
 // Get the annotations for the task sub list.
@@ -106,7 +106,7 @@ if (isset($kga['customer']))
   $ann = xp_get_arr_evt($in,$out,null,array($kga['customer']['knd_ID']));
 else
   $ann = xp_get_arr_evt($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+Format::formatAnnotations($ann);
 $tpl->assign('evt_ann',$ann);
 
 // Get the columns the user had disabled last time.

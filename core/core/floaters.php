@@ -62,10 +62,10 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
 
         $tpl->assign('skins', ls("../skins"));
-        $tpl->assign('langs', langs());
+        $tpl->assign('langs', Translations::langs());
         $tpl->assign('timezones', timezoneList());
         $tpl->assign('usr', $kga['usr']);
-        $tpl->assign('rate', get_rate($kga['usr']['usr_ID'],NULL,NULL));
+        $tpl->assign('rate', $database->get_rate($kga['usr']['usr_ID'],NULL,NULL));
 
         $tpl->display("preferences.tpl");
     break;
@@ -79,7 +79,7 @@ switch ($axAction) {
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
 
-            $data = knd_get_data($id);
+            $data = $database->knd_get_data($id);
             if ($data) {
                 $tpl->assign('knd_name'     , $data['knd_name'    ]);
                 $tpl->assign('knd_comment'  , $data['knd_comment' ]);
@@ -123,7 +123,7 @@ switch ($axAction) {
         if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
  
         if ($id) {
-            $data = pct_get_data($id);
+            $data = $database->pct_get_data($id);
             if ($data) {
                 $tpl->assign('pct_name'        , $data['pct_name'        ]);
                 $tpl->assign('pct_comment'     , $data['pct_comment'     ]);
@@ -132,7 +132,7 @@ switch ($axAction) {
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
                 $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
-                $tpl->assign('evt_selection'   , pct_get_evts($id)        );
+                $tpl->assign('evt_selection'   , $database->pct_get_evts($id)        );
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
                 $tpl->assign('grp_selection', pct_get_grps($id));
@@ -173,7 +173,7 @@ switch ($axAction) {
         if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
 
         if ($id) {
-            $data = evt_get_data($id);
+            $data = $database->evt_get_data($id);
             if ($data) {
                 $tpl->assign('evt_name'        , $data['evt_name'        ]);
                 $tpl->assign('evt_comment'     , $data['evt_comment'     ]);
@@ -181,8 +181,8 @@ switch ($axAction) {
                 $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
                 $tpl->assign('evt_default_rate', $data['evt_default_rate']);
                 $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
-                $tpl->assign('grp_selection', evt_get_grps($id));
-                $tpl->assign('pct_selection', evt_get_pcts($id));
+                $tpl->assign('grp_selection', $database->evt_get_grps($id));
+                $tpl->assign('pct_selection', $database->evt_get_pcts($id));
                 $tpl->assign('id', $id);
         
             }

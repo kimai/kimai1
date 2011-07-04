@@ -26,7 +26,7 @@ case 'login':
       if ($authPlugin->authenticate($name,$password,$userId)) {
         
         if ($userId === false) {
-          $userId   = usr_create(array(
+          $userId   = $database->usr_create(array(
                       'usr_name' => $name,
                       'usr_grp' => $authPlugin->getDefaultGroupId(),
                       'usr_sts' => 2,
@@ -34,7 +34,7 @@ case 'login':
                     ));
         }
 
-        $userData = usr_get_data($userId);
+        $userData = $database->usr_get_data($userId);
 
         if ($userData['ban'] < ($kga['conf']['loginTries']) ||
             (time() - $userData['banTime']) > $kga['conf']['loginBanTime']) {
@@ -47,13 +47,13 @@ case 'login':
           setcookie ("kimai_key",$keymai);
           setcookie ("kimai_usr",$userData['usr_name']);
 
-          loginSetKey($userId,$keymai);
+          $database->loginSetKey($userId,$keymai);
 
           header("Location: record.php");
         } else {
           // login attempt even though logintries are used up and bantime is not over => deny
           setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-          loginUpdateBan($userId);
+          $database->loginUpdateBan($userId);
 
           $banned = true;
         }
@@ -62,7 +62,7 @@ case 'login':
         // wrong username/password => deny
         setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
         if ($userId !== false)
-          loginUpdateBan($userId,true);
+          $database->loginUpdateBan($userId,true);
 
         $loginFailed = true;
       }

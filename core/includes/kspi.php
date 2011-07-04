@@ -50,7 +50,7 @@ if ($isCoreProcessor) {
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
-$usr = checkUser();
+$usr = $database->checkUser();
 
 $tpl->assign('kga',$kga);
 
@@ -82,7 +82,7 @@ if (isset($_REQUEST['last_day']))
   $out = mktime(23,59,59,date("n",$_REQUEST['last_day']),date("j",$_REQUEST['last_day']),date("Y",$_REQUEST['last_day']));
 
 if ($axAction != "reloadLogfile") {
-    logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['knd_name']:$kga['usr']['usr_name'])."): " . $axAction);
+    Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['knd_name']:$kga['usr']['usr_name'])."): " . $axAction);
 }
 
 

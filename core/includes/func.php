@@ -21,35 +21,6 @@
  * Functions defined here are not directly accessing the database.
  */
 
-// Require database layer functions
-if (isset($kga['server_conn']))
-  require("db_layer_".$kga['server_conn'].".php");
-
-
-/**
- * Prepare all values of the array so it's save to put them into an sql query.
- * The conversion to utf8 is done here as well, if configured.
- * 
- * @param array $data Array which values are being prepared.
- * @return array The same array, except all values are being escaped correctly.
- */
-function clean_data($data) {
-    global $kga;   
-    foreach ($data as $key => $value) {
-        if ($key != "pw") { 
-            $return[$key] = urldecode(strip_tags($data[$key]));
-        $return[$key] = str_replace('"','_',$data[$key]);
-        $return[$key] = str_replace("'",'_',$data[$key]);
-        $return[$key] = str_replace('\\','',$data[$key]);
-        } else {
-            $return[$key] = $data[$key];
-        }
-    if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
-    }
-    
-    return $return;
-}
-
 /**
  * Kill the current users session by redirecting him to the logout page.
  */
@@ -93,119 +64,6 @@ function intervallColon($sek) {
 }
 
 /**
- * Format a duration given in seconds according to the global setting. Either
- * seconds are shown or not.
- * 
- * @param integer|array one value in seconds or an array of values in seconds
- * @return integer|array depending on the $sek param which contains the formatted duration
- * @author sl
- */
-function formatDuration($sek) {
-  global $kga;
-  if (is_array($sek)) {
-    // Convert all values of the array.
-    $arr = array();
-    foreach ($sek as $key=>$value)
-    {
-        $arr[$key] = formatDuration($value);
-    }
-    return $arr;
-  }
-  else {
-    // Format accordingly.
-    if ($kga['conf']['durationWithSeconds'] == 0)
-      return sprintf('%d:%02d', $sek / 3600, $sek / 60 % 60);
-    else
-      return sprintf('%d:%02d:%02d', $sek / 3600, $sek / 60 % 60, $sek % 60);
-  }
-}
-
-/**
- * Format a currency or an array of currencies accordingly.
- * 
- * @param integer|array one value or an array of decimal numbers
- * @return integer|array formatted string(s)
- * @author sl
- */
-function formatCurrency($number,$htmlNoWrap = true) {
-  global $kga;
-  if (is_array($number)) {
-    // Convert all values of the array.
-    $arr = array();
-    foreach ($number as $key=>$value)
-    {
-        $arr[$key] = formatCurrency($value);
-    }
-    return $arr;
-  }
-  else {
-    $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f",$number) );
-    if ($kga['conf']['currency_first'])
-      $value = $kga['currency_sign']." ".$value;
-    else
-      $value = $value." ".$kga['currency_sign'];
-
-    if ($htmlNoWrap)
-      return "<span style=\"white-space: nowrap;\">$value</span>";
-    else
-      return $value;
-  }
-}
-
-/**
- * Format the annotations and only include data which the user wants to see. 
- * The array which is passed to the method will be modified.
- *
- * @param $ann array the annotation array (userid => (time, costs) )
- */
-function formatAnnotations(&$ann) {
-  $type = usr_get_preference('ui.sublistAnnotations');
-  $userIds = array_keys($ann);
-
-  if ($type == null)
-    $type = 0;
-
-  switch ($type) {
-  case 0:
-    // just time
-    foreach ($userIds as $userId) {
-      $ann[$userId] = formatDuration($ann[$userId]['time']);
-    }
-    break;
-  case 1:
-    // just costs
-    foreach ($userIds as $userId) {
-      $ann[$userId] = formatCurrency($ann[$userId]['costs']);
-    }
-    break;
-  case 2:
-  default:
-    // both
-    foreach ($userIds as $userId) {
-      $time = formatDuration($ann[$userId]['time']);
-      $costs = formatCurrency($ann[$userId]['costs']);
-      $ann[$userId] =  "<span style=\"white-space: nowrap;\">$time |</span>  $costs";
-    }
-
-  }
-}
-
-/**
- * returns hours, minutes and seconds as array
- * input: number of seconds
- *
- * @param integer $sek seconds to extract the time from
- * @return array
- * @author th
- */
-function hourminsec($sek) {
-    $i['h']   = $sek / 3600 % 24;
-    $i['i']   = $sek / 60 % 60;
-    $i['s']   = $sek % 60;
-    return $i;
-}
-
-/**
  * returns array of subdirectorys - needed for skin selector
  *
  * @param string $dir Directory to list subdirectorys from
@@ -224,28 +82,6 @@ function ls($dir){
         }
     return isset($arr_subfolders)?$arr_subfolders:false;
     closedir($handle);
-}
-
-/**
- * returns array of language files
- *
- * @param none
- * @return array
- * @author unknown/th
- */
-function langs(){
-    $arr_files = array();
-    $arr_files[] = "";
-    $handle = opendir(WEBROOT.'/language/');
-    while (false !== ($readdir = readdir($handle))) {
-      if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'
-        && endsWith($readdir,'.php') ) {
-        $arr_files[] = str_replace(".php", "", $readdir);
-      }
-    }
-    closedir($handle);
-    sort($arr_files);
-    return $arr_files;
 }
 
 /**
@@ -273,7 +109,7 @@ function timezoneList() {
  */
 function makeSelectBox($subject,$user,$selection=null){
 
-    global $kga;
+    global $kga, $database;
 
     $sel = array();
     $sel[0] = array();
@@ -281,7 +117,7 @@ function makeSelectBox($subject,$user,$selection=null){
 
     switch ($subject) {
         case 'pct':
-            $arr_pct = get_arr_pct($user);
+            $arr_pct = $database->get_arr_pct($user);
             $i=0;
             foreach ($arr_pct as $pct) {
                 if ($pct['pct_visible']) {
@@ -303,7 +139,7 @@ function makeSelectBox($subject,$user,$selection=null){
             break;
 
         case 'evt':
-            $arr_evt = get_arr_evt($user);
+            $arr_evt = $database->get_arr_evt($user);
             $i=0;
             foreach ($arr_evt as $evt) {
                 if ($evt['evt_visible']) {
@@ -315,7 +151,7 @@ function makeSelectBox($subject,$user,$selection=null){
             break;
 
         case 'knd':
-            $arr_knd = get_arr_knd($user);
+            $arr_knd = $database->get_arr_knd($user);
             $i=0;
             $selectionFound = false;
             foreach ($arr_knd as $knd) {
@@ -328,14 +164,14 @@ function makeSelectBox($subject,$user,$selection=null){
                 }
             }
             if ($selection != null && !$selectionFound) {
-              $data = knd_get_data($selection);
+              $data = $database->knd_get_data($selection);
               $sel[0][$i] = $data['knd_name'];
               $sel[1][$i] = $data['knd_ID'];
             }
             break;
 
         case 'grp':
-            $arr_grp = get_arr_grp();
+            $arr_grp = $database->get_arr_grp();
             $i=0;
             foreach ($arr_grp as $grp) {
                 if (!$grp['grp_trash']) {
@@ -371,10 +207,10 @@ function makeSelectBox($subject,$user,$selection=null){
  * @author th
  */
 function get_arr_pct_with_time($group,$user,$in,$out) {
-    global $kga;
+    global $kga, $database;
     //TODO: [tom] Functions results with 1 query
-    $arr_pcts = get_arr_pct($group);
-    $arr_time = get_arr_time_pct($user,$in,$out);
+    $arr_pcts = $database->get_arr_pct($group);
+    $arr_time = $database->get_arr_time_pct($user,$in,$out);
     //TODO END
     $arr = array();
 
@@ -386,7 +222,7 @@ function get_arr_pct_with_time($group,$user,$in,$out) {
 		$arr[$i]['pct_comment'] = $pct['pct_comment'];
         $arr[$i]['knd_name']    = $pct['knd_name'];
         $arr[$i]['pct_visible'] = $pct['pct_visible'];
-        $arr[$i]['zeit']        = @formatDuration($arr_time[$pct['pct_ID']]);
+        $arr[$i]['zeit']        = @Format::formatDuration($arr_time[$pct['pct_ID']]);
         $i++;
     }
 
@@ -438,10 +274,10 @@ function random_number($length) {
  * @author th
  */
 function checkDBversion($path) {
-    global $kga;
+    global $kga, $database;
 
     // check for versions before 0.7.13r96
-    $installedVersion = get_DBversion();
+    $installedVersion = $database->get_DBversion();
     $checkVersion = $installedVersion[0];
     $checkVersion = "$checkVersion";
     if ($checkVersion != $kga['version']) {
@@ -476,161 +312,6 @@ function get_agent() {
     else if(strpos($agent,"mozilla") !== false) $browser = "Mozilla";
     else $browser = "?";
     return $browser;
-}
-
-/**
- * writes errors during install or update to the logfile stored in temporary
- *
- * @param string $value message
- * @param string $path relative path to temporary directory
- * @param boolean $success
- * @author th
- */
-function logfile($value) {
-
-    $value = str_replace("\n", "", $value);
-    $value = str_replace("  ", " ", $value);
-    $value = str_replace("  ", " ", $value);
-
-    $logdatei=fopen(WEBROOT."temporary/logfile.txt","a");
-
-    fputs($logdatei, date("[d.m.Y H:i:s] ",time()) . $value ."\n");
-    fclose($logdatei);
-}
-
-/**
- * preprocess shortcut for date entries
- *
- * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
- *
- * @param string $date shortcut date
- * @return string
- * @author th
- */
-function expand_date_shortcut($date) {
-
-    $date  = str_replace(" ","",$date);
-
-    // empty string can't be a time value
-    if (strlen($date)==0)
-      return false;
-
-    // get the parts
-    $parts = preg_split("/\./",$date);
-
-    if (count($parts) == 0 || count($parts) > 3)
-      return false;
-
-    // check day
-    if (strlen($parts[0]) == 1)
-      $parts[0] = "0".$parts[0];
-
-    // check month
-    if (!isset($parts[1]))
-      $parts[1] = date("m");
-    else if (strlen($parts[1]) == 1)
-      $parts[1] = "0".$parts[1];
-
-    // check year
-    if (!isset($parts[2]))
-      $parts[2] = date("Y");
-    else if (strlen($parts[2]) == 2) {
-      if ($parts[2] > 70)
-        $parts[2] = "19".$parts[2];
-      else {
-        if ($parts[2] < 10)
-          $parts[2] = "200".$parts[2];
-        else
-          $parts[2] = "20".$parts[2];
-      }
-    }
-    
-    $return = implode(".",$parts);
-
-
-    if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/",$return))  $return = false;
-    return $return;
-}
-
-/**
- * preprocess shortcut for time entries
- *
- * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
- *
- * @param string $date shortcut time
- * @return string
- * @author th
- */
-function expand_time_shortcut($time) {
-    $time  = str_replace(" ","",$time);
-
-    // empty string can't be a time value
-    if (strlen($time)==0)
-      return false;
-
-    // get the parts
-    $parts = preg_split("/:|\./",$time);
-
-    for ($i=0;$i<count($parts);$i++) {
-      switch (strlen($parts[$i])) {
-        case 0:
-          return false;
-        case 1:
-          $parts[$i] = "0".$parts[$i];
-      }
-    }
-
-    // fill unsued parts (eg. 12:00 given but 12:00:00 is needed)
-    while (count($parts) < 3) {
-      $parts[] = "00";
-    }
-
-    $return = implode(":",$parts);
-
-    $regex23 = '([0-1][0-9])|(2[0-3])'; // regular expression for hours
-    $regex59 = '([0-5][0-9])'; // regular expression for minutes and seconds
-    if (!preg_match("/^($regex23):($regex59):($regex59)$/",$return)) $return = false;
-    return $return;
-}
-
-/**
- * check if a parset string matches with the following time-formatting: 20.08.2008-19:00:00
- * returns true if string is ok
- *
- * @param string $timestring
- * @return boolean
- * @author th
- */
-function check_time_format($timestring) {
-    if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})-([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})/",$timestring)) {
-        return false; // WRONG format
-    } else {
-        $ok = 1;
-
-        $hours   = substr($timestring,11,2);
-        $minutes = substr($timestring,14,2);
-        $seconds = substr($timestring,17,2);
-
-        if ((int)$hours>=24)  $ok=0;
-        if ((int)$minutes>=60) $ok=0;
-        if ((int)$seconds>=60) $ok=0;
-
-        logfile("timecheck: ".$ok);
-
-        $day   = substr($timestring,0,2);
-        $month = substr($timestring,3,2);
-        $year  = substr($timestring,6,4);
-
-        if (!checkdate( (int)$month, (int)$day, (int)$year) ) $ok=0;
-
-        logfile("time/datecheck: ".$ok);
-
-        if ($ok) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
 
 function convert_time_strings($in,$out) {
@@ -710,7 +391,7 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
       $zef_final_data['zef_cleared']      = $zef_data['cleared'];
 
-	    return zef_edit_record($id,$zef_final_data);
+	    return $database->zef_edit_record($id,$zef_final_data);
 
 	} else {
 
@@ -726,31 +407,10 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
       $zef_final_data['zef_cleared']         = $zef_data['cleared'];
 
-	    return zef_edit_record($id,$zef_final_data);
+	    return $database->zef_edit_record($id,$zef_final_data);
 
 	}
 
-}
-
-
-
-
-
-// http://www.alfasky.com/?p=20
-// This little function will help you truncate a string to a specified
-// length when copying data to a place where you can only store or display
-// a limited number of characters, then it will append “…” to it showing
-// that some characters were removed from the original entry.
-
-function addEllipsis($string, $length, $end='…')
-{
-  if (strlen($string) > $length)
-  {
-    $length -=  strlen($end);  // $length =  $length - strlen($end);
-    $string  = substr($string, 0, $length);
-    $string .= $end;  //  $string =  $string . $end;
-  }
-  return $string;
 }
 
 
@@ -810,87 +470,6 @@ EOD;
   return true;
 }
 
-/**
- * Check if the new time values are better than the old once in the array.
- *
- * @param $bestTime (called by reference)
- *                  Array containing the, until now, best time data
- * @param $newStart suggestion for a better start time
- * @param $newEnd   suggestion for a better end time
- * @param $realStart the real start time
- * @param $realEnd   the real end time
- */
-function roundTimespanCheckIfBetter(&$bestTime,$newStart,$newEnd,$realStart,$realEnd) {
-  $realDuration = $realEnd-$realStart;
-  $newDuration = $newEnd-$newStart;
-
-  if (abs($realDuration-$newDuration) > abs($realDuration - $bestTime['duration'])) {
-    // new times are definitely worse, as the timespan is furher away from the real duration
-    return;
-  }
-
-  // still, this might be closer to the real time
-  if (abs($realStart-$newStart)+abs($realEnd-$newEnd) >= $bestTime['totalDeviation']) {
-    // it is not
-    return;
-  }
-
-  // new time is better, update array
-  $bestTime['start']    = $newStart;
-  $bestTime['end']      = $newEnd;
-  $bestTime['duration'] = $newEnd-$newStart;
-  $bestTime['totalDeviation'] = abs($realStart-$newStart)+abs($realEnd-$newEnd);
-}
-
-/**
- * Find a beginning and end time whose timespan is as close to
- * the real timepsan as possible while being a multiple of $steps (in minutes).
- *
- * e.g.: 16:07:31 - 17:15:16 is "rounded" to 16:00:00 - 17:15:00
- *       with steps set to 15
- *
- *@param $start the beginning of the timespan
- *@param $end   the end of the timespan
- *@param $steps the steps in minutes (has to divide an hour, e.g. 5 is valid while 7 is not)
- *
- */
-function roundTimespan($start,$end,$steps) {
-  // calculate how long a steps is (e.g. 15 second steps are 900 seconds long)
-  $stepWidth=$steps*60;
-
-  if ($steps == 0) {
-    $bestTime = array();
-    $bestTime['start']    = $start;
-    $bestTime['end']      = $end;
-    return $bestTime;
-  }
-
-
-  // calculate how many seconds we are over the previous full step
-  $startSecondsOver = $start%$stepWidth;
-  $endSecondsOver   = $end%$stepWidth;
-
-  // calculate earlier and later times of full step width
-  $earlierStart = $start-$startSecondsOver;
-  $earlierEnd   = $end-$endSecondsOver;
-  $laterStart   = $start+($stepWidth-$startSecondsOver);
-  $laterEnd     = $end+($stepWidth-$endSecondsOver);
-
-
-  // assuming the earlier start end end time are the best (likely not always true)
-  $bestTime = array();
-  $bestTime['start']    = $earlierStart;
-  $bestTime['end']      = $earlierEnd;
-  $bestTime['duration'] = $earlierEnd-$earlierStart;
-  $bestTime['totalDeviation'] = abs($start-$earlierStart)+abs($end-$earlierEnd);
-
-  // check for better start and end times
-  roundTimespanCheckIfBetter($bestTime,$earlierStart,$laterEnd,$start,$end);
-  roundTimespanCheckIfBetter($bestTime,$laterStart,$earlierEnd,$start,$end);
-  roundTimespanCheckIfBetter($bestTime,$laterStart,$laterEnd,$start,$end);
-
-  return $bestTime;
-}
 
 
 

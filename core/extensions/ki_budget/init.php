@@ -22,7 +22,7 @@ include('../../includes/basics.php');
 
 require("private_func.php");
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // set smarty config
 require_once(WEBROOT.'libraries/smarty/Smarty.class.php');
@@ -32,9 +32,9 @@ $tpl->compile_dir  = 'compile/';
 
 // Get all project for the logged in customer or the current user.
 if (isset($kga['customer']))
-  $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+  $arr_pct = $database->get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
 else
-  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+  $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
 
 $usedEvents = array();
 $xpensesOccured = false;

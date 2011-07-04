@@ -26,7 +26,8 @@
  * @author AA
  */
 function get_entry_knd($id) {
-    global $kga, $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}knd 

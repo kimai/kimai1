@@ -27,8 +27,8 @@
  * @author sl
  */
 function xp_zef_set_cleared($id,$cleared) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
@@ -50,8 +50,8 @@ function xp_zef_set_cleared($id,$cleared) {
  * @author sl
  */
 function xp_exp_set_cleared($id,$cleared) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
@@ -75,7 +75,8 @@ function xp_exp_set_cleared($id,$cleared) {
  * @author sl
  */
 function xp_toggle_header($header) {
-    global $kga,$pdo_conn,$all_column_headers;    
+    global $kga, $database,$all_column_headers;
+    $pdo_conn = $database->getConnectionHandler(); 
     $p = $kga['server_prefix'];
 
 
@@ -102,7 +103,8 @@ function xp_toggle_header($header) {
  * @author sl
  */
 function xp_get_disabled_headers($user_id) {
-    global $kga,$pdo_conn,$all_column_headers; 
+    global $kga, $database,$all_column_headers;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $disabled_headers = array();

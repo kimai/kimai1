@@ -22,7 +22,7 @@
 // ==================================
 include('../../includes/basics.php');
 include('private_db_layer_'.$kga['server_conn'].'.php');
-checkUser();
+$database->checkUser();
 
 
 // ============================================
@@ -64,7 +64,7 @@ if (isset($kga['usr'])) // user logged in
   $ann = get_arr_exp_usr($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
   $ann = get_arr_exp_usr($in,$out,null,array($kga['customer']['knd_ID']));
-$ann = formatCurrency($ann);
+$ann = Format::formatCurrency($ann);
 $tpl->assign('usr_ann',$ann);
 
 // TODO: function for loops or convert it in template with new function
@@ -72,14 +72,14 @@ if (isset($kga['usr'])) // user logged in
   $ann = get_arr_exp_knd($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
   $ann = get_arr_exp_knd($in,$out,null,array($kga['customer']['knd_ID']));
-$ann = formatCurrency($ann);
+$ann = Format::formatCurrency($ann);
 $tpl->assign('knd_ann',$ann);
 
 if (isset($kga['usr'])) // user logged in
   $ann = get_arr_exp_pct($in,$out,array($kga['usr']['usr_ID']));
 else // customer logged in
   $ann = get_arr_exp_pct($in,$out,null,array($kga['customer']['knd_ID']));
-$ann = formatCurrency($ann);
+$ann = Format::formatCurrency($ann);
 $tpl->assign('pct_ann',$ann);
 
 $tpl->assign('exp_display', $tpl->fetch("exp.tpl"));

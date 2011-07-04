@@ -26,7 +26,8 @@
  * @author sl
  */
 function get_entry_knd($id) {
-    global $kga, $conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $filter['knd_name'] = MySQL::SQLValue($id);

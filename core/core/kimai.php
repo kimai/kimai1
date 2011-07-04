@@ -36,7 +36,7 @@ header("Pragma: no-cache");
 // ==================================
 include('../includes/basics.php');
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
@@ -186,7 +186,7 @@ if (isset($kga['customer'])) {
   $current_timer['sec']  = 0;
 }
 else
-  $current_timer = get_current_timer();
+  $current_timer = $database->get_current_timer();
 
 // =======================================
 // = Display date and time in the header =
@@ -197,7 +197,7 @@ $dp_start = 0;
 if ($kga['calender_start']!="")
     $dp_start = $kga['calender_start'];
 else if (isset($kga['usr']))
-    $dp_start = date("d/m/Y",getjointime($kga['usr']['usr_ID']));    
+    $dp_start = date("d/m/Y",$database->getjointime($kga['usr']['usr_ID']));    
     
 
 $dp_today = date("d/m/Y",time());
@@ -206,9 +206,9 @@ $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $dp_today);
 
 if (isset($kga['customer']))
-  $tpl->assign('total', formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
+  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
 else
-  $tpl->assign('total', formatDuration(get_zef_time($in,$out,$kga['usr']['usr_ID'])));
+  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$kga['usr']['usr_ID'])));
 
 // ===========================
 // = DatePicker localization =
@@ -247,7 +247,7 @@ $tpl->assign('css_extension_files', $css_extension_files);
 $tpl->assign('js_extension_files', $js_extension_files);
 
 if (isset($kga['usr']))
-  $tpl->assign('recstate', get_rec_state($kga['usr']['usr_ID']));
+  $tpl->assign('recstate', $database->get_rec_state($kga['usr']['usr_ID']));
 else
   $tpl->assign('recstate', 0);
 
@@ -260,12 +260,12 @@ $pct_data = array('pct_ID'=>false,'pct_name'=>'');
 $evt_data = array('evt_ID'=>false,'evt_name'=>'');
 
 if (!isset($kga['customer'])) {
-  //$lastZefRecord = zef_get_data(false);
-  $last_pct = pct_get_data($kga['usr']['lastProject']);
-  $last_evt = evt_get_data($kga['usr']['lastEvent']);
+  //$lastZefRecord = $database->zef_get_data(false);
+  $last_pct = $database->pct_get_data($kga['usr']['lastProject']);
+  $last_evt = $database->evt_get_data($kga['usr']['lastEvent']);
   if (!$last_pct['pct_trash']) {
     $pct_data = $last_pct;
-    $knd_data = knd_get_data($last_pct['pct_kndID']);
+    $knd_data = $database->knd_get_data($last_pct['pct_kndID']);
   }
   if (!$last_evt['evt_trash'])
     $evt_data = $last_evt;    
@@ -304,7 +304,7 @@ if ($handle = opendir($extDir)) {
 if (isset($kga['customer']))
   $arr_usr = array();
 else
-  $arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
+  $arr_usr = $database->get_arr_watchable_users($kga['usr']['usr_ID']);
 if (count($arr_usr)>0) {
     $tpl->assign('arr_usr', $arr_usr);
 } else {
@@ -321,7 +321,7 @@ if (isset($kga['customer']))
       'knd_name'=>$kga['customer']['knd_name'],
       'knd_visible'=>$kga['customer']['knd_visible']));
 else
-  $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+  $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -333,9 +333,9 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // = display project table =
 // =========================
 if (isset($kga['customer']))
-  $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+  $arr_pct = $database->get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
 else
-  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+  $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -347,11 +347,11 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // = display events table =
 // ========================
 if (isset($kga['customer']))
-  $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+  $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
 else if ($pct_data['pct_ID'])
-  $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],$pct_data['pct_ID']);
+  $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],$pct_data['pct_ID']);
 else
-  $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
+  $arr_evt = $database->get_arr_evt($kga['usr']['usr_grp']);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {

@@ -72,7 +72,8 @@ abstract class AuthBase {
    * @return integer id of the group to add the user to
    **/
   public function getDefaultGroupId() {
-      $groups = get_arr_grp();
+      global $database;
+      $groups = $database->get_arr_grp();
       return $groups[0]['grp_id'];
   }
 }

@@ -20,7 +20,7 @@
     // Include Basics
     include('../../includes/basics.php');
 
-    $usr = checkUser();
+    $usr = $database->checkUser();
     // ============================================
     // = initialize currently displayed timespace =
     // ============================================
@@ -40,17 +40,20 @@
     // = display customer table =
     // ==========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_knd = get_arr_knd("all");
+      $arr_knd = $database->get_arr_knd("all");
     else
-      $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+      $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
 
     foreach ($arr_knd as $row=>$knd_data) {
       $grp_names = array();
-      foreach (knd_get_grps($knd_data['knd_ID']) as $grp_id) {
-        $data = grp_get_data($grp_id);
-         $grp_names[] = $data['grp_name'];
+      $grps = $database->knd_get_grps($knd_data['knd_ID']);
+      if ($grps !== false) {
+        foreach ($grps as $grp_id) {
+          $data = $database->grp_get_data($grp_id);
+          $grp_names[] = $data['grp_name'];
+        }
+        $arr_knd[$row]['groups'] = implode(", ",$grp_names);
       }
-      $arr_knd[$row]['groups'] = implode(", ",$grp_names);
     }
 
     if (count($arr_knd)>0) {
@@ -64,14 +67,14 @@
     // = display project table =
     // =========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_pct = get_arr_pct("all");
+      $arr_pct = $database->get_arr_pct("all");
     else
-      $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+      $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
 
     foreach ($arr_pct as $row=>$pct_data) {
       $grp_names = array();
-      foreach (pct_get_grps($pct_data['pct_ID']) as $grp_id) {
-        $data = grp_get_data($grp_id);
+      foreach ($database->pct_get_grps($pct_data['pct_ID']) as $grp_id) {
+        $data = $database->grp_get_data($grp_id);
          $grp_names[] = $data['grp_name'];
       }
       $arr_pct[$row]['groups'] = implode(", ",$grp_names);
@@ -88,14 +91,14 @@
     // = display events table =
     // ========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_evt = get_arr_evt_by_pct("all",-2);
+      $arr_evt = $database->get_arr_evt_by_pct("all",-2);
     else
-      $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],-2);
+      $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],-2);
 
     foreach ($arr_evt as $row=>$evt_data) {
       $grp_names = array();
-      foreach (evt_get_grps($evt_data['evt_ID']) as $grp_id) {
-        $data = grp_get_data($grp_id);
+      foreach ($database->evt_get_grps($evt_data['evt_ID']) as $grp_id) {
+        $data = $database->grp_get_data($grp_id);
          $grp_names[] = $data['grp_name'];
       }
       $arr_evt[$row]['groups'] = implode(", ",$grp_names);
@@ -113,18 +116,18 @@
     $tpl->assign('curr_user', $kga['usr']['usr_name']);
 
     if ($kga['usr']['usr_sts']==0)
-      $tpl->assign('arr_grp', get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
+      $tpl->assign('arr_grp', $database->get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
     else
-      $tpl->assign('arr_grp', get_arr_grp_by_leader($kga['usr']['usr_ID'],
+      $tpl->assign('arr_grp', $database->get_arr_grp_by_leader($kga['usr']['usr_ID'],
         get_cookie('ap_ext_show_deleted_groups',0)));
 
     if ($kga['usr']['usr_sts']==0)
-      $tpl->assign('arr_usr',  get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+      $tpl->assign('arr_usr',  $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
     else
-      $tpl->assign('arr_usr',get_arr_watchable_users($kga['usr']['usr_ID']));
+      $tpl->assign('arr_usr',$database->get_arr_watchable_users($kga['usr']['usr_ID']));
     $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
     $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
-    $tpl->assign('languages', langs());
+    $tpl->assign('languages', Translations::langs());
 
     $tpl->assign('timezones', timezoneList());
 

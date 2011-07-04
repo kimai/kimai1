@@ -22,7 +22,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -48,16 +48,16 @@ header("Pragma: no-cache");
 
 // Get the total time displayed in the table.
 if (isset($kga['customer']))
-  $total = formatDuration(get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
+  $total = Format::formatDuration($database->get_zef_time($in,$out,null,array($kga['customer']['knd_ID']),null));
 else
-  $total = formatDuration(get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
+  $total = Format::formatDuration($database->get_zef_time($in,$out,array($kga['usr']['usr_ID']),null,null));
 $tpl->assign('total', $total);
 
 // Get the array of timesheet entries.
 if (isset($kga['customer']))
-  $arr_zef = get_arr_zef($in,$out,null,array($kga['customer']['knd_ID']),null,1);
+  $arr_zef = $database->get_arr_zef($in,$out,null,array($kga['customer']['knd_ID']),null,1);
 else
-  $arr_zef = get_arr_zef($in,$out,array($kga['usr']['usr_ID']),null,null,1);
+  $arr_zef = $database->get_arr_zef($in,$out,array($kga['usr']['usr_ID']),null,null,1);
 if (count($arr_zef)>0) {
     $tpl->assign('arr_zef', $arr_zef);
 } else {
@@ -66,34 +66,34 @@ if (count($arr_zef)>0) {
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
-  $ann = get_arr_time_usr($in,$out,null,array($kga['customer']['knd_ID']));
+  $ann = $database->get_arr_time_usr($in,$out,null,array($kga['customer']['knd_ID']));
 else
-  $ann = get_arr_time_usr($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+  $ann = $database->get_arr_time_usr($in,$out,array($kga['usr']['usr_ID']));
+Format::formatAnnotations($ann);
 $tpl->assign('usr_ann',$ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
-  $ann = get_arr_time_knd($in,$out,null,array($kga['customer']['knd_ID']));
+  $ann = $database->get_arr_time_knd($in,$out,null,array($kga['customer']['knd_ID']));
 else
-  $ann = get_arr_time_knd($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+  $ann = $database->get_arr_time_knd($in,$out,array($kga['usr']['usr_ID']));
+Format::formatAnnotations($ann);
 $tpl->assign('knd_ann',$ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
-  $ann = get_arr_time_pct($in,$out,null,array($kga['customer']['knd_ID']));
+  $ann = $database->get_arr_time_pct($in,$out,null,array($kga['customer']['knd_ID']));
 else
-  $ann = get_arr_time_pct($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+  $ann = $database->get_arr_time_pct($in,$out,array($kga['usr']['usr_ID']));
+Format::formatAnnotations($ann);
 $tpl->assign('pct_ann',$ann);
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
-  $ann = get_arr_time_evt($in,$out,null,array($kga['customer']['knd_ID']));
+  $ann = $database->get_arr_time_evt($in,$out,null,array($kga['customer']['knd_ID']));
 else
-  $ann = get_arr_time_evt($in,$out,array($kga['usr']['usr_ID']));
-formatAnnotations($ann);
+  $ann = $database->get_arr_time_evt($in,$out,array($kga['usr']['usr_ID']));
+Format::formatAnnotations($ann);
 $tpl->assign('evt_ann',$ann);
 
 

@@ -54,13 +54,14 @@ function calculate_expenses_sum($projectId) {
  * 
  */
 function budget_plot_data($projects,&$usedEvents,&$expensesOccured) {
+global $database;
 
 $wages = array();
 $eventUsage = array(); // track what events are used
 $usedEvents = array(); 
 $expensesOccured = false;
 
-$events = get_arr_evt("all");
+$events = $database->get_arr_evt("all");
 
  /*
   * sum up expenses
@@ -93,7 +94,7 @@ foreach ($projects as $project) {
  */
 foreach ($projects as $project) {
   $projectId = $project['pct_ID'];
-  $zef_arr = get_arr_zef(0,time(),null,null,array($projectId));
+  $zef_arr = $database->get_arr_zef(0,time(),null,null,array($projectId));
 
   foreach ($zef_arr as $zef) {
     $pctId = $zef['zef_pctID'];

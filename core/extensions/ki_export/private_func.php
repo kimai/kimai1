@@ -46,13 +46,13 @@ include('private_db_layer_'.$kga['server_conn'].'.php');
  * @return array with time recordings and expenses chronologically sorted
  */
 function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null,$events = null,$limit=false,$reverse_order=false,$default_location='',$filter_cleared=-1,$filter_type=-1,$limitCommentSize=true,$filter_refundable=-1) {
-  global $expense_ext_available;
+  global $expense_ext_available, $database;
 
     $zef_arr = array();
     $exp_arr = array();
     
     if ($filter_type != 1)
-      $zef_arr = get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order,$filter_cleared);
+      $zef_arr = $database->get_arr_zef($start,$end,$users,$customers,$projects,$events,$limit,$reverse_order,$filter_cleared);
     
     if ($filter_type != 0 && $expense_ext_available)
       $exp_arr = get_arr_exp($start,$end,$users,$customers,$projects,$limit,$reverse_order,$filter_refundable,$filter_cleared);
@@ -86,7 +86,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
           $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
           $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
           if ($limitCommentSize)
-            $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+            $arr['comment']      = Format::addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
           else
             $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
           $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
@@ -114,7 +114,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
         $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
         if ($limitCommentSize)
-          $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
+          $arr['comment']      = Format::addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
         else
           $arr['comment']      = $exp_arr[$exp_arr_index]['exp_comment'];
         $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
@@ -150,7 +150,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
         $arr['zef_evtID']      = $zef_arr[$zef_arr_index]['zef_evtID'];
         $arr['evt_name']       = $zef_arr[$zef_arr_index]['evt_name'];
         if ($limitCommentSize)
-          $arr['comment']      = addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+          $arr['comment']      = Format::addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
         else
           $arr['comment']      = $zef_arr[$zef_arr_index]['zef_comment'];
         $arr['comment_type']   = $zef_arr[$zef_arr_index]['zef_comment_type'];
@@ -180,7 +180,7 @@ function xp_get_arr($start,$end,$users = null,$customers = null,$projects = null
       $arr['pct_ID']         = $exp_arr[$exp_arr_index]['pct_ID'];
       $arr['pct_name']       = $exp_arr[$exp_arr_index]['pct_name'];
       if ($limitCommentSize)
-        $arr['comment']      = addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
+        $arr['comment']      = Format::addEllipsis($exp_arr[$exp_arr_index]['exp_comment'],150);
       else
         $arr['comment']      = $exp_arr[$exp_arr_index]['exp_comment'];
       $arr['evt_name']       = $exp_arr[$exp_arr_index]['exp_designation'];
@@ -225,9 +225,9 @@ function merge_annotations(&$zef_arr,&$exp_arr) {
  * @return array Array which assigns every user (via his ID) the data to show.
  */
 function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
-  global $expense_ext_available;
+  global $expense_ext_available, $database;
 
-    $arr = get_arr_time_usr($start,$end,$users,$customers,$projects,$events);
+    $arr = $database->get_arr_time_usr($start,$end,$users,$customers,$projects,$events);
     
     if ($expense_ext_available) {
       $exp_arr = get_arr_exp_usr($start,$end,$users,$customers,$projects);
@@ -251,9 +251,9 @@ function xp_get_arr_usr($start,$end,$users = null,$customers = null,$projects = 
  * @return array Array which assigns every customer (via his ID) the data to show.
  */
 function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
-  global $expense_ext_available;
+  global $expense_ext_available, $database;
 
-    $arr = get_arr_time_knd($start,$end,$users,$customers,$projects,$events);
+    $arr = $database->get_arr_time_knd($start,$end,$users,$customers,$projects,$events);
     
     if ($expense_ext_available) {
       $exp_arr = get_arr_exp_knd($start,$end,$users,$customers,$projects);
@@ -275,9 +275,9 @@ function xp_get_arr_knd($start,$end,$users = null,$customers = null,$projects = 
  * @return array Array which assigns every project (via his ID) the data to show.
  */
 function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
-  global $expense_ext_available;
+  global $expense_ext_available, $database;
 
-    $arr = get_arr_time_pct($start,$end,$users,$customers,$projects,$events);
+    $arr = $database->get_arr_time_pct($start,$end,$users,$customers,$projects,$events);
     
     if ($expense_ext_available) {
       $exp_arr = get_arr_exp_pct($start,$end,$users,$customers,$projects);
@@ -299,7 +299,8 @@ function xp_get_arr_pct($start,$end,$users = null,$customers = null,$projects = 
  * @return array Array which assigns every taks (via his ID) the data to show.
  */
 function xp_get_arr_evt($start,$end,$users = null,$customers = null,$projects = null,$events = null) {
-    $arr = get_arr_time_evt($start,$end,$users,$customers,$projects,$events);
+    global $database;
+    $arr = $database->get_arr_time_evt($start,$end,$users,$customers,$projects,$events);
     return $arr;
 }
 

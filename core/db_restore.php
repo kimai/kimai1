@@ -25,7 +25,7 @@
 
 require('includes/basics.php');
 
-$version_temp  = get_DBversion();
+$version_temp  = $database->get_DBversion();
 $versionDB  = $version_temp[0];
 $revisionDB = $version_temp[1];
 
@@ -56,9 +56,9 @@ function exec_query($query) {
         else
           $errorInfo = "No connection object.";
     }
-    logfile($query);
+    Logger::logfile($query);
     if (!$success) {
-      logfile($errorInfo);
+      Logger::logfile($errorInfo);
       $errors=true;
     }
 }
@@ -71,7 +71,7 @@ if (isset($_REQUEST['submit']))
        * Create a backup.
        */
       
-      logfile("-- begin backup -----------------------------------");
+      Logger::logfile("-- begin backup -----------------------------------");
 	    $backup_stamp = time();  
 	    $query = ("SHOW TABLES;");
       
@@ -122,7 +122,7 @@ if (isset($_REQUEST['submit']))
 	    		if ($errors) die($kga['lang']['updater'][60]);
 	    	}
 	    }
-	    logfile("-- backup finished -----------------------------------");
+	    Logger::logfile("-- backup finished -----------------------------------");
 		header("location: db_restore.php");
 	}
 

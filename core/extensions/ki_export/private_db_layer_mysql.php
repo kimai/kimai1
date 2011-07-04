@@ -27,7 +27,8 @@
  * @author sl
  */
 function xp_zef_set_cleared($id,$cleared) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
 
     $table                 = $kga['server_prefix']."zef";
     $values['zef_cleared'] = $cleared?1:0;
@@ -49,7 +50,8 @@ function xp_zef_set_cleared($id,$cleared) {
  * @author sl
  */
 function xp_exp_set_cleared($id,$cleared) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
 
     $table                 = $kga['server_prefix']."exp";
     $values['exp_cleared'] = $cleared?1:0;
@@ -72,7 +74,8 @@ function xp_exp_set_cleared($id,$cleared) {
  * @author sl
  */
 function xp_toggle_header($header) {
-    global $kga,$conn,$all_column_headers;    
+    global $kga, $database,$all_column_headers;    
+    $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header,$all_column_headers);
 
@@ -97,7 +100,8 @@ function xp_toggle_header($header) {
  * @author sl
  */
 function xp_get_disabled_headers($user_id) {
-    global $kga,$conn,$all_column_headers; 
+    global $kga, $database,$all_column_headers;
+    $conn = $database->getConnectionHandler();
 
     $disabled_headers = array();
 

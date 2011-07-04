@@ -138,22 +138,22 @@ switch ($axAction) {
     	$arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
-        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
+        $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
 
         $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        Format::formatAnnotations($ann);
         $tpl->assign('usr_ann',$ann);
         
         $ann = xp_get_arr_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        Format::formatAnnotations($ann);
         $tpl->assign('knd_ann',$ann);
 
         $ann = xp_get_arr_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        Format::formatAnnotations($ann);
         $tpl->assign('pct_ann',$ann);
 
         $ann = xp_get_arr_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        Format::formatAnnotations($ann);
         $tpl->assign('evt_ann',$ann);
 
         $tpl->assign('timeformat',$timeformat);
@@ -169,7 +169,7 @@ switch ($axAction) {
      */
     case 'export_html':   
 
-        usr_set_preferences(array(
+        $database->usr_set_preferences(array(
           'print_summary' => isset($_REQUEST['print_summary'])?1:0,
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.print.');
@@ -221,14 +221,14 @@ switch ($axAction) {
         // Create filter descirption, Same is in PDF export
         $customers = array();
         foreach ($filterKnd as $knd_id) {
-          $customer_info = knd_get_data($knd_id);
+          $customer_info = $database->knd_get_data($knd_id);
           $customers[] = $customer_info['knd_name'];
         }
         $tpl->assign('customersFilter',implode(', ',$customers));
 
         $projects = array();
         foreach ($filterPct as $pct_id) {
-          $project_info = pct_get_data($pct_id);
+          $project_info = $database->pct_get_data($pct_id);
           $projects[] = $project_info['pct_name'];
         }
         $tpl->assign('projectsFilter',implode(', ',$projects));
@@ -251,7 +251,7 @@ switch ($axAction) {
      */
     case 'export_xls':
 
-        usr_set_preferences(array(
+        $database->usr_set_preferences(array(
           'decimal_separator' => $_REQUEST['decimal_separator'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.xls.');      
@@ -279,7 +279,7 @@ switch ($axAction) {
      */
     case 'export_csv':
 
-        usr_set_preferences(array(
+        $database->usr_set_preferences(array(
           'column_delimiter' => $_REQUEST['column_delimiter'],
           'quote_char' => $_REQUEST['quote_char'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
@@ -375,7 +375,7 @@ switch ($axAction) {
      */
     case 'export_pdf':
 
-        usr_set_preferences(array(
+        $database->usr_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
           'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
@@ -412,7 +412,7 @@ switch ($axAction) {
      */
     case 'export_pdf2':
 
-        usr_set_preferences(array(
+        $database->usr_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
           'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 

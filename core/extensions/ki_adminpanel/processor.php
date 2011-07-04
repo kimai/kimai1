@@ -34,15 +34,15 @@ switch ($axAction) {
     	$usr_data['usr_grp'] = $kga['usr']['usr_grp'];
     	$usr_data['usr_sts'] = 2;
     	$usr_data['usr_active'] = 0;
-    	echo usr_create($usr_data);
+    	echo $database->usr_create($usr_data);
     break;
     
     case "createGrp":
     // create new group
 		$grp_data['grp_name'] = trim($axValue);
-		$new_grp_id = grp_create($grp_data);
+		$new_grp_id = $database->grp_create($grp_data);
 		if ($new_grp_id != false) {
-			assign_grp2ldrs($new_grp_id, array($kga['usr']['usr_ID']));
+			$database->assign_grp2ldrs($new_grp_id, array($kga['usr']['usr_ID']));
 		}
     break;
     
@@ -51,15 +51,15 @@ switch ($axAction) {
         $tpl->assign('curr_user', $kga['usr']['usr_name']);
 
         if ($kga['usr']['usr_sts']==0)
-          $tpl->assign('arr_grp', get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
+          $tpl->assign('arr_grp', $database->get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
         else
-          $tpl->assign('arr_grp', get_arr_grp_by_leader($kga['usr']['usr_ID'],
+          $tpl->assign('arr_grp', $database->get_arr_grp_by_leader($kga['usr']['usr_ID'],
             get_cookie('ap_ext_show_deleted_groups',0)));
 
         if ($kga['usr']['usr_sts']==0)
-          $tpl->assign('arr_usr',  get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+          $tpl->assign('arr_usr',  $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
         else
-          $tpl->assign('arr_usr',get_arr_watchable_users($kga['usr']['usr_ID']));
+          $tpl->assign('arr_usr',$database->get_arr_watchable_users($kga['usr']['usr_ID']));
         $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
         $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
         switch ($axValue) {
@@ -70,17 +70,20 @@ switch ($axAction) {
             
             case "knd":
 		if ($kga['usr']['usr_sts']==0)
-		  $arr_knd = get_arr_knd("all");
+		  $arr_knd = $database->get_arr_knd("all");
 		else
-		  $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+		  $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
 
     foreach ($arr_knd as $row=>$knd_data) {
       $grp_names = array();
-      foreach (knd_get_grps($knd_data['knd_ID']) as $grp_id) {
-        $data = grp_get_data($grp_id);
-         $grp_names[] = $data['grp_name'];
+      $grps = $database->knd_get_grps($knd_data['knd_ID']);
+      if ($grps !== false) {
+        foreach ($grps as $grp_id) {
+          $data = $database->grp_get_data($grp_id);
+          $grp_names[] = $data['grp_name'];
+        }
+        $arr_knd[$row]['groups'] = implode(", ",$grp_names);
       }
-      $arr_knd[$row]['groups'] = implode(", ",$grp_names);
     }
 
                 if (count($arr_knd)>0) {
@@ -93,15 +96,15 @@ switch ($axAction) {
                 
             case "pct":
 		if ($kga['usr']['usr_sts']==0)
-		  $arr_pct = get_arr_pct("all");
+		  $arr_pct = $database->get_arr_pct("all");
 		else
-		  $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+		  $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
 
 
     foreach ($arr_pct as $row=>$pct_data) {
       $grp_names = array();
-      foreach (pct_get_grps($pct_data['pct_ID']) as $grp_id) {
-        $data = grp_get_data($grp_id);
+      foreach ($database->pct_get_grps($pct_data['pct_ID']) as $grp_id) {
+        $data = $database->grp_get_data($grp_id);
          $grp_names[] = $data['grp_name'];
       }
       $arr_pct[$row]['groups'] = implode(", ",$grp_names);
@@ -120,11 +123,11 @@ switch ($axAction) {
 		else
 		  $group = $kga['usr']['usr_grp'];
                 if (!isset($_REQUEST['evt_filter']))
-                  $arr_evt = get_arr_evt($group);
+                  $arr_evt = $database->get_arr_evt($group);
                 else
                   switch ($_REQUEST['evt_filter']) {
                       case -1:
-                      $arr_evt = get_arr_evt($group);
+                      $arr_evt = $database->get_arr_evt($group);
                       break;
                     case -2:
                       // -2 is to get unassigned events. As -2 is never
@@ -132,13 +135,13 @@ switch ($axAction) {
                       // events.
                     default:
                       $arr_evt = 
-                        get_arr_evt_by_pct($group,$_REQUEST['evt_filter']);
+                        $database->get_arr_evt_by_pct($group,$_REQUEST['evt_filter']);
                   }
 
                 foreach ($arr_evt as $row=>$evt_data) {
                   $grp_names = array();
-                  foreach (evt_get_grps($evt_data['evt_ID']) as $grp_id) {
-                    $data = grp_get_data($grp_id);
+                  foreach ($database->evt_get_grps($evt_data['evt_ID']) as $grp_id) {
+                    $data = $database->grp_get_data($grp_id);
                     $grp_names[] = $data['grp_name'];
                   }
                   $arr_evt[$row]['groups'] = implode(", ",$grp_names);
@@ -151,7 +154,7 @@ switch ($axAction) {
                 }
                 
                 
-                $arr_pct = get_arr_pct($group);
+                $arr_pct = $database->get_arr_pct($group);
                 $tpl->assign('arr_pct', $arr_pct);
                 
                 $tpl->assign('selected_evt_filter',$_REQUEST['evt_filter']);
@@ -171,7 +174,7 @@ switch ($axAction) {
             case 1: 
             // If the confirmation is returned the user gets the trash-flag. 
             // TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
-            usr_delete($id);
+            $database->usr_delete($id);
         break;
         }
     break;
@@ -186,7 +189,7 @@ switch ($axAction) {
             case 1: 
             // If the confirmation is returned the group gets the trash-flag. 
             // TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
-            grp_delete($id);
+            $database->grp_delete($id);
         break;
         }
     break;
@@ -200,7 +203,7 @@ switch ($axAction) {
         break;
             case 1: 
             // If the confirmation is returned the project gets the trash-flag. 
-            pct_delete($id);
+            $database->pct_delete($id);
         break;
         }
     break;
@@ -214,7 +217,7 @@ switch ($axAction) {
         break;
             case 1: 
             // If the confirmation is returned the customer gets the trash-flag. 
-            knd_delete($id);
+            $database->knd_delete($id);
         break;
         }
     break;
@@ -228,7 +231,7 @@ switch ($axAction) {
         break;
             case 1: 
             // If the confirmation is returned the event gets the trash-flag. 
-            evt_delete($id);
+            $database->evt_delete($id);
         break;
         }
     break;
@@ -236,7 +239,7 @@ switch ($axAction) {
     case "banUsr":
     // Ban a user from login
     $sts['usr_active'] = 0;
-    usr_edit($id, $sts);
+    $database->usr_edit($id, $sts);
     echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />",
                   $kga['lang']['bannedusr'], $kga['lang']['bannedusr'], $kga['conf']['skin']);
     break;
@@ -244,7 +247,7 @@ switch ($axAction) {
     case "unbanUsr":
     // Unban a user from login
     $sts['usr_active'] = 1;
-    usr_edit($id, $sts);
+    $database->usr_edit($id, $sts);
     echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />",
                   $kga['lang']['activeusr'], $kga['lang']['activeusr'], $kga['conf']['skin']);
     break;
@@ -262,7 +265,7 @@ switch ($axAction) {
         if ($_REQUEST['usr_pw'] != "") {
         	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['usr_pw'].$kga['password_salt']);
         }
-        usr_edit($id, $usr_data); 
+        $database->usr_edit($id, $usr_data); 
     break;
     
     case "sendEditGrp":
@@ -271,7 +274,7 @@ switch ($axAction) {
         grp_edit($id, $grp_data);
         
         $ldrs = $_REQUEST['grp_leader'];
-        assign_grp2ldrs($id, $ldrs);
+        $database->assign_grp2ldrs($id, $ldrs);
         
     break;
     
@@ -301,7 +304,7 @@ switch ($axAction) {
         $var_data['defaultTimezone']        = $_REQUEST['defaultTimezone'];
         $var_data['exactSums']              = isset($_REQUEST['exactSums']);
         
-        $success = var_edit($var_data);
+        $success = $database->var_edit($var_data);
 
         // do whatever you like
         // and return one of these:

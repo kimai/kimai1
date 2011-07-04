@@ -29,8 +29,8 @@ switch ($axAction) {
     // = Builds edit-user dialogue =
     // =============================
 
-        $usr_details = get_usr($id);        
-        $arr = get_arr_grp();
+        $usr_details = $database->get_usr($id);        
+        $arr = $database->get_arr_grp();
         
         $i=0;
         foreach ($arr as $row) {
@@ -52,8 +52,8 @@ switch ($axAction) {
     // = Builds edit-group dialogue =
     // =============================
         
-        $grp_details = grp_get_data($_REQUEST['id']);
-        $arr = get_arr_usr();
+        $grp_details = $database->grp_get_data($_REQUEST['id']);
+        $arr = $database->get_arr_usr();
         
         $i=0;
         foreach ($arr as $row) {
@@ -62,7 +62,7 @@ switch ($axAction) {
             $i++;
         }
                 
-        $grp_selection=grp_get_ldrs($_REQUEST['id']);
+        $grp_selection=$database->grp_get_ldrs($_REQUEST['id']);
         $tpl->assign('grp_selection', $grp_selection);
                       
         $tpl->assign('arr_usr_ID',   $arr_usr_ID);

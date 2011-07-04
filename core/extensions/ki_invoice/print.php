@@ -57,12 +57,12 @@ function RoundValue( $value, $prec ) {
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates   = "templates/";
-$usr             = checkUser();
+$usr             = $database->checkUser();
 $timespace       = get_timespace();
 $in              = $timespace[0];
 $out             = $timespace[1];
 
-$timeArray = get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), 1);
+$timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), 1);
 /* $timeArray now contains: zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID,
 	zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment,
 	pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type,
@@ -145,7 +145,7 @@ if (isset($_REQUEST['round'])) {
         $rounded = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
 
         // Write a logfile entry for each value that is rounded.
-        logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
+        Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
 
         $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
         $invoiceArray[$time_index]['hour'] = $rounded;

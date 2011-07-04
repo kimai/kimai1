@@ -27,8 +27,8 @@
  * @author th
  */
 function exp_delete_record($id) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $pdo_query = $pdo_conn->prepare("DELETE FROM ${p}exp WHERE `exp_ID` = ? LIMIT 1;");
@@ -49,8 +49,8 @@ function exp_delete_record($id) {
  * @author sl
  */
 function exp_create_record($usr_ID,$data) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}exp (  
@@ -83,7 +83,7 @@ function exp_create_record($usr_ID,$data) {
         return $result;
     }
     
-    logfile($result);
+    Logger::logfile($result);
     
 } 
 
@@ -142,8 +142,8 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
  */
 
 function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false, $filter_refundable = -1,$filterCleared = null) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     if (!is_numeric($filterCleared)) {
@@ -233,8 +233,8 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
  * @author sl
  */
 function get_entry_exp($id) {
-    global $kga;
-    global $pdo_conn;   
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
   
     $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp 
@@ -258,9 +258,8 @@ function get_entry_exp($id) {
  * @author ob
  */
 function exp_get_data($exp_id) {
-
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     if ($exp_id) {
@@ -290,8 +289,8 @@ function exp_get_data($exp_id) {
  */
  
 function exp_edit_record($id,$data) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
     
     $original_array = exp_get_data($id);
@@ -336,7 +335,7 @@ function exp_edit_record($id,$data) {
         return $result;
     }
     
-    logfile("editrecord:result:".$result);
+    Logger::logfile("editrecord:result:".$result);
 
 
 
@@ -352,8 +351,8 @@ function exp_edit_record($id,$data) {
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
 function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = null) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
@@ -393,8 +392,8 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
 function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = null) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
     $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
@@ -430,8 +429,8 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
 function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = null) {
-    global $kga;
-    global $pdo_conn;
+    global $kga, $database;
+    $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
 

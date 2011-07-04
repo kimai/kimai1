@@ -26,7 +26,8 @@
  * @author th
  */
 function exp_delete_record($id) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     $filter["exp_ID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix']."exp";
     $query = MySQL::BuildSQLDelete($table, $filter);
@@ -42,10 +43,10 @@ function exp_delete_record($id) {
  * @author sl
  */
 function exp_create_record($usr_ID,$data) {
-    global $kga;
-    global $conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
  
-    $data = clean_data($data);
+    $data = $database->clean_data($data);
     
     $values ['exp_pctID']        =   MySQL::SQLValue( $data ['exp_pctID']        , MySQL::SQLVALUE_NUMBER );
     $values ['exp_designation']  =   MySQL::SQLValue( $data ['exp_designation'] );
@@ -120,7 +121,8 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
 
 // TODO: Test it!
 function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     $p     = $kga['server_prefix'];
 
     if (!is_numeric($filterCleared)) {
@@ -215,7 +217,8 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
  * @author sl
  */
 function get_entry_exp($id) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
 
     $id    = MySQL::SQLValue($id   , MySQL::SQLVALUE_NUMBER);
     $p     = $kga['server_prefix'];
@@ -240,7 +243,8 @@ function get_entry_exp($id) {
  * @author ob
  */
 function exp_get_data($exp_id) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     
     $p = $kga['server_prefix'];
     
@@ -270,9 +274,10 @@ function exp_get_data($exp_id) {
  */
  
 function exp_edit_record($id,$data) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     
-    $data = clean_data($data);
+    $data = $database->clean_data($data);
    
     $original_array = exp_get_data($id);
     $new_array = array();
@@ -333,7 +338,8 @@ function exp_edit_record($id,$data) {
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
 function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects = null) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
@@ -379,7 +385,8 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
 function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects = null) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
@@ -422,7 +429,8 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
 function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects = null) {
-    global $kga,$conn;
+    global $kga, $database;
+    $conn = $database->getConnectionHandler();
     
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);

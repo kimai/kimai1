@@ -83,7 +83,7 @@ switch ($axAction) {
      * Write some message to the logfile.
      */
     case "shoutbox":
-        logfile("text: " .$axValue);
+        Logger::logfile("text: " .$axValue);
     break;
 
     /**

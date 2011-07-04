@@ -37,11 +37,11 @@ switch ($axAction) {
     case 'record':
         if (isset($kga['customer'])) die();
         
-        if (get_rec_state($kga['usr']['usr_ID'])) {
-            stopRecorder($kga['usr']['usr_ID']);
+        if ($database->get_rec_state($kga['usr']['usr_ID'])) {
+            $database->stopRecorder($kga['usr']['usr_ID']);
         }
         
-        $zefData = zef_get_data($id);
+        $zefData = $database->zef_get_data($id);
 
         $zefData['in'] = time();
         $zefData['out'] = 0;
@@ -57,24 +57,24 @@ switch ($axAction) {
         $zefData['rate'] = $zefData['zef_rate'];
         $zefData['cleared'] = $zefData['zef_cleared'];
 
-        $newZefId = zef_create_record($kga['usr']['usr_ID'],$zefData);
+        $newZefId = $database->zef_create_record($kga['usr']['usr_ID'],$zefData);
         
         $usrData = array();
         $usrData['lastRecord'] = $newZefId;
         $usrData['lastProject'] = $zefData['pct_ID'];
         $usrData['lastEvent'] = $zefData['evt_ID'];
-        usr_edit($kga['usr']['usr_ID'], $usrData);
+        $database->usr_edit($kga['usr']['usr_ID'], $usrData);
         
         
-        $pctdata = pct_get_data($zefData['zef_pctID']);        
+        $pctdata = $database->pct_get_data($zefData['zef_pctID']);        
         $return =  'pct_name = "' . $pctdata['pct_name'] .'"; ';
         
         $return .=  'knd = "' . $pctdata['pct_kndID'] .'"; ';
         
-        $knddata = knd_get_data($pctdata['pct_kndID']);        
+        $knddata = $database->knd_get_data($pctdata['pct_kndID']);        
         $return .=  'knd_name = "' . $knddata['knd_name'] .'"; ';
                 
-        $evtdata = evt_get_data($zefData['zef_evtID']);
+        $evtdata = $database->evt_get_data($zefData['zef_evtID']);
         $return .= 'evt_name = "' . $evtdata['evt_name'] .'"; ';
 
         echo $return;
@@ -86,7 +86,7 @@ switch ($axAction) {
     // ==================
     case 'stop':
         if (isset($kga['customer'])) die();
-        stopRecorder($kga['usr']['usr_ID']);
+        $database->stopRecorder($kga['usr']['usr_ID']);
         echo 1;
     break;
 
@@ -96,9 +96,9 @@ switch ($axAction) {
     case 'edit_running_project':
         if (isset($kga['customer'])) die();
 
-        $last_event = get_event_last();
+        $last_event = $database->get_event_last();
 
-        zef_edit_pct(
+        $database->zef_edit_pct(
             $last_event['zef_ID'],
             $_REQUEST['project']);
         echo 1;
@@ -110,9 +110,9 @@ switch ($axAction) {
     case 'edit_running_task':
         if (isset($kga['customer'])) die();
 
-        $last_event = get_event_last();
+        $last_event = $database->get_event_last();
 
-        zef_edit_evt(
+        $database->zef_edit_evt(
             $last_event['zef_ID'],
             $_REQUEST['task']);
         echo 1;
@@ -124,7 +124,7 @@ switch ($axAction) {
     case 'edit_running_comment':
         if (isset($kga['customer'])) die();
 
-        zef_edit_comment(
+        $database->zef_edit_comment(
             $axValue,
             $_REQUEST['comment_type'],
             $_REQUEST['comment']);
@@ -135,7 +135,7 @@ switch ($axAction) {
     // = Erase timesheet entry via quickdelete =
     // =========================================
     case 'quickdelete':
-        zef_delete_record($id);
+        $database->zef_delete_record($id);
         echo 1;
     break;
 
@@ -144,7 +144,7 @@ switch ($axAction) {
     // ===============================================
     case 'bestFittingRate':
         if (isset($kga['customer'])) die();
-        $rate = get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']);
+        $rate = $database->get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']);
         if ($rate === false)
           echo -1;
         else
@@ -156,7 +156,7 @@ switch ($axAction) {
     // ===============================================
     case 'reload_evt_options':
         if (isset($kga['customer'])) die();
-        $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],
+        $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],
               $_REQUEST['pct']);
         foreach ($arr_evt as $event) {
           if (!$event['evt_visible'])
@@ -198,28 +198,28 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $filterKnd = array($kga['customer']['knd_ID']);
 
-        $arr_zef = get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,1);
+        $arr_zef = $database->get_arr_zef($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,1);
         if (count($arr_zef)>0) {
             $tpl->assign('arr_zef', $arr_zef);
         } else {
             $tpl->assign('arr_zef', 0);
         }
-        $tpl->assign('total', formatDuration(get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
+        $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
 
-        $ann = get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        $ann = $database->get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        Format::formatAnnotations($ann);
         $tpl->assign('usr_ann',$ann);
         
-        $ann = get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        $ann = $database->get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        Format::formatAnnotations($ann);
         $tpl->assign('knd_ann',$ann);
 
-        $ann = get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        $ann = $database->get_arr_time_pct($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        Format::formatAnnotations($ann);
         $tpl->assign('pct_ann',$ann);
 
-        $ann = get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
-        formatAnnotations($ann);
+        $ann = $database->get_arr_time_evt($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        Format::formatAnnotations($ann);
         $tpl->assign('evt_ann',$ann);
 
         $tpl->display("zef.tpl");
@@ -245,22 +245,22 @@ switch ($axAction) {
       if ($data['erase']) {
         // delete checkbox set ?
         // then the record is simply dropped and processing stops at this point
-          zef_delete_record($id);
+          $database->zef_delete_record($id);
           break;
       }
-      logfile(implode(" : ",$data));
+      Logger::logfile(implode(" : ",$data));
 
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
       
-      $edit_in_day       = expand_date_shortcut($_REQUEST['edit_in_day']);
-      $edit_out_day      = expand_date_shortcut($_REQUEST['edit_out_day']);
-      $edit_in_time   = expand_time_shortcut($_REQUEST['edit_in_time']);
-      $edit_out_time  = expand_time_shortcut($_REQUEST['edit_out_time']);
+      $edit_in_day       = Format::expand_date_shortcut($_REQUEST['edit_in_day']);
+      $edit_out_day      = Format::expand_date_shortcut($_REQUEST['edit_out_day']);
+      $edit_in_time   = Format::expand_time_shortcut($_REQUEST['edit_in_time']);
+      $edit_out_time  = Format::expand_time_shortcut($_REQUEST['edit_out_time']);
       $new_in  = "${edit_in_day}-${edit_in_time}";
       $new_out = "${edit_out_day}-${edit_out_time}";  
       
-      if (check_time_format($new_in) && check_time_format($new_out)) {
+      if (Format::check_time_format($new_in) && Format::check_time_format($new_out)) {
           // if this is TRUE the values PASSED the test! 
           $setTimeValue = 1;   
       }
@@ -269,7 +269,7 @@ switch ($axAction) {
         
       $new_time = convert_time_strings($new_in,$new_out);
       
-      logfile("new_time: " .serialize($new_time));
+      Logger::logfile("new_time: " .serialize($new_time));
       
       // if the difference between in and out value is zero or below this can't be correct ...
       
@@ -293,7 +293,7 @@ switch ($axAction) {
           $data['out']  = 0;
           $data['diff'] = 0;
           // we send zeros instead of unix timestamps to the db-layer 
-          zef_edit_record($id,$data);
+          $database->zef_edit_record($id,$data);
           break; 
           
       } else {
@@ -307,14 +307,14 @@ switch ($axAction) {
           if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
               // TIME RIGHT - EDIT ENTRY
-              logfile("zef_edit_record: " .$id);
+              Logger::logfile("zef_edit_record: " .$id);
               check_zef_data($id,$data);
           
           } else {
               
               // TIME RIGHT - NEW ENTRY
-              logfile("zef_create_record");
-              zef_create_record($kga['usr']['usr_ID'],$data);
+              Logger::logfile("zef_create_record");
+              $database->zef_create_record($kga['usr']['usr_ID'],$data);
               
           }
           

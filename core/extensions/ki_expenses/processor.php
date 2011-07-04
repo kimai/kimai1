@@ -63,16 +63,16 @@ switch ($axAction) {
 
 
       $ann = get_arr_exp_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
-      $ann = formatCurrency($ann);
+      $ann = Format::formatCurrency($ann);
       $tpl->assign('usr_ann',$ann);
 
       // TODO: function for loops or convert it in template with new function
       $ann = get_arr_exp_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
-      $ann = formatCurrency($ann);
+      $ann = Format::formatCurrency($ann);
       $tpl->assign('knd_ann',$ann);
 
       $ann = get_arr_exp_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
-      $ann = formatCurrency($ann);
+      $ann = Format::formatCurrency($ann);
       $tpl->assign('pct_ann',$ann);
 
       $tpl->assign('evt_ann',array());
@@ -112,23 +112,23 @@ switch ($axAction) {
         break;
       }
 
-      logfile(implode(" : ",$data));
+      Logger::logfile(implode(" : ",$data));
     
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
         
-      $edit_day  = expand_date_shortcut($_REQUEST['edit_day']);
-      $edit_time = expand_time_shortcut($_REQUEST['edit_time']);
+      $edit_day  = Format::expand_date_shortcut($_REQUEST['edit_day']);
+      $edit_time = Format::expand_time_shortcut($_REQUEST['edit_time']);
     
       $new = "${edit_day}-${edit_time}";
-      if (!check_time_format($new)) {
+      if (!Format::check_time_format($new)) {
         // if this is TRUE the values PASSED the test! 
         //$setTimeValue = 1;   
         break;
       }
       $new_time = convert_time_strings($new,$new);        
       $data['exp_timestamp'] = $new_time['in'];
-      //logfile("new_time: " .serialize($new_time));
+      //Logger::logfile("new_time: " .serialize($new_time));
 
       $data['exp_multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_multiplier']);
       $data['exp_value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_value']);
@@ -136,13 +136,13 @@ switch ($axAction) {
       if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
         // TIME RIGHT - EDIT ENTRY
-        logfile("exp_edit_record: " .$id);
+        Logger::logfile("exp_edit_record: " .$id);
         exp_edit_record($id,$data);
     
       } else {
           
         // TIME RIGHT - NEW ENTRY
-        logfile("exp_create_record");
+        Logger::logfile("exp_create_record");
         exp_create_record($kga['usr']['usr_ID'],$data);
           
       }

@@ -55,7 +55,7 @@ switch ($axAction) {
           return;
         }
 
-        var_edit(array('defaultVat'=>$vat));
+        $database->var_edit(array('defaultVat'=>$vat));
         echo "1";
     break;
 

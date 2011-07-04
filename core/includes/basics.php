@@ -44,11 +44,72 @@ if (!isset($server_hostname)) {
 }
 
 require(WEBROOT.'includes/vars.php');
-
+require(WEBROOT.'includes/classes/format.class.php');
+require(WEBROOT.'includes/classes/logger.class.php');
+require(WEBROOT.'includes/classes/translations.class.php');
+require(WEBROOT.'includes/classes/rounding.class.php');
 require(WEBROOT.'includes/func.php');
-require(WEBROOT."includes/connect_".$kga['server_conn'].".php");
 
-$vars = var_get_data();
+
+// ==================================================================================
+// = check for additional database(s) and set $kga['server_database'] accordingly   =
+// = $kga['server_database'] stays untouched if there is no entry in the            =
+// = $server_ext_database array (for more info see /includes/vars.php)              =
+// ==================================================================================
+if (isset($_REQUEST['database'])) {
+    if ($_REQUEST['database']==true) {
+       
+        $dbnr = $_REQUEST['database'] - 1;
+        
+        $kga['server_database'] = $server_ext_database[$dbnr];
+        
+            if ($server_ext_username[$dbnr] != '') {
+                $kga['server_username'] = $server_ext_username[$dbnr];
+            }
+            if ($server_ext_password[$dbnr] != '') {
+                $kga['server_password'] = $server_ext_password[$dbnr];
+            }
+            if ($server_ext_prefix[$dbnr] != '') {
+                $kga['server_prefix'] = $server_ext_prefix[$dbnr];
+            }
+    }
+} else {
+    if (isset($_COOKIE['kimai_db']) && $_COOKIE['kimai_db'] == true) {
+        
+        $dbnr = $_COOKIE['kimai_db'] - 1;
+        
+        $kga['server_database'] = $server_ext_database[$dbnr];
+
+            if ($server_ext_username[$dbnr] != '') {
+                $kga['server_username'] = $server_ext_username[$dbnr];
+            }
+            if ($server_ext_password[$dbnr] != '') {
+                $kga['server_password'] = $server_ext_password[$dbnr];
+            }
+            if ($server_ext_prefix[$dbnr] != '') {
+                $kga['server_prefix'] = $server_ext_prefix[$dbnr];
+            }
+    } 
+}
+
+require(WEBROOT."includes/classes/database/databaseLayer.class.php");
+
+if ($kga['server_conn'] == 'mysql') {
+  require(WEBROOT."includes/classes/database/mysqlDatabaseLayer.class.php");
+  $database = new MysqlDatabaseLayer($kga);
+}
+else {
+  require(WEBROOT."includes/classes/database/pdoDatabaseLayer.class.php");
+  $database = new PdoDatabaseLayer($kga);
+}
+$database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
+
+$translations = new Translations($kga);
+if ($kga['language'] != 'en') 
+  $translations->load($kga['language']);
+
+
+$vars = $database->var_get_data();
 if (!empty($vars)) {
   $kga['currency_name']          = $vars['currency_name'];
   $kga['currency_sign']          = $vars['currency_sign'];
@@ -71,9 +132,4 @@ if (!empty($vars)) {
     date_default_timezone_set($vars['defaultTimezone']);
 }
 
-// load language file
-$kga['lang'] = require(WEBROOT.'language/en.php');
-
-if ($kga['language'] != 'en') 
- $kga['lang'] =  array_replace_recursive($kga['lang'],include(WEBROOT."language/${kga['language']}.php"));
 ?>

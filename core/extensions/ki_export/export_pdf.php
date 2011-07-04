@@ -58,7 +58,7 @@ class MYPDF extends TCPDF {
    * @return string formatted string
    */
   public function money($number) {
-    return formatCurrency($number,false);
+    return Format::formatCurrency($number,false);
   }
   
 
@@ -188,7 +188,7 @@ class MYPDF extends TCPDF {
                foreach ($comment_lines as $comment_line) {
                  $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
            $this->SetFont('', 'I', $comment_font_size); 
-           //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
+           //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
            $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
            $this->SetFont('', '', $current_font_size); 
             if (isset($this->columns['dec_time']))
@@ -399,7 +399,7 @@ if (isset($_REQUEST['print_summary'])) {
 // Write to the PDF document which, if any, customer filters were applied.
 $customers = array();
 foreach ($filterKnd as $knd_id) {
-  $customer_info = knd_get_data($knd_id);
+  $customer_info = $database->knd_get_data($knd_id);
   $customers[] = $customer_info['knd_name'];
 }
 if (count($customers)>0) {
@@ -411,7 +411,7 @@ if (count($customers)>0) {
 // Write to the PDF document which, if any, project filters were applied.
 $projects = array();
 foreach ($filterPct as $pct_id) {
-  $project_info = pct_get_data($pct_id);
+  $project_info = $database->pct_get_data($pct_id);
   $projects[] = $project_info['pct_name'];
 }
 if (count($projects)>0) {

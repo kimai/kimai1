@@ -104,7 +104,7 @@ if ($_REQUEST['a']=="logout") {
 // = User already logged in? =
 // ===========================
 if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr']!='0' && $_COOKIE['kimai_key']!='0' && !$_REQUEST['a']=="logout") {
-    if (get_seq($_COOKIE['kimai_usr']) == $_COOKIE['kimai_key']) { 
+    if ($database->get_seq($_COOKIE['kimai_usr']) == $_COOKIE['kimai_key']) { 
         header("Location: core/kimai.php");
         exit;
     }
@@ -113,7 +113,7 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
 // ==============================================
 // = Login active? If not redirect to interface =
 // ==============================================
-get_global_config();
+$database->get_global_config();
 if (!$kga['conf']['login']) {
     header("Location: core/kimai.php");
     exit;
@@ -136,20 +136,20 @@ $tpl->display('login/header.tpl');
 if ($authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
 
   if ($userId === false) {
-    $userId   = usr_create(array(
+    $userId   = $database->usr_create(array(
                 'usr_name' => $name,
                 'usr_grp' => $authPlugin->getDefaultGroupId(),
                 'usr_sts' => 2,
                 'usr_active' => 1
               ));
   }
-  $userData = usr_get_data($userId);
+  $userData = $database->usr_get_data($userId);
 
   $keymai=random_code(30);        
   setcookie ("kimai_key",$keymai);
   setcookie ("kimai_usr",$userData['usr_name']);
 
-  loginSetKey($userId,$keymai);
+  $database->loginSetKey($userId,$keymai);
 
   header("Location: core/kimai.php");
 }
@@ -163,9 +163,9 @@ switch($_REQUEST['a']){
 case "checklogin":
     $name = htmlspecialchars(trim($name));
     
-    $is_customer = is_customer_name($name);
+    $is_customer = $database->is_customer_name($name);
     
-    logfile("login: " . $name. ($is_customer?" as customer":" as user"));
+    Logger::logfile("login: " . $name. ($is_customer?" as customer":" as user"));
 
     if ($is_customer) {
       // perform login of customer
@@ -197,7 +197,7 @@ case "checklogin":
       if ($authPlugin->authenticate($name,$password,$userId)) {
         
         if ($userId === false) {
-          $userId   = usr_create(array(
+          $userId   = $database->usr_create(array(
                       'usr_name' => $name,
                       'usr_grp' => $authPlugin->getDefaultGroupId(),
                       'usr_sts' => 2,
@@ -205,7 +205,7 @@ case "checklogin":
                     ));
         }
 
-        $userData = usr_get_data($userId);
+        $userData = $database->usr_get_data($userId);
 
         if ($userData['ban'] < ($kga['conf']['loginTries']) ||
             (time() - $userData['banTime']) > $kga['conf']['loginBanTime']) {
@@ -218,13 +218,13 @@ case "checklogin":
           setcookie ("kimai_key",$keymai);
           setcookie ("kimai_usr",$userData['usr_name']);
 
-          loginSetKey($userId,$keymai);
+          $database->loginSetKey($userId,$keymai);
 
           header("Location: core/kimai.php");
         } else {
           // login attempt even though logintries are used up and bantime is not over => deny
           setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
-          loginUpdateBan($userId);
+          $database->loginUpdateBan($userId);
 
           $tpl->assign('headline', $kga['lang']['banned']);
           $tpl->assign('message', $kga['lang']['tooManyLogins']); 
@@ -236,7 +236,7 @@ case "checklogin":
         // wrong username/password => deny
         setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
         if ($userId !== false)
-          loginUpdateBan($userId,true);
+          $database->loginUpdateBan($userId,true);
 
         $tpl->assign('headline', $kga['lang']['accessDenied']); 
         $tpl->assign('message', $kga['lang']['wrongPass']);

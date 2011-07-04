@@ -27,7 +27,7 @@ include('../../includes/basics.php');
 include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
-$usr = checkUser();
+$usr = $database->checkUser();
 
 // set smarty config
 require_once('../../libraries/smarty/Smarty.class.php');

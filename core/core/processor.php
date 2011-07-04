@@ -38,7 +38,7 @@ switch ($axAction) {
      * Append a new entry to the logfile.
      */
     case 'logfile':
-        logfile("JavaScript: " . $axValue);
+        Logger::logfile("JavaScript: " . $axValue);
     break;
 
     /**
@@ -54,7 +54,7 @@ switch ($axAction) {
       if (isset($_REQUEST['event']))
         $data['lastEvent']   = $_REQUEST['event'];
 
-      usr_edit($kga['usr']['usr_ID'],$data);
+      $database->usr_edit($kga['usr']['usr_ID'],$data);
     break;
 
 
@@ -77,19 +77,19 @@ switch ($axAction) {
         $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
 
-        usr_set_preferences($preferences,'ui.');
-        usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));
+        $database->usr_set_preferences($preferences,'ui.');
+        $database->usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))
-          save_rate($kga['usr']['usr_ID'],null,NULL,$rate);
+          $database->save_rate($kga['usr']['usr_ID'],null,NULL,$rate);
         else
-          remove_rate($kga['usr']['usr_ID'],null,NULL);
+          $database->remove_rate($kga['usr']['usr_ID'],null,NULL);
         
         // If the password field is empty don't overwrite the old password.
         if ($_REQUEST['pw'] != "") {
         	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
-          usr_edit($kga['usr']['usr_ID'], $usr_data);
+          $database->usr_edit($kga['usr']['usr_ID'], $usr_data);
         }
         
         
@@ -112,7 +112,7 @@ switch ($axAction) {
         $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
         if ($timespace_out < 950000000) $timespace_out = $out;
         
-        save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']);
+        $database->save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']);
     break;
 
     /**
@@ -122,12 +122,12 @@ switch ($axAction) {
     case 'startRecord':
         if (isset($kga['customer'])) die();
 
-        if (get_rec_state($kga['usr']['usr_ID'])) {
-            stopRecorder();
+        if ($database->get_rec_state($kga['usr']['usr_ID'])) {
+            $database->stopRecorder();
         }
     
         $IDs = explode('|',$axValue);
-        startRecorder($IDs[0],$IDs[1],$id);
+        $database->startRecorder($IDs[0],$IDs[1],$id);
         echo 1;
     break;
     
@@ -135,7 +135,7 @@ switch ($axAction) {
      * Stop the running recording.
      */
     case 'stopRecord':
-        stopRecorder();
+        $database->stopRecorder();
         echo 1;
     break;
 
@@ -148,7 +148,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $arr_usr = array();
         else
-          $arr_usr = get_arr_watchable_users($kga['usr']['usr_ID']);
+          $arr_usr = $database->get_arr_watchable_users($kga['usr']['usr_ID']);
 
         if (count($arr_usr)>0) {
             $tpl->assign('arr_usr', $arr_usr);
@@ -168,7 +168,7 @@ switch ($axAction) {
               'knd_name'=>$kga['customer']['knd_name'],
               'knd_visible'=>$kga['customer']['knd_visible']));
         else
-          $arr_knd = get_arr_knd($kga['usr']['usr_grp']);
+          $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
 
         if (count($arr_knd)>0) {
             $tpl->assign('arr_knd', $arr_knd);
@@ -183,9 +183,9 @@ switch ($axAction) {
      */
     case 'reload_pct':
         if (isset($kga['customer']))
-          $arr_pct = get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+          $arr_pct = $database->get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
         else
-          $arr_pct = get_arr_pct($kga['usr']['usr_grp']);
+          $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
 
         if (count($arr_pct)>0) {
             $tpl->assign('arr_pct', $arr_pct);
@@ -202,12 +202,12 @@ switch ($axAction) {
      */
     case 'reload_evt':
         if (isset($kga['customer']))
-          $arr_evt = get_arr_evt_by_knd($kga['customer']['knd_ID']);
+          $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
         else if (isset($_REQUEST['pct']))
-          $arr_evt = get_arr_evt_by_pct($kga['usr']['usr_grp'],
+          $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],
               $_REQUEST['pct']);
         else
-          $arr_evt = get_arr_evt($kga['usr']['usr_grp']);
+          $arr_evt = $database->get_arr_evt($kga['usr']['usr_grp']);
         if (count($arr_evt)>0) {
             $tpl->assign('arr_evt', $arr_evt);
         } else {
@@ -256,14 +256,14 @@ switch ($axAction) {
             	
               // add or update the customer
             	if (!$id) {
-                    $id = knd_create($data);
+                    $id = $database->knd_create($data);
             	} else {
-            	    knd_edit($id, $data);
+            	    $database->knd_edit($id, $data);
             	}
 
               // set the customer group mappings
               $grp_array = $_REQUEST['knd_grp'];
-              assign_knd2grps($id, $grp_array);
+              $database->assign_knd2grps($id, $grp_array);
             break;
             
             /**
@@ -287,16 +287,16 @@ switch ($axAction) {
                 
                 // add or update the project
               if (!$id) {
-                $id = pct_create($data);
+                $id = $database->pct_create($data);
             	} else {
-                pct_edit($id, $data);
+                $database->pct_edit($id, $data);
             	}
 
               // set the project group mappings
               if (isset($_REQUEST['pct_grp']))
-                assign_pct2grps($id, $_REQUEST['pct_grp']);
+                $database->assign_pct2grps($id, $_REQUEST['pct_grp']);
               if (isset($_REQUEST['pct_evt']))
-                assign_pct2evts($id, $_REQUEST['pct_evt']);
+                $database->assign_pct2evts($id, $_REQUEST['pct_evt']);
             break;
             
             /**
@@ -316,21 +316,21 @@ switch ($axAction) {
                 
                 // add or update the project
               if (!$id) {
-                $id = evt_create($data);
+                $id = $database->evt_create($data);
             	} else {
-                evt_edit($id, $data);
+                $database->evt_edit($id, $data);
             	}
 
               // set the task group and task project mappings
               if (isset($_REQUEST['evt_grp']))
-                assign_evt2grps($id, $_REQUEST['evt_grp']);
+                $database->assign_evt2grps($id, $_REQUEST['evt_grp']);
               else
-                assign_evt2grps($id, array());
+                $database->assign_evt2grps($id, array());
 
               if (isset($_REQUEST['evt_pct']))
-                assign_evt2pcts($id, $_REQUEST['evt_pct']);
+                $database->assign_evt2pcts($id, $_REQUEST['evt_pct']);
               else
-                assign_evt2pcts($id, array());
+                $database->assign_evt2pcts($id, array());
             break;
         }
     break;

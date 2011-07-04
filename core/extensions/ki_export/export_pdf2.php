@@ -71,7 +71,7 @@ class MYPDF extends TCPDF {
    * @return string formatted string
    */
   public function money($number) {
-    return formatCurrency($number,false);
+    return Format::formatCurrency($number,false);
   }
 
   /**

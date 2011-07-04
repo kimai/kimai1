@@ -27,7 +27,7 @@ require('includes/basics.php');
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
-$version_temp  = get_DBversion();
+$version_temp  = $database->get_DBversion();
 $versionDB  = $version_temp[0];
 $revisionDB = $version_temp[1];
 unset($version_temp);
@@ -311,7 +311,7 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
         }
     }
     
-    logfile($query,$success);
+    Logger::logfile($query,$success);
     
     if ($kga['server_conn'] == "pdo") {
         if (is_object($pdo_conn)) {
@@ -344,7 +344,7 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
 
     if (!$success) {
 
-        logfile("An error has occured in query: $query");
+        Logger::logfile("An error has occured in query: $query");
 
         if ($kga['server_conn'] == "pdo") {
             if (is_object($pdo_conn)) {
@@ -357,7 +357,7 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
             }
         }
 
-        logfile("Error text: $err");
+        Logger::logfile("Error text: $err");
     }
     
 }
@@ -369,7 +369,7 @@ $versionDB_e = explode(".",$versionDB);
 $errors = 0;
 $executed_queries = 0;
 
-logfile("-- begin update -----------------------------------");
+Logger::logfile("-- begin update -----------------------------------");
 
 $p = $kga['server_prefix'];
 
@@ -377,7 +377,7 @@ if ((int)$revisionDB < $kga['revision']) {
     /**
      * Perform an backup (or snapshot) of the current tables.
      */
-    logfile("-- begin backup -----------------------------------");
+    Logger::logfile("-- begin backup -----------------------------------");
 
     $backup_stamp = time();    // as an individual backup label the timestamp should be enough for now...
                                // by using this type of label we can also exactly identify when it was done
@@ -387,7 +387,7 @@ if ((int)$revisionDB < $kga['revision']) {
 
                            
     $result_backup=@mysql_query($query); 
-    logfile($query,$result_backup);
+    Logger::logfile($query,$result_backup);
     $prefix_length = strlen($p);
     
     echo "</table>";
@@ -429,7 +429,7 @@ if ((int)$revisionDB < $kga['revision']) {
     	}
     }
 
-    logfile("-- backup finished -----------------------------------");
+    Logger::logfile("-- backup finished -----------------------------------");
     
     echo "</table><br /><br />";
     echo "<strong>".$kga['lang']['updater'][70]."</strong></br>";
@@ -440,7 +440,7 @@ if ((int)$revisionDB < $kga['revision']) {
 
 
 if ( ((int)$versionDB_e[1] == 7 && (int)$versionDB_e[2] < 12) ) {
-logfile("-- update to 0.7.12");
+Logger::logfile("-- update to 0.7.12");
     exec_query("ALTER TABLE `${p}evt` ADD `evt_visible` TINYINT NOT NULL DEFAULT '1'",1);                                    
     exec_query("ALTER TABLE `${p}knd` ADD `knd_visible` TINYINT NOT NULL DEFAULT '1'",1);
     exec_query("ALTER TABLE `${p}pct` ADD `pct_visible` TINYINT NOT NULL DEFAULT '1'",1);                               
@@ -451,7 +451,7 @@ logfile("-- update to 0.7.12");
 }
 
 if ((int)$revisionDB < 96) {
-logfile("-- update to 0.7.13r96");
+Logger::logfile("-- update to 0.7.13r96");
     exec_query("ALTER TABLE `${p}conf` ADD `allvisible` TINYINT(1) NOT NULL DEFAULT '1'",1);
     // a proper installed database throws errors from here. don't worry - no problem. We ignore those ...
     exec_query("ALTER TABLE `${p}evt` CHANGE `visible` `evt_visible` TINYINT(1) NOT NULL DEFAULT '1'",0);
@@ -463,13 +463,13 @@ logfile("-- update to 0.7.13r96");
 }
 
 if ((int)$revisionDB < 141) {
-logfile("-- update to 0.7.13r141");
+Logger::logfile("-- update to 0.7.13r141");
     $query="ALTER TABLE `${p}conf` ADD `flip_pct_display` tinyint(1) NOT NULL DEFAULT '0'";
     exec_query($query,1);
 }
 
 if ((int)$revisionDB < 221) {
-logfile("-- update to 0.8");
+Logger::logfile("-- update to 0.8");
     // drop views
     exec_query("DROP VIEW IF EXISTS ${p}get_arr_grp, ${p}get_usr_count_in_grp",0);	
     // Set news group name length
@@ -848,7 +848,7 @@ EOD;
 
 if ((int)$revisionDB < 733) {
 
-    logfile("-- update to 0.8.0a");
+    Logger::logfile("-- update to 0.8.0a");
 
     exec_query("ALTER TABLE `${p}evt` CHANGE `evt_visible` `evt_visible` TINYINT(1) NOT NULL DEFAULT '1';",0);
     exec_query("ALTER TABLE `${p}knd` CHANGE `knd_visible` `knd_visible` TINYINT(1) NOT NULL DEFAULT '1';",0);
@@ -877,28 +877,28 @@ if ((int)$revisionDB < 733) {
 
 
 if ((int)$revisionDB < 809) {
-    logfile("-- update to r810");
+    Logger::logfile("-- update to r810");
     exec_query("ALTER TABLE `${p}usr` ADD `pct_comment_flag` TINYINT(1) NOT NULL DEFAULT '0'",1);
 }
 
 if ((int)$revisionDB < 817) {
-    logfile("-- update to r817");
+    Logger::logfile("-- update to r817");
     exec_query("ALTER TABLE `${p}usr` ADD `showIDs` TINYINT(1) NOT NULL DEFAULT '0'",1);
 }
 
 if ((int)$revisionDB < 837) {
-    logfile("-- update to r837");
+    Logger::logfile("-- update to r837");
     exec_query("ALTER TABLE `${p}usr` ADD `usr_alias` VARCHAR(10)",0);
     exec_query("ALTER TABLE `${p}zef` ADD `zef_location` varchar(50)",1);
 }
 
 if ((int)$revisionDB < 848) {
-    logfile("-- update to r848");
+    Logger::logfile("-- update to r848");
     exec_query("ALTER TABLE `${p}zef` ADD `zef_trackingnr` int(20)",1);
 }
 
 if ((int)$revisionDB < 898) {
-    logfile("-- update to r898");
+    Logger::logfile("-- update to r898");
     exec_query("CREATE TABLE `${p}rates` (
   `user_id` int(10) DEFAULT NULL,
   `project_id` int(10) DEFAULT NULL,
@@ -909,13 +909,13 @@ if ((int)$revisionDB < 898) {
 }
 
 if ((int)$revisionDB < 922) {
-    logfile("-- update to r922");
+    Logger::logfile("-- update to r922");
     exec_query("ALTER TABLE `${p}knd` ADD `knd_password` VARCHAR(255);",1);
     exec_query("ALTER TABLE `${p}knd` ADD `knd_secure` varchar(60) NOT NULL default '0';",1);
 }
 
 if ((int)$revisionDB < 935) {
-    logfile("-- update to r935");
+    Logger::logfile("-- update to r935");
     exec_query("CREATE TABLE `${p}exp` (
   `exp_ID` int(10) NOT NULL AUTO_INCREMENT,
   `exp_timestamp` int(10) NOT NULL DEFAULT '0',
@@ -931,7 +931,7 @@ if ((int)$revisionDB < 935) {
 }
 
 if ((int)$revisionDB < 1067) {
-    logfile("-- update to r1067");
+    Logger::logfile("-- update to r1067");
 
   /*
    *  Write new config file with password salt
@@ -979,12 +979,12 @@ if ((int)$revisionDB < 1067) {
 }
 
 if ((int)$revisionDB < 1068) {
-    logfile("-- update to r1068");
+    Logger::logfile("-- update to r1068");
     exec_query("ALTER TABLE `${p}usr` CHANGE `autoselection` `autoselection` TINYINT( 1 ) NOT NULL default '0';");
 }
 
 if ((int)$revisionDB < 1077) {
-    logfile("-- update to r1076");
+    Logger::logfile("-- update to r1076");
     exec_query("ALTER TABLE `${p}usr` CHANGE `usr_mail` `usr_mail` varchar(160) DEFAULT ''");
     exec_query("ALTER TABLE `${p}usr` CHANGE `pw` `pw` varchar(254) NULL DEFAULT NULL");
     exec_query("ALTER TABLE `${p}usr` CHANGE `lang` `lang` varchar(6) DEFAULT ''");
@@ -992,27 +992,27 @@ if ((int)$revisionDB < 1077) {
 }
 
 if ((int)$revisionDB < 1086) {
-    logfile("-- update to r1086");
+    Logger::logfile("-- update to r1086");
     exec_query("ALTER TABLE `${p}pct` ADD `pct_budget` DECIMAL(10,2) NOT NULL DEFAULT 0.00");
 }
 
 if ((int)$revisionDB < 1088) {
-    logfile("-- update to r1088");
+    Logger::logfile("-- update to r1088");
     exec_query("ALTER TABLE `${p}usr` ADD `noFading` TINYINT(1) NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1089) {
-    logfile("-- update to r1089");
+    Logger::logfile("-- update to r1089");
     exec_query("ALTER TABLE `${p}usr` ADD `export_disabled_columns` INT NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1103) {
-    logfile("-- update to r1103");
+    Logger::logfile("-- update to r1103");
     exec_query("ALTER TABLE ${p}usr DROP `allvisible`");
 }
 
 if ((int)$revisionDB < 1112) {
-    logfile("-- update to r1112");
+    Logger::logfile("-- update to r1112");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_name','Euro')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_sign','€')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_sensible_data','1')");
@@ -1036,7 +1036,7 @@ if ((int)$revisionDB < 1115) {
 }
 
 if ((int)$revisionDB < 1126) {
-    logfile("-- update to r1126");
+    Logger::logfile("-- update to r1126");
     exec_query("ALTER TABLE `${p}grp_evt` ADD UNIQUE (`grp_ID` ,`evt_ID`);");
     exec_query("ALTER TABLE `${p}grp_knd` ADD UNIQUE (`grp_ID` ,`knd_ID`);");
     exec_query("ALTER TABLE `${p}grp_pct` ADD UNIQUE (`grp_ID` ,`pct_ID`);");
@@ -1044,7 +1044,7 @@ if ((int)$revisionDB < 1126) {
 }
 
 if ((int)$revisionDB < 1132) {
-    logfile("-- update to r1132");
+    Logger::logfile("-- update to r1132");
     if ($kga['server_conn'] == "mysql") {
        exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
        exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
@@ -1052,22 +1052,22 @@ if ((int)$revisionDB < 1132) {
 }
 
 if ((int)$revisionDB < 1139) {
-    logfile("-- update to r1139");
+    Logger::logfile("-- update to r1139");
     exec_query("ALTER TABLE `${p}usr` ADD `user_list_hidden` INT NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1142) {
-    logfile("-- update to r1142");
+    Logger::logfile("-- update to r1142");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('roundPrecision','0')");
 }
 
 if ((int)$revisionDB < 1145) {
-    logfile("-- update to r1145");
+    Logger::logfile("-- update to r1145");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_first','0')");
 }
 
 if ((int)$revisionDB < 1176) {
-    logfile("-- update to r1176");
+    Logger::logfile("-- update to r1176");
     exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_usrID` ) ");
     exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_pctID` ) ");
     exec_query("ALTER TABLE `${p}pct` ADD INDEX ( `pct_kndID` ) ");
@@ -1077,47 +1077,47 @@ if ((int)$revisionDB < 1176) {
 }
 
 if ((int)$revisionDB < 1183) {
-    logfile("-- update to r1183");
+    Logger::logfile("-- update to r1183");
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_trackingnr` `zef_trackingnr` varchar(30) DEFAULT ''");
 }
 
 if ((int)$revisionDB < 1184) {
-    logfile("-- update to r1184");
+    Logger::logfile("-- update to r1184");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('decimalSeparator',',')");
 }
 
 if ((int)$revisionDB < 1185) {
-    logfile("-- update to r1185");
+    Logger::logfile("-- update to r1185");
     exec_query("CREATE TABLE ${p}pct_evt (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;");
 }
 
 if ((int)$revisionDB < 1206) {
-    logfile("-- update to r1206");
+    Logger::logfile("-- update to r1206");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('durationWithSeconds','0')");
 }
 
 if ((int)$revisionDB < 1207) {
-    logfile("-- update to r1207");
+    Logger::logfile("-- update to r1207");
     exec_query("ALTER TABLE `${p}exp` ADD `exp_multiplier` INT NOT NULL DEFAULT '1'");
 
 }
 
 if ((int)$revisionDB < 1213) {
-    logfile("-- update to r1213");
+    Logger::logfile("-- update to r1213");
     exec_query("ALTER TABLE ${p}knd DROP `knd_logo`");
     exec_query("ALTER TABLE ${p}pct DROP `pct_logo`");
     exec_query("ALTER TABLE ${p}evt DROP `evt_logo`");
 }
 
 if ((int)$revisionDB < 1216) {
-    logfile("-- update to r1216");
+    Logger::logfile("-- update to r1216");
     exec_query("ALTER TABLE `${p}exp`
   ADD `exp_refundable` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)' AFTER `exp_comment_type`;");
 }
 
 if ((int)$revisionDB < 1219) {
     $timezone = mysql_real_escape_string($_REQUEST['timezone']);
-    logfile("-- update to r1219");
+    Logger::logfile("-- update to r1219");
     exec_query("ALTER TABLE `${p}usr`
   ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
     exec_query("UPDATE `${p}usr`
@@ -1126,7 +1126,7 @@ if ((int)$revisionDB < 1219) {
 }
 
 if ((int)$revisionDB < 1225) {
-    logfile("-- update to r1225");
+    Logger::logfile("-- update to r1225");
     exec_query("CREATE TABLE `${p}preferences` (
   `userID` int(10) NOT NULL,
   `var` varchar(255) NOT NULL,
@@ -1154,7 +1154,7 @@ if ((int)$revisionDB < 1225) {
 }
 
 if ((int)$revisionDB < 1227) {
-    logfile("-- update to r1227");
+    Logger::logfile("-- update to r1227");
     exec_query("ALTER TABLE `${p}knd`
   ADD `knd_vat` VARCHAR( 255 ) NOT NULL");
     exec_query("ALTER TABLE `${p}knd`
@@ -1162,48 +1162,48 @@ if ((int)$revisionDB < 1227) {
 }
 
 if ((int)$revisionDB < 1229) {
-    logfile("-- update to r1229");
+    Logger::logfile("-- update to r1229");
     exec_query("ALTER TABLE `${p}usr` CHANGE `banTime` `banTime` int(10) NOT NULL DEFAULT 0");
 }
 
 if ((int)$revisionDB < 1236) {
-    logfile("-- update to r1236");
+    Logger::logfile("-- update to r1236");
     exec_query("ALTER TABLE `${p}pct`
   ADD `pct_internal` TINYINT( 1 ) NOT NULL DEFAULT 0");
 }
 
 if ((int)$revisionDB < 1240) {
-    logfile("-- update to r1240");
+    Logger::logfile("-- update to r1240");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('exactSums','0')");
 }
 
 if ((int)$revisionDB < 1256) {
-    logfile("-- update to r1256");
+    Logger::logfile("-- update to r1256");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultVat','0')");
 }
 
 if ((int)$revisionDB < 1257) {
-    logfile("-- update to r1257");
+    Logger::logfile("-- update to r1257");
     exec_query("UPDATE ${p}preferences SET var = CONCAT('ui.',var) WHERE var 
     IN ('skin', 'rowlimit', 'lang', 'autoselection', 'quickdelete', 'flip_pct_display',
     'pct_comment_flag', 'showIDs', 'noFading', 'user_list_hidden', 'hideClearedEntries')");
 }
 
 if ((int)$revisionDB < 1284) {
-    logfile("-- update to r1284");
+    Logger::logfile("-- update to r1284");
     exec_query("ALTER TABLE `${p}exp` CHANGE `exp_multiplier`
     `exp_multiplier` decimal(10,2) NOT NULL DEFAULT '1.00'");
 }
 
 if ((int)$revisionDB < 1291) {
-    logfile("-- update to r1291");
+    Logger::logfile("-- update to r1291");
     $salt = $kga['password_salt'];
     $query = "UPDATE `${p}usr` SET pw=MD5(CONCAT('${salt}',pw,'${salt}')) WHERE pw REGEXP '^[0-9a-f]{32}$' = 0 AND pw != ''";
     exec_query($query,false,str_replace($salt,'salt was stripped',$query));
 }
 
 if ((int)$revisionDB < 1305) {
-    logfile("-- update to r1305");
+    Logger::logfile("-- update to r1305");
 
     // update knd_name
     $result = mysql_query("SELECT knd_ID,knd_name FROM ${p}knd");
@@ -1297,7 +1297,7 @@ if ((int)$revisionDB < $kga['revision']) {
 
 }
 
-logfile("-- update finished --------------------------------");
+Logger::logfile("-- update finished --------------------------------");
 
 if ((int)$revisionDB == $kga['revision']) {
     echo "<script type=\"text/javascript\">window.location.href = \"index.php\";</script>";

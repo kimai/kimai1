@@ -30,8 +30,8 @@ switch ($axAction) {
     case 'edit_running_comment':
         if (isset($kga['customer'])) die();
 
-        $tpl->assign('langs', langs());
-        $last_event = get_event_last();
+        $tpl->assign('langs', Translations::langs());
+        $last_event = $database->get_event_last();
         $tpl->assign('id', $last_event['zef_ID']);
         $tpl->assign('comment', $last_event['zef_comment']);
         $tpl->assign('comment_active', $last_event['zef_comment_type']);
@@ -47,7 +47,7 @@ switch ($axAction) {
     // ==============================================
     $selected = explode('|',$axValue);
     if ($id) {
-        $zef_entry = get_entry_zef($id);
+        $zef_entry = $database->get_entry_zef($id);
         $tpl->assign('id', $id);
         $tpl->assign('zlocation', $zef_entry['zef_location']);
         
@@ -79,7 +79,7 @@ switch ($axAction) {
     
         $tpl->assign('edit_in_time',  date("H:i:s"));
         $tpl->assign('edit_out_time', date("H:i:s"));
-        $tpl->assign('rate',get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
+        $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
 
     }
 

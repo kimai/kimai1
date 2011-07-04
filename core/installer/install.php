@@ -52,9 +52,9 @@ function exec_query($query) {
         else
           $errorInfo = "No connection object.";
     }
-    logfile($query);
+    Logger::logfile($query);
     if (!$success) {
-      logfile($errorInfo);
+      Logger::logfile($errorInfo);
       $errors=true;
     }
 } 
@@ -72,7 +72,7 @@ date_default_timezone_set($_REQUEST['timezone']);
 
 $randomAdminID = random_number(9);
 
-logfile("-- begin install ----------------------------------");
+Logger::logfile("-- begin install ----------------------------------");
 
 // if any of the queries fails, this will be true
 $errors=false;
@@ -346,7 +346,7 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
 
 // init timespace for admin user to current month
 $mon = date("n"); $day = date("j"); $Y = date("Y");
-save_timespace(mktime(0,0,0,$mon,1,$Y),mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y),$randomAdminID);
+$database->save_timespace(mktime(0,0,0,$mon,1,$Y),mktime(23,59,59,$mon,lastday($month=$mon,$year=$Y),$Y),$randomAdminID);
 
 
 
@@ -358,9 +358,9 @@ if ($errors) {
     $tpl->assign('headline',$kga['lang']['errors'][1]['hdl']);
     $tpl->assign('message',$kga['lang']['errors'][1]['txt']);
     $tpl->display('misc/error.tpl');
-    logfile("-- showing install error --------------------------");
+    Logger::logfile("-- showing install error --------------------------");
 } else {
-    logfile("-- installation finished without error ------------");
+    Logger::logfile("-- installation finished without error ------------");
     header("Location: ../index.php");
 }
 ?>
