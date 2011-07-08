@@ -97,7 +97,7 @@ switch ($axAction) {
                 $tpl->assign('knd_homepage' , $data['knd_homepage']);
                 $tpl->assign('knd_visible'  , $data['knd_visible' ]);
                 $tpl->assign('knd_filter'   , $data['knd_filter'  ]);
-                $tpl->assign('grp_selection', knd_get_grps($id));
+                $tpl->assign('grp_selection', $database->knd_get_grps($id));
                 $tpl->assign('id', $id);
             }
         }
@@ -135,7 +135,7 @@ switch ($axAction) {
                 $tpl->assign('evt_selection'   , $database->pct_get_evts($id)        );
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
-                $tpl->assign('grp_selection', pct_get_grps($id));
+                $tpl->assign('grp_selection', $database->pct_get_grps($id));
                 $tpl->assign('id', $id);
             }
         }
