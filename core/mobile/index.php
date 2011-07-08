@@ -47,7 +47,7 @@ case 'login':
           setcookie ("kimai_key",$keymai);
           setcookie ("kimai_usr",$userData['usr_name']);
 
-          $database->loginSetKey($userId,$keymai);
+          $database->usr_loginSetKey($userId,$keymai);
 
           header("Location: record.php");
         } else {

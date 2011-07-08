@@ -72,7 +72,7 @@
                     <li>
                         <label for="usr_pw">{$kga.lang.newPassword}:</label>
                         <input class="formfield" type="password" name="usr_pw" size="9" id="password" /> {$kga.lang.minLength}
-        {if $usr_details.usr_pw == "no"}
+        {if $usr_details.pw == ""}
         
                         <br/>
                         <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />

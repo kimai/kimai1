@@ -24,21 +24,21 @@ class KimaiAuth extends AuthBase {
 
 
   public function authenticate($username,$password,&$userId) {
-      global $kga;
+      global $kga, $database;
 
-      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+      $id = $database->usr_name2id($username);
 
-      $result = mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
-      if (mysql_num_rows($result) != 1) {
+      if ($id === false) {
         $userId = false;
         return false;
       }
+      
+      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
 
-      $row    = mysql_fetch_assoc($result);
-      $pass    = $row['pw'];        
-      $ban     = $row['ban'];
-      $banTime = $row['banTime'];   
-      $userId  = $row['usr_ID'];
+      $userData = $database->usr_get_data($id);
+
+      $pass    = $userData['pw'];     
+      $userId  = $userData['usr_ID'];
       
       return $pass==$passCrypt && $username!="";
   }

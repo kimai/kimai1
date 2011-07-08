@@ -29,7 +29,7 @@ switch ($axAction) {
     // = Builds edit-user dialogue =
     // =============================
 
-        $usr_details = $database->get_usr($id);        
+        $usr_details = $database->usr_get_data($id);        
         $arr = $database->get_arr_grp();
         
         $i=0;

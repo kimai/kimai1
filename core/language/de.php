@@ -53,6 +53,7 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Abbrechen",
 "edit"              => "Eintrag bearbeiten",
+"close"             => "schließen",
 "construction"      => "Hier wird noch gebaut...",
 "about"             => "Über",
 "hours"             => "Stunden",

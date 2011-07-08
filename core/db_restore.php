@@ -383,12 +383,12 @@ echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
 
 $query = ("SHOW TABLES;");
                        
-$result_backup=@mysql_query($query); 
+$result_backup=$database->queryAll($query);
 
 $arr = array();
 $arr2 = array();
 
-while ($row = mysql_fetch_array($result_backup))
+foreach ($result_backup as $row)
 {
 	if ( (substr($row[0], 0, 10) == "kimai_bak_"))
 	{

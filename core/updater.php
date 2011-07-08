@@ -376,7 +376,7 @@ if ((int)$revisionDB < $kga['revision']) {
     $query = ("SHOW TABLES;");
 
                            
-    $result_backup=@mysql_query($query); 
+    $result_backup=$database->queryAll($query);
     Logger::logfile($query,$result_backup);
     $prefix_length = strlen($p);
     
@@ -385,7 +385,7 @@ if ((int)$revisionDB < $kga['revision']) {
     echo "<strong>".$kga['lang']['updater'][50]."</strong>";
     echo "<table style='width:100%'>";
 
-    while ($row = mysql_fetch_array($result_backup)) {
+    foreach ($result_backup as $row) {
     	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
 	
 			$primaryKey = "";
@@ -948,11 +948,7 @@ if ((int)$revisionDB < 1067) {
    */
   $new_passwords = array();
 
-  $result = mysql_query("SELECT * FROM ${p}usr");
-  
-  $users = array();
-  while ($row = mysql_fetch_assoc($result))
-    $users[] = $row;
+  $users = $database->queryAll("SELECT * FROM ${p}usr");
 
   foreach ($users as $user) {
     if ($user['usr_name'] == 'admin')
@@ -1196,9 +1192,9 @@ if ((int)$revisionDB < 1305) {
     Logger::logfile("-- update to r1305");
 
     // update knd_name
-    $result = mysql_query("SELECT knd_ID,knd_name FROM ${p}knd");
+    $result = $databsae->queryAll("SELECT knd_ID,knd_name FROM ${p}knd");
     
-    while ($customer = mysql_fetch_assoc($result)) {
+    foreach ($result as $customer) {
       $name = htmlspecialchars_decode($customer['knd_name']);
 
       if ($name == $customer['knd_name'])
@@ -1210,9 +1206,9 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update pct_name
-    $result = mysql_query("SELECT pct_ID,pct_name FROM ${p}pct");
+    $result = $databsae->queryAll("SELECT pct_ID,pct_name FROM ${p}pct");
     
-    while ($project = mysql_fetch_assoc($result)) {
+    foreach ($result as $project) {
       $name = htmlspecialchars_decode($project['pct_name']);
 
       if ($name == $project['pct_name'])
@@ -1224,9 +1220,9 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update evt_name
-    $result = mysql_query("SELECT evt_ID,evt_name FROM ${p}evt");
+    $result = $databsae->queryAll("SELECT evt_ID,evt_name FROM ${p}evt");
     
-    while ($event = mysql_fetch_assoc($result)) {
+    foreach ($result as $event) {
       $name = htmlspecialchars_decode($event['evt_name']);
 
       if ($name == $event['evt_name'])
@@ -1238,9 +1234,9 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update usr_name
-    $result = mysql_query("SELECT usr_ID,usr_name FROM ${p}usr");
+    $result = $databsae->queryAll("SELECT usr_ID,usr_name FROM ${p}usr");
     
-    while ($user = mysql_fetch_assoc($result)) {
+    foreach ($result as $user) {
       $name = htmlspecialchars_decode($user['usr_name']);
 
       if ($name == $user['usr_name'])
@@ -1252,9 +1248,9 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update grp_name
-    $result = mysql_query("SELECT grp_ID,grp_name FROM ${p}grp");
+    $result = $databsae->queryAll("SELECT grp_ID,grp_name FROM ${p}grp");
     
-    while ($group = mysql_fetch_assoc($result)) {
+    foreach ($result as $group) {
       $name = htmlspecialchars_decode($group['grp_name']);
 
       if ($name == $group['grp_name'])

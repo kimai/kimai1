@@ -54,6 +54,7 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Cancel",
 "edit"              => "Edit Entry",
+"close"             => "close",
 "construction"      => "under construction...",
 "about"             => "About",
 "hours"             => "hours",

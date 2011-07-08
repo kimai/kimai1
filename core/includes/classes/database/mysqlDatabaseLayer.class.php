@@ -3083,45 +3083,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * return details of specific user
-  * DEPRICATED!!
+  * return ID of specific user named 'XXX'
   *
-  * @param integer $user ID of user in table usr
-  * @return array
-  * @author th 
+  * @param integer $name name of user in table usr
+  * @return id of the customer
   */
-  public function get_usr($usr_id) {
-      $p = $this->kga['server_prefix'];
-      
-      $usr_id = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
-      $prefix = $this->kga['server_prefix'];
-          
-      $query = "SELECT * FROM ${p}usr Left Join ${p}grp ON usr_grp = grp_ID WHERE usr_ID = $usr_id LIMIT 1;";
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          return false;
-      }
-
-      $row = $this->conn->RowArray(0,MYSQL_ASSOC);
-
-      $arr['usr_ID']     = $row['usr_ID'];
-      $arr['usr_name']   = $row['usr_name'];
-      $arr['usr_alias']  = $row['usr_alias'];
-      $arr['usr_grp']    = $row['usr_grp'];
-      $arr['usr_sts']    = $row['usr_sts'];
-      $arr['grp_name']   = $row['grp_name'];
-      $arr['usr_mail']   = $row['usr_mail'];
-      $arr['usr_active'] = $row['usr_active'];
-      
-      if ($row['pw']!=''&&$row['pw']!='0') {
-          $arr['usr_pw'] = "yes"; 
-      } else {                 
-          $arr['usr_pw'] = "no"; 
-      }
-
-      $arr['usr_rate'] = $this->get_rate($arr['usr_ID'],NULL,NULL);
-        
-      return $arr;
+  public function knd_name2id($name) {
+      return $this->name2id($this->kga['server_prefix']."knd",'knd_ID','knd_name',$name);
   }
 
   /**
@@ -3132,9 +3100,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author th
   */
   public function usr_name2id($name) {
-      $filter ['usr_name'] = MySQL::SQLValue($name);
-      $columns[] = "usr_ID";
-      $table = $this->kga['server_prefix']."usr";
+      return $this->name2id($this->kga['server_prefix']."usr",'usr_ID','usr_name',$name);
+  }
+
+  /**
+   * Query a table for an id by giving the name of an entry.
+   * @author sl
+   */
+  private function name2id($table,$outColumn,$filterColumn,$value) {
+      $filter [$filterColumn] = MySQL::SQLValue($value);
+      $columns[] = $outColumn;
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
@@ -3142,7 +3117,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
       
       $row = $this->conn->RowArray(0,MYSQL_ASSOC);
-      return $row['usr_ID'];
+
+      if ($row === false)
+        return false;
+
+      return $row[$outColumn];
   }
 
   /**
@@ -3687,13 +3666,26 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * 
   * @author sl
   */
-  public function loginSetKey($userId,$keymai) {
+  public function usr_loginSetKey($userId,$keymai) {
     $p = $this->kga['server_prefix'];
 
     $query = "UPDATE ${p}usr SET secure='$keymai',ban=0,banTime=0 WHERE usr_ID='".
       mysql_real_escape_string($userId)."';";
-    mysql_query($query);
+    $this->conn->Query($query);
+  }
 
+  /**
+  * Save a new secure key for a customer to the database. This key is stored in the clients cookie and used
+  * to reauthenticate the customer.
+  * 
+  * @author sl
+  */
+  public function knd_loginSetKey($customerId,$keymai) {
+    $p = $this->kga['server_prefix'];
+
+    $query = "UPDATE ${p}knd SET knd_secure='$keymai' WHERE knd_ID='".
+      mysql_real_escape_string($customerId)."';";
+    $this->conn->Query($query);
   }
 
   /**
@@ -3715,6 +3707,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
       $this->conn->Query($query);
+  }
+
+
+  /**
+   * Return all rows for the given sql query.
+   * 
+   * @param string $query the sql query to execute
+   */
+  public function queryAll($query) {
+    return $this->conn->QueryArray($query);
   }
 
 }

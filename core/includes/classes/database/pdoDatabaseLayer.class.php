@@ -3247,60 +3247,41 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * return details of specific user
-  *
-  * <pre>
-  * returns: 
-  * ...
-  * </pre>
-  *
-  * @param integer $user ID of user in table usr
-  * @global array $this->kga kimai-global-array
-  * @return array
-  * @author th 
-  */
-  public function get_usr($id) {
-      $p = $this->kga['server_prefix'];
-          
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr Left Join ${p}grp ON usr_grp = grp_ID WHERE usr_ID = ? LIMIT 1;");
-      $pdo_query->execute(array($id));
-      
-      $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-          $arr['usr_ID']    = $row['usr_ID'];
-          $arr['usr_name']  = $row['usr_name'];
-          $arr['usr_alias'] = $row['usr_alias'];
-          $arr['usr_grp']   = $row['usr_grp'];
-          $arr['usr_sts']   = $row['usr_sts'];
-          $arr['grp_name']  = $row['grp_name'];
-          $arr['usr_mail']  = $row['usr_mail'];
-          $arr['usr_active'] = $row['usr_active'];
-          
-          if ($row['pw']!=''&&$row['pw']!='0') {
-              $arr['usr_pw'] = "yes"; 
-          } else {                 
-              $arr['usr_pw'] = "no"; 
-          }
-
-      $arr['usr_rate'] = $this->get_rate($arr['usr_ID'],NULL,NULL);
-      return $arr;
+   * return ID of specific customer named 'XXX'
+   * 
+   * @param string $name name of the customer in table knd
+   * @return integer
+   */
+  public function knd_name2id($name) {
+      return $this->name2id($this->kga['server_prefix']."knd",'knd_ID','knd_name',$name);
   }
 
   /**
   * return ID of specific user named 'XXX'
   *
   * @param integer $name name of user in table usr
-  * @global array $this->kga kimai-global-array
   * @return string
   * @author th
   */
   public function usr_name2id($name) {
-      $p = $this->kga['server_prefix'];
+      return $this->name2id($this->kga['server_prefix']."usr",'usr_ID','usr_name',$name);
+  }
+
+  /**
+  * Query a table for an id by giving the name of an entry.
+  *
+  * @author sl
+  */
+  private function name2id($table,$outColumn,$filterColumn,$value) {
       
-      $pdo_query = $this->conn->prepare("SELECT usr_ID FROM ${p}usr WHERE usr_name = ? LIMIT 1;");
-      $pdo_query->execute(array($name));
+      $pdo_query = $this->conn->prepare("SELECT $outColumn FROM $table WHERE $filterColumn = ? LIMIT 1;");
+      $pdo_query->execute(array($value));
+
+      if ($pdo_query->rowCount() == 0)
+        return false;
       
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['usr_ID'];
+      return $row[$outColumn];
   }
 
   /**
@@ -3543,12 +3524,26 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @global array $conn         MySQL connection
   * @author sl
   */
-  public function loginSetKey($userId,$keymai) {
+  public function usr_loginSetKey($userId,$keymai) {
     $p = $this->kga['server_prefix'];
 
     $query = "UPDATE ${p}usr SET secure=?, ban=0, banTime=0 WHERE usr_ID=?;";
     $query = $this->conn->prepare($query);
     $query->execute(array($keymai,$userId));
+  }
+
+  /**
+  * Save a new secure key for a customer to the database. This key is stored in the clients cookie and used
+  * to reauthenticate the customer.
+  * 
+  * @author sl
+  */
+  public function knd_loginSetKey($customerId,$keymai) {
+    $p = $this->kga['server_prefix'];
+
+    $query = "UPDATE ${p}knd SET knd_secure=? WHERE knd_ID=?;";
+    $query = $this->conn->prepare($query);
+    $query->execute(array($keymai,$customerId));
   }
 
   /**
@@ -3570,6 +3565,22 @@ class PDODatabaseLayer extends DatabaseLayer {
 
     $query = $this->conn->prepare($query);
     $query->execute(array($userId));
+  }
+
+
+  /**
+   * Return all rows for the given sql query.
+   * 
+   * @param string $query the sql query to execute
+   */
+  public function queryAll($statement) {
+    $query = $this->conn->exec($statement);
+
+    $result = array();
+    while ($row = $pdo_query->fetch()) {
+          $result[] = $row;
+      }
+    return $result;
   }
 
 }

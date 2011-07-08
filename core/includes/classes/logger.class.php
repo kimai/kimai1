@@ -13,6 +13,8 @@ class Logger {
    */
   private function __construct() {
     $this->file=fopen(WEBROOT."temporary/logfile.txt","a");
+    set_error_handler("Logger::errorHandler");
+    set_exception_handler('Logger::exceptionHandler');
   }
 
   /**
@@ -20,6 +22,16 @@ class Logger {
    */
   function __destruct() {
     fclose($this->file);
+  }
+
+  /**
+   * Initialize the logger.
+   * 
+   * @author sl
+   */
+  public static function init() {
+      if (self::$instance == null)
+        self::$instance = new Logger();
   }
 
   /**
@@ -46,9 +58,46 @@ class Logger {
    */
   public function log($line) {
       fputs($this->file, date("[d.m.Y H:i:s] ",time()) . $line ."\n");
-
   }
 
+  public static function exceptionHandler($exception) {
+    Logger::logfile("Uncaught exception: " , $exception->getMessage());
+  }
+
+  public static function errorHandler($errno ,$errstr , $errfile , $errline)  {
+    $line = '';
+    switch ($errno) {
+      case E_WARNING:
+        $line .= 'E_WARNING';
+        break;
+      case E_NOTICE:
+        $line .= 'E_NOTICE';
+        break;
+      case E_USER_ERROR:
+        $line .= 'E_USER_ERROR';
+        break;
+      case E_USER_WARNING:
+        $line .= 'E_USER_WARNING';
+        break;
+      case E_USER_NOTICE:
+        $line .= 'E_USER_NOTICE';
+        break;
+      case E_STRICT:
+        $line .= 'E_STRICT';
+        break;
+      case E_RECOVERABLE_ERROR:
+        $line .= 'E_RECOVERABLE_ERROR';
+        break;
+    }
+    
+    $line .= ' ' . $errstr;
+    
+    $line .= " @${errfile} line ${errline}";
+
+    Logger::logfile($line);
+    
+    return false; // let PHP do it's error handling as well
+  }
 
 }
 

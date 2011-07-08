@@ -74,8 +74,8 @@ $tpl->assign('kga', $kga);
 // ==========================
 // = installation required? =
 // ==========================
-$ready = @mysql_query(sprintf("select count(*) FROM %susr;",$kga['server_prefix']));
-if (!$ready) { 
+$users = $database->get_arr_usr();
+if (count($users) == 0) { 
     $tpl->assign('devtimespan', '2006-'.date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {
         $tpl->assign('disagreedGPL', 1);
@@ -144,7 +144,7 @@ if ($authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) 
   setcookie ("kimai_key",$keymai);
   setcookie ("kimai_usr",$userData['usr_name']);
 
-  $database->loginSetKey($userId,$keymai);
+  $database->usr_loginSetKey($userId,$keymai);
 
   header("Location: core/kimai.php");
 }
@@ -165,17 +165,15 @@ case "checklogin":
     if ($is_customer) {
       // perform login of customer
       $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-      $result = @mysql_query(sprintf("SELECT * FROM %sknd WHERE knd_name ='%s';",$kga['server_prefix'],$name));
-      $row    = @mysql_fetch_assoc($result);
-      $id      = $row['knd_ID'];
-      $user    = $row['knd_name'];
-      $pass    = $row['knd_password'];
+      $id = $database->knd_name2id($name);
+      $data = $database->knd_get_data($id);
+      
       // TODO: add BAN support
-      if ( $name==$user && $pass==$passCrypt && $user!='' && $pass!='') { 
+      if ( $data['knd_password']==$passCrypt && $user!='' && $pass!='') { 
         $keymai=random_code(30);        
         setcookie ("kimai_key",$keymai);
         setcookie ("kimai_usr",'knd_'.$user);
-        @mysql_query(sprintf("UPDATE %sknd SET knd_secure='%s' WHERE knd_name='%s';",$kga['server_prefix'],$keymai,$user));
+        $database->knd_loginSetKey($id,$keymai);
         header("Location: core/kimai.php");
       }
       else {
@@ -213,7 +211,7 @@ case "checklogin":
           setcookie ("kimai_key",$keymai);
           setcookie ("kimai_usr",$userData['usr_name']);
 
-          $database->loginSetKey($userId,$keymai);
+          $database->usr_loginSetKey($userId,$keymai);
 
           header("Location: core/kimai.php");
         } else {

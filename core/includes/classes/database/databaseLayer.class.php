@@ -851,20 +851,20 @@ abstract class DatabaseLayer {
   */
   public abstract function zef_edit_comment($zef_ID,$comment_type,$comment);
 
+
   /**
-  * return details of specific user
-  * DEPRICATED!!
-  *
-  * @param integer $user ID of user in table usr
-  * @return array
-  */
-  public abstract function get_usr($usr_id);
+   * return ID of specific customer named 'XXX'
+   * 
+   * @param string $name name of the customer in table knd
+   * @return integer
+   */
+  public abstract function knd_name2id($name);
 
   /**
   * return ID of specific user named 'XXX'
   *
   * @param integer $name name of user in table usr
-  * @return string
+  * @return id of the customer
   */
   public abstract function usr_name2id($name);
 
@@ -984,13 +984,27 @@ abstract class DatabaseLayer {
   * Save a new secure key for a user to the database. This key is stored in the users cookie and used
   * to reauthenticate the user.
   */
-  public abstract function loginSetKey($userId,$keymai);
+  public abstract function usr_loginSetKey($userId,$keymai);
+
+  /**
+  * Save a new secure key for a customer to the database. This key is stored in the clients cookie and used
+  * to reauthenticate the customer.
+  */
+  public abstract function knd_loginSetKey($customerId,$keymai);
 
   /**
   * Update the ban status of a user. This increments the ban counter.
   * Optionally it sets the start time of the ban to the current time.
   */
   public abstract function loginUpdateBan($userId,$resetTime = false);
+
+
+  /**
+   * Return all rows for the given sql query.
+   * 
+   * @param string $query the sql query to execute
+   */
+  public abstract function queryAll($query);
 
 }
 
