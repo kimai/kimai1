@@ -43,128 +43,8 @@ $usr = $database->checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-// =========================================
-// = PARSE EXTENSION CONFIGS (ext_configs) =
-// =========================================
-
-if ($handle = opendir('../extensions/')) {
-    chdir("../extensions/");
-    $ext_configs = array();
-    
-    $css_extension_files = array();
-    $js_extension_files  = array();
-    $extensions          = array();
-    $tab_change_trigger  = array();
-    $tss_hooks           = array();
-    $rec_hooks           = array();
-    $stp_hooks           = array();
-    $chu_hooks           = array();
-    $chk_hooks           = array();
-    $chp_hooks           = array();
-    $che_hooks           = array();
-    $lft_hooks           = array(); // list filter hooks
-    $rsz_hooks           = array(); // resize hooks
-    $timeouts            = array();
-    
-    while (false !== ($file = readdir($handle))) {
-
-        if (is_dir($file) AND ($file != ".") AND ($file != "..") AND (substr($file,0) != ".") AND (substr($file,0,1) != "#")) {
-                    if (file_exists($file.'/config.ini')) {
-                        $settings = parse_ini_file($file.'/config.ini');
-                       	
-                       	// Check if user has the correct rank to use this extension
-                       	if (isset($kga['usr']))
-                          switch ($kga['usr']['usr_sts']) {
-                            case 0:
-                            if ($settings['ADMIN_ALLOWED'] == "1") {
-                              $extensions[] = $settings;
-                            }
-                            break;
-                          
-                            case 1:
-                              if ($settings['GROUP_LEADER_ALLOWED'] == "1") {
-                              $extensions[] = $settings;
-                            }
-                            break;
-                          
-                            case 2:
-                              if ($settings['USER_ALLOWED'] == "1") {
-                              $extensions[] = $settings;
-                            }
-                            break;
-                          }
-                       	else if ($settings['CUSTOMER_ALLOWED'] == "1")
-                       	  $extensions[] = $settings;
-                       	
-                       	foreach($settings as $key=>$value){
-							
-							// add CSS files
-							if($key == 'CSS_INCLUDE_FILES'){
-								if(is_array($value)){
-									foreach($value as $subvalue){
-										if(!in_array($subvalue, $css_extension_files)){
-											$css_extension_files[] = $subvalue;
-										}
-									}
-								} else {
-									if(!in_array($value, $css_extension_files)){
-										$css_extension_files[] = $value;
-									}
-								}
-							}
-							
-							// add JavaScript files
-							if($key == 'JS_INCLUDE_FILES') {
-								if(is_array($value)){
-									foreach($value as $subvalue){
-										if(!in_array($subvalue, $js_extension_files)){
-											$js_extension_files[] = $subvalue;
-										}
-									}
-								} else {
-									if(!in_array($value, $js_extension_files)){
-										$js_extension_files[] = $value;
-									}
-								}
-							}
-							
-                            // read trigger function for tab change
-                            if ($key == 'TAB_CHANGE_TRIGGER') { $tab_change_trigger[] = $value; }
-                                                        
-                            // read hook triggers
-                            if ($key == 'TIMESPACE_CHANGE_TRIGGER') { $tss_hooks[] = $value; }
-                            if ($key == 'BUZZER_RECORD_TRIGGER')    { $rec_hooks[] = $value; }
-                            if ($key == 'BUZZER_STOP_TRIGGER')      { $stp_hooks[] = $value; }
-                            if ($key == 'CHANGE_USR_TRIGGER')       { $chu_hooks[] = $value; }
-                            if ($key == 'CHANGE_KND_TRIGGER')       { $chk_hooks[] = $value; }
-                            if ($key == 'CHANGE_PCT_TRIGGER')       { $chp_hooks[] = $value; }
-                            if ($key == 'CHANGE_EVT_TRIGGER')       { $che_hooks[] = $value; }
-                            if ($key == 'LIST_FILTER_TRIGGER')      { $lft_hooks[] = $value; }
-                            if ($key == 'RESIZE_TRIGGER')           { $rsz_hooks[] = $value; }
-                            
-                            // add Timeout clearing
-                            
-                            if($key == 'REG_TIMEOUTS') {
-                            if(is_array($value)){
-                                 foreach($value as $subvalue){
-                                     if(!in_array($subvalue, $timeouts)){
-                                         $timeouts[] = $subvalue;
-                                     }
-                                 }
-                             } else {
-                                 if(!in_array($value, $timeouts)){
-                                     $timeouts[] = $value;
-                                 }
-                             }
-                            }
-                            
-                            
-                        }
-                    }
-        }
-    }
-    closedir($handle);
-}
+$extensions = new Extensions($kga, WEBROOT.'/extensions/');
+$extensions->loadConfigurations();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -240,9 +120,9 @@ $tpl->assign('timespace_out', $out);
 
 $tpl->assign('kga',$kga);
                        
-$tpl->assign('extensions', $extensions);
-$tpl->assign('css_extension_files', $css_extension_files);
-$tpl->assign('js_extension_files', $js_extension_files);
+$tpl->assign('extensions', $extensions->extensionsTabData());
+$tpl->assign('css_extension_files', $extensions->cssExtensionFiles());
+$tpl->assign('js_extension_files', $extensions->jsExtensionFiles());
 
 if (isset($kga['usr']))
   $tpl->assign('recstate', $database->get_rec_state($kga['usr']['usr_ID']));
@@ -272,29 +152,12 @@ $tpl->assign('knd_data', $knd_data);
 $tpl->assign('pct_data', $pct_data);
 $tpl->assign('evt_data', $evt_data);
 
-
 // =========================================
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
-$extDir = WEBROOT.'extensions';
-if ($handle = opendir($extDir)) {
-    chdir($extDir);
-    $ext_configs = array();
-    while (false !== ($file = readdir($handle))) {
-        if (is_dir($file) AND ($file != ".") AND ($file != "..") AND (substr($file,0) != ".") AND (substr($file,0,1) != "#")) {
-            if ($subhandle = opendir($extDir . DIRECTORY_SEPARATOR . $file)) {
-                while (false !== ($phpfile = readdir($subhandle))) {
-                    if($phpfile == "kimai_include.php") {
-                       require_once($extDir . DIRECTORY_SEPARATOR .$file. DIRECTORY_SEPARATOR .$phpfile);
-                    }
-                }
-                closedir($subhandle);
-            }
-        }
-    }
-    closedir($handle);
+foreach ($extensions->phpIncludeFiles() as $includeFile) {
+  require_once($includeFile);
 }
-
 
 // =======================
 // = display user table =
@@ -363,88 +226,22 @@ else
   $tpl->assign('showInstallWarning',false);
 
 
+
 // ========================
 // = BUILD HOOK FUNCTIONS =
 // ========================
 
-$hook_tss ="";
-if(is_array($tss_hooks)){
-    foreach ($tss_hooks as $hook) { 
-        $hook_tss .= $hook; 
-    }
-}
 
-$hook_bzzRec="";
-if(is_array($rec_hooks)){
-    foreach ($rec_hooks as $hook) { 
-        $hook_bzzRec .= $hook; 
-    }
-}
-
-$hook_bzzStp ="";
-if(is_array($stp_hooks)){
-    foreach ($stp_hooks as $hook) { 
-        $hook_bzzStp .= $hook; 
-    }
-}
-
-$hook_chgUsr="";
-if(is_array($chu_hooks)){
-    foreach ($chu_hooks as $hook) { 
-        $hook_chgUsr .= $hook; 
-    }
-}
-
-$hook_chgKnd="";
-if(is_array($chk_hooks)){
-    foreach ($chk_hooks as $hook) { 
-        $hook_chgKnd .= $hook; 
-    }
-}
-
-$hook_chgPct="";
-if(is_array($chp_hooks)){
-    foreach ($chp_hooks as $hook) { 
-        $hook_chgPct .= $hook; 
-    }
-}
-
-$hook_chgEvt="";
-if(is_array($che_hooks)){
-    foreach ($che_hooks as $hook) { 
-        $hook_chgEvt .= $hook; 
-    }
-}
-
-$hook_filter="";
-if(is_array($lft_hooks)){
-    foreach ($lft_hooks as $hook) { 
-        $hook_filter .= $hook; 
-    }
-}
-
-$hook_resize="";
-if(is_array($rsz_hooks)){
-    foreach ($rsz_hooks as $hook) { 
-        $hook_resize .= $hook; 
-    }
-}
-
-$tpl->assign('hook_tss',      $hook_tss);
-$tpl->assign('hook_bzzRec',   $hook_bzzRec);
-$tpl->assign('hook_bzzStp',   $hook_bzzStp);
-$tpl->assign('hook_chgUsr',   $hook_chgUsr);
-$tpl->assign('hook_chgKnd',   $hook_chgKnd);
-$tpl->assign('hook_chgPct',   $hook_chgPct);
-$tpl->assign('hook_chgEvt',   $hook_chgEvt);
-$tpl->assign('hook_filter',   $hook_filter);
-$tpl->assign('hook_resize',   $hook_resize);
-
-$timeoutlist = "";
-foreach ($timeouts as $timeout) {
-    $timeoutlist .=  "kill_timeout('" . $timeout . "');" ;
-}
-$tpl->assign('timeoutlist', $timeoutlist);
+$tpl->assign('hook_tss',      $extensions->tssHooks());
+$tpl->assign('hook_bzzRec',   $extensions->recHooks());
+$tpl->assign('hook_bzzStp',   $extensions->stpHooks());
+$tpl->assign('hook_chgUsr',   $extensions->chuHooks());
+$tpl->assign('hook_chgKnd',   $extensions->chkHooks());
+$tpl->assign('hook_chgPct',   $extensions->chpHooks());
+$tpl->assign('hook_chgEvt',   $extensions->cheHooks());
+$tpl->assign('hook_filter',   $extensions->lftHooks());
+$tpl->assign('hook_resize',   $extensions->rszHooks());
+$tpl->assign('timeoutlist',   $extensions->timeoutList());
 
 $tpl->display('core/main.tpl');
 

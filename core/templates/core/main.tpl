@@ -242,16 +242,16 @@
            	    </a>
            	</li>
            	        
-{foreach name="tabloop" from=$extensions item="object"}
-{if $object.EXTENSION_NAME AND $object.EXTENSION_KEY != "ki_timesheet"}
+{foreach name="tabloop" from=$extensions item="extension"}
+{if $extension.name AND $extension.key != "ki_timesheet"}
             <li class="tab norm" id="exttab_{$smarty.foreach.tabloop.iteration}">
-                <a href="javascript:void(0);" onclick="changeTab({$smarty.foreach.tabloop.iteration}, '{$object.EXTENSION_INIT_FILE}'); {$object.TAB_CHANGE_TRIGGER};">
+                <a href="javascript:void(0);" onclick="changeTab({$smarty.foreach.tabloop.iteration}, '{$extension.initFile}'); {$extension.tabChangeTrigger};">
                     <span class="aa">&nbsp;</span>
                     <span class="bb">
-                    {if isset($kga.lang.extensions[$object.EXTENSION_KEY])}
-                    {$kga.lang.extensions[$object.EXTENSION_KEY]}
+                    {if isset($kga.lang.extensions[$extension.key])}
+                    {$kga.lang.extensions[$extension.key]}
                     {else}
-                    {$object.EXTENSION_NAME|escape:'html'}
+                    {$extension.name|escape:'html'}
                     {/if}</span>
                     <span class="cc">&nbsp;</span>
                 </a>
@@ -265,9 +265,9 @@
     <div id="gui">
     	<div id="extdiv_0" class="ext ki_timesheet"></div>
     	
-{foreach name="extensionloop" from=$extensions item="object"}
-{if $object.EXTENSION_KEY != "ki_timesheet"}
-		<div id="extdiv_{$smarty.foreach.extensionloop.iteration}" class="ext {$object.EXTENSION_KEY}" style="display:none;"></div>
+{foreach name="extensionloop" from=$extensions item="extension"}
+{if $extension != "ki_timesheet"}
+		<div id="extdiv_{$smarty.foreach.extensionloop.iteration}" class="ext {$extension.key}" style="display:none;"></div>
 {/if}
 {/foreach}
 
