@@ -29,17 +29,12 @@
                   return false;
                 }
 
-                // test if start time is before end time
-                var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
-                var outTimeMatches = $('#edit_out_time').val().match(ts_timeFormatExp);
-                for (var i = 1;i<=3;i++) {
-                  var inVal = inTimeMatches[i];
-                  var outVal = outTimeMatches[i];
-                  
-                  if (inVal[0] == ":")
-                    inVal = inVal.substr(1);
-                  if (outVal[0] == ":")
-                    outVal = outVal.substr(1);
+                // test if start day is before end day
+                var inDayMatches = $('#edit_in_day').val().match(ts_dayFormatExp);
+                var outDayMatches = $('#edit_out_day').val().match(ts_dayFormatExp);
+                for (var i = 3;i>=1;i--) {
+                  var inVal = inDayMatches[i];
+                  var outVal = outDayMatches[i];
                   
                   if (inVal == undefined)
                     inVal = 0;
@@ -54,7 +49,32 @@
                     break; // if this part is smaller we don't care for the other parts
                 }
                 
-                
+                if (inDayMatches[0] == outDayMatches[0]) {
+                  // test if start time is before end time if it's the same day
+                  var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
+                  var outTimeMatches = $('#edit_out_time').val().match(ts_timeFormatExp);
+                  for (var i = 1;i<=3;i++) {
+                    var inVal = inTimeMatches[i];
+                    var outVal = outTimeMatches[i];
+                    
+                    if (inVal[0] == ":")
+                      inVal = inVal.substr(1);
+                    if (outVal[0] == ":")
+                      outVal = outVal.substr(1);
+                    
+                    if (inVal == undefined)
+                      inVal = 0;
+                    if (outVal == undefined)
+                      outVal = 0;
+                    
+                    if (inVal > outVal) {
+                      alert("{/literal}{$kga.lang.StartTimeBeforeEndTime}{literal}");
+                      return false;
+                    }
+                    else if (inVal < outVal)
+                      break; // if this part is smaller we don't care for the other parts
+                  }
+                }
                 
                 var edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
                 var edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
