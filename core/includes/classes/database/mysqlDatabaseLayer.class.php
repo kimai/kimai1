@@ -70,9 +70,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."knd";
       $result = $this->conn->InsertRow($table, $values);
       
-      Logger::logfile($result);
-
       if (! $result) {
+        Logger::logfile('knd_create: '.$this->conn->Error());
         return false;
       } else {
         return $this->conn->GetLastInsertID();
@@ -92,9 +91,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->SelectRows($table, $filter);
       
       if (! $result) {
+        Logger::logfile('knd_get_data: '.$this->conn->Error());
         return false;
       } else {
-          // return  $this->conn->getHTML();
           return $this->conn->RowArray(0,MYSQL_ASSOC);
       }
   }
@@ -152,6 +151,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);
       
       if ($d_result == false) {
+              Logger::logfile('assign_knd2grps: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -163,6 +163,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $result = $this->conn->Query($query);            
 
           if ($result == false) {
+                  Logger::logfile('assign_knd2grps: '.$this->conn->Error());
                   $this->conn->TransactionRollback();
                   return false;
           }
@@ -171,6 +172,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_knd2grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -204,6 +206,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           }
           return $return_grps;
       } else {
+          Logger::logfile('knd_get_grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -245,8 +248,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."pct";
       $result = $this->conn->InsertRow($table, $values);
       
-      if (! $result)
+      if (! $result) {
+        Logger::logfile('pct_create: '.$this->conn->Error());
         return false;
+      }
 
       $pct_id = $this->conn->GetLastInsertID();
 
@@ -284,8 +289,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."pct";
       $result = $this->conn->SelectRows($table, $filter);
 
-      if (! $result)
+      if (! $result) {
+        Logger::logfile('pct_get_data: '.$this->conn->Error());
         return false;
+      }
 
       $result_array = $this->conn->RowArray(0,MYSQL_ASSOC);
       $result_array['pct_default_rate'] = $this->get_rate(NULL,$pct_id,NULL);
@@ -344,6 +351,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           if (! $this->conn->TransactionEnd()) $this->conn->Kill();
           return true;
       } else {
+          Logger::logfile('pct_edit: '.$this->conn->Error());
           if (! $this->conn->TransactionRollback()) $this->conn->Kill();
           return false;
       }
@@ -368,6 +376,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
       
       if ($d_result == false) {
+              Logger::logfile('assign_pct2grps: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -380,6 +389,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);
         
         if ($result == false) {
+                Logger::logfile('assign_pct2grps: '.$this->conn->Error());
                 $this->conn->TransactionRollback();
                 return false;
         }
@@ -388,6 +398,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_pct2grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -408,6 +419,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('pct_get_grps: '.$this->conn->Error());
           return false;
       }
 
@@ -463,8 +475,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."evt";
       $result = $this->conn->InsertRow($table, $values);
 
-      if (! $result)
+      if (! $result) {
+        Logger::logfile('evt_create: '.$this->conn->Error());
         return false;
+      }
 
       $evt_id = $this->conn->GetLastInsertID();
       
@@ -497,8 +511,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."evt";
       $result = $this->conn->SelectRows($table, $filter);
 
-      if (! $result)
+      if (! $result) {
+        Logger::logfile('evt_get_data: '.$this->conn->Error());
         return false;
+      }
 
 
       $result_array = $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -561,6 +577,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           if (! $this->conn->TransactionEnd()) $this->conn->Kill();
           return true;
       } else {
+          Logger::logfile('evt_edit: '.$this->conn->Error());
           if (! $this->conn->TransactionRollback()) $this->conn->Kill();
           return false;
       }
@@ -583,6 +600,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+          Logger::logfile('assign_evt2grps: '.$this->conn->Error());
           $this->conn->TransactionRollback();
           return false;
       }
@@ -594,6 +612,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
         
         if ($result == false) {
+            Logger::logfile('assign_evt2grps: '.$this->conn->Error());
             $this->conn->TransactionRollback();
             return false;
         }
@@ -602,6 +621,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_evt2grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -623,6 +643,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+          Logger::logfile('assign_evt2pcts: '.$this->conn->Error());
           $this->conn->TransactionRollback();
           return false;
       }
@@ -634,6 +655,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
         
         if ($result == false) {
+            Logger::logfile('assign_evt2pcts: '.$this->conn->Error());
             $this->conn->TransactionRollback();
             return false;
         }
@@ -642,6 +664,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_evt2pcts: '.$this->conn->Error());
           return false;
       }
   }
@@ -663,6 +686,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+          Logger::logfile('assign_pct2evts: '.$this->conn->Error());
           $this->conn->TransactionRollback();
           return false;
       }
@@ -674,6 +698,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
         
         if ($result == false) {
+            Logger::logfile('assign_pct2evts: '.$this->conn->Error());
             $this->conn->TransactionRollback();
             return false;
         }
@@ -682,6 +707,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_pct2evts: '.$this->conn->Error());
           return false;
       }
   }
@@ -700,6 +726,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('evt_get_pcts: '.$this->conn->Error());
           return false;
       }
 
@@ -733,6 +760,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('pct_get_evts: '.$this->conn->Error());
           return false;
       }
 
@@ -766,6 +794,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('evt_get_grps: '.$this->conn->Error());
           return false;
       }
 
@@ -822,6 +851,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+              Logger::logfile('assign_grp2knds: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -833,6 +863,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
         
         if ($result == false) {
+                Logger::logfile('assign_grp2knds: '.$this->conn->Error());
                 $this->conn->TransactionRollback();
                 return false;
         }
@@ -841,6 +872,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_grp2knds: '.$this->conn->Error());
           return false;
       }
   }
@@ -863,6 +895,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+              Logger::logfile('assign_grp2pcts: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -874,6 +907,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
 
         if ($result == false) {
+            Logger::logfile('assign_grp2pcts: '.$this->conn->Error());
             $this->conn->TransactionRollback();
             return false;
         }
@@ -882,6 +916,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_grp2pcts: '.$this->conn->Error());
           return false;
       }
   }
@@ -904,6 +939,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($d_query);    
 
       if ($d_result == false) {
+          Logger::logfile('assign_grp2evts: '.$this->conn->Error());
           $this->conn->TransactionRollback();
           return false;
       }
@@ -915,6 +951,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);            
 
         if ($result == false) {
+            Logger::logfile('assign_grp2evts: '.$this->conn->Error());
             $this->conn->TransactionRollback();
             return false;
         }
@@ -923,6 +960,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_grp2evts: '.$this->conn->Error());
           return false;
       }
   }
@@ -944,6 +982,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('grp_get_knds: '.$this->conn->Error());
           return false;
       }
       
@@ -979,6 +1018,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('grp_get_pcts: '.$this->conn->Error());
           return false;
       }
 
@@ -1015,6 +1055,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('grp_get_evts: '.$this->conn->Error());
           return false;
       }
 
@@ -1060,6 +1101,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
 
       if ($result===false) {
+        Logger::logfile('usr_create: '.$this->conn->Error());
         return false;
       }
       else {
@@ -1086,6 +1128,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->SelectRows($table, $filter);
 
       if (! $result) {
+        Logger::logfile('usr_get_data: '.$this->conn->Error());
         return false;
       } else {
           // return  $this->conn->getHTML();
@@ -1140,6 +1183,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       } else {
           if (! $this->conn->TransactionRollback()) $this->conn->Kill();
 
+          Logger::logfile('usr_edit: '.$this->conn->Error());
           return false;
       }
   }
@@ -1310,6 +1354,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($query);    
       
       if ($d_result == false) {
+              Logger::logfile('assign_ldr2grps: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -1322,6 +1367,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);
         
         if ($result == false) {
+                Logger::logfile('assign_ldr2grps: '.$this->conn->Error());
                 $this->conn->TransactionRollback();
                 return false;
         }
@@ -1332,6 +1378,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_ldr2grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -1355,6 +1402,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($query);    
       
       if ($d_result == false) {
+              Logger::logfile('assign_grp2ldrs: '.$this->conn->Error());
               $this->conn->TransactionRollback();
               return false;
       }
@@ -1367,6 +1415,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);
         
         if ($result == false) {
+                Logger::logfile('assign_grp2ldrs: '.$this->conn->Error());
                 $this->conn->TransactionRollback();
                 return false;
         }
@@ -1377,6 +1426,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($this->conn->TransactionEnd() == true) {
           return true;
       } else {
+          Logger::logfile('assign_grp2ldrs: '.$this->conn->Error());
           return false;
       }
   }
@@ -1395,6 +1445,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('ldr_get_grps: '.$this->conn->Error());
           return false;
       }
   
@@ -1410,6 +1461,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           }
           return $return_grps;
       } else {
+          Logger::logfile('ldr_get_grps: '.$this->conn->Error());
           return false;
       }
   }
@@ -1430,6 +1482,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('grp_get_ldrs: '.$this->conn->Error());
           return false;
       }
       
@@ -1466,6 +1519,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->InsertRow($table, $values);
 
       if (! $result) {
+        Logger::logfile('grp_create: '.$this->conn->Error());
         return false;
       } else {
         return $this->conn->GetLastInsertID();
@@ -1487,6 +1541,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->SelectRows($table, $filter);    
       
       if (! $result) {
+        Logger::logfile('grp_get_data: '.$this->conn->Error());
         return false;
       } else {
           return $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -1588,6 +1643,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);
         
         if ($result === false) {
+            Logger::logfile('var_edit: '.$this->conn->Error());
             return false;
         }
       }
@@ -1713,6 +1769,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
       
       if (! $result) {
+        Logger::logfile('zef_get_data: '.$this->conn->Error());
         return false;
       } else {
           return $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -1763,8 +1820,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $success =  $this->conn->InsertRow($table, $values);
       if ($success)
         return  $this->conn->GetLastInsertID();
-      else
+      else {
+        Logger::logfile('zef_create_record: '.$this->conn->Error());
         return false;
+      }
   } 
 
   /**
@@ -1817,6 +1876,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if ($success) {
           if (! $this->conn->TransactionEnd()) $this->conn->Kill();
       } else {
+          Logger::logfile('zef_edit_record: '.$this->conn->Error());
           if (! $this->conn->TransactionRollback()) $this->conn->Kill();
       }
 
@@ -1884,6 +1944,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('get_arr_pct: '.$this->conn->Error());
           return false;
       }
       
@@ -2359,27 +2420,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns single timesheet entry as array
-  *
-  * @param integer $id ID of entry in table zef
-  * @return array
-  * @author th
-  */
-  public function get_entry_zef($id) {
-      $id    = MySQL::SQLValue($id   , MySQL::SQLVALUE_NUMBER);
-    $p     = $this->kga['server_prefix'];
-    
-      $query = "SELECT * FROM ${p}zef 
-                Left Join ${p}pct ON zef_pctID = pct_ID 
-                Left Join ${p}knd ON pct_kndID = knd_ID 
-                Left Join ${p}evt ON evt_ID    = zef_evtID
-                WHERE zef_ID = $id LIMIT 1;";
-
-      $this->conn->Query($query);
-      return $this->conn->RowArray(0,MYSQL_ASSOC);
-  }
-
-  /**
   * returns time summary of current timesheet
   *
   * @param integer $user ID of user in table usr
@@ -2462,6 +2502,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('get_arr_knd: '.$this->conn->Error());
           return false;
       }
 
@@ -2496,6 +2537,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('get_arr_evt: '.$this->conn->Error());
           return false;
       }
 
@@ -2551,6 +2593,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('get_arr_evt_by_pct: '.$this->conn->Error());
           return false;
       }
 
@@ -2587,6 +2630,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('get_arr_evt_by_knd: '.$this->conn->Error());
           return false;
       }
 
@@ -2604,7 +2648,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           }
           return $arr;
       } else {
-          return false;
+          return array();
       }
   }
 
@@ -2706,6 +2750,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('get_seq: '.$this->conn->Error());
           return false;
       }
       
@@ -2957,8 +3002,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
       
-      Logger::logfile($query);
-      
       return $this->conn->Query($query);    
   }
 
@@ -2987,6 +3030,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->InsertRow($table, $values);
 
       if (! $result) {
+        Logger::logfile('startRecorder: '.$this->conn->Error());
         return false;
       } 
       
@@ -3026,8 +3070,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
       
-      Logger::logfile($query);
-      
       return $this->conn->Query($query);   
   }
 
@@ -3049,8 +3091,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['zef_evtID'] = $evt_id;
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-      
-      Logger::logfile($query);
       
       return $this->conn->Query($query);  
   }
@@ -3076,8 +3116,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['zef_comment']      = $comment;
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-      
-      Logger::logfile($query);
       
       return $this->conn->Query($query); 
   }
@@ -3113,6 +3151,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('name2id: '.$this->conn->Error());
           return false;
       }
       
@@ -3138,6 +3177,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
+          Logger::logfile('usr_id2name: '.$this->conn->Error());
           return false;
       }
       
@@ -3179,6 +3219,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('getUsage: '.$this->conn->Error());
           return false;
       }
       
@@ -3201,6 +3242,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('getjointime: '.$this->conn->Error());
           return false;
       }
 
@@ -3228,7 +3270,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $filter['usr_ID'] = $user_id;
       $table = $this->kga['server_prefix']."usr";
       $result = $this->conn->SelectRows($table, $filter);
-      if (! $result) return array();
+      if (! $result) {
+        Logger::logfile('get_arr_watchable_users: '.$this->conn->Error());
+        return array();
+      }
       $row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
       if ($row['usr_sts'] == "0") { // if is admin
@@ -3240,7 +3285,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $result = $this->conn->Query($query);
       }
 
-      if (! $result) return array();
+      if (! $result) {
+        Logger::logfile('get_arr_watchable_users: '.$this->conn->Error());
+        return array();
+      }
 
       return $this->conn->RecordsArray(MYSQL_ASSOC);
   }
@@ -3279,7 +3327,12 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               Join " . $this->kga['server_prefix'] . "evt ON evt_ID    = zef_evtID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;";
       $result = $this->conn->Query($query);
-      if (! $result) return array();
+      
+      if (! $result) {
+        Logger::logfile('get_arr_time_usr: '.$this->conn->Error());
+        return array();
+      }
+
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       if (!$rows) return array();
 
@@ -3350,7 +3403,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
 
       $result = $this->conn->Query($query);
-      if (! $result) return array();
+      if (! $result) {
+        Logger::logfile('get_arr_time_knd: '.$this->conn->Error());
+        return array();
+      }
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       if (!$rows) return array();
 
@@ -3420,7 +3476,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
       
       $result = $this->conn->Query($query);
-      if (! $result) return array();
+      if (! $result) {
+        Logger::logfile('get_arr_time_pct: '.$this->conn->Error());
+        return array();
+      }
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       if (!$rows) return array();
 
@@ -3490,7 +3549,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           (count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses);
       
       $result = $this->conn->Query($query);
-      if (! $result) return array();
+      if (! $result) {
+        Logger::logfile('get_arr_time_evt: '.$this->conn->Error());
+        return array();
+      }
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       if (!$rows) return array();
 
@@ -3538,12 +3600,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $query = "UPDATE " . $this->kga['server_prefix'] . "usr," . $this->kga['server_prefix'] . "ldr SET usr_sts = 2 WHERE usr_sts = 1";
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('update_leader_status: '.$this->conn->Error());
           return false;
       }
       
       $query = "UPDATE " . $this->kga['server_prefix'] . "usr," . $this->kga['server_prefix'] . "ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID";
       $result = $this->conn->Query($query);
       if ($result == false) {
+          Logger::logfile('update_leader_status: '.$this->conn->Error());
           return false;
       }
 
@@ -3574,8 +3638,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
     $result = $this->conn->Query($query);
 
-    if ($result == false)
+    if ($result == false) {
+      Logger::logfile('save_rate: '.$this->conn->Error());
       return false;
+    }
     else
       return true;
   }
@@ -3625,8 +3691,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
     $result = $this->conn->Query($query);
 
-    if ($result === false)
+    if ($result === false) {
+      Logger::logfile('remove_rate: '.$this->conn->Error());
       return false;
+    }
     else
       return true;
   }

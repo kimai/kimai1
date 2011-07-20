@@ -31,8 +31,13 @@ class PDODatabaseLayer extends DatabaseLayer {
     try {
       $this->conn = new PDO($pdo_dsn, $username, $password);
     } catch (PDOException $pdo_ex) {
-      Logger::log('PDO CONNECTION FAILED: ' . $pdo_ex->getMessage());
+      Logger::logfile('PDO CONNECTION FAILED: ' . $pdo_ex->getMessage());
     }
+  }
+
+  private function logLastError($scope) {
+      $err = $this->conn->errorInfo();
+      Logger::logfile($scope.': ('.$err[0].') '.$err[2]);
   }
 
   /**
@@ -139,12 +144,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       $data['knd_vat'],
       $data['knd_contact']
       ));
-        
-      $err = $pdo_query->errorInfo();
       
       if ($result == true) {
           return $this->conn->lastInsertId();
       } else {
+          $this->logLastError('knd_create');
           return false;
       }
   }
@@ -164,6 +168,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $result = $pdo_query->execute(array($knd_id));
       
       if ($result == false) {
+          $this->logLastError('knd_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -199,7 +204,12 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement->bindValue(":customerId", $knd_id);
 
-      return $statement->execute();
+      if (!$statement->execute()) {
+          $this->logLastError('knd_edit');
+          return false;
+      }
+      
+      return true;
   }
 
   /**
@@ -220,6 +230,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_knd WHERE knd_ID=?;");    
       $d_result = $pdo_query->execute(array($knd_id));
       if ($d_result == false) {
+          $this->logLastError('assign_knd2grps');
           $this->conn->rollBack();
           return false;
       }
@@ -228,6 +239,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_grp,$knd_id));
         if ($result == false) {
+            $this->logLastError('assign_knd2grps');
             $this->conn->rollBack();
             return false;
         }
@@ -236,6 +248,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_knd2grps');
           return false;
       }
   }
@@ -255,6 +268,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $result = $pdo_query->execute(array($knd_id));
       if ($result == false) {
+          $this->logLastError('knd_get_grps');
           return false;
       }
       
@@ -284,6 +298,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $result = $pdo_query->execute(array($knd_id));
       
       if ($result == false) {
+          $this->logLastError('knd_delete');
           return false;
       }
       
@@ -341,6 +356,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           
           return $pct_id;
       } else {
+          $this->logLastError('pct_create');
           return false;
       }
   }
@@ -364,6 +380,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $result = $pdo_query->execute(array($pct_id));
       
       if ($result == false) {
+          $this->logLastError('pct_get_data');
           return false;
       }
 
@@ -419,6 +436,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $statement->bindValue(":projectId", $pct_id);
 
       if ($statement->execute() === false) {
+        $this->logLastError('pct_edit');
         $this->conn->rollBack();
         return false;
       }
@@ -426,6 +444,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('pct_edit');
           return false;
       }
   }
@@ -447,6 +466,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_pct WHERE pct_ID=?;");    
       $d_result = $pdo_query->execute(array($pct_id));
       if ($d_result == false) {
+          $this->logLastError('assign_pct2grps');
           $this->conn->rollBack();
           return false;
       }
@@ -455,6 +475,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_grp,$pct_id));
         if ($result == false) {
+            $this->logLastError('assign_pct2grps');
             $this->conn->rollBack();
             return false;
         }
@@ -463,6 +484,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_pct2grps');
           return false;
       }
   }
@@ -481,6 +503,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_pct WHERE pct_ID = ?;");
       $result = $pdo_query->execute(array($pct_id));
       if ($result == false) {
+          $this->logLastError('pct_get_grps');
           return false;
       }
       
@@ -509,6 +532,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}pct SET pct_trash=1 WHERE pct_ID = ?;");
       $result = $pdo_query->execute(array($pct_id));
       if ($result == false) {
+          $this->logLastError('pct_delete');
           return false;
       }
       return $result;
@@ -561,6 +585,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
         return $evt_id;
       } else {
+        $this->logLastError('evt_create');
         return false;
       }
   }
@@ -580,6 +605,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $result = $pdo_query->execute(array($evt_id));
       
       if ($result == false) {
+          $this->logLastError('evt_get_data');
           return false;
       }
 
@@ -633,12 +659,15 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement->bindValue(":eventId", $evt_id);
 
-      if (!$statement->execute())
+      if (!$statement->execute()) {
+          $this->logLastError('evt_edit');
         return false;
+      }
       
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('evt_edit');
           return false;
       }
   }
@@ -660,6 +689,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_evt WHERE evt_ID=?;");    
       $d_result = $pdo_query->execute(array($evt_id));
       if ($d_result == false) {
+          $this->logLastError('assign_evt2grps');
           $this->conn->rollBack();
           return false;
       }
@@ -668,6 +698,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_grp,$evt_id));
         if ($result == false) {
+          $this->logLastError('assign_evt2grps');
             $this->conn->rollBack();
             return false;
         }
@@ -676,6 +707,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_evt2grps');
           return false;
       }
   }
@@ -697,6 +729,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}pct_evt WHERE evt_ID=?;");    
       $d_result = $pdo_query->execute(array($evt_id));
       if ($d_result == false) {
+          $this->logLastError('assign_evt2pcts');
           $this->conn->rollBack();
           return false;
       }
@@ -705,6 +738,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}pct_evt (pct_ID,evt_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_pct,$evt_id));
         if ($result == false) {
+            $this->logLastError('assign_evt2pcts');
             $this->conn->rollBack();
             return false;
         }
@@ -713,6 +747,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_evt2pcts');
           return false;
       }
   }
@@ -734,6 +769,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}pct_evt WHERE pct_ID=?;");    
       $d_result = $pdo_query->execute(array($pct_id));
       if ($d_result == false) {
+          $this->logLastError('assign_pct2evts');
           $this->conn->rollBack();
           return false;
       }
@@ -742,6 +778,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}pct_evt (evt_ID,pct_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_evt,$pct_id));
         if ($result == false) {
+          $this->logLastError('assign_pct2evts');
             $this->conn->rollBack();
             return false;
         }
@@ -750,6 +787,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_pct2evts');
           return false;
       }
   }
@@ -769,6 +807,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $result = $pdo_query->execute(array($evt_id));
       if ($result == false) {
+          $this->logLastError('evt_get_pcts');
           return false;
       }
       
@@ -798,6 +837,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $result = $pdo_query->execute(array($pct_id));
       if ($result == false) {
+          $this->logLastError('pct_get_evts');
           return false;
       }
       
@@ -827,6 +867,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $result = $pdo_query->execute(array($evt_id));
       if ($result == false) {
+          $this->logLastError('evt_get_grps');
           return false;
       }
       
@@ -855,6 +896,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}evt SET evt_trash=1 WHERE evt_ID = ?;");
       $result = $pdo_query->execute(array($evt_id));
       if ($result == false) {
+          $this->logLastError('evt_delete');
           return false;
       }
       
@@ -879,6 +921,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $d_query = $this->conn->prepare("DELETE FROM ${p}grp_knd WHERE grp_ID=?;");
       $d_result = $d_query->execute(array($grp_id));
       if ($d_result == false) {
+          $this->logLastError('assign_grp2knds');
           return false;
       }
       
@@ -886,6 +929,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($grp_id,$current_knd));
         if ($result == false) {
+            $this->logLastError('assign_grp2knds');
             return false;
         }
       }
@@ -893,6 +937,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_grp2knds');
           return false;
       }
   }
@@ -915,6 +960,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $d_query = $this->conn->prepare("DELETE FROM ${p}grp_pct WHERE grp_ID=?;");
       $d_result = $d_query->execute(array($grp_id));
       if ($d_result == false) {
+          $this->logLastError('assign_grp2pcts');
           return false;
       }
       
@@ -922,6 +968,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($grp_id,$current_pct));
         if ($result == false) {
+            $this->logLastError('assign_grp2pcts');
             return false;
         }
       }
@@ -929,6 +976,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_grp2pcts');
           return false;
       }
   }
@@ -951,6 +999,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $d_query = $this->conn->prepare("DELETE FROM ${p}grp_evt WHERE grp_ID=?;");
       $d_result = $d_query->execute(array($grp_id));
       if ($d_result == false) {
+          $this->logLastError('assign_grp2evts');
           return false;
       }
       
@@ -958,6 +1007,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
         $result = $pdo_query->execute(array($grp_id,$current_evt));
         if ($result == false) {
+          $this->logLastError('assign_grp2evts');
             return false;
         }
       }
@@ -965,6 +1015,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_grp2evts');
           return false;
       }
   }
@@ -985,6 +1036,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       WHERE ${p}knd.knd_trash = 0 AND grp_ID = ?;");
       $result = $pdo_query->execute(array($grp_id));
       if ($result == false) {
+          $this->logLastError('grp_get_knds');
           return false;
       }
       
@@ -1015,6 +1067,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       WHERE ${p}evt.evt_trash=0 AND grp_ID = ?;");
       $result = $pdo_query->execute(array($grp_id));
       if ($result == false) {
+          $this->logLastError('grp_get_pcts');
           return false;
       }
       
@@ -1045,6 +1098,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       WHERE ${p}evt.evt_trash=0 AND ${p}grp_evt.grp_ID = ?;");
       $result = $pdo_query->execute(array($grp_id));
       if ($result == false) {
+          $this->logLastError('grp_get_evts');
           return false;
       }
       
@@ -1102,6 +1156,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           }
           return $data['usr_ID'];
       } else {
+          $this->logLastError('usr_create');
           return false;
       }
   }
@@ -1118,9 +1173,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_ID = ?");
-      $result =  $pdo_query->execute(array($usr_id));
+      $result = $pdo_query->execute(array($usr_id));
       
       if ($result == false) {
+          $this->logLastError('usr_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -1158,8 +1214,10 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement->bindValue(":userId", $usr_id);
 
-      if (!$statement->execute())
+      if (!$statement->execute()) {
+        $this->logLastError('usr_edit');
         return false;
+      }
 
       if (isset($data['usr_rate'])) {
         if (is_numeric($data['usr_rate']))
@@ -1171,6 +1229,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('usr_edit');
           return false;
       }
   }
@@ -1189,6 +1248,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET usr_trash=1 WHERE usr_ID = ?;");
       $result = $pdo_query->execute(array($usr_id));
       if ($result == false) {
+          $this->logLastError('usr_delete');
           return false;
       }
       return $result;
@@ -1211,6 +1271,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var = ?");
 
       $result = $pdo_query->execute(array($userId,$key));
+
+      if ($result == false) {
+          $this->logLastError('usr_get_preference');
+          return null;
+      }
 
       $data = $pdo_query->fetch();
 
@@ -1237,7 +1302,12 @@ class PDODatabaseLayer extends DatabaseLayer {
       $placeholders = implode(",",array_fill(0,count($keys),'?'));
 
       $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var IN ($placeholders)");
-      $pdo_query->execute(array_merge(array($userId,$prefix),$keys));
+      $result = $pdo_query->execute(array_merge(array($userId,$prefix),$keys));
+
+      if ($result == false) {
+          $this->logLastError('usr_get_preferences');
+          return null;
+      }
 
       $preferences = array();
 
@@ -1269,7 +1339,12 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var LIKE ?");
         
-      $pdo_query->execute(array($userId,"$prefix%"));
+      $result = $pdo_query->execute(array($userId,"$prefix%"));
+
+      if ($result == false) {
+          $this->logLastError('usr_get_preferences_by_prefix');
+          return null;
+      }
 
       $preferences = array();
 
@@ -1311,6 +1386,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $result = $pdo_query->execute(array(
           $userId,$key,$value,$value));
         if (! $result) {
+          $this->logLastError('usr_set_preferences');
           $this->conn->rollBack();
           return false;
         }      
@@ -1336,6 +1412,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}ldr WHERE grp_leader=?;");    
       $d_result = $pdo_query->execute(array($ldr_id));
       if ($d_result == false) {
+              $this->logLastError('assign_ldr2grps');
               $this->conn->rollBack();
               return false;
       }
@@ -1344,6 +1421,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}ldr(grp_ID,grp_leader) VALUES (?,?);");
         $result = $pdo_query->execute(array($current_grp,$ldr_id));
         if ($result == false) {
+            $this->logLastError('assign_ldr2grps');
             $this->conn->rollBack();
             return false;
         }
@@ -1354,6 +1432,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+              $this->logLastError('assign_ldr2grps');
           return false;
       }
   }
@@ -1376,6 +1455,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $d_query = $this->conn->prepare("DELETE FROM ${p}ldr WHERE grp_ID=?;");
       $d_result = $d_query->execute(array($grp_id));
       if ($d_result == false) {
+          $this->logLastError('assign_grp2ldrs');
           return false;
       }
       
@@ -1383,6 +1463,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $pdo_query = $this->conn->prepare("INSERT INTO ${p}ldr (grp_ID,grp_leader) VALUES (?,?);");
         $result = $pdo_query->execute(array($grp_id,$current_ldr));
         if ($result == false) {
+            $this->logLastError('assign_grp2ldrs');
             return false;
         }
       }
@@ -1392,6 +1473,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($this->conn->commit() == true) {
           return true;
       } else {
+          $this->logLastError('assign_grp2ldrs');
           return false;
       }
   }
@@ -1410,6 +1492,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}ldr WHERE grp_leader = ?;");
       $result = $pdo_query->execute(array($ldr_id));
       if ($result == false) {
+          $this->logLastError('ldr_get_grps');
           return false;
       }
       
@@ -1439,6 +1522,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       JOIN ${p}usr ON ${p}usr.usr_ID = ${p}ldr.grp_leader WHERE grp_ID = ? AND usr_trash=0;");
       $result = $pdo_query->execute(array($grp_id));
       if ($result == false) {
+          $this->logLastError('grp_get_ldrs');
           return false;
       }
       
@@ -1472,6 +1556,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($result == true) {
           return $this->conn->lastInsertId();
       } else {
+          $this->logLastError('grp_create');
           return false;
       }
   }
@@ -1488,9 +1573,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}grp WHERE grp_ID = ?");
-      $result =  $pdo_query->execute(array($grp_id));
+      $result = $pdo_query->execute(array($grp_id));
       
       if ($result == false) {
+          $this->logLastError('grp_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -1510,9 +1596,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
       
       $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}usr WHERE usr_trash=0 AND usr_grp = ?");
-      $result =  $pdo_query->execute(array($grp_id));
+      $result = $pdo_query->execute(array($grp_id));
       
       if ($result == false) {
+          $this->logLastError('grp_count_users');
           return false;
       } else {
           $result_array = $pdo_query->fetch();
@@ -1535,7 +1622,14 @@ class PDODatabaseLayer extends DatabaseLayer {
       $data = $this->clean_data($data); 
       
       $pdo_query = $this->conn->prepare("UPDATE ${p}grp SET grp_name = ? WHERE grp_ID = ?;");
-      return $pdo_query->execute(array($data['grp_name'],$grp_id));
+      $result = $pdo_query->execute(array($data['grp_name'],$grp_id));
+
+      if ($result == false) {
+          $this->logLastError('grp_edit');
+          return false;
+      }
+      
+      return true;
   }
 
   /**
@@ -1551,11 +1645,13 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $pdo_query = $this->conn->prepare("UPDATE ${p}grp SET grp_trash=1 WHERE grp_ID = ?;");
       $result = $pdo_query->execute(array($grp_id));
+
       if ($result == false) {
+          $this->logLastError('grp_delete');
           return false;
       }
       
-      return $result;
+      return true;
   }
 
   /**
@@ -1570,6 +1666,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}var;");
       $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('var_get_data');
+          return null;
+      }
       
       $var_data = array();
           
@@ -1601,11 +1702,14 @@ class PDODatabaseLayer extends DatabaseLayer {
         $statement->bindValue(1,$value);
         $statement->bindValue(2,$key);
 
-        if (!$statement->execute())
+        if (!$statement->execute()) {
+          $this->logLastError('var_edit');
           return false;
+        }
       }
       
       if ($this->conn->commit() == false) {
+          $this->logLastError('var_edit');
           return false;
       }
       
@@ -1625,6 +1729,12 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $pdo_query = $this->conn->prepare("SELECT COUNT( * ) FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
       $result = $pdo_query->execute(array($usr_id));
+
+      if ($result == false) {
+          $this->logLastError('get_rec_state');
+          return false;
+      }
+
       $result_array = $pdo_query->fetch();
       
       if ($result_array[0] == 0) {
@@ -1649,16 +1759,32 @@ class PDODatabaseLayer extends DatabaseLayer {
       // Lock tables
       $pdo_query_l = $this->conn->prepare("LOCK TABLE ${p}usr READ, ${p}zef READ");
       $result_l = $pdo_query_l->execute();
+
+      if ($result_l == false) {
+          $this->logLastError('validate_zef');
+          return false;
+      }
       
       // case 1: scan for multiple running entries of the same user
       
       $pdo_query = $this->conn->prepare("SELECT usr_ID FROM ${p}usr");
       $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('validate_zef');
+          return false;
+      }
       
       while ($current_row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {    
           // echo $current_row['usr_ID'] . "<br>";
           $pdo_query_zef = $this->conn->prepare("SELECT COUNT(*) FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
           $result_zef = $pdo_query_zef->execute(array($current_row['usr_ID']));
+
+          if ($result_zef == false) {
+              $this->logLastError('validate_zef');
+              return false;
+          }
+
           $result_array_zef = $pdo_query_zef->fetch();
           
           if ($result_array_zef[0] > 1) {
@@ -1669,10 +1795,21 @@ class PDODatabaseLayer extends DatabaseLayer {
               
               $pdo_query_zef = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
               $result_zef = $pdo_query_zef->execute(array($current_row['usr_ID']));
+
+              if ($result_zef == false) {
+                  $this->logLastError('validate_zef');
+                  return false;
+              }
               
               // mark all running-zef-entries with a comment (except the newest one)
               $pdo_query_zef_max = $this->conn->prepare("SELECT MAX(zef_in), zef_ID FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0 GROUP BY zef_ID;");
               $result_zef_max = $pdo_query_zef_max->execute(array($current_row['usr_ID']));
+
+              if ($result_zef_max == false) {
+                  $this->logLastError('validate_zef');
+                  return false;
+              }
+
               $result_array_zef_max = $pdo_query_zef_max->fetch(PDO::FETCH_ASSOC);
               $max_id = $result_array_zef_max['zef_ID'];
               
@@ -1684,8 +1821,11 @@ class PDODatabaseLayer extends DatabaseLayer {
                       zef_comment_type = 2
                       WHERE zef_ID = ?");
                       $result_zef_edit = $pdo_query_zef_edit->execute(array($current_row_zef['zef_ID']));
-                      $err = $pdo_query_zef_edit->errorInfo();
-                      error_log("ERROR: " . $err[2]);
+
+                      if ($result_zef_edit == false) {
+                          $this->logLastError('validate_zef');
+                          return false;
+                      }
                   }
               
                   // var_dump($current_row_zef);
@@ -1697,6 +1837,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       // Unlock tables
       $pdo_query_ul = $this->conn->prepare("UNLOCK TABLES");
       $result_ul = $pdo_query_ul->execute();
+
+      if ($result_ul == false) {
+          $this->logLastError('validate_zef');
+          return false;
+      }
       
       return $return_state;
   }
@@ -1716,12 +1861,12 @@ class PDODatabaseLayer extends DatabaseLayer {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_ID = ?");
       } else {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
-          // Logger::logfile("SELECT * FROM " . $this->kga['server_prefix'] . "zef ORDER BY zef_ID DESC LIMIT 1");
       }
       
       $result = $pdo_query->execute(array($zef_id));
       
       if ($result == false) {
+          $this->logLastError('zef_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -1743,6 +1888,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("DELETE FROM ${p}zef WHERE `zef_ID` = ? LIMIT 1;");
       $result = $pdo_query->execute(array($id));
       if ($result == false) {
+          $this->logLastError('zef_delete_record');
           return $result;
       }
   } 
@@ -1788,9 +1934,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$data['rate'],
       $data['cleared']?1:0
       ));
-    Logger::logfile(serialize($pdo_query->errorInfo()));
-      if ($result === false)
+
+      if ($result === false) {
+          $this->logLastError('zef_create_record');
           return false;
+      }
       else
         return $this->conn->lastInsertId();
   } 
@@ -1847,12 +1995,9 @@ class PDODatabaseLayer extends DatabaseLayer {
       ));
     
       if ($result == false) {
-          $err = $pdo_query->errorInfo();
-          error_log("ERROR: " . $err[2]);
+          $this->logLastError('zef_edit_record');
           return $result;
       }
-      
-      Logger::logfile("editrecord:result:".$result);
   } 
 
   /**
@@ -1877,10 +2022,20 @@ class PDODatabaseLayer extends DatabaseLayer {
         $timespace_out = 0;
         
       $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET timespace_in  = ? WHERE usr_ID = ?;");
-      $pdo_query->execute(array($timespace_in ,$user));
+      $result = $pdo_query->execute(array($timespace_in ,$user));
+
+      if ($result == false) {
+          $this->logLastError('save_timespace');
+          return false;
+      }
       
       $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET timespace_out = ? WHERE usr_ID = ?;");
-      $pdo_query->execute(array($timespace_out ,$user));
+      $result = $pdo_query->execute(array($timespace_out ,$user));
+
+      if ($result == false) {
+          $this->logLastError('save_timespace');
+          return false;
+      }
   }
 
   /**
@@ -1910,6 +2065,11 @@ class PDODatabaseLayer extends DatabaseLayer {
               $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;");
           }
           $result = $pdo_query->execute(array($group));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_pct');
+          return false;
       }
       
       $i=0;
@@ -1954,6 +2114,11 @@ class PDODatabaseLayer extends DatabaseLayer {
             $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY pct_name,knd_name;");        
         }  
         $result = $pdo_query->execute(array($group, $knd_id));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_pct_by_knd');
+          return false;
       }
       
       $i=0;
@@ -2061,7 +2226,13 @@ class PDODatabaseLayer extends DatabaseLayer {
               
       $pdo_query = $this->conn->prepare($query);
       
-              $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_zef');
+          return false;
+      }
+
       $i=0;
       $arr=array();
       /* TODO: needs revision as foreach loop */
@@ -2149,6 +2320,13 @@ class PDODatabaseLayer extends DatabaseLayer {
                 
                 $data     = $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';");
                 $result   = $pdo_query->execute(array(substr($kimai_usr,4)));
+
+                if ($result == false) {
+                    $this->logLastError('checkUser');
+                    kickUser();
+                    return null;
+                }
+
                 $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
                 $knd_ID   = $row['knd_ID'];
                 if ($knd_ID < 1) {
@@ -2158,6 +2336,13 @@ class PDODatabaseLayer extends DatabaseLayer {
               else {
                 $data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
                 $result   = $pdo_query->execute(array($kimai_usr));
+
+                if ($result == false) {
+                    $this->logLastError('checkUser');
+                    kickUser();
+                    return null;
+                }
+
                 $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
                 $usr_ID   = $row['usr_ID'];
                 $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
@@ -2209,6 +2394,12 @@ class PDODatabaseLayer extends DatabaseLayer {
     // get values from global configuration 
     $pdo_query = $this->conn->prepare("SELECT * FROM ${p}var;");
     $result = $pdo_query->execute();
+
+    if ($result == false) {
+        $this->logLastError('get_global_config');
+        return;
+    }
+
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
     do { 
@@ -2266,6 +2457,12 @@ class PDODatabaseLayer extends DatabaseLayer {
     FROM ${p}usr WHERE usr_ID = ?;");
 
     $result = $pdo_query->execute(array($user));
+
+    if ($result == false) {
+        $this->logLastError('get_user_config');
+        return;
+    }
+
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
     foreach( $row as $key => $value) {
         $this->kga['usr'][$key] = $value;
@@ -2294,6 +2491,12 @@ class PDODatabaseLayer extends DatabaseLayer {
     // get values from customer record
     $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_ID = ?;");
     $result = $pdo_query->execute(array($customer_ID));
+
+    if ($result == false) {
+        $this->logLastError('get_customer_config');
+        return;
+    }
+
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
     foreach( $row as $key => $value) {
         $this->kga['customer'][$key] = $value;
@@ -2312,7 +2515,13 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ?");
-      $pdo_query->execute(array($name));
+      $result = $pdo_query->execute(array($name));
+
+      if ($result == false) {
+          $this->logLastError('is_customer_name');
+          return false;
+      }
+
       return $pdo_query->rowCount() == 1;
   }
 
@@ -2338,30 +2547,14 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $lastRecord = $this->kga['usr']['lastRecord'];
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_ID = ?");
-      $pdo_query->execute(array($lastRecord));
+      $result = $pdo_query->execute(array($lastRecord));
+
+      if ($result == false) {
+          $this->logLastError('get_event_last');
+          return null;
+      }
+
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row;
-  }
-
-  /**
-  * returns single timesheet entry as array
-  *
-  * @param integer $id ID of entry in table zef
-  * @global array $this->kga kimai-global-array
-  * @return array
-  * @author th
-  */
-  public function get_entry_zef($id) { 
-      $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef 
-      Left Join ${p}pct ON zef_pctID = pct_ID 
-      Left Join ${p}knd ON pct_kndID = knd_ID 
-      Left Join ${p}evt ON evt_ID    = zef_evtID
-      WHERE zef_ID = ? LIMIT 1;");
-    
-      $pdo_query->execute(array($id));
-      $row    = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $row;
   }
 
@@ -2409,7 +2602,13 @@ class PDODatabaseLayer extends DatabaseLayer {
               Join ${p}knd ON pct_kndID = knd_ID
               Join ${p}usr ON zef_usrID = usr_ID
               Join ${p}evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
-      $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_zef_time');
+          return null;
+      }
+
       $sum = 0;
       $zef_in = 0;
       $zef_out = 0;
@@ -2452,10 +2651,15 @@ class PDODatabaseLayer extends DatabaseLayer {
       $arr = array();
       if ($group == "all") {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
-          $pdo_query->execute();
+          $result = $pdo_query->execute();
       } else {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = ? AND knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
-          $pdo_query->execute(array($group));
+          $result = $pdo_query->execute(array($group));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_knd');
+          return null;
       }
     
       $i=0;
@@ -2486,16 +2690,27 @@ class PDODatabaseLayer extends DatabaseLayer {
       // check if user is admin
       $pdo_query = $this->conn->prepare("SELECT usr_sts FROM ${p}usr WHERE usr_ID = ?");
       $result   = $pdo_query->execute(array($user_id));
+
+      if ($result == false) {
+          $this->logLastError('get_arr_watchable_users');
+          return array();
+      }
+
       $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
       // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
       if ($row['usr_sts'] == "0") { // if is admin
         $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_trash=0 ORDER BY usr_name");
-        $pdo_query->execute();
+        $result = $pdo_query->execute();
       }
       else {
         $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr INNER JOIN ${p}ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ? ORDER BY usr_name");
-        $pdo_query->execute(array($user_id));
+        $result = $pdo_query->execute(array($user_id));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_watchable_users');
+          return array();
       }
       
       $i=0;
@@ -2533,7 +2748,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         $whereClauses[]="zef_in < $out";
       
       
-  $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out, usr_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
+      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out, usr_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
               FROM ${p}zef 
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
@@ -2541,7 +2756,12 @@ class PDODatabaseLayer extends DatabaseLayer {
               Join ${p}evt ON evt_ID    = zef_evtID "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;");
       
-              $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_time_usr');
+          return array();
+      }
 
       $arr = array();
       $zef_in = 0;
@@ -2605,7 +2825,12 @@ class PDODatabaseLayer extends DatabaseLayer {
               FROM ${p}zef 
               Left Join ${p}pct ON zef_pctID = pct_ID
               Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
-      $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_time_knd');
+          return array();
+      }
 
       $arr = array();  
       $zef_in = 0;
@@ -2669,7 +2894,12 @@ class PDODatabaseLayer extends DatabaseLayer {
           FROM ${p}zef 
           Left Join ${p}pct ON zef_pctID = pct_ID
           Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
-      $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_time_pct');
+          return array();
+      }
 
       $arr = array();  
       $zef_in = 0;
@@ -2711,10 +2941,15 @@ class PDODatabaseLayer extends DatabaseLayer {
       $arr = array();
       if ($group == "all") {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
-          $pdo_query->execute();
+          $result = $pdo_query->execute();
       } else {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = ? AND evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
-          $pdo_query->execute(array($group));
+          $result = $pdo_query->execute(array($group));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_evt');
+          return array();
       }
       
       $i=0;
@@ -2738,7 +2973,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   WHERE evt_trash=0 AND (pct_ID = ? OR pct_ID IS NULL)
   ORDER BY evt_visible DESC,evt_name;");
-          $pdo_query->execute(array($pct));
+          $result = $pdo_query->execute(array($pct));
       } else {
           $pdo_query = $this->conn->prepare("SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
   JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
@@ -2746,7 +2981,12 @@ class PDODatabaseLayer extends DatabaseLayer {
   WHERE `${p}grp_evt`.`grp_ID` = ? AND evt_trash=0
   AND (pct_ID = ? OR pct_ID IS NULL)
   ORDER BY evt_visible DESC,evt_name;");
-          $pdo_query->execute(array($group,$pct));
+          $result = $pdo_query->execute(array($group,$pct));
+      }
+
+      if ($result == false) {
+          $this->logLastError('get_arr_evt_by_pct');
+          return array();
       }
       
       $i=0;
@@ -2773,7 +3013,12 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
       
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = ?)) AND evt_trash=0");
-      $pdo_query->execute(array($customer_ID));
+      $result = $pdo_query->execute(array($customer_ID));
+
+      if ($result == false) {
+          $this->logLastError('get_arr_evt_by_knd');
+          return array();
+      }
       
       $arr=array();
       $i=0;
@@ -2814,7 +3059,12 @@ class PDODatabaseLayer extends DatabaseLayer {
           Left Join ${p}evt ON zef_evtID = evt_ID
           Left Join ${p}pct ON zef_pctID = pct_ID
           Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
-      $pdo_query->execute();
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_time_evt');
+          return array();
+      }
 
       $arr = array();  
       $zef_in = 0;
@@ -2871,7 +3121,13 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
           
       $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in,zef_time FROM ${p}zef WHERE zef_usrID = ? ORDER BY zef_in DESC LIMIT 1;");
-      $pdo_query->execute(array($this->kga['usr']['usr_ID']));
+      $result = $pdo_query->execute(array($this->kga['usr']['usr_ID']));
+
+      if ($result == false) {
+          $this->logLastError('get_current_timer');
+          return false;
+      }
+
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       $zef_time  = (int)$row['zef_time'];
       $zef_in    = (int)$row['zef_in'];
@@ -2907,14 +3163,26 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
       
       $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'version';");
-      $pdo_query->execute(array());
+      $result = $pdo_query->execute(array());
+
+      if ($result == false) {
+          $this->logLastError('get_DBversion');
+          return false;
+      }
+
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       $return[0]   = $row['value'];
       
       if (!is_array($row)) $return[0] = "0.5.1";
       
       $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'revision';");
-      $pdo_query->execute(array());
+      $result = $pdo_query->execute(array());
+
+      if ($result == false) {
+          $this->logLastError('get_DBversion');
+          return false;
+      }
+
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       $return[1]   = $row['value'];
       
@@ -2938,13 +3206,25 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       if (strncmp($user, 'knd_', 4) == 0) {
         $pdo_query = $this->conn->prepare("SELECT knd_secure FROM ${p}knd WHERE knd_name = ?;");
-        $pdo_query->execute(array(substr($user,4)));
+        $result = $pdo_query->execute(array(substr($user,4)));
+
+        if ($result == false) {
+            $this->logLastError('get_seq');
+            return false;
+        }
+
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
         $seq         = $row['knd_secure'];
       }
       else {
         $pdo_query = $this->conn->prepare("SELECT secure FROM ${p}usr WHERE usr_name = ?;");
-        $pdo_query->execute(array($user));
+        $result = $pdo_query->execute(array($user));
+
+        if ($result == false) {
+            $this->logLastError('get_seq');
+            return false;
+        }
+
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
         $seq         = $row['secure'];
       }
@@ -2978,6 +3258,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
       $pdo_query = $this->conn->prepare(sprintf("SELECT * FROM ${p}usr Left Join ${p}grp ON usr_grp = grp_ID %s ORDER BY usr_name;",$trashoption));
       $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_usr');
+          return array();
+      }
       
       $i=0;
       while ($row = $pdo_query->fetch()) {
@@ -3034,12 +3319,22 @@ class PDODatabaseLayer extends DatabaseLayer {
       ${p}ldr READ
       ");
       $result_l = $pdo_query_l->execute();
+
+      if ($result_l == false) {
+          $this->logLastError('get_arr_grp');
+          return array();
+      }
       
       if (!$trash) {
           $trashoption = "WHERE grp_trash !=1";
       }
       $pdo_query = $this->conn->prepare(sprintf("SELECT * FROM ${p}grp %s ORDER BY grp_name;",$trashoption));
       $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_grp');
+          return array();
+      }
       
       // rows into array
       $groups = array();
@@ -3067,6 +3362,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       // Unlock tables
       $pdo_query_ul = $this->conn->prepare("UNLOCK TABLES");
       $result_ul = $pdo_query_ul->execute();
+
+      if ($result_ul == false) {
+          $this->logLastError('get_arr_grp');
+          return array();
+      }
       
       // error_log("get_arr_grp: " . serialize($groups));
       
@@ -3107,6 +3407,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       " . $this->kga['server_prefix'] . "ldr READ
       ");
       $result_l = $pdo_query_l->execute();
+
+      if ($result_l == false) {
+          $this->logLastError('get_arr_grp_by_leader');
+          return array();
+      }
       
       if (!$trash) {
           $trashoption = "AND grp_trash !=1";
@@ -3117,6 +3422,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       WHERE grp_leader = ? $trashoption ORDER BY grp_name");
 
       $result = $pdo_query->execute($leader_id);
+
+      if ($result == false) {
+          $this->logLastError('get_arr_grp_by_leader');
+          return array();
+      }
       
       // rows into array
       $groups = array();
@@ -3144,6 +3454,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       // Unlock tables
       $pdo_query_ul = $this->conn->prepare("UNLOCK TABLES");
       $result_ul = $pdo_query_ul->execute();
+
+      if ($result_ul == false) {
+          $this->logLastError('get_arr_grp_by_leader');
+          return array();
+      }
       
       // error_log("get_arr_grp: " . serialize($groups));
       
@@ -3175,7 +3490,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $difference = $rounded['end']-$rounded['start'];
 
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
-      $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$zef_ID));
+      $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$zef_ID));
+
+      if ($result == false)
+          $this->logLastError('stopRecorder');
   }
 
   /**
@@ -3194,7 +3512,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query->execute(array($pct_ID,$evt_ID,time(),$user,$this->get_best_fitting_rate($user,$pct_ID,$evt_ID)));
       
       $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
-      $pdo_query->execute(array($user));
+      $result = $pdo_query->execute(array($user));
+
+      if ($result == false)
+          $this->logLastError('startRecorder');
   }
 
   /**
@@ -3210,7 +3531,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef 
       SET zef_pctID = ? WHERE zef_ID = ?");
 
-      $pdo_query->execute(array($pct_id,$zef_id));
+      $result = $pdo_query->execute(array($pct_id,$zef_id));
+
+      if ($result == false)
+          $this->logLastError('zef_edit_pct');
   }
 
   /**
@@ -3226,7 +3550,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef 
       SET zef_evtID = ? WHERE zef_ID = ?");
 
-      $pdo_query->execute(array($evt_id,$zef_id));
+      $result = $pdo_query->execute(array($evt_id,$zef_id));
+
+      if ($result == false)
+          $this->logLastError('zef_edit_evt');
   }
 
   /**
@@ -3243,7 +3570,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef 
       SET zef_comment_type = ?, zef_comment = ? WHERE zef_ID = ?");
 
-      $pdo_query->execute(array($comment_type,$comment,$zef_ID));
+      $result = $pdo_query->execute(array($comment_type,$comment,$zef_ID));
+
+      if ($result == false)
+          $this->logLastError('zef_edit_comment');
   }
 
   /**
@@ -3275,7 +3605,10 @@ class PDODatabaseLayer extends DatabaseLayer {
   private function name2id($table,$outColumn,$filterColumn,$value) {
       
       $pdo_query = $this->conn->prepare("SELECT $outColumn FROM $table WHERE $filterColumn = ? LIMIT 1;");
-      $pdo_query->execute(array($value));
+      $result = $pdo_query->execute(array($value));
+
+      if ($result == false)
+          $this->logLastError('name2id');
 
       if ($pdo_query->rowCount() == 0)
         return false;
@@ -3296,7 +3629,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
       
       $pdo_query = $this->conn->prepare("SELECT usr_name FROM ${p}usr WHERE usr_ID = ? LIMIT 1;");
-      $pdo_query->execute(array($id));
+      $result = $pdo_query->execute(array($id));
+
+      if ($result == false)
+          $this->logLastError('usr_id2name');
       
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $row['usr_name'];
@@ -3319,17 +3655,23 @@ class PDODatabaseLayer extends DatabaseLayer {
           case "pct":
           case "evt":
               $pdo_query = $this->conn->prepare("SELECT COUNT(*) AS result FROM ${p}zef WHERE zef_" . $subject . "ID = ?;");
-              $pdo_query->execute(array($id));
+              $result = $pdo_query->execute(array($id));
           break;
 
           case "knd":
               $pdo_query = $this->conn->prepare("SELECT COUNT(*) AS result FROM ${p}pct Left Join ${p}knd ON pct_kndID = knd_ID WHERE pct_kndID = ?;");
-              $pdo_query->execute(array($id));
+              $result = $pdo_query->execute(array($id));
           break;
               
           default:
           break;
       }
+
+      if ($result == false) {
+          $this->logLastError('getUsage');
+          return false;
+      }
+
       $row   = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $row['result'];
   }
@@ -3346,7 +3688,13 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $query = "SELECT zef_in FROM ${p}zef WHERE zef_usrID = ? ORDER BY zef_in ASC LIMIT 1;";
       $pdo_query = $this->conn->prepare($query);
-      $pdo_query->execute(array($usr_id));
+      $result = $pdo_query->execute(array($usr_id));
+
+      if ($result == false) {
+          $this->logLastError('getjointime');
+          return false;
+      }
+
       $result_array = $pdo_query->fetch();
           
       if ($result_array[0] == 0) {
@@ -3371,12 +3719,14 @@ class PDODatabaseLayer extends DatabaseLayer {
       $query = $this->conn->prepare("UPDATE ${p}usr,${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
       $result = $query->execute();
       if ($result == false) {
+          $this->logLastError('update_leader_status');
           return false;
       }
       
       $query = $this->conn->prepare("UPDATE ${p}usr,${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
       $result = $query->execute();
       if ($result == false) {
+          $this->logLastError('update_leader_status');
           return false;
       }
 
@@ -3413,8 +3763,10 @@ class PDODatabaseLayer extends DatabaseLayer {
     $query = $this->conn->prepare($query_string);
     $result = $query->execute();
 
-    if ($result == false)
+    if ($result == false) {
+      $this->logLastError('save_rate');
       return false;
+    }
     else
       return true;
   }
@@ -3442,6 +3794,11 @@ class PDODatabaseLayer extends DatabaseLayer {
 
     $query = $this->conn->prepare($query_string);
     $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('get_rate');
+      return false;
+    }
 
     if ($query->rowCount() == 0)
       return false;
@@ -3475,8 +3832,10 @@ class PDODatabaseLayer extends DatabaseLayer {
     $query = $this->conn->prepare($query_string);
     $result = $query->execute();
 
-    if ($result === false)
+    if ($result === false) {
+      $this->logLastError('remove_rate');
       return false;
+    }
     else
       return true;
   }
@@ -3509,6 +3868,11 @@ class PDODatabaseLayer extends DatabaseLayer {
     $query = $this->conn->prepare($query_string);
     $result = $query->execute();
 
+    if ($result == false) {
+      $this->logLastError('get_best_fitting_rate');
+      return false;
+    }
+
     if ($query->rowCount() == 0)
       return false;
 
@@ -3529,7 +3893,10 @@ class PDODatabaseLayer extends DatabaseLayer {
 
     $query = "UPDATE ${p}usr SET secure=?, ban=0, banTime=0 WHERE usr_ID=?;";
     $query = $this->conn->prepare($query);
-    $query->execute(array($keymai,$userId));
+    $result = $query->execute(array($keymai,$userId));
+
+    if ($result == false)
+      $this->logLastError('usr_loginSetKey');
   }
 
   /**
@@ -3543,7 +3910,10 @@ class PDODatabaseLayer extends DatabaseLayer {
 
     $query = "UPDATE ${p}knd SET knd_secure=? WHERE knd_ID=?;";
     $query = $this->conn->prepare($query);
-    $query->execute(array($keymai,$customerId));
+    $result = $query->execute(array($keymai,$customerId));
+
+    if ($result == false)
+      $this->logLastError('knd_loginSetKey');
   }
 
   /**
@@ -3564,7 +3934,10 @@ class PDODatabaseLayer extends DatabaseLayer {
     $query .= "WHERE usr_ID = ?";
 
     $query = $this->conn->prepare($query);
-    $query->execute(array($userId));
+    $result = $query->execute(array($userId));
+
+    if ($result == false)
+      $this->logLastError('loginUpdateBan');
   }
 
 
@@ -3574,7 +3947,10 @@ class PDODatabaseLayer extends DatabaseLayer {
    * @param string $query the sql query to execute
    */
   public function queryAll($statement) {
-    $query = $this->conn->exec($statement);
+    $pdo_query = $this->conn->query($statement);
+
+    if ($pdo_query == false)
+      $this->logLastError("queryAll for $statement");
 
     $result = array();
     while ($row = $pdo_query->fetch()) {
@@ -3584,6 +3960,4 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
 }
-
-
 ?>

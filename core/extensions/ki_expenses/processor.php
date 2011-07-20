@@ -111,8 +111,6 @@ switch ($axAction) {
         exp_delete_record($id);
         break;
       }
-
-      Logger::logfile(implode(" : ",$data));
     
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...

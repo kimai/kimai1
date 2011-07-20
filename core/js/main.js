@@ -249,14 +249,6 @@ function n_uhr() {
         setTimeout("n_uhr()", 1000);
 }
 
-
-function logfile(entry) {
-    $.post("processor.php", { axAction: "logfile", axValue: entry, id: 0 });
-}
-
-
-
-
 // ----------------------------------------------------------------------------------------
 // grabs entered timespace and writes it to database
 // after that it reloads all tables
@@ -588,7 +580,6 @@ function lists_usrShrinkHide() {
 }
 
 function lists_shrinkExtToggle() {
-    logfile("extshrink");
     (extShrinkMode)?extShrinkMode=0:extShrinkMode=1;
     if (extShrinkMode) {
         $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/zefShrink_down.png')");
@@ -600,21 +591,23 @@ function lists_shrinkExtToggle() {
 }
 
 function lists_shrinkKndToggle() {
-    logfile("kndshrink");
     (kndShrinkMode)?kndShrinkMode=0:kndShrinkMode=1;
     if (kndShrinkMode) {
         $('#knd, #knd_head, #knd_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
+        if (!usrShrinkMode)
+          $('#usrShrink').hide();
     } else {
-		lists_set_tableWrapperWidths();
+        lists_set_tableWrapperWidths();
         $('#knd, #knd_head, #knd_foot').fadeIn(fading_enabled?"slow":0);
         $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
-		lists_resize();
+        lists_resize();
+        if (!usrShrinkMode)
+          $('#usrShrink').show();
     }
 }
 
 function lists_shrinkUsrToggle() {
-    logfile("usrshrink");
     (usrShrinkMode)?usrShrinkMode=0:usrShrinkMode=1;
     if (usrShrinkMode) {
         $('#usr, #usr_head, #usr_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);

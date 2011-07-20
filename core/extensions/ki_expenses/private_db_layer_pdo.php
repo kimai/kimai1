@@ -81,10 +81,7 @@ function exp_create_record($usr_ID,$data) {
 
     if ($result == false) {
         return $result;
-    }
-    
-    Logger::logfile($result);
-    
+    }    
 } 
 
 
@@ -334,11 +331,6 @@ function exp_edit_record($id,$data) {
     if ($result == false) {
         return $result;
     }
-    
-    Logger::logfile("editrecord:result:".$result);
-
-
-
 } 
 
 /**

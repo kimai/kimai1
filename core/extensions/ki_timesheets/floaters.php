@@ -47,7 +47,7 @@ switch ($axAction) {
     // ==============================================
     $selected = explode('|',$axValue);
     if ($id) {
-        $zef_entry = $database->get_entry_zef($id);
+        $zef_entry = $database->zef_get_data($id);
         $tpl->assign('id', $id);
         $tpl->assign('zlocation', $zef_entry['zef_location']);
         
@@ -65,8 +65,8 @@ switch ($axAction) {
         $tpl->assign('edit_out_time', date("H:i:s",$zef_entry['zef_out']));
 
         // preselected
-        $tpl->assign('pres_pct', $zef_entry['pct_ID']);
-        $tpl->assign('pres_evt', $zef_entry['evt_ID']);
+        $tpl->assign('pres_pct', $zef_entry['zef_pctID']);
+        $tpl->assign('pres_evt', $zef_entry['zef_evtID']);
     
         $tpl->assign('comment_active', $zef_entry['zef_comment_type']);
 

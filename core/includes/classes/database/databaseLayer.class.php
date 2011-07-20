@@ -645,14 +645,6 @@ abstract class DatabaseLayer {
   public abstract function get_event_last();
 
   /**
-  * returns single timesheet entry as array
-  *
-  * @param integer $id ID of entry in table zef
-  * @return array
-  */
-  public abstract function get_entry_zef($id);
-
-  /**
   * returns time summary of current timesheet
   *
   * @param integer $user ID of user in table usr

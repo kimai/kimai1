@@ -248,7 +248,6 @@ switch ($axAction) {
           $database->zef_delete_record($id);
           break;
       }
-      Logger::logfile(implode(" : ",$data));
 
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
@@ -268,8 +267,6 @@ switch ($axAction) {
         break;
         
       $new_time = convert_time_strings($new_in,$new_out);
-      
-      Logger::logfile("new_time: " .serialize($new_time));
       
       // if the difference between in and out value is zero or below this can't be correct ...
       
