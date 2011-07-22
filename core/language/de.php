@@ -261,10 +261,13 @@ return array(
 'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
 
 'hideClearedEntries' => 'abgerechnete Einträge verstecken',
+'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
 
 'general' => 'Allgemein',
 'address' => 'Adresse',
 'contact' => 'Kontakt',
+'list'=> 'Liste',
+'sublists' => 'Untere Listen',
 
 'internalProject' => 'internes Projekt',
 

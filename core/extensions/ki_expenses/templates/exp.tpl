@@ -172,10 +172,12 @@
                     </td>
                     
                 </tr>
-                
-                <tr id="exp_c{$arr_exp[row].exp_ID}" class="comm{$arr_exp[row].exp_comment_type}" style="display:none;">
+
+{if $arr_exp[row].exp_comment}   
+                <tr id="exp_c{$arr_exp[row].exp_ID}" class="comm{$arr_exp[row].exp_comment_type}" {if $hideComments}style="display:none;"{/if}>
                     <td colspan="8">{$arr_exp[row].exp_comment|escape:'html'|nl2br}</td>
                 </tr>
+{/if}
 
 {assign var="day_buffer" value=$arr_exp[row].exp_timestamp|date_format:"%d"}
                

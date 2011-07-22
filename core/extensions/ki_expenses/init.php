@@ -82,6 +82,8 @@ else // customer logged in
 $ann = Format::formatCurrency($ann);
 $tpl->assign('pct_ann',$ann);
 
+$tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+
 $tpl->assign('exp_display', $tpl->fetch("exp.tpl"));
 
 $tpl->display('main.tpl');

@@ -96,6 +96,7 @@ else
 Format::formatAnnotations($ann);
 $tpl->assign('evt_ann',$ann);
 
+$tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
 
 $tpl->assign('zef_display', $tpl->fetch("zef.tpl"));
 
@@ -123,6 +124,6 @@ else {
   $tpl->assign('sel_evt_IDs',   $sel[1]);
 }
 
-  $tpl->display('main.tpl');
+$tpl->display('main.tpl');
 
 ?>

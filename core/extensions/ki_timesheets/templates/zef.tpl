@@ -272,10 +272,12 @@
                     </td>
 
                 </tr>
-                
-                <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type|escape:'html'}" style="display:none;">
+
+{if $arr_zef[row].zef_comment}                
+                <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type|escape:'html'}" {if $hideComments}style="display:none;"{/if}>
                     <td colspan="10">{$arr_zef[row].zef_comment|escape:'html'|nl2br}</td>
                 </tr>
+{/if}
 
 {assign var="day_buffer" value=$arr_zef[row].zef_in|date_format:"%d"}
 {assign var="zef_in_buffer" value=$arr_zef[row].zef_in}

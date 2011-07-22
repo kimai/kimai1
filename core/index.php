@@ -276,7 +276,5 @@ default:
     $tpl->display('login/panel.tpl');
 break;
 }
-if(isset($link))
-	mysql_close($link); 
 ob_end_flush();
 ?>

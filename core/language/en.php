@@ -266,10 +266,13 @@ return array(
 'defaultTimezone' => 'time zone for new users and customers',
 
 'hideClearedEntries' => 'hide cleared entries',
+'showCommentsByDefault' => 'show comments by default',
 
 'general' => 'General',
 'address' => 'Address',
 'contact' => 'Contact',
+'list'=> 'List',
+'sublists' => 'Lower Lists',
 
 'internalProject' => 'internal project',
 

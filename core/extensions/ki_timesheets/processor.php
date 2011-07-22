@@ -222,6 +222,8 @@ switch ($axAction) {
         Format::formatAnnotations($ann);
         $tpl->assign('evt_ann',$ann);
 
+        $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+
         $tpl->display("zef.tpl");
     break;
     

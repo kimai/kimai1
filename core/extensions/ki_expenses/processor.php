@@ -77,6 +77,8 @@ switch ($axAction) {
 
       $tpl->assign('evt_ann',array());
 
+      $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+
       $tpl->display("exp.tpl");
     break;
 

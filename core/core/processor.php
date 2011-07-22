@@ -75,6 +75,7 @@ switch ($axAction) {
         $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
         $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
         $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
+        $preferences['showCommentsByDefault'] = isset($_REQUEST['showCommentsByDefault'])?1:0;
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
 
         $database->usr_set_preferences($preferences,'ui.');
