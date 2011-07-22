@@ -200,7 +200,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement = $this->conn->prepare($query);
 
-      bindValues($statement,$keys,$data);
+      $this->bindValues($statement,$keys,$data);
 
       $statement->bindValue(":customerId", $knd_id);
 
@@ -431,7 +431,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement = $this->conn->prepare($query);
 
-      bindValues($statement,$keys,$data);
+      $this->bindValues($statement,$keys,$data);
 
       $statement->bindValue(":projectId", $pct_id);
 
@@ -655,7 +655,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement = $this->conn->prepare($query);
 
-      bindValues($statement,$keys,$data);
+      $this->bindValues($statement,$keys,$data);
 
       $statement->bindValue(":eventId", $evt_id);
 
@@ -1210,7 +1210,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $statement = $this->conn->prepare($query);
 
-      bindValues($statement,$keys,$data);
+      $this->bindValues($statement,$keys,$data);
 
       $statement->bindValue(":userId", $usr_id);
 
