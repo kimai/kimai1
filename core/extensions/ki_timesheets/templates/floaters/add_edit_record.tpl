@@ -20,7 +20,6 @@
 
             $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
 
-
                 if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
                     !$('#edit_out_day').val().match(ts_dayFormatExp) ||
                     !$('#edit_in_time').val().match(ts_timeFormatExp) ||
@@ -35,6 +34,9 @@
                 for (var i = 3;i>=1;i--) {
                   var inVal = inDayMatches[i];
                   var outVal = outDayMatches[i];
+
+                  inVal = parseInt(inVal);
+                  outval = parseInt(outVal);
                   
                   if (inVal == undefined)
                     inVal = 0;
@@ -48,7 +50,6 @@
                   else if (inVal < outVal)
                     break; // if this part is smaller we don't care for the other parts
                 }
-                
                 if (inDayMatches[0] == outDayMatches[0]) {
                   // test if start time is before end time if it's the same day
                   var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
@@ -61,12 +62,15 @@
                       inVal = inVal.substr(1);
                     if (outVal[0] == ":")
                       outVal = outVal.substr(1);
+
+                    inVal = parseInt(inVal);
+                    outval = parseInt(outVal);
                     
                     if (inVal == undefined)
                       inVal = 0;
                     if (outVal == undefined)
                       outVal = 0;
-                    
+
                     if (inVal > outVal) {
                       alert("{/literal}{$kga.lang.StartTimeBeforeEndTime}{literal}");
                       return false;

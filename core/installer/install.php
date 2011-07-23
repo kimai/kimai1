@@ -51,6 +51,16 @@ function exec_query($query) {
     }
 } 
 
+function quoteForSql($input) {
+  global $kga, $database;
+
+  if ($kga['server_conn'] == "pdo") {
+    return $database->getConnectionHandler()->quote($input);
+  } else {
+    return "'".mysql_real_escape_string($input)."'";
+  }
+}
+
 if (!isset($_REQUEST['accept'])) {
     header("Location: ../index.php?disagreedGPL=1");
     exit;
@@ -269,7 +279,7 @@ $query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) V
 exec_query($query);
 
 $query="INSERT INTO `${p}preferences` (`userID`,`var`,`value`) VALUES ('$randomAdminID','ui.rowlimit','100'),
-('$randomAdminID','ui.skin','standard'),('$randomAdminID','timezone','".mysql_real_escape_string($_REQUEST['timezone'])."');";
+('$randomAdminID','ui.skin','standard'),('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
 $query="INSERT INTO `${p}ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
@@ -331,7 +341,7 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('language','$kga[langua
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('decimalSeparator',',')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','0')");
-exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone','".mysql_real_escape_string($_REQUEST['timezone'])."')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone',".quoteForSql($_REQUEST['timezone']).")");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
 

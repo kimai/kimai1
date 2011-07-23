@@ -198,9 +198,6 @@ switch ($axAction) {
      * Create the database.
      */
     case ("make_database");
-
-    error_log("make database ###################");
-
         $database     = $_REQUEST['database'];
         $hostname     = $_REQUEST['hostname'];
         $username     = $_REQUEST['username'];

@@ -1,11 +1,11 @@
 <?php
 echo '<script type="text/javascript" charset="utf-8">current=50;</script>';
 
-(isset($_REQUEST['hostname']))?$mysqlhost = $_REQUEST['hostname']:$mysqlhost="localhost";
-(isset($_REQUEST['username']))?$mysqluser = $_REQUEST['username']:$mysqluser = "";
-(isset($_REQUEST['password']))?$mysqlpwd  = $_REQUEST['password']:$mysqlpwd  = "";
+$hostname = isset($_REQUEST['hostname'])?$_REQUEST['hostname']:"localhost";
+$username = isset($_REQUEST['username'])?$_REQUEST['username']:"";
+$password = isset($_REQUEST['password'])?$_REQUEST['password']:"";
 
-if ($mysqlhost=="") $mysqlhost="localhost";
+if ($hostname=="") $hostname="localhost";
 
 if ($_REQUEST['lang']=="en") {
 
@@ -16,9 +16,9 @@ $echo=<<<EOD
     
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Host:<br/><input id="host" type="text" value="$mysqlhost"/>   </td>
-            <td>User:<br/><input id="user" type="text" value="$mysqluser"/>   </td>
-            <td>Password:<br/><input id="pass" type="password" value="$mysqlpwd"/></td>
+            <td>Host:<br/><input id="host" type="text" value="$hostname"/>   </td>
+            <td>User:<br/><input id="user" type="text" value="$username"/>   </td>
+            <td>Password:<br/><input id="pass" type="password" value="$password"/></td>
         </tr>
     </table>
     <span id='caution'></span><br />
@@ -35,9 +35,9 @@ $echo=<<<EOD
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Host:<br/><input id="host" type="text" value="$mysqlhost"/>    </td>
-            <td>Benutzer:<br/><input id="user" type="text" value="$mysqluser"/></td>
-            <td>Passwort:<br/><input id="pass" type="password" value="$mysqlpwd"/> </td>
+            <td>Host:<br/><input id="host" type="text" value="$hostname"/>    </td>
+            <td>Benutzer:<br/><input id="user" type="text" value="$username"/></td>
+            <td>Passwort:<br/><input id="pass" type="password" value="$password"/> </td>
         </tr>
     </table>
     <span id='caution'></span><br /><br />

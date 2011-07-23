@@ -352,6 +352,16 @@ function exec_query($query,$errorProcessing=false,$displayQuery=null) {
     
 }
 
+function quoteForSql($input) {
+  global $kga, $database;
+
+  if ($kga['server_conn'] == "pdo") {
+    return $database->getConnectionHandler()->quote($input);
+  } else {
+    return "'".mysql_real_escape_string($input)."'";
+  }
+}
+
 
 $version_e   = explode(".",$kga['version']);
 $versionDB_e = explode(".",$versionDB);
@@ -1102,13 +1112,13 @@ if ((int)$revisionDB < 1216) {
 }
 
 if ((int)$revisionDB < 1219) {
-    $timezone = mysql_real_escape_string($_REQUEST['timezone']);
+    $timezone = quoteForSql($_REQUEST['timezone']);
     Logger::logfile("-- update to r1219");
     exec_query("ALTER TABLE `${p}usr`
   ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
     exec_query("UPDATE `${p}usr`
   SET `timezone` = '$timezone'");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone','$timezone')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone',$timezone)");
 }
 
 if ((int)$revisionDB < 1225) {
@@ -1200,9 +1210,9 @@ if ((int)$revisionDB < 1305) {
       if ($name == $customer['knd_name'])
         continue;
 
-      exec_query("UPDATE ${p}knd SET knd_name = '".
-          mysql_real_escape_string($name).
-          "' WHERE knd_ID = $customer[knd_ID]");
+      exec_query("UPDATE ${p}knd SET knd_name = ".
+          quoteForSql($name).
+          " WHERE knd_ID = $customer[knd_ID]");
     }
 
     // update pct_name
@@ -1214,9 +1224,9 @@ if ((int)$revisionDB < 1305) {
       if ($name == $project['pct_name'])
         continue;
 
-      exec_query("UPDATE ${p}pct SET pct_name = '".
-          mysql_real_escape_string($name).
-          "' WHERE pct_ID = $project[pct_ID]");
+      exec_query("UPDATE ${p}pct SET pct_name = ".
+          quoteForSql($name).
+          " WHERE pct_ID = $project[pct_ID]");
     }
 
     // update evt_name
@@ -1228,9 +1238,9 @@ if ((int)$revisionDB < 1305) {
       if ($name == $event['evt_name'])
         continue;
 
-      exec_query("UPDATE ${p}evt SET evt_name = '".
-          mysql_real_escape_string($name).
-          "' WHERE evt_ID = $event[evt_ID]");
+      exec_query("UPDATE ${p}evt SET evt_name = ".
+          quoteForSql($name).
+          " WHERE evt_ID = $event[evt_ID]");
     }
 
     // update usr_name
@@ -1242,9 +1252,9 @@ if ((int)$revisionDB < 1305) {
       if ($name == $user['usr_name'])
         continue;
 
-      exec_query("UPDATE ${p}usr SET usr_name = '".
-          mysql_real_escape_string($name).
-          "' WHERE usr_ID = $user[usr_ID]");
+      exec_query("UPDATE ${p}usr SET usr_name = ".
+          quoteForSql($name).
+          " WHERE usr_ID = $user[usr_ID]");
     }
 
     // update grp_name
@@ -1256,9 +1266,9 @@ if ((int)$revisionDB < 1305) {
       if ($name == $group['grp_name'])
         continue;
 
-      exec_query("UPDATE ${p}grp SET grp_name = '".
-          mysql_real_escape_string($name).
-          "' WHERE grp_ID = $group[grp_ID]");
+      exec_query("UPDATE ${p}grp SET grp_name = ".
+          quoteForSql($name).
+          " WHERE grp_ID = $group[grp_ID]");
     }
     
 }

@@ -19,47 +19,17 @@
 
 include('../../libraries/tcpdf/tcpdf.php');
 
-class MYPDF extends TCPDF { 
+include('base_export_pdf.php');
+
+class MYPDF extends BasePDF { 
 
   /**
    * Widths of all columns
    */
   var $w = array(); 
-  var $print_time;
-  var $date_format;
 
   var $columns = array();
 
-  /**
-   * Format a Unix timestamp to a date.
-   * @param int $number unix timestamp
-   * @return string formatted as date
-   */
-  public function dateformat($number) {
-      return strftime($this->date_format,$number);
-  } 
-
-  /**
-   * Format the duration.
-   * @param int $number number to format (usually in hours)
-   * @return string formatted string
-   */
-  public function timespan($number) {
-    global $kga;
-    if ($number == -1)
-      return "-------";
-    else
-      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
-  } 
-
-  /**
-   * Format a number as a money value.
-   * @param int $number amount of money
-   * @return string formatted string
-   */
-  public function money($number) {
-    return Format::formatCurrency($number,false);
-  }
   
 
   /**
@@ -83,27 +53,6 @@ class MYPDF extends TCPDF {
         $this->SetFont('helvetica', '', 8); // Set font
         $this->Cell(0, 10, date('d.m.Y H:i:s', $this->print_time), 0, 0, 'R');
   } 
-
-  /**
-   * Print the header of the table.
-   * @param array $w widths of the table columns
-   * @param array $header string with the column headers
-   */
-  public function printHeader($w,$header) {
-
-        // Colors, line width and bold font 
-        $this->SetFillColor(240, 240, 240); 
-        $this->SetTextColor(0); 
-        $this->SetDrawColor(0,0,0); 
-        $this->SetLineWidth(0.3); 
-        $this->SetFont('', 'B'); 
-
-    for($i = 0; $i < count($w); $i++) {
-          if ($w[$i] <= 0) continue;
-          $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1); 
-     }
-    $this->Ln(); 
-  }
 
   /**
    * Print the table containing the detailed information.
@@ -216,76 +165,6 @@ class MYPDF extends TCPDF {
         $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
     }
   }
-
-  /**
-    * Print the table containing the summarized information.
-    * @param array $header String with the column headers.
-    * @param array $data Data to print.
-    */
-  public function ColoredTable_result($header,$data) {
-    global $kga;
-    $w = array($this->getPageWidth()-$this->pagedim[$this->page]['lm']-$this->pagedim[$this->page]['rm'],0,0);
-    if (isset($this->columns['wage'])) {
-      $w[2] = 30;
-      $w[0] -= 30;
-    }
-    if (isset($this->columns['dec_time'])) {
-      $w[1] = 30;
-      $w[0] -= 30;
-    }
-        
-    // Header 
-    $this->printHeader($w,$header);
-
-    // Color and font restoration 
-    $this->SetFillColor(224, 235, 255); 
-    $this->SetTextColor(0); 
-    $this->SetFont(''); 
-    // Data 
-    $fill = 0; 
-    $sum = 0;
-    $sum_time = 0;
-    foreach($data as $row) { 
-      // check if page break is nessessary
-      if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
-        $this->Cell(array_sum($w), 0, '', 'T'); 
-        $this->Ln();  
-        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
-        if (isset($this->columns['dec_time']))
-          $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
-        if (isset($this->columns['wage']))
-          $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-        $this->Ln();  
-        $this->AddPage();
-        $this->printHeader($w,$header);
-
-        // Color and font restoration 
-        $this->SetFillColor(224, 235, 255); 
-        $this->SetTextColor(0); 
-        $this->SetFont(''); 
-      }
-      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
-      if (isset($this->columns['dec_time']))
-        $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
-      if (isset($this->columns['wage']))
-        $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-      $this->Ln(); 
-      $fill=!$fill; 
-      $sum+=$row['wage'];
-      $sum_time += $row['time']==-1?0:$row['time']; 
-        
-    }
-    $this->Cell(array_sum($w), 0, '', 'T'); 
-    $this->Ln();
-
-    $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
-    $this->SetFont('', 'B'); 
-    if (isset($this->columns['dec_time']))
-      $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
-    if (isset($this->columns['wage']))
-      $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-  }
-
 }
 
  
@@ -357,40 +236,13 @@ if (!empty($_REQUEST['document_comment'])) {
 
 if (isset($_REQUEST['print_summary'])) {
   
-  //Create the summary.
-  $zef_summary = array();
-  $exp_summary = array();
-  foreach ($arr_data as $one_entry) {
-
-    if ($one_entry['type'] == 'zef') {
-      if (isset($zef_summary[$one_entry['zef_evtID']])) {
-        $zef_summary[$one_entry['zef_evtID']]['time']   += ($kga['conf']['exactSums'] == 1)?$one_entry['zef_time']/3600:$one_entry['dec_zef_time']; //Sekunden
-        $zef_summary[$one_entry['zef_evtID']]['wage']   += ($kga['conf']['exactSums'] == 1)?$one_entry['wage_decimal']:$one_entry['wage']; //Euro
-      }
-      else {
-        $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
-        $zef_summary[$one_entry['zef_evtID']]['time']         = ($kga['conf']['exactSums'] == 1)?$one_entry['zef_time']/3600:$one_entry['dec_zef_time'];
-        $zef_summary[$one_entry['zef_evtID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$one_entry['wage_decimal']:$one_entry['wage'];
-      }
-    }
-    else {
-      $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$one_entry['evt_name'];
-      $exp_info['time']   = -1;
-      $exp_info['wage'] = $one_entry['wage'];
-      
-      $exp_summary[] = $exp_info;
-    }
-  }
-  
-  $summary = array_merge($zef_summary,$exp_summary);
-  
   if (isset($_REQUEST['create_bookmarks']))
     $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
   
   $pdf->ln();
   $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['summary'].'</h3>');
   $pdf->ln();
-  $pdf->ColoredTable_result(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $summary);
+  $pdf->printSummary(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $pdf_arr_data);
   
   $pdf->AddPage();
   
@@ -420,27 +272,26 @@ if (count($projects)>0) {
   $pdf->ln();
 }
 
+$firstRun = true;
+foreach ($pdf_arr_data as $customer) {
+  // process each customer in first dimension
 
-if (isset($_REQUEST['customer_new_page'])) {
-  $firstRun = true;
-  foreach ($knd_arr_data as $arr_data) {
-    if ($firstRun)
-      $firstRun = false;
-    else
-      $pdf->AddPage();
-    $pdf->ln();
-    $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
-    $pdf->ln();
-    $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
-  }
-}
-else {
+  if ($firstRun)
+    $firstRun = false;
+  else if (isset($_REQUEST['customer_new_page']))
+    $pdf->AddPage();
+
   $pdf->ln();
   $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
-  $pdf->ln();
-  $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$arr_data);
-}
+  $pdf->ln();  
 
+  $project_ids = array_keys($customer);
+
+  foreach ($project_ids as $project_id) {
+    // process each project in second dimension
+    $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$customer[$project_id]);
+  }
+}
 
 $pdf->Output('invoice_'.date('Y-m-d_H-i-s', $pdf->print_time).'.pdf', ( (isset($_REQUEST['download_pdf'])) ? 'D' : 'I' ) ); // D=Download I=Eingebunden
 ?>

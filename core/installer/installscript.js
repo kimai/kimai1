@@ -298,12 +298,14 @@ function host_proceed() {
 // -------------------------------------------------
 // Database selection
 
-function db_proceed() {
+function db_check() {
     database        = $('#db_names').val();
     create_database = $('#db_create').val();
     prefix          = $('#prefix').val();
     
-    if (database == "0" && create_database == "") {
+    databaseGiven = $('#db_names').is('select')?database != "0":database != "";
+    
+    if (!databaseGiven && create_database == "") {
         if (language =="en") {
             $('#db_select_label').html("You have to choose one of these databases!");
             $('#db_select_label').html("You have to choose either one of these ...");
@@ -315,30 +317,42 @@ function db_proceed() {
         }
         $('#db_select_label').addClass("arrow");
         $('#db_create_label').addClass("arrow");
-        
-    } else {
-        
-        if (create_database != "") {
-            database=create_database;
-            new_database = 1;
-        }
-        
-        target = "70_write_conf";
-        
-        step_ahead();
-    
-        $('#installsteps').slideUp(500,function(){
-            $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, prefix:prefix},
-                function(data) {
-                    $('#installsteps').html(data);
-                    $('td.use_db').html(database);
-                    $('td.use_host').html(hostname);
-                    $('td.use_prefix').html(prefix);
-                    $('#installsteps').slideDown(500);
-                }
-            );
-        });
     }
+    else {
+      $('#installsteps').slideUp(500,function(){
+        $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, create_database:create_database, prefix:prefix, redirect:true},
+              function(data) {
+                $('#installsteps').html(data);
+                $('#installsteps').slideDown(500);
+              }
+        );
+      });
+    }
+}
+
+function db_proceed() {
+  database        = $('#db_names').val();
+  create_database = $('#db_create').val();
+  prefix          = $('#prefix').val();
+  
+  if (create_database != "") {
+    database=create_database;
+    new_database = 1;
+  }
+  
+  target = "70_write_conf";
+  
+  step_ahead();
+  
+  $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, prefix:prefix},
+    function(data) {
+      $('#installsteps').html(data);
+      $('td.use_db').html(database);
+      $('td.use_host').html(hostname);
+      $('td.use_prefix').html(prefix);
+      $('#installsteps').slideDown(500);
+    }
+  );
 }
 
 // -------------------------------------------------
