@@ -144,7 +144,7 @@
             
 {if $arr_usr[userarray].usr_pw == "no"}
             <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); $(this).blur(); return false;">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" width="16" height="16" title='{$kga.lang.nopassword}' border="0">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" width="16" height="16" title='{$kga.lang.nopasswordset}' border="0">
             </a>
 {/if}
 

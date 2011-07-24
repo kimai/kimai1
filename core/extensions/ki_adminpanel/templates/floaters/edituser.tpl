@@ -76,7 +76,7 @@
         
                         <br/>
                         <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />
-                        <strong style="color:red">{$kga.lang.nopassword}</strong>
+                        <strong style="color:red">{$kga.lang.nopasswordset}</strong>
         {/if}
                     </li>
 

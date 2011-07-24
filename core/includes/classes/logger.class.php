@@ -65,6 +65,11 @@ class Logger {
   }
 
   public static function errorHandler($errno ,$errstr , $errfile , $errline)  {
+
+    // If the @ error-control operator is set don't log the error.
+    if (error_reporting() === 0)
+      return false;
+
     $line = '';
     switch ($errno) {
       case E_WARNING:

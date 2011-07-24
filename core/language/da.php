@@ -144,7 +144,7 @@ return array(
 "changegrp"         => "Skift bruger",
 "members"           => "Medlemmer",
 "groupleader"       => "Gruppes leder",
-"nopassword"        => "Ingen adgangskode angivet!",
+"nopasswordset"     => "Ingen adgangskode angivet!",
 "noItems"           => "ingen posteringer",
 "DBname"            => "Navn på database",
 "autoselection"     => "Automatisk valg",

@@ -154,22 +154,26 @@
                 
                    <li>
                        <label for="pct_ID">{$kga.lang.pct}:</label>
-                       <select size = "5" name="pct_ID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_evt($('#add_edit_zef_pct_ID').val());" >
-                           {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
-                       </select>
-                       <br/>
-                       <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_pct_ID', this.value); ts_add_edit_validate();"/>
+                       <div class="multiFields">
+                        <select size = "5" name="pct_ID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_evt($('#add_edit_zef_pct_ID').val());" >
+                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
+                        </select>
+                        <br/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_pct_ID', this.value); ts_add_edit_validate();"/>
+                       </div>
                    </li>
                    
 
 
                    <li>
                        <label for="evt_ID">{$kga.lang.evt}:</label>
-                       <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRate();ts_add_edit_validate();" >
-                           {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
-                       </select>
-                       <br/>
-                      <input type="input" style="margin-left:115px;width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_evt_ID', this.value); ts_add_edit_validate();" />
+                       <div class="multiFields">
+                        <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRate();ts_add_edit_validate();" >
+                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
+                        </select>
+                        <br/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_evt_ID', this.value); ts_add_edit_validate();" />
+                      </div>
                    </li>
                 
 {* -------------------------------------------------------------------- *} 

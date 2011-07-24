@@ -263,7 +263,7 @@ return array(
 
 "groupleader"       => "Líder do Grupo",
 
-"nopassword"        => "Nenhuma senha definida!",
+"nopasswordset"     => "Nenhuma senha definida!",
 
 "noItems"           => "sem Entradas",
 

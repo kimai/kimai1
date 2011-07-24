@@ -251,8 +251,11 @@ switch ($axAction) {
             	$data['knd_filter']   = $_REQUEST['knd_filter'];
         
               // If password field is empty dont overwrite the password.
-              if ($_REQUEST['knd_password'] != "") {
+              if (isset($_REQUEST['knd_password']) && $_REQUEST['knd_password'] != "") {
                 $data['knd_password'] = md5($kga['password_salt'].$_REQUEST['knd_password'].$kga['password_salt']);
+              }
+              if (isset($_REQUEST['knd_no_password'])) {
+                $data['knd_password'] = '';
               }
             	
               // add or update the customer

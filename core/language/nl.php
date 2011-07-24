@@ -135,7 +135,7 @@ return array(
 "changegrp"         => "Wissel van groep",
 "members"           => "Leden",
 "groupleader"       => "Groepshoofd",
-"nopassword"        => "Geen wachtwoord ingegeven!",
+"nopasswordset"     => "Geen wachtwoord ingegeven!",
 "noItems"           => "Geen input",
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",

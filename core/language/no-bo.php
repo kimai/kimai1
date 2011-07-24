@@ -150,7 +150,7 @@ return array(
 "changegrp"         => "Endre gruppe",
 "members"           => "Medlem",
 "groupleader"       => "Gruppesjef",
-"nopassword"        => "Ikke angitt passord!",
+"nopasswordset"     => "Ikke angitt passord!",
 "noItems"           => "ingen oppføringer",
 "DBname"            => "Navn på database",
 "autoselection"     => "Automatisk valg",

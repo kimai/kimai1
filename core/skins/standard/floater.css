@@ -37,6 +37,11 @@
 #floater_innerwrap fieldset {
     border:none;
 }
+
+#floater_innerwrap .multiFields {
+    margin-left:115px;
+}
+
 #floater_innerwrap fieldset label {
     margin-right:5px;
     width:110px;
@@ -58,6 +63,15 @@
 {
     background-color:#fff;
     border:3px double #bbb;
+}
+
+#floater_innerwrap select[disabled],
+#floater_innerwrap input[disabled],
+#floater_innerwrap textarea[disabled]
+{
+  background-color:#ddd;
+  color:#ddd;
+  border:3px double #999;
 }
 
 

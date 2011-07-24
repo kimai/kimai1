@@ -169,7 +169,7 @@ return array(
 "changegrp"         => "更改组",
 "members"           => "成员列表",
 "groupleader"       => "组管理员",
-"nopassword"        => "空密码设置",
+"nopasswordset"     => "空密码设置",
 "noItems"           => "空条目",
 "DBname"            => "数据库名字",
 "updated"           => "数据记录更新!",

@@ -142,7 +142,7 @@ return array(
 "changegrp"         => "ändra grupp",
 "members"           => "Medlemmar",
 "groupleader"       => "Grupp ledare",
-"nopassword"        => "Inget lösenord angivet!",
+"nopasswordset"     => "Inget lösenord angivet!",
 "noItems"           => "Inga Poster",
 "DBname"            => "Namn på databas",
 "autoselection"     => "Autoval",

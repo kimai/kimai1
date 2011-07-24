@@ -139,7 +139,7 @@ return array(
 "changegrp"         => "Change group",
 "members"           => "Members",
 "groupleader"       => "Group leader",
-"nopassword"        => "No password set!",
+"nopasswordset"     => "No password set!",
 "noItems"           => "no Entries",
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",

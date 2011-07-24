@@ -155,7 +155,7 @@ return array(
 "changegrp"         => "Modifier le groupe",
 "members"           => "Membres",
 "groupleader"       => "Responsable du groupe",
-"nopassword"        => "Aucun mot de passe enregistré",
+"nopasswordset"     => "Aucun mot de passe enregistré",
 "noItems"           => "Pas d'entrées",
 "DBname"            => "Nom de la base de données",
 "autoselection"     => "Sélection automatique",

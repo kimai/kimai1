@@ -1,6 +1,15 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
+    
+            $('.disableInput').click(function(){
+              var input = $(this);
+              if (input.is (':checked'))
+                input.siblings().attr("disabled","disabled");
+              else
+                input.siblings().attr("disabled","");
+            });
+
             $('#add_edit_knd').ajaxForm(function() { 
 
                 if ($('#knd_grps').val() == null) {
@@ -88,15 +97,11 @@
                     </li>   
 
                     <li>
-                         <label for="knd_password">{$kga.lang.password}:</label>
-                         <input type="password" name='knd_password' cols='30' rows='3' value=""/>
-                   
-        {if !$knd_password}
-        
-                        <br/>
-                        <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />
-                        <strong style="color:red">{$kga.lang.nopassword}</strong>
-        {/if}
+                      <label for="knd_password">{$kga.lang.password}:</label>
+                      <div class="multiFields">
+                        <input type="password" name='knd_password' cols='30' rows='3' value="" {if !$knd_password}disabled="disabled"{/if}/><br/>
+                        <input type="checkbox" name="knd_no_password" value="1" class="disableInput" {if !$knd_password}checked="checked"{/if}>{$kga.lang.nopassword}
+                      </div>
                     </li> 
 
                 </ul>

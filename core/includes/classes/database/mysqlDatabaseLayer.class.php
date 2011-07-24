@@ -55,7 +55,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if (isset($data['knd_password']))
         $values   ['knd_password']    =     MySQL::SQLValue($data   ['knd_password']      );
       else
-        $values   ['knd_password']    = '';
+        $values   ['knd_password']    =     "''";
       $values     ['knd_company']     =     MySQL::SQLValue($data   ['knd_company']       );
       $values     ['knd_vat']         =     MySQL::SQLValue($data   ['knd_vat']           );
       $values     ['knd_contact']     =     MySQL::SQLValue($data   ['knd_contact']       );
