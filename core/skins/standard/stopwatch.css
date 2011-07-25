@@ -60,3 +60,11 @@
   z-index: 70;
   display:hidden;
 }
+
+#stopwatch_edit_starttime {
+  position: absolute;
+  right: 295px;
+  top: 55px;
+  z-index: 70;
+  display:hidden;
+}

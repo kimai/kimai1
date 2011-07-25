@@ -35,6 +35,8 @@ return array(
 "out"               => "Out",
 "time"              => "h'm",
 "timelabel"         => "Time",
+"starttime"         => "start time",
+"DateTimeNotInFuture"=> "The day and time must not be in the future.",
 "durationlabel"     => "Duration",
 "knd"               => "Customer",
 "pct"               => "Project",

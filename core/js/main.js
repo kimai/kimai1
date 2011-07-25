@@ -323,14 +323,15 @@ function updateTimespaceWarning() {
 function startRecord(pct_ID,evt_ID,user_ID) {
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
-    offset = now;
-    startsec = 0;
+    offset = 0;
+    startsec = now;
     show_stopwatch();
     value = pct_ID +"|"+ evt_ID;
     $.post("processor.php", { axAction: "startRecord", axValue: value, id: user_ID},
         function(response){
             ts_ext_reload();
             $("#stopwatch_edit_comment").show();
+            $("#stopwatch_edit_starttime").show();
         }
     );
 }
@@ -372,6 +373,7 @@ function show_selectors() {
     $("#selector").css('display','block');
     $("#stopwatch").css('display','none');
     $("#stopwatch_edit_comment").css('display','none');
+    $("#stopwatch_edit_starttime").css('display','none');    
     $("#stopwatch_ticker").css('display','none');
     $("#buzzer").removeClass("act");
     if (!(selected_knd && selected_pct && selected_evt)) {
@@ -382,6 +384,11 @@ function show_selectors() {
 function edit_running_comment() {
   floaterShow('../extensions/ki_timesheets/floaters.php',
       'edit_running_comment',0,0,600,200);
+}
+
+function edit_running_starttime() {
+  floaterShow('../extensions/ki_timesheets/floaters.php',
+      'edit_running_starttime',0,0,600,200);
 }
 
 function buzzer() {

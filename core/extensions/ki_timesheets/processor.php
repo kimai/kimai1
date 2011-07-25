@@ -131,6 +131,23 @@ switch ($axAction) {
         echo 1;
     break;
 
+    // ===================================
+    // = set time for a running event =
+    // ===================================
+    case 'edit_running_starttime':
+        if (isset($kga['customer'])) die();
+            // fcw: 2011-07-23: Neue Startzeit aus heutigem Datum holen und aus dem REQUEST. 
+            // Schon fuer convert_time_strings (aus /includes/func.php) passend machen (als String, z.B.: "23.07.2011-16:25:57")
+            $new_starttime = Format::expand_date_shortcut($_REQUEST['startday']).'-'.Format::expand_time_shortcut($_REQUEST['starttime']);
+            // UNIX-Time holen, zwei Mal den selben Parameter, nur einer wird gebraucht
+            $new_time = convert_time_strings($new_starttime, $new_starttime);
+            // neue Startuhrzeit in die DB schreiben
+            $database->zef_edit_starttime(
+                $axValue,
+                $new_time['in']);
+        echo $new_time['in'];
+    break;
+
     // =========================================
     // = Erase timesheet entry via quickdelete =
     // =========================================

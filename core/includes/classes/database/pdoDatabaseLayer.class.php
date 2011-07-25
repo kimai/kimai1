@@ -3120,7 +3120,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   public function get_current_timer() {
       $p = $this->kga['server_prefix'];
           
-      $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in,zef_time FROM ${p}zef WHERE zef_usrID = ? ORDER BY zef_in DESC LIMIT 1;");
+      $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = ? AND zef_time = 0;");
       $result = $pdo_query->execute(array($this->kga['usr']['usr_ID']));
 
       if ($result == false) {
@@ -3128,22 +3128,23 @@ class PDODatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      $zef_time  = (int)$row['zef_time'];
-      $zef_in    = (int)$row['zef_in'];
-
-      if (!$zef_time && $zef_in) {
-          $aktuelleMessung = Format::hourminsec(time()-$zef_in);
-          $current_timer['all']  = $zef_in;
-          $current_timer['hour'] = $aktuelleMessung['h'];
-          $current_timer['min']  = $aktuelleMessung['i'];
-          $current_timer['sec']  = $aktuelleMessung['s'];
-      } else {
+      if ($pdo_query->rowCount()) {
           $current_timer['all']  = 0;
           $current_timer['hour'] = 0;
           $current_timer['min']  = 0;
           $current_timer['sec']  = 0;
       }
+      else {
+        $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+        $zef_in    = (int)$row['zef_in'];
+
+        $aktuelleMessung = Format::hourminsec(time()-$zef_in);
+        $current_timer['all']  = $zef_in;
+        $current_timer['hour'] = $aktuelleMessung['h'];
+        $current_timer['min']  = $aktuelleMessung['i'];
+        $current_timer['sec']  = $aktuelleMessung['s'];
+      }
+
       return $current_timer;
   }
 
@@ -3574,6 +3575,23 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       if ($result == false)
           $this->logLastError('zef_edit_comment');
+  }
+
+  /**
+  * Just edit the starttime of an entry. This is used for editing the starttime
+  * of a running entry.
+  * 
+  * @param $zef_ID id of the timesheet entry
+  * @param $starttime the new starttime
+  */
+  function zef_edit_starttime($zef_ID,$starttime) {
+      $p = $this->kga['server_prefix'];
+      
+      $pdo_query = $this->conn->prepare("UPDATE ${p}zef 
+      SET zef_in = ? WHERE zef_ID = ?");
+
+      $pdo_query->execute(array($starttime,$zef_ID));
+
   }
 
   /**

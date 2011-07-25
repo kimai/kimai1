@@ -34,6 +34,8 @@ return array(
 "out"               => "bis",
 "time"              => "h'm",
 "timelabel"         => "Zeit",
+"starttime"         => "Startzeit",
+"DateTimeNotInFuture"=> "Der Zeitpunkt darf nicht in der Zukunft liegen.",
 "durationlabel"     => "Dauer",
 "knd"               => "Kunde",
 "pct"               => "Projekt",

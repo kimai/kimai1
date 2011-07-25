@@ -2749,24 +2749,25 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $user  = MySQL::SQLValue($this->kga['usr']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
     $p     = $this->kga['server_prefix'];
           
-      $this->conn->Query("SELECT zef_ID,zef_in,zef_time FROM ${p}zef WHERE zef_usrID = $user ORDER BY zef_in DESC LIMIT 1;");
-      
-      $row = $this->conn->RowArray(0,MYSQL_ASSOC);
+      $this->conn->Query("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = $user AND zef_time = 0;");
 
-      $zef_time  = (int)$row['zef_time'];
-      $zef_in    = (int)$row['zef_in'];
-
-      if (!$zef_time && $zef_in) {
-          $aktuelleMessung = Format::hourminsec(time()-$zef_in);
-          $current_timer['all']  = $zef_in;
-          $current_timer['hour'] = $aktuelleMessung['h'];
-          $current_timer['min']  = $aktuelleMessung['i'];
-          $current_timer['sec']  = $aktuelleMessung['s'];
-      } else {
+      if ($this->conn->RowCount() == 0) {
           $current_timer['all']  = 0;
           $current_timer['hour'] = 0;
           $current_timer['min']  = 0;
           $current_timer['sec']  = 0;
+      }
+      else {
+
+        $row = $this->conn->RowArray(0,MYSQL_ASSOC);
+
+        $zef_in    = (int)$row['zef_in'];
+
+        $aktuelleMessung = Format::hourminsec(time()-$zef_in);
+        $current_timer['all']  = $zef_in;
+        $current_timer['hour'] = $aktuelleMessung['h'];
+        $current_timer['min']  = $aktuelleMessung['i'];
+        $current_timer['sec']  = $aktuelleMessung['s'];
       }
       return $current_timer;
   }
@@ -3218,6 +3219,29 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
       
       return $this->conn->Query($query); 
+  }
+
+  /**
+  * Just edit the starttime of an entry. This is used for editing the starttime
+  * of a running entry.
+  * 
+  * @param $zef_ID id of the timesheet entry
+  * @param $starttime the new starttime
+  */
+  function zef_edit_starttime($zef_ID,$starttime) {
+      $zef_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
+      $starttime    = MySQL::SQLValue($starttime );
+      
+      $table = $this->kga['server_prefix']."zef";
+      
+      $filter['zef_ID'] = $zef_ID;
+
+      $values['zef_in'] = $starttime;
+
+      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+      
+      return $this->conn->Query($query);
+
   }
 
   /**

@@ -30,7 +30,6 @@ switch ($axAction) {
     case 'edit_running_comment':
         if (isset($kga['customer'])) die();
 
-        $tpl->assign('langs', Translations::langs());
         $last_event = $database->get_event_last();
         $tpl->assign('id', $last_event['zef_ID']);
         $tpl->assign('comment', $last_event['zef_comment']);
@@ -38,6 +37,19 @@ switch ($axAction) {
         $tpl->assign('comment_types', $comment_types);
         $tpl->assign('comment_values', array('0','1','2'));
         $tpl->display("edit_running_comment.tpl");
+    break;
+
+    // =================================================
+    // = displays edit time dialog for running task =
+    // =================================================
+    case 'edit_running_starttime':
+        if (isset($kga['customer'])) die();
+
+        $last_event = $database->get_event_last();
+        $tpl->assign('id', $last_event['zef_ID']);
+        $tpl->assign('startday', date("d.m.Y",$last_event['zef_in']));
+        $tpl->assign('starttime', date("H:i:s",$last_event['zef_in']));
+        $tpl->display("edit_running_starttime.tpl");
     break;
 
     case "add_edit_record":  
