@@ -15,6 +15,7 @@
               <col class="project" />
               <col class="action" />
               <col class="trackingnumber" />
+              <col class="username" />
             </colgroup>
 
             <tbody>
@@ -271,11 +272,23 @@
                     {$arr_zef[row].zef_trackingnr|escape:'html'}
                     </td>
 
+                    <td class="username
+                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_zef[row].zef_out != $zef_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    {$arr_zef[row].usr_name|escape:'html'}
+                    </td>
+
                 </tr>
 
 {if $arr_zef[row].zef_comment}                
                 <tr id="c{$arr_zef[row].zef_ID}" class="comm{$arr_zef[row].zef_comment_type|escape:'html'}" {if $hideComments}style="display:none;"{/if}>
-                    <td colspan="10">{$arr_zef[row].zef_comment|escape:'html'|nl2br}</td>
+                    <td colspan="11">{$arr_zef[row].zef_comment|escape:'html'|nl2br}</td>
                 </tr>
 {/if}
 

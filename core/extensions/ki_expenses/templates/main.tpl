@@ -22,6 +22,7 @@
           <col class="knd" />
           <col class="pct" />
           <col class="designation" />
+              <col class="username" />
         </colgroup>
         <tbody>
             <tr>
@@ -33,6 +34,7 @@
                 <td class="knd">{$kga.lang.knd}</td>
                 <td class="pct">{$kga.lang.pct}</td>
                 <td class="designation">{$kga.lang.designation}</td>
+                <td class="username">{$kga.lang.username}</td>
             </tr>
         </tbody>
     </table>

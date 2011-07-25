@@ -13,6 +13,7 @@
               <col class="client" />
               <col class="project" />
               <col class="designation" />
+              <col class="username" />
             </colgroup>
 
             <tbody>
@@ -169,6 +170,18 @@
                         <a href="#" onClick="exp_comment({$arr_exp[row].exp_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/blase_caution.gif' width="12" height="13" title='{$arr_exp[row].exp_comment|escape:'html'}' border="0" /></a>
     {/if}
 {/if}
+                    </td>
+
+                    <td class="username
+                        {if $arr_exp[row].exp_timestamp|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_zef[row].zef_out != $zef_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                    ">
+                    {$arr_exp[row].usr_name|escape:'html'}
                     </td>
                     
                 </tr>

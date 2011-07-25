@@ -24,6 +24,7 @@
           <col class="pct" />
           <col class="evt" />
           <col class="trackingnumber" />
+          <col class="username" />
         </colgroup>
         <tbody>
             <tr>
@@ -37,6 +38,7 @@
                 <td class="pct">{$kga.lang.pct}</td>
                 <td class="evt">{$kga.lang.evt}</td>
                 <td class="trackingnumber">{$kga.lang.trackingnr}</td>
+                <td class="username">{$kga.lang.username}</td>
             </tr>
         </tbody>
     </table>
