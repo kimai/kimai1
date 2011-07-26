@@ -168,6 +168,36 @@ switch ($axAction) {
 	  echo $rate;
     break;
 
+    // ===========================================
+    // = Get all rates for the project and event =
+    // ===========================================
+    case 'allFittingRates':
+        if (isset($kga['customer'])) die();
+
+        $rates = $database->allFittingRates($kga['usr']['usr_ID'],$_REQUEST['project'],$_REQUEST['task']);
+        $processedData = array();
+
+        if ($rates !== false)
+          foreach ($rates as $rate) {
+            $line = Format::formatCurrency($rate['rate']);
+
+            $setFor = array(); // contains the list of "types" for which this rate was set
+            if ($rate['user_id'] != null)
+              $setFor[] = $kga['lang']['username'];
+            if ($rate['project_id'] != null)
+              $setFor[] =  $kga['lang']['pct'];
+            if ($rate['event_id'] != null)
+              $setFor[] =  $kga['lang']['evt'];
+
+            if (count($setFor) != 0)
+              $line .= ' ('.implode($setFor,', ').')';
+
+            $processedData[] = array('value'=>$rate['rate'], 'desc'=>$line);
+          }
+
+        echo json_encode($processedData);
+    break;
+
     // ===============================================
     // = Get the best rate for the project and event =
     // ===============================================

@@ -24,7 +24,7 @@
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery-ui-1.8.5.custom.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-ui-1.8.14.custom.min.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
     <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>

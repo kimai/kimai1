@@ -85,7 +85,7 @@ div.ki_timesheet tr td.wage {
     text-align:center;
 }
 
-div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.trackingnumber {
+div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.username {
     border-right: none;
 }
 

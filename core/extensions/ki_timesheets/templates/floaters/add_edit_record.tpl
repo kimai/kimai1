@@ -5,18 +5,47 @@
             $('#help').hide();
 
 
-        $('#edit_in_day').datepicker({
-          onSelect: function(dateText, instance) {
-            $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
-            ts_timeToDuration();
-          }
-         });
-        $('#edit_out_day').datepicker({
-          onSelect: function(dateText, instance) {
-            $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
-            ts_timeToDuration();
-          }
-         });
+            $('#edit_in_day').datepicker({
+              onSelect: function(dateText, instance) {
+                $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
+                ts_timeToDuration();
+              }
+            });
+            $('#edit_out_day').datepicker({
+              onSelect: function(dateText, instance) {
+                $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
+                ts_timeToDuration();
+              }
+            });
+
+            $( "#rate" ).click(function() {
+              $( "#rate").autocomplete("search",0);
+            });
+            
+            $( "#rate" ).autocomplete({
+              width:"200px",
+              source: function(req, add){  
+                $.getJSON("../extensions/ki_timesheets/processor.php", {
+                    axAction: "allFittingRates",
+                    project: $("#add_edit_zef_pct_ID").val(),
+                    task: $("#add_edit_zef_evt_ID").val()
+                  },
+                  function(data) {
+                    add(data);
+                  }
+                );  
+              },
+              select: function( event, ui ) {
+                $( "#rate" ).val( ui.item.value );
+
+                return false;
+              }
+            }).data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.desc + "</a>" )
+                        .appendTo( ul );
+            };
 
             $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
 
@@ -201,6 +230,7 @@
                    <li>
                         <label for="rate">{$kga.lang.rate}:</label>
                         <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        </select>
                    </li>
                </ul>
              </fieldset>

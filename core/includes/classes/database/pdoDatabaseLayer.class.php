@@ -3899,6 +3899,47 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   /**
+  * Query the database for all fitting rates for the given user, project and event.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function allFittingRates($user_id,$project_id,$event_id) {
+    $p = $this->kga['server_prefix'];
+
+
+    // validate input
+    if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+
+    $query_string = "SELECT rate, user_id, project_id, event_id FROM ${p}rates WHERE
+    (user_id = $user_id OR user_id IS NULL)  AND
+    (project_id = $project_id OR project_id IS NULL)  AND
+    (event_id = $event_id OR event_id IS NULL)
+    ORDER BY user_id DESC, event_id DESC, project_id DESC;";
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('get_best_fitting_rate');
+      return false;
+    }
+      
+    $allRates = array();
+    
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $allRates[] = $row;
+    }
+    
+    return $allRates;
+  }
+
+  /**
   * Save a new secure key for a user to the database. This key is stored in the users cookie and used
   * to reauthenticate the user.
   * 
