@@ -267,6 +267,10 @@ return array(
 
 'timezone' => 'time zone',
 'defaultTimezone' => 'time zone for new users and customers',
+'editLimitPart1' => 'No entries can be added or edited which end more than',
+'editLimitPart2' => 'day(s) and',
+'editLimitPart3' => 'hour(s) in the past.',
+'editLimitError' => 'The end date is further in the past than it was allowed to be.',
 
 'hideClearedEntries' => 'hide cleared entries',
 'showCommentsByDefault' => 'show comments by default',

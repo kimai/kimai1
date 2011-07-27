@@ -65,7 +65,22 @@ switch ($axAction) {
         switch ($axValue) {
             case "usr": $tpl->display("users.tpl");    break;
             case "grp": $tpl->display("groups.tpl");   break;
-            case "adv": $tpl->display("advanced.tpl"); break;
+            case "adv":
+
+                if ($kga['conf']['editLimit'] != '-') {
+                  $tpl->assign('editLimitEnabled',true);
+                  $editLimit = $kga['conf']['editLimit']/(60*60); // convert to hours
+                  $tpl->assign('editLimitDays',(int) ($editLimit/24) );
+                  $tpl->assign('editLimitHours',(int) ($editLimit%24) );
+                }
+                else {
+                  $tpl->assign('editLimitEnabled',false);
+                  $tpl->assign('editLimitDays','');
+                  $tpl->assign('editLimitHours','');
+                }
+
+                $tpl->display("advanced.tpl");
+            break;
             case "db":  $tpl->display("database.tpl"); break;
             
             case "knd":
@@ -303,6 +318,19 @@ switch ($axAction) {
         $var_data['durationWithSeconds']    = isset($_REQUEST['durationWithSeconds']);
         $var_data['defaultTimezone']        = $_REQUEST['defaultTimezone'];
         $var_data['exactSums']              = isset($_REQUEST['exactSums']);
+        
+        $editLimit = false;
+        if (isset($_REQUEST['editLimitEnabled'])) {
+          $hours = (int)$_REQUEST['editLimitHours'];
+          $days = (int)$_REQUEST['editLimitDays'];
+          $editLimit = $hours+$days*24;
+          $editLimit *= 60*60; // convert to seconds
+        }
+
+        if ($editLimit === false || $editLimit === 0)
+            $var_data['editLimit']          = '-';
+        else 
+            $var_data['editLimit']          = $editLimit; 
         
         $success = $database->var_edit($var_data);
 

@@ -344,6 +344,7 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone',".quoteForSql($_REQUEST['timezone']).")");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
+exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('editLimit','-')");
 
 if ($errors) {
     require_once('../libraries/smarty/Smarty.class.php');

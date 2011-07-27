@@ -3,11 +3,20 @@
         
         $(document).ready(function() {
             $('#help').hide();
-            $('#exp_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
-              floaterClose();
-              return;
-            },
-              'success' : exp_ext_reload
+
+            $('#edit_day').datepicker();
+
+            $('#exp_ext_form_add_edit_record').ajaxForm( {
+              'success' : function(data) {
+                var result = jQuery.parseJSON(data);
+                if (result.result == "ok") {
+                  floaterClose();
+                  exp_ext_reload();
+                }
+                else {
+                  alert(result.message);
+                }
+              }
             });
 
             {/literal}{if $id}{literal}

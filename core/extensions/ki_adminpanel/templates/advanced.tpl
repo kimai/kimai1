@@ -12,6 +12,19 @@
             });
         }
         $(document).ready(function() {
+    
+            $('.disableInput').click(function(){
+              var input = $(this);
+              if (input.is (':checked')) {
+                input.parent().removeClass("disabled");
+                input.siblings().attr("disabled","");
+              }
+              else {
+                input.parent().addClass("disabled");
+                input.siblings().attr("disabled","disabled");
+              }
+            });
+
             $('#ap_ext_form_editadv').ajaxForm({target:'#ap_ext_output',success:cb}); 
         }); 
     </script>
@@ -124,6 +137,12 @@
 
             <div>
                <input type="checkbox" name="exactSums" {if $kga.conf.exactSums}checked="checked"{/if} value="1" class="formfield"> {$kga.lang.exactSums}
+            </div>
+
+            <div {if !$editLimitEnabled}class="disabled"{/if}>
+              <input type="checkbox" name="editLimitEnabled" value="1" {if $editLimitEnabled}checked="checked"{/if} class="formfield, disableInput"> {$kga.lang.editLimitPart1}
+              <input type="text" name="editLimitDays" size="3" class="formfield" value="{$editLimitDays}" {if !$editLimitEnabled}disabled="disabled"{/if}> {$kga.lang.editLimitPart2}
+              <input type="text" name="editLimitHours" size="3" class="formfield" value="{$editLimitHours}" {if !$editLimitEnabled}disabled="disabled"{/if}> {$kga.lang.editLimitPart3}
             </div>
 
         

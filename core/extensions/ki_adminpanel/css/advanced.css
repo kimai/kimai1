@@ -27,3 +27,7 @@ fieldset.ap_ext_advanced div#formbuttons {
     color:white;
     font-weight:bold;
 }
+
+.ap_ext_advanced div.disabled {
+  color:#aaa;
+}

@@ -11,6 +11,7 @@
                 ts_timeToDuration();
               }
             });
+
             $('#edit_out_day').datepicker({
               onSelect: function(dateText, instance) {
                 $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
@@ -118,10 +119,18 @@
                     return false;
                 }
 
-              floaterClose();
               return true;
             },
-              'success' : ts_ext_reload
+              'success' : function(data) {
+                var result = jQuery.parseJSON(data);
+                if (result.result == "ok") {
+                  floaterClose();
+                  ts_ext_reload();
+                }
+                else {
+                  alert(result.message);
+                }
+              }
             });
             {/literal}{if $id}
             ts_ext_reload_evt({$pres_pct},true);

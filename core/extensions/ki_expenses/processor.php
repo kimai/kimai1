@@ -96,6 +96,14 @@ switch ($axAction) {
     case 'add_edit_record':
     if (!is_array($kga['usr']))
       break;
+
+      if ($id) {
+        $data = exp_get_data($id);
+        if ($kga['conf']['editLimit'] != "-" && time()-$data['exp_timestamp'] > $kga['conf']['editLimit']) {
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+          return;
+        }
+      }
     
       $data['exp_pctID']        = $_REQUEST['pct_ID'];
       $data['exp_designation']  = $_REQUEST['designation'];
@@ -111,6 +119,7 @@ switch ($axAction) {
         // delete checkbox set ?
         // then the record is simply dropped and processing stops at this point
         exp_delete_record($id);
+        echo json_encode(array('result'=>'ok'));
         break;
       }
     
@@ -124,9 +133,16 @@ switch ($axAction) {
       if (!Format::check_time_format($new)) {
         // if this is TRUE the values PASSED the test! 
         //$setTimeValue = 1;   
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
         break;
       }
       $new_time = convert_time_strings($new,$new);        
+
+      if ($kga['conf']['editLimit'] != "-" && time()-$new_time['in'] > $kga['conf']['editLimit']) {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+        return;
+      }
+
       $data['exp_timestamp'] = $new_time['in'];
       //Logger::logfile("new_time: " .serialize($new_time));
 
@@ -146,6 +162,7 @@ switch ($axAction) {
         exp_create_record($kga['usr']['usr_ID'],$data);
           
       }
+      echo json_encode(array('result'=>'ok'));
 
     break;
 

@@ -1273,6 +1273,11 @@ if ((int)$revisionDB < 1305) {
     
 }
 
+if ((int)$revisionDB < 1326) {
+    Logger::logfile("-- update to r1326");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
+}
+
 
 
 // ============================

@@ -262,6 +262,10 @@ return array(
 
 'timezone' => 'Zeitzone',
 'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
+'editLimitPart1' => 'Es können keine Einträge hinzugefügt oder bearbeitet werden, die',
+'editLimitPart2' => 'Tag(e) und',
+'editLimitPart3' => 'Stunde(n) in der Vergangenheit liegen.',
+'editLimitError' => 'Das Enddatum liegt weiter in der Vergangenheit, als es erlaubt wurde.',
 
 'hideClearedEntries' => 'abgerechnete Einträge verstecken',
 'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',

@@ -280,6 +280,14 @@ switch ($axAction) {
     // =========================
     case 'add_edit_record': 
       if (isset($kga['customer'])) die();
+
+      if ($id) {
+        $data = $database->zef_get_data($id);
+        if ($kga['conf']['editLimit'] != "-" && time()-$data['zef_out'] > $kga['conf']['editLimit']) {
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+          return;
+        }
+      }
   
       $data['pct_ID']          = $_REQUEST['pct_ID'];
       $data['evt_ID']          = $_REQUEST['evt_ID'];
@@ -295,6 +303,7 @@ switch ($axAction) {
         // delete checkbox set ?
         // then the record is simply dropped and processing stops at this point
           $database->zef_delete_record($id);
+          echo json_encode(array('result'=>'ok'));
           break;
       }
 
@@ -312,20 +321,28 @@ switch ($axAction) {
           // if this is TRUE the values PASSED the test! 
           $setTimeValue = 1;   
       }
-      else
+      else {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
         break;
+      }
         
       $new_time = convert_time_strings($new_in,$new_out);
       
       // if the difference between in and out value is zero or below this can't be correct ...
       
       // TIME WRONG - NEW ENTRY
+
+      if ($kga['conf']['editLimit'] != "-" && time()-$new_time['out'] > $kga['conf']['editLimit']) {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+        return;
+      }
       
       
       if (!$new_time['diff'] && !$id) {
           // if this is an ADD record dialog it makes no sense to create the record
           // when it doesn't have any TIME attached ... so this stops the processing.
           // TODO: throw a warning message when this happens ...
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
           break;
       }
       
@@ -340,6 +357,7 @@ switch ($axAction) {
           $data['diff'] = 0;
           // we send zeros instead of unix timestamps to the db-layer 
           $database->zef_edit_record($id,$data);
+          echo json_encode(array('result'=>'ok'));
           break; 
           
       } else {
@@ -366,6 +384,7 @@ switch ($axAction) {
           
           
       }
+      echo json_encode(array('result'=>'ok'));
       
     break;
 

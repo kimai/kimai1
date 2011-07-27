@@ -67,7 +67,7 @@
 
                         
 {*Edit Record Button - nur einblenden wenn fertig recorded*}
-{if $arr_zef[row].zef_out}
+{if $arr_zef[row].zef_out && ($kga.conf.editLimit == "-" || time()-$arr_zef[row].zef_out <= $kga.conf.editLimit)}
                         {strip}<a href ='#' onClick="editRecord({$arr_zef[row].zef_ID}); $(this).blur(); return false;" title='{$kga.lang.edit}'>
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>{/strip}

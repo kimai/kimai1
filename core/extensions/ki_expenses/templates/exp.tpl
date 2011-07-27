@@ -36,7 +36,7 @@
                     ">
 
 {* only users can see options *}
-{if $kga.usr}
+{if $kga.usr &&  ($kga.conf.editLimit == "-" || time()-$arr_exp[row].exp_timestamp <= $kga.conf.editLimit)}
 
                         
 {*Edit Record Button *}

@@ -133,6 +133,20 @@
 
     $admin['users'] = $tpl->fetch("users.tpl");
     $admin['groups'] = $tpl->fetch("groups.tpl");
+
+
+
+    if ($kga['conf']['editLimit'] != '-') {
+      $tpl->assign('editLimitEnabled',true);
+      $editLimit = $kga['conf']['editLimit']/(60*60); // convert to hours
+      $tpl->assign('editLimitDays',(int) ($editLimit/24) );
+      $tpl->assign('editLimitHours',(int) ($editLimit%24) );
+    }
+    else {
+      $tpl->assign('editLimitEnabled',false);
+      $tpl->assign('editLimitDays','');
+      $tpl->assign('editLimitHours','');
+    }
     $admin['advanced'] = $tpl->fetch("advanced.tpl");
     
     if ($kga['show_sensible_data']) {
