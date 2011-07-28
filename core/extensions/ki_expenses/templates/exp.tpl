@@ -84,7 +84,7 @@
                                                 {/if}
                                             {/if}
                     ">
-                        {$arr_exp[row].exp_timestamp|date_format:$kga.date_format.2|escape:'html'}
+                        {$arr_exp[row].exp_timestamp|date_format:"%H:%M"|escape:'html'}
                     </td>
 
 {*value --------------------------------------------------------*}

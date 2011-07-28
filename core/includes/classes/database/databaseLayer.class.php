@@ -290,30 +290,6 @@ abstract class DatabaseLayer {
   public abstract function assign_grp2evts($grp_id, $evt_array);
 
   /**
-  * returns all the customers of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the knd_IDs of the groups or false on error
-  */
-  public abstract function grp_get_knds($grp_id);
-
-  /**
-  * returns all the projects of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the pct_IDs of the groups or false on error
-  */
-  public abstract function grp_get_pcts($grp_id);
-
-  /**
-  * returns all the events of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the evt_IDs of the groups or false on error
-  */
-  public abstract function grp_get_evts($grp_id);
-
-  /**
   * Adds a new user
   *
   * @param array $data  username, email, and other data of the new user
@@ -487,13 +463,6 @@ abstract class DatabaseLayer {
   * @return boolean true=there is an entry, false=there is none (actually 1 or 0 is returnes as number!)
   */
   public abstract function get_rec_state($usr_id);
-
-  /**
-  * validates the contents of the zef-table and marks them if there is a problem
-  *
-  * @return boolean true=everything okay, false=there was at least one issue
-  */
-  public abstract function validate_zef();
 
   /**
   * Returns the data of a certain time record
@@ -867,18 +836,6 @@ abstract class DatabaseLayer {
   * @return int
   */
   public abstract function usr_id2name($id);
-
-  /**
-  * lookup if an item (knd pct evt) is referenced in timesheet table
-  * returns number of entities
-  * 
-  * fail!
-  *
-  * @param integer $id of item
-  * @param string $subject of item
-  * @return integer
-  */
-  public abstract function getUsage($id,$subject);
 
   /**
   * returns the date of the first timerecord of a user (when did the user join?)

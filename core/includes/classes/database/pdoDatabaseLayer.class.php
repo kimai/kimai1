@@ -122,8 +122,9 @@ class PDODatabaseLayer extends DatabaseLayer {
       knd_visible,
       knd_filter,
       knd_vat,
-      knd_contact
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+      knd_contact,
+      knd_timezone
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
       
       $result = $pdo_query->execute(
       array(
@@ -142,7 +143,8 @@ class PDODatabaseLayer extends DatabaseLayer {
       $data['knd_visible'], 
       $data['knd_filter'],
       $data['knd_vat'],
-      $data['knd_contact']
+      $data['knd_contact'],
+      $data['knd_timezone']
       ));
       
       if ($result == true) {
@@ -192,7 +194,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         'knd_name'    ,'knd_comment','knd_password' ,'knd_company','knd_vat',
         'knd_contact' ,'knd_street' ,'knd_zipcode'  ,'knd_city'   ,'knd_tel',
         'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage',
-        'knd_visible','knd_filter');
+        'knd_visible','knd_filter', 'knd_timezone');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'knd SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -1021,99 +1023,6 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns all the customers of the given group
-  *
-  * @param array $grp_id        grp_id of the group
-  * @global array $this->kga         kimai-global-array
-  * @return array            contains the knd_IDs of the groups or false on error
-  * @author ob
-  */
-  public function grp_get_knds($grp_id) {
-      $p = $this->kga['server_prefix'];
-      
-      $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}grp_knd
-      JOIN ${p}knd USING (knd_ID)
-      WHERE ${p}knd.knd_trash = 0 AND grp_ID = ?;");
-      $result = $pdo_query->execute(array($grp_id));
-      if ($result == false) {
-          $this->logLastError('grp_get_knds');
-          return false;
-      }
-      
-      $return_knds = array();
-      $counter = 0;
-      
-      while ($current_knd = $pdo_query->fetch()) {
-          $return_knds[$counter] = $current_knd['knd_ID'];
-          $counter++;
-      }
-      
-      return $return_knds;
-  }
-
-  /**
-  * returns all the projects of the given group
-  *
-  * @param array $grp_id        grp_id of the group
-  * @global array $this->kga         kimai-global-array
-  * @return array            contains the pct_IDs of the groups or false on error
-  * @author ob
-  */
-  public function grp_get_pcts($grp_id) {
-      $p = $this->kga['server_prefix'];
-      
-      $pdo_query = $this->conn->prepare("SELECT pct_ID FROM ${p}grp_pct
-      JOIN ${p}pct USING(pct_ID)
-      WHERE ${p}evt.evt_trash=0 AND grp_ID = ?;");
-      $result = $pdo_query->execute(array($grp_id));
-      if ($result == false) {
-          $this->logLastError('grp_get_pcts');
-          return false;
-      }
-      
-      $return_pcts = array();
-      $counter = 0;
-      
-      while ($current_pct = $pdo_query->fetch()) {
-          $return_pcts[$counter] = $current_pct['pct_ID'];
-          $counter++;
-      }
-      
-      return $return_pcts;
-  }
-
-  /**
-  * returns all the events of the given group
-  *
-  * @param array $grp_id        grp_id of the group
-  * @global array $this->kga         kimai-global-array
-  * @return array            contains the evt_IDs of the groups or false on error
-  * @author ob
-  */
-  public function grp_get_evts($grp_id) {
-      $p = $this->kga['server_prefix'];
-      
-      $pdo_query = $this->conn->prepare("SELECT evt_ID FROM ${p}grp_evt
-      JOIN ${p}evt USING(evt_ID)
-      WHERE ${p}evt.evt_trash=0 AND ${p}grp_evt.grp_ID = ?;");
-      $result = $pdo_query->execute(array($grp_id));
-      if ($result == false) {
-          $this->logLastError('grp_get_evts');
-          return false;
-      }
-      
-      $return_evts = array();
-      $counter = 0;
-      
-      while ($current_evt = $pdo_query->fetch()) {
-          $return_evts[$counter] = $current_evt['evt_ID'];
-          $counter++;
-      }
-      
-      return $return_evts;
-  }
-
-  /**
   * Adds a new user
   *
   * @param array $data         username, email, and other data of the new user
@@ -1742,108 +1651,6 @@ class PDODatabaseLayer extends DatabaseLayer {
       } else {
           return 1;
       }
-  }
-
-  /**
-  * validates the contents of the zef-table and marks them if there is a problem
-  *
-  * @global array $this->kga kimai-global-array
-  * @return boolean true=everything okay, false=there was at least one issue
-  * @author ob 
-  */
-  public function validate_zef() {
-      $p = $this->kga['server_prefix'];
-      
-      $return_state = true;    
-      
-      // Lock tables
-      $pdo_query_l = $this->conn->prepare("LOCK TABLE ${p}usr READ, ${p}zef READ");
-      $result_l = $pdo_query_l->execute();
-
-      if ($result_l == false) {
-          $this->logLastError('validate_zef');
-          return false;
-      }
-      
-      // case 1: scan for multiple running entries of the same user
-      
-      $pdo_query = $this->conn->prepare("SELECT usr_ID FROM ${p}usr");
-      $result = $pdo_query->execute();
-
-      if ($result == false) {
-          $this->logLastError('validate_zef');
-          return false;
-      }
-      
-      while ($current_row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {    
-          // echo $current_row['usr_ID'] . "<br>";
-          $pdo_query_zef = $this->conn->prepare("SELECT COUNT(*) FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
-          $result_zef = $pdo_query_zef->execute(array($current_row['usr_ID']));
-
-          if ($result_zef == false) {
-              $this->logLastError('validate_zef');
-              return false;
-          }
-
-          $result_array_zef = $pdo_query_zef->fetch();
-          
-          if ($result_array_zef[0] > 1) {
-          
-              $return_state = false;
-          
-              // echo "User " . $current_row['usr_ID'] . "has multiple running zef entries:<br>";
-              
-              $pdo_query_zef = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
-              $result_zef = $pdo_query_zef->execute(array($current_row['usr_ID']));
-
-              if ($result_zef == false) {
-                  $this->logLastError('validate_zef');
-                  return false;
-              }
-              
-              // mark all running-zef-entries with a comment (except the newest one)
-              $pdo_query_zef_max = $this->conn->prepare("SELECT MAX(zef_in), zef_ID FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0 GROUP BY zef_ID;");
-              $result_zef_max = $pdo_query_zef_max->execute(array($current_row['usr_ID']));
-
-              if ($result_zef_max == false) {
-                  $this->logLastError('validate_zef');
-                  return false;
-              }
-
-              $result_array_zef_max = $pdo_query_zef_max->fetch(PDO::FETCH_ASSOC);
-              $max_id = $result_array_zef_max['zef_ID'];
-              
-              while ($current_row_zef = $pdo_query_zef->fetch(PDO::FETCH_ASSOC)) {
-              
-                  if($current_row_zef['zef_ID'] != $max_id) {
-                      $pdo_query_zef_edit = $this->conn->prepare("UPDATE ${p}zef SET 
-                      zef_comment = 'bad entry: multiple running entries found',
-                      zef_comment_type = 2
-                      WHERE zef_ID = ?");
-                      $result_zef_edit = $pdo_query_zef_edit->execute(array($current_row_zef['zef_ID']));
-
-                      if ($result_zef_edit == false) {
-                          $this->logLastError('validate_zef');
-                          return false;
-                      }
-                  }
-              
-                  // var_dump($current_row_zef);
-                  // echo "<br>";
-              }
-          }
-      }
-      
-      // Unlock tables
-      $pdo_query_ul = $this->conn->prepare("UNLOCK TABLES");
-      $result_ul = $pdo_query_ul->execute();
-
-      if ($result_ul == false) {
-          $this->logLastError('validate_zef');
-          return false;
-      }
-      
-      return $return_state;
   }
 
   /**
@@ -2501,6 +2308,8 @@ class PDODatabaseLayer extends DatabaseLayer {
     foreach( $row as $key => $value) {
         $this->kga['customer'][$key] = $value;
     }
+
+    date_default_timezone_set($this->kga['customer']['knd_timezone']);
   }
 
   /**
@@ -3654,44 +3463,6 @@ class PDODatabaseLayer extends DatabaseLayer {
       
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $row['usr_name'];
-  }
-
-  /**
-  * lookup if an item (knd pct evt) is referenced in timesheet table
-  * returns number of entities
-  *
-  * @param integer $id of item
-  * @param string $subject of item
-  * @return integer
-  *
-  * @author th
-  */
-  public function getUsage($id,$subject) {
-      $p = $this->kga['server_prefix'];
-      
-      switch ($subject) {
-          case "pct":
-          case "evt":
-              $pdo_query = $this->conn->prepare("SELECT COUNT(*) AS result FROM ${p}zef WHERE zef_" . $subject . "ID = ?;");
-              $result = $pdo_query->execute(array($id));
-          break;
-
-          case "knd":
-              $pdo_query = $this->conn->prepare("SELECT COUNT(*) AS result FROM ${p}pct Left Join ${p}knd ON pct_kndID = knd_ID WHERE pct_kndID = ?;");
-              $result = $pdo_query->execute(array($id));
-          break;
-              
-          default:
-          break;
-      }
-
-      if ($result == false) {
-          $this->logLastError('getUsage');
-          return false;
-      }
-
-      $row   = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['result'];
   }
 
   /**

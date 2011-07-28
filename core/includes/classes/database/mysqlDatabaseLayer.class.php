@@ -67,6 +67,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values     ['knd_mobile']      =     MySQL::SQLValue($data   ['knd_mobile']        );
       $values     ['knd_mail']        =     MySQL::SQLValue($data   ['knd_mail']          );
       $values     ['knd_homepage']    =     MySQL::SQLValue($data   ['knd_homepage']      );
+      $values     ['knd_timezone']    =     MySQL::SQLValue($data   ['knd_timezone']      );
       
       $values['knd_visible'] = MySQL::SQLValue($data['knd_visible'] , MySQL::SQLVALUE_NUMBER  );
       $values['knd_filter']  = MySQL::SQLValue($data['knd_filter']  , MySQL::SQLVALUE_NUMBER  );
@@ -118,7 +119,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $strings = array(
         'knd_name'    ,'knd_comment','knd_password' ,'knd_company','knd_vat',
         'knd_contact' ,'knd_street' ,'knd_zipcode'  ,'knd_city'   ,'knd_tel',
-        'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage');
+        'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage', 'knd_timezone');
       foreach ($strings as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key]);
@@ -1012,116 +1013,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns all the customers of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the knd_IDs of the groups or false on error
-  * @author th
-  */
-  public function grp_get_knds($grp_id) {
-      $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-      $p = $this->kga['server_prefix'];
-      
-      $query = "SELECT knd_ID FROM ${p}grp_knd
-      JOIN ${p}knd USING (knd_ID)
-      WHERE ${p}knd.knd_trash = 0 AND grp_ID = ?;";
-      
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('grp_get_knds');
-          return false;
-      }
-      
-      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-      
-      $return_knds = array();
-      $counter     = 0;
-      if ($this->conn->RowCount()) {
-          foreach ($rows as $current_knd) {
-              $return_knds[$counter] = $current_knd['knd_ID'];
-              $counter++;   
-          }
-          return $return_knds;
-      } else {
-          return false;
-      }
-  }
-
-  /**
-  * returns all the projects of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the pct_IDs of the groups or false on error
-  * @author th
-  */
-  public function grp_get_pcts($grp_id) {
-      $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-      $p = $this->kga['server_prefix'];
-      
-      $query = "SELECT pct_ID FROM ${p}grp_pct
-      JOIN ${p}pct USING(pct_ID)
-      WHERE ${p}evt.evt_trash=0 AND grp_ID = $grp_id;";
-      
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('grp_get_pcts');
-          return false;
-      }
-
-      $return_pcts = array();
-      $counter     = 0;
-
-      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-
-      if ($this->conn->RowCount()) {
-          foreach ($rows as $current_pct) {
-              $return_pcts[$counter] = $current_pct['pct_ID'];
-              $counter++;
-          }
-          return $return_pcts;
-      } else {
-          return false;
-      }
-  }
-
-  /**
-  * returns all the events of the given group
-  *
-  * @param array $grp_id  grp_id of the group
-  * @return array         contains the evt_IDs of the groups or false on error
-  * @author th
-  */
-  public function grp_get_evts($grp_id) {
-      $grp_id = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
-      $p = $this->kga['server_prefix'];
-      
-      $query = "SELECT evt_ID FROM ${p}grp_evt
-      JOIN ${p}evt USING(evt_ID)
-      WHERE ${p}evt.evt_trash=0 AND ${p}grp_evt.grp_ID = $grp_id;";
-
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('grp_get_evts');
-          return false;
-      }
-
-      $return_evts = array();
-      $counter     = 0;
-
-      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-
-      if ($this->conn->RowCount()) {
-          foreach ($rows as $current_evt) {
-              $return_evts[$counter] = $current_evt['evt_ID'];
-              $counter++;   
-          }
-          return $return_evts;
-      } else {
-          return false;
-      }
-  }
-
-  /**
   * Adds a new user
   *
   * @param array $data  username, email, and other data of the new user
@@ -1740,84 +1631,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       } else {
           return "0";
       }
-  }
-
-  /**
-  * validates the contents of the zef-table and marks them if there is a problem
-  *
-  * @return boolean true=everything okay, false=there was at least one issue
-  * @author ob 
-  */
-  public function validate_zef() {
-      $return_state = true;    
-
-      $p = $this->kga['server_prefix'];
-    
-      // Lock tables
-      $lock  = "LOCK TABLE ${p}usr READ, ${p}zef READ;";
-      $this->conn->Query($lock);
-
-  //------
-      
-      // case 1: scan for multiple running entries of the same user
-      
-      $query = "SELECT usr_ID FROM ${p}usr";
-      $result = $this->conn->Query($query);
-
-      $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
-      
-      foreach ($rows as $row) {
-      $usr_id = $row['usr_ID'];
-          // echo $row['usr_ID'] . "<br>";
-          $query_zef = "SELECT COUNT(*) FROM ${p}zef WHERE zef_usrID = $usr_id AND zef_in > 0 AND zef_out = 0;";
-
-          $result_zef = $this->conn->Query($query_zef);
-          $result_array_zef = $this->conn->RowArray(0,MYSQL_ASSOC);
-          
-          if ($result_array_zef[0] > 1) {
-          
-              $return_state = false;
-          
-              // echo "User " . $row['usr_ID'] . "has multiple running zef entries:<br>";
-              
-              $query_zef = "SELECT * FROM ${p}zef WHERE zef_usrID = $usr_id AND zef_in > 0 AND zef_out = 0;";
-            $result_zef = $this->conn->Query($query_zef);
-        $rows_zef = $this->conn->RowArray(0,MYSQL_ASSOC);
-              
-              // mark all running-zef-entries with a comment (except the newest one)
-              $query_zef_max = "SELECT MAX(zef_in), zef_ID FROM ${p}zef WHERE zef_usrID = $usr_id AND zef_in > 0 AND zef_out = 0 GROUP BY zef_ID;";
-              $result_zef_max = $this->conn->Query($query_zef_max);
-
-              $result_array_zef_max = $this->conn->RowArray(0,MYSQL_ASSOC);
-              // $max_id = $result_array_zef_max['zef_ID'];
-              $max_id = $result_array_zef_max->zef_ID;
-              
-              foreach ($rows_zef as $row_zef) {
-              
-                  if($row_zef['zef_ID'] != $max_id) {
-            $zef_id = $row_zef['zef_ID'];
-                      $query_zef_edit = "UPDATE ${p}zef SET 
-                      zef_comment = 'bad entry: multiple running entries found',
-                      zef_comment_type = 2
-                      WHERE zef_ID = $zef_id ;";
-
-                      $result_zef_edit = $this->conn->Query($query_zef_edit); 
-                      
-                      // $err = $this->conn->errorInfo();
-                      // error_log("ERROR: " . $err[2]);
-                  }
-              
-                  // var_dump($row_zef);
-                  // echo "<br>";
-              }
-          }
-      }
-      
-      // Unlock tables
-      $unlock = "UNLOCK TABLES";
-      $this->conn->Query($unlock);
-      
-      return $return_state;
   }
 
   /**
@@ -2446,12 +2259,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $columns[] = "knd_trash";
     $columns[] = "knd_password";
     $columns[] = "knd_secure";
+    $columns[] = "knd_timezone";
 
     $this->conn->SelectRows($table, $filter, $columns);
     $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
     foreach($rows as $key => $value) {
         $this->kga['customer'][$key] = $value;
     } 
+
+    date_default_timezone_set($this->kga['customer']['knd_timezone']);
   }
 
   /**
@@ -3307,48 +3123,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $row = $this->conn->RowArray(0,MYSQL_ASSOC);
       return $row['usr_name'];
-  }
-
-  /**
-  * lookup if an item (knd pct evt) is referenced in timesheet table
-  * returns number of entities
-  * 
-  * fail!
-  *
-  * @param integer $id of item
-  * @param string $subject of item
-  * @return integer
-  *
-  * @author th
-  */
-  public function getUsage($id,$subject) {
-      if (($subject!="pct")&&($subject!="evt")&&($subject!="knd")) {
-          return false;
-      }
-      $id = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-      $p = $this->kga['server_prefix'];
-      
-      switch ($subject) {
-          case "pct":
-          case "evt":
-              $query = "SELECT COUNT(*) AS result FROM ${p}zef WHERE zef_${subject}ID = $id;";
-              break;
-          case "knd":
-              $query = "SELECT COUNT(*) AS result FROM ${p}pct Left Join ${prefix}knd ON pct_kndID = knd_ID WHERE pct_kndID = $id;";
-              break;
-          default:
-              return false;
-              break;
-      }
-      
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('getUsage');
-          return false;
-      }
-      
-      $row = $this->conn->RowArray(0,MYSQL_ASSOC);
-      return $row['result'];
   }
 
   /**

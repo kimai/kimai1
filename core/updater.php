@@ -293,7 +293,7 @@ $RUsure = $kga['lang']['updater'][0];
  * @param $query query to execute as string
  * @param $errorProcessing true if it's an error when the query fails.
  */
-function exec_query($query,$errorProcessing=false,$displayQuery=null) {
+function exec_query($query,$errorProcessing=true,$displayQuery=null) {
     global $database, $kga, $errors, $executed_queries;
     
     $conn = $database->getConnectionHandler();
@@ -1278,13 +1278,21 @@ if ((int)$revisionDB < 1326) {
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
 }
 
+if ((int)$revisionDB < 1327) {
+    Logger::logfile("-- update to r1327");
+    $result = $database->queryAll("SELECT value FROM ${p}var WHERE var = 'defaultTimezone'");
+    $timezone = quoteForSql($result[0][0]);
+    exec_query("ALTER TABLE ${p}knd ADD COLUMN `knd_timezone` varchar(255) NOT NULL DEFAULT $timezone");
+    exec_query("ALTER TABLE ${p}knd ALTER COLUMN `knd_timezone` DROP DEFAULT");
+}
+
 
 
 // ============================
 // = update DB version number =
 // ============================
-
-if ((int)$revisionDB < $kga['revision']) {
+error_log('ERRORS:'.$errors);
+if ((int)$revisionDB < $kga['revision'] && !$errors) {
     
     $versionDB_e[0] = 0;
     $versionDB_e[1] = 8;

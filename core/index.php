@@ -169,10 +169,10 @@ case "checklogin":
       $data = $database->knd_get_data($id);
       
       // TODO: add BAN support
-      if ( $data['knd_password']==$passCrypt && $user!='' && $pass!='') { 
+      if ( $data['knd_password']==$passCrypt && $name!='' && $passCrypt!='') { 
         $keymai=random_code(30);        
         setcookie ("kimai_key",$keymai);
-        setcookie ("kimai_usr",'knd_'.$user);
+        setcookie ("kimai_usr",'knd_'.$name);
         $database->knd_loginSetKey($id,$keymai);
         header("Location: core/kimai.php");
       }

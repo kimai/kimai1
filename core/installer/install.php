@@ -173,6 +173,7 @@ $query=
   `knd_mobile` varchar(255) NOT NULL,
   `knd_mail` varchar(255) NOT NULL,
   `knd_homepage` varchar(255) NOT NULL,
+  `knd_timezone` varchar(255) NOT NULL,
   `knd_trash` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY  (`knd_ID`)
 ) AUTO_INCREMENT=1;";
@@ -268,7 +269,7 @@ exec_query($query);
 $query="INSERT INTO `${p}evt` (`evt_ID`, `evt_name`, `evt_comment`) VALUES (1, '".$kga['lang']['testEVT']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `${p}knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`, `knd_vat`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '','');";
+$query="INSERT INTO `${p}knd` (`knd_ID`, `knd_name`, `knd_comment`, `knd_company`, `knd_street`, `knd_zipcode`, `knd_city`, `knd_tel`, `knd_fax`, `knd_mobile`, `knd_mail`, `knd_homepage`, `knd_vat`, `knd_timezone`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
 $query="INSERT INTO `${p}pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";

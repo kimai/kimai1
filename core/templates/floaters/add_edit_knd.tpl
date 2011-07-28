@@ -104,6 +104,13 @@
                       </div>
                     </li> 
 
+                    <li>
+                      <label for="knd_timezone">{$kga.lang.timezone}:</label>
+                      <select name="knd_timezone">
+                        {html_options values=$timezones output=$timezones selected=$knd_timezone}
+                      </select>
+                    </li>
+
                 </ul>
                 
             </fieldset>

@@ -84,6 +84,7 @@ switch ($axAction) {
                 $tpl->assign('knd_name'     , $data['knd_name'    ]);
                 $tpl->assign('knd_comment'  , $data['knd_comment' ]);
                 $tpl->assign('knd_password' , $data['knd_password']);
+                $tpl->assign('knd_timezone' , $data['knd_timezone']);
                 $tpl->assign('knd_company'  , $data['knd_company' ]);
                 $tpl->assign('knd_vat'      , $data['knd_vat'     ]);
                 $tpl->assign('knd_contact'  , $data['knd_contact' ]);
@@ -101,6 +102,12 @@ switch ($axAction) {
                 $tpl->assign('id', $id);
             }
         }
+        else {
+          $tpl->assign('knd_timezone' , $kga['conf']['timezone']);
+        }
+
+        $tpl->assign('timezones', timezoneList());
+
         // create the <select> element for the groups
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
         $tpl->assign('sel_grp_names', $sel[0]);
