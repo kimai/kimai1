@@ -31,6 +31,9 @@ $revisionDB = $version_temp[1];
 
 $p = $kga['server_prefix'];
 
+
+$conn = $database->getConnectionHandler();
+
 /**
  * Execute an sql query in the database. The correct database connection
  * will be chosen and the query will be logged with the success status.
@@ -38,14 +41,12 @@ $p = $kga['server_prefix'];
  * @param $query query to execute as string
  */
 function exec_query($query) {
-    global $database, $kga, $errors, $executed_queries;
-    
-    $conn = $database->getConnectionHandler();
+    global $conn, $kga, $errors, $executed_queries;
     
     $success = false;
    
     if ($kga['server_conn'] == "pdo") {
-      $pdo_query = $pdo_conn->prepare($query);
+      $pdo_query = $conn->prepare($query);
       $success = $pdo_query->execute(array());
     } else {
       $success = $conn->Query($query);
@@ -70,8 +71,8 @@ if (isset($_REQUEST['submit']))
 	    $query = ("SHOW TABLES;");
       
       if ($kga['server_conn'] == "pdo") {
-              if (is_object($pdo_conn)) {
-                  $pdo_query = $pdo_conn->prepare($query);
+              if (is_object($conn)) {
+                  $pdo_query = $conn->prepare($query);
                   $success = $pdo_query->execute(array());
             $tables = $pdo_query->fetchAll();
               }
@@ -130,8 +131,8 @@ if (isset($_REQUEST['submit']))
 		$query = ("SHOW TABLES;");
       
       if ($kga['server_conn'] == "pdo") {
-              if (is_object($pdo_conn)) {
-                  $pdo_query = $pdo_conn->prepare($query);
+              if (is_object($conn)) {
+                  $pdo_query = $conn->prepare($query);
                   $success = $pdo_query->execute(array());
             $tables = $pdo_query->fetchAll();
               }
@@ -154,7 +155,7 @@ if (isset($_REQUEST['submit']))
 		}
 		if ($kga['server_conn'] == "pdo") 
 		{
-		        if (is_object($pdo_conn)) 
+		        if (is_object($conn)) 
 			{
 			
 
@@ -163,7 +164,7 @@ if (isset($_REQUEST['submit']))
 			{
 				$query .= $row;
 			}
-			    $pdo_query = $pdo_conn->prepare($query);
+			    $pdo_query = $conn->prepare($query);
 		            $success = $pdo_query->execute(array());
 		        }
 		} 
@@ -274,8 +275,8 @@ if (isset($_REQUEST['submit']))
 			$query = ("SHOW TABLES;");
 			
 			if ($kga['server_conn'] == "pdo") {
-			        if (is_object($pdo_conn)) {
-			            $pdo_query = $pdo_conn->prepare($query);
+			        if (is_object($conn)) {
+			            $pdo_query = $conn->prepare($query);
 			            $success = $pdo_query->execute(array());
 				    $tables = $pdo_query->fetchAll();
 			        }
@@ -307,8 +308,8 @@ if (isset($_REQUEST['submit']))
 			
 			$query = "SELECT value FROM kimai_bak_" . $dates[0] . "_kimai_var WHERE var = 'revision' LIMIT 0,1;";
 			if ($kga['server_conn'] == "pdo") {
-			        if (is_object($pdo_conn)) {
-			            $pdo_query = $pdo_conn->prepare($query);
+			        if (is_object($conn)) {
+			            $pdo_query = $conn->prepare($query);
 			            $success = $pdo_query->execute(array());
 				    $revision = $pdo_query->fetch(PDO::FETCH_ASSOC);
 			        }

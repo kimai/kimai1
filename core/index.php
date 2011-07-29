@@ -110,12 +110,6 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
     }
 }
 
-// ===========================
-// = Send HEADER information =
-// ===========================
-$tpl->display('login/header.tpl');
-
-
 // ======================================
 // = if possible try an automatic login =
 // ======================================
@@ -234,6 +228,12 @@ break;
 // = Show login panel depending on (demo)mode =
 // ============================================
 default:
+
+    // ===========================
+    // = Send HEADER information =
+    // ===========================
+    $tpl->display('login/header.tpl');
+
     // ======================================
     // = Selectbox for additional databases =
     // ======================================
