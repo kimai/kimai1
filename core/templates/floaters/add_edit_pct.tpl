@@ -121,7 +121,7 @@
                     <li>
                          <label for="pct_comment">{$kga.lang.evts}:</label>
                         <select class="formfield" name="pct_evt[]" multiple size='5' style="width:255px">
-                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$evt_selection}
+                            {html_options options=$assignableTasks selected=$evt_selection}
                         </select>
                     </li>
               </ul>

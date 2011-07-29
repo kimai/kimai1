@@ -120,6 +120,7 @@ $query=
   `evt_visible` TINYINT(1) NOT NULL DEFAULT '1',
   `evt_filter` TINYINT(1) NOT NULL DEFAULT '0',
   `evt_trash` TINYINT(1) NOT NULL DEFAULT '0',
+  `evt_assignable` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`evt_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);

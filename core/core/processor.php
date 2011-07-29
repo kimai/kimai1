@@ -315,6 +315,7 @@ switch ($axAction) {
               $data['evt_comment']      = $_REQUEST['evt_comment'];
               $data['evt_visible']      = $_REQUEST['evt_visible'];
               $data['evt_filter']       = $_REQUEST['evt_filter'];
+              $data['evt_assignable']   = isset($_REQUEST['evt_assignable'])?1:0;
               $data['evt_default_rate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_default_rate']);
               $data['evt_my_rate']      = 

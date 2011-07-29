@@ -1,6 +1,15 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
+
+            $('.disableInput').click(function(){
+              var input = $(this);
+              if (input.is (':checked'))
+                $('#evt_pcts').attr("disabled","");
+              else
+                $('#evt_pcts').attr("disabled","disabled");
+            });
+
              $('#add_edit_evt').ajaxForm(function() {
 
                 if ($('#evt_grps').val() == null) {
@@ -121,10 +130,15 @@
                 <ul>
 
                     <li>
-                        <label for="evt_pct" >{$kga.lang.pcts}:</label>
-                        <select class="formfield" name="evt_pct[]" multiple size='5' style="width:255px">
+                        <label for="evt_pct">{$kga.lang.pcts}:</label>
+                        <select class="formfield" id="evt_pcts" name="evt_pct[]" multiple size='5' style="width:255px" {if !$evt_assignable}disabled="disabled"{/if}>
                             {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pct_selection}
                         </select>
+                    </li>
+
+                    <li>
+                        <label for="evt_assignable" >{$kga.lang.taskAssignable}:</label>
+                        <input type="checkbox" class="disableInput formfield" value="1" name="evt_assignable" {if $evt_assignable}checked="checked"{/if}/> {$kga.lang.taskAssignableDescription}
                     </li>
 
 

@@ -152,9 +152,13 @@ switch ($axAction) {
         $tpl->assign('sel_knd_IDs',   $sel[1]);
 
         // Create a <select> element to chosse the events.
-        $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
-        $tpl->assign('sel_evt_names', $sel[0]);
-        $tpl->assign('sel_evt_IDs',   $sel[1]);
+        $assignableTasks = array();
+        $tasks = $database->get_arr_evt($kga['usr']['usr_grp']);
+        foreach ($tasks as $task) {
+          if (!$task['evt_assignable']) continue;
+          $assignableTasks[$task['evt_ID']] = $task['evt_name'];
+        }
+        $tpl->assign('assignableTasks',$assignableTasks);
         
         // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
@@ -188,6 +192,7 @@ switch ($axAction) {
                 $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
                 $tpl->assign('evt_default_rate', $data['evt_default_rate']);
                 $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
+                $tpl->assign('evt_assignable'  , $data['evt_assignable'  ]);
                 $tpl->assign('grp_selection', $database->evt_get_grps($id));
                 $tpl->assign('pct_selection', $database->evt_get_pcts($id));
                 $tpl->assign('id', $id);

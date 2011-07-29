@@ -298,6 +298,9 @@ return array(
 
 'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
+'assignable' => 'Assignable',
+'assignableDescription' => 'Assignable to individual projects',
+
 
 
 'credits' => <<<EOF

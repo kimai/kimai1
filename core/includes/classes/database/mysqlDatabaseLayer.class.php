@@ -491,6 +491,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['evt_comment'] = MySQL::SQLValue($data['evt_comment'] );
       $values['evt_visible'] = MySQL::SQLValue($data['evt_visible'] , MySQL::SQLVALUE_NUMBER );
       $values['evt_filter']  = MySQL::SQLValue($data['evt_filter']  , MySQL::SQLVALUE_NUMBER );
+      $values['evt_assignable'] = MySQL::SQLValue($data['evt_assignable']  , MySQL::SQLVALUE_NUMBER );
 
       $table = $this->kga['server_prefix']."evt";
       $result = $this->conn->InsertRow($table, $values);
@@ -565,7 +566,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $values[$key] = MySQL::SQLValue($data[$key]);
       }
 
-      $numbers = array('evt_visible', 'evt_filter');
+      $numbers = array('evt_visible', 'evt_filter', 'evt_assignable');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
@@ -2442,6 +2443,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['evt_ID']       = $row->evt_ID;   
               $arr[$i]['evt_name']     = $row->evt_name;
               $arr[$i]['evt_visible']  = $row->evt_visible;
+              $arr[$i]['evt_assignable']  = $row->evt_assignable;
               $i++;
           }
           return $arr;

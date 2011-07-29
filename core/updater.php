@@ -1291,6 +1291,16 @@ if ((int)$revisionDB < 1328) {
     exec_query("DELETE FROM ${p}var WHERE var='login' LIMIT 1;");
 }
 
+if ((int)$revisionDB < 1331) {
+    Logger::logfile("-- update to r1331");
+    exec_query("ALTER TABLE ${p}evt ADD COLUMN `evt_assignable` TINYINT(1) NOT NULL DEFAULT '0';");
+    $result = $database->queryAll("SELECT DISTINCT evt_ID FROM ${p}pct_evt");
+    foreach ($result as $row) {
+      exec_query("UPDATE ${p}evt SET evt_assignable=1 WHERE evt_ID=".$row[0]);
+    }
+}
+  
+
 
 
 // ============================

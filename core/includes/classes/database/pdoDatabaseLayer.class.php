@@ -556,14 +556,16 @@ class PDODatabaseLayer extends DatabaseLayer {
       evt_name, 
       evt_comment, 
       evt_visible, 
-      evt_filter
-      ) VALUES (?, ?, ?, ?);");
+      evt_filter,
+      evt_assignable
+      ) VALUES (?, ?, ?, ?, ?);");
       
       $result = $pdo_query->execute(array(
       $data['evt_name'],
       $data['evt_comment'],
       $data['evt_visible'],
-      $data['evt_filter']
+      $data['evt_filter'],
+      $data['evt_assignable']
       ));
       
       if ($result == true) {
@@ -649,7 +651,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         unset($data['evt_my_rate']);
       }
 
-      $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter');
+      $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter', 'evt_assignable');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'evt SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -2766,6 +2768,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           $arr[$i]['evt_ID'] = $row['evt_ID'];
           $arr[$i]['evt_name'] = $row['evt_name'];
           $arr[$i]['evt_visible'] = $row['evt_visible'];
+          $arr[$i]['evt_assignable'] = $row['evt_assignable'];
           $i++;
       }
   

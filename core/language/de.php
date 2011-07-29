@@ -293,6 +293,9 @@ return array(
 
 'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
 
+'taskAssignable' => 'Zuweisbar',
+'taskAssignableDescription' => 'Zuweisbar an einzelne Projekte',
+
 
 
 'credits' => <<<EOF
