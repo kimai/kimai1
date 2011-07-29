@@ -274,6 +274,7 @@ return array(
 
 'hideClearedEntries' => 'hide cleared entries',
 'showCommentsByDefault' => 'show comments by default',
+'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
 
 'general' => 'General',
 'address' => 'Address',

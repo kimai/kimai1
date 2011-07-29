@@ -172,7 +172,9 @@ tbody tr.comm2 td {
 .break_gap {
 	border-top:2px dotted #FF6FCF; /* Kathrin wollte das Pink haben ... */
 }
-
+.time_overlap {
+        border-top:2px solid red;
+}
 
 
 

@@ -20,10 +20,16 @@
 
             <tbody>
 
+{assign var="time_buffer" value="0"}
 {assign var="day_buffer" value="0"}
 {assign var="zef_in_buffer" value=0}
                 
 {section name=row loop=$arr_zef}
+
+{*Assign initial value to time buffer which must be larger than or equal to zef_out*}
+{if $time_buffer==0}
+{assign var="time_buffer" value=$arr_zef[row].zef_out}
+{/if}
 
 {if $arr_zef[row].zef_out}                
                 <tr id="zefEntry{$arr_zef[row].zef_ID}" class="{cycle values="odd,even"}">
@@ -32,12 +38,12 @@
 {/if}
                
                     <td nowrap class="option 
-                                            {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                                            {if $arr_zef[row].zef_out > $time_buffer}
+                                                {if $showOverlapLines}time_overlap{/if}
+                                            {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
                                                 {if $kga.show_daySeperatorLines}break_day{/if}
-                                            {else}
-                                                {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                                    {if $kga.show_gabBreaks}break_gap{/if}
-                                                {/if}
+                                            {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                                                {if $kga.show_gabBreaks}break_gap{/if}
                                             {/if}
                     ">
 
@@ -104,13 +110,13 @@
 {*datum --------------------------------------------------------*}
 
                     <td class="date
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                         {$arr_zef[row].zef_in|date_format:$kga.date_format.1|escape:'html'}
                     </td>
@@ -118,13 +124,13 @@
 {*in -----------------------------------------------------------*}
 
                     <td class="from
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                         {$arr_zef[row].zef_in|date_format:"%H:%M"|escape:'html'}
                     </td>
@@ -132,13 +138,13 @@
 {*out ----------------------------------------------------------*}
 
                     <td class="to
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                     
 {if $arr_zef[row].zef_out}
@@ -151,13 +157,13 @@
 {*task time ----------------------------------------------------*}
 
                     <td class="time
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                     
 {if $arr_zef[row].zef_time}
@@ -172,13 +178,13 @@
 {*task wage ----------------------------------------------------*}
 
                     <td class="wage
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                     
 {if $arr_zef[row].wage}
@@ -193,13 +199,13 @@
 {*client name --------------------------------------------------*}
 
                     <td class="knd
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                         {$arr_zef[row].knd_name|escape:'html'}
                     </td>
@@ -207,13 +213,13 @@
 {*project name -------------------------------------------------*}
 
                     <td class="pct
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
@@ -232,13 +238,13 @@
 {*event name and comment bubble --------------------------------*}
 
                     <td class="evt
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
@@ -261,25 +267,25 @@
                     </td>
 
                     <td class="trackingnumber
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                     {$arr_zef[row].zef_trackingnr|escape:'html'}
                     </td>
 
                     <td class="username
-                        {if $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
-                            {if $kga.show_daySeperatorLines}break_day{/if}
-                        {else}
-                            {if $arr_zef[row].zef_out != $zef_in_buffer}
-                                {if $kga.show_gabBreaks}break_gap{/if}
-                            {/if}
-                        {/if}
+                      {if $arr_zef[row].zef_out > $time_buffer}
+                          {if $showOverlapLines}time_overlap{/if}
+                      {elseif $arr_zef[row].zef_in|date_format:"%d" != $day_buffer}
+                          {if $kga.show_daySeperatorLines}break_day{/if}
+                      {elseif $arr_zef[row].zef_out != $zef_in_buffer}
+                          {if $kga.show_gabBreaks}break_gap{/if}
+                      {/if}
                     ">
                     {$arr_zef[row].usr_name|escape:'html'}
                     </td>
@@ -294,6 +300,7 @@
 
 {assign var="day_buffer" value=$arr_zef[row].zef_in|date_format:"%d"}
 {assign var="zef_in_buffer" value=$arr_zef[row].zef_in}
+{assign var="time_buffer" value=$arr_zef[row].zef_in}
                
 {/section}
                 

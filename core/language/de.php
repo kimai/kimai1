@@ -269,6 +269,7 @@ return array(
 
 'hideClearedEntries' => 'abgerechnete Einträge verstecken',
 'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
+'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
 
 'general' => 'Allgemein',
 'address' => 'Adresse',

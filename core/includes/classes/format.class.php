@@ -74,7 +74,11 @@ class Format {
   public static function formatAnnotations(&$ann) {
     global $database;
 
-    $type = $database->usr_get_preference('ui.sublistAnnotations');
+    if (isset($kga['usr']))
+      $type = $database->usr_get_preference('ui.sublistAnnotations');
+    else
+      $type = 2;
+
     $userIds = array_keys($ann);
 
     if ($type == null)

@@ -82,7 +82,10 @@ else // customer logged in
 $ann = Format::formatCurrency($ann);
 $tpl->assign('pct_ann',$ann);
 
-$tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+if (isset($kga['usr']))
+  $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+else
+  $tpl->assign('hideComments',true);
 
 $tpl->assign('exp_display', $tpl->fetch("exp.tpl"));
 

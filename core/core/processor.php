@@ -77,6 +77,7 @@ switch ($axAction) {
         $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
         $preferences['showCommentsByDefault'] = isset($_REQUEST['showCommentsByDefault'])?1:0;
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
+        $preferences['hideOverlapLines']   = isset($_REQUEST['hideOverlapLines'])?1:0;
 
         $database->usr_set_preferences($preferences,'ui.');
         $database->usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));

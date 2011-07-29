@@ -269,7 +269,15 @@ switch ($axAction) {
         Format::formatAnnotations($ann);
         $tpl->assign('evt_ann',$ann);
 
-        $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+        if (isset($kga['usr']))
+          $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+        else
+          $tpl->assign('hideComments',true);
+
+        if (isset($kga['usr']))
+          $tpl->assign('showOverlapLines',$database->usr_get_preference('ui.hideOverlapLines')!=1);
+        else
+          $tpl->assign('showOverlapLines',false);
 
         $tpl->display("zef.tpl");
     break;

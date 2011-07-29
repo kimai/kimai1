@@ -157,6 +157,10 @@
             <label for="showCommentsByDefault"></label>
             <input type="checkbox" name="showCommentsByDefault" value="1" {if $kga.conf.showCommentsByDefault}checked{/if} /> {$kga.lang.showCommentsByDefault}
           </li>     
+          <li>
+            <label for="hideOverlapLines"></label>
+            <input type="checkbox" name="hideOverlapLines" value="1" {if $kga.conf.hideOverlapLines}checked{/if} /> {$kga.lang.hideOverlapLines}
+          </li>     
         </ul>
       </fieldset>
 
