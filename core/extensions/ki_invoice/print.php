@@ -69,7 +69,7 @@ $timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_
 	usr_name, usr_alias, zef_cleared
 */
 
-$date  = date("m-d-Y");
+$date  = time();
 $month = $kga['lang']['months'][date("n", $out)-1];
 $year  = date("Y", $out );
 
@@ -88,11 +88,11 @@ if (count($timeArray) > 0) {
 	$customerMobile  = $kndArray['knd_mobile'];
 	$customerEmail   = $kndArray['knd_mail'];
 	$customerContact = $kndArray['knd_homepage']; //I'm using the "homepage" field to store client contact name
-	$beginDate       = date("F j, Y", $in);
-	$endDate         = date("F j, Y", $out);
+	$beginDate       = $in;
+	$endDate         = $out;
 	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
-	$today           = date("F j, Y");
-	$dueDate         = date("F j, Y", mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y")));
+	$today           = time();
+	$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y"));
 } else {
     echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
     return;

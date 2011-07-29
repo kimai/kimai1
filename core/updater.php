@@ -1286,6 +1286,11 @@ if ((int)$revisionDB < 1327) {
     exec_query("ALTER TABLE ${p}knd ALTER COLUMN `knd_timezone` DROP DEFAULT");
 }
 
+if ((int)$revisionDB < 1328) {
+    Logger::logfile("-- update to r1328");
+    exec_query("DELETE FROM ${p}var WHERE var='login' LIMIT 1;");
+}
+
 
 
 // ============================

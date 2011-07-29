@@ -74,7 +74,15 @@ abstract class AuthBase {
   public function getDefaultGroupId() {
       global $database;
       $groups = $database->get_arr_grp();
-      return $groups[0]['grp_id'];
+
+      $group = 0;
+      if (count($groups) > 1) {
+          $group = $groups[1]['grp_ID'];
+      }
+      if (count($groups) === 1) {
+          $group = $groups[0]['grp_ID'];
+      }
+      return $group; 
   }
 }
 

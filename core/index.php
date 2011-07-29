@@ -110,15 +110,6 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
     }
 }
 
-// ==============================================
-// = Login active? If not redirect to interface =
-// ==============================================
-$database->get_global_config();
-if (!$kga['conf']['login']) {
-    header("Location: core/kimai.php");
-    exit;
-}
-
 // ===========================
 // = Send HEADER information =
 // ===========================
