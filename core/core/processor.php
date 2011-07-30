@@ -290,6 +290,8 @@ switch ($axAction) {
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
               $data['pct_my_rate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_my_rate']);
+              $data['pct_fixed_rate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_fixed_rate']);
                 
                 // add or update the project
               if (!$id) {
@@ -320,6 +322,8 @@ switch ($axAction) {
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_default_rate']);
               $data['evt_my_rate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_my_rate']);
+              $data['evt_fixed_rate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_fixed_rate']);
                 
                 // add or update the project
               if (!$id) {

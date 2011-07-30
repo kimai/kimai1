@@ -1299,14 +1299,26 @@ if ((int)$revisionDB < 1331) {
       exec_query("UPDATE ${p}evt SET evt_assignable=1 WHERE evt_ID=".$row[0]);
     }
 }
+
+if ((int)$revisionDB < 1332) {
+    Logger::logfile("-- update to r1332");
+    $query=
+    "CREATE TABLE `${p}fixed_rates` (
+      `project_id` int(10) DEFAULT NULL,
+      `event_id` int(10) DEFAULT NULL,
+      `rate` decimal(10,2) NOT NULL
+    );";
+    exec_query($query);
+    exec_query("ALTER TABLE ${p}zef ADD COLUMN `zef_fixed_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';");
+}
   
+
 
 
 
 // ============================
 // = update DB version number =
 // ============================
-error_log('ERRORS:'.$errors);
 if ((int)$revisionDB < $kga['revision'] && !$errors) {
     
     $versionDB_e[0] = 0;

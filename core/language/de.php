@@ -218,6 +218,7 @@ return array(
 "rate_short"        => "Satz",
 "default_rate"      => "Stundenlohn",
 "my_rate"           => "mein Stundenlohn",
+"fixed_rate"        => "Pauschale",
 
 "wage"              => "Lohn",
 

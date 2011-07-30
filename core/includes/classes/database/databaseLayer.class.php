@@ -910,24 +910,54 @@ abstract class DatabaseLayer {
   public abstract function update_leader_status();
 
   /**
-  * Save rate to database.
+  * Save hourly rate to database.
   */
   public abstract function save_rate($user_id,$project_id,$event_id,$rate);
 
   /**
-  * Read rate from database.
+  * Read hourly rate from database.
   */
   public abstract function get_rate($user_id,$project_id,$event_id);
 
   /**
-  * Remove rate from database.
+  * Remove hourly rate from database.
   */
   public abstract function remove_rate($user_id,$project_id,$event_id);
 
   /**
-  * Query the database for the best fitting rate for the given user, project and event.
+  * Query the database for the best fitting hourly rate for the given user, project and event.
   */
   public abstract function get_best_fitting_rate($user_id,$project_id,$event_id);
+
+  /**
+  * Query the database for all fitting hourly rates for the given user, project and event.
+  */
+  public abstract function allFittingRates($user_id,$project_id,$event_id);
+
+  /**
+  * Save fixed rate to database.
+  */
+  public abstract function save_fixed_rate($project_id,$event_id,$rate);
+
+  /**
+  * Read fixed rate from database.
+  */
+  public abstract function get_fixed_rate($project_id,$event_id);
+
+  /**
+  * Remove fixed rate from database.
+  */
+  public abstract function remove_fixed_rate($project_id,$event_id);
+
+  /**
+  * Query the database for the best fitting fixed rate for the given user, project and event.
+  */
+  public abstract function get_best_fitting_fixed_rate($project_id,$event_id);
+
+  /**
+  * Query the database for all fitting fixed rates for the given user, project and event.
+  */
+  public abstract function allFittingFixedRates($project_id,$event_id);
 
   /**
   * Save a new secure key for a user to the database. This key is stored in the users cookie and used

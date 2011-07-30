@@ -355,6 +355,13 @@ class PDODatabaseLayer extends DatabaseLayer {
           else
             $this->remove_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
         }
+
+        if (isset($data['pct_fixed_rate'])) {
+          if (is_numeric($data['pct_fixed_rate']))
+            $this->save_fixed_rate($pct_id,NULL,$data['pct_fixed_rate']);
+          else
+            $this->remove_fixed_rate($pct_id,NULL);
+        }
           
           return $pct_id;
       } else {
@@ -390,6 +397,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   
       $result_array['pct_default_rate'] = $this->get_rate(NULL,$pct_id,NULL);
       $result_array['pct_my_rate'] = $this->get_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
+      $result_array['pct_fixed_rate'] = $this->get_fixed_rate($pct_id,NULL);
       return $result_array;
   }
 
@@ -422,6 +430,13 @@ class PDODatabaseLayer extends DatabaseLayer {
           $this->remove_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
         unset($data['pct_my_rate']);
       }
+
+        if (isset($data['pct_fixed_rate'])) {
+          if (is_numeric($data['pct_fixed_rate']))
+            $this->save_fixed_rate($pct_id,NULL,$data['pct_fixed_rate']);
+          else
+            $this->remove_fixed_rate($pct_id,NULL);
+        }
 
       $keys = array(
         'pct_kndID', 'pct_name', 'pct_comment', 'pct_visible', 'pct_internal',
@@ -587,6 +602,13 @@ class PDODatabaseLayer extends DatabaseLayer {
             $this->remove_rate($this->kga['usr']['usr_ID'],NULL,$evt_id);
         }
 
+        if (isset($data['evt_fixed_rate'])) {
+          if (is_numeric($data['evt_fixed_rate']))
+            $this->save_fixed_rate(NULL,$evt_id,$data['evt_fixed_rate']);
+          else
+            $this->remove_fixed_rate(NULL,$evt_id);
+        }
+
         return $evt_id;
       } else {
         $this->logLastError('evt_create');
@@ -617,6 +639,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $result_array['evt_default_rate'] = $this->get_rate(NULL,NULL,$result_array['evt_ID']);
       $result_array['evt_my_rate'] = $this->get_rate($this->kga['usr']['usr_ID'],NULL,$result_array['evt_ID']);
+      $result_array['evt_fixed_rate'] = $this->get_fixed_rate(NULL,$result_array['evt_ID']);
 
       return $result_array;
   }
@@ -649,6 +672,14 @@ class PDODatabaseLayer extends DatabaseLayer {
         else
           $this->remove_rate($this->kga['usr']['usr_ID'],NULL,$evt_id);
         unset($data['evt_my_rate']);
+      }
+
+      if (isset($data['evt_fixed_rate'])) {
+        if (is_numeric($data['evt_fixed_rate']))
+          $this->save_fixed_rate(NULL,$evt_id,$data['evt_fixed_rate']);
+        else
+          $this->remove_fixed_rate(NULL,$evt_id);
+        unset($data['evt_fixed_rate']);
       }
 
       $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter', 'evt_assignable');
@@ -3700,7 +3731,183 @@ class PDODatabaseLayer extends DatabaseLayer {
     $result = $query->execute();
 
     if ($result == false) {
-      $this->logLastError('get_best_fitting_rate');
+      $this->logLastError('allFittingRates');
+      return false;
+    }
+      
+    $allRates = array();
+    
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $allRates[] = $row;
+    }
+    
+    return $allRates;
+  }
+
+  /**
+  * Save fixed rate to database.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function save_fixed_rate($project_id,$event_id,$rate) {
+    $p = $this->kga['server_prefix'];
+
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+    if (!is_numeric($rate)) return false;
+
+
+    // build update or insert statement
+    $query_string = "";
+    if ($this->get_fixed_rate($project_id,$event_id) === false)
+      $query_string = "INSERT INTO ${p}fixed_rates VALUES($project_id,$event_id,$rate);";
+    else
+      $query_string = "UPDATE ${p}fixed_rates SET rate = $rate WHERE ".
+    (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+    (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('save_fixed_rate');
+      return false;
+    }
+    else
+      return true;
+  }
+
+  /**
+  * Read fixed rate from database.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function get_fixed_rate($project_id,$event_id) {
+    $p = $this->kga['server_prefix'];
+
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+    $query_string = "SELECT rate FROM ${p}fixed_rates WHERE ".
+    (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+    (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('get_fixed_rate');
+      return false;
+    }
+
+    if ($query->rowCount() == 0)
+      return false;
+
+    $data = $query->fetch(PDO::FETCH_ASSOC);
+    return $data['rate'];
+  }
+
+  /**
+  * Remove fixed rate from database.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function remove_fixed_rate($project_id,$event_id) {
+    $p = $this->kga['server_prefix'];
+
+
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+    $query_string = "DELETE FROM ${p}fixed_rates WHERE ".
+    (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
+    (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result === false) {
+      $this->logLastError('remove_fixed_rate');
+      return false;
+    }
+    else
+      return true;
+  }
+
+  /**
+  * Query the database for the best fitting rate for the given user, project and event.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function get_best_fitting_fixed_rate($project_id,$event_id) {
+    $p = $this->kga['server_prefix'];
+
+
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+
+    $query_string = "SELECT rate FROM ${p}rates WHERE
+    (project_id = $project_id OR project_id IS NULL)  AND
+    (event_id = $event_id OR event_id IS NULL)
+    ORDER BY event_id DESC, project_id DESC
+    LIMIT 1;";
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('get_best_fitting_fixed_rate');
+      return false;
+    }
+
+    if ($query->rowCount() == 0)
+      return false;
+
+    $data = $query->fetch(PDO::FETCH_ASSOC);
+    return $data['rate'];
+  }
+
+  /**
+  * Query the database for all fitting rates for the given user, project and event.
+  * 
+  * @global array $this->kga              kimai global array
+  * @global array $this->conn         PDO connection
+  * @author sl
+  */
+  public function allFittingFixedRates($project_id,$event_id) {
+    $p = $this->kga['server_prefix'];
+
+
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+    $query_string = "SELECT rate, project_id, event_id FROM ${p}fixed_rates WHERE
+    (project_id = $project_id OR project_id IS NULL)  AND
+    (event_id = $event_id OR event_id IS NULL)
+    ORDER BY event_id DESC, project_id DESC;";
+
+    $query = $this->conn->prepare($query_string);
+    $result = $query->execute();
+
+    if ($result == false) {
+      $this->logLastError('allFittingFixedRates');
       return false;
     }
       

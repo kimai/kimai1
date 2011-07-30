@@ -67,6 +67,7 @@ switch ($axAction) {
         $tpl->assign('comment', $zef_entry['zef_comment']);
         
         $tpl->assign('rate', $zef_entry['zef_rate']);
+        $tpl->assign('fixed_rate', $zef_entry['zef_fixed_rate']);
         
         $tpl->assign('cleared', $zef_entry['zef_cleared']!=0);
     
@@ -92,6 +93,7 @@ switch ($axAction) {
         $tpl->assign('edit_in_time',  date("H:i:s"));
         $tpl->assign('edit_out_time', date("H:i:s"));
         $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
+        $tpl->assign('fixed_rate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
 
     }
 

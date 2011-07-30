@@ -92,6 +92,11 @@
                         <label for="evt_my_rate" >{$kga.lang.my_rate}:</label>
                         <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
+                
+                    <li>
+                        <label for="evt_my_rate" >{$kga.lang.fixed_rate}:</label>
+                        <input type="text" name="evt_fixed_rate" id="focus" value="{$evt_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                    </li>
 
                     <li>
                          <label for="evt_visible">{$kga.lang.visibility}:</label>

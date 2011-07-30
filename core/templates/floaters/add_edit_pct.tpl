@@ -110,6 +110,11 @@
                     </li>
 
                     <li>
+                        <label for="pct_fixed_rate" >{$kga.lang.fixed_rate}:</label>
+                        <input type="text" name="pct_fixed_rate" value="{$pct_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                    </li>
+
+                    <li>
                          <label for="pct_budget">{$kga.lang.budget}:</label>
                          <input type='text' name='pct_budget' cols='30' rows='5' value="{$pct_budget|replace:'.':$kga.conf.decimalSeparator|escape:'html'}"/>
                     </li>

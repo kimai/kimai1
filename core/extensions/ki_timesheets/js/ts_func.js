@@ -202,7 +202,7 @@ function ts_ext_reload_evt(pct,noUpdateRate) {
                     $("#add_edit_zef_evt_ID").html(data);
                     $("#add_edit_zef_evt_ID").val(selected_evt);
                     if (noUpdateRate == undefined)
-		      getBestRate();
+		      getBestRates();
                     ts_add_edit_validate();
                 }
             );
@@ -306,13 +306,19 @@ function editRecord(id) {
 // ----------------------------------------------------------------------------------------
 // refresh the rate with a new value, if this is a new entry
 //
-function getBestRate() {
-    $.post(ts_ext_path + "processor.php", { axAction: "bestFittingRate", axValue: 0,
+function getBestRates() {
+    $.getJSON(ts_ext_path + "processor.php", { axAction: "bestFittingRates", axValue: 0,
         project_id: $("#add_edit_zef_pct_ID").val(), event_id: $("#add_edit_zef_evt_ID").val()},
         function(data){
-            if (data != -1) {
-                $("#ts_ext_form_add_edit_record #rate").val(data);
-            }
+            if (data.hourlyRate == false)
+              $("#ts_ext_form_add_edit_record #rate").val('');
+            else
+              $("#ts_ext_form_add_edit_record #rate").val(data.hourlyRate);
+            
+            if (data.fixedRate == false)
+              $("#ts_ext_form_add_edit_record #fixed_rate").val('');
+            else
+              $("#ts_ext_form_add_edit_record #fixed_rate").val(data.fixedRate);
         }
     );
 }

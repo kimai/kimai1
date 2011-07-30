@@ -159,13 +159,14 @@ switch ($axAction) {
     // ===============================================
     // = Get the best rate for the project and event =
     // ===============================================
-    case 'bestFittingRate':
+    case 'bestFittingRates':
         if (isset($kga['customer'])) die();
-        $rate = $database->get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']);
-        if ($rate === false)
-          echo -1;
-        else
-	  echo $rate;
+        
+        $data = array(
+          'hourlyRate' => $database->get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']),
+          'fixedRate' => $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['event_id'])
+        );
+        echo json_encode($data);
     break;
 
     // ===========================================
@@ -184,6 +185,34 @@ switch ($axAction) {
             $setFor = array(); // contains the list of "types" for which this rate was set
             if ($rate['user_id'] != null)
               $setFor[] = $kga['lang']['username'];
+            if ($rate['project_id'] != null)
+              $setFor[] =  $kga['lang']['pct'];
+            if ($rate['event_id'] != null)
+              $setFor[] =  $kga['lang']['evt'];
+
+            if (count($setFor) != 0)
+              $line .= ' ('.implode($setFor,', ').')';
+
+            $processedData[] = array('value'=>$rate['rate'], 'desc'=>$line);
+          }
+
+        echo json_encode($processedData);
+    break;
+
+    // ===========================================
+    // = Get all rates for the project and event =
+    // ===========================================
+    case 'allFittingFixedRates':
+        if (isset($kga['customer'])) die();
+
+        $rates = $database->allFittingFixedRates($_REQUEST['project'],$_REQUEST['task']);
+        $processedData = array();
+
+        if ($rates !== false)
+          foreach ($rates as $rate) {
+            $line = Format::formatCurrency($rate['rate']);
+
+            $setFor = array(); // contains the list of "types" for which this rate was set
             if ($rate['project_id'] != null)
               $setFor[] =  $kga['lang']['pct'];
             if ($rate['event_id'] != null)
@@ -305,6 +334,7 @@ switch ($axAction) {
       $data['comment_type']    = $_REQUEST['comment_type'];
       $data['erase']           = isset($_REQUEST['erase']);
       $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+      $data['fixed_rate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixed_rate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
 
       if ($data['erase']) {

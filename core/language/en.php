@@ -219,6 +219,7 @@ return array(
 "rate_short"        => "Rate",
 "default_rate"      => "Default rate",
 "my_rate"           => "My rate",
+"fixed_rate"        => "Fixed rate",
 
 "wage"              => "Wage",
 

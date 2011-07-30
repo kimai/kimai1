@@ -48,6 +48,35 @@
                         .appendTo( ul );
             };
 
+            $( "#fixed_rate" ).click(function() {
+              $( "#fixed_rate").autocomplete("search",0);
+            });
+            
+            $( "#fixed_rate" ).autocomplete({
+              width:"200px",
+              source: function(req, add){  
+                $.getJSON("../extensions/ki_timesheets/processor.php", {
+                    axAction: "allFittingFixedRates",
+                    project: $("#add_edit_zef_pct_ID").val(),
+                    task: $("#add_edit_zef_evt_ID").val()
+                  },
+                  function(data) {
+                    add(data);
+                  }
+                );  
+              },
+              select: function( event, ui ) {
+                $( "#fixed_rate" ).val( ui.item.value );
+
+                return false;
+              }
+            }).data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.desc + "</a>" )
+                        .appendTo( ul );
+            };
+
             $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
 
                 if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
@@ -206,7 +235,7 @@
                    <li>
                        <label for="evt_ID">{$kga.lang.evt}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRate();ts_add_edit_validate();" >
+                        <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
                             {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
                         </select>
                         <br/>
@@ -238,7 +267,10 @@
                    </li>
                    <li>
                         <label for="rate">{$kga.lang.rate}:</label>
-                        <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' maxlength='50' size='20' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        </select>
+                        <label for="fixed_rate" style="float: none; margin-left: 60px;">{$kga.lang.fixed_rate}:</label>
+                        <input id='fixed_rate' type='text' name='fixed_rate' value='{$fixed_rate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         </select>
                    </li>
                </ul>

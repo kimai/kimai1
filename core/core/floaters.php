@@ -142,6 +142,7 @@ switch ($axAction) {
                 $tpl->assign('evt_selection'   , $database->pct_get_evts($id)        );
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
+                $tpl->assign('pct_fixed_rate'  , $data['pct_fixed_rate'  ]);
                 $tpl->assign('grp_selection', $database->pct_get_grps($id));
                 $tpl->assign('id', $id);
             }
@@ -192,6 +193,7 @@ switch ($axAction) {
                 $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
                 $tpl->assign('evt_default_rate', $data['evt_default_rate']);
                 $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
+                $tpl->assign('evt_fixed_rate'  , $data['evt_fixed_rate'  ]);
                 $tpl->assign('evt_assignable'  , $data['evt_assignable'  ]);
                 $tpl->assign('grp_selection', $database->evt_get_grps($id));
                 $tpl->assign('pct_selection', $database->evt_get_pcts($id));
