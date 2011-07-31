@@ -72,7 +72,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$user,$selection=null){
+function makeSelectBox($subject,$groups,$selection=null){
 
     global $kga, $database;
 
@@ -82,7 +82,7 @@ function makeSelectBox($subject,$user,$selection=null){
 
     switch ($subject) {
         case 'pct':
-            $arr_pct = $database->get_arr_pct($user);
+            $arr_pct = $database->get_arr_pct($groups);
             $i=0;
             foreach ($arr_pct as $pct) {
                 if ($pct['pct_visible']) {
@@ -104,7 +104,7 @@ function makeSelectBox($subject,$user,$selection=null){
             break;
 
         case 'evt':
-            $arr_evt = $database->get_arr_evt($user);
+            $arr_evt = $database->get_arr_evt($groups);
             $i=0;
             foreach ($arr_evt as $evt) {
                 if ($evt['evt_visible']) {
@@ -116,7 +116,7 @@ function makeSelectBox($subject,$user,$selection=null){
             break;
 
         case 'knd':
-            $arr_knd = $database->get_arr_knd($user);
+            $arr_knd = $database->get_arr_knd($groups);
             $i=0;
             $selectionFound = false;
             foreach ($arr_knd as $knd) {

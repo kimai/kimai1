@@ -434,6 +434,21 @@ abstract class DatabaseLayer {
   public abstract function grp_edit($grp_id, $data);
 
   /**
+   * Set the groups in which the user is a member in.
+   * @param int $userId   id of the user
+   * @param array $groups  array of the group ids to be part of
+   * @return boolean       true on success, false on failure
+   */
+  public abstract function setGroupMemberships($userId,array $groups);
+
+  /**
+   * Get the groups in which the user is a member in.
+   * @param int $userId   id of the user
+   * @return array        list of group ids
+   */
+  public abstract function getGroupMemberships($userId);
+
+  /**
   * deletes a group
   *
   * @param array $grp_id  grp_id of the group
@@ -511,16 +526,16 @@ abstract class DatabaseLayer {
   * @param integer $user ID of user in database
   * @return array
   */
-  public abstract function get_arr_pct($group);
+  public abstract function get_arr_pct(array $groups);
 
   /**
   * returns list of projects for specific group and specific customer as array
   *
-  * @param integer $user ID of user in database
   * @param integer $knd_id customer id
+  * @param array $groups list of group ids
   * @return array
   */
-  public abstract function get_arr_pct_by_knd($group, $knd_id);
+  public abstract function get_arr_pct_by_knd($knd_id,array $groups);
 
   /**
   *  Creates an array of clauses which can be joined together in the WHERE part
@@ -558,7 +573,6 @@ abstract class DatabaseLayer {
   * returns: 
   * [usr_ID] user ID, 
   * [usr_sts] user status (rights), 
-  * [usr_grp] group of user, 
   * [usr_name] username 
   * </pre>
   *
@@ -629,10 +643,10 @@ abstract class DatabaseLayer {
   * @param integer $group ID of group in table grp or "all" for all groups
   * @return array
   */
-  public abstract function get_arr_knd($group);
+  public abstract function get_arr_knd(array $groups);
 
   ## Load into Array: Events 
-  public abstract function get_arr_evt($group);
+  public abstract function get_arr_evt(array $groups);
 
   /**
   * Get an array of events, which should be displayed for a specific project.
@@ -646,7 +660,7 @@ abstract class DatabaseLayer {
   *  to via the pct_evt table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
   */
-  public abstract function get_arr_evt_by_pct($group,$pct);
+  public abstract function get_arr_evt_by_pct($pct, array $groups);
 
   /**
   * returns list of events used with specified customer
@@ -703,16 +717,15 @@ abstract class DatabaseLayer {
   *
   * [usr_ID] => 23103741
   * [usr_name] => admin
-  * [usr_grp] => 1
   * [usr_sts] => 0
   * [grp_name] => miesepriem
   * [usr_mail] => 0
   * [usr_active] => 0
   *
-  *
+  * @param array $groups list of group ids the users must be a member of
   * @return array
   */
-  public abstract function get_arr_usr($trash=0);
+  public abstract function get_arr_usr($trash=0,array $groups = null);
 
   /**
   * returns array of all groups 
@@ -848,10 +861,10 @@ abstract class DatabaseLayer {
   /**
   * returns list of users the given user can watch
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user the user information array
   * @return array
   */
-  public abstract function get_arr_watchable_users($user_id);
+  public abstract function get_arr_watchable_users($user);
 
   /**
   * returns assoc. array where the index is the ID of a user and the value the time

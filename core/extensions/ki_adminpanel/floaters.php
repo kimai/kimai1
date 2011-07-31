@@ -39,6 +39,8 @@ switch ($axAction) {
             $i++;
         }
         
+        $tpl->assign('selectedGroups',$database->getGroupMemberships($id));
+        
         $tpl->assign('arr_grp_ID',   $arr_grp_ID);
         $tpl->assign('arr_grp_name', $arr_grp_name);
                     

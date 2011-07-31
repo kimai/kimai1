@@ -31,10 +31,11 @@ switch ($axAction) {
     case "createUsr":
     // create new user account
     	$usr_data['usr_name'] = trim($axValue);
-    	$usr_data['usr_grp'] = $kga['usr']['usr_grp'];
     	$usr_data['usr_sts'] = 2;
     	$usr_data['usr_active'] = 0;
-    	echo $database->usr_create($usr_data);
+    	$userId = $database->usr_create($usr_data);
+        $database->setGroupMemberships($userId,$kga['usr']['groups']);
+        echo $userId;
     break;
     
     case "createGrp":
@@ -57,9 +58,21 @@ switch ($axAction) {
             get_cookie('ap_ext_show_deleted_groups',0)));
 
         if ($kga['usr']['usr_sts']==0)
-          $tpl->assign('arr_usr',  $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+          $arr_usr = $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0));
         else
-          $tpl->assign('arr_usr',$database->get_arr_watchable_users($kga['usr']['usr_ID']));
+          $arr_usr = $database->get_arr_watchable_users($kga['usr']);
+
+        // get group names
+        foreach ($arr_usr as &$user) {
+          $groups = $database->getGroupMemberships($user['usr_ID']);
+          foreach ($groups as $group) {
+            $groupData = $database->grp_get_data($group);
+            $user['groups'][] = $groupData['grp_name'];
+          }
+        }
+
+        $tpl->assign('arr_usr',$arr_usr);
+
         $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
         $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
         switch ($axValue) {
@@ -85,9 +98,9 @@ switch ($axAction) {
             
             case "knd":
 		if ($kga['usr']['usr_sts']==0)
-		  $arr_knd = $database->get_arr_knd("all");
+		  $arr_knd = $database->get_arr_knd();
 		else
-		  $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
+		  $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
 
     foreach ($arr_knd as $row=>$knd_data) {
       $grp_names = array();
@@ -111,9 +124,9 @@ switch ($axAction) {
                 
             case "pct":
 		if ($kga['usr']['usr_sts']==0)
-		  $arr_pct = $database->get_arr_pct("all");
+		  $arr_pct = $database->get_arr_pct();
 		else
-		  $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
+		  $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
 
 
     foreach ($arr_pct as $row=>$pct_data) {
@@ -134,15 +147,15 @@ switch ($axAction) {
                 
             case "evt": 
 		if ($kga['usr']['usr_sts']==0)
-		  $group = "all";
+		  $groups = null;
 		else
-		  $group = $kga['usr']['usr_grp'];
+		  $groups = $kga['usr']['groups'];
                 if (!isset($_REQUEST['evt_filter']))
-                  $arr_evt = $database->get_arr_evt($group);
+                  $arr_evt = $database->get_arr_evt($groups);
                 else
                   switch ($_REQUEST['evt_filter']) {
                       case -1:
-                      $arr_evt = $database->get_arr_evt($group);
+                      $arr_evt = $database->get_arr_evt($groups);
                       break;
                     case -2:
                       // -2 is to get unassigned events. As -2 is never
@@ -150,7 +163,7 @@ switch ($axAction) {
                       // events.
                     default:
                       $arr_evt = 
-                        $database->get_arr_evt_by_pct($group,$_REQUEST['evt_filter']);
+                        $database->get_arr_evt_by_pct($_REQUEST['evt_filter'],$groups);
                   }
 
                 foreach ($arr_evt as $row=>$evt_data) {
@@ -169,7 +182,7 @@ switch ($axAction) {
                 }
                 
                 
-                $arr_pct = $database->get_arr_pct($group);
+                $arr_pct = $database->get_arr_pct($groups);
                 $tpl->assign('arr_pct', $arr_pct);
                 
                 $tpl->assign('selected_evt_filter',$_REQUEST['evt_filter']);
@@ -270,7 +283,6 @@ switch ($axAction) {
     case "sendEditUsr":
     // process editUsr form
         $usr_data['usr_name']  = trim($_REQUEST['usr_name']);
-        $usr_data['usr_grp']   = $_REQUEST['usr_grp'];
         $usr_data['usr_sts']   = $_REQUEST['usr_sts'];
         $usr_data['usr_mail']  = $_REQUEST['usr_mail'];
         $usr_data['usr_alias'] = $_REQUEST['usr_alias'];
@@ -281,12 +293,14 @@ switch ($axAction) {
         	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['usr_pw'].$kga['password_salt']);
         }
         $database->usr_edit($id, $usr_data); 
+
+        $database->setGroupMemberships($id,$_REQUEST['groups']);
     break;
     
     case "sendEditGrp":
     // process editGrp form
         $grp_data['grp_name'] = trim($_REQUEST['grp_name']);
-        grp_edit($id, $grp_data);
+        $database->grp_edit($id, $grp_data);
         
         $ldrs = $_REQUEST['grp_leader'];
         $database->assign_grp2ldrs($id, $ldrs);

@@ -86,7 +86,6 @@ $query =
   `usr_ID` int(10) NOT NULL,
   `usr_name` varchar(160) NOT NULL,
   `usr_alias` varchar(10),
-  `usr_grp` int(5) NOT NULL default '1',
   `usr_sts` tinyint(1) NOT NULL default '2',
   `usr_trash` tinyint(1) NOT NULL default '0',
   `usr_active` tinyint(1) NOT NULL default '1',
@@ -131,6 +130,14 @@ $query=
   `grp_name` varchar(160) NOT NULL,
   `grp_trash` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`grp_ID`)
+) AUTO_INCREMENT=1;";
+exec_query($query);
+
+$query=
+"CREATE TABLE `${p}grp_usr` (
+  `grp_ID` int(10) NOT NULL,
+  `usr_ID` int(10) NOT NULL,
+  PRIMARY KEY (`grp_ID`,`usr_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 

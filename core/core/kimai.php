@@ -165,7 +165,7 @@ foreach ($extensions->phpIncludeFiles() as $includeFile) {
 if (isset($kga['customer']))
   $arr_usr = array();
 else
-  $arr_usr = $database->get_arr_watchable_users($kga['usr']['usr_ID']);
+  $arr_usr = $database->get_arr_watchable_users($kga['usr']);
 if (count($arr_usr)>0) {
     $tpl->assign('arr_usr', $arr_usr);
 } else {
@@ -182,7 +182,7 @@ if (isset($kga['customer']))
       'knd_name'=>$kga['customer']['knd_name'],
       'knd_visible'=>$kga['customer']['knd_visible']));
 else
-  $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
+  $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -194,9 +194,9 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // = display project table =
 // =========================
 if (isset($kga['customer']))
-  $arr_pct = $database->get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+  $arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
 else
-  $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
+  $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -210,9 +210,9 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 if (isset($kga['customer']))
   $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
 else if ($pct_data['pct_ID'])
-  $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],$pct_data['pct_ID']);
+  $arr_evt = $database->get_arr_evt_by_pct($pct_data['pct_ID'],$kga['usr']['groups']);
 else
-  $arr_evt = $database->get_arr_evt($kga['usr']['usr_grp']);
+  $arr_evt = $database->get_arr_evt($kga['usr']['groups']);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {

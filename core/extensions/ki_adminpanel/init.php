@@ -40,9 +40,9 @@
     // = display customer table =
     // ==========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_knd = $database->get_arr_knd("all");
+      $arr_knd = $database->get_arr_knd();
     else
-      $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
+      $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
 
     foreach ($arr_knd as $row=>$knd_data) {
       $grp_names = array();
@@ -67,9 +67,9 @@
     // = display project table =
     // =========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_pct = $database->get_arr_pct("all");
+      $arr_pct = $database->get_arr_pct();
     else
-      $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
+      $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
 
     foreach ($arr_pct as $row=>$pct_data) {
       $grp_names = array();
@@ -91,9 +91,9 @@
     // = display events table =
     // ========================
     if ($kga['usr']['usr_sts']==0)
-      $arr_evt = $database->get_arr_evt_by_pct("all",-2);
+      $arr_evt = $database->get_arr_evt_by_pct(-2);
     else
-      $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],-2);
+      $arr_evt = $database->get_arr_evt_by_pct(-2,$kga['usr']['groups']);
 
     foreach ($arr_evt as $row=>$evt_data) {
       $grp_names = array();
@@ -122,9 +122,21 @@
         get_cookie('ap_ext_show_deleted_groups',0)));
 
     if ($kga['usr']['usr_sts']==0)
-      $tpl->assign('arr_usr',  $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0)));
+      $arr_usr = $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0));
     else
-      $tpl->assign('arr_usr',$database->get_arr_watchable_users($kga['usr']['usr_ID']));
+      $arr_usr = $database->get_arr_watchable_users($kga['usr']);
+
+    // get group names
+    foreach ($arr_usr as &$user) {
+      $groups = $database->getGroupMemberships($user['usr_ID']);
+      foreach ($groups as $group) {
+        $groupData = $database->grp_get_data($group);
+        $user['groups'][] = $groupData['grp_name'];
+      }
+    }
+
+    $tpl->assign('arr_usr',$arr_usr);
+
     $tpl->assign('showDeletedGroups', get_cookie('ap_ext_show_deleted_groups',0));
     $tpl->assign('showDeletedUsers', get_cookie('ap_ext_show_deleted_users',0));
     $tpl->assign('languages', Translations::langs());

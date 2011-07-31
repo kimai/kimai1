@@ -163,11 +163,9 @@
 
 {*########## Group cells ##########*}
         <td>
-{if $arr_usr[userarray].usr_grp == 1}
-            <span style="color:red">{$arr_usr[userarray].grp_name|escape:'html'}</span>
-{else}
-            {$arr_usr[userarray].grp_name|escape:'html'}
-{/if}
+            {section name=group loop=$arr_usr[userarray].groups} 
+              {$arr_usr[userarray].groups[group]|escape:'html'}{if $smarty.section.group.last eq false}, {/if}
+            {/section}
         </td>      
 {*########## Group cells ##########*}
 

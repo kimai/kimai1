@@ -109,14 +109,13 @@ switch ($axAction) {
         $tpl->assign('timezones', timezoneList());
 
         // create the <select> element for the groups
-        $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['usr']['groups']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $grp_selection[]=$kga['usr']['usr_grp'];
-            $tpl->assign('grp_selection', $grp_selection);
+            $tpl->assign('grp_selection', $kga['usr']['groups']);
             $tpl->assign('id', 0);
         }
 
@@ -148,13 +147,13 @@ switch ($axAction) {
             }
         }
         // Create a <select> element to chosse the customer.
-        $sel = makeSelectBox("knd",$kga['usr']['usr_grp'],isset($data)?$data['pct_kndID']:null);
+        $sel = makeSelectBox("knd",$kga['usr']['groups'],isset($data)?$data['pct_kndID']:null);
         $tpl->assign('sel_knd_names', $sel[0]);
         $tpl->assign('sel_knd_IDs',   $sel[1]);
 
         // Create a <select> element to chosse the events.
         $assignableTasks = array();
-        $tasks = $database->get_arr_evt($kga['usr']['usr_grp']);
+        $tasks = $database->get_arr_evt($kga['usr']['groups']);
         foreach ($tasks as $task) {
           if (!$task['evt_assignable']) continue;
           $assignableTasks[$task['evt_ID']] = $task['evt_name'];
@@ -162,14 +161,13 @@ switch ($axAction) {
         $tpl->assign('assignableTasks',$assignableTasks);
         
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['usr']['groups']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
         
         // Set defaults for a new project.
         if (!$id) {
-            $grp_selection[]=$kga['usr']['usr_grp'];
-            $tpl->assign('grp_selection', $grp_selection);
+            $tpl->assign('grp_selection', $kga['usr']['groups']);
 
             $tpl->assign('knd_selection', null);
             $tpl->assign('id', 0);
@@ -203,19 +201,18 @@ switch ($axAction) {
         }
 
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['usr_grp']);
+        $sel = makeSelectBox("grp",$kga['usr']['groups']);
         $tpl->assign('sel_grp_names', $sel[0]);
         $tpl->assign('sel_grp_IDs',   $sel[1]);
 
         // Create a <select> element to chosse the projects.
-        $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+        $sel = makeSelectBox("pct",$kga['usr']['groups']);
         $tpl->assign('sel_pct_names', $sel[0]);
         $tpl->assign('sel_pct_IDs',   $sel[1]);
 
         // Set defaults for a new project.
         if (!$id) {
-            $grp_selection[]=$kga['usr']['usr_grp'];
-            $tpl->assign('grp_selection', $grp_selection);
+            $tpl->assign('grp_selection', $kga['usr']['groups']);
             $tpl->assign('id', 0);
         }
 

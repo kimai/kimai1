@@ -38,7 +38,7 @@ $tpl->compile_dir  = 'compile/';
 $tpl->assign('kga', $kga);
 
 // get list of projects for select box
-$sel = makeSelectBox("pct",$kga['usr']['usr_grp']);  
+$sel = makeSelectBox("pct",$kga['usr']['groups']);  
 $tpl->assign('sel_pct_names', $sel[0]);
 $tpl->assign('sel_pct_IDs',   $sel[1]);
 

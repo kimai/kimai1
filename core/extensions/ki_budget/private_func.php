@@ -61,7 +61,7 @@ $eventUsage = array(); // track what events are used
 $usedEvents = array(); 
 $expensesOccured = false;
 
-$events = $database->get_arr_evt("all");
+$events = $database->get_arr_evt();
 
  /*
   * sum up expenses

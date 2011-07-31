@@ -118,10 +118,10 @@ if ($authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) 
   if ($userId === false) {
     $userId   = $database->usr_create(array(
                 'usr_name' => $name,
-                'usr_grp' => $authPlugin->getDefaultGroupId(),
                 'usr_sts' => 2,
                 'usr_active' => 1
               ));
+    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
   }
   $userData = $database->usr_get_data($userId);
 
@@ -177,10 +177,10 @@ case "checklogin":
         if ($userId === false) {
           $userId   = $database->usr_create(array(
                       'usr_name' => $name,
-                      'usr_grp' => $authPlugin->getDefaultGroupId(),
                       'usr_sts' => 2,
                       'usr_active' => 1
                     ));
+          $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
         }
 
         $userData = $database->usr_get_data($userId);

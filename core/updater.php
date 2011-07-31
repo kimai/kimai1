@@ -400,18 +400,18 @@ if ((int)$revisionDB < $kga['revision']) {
 	
 			$primaryKey = "";
 			
-			if (strlen(strstr($row[0],"evt"))>0) { $primaryKey = "evt_ID";}
-			if (strlen(strstr($row[0],"grp"))>0) { $primaryKey = "grp_ID";}
-			if (strlen(strstr($row[0],"knd"))>0) { $primaryKey = "knd_ID";}
-			if (strlen(strstr($row[0],"pct"))>0) { $primaryKey = "pct_ID";}
-			if (strlen(strstr($row[0],"zef"))>0) { $primaryKey = "zef_ID";}
-			if (strlen(strstr($row[0],"usr"))>0) { $primaryKey = "usr_name";}
-			if (strlen(strstr($row[0],"var"))>0) { $primaryKey = "var";}
-			if ( (strlen(strstr($row[0],"ldr"))>0) 
-				|| (strlen(strstr($row[0],"grp_evt"))>0) 
-				|| (strlen(strstr($row[0],"pct_evt"))>0) 
-				|| (strlen(strstr($row[0],"grp_knd"))>0) 
-				|| (strlen(strstr($row[0],"grp_pct"))>0)) 
+			if (substr($row[0],$prefix_length) == "evt") { $primaryKey = "evt_ID";}
+			if (substr($row[0],$prefix_length) == "grp") { $primaryKey = "grp_ID";}
+			if (substr($row[0],$prefix_length) == "knd") { $primaryKey = "knd_ID";}
+			if (substr($row[0],$prefix_length) == "pct") { $primaryKey = "pct_ID";}
+			if (substr($row[0],$prefix_length) == "zef") { $primaryKey = "zef_ID";}
+			if (substr($row[0],$prefix_length) == "usr") { $primaryKey = "usr_name";}
+			if (substr($row[0],$prefix_length) == "var") { $primaryKey = "var";}
+			if ( (substr($row[0],$prefix_length) == "ldr") 
+				|| (substr($row[0],$prefix_length) == "grp_evt") 
+				|| (substr($row[0],$prefix_length) == "pct_evt")
+				|| (substr($row[0],$prefix_length) == "grp_knd") 
+				|| (substr($row[0],$prefix_length) == "grp_pct")) 
 			{ 
 				$primaryKey = "uid";
 			}
@@ -1311,10 +1311,24 @@ if ((int)$revisionDB < 1332) {
     exec_query($query);
     exec_query("ALTER TABLE ${p}zef ADD COLUMN `zef_fixed_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0';");
 }
-  
 
+if ((int)$revisionDB < 1333) {
+    Logger::logfile("-- update to r1333");
+    $query=
+    "CREATE TABLE `${p}grp_usr` (
+      `grp_ID` int(10) NOT NULL,
+      `usr_ID` int(10) NOT NULL,
+      PRIMARY KEY (`grp_ID`,`usr_ID`)
+    ) AUTO_INCREMENT=1;";
+    exec_query($query);
 
+    $result = $database->queryAll("SELECT usr_ID,usr_grp FROM ${p}usr");
+    foreach ($result as $row) {
+      exec_query("INSERT INTO ${p}grp_usr (`grp_ID`,`usr_ID`) VALUES($row[usr_grp],$row[usr_ID]);");
+    }
 
+    exec_query("ALTER TABLE ${p}usr DROP `usr_grp`;");
+}
 
 // ============================
 // = update DB version number =

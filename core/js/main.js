@@ -527,8 +527,6 @@ function editSubject(subject,id) {
 // filters project and task fields in add/edit record dialog
 
 function filter_selects(id, needle) {
-  var n = new RegExp(needle, 'i');
-  
   // cache initialisieren
   if(typeof window['__cacheselect_'+id] == "undefined") {
     window['__cacheselect_'+id] = [];
@@ -545,7 +543,7 @@ function filter_selects(id, needle) {
   
   var i, cs = window['__cacheselect_'+id];
   for(i=0; i<cs.length; ++i) {
-    if(cs[i].text.match(n) !== null) $('#'+id).addOption(cs[i].value, cs[i].text);
+    if(cs[i].text.toLowerCase().indexOf(needle.toLowerCase()) !== -1) $('#'+id).addOption(cs[i].value, cs[i].text);
   }
   $('#'+id).val(selectedValue);
 }
@@ -808,13 +806,12 @@ function lists_reload(subject) {
 //  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
 // 
 function lists_live_filter(div_list, needle) {
-   var n = new RegExp(needle, 'i');
-   $('#'+div_list+' tr ').filter(function(index) {
-       return ($(this).children('td:nth-child(2)').text().match(n) === null);
-   }).css('display','none');
-   $('#'+div_list+' tr ').filter(function(index) {
-       return ($(this).children('td:nth-child(2)').text().match(n) !== null);
-   }).css('display','');
+  $('#'+div_list+' tr ').filter(function(index) {
+    return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) === -1);
+  }).css('display','none');
+  $('#'+div_list+' tr ').filter(function(index) {
+    return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) !== -1);
+  }).css('display','');
 }
 
 

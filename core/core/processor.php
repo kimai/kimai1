@@ -150,7 +150,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $arr_usr = array();
         else
-          $arr_usr = $database->get_arr_watchable_users($kga['usr']['usr_ID']);
+          $arr_usr = $database->get_arr_watchable_users($kga['usr']);
 
         if (count($arr_usr)>0) {
             $tpl->assign('arr_usr', $arr_usr);
@@ -170,7 +170,7 @@ switch ($axAction) {
               'knd_name'=>$kga['customer']['knd_name'],
               'knd_visible'=>$kga['customer']['knd_visible']));
         else
-          $arr_knd = $database->get_arr_knd($kga['usr']['usr_grp']);
+          $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
 
         if (count($arr_knd)>0) {
             $tpl->assign('arr_knd', $arr_knd);
@@ -185,9 +185,9 @@ switch ($axAction) {
      */
     case 'reload_pct':
         if (isset($kga['customer']))
-          $arr_pct = $database->get_arr_pct_by_knd("all",$kga['customer']['knd_ID']);
+          $arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
         else
-          $arr_pct = $database->get_arr_pct($kga['usr']['usr_grp']);
+          $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
 
         if (count($arr_pct)>0) {
             $tpl->assign('arr_pct', $arr_pct);
@@ -206,10 +206,9 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
         else if (isset($_REQUEST['pct']))
-          $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],
-              $_REQUEST['pct']);
+          $arr_evt = $database->get_arr_evt_by_pct($_REQUEST['pct'],$kga['usr']['groups']);
         else
-          $arr_evt = $database->get_arr_evt($kga['usr']['usr_grp']);
+          $arr_evt = $database->get_arr_evt($kga['usr']['groups']);
         if (count($arr_evt)>0) {
             $tpl->assign('arr_evt', $arr_evt);
         } else {

@@ -1076,15 +1076,13 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("INSERT INTO ${p}usr (
       `usr_ID`,
       `usr_name`,
-      `usr_grp`,
       `usr_sts`,
       `usr_active`
-      ) VALUES (?, ?, ?, ?, ?)");
+      ) VALUES (?, ?, ?, ?)");
       
       $result = $pdo_query->execute(array(
       $data['usr_ID'],
       $data['usr_name'],
-      $data['usr_grp'],
       $data['usr_sts'],
       $data['usr_active']
       ));
@@ -1143,7 +1141,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       $this->conn->beginTransaction();
 
       $keys = array(
-        'usr_name', 'usr_grp', 'usr_sts', 'usr_trash', 'usr_active', 'usr_mail',
+        'usr_name', 'usr_sts', 'usr_trash', 'usr_active', 'usr_mail',
         'usr_alias', 'pw', 'lastRecord', 'lastProject', 'lastEvent');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'usr SET ';
@@ -1537,7 +1535,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   public function grp_count_users($grp_id) {
       $p = $this->kga['server_prefix'];
       
-      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}usr WHERE usr_trash=0 AND usr_grp = ?");
+      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}grp_usr WHERE grp_ID = ?");
       $result = $pdo_query->execute(array($grp_id));
       
       if ($result == false) {
@@ -1572,6 +1570,69 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
       
       return true;
+  }
+
+  /**
+   * Set the groups in which the user is a member in.
+   * @param int $userId   id of the user
+   * @param array $groups  array of the group ids to be part of
+   * @return boolean       true on success, false on failure
+   * @author sl
+   */
+  public function setGroupMemberships($userId,array $groups) {
+      $p = $this->kga['server_prefix'];
+          
+      $this->conn->beginTransaction();
+
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_usr WHERE usr_ID = ?");
+      $result = $pdo_query->execute(array($userId));
+
+      if (!$result) {
+        $this->logLastError('setGroupMemberships');
+        $this->conn->rollBack();
+        return false;
+      }
+      
+      foreach ($groups as $group) {
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_usr (usr_ID,grp_ID) VALUES (?,?)");
+        $result = $pdo_query->execute(array($userId,$group));
+
+        if (!$result) {
+          $this->logLastError('setGroupMemberships');
+          $this->conn->rollBack();
+          return false;
+        }
+      }
+
+      if ($this->conn->commit() == false) {
+          $this->logLastError('setGroupMemberships');
+          return false;
+      }
+  
+  }
+
+  /**
+   * Get the groups in which the user is a member in.
+   * @param int $userId   id of the user
+   * @return array        list of group ids
+   */
+  public function getGroupMemberships($userId) {
+    $p = $this->kga['server_prefix'];
+
+    $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_usr WHERE usr_ID = ?");
+    $result = $pdo_query->execute(array($userId));
+
+    if ($result == false) {
+        $this->logLastError('getGroupMemberships');
+        return null;
+    }
+
+    $arr = array();
+    while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+      $arr[] = $row['grp_ID'];
+    }
+    
+    return $arr;
   }
 
   /**
@@ -1886,26 +1947,27 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @return array
   * @author th
   */
-  public function get_arr_pct($group) {
+  public function get_arr_pct(array $groups = null) {
       $p = $this->kga['server_prefix'];
       
       $arr = array();
 
-      if ($group == "all") {
-          if ($this->kga['conf']['flip_pct_display']) {
-              $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;");
-          } else {
-              $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;");
-          }
-          $result = $pdo_query->execute();    
-      } else {
-          if ($this->kga['conf']['flip_pct_display']) {
-              $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND pct_trash=0 ORDER BY pct_visible DESC,knd_name,pct_name;");
-          } else {
-              $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND pct_trash=0 ORDER BY pct_visible DESC,pct_name,knd_name;");
-          }
-          $result = $pdo_query->execute(array($group));
-      }
+      if ($groups === null)
+        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0";
+      else
+        $query = "SELECT * FROM ${p}pct
+         JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
+         JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
+         WHERE ${p}grp_pct.grp_ID IN (".implode($groups,',').")
+          AND pct_trash=0";
+
+      if ($this->kga['conf']['flip_pct_display'])
+        $query .= " ORDER BY pct_visible DESC,knd_name,pct_name;";
+      else
+        $query .= " ORDER BY pct_visible DESC,pct_name,knd_name;";
+
+      $pdo_query = $this->conn->prepare($query);
+      $result = $pdo_query->execute();
 
       if ($result == false) {
           $this->logLastError('get_arr_pct');
@@ -1935,26 +1997,29 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @return array
   * @author ob
   */
-  public function get_arr_pct_by_knd($group, $knd_id) {
+  public function get_arr_pct_by_knd($knd_id, array $groups = null) {
       $p = $this->kga['server_prefix'];
       
       $arr = array();
 
-      if ($group == "all") {
-        if ($this->kga['conf']['flip_pct_display']) {
-            $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY knd_name,pct_name;");
-        } else {
-            $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY pct_name,knd_name;");        
-        }
-        $result = $pdo_query->execute(array($knd_id));  
-      } else {
-        if ($this->kga['conf']['flip_pct_display']) {
-            $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY knd_name,pct_name;");
-        } else {
-            $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID WHERE ${p}grp_pct.grp_ID = ? AND ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0 ORDER BY pct_name,knd_name;");        
-        }  
-        $result = $pdo_query->execute(array($group, $knd_id));
-      }
+      if ($group == "all")
+        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0";
+      else
+        $query = "SELECT * FROM ${p}pct
+         JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
+         JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
+        WHERE ${p}grp_pct.grp_ID  IN (".implode($groups,',').")
+         AND ${p}pct.pct_kndID = ?
+         AND pct_internal=0
+         AND pct_trash=0";
+
+      if ($this->kga['conf']['flip_pct_display'])
+        $query .= " ORDER BY knd_name,pct_name;";
+      else
+        $query .= " ORDER BY pct_name,knd_name;";
+
+      $pdo_query = $this->conn->prepare($query);
+      $result = $pdo_query->execute(array($knd_id));
 
       if ($result == false) {
           $this->logLastError('get_arr_pct_by_knd');
@@ -2138,7 +2203,6 @@ class PDODatabaseLayer extends DatabaseLayer {
   * returns: 
   * [usr_ID] user ID, 
   * [usr_sts] user status (rights), 
-  * [usr_grp] group of user, 
   * [usr_name] username 
   * </pre>
   *
@@ -2174,7 +2238,7 @@ class PDODatabaseLayer extends DatabaseLayer {
                 }
               }
               else {
-                $data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts,usr_grp FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
+                $data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
                 $result   = $pdo_query->execute(array($kimai_usr));
 
                 if ($result == false) {
@@ -2186,7 +2250,6 @@ class PDODatabaseLayer extends DatabaseLayer {
                 $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
                 $usr_ID   = $row['usr_ID'];
                 $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-                $usr_grp  = $row['usr_grp'];
                 $usr_name = $kimai_usr;
                 if ($usr_ID < 1) {
                     kickUser();
@@ -2278,7 +2341,6 @@ class PDODatabaseLayer extends DatabaseLayer {
     $pdo_query = $this->conn->prepare("SELECT
     `usr_ID`,
     `usr_name`,
-    `usr_grp`,
     `usr_sts`,
     `usr_trash`,
     `usr_active`,
@@ -2307,6 +2369,8 @@ class PDODatabaseLayer extends DatabaseLayer {
     foreach( $row as $key => $value) {
         $this->kga['usr'][$key] = $value;
     }
+
+    $this->kga['usr']['groups'] = $this->getGroupMemberships($user);
 
     $this->kga['conf'] = array_merge($this->kga['conf'],$this->usr_get_preferences_by_prefix('ui.',$this->kga['usr']['usr_ID']));
     $userTimezone = $this->usr_get_preference('timezone');
@@ -2487,16 +2551,20 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @return array
   * @author th
   */
-  public function get_arr_knd($group) {
+  public function get_arr_knd(array $groups = null) {
       $p = $this->kga['server_prefix'];
           
       $arr = array();
-      if ($group == "all") {
+      if ($groups === null) {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
           $result = $pdo_query->execute();
       } else {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID` WHERE `${p}grp_knd`.`grp_ID` = ? AND knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
-          $result = $pdo_query->execute(array($group));
+          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd
+           JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID`
+          WHERE `${p}grp_knd`.`grp_ID` IN (".implode($groups,',').")
+           AND knd_trash=0
+          ORDER BY knd_visible DESC, knd_name;");
+          $result = $pdo_query->execute();
       }
 
       if ($result == false) {
@@ -2524,45 +2592,38 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @return array
   * @author sl
   */
-  public function get_arr_watchable_users($user_id) {
+  public function get_arr_watchable_users($user) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
 
-      // check if user is admin
-      $pdo_query = $this->conn->prepare("SELECT usr_sts FROM ${p}usr WHERE usr_ID = ?");
-      $result   = $pdo_query->execute(array($user_id));
-
-      if ($result == false) {
-          $this->logLastError('get_arr_watchable_users');
-          return array();
-      }
-
-      $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
-
-      // SELECT usr_ID,usr_name FROM kimai_usr u INNER JOIN kimai_ldr l ON usr_grp = grp_ID WHERE grp_leader = 990287573
-      if ($row['usr_sts'] == "0") { // if is admin
+      if ($user['usr_sts'] == "0") { // if is admin
         $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_trash=0 ORDER BY usr_name");
         $result = $pdo_query->execute();
+        
+        $arr = array();
+        $i=0;
+        while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+            $arr[$i]['usr_ID']   = $row['usr_ID'];
+            $arr[$i]['usr_name'] = $row['usr_name'];
+            $i++;
+        }
+        return $arr;
       }
-      else {
-        $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr INNER JOIN ${p}ldr ON usr_grp = grp_ID WHERE usr_trash=0 AND grp_leader = ? ORDER BY usr_name");
-        $result = $pdo_query->execute(array($user_id));
+      
+      $pdo_query = $this->conn->preapre("SELECT grp_ID FROM " . $this->kga['server_prefix'] . "grp_ldr WHERE grp_leader=?");
+      $success = $pdo_query->execute(array($user['usr_ID']));
+
+      if (!$success) {
+        $this->logLastError('get_arr_watchable_users');
+        return array();
       }
 
-      if ($result == false) {
-          $this->logLastError('get_arr_watchable_users');
-          return array();
-      }
+      $leadingGroups = array();
+      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC))
+        $leadingGroups[] = $row['grp_ID'];
       
-      $i=0;
-      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['usr_ID']   = $row['usr_ID'];
-          $arr[$i]['usr_name'] = $row['usr_name'];
-          $i++;
-      }
-      
-      return $arr;
+      return $this->get_arr_usr(0,$leadingGroups);
   }
 
   /**
@@ -2777,17 +2838,21 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   ## Load into Array: Events 
-  public function get_arr_evt($group) {
+  public function get_arr_evt(array $groups = null) {
       $p = $this->kga['server_prefix'];
       
       $arr = array();
-      if ($group == "all") {
+      if ($groups === null) {
           $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
-          $result = $pdo_query->execute();
       } else {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID` WHERE `${p}grp_evt`.`grp_ID` = ? AND evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
-          $result = $pdo_query->execute(array($group));
+          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt
+           JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
+          WHERE `${p}grp_evt`.`grp_ID` IN (".implode($groups,',').")
+           AND evt_trash=0
+          ORDER BY evt_visible DESC, evt_name;");
       }
+
+      $result = $pdo_query->execute();
 
       if ($result == false) {
           $this->logLastError('get_arr_evt');
@@ -2807,25 +2872,27 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   ## Load into Array: Events 
-  public function get_arr_evt_by_pct($group,$pct) {
+  public function get_arr_evt_by_pct($pct, array $groups = null) {
       $p = $this->kga['server_prefix'];
       
       $arr = array();
-      if ($group == "all") {
+      if ($groups === null) {
           $pdo_query = $this->conn->prepare("SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-  WHERE evt_trash=0 AND (pct_ID = ? OR pct_ID IS NULL)
-  ORDER BY evt_visible DESC,evt_name;");
-          $result = $pdo_query->execute(array($pct));
+  WHERE evt_trash=0
+   AND (pct_ID = ? OR pct_ID IS NULL)
+  ORDER BY evt_visible DESC, evt_name;");
       } else {
           $pdo_query = $this->conn->prepare("SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
   JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-  WHERE `${p}grp_evt`.`grp_ID` = ? AND evt_trash=0
+  WHERE `${p}grp_evt`.`grp_ID` IN (".implode($groups,',').")
+   AND evt_trash=0
   AND (pct_ID = ? OR pct_ID IS NULL)
-  ORDER BY evt_visible DESC,evt_name;");
-          $result = $pdo_query->execute(array($group,$pct));
+  ORDER BY evt_visible DESC, evt_name;");
       }
+
+      $result = $pdo_query->execute(array($pct));
 
       if ($result == false) {
           $this->logLastError('get_arr_evt_by_pct');
@@ -3081,27 +3148,34 @@ class PDODatabaseLayer extends DatabaseLayer {
   *
   * [usr_ID] => 23103741
   * [usr_name] => admin
-  * [usr_grp] => 1
   * [usr_sts] => 0
-  * [grp_name] => miesepriem
   * [usr_mail] => 0
   * [usr_active] => 0
   *
   *
   * @global array $this->kga kimai-global-array
+  * @param array $groups list of group ids the users must be a member of
   * @return array
   * @author th 
   */
-  public function get_arr_usr($trash=0) {
+  public function get_arr_usr($trash=0,array $groups = null) {
       $p = $this->kga['server_prefix'];
         
       $arr = array();
       
-      if (!$trash) {
-          $trashoption = "WHERE usr_trash !=1";
-      }
-      $pdo_query = $this->conn->prepare(sprintf("SELECT * FROM ${p}usr Left Join ${p}grp ON usr_grp = grp_ID %s ORDER BY usr_name;",$trashoption));
-      $result = $pdo_query->execute();
+      if ($groups === null)
+        $query = "SELECT * FROM ${p}usr 
+        WHERE usr_trash = ?
+        ORDER BY usr_name ;";
+      else
+        $query = "SELECT * FROM ${p}usr
+         JOIN ${p}grp_usr ON usr_ID = usr_ID
+        WHERE ${p}grp_usr.grp_ID IN (".implode($groups,',').") AND
+         usr_trash = ?
+        ORDER BY usr_name ;";
+
+      $pdo_query = $this->conn->prepare($query);
+      $result = $pdo_query->execute(array($trash));
 
       if ($result == false) {
           $this->logLastError('get_arr_usr');
@@ -3112,9 +3186,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       while ($row = $pdo_query->fetch()) {
           $arr[$i]['usr_ID']   = $row['usr_ID'];
           $arr[$i]['usr_name'] = $row['usr_name'];
-          $arr[$i]['usr_grp']  = $row['usr_grp'];
           $arr[$i]['usr_sts']  = $row['usr_sts'];
-          $arr[$i]['grp_name'] = $row['grp_name'];
           $arr[$i]['usr_mail'] = $row['usr_mail'];
           $arr[$i]['usr_active'] = $row['usr_active'];
           $arr[$i]['usr_trash'] = $row['usr_trash'];

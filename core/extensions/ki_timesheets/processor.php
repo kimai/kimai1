@@ -232,8 +232,7 @@ switch ($axAction) {
     // ===============================================
     case 'reload_evt_options':
         if (isset($kga['customer'])) die();
-        $arr_evt = $database->get_arr_evt_by_pct($kga['usr']['usr_grp'],
-              $_REQUEST['pct']);
+        $arr_evt = $database->get_arr_evt_by_pct($_REQUEST['pct'],$kga['usr']['groups']);
         foreach ($arr_evt as $event) {
           if (!$event['evt_visible'])
             continue;

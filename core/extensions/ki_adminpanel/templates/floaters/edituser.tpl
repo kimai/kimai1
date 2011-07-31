@@ -104,9 +104,9 @@
                     </li>
 
                     <li>
-                        <label for="usr_grp">{$kga.lang.group}:</label>
-                        <select class="formfield" name="usr_grp">
-                            {html_options values=$arr_grp_ID output=$arr_grp_name selected=$usr_details.usr_grp}
+                        <label for="groups">{$kga.lang.group}:</label>
+                        <select class="formfield" name="groups[]" size="5" multiple>
+                            {html_options values=$arr_grp_ID output=$arr_grp_name selected=$selectedGroups}
                         </select>
                   	</li>
 

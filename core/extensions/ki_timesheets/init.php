@@ -116,7 +116,7 @@ if (isset($kga['customer'])) {
   $tpl->assign('sel_pct_IDs',   array());
 }
 else {
-  $sel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+  $sel = makeSelectBox("pct",$kga['usr']['groups']);
   $tpl->assign('sel_pct_names', $sel[0]);
   $tpl->assign('sel_pct_IDs',   $sel[1]);
 }
@@ -127,7 +127,7 @@ if (isset($kga['customer'])) {
   $tpl->assign('sel_evt_IDs',   array());
 }
 else {
-  $sel = makeSelectBox("evt",$kga['usr']['usr_grp']);
+  $sel = makeSelectBox("evt",$kga['usr']['groups']);
   $tpl->assign('sel_evt_names', $sel[0]);
   $tpl->assign('sel_evt_IDs',   $sel[1]);
 }

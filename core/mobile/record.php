@@ -7,10 +7,10 @@ require('../includes/basics.php');
 $usr = $database->checkUser();
 
 // select for projects
-$projectSel = makeSelectBox("pct",$kga['usr']['usr_grp']);
+$projectSel = makeSelectBox("pct",$kga['usr']['groups']);
 
 // select for events
-$eventSel = makeSelectBox("evt",$kga['usr']['usr_grp']);
+$eventSel = makeSelectBox("evt",$kga['usr']['groups']);
 
 
 if (isset($_REQUEST['stopRecord'])) {
