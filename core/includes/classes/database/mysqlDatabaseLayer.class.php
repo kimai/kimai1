@@ -1581,7 +1581,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * @return boolean       true on success, false on failure
    * @author sl
    */
-  public function setGroupMemberships($userId,array $groups) {
+  public function setGroupMemberships($userId,array $groups = null) {
     $table = $this->kga['server_prefix']."grp_usr";
 
     if (! $this->conn->TransactionBegin()) {

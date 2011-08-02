@@ -439,7 +439,7 @@ abstract class DatabaseLayer {
    * @param array $groups  array of the group ids to be part of
    * @return boolean       true on success, false on failure
    */
-  public abstract function setGroupMemberships($userId,array $groups);
+  public abstract function setGroupMemberships($userId,array $groups = null);
 
   /**
    * Get the groups in which the user is a member in.
@@ -526,7 +526,7 @@ abstract class DatabaseLayer {
   * @param integer $user ID of user in database
   * @return array
   */
-  public abstract function get_arr_pct(array $groups);
+  public abstract function get_arr_pct(array $groups = null);
 
   /**
   * returns list of projects for specific group and specific customer as array
@@ -535,7 +535,7 @@ abstract class DatabaseLayer {
   * @param array $groups list of group ids
   * @return array
   */
-  public abstract function get_arr_pct_by_knd($knd_id,array $groups);
+  public abstract function get_arr_pct_by_knd($knd_id,array $groups = null);
 
   /**
   *  Creates an array of clauses which can be joined together in the WHERE part
@@ -643,10 +643,10 @@ abstract class DatabaseLayer {
   * @param integer $group ID of group in table grp or "all" for all groups
   * @return array
   */
-  public abstract function get_arr_knd(array $groups);
+  public abstract function get_arr_knd(array $groups = null);
 
   ## Load into Array: Events 
-  public abstract function get_arr_evt(array $groups);
+  public abstract function get_arr_evt(array $groups = null);
 
   /**
   * Get an array of events, which should be displayed for a specific project.
@@ -660,7 +660,7 @@ abstract class DatabaseLayer {
   *  to via the pct_evt table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
   */
-  public abstract function get_arr_evt_by_pct($pct, array $groups);
+  public abstract function get_arr_evt_by_pct($pct, array $groups = null);
 
   /**
   * returns list of events used with specified customer

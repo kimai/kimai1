@@ -1579,7 +1579,7 @@ class PDODatabaseLayer extends DatabaseLayer {
    * @return boolean       true on success, false on failure
    * @author sl
    */
-  public function setGroupMemberships($userId,array $groups) {
+  public function setGroupMemberships($userId,array $groups = null) {
       $p = $this->kga['server_prefix'];
           
       $this->conn->beginTransaction();
