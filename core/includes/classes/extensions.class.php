@@ -58,22 +58,21 @@ class Extensions {
         switch ($this->kga['usr']['usr_sts']) {
           case 0:
           if ($settings['ADMIN_ALLOWED'] != "1")
-            continue;
+            continue 2;
           break;
 
           case 1:
             if ($settings['GROUP_LEADER_ALLOWED'] != "1")
-              continue;
+              continue 2;
           break;
         
           case 2:
             if ($settings['USER_ALLOWED'] != "1")
-              continue;
+              continue 2;
           break;
         }
      	else if ($settings['CUSTOMER_ALLOWED'] != "1")
      	  continue;
-
 
       $this->extensions[] = array('name' => $settings['EXTENSION_NAME'],
         'key' => $settings['EXTENSION_KEY'],
