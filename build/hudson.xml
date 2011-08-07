@@ -30,6 +30,7 @@
     </target>
 
     <target name="prepare" depends="clean">
+    	<mkdir dir="${target.release.dir}"/>
         <mkdir dir="${workspace}/build/logs"/>
         <mkdir dir="${workspace}/build/artifacts"/>
     </target>
