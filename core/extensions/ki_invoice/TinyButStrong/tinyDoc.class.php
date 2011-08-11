@@ -321,6 +321,7 @@ class tinyDoc extends clsTinyButStrong
         chdir($cwd);
         break;
     }
+    @chmod($this->getProcessDir().DIRECTORY_SEPARATOR.$this->getBasename().DIRECTORY_SEPARATOR.$this->getXmlFilename(),0777);
   }
 
 

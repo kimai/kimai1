@@ -170,7 +170,7 @@ if (!is_numeric($vat_rate)) {
 $vat   = $vat_rate*$gtotal/100;
 $total = $gtotal-$vat;
 $doc   = new tinyDoc();
-$oldUmask = @umask(0777);
+
 // use zip extension if available
 if (class_exists('ZipArchive')) {
     $doc->setZipMethod('ziparchive');
@@ -199,8 +199,6 @@ $doc->mergeXmlBlock('row', $invoiceArray);
 
 $doc->saveXml();
 $doc->close();
-
-@umask($oldUmask);
 
 // send and remove the document
 $doc->sendResponse();
