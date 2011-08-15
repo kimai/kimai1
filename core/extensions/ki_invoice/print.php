@@ -196,7 +196,7 @@ $doc->createFrom($templateform);
 $doc->loadXml('content.xml');
 
 $doc->mergeXmlBlock('row', $invoiceArray);
-echo $doc->getZipMethod();
+
 $doc->saveXml();
 $doc->close();
 
