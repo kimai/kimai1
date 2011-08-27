@@ -21,25 +21,25 @@
  * Perform the installation by creating all necessary tables
  * and some basic entries.
  */
- 
+
 /**
  * Execute an sql query in the database. The correct database connection
  * will be chosen and the query will be logged with the success status.
- * 
+ *
  * @param $query query to execute as string
  */
 function exec_query($query) {
     global $database, $errors, $db_layer;
-    
+
     $conn = $database->getConnectionHandler();
-    
+
     $success = false;
-    
+
     if ($db_layer == "pdo") {
       $pdo_query = $conn->prepare($query);
       $success = $pdo_query->execute(array());
       $errorInfo = serialize($pdo_query->errorInfo());
-        
+
     } else {
       $success = $conn->Query($query);
       $errorInfo = serialize($conn->Error());
@@ -49,7 +49,7 @@ function exec_query($query) {
       Logger::logfile($errorInfo);
       $errors=true;
     }
-} 
+}
 
 function quoteForSql($input) {
   global $kga, $database;
@@ -292,6 +292,8 @@ exec_query($query);
 $query="INSERT INTO `${p}pct` (`pct_ID`, `pct_kndID`, `pct_name`, `pct_comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
 exec_query($query);
 
+
+// ADMIN USER
 $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
 $query="INSERT INTO `${p}usr` (`usr_ID`,`usr_name`,`usr_mail`,`pw`,`usr_sts` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0');";
 exec_query($query);
@@ -303,6 +305,8 @@ exec_query($query);
 $query="INSERT INTO `${p}ldr` (`grp_ID`,`grp_leader`) VALUES ('1','$randomAdminID');";
 exec_query($query);
 
+$query="INSERT INTO `${p}grp_usr` (`grp_ID`,`usr_ID`) VALUES ('1','$randomAdminID');";
+exec_query($query);
 
 
 // CROSS TABLES
