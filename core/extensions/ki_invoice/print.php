@@ -23,8 +23,6 @@ include_once('../../includes/basics.php');
 include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
-include_once('private_db_layer_'.$kga['server_conn'].'.php');
-
 /**
  * returns true if event is in the arrays
  *
@@ -75,7 +73,8 @@ $year  = date("Y", $out );
 
 if (count($timeArray) > 0) {
     // customer data
-    $kndArray        = get_entry_knd($timeArray[0]['knd_name']);
+    $kndArray        = $database->knd_get_data($timeArray[0]['pct_kndID']);
+    $pctArray        = $database->pct_get_data($timeArray[0]['zef_pctID']);
 	$project         = html_entity_decode($timeArray[0]['pct_name']);
 	$customerName    = html_entity_decode($timeArray[0]['knd_name']);
 	$companyName     = $kndArray['knd_company'];
@@ -88,6 +87,8 @@ if (count($timeArray) > 0) {
 	$customerMobile  = $kndArray['knd_mobile'];
 	$customerEmail   = $kndArray['knd_mail'];
 	$customerContact = $kndArray['knd_homepage']; //I'm using the "homepage" field to store client contact name
+	$customerVat     = $kndArray['knd_vat'];
+	$projectComment  = $pctArray['pct_comment'];
 	$beginDate       = $in;
 	$endDate         = $out;
 	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
