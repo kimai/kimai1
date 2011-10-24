@@ -248,6 +248,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['pct_name']    = MySQL::SQLValue($data['pct_name']    );
       $values['pct_comment'] = MySQL::SQLValue($data['pct_comment'] );
       $values['pct_budget']  = MySQL::SQLValue($data['pct_budget']  , MySQL::SQLVALUE_NUMBER );
+      $values['pct_effort']  = MySQL::SQLValue($data['pct_effort']  , MySQL::SQLVALUE_NUMBER );
+      $values['pct_approved']= MySQL::SQLValue($data['pct_approved'], MySQL::SQLVALUE_NUMBER );
       $values['pct_kndID']   = MySQL::SQLValue($data['pct_kndID']   , MySQL::SQLVALUE_NUMBER );
       $values['pct_visible'] = MySQL::SQLValue($data['pct_visible'] , MySQL::SQLVALUE_NUMBER );
       $values['pct_internal']= MySQL::SQLValue($data['pct_internal'], MySQL::SQLVALUE_NUMBER );
@@ -334,7 +336,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       $numbers = array(
-          'pct_budget', 'pct_kndID', 'pct_visible', 'pct_internal', 'pct_filter');
+      'pct_budget', 'pct_kndID', 'pct_visible', 'pct_internal', 'pct_filter', 'pct_effort', 'pct_approved');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
@@ -814,6 +816,44 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
   }
+  
+  /**
+   * 
+   * update the data for event per project, which is budget, approved and effort
+   * @param integer $pct_id
+   * @param integer $evt_id
+   * @param array $data
+   */
+  public function pct_evt_edit($pct_id, $evt_id, $data) {
+      
+      $data = $this->clean_data($data);
+
+      $filter  ['pct_ID']          =   MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
+      $filter  ['evt_ID']          =   MySQL::SQLValue($evt_id, MySQL::SQLVALUE_NUMBER);
+      $table = $this->kga['server_prefix']."pct_evt";
+
+      if (! $this->conn->TransactionBegin()) {
+        $this->logLastError('pct_evt_edit');
+        return false;
+      }
+
+      $query = MySQL::BuildSQLUpdate($table, $data, $filter);
+      if ($this->conn->Query($query)) {
+
+          if (! $this->conn->TransactionEnd()) {
+            $this->logLastError('pct_evt_edit');
+            return false;
+          }
+          return true;
+      } else {
+          $this->logLastError('pct_evt_edit');
+          if (! $this->conn->TransactionRollback()) {
+            $this->logLastError('pct_evt_edit');
+            return false;
+          }
+          return false;
+      }
+  }
 
   /**
   * returns all the events which were assigned to a project
@@ -823,11 +863,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author sl
   */
   public function pct_get_evts($pct_id) {
-      $filter ['pct_ID'] = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
-      $columns[]         = "evt_ID";
-      $table = $this->kga['server_prefix']."pct_evt";
+      $projectId = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
+      $p = $this->kga['server_prefix'];
       
-      $result = $this->conn->SelectRows($table, $filter, $columns);
+      $query = "SELECT ${p}pct_evt.evt_ID, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_effort, ${p}pct_evt.evt_approved FROM ${p}pct_evt
+      join ${p}evt on ${p}evt.evt_ID = ${p}pct_evt.evt_ID WHERE ${p}pct_evt.pct_ID = $projectId AND evt_trash=0;";
+          
+      $result = $this->conn->Query($query);
+      
       if ($result == false) {
           $this->logLastError('pct_get_evts');
           return false;
@@ -837,16 +880,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $counter     = 0;
       
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-      
-      if ($this->conn->RowCount()) {
-          foreach ($rows as $current_evt) {
-              $return_evts[$counter] = $current_evt['evt_ID'];
-              $counter++;   
-          }
-          return $return_evts;
-      } else {
-          return false;
-      }
+      return $rows;
   }
 
   /**
@@ -1532,6 +1566,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return $this->conn->RowArray(0,MYSQL_ASSOC);
       }
   }
+  
+  
+  /**
+  * Returns the data of a certain status
+  *
+  * @param array $status_id  status_id of the group
+  * @return array         	 the group's data (name) as array, false on failure
+  * @author mo
+  */
+  public function status_get_data($status_id) {
+      
+      $filter['status_id'] = MySQL::SQLValue($status_id, MySQL::SQLVALUE_NUMBER);
+      $table = $this->kga['server_prefix']."status";
+      $result = $this->conn->SelectRows($table, $filter);    
+      
+      if (! $result) {
+        $this->logLastError('status_get_data');
+        return false;
+      } else {
+          return $this->conn->RowArray(0,MYSQL_ASSOC);
+      }
+  }
 
   /**
   * Returns the number of users in a certain group
@@ -1552,6 +1608,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       return $this->conn->RowCount()===false?0:$this->conn->RowCount();
   }
+  
+  
+  /**
+  * Returns the number of zef with a certain status
+  *
+  * @param integer $status_id   status_id of the status
+  * @return int            		the number of zef with this status
+  * @author mo
+  */
+  public function status_count_zef($status_id) {
+      $filter['zef_status'] = MySQL::SQLValue($status_id, MySQL::SQLVALUE_NUMBER);
+      $table = $this->kga['server_prefix']."zef";
+      $result = $this->conn->SelectRows($table, $filter);
+
+      if (! $result) {
+        $this->logLastError('status_count_zef');
+        return false;
+      }
+      
+      return $this->conn->RowCount()===false?0:$this->conn->RowCount();
+  }
+  
 
   /**
   * Edits a group by replacing its data by the new array
@@ -1568,6 +1646,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $filter ['grp_ID']   = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."grp";
+
+      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    
+      return $this->conn->Query($query);
+  }
+  
+    /**
+  * Edits a status by replacing its data by the new array
+  *
+  * @param array $status_id  grp_id of the status to be edited
+  * @param array $data    name and other new data of the status
+  * @return boolean       true on success, false on failure
+  * @author mo
+  */
+  public function status_edit($status_id, $data) {
+      $data = $this->clean_data($data);
+    
+      $values ['status'] = MySQL::SQLValue($data ['status'] );
+
+      $filter ['status_id']   = MySQL::SQLValue($status_id, MySQL::SQLVALUE_NUMBER);
+      $table = $this->kga['server_prefix']."status";
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
     
@@ -1655,6 +1754,20 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $filter['grp_ID'] = MySQL::SQLValue($grp_id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."grp";
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+      return $this->conn->Query($query);
+  }
+  
+    /**
+  * deletes a status
+  *
+  * @param array $status_id  status_id of the status
+  * @return boolean       	 true on success, false on failure
+  * @author mo
+  */
+  public function status_delete($status_id) {
+      $filter['status_id'] = MySQL::SQLValue($status_id, MySQL::SQLVALUE_NUMBER);
+      $table = $this->kga['server_prefix']."status";
+      $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
 
@@ -1789,6 +1902,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $values ['zef_location']     =   MySQL::SQLValue( $data ['zlocation'] );
       $values ['zef_comment']      =   MySQL::SQLValue( $data ['comment'] );
+      $values ['zef_description']      =   MySQL::SQLValue( $data ['description'] );
       if ($data ['trackingnr'] == '')
         $values ['zef_trackingnr'] = 'NULL';
       else
@@ -1802,6 +1916,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_time']         =   MySQL::SQLValue( $data ['diff']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_rate']         =   MySQL::SQLValue( $data ['rate']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_budget']   	   =   MySQL::SQLValue($data ['budget']   	   , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_approved'] 	   =   MySQL::SQLValue($data ['approved']      , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
       
       $table = $this->kga['server_prefix']."zef";
       $success =  $this->conn->InsertRow($table, $values);
@@ -1825,15 +1943,25 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     
       $original_array = $this->zef_get_data($id);
       $new_array = array();
+      $budgetChange = 0;
+      $approvedChange = 0;
       
       foreach ($original_array as $key => $value) {
           if (isset($data[$key]) == true) {
+          	// buget is added to total budget for task. So if we change the budget, we need
+          	// to first subtract the previous entry before adding the new one
+//          	if($key == 'zef_budget') {
+//          		$budgetChange = - $value;
+//          	} else if($key == 'zef_approved') {
+//          		$approvedChange = - $value;
+//          	}
               $new_array[$key] = $data[$key];
           } else {
               $new_array[$key] = $original_array[$key];
           }
       }
 
+      $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
       $values ['zef_comment']      = MySQL::SQLValue($new_array ['zef_comment']                                );
       $values ['zef_location']     = MySQL::SQLValue($new_array ['zef_location']                               );
       if ($new_array ['zef_trackingnr'] == '')
@@ -1848,6 +1976,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_time']         = MySQL::SQLValue($new_array ['zef_time']          , MySQL::SQLVALUE_NUMBER );
       $values ['zef_rate']         = MySQL::SQLValue($new_array ['zef_rate']          , MySQL::SQLVALUE_NUMBER );
       $values ['zef_cleared']      = MySQL::SQLValue($new_array ['zef_cleared']?1:0   , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_budget'] 	   = MySQL::SQLValue($new_array ['zef_budget']     	  , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_approved'] 	   = MySQL::SQLValue($new_array ['zef_approved']  	  , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_status'] 	   = MySQL::SQLValue($new_array ['zef_status']		  , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_billable'] 	   = MySQL::SQLValue($new_array ['zef_billable']	  , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
                                     
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
@@ -1863,6 +1996,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
             return false;
           }
       } else {
+//      	$budgetChange += $values['zef_budget'];
+//      	$approvedChange += $values['zef_approved'];
+//      	$this->update_evt_budget($values['zef_pctID'], $values['zef_evtID'], $budgetChange);
+//      	$this->update_evt_approved($values['zef_pctID'], $values['zef_evtID'], $budgetChange);
           $this->logLastError('zef_edit_record');
           if (! $this->conn->TransactionRollback()) {
             $this->logLastError('zef_edit_record');
@@ -1872,6 +2009,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       return $success;
   } 
+  
 
   /**
   * saves timespace of user in database (table conf)
@@ -1948,11 +2086,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           foreach ($rows as $row) {
               $arr[$i]['pct_ID']      = $row['pct_ID'];
               $arr[$i]['pct_name']    = $row['pct_name'];
-        $arr[$i]['pct_comment'] = $row['pct_comment'];
+       		  $arr[$i]['pct_comment'] = $row['pct_comment'];
               $arr[$i]['knd_name']    = $row['knd_name'];
               $arr[$i]['knd_ID']      = $row['knd_ID'];
               $arr[$i]['pct_visible'] = $row['pct_visible'];
               $arr[$i]['pct_budget'] = $row['pct_budget'];
+              $arr[$i]['pct_effort'] = $row['pct_effort'];
+              $arr[$i]['pct_approved'] = $row['pct_approved'];
               $i++;
           }
           return $arr;
@@ -1982,7 +2122,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $sort = "pct_name,knd_name";
       }
 
-      if ($group === null) {
+      if ($groups === null) {
         $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND ${p}pct.pct_kndID = $knd_id AND pct_trash=0 ORDER BY $sort;";
       } else {
         $query = "SELECT * FROM ${p}pct
@@ -2008,6 +2148,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $arr[$i]['knd_ID']      = $row->knd_ID;
           $arr[$i]['pct_visible'] = $row->pct_visible;
           $arr[$i]['pct_budget']  = $row->pct_budget;
+          $arr[$i]['pct_effort']  = $row->pct_effort;
+          $arr[$i]['pct_approved']  = $row->pct_approved;
           $i++;
       }
       
@@ -2109,11 +2251,12 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $limit="";
       }
 
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
                 FROM ${p}zef 
                 Join ${p}pct ON zef_pctID = pct_ID
                 Join ${p}knd ON pct_kndID = knd_ID
                 Join ${p}usr ON zef_usrID = usr_ID
+                Join ${p}status ON zef_status = status_id
                 Join ${p}evt ON evt_ID    = zef_evtID "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit.';';
@@ -2151,6 +2294,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                 $arr[$i]['wage_decimal']     = $arr[$i]['zef_time']/3600*$row->zef_rate;
                 $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
               }
+              $arr[$i]['zef_budget']   	   = $row->zef_budget;
+              $arr[$i]['zef_approved']     = $row->zef_approved;
               $arr[$i]['zef_rate']         = $row->zef_rate;
               $arr[$i]['zef_pctID']        = $row->zef_pctID;
               $arr[$i]['zef_evtID']        = $row->zef_evtID;
@@ -2163,6 +2308,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['pct_comment']      = $row->pct_comment;
               $arr[$i]['zef_location']     = $row->zef_location;
               $arr[$i]['zef_trackingnr']   = $row->zef_trackingnr;
+              $arr[$i]['zef_budget']  	   = $row->zef_budget;
+              $arr[$i]['zef_approved']     = $row->zef_approved;
+              $arr[$i]['zef_status']       = $row->status;
+              $arr[$i]['zef_billable']     = $row->zef_billable;
+              $arr[$i]['zef_description']  = $row->zef_description;
               $arr[$i]['zef_comment']      = $row->zef_comment;
               $arr[$i]['zef_cleared']      = $row->zef_cleared;
               $arr[$i]['zef_comment_type'] = $row->zef_comment_type;
@@ -2281,6 +2431,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $this->kga['conf']['lang'] = '';
     $this->kga['conf']['user_list_hidden'] = 0;
     $this->kga['conf']['hideClearedEntries'] = 0;
+
+
+    $table = $this->kga['server_prefix']."status";
+    $this->conn->SelectRows($table);
+    
+    $this->conn->MoveFirst();
+    while (! $this->conn->EndOfSeek()) {
+        $row = $this->conn->Row();
+        $this->kga['conf']['status'][] = $row->status;
+    }
   }
 
   /**
@@ -2585,13 +2745,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
+          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_approved, ${p}pct_evt.evt_effort FROM ${p}evt
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   WHERE evt_trash=0
    AND (pct_ID = $pct OR pct_ID IS NULL)
   ORDER BY evt_visible DESC,evt_name;";
       } else {
-          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
+          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_approved, ${p}pct_evt.evt_effort FROM ${p}evt
   JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   WHERE `${p}grp_evt`.`grp_ID`  IN (".implode($groups,',').")
@@ -2607,15 +2767,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       $arr = array();
-      $i = 0;
       if ($this->conn->RowCount()) {
           $this->conn->MoveFirst();
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
-              $arr[$i]['evt_ID']       = $row->evt_ID;   
-              $arr[$i]['evt_name']     = $row->evt_name;
-              $arr[$i]['evt_visible']  = $row->evt_visible;
-              $i++;
+              $arr[$row->evt_ID]['evt_ID']       = $row->evt_ID;   
+              $arr[$row->evt_ID]['evt_name']     = $row->evt_name;
+              $arr[$row->evt_ID]['evt_visible']  = $row->evt_visible;
+              $arr[$row->evt_ID]['evt_budget']   = $row->evt_budget;
+              $arr[$row->evt_ID]['evt_approved'] = $row->evt_approved;
+              $arr[$row->evt_ID]['evt_effort']   = $row->evt_effort;
           }
           return $arr;
       } else {
@@ -2767,6 +2928,72 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $row = $this->conn->RowArray(0,MYSQL_ASSOC);
       return strncmp($user, 'knd_', 4)==0?$row['knd_secure']:$row['secure'];
   }
+  
+  /**
+   * return status names
+   * @param integer $statusIds
+   */
+    public function get_status($statusIds) {
+  	  $p = $this->kga['server_prefix'];
+  	  $statusIds = implode(',', $statusIds);
+      $query = "SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id";
+      $result = $this->conn->Query($query);
+      if ($result == false) {
+          $this->logLastError('get_status');
+          return false;
+      }
+      
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      foreach($rows as $row) {
+      	$res[] = $row['status'];
+      }
+      return $res;
+  }
+  
+    /**
+  * returns array of all status with the status id as key
+  *
+  * @return array
+  * @author mo 
+  */
+  public function get_arr_status() {
+      $p = $this->kga['server_prefix'];
+      
+        $query = "SELECT * FROM ${p}status 
+        ORDER BY status;";
+      $this->conn->Query($query);
+
+      $arr = array();
+      $i=0;
+      
+      $this->conn->MoveFirst();
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      foreach($rows as $row) {
+          $arr[] = $row;
+          $arr[$i]['count_zef'] = $this->status_count_zef($row['status_id']);
+          $i++;
+      }
+
+      return $arr;
+  }
+  
+  /**
+   * add a new status
+   * @param Array $statusArray
+   */
+  public function status_create($status) {
+  	
+      $values['status'] = MySQL::SQLValue(trim($status['status']));
+      
+      $table = $this->kga['server_prefix']."status";
+      $result = $this->conn->InsertRow($table, $values);
+      if (! $result) {
+        $this->logLastError('add_status');
+        return false;
+      } 
+//  	}
+        return true;
+  }
 
   /**
   * returns array of all users 
@@ -2798,7 +3025,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         WHERE ${p}grp_usr.grp_ID IN (".implode($groups,',').") AND
          usr_trash = $trash
         ORDER BY usr_name ;";
-
       $this->conn->Query($query);
 
       $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -3836,6 +4062,54 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
     $data = $this->conn->rowArray(0,MYSQL_ASSOC);
     return $data['rate'];
+  }
+  
+  /**
+   * 
+   * get the whole budget used for the event
+   * @param integer $project_id
+   * @param integer $event_id
+   */
+  public function get_budget_used($project_id,$event_id) {
+  	$zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+  	$budgetUsed = 0;
+  	if(is_array($zefs)) {
+	  	foreach($zefs as $zef) {
+	  		$budgetUsed+= $zef['wage_decimal'];
+	  	}
+  	}
+  	return $budgetUsed;
+  }
+  
+  /**
+  * Read event budgets
+  * 
+  * @author mo
+  */
+  public function get_evt_budget($project_id,$event_id) {
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+    $query = "SELECT evt_budget, evt_approved, evt_effort FROM " . $this->kga['server_prefix'] . "pct_evt WHERE ".
+    (($project_id=="NULL")?"pct_ID is NULL":"pct_ID = $project_id"). " AND ".
+    (($event_id=="NULL")?"evt_ID is NULL":"evt_ID = $event_id");
+
+    $result = $this->conn->Query($query);
+
+    if ($result === false) {
+      $this->logLastError('get_evt_budget');
+      return false;
+    }
+    $data = $this->conn->rowArray(0,MYSQL_ASSOC);
+    
+  	$zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+  	foreach($zefs as $zef) {
+    	$data['evt_budget']+= $zef['zef_budget'];
+    	$data['evt_approved']+= $zef['zef_approved'];
+  	}    
+    return $data;
   }
 
   /**

@@ -517,9 +517,12 @@ function ticktack_off() {
 //
 function editSubject(subject,id) {
     var height = 180;
-    if (subject == 'pct')
-      height = 210;
-    floaterShow('floaters.php','add_edit_'+subject,0,id,450,height); return false;
+    var width = 450;
+    if (subject == 'pct') {
+      height = 250;
+      width = 650;
+    }
+    floaterShow('floaters.php','add_edit_'+subject,0,id,width,height); return false;
 }
 
 

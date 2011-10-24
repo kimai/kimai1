@@ -28,6 +28,8 @@
   float:left;
   /*min-width:150px;
   height:150px;*/
+  height: 250px;
+  width: 210px;
   background-color:#fafafa;
   border:1px solid black;
   margin:5px;
@@ -48,6 +50,14 @@
   border:1px solid black;  
   margin:5px;
 }
+
+
+.filter {
+  background-color:#fafafa;
+  margin:5px;
+}
+
+
 
 .key {
   float:left;

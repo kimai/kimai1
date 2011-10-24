@@ -119,14 +119,16 @@ function makeSelectBox($subject,$groups,$selection=null){
             $arr_knd = $database->get_arr_knd($groups);
             $i=0;
             $selectionFound = false;
-            foreach ($arr_knd as $knd) {
-                if ($knd['knd_visible']) {
-                    $sel[0][$i] = $knd['knd_name'];
-                    $sel[1][$i] = $knd['knd_ID'];
-                    $i++;
-                    if ($selection == $knd['knd_ID'])
-                      $selectionFound = true;
-                }
+            if(is_array($arr_knd)) {
+	            foreach ($arr_knd as $knd) {
+	                if ($knd['knd_visible']) {
+	                    $sel[0][$i] = $knd['knd_name'];
+	                    $sel[1][$i] = $knd['knd_ID'];
+	                    $i++;
+	                    if ($selection == $knd['knd_ID'])
+	                      $selectionFound = true;
+	                }
+	            }
             }
             if ($selection != null && !$selectionFound) {
               $data = $database->knd_get_data($selection);
@@ -262,17 +264,24 @@ function get_cookie($cookie_name, $default=null) {
  */
 function check_zef_data($id, $zef_data) {
   global $database;
-
+  
 	if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
 
 		$zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
 	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
 	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
 	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
+	    $zef_final_data['zef_description']  = $zef_data['description'];
 	    $zef_final_data['zef_comment']      = $zef_data['comment'];
 	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
-      $zef_final_data['zef_cleared']      = $zef_data['cleared'];
+	    $zef_final_data['zef_rate']         = $zef_data['rate'];
+	    $zef_final_data['zef_budget']       = $zef_data['budget'];
+	    $zef_final_data['zef_approved']     = $zef_data['approved'];
+	    $zef_final_data['zef_status']       = $zef_data['status'];
+	    $zef_final_data['zef_billable']     = $zef_data['billable'];
+	    $zef_final_data['zef_description']  = $zef_data['description'];
+      	$zef_final_data['zef_cleared']      = $zef_data['cleared'];
 
 	    return $database->zef_edit_record($id,$zef_final_data);
 
@@ -282,13 +291,19 @@ function check_zef_data($id, $zef_data) {
 	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
 	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
 	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
+	    $zef_final_data['zef_description']  = $zef_data['description'];
 	    $zef_final_data['zef_comment']      = $zef_data['comment'];
 	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
 	    $zef_final_data['zef_in']           = $zef_data['in'];
 	    $zef_final_data['zef_out']          = $zef_data['out'];
 	    $zef_final_data['zef_time']         = $zef_data['diff'];
 	    $zef_final_data['zef_rate']         = $zef_data['rate'];
-      $zef_final_data['zef_cleared']         = $zef_data['cleared'];
+	    $zef_final_data['zef_budget']       = $zef_data['budget'];
+	    $zef_final_data['zef_approved']     = $zef_data['approved'];
+	    $zef_final_data['zef_status']       = $zef_data['status'];
+	    $zef_final_data['zef_billable']     = $zef_data['billable'];
+	    $zef_final_data['zef_description']  = $zef_data['description'];
+        $zef_final_data['zef_cleared']      = $zef_data['cleared'];
 
 	    return $database->zef_edit_record($id,$zef_final_data);
 

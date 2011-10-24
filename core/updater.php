@@ -1330,6 +1330,41 @@ if ((int)$revisionDB < 1333) {
     exec_query("ALTER TABLE ${p}usr DROP `usr_grp`;");
 }
 
+if ((int)$revisionDB < 1347) {
+    Logger::logfile("-- update to r1347");
+    exec_query("ALTER TABLE `${p}pct_evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
+ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
+ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
+
+    exec_query("ALTER TABLE `${p}pct` ADD `pct_effort` DECIMAL( 10, 2 ) NULL AFTER `pct_budget` ,
+ADD `pct_approved` DECIMAL( 10, 2 ) NULL AFTER `pct_effort` ");
+
+    exec_query("ALTER TABLE `${p}zef` ADD `zef_status` SMALLINT DEFAULT 1,
+ADD `zef_billable` TINYINT NULL");
+
+    exec_query("CREATE TABLE `${p}status` (
+`status_id` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`status` VARCHAR( 200 ) NOT NULL
+) ENGINE = InnoDB ");
+
+    exec_query("INSERT INTO `${p}status` (`status_id` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
+
+    exec_query("ALTER TABLE `${p}zef` ADD `zef_budget` DECIMAL( 10, 2 ) NULL AFTER `zef_fixed_rate` ,
+ADD `zef_approved` DECIMAL( 10, 2 ) NULL AFTER `zef_budget` ;");
+
+    exec_query("ALTER TABLE `${p}zef` ADD `zef_description` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL AFTER `zef_evtID` ");
+
+    exec_query("UPDATE ${p}zef SET zef_status = 3 WHERE zef_cleared = 1");
+
+    exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '1' );");
+
+    exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundMinutes', '0');");
+
+    exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundSeconds', '0');");
+
+    exec_query("DELETE FROM `${p}var` WHERE `var` = 'status';");
+}
+
 // ============================
 // = update DB version number =
 // ============================

@@ -105,7 +105,7 @@
                  </ul>
 
             </fieldset>
-
+            
             <fieldset id="comment">
                 <ul>
                     <li>
@@ -114,6 +114,7 @@
                     </li>
                 </ul>
             </fieldset>
+          
 
 {if $sel_grp_IDs|@count gt 1}   
     <fieldset id="groups">

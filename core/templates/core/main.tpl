@@ -26,8 +26,14 @@
     <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery-ui-1.8.14.custom.min.js" type="text/javascript" charset="utf-8"></script>
     <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
-    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
-    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
+    <script src="../libraries/jQuery/jquery.jqplot.js" type="text/javascript"></script>
+    <script src="../libraries/jQuery/jqplot.pieRenderer.js" type="text/javascript" ></script>
+<!--    <script src="../libraries/jQuery/jqplot.dateAxisRenderer.min.js" type="text/javascript" ></script>-->
+<!--    <script src="../libraries/jQuery/jqplot.highlighter.min.js" type="text/javascript" ></script>-->
+<!--    <script src="../libraries/jQuery/jqplot.cursor.min.js" type="text/javascript" ></script>-->
+    <script src="../libraries/jQuery/jquery.timePicker.js" type="text/javascript" ></script>
+    <script src="../libraries/jQuery/jquery.uniform.min.js" type="text/javascript" ></script>
+    <script src="../libraries/jQuery/ui.sexyselect.0.6.js" type="text/javascript" ></script>
     <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
     <!-- /Libs -->
 
@@ -49,6 +55,7 @@
 
         var lang_checkUsername    = "{$kga.lang.checkUsername}";
         var lang_checkGroupname   = "{$kga.lang.checkGroupname}";
+        var lang_checkStatusname   = "{$kga.lang.checkStatusname}";
         var lang_passwordsDontMatch   = "{$kga.lang.passwordsDontMatch}";
         var lang_passwordTooShort = "{$kga.lang.passwordTooShort}";
 
@@ -327,7 +334,7 @@
 
 <div id="pct_foot">
 {if $kga.usr && $kga.usr.usr_sts != 2 }  
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); $(this).blur(); return false;"></a>
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,650,200); $(this).blur(); return false;"></a>
 {/if}
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct'); $(this).blur(); return false;"></a>
 <a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('pct'); $(this).blur(); return false;"></a>

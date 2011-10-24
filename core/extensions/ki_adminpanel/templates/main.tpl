@@ -77,17 +77,32 @@
 			{$admin.groups}
 		</div>
 	</div>
+	
+{* edit status *}
 
-{* advanced *}
-{ if $kga.usr.usr_sts == 0 }
 	<div id="ap_ext_sub3">
 		<div class="ap_ext_panel_header">
 			<a onClick="ap_ext_subtab_expand(3)">
 			    <span class="ap_ext_accordeon_triangle"></span>
-			    {$kga.lang.advanced}
+			    {$kga.lang.status}
 			</a>
 		</div>
 		<div id="ap_ext_s3" class="ap_ext_subtab ap_ext_4cols">
+			{$admin.status}
+		</div>
+	</div>
+	
+
+{* advanced *}
+{ if $kga.usr.usr_sts == 0 }
+	<div id="ap_ext_sub4">
+		<div class="ap_ext_panel_header">
+			<a onClick="ap_ext_subtab_expand(4)">
+			    <span class="ap_ext_accordeon_triangle"></span>
+			    {$kga.lang.advanced}
+			</a>
+		</div>
+		<div id="ap_ext_s4" class="ap_ext_subtab ap_ext_4cols">
 			{$admin.advanced}
 		</div>
 	</div>
@@ -95,14 +110,14 @@
 
 {* DB *}
 { if $kga.usr.usr_sts == 0 }
-    <div id="ap_ext_sub4">
+    <div id="ap_ext_sub5">
         <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(4)">
+            <a onClick="ap_ext_subtab_expand(5)">
                 <span class="ap_ext_accordeon_triangle"></span>
                 {$kga.lang.database}
             </a>
         </div>
-        <div id="ap_ext_s4" class="ap_ext_subtab ap_ext_4cols">
+        <div id="ap_ext_s5" class="ap_ext_subtab ap_ext_4cols">
             {$admin.database}
         </div>
     </div>

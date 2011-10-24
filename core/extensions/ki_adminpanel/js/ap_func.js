@@ -207,6 +207,22 @@ function ap_ext_newGroup() {
     });
 }
 
+//----------------------------------------------------------------------------------------
+//graps the value of the newGroup input field 
+//and ajaxes it to the createGrp function of the processor
+//
+function ap_ext_newStatus() {
+ newstatus = $("#newstatus").val();
+ if (newstatus == "") {
+     alert(lang_checkStatusname);
+     return false;
+ }
+ $.post(ap_ext_path + "processor.php", { axAction: "createStatus", axValue: newstatus, id: 0 }, 
+ function(data) {
+     ap_ext_refreshSubtab('status');
+ });
+}
+
 
 
 // ----------------------------------------------------------------------------------------
@@ -223,6 +239,14 @@ function ap_ext_editGroup(id) {
     floaterShow(ap_ext_path + "floaters.php","editGrp",0,id,450,100);
 }
 
+
+//----------------------------------------------------------------------------------------
+//by clicking on the edit button of a status the edit dialogue pops up
+//
+function ap_ext_editStatus(id) {
+ floaterShow(ap_ext_path + "floaters.php","editStatus",0,id,450,100);
+}
+
 // ----------------------------------------------------------------------------------------
 // refreshes either user/group/advanced/DB subtab
 //
@@ -234,13 +258,14 @@ function ap_ext_refreshSubtab(tab) {
     $.post(ap_ext_path + "processor.php", options, 
     function(data) {
         switch(tab) {
-            case "usr":  target = "#ap_ext_s1"; break
-            case "grp":  target = "#ap_ext_s2"; break
-            case "adv":  target = "#ap_ext_s3"; break
-            case "db":   target = "#ap_ext_s4"; break
-            case "knd":  target = "#ap_ext_s5"; break
-            case "pct":  target = "#ap_ext_s6"; break
-            case "evt":  target = "#ap_ext_s7"; break
+            case "usr":  	target = "#ap_ext_s1"; break
+            case "grp":  	target = "#ap_ext_s2"; break
+            case "status":  target = "#ap_ext_s3"; break
+            case "adv":  	target = "#ap_ext_s4"; break
+            case "db":   	target = "#ap_ext_s5"; break
+            case "knd":  	target = "#ap_ext_s6"; break
+            case "pct": 	target = "#ap_ext_s7"; break
+            case "evt": 	target = "#ap_ext_s8"; break
         }
         $(target).html(data);
     });
@@ -277,6 +302,21 @@ function ap_ext_deleteGroup(id) {
             }
         }
     );
+}
+
+//----------------------------------------------------------------------------------------
+//delete status
+//
+function ap_ext_deleteStatus(id) {
+ $.post(ap_ext_path + "processor.php", { axAction: "deleteStatus", axValue: 0, id: id }, 
+     function(data) {
+         if (confirm(data)) {
+             $.post(ap_ext_path + "processor.php", {axAction: "deleteStatus", axValue: 1, id: id }, 
+                 function() { ap_ext_refreshSubtab('status'); }
+             );
+         }
+     }
+ );
 }
 
 // ----------------------------------------------------------------------------------------

@@ -145,12 +145,28 @@
               <input type="text" name="editLimitHours" size="3" class="formfield" value="{$editLimitHours}" {if !$editLimitEnabled}disabled="disabled"{/if}> {$kga.lang.editLimitPart3}
             </div>
 
-        
+<!--        -->
+<!--            <div>-->
+<!--               <select name="status[]" multiple="multiple">-->
+<!--                    {html_options values=$status output=$status_names selected=$kga.conf.status}-->
+<!--                </select> {$kga.lang.status}-->
+<!--            </div>-->
+<!--            -->
+<!--            <div>-->
+<!--               <input type="text" name="new_status" class="formfield"> {$kga.lang.new_status}-->
+<!--            </div>-->
+            
+            <div {if !$roundTimesheetEntries}class="disabled"{/if}>
+              <input type="checkbox" name="roundTimesheetEntries" value="1" {if $roundTimesheetEntries}checked="checked"{/if} class="formfield, disableInput"> {$kga.lang.roundTimesheetEntries}
+              <input type="text" name="roundMinutes" size="3" class="formfield" value="{$roundMinutes}" {if !$roundTimesheetEntries}disabled="disabled"{/if}> {$kga.lang.minutes} {$kga.lang.and}
+              <input type="text" name="roundSeconds" size="3" class="formfield" value="{$roundSeconds}" {if !$roundTimesheetEntries}disabled="disabled"{/if}> {$kga.lang.seconds}
+            </div>
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         
             <div id="formbuttons">
                 <input id="ap_ext_form_editadv_submit" class='btn_ok' type='submit' value='{$kga.lang.save}' />
             </div>
+            
         
         </fieldset>
         

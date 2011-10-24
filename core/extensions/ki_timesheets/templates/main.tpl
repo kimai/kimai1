@@ -9,7 +9,7 @@
 <div id="zef_head">
     <div class="left">
     {if $kga.usr}
-        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_record',selected_pct+'|'+selected_evt,0,600,380); $(this).blur(); return false;">{$kga.lang.add}</a>
+        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_record',selected_pct+'|'+selected_evt,0,650,580); $(this).blur(); return false;">{$kga.lang.add}</a>
     {/if}
     </div>
     <table>

@@ -120,6 +120,9 @@ $query=
   `evt_filter` TINYINT(1) NOT NULL DEFAULT '0',
   `evt_trash` TINYINT(1) NOT NULL DEFAULT '0',
   `evt_assignable` TINYINT(1) NOT NULL DEFAULT '0',
+  `evt_budget` DECIMAL( 10, 2 ) NULL ,
+  `evt_effort` DECIMAL( 10, 2 ) NULL ,
+  `evt_approved` DECIMAL( 10, 2 ) NULL,
   PRIMARY KEY (`evt_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
@@ -197,6 +200,8 @@ $query=
   `pct_filter` TINYINT(1) NOT NULL DEFAULT '0',
   `pct_trash` TINYINT(1) NOT NULL DEFAULT '0',
   `pct_budget` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `pct_effort` DECIMAL( 10, 2 ) NULL,
+  `pct_approved` DECIMAL( 10, 2 ) NULL,
   `pct_internal` TINYINT( 1 ) NOT NULL DEFAULT 0,
   PRIMARY KEY  (`pct_ID`)
 ) AUTO_INCREMENT=1;";
@@ -213,6 +218,7 @@ $query=
   `zef_usrID` int(10) NOT NULL,
   `zef_pctID` int(10) NOT NULL,
   `zef_evtID` int(10) NOT NULL,
+  `zef_description` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `zef_comment` TEXT NULL DEFAULT NULL,
   `zef_comment_type` TINYINT(1) NOT NULL DEFAULT '0',
   `zef_cleared` TINYINT(1) NOT NULL DEFAULT '0',
@@ -220,6 +226,10 @@ $query=
   `zef_trackingnr` varchar(30),
   `zef_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0',
   `zef_fixed_rate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0',
+  `zef_budget` DECIMAL( 10, 2 ) NULL,
+  `zef_approved` DECIMAL( 10, 2 ) NULL,
+  `zef_status` SMALLINT DEFAULT 1,
+  `zef_billable` TINYINT NULL,
   PRIMARY KEY  (`zef_ID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
@@ -273,7 +283,14 @@ exec_query($query);
 exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_usrID` ) ");
 exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_pctID` ) ");
 
+$query = 
+"CREATE TABLE `${p}status` (
+`status_id` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`status` VARCHAR( 200 ) NOT NULL
+) ENGINE = InnoDB ";
+exec_query($query);
 
+exec_query("INSERT INTO `${p}status` (`status_id` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
 // GROUPS
 $defaultgrp=$kga['lang']['defaultgrp'];
@@ -367,6 +384,9 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone',".quo
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('editLimit','-')");
+exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '1' );");
+exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundMinutes', '0');");
+exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundSeconds', '0');");
 
 if ($errors) {
     require_once('../libraries/smarty/Smarty.class.php');

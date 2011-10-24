@@ -170,14 +170,35 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width: 90px;
 }
 
-#xp td.rate
+#xp td.budget
+{
+    width:50px;
+}
+
+#xp td.status
+{
+    width:50px;
+}
+
+#xp td.billable
 {
     width:40px;
 }
 
+#xp td.approved
+{
+    width:50px;
+}
+
+
+#xp td.rate
+{
+    width:50px;
+}
+
 #xp td.wage
 {
-    width:40px;
+    width:50px;
 }
 
 #xp_head td { white-space:nowrap; }
@@ -204,7 +225,12 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
 }
 
 #xp td.comment {
-    width:80px;
+    width:40px;
+}
+
+
+#xp td.description {
+    width:120px;
 }
 
 #xp td.location {
@@ -212,7 +238,7 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
 }
 
 #xp td.trackingnr {
-    width:120px;
+    width:40px;
 }
 
 div.ki_export table tr.odd td.disabled {

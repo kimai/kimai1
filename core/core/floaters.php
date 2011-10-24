@@ -137,8 +137,10 @@ switch ($axAction) {
                 $tpl->assign('pct_internal'    , $data['pct_internal'    ]);
                 $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
                 $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
+                $tpl->assign('pct_effort'      , $data['pct_effort'      ]);
+                $tpl->assign('pct_approved'    , $data['pct_approved' 	 ]);
                 $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
-                $tpl->assign('evt_selection'   , $database->pct_get_evts($id)        );
+                $tpl->assign('evt_selection'   , $database->pct_get_evts($id));
                 $tpl->assign('pct_default_rate', $data['pct_default_rate']);
                 $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
                 $tpl->assign('pct_fixed_rate'  , $data['pct_fixed_rate'  ]);
@@ -154,9 +156,11 @@ switch ($axAction) {
         // Create a <select> element to chosse the events.
         $assignableTasks = array();
         $tasks = $database->get_arr_evt($kga['usr']['groups']);
-        foreach ($tasks as $task) {
-          if (!$task['evt_assignable']) continue;
-          $assignableTasks[$task['evt_ID']] = $task['evt_name'];
+        if(is_array($tasks)) {
+	        foreach ($tasks as $task) {
+	          if (!$task['evt_assignable']) continue;
+	          $assignableTasks[$task['evt_ID']] = $task['evt_name'];
+	        }
         }
         $tpl->assign('assignableTasks',$assignableTasks);
         

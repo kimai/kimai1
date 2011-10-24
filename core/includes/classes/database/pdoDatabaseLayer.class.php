@@ -325,8 +325,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       pct_visible,
       pct_internal,
       pct_filter,
-      pct_budget
-      ) VALUES (?, ?, ?, ?, ?, ?, ?);");
+      pct_budget,
+      pct_effort,
+      pct_approved
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
       (int)$data['pct_kndID'],
@@ -335,8 +337,9 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$data['pct_visible'],
       (int)$data['pct_internal'],
       (int)$data['pct_filter'],
-      doubleval($data['pct_budget'])
-      ));
+      doubleval($data['pct_budget']),
+      doubleval($data['pct_effort']),
+      doubleval($data['pct_approved'])));
 
       if ($result == true) {
 
@@ -440,7 +443,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $keys = array(
         'pct_kndID', 'pct_name', 'pct_comment', 'pct_visible', 'pct_internal',
-        'pct_filter', 'pct_budget');
+        'pct_filter', 'pct_budget', 'pct_effort', 'pct_approved');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'pct SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -504,6 +507,25 @@ class PDODatabaseLayer extends DatabaseLayer {
           $this->logLastError('assign_pct2grps');
           return false;
       }
+  }
+  
+      /**
+  * deletes a status
+  *
+  * @param array $status_id  status_id of the status
+  * @return boolean       	 true on success, false on failure
+  * @author mo
+  */
+  public function status_delete($status_id) {
+      $p = $this->kga['server_prefix'];
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE pct_ID=?;");    
+      $d_result = $pdo_query->execute(array($status_id));
+      if ($d_result == false) {
+          $this->logLastError('status_delete');
+          $this->conn->rollBack();
+          return false;
+      }
+      return true;
   }
 
   /**
@@ -572,14 +594,20 @@ class PDODatabaseLayer extends DatabaseLayer {
       evt_comment,
       evt_visible,
       evt_filter,
+      evt_budget.
+      evt_effort,
+      evt_approved,
       evt_assignable
-      ) VALUES (?, ?, ?, ?, ?);");
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
       $data['evt_name'],
       $data['evt_comment'],
       $data['evt_visible'],
       $data['evt_filter'],
+      $data['evt_budget'],
+      $data['evt_effort'],
+      $data['evt_approved'],
       $data['evt_assignable']
       ));
 
@@ -613,6 +641,40 @@ class PDODatabaseLayer extends DatabaseLayer {
       } else {
         $this->logLastError('evt_create');
         return false;
+      }
+  }
+  
+   /**
+   * 
+   * update the data for event per project, which is budget, approved and effort
+   * @param integer $pct_id
+   * @param integer $evt_id
+   * @param array $data
+   */
+  public function pct_evt_edit($pct_id, $evt_id, $data) {
+      
+      $data = $this->clean_data($data);
+ 	  $keys = array('evt_budget', 'evt_effort', 'evt_approved');
+
+      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'pct_evt SET ';
+      $query .= $this->buildSQLUpdateSet($keys, $data);
+      $query .= ' WHERE evt_id = :eventId and pct_id = :projectId;';
+       $statement = $this->conn->prepare($query);
+
+      $this->bindValues($statement,$keys,$data);
+      $statement->bindValue(":eventId", $evt_id);
+      $statement->bindValue(":projectId", $pct_id);
+
+      if (!$statement->execute()) {
+          $this->logLastError('evt_edit');
+        return false;
+      }
+      
+      if ($this->conn->commit() == true) {
+          return true;
+      } else {
+          $this->logLastError('evt_edit');
+          return false;
       }
   }
 
@@ -682,7 +744,7 @@ class PDODatabaseLayer extends DatabaseLayer {
         unset($data['evt_fixed_rate']);
       }
 
-      $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter', 'evt_assignable');
+      $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter', 'evt_budget', 'evt_effort', 'evt_approved', 'evt_assignable');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'evt SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -868,7 +930,8 @@ class PDODatabaseLayer extends DatabaseLayer {
   public function pct_get_evts($pct_id) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT evt_ID FROM ${p}pct_evt WHERE pct_ID = ?;");
+      $pdo_query = $this->conn->prepare("SELECT ${p}pct_evt.evt_ID,evt_budget, evt_effort, evt_approved FROM ${p}pct_evt
+      join ${p}evt on ${p}evt.evt_ID = ${p}pct_evt.evt_ID WHERE pct_ID = ? and evt_trash = 0;");
 
       $result = $pdo_query->execute(array($pct_id));
       if ($result == false) {
@@ -877,11 +940,9 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
 
       $return_evts = array();
-      $counter = 0;
-
+      
       while ($current_evt = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_evts[$counter] = $current_evt['evt_ID'];
-          $counter++;
+          $return_evts[] = $current_evt;
       }
 
       return $return_evts;
@@ -1523,6 +1584,29 @@ class PDODatabaseLayer extends DatabaseLayer {
           return $result_array;
       }
   }
+  
+    
+  /**
+  * Returns the data of a certain status
+  *
+  * @param array $status_id  status_id of the group
+  * @return array         	 the group's data (name) as array, false on failure
+  * @author mo
+  */
+  public function status_get_data($status_id) {
+      $p = $this->kga['server_prefix'];
+      
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}status WHERE status_id = ?");
+      $result = $pdo_query->execute(array($status_id));
+      
+      if ($result == false) {
+        $this->logLastError('status_get_data');
+        return false;
+      } else {
+          $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
+          return $result_array;
+      }
+  }
 
   /**
   * Returns the number of users in a certain group
@@ -1569,6 +1653,30 @@ class PDODatabaseLayer extends DatabaseLayer {
           return false;
       }
 
+      return true;
+  }
+  
+ /**
+  * Edits a status by replacing its data by the new array
+  *
+  * @param array $status_id  grp_id of the status to be edited
+  * @param array $data    name and other new data of the status
+  * @return boolean       true on success, false on failure
+  * @author mo
+  */
+    public function status_edit($status_id, $data) {
+      $p = $this->kga['server_prefix'];
+      
+      $data = $this->clean_data($data); 
+      
+      $pdo_query = $this->conn->prepare("UPDATE ${p}status SET status = ? WHERE status_id = ?;");
+      $result = $pdo_query->execute(array($data['status'],$status_id));
+
+      if ($result == false) {
+          $this->logLastError('status_edit');
+          return false;
+      }
+      
       return true;
   }
 
@@ -1810,6 +1918,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       `zef_evtID`,
       `zef_location`,
       `zef_trackingnr`,
+      `zef_description`,
       `zef_comment`,
       `zef_comment_type`,
       `zef_in`,
@@ -1817,8 +1926,12 @@ class PDODatabaseLayer extends DatabaseLayer {
       `zef_time`,
       `zef_usrID`,
       `zef_rate`,
-      `zef_cleared`
-      ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+      `zef_cleared`,
+      `zef_budget`,
+      `zef_approved`,
+      `zef_status`,
+      `zef_billable`
+      ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ;");
 
       $result = $pdo_query->execute(array(
@@ -1826,6 +1939,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$data['evt_ID'] ,
       $data['zlocation'],
       $data['trackingnr']==''?null:$data['trackingnr'],
+      $data['description'],
       $data['comment'],
       (int)$data['comment_type'] ,
       (int)$data['in'],
@@ -1833,7 +1947,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$data['diff'],
       (int)$usr_ID,
       (int)$data['rate'],
-      $data['cleared']?1:0
+      $data['cleared']?1:0,
+      (int)$data['budget'],
+      (int)$data['approved'],
+      (int)$data['status'],
+      (int)$data['billable']
       ));
 
       if ($result === false) {
@@ -1871,13 +1989,18 @@ class PDODatabaseLayer extends DatabaseLayer {
       zef_evtID = ?,
       zef_location = ?,
       zef_trackingnr = ?,
+      zef_description = ?,
       zef_comment = ?,
       zef_comment_type = ?,
       zef_in = ?,
       zef_out = ?,
       zef_time = ?,
       zef_rate = ?,
-      zef_cleared= ?
+      zef_cleared= ?,
+      zef_budget= ?,
+      zef_approved= ?,
+      zef_status= ?,
+      zef_billable= ?
       WHERE zef_ID = ?;");
 
       $result = $pdo_query->execute(array(
@@ -1885,6 +2008,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$new_array['zef_evtID'] ,
       $new_array['zef_location'],
       $new_array['zef_trackingnr']==''?null:$new_array['zef_trackingnr'],
+      $new_array['zef_description'],
       $new_array['zef_comment'],
       (int)$new_array['zef_comment_type'] ,
       (int)$new_array['zef_in'],
@@ -1892,6 +2016,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       (int)$new_array['zef_time'],
       (int)$new_array['zef_rate'],
       (int)$new_array['zef_cleared'],
+      (int)$new_array['zef_budget'],
+      (int)$new_array['zef_approved'],
+      (int)$new_array['zef_status'],
+      (int)$new_array['zef_billable'],
       $id
       ));
 
@@ -1983,6 +2111,8 @@ class PDODatabaseLayer extends DatabaseLayer {
           $arr[$i]['knd_ID']      = $row['knd_ID'];
           $arr[$i]['pct_visible'] = $row['pct_visible'];
           $arr[$i]['pct_budget'] = $row['pct_budget'];
+          $arr[$i]['pct_effort'] = $row['pct_effort'];
+          $arr[$i]['pct_approved'] = $row['pct_approved'];
           $i++;
       }
       return $arr;
@@ -2002,7 +2132,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $arr = array();
 
-      if ($group == "all")
+      if ($groups == "all" || $groups == null)
         $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0";
       else
         $query = "SELECT * FROM ${p}pct
@@ -2120,11 +2250,12 @@ class PDODatabaseLayer extends DatabaseLayer {
           $limit="";
       }
 
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
               FROM ${p}zef
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
               Join ${p}usr ON zef_usrID = usr_ID
+              Join ${p}status ON zef_status = status_id
               Join ${p}evt ON evt_ID    = zef_evtID "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
               ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit . ';';
@@ -2183,10 +2314,15 @@ class PDODatabaseLayer extends DatabaseLayer {
           $arr[$i]['pct_comment']      = $row['pct_comment'];
           $arr[$i]['zef_location']     = $row['zef_location'];
           $arr[$i]['zef_trackingnr']   = $row['zef_trackingnr'];
+          $arr[$i]['zef_budget']  	   = $row['zef_budget'];
+          $arr[$i]['zef_approved']     = $row['zef_approved'];
+          $arr[$i]['zef_status']       = $row['status'];
+          $arr[$i]['zef_billable']     = $row['zef_billable'];
+          $arr[$i]['zef_description']  = $row['zef_description'];
           $arr[$i]['zef_comment']      = $row['zef_comment'];
           $arr[$i]['zef_cleared']      = $row['zef_cleared'];
           $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
-          $arr[$i]['usr_name']        = $row['usr_name'];
+          $arr[$i]['usr_name']         = $row['usr_name'];
           $arr[$i]['usr_alias']        = $row['usr_alias'];
           $i++;
       }
@@ -2321,6 +2457,22 @@ class PDODatabaseLayer extends DatabaseLayer {
     $this->kga['conf']['lang'] = '';
     $this->kga['conf']['user_list_hidden'] = 0;
     $this->kga['conf']['hideClearedEntries'] = 0;
+
+
+    // get status values
+    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}status;");
+    $result = $pdo_query->execute();
+
+    if ($result == false) {
+        $this->logLastError('get_global_config');
+        return;
+    }
+
+    $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
+
+    do {
+        $this->kga['conf']['status'][] = $row['status'];
+    } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
   }
 
   /**
@@ -2768,6 +2920,55 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       return $arr;
   }
+  
+    
+  /**
+  * Read event budgets
+  * 
+  * @author mo
+  */
+  public function get_evt_budget($project_id,$event_id) {
+    // validate input
+    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
+    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+
+
+    $pdo_query = $this->conn->prepare("SELECT evt_budget, evt_approved, evt_effort FROM " . $this->kga['server_prefix'] . "pct_evt WHERE ".
+    (($project_id=="NULL")?"pct_ID is NULL":"pct_ID = $project_id"). " AND ".
+    (($event_id=="NULL")?"evt_ID is NULL":"evt_ID = $event_id"));
+          
+    $result = $pdo_query->execute();
+
+    if ($result == false) {
+        $this->logLastError('get_evt_budget');
+        return array();
+    }
+    $data = $pdo_query->fetch(PDO::FETCH_ASSOC);
+    $zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+  	foreach($zefs as $zef) {
+    	$data['evt_budget']+= $zef['zef_budget'];
+    	$data['evt_approved']+= $zef['zef_approved'];
+  	}    
+    return $data;
+  }
+  
+    /**
+   * 
+   * get the whole budget used for the event
+   * @param integer $project_id
+   * @param integer $event_id
+   */
+  public function get_budget_used($project_id,$event_id) {
+  	$zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+  	$budgetUsed = 0;
+  	if(is_array($zef)) {
+	  	foreach($zefs as $zef) {
+	  		$budgetUsed+= $zef['wage_decimal'];
+	  	}
+  	}
+	return $budgetUsed;
+  }
+  
 
   /**
   * returns list of time summary attached to project ID's within specific timespace as array
@@ -3141,6 +3342,94 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
 
       return $seq;
+  }
+  
+  
+  /**
+   * return status names
+   * @param integer $statusIds
+   */
+    public function get_status($statusIds) {
+  	  $p = $this->kga['server_prefix'];
+  	  $statusIds = implode(',', $statusIds);
+      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
+      $result = $pdo_query->execute();
+      if ($result == false) {
+          $this->logLastError('get_status');
+          return false;
+      }
+      
+      while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+      	$res[] = $row['status'];
+      }
+      return $res;
+  }
+  
+    /**
+  * Returns the number of zef with a certain status
+  *
+  * @param integer $status_id   status_id of the status
+  * @return int            		the number of zef with this status
+  * @author mo
+  */
+  public function status_count_zef($status_id) {
+      $p = $this->kga['server_prefix'];
+      
+      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}zef WHERE zef_status = ?");
+      $result = $pdo_query->execute(array($status_id));
+      
+      if ($result == false) {
+          $this->logLastError('status_count_zef');
+          return false;
+      } else {
+          $result_array = $pdo_query->fetch();
+          return $result_array[0];
+      }
+  }
+  
+  
+ /**
+  * returns array of all status with the status id as key
+  *
+  * @return array
+  * @author mo 
+  */
+  public function get_arr_status() {
+      $p = $this->kga['server_prefix'];
+      
+        $query = "SELECT * FROM ${p}status 
+        ORDER BY status;";
+
+      $pdo_query = $this->conn->prepare($query);
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('getStatus');
+          return array();
+      }
+      $i = 0;
+      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+          $arr[] = $row;
+          $arr[$i]['count_zef'] = $this->status_count_zef($row['status_id']);
+          $i++;
+      }
+      return $arr;
+  }
+  
+    /**
+   * add a new status
+   * @param array $statusArray
+   */
+  public function status_create($status) {
+      $p = $this->kga['server_prefix'];
+	  	  $pdo_query = $this->conn->prepare("INSERT INTO ${p}status (status) VALUES (?);");
+	      $result = $pdo_query->execute(array(trim($status)));
+        
+	      if (! $result) {
+	        $this->logLastError('add_status');
+	        return false;
+	      } 
+      return $this->conn->lastInsertId();
   }
 
   /**

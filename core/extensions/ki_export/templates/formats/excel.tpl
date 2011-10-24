@@ -56,9 +56,14 @@ mso-number-format:Fixed;
 { if $columns.dec_time     } <td>{$kga.lang.timelabel}</td>   { /if }
 { if $columns.rate         } <td>{$kga.lang.rate}</td>        { /if }
 { if $columns.wage         } <td>{$kga.currency_name}</td>    { /if }
+{ if $columns.budget       } <td>{$kga.lang.budget}</td>      { /if }
+{ if $columns.approved     } <td>{$kga.lang.approved}</td>    { /if }
+{ if $columns.status       } <td>{$kga.lang.status}</td>   	  { /if }
+{ if $columns.billable     } <td>{$kga.lang.billable}</td>    { /if }
 { if $columns.knd          } <td>{$kga.lang.knd}</td>         { /if }
 { if $columns.pct          } <td>{$kga.lang.pct}</td>         { /if }
 { if $columns.action       } <td>{$kga.lang.evt}</td>         { /if }
+{ if $columns.description  } <td>{$kga.lang.description}</td> { /if }
 { if $columns.comment      } <td>{$kga.lang.comment}</td>     { /if }
 { if $columns.location     } <td>{$kga.lang.zlocation}</td>   { /if }
 { if $columns.trackingnr   } <td>{$kga.lang.trackingnr}</td>  { /if }
@@ -155,6 +160,35 @@ mso-number-format:Fixed;
                     </td>
 {/if}
 
+{*budget --------------------------------------------------*}
+{ if $columns.budget }
+                    <td>
+                        {$arr_data[row].budget|escape:'html'}
+                    </td>
+{/if}
+
+
+{*approved --------------------------------------------------*}
+{ if $columns.approved }
+                    <td>
+                        {$arr_data[row].approved|escape:'html'}
+                    </td>
+{/if}
+
+{*status --------------------------------------------------*}
+{ if $columns.status }
+                    <td>
+                        {$arr_data[row].status|escape:'html'}
+                    </td>
+{/if}
+
+{*billable --------------------------------------------------*}
+{ if $columns.billable }
+                    <td>
+                        {$arr_data[row].billable|escape:'html'}%
+                    </td>
+{/if}
+
 {*client name --------------------------------------------------*}
 { if $columns.knd }
                     <td>
@@ -174,6 +208,13 @@ mso-number-format:Fixed;
 { if $columns.action }
                     <td>
                             {$arr_data[row].evt_name|escape:'html'} 
+                    </td>
+{/if}
+
+{*description --------------------------------------------------*}
+{ if $columns.description }
+                    <td>
+                        {$arr_data[row].description|escape:'html'}%
                     </td>
 {/if}
 

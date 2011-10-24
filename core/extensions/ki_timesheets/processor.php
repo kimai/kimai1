@@ -52,6 +52,7 @@ switch ($axAction) {
         $zefData['evt_ID'] = $zefData['zef_evtID'];
         $zefData['zlocation'] = $zefData['zef_location'];
         $zefData['trackingnr'] = $zefData['zef_trackingnr'];
+        $zefData['description'] = $zefData['zef_description'];
         $zefData['comment'] = $zefData['zef_comment'];
         $zefData['comment_type'] = $zefData['zef_comment_type'];
         $zefData['rate'] = $zefData['zef_rate'];
@@ -165,6 +166,29 @@ switch ($axAction) {
         $data = array(
           'hourlyRate' => $database->get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']),
           'fixedRate' => $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['event_id'])
+        );
+        echo json_encode($data);
+    break;
+    
+    
+    // ===============================================
+    // = Get the new budget data after changing project or event =
+    // ===============================================
+    case 'budgets':
+        if (isset($kga['customer'])) die();
+        $zefData = $database->zef_get_data($_REQUEST['zef_id']);
+        // we subtract the used data in case the event is the same as in the db, otherwise
+        // it would get counted twice. For all aother cases, just set the values to 0
+        // so we don't subtract too much
+        if($zefData['zef_evtID'] != $_REQUEST['event_id'] || $zefData['zef_pctID'] != $_REQUEST['project_id']) {
+        	$zefData['zef_budget'] = 0;
+        	$zefData['zef_approved'] = 0;
+        	$zefData['zef_rate'] = 0;
+        }
+        $data = array(
+          'eventBudgets' => $database->get_evt_budget($_REQUEST['project_id'],$_REQUEST['event_id']),
+          'eventUsed' => $database->get_budget_used($_REQUEST['project_id'],$_REQUEST['event_id']),
+          'zefData' => $zefData
         );
         echo json_encode($data);
     break;
@@ -324,17 +348,22 @@ switch ($axAction) {
           return;
         }
       }
-  
+      
       $data['pct_ID']          = $_REQUEST['pct_ID'];
       $data['evt_ID']          = $_REQUEST['evt_ID'];
       $data['zlocation']       = $_REQUEST['zlocation'];
       $data['trackingnr']      = $_REQUEST['trackingnr'];
+      $data['description']     = $_REQUEST['description'];
       $data['comment']         = $_REQUEST['comment'];
       $data['comment_type']    = $_REQUEST['comment_type'];
       $data['erase']           = isset($_REQUEST['erase']);
       $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
       $data['fixed_rate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixed_rate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
+      $data['status']          = $_REQUEST['status'];
+      $data['billable']        = $_REQUEST['billable'];
+      $data['budget']          = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
+      $data['approved']        = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
 
       if ($data['erase']) {
         // delete checkbox set ?

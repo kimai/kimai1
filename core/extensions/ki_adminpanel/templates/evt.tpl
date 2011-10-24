@@ -1,5 +1,5 @@
 
-<a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_evt}"></a> {$kga.lang.new_evt}
+<a href="#" onClick="floaterShow('floaters.php','add_edit_evt',0,0,500,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_evt}"></a> {$kga.lang.new_evt}
 
 &nbsp;&nbsp;&nbsp;{$kga.lang.view_filter}:
         <select size="1" id="evt_pct_filter" onchange="ap_ext_refreshSubtab('evt');">
@@ -26,37 +26,37 @@
     
             <tbody>
 
-{section name=row loop=$arr_evt}
-{if $arr_evt[row].evt_visible || $arr_evt[row].zeit != "0:00"}
+{foreach item=evt from=$arr_evt}
+{if $evt.evt_visible || $evt.zeit != "0:00"}
             
                 <tr class="{cycle values="odd,even"}">
 
                     <td class="option">
-                        <a href ="#" onClick="editSubject('evt',{$arr_evt[row].evt_ID}); $(this).blur(); return false;">
+                        <a href ="#" onClick="editSubject('evt',{$evt.evt_ID}); $(this).blur(); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
                         
                         &nbsp;
                         
-                        <a href="#" id="delete_evt{$arr_evt[row].evt_ID}" onClick="ap_ext_deleteEvent({$arr_evt[row].evt_ID})">
+                        <a href="#" id="delete_evt{$evt.evt_ID}" onClick="ap_ext_deleteEvent({$evt.evt_ID})">
                           <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delevt}" width="13" height="13" alt="{$kga.lang.delevt}" border="0">
                         </a>
                     </td>
 
                     <td class="events">
-                        {if $arr_evt[row].evt_visible != 1}<span style="color:#bbb">{/if}
-                        {$arr_evt[row].evt_name|escape:'html'}
-                        {if $arr_evt[row].evt_visible != 1}</span>{/if}
+                        {if $evt.evt_visible != 1}<span style="color:#bbb">{/if}
+                        {$evt.evt_name|escape:'html'}
+                        {if $evt.evt_visible != 1}</span>{/if}
                     </td>
                     
                     <td>
-                        {$arr_evt[row].groups|escape:'html'}
+                        {$evt.groups|escape:'html'}
                     </td>
 
                 </tr>
             
 {/if}
-{/section}
+{/foreach}
 
 
 

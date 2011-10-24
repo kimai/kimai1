@@ -21,9 +21,14 @@
           <col class="dec_time" />
           <col class="rate" />
           <col class="wage" />
+          <col class="budget" />
+          <col class="approved" />
+          <col class="status" />
+          <col class="billable" />
           <col class="knd" />
           <col class="pct" />
           <col class="evt" />
+          <col class="description" />
           <col class="comment" />
           <col class="location" />
           <col class="trackingnr" />
@@ -38,9 +43,14 @@
                 <td class="dec_time {if $disabled_columns.dec_time}disabled{/if}"><a onClick="xp_toggle_column('dec_time');">{$kga.lang.timelabel}</a></td>
                 <td class="rate"><a class="rate {if $disabled_columns.rate}disabled{/if}" onClick="xp_toggle_column('rate');">{$kga.lang.rate_short}</a></td>
                 <td class="wage"><a class="wage {if $disabled_columns.wage}disabled{/if}" onClick="xp_toggle_column('wage');">{$kga.lang.total}</a></td>
+                <td class="budget {if $disabled_columns.budget}disabled{/if}"><a onClick="xp_toggle_column('budget');">{$kga.lang.budget}</a></td>
+                <td class="approved {if $disabled_columns.approved}disabled{/if}"><a onClick="xp_toggle_column('approved');">{$kga.lang.approved}</a></td>
+                <td class="status {if $disabled_columns.status}disabled{/if}"><a onClick="xp_toggle_column('status);">{$kga.lang.status}</a></td>
+                <td class="billable {if $disabled_columns.billable}disabled{/if}"><a onClick="xp_toggle_column('billable');">{$kga.lang.billable}</a></td>
                 <td class="knd {if $disabled_columns.knd}disabled{/if}"><a onClick="xp_toggle_column('knd');">{$kga.lang.knd}</a></td>
                 <td class="pct {if $disabled_columns.pct}disabled{/if}"><a onClick="xp_toggle_column('pct');">{$kga.lang.pct}</a></td>
                 <td class="evt {if $disabled_columns.evt}disabled{/if}"><a onClick="xp_toggle_column('evt');">{$kga.lang.evt}</a></td>
+                <td class="description {if $disabled_columns.description}disabled{/if}"><a onClick="xp_toggle_column('description');">{$kga.lang.description}</a></td>
 
                 <td class="moreinfo" colspan="3">
 					<a class="comment {if $disabled_columns.comment}disabled{/if}" onClick="xp_toggle_column('comment');">{$kga.lang.comment}</a>,

@@ -1,4 +1,4 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,450,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_pct}"></a> {$kga.lang.new_pct}
+<a href="#" onClick="floaterShow('floaters.php','add_edit_pct',0,0,650,200); $(this).blur(); return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/add.png" width="22" height="16" alt="{$kga.lang.new_pct}"></a> {$kga.lang.new_pct}
 <br/><br/>
 
 {cycle values="odd,even" reset=true print=false}

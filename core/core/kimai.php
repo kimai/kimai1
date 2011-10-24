@@ -53,6 +53,12 @@ $timespace = get_timespace();
 $in = $timespace[0];
 $out = $timespace[1];
 
+// ============================================
+// = load the config =
+// ============================================
+include('Config.php');
+
+
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
@@ -131,6 +137,7 @@ else
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 $tpl->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
+$tpl->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 
 
 $knd_data = array('knd_ID'=>false,'knd_name'=>'');

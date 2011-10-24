@@ -73,7 +73,19 @@ switch ($axAction) {
         $tpl->assign('grp_details', $grp_details);
         $tpl->display("editgroup.tpl"); 
         
-    break;        
+    break;     
+    
+    case "editStatus":    
+    // =============================
+    // = Builds edit-status dialogue =
+    // =============================
+        
+        $status_details = $database->status_get_data($_REQUEST['id']);
+        
+        $tpl->assign('status_details', $status_details);
+        $tpl->display("editstatus.tpl"); 
+        
+    break;       
 
 }
 

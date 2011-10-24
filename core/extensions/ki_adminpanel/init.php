@@ -121,6 +121,8 @@
       $tpl->assign('arr_grp', $database->get_arr_grp_by_leader($kga['usr']['usr_ID'],
         get_cookie('ap_ext_show_deleted_groups',0)));
 
+      $tpl->assign('arr_status', $database->get_arr_status());
+        
     if ($kga['usr']['usr_sts']==0)
       $arr_usr = $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0));
     else
@@ -129,9 +131,11 @@
     // get group names
     foreach ($arr_usr as &$user) {
       $groups = $database->getGroupMemberships($user['usr_ID']);
-      foreach ($groups as $group) {
-        $groupData = $database->grp_get_data($group);
-        $user['groups'][] = $groupData['grp_name'];
+      if(is_array($groups)) {
+	      foreach ($groups as $group) {
+	        $groupData = $database->grp_get_data($group);
+	        $user['groups'][] = $groupData['grp_name'];
+	      }
       }
     }
 
@@ -142,9 +146,12 @@
     $tpl->assign('languages', Translations::langs());
 
     $tpl->assign('timezones', timezoneList());
+    $status = $database->get_arr_status();
+    $tpl->assign('arr_status', $status);
 
     $admin['users'] = $tpl->fetch("users.tpl");
     $admin['groups'] = $tpl->fetch("groups.tpl");
+    $admin['status'] = $tpl->fetch("status.tpl");
 
 
 
@@ -158,6 +165,16 @@
       $tpl->assign('editLimitEnabled',false);
       $tpl->assign('editLimitDays','');
       $tpl->assign('editLimitHours','');
+    }
+        if ($kga['conf']['roundTimesheetEntries'] != '') {
+      $tpl->assign('roundTimesheetEntries',true);
+      $tpl->assign('roundMinutes',$kga['conf']['roundMinutes']);
+      $tpl->assign('roundSeconds',$kga['conf']['roundSeconds']);
+    }
+    else {
+      $tpl->assign('roundTimesheetEntries',false);
+      $tpl->assign('roundMinutes','');
+      $tpl->assign('roundSeconds','');
     }
     $admin['advanced'] = $tpl->fetch("advanced.tpl");
     

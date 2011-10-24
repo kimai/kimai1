@@ -127,6 +127,9 @@ return array(
 "database"          => "Database",
 "options"           => "Options",
 "status"            => "Status",
+"editstatus"		=> "Edit status",
+"new_status"        => "Add status",
+"description"       => "Description",
 "adminmail"         => "email address of administrator",
 "logintries"        => "number of false logins before user gets banned",
 "bantime"           => "login bantime in seconds",
@@ -194,6 +197,7 @@ return array(
 "hideitem"          => "make invisible",
 "checkUsername"     => "You must enter a username in the field left from the add-button!",
 "checkGroupname"    => "You must enter a group name in the field left from the add-button!",
+"checkStatusname"    => "You must enter a status name in the field left from the add-button!",
 "clickToReload"     => "Click here to reload the GUI",
 "sure"              => "Sure?",
 "clock"             => "Clock",
@@ -214,15 +218,26 @@ return array(
 "testPCT"           => "Test-Project",
 "testEVT"           => "testing",
 
+"time_billable"     => "Billable",
+"billable"          => "Billable",
 "budget"            => "Budget",
 "rate"              => "Rate (by hour)",
 "rate_short"        => "Rate",
+"approved"          => "Approved",
 "default_rate"      => "Default rate",
 "my_rate"           => "My rate",
 "fixed_rate"        => "Fixed rate",
-
+"used"          	=> "Used",
+"budget_available" 	=> "Budget available",
+"budget_event" 		=> "Budget of event",
+"budget_event_used" => "Budget used",
+"budget_event_approved" => "Budget approved",
+"budget_minus"		=> "over budget",
 "wage"              => "Wage",
-
+"roundTimesheetEntries" => "Round new timesheet entries to",
+"minutes"			=> "Minutes",
+"seconds" 			=> "Seconds",
+"and" 				=> "and",
 "customerlogin"     => "customer login",
 
 "expense"           => "Expense",
@@ -257,6 +272,7 @@ return array(
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
 'all_events' => '&lt;&lt;all&gt;&gt;',
+'all' => 'alle',
 
 'durationWithSeconds' => 'Show duration exact to the second.',
 
@@ -299,9 +315,8 @@ return array(
 
 'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
-'assignable' => 'Assignable',
-'assignableDescription' => 'Assignable to individual projects',
-
+'taskAssignable' => 'Assignable',
+'taskAssignableDescription' => 'Assignable to individual projects',
 
 
 'credits' => <<<EOF

@@ -178,9 +178,13 @@ switch ($axAction) {
         $arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $timeSum = 0;
         $wageSum = 0;
+        $budgetSum = 0;
+        $approvedSum = 0;
         foreach ($arr_data as $data) {
           $timeSum += $data['dec_zef_time'];
           $wageSum += $data['wage'];
+          $budgetSum += $data['budget'];
+          $approvedSum += $data['approved'];
         }
         
         $tpl->assign('timespan',strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
@@ -194,12 +198,16 @@ switch ($axAction) {
             if ($one_entry['type'] == 'zef') {
               if (isset($zef_summary[$one_entry['zef_evtID']])) {
                 $zef_summary[$one_entry['zef_evtID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
-                $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Euro
+                $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Currency
+                $zef_summary[$one_entry['zef_evtID']]['budget'] += $one_entry['budget']; //Currency
+                $zef_summary[$one_entry['zef_evtID']]['approved']+= $one_entry['approved']; //Currency
               }
               else {
                 $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
                 $zef_summary[$one_entry['zef_evtID']]['time']         = $one_entry['dec_zef_time'];
                 $zef_summary[$one_entry['zef_evtID']]['wage']         = $one_entry['wage'];
+                $zef_summary[$one_entry['zef_evtID']]['budget'] 	  = $one_entry['budget']; 
+                $zef_summary[$one_entry['zef_evtID']]['approved']	  = $one_entry['approved'];
               }
             }
             else {
@@ -240,6 +248,8 @@ switch ($axAction) {
         $tpl->assign('custom_dateformat',$dateformat);
         $tpl->assign('timeSum',$timeSum);
         $tpl->assign('wageSum',$wageSum);
+        $tpl->assign('budgetSum',$budgetSum);
+        $tpl->assign('approvedSum',$approvedSum);
 
         header("Content-Type: text/html");
         $tpl->display("formats/html.tpl");
@@ -309,6 +319,14 @@ switch ($axAction) {
           $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);          
         if (isset($columns['wage']))
           $row[] = csv_prepare_field($kga['currency_name'],$column_delimiter,$quote_char);                      
+        if (isset($columns['budget']))
+          $row[] = csv_prepare_field($kga['lang']['budget'],$column_delimiter,$quote_char);                      
+        if (isset($columns['approved']))
+          $row[] = csv_prepare_field($kga['lang']['approved'],$column_delimiter,$quote_char);                      
+        if (isset($columns['status']))
+          $row[] = csv_prepare_field($kga['lang']['status'],$column_delimiter,$quote_char);                      
+        if (isset($columns['billable']))
+          $row[] = csv_prepare_field($kga['lang']['billable'],$column_delimiter,$quote_char);                      
         if (isset($columns['knd']))
           $row[] = csv_prepare_field($kga['lang']['knd'],$column_delimiter,$quote_char);           
         if (isset($columns['pct']))
@@ -345,7 +363,15 @@ switch ($axAction) {
           if (isset($columns['rate']))
             $row[] = csv_prepare_field($data['zef_rate'],$column_delimiter,$quote_char);          
           if (isset($columns['wage']))
-            $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                      
+            $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                 
+          if (isset($columns['budget']))
+            $row[] = csv_prepare_field($data['budget'],$column_delimiter,$quote_char);                  
+          if (isset($columns['approved']))
+            $row[] = csv_prepare_field($data['approved'],$column_delimiter,$quote_char);                  
+          if (isset($columns['status']))
+            $row[] = csv_prepare_field($data['status'],$column_delimiter,$quote_char);                  
+          if (isset($columns['billable']))
+            $row[] = csv_prepare_field($data['billable'],$column_delimiter,$quote_char).'%';                       
           if (isset($columns['knd']))
             $row[] = csv_prepare_field($data['knd_name'],$column_delimiter,$quote_char);           
           if (isset($columns['pct']))

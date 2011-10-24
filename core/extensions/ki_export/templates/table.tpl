@@ -12,9 +12,14 @@
               <col class="dec_time" />
               <col class="rate" />
               <col class="wage" />
+              <col class="budget" />
+              <col class="approved" />
+              <col class="status" />
+              <col class="billable" />
               <col class="client" />
               <col class="project" />
               <col class="action" />
+              <col class="description" />
               <col class="comment" />
               <col class="location" />
               <col class="trackingnr" />
@@ -32,19 +37,6 @@
 <tr id="xp{$arr_data[row].type}{$arr_data[row].id}" class="{cycle values="odd,even"} {if !$arr_data[row].time_out}active{/if}
  {if $arr_data[row].type=="exp"}expense{/if}">
                
-
-
-
-
-
-
-
-
-
-
-
-
-                   
 
 {*datum --------------------------------------------------------*}
 
@@ -177,6 +169,66 @@
                         &ndash;
 {/if}
                     </td>
+                    
+{*budget --------------------------------------------------*}
+                    <td class="budget
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                        {if $disabled_columns.budget}disabled{/if}
+                    ">
+                        {$arr_data[row].budget|escape:'html'}
+                    </td>
+                    
+                    
+{*approved --------------------------------------------------*}
+                    <td class="approved
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                        {if $disabled_columns.approved}disabled{/if}
+                    ">
+                        {$arr_data[row].approved|escape:'html'}
+                    </td>
+                    
+                    
+{*status --------------------------------------------------*}
+                    <td class="status
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                        {if $disabled_columns.status}disabled{/if}
+                    ">
+                        {$arr_data[row].status|escape:'html'}
+                    </td>
+                    
+                    
+{*billable --------------------------------------------------*}
+                    <td class="billable
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                        {if $disabled_columns.billable}disabled{/if}
+                    ">
+                        {$arr_data[row].billable|escape:'html'}%
+                    </td>
+                    
 
 {*client name --------------------------------------------------*}
 
@@ -237,6 +289,22 @@
                             return false;">
                             {$arr_data[row].evt_name|escape:'html'} 
                         </a>
+                    </td>
+                    
+{*description -----------------------------------------------------*}
+
+                    <td class="description
+                        {if $arr_data[row].time_in|date_format:"%d" != $day_buffer}
+                            {if $kga.show_daySeperatorLines}break_day{/if}
+                        {else}
+                            {if $arr_data[row].time_out != $time_in_buffer}
+                                {if $kga.show_gabBreaks}break_gap{/if}
+                            {/if}
+                        {/if}
+                        {if $disabled_columns.comment}disabled{/if}
+                    ">
+                        {$arr_data[row].description|escape:'html'|nl2br}
+                        
                     </td>
 
 {*comment -----------------------------------------------------*}

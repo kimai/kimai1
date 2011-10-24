@@ -108,6 +108,7 @@ while ($time_index < count($timeArray)) {
 	$time    = $timeArray[$time_index]['zef_time']/3600;
 	$event   = html_entity_decode($timeArray[$time_index]['evt_name']);
 	$comment = $timeArray[$time_index]['zef_comment'];
+	$description = $timeArray[$time_index]['zef_description'];
 	$evtdt   = date("m/d/Y", $timeArray[$time_index]['zef_in']);
 
    // do we have to create a short form?
@@ -122,15 +123,16 @@ while ($time_index < count($timeArray)) {
             'hour'    => $totalTime+$time,
             "amount"  => $totalAmount+$wage,
             'date'    => $evtdt,
+            'description' => $description,
             'comment' => $comment
          );
 	  }
 	  else {
-   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'comment'=>$comment);
+   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment);
 	  }
    }
    else {
-      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'comment'=>$comment);
+      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment);
    }
    $time_index++;
 }

@@ -189,9 +189,16 @@ function xp_ext_set_TableWidths() {
 
 
   $("#xp_head > table > tbody > tr > td.time").css("width", $("div#xp > div > table > tbody > tr > td.time").width());
+  $("#xp_head > table > tbody > tr > td.wage").css("width", $("div#xp > div > table > tbody > tr > td.wage").width());
+  $("#xp_head > table > tbody > tr > td.rate").css("width", $("div#xp > div > table > tbody > tr > td.rate").width());
+  $("#xp_head > table > tbody > tr > td.billable").css("width", $("div#xp > div > table > tbody > tr > td.billable").width());
+  $("#xp_head > table > tbody > tr > td.status").css("width", $("div#xp > div > table > tbody > tr > td.status").width());
+  $("#xp_head > table > tbody > tr > td.budget").css("width", $("div#xp > div > table > tbody > tr > td.budget").width());
+  $("#xp_head > table > tbody > tr > td.approved").css("width", $("div#xp > div > table > tbody > tr > td.approved").width());
   $("#xp_head > table > tbody > tr > td.knd").css("width", $("div#xp > div > table > tbody > tr > td.knd").width());
   $("#xp_head > table > tbody > tr > td.pct").css("width", $("div#xp > div > table > tbody > tr > td.pct").width());
   $("#xp_head > table > tbody > tr > td.evt").css("width", $("div#xp > div > table > tbody > tr > td.evt").width());
+  $("#xp_head > table > tbody > tr > td.description").css("width", $("div#xp > div > table > tbody > tr > td.description").width());
   $("#xp_head > table > tbody > tr > td.moreinfo").css("width",
       $("div#xp > div > table > tbody > tr > td.comment").width()+
       $("div#xp > div > table > tbody > tr > td.location").width()+
@@ -347,7 +354,7 @@ function xp_toggle_cleared(id) {
  * Create a list of enabled columns.
  */
 function xp_enabled_columns() {
-  columns = new Array('date','from','to','time','dec_time','rate','wage','knd','pct','action','comment','location','trackingnr','user','cleared');
+  columns = new Array('date','from','to','time','dec_time','rate','wage','budget','approved','status','billable','knd','pct','action','description','comment','location','trackingnr','user','cleared');
   columnsString = '';
   firstColumn = true;
   $(columns).each(function () {

@@ -285,6 +285,10 @@ switch ($axAction) {
               $data['pct_filter']       = $_REQUEST['pct_filter'];
               $data['pct_budget']       = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_budget']);
+              $data['pct_effort']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_effort']);
+              $data['pct_approved']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_approved']);
               $data['pct_default_rate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
               $data['pct_my_rate']      = 
@@ -304,6 +308,21 @@ switch ($axAction) {
                 $database->assign_pct2grps($id, $_REQUEST['pct_grp']);
               if (isset($_REQUEST['pct_evt']))
                 $database->assign_pct2evts($id, $_REQUEST['pct_evt']);
+                foreach($_REQUEST['pct_evt'] as $index => $evt_id) {
+                	if($evt_id <= 0) {
+                		continue;
+                	}
+                	if($_REQUEST['budget'][$index] <= 0) {
+                		$_REQUEST['budget'][$index] = 0;
+                	}
+                	if($_REQUEST['effort'][$index] <= 0) {
+                		$_REQUEST['effort'][$index] = 0;
+                	}
+                	if($_REQUEST['approved'][$index] <= 0) {
+                		$_REQUEST['approved'][$index] = 0;
+                	}
+               		$database->pct_evt_edit($id, $evt_id, array('evt_budget' => $_REQUEST['budget'][$index], 'evt_effort' => $_REQUEST['effort'][$index], 'evt_approved' => $_REQUEST['approved'][$index]));
+                }
             break;
             
             /**

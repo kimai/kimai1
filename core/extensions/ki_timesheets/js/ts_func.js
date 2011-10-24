@@ -195,17 +195,76 @@ function ts_ext_reload() {
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
 //
-function ts_ext_reload_evt(pct,noUpdateRate) {
+function ts_ext_reload_evt(pct,noUpdateRate, evt, zef) {
   var selected_evt = $('#add_edit_zef_evt_ID').val();
             $.post(ts_ext_path + "processor.php", { axAction: "reload_evt_options", axValue: 0, id: 0, pct:pct },
                 function(data) { 
                     $("#add_edit_zef_evt_ID").html(data);
                     $("#add_edit_zef_evt_ID").val(selected_evt);
                     if (noUpdateRate == undefined)
-		      getBestRates();
+                    getBestRates();
                     ts_add_edit_validate();
+                    if(evt > 0) {
+	                    $.getJSON("../extensions/ki_timesheets/processor.php", {
+	                        axAction: "budgets",
+	                        project_id: pct,
+	                        event_id: evt,
+	                        zef_id: zef
+	                      },
+	                      function(data) {
+	                    	  ts_ext_updateBudget(data);
+	                      }
+	                     );
+                    }
                 }
             );
+}
+
+//----------------------------------------------------------------------------------------
+//reloads budget
+//
+// everything in data['zefData'] has to be subtracted in case the zef is in the db already
+// part of this event. In other cases, we already took case on server side that the values are 0
+function ts_ext_updateBudget(data) {
+	var budget = data['eventBudgets']['evt_budget'];
+	// that is the case if we changed the project and no event is selected
+	if(isNaN(budget)) {
+		budget = 0;
+	}
+	if($('#budget_val').val() != '') {
+		budget+= parseFloat($('#budget_val').val());
+	}
+	budget-= data['zefData']['zef_budget'];
+	$('#budget_event').text(budget);
+	var approved = data['eventBudgets']['evt_approved'];
+	// that is the case if we changed the project and no event is selected
+	if(isNaN(approved)) {
+		approved = 0;
+	}
+	if($('#approved').val() != '') {
+		approved+= parseFloat($('#approved').val());
+	}
+	approved-= data['zefData']['zef_approved'];
+	$('#budget_event_approved').text(approved);
+	var budgetUsed = data['eventUsed'];
+	if(isNaN(budgetUsed)) {
+		budgetUsed = 0;
+	}
+    var durationArray= new Array();
+    durationArray = $("#edit_duration").val().split(/:|\./);
+    if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
+        secs = durationArray[0]*3600;
+        if(durationArray.length > 1)
+            secs += (durationArray[1]*60);
+        if(durationArray.length > 2)
+        	secs += parseInt(durationArray[2]);
+		var rate = $('#rate').val();
+		if(rate != '') {
+	    	budgetUsed+= secs/3600*rate;
+			budgetUsed-=data['zefData']['zef_time']/3600*data['zefData']['zef_rate'];
+		}
+    }
+	$('#budget_event_used').text(Math.round(budgetUsed,2));
 }
 
 // ----------------------------------------------------------------------------------------
@@ -300,7 +359,7 @@ function quickdelete(id) {
 // edit a timesheet record
 //
 function editRecord(id) {
-    floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,700,350);
+    floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,650,500);
 }
 
 // ----------------------------------------------------------------------------------------
@@ -310,15 +369,18 @@ function getBestRates() {
     $.getJSON(ts_ext_path + "processor.php", { axAction: "bestFittingRates", axValue: 0,
         project_id: $("#add_edit_zef_pct_ID").val(), event_id: $("#add_edit_zef_evt_ID").val()},
         function(data){
-            if (data.hourlyRate == false)
-              $("#ts_ext_form_add_edit_record #rate").val('');
-            else
+            if (data.hourlyRate == false) {
+            	//TODO: why does Kimai do this? If we already set a rate
+            	// we might want to keep it, not just reset it to empty..?
+//              $("#ts_ext_form_add_edit_record #rate").val('');
+              } else {
               $("#ts_ext_form_add_edit_record #rate").val(data.hourlyRate);
-            
-            if (data.fixedRate == false)
+              }
+            if (data.fixedRate == false) {
               $("#ts_ext_form_add_edit_record #fixed_rate").val('');
-            else
+            } else {
               $("#ts_ext_form_add_edit_record #fixed_rate").val(data.fixedRate);
+            }
         }
     );
 }
@@ -346,6 +408,7 @@ function pasteNow(value) {
     time  = H + ":" + i + ":" + s;
     
     $("#edit_out_time").val(time);
+    $('#edit_out_time').trigger('change');
     
     $("#edit_out_day").datepicker( "setDate" , now );
 }
@@ -458,6 +521,7 @@ function ts_timeToDuration() {
             if(hours<10)
                 hours="0"+hours;
             $("#edit_duration").val(hours+":"+mins+":"+secs);
+            $('#edit_duration').trigger('change');
         }
     }
 }

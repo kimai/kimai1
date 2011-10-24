@@ -157,6 +157,12 @@
   { if $columns.wage }
         <td>{$summary[row].wage|escape:'html'}</td>
   {/if}
+  { if $columns.budget }
+        <td>{$summary[row].budget|escape:'html'}</td>
+  {/if}
+  { if $columns.approved }
+        <td>{$summary[row].approved|escape:'html'}</td>
+  {/if}
       </tr>
   {/section}
 
@@ -169,6 +175,12 @@
   {/if}
   { if $columns.wage }
         <td>{$wageSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
+  {/if}
+    { if $columns.wage }
+        <td>{$budgetSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
+  {/if}
+    { if $columns.wage }
+        <td>{$approvedSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
   {/if}
       </tr>
 
@@ -190,9 +202,14 @@
 { if $columns.dec_time     } <th>{$kga.lang.timelabel}</th>   { /if }
 { if $columns.rate         } <th>{$kga.lang.rate}</th>        { /if }
 { if $columns.wage         } <th>{$kga.currency_name}</th>    { /if }
+{ if $columns.budget       } <th>{$kga.lang.budget}</th>      { /if }
+{ if $columns.approved     } <th>{$kga.lang.approved}</th>    { /if }
+{ if $columns.status       } <th>{$kga.lang.status}</th>      { /if }
+{ if $columns.billable     } <th>{$kga.lang.billable}</th>    { /if }
 { if $columns.knd          } <th>{$kga.lang.knd}</th>         { /if }
 { if $columns.pct          } <th>{$kga.lang.pct}</th>         { /if }
 { if $columns.action       } <th>{$kga.lang.evt}</th>         { /if }
+{ if $columns.decription   } <th>{$kga.lang.description}</th> { /if }
 { if $columns.comment      } <th>{$kga.lang.comment}</th>     { /if }
 { if $columns.location     } <th>{$kga.lang.zlocation}</th>   { /if }
 { if $columns.trackingnr   } <th>{$kga.lang.trackingnr}</th>  { /if }
@@ -293,6 +310,33 @@
                     </td>
 {/if}
 
+{*budget --------------------------------------------------*}
+{ if $columns.budget }
+                    <td>
+                        {$arr_data[row].budget|escape:'html'}
+                    </td>
+{/if}
+
+{*approved --------------------------------------------------*}
+{ if $columns.approved }
+                    <td>
+                        {$arr_data[row].approved|escape:'html'}
+                    </td>
+{/if}
+
+{*status --------------------------------------------------*}
+{ if $columns.status }
+                    <td>
+                        {$arr_data[row].status|escape:'html'}
+                    </td>
+{/if}
+
+{*billable --------------------------------------------------*}
+{ if $columns.billable }
+                    <td>
+                        {$arr_data[row].billable|escape:'html'}
+                    </td>
+{/if}
 {*client name --------------------------------------------------*}
 { if $columns.knd }
                     <td>
@@ -312,6 +356,13 @@
 { if $columns.action }
                     <td>
                             {$arr_data[row].evt_name|escape:'html'} 
+                    </td>
+{/if}
+
+{*description --------------------------------------------------*}
+{ if $columns.description }
+                    <td>
+                        {$arr_data[row].description|escape:'html'}
                     </td>
 {/if}
 
@@ -376,9 +427,16 @@
   { if $columns.wage } <td>
     {$wageSum|escape:'html'}
   </td>{/if}
+  { if $columns.budget } <td>
+    {$budgetSum|escape:'html'}</td> {/if}
+  { if $columns.approved } <td>
+    {$approvedSum|escape:'html'}</td> {/if}
+  { if $columns.status } <td></td> {/if}
+  { if $columns.billable } <td></td> {/if}
   { if $columns.knd } <td></td> {/if}
   { if $columns.pct } <td></td> {/if}
   { if $columns.action } <td></td> {/if}
+  { if $columns.description } <td></td> {/if}
   { if $columns.comment } <td></td> {/if}
   { if $columns.location } <td></td> {/if}
   { if $columns.trackingnr } <td></td> {/if}
