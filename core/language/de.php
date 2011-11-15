@@ -473,6 +473,7 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 
 'ext_invoice' => array(
 
+"invoiceTemplate"           => "Rechnungsvorlage:",
 "invoiceTitle" 				=> "Rechnung Erstellen",
 "invoiceProject" 			=> "Projekte:",
 "invoiceTimePeriod" 		=> "Zeitspanne:",

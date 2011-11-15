@@ -30,7 +30,7 @@
 			</div>
 			
 <!--Work in Progress: Select box for form type-->
-			Invoice Form:
+			{$kga.lang.ext_invoice.invoiceTemplate}
 			<select id="iv_form_docs" name="ivform_file" class="formfield">
 			 {html_options values=$sel_form_files output=$sel_form_files selected=$pres_form}
 			</select><br/><br/>

@@ -476,6 +476,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 'ext_invoice' => array(
 	
+"invoiceTemplate"           => "Invoice template:",
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
 "invoiceTimePeriod" 	=> "Period of time:",
@@ -490,7 +491,14 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'unusedBudget' => 'unused'
 ),
 
-'extensions' => array()
+'extensions' => array(
+  'ki_timesheet' => 'Timesheet',
+  'ap_ext' => 'Admin Panel',
+  'ki_expenses' => 'Expeneses',
+  'ki_export' => 'Export',
+  'ki_budget' => 'Budget',
+  'ki_invoice' => 'Invoice' 
+)
 
 );
 
