@@ -473,6 +473,7 @@ function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
 // ... so just THX! ;)
 
 function ticktac() {
+    startsecoffset = startsec ? startsec : offset;
     sek   = Math.floor((new Date()).getTime()/1000)-startsec-offset;
     hour  = Math.floor(sek / 3600);
     min   = Math.floor((sek-hour*3600) / 60);

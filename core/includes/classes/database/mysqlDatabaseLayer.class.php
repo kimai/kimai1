@@ -2843,7 +2843,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $user  = MySQL::SQLValue($this->kga['usr']['usr_ID'] , MySQL::SQLVALUE_NUMBER);
     $p     = $this->kga['server_prefix'];
           
-      $this->conn->Query("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = $user AND zef_time = 0;");
+      $this->conn->Query("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = $user AND zef_out = 0;");
 
       if ($this->conn->RowCount() == 0) {
           $current_timer['all']  = 0;

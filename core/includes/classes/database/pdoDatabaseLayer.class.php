@@ -3231,7 +3231,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   public function get_current_timer() {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = ? AND zef_time = 0;");
+      $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = ? AND zef_out = 0;");
       $result = $pdo_query->execute(array($this->kga['usr']['usr_ID']));
 
       if ($result == false) {
