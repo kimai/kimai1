@@ -21,7 +21,7 @@
  * Basic initialization takes place here.
  * From loading the configuration to connecting to the database this all is done
  * here.
- * 
+ *
  * What does NOT happen here is including the database dependant functions.
  */
 
@@ -59,11 +59,11 @@ require(WEBROOT.'includes/func.php');
 // ==================================================================================
 if (isset($_REQUEST['database'])) {
     if ($_REQUEST['database']==true) {
-       
+
         $dbnr = $_REQUEST['database'] - 1;
-        
+
         $kga['server_database'] = $server_ext_database[$dbnr];
-        
+
             if ($server_ext_username[$dbnr] != '') {
                 $kga['server_username'] = $server_ext_username[$dbnr];
             }
@@ -76,9 +76,9 @@ if (isset($_REQUEST['database'])) {
     }
 } else {
     if (isset($_COOKIE['kimai_db']) && $_COOKIE['kimai_db'] == true) {
-        
+
         $dbnr = $_COOKIE['kimai_db'] - 1;
-        
+
         $kga['server_database'] = $server_ext_database[$dbnr];
 
             if ($server_ext_username[$dbnr] != '') {
@@ -90,7 +90,7 @@ if (isset($_REQUEST['database'])) {
             if ($server_ext_prefix[$dbnr] != '') {
                 $kga['server_prefix'] = $server_ext_prefix[$dbnr];
             }
-    } 
+    }
 }
 
 require(WEBROOT."includes/classes/database/databaseLayer.class.php");
@@ -106,7 +106,7 @@ else {
 $database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
 
 $translations = new Translations($kga);
-if ($kga['language'] != 'en') 
+if ($kga['language'] != 'en')
   $translations->load($kga['language']);
 
 
@@ -132,5 +132,3 @@ if (!empty($vars)) {
   if ($vars['defaultTimezone'])
     date_default_timezone_set($vars['defaultTimezone']);
 }
-
-?>
