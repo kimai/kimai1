@@ -99,7 +99,9 @@ $query =
   `lastRecord` int(10) NOT NULL default '0',
   `timespace_in` varchar(60) NOT NULL default '0',
   `timespace_out` varchar(60) NOT NULL default '0',
+  `apikey` varchar(30) NULL DEFAULT NULL,
   PRIMARY KEY  (`usr_name`)
+  UNIQUE KEY `apikey` (`apikey`)
 );";
 exec_query($query);
 

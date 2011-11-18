@@ -1365,6 +1365,12 @@ ADD `zef_approved` DECIMAL( 10, 2 ) NULL AFTER `zef_budget` ;");
     exec_query("DELETE FROM `${p}var` WHERE `var` = 'status';");
 }
 
+if ((int)$revisionDB < 1349) {
+    Logger::logfile("-- update to r1350");
+    exec_query("ALTER TABLE `${p}usr` ADD `apikey` VARCHAR( 30 ) NULL AFTER `timespace_out`");
+    exec_query("ALTER TABLE `${p}usr` ADD UNIQUE (`apikey`)");
+}
+
 // ============================
 // = update DB version number =
 // ============================
