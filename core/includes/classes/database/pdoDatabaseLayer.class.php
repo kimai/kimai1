@@ -508,7 +508,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           return false;
       }
   }
-  
+
       /**
   * deletes a status
   *
@@ -518,7 +518,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   */
   public function status_delete($status_id) {
       $p = $this->kga['server_prefix'];
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE pct_ID=?;");    
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE pct_ID=?;");
       $d_result = $pdo_query->execute(array($status_id));
       if ($d_result == false) {
           $this->logLastError('status_delete');
@@ -643,16 +643,16 @@ class PDODatabaseLayer extends DatabaseLayer {
         return false;
       }
   }
-  
+
    /**
-   * 
+   *
    * update the data for event per project, which is budget, approved and effort
    * @param integer $pct_id
    * @param integer $evt_id
    * @param array $data
    */
   public function pct_evt_edit($pct_id, $evt_id, $data) {
-      
+
       $data = $this->clean_data($data);
  	  $keys = array('evt_budget', 'evt_effort', 'evt_approved');
 
@@ -669,7 +669,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           $this->logLastError('evt_edit');
         return false;
       }
-      
+
       if ($this->conn->commit() == true) {
           return true;
       } else {
@@ -940,7 +940,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
 
       $return_evts = array();
-      
+
       while ($current_evt = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
           $return_evts[] = $current_evt;
       }
@@ -1584,8 +1584,8 @@ class PDODatabaseLayer extends DatabaseLayer {
           return $result_array;
       }
   }
-  
-    
+
+
   /**
   * Returns the data of a certain status
   *
@@ -1595,10 +1595,10 @@ class PDODatabaseLayer extends DatabaseLayer {
   */
   public function status_get_data($status_id) {
       $p = $this->kga['server_prefix'];
-      
+
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}status WHERE status_id = ?");
       $result = $pdo_query->execute(array($status_id));
-      
+
       if ($result == false) {
         $this->logLastError('status_get_data');
         return false;
@@ -1655,7 +1655,7 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       return true;
   }
-  
+
  /**
   * Edits a status by replacing its data by the new array
   *
@@ -1666,9 +1666,9 @@ class PDODatabaseLayer extends DatabaseLayer {
   */
     public function status_edit($status_id, $data) {
       $p = $this->kga['server_prefix'];
-      
-      $data = $this->clean_data($data); 
-      
+
+      $data = $this->clean_data($data);
+
       $pdo_query = $this->conn->prepare("UPDATE ${p}status SET status = ? WHERE status_id = ?;");
       $result = $pdo_query->execute(array($data['status'],$status_id));
 
@@ -1676,7 +1676,7 @@ class PDODatabaseLayer extends DatabaseLayer {
           $this->logLastError('status_edit');
           return false;
       }
-      
+
       return true;
   }
 
@@ -2347,76 +2347,61 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @return array
   * @author th
   */
-  public function checkUser() {
-      $p = $this->kga['server_prefix'];
+  public function checkUserInternal($kimai_usr)
+  {
+	$p = $this->kga['server_prefix'];
+	if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+		$data     = $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';");
+		$result   = $pdo_query->execute(array(substr($kimai_usr,4)));
 
-      if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
-          $kimai_usr = addslashes($_COOKIE['kimai_usr']);
-          $kimai_key = addslashes($_COOKIE['kimai_key']);
-          if ($this->get_seq($kimai_usr) != $kimai_key) {
-              kickUser();
-          } else {
-              if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+		if ($result == false) {
+			$this->logLastError('checkUser');
+			kickUser();
+			return null;
+		}
 
-                $data     = $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';");
-                $result   = $pdo_query->execute(array(substr($kimai_usr,4)));
+		$row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
+		$knd_ID   = $row['knd_ID'];
+		if ($knd_ID < 1) {
+			kickUser();
+		}
+	}
+	else
+	{
+		$data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
+		$result   = $pdo_query->execute(array($kimai_usr));
 
-                if ($result == false) {
-                    $this->logLastError('checkUser');
-                    kickUser();
-                    return null;
-                }
+		if ($result == false) {
+			$this->logLastError('checkUser');
+			kickUser();
+			return null;
+		}
 
-                $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
-                $knd_ID   = $row['knd_ID'];
-                if ($knd_ID < 1) {
-                    kickUser();
-                }
-              }
-              else {
-                $data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
-                $result   = $pdo_query->execute(array($kimai_usr));
+		$row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
+		$usr_ID   = $row['usr_ID'];
+		$usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
+		$usr_name = $kimai_usr;
+		if ($usr_ID < 1) {
+			kickUser();
+		}
+	}
 
-                if ($result == false) {
-                    $this->logLastError('checkUser');
-                    kickUser();
-                    return null;
-                }
+	// load configuration
+	$this->get_global_config();
+	if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+		$this->get_customer_config($knd_ID);
+	} else {
+		// get_customer_config
+		$this->get_user_config($usr_ID);
+	}
 
-                $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
-                $usr_ID   = $row['usr_ID'];
-                $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-                $usr_name = $kimai_usr;
-                if ($usr_ID < 1) {
-                    kickUser();
-                }
-              }
-          }
+	// override default language if user has chosen a language in the prefs
+	if ($this->kga['conf']['lang'] != "") {
+	$this->kga['language'] = $this->kga['conf']['lang'];
+	$this->kga['lang'] = array_replace_recursive($this->kga['lang'],include(WEBROOT.'language/'.$this->kga['language'].'.php'));
+	}
 
-      } else {
-          kickUser();
-      }
-
-
-      if ((isset($knd_ID) && $knd_ID<1) ||  (isset($usr_ID) && $usr_ID<1)) {
-          kickUser();
-      }
-
-      // load configuration
-      $this->get_global_config();
-      if (strncmp($kimai_usr, 'knd_', 4) == 0)
-        $this->get_customer_config($knd_ID);
-      else
-        $this->get_user_config($usr_ID);
-      // get_customer_config
-
-      // override default language if user has chosen a language in the prefs
-      if ($this->kga['conf']['lang'] != "") {
-        $this->kga['language'] = $this->kga['conf']['lang'];
-        $this->kga['lang'] = array_replace_recursive($this->kga['lang'],include(WEBROOT.'language/'.$this->kga['language'].'.php'));
-      }
-
-      return (isset($this->kga['usr'])?$this->kga['usr']:null);
+	return (isset($this->kga['usr'])?$this->kga['usr']:null);
   }
 
   /**
@@ -2476,6 +2461,34 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
   /**
+   * Returns a username for the given $apikey.
+   *
+   * @param string $apikey
+   * @return string|null
+   */
+  public function getUserByApiKey($apikey)
+  {
+    $p = $this->kga['server_prefix'];
+
+    if (!$apikey || strlen(trim($apikey)) == 0) {
+      return null;
+    }
+
+    // get values from user record
+    $pdo_query = $this->conn->prepare("SELECT `usr_ID`, `usr_name` FROM ${p}usr WHERE `apikey` = ? AND NOT usr_trash = '1';");
+
+    $result = $pdo_query->execute(array($apikey));
+
+    if ($result == false) {
+        $this->logLastError('getUserByApiKey');
+        return null;
+    }
+
+    $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
+    return $row['usr_name'];
+  }
+
+  /**
   * write details of a specific user into $this->kga
   *
   * @param integer $user ID of user in table usr
@@ -2506,7 +2519,8 @@ class PDODatabaseLayer extends DatabaseLayer {
     `lastEvent`,
     `lastRecord`,
     `timespace_in`,
-    `timespace_out`
+    `timespace_out`,
+    `apikey`
 
     FROM ${p}usr WHERE usr_ID = ?;");
 
@@ -2920,11 +2934,11 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       return $arr;
   }
-  
-    
+
+
   /**
   * Read event budgets
-  * 
+  *
   * @author mo
   */
   public function get_evt_budget($project_id,$event_id) {
@@ -2936,7 +2950,7 @@ class PDODatabaseLayer extends DatabaseLayer {
     $pdo_query = $this->conn->prepare("SELECT evt_budget, evt_approved, evt_effort FROM " . $this->kga['server_prefix'] . "pct_evt WHERE ".
     (($project_id=="NULL")?"pct_ID is NULL":"pct_ID = $project_id"). " AND ".
     (($event_id=="NULL")?"evt_ID is NULL":"evt_ID = $event_id"));
-          
+
     $result = $pdo_query->execute();
 
     if ($result == false) {
@@ -2948,12 +2962,12 @@ class PDODatabaseLayer extends DatabaseLayer {
   	foreach($zefs as $zef) {
     	$data['evt_budget']+= $zef['zef_budget'];
     	$data['evt_approved']+= $zef['zef_approved'];
-  	}    
+  	}
     return $data;
   }
-  
+
     /**
-   * 
+   *
    * get the whole budget used for the event
    * @param integer $project_id
    * @param integer $event_id
@@ -2968,7 +2982,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   	}
 	return $budgetUsed;
   }
-  
+
 
   /**
   * returns list of time summary attached to project ID's within specific timespace as array
@@ -3343,8 +3357,8 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       return $seq;
   }
-  
-  
+
+
   /**
    * return status names
    * @param integer $statusIds
@@ -3358,13 +3372,13 @@ class PDODatabaseLayer extends DatabaseLayer {
           $this->logLastError('get_status');
           return false;
       }
-      
+
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
       	$res[] = $row['status'];
       }
       return $res;
   }
-  
+
     /**
   * Returns the number of zef with a certain status
   *
@@ -3374,10 +3388,10 @@ class PDODatabaseLayer extends DatabaseLayer {
   */
   public function status_count_zef($status_id) {
       $p = $this->kga['server_prefix'];
-      
+
       $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}zef WHERE zef_status = ?");
       $result = $pdo_query->execute(array($status_id));
-      
+
       if ($result == false) {
           $this->logLastError('status_count_zef');
           return false;
@@ -3386,18 +3400,18 @@ class PDODatabaseLayer extends DatabaseLayer {
           return $result_array[0];
       }
   }
-  
-  
+
+
  /**
   * returns array of all status with the status id as key
   *
   * @return array
-  * @author mo 
+  * @author mo
   */
   public function get_arr_status() {
       $p = $this->kga['server_prefix'];
-      
-        $query = "SELECT * FROM ${p}status 
+
+        $query = "SELECT * FROM ${p}status
         ORDER BY status;";
 
       $pdo_query = $this->conn->prepare($query);
@@ -3415,7 +3429,7 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
       return $arr;
   }
-  
+
     /**
    * add a new status
    * @param array $statusArray
@@ -3424,11 +3438,11 @@ class PDODatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 	  	  $pdo_query = $this->conn->prepare("INSERT INTO ${p}status (status) VALUES (?);");
 	      $result = $pdo_query->execute(array(trim($status)));
-        
+
 	      if (! $result) {
 	        $this->logLastError('add_status');
 	        return false;
-	      } 
+	      }
       return $this->conn->lastInsertId();
   }
 
@@ -3680,7 +3694,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @global array $this->kga kimai-global-array
   * @param integer $user ID of user
   * @author th
-  *
+  * @return boolean
   */
   public function stopRecorder() {
   ## stop running recording
@@ -3697,8 +3711,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
       $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$zef_ID));
 
-      if ($result == false)
+      if ($result == false) {
           $this->logLastError('stopRecorder');
+	  }
+	  return $result;
   }
 
   /**
@@ -3707,6 +3723,7 @@ class PDODatabaseLayer extends DatabaseLayer {
   * @param integer $pct_ID ID of project to record
   * @global array $this->kga kimai-global-array
   * @author th
+  * @return boolean
   */
   public function startRecorder($pct_ID,$evt_ID,$user) {
       $p = $this->kga['server_prefix'];
@@ -3714,13 +3731,20 @@ class PDODatabaseLayer extends DatabaseLayer {
       $pdo_query = $this->conn->prepare("INSERT INTO ${p}zef
       (zef_pctID,zef_evtID,zef_in,zef_usrID,zef_rate) VALUES
       (?, ?, ?, ?, ?);");
-      $pdo_query->execute(array($pct_ID,$evt_ID,time(),$user,$this->get_best_fitting_rate($user,$pct_ID,$evt_ID)));
+      $result = $pdo_query->execute(array($pct_ID,$evt_ID,time(),$user,$this->get_best_fitting_rate($user,$pct_ID,$evt_ID)));
+      if ($result === false) {
+          $this->logLastError('startRecorder');
+          return false;
+	  }
 
       $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
       $result = $pdo_query->execute(array($user));
 
-      if ($result == false)
+      if ($result === false) {
           $this->logLastError('startRecorder');
+	  }
+
+	  return $result;
   }
 
   /**
@@ -4361,4 +4385,3 @@ class PDODatabaseLayer extends DatabaseLayer {
   }
 
 }
-?>

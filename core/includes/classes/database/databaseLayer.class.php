@@ -46,16 +46,16 @@ abstract class DatabaseLayer {
   /**
   * Prepare all values of the array so it's save to put them into an sql query.
   * The conversion to utf8 is done here as well, if configured.
-  * 
+  *
   * This method is public since ki_expenses private database layers use it.
-  * 
+  *
   * @param array $data Array which values are being prepared.
   * @return array The same array, except all values are being escaped correctly.
   */
   public function clean_data($data) {
-      global $kga;   
+      global $kga;
       foreach ($data as $key => $value) {
-          if ($key != "pw") { 
+          if ($key != "pw") {
               $return[$key] = urldecode(strip_tags($data[$key]));
           $return[$key] = str_replace('"','_',$data[$key]);
           $return[$key] = str_replace("'",'_',$data[$key]);
@@ -65,7 +65,7 @@ abstract class DatabaseLayer {
           }
       if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
       }
-      
+
       return $return;
   }
 
@@ -105,7 +105,7 @@ abstract class DatabaseLayer {
   * @param int $knd_id         knd_id of the customer to which the groups will be assigned
   * @param array $grp_array    contains one or more grp_IDs
   * @return boolean            true on success, false on failure
-  */ 
+  */
   public abstract function assign_knd2grps($knd_id, $grp_array);
 
   /**
@@ -262,7 +262,7 @@ abstract class DatabaseLayer {
   /**
   * Assigns a group to 1-n customers by adding entries to the cross table
   * (counterpart to assign_knd2grp)
-  * 
+  *
   * @param array $grp_id        grp_id of the group to which the customers will be assigned
   * @param array $knd_array    contains one or more knd_IDs
   * @return boolean            true on success, false on failure
@@ -272,7 +272,7 @@ abstract class DatabaseLayer {
   /**
   * Assigns a group to 1-n projects by adding entries to the cross table
   * (counterpart to assign_pct2grp)
-  * 
+  *
   * @param array $grp_id        grp_id of the group to which the projects will be assigned
   * @param array $pct_array    contains one or more pct_IDs
   * @return boolean            true on success, false on failure
@@ -282,7 +282,7 @@ abstract class DatabaseLayer {
   /**
   * Assigns a group to 1-n events by adding entries to the cross table
   * (counterpart to assign_evt2grp)
-  * 
+  *
   * @param array $grp_id        grp_id of the group to which the events will be assigned
   * @param array $evt_array    contains one or more evt_IDs
   * @return boolean            true on success, false on failure
@@ -324,7 +324,7 @@ abstract class DatabaseLayer {
 
   /**
   * Get a preference for a user. If no user ID is given the current user is used.
-  * 
+  *
   * @param string  $key     name of the preference to fetch
   * @param integer $userId  (optional) id of the user to fetch the preference for
   * @return string value of the preference or null if there is no such preference
@@ -333,7 +333,7 @@ abstract class DatabaseLayer {
 
   /**
   * Get several preferences for a user. If no user ID is given the current user is used.
-  * 
+  *
   * @param array   $keys    names of the preference to fetch in an array
   * @param integer $userId  (optional) id of the user to fetch the preference for
   * @return array  with keys for every found preference and the found value
@@ -344,7 +344,7 @@ abstract class DatabaseLayer {
   * Get several preferences for a user which have a common prefix. The returned preferences are striped off
   * the prefix.
   * If no user ID is given the current user is used.
-  * 
+  *
   * @param string  $prefix   prefix all preferenc keys to fetch have in common
   * @param integer $userId  (optional) id of the user to fetch the preference for
   * @return array  with keys for every found preference and the found value
@@ -355,12 +355,12 @@ abstract class DatabaseLayer {
   * Save one or more preferences for a user. If no user ID is given the current user is used.
   * The array has to assign every preference key a value to store.
   * Example: array ( 'setting1' => 'value1', 'setting2' => 'value2');
-  * 
+  *
   * A prefix can be specified, which will be prepended to every preference key.
   *
   * @param array   $data   key/value pairs to store
   * @param string  $prefix prefix for all preferences
-  * @param integer $userId (optional) id of another user than the current 
+  * @param integer $userId (optional) id of another user than the current
   * @return boolean        true on success, false on failure
   */
   public abstract function usr_set_preferences(array $data,$prefix='',$userId=null);
@@ -377,7 +377,7 @@ abstract class DatabaseLayer {
   /**
   * Assigns a group to 1-n group leaders by adding entries to the cross table
   * (counterpart to assign_ldr2grp)
-  * 
+  *
   * @param array $grp_id        grp_id of the group to which the group leaders will be assigned
   * @param array $ldr_array    contains one or more usr_ids of the leaders)
   * @return boolean            true on success, false on failure
@@ -488,14 +488,14 @@ abstract class DatabaseLayer {
   public abstract function zef_get_data($zef_id);
 
   /**
-  * delete zef entry 
+  * delete zef entry
   *
   * @param integer $id -> ID of record
   */
   public abstract function zef_delete_record($id);
 
   /**
-  * create zef entry 
+  * create zef entry
   *
   * @param integer $id    ID of record
   * @param integer $data  array with record data
@@ -503,7 +503,7 @@ abstract class DatabaseLayer {
   public abstract function zef_create_record($usr_ID,$data);
 
   /**
-  * edit zef entry 
+  * edit zef entry
   *
   * @param integer $id ID of record
   * @param integer $data  array with new record data
@@ -541,7 +541,7 @@ abstract class DatabaseLayer {
   *  Creates an array of clauses which can be joined together in the WHERE part
   *  of a sql query. The clauses describe whether a line should be included
   *  depending on the filters set.
-  *  
+  *
   *  This method also makes the values SQL-secure.
   *
   * @param Array list of IDs of users to include
@@ -565,27 +565,50 @@ abstract class DatabaseLayer {
   public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null);
 
   /**
+   * Returns a username for the given $apikey.
+   *
+   * @param string $apikey
+   * @return string|null
+   */
+  public abstract function getUserByApiKey($apikey);
+
+  /**
   * checks if user is logged on and returns user information as array
   * kicks client if is not verified
   * TODO: this and get_config should be one function
   *
   * <pre>
-  * returns: 
-  * [usr_ID] user ID, 
-  * [usr_sts] user status (rights), 
-  * [usr_name] username 
+  * returns:
+  * [usr_ID] user ID,
+  * [usr_sts] user status (rights),
+  * [usr_name] username
   * </pre>
   *
   * @param integer $user ID of user in table usr
   * @return array
   */
-  public abstract function checkUser();
+  public abstract function checkUserInternal($kimai_usr);
+
+  public function checkUser()
+  {
+    if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
+        $kimai_usr = addslashes($_COOKIE['kimai_usr']);
+        $kimai_key = addslashes($_COOKIE['kimai_key']);
+
+		if ($this->get_seq($kimai_usr) != $kimai_key) {
+			kickUser();
+		} else {
+			return $this->checkUserInternal($kimai_usr);
+		}
+	}
+	kickUser();
+  }
 
   /**
   * write global configuration into $this->kga including defaults for user settings.
   *
   * @param integer $user ID of user in table usr
-  * @return array $this->kga 
+  * @return array $this->kga
   */
   public abstract function get_global_config();
 
@@ -593,7 +616,7 @@ abstract class DatabaseLayer {
   * write details of a specific user into $this->kga
   *
   * @param integer $user ID of user in table usr
-  * @return array $this->kga 
+  * @return array $this->kga
   */
   public abstract function get_user_config($user);
 
@@ -601,7 +624,7 @@ abstract class DatabaseLayer {
   * write details of a specific customer into $this->kga
   *
   * @param integer $user ID of user in table usr
-  * @return array $this->kga 
+  * @return array $this->kga
   */
   public abstract function get_customer_config($user);
 
@@ -645,17 +668,17 @@ abstract class DatabaseLayer {
   */
   public abstract function get_arr_knd(array $groups = null);
 
-  ## Load into Array: Events 
+  ## Load into Array: Events
   public abstract function get_arr_evt(array $groups = null);
 
   /**
   * Get an array of events, which should be displayed for a specific project.
   * Those are events which were assigned to the project or which are assigned to
   * no project.
-  * 
+  *
   * Two joins can occur:
   *  The JOIN is for filtering the events by groups.
-  *  
+  *
   *  The LEFT JOIN gives each event row the project id which it has been assigned
   *  to via the pct_evt table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
@@ -701,10 +724,10 @@ abstract class DatabaseLayer {
   public abstract function get_DBversion();
 
   /**
-  * returns the key for the session of a specific user 
+  * returns the key for the session of a specific user
   *
-  * the key is both stored in the database (usr table) and a cookie on the client. 
-  * when the keys match the user is allowed to access the Kimai GUI. 
+  * the key is both stored in the database (usr table) and a cookie on the client.
+  * when the keys match the user is allowed to access the Kimai GUI.
   * match test is performed via function userCheck()
   *
   * @param integer $user ID of user in table usr
@@ -713,7 +736,7 @@ abstract class DatabaseLayer {
   public abstract function get_seq($user);
 
   /**
-  * returns array of all users 
+  * returns array of all users
   *
   * [usr_ID] => 23103741
   * [usr_name] => admin
@@ -728,25 +751,25 @@ abstract class DatabaseLayer {
   public abstract function get_arr_usr($trash=0,array $groups = null);
 
   /**
-  * returns array of all groups 
+  * returns array of all groups
   *
   * [0]=> array(6) {
-  *      ["grp_ID"]      =>  string(1) "1" 
-  *      ["grp_name"]    =>  string(5) "admin" 
-  *      ["grp_leader"]  =>  string(9) "1234" 
-  *      ["grp_trash"]   =>  string(1) "0" 
-  *      ["count_users"] =>  string(1) "2" 
-  *      ["leader_name"] =>  string(5) "user1" 
-  * } 
-  * 
-  * [1]=> array(6) { 
-  *      ["grp_ID"]      =>  string(1) "2" 
-  *      ["grp_name"]    =>  string(4) "Test" 
-  *      ["grp_leader"]  =>  string(9) "12345" 
-  *      ["grp_trash"]   =>  string(1) "0" 
-  *      ["count_users"] =>  string(1) "1" 
-  *      ["leader_name"] =>  string(7) "user2" 
-  *  } 
+  *      ["grp_ID"]      =>  string(1) "1"
+  *      ["grp_name"]    =>  string(5) "admin"
+  *      ["grp_leader"]  =>  string(9) "1234"
+  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["count_users"] =>  string(1) "2"
+  *      ["leader_name"] =>  string(5) "user1"
+  * }
+  *
+  * [1]=> array(6) {
+  *      ["grp_ID"]      =>  string(1) "2"
+  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["grp_leader"]  =>  string(9) "12345"
+  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["count_users"] =>  string(1) "1"
+  *      ["leader_name"] =>  string(7) "user2"
+  *  }
   *
   * @return array
   *
@@ -757,22 +780,22 @@ abstract class DatabaseLayer {
   * returns array of all groups of a group leader
   *
   * [0]=> array(6) {
-  *      ["grp_ID"]      =>  string(1) "1" 
-  *      ["grp_name"]    =>  string(5) "admin" 
-  *      ["grp_leader"]  =>  string(9) "1234" 
-  *      ["grp_trash"]   =>  string(1) "0" 
-  *      ["count_users"] =>  string(1) "2" 
-  *      ["leader_name"] =>  string(5) "user1" 
-  * } 
-  * 
-  * [1]=> array(6) { 
-  *      ["grp_ID"]      =>  string(1) "2" 
-  *      ["grp_name"]    =>  string(4) "Test" 
-  *      ["grp_leader"]  =>  string(9) "12345" 
-  *      ["grp_trash"]   =>  string(1) "0" 
-  *      ["count_users"] =>  string(1) "1" 
-  *      ["leader_name"] =>  string(7) "user2" 
-  *  } 
+  *      ["grp_ID"]      =>  string(1) "1"
+  *      ["grp_name"]    =>  string(5) "admin"
+  *      ["grp_leader"]  =>  string(9) "1234"
+  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["count_users"] =>  string(1) "2"
+  *      ["leader_name"] =>  string(5) "user1"
+  * }
+  *
+  * [1]=> array(6) {
+  *      ["grp_ID"]      =>  string(1) "2"
+  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["grp_leader"]  =>  string(9) "12345"
+  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["count_users"] =>  string(1) "1"
+  *      ["leader_name"] =>  string(7) "user2"
+  *  }
   *
   * @return array
   */
@@ -786,7 +809,7 @@ abstract class DatabaseLayer {
   * it is split up and stored in the DB by days
   *
   * @param integer $user ID of user
-  *
+  * @return boolean
   */
   public abstract function stopRecorder();
 
@@ -794,13 +817,14 @@ abstract class DatabaseLayer {
   * starts timesheet record
   *
   * @param integer $pct_ID ID of project to record
+  * @return boolean
   */
   public abstract function startRecorder($pct_ID,$evt_ID,$user);
 
   /**
   * Just edit the project for an entry. This is used for changing the project
   * of a running entry.
-  * 
+  *
   * @param $zef_id id of the timesheet entry
   * @param $pct_id id of the project to change to
   */
@@ -809,7 +833,7 @@ abstract class DatabaseLayer {
   /**
   * Just edit the task for an entry. This is used for changing the task
   * of a running entry.
-  * 
+  *
   * @param $zef_id id of the timesheet entry
   * @param $evt_id id of the task to change to
   */
@@ -818,7 +842,7 @@ abstract class DatabaseLayer {
   /**
   * Just edit the comment an entry. This is used for editing the comment
   * of a running entry.
-  * 
+  *
   * @param $zef_ID id of the timesheet entry
   * @param $comment_type new type of the comment
   * @param $comment the comment text
@@ -828,7 +852,7 @@ abstract class DatabaseLayer {
 
   /**
    * return ID of specific customer named 'XXX'
-   * 
+   *
    * @param string $name name of the customer in table knd
    * @return integer
    */
@@ -993,11 +1017,9 @@ abstract class DatabaseLayer {
 
   /**
    * Return all rows for the given sql query.
-   * 
+   *
    * @param string $query the sql query to execute
    */
   public abstract function queryAll($query);
 
 }
-
-?>
