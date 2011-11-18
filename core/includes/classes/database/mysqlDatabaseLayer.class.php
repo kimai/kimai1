@@ -2778,13 +2778,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_approved, ${p}pct_evt.evt_effort FROM ${p}evt
+          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}evt.evt_budget, ${p}evt.evt_approved, ${p}evt.evt_effort FROM ${p}evt
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   WHERE evt_trash=0
    AND (pct_ID = $pct OR pct_ID IS NULL)
   ORDER BY evt_visible DESC,evt_name;";
       } else {
-          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_approved, ${p}pct_evt.evt_effort FROM ${p}evt
+          $query = "SELECT ${p}evt.evt_ID,evt_name,evt_visible, ${p}evt.evt_budget, ${p}evt.evt_approved, ${p}evt.evt_effort FROM ${p}evt
   JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
   WHERE `${p}grp_evt`.`grp_ID`  IN (".implode($groups,',').")
