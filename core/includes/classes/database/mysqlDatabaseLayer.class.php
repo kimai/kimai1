@@ -866,8 +866,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $projectId = MySQL::SQLValue($pct_id, MySQL::SQLVALUE_NUMBER);
       $p = $this->kga['server_prefix'];
 
-      $query = "SELECT ${p}pct_evt.evt_ID, ${p}pct_evt.evt_budget, ${p}pct_evt.evt_effort, ${p}pct_evt.evt_approved FROM ${p}pct_evt
-      join ${p}evt on ${p}evt.evt_ID = ${p}pct_evt.evt_ID WHERE ${p}pct_evt.pct_ID = $projectId AND evt_trash=0;";
+      $query = "SELECT ${p}pct_evt.evt_ID, ${p}evt.evt_budget, ${p}evt.evt_effort,
+				${p}evt.evt_approved FROM ${p}pct_evt JOIN ${p}evt ON
+				${p}evt.evt_ID = ${p}pct_evt.evt_ID WHERE ${p}pct_evt.pct_ID = $projectId AND ${p}evt.evt_trash=0;";
 
       $result = $this->conn->Query($query);
 
@@ -1081,7 +1082,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Adds a new user
   *
   * @param array $data  username, email, and other data of the new user
-  * @return boolean     true on success, false on failure
+  * @return boolean|integer     false on failure, otherwise the new user id
   * @author th
   */
   public function usr_create($data) {
@@ -1092,28 +1093,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $data = $this->clean_data($data);
 
-      $values ['usr_name']     =  MySQL::SQLValue($data ['usr_name']  );
-      $values ['usr_ID']       =  MySQL::SQLValue($data ['usr_ID']      , MySQL::SQLVALUE_NUMBER  );
-      $values ['usr_sts']      =  MySQL::SQLValue($data ['usr_sts']     , MySQL::SQLVALUE_NUMBER  );
-      $values ['usr_active']   =  MySQL::SQLValue($data ['usr_active']  , MySQL::SQLVALUE_NUMBER  );
+      $values ['usr_name']   = MySQL::SQLValue($data['usr_name']);
+      $values ['usr_ID']     = MySQL::SQLValue($data['usr_ID']    , MySQL::SQLVALUE_NUMBER);
+      $values ['usr_sts']    = MySQL::SQLValue($data['usr_sts']   , MySQL::SQLVALUE_NUMBER);
+      $values ['usr_active'] = MySQL::SQLValue($data['usr_active'], MySQL::SQLVALUE_NUMBER);
 
       $table  = $this->kga['server_prefix']."usr";
       $result = $this->conn->InsertRow($table, $values);
-
 
       if ($result===false) {
         $this->logLastError('usr_create');
         return false;
       }
-      else {
-          if (isset($data['usr_rate'])) {
-            if (is_numeric($data['usr_rate']))
-              $this->save_rate($usr_id,NULL,NULL,$data['usr_rate']);
-            else
-              $this->remove_rate($usr_id,NULL,NULL);
-          }
-          return $data['usr_ID'];
+
+      if (isset($data['usr_rate'])) {
+        if (is_numeric($data['usr_rate'])) {
+          $this->save_rate($data['usr_ID'], NULL, NULL, $data['usr_rate']);
+        } else {
+          $this->remove_rate($data['usr_ID'], NULL, NULL);
+        }
       }
+    
+      return $data['usr_ID'];
   }
 
   /**
@@ -1370,14 +1371,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $d_result = $this->conn->Query($query);
 
       if ($d_result == false) {
-              $this->logLastError('assign_ldr2grps');
-              $this->conn->TransactionRollback();
-              return false;
+          $this->logLastError('assign_ldr2grps');
+          $this->conn->TransactionRollback();
+          return false;
       }
 
-      foreach ($ldr_array as $current_grp) {
-        $values['grp_ID']       = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
-        $values['grp_leader']   = MySQL::SQLValue($ldr_id      , MySQL::SQLVALUE_NUMBER);
+      foreach ($grp_array as $current_grp) {
+        $values['grp_ID']       = MySQL::SQLValue($current_grp, MySQL::SQLVALUE_NUMBER);
+        $values['grp_leader']   = MySQL::SQLValue($ldr_id     , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
 
         $result = $this->conn->Query($query);
@@ -2110,11 +2111,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author ob
   */
   public function get_arr_pct_by_knd($knd_id, array $groups = null) {
-      $group   = MySQL::SQLValue($group  , MySQL::SQLVALUE_NUMBER);
-      $knd_id  = MySQL::SQLValue($knd_id , MySQL::SQLVALUE_NUMBER);
+      $knd_id  = MySQL::SQLValue($knd_id, MySQL::SQLVALUE_NUMBER);
       $p       = $this->kga['server_prefix'];
-
-
 
       if ($this->kga['conf']['flip_pct_display']) {
           $sort = "knd_name,pct_name";
@@ -2123,15 +2121,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       if ($groups === null) {
-        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND ${p}pct.pct_kndID = $knd_id AND pct_trash=0 ORDER BY $sort;";
+        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
+                    AND ${p}pct.pct_kndID = $knd_id AND pct_trash=0 ORDER BY $sort;";
       } else {
         $query = "SELECT * FROM ${p}pct
-         JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
-         JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
-        WHERE ${p}grp_pct.grp_ID  IN (".implode($groups,',').")
-         AND ${p}pct.pct_kndID = $knd_id
-         AND pct_trash=0
-        ORDER BY $sort;";
+                    JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
+                    JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
+                    WHERE ${p}grp_pct.grp_ID  IN (".implode($groups,',').")
+                    AND ${p}pct.pct_kndID = $knd_id
+                    AND pct_trash=0
+                    ORDER BY $sort;";
       }
 
       $this->conn->Query($query);
@@ -2251,7 +2250,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $limit="";
       }
 
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable, zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name, zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
+                       zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
+                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
                 FROM ${p}zef
                 Join ${p}pct ON zef_pctID = pct_ID
                 Join ${p}knd ON pct_kndID = knd_ID
