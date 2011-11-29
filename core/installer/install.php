@@ -386,7 +386,7 @@ exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone',".quo
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultVat','0')");
 exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('editLimit','-')");
-exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '1' );");
+exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '0' );");
 exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundMinutes', '0');");
 exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundSeconds', '0');");
 

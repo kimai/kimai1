@@ -1356,7 +1356,7 @@ ADD `zef_approved` DECIMAL( 10, 2 ) NULL AFTER `zef_budget` ;");
 
     exec_query("UPDATE ${p}zef SET zef_status = 3 WHERE zef_cleared = 1");
 
-    exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '1' );");
+    exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundTimesheetEntries', '0' );");
 
     exec_query("INSERT INTO `${p}var` (`var` ,`value`) VALUES ('roundMinutes', '0');");
 

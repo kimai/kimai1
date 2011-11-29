@@ -10,10 +10,11 @@ class Config {
 	 */
 	private function __construct() {
 		// current dir might be in an extension or in core..
-		self::$config = parse_ini_file("../../config/config.ini");
-		if (! self::$config) {
-			self::$config = parse_ini_file("../config/config.ini");
-		}
+                if (file_exists('../../config/config.ini'))
+                  $path = '../../config/config.ini';
+                else
+                  $path = '../config/config.ini';
+		self::$config = parse_ini_file($path);
 	}
 
 	public static function getConfig($type) {
