@@ -226,7 +226,7 @@ class Kimai_Soap_Server
         if (count($users) > 0) {
 			$results = array();
 			foreach ($users as $row) {
-				$results[$row['usr_ID']] = $row['usr_name'];
+				$results[] = array('user_ID' => $row['usr_ID'], 'usr_name' => $row['usr_name']);
 			}
 			return $results;
         }
@@ -251,7 +251,7 @@ class Kimai_Soap_Server
         $kga = $this->getKimaiEnv();
         if (isset($kga['customer'])) {
           return array(
-			$kga['customer']['knd_ID'] => $kga['customer']['knd_name']
+			'knd_ID' => $kga['customer']['knd_ID'], 'knd_name' => $kga['customer']['knd_name']
           );
 		}
 
@@ -260,7 +260,7 @@ class Kimai_Soap_Server
         if (count($customers) > 0) {
 			$results = array();
 			foreach ($customers as $row) {
-				$results[$row['knd_ID']] = $row['knd_name'];
+				$results[] = array('knd_ID' => $row['knd_ID'], 'knd_name' => $row['knd_name']);
 			}
 			return $results;
         }
@@ -324,6 +324,23 @@ class Kimai_Soap_Server
           $tasks = $this->getBackend()->get_arr_evt_by_knd($kga['customer']['knd_ID']);
 		} else if ($projectId !== null) {
           $tasks = $this->getBackend()->get_arr_evt_by_pct($projectId, $user['groups']);
+		  /**
+		   * we need to copy the array with new keys (remove the knd_ID key)
+		   * if we do not do this, soap server will break our response scheme
+		   */
+		  $tempTasks = array();
+		  foreach ($tasks as $task)
+		  {
+			$tempTasks[] = array(
+				'evt_ID' => $task['evt_ID'],
+				'evt_name' => $task['evt_name'],
+				'evt_visible' => $task['evt_visible'],
+				'evt_budget' => $task['evt_budget'],
+				'evt_approved' => $task['evt_approved'],
+				'evt_effort' => $task['evt_effort']
+			);
+		  }
+		  $tasks = $tempTasks;
         } else {
           $tasks = $this->getBackend()->get_arr_evt($user['groups']);
 		}
