@@ -19,8 +19,13 @@
 
 /**
  * Provide the database layer for MySQL.
+ *
+ * @author th
+ * @author sl
+ * @author Kevin Papst
  */
-class PDODatabaseLayer extends DatabaseLayer {
+class PDODatabaseLayer extends DatabaseLayer
+{
 
     /**
     * Connect to the database.
@@ -1188,7 +1193,8 @@ class PDODatabaseLayer extends DatabaseLayer {
     * @return array            the user's data (username, email-address, status etc) as array, false on failure
     * @author ob
     */
-    public function usr_get_data($usr_id) {
+    public function usr_get_data($usr_id)
+    {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_ID = ?");
@@ -1197,10 +1203,10 @@ class PDODatabaseLayer extends DatabaseLayer {
       if ($result == false) {
           $this->logLastError('usr_get_data');
           return false;
-      } else {
-          $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
-          return $result_array;
       }
+        
+      $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
+      return $result_array;
     }
 
     /**
@@ -1212,7 +1218,8 @@ class PDODatabaseLayer extends DatabaseLayer {
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function usr_edit($usr_id, $data) {
+    public function usr_edit($usr_id, $data)
+    {
       $p = $this->kga['server_prefix'];
 
       $data = $this->clean_data($data);
@@ -1221,7 +1228,8 @@ class PDODatabaseLayer extends DatabaseLayer {
 
       $keys = array(
         'usr_name', 'usr_sts', 'usr_trash', 'usr_active', 'usr_mail',
-        'usr_alias', 'pw', 'lastRecord', 'lastProject', 'lastEvent');
+        'usr_alias', 'pw', 'lastRecord', 'lastProject', 'lastEvent', 'apikey'
+      );
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'usr SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -1239,18 +1247,19 @@ class PDODatabaseLayer extends DatabaseLayer {
       }
 
       if (isset($data['usr_rate'])) {
-        if (is_numeric($data['usr_rate']))
+        if (is_numeric($data['usr_rate'])) {
           $this->save_rate($usr_id,NULL,NULL,$data['usr_rate']);
-        else
+        } else {
           $this->remove_rate($usr_id,NULL,NULL);
+        }
       }
 
       if ($this->conn->commit() == true) {
           return true;
-      } else {
-          $this->logLastError('usr_edit');
-          return false;
       }
+
+      $this->logLastError('usr_edit');
+      return false;
     }
 
     /**
@@ -2489,24 +2498,24 @@ class PDODatabaseLayer extends DatabaseLayer {
     */
     public function getUserByApiKey($apikey)
     {
-    $p = $this->kga['server_prefix'];
+        $p = $this->kga['server_prefix'];
 
-    if (!$apikey || strlen(trim($apikey)) == 0) {
-      return null;
-    }
+        if (!$apikey || strlen(trim($apikey)) == 0) {
+          return null;
+        }
 
-    // get values from user record
-    $pdo_query = $this->conn->prepare("SELECT `usr_ID`, `usr_name` FROM ${p}usr WHERE `apikey` = ? AND NOT usr_trash = '1';");
+        // get values from user record
+        $pdo_query = $this->conn->prepare("SELECT `usr_ID`, `usr_name` FROM ${p}usr WHERE `apikey` = ? AND NOT usr_trash = '1';");
 
-    $result = $pdo_query->execute(array($apikey));
+        $result = $pdo_query->execute(array($apikey));
 
-    if ($result == false) {
-        $this->logLastError('getUserByApiKey');
-        return null;
-    }
+        if ($result == false) {
+            $this->logLastError('getUserByApiKey');
+            return null;
+        }
 
-    $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
-    return $row['usr_name'];
+        $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+        return $row['usr_name'];
     }
 
     /**

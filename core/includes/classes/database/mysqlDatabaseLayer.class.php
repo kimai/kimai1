@@ -20,7 +20,11 @@
 include(WEBROOT.'libraries/mysql.class.php');
 
 /**
- * Provide the database layer for MySQL.
+ * Provides the database layer for MySQL.
+ *
+ * @author th
+ * @author sl
+ * @author Kevin Papst
  */
 class MySQLDatabaseLayer extends DatabaseLayer {
 
@@ -1124,18 +1128,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return array         the user's data (username, email-address, status etc) as array, false on failure
   * @author th
   */
-  public function usr_get_data($usr_id) {
+  public function usr_get_data($usr_id)
+  {
       $filter['usr_ID'] = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."usr";
       $result = $this->conn->SelectRows($table, $filter);
 
-      if (! $result) {
+      if (!$result) {
         $this->logLastError('usr_get_data');
         return false;
-      } else {
-          // return  $this->conn->getHTML();
-          return $this->conn->RowArray(0,MYSQL_ASSOC);
       }
+
+      // return  $this->conn->getHTML();
+      return $this->conn->RowArray(0,MYSQL_ASSOC);
   }
 
   /**
@@ -1146,40 +1151,40 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return boolean       true on success, false on failure
   * @author ob/th
   */
-  public function usr_edit($usr_id, $data) {
+  public function usr_edit($usr_id, $data)
+  {
       $data = $this->clean_data($data);
 
-      $strings = array('usr_name', 'usr_mail', 'usr_alias', 'pw');
+      $strings = array('usr_name', 'usr_mail', 'usr_alias', 'pw', 'apikey');
       foreach ($strings as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key]);
       }
 
-      $numbers = array(
-            'usr_sts'   ,'usr_trash' ,'usr_active',
-            'lastProject' ,'lastEvent' ,'lastRecord');
+      $numbers = array('usr_sts' ,'usr_trash' ,'usr_active', 'lastProject' ,'lastEvent' ,'lastRecord');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
       }
 
-      $filter ['usr_ID']            = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."usr";
+      $filter['usr_ID'] = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
+      $table            = $this->kga['server_prefix']."usr";
 
-      if (! $this->conn->TransactionBegin()) {
+      if (!$this->conn->TransactionBegin()) {
         $this->logLastError('usr_edit');
         return false;
       }
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-      if ($this->conn->Query($query)) {
-
+      if ($this->conn->Query($query))
+      {
           if (isset($data['usr_rate'])) {
-            if (is_numeric($data['usr_rate']))
+            if (is_numeric($data['usr_rate'])) {
               $this->save_rate($usr_id,NULL,NULL,$data['usr_rate']);
-            else
+            } else {
               $this->remove_rate($usr_id,NULL,NULL);
+            }
           }
 
           if (! $this->conn->TransactionEnd()) {
@@ -1188,15 +1193,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           }
 
           return true;
-      } else {
-          if (! $this->conn->TransactionRollback()) {
-            $this->logLastError('usr_edit');
-            return false;
-          }
-
-          $this->logLastError('usr_edit');
-          return false;
       }
+
+      if (!$this->conn->TransactionRollback()) {
+        $this->logLastError('usr_edit');
+        return false;
+      }
+
+      $this->logLastError('usr_edit');
+      return false;
   }
 
   /**
@@ -1653,7 +1658,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       return $this->conn->Query($query);
   }
 
-    /**
+ /**
   * Edits a status by replacing its data by the new array
   *
   * @param array $status_id  grp_id of the status to be edited
@@ -2472,7 +2477,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $columns[] = "usr_name";
 
     $this->conn->SelectRows($table, $filter, $columns);
-    $row = $this->conn->RowArray(0,MYSQL_ASSOC);
+    $row = $this->conn->RowArray(0, MYSQL_ASSOC);
     return $row['usr_name'];
   }
 

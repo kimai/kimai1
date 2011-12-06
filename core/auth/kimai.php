@@ -20,29 +20,48 @@
 require(WEBROOT.'auth/base.php');
 
 
-class KimaiAuth extends AuthBase {
+class KimaiAuth extends AuthBase
+{
 
+    /**
+     * @param DatabaseLayer $database
+     * @param array $kga
+     */
+    public function __construct($database = null, $kga = null)
+    {
+        if ($database !== null) {
+            $this->setDatabase($database);
+        }
 
-  public function authenticate($username,$password,&$userId) {
-      global $kga, $database;
+        if ($kga !== null) {
+            $this->setKga($kga);
+        }
+    }
 
-      $id = $database->usr_name2id($username);
+    /**
+     * @param $username
+     * @param $password
+     * @param $userId
+     * @return bool
+     */
+    public function authenticate($username, $password, &$userId)
+    {
+        $kga      = $this->getKga();
+        $database = $this->getDatabase();
 
-      if ($id === false) {
-        $userId = false;
-        return false;
-      }
-      
-      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+        $id = $database->usr_name2id($username);
 
-      $userData = $database->usr_get_data($id);
+        if ($id === false) {
+            $userId = false;
+            return false;
+        }
 
-      $pass    = $userData['pw'];     
-      $userId  = $userData['usr_ID'];
-      
-      return $pass==$passCrypt && $username!="";
-  }
+        $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+        $userData  = $database->usr_get_data($id);
+        $pass      = $userData['pw'];
+        $userId    = $userData['usr_ID'];
+
+        return $pass==$passCrypt && $username!="";
+    }
+
 }
-
-// There should be NO trailing whitespaces.
-?>

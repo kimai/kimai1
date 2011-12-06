@@ -18,11 +18,11 @@
  */
 
 /**
- * This file is the SOAP interface to Kimai to be used by
+ * This file is the JSON interface to Kimai to be used by
  * external APPs to allow remote access.
  *
  * Please read the following page to know how this server works:
- * http://framework.zend.com/manual/en/zend.soap.server.html
+ * http://framework.zend.com/manual/en/zend.json.server.html
  *
  * @author Kevin Papst <kpapst@gmx.net>
  */
@@ -52,33 +52,31 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
 
 /**
  * ==================================================================
- * Prepare environment and execute SOAP mode to execute
+ * Prepare environment and execute JSON calls
  * ==================================================================
  */
 
 require(APPLICATION_PATH.'/includes/classes/remote.class.php');
 
-ini_set('soap.wsdl_cache_enabled', 0);                              // @TODO
-ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/compile/');     // @TODO
-ini_set('soap.wsdl_cache', WSDL_CACHE_NONE);                        // WSDL_CACHE_DISK
-ini_set('soap.wsdl_cache_ttl', 0);                                  // cache lifetime
+$server = new Zend_Json_Server();
+$server->setClass('Kimai_Remote_Api');
 
-// @TODO check what works better, with or without?
-//$soapOpts = array('soap_version' => SOAP_1_2, 'encoding' => 'UTF-8'/*, 'uri' => $wsdlUrl*/);
-$soapOpts = array();
+if ('GET' == $_SERVER['REQUEST_METHOD']) {
+    // Indicate the URL endpoint, and the JSON-RPC version used:
+    $server->setTarget('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])
+           ->setEnvelope(Zend_Json_Server_Smd::ENV_JSONRPC_2);
 
-if (isset($_GET['wsdl']) || isset($_GET['WSDL']))
-{
-	$autodiscover = new Zend_Soap_AutoDiscover();
-	$autodiscover->setClass('Kimai_Remote_Api');
-	$autodiscover->handle();
+    // Grab the SMD
+    $smd = $server->getServiceMap();
+
+    // Return the SMD to the client
+    header('Content-Type: application/json');
+    echo $smd;
+    return;
 }
-else
-{
-	$wsdlUrl =  'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?wsdl';
-	$server = new Kimai_Remote_Api();
+// dirty hack
+$request = new Zend_Json_Server_Request();
+$request->setOptions($_REQUEST);
+$server->setRequest($request);
 
-	$soap = new Zend_Soap_Server($wsdlUrl, $soapOpts);
-	$soap->setObject($server);
-	$soap->handle();
-}
+$server->handle();
