@@ -1,0 +1,22 @@
+EXTENSION_NAME = "Timesheet"
+EXTENSION_KEY = "ki_timesheet"
+EXTENSION_INIT_FILE = "init.php"
+EXTENSION_DIR = "ki_timesheets"
+
+ADMIN_ALLOWED = "1"
+GROUP_LEADER_ALLOWED = "1"
+USER_ALLOWED = "1"
+CUSTOMER_ALLOWED = "1"
+
+JS_INCLUDE_FILES[] =  "../extensions/ki_timesheets/js/ts_func.js"
+JS_INCLUDE_FILES[] =  "../extensions/ki_timesheets/js/ts_init.js"
+CSS_INCLUDE_FILES = "../extensions/ki_timesheets/css/styles.css"
+
+TAB_CHANGE_TRIGGER       = "ts_ext_triggerchange();"
+TIMESPACE_CHANGE_TRIGGER = "ts_ext_triggerTSS();"
+
+CHANGE_KND_TRIGGER       = "ts_ext_triggerCHK();"
+CHANGE_PCT_TRIGGER       = "ts_ext_triggerCHP();"
+CHANGE_EVT_TRIGGER       = "ts_ext_triggerCHE();"
+LIST_FILTER_TRIGGER      = "ts_ext_reload();"
+RESIZE_TRIGGER           = "ts_ext_resize();"

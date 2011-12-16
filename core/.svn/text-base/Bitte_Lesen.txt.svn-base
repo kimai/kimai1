@@ -1,0 +1,84 @@
+Installationsanleitung:
+-----------------------
+
+# Benutzen Sie einen *aktuellen* Browser!
+# Sie brauchen Zugriff auf eine (MySQL) Datenbank und PHP 
+# Rufen Sie mit dem Browser das Kimai-Verzeichnis auf.
+# Seit v0.8 gibt es einen Step-by-Step Installer. 
+  Befolgen Sie einfach die Anweisungen des Installers.
+
+**********************************************************************
+* Anmelden koennen Sie sich mit dem voreingestellten Benutzerkonto:  *
+* Benutzer: admin / Passwort: changeme                               *
+**********************************************************************
+
+WICHTIG! Entfernen Sie nach der Installation das Verzeichnis
+'installer'!
+
+Wenn sich Kimai nicht starten laesst, liegt das wahrscheinlich an
+falschen Schreibrechten fuer Dateien und Ordner! Der Installer zeigt
+Ihnen, welche Rechte Sie aendern muessen. Weiter unten finden Sie
+noch weitere Hinweise zur Installation.
+
+Sollten trotzdem Probleme bei der Installation auftauchen, lesen Sie
+bitte im Forum unter http://forum.kimai.org (Rubrik 'Support').
+
+
+Eine neue Version aktualisiert, falls notwendig, selbstaendig die
+Datenbankstruktur. Vorher wird jeweils ein Backup angelegt.
+Sollte dabei mal etwas schief laufen, koennen die Daten per phpMyAdmin
+(wir arbeiten an einem Tool mit dem Sie das direkt in Kimai machen koennen)
+wieder hergestellt werden.
+
+
+Updates:
+--------
+
+ES KÖNNEN NUR VERSIONEN HÖHER ALS 7.0 UPGEDATET WERDEN!
+
+Um eine neue Version zu installieren, ersetzen Sie einfach das gesamte
+Kimai-Verzeichnis durch das neue Package. Sie muessen dabei lediglich
+die Datei '/includes/autoconf.php' von der alten Version behalten.
+
+Zusätzlich müssen sie sicherstellen, dass die Berechtigungen noch stimmen. Die folgenden
+Ordner und Dateien müssen für den Webserver schreibbar sein:
+/compile
+/extensions/ki_timesheets/compile
+/extensions/ki_adminpanel/compile
+/extensions/ki_expenses/compile
+/extensions/ki_export/compile
+/extensions/ki_budget/compile
+/extensions/ki_invoice/compile
+/temporary
+/temporary/logfile.txt
+/includes/autoconf.php
+
+
+=== Update wenn noch keine autoconf.php existiert ===
+
+Existiert bereits eine autoconf.php sind diese Schritte nicht durchzuführen.
+
+Die Datei conf.php in autoconf.php umbenennen.
+
+Anschließend müssen 3 Variablen zu autoconf.php hinzugefügt werden:
+
+$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
+						  // check the PHP PDO manual if you are using a different
+						  // database
+$server_conn = "mysql";
+
+$password_salt = "";
+
+Die Installation laeuft dann nicht mit PDO. Soll PDO genutzt werden,
+muss $server_conn = "pdo" gesetzt werden.
+
+
+
+Noch ein Hinweis: 
+-----------------
+Diese Software ist kostenlos. Wir bitten Sie die Copyright-Vermerke auf dem
+Login-Screen und im About-Fenster nicht zu entfernen.
+
+
+
+Have Fun!

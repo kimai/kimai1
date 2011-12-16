@@ -1,0 +1,11 @@
+Patched tinyDoc.class.php:
+===========================================
+function deltree ~ line 435:   
+      // if (realpath($dir) == realpath(DIRECTORY_SEPARATOR))
+    if (realpath($dir) == DIRECTORY_SEPARATOR)
+    
+    
+function setProcessDir ~ line 900:
+      // if (realpath($processDir) == realpath(DIRECTORY_SEPARATOR))
+    if (realpath($processDir) == DIRECTORY_SEPARATOR)
+

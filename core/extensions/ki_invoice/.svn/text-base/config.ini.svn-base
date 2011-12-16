@@ -1,0 +1,16 @@
+EXTENSION_NAME = "Invoice"
+EXTENSION_KEY = "ki_invoice"
+EXTENSION_INIT_FILE = "ki_invoice/init.php"
+EXTENSION_DIR = "ki_invoice"
+
+ADMIN_ALLOWED = "1"
+GROUP_LEADER_ALLOWED = "1"
+USER_ALLOWED = "1"
+CUSTOMER_ALLOWED = "0"
+
+JS_INCLUDE_FILES[] = "../extensions/ki_invoice/js/iv_init.js"
+JS_INCLUDE_FILES[] = "../extensions/ki_invoice/js/iv_func.js"
+CSS_INCLUDE_FILES = "../extensions/ki_invoice/css/styles.css.php"
+
+TAB_CHANGE_TRIGGER       = "iv_ext_triggerchange();"
+TIMESPACE_CHANGE_TRIGGER = "iv_ext_triggerTSS();"

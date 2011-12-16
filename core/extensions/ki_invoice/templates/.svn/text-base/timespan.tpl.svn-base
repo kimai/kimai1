@@ -1,0 +1,1 @@
+{$kga.lang.ext_invoice.invoiceTimePeriod}  <b>{$in|date_format:$kga.date_format.2|escape:'html'} - {$out|date_format:$kga.date_format.2|escape:'html'}</b>

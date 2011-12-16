@@ -1,0 +1,117 @@
+10
+
+dir
+498
+https://kimai.svn.sourceforge.net/svnroot/kimai/kimai/core/libraries/Zend/Feed/Writer/Extension
+https://kimai.svn.sourceforge.net/svnroot/kimai
+
+
+
+2011-11-18T20:39:27.074633Z
+489
+kpapst
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+6c400f8c-763c-0410-ad1e-de11c01e913c
+
+Atom
+dir
+
+Content
+dir
+
+DublinCore
+dir
+
+ITunes
+dir
+
+RendererAbstract.php
+file
+
+
+
+
+2011-12-07T16:23:32.000000Z
+23b87bc44628c80ace2500f585776c97
+2011-11-18T20:39:27.074633Z
+489
+kpapst
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3832
+
+RendererInterface.php
+file
+
+
+
+
+2011-12-07T16:23:33.000000Z
+2a27ada28c959cacdcfae3069da6770b
+2011-11-18T20:39:27.074633Z
+489
+kpapst
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1640
+
+Slash
+dir
+
+Threading
+dir
+
+WellFormedWeb
+dir
+

@@ -1,0 +1,22 @@
+EXTENSION_NAME = "Export"
+EXTENSION_KEY = "ki_export"
+EXTENSION_INIT_FILE = "ki_export/init.php"
+EXTENSION_DIR = "ki_export"
+
+ADMIN_ALLOWED = "1"
+GROUP_LEADER_ALLOWED = "1"
+USER_ALLOWED = "1"
+CUSTOMER_ALLOWED = "1"
+
+JS_INCLUDE_FILES[] = "../extensions/ki_export/js/xp_func.js"
+JS_INCLUDE_FILES[] = "../extensions/ki_export/js/xp_init.js"
+CSS_INCLUDE_FILES = "../extensions/ki_export/css/styles.css"
+
+TAB_CHANGE_TRIGGER       = "xp_ext_triggerchange();"
+TIMESPACE_CHANGE_TRIGGER = "xp_ext_triggerTSS();"
+
+CHANGE_KND_TRIGGER       = "xp_ext_triggerCHK();"
+CHANGE_PCT_TRIGGER       = "xp_ext_triggerCHP();"
+CHANGE_EVT_TRIGGER       = "xp_ext_triggerCHE();"
+LIST_FILTER_TRIGGER      = "xp_ext_reload();"
+RESIZE_TRIGGER           = "xp_ext_resize();"

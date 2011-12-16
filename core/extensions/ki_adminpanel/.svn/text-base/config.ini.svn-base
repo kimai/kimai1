@@ -1,0 +1,18 @@
+EXTENSION_NAME = "Admin Panel"
+EXTENSION_KEY = "ap_ext"
+EXTENSION_DIR = "ki_adminpanel"
+EXTENSION_INIT_FILE = "ki_adminpanel/init.php"
+ADMIN_ALLOWED = "1"
+GROUP_LEADER_ALLOWED = "1"
+USER_ALLOWED = "0"
+CUSTOMER_ALLOWED = "0"
+
+TAB_CHANGE_TRIGGER = "ap_ext_triggerchange();"
+CHANGE_KND_TRIGGER = "ap_ext_triggerCHK();"
+CHANGE_PCT_TRIGGER = "ap_ext_triggerCHP();"
+CHANGE_EVT_TRIGGER = "ap_ext_triggerCHE();"
+CHANGE_USR_TRIGGER = "ap_ext_triggerUSR();"
+
+CSS_INCLUDE_FILES = "../extensions/ki_adminpanel/css/styles.css"
+JS_INCLUDE_FILES[] = "../extensions/ki_adminpanel/js/ap_func.js"
+JS_INCLUDE_FILES[] = "../extensions/ki_adminpanel/js/ap_init.js"

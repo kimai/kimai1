@@ -1,0 +1,90 @@
+Installation:
+-------------
+
+# Use a *modern* Browser!
+# You need PHP 5 and access to a MySQL-database.
+# Start your Browser and go to your Kimai directory.
+# Since 0.8 Kimai has a step-by-step installation program. 
+  Just follow the instructions of the installer.
+
+IMPORTANT! Remove the 'installer' directory when you’ve successfully
+installed Kimai.
+
+  ***********************************************
+  * You can login via the preinstalled account: *
+  * User: admin / Password: changeme            *
+  ***********************************************
+
+When Kimai doesn't start the reason is probably wrong writing permissions
+of certain files and folders! The installer shows you which permissions
+are to be set.
+
+If you have problems installing, please read the section 'Support'
+in the forum. -> http://forum.kimai.org
+
+A new version updates the database automatically (is nessesary).
+Before that a backup of your data will be created. Normally you'll
+not even notice this process. If anything goes wrong during the
+database-update you can recover the data via phpMyAdmin (we're
+also working on a tool for recoverage...)
+
+
+Updates:
+--------
+
+YOU CAN ONLY UPDATE VERSIONS HIGHER THAN 7.0!
+
+
+To install a new version just replace the entire directory with the new
+package EXCEPT the file 'autoconf.php' which sits inside the 'includes' folder.
+
+Additionally you have to make sure the permissions are still correct. The following
+folders and files need to be writeable for the webserver:
+/compile
+/extensions/ki_timesheets/compile
+/extensions/ki_adminpanel/compile
+/extensions/ki_expenses/compile
+/extensions/ki_export/compile
+/extensions/ki_budget/compile
+/extensions/ki_invoice/compile
+/temporary
+/temporary/logfile.txt
+/includes/autoconf.php
+
+
+Once again: Kimai will NOT work with wrong writing permissions!
+
+
+=== Update when no autoconf.php exists ===
+
+If you already have a autoconf.php in your installation skip this.
+
+Rename your conf.php file to autoconf.php.
+
+Then edit it and add three new variables:
+
+$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
+						  // check the PHP PDO manual if you are using a different
+						  // database
+$server_conn = "mysql";
+
+$password_salt   = "";
+
+Kimai will then work in non-PDO mode. If you want to
+use PDO $server_conn must be set to "pdo".
+
+
+
+Finally visit your Kimai installation with your web browser and the
+auto update process will perform all further necessary updates.
+
+
+Some final words:
+-----------------
+
+This software is free of charge. We ask you to NOT remove the copyright-notes
+on the login-panel and in the credits-window.
+
+
+
+Have Fun!

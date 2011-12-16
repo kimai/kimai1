@@ -1,0 +1,4 @@
+@import "setup.css.php";
+@import "subtabs.css.php";
+@import "tables.css";
+@import "advanced.css";

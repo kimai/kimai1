@@ -1,0 +1,70 @@
+#xp_ext_tab_filter {
+  padding: 10px 0 0 0;
+  font-size: 20px;
+  color: #3a3b34;
+  display: none;
+}
+#xp_ext_tab_filter input[type=text] {
+  font-size: 20px;
+  display: block;
+  float: left;
+  width: 100px;
+  border: none;
+  height: 25px;
+  margin-top: 1px;
+  margin-left: 5px;
+  padding-left: 3px;
+  background-color: #ddddcd;
+}
+#xp_ext_tab_filter span {
+  margin-left: 10px;
+  float: left;
+  display: block;
+}
+#xp_ext_tab_location {
+  padding: 10px 0 0 0;
+  font-size: 20px;
+  color: #3a3b34;
+  display: none;
+}
+#xp_ext_tab_location input[type=text] {
+  font-size: 20px;
+  display: block;
+  float: left;
+  width: 150px;
+  border: none;
+  height: 25px;
+  margin-top: 1px;
+  margin-left: 5px;
+  padding-left: 3px;
+  background-color: #ddddcd;
+}
+#xp_ext_tab_location span {
+  margin-left: 10px;
+  float: left;
+  display: block;
+}
+#xp_ext_tab_timeformat {
+  padding: 10px 0 0 0;
+  font-size: 20px;
+  color: #3a3b34;
+  display: none;
+}
+#xp_ext_tab_timeformat input[type=text] {
+  font-size: 20px;
+  display: block;
+  float: left;
+  width: 100px;
+  border: none;
+  height: 25px;
+  margin-top: 1px;
+  margin-left: 5px;
+  padding-left: 3px;
+  background-color: #ddddcd;
+}
+#xp_ext_tab_timeformat span {
+  margin-left: 10px;
+  float: left;
+  display: block;
+}
+#xp_ext_tab_timeformat { display: block; }

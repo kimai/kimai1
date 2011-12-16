@@ -1,0 +1,71 @@
+10
+
+dir
+498
+https://kimai.svn.sourceforge.net/svnroot/kimai/kimai/core/libraries/Zend/Application
+https://kimai.svn.sourceforge.net/svnroot/kimai
+
+
+
+2011-11-18T20:39:27.074633Z
+489
+kpapst
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+6c400f8c-763c-0410-ad1e-de11c01e913c
+
+Bootstrap
+dir
+
+Exception.php
+file
+
+
+
+
+2011-12-07T16:24:19.000000Z
+b35bd3858b034755f8f584972ac03bcf
+2011-11-18T20:39:27.074633Z
+489
+kpapst
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1171
+
+Module
+dir
+
+Resource
+dir
+
