@@ -1,52 +1,0 @@
-10
-
-dir
-498
-https://kimai.svn.sourceforge.net/svnroot/kimai/kimai/core/extensions
-https://kimai.svn.sourceforge.net/svnroot/kimai
-
-
-
-2011-11-19T00:41:33.625970Z
-492
-kpapst
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-6c400f8c-763c-0410-ad1e-de11c01e913c
-
-ext_debug
-dir
-
-ki_adminpanel
-dir
-
-ki_budget
-dir
-
-ki_demoextension
-dir
-
-ki_expenses
-dir
-
-ki_export
-dir
-
-ki_invoice
-dir
-
-ki_timesheets
-dir
-
