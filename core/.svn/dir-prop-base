@@ -1,8 +1,0 @@
-K 10
-svn:ignore
-V 32
-test_umysql_layer
-KimaiLite
-sql
-
-END
