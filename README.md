@@ -16,7 +16,7 @@ There is also some [documentation about Kimai](http://www.kimai.org/en/documenta
 Contributing
 ------------
 
-We'd love to get input from all you talented developer out there:
+We would love to get input from all you talented developer out there:
 
 1. Fork Kimai or one of its extensions
 2. Create a branch (`git checkout -b my_kimai`)

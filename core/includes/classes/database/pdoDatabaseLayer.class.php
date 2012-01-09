@@ -1204,7 +1204,7 @@ class PDODatabaseLayer extends DatabaseLayer
           $this->logLastError('usr_get_data');
           return false;
       }
-        
+
       $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $result_array;
     }
@@ -4423,6 +4423,56 @@ class PDODatabaseLayer extends DatabaseLayer
               $result[] = $row;
           }
         return $result;
+    }
+
+    /**
+     * Checks if given $projectId exists in the DB.
+     *
+     * @param int $projectId
+     * @return bool
+     */
+    public function isValidProjectId($projectId)
+    {
+        $table = $this->getProjectTable();
+        $idColumn = 'pct_ID';
+
+        return $this->rowExists($table, $idColumn, $projectId);
+    }
+
+    /**
+     * Checks if given $eventId exists in the DB.
+     *
+     * @param int $eventId
+     * @return bool
+     */
+    public function isValidEventId($eventId)
+    {
+        $table = $this->getEventTable();
+        $idColumn = 'evt_ID';
+
+        return $this->rowExists($table, $idColumn, $eventId);
+    }
+
+    /**
+     * Checks if a given DB row based on the $idColumn & $id exists.
+     *
+     * @param string $table
+     * @param string $idColumn
+     * @param int $id
+     * @return bool
+     */
+    protected function rowExists($table, $idColumn, $id)
+    {
+        $pdo_query = $this->conn->prepare("SELECT * FROM $table WHERE $idColumn = ?");
+        $select = $pdo_query->execute(array($id));
+
+        if (!$select) {
+            $this->logLastError('rowExists');
+            return false;
+        }
+
+        $rowExits = (bool)$pdo_query->fetch(PDO::FETCH_ASSOC);
+        return $rowExits;
     }
 
 }
