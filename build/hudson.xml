@@ -71,7 +71,7 @@
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend" depends="prepare">
         <exec dir="${workspace}" executable="pdepend">
-            <arg line="--ignore=git/core/libraries/ --jdepend-xml=build/logs/jdepend.xml git/core"/>
+            <arg line="--ignore=libraries/ --jdepend-xml=build/logs/jdepend.xml git/core"/>
         </exec>
     </target>
 
