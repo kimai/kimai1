@@ -10,7 +10,7 @@
 	<import file="${basedir}/build.xml"/>
     
 	<!-- The build directory for all tasks -->
-    <property location="${basedir}/../../../" name="workspace" />
+    <property location="${basedir}/../../" name="workspace" />
 
     <description>
         Hudson Build File for the Kimai - Time Tracking Software.
