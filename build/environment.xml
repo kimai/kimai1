@@ -31,6 +31,8 @@
 	  	<exclude name=".settings"/>
 	  	<exclude name=".project"/>
 	  	<exclude name=".svn"/>
+        <exclude name=".git"/>
+        <exclude name=".gitignore"/>
 	  	<exclude name="Entries"/>
 	  	<exclude name="Repository"/>
 	  	<exclude name="Root"/>
@@ -42,6 +44,7 @@
 	  	<exclude name="updater_old.php"/>
 	  	<!-- exclude name="kimaiversion.php"/ -->
 	  	<exclude name="todo.txt"/>
+        <exclude name="README.md"/>
 	</patternset>
 
 	<!-- Name and location of the release files -->
