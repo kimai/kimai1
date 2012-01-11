@@ -78,7 +78,7 @@
 	<!-- PHPMD: Mess detection - code analysis -->
     <target name="phpmd" depends="prepare">
         <exec dir="${workspace}" executable="phpmd">
-            <arg line="git xml codesize,unusedcode --exclude git/core/libraries/ --reportfile build/logs/pmd.xml" />
+            <arg line="git xml codesize,unusedcode --exclude core/libraries/ --reportfile build/logs/pmd.xml" />
         </exec>
     </target>
 
