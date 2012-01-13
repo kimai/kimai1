@@ -2972,10 +2972,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * return status names
    * @param integer $statusIds
    */
-    public function get_status($statusIds) {
+  public function get_status($statusIds)
+  {
   	  $p = $this->kga['server_prefix'];
-  	  $statusIds = implode(',', $statusIds);
-      $query = "SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id";
+  	  // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
+      $statusIds = implode('\',\'', $statusIds);
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusIds = "'" . $statusIds . "'";
+      $query = "SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id";
       $result = $this->conn->Query($query);
       if ($result == false) {
           $this->logLastError('get_status');
@@ -2983,18 +2987,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      $res = array();
       foreach($rows as $row) {
       	$res[] = $row['status'];
       }
       return $res;
   }
 
-    /**
-  * returns array of all status with the status id as key
-  *
-  * @return array
-  * @author mo
-  */
+  /**
+   * returns array of all status with the status id as key
+   *
+   * @return array
+   * @author mo
+   */
   public function get_arr_status() {
       $p = $this->kga['server_prefix'];
 

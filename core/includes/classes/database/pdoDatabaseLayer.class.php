@@ -3388,21 +3388,27 @@ class PDODatabaseLayer extends DatabaseLayer
       return $seq;
     }
 
-
-    /**
+   /**
     * return status names
     * @param integer $statusIds
     */
-    public function get_status($statusIds) {
+   public function get_status($statusIds)
+   {
       $p = $this->kga['server_prefix'];
-      $statusIds = implode(',', $statusIds);
-      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
+      // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
+      $statusIds = implode('\',\'', $statusIds);
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusIds = "'" . $statusIds . "'";
+      // fcw: fehler in query (nicht status_id in (...) sondern status in (...)
+      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id");
+
       $result = $pdo_query->execute();
       if ($result == false) {
           $this->logLastError('get_status');
           return false;
       }
 
+      $res = array();
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $res[] = $row['status'];
       }
