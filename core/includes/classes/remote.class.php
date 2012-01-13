@@ -181,6 +181,32 @@ class Kimai_Remote_Api
     }
 
     /**
+     * Returns the result array for failed authentication.
+     *
+     * @return array
+     */
+    protected function getAuthErrorResult()
+    {
+        return $this->getErrorResult('Unknown user or no permissions.');
+    }
+
+    /**
+     * Returns the array for failure messages.
+     * Returned messages will always be a string, but might be empty!
+     *
+     * @param string $msg
+     * @return array
+     */
+    protected function getErrorResult($msg = null)
+    {
+        if ($msg === null) {
+            $msg = '';
+        }
+
+        return array('success' => false, 'message' => $msg);
+    }
+
+    /**
      * The user started the recording of an event via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
      *
@@ -192,11 +218,11 @@ class Kimai_Remote_Api
 	public function startRecord($apiKey, $projectId, $eventId)
 	{
         if (!$this->init($apiKey, 'startRecord')) {
-			return false;
+            return $this->getAuthErrorResult();
         }
-
+		
 		// check for valid params
-		if(!$this->getBackend()->isValidProjectId($projectId) ||
+		if(!$this->getBackend()->isValidProjectId($projectId) || 
 			!$this->getBackend()->isValidEventId($eventId))
 		{
 			return false;
@@ -222,7 +248,7 @@ class Kimai_Remote_Api
 	public function stopRecord($apiKey)
 	{
         if (!$this->init($apiKey, 'stopRecord')) {
-			return false;
+			return $this->getAuthErrorResult();
         }
 
         $result = $this->getBackend()->stopRecorder();
@@ -245,7 +271,7 @@ class Kimai_Remote_Api
 	public function getUsers($apiKey)
 	{
         if (!$this->init($apiKey, 'getUsers')) {
-			return false;
+			return $this->getAuthErrorResult();
         }
 
 		$users = $this->getBackend()->get_arr_watchable_users($this->getUser());
@@ -272,7 +298,7 @@ class Kimai_Remote_Api
 	public function getCustomers($apiKey)
 	{
         if (!$this->init($apiKey, 'getCustomers', true)) {
-			return false;
+			return $this->getAuthErrorResult();
         }
 
         $kga = $this->getKimaiEnv();
@@ -305,7 +331,7 @@ class Kimai_Remote_Api
 	public function getProjects($apiKey)
 	{
         if (!$this->init($apiKey, 'getProjects', true)) {
-			return false;
+			return $this->getAuthErrorResult();
         }
 
         $projects = array();
@@ -339,7 +365,7 @@ class Kimai_Remote_Api
 	public function getTasks($apiKey, $projectId = null)
 	{
         if (!$this->init($apiKey, 'getTasks', true)) {
-			return false;
+			return $this->getAuthErrorResult();
         }
 
         $tasks = array();
@@ -395,9 +421,14 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->get_event_last();
 
 		// no "last" event existing
-        if ($result === false) {
+        if ($result == false) {
 			return array();
 		}
+
+        // do not return any values if the task is no more active
+        if (!empty($result['zef_out'])) {
+            return array();
+        }
 
         // do not expose all values, but only the public visible ones
         $keys    = array('zef_ID', 'zef_evtID', 'zef_pctID', 'zef_in', 'zef_out', 'zef_time');
@@ -407,7 +438,23 @@ class Kimai_Remote_Api
 				$current[$key] = $result[$key];
 			}
 		}
-        return $current;
+		/**
+		 * add current server time
+		 * this maybe needed to synchronize elapsed time on any extern api calls
+		 */
+		$current['zef_servertime'] =  time();
+		/**
+		 * add customerId & Name
+		 */
+		
+		$zef = $this->getBackend()->get_arr_zef($current['zef_in'], $current['zef_out']);
+		$current['zef_knd_ID'] = $zef[0]['pct_kndID'];
+		$current['zef_knd_name'] = $zef[0]['knd_name'];
+		$current['zef_pct_name'] = $zef[0]['pct_name'];
+		$current['zef_evt_name'] = $zef[0]['evt_name'];
+		
+		
+        return array($current);
 	}
 
 }
