@@ -1,0 +1,2 @@
+This directory holds temporary files, which will be created during PDF and/or ODT compilation.
+It needs to exist, otherwise creation of these documents will fail.

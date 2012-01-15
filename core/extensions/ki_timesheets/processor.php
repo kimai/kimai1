@@ -30,17 +30,17 @@ require("../../includes/kspi.php");
 // = handle request =
 // ==================
 switch ($axAction) {
-    
+
     // =========================
     // = record an event AGAIN =
     // =========================
     case 'record':
         if (isset($kga['customer'])) die();
-        
+
         if ($database->get_rec_state($kga['usr']['usr_ID'])) {
             $database->stopRecorder($kga['usr']['usr_ID']);
         }
-        
+
         $zefData = $database->zef_get_data($id);
 
         $zefData['in'] = time();
@@ -57,24 +57,26 @@ switch ($axAction) {
         $zefData['comment_type'] = $zefData['zef_comment_type'];
         $zefData['rate'] = $zefData['zef_rate'];
         $zefData['cleared'] = $zefData['zef_cleared'];
+        //fcw: status hatte hier noch gefehlt
+        $zefData['status'] = $zefData['zef_status'];
 
         $newZefId = $database->zef_create_record($kga['usr']['usr_ID'],$zefData);
-        
+
         $usrData = array();
         $usrData['lastRecord'] = $newZefId;
         $usrData['lastProject'] = $zefData['pct_ID'];
         $usrData['lastEvent'] = $zefData['evt_ID'];
         $database->usr_edit($kga['usr']['usr_ID'], $usrData);
-        
-        
-        $pctdata = $database->pct_get_data($zefData['zef_pctID']);        
+
+
+        $pctdata = $database->pct_get_data($zefData['zef_pctID']);
         $return =  'pct_name = "' . $pctdata['pct_name'] .'"; ';
-        
+
         $return .=  'knd = "' . $pctdata['pct_kndID'] .'"; ';
-        
-        $knddata = $database->knd_get_data($pctdata['pct_kndID']);        
+
+        $knddata = $database->knd_get_data($pctdata['pct_kndID']);
         $return .=  'knd_name = "' . $knddata['knd_name'] .'"; ';
-                
+
         $evtdata = $database->evt_get_data($zefData['zef_evtID']);
         $return .= 'evt_name = "' . $evtdata['evt_name'] .'"; ';
 
@@ -137,7 +139,7 @@ switch ($axAction) {
     // ===================================
     case 'edit_running_starttime':
         if (isset($kga['customer'])) die();
-            // fcw: 2011-07-23: Neue Startzeit aus heutigem Datum holen und aus dem REQUEST. 
+            // fcw: 2011-07-23: Neue Startzeit aus heutigem Datum holen und aus dem REQUEST.
             // Schon fuer convert_time_strings (aus /includes/func.php) passend machen (als String, z.B.: "23.07.2011-16:25:57")
             $new_starttime = Format::expand_date_shortcut($_REQUEST['startday']).'-'.Format::expand_time_shortcut($_REQUEST['starttime']);
             // UNIX-Time holen, zwei Mal den selben Parameter, nur einer wird gebraucht
@@ -162,15 +164,15 @@ switch ($axAction) {
     // ===============================================
     case 'bestFittingRates':
         if (isset($kga['customer'])) die();
-        
+
         $data = array(
           'hourlyRate' => $database->get_best_fitting_rate($kga['usr']['usr_ID'],$_REQUEST['project_id'],$_REQUEST['event_id']),
           'fixedRate' => $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['event_id'])
         );
         echo json_encode($data);
     break;
-    
-    
+
+
     // ===============================================
     // = Get the new budget data after changing project or event =
     // ===============================================
@@ -293,7 +295,7 @@ switch ($axAction) {
         // if no userfilter is set, set it to current user
         if (isset($kga['usr']) && count($filterUsr) == 0)
           array_push($filterUsr,$kga['usr']['usr_ID']);
-          
+
         if (isset($kga['customer']))
           $filterKnd = array($kga['customer']['knd_ID']);
 
@@ -308,7 +310,7 @@ switch ($axAction) {
         $ann = $database->get_arr_time_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         Format::formatAnnotations($ann);
         $tpl->assign('usr_ann',$ann);
-        
+
         $ann = $database->get_arr_time_knd($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         Format::formatAnnotations($ann);
         $tpl->assign('knd_ann',$ann);
@@ -333,12 +335,12 @@ switch ($axAction) {
 
         $tpl->display("zef.tpl");
     break;
-    
-    
+
+
     // =========================
     // = add / edit zef record =
     // =========================
-    case 'add_edit_record': 
+    case 'add_edit_record':
       if (isset($kga['customer'])) die();
 
       if ($id) {
@@ -348,7 +350,7 @@ switch ($axAction) {
           return;
         }
       }
-      
+
       $data['pct_ID']          = $_REQUEST['pct_ID'];
       $data['evt_ID']          = $_REQUEST['evt_ID'];
       $data['zlocation']       = $_REQUEST['zlocation'];
@@ -375,35 +377,35 @@ switch ($axAction) {
 
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
-      
+
       $edit_in_day       = Format::expand_date_shortcut($_REQUEST['edit_in_day']);
       $edit_out_day      = Format::expand_date_shortcut($_REQUEST['edit_out_day']);
       $edit_in_time   = Format::expand_time_shortcut($_REQUEST['edit_in_time']);
       $edit_out_time  = Format::expand_time_shortcut($_REQUEST['edit_out_time']);
       $new_in  = "${edit_in_day}-${edit_in_time}";
-      $new_out = "${edit_out_day}-${edit_out_time}";  
-      
+      $new_out = "${edit_out_day}-${edit_out_time}";
+
       if (Format::check_time_format($new_in) && Format::check_time_format($new_out)) {
-          // if this is TRUE the values PASSED the test! 
-          $setTimeValue = 1;   
+          // if this is TRUE the values PASSED the test!
+          $setTimeValue = 1;
       }
       else {
         echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
         break;
       }
-        
+
       $new_time = convert_time_strings($new_in,$new_out);
-      
+
       // if the difference between in and out value is zero or below this can't be correct ...
-      
+
       // TIME WRONG - NEW ENTRY
 
       if ($kga['conf']['editLimit'] != "-" && time()-$new_time['out'] > $kga['conf']['editLimit']) {
         echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
         return;
       }
-      
-      
+
+
       if (!$new_time['diff'] && !$id) {
           // if this is an ADD record dialog it makes no sense to create the record
           // when it doesn't have any TIME attached ... so this stops the processing.
@@ -411,9 +413,9 @@ switch ($axAction) {
           echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
           break;
       }
-      
+
       // TIME WRONG - EDIT ENTRY
-      
+
       if (!$new_time['diff']) {
           // obviously this is an edit of an existing record. but still it contains no correct timespan.
           // here somebody didn't mean to change the timespace like that. so we leave the timespan as is.
@@ -421,37 +423,37 @@ switch ($axAction) {
           $data['in']   = 0;
           $data['out']  = 0;
           $data['diff'] = 0;
-          // we send zeros instead of unix timestamps to the db-layer 
+          // we send zeros instead of unix timestamps to the db-layer
           $database->zef_edit_record($id,$data);
           echo json_encode(array('result'=>'ok'));
-          break; 
-          
+          break;
+
       } else {
-          
+
           // TIME RIGHT !
-                                                                              
+
           $data['in']   = $new_time['in'];
           $data['out']  = $new_time['out'];
           $data['diff'] = $new_time['diff'];
-              
+
           if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
               // TIME RIGHT - EDIT ENTRY
               Logger::logfile("zef_edit_record: " .$id);
               check_zef_data($id,$data);
-          
+
           } else {
-              
+
               // TIME RIGHT - NEW ENTRY
               Logger::logfile("zef_create_record");
               $database->zef_create_record($kga['usr']['usr_ID'],$data);
-              
+
           }
-          
-          
+
+
       }
       echo json_encode(array('result'=>'ok'));
-      
+
     break;
 
 }

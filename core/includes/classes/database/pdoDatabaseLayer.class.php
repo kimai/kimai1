@@ -1204,7 +1204,7 @@ class PDODatabaseLayer extends DatabaseLayer
           $this->logLastError('usr_get_data');
           return false;
       }
-        
+
       $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $result_array;
     }
@@ -3388,21 +3388,27 @@ class PDODatabaseLayer extends DatabaseLayer
       return $seq;
     }
 
-
-    /**
+   /**
     * return status names
     * @param integer $statusIds
     */
-    public function get_status($statusIds) {
+   public function get_status($statusIds)
+   {
       $p = $this->kga['server_prefix'];
-      $statusIds = implode(',', $statusIds);
-      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
+      // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
+      $statusIds = implode('\',\'', $statusIds);
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusIds = "'" . $statusIds . "'";
+      // fcw: fehler in query (nicht status_id in (...) sondern status in (...)
+      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id");
+
       $result = $pdo_query->execute();
       if ($result == false) {
           $this->logLastError('get_status');
           return false;
       }
 
+      $res = array();
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $res[] = $row['status'];
       }
@@ -4423,6 +4429,56 @@ class PDODatabaseLayer extends DatabaseLayer
               $result[] = $row;
           }
         return $result;
+    }
+
+    /**
+     * Checks if given $projectId exists in the DB.
+     *
+     * @param int $projectId
+     * @return bool
+     */
+    public function isValidProjectId($projectId)
+    {
+        $table = $this->getProjectTable();
+        $idColumn = 'pct_ID';
+
+        return $this->rowExists($table, $idColumn, $projectId);
+    }
+
+    /**
+     * Checks if given $eventId exists in the DB.
+     *
+     * @param int $eventId
+     * @return bool
+     */
+    public function isValidEventId($eventId)
+    {
+        $table = $this->getEventTable();
+        $idColumn = 'evt_ID';
+
+        return $this->rowExists($table, $idColumn, $eventId);
+    }
+
+    /**
+     * Checks if a given DB row based on the $idColumn & $id exists.
+     *
+     * @param string $table
+     * @param string $idColumn
+     * @param int $id
+     * @return bool
+     */
+    protected function rowExists($table, $idColumn, $id)
+    {
+        $pdo_query = $this->conn->prepare("SELECT * FROM $table WHERE $idColumn = ?");
+        $select = $pdo_query->execute(array($id));
+
+        if (!$select) {
+            $this->logLastError('rowExists');
+            return false;
+        }
+
+        $rowExits = (bool)$pdo_query->fetch(PDO::FETCH_ASSOC);
+        return $rowExits;
     }
 
 }

@@ -1117,7 +1117,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $this->remove_rate($data['usr_ID'], NULL, NULL);
         }
       }
-    
+
       return $data['usr_ID'];
   }
 
@@ -2972,10 +2972,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * return status names
    * @param integer $statusIds
    */
-    public function get_status($statusIds) {
+  public function get_status($statusIds)
+  {
   	  $p = $this->kga['server_prefix'];
-  	  $statusIds = implode(',', $statusIds);
-      $query = "SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id";
+  	  // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
+      $statusIds = implode('\',\'', $statusIds);
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusIds = "'" . $statusIds . "'";
+      $query = "SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id";
       $result = $this->conn->Query($query);
       if ($result == false) {
           $this->logLastError('get_status');
@@ -2983,18 +2987,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      $res = array();
       foreach($rows as $row) {
       	$res[] = $row['status'];
       }
       return $res;
   }
 
-    /**
-  * returns array of all status with the status id as key
-  *
-  * @return array
-  * @author mo
-  */
+  /**
+   * returns array of all status with the status id as key
+   *
+   * @return array
+   * @author mo
+   */
   public function get_arr_status() {
       $p = $this->kga['server_prefix'];
 
@@ -3268,21 +3273,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * performed when the stop buzzer is hit.
-  * Checks which record is currently recording and
-  * writes the end time into that entry.
-  * if the measured timevalue is longer than one calendar day
-  * it is split up and stored in the DB by days
-  *
-  * @param integer $user ID of user
-  * @author th
-  * @return boolean
-  */
-  public function stopRecorder() {
-  ## stop running recording |
+   * Stops the currently running record.
+   *
+   * Performed when the stop buzzer is hit.
+   * Checks which record is currently recording and writes the end time into that entry.
+   * If the measured timevalue is longer than one calendar day it is split up and
+   * stored in the DB by days.
+   *
+   * @param integer $user ID of user
+   * @author th
+   * @return boolean
+   */
+  public function stopRecorder()
+  {
       $table = $this->kga['server_prefix']."zef";
 
-      $last_task        = $this->get_event_last(); // aktuelle vorgangs-ID auslesen
+      $last_task = $this->get_event_last(); // aktuelle vorgangs-ID auslesen
+
+      // last event was already stopped!
+      if (!empty($last_task['zef_out'])) {
+          return false;
+      }
 
       $filter['zef_ID'] = $last_task['zef_ID'];
 
@@ -4293,8 +4304,63 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    *
    * @param string $query the sql query to execute
    */
-  public function queryAll($query) {
+  public function queryAll($query)
+  {
     return $this->conn->QueryArray($query);
+  }
+
+
+  /**
+   * Checks if given $projectId exists in the DB.
+   *
+   * @param int $projectId
+   * @return bool
+   */
+  public function isValidProjectId($projectId)
+  {
+      $table = $this->getProjectTable();
+      $idColumn = 'pct_ID';
+
+      return $this->rowExists($table, $idColumn, $projectId);
+  }
+
+  /**
+   * Checks if given $eventId exists in the DB.
+   *
+   * @param int $eventId
+   * @return bool
+   */
+  public function isValidEventId($eventId)
+  {
+
+      $table = $this->getEventTable();
+      $idColumn = 'evt_ID';
+
+      return $this->rowExists($table, $idColumn, $eventId);
+  }
+
+
+  /**
+   * Checks if a given DB row based on the $idColumn & $id exists.
+   *
+   * @param string $table
+   * @param string $idColumn
+   * @param int $id
+   * @return bool
+   */
+  protected function rowExists($table, $idColumn, $id)
+  {
+      $select = $this->conn->SelectRows($table, array($idColumn => $id));
+
+      if(!$select) {
+          $this->logLastError('rowExists');
+          return false;
+      }
+      else
+      {
+          $rowExits = (bool)$this->conn->RowArray(0, MYSQL_ASSOC);
+          return $rowExits;
+      }
   }
 
 }

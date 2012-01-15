@@ -45,6 +45,14 @@
 			  {html_options values=$sel_round_IDs output=$sel_round_names selected=$pres_round}
 			</select>
      
+            <br/>
+            
+            <select name="filter_cleared" name="cleared">
+              <option value="-1" {if !$kga.conf.hideClearedEntries}selected="selected"{/if}>{$kga.lang.xp_ext.cleared_all}</option>
+              <option value="1">{$kga.lang.xp_ext.cleared_cleared}</option>
+              <option value="0" {if $kga.conf.hideClearedEntries}selected="selected"{/if}>{$kga.lang.xp_ext.cleared_open}</option>
+            </select>
+     
 	    	<div id="iv_button">	
 				<input type="submit" class="btn_ok" value={$kga.lang.ext_invoice.invoiceButton}>
 	    	</div>

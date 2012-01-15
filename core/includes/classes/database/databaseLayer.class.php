@@ -75,6 +75,33 @@ abstract class DatabaseLayer {
   public abstract function connect($host,$database,$username,$password,$utf8,$serverType);
 
   /**
+   * @return string name of the project table
+   */
+  public function getProjectTable()
+  {
+      return $this->getTableName('pct');
+  }
+
+  /**
+   * @return string name of the event table
+   */
+  public function getEventTable()
+  {
+      return $this->getTableName('evt');
+  }
+
+  /**
+   * Returns the table name, either prefixed or plain, depending on the current configuration.
+   *
+   * @param string $table
+   * @return string
+   */
+  public function getTableName($table)
+  {
+      return $this->kga['server_prefix'].$table;
+  }
+
+  /**
   * Add a new customer to the database.
   *
   * @param array $data  name, address and other data of the new customer
@@ -1014,7 +1041,6 @@ abstract class DatabaseLayer {
   */
   public abstract function loginUpdateBan($userId,$resetTime = false);
 
-
   /**
    * Return all rows for the given sql query.
    *
@@ -1022,6 +1048,30 @@ abstract class DatabaseLayer {
    */
   public abstract function queryAll($query);
 
+  /**
+   * checks if given $projectId exists in the db
+   *
+   * @param int $projectId
+   * @return bool
+   */
+  public abstract function isValidProjectId($projectId);
+
+  /**
+   * checks if given $eventId exists in the db
+   *
+   * @param int $eventId
+   * @return bool
+   */
+  public abstract function isValidEventId($eventId);
+
+  /**
+   * checks if a given db row based on the $idColumn & $id exists
+   * @param string $table
+   * @param string $idColumn
+   * @param int $id
+   * @return bool
+   */
+  protected abstract function rowExists($table, $idColumn, $id);
 
   /**
   * associates an Event with a collection of Projects in the context of a user group.

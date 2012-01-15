@@ -60,7 +60,7 @@ $timespace       = get_timespace();
 $in              = $timespace[0];
 $out             = $timespace[1];
 
-$timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), 1);
+$timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), null,false,false,$_REQUEST['filter_cleared']);
 /* $timeArray now contains: zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID,
 	zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment,
 	pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type,

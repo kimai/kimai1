@@ -10,10 +10,10 @@
 	<import file="${basedir}/build.xml"/>
     
 	<!-- The build directory for all tasks -->
-    <property location="${basedir}/../../../" name="workspace" />
+    <property location="${basedir}/../../" name="workspace" />
 
     <description>
-        Hudson Build File for the Kimai - Time Tracking Software.
+        CI Build File for Kimai - Time Tracking Software
         
         Copyright (C) Kimai Team.
         See http://www.kimai.org/ for further informations.
@@ -64,21 +64,21 @@
     <!-- phpcpd: Copy and Paste Detection -->
     <target name="phpcpd" depends="prepare">
         <exec dir="${workspace}" executable="phpcpd">
-            <arg line="--exclude svn/kimai/core/libraries/ --log-pmd build/logs/pmd-cpd.xml svn/kimai/core"/>
+            <arg line="--exclude git/core/libraries/ --log-pmd build/logs/pmd-cpd.xml git/core"/>
         </exec>
     </target>
     
     <!-- pDepend: Static Code Analysis -->
     <target name="pdepend" depends="prepare">
         <exec dir="${workspace}" executable="pdepend">
-            <arg line="--ignore=svn/kimai/core/libraries/ --jdepend-xml=build/logs/jdepend.xml svn/kimai/core"/>
+            <arg line="--ignore=libraries/ --jdepend-xml=build/logs/jdepend.xml git/core"/>
         </exec>
     </target>
 
 	<!-- PHPMD: Mess detection - code analysis -->
     <target name="phpmd" depends="prepare">
         <exec dir="${workspace}" executable="phpmd">
-            <arg line="svn/kimai xml codesize,unusedcode --exclude svn/kimai/core/libraries/ --reportfile build/logs/pmd.xml" />
+            <arg line="git xml codesize,unusedcode --exclude core/libraries/ --reportfile build/logs/pmd.xml" />
         </exec>
     </target>
 
