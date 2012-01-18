@@ -2971,6 +2971,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
    * return status names
    * @param integer $statusIds
+    * @FIXME kpapst - here we fetch the description of the entries which are already known
+    *                 SELECT status from status WHERE status in ('open') - doesn't make
+    *                 really sense, only the values will be ordered
    */
   public function get_status($statusIds)
   {
