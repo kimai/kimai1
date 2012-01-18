@@ -26,7 +26,7 @@ class Logger {
 
   /**
    * Initialize the logger.
-   * 
+   *
    * @author sl
    */
   public static function init() {
@@ -52,7 +52,7 @@ class Logger {
 
   /**
    * Write a line to the logfile.
-   * 
+   *
    * @param string $line line to log
    * @author sl
    */
@@ -61,7 +61,7 @@ class Logger {
   }
 
   public static function exceptionHandler($exception) {
-    Logger::logfile("Uncaught exception: " , $exception->getMessage());
+    Logger::logfile("Uncaught exception: " . $exception->getMessage());
   }
 
   public static function errorHandler($errno ,$errstr , $errfile , $errline)  {
@@ -94,13 +94,13 @@ class Logger {
         $line .= 'E_RECOVERABLE_ERROR';
         break;
     }
-    
+
     $line .= ' ' . $errstr;
-    
+
     $line .= " @${errfile} line ${errline}";
 
     Logger::logfile($line);
-    
+
     return false; // let PHP do it's error handling as well
   }
 
