@@ -1073,4 +1073,115 @@ abstract class DatabaseLayer {
    */
   protected abstract function rowExists($table, $idColumn, $id);
 
+  /**
+  * associates an Event with a collection of Projects in the context of a user group.
+  * Projects that are currently associated with the Event but not mentioned in the specified id collection, will get un-assigned.
+  * The fundamental difference to assign_evt2pcts(evt_id, pct_array) is that this method is aware of potentially existing assignments 
+  * that are invisible and thus unmanagable to the user as the user lacks access to the Projects.
+  * It is implicitly assumed that the user has access to the Event and the Projects designated by the method parameters.
+  * @param integer $evt_id the id of the Event to associate
+  * @param array $pct_array the array of Project ids to associate
+  * @param integer $group the user's group id 
+  */
+  function assignEvt2PctsForGroup($evt_id, $pct_array, $group)
+  {
+      $projectIds = array_merge($pct_array, getNonManagableAssignedElementIds("evt", "pct", $evt_id, $group));
+      assign_evt2pcts($evt_id, $projectIds);
+  }
+
+  /**
+  * associates a Project with a collection of Events in the context of a user group.
+  * Events that are currently associated with the Project but not mentioned in the specified id collection, will get un-assigned.
+  * The fundamental difference to assign_pct2evts($pct_id, $evt_array) is that this method is aware of potentially existing assignments 
+  * that are invisible and thus unmanagable to the user as the user lacks access to the Events.
+  * It is implicitly assumed that the user has access to the Project and the Events designated by the method parameters.
+  * @param integer $pct_id the id of the Project to associate
+  * @param array $evt_array the array of Event ids to associate
+  * @param integer $group the user's group id 
+  */
+  function assignPct2EvtsForGroup($pct_id, $evt_array, $group)
+  {
+      $eventIds = array_merge($evt_array, getNonManagableAssignedElementIds("pct", "evt", $pct_id, $group));
+      assign_pct2evts($pct_id, $eventIds);
+  }
+
+  /**
+  * computes an array of (project- or event-) ids for Project-Event-Assignments that are unmanage-able for the given group.
+  * This method supports Project-Event-Assignments as seen from both end points.
+  * The returned array contains the ids of all those Projects or Events that are assigned to Events or Projects but cannot be seen by the user that 
+  * looks at the assignments.
+  * @param string $parentSubject a string designating the parent in the assignment, must be one of "pct" or "evt"  
+  * @param string $subject a string designating the child in the assignment, must be one of "pct" or "evt"  
+  * @param integer $parentId the id of the parent 
+  * @param integer $group the id of the user's group 
+  * @return array the array of ids of those child Projects or Events that are assigned to the parent Event or Project but are invisible to the user
+  */
+  function getNonManagableAssignedElementIds($parentSubject, $subject, $parentId, $group)
+  {
+      $resultIds = array();
+      $selectedIds = array();
+      $allElements = array();
+      $viewableElements = array();
+      switch ($parentSubject . "_" . $subject)
+      {
+          case 'pct_evt':
+              $selectedIds = pct_get_evts($parentId);
+              break;
+          case 'evt_pct':
+              $selectedIds = evt_get_pcts($parentId);
+              break;
+      }
+
+      //if there are no assignments currently, there's nothing too much that could get deleted :)
+      if (count($selectedIds) > 0)
+      {
+          switch ($parentSubject . "_" . $subject)
+          {
+              case 'pct_evt':
+                  $allElements = get_arr_evt("all");
+                  $viewableElements = get_arr_evt($group);
+                  break;
+              case 'evt_pct':
+                  $allElements = get_arr_pct("all");
+                  $viewableElements = get_arr_pct($group);
+                  break;
+          }
+          //if there are no elements hidden from the group, there's nothing too much that could get deleted either
+          if (count($allElements) > count($viewableElements))
+          {
+              //1st, find the ids of the elements that are invisible for the group
+              $invisibleIds = array();
+              $idField = $subject . "_ID";
+              foreach ($allElements as $allElement)
+              {
+                  $seen = false;
+                  foreach ($viewableElements as $viewableElement)
+                  {
+                      if ($viewableElement[$idField] == $allElement[$idField])
+                      {
+                          $seen = true;
+                          break; //element is viewable, so we can stop here
+                      }
+                  }
+                  if(!$seen)
+                  {
+                      $invisibleIds[] = $allElement[$idField];
+                  }
+              }
+              if(count($invisibleIds) > 0)
+              {
+                  //2nd, find the invisible assigned elements and add them to the result array
+                  foreach($selectedIds as $selectedId)
+                  {
+                      if(in_array($selectedId, $invisibleIds))
+                      {
+                          $resultIds[] = $selectedId;
+                      }
+                  }
+              }            
+          }
+      }
+      return $resultIds;
+  }
+
 }
