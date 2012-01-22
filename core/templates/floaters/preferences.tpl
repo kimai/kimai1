@@ -8,7 +8,8 @@
         if ( ($('#password').val() != "" || $('#retypePassword').val() != "")
               && !validatePassword($('#password').val(),$('#retypePassword').val()))
           return false;
-
+      },
+      success: function() {
         window.location.reload();
       }
     }; 

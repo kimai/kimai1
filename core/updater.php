@@ -1371,6 +1371,16 @@ if ((int)$revisionDB < 1349) {
     exec_query("ALTER TABLE `${p}usr` ADD UNIQUE (`apikey`)");
 }
 
+if ((int)$revisionDB < 1367) {
+    Logger::logfile("-- update to r1367");
+    exec_query("ALTER TABLE `${p}pct_evt` DROP `evt_budget`,
+DROP `evt_effort`,
+DROP `evt_approved`;");
+    exec_query("ALTER TABLE `${p}evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
+ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
+ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
+}
+
 // ============================
 // = update DB version number =
 // ============================

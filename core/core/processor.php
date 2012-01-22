@@ -307,7 +307,7 @@ switch ($axAction) {
               if (isset($_REQUEST['pct_grp']))
                 $database->assign_pct2grps($id, $_REQUEST['pct_grp']);
               if (isset($_REQUEST['pct_evt']))
-                $database->assign_pct2evts($id, $_REQUEST['pct_evt']);
+                $database->assignPct2EvtsForGroup($id, $_REQUEST['pct_evt'], $kga['usr']['groups']);
                 foreach($_REQUEST['pct_evt'] as $index => $evt_id) {
                 	if($evt_id <= 0) {
                 		continue;
@@ -357,9 +357,9 @@ switch ($axAction) {
                 $database->assign_evt2grps($id, array());
 
               if (isset($_REQUEST['evt_pct']))
-                $database->assign_evt2pcts($id, $_REQUEST['evt_pct']);
+                $database->assignEvt2PctsForGroup($id, $_REQUEST['evt_pct'], $kga['usr']['groups']);
               else
-                $database->assign_evt2pcts($id, array());
+                $database->assignEvt2PctsForGroup($id, array(), $kga['usr']['groups']);
             break;
         }
     break;
