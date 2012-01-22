@@ -2213,27 +2213,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * returns timesheet for specific user as multidimensional array
-  *
+  *@TODO: needs new comments
   * @param integer $user ID of user in table usr
   * @param integer $in start of timespace in unix seconds
   * @param integer $out end of timespace in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
+  * @param 
   * @return array
   * @author th
   */
-  public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null) {
+  public function get_arr_zef($in, $out, $users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       if (!is_numeric($filterCleared)) {
         $filterCleared = $this->kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
       }
-
+      
       $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
       $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
       $filterCleared   = MySQL::SQLValue($filterCleared , MySQL::SQLVALUE_NUMBER);
-      $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
-
+      $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_BOOLEAN);
+      
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->zef_whereClausesFromFilters($users, $customers, $projects, $events);
 
       if (isset($this->kga['customer']))
         $whereClauses[] = "${p}pct.pct_internal = 0";
@@ -2244,20 +2245,37 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $whereClauses[]="zef_in < $out";
       if ($filterCleared > -1)
         $whereClauses[] = "zef_cleared = $filterCleared";
-
+      
       if ($limit) {
-          if (isset($this->kga['conf']['rowlimit'])) {
-              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
-          } else {
-              $limit="LIMIT 100";
-          }
+		if(!empty($limitRows))
+		{
+			$startRows = (int)$startRows;
+      	  	$limit = "LIMIT $startRows, $limitRows";
+		} 
+		else 
+		{
+			if (isset($this->kga['conf']['rowlimit'])) {
+				$limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+			} else {
+				$limit="LIMIT 100";
+			}
+		}
       } else {
           $limit="";
       }
-
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
+      
+      
+      $select = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
                        zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
-                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
+      
+      if($countOnly)
+      {
+      	$select = "SELECT COUNT(*) AS total";
+      	$limit = "";
+      }
+                       
+      $query = "$select
                 FROM ${p}zef
                 Join ${p}pct ON zef_pctID = pct_ID
                 Join ${p}knd ON pct_kndID = knd_ID
@@ -2266,8 +2284,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                 Join ${p}evt ON evt_ID    = zef_evtID "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit.';';
-
+      
       $this->conn->Query($query);
+		
+      
+      if($countOnly)
+      {
+      	$this->conn->MoveFirst();
+      	$row = $this->conn->Row();
+      	return $row->total;
+      }
 
       $i=0;
       $arr=array();

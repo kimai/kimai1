@@ -578,7 +578,7 @@ abstract class DatabaseLayer {
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
-  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null);
+  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
   /**
    * Returns a username for the given $apikey.

@@ -456,5 +456,53 @@ class Kimai_Remote_Api
 		
         return array($current);
 	}
+	
+	/**
+	 * Returns a list of recorded times.
+     * @param string $apiKey
+	 * @param string $form a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
+	 * @param int $start limit start
+	 * @param int $limit count rows to select
+	 * @return array
+	 */
+	public function getTimesheet($apiKey, $from = 0, $to = 0, $cleared = -1, $start = 0, $limit = 0)
+	{
+		if (!$this->init($apiKey, 'getTimesheet', true)) {
+			return $this->getAuthErrorResult();
+        }
+		
+		$kga = $this->getKimaiEnv();
+		$backend = $this->getBackend();
+		$user = $this->getUser();
+		
+		$in = strtotime($from);
+		$out = strtotime($to);
+		
+		if(!$in)
+		{
+			$in = 0;
+		}
+		
+		if(!$out)
+		{
+			$out = 0;
+		}
+		
+		// Get the array of timesheet entries.
+		if (isset($kga['customer']))
+		{
+		  $arr_zef = $backend->get_arr_zef($in, $out, null, array($kga['customer']['knd_ID']), false, $cleared, $start, $limit);
+		  $totalCount = $backend->get_arr_zef($in, $out, null, array($kga['customer']['knd_ID']), false, $cleared, $start, $limit, true);
+		}
+		else
+		{
+		  $arr_zef = $backend->get_arr_zef($in, $out, array($user['usr_ID']), null, null, null, true, false, $cleared, $start, $limit);
+		  $totalCount = $backend->get_arr_zef($in, $out, array($user['usr_ID']), null, null, null, true, false, $cleared, $start, $limit, true);
+		}
+		
+		return array('items' => $arr_zef, 'total' => $totalCount);
+	}
 
 }

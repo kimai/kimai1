@@ -2249,7 +2249,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null) {
+    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -2269,18 +2269,31 @@ class PDODatabaseLayer extends DatabaseLayer
         $whereClauses[] = "zef_cleared = $filterCleared";
 
       if ($limit) {
-          if (isset($this->kga['conf']['rowlimit'])) {
-              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
-          } else {
-              $limit="LIMIT 100";
-          }
+      	  if(!empty($limitRows))
+      	  {
+      	  	$startRows = (int)$startRows;
+      	  	$limit = "LIMIT $startRows, $limitRows";
+      	  } else {
+	          if (isset($this->kga['conf']['rowlimit'])) {
+	              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+	          } else {
+	              $limit="LIMIT 100";
+	          }
+      	  }
       } else {
           $limit="";
       }
-
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
+		
+      $select = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
                        zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
-                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
+      if($countOnly)
+      {
+      	$select = "SELECT COUNT(*) AS total";
+      	$limit = "";
+      }
+      
+      $query = "$select
               FROM ${p}zef
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
@@ -2298,7 +2311,15 @@ class PDODatabaseLayer extends DatabaseLayer
           $this->logLastError('get_arr_zef');
           return false;
       }
-
+		
+      // return only number of rows
+      if($countOnly)
+      {
+      	$row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+      	return $row->total;
+      }
+      
+      
       $i=0;
       $arr=array();
       /* TODO: needs revision as foreach loop */
