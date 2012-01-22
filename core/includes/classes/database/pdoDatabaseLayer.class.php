@@ -1204,7 +1204,7 @@ class PDODatabaseLayer extends DatabaseLayer
           $this->logLastError('usr_get_data');
           return false;
       }
-
+        
       $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
       return $result_array;
     }
@@ -2249,7 +2249,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null) {
+    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -2269,18 +2269,31 @@ class PDODatabaseLayer extends DatabaseLayer
         $whereClauses[] = "zef_cleared = $filterCleared";
 
       if ($limit) {
-          if (isset($this->kga['conf']['rowlimit'])) {
-              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
-          } else {
-              $limit="LIMIT 100";
-          }
+      	  if(!empty($limitRows))
+      	  {
+      	  	$startRows = (int)$startRows;
+      	  	$limit = "LIMIT $startRows, $limitRows";
+      	  } else {
+	          if (isset($this->kga['conf']['rowlimit'])) {
+	              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+	          } else {
+	              $limit="LIMIT 100";
+	          }
+      	  }
       } else {
           $limit="";
       }
-
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
+		
+      $select = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
                        zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
-                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
+      if($countOnly)
+      {
+      	$select = "SELECT COUNT(*) AS total";
+      	$limit = "";
+      }
+      
+      $query = "$select
               FROM ${p}zef
               Join ${p}pct ON zef_pctID = pct_ID
               Join ${p}knd ON pct_kndID = knd_ID
@@ -2298,7 +2311,15 @@ class PDODatabaseLayer extends DatabaseLayer
           $this->logLastError('get_arr_zef');
           return false;
       }
-
+		
+      // return only number of rows
+      if($countOnly)
+      {
+      	$row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+      	return $row->total;
+      }
+      
+      
       $i=0;
       $arr=array();
       /* TODO: needs revision as foreach loop */
@@ -3388,30 +3409,24 @@ class PDODatabaseLayer extends DatabaseLayer
       return $seq;
     }
 
-   /**
+
+    /**
     * return status names
     * @param integer $statusIds
     * @FIXME kpapst - here we fetch the description of the entries which are already known
     *                 SELECT status from status WHERE status in ('open') - doesn't make
     *                 really sense, only the values will be ordered
     */
-   public function get_status($statusIds)
-   {
+    public function get_status($statusIds) {
       $p = $this->kga['server_prefix'];
-      // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
-      $statusIds = implode('\',\'', $statusIds);
-      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
-      $statusIds = "'" . $statusIds . "'";
-      // fcw: fehler in query (nicht status_id in (...) sondern status in (...)
-      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id");
-
+      $statusIds = implode(',', $statusIds);
+      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
       $result = $pdo_query->execute();
       if ($result == false) {
           $this->logLastError('get_status');
           return false;
       }
 
-      $res = array();
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $res[] = $row['status'];
       }
@@ -4433,55 +4448,70 @@ class PDODatabaseLayer extends DatabaseLayer
           }
         return $result;
     }
+	
+	
+	  /**
+   * checks if given $projectId exists in the db
+   * 
+   * @param int $projectId
+   * @return bool
+   */
+  public function isValidProjectId($projectId)
+  {
+  	
+  	$table = $this->getProjectTable();
+	$filter = array('pct_ID' => $projectId, 'pct_trash' => 0);
+	
+	return $this->rowExists($table, $filter);
+  }
+  
+  /**
+   * checks if given $eventId exists in the db
+   * 
+   * @param int $eventId
+   * @return bool
+   */
+  public function isValidEventId($eventId)
+  {
+  	
+  	$table = $this->getEventTable();
+	$filter = array('evt_ID' => $eventId, 'evt_trash' => 0);
+	
+	return $this->rowExists($table, $filter);
+  }
+  
+  
+  /**
+   * checks if a given db row based on the $idColumn & $id exists
+   * @param string $table
+   * @param array $filter
+   * @return bool
+   */
+  protected function rowExists($table, Array $filter)
+  {
+  	/**
+	 * TODO: source out to a function! (MySQL::BuildSQLWhereClause())
+	 */
+	$where = '';
+	foreach($filter as $key => $value)
+	{
+		if(empty($where))
+		{
+			$where .= "$key = $value";
+		} else {
+			$where .= " AND $key = $value";
+		}
+	}
+	$pdo_query = $this->conn->prepare("SELECT * FROM $table WHERE $where");
+    $select = $pdo_query->execute(array($id));
 
-    /**
-     * Checks if given $projectId exists in the DB.
-     *
-     * @param int $projectId
-     * @return bool
-     */
-    public function isValidProjectId($projectId)
-    {
-        $table = $this->getProjectTable();
-        $idColumn = 'pct_ID';
-
-        return $this->rowExists($table, $idColumn, $projectId);
-    }
-
-    /**
-     * Checks if given $eventId exists in the DB.
-     *
-     * @param int $eventId
-     * @return bool
-     */
-    public function isValidEventId($eventId)
-    {
-        $table = $this->getEventTable();
-        $idColumn = 'evt_ID';
-
-        return $this->rowExists($table, $idColumn, $eventId);
-    }
-
-    /**
-     * Checks if a given DB row based on the $idColumn & $id exists.
-     *
-     * @param string $table
-     * @param string $idColumn
-     * @param int $id
-     * @return bool
-     */
-    protected function rowExists($table, $idColumn, $id)
-    {
-        $pdo_query = $this->conn->prepare("SELECT * FROM $table WHERE $idColumn = ?");
-        $select = $pdo_query->execute(array($id));
-
-        if (!$select) {
-            $this->logLastError('rowExists');
-            return false;
-        }
-
-        $rowExits = (bool)$pdo_query->fetch(PDO::FETCH_ASSOC);
-        return $rowExits;
-    }
+      if (!$select) {
+          $this->logLastError('rowExists');
+          return false;
+      } else {
+         $rowExits = (bool)$pdo_query->fetch(PDO::FETCH_ASSOC);
+          return $rowExits;
+      }
+  }
 
 }
