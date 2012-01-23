@@ -3389,31 +3389,31 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
    /**
-    * return status names
-    * @param integer $statusIds
-    * @FIXME kpapst - here we fetch the description of the entries which are already known
-    *                 SELECT status from status WHERE status in ('open') - doesn't make
-    *                 really sense, only the values will be ordered
+    * return integer array statusIds
+    * @param string (array) $statusNames
     */
-   public function get_status($statusIds)
+   public function get_status_ids($statusNames) // fcw: vorher: get_status($statusIds)
    {
       $p = $this->kga['server_prefix'];
-      // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
-      $statusIds = implode('\',\'', $statusIds);
-      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
-      $statusIds = "'" . $statusIds . "'";
-      // fcw: fehler in query (nicht status_id in (...) sondern status in (...)
-      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id");
+      // fcw: nur wenn ein array, wenn $statusNames nur ein string ist, einfach so lassen.
+      if (is_array($statusNames))
+        // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, 
+        // wg. WHERE status IN ('status1','status2',...,'statusN')
+         $statusNames = implode('\',\'', $statusNames);
+
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen 
+      // (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusNames = "'" . $statusNames . "'";
+      $pdo_query = $this->conn->prepare("SELECT status_id FROM ${p}status where status in ( $statusNames ) order by status_id");
 
       $result = $pdo_query->execute();
       if ($result == false) {
-          $this->logLastError('get_status');
+          $this->logLastError('get_status_ids');
           return false;
       }
-
       $res = array();
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $res[] = $row['status'];
+        $res[] = $row['status_id'];
       }
       return $res;
     }
@@ -3450,9 +3450,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_arr_status() {
       $p = $this->kga['server_prefix'];
 
-        $query = "SELECT * FROM ${p}status
-        ORDER BY status;";
-
+      $query = "SELECT * FROM ${p}status ORDER BY status;";
       $pdo_query = $this->conn->prepare($query);
       $result = $pdo_query->execute();
 

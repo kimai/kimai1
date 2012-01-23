@@ -2971,9 +2971,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
    * return status names
    * @param integer $statusIds
-    * @FIXME kpapst - here we fetch the description of the entries which are already known
-    *                 SELECT status from status WHERE status in ('open') - doesn't make
-    *                 really sense, only the values will be ordered
    */
   public function get_status($statusIds)
   {
@@ -2996,7 +2993,37 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
       return $res;
   }
+   /**
+    * return integer array statusIds
+    * @param string (array) $statusNames
+    */
+   public function get_status_ids($statusNames)
+   {
+      $p = $this->kga['server_prefix'];
+      if (is_array($statusNames))
+        $statusNames = implode('\',\'', $statusNames);
+      $statusNames = "'" . $statusNames . "'";
+      $query = "SELECT status_id FROM ${p}status where status in ( $statusNames ) order by status_id");
 
+      $result = $this->conn->Query($query);
+      if ($result == false) {
+          $this->logLastError('get_status_ids');
+          return false;
+      }
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      $res = array();
+      foreach($rows as $row) {
+          $res[] = $row['status_id'];
+      }
+      return $res;
+    }
+
+   /**
+    * return status_id
+    * @param string $status_name
+    */    
+ 
+      
   /**
    * returns array of all status with the status id as key
    *
