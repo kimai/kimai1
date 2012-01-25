@@ -1453,7 +1453,7 @@ class MySQL
 		} else {
 			$sql = self::BuildSQLSelect($tableName, $whereArray,
 					$columns, $sortColumns, $sortAscending, $limit);
-			// Execute the UPDATE
+			// Execute the SELECT
 			if (! $this->Query($sql)) {
 				return $this->last_result;
 			} else {

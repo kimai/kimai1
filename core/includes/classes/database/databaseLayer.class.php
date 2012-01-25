@@ -73,32 +73,21 @@ abstract class DatabaseLayer {
    * Connect to the database.
    */
   public abstract function connect($host,$database,$username,$password,$utf8,$serverType);
-
+  
   /**
-   * @return string name of the project table
+   * @return string the tablename with the server prefix
    */
   public function getProjectTable()
   {
-      return $this->getTableName('pct');
+  	return $this->kga['server_prefix'].'pct';
   }
-
+  
   /**
-   * @return string name of the event table
+   * @return string the tablename with the server prefix
    */
   public function getEventTable()
   {
-      return $this->getTableName('evt');
-  }
-
-  /**
-   * Returns the table name, either prefixed or plain, depending on the current configuration.
-   *
-   * @param string $table
-   * @return string
-   */
-  public function getTableName($table)
-  {
-      return $this->kga['server_prefix'].$table;
+  	return $this->kga['server_prefix'].'evt';
   }
 
   /**
@@ -589,7 +578,7 @@ abstract class DatabaseLayer {
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
-  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null);
+  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
   /**
    * Returns a username for the given $apikey.
@@ -1041,37 +1030,39 @@ abstract class DatabaseLayer {
   */
   public abstract function loginUpdateBan($userId,$resetTime = false);
 
+
   /**
    * Return all rows for the given sql query.
    *
    * @param string $query the sql query to execute
    */
   public abstract function queryAll($query);
-
+  
+  
   /**
    * checks if given $projectId exists in the db
-   *
+   * 
    * @param int $projectId
    * @return bool
    */
   public abstract function isValidProjectId($projectId);
-
+  
   /**
    * checks if given $eventId exists in the db
-   *
+   * 
    * @param int $eventId
    * @return bool
    */
   public abstract function isValidEventId($eventId);
-
+  
   /**
    * checks if a given db row based on the $idColumn & $id exists
    * @param string $table
-   * @param string $idColumn
-   * @param int $id
+   * @param array $filter
    * @return bool
    */
-  protected abstract function rowExists($table, $idColumn, $id);
+  protected abstract function rowExists($table, Array $filter);
+  
 
   /**
   * associates an Event with a collection of Projects in the context of a user group.
