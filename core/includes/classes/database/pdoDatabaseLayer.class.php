@@ -3409,7 +3409,6 @@ class PDODatabaseLayer extends DatabaseLayer
       return $seq;
     }
 
-
     /**
     * return status names
     * @param integer $statusIds
@@ -3421,17 +3420,45 @@ class PDODatabaseLayer extends DatabaseLayer
       $p = $this->kga['server_prefix'];
       $statusIds = implode(',', $statusIds);
       $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
+
       $result = $pdo_query->execute();
       if ($result == false) {
           $this->logLastError('get_status');
           return false;
       }
 
+      $res = array();
       while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
         $res[] = $row['status'];
       }
       return $res;
     }
+
+   /**
+    * return integer array statusIds
+    * @param string (array) $statusNames
+    */
+   public function get_status_ids($statusNames) // fcw: vorher: get_status($statusIds)
+   {
+      $p = $this->kga['server_prefix'];
+      // fcw: nur wenn ein array, wenn $statusNames nur ein string ist, einfach so lassen.
+      if (is_array($statusNames))
+        // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, 
+        // wg. WHERE status IN ('status1','status2',...,'statusN')
+         $statusNames = implode('\',\'', $statusNames);
+
+      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen 
+      // (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
+      $statusNames = "'" . $statusNames . "'";
+      $pdo_query = $this->conn->prepare("SELECT status_id FROM ${p}status where status in ( $statusNames ) order by status_id");
+
+      $res = array();
+      while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        $res[] = $row['status_id'];
+      }
+      return $res;
+   }
+
 
     /**
     * Returns the number of zef with a certain status
@@ -3465,9 +3492,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_arr_status() {
       $p = $this->kga['server_prefix'];
 
-        $query = "SELECT * FROM ${p}status
-        ORDER BY status;";
-
+      $query = "SELECT * FROM ${p}status ORDER BY status;";
       $pdo_query = $this->conn->prepare($query);
       $result = $pdo_query->execute();
 

@@ -149,11 +149,12 @@ switch ($axAction) {
         $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
         $tpl->assign('fixed_rate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
     }
-
-    $statusIds = $kga['conf']['status'];
-    sort($statusIds);
-    $tpl->assign('statusIds', $statusIds);
-    $tpl->assign('status', $database->get_status($statusIds));
+    // fcw: hier korrigiert: statusNames statt (vorher) statusIds, da kga['conf']['status'] die Namen und nicht die Ids enthaelt.
+    // Die status_id sind in den value Werten der options (vom select)
+    $statusNames = $kga['conf']['status'];
+    $tpl->assign('status', $statusNames);
+    // fcw: korrigiert: get_status_ids (funktion in pdo/myslDatabaseLayer.class.php geaendert) statt get_status.
+    $tpl->assign('statusIds', $database->get_status_ids($statusNames));
     
     $billableValues = Config::getConfig('billable');
     $tpl->assign('billableValues', $billableValues); 
