@@ -58,7 +58,7 @@
   right: 105px;
   top: 55px;
   z-index: 70;
-  display:hidden;
+  display:none;
 }
 
 #stopwatch_edit_starttime {
@@ -66,5 +66,5 @@
   right: 295px;
   top: 55px;
   z-index: 70;
-  display:hidden;
+  display:none;
 }

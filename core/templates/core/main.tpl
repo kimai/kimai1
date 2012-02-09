@@ -5,6 +5,7 @@
     <meta name="robots" value="noindex,nofollow" />
 
     <title>{$kga.usr.usr_name|escape:'html'} - Kimai</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
     <!-- Default Stylesheets -->
     <link rel="stylesheet" href="../skins/{$kga.conf.skin|escape:'html'}/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />

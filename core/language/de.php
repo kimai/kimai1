@@ -267,7 +267,7 @@ return array(
 'table_date_format' => ' Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
 'round_time' => 'Zeit runden auf ',
 'round_time_minute' => ' Minute(n).',
-'logged_in_as' => 'angemeldet als:',
+'logged_in_as' => 'Angemeldet als:',
 
 'decimal_separator'  => 'Dezimal-Trennzeichen',
 
@@ -432,7 +432,7 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "create_bookmarks"		   => "Lesezeichen erstellen",
 "download_pdf"    		   => "PDF-Datei downloaden",
 "pdf_format"               => "Format",
-"export_pdf"               => "tabelarisch",
+"export_pdf"               => "tabellarisch",
 "export_pdf2"              => "Liste",
 
 "column_delimiter"		   => "Trennzeichen für Spalten",
