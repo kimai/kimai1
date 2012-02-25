@@ -99,9 +99,11 @@ checkDBversion(".");
 // =========================
 // = User requested logout =
 // =========================
+$justLoggedOut = false;
 if ($_REQUEST['a']=="logout") {
     setcookie ("kimai_key","0"); 
     setcookie ("kimai_usr","0");    
+    $justLoggedOut = true;
 }
 
 // ===========================
@@ -117,7 +119,7 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
 // ======================================
 // = if possible try an automatic login =
 // ======================================
-if ($authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId))
+if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId))
 {
     if ($userId === false) {
     $userId   = $database->usr_create(array(
