@@ -89,6 +89,20 @@ abstract class DatabaseLayer {
   {
   	return $this->kga['server_prefix'].'evt';
   }
+  
+  /**
+   * @return string the tablename with the server prefix
+   */
+  public function getCustomerTable()
+  {
+  	return $this->kga['server_prefix'].'knd';
+  }
+
+
+  public function getZefTable()
+  {
+  	return $this->kga['server_prefix'].'zef';
+  }
 
   /**
   * Add a new customer to the database.

@@ -57,6 +57,7 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
  */
 
 require(APPLICATION_PATH.'/includes/classes/remote.class.php');
+header('Access-Control-Allow-Origin: *');
 
 $server = new Zend_Json_Server();
 $server->setClass('Kimai_Remote_Api');
@@ -74,9 +75,15 @@ if ('GET' == $_SERVER['REQUEST_METHOD']) {
     echo $smd;
     return;
 }
-// dirty hack
-$request = new Zend_Json_Server_Request();
-$request->setOptions($_REQUEST);
+
+/**
+ * http request will 
+ *  - parse php://input 
+ *  - json_decode it
+ *  - auto setOptions
+ * therefore request should be a string e.g. {jsonrpc : '2.0', method: '<actionString>', params : [param1, param2], id : '<anyId>' } 
+ */
+$request = new Zend_Json_Server_Request_Http();
 $server->setRequest($request);
 
 $server->handle();
