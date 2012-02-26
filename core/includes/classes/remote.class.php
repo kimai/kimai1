@@ -20,8 +20,8 @@
 /**
  * This file is the base class for remote calls.
  * It can and should be utilized for all remote APIs, currently:
- * - Soap
- * - JSON (in work)
+ * - Soap // WORK IN PROGRESS
+ * - JSON // WORK IN PROGRESS
  *
  * @author Kevin Papst <kpapst@gmx.net>
  * @author Alexander Bauer (patch for structural change of responses)
@@ -30,7 +30,7 @@
 /**
  * The real class, answering all SOAP methods.
  *
- * Every public method in here, will be available for SOAP Requests and auto-discovered for WSDL queries.
+ * Every public method in here, will be available for SOAP/JSON Requests and auto-discovered for WSDL queries.
  */
 class Kimai_Remote_Api
 {
@@ -203,8 +203,23 @@ class Kimai_Remote_Api
             $msg = '';
         }
 
-        return array('success' => false, 'message' => $msg);
+        return array('success' => false, 'error' => array('msg' => $msg));
     }
+	
+	/**
+	 * Returns the array for success responses.
+	 * 
+	 * @param array $items
+	 * @param int $total = 0
+	 * @return array
+	 */
+	protected function getSuccessResult(Array $items, $total = 0) {
+		if(empty($total)) {
+			$total = count($items);
+		}
+		
+		return array('success' => true, 'items' => $items, 'total' => $total);
+	}
 
     /**
      * The user started the recording of an event via the buzzer. If this method
@@ -477,32 +492,87 @@ class Kimai_Remote_Api
 		$backend = $this->getBackend();
 		$user = $this->getUser();
 		
-		$in = strtotime($from);
-		$out = strtotime($to);
-		
-		if(!$in)
-		{
-			$in = 0;
-		}
-		
-		if(!$out)
-		{
-			$out = 0;
-		}
-		
+		$in = (int)strtotime($from);
+		$out = (int)strtotime($to);
+
 		// Get the array of timesheet entries.
-		if (isset($kga['customer']))
-		{
+		if (isset($kga['customer'])) {
 		  $arr_zef = $backend->get_arr_zef($in, $out, null, array($kga['customer']['knd_ID']), false, $cleared, $start, $limit);
 		  $totalCount = $backend->get_arr_zef($in, $out, null, array($kga['customer']['knd_ID']), false, $cleared, $start, $limit, true);
-		}
-		else
-		{
+		} else {
 		  $arr_zef = $backend->get_arr_zef($in, $out, array($user['usr_ID']), null, null, null, true, false, $cleared, $start, $limit);
 		  $totalCount = $backend->get_arr_zef($in, $out, array($user['usr_ID']), null, null, null, true, false, $cleared, $start, $limit, true);
 		}
 		
-		return array('items' => $arr_zef, 'total' => $totalCount);
+		$result = $this->getSuccessResult($arr_zef, $totalCount);
+		return $result;
+	}
+	
+	/**
+	 * @param string $apiKey
+	 * @param int $id
+	 * @return array
+	 */
+	public function getTimesheetRecord($apiKey, $id) {
+		if (!$this->init($apiKey, 'getTimesheetRecord', true)) {
+			return $this->getAuthErrorResult();
+        }
+		
+		$id = (int)$id;
+		$result = $this->getErrorResult('Invalid ID');
+		// valid id?
+		if(empty($id)) {
+			return $result;
+		}
+		
+		$backend = $this->getBackend();
+		$zef_entry = $backend->zef_get_data($id);
+		
+		// valid entry?
+		if(!empty($zef_entry)) {
+			$result = $this->getSuccessResult(array($zef_entry));
+		}
+		
+		return  $result;
+	}
+
+	/**
+ 	 * @TODO: PDO needs testings
+	 * Returns a list of expenses.
+     * @param string $apiKey
+	 * @param string $form a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
+	 * @param int $redundable -1 all, 0 only refundable
+	 * @param int $start limit start
+	 * @param int $limit count rows to select
+	 * @return array
+	 */
+	public function getExpenses($apiKey, $from = 0, $to = 0, $refundable = -1, $cleared = -1, $start = 0, $limit = 0)
+	{
+		if (!$this->init($apiKey, 'getExpenses', true)) {
+			return $this->getAuthErrorResult();
+        }
+        
+		$kga = $this->getKimaiEnv();
+		$backend = $this->getBackend();
+		$user = $this->getUser();
+		
+		$in = (int)strtotime($from);
+		$out = (int)strtotime($to);
+		
+		// Get the array of timesheet entries.
+		if (isset($kga['customer']))
+		{
+		  $arr_exp = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, true, false, $refundable, $cleared, $start, $limit);
+		  $totalCount = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, true, false, $refundable, $cleared, $start, $limit, true);
+		}
+		else
+		{
+			$arr_exp = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, true, false, $refundable, $cleared, $start, $limit);
+			$totalCount = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, true, false, $refundable, $cleared, $start, $limit, true);
+		}
+		$result = $this->getSuccessResult($arr_exp, $totalCount);
 	}
 
 }
