@@ -475,7 +475,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns a list of recorded times.
      * @param string $apiKey
-	 * @param string $form a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param string $from a MySQL DATE/DATETIME/TIMESTAMP
 	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
 	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
 	 * @param int $start limit start

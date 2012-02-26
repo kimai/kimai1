@@ -2225,7 +2225,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * returns timesheet for specific user as multidimensional array
+<<<<<<< HEAD
   * @TODO: needs new comments
+=======
+  *@TODO: needs new comments
+>>>>>>> origin/master
   * @param integer $user ID of user in table usr
   * @param integer $in start of timespace in unix seconds
   * @param integer $out end of timespace in unix seconds
@@ -3008,6 +3012,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
    * return status names
    * @param integer $statusIds
+    * @FIXME kpapst - here we fetch the description of the entries which are already known
+    *                 SELECT status from status WHERE status in ('open') - doesn't make
+    *                 really sense, only the values will be ordered
    */
     public function get_status($statusIds) {
   	  $p = $this->kga['server_prefix'];
