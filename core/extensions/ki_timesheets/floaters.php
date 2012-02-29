@@ -149,7 +149,8 @@ switch ($axAction) {
         $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
         $tpl->assign('fixed_rate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
     }
-
+	
+	//@FIXME $statusIds aren't the ids, but status names
     $statusIds = $kga['conf']['status'];
     sort($statusIds);
     $tpl->assign('statusIds', $statusIds);

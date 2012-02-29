@@ -536,10 +536,10 @@ abstract class DatabaseLayer {
   * edit zef entry
   *
   * @param integer $id ID of record
-  * @param integer $data  array with new record data
+  * @param array $data  array with new record data
   * @author th
   */
-  public abstract function zef_edit_record($id,$data);
+  public abstract function zef_edit_record($id, Array $data);
 
   /**
   * saves timespace of user in database (table conf)

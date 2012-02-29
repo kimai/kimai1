@@ -2006,10 +2006,10 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param integer $id ID of record
     * @global array $this->kga kimai-global-array
-    * @param integer $data  array with new record data
+    * @param array $data  array with new record data
     * @author th
     */
-    public function zef_edit_record($id,$data) {
+    public function zef_edit_record($id, Array $data) {
       $p = $this->kga['server_prefix'];
 
       $original_array = $this->zef_get_data($id);

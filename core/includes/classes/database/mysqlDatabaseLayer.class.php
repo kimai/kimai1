@@ -1903,19 +1903,21 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   public function zef_delete_record($id) {
 
       $filter["zef_ID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
 
-  /**
+ /**
   * create zef entry
   *
   * @param integer $id    ID of record
   * @param integer $data  array with record data
   * @author th
+  * @FIXME alex - 	the $data of zef_create_record & zef_edit_record are hell different, WHY, WHY, WHY?
+  * 				to keep the API clean, added new function => zef_add_record
   */
-  public function zef_create_record($usr_ID,$data) {
+  public function zef_create_record($usr_ID, $data) {
       $data = $this->clean_data($data);
 
       $values ['zef_location']     =   MySQL::SQLValue( $data ['zlocation'] );
@@ -1939,7 +1941,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
 
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $success =  $this->conn->InsertRow($table, $values);
       if ($success)
         return  $this->conn->GetLastInsertID();
@@ -1949,14 +1951,78 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
   }
 
+	/**
+	 * @TODO: add to PDO
+	 * @see zef_create_record 
+	 * @param array $data
+	 */
+	public function zef_add_record(Array $data) {
+		$data = $this->clean_data($data);
+		$values = array();
+		
+		$values ['zef_in'] = MySQL::SQLValue($data['zef_in'], MySQL::SQLVALUE_NUMBER );
+		$values ['zef_out'] = MySQL::SQLValue($data['zef_out'], MySQL::SQLVALUE_NUMBER );
+		$values ['zef_time'] = MySQL::SQLValue($data['zef_time'], MySQL::SQLVALUE_NUMBER );
+		$values ['zef_usrID'] = MySQL::SQLValue($data['zef_usrID'], MySQL::SQLVALUE_NUMBER );
+      	$values ['zef_pctID'] = MySQL::SQLValue($data['zef_pctID'], MySQL::SQLVALUE_NUMBER );
+      	$values ['zef_evtID'] = MySQL::SQLValue($data['zef_evtID'], MySQL::SQLVALUE_NUMBER );
+		
+		if(isset($data ['zef_description'])) {
+			$values ['zef_description'] = MySQL::SQLValue($data ['zef_description']);	
+		}
+		
+		if(isset($data ['zef_comment'])) {
+      		$values ['zef_comment'] = MySQL::SQLValue($data ['zef_comment']);
+		}
+		if(isset($data ['zef_comment_type'])) {
+			$values ['zef_comment_type'] = MySQL::SQLValue($data ['zef_comment_type'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_cleared'])) {
+			$values ['zef_cleared'] = MySQL::SQLValue($data ['zef_cleared'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_location'])) {
+      		$values ['zef_location'] = MySQL::SQLValue($data ['zef_location']);
+		}
+		if(isset($data ['zef_trackingnr'])) {
+        	$values ['zef_trackingnr'] = MySQL::SQLValue($data ['zef_trackingnr']);
+		}
+		if(isset($data ['zef_rate'])) {
+			$values ['zef_rate'] = MySQL::SQLValue($data ['zef_rate'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_fixed_rate'])) {
+			$values ['zef_fixed_rate'] = MySQL::SQLValue($data ['zef_fixed_rate'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_budget'])) {
+			$values ['zef_budget'] = MySQL::SQLValue($data ['zef_budget'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_approved'])) {
+			$values ['zef_approved'] = MySQL::SQLValue($data ['zef_approved'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_status'])) {
+			$values ['zef_status'] = MySQL::SQLValue($data ['zef_status'], MySQL::SQLVALUE_NUMBER );
+		}
+		if(isset($data ['zef_billable'])) {
+			$values ['zef_billable'] = MySQL::SQLValue($data ['zef_billable'], MySQL::SQLVALUE_NUMBER );
+		}
+	
+		$table = $this->getZefTable();
+		$success =  $this->conn->InsertRow($table, $values);
+		if ($success) {
+			return  $this->conn->GetLastInsertID();
+		} else {
+	        $this->logLastError('zef_add_record');
+	        return false;
+		}
+	}
+
   /**
   * edit zef entry
   *
   * @param integer $id ID of record
-  * @param integer $data  array with new record data
+  * @param array $data array with new record data
   * @author th
   */
-  public function zef_edit_record($id,$data) {
+  public function zef_edit_record($id, Array $data) {
       $data = $this->clean_data($data);
 
       $original_array = $this->zef_get_data($id);
@@ -1978,7 +2044,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-
+		
+	//@FIXME: zef_description is evaluated twice?
       $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
       $values ['zef_comment']      = MySQL::SQLValue($new_array ['zef_comment']                                );
       $values ['zef_location']     = MySQL::SQLValue($new_array ['zef_location']                               );
@@ -1998,7 +2065,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_approved'] 	   = MySQL::SQLValue($new_array ['zef_approved']  	  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_status'] 	   = MySQL::SQLValue($new_array ['zef_status']		  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   = MySQL::SQLValue($new_array ['zef_billable']	  , MySQL::SQLVALUE_NUMBER );
-      $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
+	  //@FIXME: zef_description is evaluated twice? number?
+     // $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
 
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
@@ -3064,18 +3132,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * add a new status
    * @param Array $statusArray
    */
-  public function status_create($status) {
-
-      $values['status'] = MySQL::SQLValue(trim($status['status']));
-
-      $table = $this->kga['server_prefix']."status";
-      $result = $this->conn->InsertRow($table, $values);
-      if (! $result) {
-        $this->logLastError('add_status');
-        return false;
-      }
-//  	}
-        return true;
+	public function status_create($status) {
+      	$values['status'] = MySQL::SQLValue(trim($status['status']));
+		
+      	$table = $this->kga['server_prefix']."status";
+      	$result = $this->conn->InsertRow($table, $values);
+      	if (! $result) {
+        	$this->logLastError('add_status');
+        	return false;
+      	}
+		return true;
   }
 
   /**
