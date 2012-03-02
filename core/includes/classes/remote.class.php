@@ -24,7 +24,7 @@
  * - JSON // WORK IN PROGRESS
  *
  * @author Kevin Papst <kpapst@gmx.net>
- * @author Alexander Bauer (patch for structural change of responses)
+ * @author Alexander Bauer
  */
 
 /**
@@ -37,15 +37,21 @@ class Kimai_Remote_Api
 	private $backend = null;
 	private $user = null;
 	private $kga = null;
-
+	
+	/**
+	 * one of mysqlDatabaseLayer or pdoDatabaseLayer
+	 */
+	private $oldDatabase = null;
 	public function __construct()
 	{
 		// Bootstrap Kimai the old fashioned way ;-)
 		require(dirname(__FILE__) . "/../basics.php");
+		require(dirname(__FILE__) . "/database/ApiDatabase.php");
 
 		// and remember the most important stuff
 		$this->kga     = $kga;
-		$this->backend = $database;
+		$this->backend = new ApiDatabase($kga, $database);
+		$this->oldDatabase = $database;
 	}
 
 	/**
@@ -129,7 +135,7 @@ class Kimai_Remote_Api
         $authClass = ucfirst($kga['authenticator']).'Auth';
 
         $authPlugin = new $authClass();
-        $authPlugin->setDatabase($database);
+        $authPlugin->setDatabase($this->oldDatabase);
         $authPlugin->setKga($kga);
         return $authPlugin;
     }
@@ -161,7 +167,7 @@ class Kimai_Remote_Api
         // if the user already has an API key, only return the existing one
         $user = $this->getBackend()->checkUserInternal($username);
         if ($user !== null && isset($user['apikey']) && !empty($user['apikey'])) {
-            return $this->getSuccessResult(array('apiKey' => $user['apikey']));
+            return $this->getSuccessResult(array(array('apiKey' => $user['apikey'])));
         }
 
         // if the user has no api key yet, create one
@@ -177,7 +183,7 @@ class Kimai_Remote_Api
         // set the apiKey to the user
         $this->getBackend()->usr_edit($userId, array('apikey' => $apiKey));
 
-        return $this->getSuccessResult(array('apiKey' => $apiKey));
+        return $this->getSuccessResult(array(array('apiKey' => $apiKey)));
     }
 
     /**
@@ -325,7 +331,8 @@ class Kimai_Remote_Api
         if (!$this->init($apiKey, 'getCustomers', true)) {
 			return $this->getAuthErrorResult();
         }
-
+		
+		$user = $this->getUser();
         $kga = $this->getKimaiEnv();
         if (isset($kga['customer'])) {
           return array(
@@ -333,7 +340,7 @@ class Kimai_Remote_Api
           );
 		}
 
-		$customers = $this->getBackend()->get_arr_knd($kga['usr']['groups']);
+		$customers = $this->getBackend()->get_arr_knd($user['groups']);
 
         if (count($customers) > 0) {
 			$results = array();
@@ -690,19 +697,18 @@ class Kimai_Remote_Api
 	}
 
 	/**
- 	 * @TODO: PDO needs testings
 	 * Returns a list of expenses.
      * @param string $apiKey
-	 * @param string $form a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param string $from a MySQL DATE/DATETIME/TIMESTAMP
 	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param int $refundable -1 all, 0 only refundable
 	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
-	 * @param int $redundable -1 all, 0 only refundable
 	 * @param int $start limit start
 	 * @param int $limit count rows to select
 	 * @return array
 	 */
-	public function getExpenses($apiKey, $from = 0, $to = 0, $refundable = -1, $cleared = -1, $start = 0, $limit = 0)
-	{
+	public function getExpenses($apiKey, $from = 0, $to = 0, $refundable = -1, $cleared = -1, $start = 0, $limit = 0) {
+		
 		if (!$this->init($apiKey, 'getExpenses', true)) {
 			return $this->getAuthErrorResult();
         }
@@ -714,20 +720,19 @@ class Kimai_Remote_Api
 		$in = (int)strtotime($from);
 		$out = (int)strtotime($to);
 		
+		
 		// Get the array of timesheet entries.
-		if (isset($kga['customer']))
-		{
-		  $arr_exp = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, true, false, $refundable, $cleared, $start, $limit);
-		  $totalCount = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, true, false, $refundable, $cleared, $start, $limit, true);
-		}
-		else
-		{
-			$arr_exp = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, true, false, $refundable, $cleared, $start, $limit);
-			$totalCount = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, true, false, $refundable, $cleared, $start, $limit, true);
+		if (isset($kga['customer'])) {
+		  $arr_exp = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, false, $refundable, $cleared, $start, $limit);
+		  $totalCount = $backend->get_arr_exp($in, $out, array($kga['customer']['knd_ID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+		} else {
+			$arr_exp = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, false, $refundable, $cleared, $start, $limit);
+			$totalCount = $backend->get_arr_exp($in, $out, array($user['usr_ID']), null, null, false, $refundable, $cleared, $start, $limit, true);
 		}
 		$result = $this->getSuccessResult($arr_exp, $totalCount);
 		
 		return $result;
 	}
+	
 
 }
