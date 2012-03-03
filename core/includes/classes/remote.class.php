@@ -733,6 +733,149 @@ class Kimai_Remote_Api
 		
 		return $result;
 	}
+
+	/**
+	 * @param string $apiKey
+	 * @param int $id
+	 * @return array
+	 */
+	public function getExpenseRecord($apiKey, $id) {
+		if (!$this->init($apiKey, 'getExpenseRecord', true)) {
+			return $this->getAuthErrorResult();
+        }
+		
+		$id = (int)$id;
+		// valid id?
+		if(empty($id)) {
+			return $this->getErrorResult('Invalid ID');
+		}
+		
+		$backend = $this->getBackend();
+		$exp_entry = $backend->get_entry_exp($id);
+		
+		// valid entry?
+		if(!empty($zef_entry)) {
+			return $this->getSuccessResult(array($exp_entry));
+		}
+		
+		$result = $this->getErrorResult();
+		return  $result;
+	}
+	/**
+	 * @param string $apiKey
+	 * @param array $record
+	 * @param bool $doUpdate
+	 * @return array
+	 */
+	public function setExpenseRecord($apiKey, Array $record, $doUpdate) {
+		if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
+			return $this->getAuthErrorResult();
+        }
+		
+		// valid $record?
+		if(empty($record)) {
+			return $this->getErrorResult('Invalid record');
+		}
+		
+		$backend = $this->getBackend();
+		$kga = $this->getKimaiEnv();
+		$user = $this->getUser();
+		
+		// check for project
+		$record['projectId'] = (int)$record['projectId'];
+		if(empty($record['projectId'])) {
+			return $this->getErrorResult('Invalid projectId.');
+		}
+		
+		// converto to timestamp
+		$timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+		
+		// make sure the timestamp is not negative
+		if($timestamp <= 0 ) {
+			return $this->getErrorResult('Invalid date, make sure there is a valid date property.');
+		}
+		
+		// prepare data array
+		/**
+		 * requried
+		 */
+		$data['exp_usrID'] = $user['usr_ID'];
+		$data['exp_pctID'] = (int)$record['projectId'];
+		$data['exp_timestamp'] = $timestamp;
+		
+		
+		/**
+		 * optional
+		 */
+		if(isset($record['designation'])) {
+	    	$data['exp_designation'] = $record['designation'];
+		}
+		if(isset($record['comment'])) {
+	    	$data['exp_comment'] = $record['comment'];
+		}
+		if(isset($record['commentType'])) {
+	    	$data['exp_comment_type'] = (int)$record['commentType'];
+		}
+		if(isset($record['refundable'])) {
+	    	$data['exp_refundable'] = (int)$record['refundable'];
+		}
+		if(isset($record['cleared'])) {
+	    	$data['exp_cleared'] = (int)$record['cleared'];
+		}
+		if(isset($record['multiplier'])) {
+	    	$data['exp_multiplier'] = (double)$record['multiplier'];
+		}
+		if(isset($record['value'])) {
+	    	$data['exp_value'] = (double)$record['value'];
+		}
+		
+		
+		if($doUpdate) {
+			$id = isset($record['id']) ? (int)$record['id'] : 0;
+			if(!empty($id)) {
+				$backend->exp_edit_record($id, $data);
+				return $this->getSuccessResult(array());
+			} else {
+				return $this->getErrorResult('Performed an update, but missing id property.');
+			}
+		} else {
+			$id = $backend->exp_create_record($data);
+			if(!empty($id)) {
+				return $this->getSuccessResult(array(array('id' => $id)));
+			} else {
+				return $this->getErrorResult('Failed to add entry.');
+			}
+		}
+		$result = $this->getErrorResult();
+		return $result;
+	}
+
+	/**
+	 * @param string $apiKey
+	 * @param int $id
+	 * @return array
+	 */
+	public function removeExpenseRecord($apiKey, $id) {
+		if (!$this->init($apiKey, 'removeTimesheetRecord', true)) {
+			return $this->getAuthErrorResult();
+        }
+		
+		
+		$id = (int)$id;
+		$result = $this->getErrorResult('Invalid ID');
+		// valid id?
+		if(empty($id)) {
+			return $result;
+		}
+		
+		$backend = $this->getBackend();
+		$kga = $this->getKimaiEnv();
+		
+		if($backend->exp_delete_record($id)) {
+			$result = $this->getSuccessResult(array());
+		}
+		return $result;	
+	}
 	
 
 }

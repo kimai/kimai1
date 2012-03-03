@@ -314,7 +314,7 @@ function exp_edit_record($id,$data) {
     }
 
     return $success;
-    
+    //@FIXME: wtf? remove this
     $original_array = exp_get_data($id);
     $new_array = array();
     

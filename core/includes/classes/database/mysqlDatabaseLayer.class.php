@@ -1955,69 +1955,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
   }
 
-	/**
-	 * @TODO: add to PDO
-	 * @see zef_create_record 
-	 * @param array $data
-	 */
-	public function zef_add_record(Array $data) {
-		$data = $this->clean_data($data);
-		$values = array();
-		
-		$values ['zef_in'] = MySQL::SQLValue($data['zef_in'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_out'] = MySQL::SQLValue($data['zef_out'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_time'] = MySQL::SQLValue($data['zef_time'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_usrID'] = MySQL::SQLValue($data['zef_usrID'], MySQL::SQLVALUE_NUMBER );
-      	$values ['zef_pctID'] = MySQL::SQLValue($data['zef_pctID'], MySQL::SQLVALUE_NUMBER );
-      	$values ['zef_evtID'] = MySQL::SQLValue($data['zef_evtID'], MySQL::SQLVALUE_NUMBER );
-		
-		if(isset($data ['zef_description'])) {
-			$values ['zef_description'] = MySQL::SQLValue($data ['zef_description']);	
-		}
-		
-		if(isset($data ['zef_comment'])) {
-      		$values ['zef_comment'] = MySQL::SQLValue($data ['zef_comment']);
-		}
-		if(isset($data ['zef_comment_type'])) {
-			$values ['zef_comment_type'] = MySQL::SQLValue($data ['zef_comment_type'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_cleared'])) {
-			$values ['zef_cleared'] = MySQL::SQLValue($data ['zef_cleared'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_location'])) {
-      		$values ['zef_location'] = MySQL::SQLValue($data ['zef_location']);
-		}
-		if(isset($data ['zef_trackingnr'])) {
-        	$values ['zef_trackingnr'] = MySQL::SQLValue($data ['zef_trackingnr']);
-		}
-		if(isset($data ['zef_rate'])) {
-			$values ['zef_rate'] = MySQL::SQLValue($data ['zef_rate'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_fixed_rate'])) {
-			$values ['zef_fixed_rate'] = MySQL::SQLValue($data ['zef_fixed_rate'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_budget'])) {
-			$values ['zef_budget'] = MySQL::SQLValue($data ['zef_budget'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_approved'])) {
-			$values ['zef_approved'] = MySQL::SQLValue($data ['zef_approved'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_status'])) {
-			$values ['zef_status'] = MySQL::SQLValue($data ['zef_status'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_billable'])) {
-			$values ['zef_billable'] = MySQL::SQLValue($data ['zef_billable'], MySQL::SQLVALUE_NUMBER );
-		}
-	
-		$table = $this->getZefTable();
-		$success =  $this->conn->InsertRow($table, $values);
-		if ($success) {
-			return  $this->conn->GetLastInsertID();
-		} else {
-	        $this->logLastError('zef_add_record');
-	        return false;
-		}
-	}
 
   /**
   * edit zef entry

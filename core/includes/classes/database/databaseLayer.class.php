@@ -103,6 +103,10 @@ abstract class DatabaseLayer {
   {
   	return $this->kga['server_prefix'].'zef';
   }
+  
+  public function getExpenseTable() {
+  	return $this->kga['server_prefix'].'exp';
+  }
 
   /**
   * Add a new customer to the database.
