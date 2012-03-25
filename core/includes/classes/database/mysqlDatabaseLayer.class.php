@@ -2301,22 +2301,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $this->conn->MoveFirst();
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
-              $arr[$i]['zef_ID']           = $row->zef_ID;
-              if ($row->zef_in <= $in && $row->zef_out < $out)  {
-                $arr[$i]['zef_in']         = $in;
-                $arr[$i]['zef_out']        = $row->zef_out;
+
+              // Start time should not be less than the selected start time. This would confuse the user.
+              if ($in && $row->zef_in <= $in)  {
+                $arr[$i]['zef_in'] = $in;
+              } else {
+                $arr[$i]['zef_in'] = $row->zef_in;
               }
-              else if ($row->zef_in <= $in && $row->zef_out >= $out)  {
-                $arr[$i]['zef_in']         = $in;
-                $arr[$i]['zef_out']        = $out;
-              }
-              else if ($row->zef_in > $in && $row->zef_out < $out)  {
-                $arr[$i]['zef_in']         = $row->zef_in;
-                $arr[$i]['zef_out']        = $row->zef_out;
-              }
-              else if ($row->zef_in > $in && $row->zef_out >= $out)  {
-                $arr[$i]['zef_in']         = $row->zef_in;
-                $arr[$i]['zef_out']        = $out;
+
+              // End time should not be less than the selected start time. This would confuse the user.
+              if ($out && $row->zef_out >= $out)  {
+                $arr[$i]['zef_out'] = $out;
+              } else {
+                $arr[$i]['zef_out'] = $row->zef_out;
               }
 
               if ($row->zef_out != 0) {
