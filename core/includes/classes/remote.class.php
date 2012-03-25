@@ -479,10 +479,10 @@ class Kimai_Remote_Api
 		 */
 		
 		$zef = $this->getBackend()->get_arr_zef($current['zef_in'], $current['zef_out']);
-		$current['zef_knd_ID'] = $zef[0]['pct_kndID'];
-		$current['zef_knd_name'] = $zef[0]['knd_name'];
-		$current['zef_pct_name'] = $zef[0]['pct_name'];
-		$current['zef_evt_name'] = $zef[0]['evt_name'];
+		$current['pct_kndID'] = $zef[0]['pct_kndID'];
+		$current['knd_name'] = $zef[0]['knd_name'];
+		$current['pct_name'] = $zef[0]['pct_name'];
+		$current['evt_name'] = $zef[0]['evt_name'];
 		
 		
 		$result = $this->getSuccessResult(array($current));
