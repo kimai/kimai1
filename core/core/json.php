@@ -57,6 +57,7 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
  */
 
 require(APPLICATION_PATH.'/includes/classes/remote.class.php');
+header('Access-Control-Allow-Origin: *');
 
 $server = new Zend_Json_Server();
 $server->setClass('Kimai_Remote_Api');

@@ -37,6 +37,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     else
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
+  
+  public function getConnection() {
+  	return $this->conn;
+  }
 
   private function logLastError($scope) {
       Logger::logfile($scope.': '.$this->conn->Error());
@@ -1867,11 +1871,23 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       $zef_id = MySQL::SQLValue($zef_id, MySQL::SQLVALUE_NUMBER);
-
+	
+		$table = $this->getZefTable();
+		$projectTable = $this->getProjectTable();
+		$eventTable = $this->getEventTable();
+		$customerTable = $this->getCustomerTable();
+		
+      	$select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.knd_ID AS knd_ID
+      				FROM $table
+                	JOIN $projectTable ON $table.zef_pctID = $projectTable.pct_ID
+                	JOIN $customerTable ON $projectTable.pct_kndID = $customerTable.knd_ID
+                	JOIN $eventTable ON $eventTable.evt_ID = $table.zef_evtID";
+		
+		
       if ($zef_id) {
-          $result = $this->conn->Query("SELECT * FROM ${p}zef WHERE zef_ID = " . $zef_id);
+          $result = $this->conn->Query("$select WHERE zef_ID = " . $zef_id);
       } else {
-          $result = $this->conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+          $result = $this->conn->Query("$select WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
       }
 
       if (! $result) {
@@ -1891,19 +1907,21 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   public function zef_delete_record($id) {
 
       $filter["zef_ID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
 
-  /**
+ /**
   * create zef entry
   *
   * @param integer $id    ID of record
   * @param integer $data  array with record data
   * @author th
+  * @FIXME alex - 	the $data of zef_create_record & zef_edit_record are hell different, WHY, WHY, WHY?
+  * 				to keep the API clean, added new function => zef_add_record
   */
-  public function zef_create_record($usr_ID,$data) {
+  public function zef_create_record($usr_ID, $data) {
       $data = $this->clean_data($data);
 
       $values ['zef_location']     =   MySQL::SQLValue( $data ['zlocation'] );
@@ -1927,7 +1945,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
 
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $success =  $this->conn->InsertRow($table, $values);
       if ($success)
         return  $this->conn->GetLastInsertID();
@@ -1937,14 +1955,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
   }
 
+
   /**
   * edit zef entry
   *
   * @param integer $id ID of record
-  * @param integer $data  array with new record data
+  * @param array $data array with new record data
   * @author th
   */
-  public function zef_edit_record($id,$data) {
+  public function zef_edit_record($id, Array $data) {
       $data = $this->clean_data($data);
 
       $original_array = $this->zef_get_data($id);
@@ -1966,7 +1985,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-
+		
+	//@FIXME: zef_description is evaluated twice?
       $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
       $values ['zef_comment']      = MySQL::SQLValue($new_array ['zef_comment']                                );
       $values ['zef_location']     = MySQL::SQLValue($new_array ['zef_location']                               );
@@ -1986,7 +2006,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_approved'] 	   = MySQL::SQLValue($new_array ['zef_approved']  	  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_status'] 	   = MySQL::SQLValue($new_array ['zef_status']		  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   = MySQL::SQLValue($new_array ['zef_billable']	  , MySQL::SQLVALUE_NUMBER );
-      $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
+	  //@FIXME: zef_description is evaluated twice? number?
+     // $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
 
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
@@ -2213,7 +2234,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * returns timesheet for specific user as multidimensional array
+<<<<<<< HEAD
+  * @TODO: needs new comments
+=======
   *@TODO: needs new comments
+>>>>>>> origin/master
   * @param integer $user ID of user in table usr
   * @param integer $in start of timespace in unix seconds
   * @param integer $out end of timespace in unix seconds
@@ -2269,8 +2294,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                        zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
                        zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
       
-      if($countOnly)
-      {
+      if($countOnly) {
       	$select = "SELECT COUNT(*) AS total";
       	$limit = "";
       }
@@ -3068,18 +3092,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * add a new status
    * @param Array $statusArray
    */
-  public function status_create($status) {
-
-      $values['status'] = MySQL::SQLValue(trim($status['status']));
-
-      $table = $this->kga['server_prefix']."status";
-      $result = $this->conn->InsertRow($table, $values);
-      if (! $result) {
-        $this->logLastError('add_status');
-        return false;
-      }
-//  	}
-        return true;
+	public function status_create($status) {
+      	$values['status'] = MySQL::SQLValue(trim($status['status']));
+		
+      	$table = $this->kga['server_prefix']."status";
+      	$result = $this->conn->InsertRow($table, $values);
+      	if (! $result) {
+        	$this->logLastError('add_status');
+        	return false;
+      	}
+		return true;
   }
 
   /**
@@ -4400,4 +4422,5 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 		return $rowExits;
 	}
   }
+  
 }

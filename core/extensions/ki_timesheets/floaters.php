@@ -149,6 +149,7 @@ switch ($axAction) {
         $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
         $tpl->assign('fixed_rate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
     }
+
     // fcw: hier korrigiert: statusNames statt (vorher) statusIds, da kga['conf']['status'] die Namen und nicht die Ids enthaelt.
     // Die status_id sind in den value Werten der options (vom select)
     $statusNames = $kga['conf']['status'];

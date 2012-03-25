@@ -1892,12 +1892,23 @@ class PDODatabaseLayer extends DatabaseLayer
     * @author ob
     */
     public function zef_get_data($zef_id) {
-      $p = $this->kga['server_prefix'];
+    	 
+	  $table = $this->getZefTable();
+	  $projectTable = $this->getProjectTable();
+	  $eventTable = $this->getEventTable();
+	  $customerTable = $this->getCustomerTable();
+	  $select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.knd_ID AS knd_ID
+      				FROM $table
+                	JOIN $projectTable ON $table.zef_pctID = $projectTable.pct_ID
+                	JOIN $customerTable ON $projectTable.pct_kndID = $customerTable.knd_ID
+                	JOIN $eventTable ON $eventTable.evt_ID = $table.zef_evtID";
+		
+		
 
       if ($zef_id) {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_ID = ?");
+          $pdo_query = $this->conn->prepare("$select WHERE zef_ID = ?");
       } else {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+          $pdo_query = $this->conn->prepare("$select WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
       }
 
       $result = $pdo_query->execute(array($zef_id));
@@ -1995,10 +2006,10 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param integer $id ID of record
     * @global array $this->kga kimai-global-array
-    * @param integer $data  array with new record data
+    * @param array $data  array with new record data
     * @author th
     */
-    public function zef_edit_record($id,$data) {
+    public function zef_edit_record($id, Array $data) {
       $p = $this->kga['server_prefix'];
 
       $original_array = $this->zef_get_data($id);
@@ -2249,7 +2260,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0) {
+    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -4536,5 +4547,177 @@ class PDODatabaseLayer extends DatabaseLayer
           return $rowExits;
       }
   }
+   /************************************************************************************************
+   * EXPENSES
+   */
+  
+  /**
+   * returns expenses for specific user as multidimensional array
+   * @TODO: needs comments
+   * @param integer $user ID of user in table usr
+   * @return array
+   * @author th
+   * @author Alexander Bauer
+   */
+  public function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null, $limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+  	$conn = $this->conn;
+  	$kga = $this->kga;
+  	$p     = $kga['server_prefix'];
+  
+  	if (!is_numeric($filterCleared)) {
+  		$filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+  	}
+  
+  	$start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
+  	$end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
+  	$limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_BOOLEAN);
+  
+  	$p     = $kga['server_prefix'];
+  
+  	$whereClauses = $this->exp_whereClausesFromFilters($users, $customers, $projects);
+  
+  	if (isset($kga['customer']))
+  		$whereClauses[] = "${p}pct.pct_internal = 0";
+  
+  	if ($start)
+  		$whereClauses[]="exp_timestamp >= $start";
+  	if ($end)
+  		$whereClauses[]="exp_timestamp <= $end";
+  	if ($filterCleared > -1)
+  		$whereClauses[] = "exp_cleared = $filterCleared";
+  
+  	switch ($filter_refundable) {
+  		case 0:
+  			$whereClauses[] = "exp_refundable > 0";
+  			break;
+  		case 1:
+  			$whereClauses[] = "exp_refundable <= 0";
+  			break;
+  		case -1:
+  		default:
+  			// return all expenses - refundable and non refundable
+  	}
+  	
+  	if ($limit) {
+  		if(!empty($limitRows)) {
+  			$startRows = (int)$startRows;
+  			$limit = "LIMIT $startRows, $limitRows";
+  		} else {
+  			if (isset($this->kga['conf']['rowlimit'])) {
+  				$limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+  			} else {
+  				$limit="LIMIT 100";
+  			}
+  		}
+  	} else {
+  		$limit="";
+  	}
+  	
+  	
+  	$select = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID,
+  				knd_name, pct_kndID, pct_name, exp_comment, exp_refundable,
+  				exp_comment_type, usr_name, exp_cleared";
+  				
+  	$where = empty($whereClauses) ? '' : "WHERE ".implode(" AND ",$whereClauses);
+  	$orderDirection = $reverse_order ? 'ASC' : 'DESC';
+  	
+  	if($countOnly) {
+  		$select = "SELECT COUNT(*) AS total";
+  		$limit = "";
+  	}
+  	 
+  	$query = "$select
+  		FROM ${p}exp
+	  	Join ${p}pct ON exp_pctID = pct_ID
+	  	Join ${p}knd ON pct_kndID = knd_ID
+	  	Join ${p}usr ON exp_usrID = usr_ID 
+	  	$where
+	  	ORDER BY exp_timestamp $orderDirection $limit";
+  	
+	 $pdo_query = $this->conn->prepare($query);
+
+      $result = $pdo_query->execute();
+
+      if ($result == false) {
+          $this->logLastError('get_arr_exp');
+          return false;
+      }
+		
+      // return only number of rows
+      if($countOnly) {
+      	$row = $pdo_query->fetch(PDO::FETCH_ASSOC);
+      	return $row->total;
+      }	
+  	
+  	$i=0;
+  	$arr=array();
+  	/* TODO: needs revision as foreach loop */
+  	while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+  		$row = $conn->Row();
+  		$arr[$i]['exp_ID']             = $row['exp_ID'];
+  		$arr[$i]['exp_timestamp']      = $row['exp_timestamp'];
+  		$arr[$i]['exp_multiplier']     = $row['exp_multiplier'];
+  		$arr[$i]['exp_value']          = $row['exp_value'];
+  		$arr[$i]['exp_pctID']          = $row['exp_pctID'];
+  		$arr[$i]['exp_designation']    = $row['exp_designation'];
+  		$arr[$i]['exp_usrID']          = $row['exp_usrID'];
+  		$arr[$i]['pct_ID']             = $row['pct_ID'];
+  		$arr[$i]['knd_name']           = $row['knd_name'];
+  		$arr[$i]['pct_kndID']          = $row['pct_kndID'];
+  		$arr[$i]['pct_name']           = $row['pct_name'];
+  		$arr[$i]['exp_comment']        = $row['exp_comment'];
+  		$arr[$i]['exp_comment_type']   = $row['exp_comment_type'];
+  		$arr[$i]['exp_refundable']     = $row['exp_refundable'];
+  		$arr[$i]['usr_name']           = $row['usr_name'];
+  		$arr[$i]['exp_cleared']        = $row['exp_cleared'];
+  		$i++;
+  	}
+  
+  	return $arr;
+  }
+  
+  /**
+   *  Creates an array of clauses which can be joined together in the WHERE part
+   *  of a sql query. The clauses describe whether a line should be included
+   *  depending on the filters set.
+   *
+   *  This method also makes the values SQL-secure.
+   *
+   * @param Array list of IDs of users to include
+   * @param Array list of IDs of customers to include
+   * @param Array list of IDs of projects to include
+   * @param Array list of IDs of events to include
+   * @return Array list of where clauses to include in the query
+   */
+  public function exp_whereClausesFromFilters($users, $customers, $projects ) {
+  
+  	if (!is_array($users)) $users = array();
+  	if (!is_array($customers)) $customers = array();
+  	if (!is_array($projects)) $projects = array();
+  
+  	for ($i = 0;$i<count($users);$i++)
+  		$users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
+  		for ($i = 0;$i<count($customers);$i++)
+  			$customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
+  			for ($i = 0;$i<count($projects);$i++)
+  			$projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+  
+  			$whereClauses = array();
+  
+  			if (count($users) > 0) {
+  			$whereClauses[] = "exp_usrID in (".implode(',',$users).")";
+  		}
+  
+  		if (count($customers) > 0) {
+  		$whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+  		}
+  
+  				if (count($projects) > 0) {
+  		$whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+  		}
+  
+  		return $whereClauses;
+  
+	}
 
 }
