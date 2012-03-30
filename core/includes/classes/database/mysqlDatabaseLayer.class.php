@@ -1985,6 +1985,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
+
 		
 	//@FIXME: zef_description is evaluated twice?
       $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
@@ -2009,6 +2010,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 	  //@FIXME: zef_description is evaluated twice? number?
      // $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
 
+      error_log($values ['zef_trackingnr']);
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -2017,6 +2019,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       if (! $this->conn->Query($query)) $success = false;
 
+      error_log($success?'true':'false');
       if ($success) {
           if (! $this->conn->TransactionEnd()) {
             $this->logLastError('zef_edit_record');
@@ -2234,11 +2237,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * returns timesheet for specific user as multidimensional array
-<<<<<<< HEAD
   * @TODO: needs new comments
-=======
-  *@TODO: needs new comments
->>>>>>> origin/master
   * @param integer $user ID of user in table usr
   * @param integer $in start of timespace in unix seconds
   * @param integer $out end of timespace in unix seconds
@@ -2325,6 +2324,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $this->conn->MoveFirst();
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
+              $arr[$i]['zef_ID']           = $row->zef_ID;
 
               // Start time should not be less than the selected start time. This would confuse the user.
               if ($in && $row->zef_in <= $in)  {
