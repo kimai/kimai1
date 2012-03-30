@@ -1381,6 +1381,10 @@ ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
 }
 
+// fcw: 2012-03-30: Preference: showInstallWarning
+exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) SELECT `usr_ID` FROM `${p}usr`, 'ui.showInstallWarning', '1'");
+
+
 // ============================
 // = update DB version number =
 // ============================

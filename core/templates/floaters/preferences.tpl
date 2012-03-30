@@ -98,6 +98,10 @@
             <label for="autoselection"></label>
             <input type="checkbox" name="autoselection" value="1" {if $kga.conf.autoselection}checked{/if} /> {$kga.lang.autoselection}
           </li>
+          <li>
+            <label for="showInstallWarning"></label>
+            <input type="checkbox" name="showInstallWarning" value="1" {if $kga.conf.showInstallWarning}checked{/if} /> {$kga.lang.showInstallWarning}
+          </li>          
         </ul>
 
       </fieldset>

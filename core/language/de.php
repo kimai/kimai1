@@ -157,6 +157,7 @@ return array(
 "noItems"           => "Keine Einträge vorhanden",
 "DBname"            => "Name der Datenbank",
 "autoselection"     => "Inhalt von Zeit- und Datumsfelder beim Bearbeiten markieren",
+"showInstallWarning"     => "Install-Warnung anzeigen (falls installer-Verz. noch vorhanden)",
 "quickdelete"       => "Einträge können direkt aus der Tabelle gelöscht werden",
 "quickdeleteHide"   => "Nein",
 "quickdeleteShow"   => "Ja, ohne Bestätigungsdialog",
