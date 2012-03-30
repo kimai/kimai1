@@ -318,6 +318,8 @@ return array(
 'taskAssignable' => 'Assignable',
 'taskAssignableDescription' => 'Assignable to individual projects',
 
+'user' => 'User',
+
 
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />

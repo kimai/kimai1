@@ -72,6 +72,8 @@ switch ($axAction) {
         $tpl->assign('fixed_rate', $zef_entry['zef_fixed_rate']);
         
         $tpl->assign('cleared', $zef_entry['zef_cleared']!=0);
+
+        $tpl->assign('user', $zef_entry['zef_usrID']);
     
         $tpl->assign('edit_in_day', date("d.m.Y",$zef_entry['zef_in']));
         $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));
@@ -102,6 +104,8 @@ switch ($axAction) {
         
         $tpl->assign('edit_in_day', date("d.m.Y"));
         $tpl->assign('edit_out_day', date("d.m.Y"));
+
+        $tpl->assign('user', $kga['usr']['usr_ID']);
 
         if($kga['conf']['roundTimesheetEntries'] != '') {
 	        $zefData = $database->zef_get_data(false);
@@ -165,6 +169,18 @@ switch ($axAction) {
     $tpl->assign('billable', $billableValues);
     $tpl->assign('comment_types', $comment_types);
     $tpl->assign('comment_values', array('0','1','2'));
+
+    $users = $database->get_arr_watchable_users($kga['usr']);
+    $userIds = array();
+    $userNames = array();
+
+    foreach ($users as $user) {
+      $userIds[] = $user['usr_ID'];
+      $userNames[] = $user['usr_name'];
+    }
+
+    $tpl->assign('userIds', $userIds);
+    $tpl->assign('userNames', $userNames);
 
     // select for projects
     $sel = makeSelectBox("pct",$kga['usr']['groups']);

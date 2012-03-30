@@ -1921,7 +1921,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @FIXME alex - 	the $data of zef_create_record & zef_edit_record are hell different, WHY, WHY, WHY?
   * 				to keep the API clean, added new function => zef_add_record
   */
-  public function zef_create_record($usr_ID, $data) {
+  public function zef_create_record($data) {
       $data = $this->clean_data($data);
 
       $values ['zef_location']     =   MySQL::SQLValue( $data ['zlocation'] );
@@ -1931,7 +1931,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $values ['zef_trackingnr'] = 'NULL';
       else
         $values ['zef_trackingnr'] =   MySQL::SQLValue( $data ['trackingnr'] );
-      $values ['zef_usrID']        =   MySQL::SQLValue( $usr_ID                , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_usrID']        =   MySQL::SQLValue( $data ['usr_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_pctID']        =   MySQL::SQLValue( $data ['pct_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_evtID']        =   MySQL::SQLValue( $data ['evt_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_comment_type'] =   MySQL::SQLValue( $data ['comment_type'] , MySQL::SQLVALUE_NUMBER );
@@ -1985,7 +1985,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-
 		
 	//@FIXME: zef_description is evaluated twice?
       $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
@@ -1995,6 +1994,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $values ['zef_trackingnr'] = 'NULL';
       else
         $values ['zef_trackingnr'] = MySQL::SQLValue($new_array ['zef_trackingnr']                             );
+      $values ['zef_usrID']        = MySQL::SQLValue($new_array ['zef_usrID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_pctID']        = MySQL::SQLValue($new_array ['zef_pctID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_evtID']        = MySQL::SQLValue($new_array ['zef_evtID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_comment_type'] = MySQL::SQLValue($new_array ['zef_comment_type']  , MySQL::SQLVALUE_NUMBER );
@@ -2010,7 +2010,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 	  //@FIXME: zef_description is evaluated twice? number?
      // $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
 
-      error_log($values ['zef_trackingnr']);
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -2019,7 +2018,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       if (! $this->conn->Query($query)) $success = false;
 
-      error_log($success?'true':'false');
       if ($success) {
           if (! $this->conn->TransactionEnd()) {
             $this->logLastError('zef_edit_record');

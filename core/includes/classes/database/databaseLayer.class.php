@@ -107,6 +107,10 @@ abstract class DatabaseLayer {
   public function getExpenseTable() {
   	return $this->kga['server_prefix'].'exp';
   }
+  
+  public function getUserTable() {
+        return $this->kga['server_prefix'].'usr';
+  }
 
   /**
   * Add a new customer to the database.
@@ -531,10 +535,9 @@ abstract class DatabaseLayer {
   /**
   * create zef entry
   *
-  * @param integer $id    ID of record
   * @param integer $data  array with record data
   */
-  public abstract function zef_create_record($usr_ID,$data);
+  public abstract function zef_create_record($data);
 
   /**
   * edit zef entry

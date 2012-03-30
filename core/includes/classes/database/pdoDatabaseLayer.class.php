@@ -1949,7 +1949,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array  $this->kga    kimai-global-array
     * @author th
     */
-    public function zef_create_record($usr_ID,$data) {
+    public function zef_create_record($data) {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("INSERT INTO ${p}zef (
@@ -1984,7 +1984,7 @@ class PDODatabaseLayer extends DatabaseLayer
       (int)$data['in'],
       (int)$data['out'],
       (int)$data['diff'],
-      (int)$usr_ID,
+      (int)$data['usr_ID'],
       (int)$data['rate'],
       $data['cleared']?1:0,
       (int)$data['budget'],
@@ -2024,6 +2024,7 @@ class PDODatabaseLayer extends DatabaseLayer
       }
 
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET
+      zef_usrID = ?,
       zef_pctID = ?,
       zef_evtID = ?,
       zef_location = ?,
@@ -2043,6 +2044,7 @@ class PDODatabaseLayer extends DatabaseLayer
       WHERE zef_ID = ?;");
 
       $result = $pdo_query->execute(array(
+      (int)$new_array['zef_usrID'],
       (int)$new_array['zef_pctID'],
       (int)$new_array['zef_evtID'] ,
       $new_array['zef_location'],

@@ -454,6 +454,14 @@
                            {html_options values=$comment_values output=$comment_types selected=$comment_active}
                        </select>
                    </li>
+                   {if $kga.usr.usr_sts != 2}   
+                   <li>
+                       <label for="user">{$kga.lang.user}:</label>
+                       <select id="user" class="formfield" name="user" tabindex="14" >
+                           {html_options values=$userIds output=$userNames selected=$user}
+                       </select>
+                   </li>
+                   {/if}
                    
                     <li>
                         <label for="erase">{$kga.lang.erase}:</label>

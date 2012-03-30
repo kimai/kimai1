@@ -316,6 +316,8 @@ return array(
 'taskAssignable' => 'Zuweisbar',
 'taskAssignableDescription' => 'Zuweisbar an einzelne Projekte',
 
+'user' => 'Benutzer',
+
 
 
 'credits' => <<<EOF
