@@ -2518,7 +2518,7 @@ class PDODatabaseLayer extends DatabaseLayer
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
     do {
-        $this->kga['conf']['status'][] = $row['status'];
+        $this->kga['conf']['status'][$row['status_id']] = $row['status'];
     } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
     }
 
@@ -3444,31 +3444,6 @@ class PDODatabaseLayer extends DatabaseLayer
       }
       return $res;
     }
-
-   /**
-    * return integer array statusIds
-    * @param string (array) $statusNames
-    */
-   public function get_status_ids($statusNames) // fcw: vorher: get_status($statusIds)
-   {
-      $p = $this->kga['server_prefix'];
-      // fcw: nur wenn ein array, wenn $statusNames nur ein string ist, einfach so lassen.
-      if (is_array($statusNames))
-        // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, 
-        // wg. WHERE status IN ('status1','status2',...,'statusN')
-         $statusNames = implode('\',\'', $statusNames);
-
-      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen 
-      // (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
-      $statusNames = "'" . $statusNames . "'";
-      $pdo_query = $this->conn->prepare("SELECT status_id FROM ${p}status where status in ( $statusNames ) order by status_id");
-
-      $res = array();
-      while($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $res[] = $row['status_id'];
-      }
-      return $res;
-   }
 
 
     /**

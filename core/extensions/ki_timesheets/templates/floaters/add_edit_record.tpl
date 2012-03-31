@@ -494,7 +494,7 @@
                    <li>
                        <label for="status">{$kga.lang.status}:</label>
                        <select id="status" class="formfield" name="status" tabindex="15" >
-                           {html_options values=$statusIds output=$status selected=$status_active}
+                           {html_options options=$status selected=$status_active}
                        </select>
                    </li>
                    
