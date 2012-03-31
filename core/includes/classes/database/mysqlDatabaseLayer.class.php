@@ -819,10 +819,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $return_grps[$counter] = $current_grp['pct_ID'];
               $counter++;
           }
-          return $return_grps;
-      } else {
-          return false;
       }
+      return $return_grps;
   }
 
   /**
@@ -1931,7 +1929,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $values ['zef_trackingnr'] = 'NULL';
       else
         $values ['zef_trackingnr'] =   MySQL::SQLValue( $data ['trackingnr'] );
-      $values ['zef_usrID']        =   MySQL::SQLValue( $data ['usr_ID']       , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_usrID']        =   MySQL::SQLValue( $data ['zef_usrID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_pctID']        =   MySQL::SQLValue( $data ['pct_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_evtID']        =   MySQL::SQLValue( $data ['evt_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_comment_type'] =   MySQL::SQLValue( $data ['comment_type'] , MySQL::SQLVALUE_NUMBER );

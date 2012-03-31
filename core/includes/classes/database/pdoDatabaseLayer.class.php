@@ -1984,7 +1984,7 @@ class PDODatabaseLayer extends DatabaseLayer
       (int)$data['in'],
       (int)$data['out'],
       (int)$data['diff'],
-      (int)$data['usr_ID'],
+      (int)$data['zef_usrID'],
       (int)$data['rate'],
       $data['cleared']?1:0,
       (int)$data['budget'],

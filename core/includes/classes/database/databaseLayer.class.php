@@ -1097,8 +1097,8 @@ abstract class DatabaseLayer {
   */
   function assignEvt2PctsForGroup($evt_id, $pct_array, $group)
   {
-      $projectIds = array_merge($pct_array, getNonManagableAssignedElementIds("evt", "pct", $evt_id, $group));
-      assign_evt2pcts($evt_id, $projectIds);
+      $projectIds = array_merge($pct_array, $this->getNonManagableAssignedElementIds("evt", "pct", $evt_id, $group));
+      $this->assign_evt2pcts($evt_id, $projectIds);
   }
 
   /**
@@ -1113,8 +1113,8 @@ abstract class DatabaseLayer {
   */
   function assignPct2EvtsForGroup($pct_id, $evt_array, $group)
   {
-      $eventIds = array_merge($evt_array, getNonManagableAssignedElementIds("pct", "evt", $pct_id, $group));
-      assign_pct2evts($pct_id, $eventIds);
+      $eventIds = array_merge($evt_array, $this->getNonManagableAssignedElementIds("pct", "evt", $pct_id, $group));
+      $this->assign_pct2evts($pct_id, $eventIds);
   }
 
   /**
@@ -1137,10 +1137,10 @@ abstract class DatabaseLayer {
       switch ($parentSubject . "_" . $subject)
       {
           case 'pct_evt':
-              $selectedIds = pct_get_evts($parentId);
+              $selectedIds = $this->pct_get_evts($parentId);
               break;
           case 'evt_pct':
-              $selectedIds = evt_get_pcts($parentId);
+              $selectedIds = $this->evt_get_pcts($parentId);
               break;
       }
 
@@ -1150,12 +1150,12 @@ abstract class DatabaseLayer {
           switch ($parentSubject . "_" . $subject)
           {
               case 'pct_evt':
-                  $allElements = get_arr_evt("all");
-                  $viewableElements = get_arr_evt($group);
+                  $allElements = $this->get_arr_evt();
+                  $viewableElements = $this->get_arr_evt($group);
                   break;
               case 'evt_pct':
-                  $allElements = get_arr_pct("all");
-                  $viewableElements = get_arr_pct($group);
+                  $allElements = $this->get_arr_pct();
+                  $viewableElements = $this->get_arr_pct($group);
                   break;
           }
           //if there are no elements hidden from the group, there's nothing too much that could get deleted either
