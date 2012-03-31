@@ -73,32 +73,43 @@ abstract class DatabaseLayer {
    * Connect to the database.
    */
   public abstract function connect($host,$database,$username,$password,$utf8,$serverType);
-
+  
   /**
-   * @return string name of the project table
+   * @return string the tablename with the server prefix
    */
   public function getProjectTable()
   {
-      return $this->getTableName('pct');
+  	return $this->kga['server_prefix'].'pct';
   }
-
+  
   /**
-   * @return string name of the event table
+   * @return string the tablename with the server prefix
    */
   public function getEventTable()
   {
-      return $this->getTableName('evt');
+  	return $this->kga['server_prefix'].'evt';
+  }
+  
+  /**
+   * @return string the tablename with the server prefix
+   */
+  public function getCustomerTable()
+  {
+  	return $this->kga['server_prefix'].'knd';
   }
 
-  /**
-   * Returns the table name, either prefixed or plain, depending on the current configuration.
-   *
-   * @param string $table
-   * @return string
-   */
-  public function getTableName($table)
+
+  public function getZefTable()
   {
-      return $this->kga['server_prefix'].$table;
+  	return $this->kga['server_prefix'].'zef';
+  }
+  
+  public function getExpenseTable() {
+  	return $this->kga['server_prefix'].'exp';
+  }
+  
+  public function getUserTable() {
+        return $this->kga['server_prefix'].'usr';
   }
 
   /**
@@ -524,19 +535,18 @@ abstract class DatabaseLayer {
   /**
   * create zef entry
   *
-  * @param integer $id    ID of record
   * @param integer $data  array with record data
   */
-  public abstract function zef_create_record($usr_ID,$data);
+  public abstract function zef_create_record($data);
 
   /**
   * edit zef entry
   *
   * @param integer $id ID of record
-  * @param integer $data  array with new record data
+  * @param array $data  array with new record data
   * @author th
   */
-  public abstract function zef_edit_record($id,$data);
+  public abstract function zef_edit_record($id, Array $data);
 
   /**
   * saves timespace of user in database (table conf)
@@ -589,7 +599,7 @@ abstract class DatabaseLayer {
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
-  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null);
+  public abstract function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
   /**
    * Returns a username for the given $apikey.
@@ -1041,37 +1051,39 @@ abstract class DatabaseLayer {
   */
   public abstract function loginUpdateBan($userId,$resetTime = false);
 
+
   /**
    * Return all rows for the given sql query.
    *
    * @param string $query the sql query to execute
    */
   public abstract function queryAll($query);
-
+  
+  
   /**
    * checks if given $projectId exists in the db
-   *
+   * 
    * @param int $projectId
    * @return bool
    */
   public abstract function isValidProjectId($projectId);
-
+  
   /**
    * checks if given $eventId exists in the db
-   *
+   * 
    * @param int $eventId
    * @return bool
    */
   public abstract function isValidEventId($eventId);
-
+  
   /**
    * checks if a given db row based on the $idColumn & $id exists
    * @param string $table
-   * @param string $idColumn
-   * @param int $id
+   * @param array $filter
    * @return bool
    */
-  protected abstract function rowExists($table, $idColumn, $id);
+  protected abstract function rowExists($table, Array $filter);
+  
 
   /**
   * associates an Event with a collection of Projects in the context of a user group.
@@ -1085,8 +1097,8 @@ abstract class DatabaseLayer {
   */
   function assignEvt2PctsForGroup($evt_id, $pct_array, $group)
   {
-      $projectIds = array_merge($pct_array, getNonManagableAssignedElementIds("evt", "pct", $evt_id, $group));
-      assign_evt2pcts($evt_id, $projectIds);
+      $projectIds = array_merge($pct_array, $this->getNonManagableAssignedElementIds("evt", "pct", $evt_id, $group));
+      $this->assign_evt2pcts($evt_id, $projectIds);
   }
 
   /**
@@ -1101,8 +1113,8 @@ abstract class DatabaseLayer {
   */
   function assignPct2EvtsForGroup($pct_id, $evt_array, $group)
   {
-      $eventIds = array_merge($evt_array, getNonManagableAssignedElementIds("pct", "evt", $pct_id, $group));
-      assign_pct2evts($pct_id, $eventIds);
+      $eventIds = array_merge($evt_array, $this->getNonManagableAssignedElementIds("pct", "evt", $pct_id, $group));
+      $this->assign_pct2evts($pct_id, $eventIds);
   }
 
   /**
@@ -1125,10 +1137,10 @@ abstract class DatabaseLayer {
       switch ($parentSubject . "_" . $subject)
       {
           case 'pct_evt':
-              $selectedIds = pct_get_evts($parentId);
+              $selectedIds = $this->pct_get_evts($parentId);
               break;
           case 'evt_pct':
-              $selectedIds = evt_get_pcts($parentId);
+              $selectedIds = $this->evt_get_pcts($parentId);
               break;
       }
 
@@ -1138,12 +1150,12 @@ abstract class DatabaseLayer {
           switch ($parentSubject . "_" . $subject)
           {
               case 'pct_evt':
-                  $allElements = get_arr_evt("all");
-                  $viewableElements = get_arr_evt($group);
+                  $allElements = $this->get_arr_evt();
+                  $viewableElements = $this->get_arr_evt($group);
                   break;
               case 'evt_pct':
-                  $allElements = get_arr_pct("all");
-                  $viewableElements = get_arr_pct($group);
+                  $allElements = $this->get_arr_pct();
+                  $viewableElements = $this->get_arr_pct($group);
                   break;
           }
           //if there are no elements hidden from the group, there's nothing too much that could get deleted either

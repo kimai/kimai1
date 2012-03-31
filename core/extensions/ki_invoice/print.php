@@ -86,7 +86,8 @@ if (count($timeArray) > 0) {
 	$customerFax     = $kndArray['knd_fax'];
 	$customerMobile  = $kndArray['knd_mobile'];
 	$customerEmail   = $kndArray['knd_mail'];
-	$customerContact = $kndArray['knd_homepage']; //I'm using the "homepage" field to store client contact name
+	$customerContact = $kndArray['knd_contact'];
+	$customerURL	 = $kndArray['knd_homepage'];
 	$customerVat     = $kndArray['knd_vat'];
 	$projectComment  = $pctArray['pct_comment'];
 	$beginDate       = $in;
@@ -110,6 +111,8 @@ while ($time_index < count($timeArray)) {
 	$comment = $timeArray[$time_index]['zef_comment'];
 	$description = $timeArray[$time_index]['zef_description'];
 	$evtdt   = date("m/d/Y", $timeArray[$time_index]['zef_in']);
+	$userName  = $timeArray[$time_index]['usr_name'];
+	$userAlias = $timeArray[$time_index]['usr_alias'];
 
    // do we have to create a short form?
    if ( isset($_REQUEST['short']) ) {
@@ -128,11 +131,11 @@ while ($time_index < count($timeArray)) {
          );
 	  }
 	  else {
-   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment);
+   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment,  'username'=>'', 'useralias'=>'');
 	  }
    }
    else {
-      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment);
+      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment, 'username'=>$userName, 'useralias'=>$userAlias);
    }
    $time_index++;
 }

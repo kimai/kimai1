@@ -1202,7 +1202,7 @@ if ((int)$revisionDB < 1305) {
     Logger::logfile("-- update to r1305");
 
     // update knd_name
-    $result = $databsae->queryAll("SELECT knd_ID,knd_name FROM ${p}knd");
+    $result = $database->queryAll("SELECT knd_ID,knd_name FROM ${p}knd");
     
     foreach ($result as $customer) {
       $name = htmlspecialchars_decode($customer['knd_name']);
@@ -1216,7 +1216,7 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update pct_name
-    $result = $databsae->queryAll("SELECT pct_ID,pct_name FROM ${p}pct");
+    $result = $database->queryAll("SELECT pct_ID,pct_name FROM ${p}pct");
     
     foreach ($result as $project) {
       $name = htmlspecialchars_decode($project['pct_name']);
@@ -1230,7 +1230,7 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update evt_name
-    $result = $databsae->queryAll("SELECT evt_ID,evt_name FROM ${p}evt");
+    $result = $database->queryAll("SELECT evt_ID,evt_name FROM ${p}evt");
     
     foreach ($result as $event) {
       $name = htmlspecialchars_decode($event['evt_name']);
@@ -1244,7 +1244,7 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update usr_name
-    $result = $databsae->queryAll("SELECT usr_ID,usr_name FROM ${p}usr");
+    $result = $database->queryAll("SELECT usr_ID,usr_name FROM ${p}usr");
     
     foreach ($result as $user) {
       $name = htmlspecialchars_decode($user['usr_name']);
@@ -1258,7 +1258,7 @@ if ((int)$revisionDB < 1305) {
     }
 
     // update grp_name
-    $result = $databsae->queryAll("SELECT grp_ID,grp_name FROM ${p}grp");
+    $result = $database->queryAll("SELECT grp_ID,grp_name FROM ${p}grp");
     
     foreach ($result as $group) {
       $name = htmlspecialchars_decode($group['grp_name']);

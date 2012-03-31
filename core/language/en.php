@@ -69,14 +69,14 @@ return array(
 "new_evt"           => "add task",
 "day_summary"       => "Time summary",
 "plzChoose"         => "please select",
-"noEntries"         => "No tracking entries for the specified timespace...",
+"noEntries"         => "No tracking entries for the specified time period...",
 "recordAgain"       => "Record this event again",
 "comment"           => "Comment",
 "zlocation"         => "Location",
 "trackingnr"        => "Tracking Number",
 "cookiewarning"     => "Turn Cookies on before you proceed.",
 "JSwarning"         => "JavaScript must be active.",
-"designation"       => "designation",
+"designation"       => "Description",
 "banned"            => "Banned (Account locked)",
 "tooManyLogins"     => "Too many wrong logins - user suspended.",
 "accessDenied"      => "Access denied!",
@@ -113,7 +113,7 @@ return array(
 "city"              => "City",
 "telephon"          => "Phone",
 "fax"               => "Fax",
-"mobilephone"       => "Chellphone",
+"mobilephone"       => "Cell",
 "mail"              => "E-Mail",
 "homepage"          => "Internet",
 "users"             => "Users",
@@ -132,7 +132,7 @@ return array(
 "description"       => "Description",
 "adminmail"         => "email address of administrator",
 "logintries"        => "number of false logins before user gets banned",
-"bantime"           => "login bantime in seconds",
+"bantime"           => "login ban time in seconds",
 "lastdbbackup"      => "Last backup",
 "runbackup"         => "Backup now",
 "defaultgrp"        => "Default (0)",
@@ -233,7 +233,7 @@ return array(
 "budget_event_used" => "Budget used",
 "budget_event_approved" => "Budget approved",
 "budget_minus"		=> "over budget",
-"wage"              => "Wage",
+"wage"              => "Amount",
 "roundTimesheetEntries" => "Round new timesheet entries to",
 "minutes"			=> "Minutes",
 "seconds" 			=> "Seconds",
@@ -241,7 +241,7 @@ return array(
 "customerlogin"     => "customer login",
 
 "expense"           => "Expense",
-"designation"       => "Designation",
+"designation"       => "Description",
 
 "cleared"           => "cleared",
 
@@ -256,9 +256,9 @@ return array(
 'show_daySeperatorLines' => 'Draw a line between entries of different days.',
 'show_gabBreaks' => 'Draw a line between two records that are not perfectly continuous.',
 'show_RecordAgain' => 'Show the &quot;Record Again&quot; button in front of every entry.',
-'show_TrackingNr' => 'Allows to edit the field Tracking-Nr.',
-'currency_name' => 'Name of the currency to use.',
-'currency_sign' => 'Sign of the currency to use.',
+'show_TrackingNr' => 'Tracking Number is editable',
+'currency_name' => 'Currency Name',
+'currency_sign' => 'Currency Symbol',
 'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
 'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'display_currentDate_format' => 'Date format for the field below the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
@@ -301,7 +301,7 @@ return array(
 
 'internalProject' => 'internal project',
 
-'exactSums' => 'Use exact sums instead of adding the shown rounded values.',
+'exactSums' => 'Use exact sums instead of adding the displayed rounded values.',
 
 'securityWarning' => 'security warning',
 'installerWarningHeadline' => 'installer folder still present!',
@@ -317,6 +317,8 @@ return array(
 
 'taskAssignable' => 'Assignable',
 'taskAssignableDescription' => 'Assignable to individual projects',
+
+'user' => 'User',
 
 
 'credits' => <<<EOF
@@ -479,12 +481,12 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "invoiceTemplate"           => "Invoice template:",
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
-"invoiceTimePeriod" 	=> "Period of time:",
+"invoiceTimePeriod" 	=> "Time Period:",
 "invoiceOptionShort" 	=> "Short Invoice",
 "invoiceOptionRound" 	=> "Round time",
 "invoiceButton" 		=> "Create",
 'noData'                => 'There are no time entries for the selected project & time period.',
-'defaultVat'        => 'default VAT'
+'defaultVat'        => 'Default VAT rate'
 ),
 
 'ext_budget' => array(

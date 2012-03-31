@@ -59,8 +59,9 @@ switch ($axAction) {
         $zefData['cleared'] = $zefData['zef_cleared'];
         //fcw: status hatte hier noch gefehlt
         $zefData['status'] = $zefData['zef_status'];
+        $zefData['usr_ID'] = $kga['usr']['usr_ID'];
 
-        $newZefId = $database->zef_create_record($kga['usr']['usr_ID'],$zefData);
+        $newZefId = $database->zef_create_record($zefData);
 
         $usrData = array();
         $usrData['lastRecord'] = $newZefId;
@@ -351,6 +352,14 @@ switch ($axAction) {
         }
       }
 
+      if (isset($_REQUEST['erase'])) {
+        // delete checkbox set ?
+        // then the record is simply dropped and processing stops at this point
+          $database->zef_delete_record($id);
+          echo json_encode(array('result'=>'ok'));
+          break;
+      }
+
       $data['pct_ID']          = $_REQUEST['pct_ID'];
       $data['evt_ID']          = $_REQUEST['evt_ID'];
       $data['zlocation']       = $_REQUEST['zlocation'];
@@ -358,7 +367,6 @@ switch ($axAction) {
       $data['description']     = $_REQUEST['description'];
       $data['comment']         = $_REQUEST['comment'];
       $data['comment_type']    = $_REQUEST['comment_type'];
-      $data['erase']           = isset($_REQUEST['erase']);
       $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
       $data['fixed_rate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixed_rate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
@@ -367,13 +375,17 @@ switch ($axAction) {
       $data['budget']          = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
       $data['approved']        = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
 
-      if ($data['erase']) {
-        // delete checkbox set ?
-        // then the record is simply dropped and processing stops at this point
-          $database->zef_delete_record($id);
-          echo json_encode(array('result'=>'ok'));
+      // only take the given user id if it is in the list of watchable users
+      $users = $database->get_arr_watchable_users($kga['usr']);
+      foreach ($users as $user) {
+        if ($user['usr_ID'] == $_REQUEST['user']) {
+          $data['zef_usrID'] = $user['usr_ID'];
           break;
+        }
       }
+
+      if (!isset($data['zef_usrID']))
+        $data['zef_usrID'] = $kga['usr']['usr_ID'];
 
       // check if the posted time values are possible
       $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
@@ -446,7 +458,7 @@ switch ($axAction) {
 
               // TIME RIGHT - NEW ENTRY
               Logger::logfile("zef_create_record");
-              $database->zef_create_record($kga['usr']['usr_ID'],$data);
+              $database->zef_create_record($data);
 
           }
 

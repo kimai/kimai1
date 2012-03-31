@@ -265,49 +265,29 @@ function get_cookie($cookie_name, $default=null) {
 function check_zef_data($id, $zef_data) {
   global $database;
   
-	if (($zef_data['in'] == 0) && ($zef_data['out'] == 0) && ($zef_data['diff'] == 0)) {
+  $zef_final_data['zef_usrID']        = $zef_data['zef_usrID'];
+  $zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
+  $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
+  $zef_final_data['zef_location']     = $zef_data['zlocation'];
+  $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
+  $zef_final_data['zef_description']  = $zef_data['description'];
+  $zef_final_data['zef_comment']      = $zef_data['comment'];
+  $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
+  $zef_final_data['zef_rate']         = $zef_data['rate'];
+  $zef_final_data['zef_budget']       = $zef_data['budget'];
+  $zef_final_data['zef_approved']     = $zef_data['approved'];
+  $zef_final_data['zef_status']       = $zef_data['status'];
+  $zef_final_data['zef_billable']     = $zef_data['billable'];
+  $zef_final_data['zef_description']  = $zef_data['description'];
+  $zef_final_data['zef_cleared']      = $zef_data['cleared'];
 
-		$zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
-	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
-	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-	    $zef_final_data['zef_description']  = $zef_data['description'];
-	    $zef_final_data['zef_comment']      = $zef_data['comment'];
-	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-	    $zef_final_data['zef_rate']         = $zef_data['rate'];
-	    $zef_final_data['zef_rate']         = $zef_data['rate'];
-	    $zef_final_data['zef_budget']       = $zef_data['budget'];
-	    $zef_final_data['zef_approved']     = $zef_data['approved'];
-	    $zef_final_data['zef_status']       = $zef_data['status'];
-	    $zef_final_data['zef_billable']     = $zef_data['billable'];
-	    $zef_final_data['zef_description']  = $zef_data['description'];
-      	$zef_final_data['zef_cleared']      = $zef_data['cleared'];
+  if (($zef_data['in'] != 0) || ($zef_data['out'] != 0) || ($zef_data['diff'] != 0)) {
+    $zef_final_data['zef_in']           = $zef_data['in'];
+    $zef_final_data['zef_out']          = $zef_data['out'];
+    $zef_final_data['zef_time']         = $zef_data['diff'];
+  }
 
-	    return $database->zef_edit_record($id,$zef_final_data);
-
-	} else {
-
-		$zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
-	    $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-	    $zef_final_data['zef_location']     = $zef_data['zlocation'];
-	    $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-	    $zef_final_data['zef_description']  = $zef_data['description'];
-	    $zef_final_data['zef_comment']      = $zef_data['comment'];
-	    $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-	    $zef_final_data['zef_in']           = $zef_data['in'];
-	    $zef_final_data['zef_out']          = $zef_data['out'];
-	    $zef_final_data['zef_time']         = $zef_data['diff'];
-	    $zef_final_data['zef_rate']         = $zef_data['rate'];
-	    $zef_final_data['zef_budget']       = $zef_data['budget'];
-	    $zef_final_data['zef_approved']     = $zef_data['approved'];
-	    $zef_final_data['zef_status']       = $zef_data['status'];
-	    $zef_final_data['zef_billable']     = $zef_data['billable'];
-	    $zef_final_data['zef_description']  = $zef_data['description'];
-        $zef_final_data['zef_cleared']      = $zef_data['cleared'];
-
-	    return $database->zef_edit_record($id,$zef_final_data);
-
-	}
+  return $database->zef_edit_record($id,$zef_final_data);
 
 }
 

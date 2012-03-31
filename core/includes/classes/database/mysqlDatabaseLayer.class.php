@@ -37,6 +37,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     else
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
+  
+  public function getConnection() {
+  	return $this->conn;
+  }
 
   private function logLastError($scope) {
       Logger::logfile($scope.': '.$this->conn->Error());
@@ -815,10 +819,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $return_grps[$counter] = $current_grp['pct_ID'];
               $counter++;
           }
-          return $return_grps;
-      } else {
-          return false;
       }
+      return $return_grps;
   }
 
   /**
@@ -1117,7 +1119,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $this->remove_rate($data['usr_ID'], NULL, NULL);
         }
       }
-
+    
       return $data['usr_ID'];
   }
 
@@ -1867,11 +1869,23 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       $zef_id = MySQL::SQLValue($zef_id, MySQL::SQLVALUE_NUMBER);
-
+	
+		$table = $this->getZefTable();
+		$projectTable = $this->getProjectTable();
+		$eventTable = $this->getEventTable();
+		$customerTable = $this->getCustomerTable();
+		
+      	$select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.knd_ID AS knd_ID
+      				FROM $table
+                	JOIN $projectTable ON $table.zef_pctID = $projectTable.pct_ID
+                	JOIN $customerTable ON $projectTable.pct_kndID = $customerTable.knd_ID
+                	JOIN $eventTable ON $eventTable.evt_ID = $table.zef_evtID";
+		
+		
       if ($zef_id) {
-          $result = $this->conn->Query("SELECT * FROM ${p}zef WHERE zef_ID = " . $zef_id);
+          $result = $this->conn->Query("$select WHERE zef_ID = " . $zef_id);
       } else {
-          $result = $this->conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+          $result = $this->conn->Query("$select WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
       }
 
       if (! $result) {
@@ -1891,19 +1905,21 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   public function zef_delete_record($id) {
 
       $filter["zef_ID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
 
-  /**
+ /**
   * create zef entry
   *
   * @param integer $id    ID of record
   * @param integer $data  array with record data
   * @author th
+  * @FIXME alex - 	the $data of zef_create_record & zef_edit_record are hell different, WHY, WHY, WHY?
+  * 				to keep the API clean, added new function => zef_add_record
   */
-  public function zef_create_record($usr_ID,$data) {
+  public function zef_create_record($data) {
       $data = $this->clean_data($data);
 
       $values ['zef_location']     =   MySQL::SQLValue( $data ['zlocation'] );
@@ -1913,7 +1929,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $values ['zef_trackingnr'] = 'NULL';
       else
         $values ['zef_trackingnr'] =   MySQL::SQLValue( $data ['trackingnr'] );
-      $values ['zef_usrID']        =   MySQL::SQLValue( $usr_ID                , MySQL::SQLVALUE_NUMBER );
+      $values ['zef_usrID']        =   MySQL::SQLValue( $data ['zef_usrID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_pctID']        =   MySQL::SQLValue( $data ['pct_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_evtID']        =   MySQL::SQLValue( $data ['evt_ID']       , MySQL::SQLVALUE_NUMBER );
       $values ['zef_comment_type'] =   MySQL::SQLValue( $data ['comment_type'] , MySQL::SQLVALUE_NUMBER );
@@ -1927,7 +1943,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
 
-      $table = $this->kga['server_prefix']."zef";
+      $table = $this->getZefTable();
       $success =  $this->conn->InsertRow($table, $values);
       if ($success)
         return  $this->conn->GetLastInsertID();
@@ -1937,14 +1953,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
   }
 
+
   /**
   * edit zef entry
   *
   * @param integer $id ID of record
-  * @param integer $data  array with new record data
+  * @param array $data array with new record data
   * @author th
   */
-  public function zef_edit_record($id,$data) {
+  public function zef_edit_record($id, Array $data) {
       $data = $this->clean_data($data);
 
       $original_array = $this->zef_get_data($id);
@@ -1966,7 +1983,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-
+		
+	//@FIXME: zef_description is evaluated twice?
       $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']    						   );
       $values ['zef_comment']      = MySQL::SQLValue($new_array ['zef_comment']                                );
       $values ['zef_location']     = MySQL::SQLValue($new_array ['zef_location']                               );
@@ -1974,6 +1992,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $values ['zef_trackingnr'] = 'NULL';
       else
         $values ['zef_trackingnr'] = MySQL::SQLValue($new_array ['zef_trackingnr']                             );
+      $values ['zef_usrID']        = MySQL::SQLValue($new_array ['zef_usrID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_pctID']        = MySQL::SQLValue($new_array ['zef_pctID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_evtID']        = MySQL::SQLValue($new_array ['zef_evtID']         , MySQL::SQLVALUE_NUMBER );
       $values ['zef_comment_type'] = MySQL::SQLValue($new_array ['zef_comment_type']  , MySQL::SQLVALUE_NUMBER );
@@ -1986,7 +2005,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['zef_approved'] 	   = MySQL::SQLValue($new_array ['zef_approved']  	  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_status'] 	   = MySQL::SQLValue($new_array ['zef_status']		  , MySQL::SQLVALUE_NUMBER );
       $values ['zef_billable'] 	   = MySQL::SQLValue($new_array ['zef_billable']	  , MySQL::SQLVALUE_NUMBER );
-      $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
+	  //@FIXME: zef_description is evaluated twice? number?
+     // $values ['zef_description']  = MySQL::SQLValue($new_array ['zef_description']	  , MySQL::SQLVALUE_NUMBER );
 
       $filter ['zef_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."zef";
@@ -2213,27 +2233,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * returns timesheet for specific user as multidimensional array
-  *
+  * @TODO: needs new comments
   * @param integer $user ID of user in table usr
   * @param integer $in start of timespace in unix seconds
   * @param integer $out end of timespace in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
+  * @param 
   * @return array
   * @author th
   */
-  public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null) {
+  public function get_arr_zef($in, $out, $users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       if (!is_numeric($filterCleared)) {
         $filterCleared = $this->kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
       }
-
+      
       $in    = MySQL::SQLValue($in    , MySQL::SQLVALUE_NUMBER);
       $out   = MySQL::SQLValue($out   , MySQL::SQLVALUE_NUMBER);
       $filterCleared   = MySQL::SQLValue($filterCleared , MySQL::SQLVALUE_NUMBER);
-      $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
-
+      $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_BOOLEAN);
+      
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->zef_whereClausesFromFilters($users, $customers, $projects, $events);
 
       if (isset($this->kga['customer']))
         $whereClauses[] = "${p}pct.pct_internal = 0";
@@ -2244,20 +2265,36 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $whereClauses[]="zef_in < $out";
       if ($filterCleared > -1)
         $whereClauses[] = "zef_cleared = $filterCleared";
-
+      
       if ($limit) {
-          if (isset($this->kga['conf']['rowlimit'])) {
-              $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
-          } else {
-              $limit="LIMIT 100";
-          }
+		if(!empty($limitRows))
+		{
+			$startRows = (int)$startRows;
+      	  	$limit = "LIMIT $startRows, $limitRows";
+		} 
+		else 
+		{
+			if (isset($this->kga['conf']['rowlimit'])) {
+				$limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+			} else {
+				$limit="LIMIT 100";
+			}
+		}
       } else {
           $limit="";
       }
-
-      $query = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
+      
+      
+      $select = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
                        zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
-                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared
+                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
+      
+      if($countOnly) {
+      	$select = "SELECT COUNT(*) AS total";
+      	$limit = "";
+      }
+                       
+      $query = "$select
                 FROM ${p}zef
                 Join ${p}pct ON zef_pctID = pct_ID
                 Join ${p}knd ON pct_kndID = knd_ID
@@ -2266,8 +2303,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                 Join ${p}evt ON evt_ID    = zef_evtID "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit.';';
-
+      
       $this->conn->Query($query);
+		
+      
+      if($countOnly)
+      {
+      	$this->conn->MoveFirst();
+      	$row = $this->conn->Row();
+      	return $row->total;
+      }
 
       $i=0;
       $arr=array();
@@ -2276,21 +2321,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
               $arr[$i]['zef_ID']           = $row->zef_ID;
-              if ($row->zef_in <= $in && $row->zef_out < $out)  {
-                $arr[$i]['zef_in']         = $in;
-                $arr[$i]['zef_out']        = $row->zef_out;
+
+              // Start time should not be less than the selected start time. This would confuse the user.
+              if ($in && $row->zef_in <= $in)  {
+                $arr[$i]['zef_in'] = $in;
+              } else {
+                $arr[$i]['zef_in'] = $row->zef_in;
               }
-              else if ($row->zef_in <= $in && $row->zef_out >= $out)  {
-                $arr[$i]['zef_in']         = $in;
-                $arr[$i]['zef_out']        = $out;
-              }
-              else if ($row->zef_in > $in && $row->zef_out < $out)  {
-                $arr[$i]['zef_in']         = $row->zef_in;
-                $arr[$i]['zef_out']        = $row->zef_out;
-              }
-              else if ($row->zef_in > $in && $row->zef_out >= $out)  {
-                $arr[$i]['zef_in']         = $row->zef_in;
-                $arr[$i]['zef_out']        = $out;
+
+              // End time should not be less than the selected start time. This would confuse the user.
+              if ($out && $row->zef_out >= $out)  {
+                $arr[$i]['zef_out'] = $out;
+              } else {
+                $arr[$i]['zef_out'] = $row->zef_out;
               }
 
               if ($row->zef_out != 0) {
@@ -2453,7 +2496,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $this->conn->MoveFirst();
     while (! $this->conn->EndOfSeek()) {
         $row = $this->conn->Row();
-        $this->kga['conf']['status'][] = $row->status;
+        $this->kga['conf']['status'][$row->status_id] = $row->status;
     }
   }
 
@@ -2973,14 +3016,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * return status names
    * @param integer $statusIds
    */
-  public function get_status($statusIds)
-  {
-  	  $p = $this->kga['server_prefix'];
-  	  // fcw: im implode noch fuer die query die Werte zudem in einfache Anfuehrungszeichen fassen, wg. WHERE status IN ('status1','status2',...,'statusN')
-      $statusIds = implode('\',\'', $statusIds);
-      // fcw: nun noch vor den ersten und hinter den letzten Wert ein ' einfuegen (vorher: status1','status2',...,'statusN - ohne Hochkomma vor erstem und vor letztem Wert)
-      $statusIds = "'" . $statusIds . "'";
-      $query = "SELECT status FROM ${p}status where status in ( $statusIds ) order by status_id";
+  public function get_status($statusIds) {
+      $p = $this->kga['server_prefix'];
+      $statusIds = implode(',', $statusIds);
+      $query = "SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id";
       $result = $this->conn->Query($query);
       if ($result == false) {
           $this->logLastError('get_status');
@@ -2988,12 +3027,12 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-      $res = array();
       foreach($rows as $row) {
       	$res[] = $row['status'];
       }
       return $res;
   }
+
    /**
     * return integer array statusIds
     * @param string (array) $statusNames
@@ -3056,18 +3095,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    * add a new status
    * @param Array $statusArray
    */
-  public function status_create($status) {
-
-      $values['status'] = MySQL::SQLValue(trim($status['status']));
-
-      $table = $this->kga['server_prefix']."status";
-      $result = $this->conn->InsertRow($table, $values);
-      if (! $result) {
-        $this->logLastError('add_status');
-        return false;
-      }
-//  	}
-        return true;
+	public function status_create($status) {
+      	$values['status'] = MySQL::SQLValue(trim($status['status']));
+		
+      	$table = $this->kga['server_prefix']."status";
+      	$result = $this->conn->InsertRow($table, $values);
+      	if (! $result) {
+        	$this->logLastError('add_status');
+        	return false;
+      	}
+		return true;
   }
 
   /**
@@ -3304,28 +3341,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-   * Stops the currently running record.
-   *
-   * Performed when the stop buzzer is hit.
-   * Checks which record is currently recording and writes the end time into that entry.
-   * If the measured timevalue is longer than one calendar day it is split up and
-   * stored in the DB by days.
-   *
-   * @param integer $user ID of user
-   * @author th
-   * @return boolean
-   */
-  public function stopRecorder()
-  {
+  * performed when the stop buzzer is hit.
+  * Checks which record is currently recording and
+  * writes the end time into that entry.
+  * if the measured timevalue is longer than one calendar day
+  * it is split up and stored in the DB by days
+  *
+  * @param integer $user ID of user
+  * @author th
+  * @return boolean
+  */
+  public function stopRecorder() {
+  ## stop running recording |
       $table = $this->kga['server_prefix']."zef";
 
-      $last_task = $this->get_event_last(); // aktuelle vorgangs-ID auslesen
+      $last_task        = $this->get_event_last(); // aktuelle vorgangs-ID auslesen
 
-      // last event was already stopped!
-      if (!empty($last_task['zef_out'])) {
-          return false;
-      }
-
+	  if(!empty($last_task['zef_out']))
+	  { // last event was already stopped!
+	  	return false;
+	  }		
+		
       $filter['zef_ID'] = $last_task['zef_ID'];
 
       $rounded = Rounding::roundTimespan($last_task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
@@ -3356,6 +3392,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $pct_ID = MySQL::SQLValue($pct_ID, MySQL::SQLVALUE_NUMBER  );
       $evt_ID = MySQL::SQLValue($evt_ID, MySQL::SQLVALUE_NUMBER  );
       $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
+
 
       $values ['zef_pctID'] = $pct_ID;
       $values ['zef_evtID'] = $evt_ID;
@@ -4335,63 +4372,58 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    *
    * @param string $query the sql query to execute
    */
-  public function queryAll($query)
-  {
+  public function queryAll($query) {
     return $this->conn->QueryArray($query);
   }
-
-
+  
   /**
-   * Checks if given $projectId exists in the DB.
-   *
+   * checks if given $projectId exists in the db
+   * 
    * @param int $projectId
    * @return bool
    */
   public function isValidProjectId($projectId)
   {
-      $table = $this->getProjectTable();
-      $idColumn = 'pct_ID';
-
-      return $this->rowExists($table, $idColumn, $projectId);
+  	
+  	$table = $this->getProjectTable();
+	$filter = array('pct_ID' => $projectId, 'pct_trash' => 0);
+	return $this->rowExists($table, $filter);
   }
-
+  
   /**
-   * Checks if given $eventId exists in the DB.
-   *
+   * checks if given $eventId exists in the db
+   * 
    * @param int $eventId
    * @return bool
    */
   public function isValidEventId($eventId)
   {
-
-      $table = $this->getEventTable();
-      $idColumn = 'evt_ID';
-
-      return $this->rowExists($table, $idColumn, $eventId);
+  	
+  	$table = $this->getEventTable();
+	$filter = array('evt_ID' => $eventId, 'evt_trash' => 0);
+	return $this->rowExists($table, $filter);
   }
-
-
-  /**
-   * Checks if a given DB row based on the $idColumn & $id exists.
-   *
+  
+  
+ /**
+   * checks if a given db row based on the $idColumn & $id exists
    * @param string $table
-   * @param string $idColumn
-   * @param int $id
+   * @param array $filter
    * @return bool
    */
-  protected function rowExists($table, $idColumn, $id)
+  protected function rowExists($table, Array $filter)
   {
-      $select = $this->conn->SelectRows($table, array($idColumn => $id));
-
-      if(!$select) {
-          $this->logLastError('rowExists');
-          return false;
-      }
-      else
-      {
-          $rowExits = (bool)$this->conn->RowArray(0, MYSQL_ASSOC);
-          return $rowExits;
-      }
+	$select = $this->conn->SelectRows($table, $filter);
+	
+	if(!$select) {
+		$this->logLastError('rowExists');
+		return false;
+	}
+	else 
+	{
+		$rowExits = (bool)$this->conn->RowArray(0, MYSQL_ASSOC);
+		return $rowExits;
+	}
   }
-
+  
 }

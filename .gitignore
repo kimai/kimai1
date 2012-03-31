@@ -2,6 +2,7 @@
 # http://de.gitready.com/beginner/2009/01/19/ignoring-files.html
 #
 /.project
+<<<<<<< HEAD
 
 # kimai mobile
 kimai-mobile
@@ -18,3 +19,6 @@ autoconf.php
 
 # smarty-temp-files
 %%*
+=======
+*.*~
+>>>>>>> upstream/master
