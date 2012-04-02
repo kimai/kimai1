@@ -40,6 +40,7 @@ return array(
 "knd"               => "Kunde",
 "pct"               => "Projekt",
 "evt"               => "Tätigkeit",
+"search"            => "Suche",
 "knds"              => "Kunden",
 "pcts"              => "Projekte",
 "evts"              => "Tätigkeiten",
