@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="robots" value="noindex,nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
 
     <title>{$kga.usr.usr_name|escape:'html'} - Kimai</title>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">

@@ -4,7 +4,7 @@
 <head>
     <link rel="SHORTCUT ICON" href="favicon.ico">
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta name="robots" value="noindex,nofollow" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>Kimai Installer</title>
     <link rel="stylesheet" type="text/css" media="screen" href="css/login.css" />
 </head>

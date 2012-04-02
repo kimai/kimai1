@@ -4,7 +4,7 @@
 <head>
 <link rel="SHORTCUT ICON" href="favicon.ico">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta name="robots" value="noindex,nofollow" />
+<meta name="robots" content="noindex, nofollow" />
 <title>Kimai {$kga.lang.login}</title>
 <script type="text/javascript" src="libraries/jQuery/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
