@@ -152,6 +152,27 @@ switch ($axAction) {
         echo $new_time['in'];
     break;
 
+    case 'search_event_comment':
+        $result = $database->zef_search_event_comment($_GET['search']);
+        //mysql_connect("localhost","franc","abcdefghijklM") or die ("Keine Verbindung moeglich");
+        // mysql_select_db("test") or die ("Die Datenbank existiert nicht");
+        // mysql_query("SET NAMES 'utf8'");
+
+        // $result = mysql_query("SELECT * FROM test WHERE text LIKE '%" . $_GET['search'] . "%' LIMIT 5");
+//        while($row = mysql_fetch_object($result))
+        foreach($result as $i => $zef_comments)
+        //while (list($zef_id, $zef_comment) = each($result)) 
+        {
+            $id = key($zef_comments);
+            $comment = $zef_comments[$id];
+            // Innerhalb des Kommentars wird hier der gesuchte String mit <span> (class="grell" o.ä.) nur noch mal hervorgehoben
+            echo '<p class="search_result">';
+            echo '<a title="Eintrag bearbeiten" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="Eintrag bearbeiten" alt="Eintrag bearbeiten (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif"></a> '.preg_replace('/(' . $_GET['search_result'] . ')/Usi', '<span class="search_result_highlighted">\\1</span>', $comment);
+            echo '</p>';
+        }
+        
+    break;
+    
     // =========================================
     // = Erase timesheet entry via quickdelete =
     // =========================================

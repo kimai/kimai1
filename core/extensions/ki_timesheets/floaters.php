@@ -53,6 +53,14 @@ switch ($axAction) {
         $tpl->display("edit_running_starttime.tpl");
     break;
 
+    // =================================================
+    // = display search dialog for event comments =
+    // =================================================
+    case 'search_event_comment':
+        if (isset($kga['customer'])) die();
+        $tpl->display("search_event_comment.tpl");
+    break;
+        
     case "add_edit_record":  
         if (isset($kga['customer'])) die();  
     // ==============================================

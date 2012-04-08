@@ -3528,6 +3528,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
+  * Search comments from zef-entries
+  *
+  * @param $search 
+  */
+  function zef_search_event_comment($search) {
+      
+      $table = $this->kga['server_prefix']."zef";
+      $query = "SELECT zef_ID, zef_comment
+      FROM ".$table."
+      WHERE zef_comment LIKE '%".$search."%' ORDER BY zef_ID DESC";
+      $result = $this->conn->Query($query);
+      if (!$result) {
+        $this->logLastError('get_arr_grp_by_leader');
+        return false;
+      }
+      // ToDo: fcw: noch testen ob das Array richtig zurueckgegeben wird
+      return $result;
+
+  }
+  
+  /**
   * return ID of specific user named 'XXX'
   *
   * @param integer $name name of user in table usr

@@ -166,3 +166,11 @@
 .ui-tabs .ui-tabs-hide {
   display:none;
 }
+
+.search_result {
+	font-size: 1em;
+	font-family: Arial, Helvetica, sans-serif;
+}
+.search_result_highlighted {
+	background-color: #00ffff;
+}

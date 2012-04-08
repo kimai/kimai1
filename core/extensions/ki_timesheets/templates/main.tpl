@@ -36,7 +36,12 @@
                 <td class="wage">{$kga.lang.wage}</td>
                 <td class="knd">{$kga.lang.knd}</td>
                 <td class="pct">{$kga.lang.pct}</td>
-                <td class="evt">{$kga.lang.evt}</td>
+                <td class="evt">{$kga.lang.evt} 
+                	<span style="position: relative">
+                        <a href="#" onclick="search_event_comment();$(this).blur();return false;">
+						    <img width="26" height="26" src="../skins/standard/grfx/lupe.jpg" alt="Search" style="position: absolute; top: -3px; left: 10px;">
+                        </a>
+					</span>
                 <td class="trackingnumber">{$kga.lang.trackingnr}</td>
                 <td class="username">{$kga.lang.username}</td>
             </tr>

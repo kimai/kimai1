@@ -3899,6 +3899,60 @@ class PDODatabaseLayer extends DatabaseLayer
       $pdo_query->execute(array($starttime,$zef_ID));
     }
 
+  /**
+  * Search comments from zef-entries
+  *
+  * @param $search 
+  */
+  function zef_search_event_comment($search) {
+      
+      
+      $p = $this->kga['server_prefix'];
+
+      $pdo_query = $this->conn->prepare("SELECT zef_ID, zef_comment FROM ${p}zef WHERE zef_comment LIKE '%".$search."%'  ORDER BY zef_ID DESC");
+      $result = $pdo_query->execute();
+
+      
+      $return_found = array();
+      $counter = 0;
+
+
+      
+            
+      if ($result == false) {
+          $this->logLastError('zef_search_event_comment');
+          return false;
+      } 
+      else {
+//          $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
+//          return $result_array;
+          while ($current_found = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+              // $return_found[$counter] = $current_found['zef_comment'];
+              // $return_found[$ID] = $current_found['zef_comment'];
+              // $counter++;
+              // array_push($attribute,array($attripaar[0] => $attripaar[1]));  
+              array_push($return_found, array($current_found['zef_ID'] => $current_found['zef_comment']));
+
+          }
+
+          return $return_found;
+      }
+      
+/*            
+      $table = $this->kga['server_prefix']."zef";
+      $query = "SELECT zef_comment
+      FROM ".$table."
+      WHERE zef_comment LIKE ".$search." ORDER BY zef_comment";
+      $result = $this->conn->Query($query);
+      if (!$result) {
+        $this->logLastError('get_arr_grp_by_leader');
+        return false;
+      }
+
+      return $result;
+*/
+  }    
+    
     /**
     * return ID of specific customer named 'XXX'
     *

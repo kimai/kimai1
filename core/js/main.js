@@ -391,6 +391,12 @@ function edit_running_starttime() {
       'edit_running_starttime',0,0,600,200);
 }
 
+// fcw: 2012-04-02 AJAX-Search through comments of events
+function search_event_comment() {
+  floaterShow('../extensions/ki_timesheets/floaters.php',
+      'search_event_comment',0,0,1000,1000);
+}
+
 function buzzer() {
     if ( recstate!=1 && $('#buzzer').hasClass('disabled') ) return;
 
