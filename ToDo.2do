@@ -13,23 +13,23 @@
 	
 -LiveSearch: schnell durchsuchbare Kommentare mit jquery 
 >Im Timesheet einen Link mit Icon Lupe neben dem Kommentar: OK
->evtl. später neben anderen Überschriften ebenso:
->CSS auslagern für die Suchergebnisse
->Übersetzung in alle verfügbare Sprachen, notfalls als englischer Text
 >Bug: Löschen der Ergebnisse nach jeder Eingabe (weil sonst Ergebnisse nach z.B. nur drei Zeichen noch da stehen):OK
 >Bug: DB-Update funktioniert nicht (gibt error) wg. mehrerer usr_ID Rückgaben (in: ... SELECT `usr_ID` FROM `svn_usr`,..):OK
 >Bug: Umlaute (UTF8) werden als Asci (?) interpretiert, nämlich zwei kleine Trapeze mit Fragezeichen
->
->
->
+>Bug: Suchergebnis sonderbar, z.B. auf ew6: Suche nach "PC03" ergibt ".PC03." (eingrahmt in Punkte)
+>Suchergebnis mit Datum und Uhrzeit ausgeben
+>Mehrere Suchbegriffe durch Leerzeichen trennen
+>...
 +Einstellungen der Suche:
 >Anzahl Mindesteingabe von Zeichen bis Suche beginnt (searchMin)
 >Anzahl Wörter/Zeichen der Rückgabe (searchMaxResult)
->
->
 >...
+>Übersetzung in alle verfügbare Sprachen, notfalls als englischer Text
+>CSS auslagern für die Suchergebnisse
+>evtl. später neben anderen, sinnvollen Überschriften ebensolche LiveSearch
 
 -Rechnungen perfektionieren (extensions/ki_invoice/print.php)
+>Standard: Kurze Abrechnung deaktiviert und "nur offene"
 
 -Rechnungen: Rundung auf 5 Minuten, bzw. NUR kurze Zeiten im 5 Minuten Takt (für Telefonsupport) alles andere auf z.B. 0.25 h.
 
