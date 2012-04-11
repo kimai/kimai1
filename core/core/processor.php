@@ -63,23 +63,25 @@ switch ($axAction) {
      */
     case 'editPrefs':
         if (isset($kga['customer'])) die();
-    
-        $preferences['skin']               = $_REQUEST['skin'];
-        $preferences['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
-        $preferences['quickdelete']        = $_REQUEST['quickdelete'];
-        $preferences['rowlimit']           = $_REQUEST['rowlimit'];
-        $preferences['lang']               = $_REQUEST['lang'];
-        $preferences['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
-        $preferences['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
-        $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
-        $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
-        $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
-        $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
+        // fcw: bei bool werten mit isset, sonst natuerlich nicht
+        $preferences['skin']                  = $_REQUEST['skin'];
+        $preferences['autoselection']         = isset($_REQUEST['autoselection'])?1:0;
+        $preferences['quickdelete']           = $_REQUEST['quickdelete'];
+        $preferences['rowlimit']              = $_REQUEST['rowlimit'];
+        $preferences['lang']                  = $_REQUEST['lang'];
+        $preferences['flip_pct_display']      = isset($_REQUEST['flip_pct_display'])?1:0;
+        $preferences['pct_comment_flag']      = isset($_REQUEST['pct_comment_flag'])?1:0;
+        $preferences['showIDs']               = isset($_REQUEST['showIDs'])?1:0;
+        $preferences['noFading']              = isset($_REQUEST['noFading'])?1:0;
+        $preferences['user_list_hidden']      = isset($_REQUEST['user_list_hidden'])?1:0;
+        $preferences['hideClearedEntries']    = isset($_REQUEST['hideClearedEntries'])?1:0;
         $preferences['showCommentsByDefault'] = isset($_REQUEST['showCommentsByDefault'])?1:0;
-        $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
-        $preferences['hideOverlapLines']   = isset($_REQUEST['hideOverlapLines'])?1:0;
-        $preferences['showInstallWarning']   = isset($_REQUEST['showInstallWarning'])?1:0;
-
+        $preferences['sublistAnnotations']    = $_REQUEST['sublistAnnotations'];
+        $preferences['hideOverlapLines']      = isset($_REQUEST['hideOverlapLines'])?1:0;
+        $preferences['showInstallWarning']    = isset($_REQUEST['showInstallWarning'])?1:0;
+        $preferences['searchMin']             = ($_REQUEST['searchMin']);
+        $preferences['searchMaxResult']       = ($_REQUEST['searchMaxResult']);
+        
         $database->usr_set_preferences($preferences,'ui.');
         $database->usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));
 

@@ -19,8 +19,17 @@
 
   }); 
 </script>
+<script type="text/javascript">$(function() {$('*').tooltip();});</script>
 {/literal}
-
+<!-- fcw: 2012-04-09: ToolTips
+um ein Tooltip hinzuzufuegen, muss man dem Element einfach ein title-Attribut beigeben, das wird
+dann als Tooltip verwendet. 
+Die Lib ist das jquery.tooltip.js, die wird in:
+/core/templates/core/main.tpl
+eingebunden.
+Gestylt werden die Tooltips in:
+/core/skins/standard/jquery.tooltip.css
+-->
 <div id="floater_innerwrap">
     
   <div id="floater_handle">
@@ -38,17 +47,26 @@
         <span class="aa">&nbsp;</span>
         <span class="bb">{$kga.lang.general}</span>
         <span class="cc">&nbsp;</span>
-        </a></li>
+        </a>
+      </li>
       <li class="tab norm"><a href="#prefSublists">
         <span class="aa">&nbsp;</span>
         <span class="bb">{$kga.lang.sublists}</span>
         <span class="cc">&nbsp;</span>
-        </a></li>
+        </a>
+      </li>
       <li class="tab norm"><a href="#prefList">
         <span class="aa">&nbsp;</span>
         <span class="bb">{$kga.lang.list}</span>
         <span class="cc">&nbsp;</span>
-        </a></li>
+        </a>
+      </li>
+      <li class="tab norm"><a href="#search">
+        <span class="aa">&nbsp;</span>
+        <span class="bb">{$kga.lang.search}</span>
+        <span class="cc">&nbsp;</span>
+        </a>
+      </li>      
     </ul>
   </div>
 
@@ -168,7 +186,19 @@
           </li>     
         </ul>
       </fieldset>
-
+      
+      <fieldset id="search">
+        <ul>
+          <li>
+            <label for="searchMin">{$kga.lang.searchMin}:</label>
+            <input title="{$kga.lang.searchMinTT}" type="text" name="searchMin" value="{$kga.conf.searchMin}" size="2" />
+          </li>     
+          <li>
+            <label for="searchMaxResult">{$kga.lang.searchMaxResult}:</label>
+            <input title="{$kga.lang.searchMaxResultTT}" type="text" name="searchMaxResult" value="{$kga.conf.searchMaxResult}" size="4" />
+          </li>     
+        </ul>
+      </fieldset>      
     </div>
           
     <input name="axAction" type="hidden" value="editPrefs" />   

@@ -39,6 +39,12 @@ return array(
 "knd"               => "Klant",
 "pct"               => "Project",
 "evt"               => "Aktie",
+"search"            => "Search",
+"searchMinTT"            => "Minimum ammount of characters (ammount of characters input) until search starts",
+"searchMaxResultTT"      => "Maximum characters in search-result (ammount of characters output)",
+"searchMin"         => "Minimal characters",
+"searchMaxResult"   => "Max. characters result",
+
 "knds"              => "Klanten",
 "pcts"              => "Projecten",
 "evts"              => "Akties",

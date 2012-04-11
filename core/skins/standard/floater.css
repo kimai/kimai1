@@ -167,10 +167,12 @@
   display:none;
 }
 
+/* fcw: 2012-04-09: Styles for the search Floater */
 .search_result {
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
 }
 .search_result_highlighted {
-	background-color: #00ffff;
+	background-color: #990000;
 }
+

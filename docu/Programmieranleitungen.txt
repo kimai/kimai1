@@ -1,0 +1,121 @@
+Einstellung hinzufügen:
+=======================
+
+Am Beispiel showInstallWarning (u.a.):
+
+DB: Tabelle prefix_preferences (userID, var, value) s.a.u. updater.php und siehe:
+\core\includes\version.php
+
+\core\core\processor.php >  case 'editPrefs': (bei bool werten mit isset, sonst nicht)
+
+\core\includes\classes\database\mysqlDatabaseLayer.class.php > get_global_config()
+\core\includes\classes\database\pdoDatabaseLayer.class.php > get_global_config()
+
+\core\templates\floaters\preferences.tpl
+
+für einen neuen Tab muss in preferences.tpl in der Liste:
+
+<ul class="menu tabSelection">
+
+ein zusätzlicher <li> Eintrag vorgenommen werden.
+
+\core\language\de.php (und alle anderen Sprachen)
+
+z.B. (bei "Search...") Suche in PowerGrep nach:
+
+("evt"\s*=>\s*"[^"]*",)
+
+ersetzen durch:
+
+\1
+"search"            => "Search",
+"searchMin"         => "Ammount of characters till the search starts",
+"searchMaxResult"   => "Ammount of maximum characters for the search result",
+
+wenn eine Zeile in jeder Sprachdatei einheitlich ist, kann man auch ohne RegEx suchen-ersetzen, z.B. Suche nach:
+
+"search"            => "Search",
+
+Ersetzen durch:
+
+"search"            => "Search",
+"searchMinTT"            => "Minimum ammount of characters (ammount of characters input) until search starts",
+"searchMaxResultTT"      => "Maximum characters in search-result (ammount of characters output)",
+
+
+\core\updater.php > bei DB Änderungen am Schluss der Rev-Prüfung SQL anhängen (z.B. if $revisionDB < 1368) umständliche Addition von Revisionsnr. + 866 (wg. Altlast)
+
+\core\includes\version.php > revision um eins erhöhen, wenn DB in updater.php aktualisiert wurde
+
+Angewendet mit showInstallWarning: 
+\core\core\kimai.php
+
+Floater hinzufügen:
+===================
+
+Beispiel edit_running_comment:
+
+
+\core\extensions\ki_timesheets\templates\main.tpl:
+
+<a href="#" onclick="search_event_comment();$(this).blur();return false;">
+
+
+\core\js\main.js:
+
+function edit_running_comment() {
+  floaterShow('../extensions/ki_timesheets/floaters.php',
+      'edit_running_comment',0,0,600,200);
+}
+
+
+\core\extensions\ki_timesheets\floaters.php:
+
+case 'search_event_comment':
+    if (isset($kga['customer'])) die();
+    $tpl->display("search_event_comment.tpl");
+break;
+
+
+\core\extensions\ki_timesheets\templates\floaters\search_event_comment.tpl
+
+hier wird dann in einem js-Bereich aufgerufen:
+
+../extensions/ki_timesheets/processor.php
+
+
+/core/extensions/ki_timesheets/processor.php:
+
+    case 'search_event_comment':
+        $result = $database->zef_search_event_comment($_GET['search']);
+        //mysql_connect("localhost","franc","abcdefghijklM") or die ("Keine Verbindung moeglich");
+        // mysql_select_db("test") or die ("Die Datenbank existiert nicht");
+        // mysql_query("SET NAMES 'utf8'");
+
+        // $result = mysql_query("SELECT * FROM test WHERE text LIKE '%" . $_GET['search'] . "%' LIMIT 5");
+//        while($row = mysql_fetch_object($result))
+        foreach($result as $i => $zef_comments)
+        //while (list($zef_id, $zef_comment) = each($result)) 
+        {
+            $id = key($zef_comments);
+            $comment = $zef_comments[$id];
+            // Innerhalb des Kommentars wird hier der gesuchte String mit <span> (class="grell" o.ä.) nur noch mal hervorgehoben
+            echo '<p class="search_result">';
+            echo '<a title="Eintrag bearbeiten" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="Eintrag bearbeiten" alt="Eintrag bearbeiten (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif"></a> '.preg_replace('/(' . $_GET['search_result'] . ')/Usi', '<span class="search_result_highlighted">\\1</span>', $comment);
+            echo '</p>';
+        }
+        
+    break;
+
+
+dann müssen noch in 
+
+pdoDatabaseLayer.class.php 
+und 
+mysqlDatabaseLayer.class.php
+
+entsprechend die Aufrufe 
+
+zef_search_event_comment
+
+bearbeitet werden.

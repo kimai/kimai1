@@ -67,6 +67,12 @@ return array(
 "knd"               => "客户",
 "pct"               => "项目",
 "evt"               => "事件",
+"search"            => "Search",
+"searchMinTT"            => "Minimum ammount of characters (ammount of characters input) until search starts",
+"searchMaxResultTT"      => "Maximum characters in search-result (ammount of characters output)",
+"searchMin"         => "Minimal characters",
+"searchMaxResult"   => "Max. characters result",
+
 "knds"              => "客户列表",
 "pcts"              => "项目列表",
 "evts"              => "事件列表",

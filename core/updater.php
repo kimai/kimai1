@@ -1381,9 +1381,21 @@ ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
 }
 
+if ((int)$revisionDB < 1368) {
+// fcw: Revision 501 -> 1367 (Revision += 866)
+    Logger::logfile("-- update to r1367");
 // fcw: 2012-03-30: Preference: showInstallWarning
-exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) SELECT `usr_ID` FROM `${p}usr`, 'ui.showInstallWarning', '1'");
 
+    $result = $database->queryAll("SELECT usr_ID FROM ${p}usr");
+    foreach ($result as $row) {
+        // fcw: installer dir present, setting: show no warning   
+        exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) VALUES($row[usr_ID], 'ui.showInstallWarning', '1')");
+        // fcw: 2012-04-10: Preferences: livesearch
+        exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) VALUES($row[usr_ID], 'ui.searchMin', '3')");
+        exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) VALUES($row[usr_ID], 'ui.searchMaxResult', '1000')");      
+    }
+
+}
 
 // ============================
 // = update DB version number =

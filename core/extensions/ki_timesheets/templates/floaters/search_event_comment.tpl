@@ -1,4 +1,4 @@
-<div id="floater_innerwrap">
+﻿<div id="floater_innerwrap">
 
     <div id="floater_handle">
         <span id="floater_title">{$kga.lang.search}</span>
@@ -46,8 +46,12 @@
         // ToDo: fcw: hier die Anzahl der Mindestzeichen in einen eigenen Tab in Einstellungen 
         if($(this).val().length >= 3)
         {
+            // empty results first
+            $("#search_result").html("");
+            // call the processor with each char.input
             $.get("../extensions/ki_timesheets/processor.php", {search: $(this).val(), axAction: "search_event_comment"}, function(data)
             {
+                // fill div-searc_results with the results
                 $("#search_result").html(data);
             });
         }

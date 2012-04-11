@@ -40,6 +40,12 @@ return array(
 "knd"               => "Cliente",
 "pct"               => "Proyecto",
 "evt"               => "Action",
+"search"            => "Search",
+"searchMinTT"            => "Minimum ammount of characters (ammount of characters input) until search starts",
+"searchMaxResultTT"      => "Maximum characters in search-result (ammount of characters output)",
+"searchMin"         => "Minimal characters",
+"searchMaxResult"   => "Max. characters result",
+
 "knds"              => "Clientes",
 "pcts"              => "Proyectos",
 "evts"              => "Acciones",

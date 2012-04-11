@@ -39,7 +39,6 @@
     <!-- fcw: 2012-04-09: ToolTips lib -->    
     <script src="../libraries/jQuery/jquery.tooltip.js" type="text/javascript" ></script>
     <script src="../libraries/jQuery/jquery.delegate.js" type="text/javascript" ></script>
-<!--<script src="../libraries/jQuery/jquery.bgiframe.js" type="text/javascript" ></script> -->
     <!-- Ende ToolTips lib -->
     <!-- /Libs -->
 
