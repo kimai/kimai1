@@ -22,6 +22,29 @@
  * This is used by all processor.php files. General setup stuff is done here.
  */
 
+/**
+ * ==================================================================
+ * Bootstrap Zend
+ * ==================================================================
+ *
+ * - Ensure library/ is on include_path
+ * - Register Autoloader
+ */
+defined('APPLICATION_PATH')
+    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(APPLICATION_PATH . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+
 // ==================================
 // = implementing standard includes =
 // ==================================

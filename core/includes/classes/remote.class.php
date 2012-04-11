@@ -252,7 +252,7 @@ class Kimai_Remote_Api
         $user = $this->getUser();
         $uid  = $user['usr_ID'];
 
-        if ($this->getBackend()->get_rec_state($uid)) {
+        if (count($this->getBackend()->get_current_recordings($uid)) > 0) {
             $this->getBackend()->stopRecorder();
         }
 
@@ -449,17 +449,15 @@ class Kimai_Remote_Api
 			return $this->getAuthErrorResult();
         }
 
-        $result = $this->getBackend()->get_event_last();
+        $result = $this->getBackend()->get_current_recordings();
 
 		// no "last" event existing
-        if ($result == false) {
+        if (count($result) == 0) {
 			return $this->getErrorResult('No active recording.');
 		}
 
-        // do not return any values if the task is no more active
-        if (!empty($result['zef_out'])) {
-            return $this->getErrorResult("Last recording finished.");
-        }
+        // get the data of the first active recording
+        $result = $this->getBackend()->zef_get_data($result[0]);
 
         // do not expose all values, but only the public visible ones
         $keys    = array('zef_ID', 'zef_evtID', 'zef_pctID', 'zef_in', 'zef_out', 'zef_time');

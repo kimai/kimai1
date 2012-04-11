@@ -130,10 +130,13 @@ $tpl->assign('extensions', $extensions->extensionsTabData());
 $tpl->assign('css_extension_files', $extensions->cssExtensionFiles());
 $tpl->assign('js_extension_files', $extensions->jsExtensionFiles());
 
-if (isset($kga['usr']))
-  $tpl->assign('recstate', $database->get_rec_state($kga['usr']['usr_ID']));
-else
-  $tpl->assign('recstate', 0);
+$tpl->assign('currentRecording', -1);
+
+if (isset($kga['usr'])) {
+  $currentRecordings = $database->get_current_recordings($kga['usr']['usr_ID']);
+  if (count($currentRecordings) > 0)
+    $tpl->assign('currentRecording', $currentRecordings[0]);
+}
 
 $tpl->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 $tpl->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
