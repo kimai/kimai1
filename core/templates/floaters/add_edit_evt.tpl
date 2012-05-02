@@ -1,3 +1,4 @@
+<!-- fcw: Der Floater "Tätigkeiten hinzufügen" -->
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
@@ -80,7 +81,7 @@
                 
                     <li>
                         <label for="evt_name" >{$kga.lang.evt}:</label>
-                        <input type="text" name="evt_name" id="focus" value="{$evt_name|escape:'html'}" />
+                        <input type="text" name="evt_name" class="focussed" value="{$evt_name|escape:'html'}" />
                     </li>
                 
                     <li>
@@ -90,12 +91,12 @@
                 
                     <li>
                         <label for="evt_my_rate" >{$kga.lang.my_rate}:</label>
-                        <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                        <input type="text" name="evt_my_rate" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
                 
                     <li>
                         <label for="evt_my_rate" >{$kga.lang.fixed_rate}:</label>
-                        <input type="text" name="evt_fixed_rate" id="focus" value="{$evt_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                        <input type="text" name="evt_fixed_rate" value="{$evt_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
                     <li>

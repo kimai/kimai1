@@ -108,7 +108,7 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 <ul>
 
 	<li><label for="pct_name">{$kga.lang.pct}:</label> <input type="text"
-		name="pct_name" id="focus" value="{$pct_name|escape:'html'}" /></li>
+		name="pct_name" class="focussed" value="{$pct_name|escape:'html'}" /></li>
 
 	<li><label for="pct_kndID">{$kga.lang.knd}:</label> <select
 		class="formfield" name="pct_kndID">

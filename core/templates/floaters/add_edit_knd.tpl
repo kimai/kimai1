@@ -83,7 +83,7 @@
                 
                     <li>
                         <label for="knd_name" >{$kga.lang.knd}:</label>
-                        <input type="text" name="knd_name" id="focus" value="{$knd_name|escape:'html'}" />
+                        <input type="text" name="knd_name" class="focussed" value="{$knd_name|escape:'html'}" />
                     </li>
 
                     <li>

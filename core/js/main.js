@@ -95,7 +95,10 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
           $("#floater").css({left:x+"px",top:y+"px"});
           $("#floater").fadeIn(fading_enabled?200:0);
           
-          $('#focus').focus();
+          // $('#focus').focus();
+          // fcw: 2012-04-25 focus for input-fields as class not ID
+          $('.focussed').focus();
+          
           $('.extended').hide();
           $('#floater_content').css("height",$('#floater_dimensions').outerHeight()+5);
  

@@ -62,6 +62,7 @@ function ap_ext_subtab_expand(id) {
 	$("#ap_ext_sub5").removeClass("active");
 	$("#ap_ext_sub6").removeClass("active");
 	$("#ap_ext_sub7").removeClass("active");
+    $("#ap_ext_sub8").removeClass("active");
 	$(".ap_ext_subtab").css("display", "none");	
 	
 	sub_id="#ap_ext_sub" +id;
@@ -251,7 +252,9 @@ function ap_ext_editStatus(id) {
 // refreshes either user/group/advanced/DB subtab
 //
 function ap_ext_refreshSubtab(tab) {
+    
     options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
+    
     if (tab == 'evt') {
       options.evt_filter = $('#evt_pct_filter').val();
     }
