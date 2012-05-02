@@ -1,10 +1,35 @@
+In PhpED kann man nach einem bestimmten Schema ToDos als Kommentare in die Dateien schreiben,
+die werden dann in dem Fenster "To-Do List" unten (neben Watch, Immediate, Locals, Log etc.) angezeigt
+und können mit CheckBox als erledigt (DONE) gesetzt werden.
+
+ToDo in PhpED (PhpED-Hilfe:To-Do List):
+// <Keyword> <Priority> <-o Owner> <-c Category> <:Comment Text>
+z.B.:
+// ToDo 9 -o fcw -c Bugfix: Fehler in Abfrage abfangen
 
 [Webseite]
 
+-Laufende Zeiterfassung in einem anderen Browserfenster öffnen hat Bugs: Kommentare / Startzeitänderung nicht möglich, Icons fehlen; Stopuhr fängt bei 0:00 an, statt der tatsächlich bereits laufenden ZEF
+
 -Updaten auf aktuellen Stand im git
+>ca. 2012-04 merge mit Master OK
+OK
 
 -Tätigkeiten hinzufügen funktioniert nicht
 >Ansichtsfilter-Auswahl ändert nicht die Ansicht der Tätigkeiten oder eine neu angelegte Tätigkeit wird aus anderen Gründen nicht angezeigt.
+>Fehler in: \core\extensions\ki_adminpanel\templates\main.tpl (doppelte ap_ext_sub8 u.a.!!!)
+OK
+
+-Status hinzufügen funktioniert nicht
+>vermutlich gleiche Ursache wie Tätigkeiten
+>Fehler in function status_create($status): Gibt Fehler: $result = $pdo_query->execute(array(trim($status))); OK: $result = $pdo_query->execute(array($status['status']));
+OK
+
+-Kunden hinzufügen u.a. kein automatischer Refresh
+>erst durch Seite neu laden wird ein neuer Kunde / Projekt angezeigt
+>vermutlich bei: case: "refreshSubtab"
+>gleicher Defekt wie Tätigkeiten, siehe dort
+OK
 
 -Ort auch in der Zeiterfassungsliste (sortierbar) anzeigen
 
@@ -13,16 +38,20 @@
 	
 -LiveSearch: schnell durchsuchbare Kommentare mit jquery 
 >Im Timesheet einen Link mit Icon Lupe neben dem Kommentar: OK
->Bug: Löschen der Ergebnisse nach jeder Eingabe (weil sonst Ergebnisse nach z.B. nur drei Zeichen noch da stehen):OK
->Bug: DB-Update funktioniert nicht (gibt error) wg. mehrerer usr_ID Rückgaben (in: ... SELECT `usr_ID` FROM `svn_usr`,..):OK
->Bug: Umlaute (UTF8) werden als Asci (?) interpretiert, nämlich zwei kleine Trapeze mit Fragezeichen
->Bug: Suchergebnis sonderbar, z.B. auf ew6: Suche nach "PC03" ergibt ".PC03." (eingrahmt in Punkte)
->Suchergebnis mit Datum und Uhrzeit ausgeben
->Mehrere Suchbegriffe durch Leerzeichen trennen
+>Bug: Löschen der Ergebnisse nach jeder Eingabe (weil sonst Ergebnisse nach z.B. nur drei Zeichen noch da stehen): OK
+>Bug: DB-Update funktioniert nicht (gibt error) wg. mehrerer usr_ID Rückgaben (in: ... SELECT `usr_ID` FROM `svn_usr`,..): OK
+>Bug: Suchergebnis sonderbar, z.B. auf ew6: Suche nach "PC03" ergibt ".PC03." (eingrahmt in Punkte): OK
+>Bug: Umlaute (UTF8) werden als Asci (?) interpretiert, nämlich zwei kleine Trapeze mit Fragezeichen. Ein utf8_decode war falsch, die Anzeige von Umlauten in PhpEd ist verhagelt, im FF geht es aber. Was da beim Debuggen in PhpEd nicht funktioniert ist nicht klar: OK
+>Bug: Fokus muss ins Suchfeld des Floaters: mit class=focussed und main.js: OK
+>Bug: ohne Ergebnis dennoch Icon 'Ändern' zu sehen
+>Suchergebnis mit Datum und Uhrzeit ausgeben: OK
+>Mehrere Suchbegriffe durch Leerzeichen trennen:durch Full-Text Search von MySQL: OK
+>mysqlDatabaselayer.clall.php anpassen wie dbo...
+>Lokalisierung
 >...
 +Einstellungen der Suche:
->Anzahl Mindesteingabe von Zeichen bis Suche beginnt (searchMin)
->Anzahl Wörter/Zeichen der Rückgabe (searchMaxResult)
+>Anzahl Mindesteingabe von Zeichen bis Suche beginnt (searchMin):OK
+>Anzahl Wörter/Zeichen der Rückgabe (searchMaxResult):OK
 >...
 >Übersetzung in alle verfügbare Sprachen, notfalls als englischer Text
 >CSS auslagern für die Suchergebnisse
@@ -42,8 +71,11 @@
 -Android APP für kimai
 
 -Uhrzeiteingabe mit lästiger Gesamtauswahl (javascript)
+>ist bereits in den Einstellungen ausschaltbar: "Inhalt von Zeit- und Datumsfelder beim Bearbeiten markieren"
+OK
 
 -Pause besser implementieren mit Pausebutton o.ä.
+>Pause durch Stop und dann 'erneut aufnehmen' Button sollte zumindest einen Vermerk "Pause" o.ä. hinzufüge
 
 [OK]
 
@@ -51,6 +83,8 @@
 OK
 
 [Mobil]
+
+-Anmeldung funktioniert schon gar nicht.
 
 -Mobilansicht wesentlich verbessern
 

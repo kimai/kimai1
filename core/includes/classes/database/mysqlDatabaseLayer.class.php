@@ -516,6 +516,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['evt_comment'] = MySQL::SQLValue($data['evt_comment'] );
       $values['evt_visible'] = MySQL::SQLValue($data['evt_visible'] , MySQL::SQLVALUE_NUMBER );
       $values['evt_filter']  = MySQL::SQLValue($data['evt_filter']  , MySQL::SQLVALUE_NUMBER );
+      // fcw: 2012-05-02: hier fehlen noch: evt_budget, evt_effort, evt_approved
+      // siehe pdoDatabaseLayer.class.php
       $values['evt_assignable'] = MySQL::SQLValue($data['evt_assignable']  , MySQL::SQLVALUE_NUMBER );
 
       $table = $this->kga['server_prefix']."evt";
@@ -3536,11 +3538,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   function zef_search_event_comment($search) {
       
-      $table = $this->kga['server_prefix']."zef";
-      $query = "SELECT zef_ID, zef_comment
-      FROM ".$table."
-      WHERE zef_comment LIKE '%".$search."%' ORDER BY zef_ID DESC";
+      $p = $this->kga['server_prefix'];
+      
+      $query = "SELECT zef_ID, FROM_UNIXTIME(zef_in) 
+      AS zef_time, zef_comment FROM ${p}zef 
+      WHERE MATCH (zef_comment, zef_description) 
+      AGAINST( '".$search."' IN BOOLEAN MODE)";
+           
       $result = $this->conn->Query($query);
+      
       if (!$result) {
         $this->logLastError('get_arr_grp_by_leader');
         return false;

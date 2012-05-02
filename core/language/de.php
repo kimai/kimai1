@@ -20,6 +20,10 @@
 /**
  * deutsch
  */
+
+// ToDo 3 -o fcw -c Task:Update language, english words in all language in their own language
+// TODO 9 -o fcw -c Task:Update Language, missing words in all language in english
+
 return array(
 "countryCode"            => "de-DE",
 "preferences"            => "Einstellungen",

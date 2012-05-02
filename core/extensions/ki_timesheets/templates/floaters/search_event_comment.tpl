@@ -16,7 +16,7 @@
                 
                     <li>
                         <label for="search">{$kga.lang.search}:</label>
-                        <input id="search" type="text" name="search" maxlength="100"  size="8" tabindex="12" />
+                        <input id="search" type="text" name="search" class="focussed" maxlength="100"  size="8" tabindex="12" />
                         
                    </li>
 
@@ -39,12 +39,11 @@
 {literal}
 <script language=javascript>
 <!--
-
     $("#search").keyup(function()
     {
         // erst bei drei eingegebenen Zeichen Suche beginnen
         // ToDo: fcw: hier die Anzahl der Mindestzeichen in einen eigenen Tab in Einstellungen 
-        if($(this).val().length >= 3)
+        if($(this).val().length >= {/literal}{$kga.conf.searchMin}{literal})
         {
             // empty results first
             $("#search_result").html("");
@@ -56,7 +55,6 @@
             });
         }
     });
-
 // -->
 </script>
 {/literal}  

@@ -1383,7 +1383,7 @@ ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
 
 if ((int)$revisionDB < 1368) {
 // fcw: Revision 501 -> 1367 (Revision += 866)
-    Logger::logfile("-- update to r1367");
+    Logger::logfile("-- update to r1368");
 // fcw: 2012-03-30: Preference: showInstallWarning
 
     $result = $database->queryAll("SELECT usr_ID FROM ${p}usr");
@@ -1396,6 +1396,16 @@ if ((int)$revisionDB < 1368) {
     }
 
 }
+
+// fcw: Revision 503 -> 1369 (Revision += 866)
+if ((int)$revisionDB < 1369) {
+
+    Logger::logfile("-- update to r1369");
+    // fcw: 2012-04-25: Full-Text Search for comments (new livesearch) and descriptions (not yet used)
+    exec_query("ALTER TABLE ${p}zef ADD FULLTEXT(zef_comment, zef_description);");
+}
+
+
 
 // ============================
 // = update DB version number =

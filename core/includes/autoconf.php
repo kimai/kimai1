@@ -29,7 +29,7 @@ $server_password = "abcdefghijklM";
 // $server_conn     = "mysql"; 
 $server_conn     = "pdo";
 $server_type     = "mysql";
-$server_prefix   = "svn_";
+$server_prefix   = "ew6_";
 $language        = "de";
 $password_salt   = "IS6CGRkeffzPmEdjdKgfX";
 

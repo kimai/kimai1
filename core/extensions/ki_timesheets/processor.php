@@ -152,17 +152,22 @@ switch ($axAction) {
         echo $new_time['in'];
     break;
 
+
+    // TODO 5 -o fcw -c BugFix:No search result but an icon to edit is displayed anyway, but shouldn't
     case 'search_event_comment':
         $result = $database->zef_search_event_comment($_GET['search']);
 
-        foreach($result as $i => $zef_comments)
+        for ($i = 0; $i < count($result); $i++)
        {
-            $id = key($zef_comments);
-            $comment = utf8_decode($zef_comments[$id]);
+            $id = $result[$i][0];
+            $time = $result[$i][1];
+            $comment = substr($result[$i][2], 0, $kga['conf']['searchMaxResult']);
             // Innerhalb des Kommentars wird hier der gesuchte String mit <span> (class="grell" o.ä.) nur noch mal hervorgehoben
             echo '<p class="search_result">';
-            echo '<a title="Eintrag bearbeiten" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="Eintrag bearbeiten" alt="Eintrag bearbeiten (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif"></a> '.preg_replace('/(' . $_GET['search'] . ')/Usi', '<span class="search_result_highlighted">.\\1.</span>', $comment);
-            echo '</p>';
+            echo '<a class="search_result_link" title="Eintrag bearbeiten" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="Eintrag bearbeiten" alt="Eintrag bearbeiten (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif">';   
+            echo ' <span class="search_result_time"> '.$time.' </span> ';
+            echo preg_replace('/(' . $_GET['search'] . ')/Usi', '<span class="search_result_highlighted">\\1</span>', $comment);
+            echo '</a> </p>';
         }
         
     break;

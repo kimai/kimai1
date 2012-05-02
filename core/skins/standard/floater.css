@@ -176,3 +176,10 @@
 	background-color: #990000;
 }
 
+.search_result_time {
+    border: 1px solid grey;
+}
+
+.search_result_link {
+    text-decoration: none;
+}

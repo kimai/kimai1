@@ -50,6 +50,11 @@ Ersetzen durch:
 Angewendet mit showInstallWarning: 
 \core\core\kimai.php
 
+Zugriff im PHP: $kga['conf']['searchMaxResult']
+Zugriff im tpl: $kga.conf.searchMaxResult
+
+
+
 Floater hinzufügen:
 ===================
 

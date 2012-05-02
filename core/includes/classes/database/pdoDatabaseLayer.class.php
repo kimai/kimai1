@@ -615,7 +615,7 @@ class PDODatabaseLayer extends DatabaseLayer
       evt_comment,
       evt_visible,
       evt_filter,
-      evt_budget.
+      evt_budget,
       evt_effort,
       evt_approved,
       evt_assignable
@@ -3510,8 +3510,9 @@ class PDODatabaseLayer extends DatabaseLayer
     public function status_create($status) {
       $p = $this->kga['server_prefix'];
           $pdo_query = $this->conn->prepare("INSERT INTO ${p}status (status) VALUES (?);");
-          $result = $pdo_query->execute(array(trim($status)));
-
+          // fcw: 2012-04-27: das gibt einen Fehler:
+          // $result = $pdo_query->execute(array(trim($status)));
+          $result = $pdo_query->execute(array($status['status']));
           if (! $result) {
             $this->logLastError('add_status');
             return false;
@@ -3910,8 +3911,14 @@ class PDODatabaseLayer extends DatabaseLayer
       
       
       $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("SELECT zef_ID, zef_comment FROM ${p}zef WHERE zef_comment LIKE '%".$search."%'  ORDER BY zef_ID DESC");
+      
+      $query = "SELECT zef_ID, FROM_UNIXTIME(zef_in) 
+      AS zef_time, zef_comment FROM ${p}zef 
+      WHERE MATCH (zef_comment, zef_description) 
+      AGAINST( '".$search."' IN BOOLEAN MODE)";
+      
+      $pdo_query = $this->conn->prepare($query);
+      
       $result = $pdo_query->execute();
 
       
@@ -3927,7 +3934,8 @@ class PDODatabaseLayer extends DatabaseLayer
       } 
       else {
           while ($current_found = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-              array_push($return_found, array($current_found['zef_ID'] => $current_found['zef_comment']));
+              // array_push($return_found, array($current_found['zef_ID'] => $current_found['zef_comment']));
+              array_push($return_found, array($current_found['zef_ID'], $current_found['zef_time'], $current_found['zef_comment']));
           }
           return $return_found;
       }
