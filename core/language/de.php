@@ -45,6 +45,8 @@ return array(
 "pct"                    => "Projekt",
 "evt"                    => "Tätigkeit",
 "search"                 => "Suche",
+"result"                 => "Ergebnis",  
+"noSearchResult"         => "Die Suche ergab kein Ergebnis",
 "searchMin"              => "Mindestzeichen",
 "searchMinTT"            => "Mindesteingabe von Zeichen (Anzahl einzelner Zeichen) bis die Suche beginnt",
 "searchMaxResult"        => "Maximale Zeichen",

@@ -155,21 +155,31 @@ switch ($axAction) {
 
     // TODO 5 -o fcw -c BugFix:No search result but an icon to edit is displayed anyway, but shouldn't
     case 'search_event_comment':
-        $result = $database->zef_search_event_comment($_GET['search']);
-
-        for ($i = 0; $i < count($result); $i++)
-       {
-            $id = $result[$i][0];
-            $time = $result[$i][1];
-            $comment = substr($result[$i][2], 0, $kga['conf']['searchMaxResult']);
-            // Innerhalb des Kommentars wird hier der gesuchte String mit <span> (class="grell" o.ä.) nur noch mal hervorgehoben
-            echo '<p class="search_result">';
-            echo '<a class="search_result_link" title="Eintrag bearbeiten" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="Eintrag bearbeiten" alt="Eintrag bearbeiten (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif">';   
-            echo ' <span class="search_result_time"> '.$time.' </span> ';
-            echo preg_replace('/(' . $_GET['search'] . ')/Usi', '<span class="search_result_highlighted">\\1</span>', $comment);
-            echo '</a> </p>';
-        }
+        $searchwords = $_GET['search'];
+        $searchwords = str_replace('--', ' -', $searchwords);
+        $result = $database->zef_search_event_comment($searchwords);
         
+        if (0 < count($result))
+        {
+            for ($i = 0; $i < count($result); $i++)
+            {
+                $id = $result[$i][0];
+                $time = $result[$i][1];
+                $comment = substr($result[$i][2], 0, $kga['conf']['searchMaxResult']);
+                // The searched result is highlighted in between the whole comment with <span class="highlighted" (or similar)
+                echo '<p class="search_result">';
+                echo '<a class="search_result_link" title="'.$kga['lang']['edit'].'" onclick="editRecord('.$id.'); $(this).blur(); return false;" href="#"><img width="13" height="13" border="0" title="'.$kga['lang']['edit'].'" alt="'.$kga['lang']['edit'].' (ID:'.$id.')" src="../skins/standard/grfx/edit2.gif">';   
+                echo ' <span class="search_result_time"> '.$time.' </span> ';
+                echo preg_replace('/(' . str_replace('+', '\+', $searchwords) . ')/Usi', '<span class="search_result_highlighted">\\1</span>', $comment);
+                echo '</a> </p>';
+            }
+        }
+        else
+        {
+            echo '<p class="search_result">';
+            echo $kga['lang']['noSearchResult'];  
+            echo '</span>';
+        }
     break;
     
     // =========================================

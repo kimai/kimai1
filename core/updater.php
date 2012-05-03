@@ -1402,7 +1402,10 @@ if ((int)$revisionDB < 1369) {
 
     Logger::logfile("-- update to r1369");
     // fcw: 2012-04-25: Full-Text Search for comments (new livesearch) and descriptions (not yet used)
-    exec_query("ALTER TABLE ${p}zef ADD FULLTEXT(zef_comment, zef_description);");
+    exec_query("ALTER TABLE ${p}zef MODIFY COLUMN `zef_comment` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;");
+    exec_query("ALTER TABLE ${p}zef ADD FULLTEXT(zef_comment);");
+    exec_query("ALTER TABLE ${p}zef ADD FULLTEXT(zef_description);");    
+    exec_query("REPAIR TABLE ${p}zef QUICK;");     
 }
 
 

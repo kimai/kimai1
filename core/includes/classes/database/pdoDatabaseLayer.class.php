@@ -2497,7 +2497,7 @@ class PDODatabaseLayer extends DatabaseLayer
     $this->kga['conf']['skin'] = 'standard';
     $this->kga['conf']['autoselection'] = 1;
     $this->kga['conf']['showInstallWarning'] = 1;  
-    $this->kga['conf']['searchMin'] = 3; 
+    $this->kga['conf']['searchMin'] = 4; 
     $this->kga['conf']['searchMaxResult'] = 1000;       
     $this->kga['conf']['quickdelete'] = 0;
     $this->kga['conf']['flip_pct_display'] = 0;
