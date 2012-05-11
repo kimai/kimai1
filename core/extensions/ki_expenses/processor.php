@@ -48,10 +48,10 @@ switch ($axAction) {
 
       // if no userfilter is set, set it to current user
       if (isset($kga['usr']) && count($filterUsr) == 0)
-        array_push($filterUsr,$kga['usr']['usr_ID']);
+        array_push($filterUsr,$kga['usr']['userID']);
         
       if (isset($kga['customer']))
-        $filterKnd = array($kga['customer']['knd_ID']);
+        $filterKnd = array($kga['customer']['customerID']);
 
       $arr_exp = get_arr_exp($in,$out,$filterUsr,$filterKnd,$filterPct,1);
       if (count($arr_exp)>0) {
@@ -78,7 +78,7 @@ switch ($axAction) {
       $tpl->assign('evt_ann',array());
 
       if (isset($kga['usr']))
-        $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+        $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
       else
         $tpl->assign('hideComments',true);
 
@@ -108,12 +108,12 @@ switch ($axAction) {
         }
       }
     
-      $data['exp_pctID']        = $_REQUEST['pct_ID'];
+      $data['exp_pctID']        = $_REQUEST['projectID'];
       $data['exp_designation']  = $_REQUEST['designation'];
       $data['exp_multiplier']   = $_REQUEST['multiplier'];
       $data['exp_value']        = $_REQUEST['edit_value'];
       $data['exp_comment']      = $_REQUEST['comment'];
-      $data['exp_comment_type'] = $_REQUEST['comment_type'];
+      $data['exp_comment_type'] = $_REQUEST['commentType'];
       $data['exp_refundable']   = isset($_REQUEST['refundable']);
       $data['erase']            = isset($_REQUEST['erase']);
 
@@ -162,7 +162,7 @@ switch ($axAction) {
           
         // TIME RIGHT - NEW ENTRY
         Logger::logfile("exp_create_record");
-        exp_create_record($kga['usr']['usr_ID'],$data);
+        exp_create_record($kga['usr']['userID'],$data);
           
       }
       echo json_encode(array('result'=>'ok'));

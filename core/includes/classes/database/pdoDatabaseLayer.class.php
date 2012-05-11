@@ -108,58 +108,58 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param array $data        name, address and other data of the new customer
     * @global array $this->kga         kimai-global-array
-    * @return int                the knd_ID of the new customer, false on failure
+    * @return int                the customerID of the new customer, false on failure
     * @author ob
     */
-    public function knd_create($data)
+    public function customer_create($data)
     {
       $data = $this->clean_data($data);
 
       $pdo_query = $this->conn->prepare("
-      INSERT INTO " . $this->kga['server_prefix'] . "knd (
-      knd_name,
-      knd_comment,
-      knd_password,
-      knd_company,
-      knd_street,
-      knd_zipcode,
-      knd_city,
-      knd_tel,
-      knd_fax,
-      knd_mobile,
-      knd_mail,
-      knd_homepage,
-      knd_visible,
-      knd_filter,
-      knd_vat,
-      knd_contact,
-      knd_timezone
+      INSERT INTO " . $this->getCustomerTable() . "(
+      name,
+      comment,
+      password,
+      company,
+      street,
+      zipcode,
+      city,
+      phone,
+      fax,
+      mobile,
+      mail,
+      homepage,
+      visible,
+      filter,
+      vat,
+      contact,
+      timezone
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
-          $data['knd_name'],
-          $data['knd_comment'],
-          $data['knd_password'],
-          $data['knd_company'],
-          $data['knd_street'],
-          $data['knd_zipcode'],
-          $data['knd_city'],
-          $data['knd_tel'],
-          $data['knd_fax'],
-          $data['knd_mobile'],
-          $data['knd_mail'],
-          $data['knd_homepage'],
-          $data['knd_visible'],
-          $data['knd_filter'],
-          $data['knd_vat'],
-          $data['knd_contact'],
-          $data['knd_timezone']
+          $data['name'],
+          $data['comment'],
+          $data['password'],
+          $data['company'],
+          $data['street'],
+          $data['zipcode'],
+          $data['city'],
+          $data['phone'],
+          $data['fax'],
+          $data['mobile'],
+          $data['mail'],
+          $data['homepage'],
+          $data['visible'],
+          $data['filter'],
+          $data['vat'],
+          $data['contact'],
+          $data['timezone']
       ));
 
       if ($result == true) {
           return $this->conn->lastInsertId();
       } else {
-          $this->logLastError('knd_create');
+          $this->logLastError('customer_create');
           return false;
       }
     }
@@ -167,20 +167,20 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain customer
     *
-    * @param array $knd_id        knd_id of the customer
+    * @param array $customerID        id of the customer
     * @global array $this->kga         kimai-global-array
     * @return array            the customer's data (name, address etc) as array, false on failure
     * @author ob
     */
-    public function knd_get_data($knd_id)
+    public function customer_get_data($customerID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_ID = ?");
-      $result = $pdo_query->execute(array($knd_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE customerID = ?");
+      $result = $pdo_query->execute(array($customerID));
 
       if ($result == false) {
-          $this->logLastError('knd_get_data');
+          $this->logLastError('customer_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -191,34 +191,34 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Edits a customer by replacing his data by the new array
     *
-    * @param array $knd_id        knd_id of the customer to be edited
+    * @param int $customerID    id of the customer to be edited
     * @param array $data        name, address and other new data of the customer
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function knd_edit($knd_id, $data)
+    public function customer_edit($customerID, $data)
     {
       $data = $this->clean_data($data);
 
       $keys = array(
-        'knd_name'    ,'knd_comment','knd_password' ,'knd_company','knd_vat',
-        'knd_contact' ,'knd_street' ,'knd_zipcode'  ,'knd_city'   ,'knd_tel',
-        'knd_fax'     ,'knd_mobile' ,'knd_mail'     ,'knd_homepage',
-        'knd_visible','knd_filter', 'knd_timezone');
+        'name'    ,'comment','password' ,'company','vat',
+        'contact' ,'street' ,'zipcode'  ,'city'   ,'phone',
+        'fax'     ,'mobile' ,'mail'     ,'homepage',
+        'visible' ,'filter', 'timezone');
 
-      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'knd SET ';
+      $query = 'UPDATE ' . $this->getCustomerTable() . ' SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
-      $query .= ' WHERE knd_id = :customerId;';
+      $query .= ' WHERE customerID = :customerId;';
 
       $statement = $this->conn->prepare($query);
 
       $this->bindValues($statement,$keys,$data);
 
-      $statement->bindValue(":customerId", $knd_id);
+      $statement->bindValue(":customerId", $customerID);
 
       if (!$statement->execute()) {
-          $this->logLastError('knd_edit');
+          $this->logLastError('customer_edit');
           return false;
       }
 
@@ -228,31 +228,31 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns a customer to 1-n groups by adding entries to the cross table
     *
-    * @param int $knd_id         knd_id of the customer to which the groups will be assigned
-    * @param array $grp_array    contains one or more grp_IDs
+    * @param int $customerID     id of the customer to which the groups will be assigned
+    * @param array $grp_array    contains one or more groupIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_knd2grps($knd_id, $grp_array)
+    public function assign_customerToGroups($customerID, $grp_array)
     {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_knd WHERE knd_ID=?;");
-      $d_result = $pdo_query->execute(array($knd_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groups_customers WHERE customerID=?;");
+      $d_result = $pdo_query->execute(array($customerID));
       if ($d_result == false) {
-          $this->logLastError('assign_knd2grps');
+          $this->logLastError('assign_customerToGroups');
           $this->conn->rollBack();
           return false;
       }
 
       foreach ($grp_array as $current_grp) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_grp,$knd_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_customers (groupID, customerID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_grp,$customerID));
         if ($result == false) {
-            $this->logLastError('assign_knd2grps');
+            $this->logLastError('assign_customerToGroups');
             $this->conn->rollBack();
             return false;
         }
@@ -261,28 +261,28 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_knd2grps');
+          $this->logLastError('assign_customerToGroups');
           return false;
       }
     }
 
     /**
-    * returns all the groups of the given customer
+    * returns all IDs of the groups of the given customer
     *
-    * @param array $knd_id        knd_id of the customer
+    * @param int $customerID        id of the customer
     * @global array $this->kga          kimai-global-array
-    * @return array               contains the grp_IDs of the groups or false on error
+    * @return array               contains the groupIDs of the groups or false on error
     * @author ob
     */
-    public function knd_get_grps($knd_id)
+    public function customer_get_groupIDs($customerID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_knd WHERE knd_ID = ?;");
+      $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groups_customers WHERE customerID = ?;");
 
-      $result = $pdo_query->execute(array($knd_id));
+      $result = $pdo_query->execute(array($customerID));
       if ($result == false) {
-          $this->logLastError('knd_get_grps');
+          $this->logLastError('customer_get_groupIDs');
           return false;
       }
 
@@ -290,7 +290,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_grp = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_grps[$counter] = $current_grp['grp_ID'];
+          $return_grps[$counter] = $current_grp['groupID'];
           $counter++;
       }
 
@@ -300,20 +300,20 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * deletes a customer
     *
-    * @param array $knd_id        knd_id of the customer
+    * @param int $customerID        id of the customer
     * @global array $this->kga          kimai-global-array
     * @return boolean             true on success, false on failure
     * @author ob
     */
-    public function knd_delete($knd_id)
+    public function customer_delete($customerID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}knd SET knd_trash=1 WHERE knd_ID = ?;");
-      $result = $pdo_query->execute(array($knd_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}customers SET trash=1 WHERE customerID = ?;");
+      $result = $pdo_query->execute(array($customerID));
 
       if ($result == false) {
-          $this->logLastError('knd_delete');
+          $this->logLastError('customer_delete');
           return false;
       }
 
@@ -325,64 +325,64 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param array $data         name, comment and other data of the new project
     * @global array $this->kga         kimai-global-array
-    * @return int                the pct_ID of the new project, false on failure
+    * @return int                the ID of the new project, false on failure
     * @author ob
     */
-    public function pct_create($data)
+    public function project_create($data)
     {
       $data = $this->clean_data($data);
 
-      $pdo_query = $this->conn->prepare("INSERT INTO " . $this->kga['server_prefix'] . "pct (
-      pct_kndID,
-      pct_name,
-      pct_comment,
-      pct_visible,
-      pct_internal,
-      pct_filter,
-      pct_budget,
-      pct_effort,
-      pct_approved
+      $pdo_query = $this->conn->prepare("INSERT INTO " . $this->getProjectTable() . " (
+      customerID,
+      name,
+      comment,
+      visible,
+      internal,
+      filter,
+      budget,
+      effort,
+      approved
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
-      (int)$data['pct_kndID'],
-      $data['pct_name'],
-      $data['pct_comment'],
-      (int)$data['pct_visible'],
-      (int)$data['pct_internal'],
-      (int)$data['pct_filter'],
-      doubleval($data['pct_budget']),
-      doubleval($data['pct_effort']),
-      doubleval($data['pct_approved'])));
+      (int)$data['customerID'],
+      $data['name'],
+      $data['comment'],
+      (int)$data['visible'],
+      (int)$data['internal'],
+      (int)$data['filter'],
+      doubleval($data['budget']),
+      doubleval($data['effort']),
+      doubleval($data['approved'])));
 
       if ($result == true) {
 
-        $pct_id = $this->conn->lastInsertId();
+        $projectID = $this->conn->lastInsertId();
 
-        if (isset($data['pct_default_rate'])) {
-          if (is_numeric($data['pct_default_rate']))
-            $this->save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+        if (isset($data['defaultRate'])) {
+          if (is_numeric($data['defaultRate']))
+            $this->save_rate(NULL,$projectID,NULL,$data['defaultRate']);
           else
-            $this->remove_rate(NULL,$pct_id,NULL);
+            $this->remove_rate(NULL,$projectID,NULL);
         }
 
-        if (isset($data['pct_my_rate'])) {
-          if (is_numeric($data['pct_my_rate']))
-            $this->save_rate($this->kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+        if (isset($data['myRate'])) {
+          if (is_numeric($data['myRate']))
+            $this->save_rate($this->kga['usr']['userID'],$projectID,NULL,$data['myRate']);
           else
-            $this->remove_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
+            $this->remove_rate($this->kga['usr']['userID'],$projectID,NULL);
         }
 
-        if (isset($data['pct_fixed_rate'])) {
-          if (is_numeric($data['pct_fixed_rate']))
-            $this->save_fixed_rate($pct_id,NULL,$data['pct_fixed_rate']);
+        if (isset($data['fixedRate'])) {
+          if (is_numeric($data['fixedRate']))
+            $this->save_fixed_rate($projectID,NULL,$data['fixedRate']);
           else
-            $this->remove_fixed_rate($pct_id,NULL);
+            $this->remove_fixed_rate($projectID,NULL);
         }
 
-          return $pct_id;
+          return $projectID;
       } else {
-          $this->logLastError('pct_create');
+          $this->logLastError('project_create');
           return false;
       }
     }
@@ -390,89 +390,89 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain project
     *
-    * @param array $pct_id        pct_id of the project
+    * @param int $projectID        ID of the project
     * @global array $this->kga         kimai-global-array
     * @return array            the project's data (name, comment etc) as array, false on failure
     * @author ob
     */
-    public function pct_get_data($pct_id)
+    public function project_get_data($projectID)
     {
       $p = $this->kga['server_prefix'];
 
-      if (!is_numeric($pct_id)) {
+      if (!is_numeric($projectID)) {
           return false;
       }
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}pct WHERE pct_ID = ?");
-      $result = $pdo_query->execute(array($pct_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}projects WHERE projectID = ?");
+      $result = $pdo_query->execute(array($projectID));
 
       if ($result == false) {
-          $this->logLastError('pct_get_data');
+          $this->logLastError('project_get_data');
           return false;
       }
 
       $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
-      $result_array['pct_default_rate'] = $this->get_rate(NULL,$pct_id,NULL);
-      $result_array['pct_my_rate'] = $this->get_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
-      $result_array['pct_fixed_rate'] = $this->get_fixed_rate($pct_id,NULL);
+      $result_array['defaultRate'] = $this->get_rate(NULL,$projectID,NULL);
+      $result_array['myRate'] = $this->get_rate($this->kga['usr']['userID'],$projectID,NULL);
+      $result_array['fixedRate'] = $this->get_fixed_rate($projectID,NULL);
       return $result_array;
     }
 
     /**
     * Edits a project by replacing its data by the new array
     *
-    * @param array $pct_id        pct_id of the project to be edited
+    * @param int $projectID     id of the project to be edited
     * @param array $data        name, comment and other new data of the project
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function pct_edit($pct_id, $data)
+    public function project_edit($projectID, $data)
     {
       $data = $this->clean_data($data);
 
       $this->conn->beginTransaction();
 
-      if (isset($data['pct_default_rate'])) {
-        if (is_numeric($data['pct_default_rate']))
-          $this->save_rate(NULL,$pct_id,NULL,$data['pct_default_rate']);
+      if (isset($data['defaultRate'])) {
+        if (is_numeric($data['defaultRate']))
+          $this->save_rate(NULL,$projectID,NULL,$data['defaultRate']);
         else
-          $this->remove_rate(NULL,$pct_id,NULL);
-        unset($data['pct_default_rate']);
+          $this->remove_rate(NULL,$projectID,NULL);
+        unset($data['defaultRate']);
       }
 
-      if (isset($data['pct_my_rate'])) {
-        if (is_numeric($data['pct_my_rate']))
-          $this->save_rate($this->kga['usr']['usr_ID'],$pct_id,NULL,$data['pct_my_rate']);
+      if (isset($data['myRate'])) {
+        if (is_numeric($data['myRate']))
+          $this->save_rate($this->kga['usr']['userID'],$projectID,NULL,$data['myRate']);
         else
-          $this->remove_rate($this->kga['usr']['usr_ID'],$pct_id,NULL);
-        unset($data['pct_my_rate']);
+          $this->remove_rate($this->kga['usr']['userID'],$projectID,NULL);
+        unset($data['myRate']);
       }
 
-        if (isset($data['pct_fixed_rate'])) {
-          if (is_numeric($data['pct_fixed_rate']))
-            $this->save_fixed_rate($pct_id,NULL,$data['pct_fixed_rate']);
+        if (isset($data['fixedRate'])) {
+          if (is_numeric($data['fixedRate']))
+            $this->save_fixed_rate($projectID,NULL,$data['fixedRate']);
           else
-            $this->remove_fixed_rate($pct_id,NULL);
+            $this->remove_fixed_rate($projectID,NULL);
         }
 
       $keys = array(
-        'pct_kndID', 'pct_name', 'pct_comment', 'pct_visible', 'pct_internal',
-        'pct_filter', 'pct_budget', 'pct_effort', 'pct_approved');
+        'customerID', 'name', 'comment', 'visible', 'internal',
+        'filter', 'budget', 'effort', 'approved');
 
-      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'pct SET ';
+      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'projects SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
-      $query .= ' WHERE pct_id = :projectId;';
+      $query .= ' WHERE projectID = :projectID;';
 
       $statement = $this->conn->prepare($query);
 
       $this->bindValues($statement,$keys,$data);
 
-      $statement->bindValue(":projectId", $pct_id);
+      $statement->bindValue(":projectID", $projectID);
 
       if ($statement->execute() === false) {
-        $this->logLastError('pct_edit');
+        $this->logLastError('project_edit');
         $this->conn->rollBack();
         return false;
       }
@@ -480,7 +480,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('pct_edit');
+          $this->logLastError('project_edit');
           return false;
       }
     }
@@ -488,31 +488,31 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns a project to 1-n groups by adding entries to the cross table
     *
-    * @param int $pct_id        pct_id of the project to which the groups will be assigned
-    * @param array $grp_array    contains one or more grp_IDs
+    * @param int $projectID        projectID of the project to which the groups will be assigned
+    * @param array $grp_array    contains one or more groupIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_pct2grps($pct_id, $grp_array)
+    public function assign_projectToGroups($projectID, $grp_array)
     {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_pct WHERE pct_ID=?;");
-      $d_result = $pdo_query->execute(array($pct_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groups_projects WHERE projectID=?;");
+      $d_result = $pdo_query->execute(array($projectID));
       if ($d_result == false) {
-          $this->logLastError('assign_pct2grps');
+          $this->logLastError('assign_projectToGroups');
           $this->conn->rollBack();
           return false;
       }
 
       foreach ($grp_array as $current_grp) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_grp,$pct_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_projects (groupID,projectID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_grp,$projectID));
         if ($result == false) {
-            $this->logLastError('assign_pct2grps');
+            $this->logLastError('assign_projectToGroups');
             $this->conn->rollBack();
             return false;
         }
@@ -521,7 +521,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_pct2grps');
+          $this->logLastError('assign_projectToGroups');
           return false;
       }
     }
@@ -529,15 +529,15 @@ class PDODatabaseLayer extends DatabaseLayer
       /**
     * deletes a status
     *
-    * @param array $status_id  status_id of the status
+    * @param array $statusID  statusID of the status
     * @return boolean       	 true on success, false on failure
     * @author mo
     */
-    public function status_delete($status_id)
+    public function status_delete($statusID)
     {
       $p = $this->kga['server_prefix'];
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE pct_ID=?;");
-      $d_result = $pdo_query->execute(array($status_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE projectID=?;");
+      $d_result = $pdo_query->execute(array($statusID));
       if ($d_result == false) {
           $this->logLastError('status_delete');
           $this->conn->rollBack();
@@ -549,19 +549,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the groups of the given project
     *
-    * @param array $pct_id        pct_id of the project
+    * @param array $projectID        projectID of the project
     * @global array $this->kga         kimai-global-array
-    * @return array            contains the grp_IDs of the groups or false on error
+    * @return array            contains the groupIDs of the groups or false on error
     * @author ob
     */
-    public function pct_get_grps($pct_id)
+    public function project_get_groupIDs($projectID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_pct WHERE pct_ID = ?;");
-      $result = $pdo_query->execute(array($pct_id));
+      $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groups_projects WHERE projectID = ?;");
+      $result = $pdo_query->execute(array($projectID));
       if ($result == false) {
-          $this->logLastError('pct_get_grps');
+          $this->logLastError('project_get_groupIDs');
           return false;
       }
 
@@ -569,7 +569,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_grp = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_grps[$counter] = $current_grp['grp_ID'];
+          $return_grps[$counter] = $current_grp['groupID'];
           $counter++;
       }
 
@@ -579,19 +579,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * deletes a project
     *
-    * @param array $pct_id        pct_id of the project
+    * @param array $projectID        projectID of the project
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function pct_delete($pct_id)
+    public function project_delete($projectID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}pct SET pct_trash=1 WHERE pct_ID = ?;");
-      $result = $pdo_query->execute(array($pct_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}projects SET trash=1 WHERE projectID = ?;");
+      $result = $pdo_query->execute(array($projectID));
       if ($result == false) {
-          $this->logLastError('pct_delete');
+          $this->logLastError('project_delete');
           return false;
       }
       return $result;
@@ -602,65 +602,65 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param array $data        name, comment and other data of the new event
     * @global array $this->kga         kimai-global-array
-    * @return int                the evt_ID of the new project, false on failure
+    * @return int                the activityID of the new project, false on failure
     * @author ob
     */
-    public function evt_create($data)
+    public function activity_create($data)
     {
       $data = $this->clean_data($data);
 
       $pdo_query = $this->conn->prepare("
-      INSERT INTO " . $this->kga['server_prefix'] . "evt (
-      evt_name,
-      evt_comment,
-      evt_visible,
-      evt_filter,
-      evt_budget.
-      evt_effort,
-      evt_approved,
-      evt_assignable
+      INSERT INTO " . $this->getActivityTable() . " (
+      name,
+      comment,
+      visible,
+      filter,
+      budget.
+      effort,
+      approved,
+      assignable
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
-      $data['evt_name'],
-      $data['evt_comment'],
-      $data['evt_visible'],
-      $data['evt_filter'],
-      $data['evt_budget'],
-      $data['evt_effort'],
-      $data['evt_approved'],
-      $data['evt_assignable']
+      $data['name'],
+      $data['comment'],
+      $data['visible'],
+      $data['filter'],
+      $data['budget'],
+      $data['effort'],
+      $data['approved'],
+      $data['assignable']
       ));
 
       if ($result == true) {
 
-        $evt_id = $this->conn->lastInsertId();
+        $activityID = $this->conn->lastInsertId();
 
 
-        if (isset($data['evt_default_rate'])) {
-          if (is_numeric($data['evt_default_rate']))
-            $this->save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+        if (isset($data['defaultRate'])) {
+          if (is_numeric($data['defaultRate']))
+            $this->save_rate(NULL,NULL,$activityID,$data['defaultRate']);
           else
-            $this->remove_rate(NULL,NULL,$evt_id);
+            $this->remove_rate(NULL,NULL,$activityID);
         }
 
-        if (isset($data['evt_my_rate'])) {
-          if (is_numeric($data['evt_my_rate']))
-            $this->save_rate($this->kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+        if (isset($data['myRate'])) {
+          if (is_numeric($data['myRate']))
+            $this->save_rate($this->kga['usr']['userID'],NULL,$activityID,$data['myRate']);
           else
-            $this->remove_rate($this->kga['usr']['usr_ID'],NULL,$evt_id);
+            $this->remove_rate($this->kga['usr']['userID'],NULL,$activityID);
         }
 
-        if (isset($data['evt_fixed_rate'])) {
-          if (is_numeric($data['evt_fixed_rate']))
-            $this->save_fixed_rate(NULL,$evt_id,$data['evt_fixed_rate']);
+        if (isset($data['fixedRate'])) {
+          if (is_numeric($data['fixedRate']))
+            $this->save_fixed_rate(NULL,$activityID,$data['fixedRate']);
           else
-            $this->remove_fixed_rate(NULL,$evt_id);
+            $this->remove_fixed_rate(NULL,$activityID);
         }
 
-        return $evt_id;
+        return $activityID;
       } else {
-        $this->logLastError('evt_create');
+        $this->logLastError('activity_create');
         return false;
       }
     }
@@ -668,33 +668,33 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     *
     * update the data for event per project, which is budget, approved and effort
-    * @param integer $pct_id
-    * @param integer $evt_id
+    * @param integer $projectID
+    * @param integer $activityID
     * @param array $data
     */
-    public function pct_evt_edit($pct_id, $evt_id, $data)
+    public function project_activity_edit($projectID, $activityID, $data)
     {
       $data = $this->clean_data($data);
       $keys = array('evt_budget', 'evt_effort', 'evt_approved');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'pct_evt SET ';
       $query .= $this->buildSQLUpdateSet($keys, $data);
-      $query .= ' WHERE evt_id = :eventId and pct_id = :projectId;';
+      $query .= ' WHERE activityID = :eventId and projectID = :projectId;';
        $statement = $this->conn->prepare($query);
 
       $this->bindValues($statement,$keys,$data);
-      $statement->bindValue(":eventId", $evt_id);
-      $statement->bindValue(":projectId", $pct_id);
+      $statement->bindValue(":eventId", $activityID);
+      $statement->bindValue(":projectId", $projectID);
 
       if (!$statement->execute()) {
-          $this->logLastError('evt_edit');
+          $this->logLastError('project_activity_edit');
         return false;
       }
 
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('evt_edit');
+          $this->logLastError('project_activity_edit');
           return false;
       }
     }
@@ -702,28 +702,28 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain project
     *
-    * @param array $evt_id        evt_id of the project
+    * @param array $activityID        activityID of the project
     * @global array $this->kga         kimai-global-array
     * @return array            the event's data (name, comment etc) as array, false on failure
     * @author ob
     */
-    public function evt_get_data($evt_id)
+    public function activity_get_data($activityID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_ID = ?");
-      $result = $pdo_query->execute(array($evt_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}activities WHERE activityID = ?");
+      $result = $pdo_query->execute(array($activityID));
 
       if ($result == false) {
-          $this->logLastError('evt_get_data');
+          $this->logLastError('activity_get_data');
           return false;
       }
 
       $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
-      $result_array['evt_default_rate'] = $this->get_rate(NULL,NULL,$result_array['evt_ID']);
-      $result_array['evt_my_rate'] = $this->get_rate($this->kga['usr']['usr_ID'],NULL,$result_array['evt_ID']);
-      $result_array['evt_fixed_rate'] = $this->get_fixed_rate(NULL,$result_array['evt_ID']);
+      $result_array['defaultRate'] = $this->get_rate(NULL,NULL,$result_array['activityID']);
+      $result_array['myRate'] = $this->get_rate($this->kga['usr']['userID'],NULL,$result_array['activityID']);
+      $result_array['fixedRate'] = $this->get_fixed_rate(NULL,$result_array['activityID']);
 
       return $result_array;
     }
@@ -731,63 +731,63 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Edits an event by replacing its data by the new array
     *
-    * @param array $evt_id        evt_id of the project to be edited
+    * @param array $activityID        activityID of the project to be edited
     * @param array $data        name, comment and other new data of the event
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function evt_edit($evt_id, $data)
+    public function activity_edit($activityID, $data)
     {
       $data = $this->clean_data($data);
 
       $this->conn->beginTransaction();
 
-      if (isset($data['evt_default_rate'])) {
-        if (is_numeric($data['evt_default_rate']))
-          $this->save_rate(NULL,NULL,$evt_id,$data['evt_default_rate']);
+      if (isset($data['defaultRate'])) {
+        if (is_numeric($data['defaultRate']))
+          $this->save_rate(NULL,NULL,$activityID,$data['defaultRate']);
         else
-          $this->remove_rate(NULL,NULL,$evt_id);
-        unset($data['evt_default_rate']);
+          $this->remove_rate(NULL,NULL,$activityID);
+        unset($data['defaultRate']);
       }
 
-      if (isset($data['evt_my_rate'])) {
-        if (is_numeric($data['evt_my_rate']))
-          $this->save_rate($this->kga['usr']['usr_ID'],NULL,$evt_id,$data['evt_my_rate']);
+      if (isset($data['myRate'])) {
+        if (is_numeric($data['myRate']))
+          $this->save_rate($this->kga['usr']['userID'],NULL,$activityID,$data['myRate']);
         else
-          $this->remove_rate($this->kga['usr']['usr_ID'],NULL,$evt_id);
-        unset($data['evt_my_rate']);
+          $this->remove_rate($this->kga['usr']['userID'],NULL,$activityID);
+        unset($data['myRate']);
       }
 
-      if (isset($data['evt_fixed_rate'])) {
-        if (is_numeric($data['evt_fixed_rate']))
-          $this->save_fixed_rate(NULL,$evt_id,$data['evt_fixed_rate']);
+      if (isset($data['fixedRate'])) {
+        if (is_numeric($data['fixedRate']))
+          $this->save_fixed_rate(NULL,$activityID,$data['fixedRate']);
         else
-          $this->remove_fixed_rate(NULL,$evt_id);
-        unset($data['evt_fixed_rate']);
+          $this->remove_fixed_rate(NULL,$activityID);
+        unset($data['fixedRate']);
       }
 
-      $keys = array('evt_name', 'evt_comment', 'evt_visible', 'evt_filter', 'evt_budget', 'evt_effort', 'evt_approved', 'evt_assignable');
+      $keys = array('name', 'comment', 'visible', 'filter', 'budget', 'effort', 'approved', 'assignable');
 
-      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'evt SET ';
+      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'activities SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
-      $query .= ' WHERE evt_id = :eventId;';
+      $query .= ' WHERE activityID = :activityID;';
 
       $statement = $this->conn->prepare($query);
 
       $this->bindValues($statement,$keys,$data);
 
-      $statement->bindValue(":eventId", $evt_id);
+      $statement->bindValue(":activityID", $activityID);
 
       if (!$statement->execute()) {
-          $this->logLastError('evt_edit');
+          $this->logLastError('activity_edit');
         return false;
       }
 
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('evt_edit');
+          $this->logLastError('activity_edit');
           return false;
       }
     }
@@ -795,31 +795,31 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns an event to 1-n groups by adding entries to the cross table
     *
-    * @param int $evt_id        evt_id of the project to which the groups will be assigned
-    * @param array $grp_array    contains one or more grp_IDs
+    * @param int $activityID        activityID of the project to which the groups will be assigned
+    * @param array $grp_array    contains one or more groupIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_evt2grps($evt_id, $grp_array)
+    public function assign_activityToGroups($activityID, $grp_array)
     {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_evt WHERE evt_ID=?;");
-      $d_result = $pdo_query->execute(array($evt_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groups_activities WHERE activityID=?;");
+      $d_result = $pdo_query->execute(array($activityID));
       if ($d_result == false) {
-          $this->logLastError('assign_evt2grps');
+          $this->logLastError('assign_activityToGroups');
           $this->conn->rollBack();
           return false;
       }
 
       foreach ($grp_array as $current_grp) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_grp,$evt_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_activities (groupID,activityID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_grp,$activityID));
         if ($result == false) {
-          $this->logLastError('assign_evt2grps');
+          $this->logLastError('assign_activityToGroups');
             $this->conn->rollBack();
             return false;
         }
@@ -828,7 +828,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_evt2grps');
+          $this->logLastError('assign_activityToGroups');
           return false;
       }
     }
@@ -836,31 +836,31 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns an event to 1-n projects by adding entries to the cross table
     *
-    * @param int $evt_id         id of the event to which projects will be assigned
-    * @param array $gpct_array    contains one or more pct_IDs
+    * @param int $activityID         id of the event to which projects will be assigned
+    * @param array $gpct_array    contains one or more projectIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob/th
     */
-    public function assign_evt2pcts($evt_id, $pct_array)
+    public function assign_activityToProjects($activityID, $pct_array)
     {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}pct_evt WHERE evt_ID=?;");
-      $d_result = $pdo_query->execute(array($evt_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}projects_activities WHERE activityID=?;");
+      $d_result = $pdo_query->execute(array($activityID));
       if ($d_result == false) {
-          $this->logLastError('assign_evt2pcts');
+          $this->logLastError('assign_activityToProjects');
           $this->conn->rollBack();
           return false;
       }
 
       foreach ($pct_array as $current_pct) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}pct_evt (pct_ID,evt_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_pct,$evt_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}projects_activities (projectID,activityID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_pct,$activityID));
         if ($result == false) {
-            $this->logLastError('assign_evt2pcts');
+            $this->logLastError('assign_activityToProjects');
             $this->conn->rollBack();
             return false;
         }
@@ -869,7 +869,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_evt2pcts');
+          $this->logLastError('assign_activityToProjects');
           return false;
       }
     }
@@ -877,30 +877,30 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns 1-n events to a project by adding entries to the cross table
     *
-    * @param int $pct_id         id of the project to which events will be assigned
-    * @param array $evt_array    contains one or more evt_IDs
+    * @param int $projectID         id of the project to which events will be assigned
+    * @param array $evt_array    contains one or more activityIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author sl
     */
-    public function assign_pct2evts($pct_id, $evt_array) {
+    public function assign_projectToActivities($projectID, $evt_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}pct_evt WHERE pct_ID=?;");
-      $d_result = $pdo_query->execute(array($pct_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}project_activities WHERE projectID=?;");
+      $d_result = $pdo_query->execute(array($projectID));
       if ($d_result == false) {
-          $this->logLastError('assign_pct2evts');
+          $this->logLastError('assign_projectToActivities');
           $this->conn->rollBack();
           return false;
       }
 
       foreach ($evt_array as $current_evt) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}pct_evt (evt_ID,pct_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_evt,$pct_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}project_activities (activityID,projectID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_evt,$projectID));
         if ($result == false) {
-          $this->logLastError('assign_pct2evts');
+          $this->logLastError('assign_projectToActivities');
             $this->conn->rollBack();
             return false;
         }
@@ -909,7 +909,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_pct2evts');
+          $this->logLastError('assign_projectToActivities');
           return false;
       }
     }
@@ -917,19 +917,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the projects to which the event was assigned
     *
-    * @param array $evt_id  evt_id of the project
+    * @param array $activityID  activityID of the project
     * @global array $this->kga    kimai-global-array
-    * @return array         contains the pct_IDs of the projects or false on error
+    * @return array         contains the projectIDs of the projects or false on error
     * @author th
     */
-    public function evt_get_pcts($evt_id) {
+    public function activity_get_projects($activityID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT pct_ID FROM ${p}pct_evt WHERE evt_ID = ?;");
+      $pdo_query = $this->conn->prepare("SELECT projectID FROM ${p}projects_activities WHERE activityID = ?;");
 
-      $result = $pdo_query->execute(array($evt_id));
+      $result = $pdo_query->execute(array($activityID));
       if ($result == false) {
-          $this->logLastError('evt_get_pcts');
+          $this->logLastError('activity_get_projects');
           return false;
       }
 
@@ -937,7 +937,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_pct = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_pcts[$counter] = $current_pct['pct_ID'];
+          $return_pcts[$counter] = $current_pct['projectID'];
           $counter++;
       }
 
@@ -947,22 +947,24 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the events which are assigned to a project
     *
-    * @param integer $pct_id  pct_id of the project
+    * @param integer $projectID  projectID of the project
     * @global array $this->kga    kimai-global-array
-    * @return array         contains the evt_IDs of the events or false on error
+    * @return array         contains the activityIDs of the events or false on error
     * @author sl
     */
-    public function pct_get_evts($pct_id) {
+    public function project_get_activities($projectID) {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare(
-        "SELECT ${p}pct_evt.evt_ID,${p}evt.evt_budget, ${p}evt.evt_effort, ${p}evt.evt_approved FROM ${p}pct_evt
-        JOIN ${p}evt ON ${p}evt.evt_ID = ${p}pct_evt.evt_ID WHERE ${p}pct_evt.pct_ID = ? AND ${p}evt.evt_trash = 0;"
+        "SELECT activityID, activity.budget, activity.effort, activity.approved
+        FROM ${p}projects_activities AS p_a
+        JOIN ${p}activities AS activity USING (activityID)
+        WHERE projectID = ? AND activity.trash = 0;"
       );
 
-      $result = $pdo_query->execute(array($pct_id));
+      $result = $pdo_query->execute(array($projectID));
       if ($result == false) {
-          $this->logLastError('pct_get_evts');
+          $this->logLastError('project_get_activities');
           return false;
       }
 
@@ -978,19 +980,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the groups of the given event
     *
-    * @param array $evt_id        evt_id of the project
+    * @param array $activityID        activityID of the project
     * @global array $this->kga         kimai-global-array
-    * @return array            contains the grp_IDs of the groups or false on error
+    * @return array            contains the groupIDs of the groups or false on error
     * @author ob
     */
-    public function evt_get_grps($evt_id) {
+    public function activity_get_groups($activityID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_evt WHERE evt_ID = ?;");
+      $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groups_activities WHERE activityID = ?;");
 
-      $result = $pdo_query->execute(array($evt_id));
+      $result = $pdo_query->execute(array($activityID));
       if ($result == false) {
-          $this->logLastError('evt_get_grps');
+          $this->logLastError('activity_get_groups');
           return false;
       }
 
@@ -998,7 +1000,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_grp = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_grps[$counter] = $current_grp['grp_ID'];
+          $return_grps[$counter] = $current_grp['groupID'];
           $counter++;
       }
 
@@ -1008,18 +1010,18 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * deletes an event
     *
-    * @param array $evt_id        evt_id of the event
+    * @param array $activityID        activityID of the event
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function evt_delete($evt_id) {
+    public function activity_delete($activityID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}evt SET evt_trash=1 WHERE evt_ID = ?;");
-      $result = $pdo_query->execute(array($evt_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}activities SET trash=1 WHERE activityID = ?;");
+      $result = $pdo_query->execute(array($activityID));
       if ($result == false) {
-          $this->logLastError('evt_delete');
+          $this->logLastError('activity_delete');
           return false;
       }
 
@@ -1028,31 +1030,31 @@ class PDODatabaseLayer extends DatabaseLayer
 
     /**
     * Assigns a group to 1-n customers by adding entries to the cross table
-    * (counterpart to assign_knd2grp)
+    * (counterpart to assign_customerToGroups)
     *
-    * @param array $grp_id        grp_id of the group to which the customers will be assigned
-    * @param array $knd_array    contains one or more knd_IDs
+    * @param array $groupID      ID of the group to which the customers will be assigned
+    * @param array $knd_array    contains one or more IDs of customers
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_grp2knds($grp_id, $knd_array) {
+    public function assign_groupToCustomers($groupID, $knd_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $d_query = $this->conn->prepare("DELETE FROM ${p}grp_knd WHERE grp_ID=?;");
-      $d_result = $d_query->execute(array($grp_id));
+      $d_query = $this->conn->prepare("DELETE FROM ${p}groups_customers WHERE groupID=?;");
+      $d_result = $d_query->execute(array($groupID));
       if ($d_result == false) {
-          $this->logLastError('assign_grp2knds');
+          $this->logLastError('assign_groupToCustomers');
           return false;
       }
 
       foreach ($knd_array as $current_knd) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_knd (grp_ID,knd_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($grp_id,$current_knd));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_customers (groupID,customerID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($groupID,$current_knd));
         if ($result == false) {
-            $this->logLastError('assign_grp2knds');
+            $this->logLastError('assign_groupToCustomers');
             return false;
         }
       }
@@ -1060,7 +1062,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_grp2knds');
+          $this->logLastError('assign_groupToCustomers');
           return false;
       }
     }
@@ -1069,29 +1071,29 @@ class PDODatabaseLayer extends DatabaseLayer
     * Assigns a group to 1-n projects by adding entries to the cross table
     * (counterpart to assign_pct2grp)
     *
-    * @param array $grp_id        grp_id of the group to which the projects will be assigned
-    * @param array $pct_array    contains one or more pct_IDs
+    * @param array $groupID        groupID of the group to which the projects will be assigned
+    * @param array $pct_array    contains one or more projectIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_grp2pcts($grp_id, $pct_array) {
+    public function assign_groupToProjects($groupID, $pct_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $d_query = $this->conn->prepare("DELETE FROM ${p}grp_pct WHERE grp_ID=?;");
-      $d_result = $d_query->execute(array($grp_id));
+      $d_query = $this->conn->prepare("DELETE FROM ${p}groups_projects WHERE groupID=?;");
+      $d_result = $d_query->execute(array($groupID));
       if ($d_result == false) {
-          $this->logLastError('assign_grp2pcts');
+          $this->logLastError('assign_groupToProjects');
           return false;
       }
 
       foreach ($pct_array as $current_pct) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_pct (grp_ID,pct_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($grp_id,$current_pct));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_projects (groupID,projectID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($groupID,$current_pct));
         if ($result == false) {
-            $this->logLastError('assign_grp2pcts');
+            $this->logLastError('assign_groupToProjects');
             return false;
         }
       }
@@ -1099,7 +1101,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_grp2pcts');
+          $this->logLastError('assign_groupToProjects');
           return false;
       }
     }
@@ -1108,29 +1110,29 @@ class PDODatabaseLayer extends DatabaseLayer
     * Assigns a group to 1-n events by adding entries to the cross table
     * (counterpart to assign_evt2grp)
     *
-    * @param array $grp_id        grp_id of the group to which the events will be assigned
-    * @param array $evt_array    contains one or more evt_IDs
+    * @param array $groupID        groupID of the group to which the events will be assigned
+    * @param array $evt_array    contains one or more activityIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_grp2evts($grp_id, $evt_array) {
+    public function assign_groupToActivities($groupID, $evt_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $d_query = $this->conn->prepare("DELETE FROM ${p}grp_evt WHERE grp_ID=?;");
-      $d_result = $d_query->execute(array($grp_id));
+      $d_query = $this->conn->prepare("DELETE FROM ${p}groups_activities WHERE groupID=?;");
+      $d_result = $d_query->execute(array($groupID));
       if ($d_result == false) {
-          $this->logLastError('assign_grp2evts');
+          $this->logLastError('assign_groupToActivities');
           return false;
       }
 
       foreach ($evt_array as $current_evt) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_evt (grp_ID,evt_ID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($grp_id,$current_evt));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_activities (groupID,activityID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($groupID,$current_evt));
         if ($result == false) {
-          $this->logLastError('assign_grp2evts');
+          $this->logLastError('assign_groupToActivities');
             return false;
         }
       }
@@ -1138,7 +1140,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_grp2evts');
+          $this->logLastError('assign_groupToActivities');
           return false;
       }
     }
@@ -1151,36 +1153,36 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function usr_create($data)
+    public function user_create($data)
     {
       $p = $this->kga['server_prefix'];
 
       // find random but unused user id
       do {
-        $data['usr_ID'] = random_number(9);
-      } while ($this->usr_get_data($data['usr_ID']));
+        $data['userID'] = random_number(9);
+      } while ($this->user_get_data($data['userID']));
 
       $data = $this->clean_data($data);
 
-      $pdo_query = $this->conn->prepare("INSERT INTO ${p}usr (`usr_ID`, `usr_name`, `usr_sts`, `usr_active` ) VALUES (?, ?, ?, ?)");
+      $pdo_query = $this->conn->prepare("INSERT INTO ${p}users (`userID`, `name`, `status`, `active` ) VALUES (?, ?, ?, ?)");
 
       $result = $pdo_query->execute(array(
-          $data['usr_ID'],
-          $data['usr_name'],
-          $data['usr_sts'],
-          $data['usr_active']
+          $data['userID'],
+          $data['name'],
+          $data['status'],
+          $data['active']
       ));
 
       if ($result == true) {
-          if (isset($data['usr_rate'])) {
-            if (is_numeric($data['usr_rate']))
-              $this->save_rate($data['usr_ID'], NULL, NULL, $data['usr_rate']);
+          if (isset($data['rate'])) {
+            if (is_numeric($data['rate']))
+              $this->save_rate($data['userID'], NULL, NULL, $data['rate']);
             else
-              $this->remove_rate($data['usr_ID'], NULL, NULL);
+              $this->remove_rate($data['userID'], NULL, NULL);
           }
-          return $data['usr_ID'];
+          return $data['userID'];
       } else {
-          $this->logLastError('usr_create');
+          $this->logLastError('user_create');
           return false;
       }
     }
@@ -1188,20 +1190,20 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain user
     *
-    * @param array $usr_id        knd_id of the user
+    * @param array $userID        knd_id of the user
     * @global array $this->kga         kimai-global-array
     * @return array            the user's data (username, email-address, status etc) as array, false on failure
     * @author ob
     */
-    public function usr_get_data($usr_id)
+    public function user_get_data($userID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_ID = ?");
-      $result = $pdo_query->execute(array($usr_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}users WHERE userID = ?");
+      $result = $pdo_query->execute(array($userID));
 
       if ($result == false) {
-          $this->logLastError('usr_get_data');
+          $this->logLastError('user_get_data');
           return false;
       }
         
@@ -1212,13 +1214,13 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Edits a user by replacing his data and preferences by the new array
     *
-    * @param array $usr_id       usr_id of the user to be edited
+    * @param array $userID       userID of the user to be edited
     * @param array $data         username, email, and other new data of the user
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function usr_edit($usr_id, $data)
+    public function user_edit($userID, $data)
     {
       $p = $this->kga['server_prefix'];
 
@@ -1227,30 +1229,30 @@ class PDODatabaseLayer extends DatabaseLayer
       $this->conn->beginTransaction();
 
       $keys = array(
-        'usr_name', 'usr_sts', 'usr_trash', 'usr_active', 'usr_mail',
-        'usr_alias', 'pw', 'lastRecord', 'lastProject', 'lastEvent', 'apikey'
+        'name', 'status', 'trash', 'active', 'mail',
+        'alias', 'password', 'lastRecord', 'lastProject', 'lastActivity', 'apikey'
       );
 
-      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'usr SET ';
+      $query = 'UPDATE ' . $this->kga['server_prefix'] . 'users SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
-      $query .= ' WHERE usr_id = :userId;';
+      $query .= ' WHERE userID = :userID;';
 
       $statement = $this->conn->prepare($query);
 
       $this->bindValues($statement,$keys,$data);
 
-      $statement->bindValue(":userId", $usr_id);
+      $statement->bindValue(":userID", $userID);
 
       if (!$statement->execute()) {
-        $this->logLastError('usr_edit');
+        $this->logLastError('user_edit');
         return false;
       }
 
-      if (isset($data['usr_rate'])) {
-        if (is_numeric($data['usr_rate'])) {
-          $this->save_rate($usr_id,NULL,NULL,$data['usr_rate']);
+      if (isset($data['rate'])) {
+        if (is_numeric($data['rate'])) {
+          $this->save_rate($userID,NULL,NULL,$data['rate']);
         } else {
-          $this->remove_rate($usr_id,NULL,NULL);
+          $this->remove_rate($userID,NULL,NULL);
         }
       }
 
@@ -1258,25 +1260,25 @@ class PDODatabaseLayer extends DatabaseLayer
           return true;
       }
 
-      $this->logLastError('usr_edit');
+      $this->logLastError('user_edit');
       return false;
     }
 
     /**
     * deletes a user
     *
-    * @param array $usr_id        usr_id of the user
+    * @param array $userID        userID of the user
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function usr_delete($usr_id) {
+    public function user_delete($userID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET usr_trash=1 WHERE usr_ID = ?;");
-      $result = $pdo_query->execute(array($usr_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET trash=1 WHERE userID = ?;");
+      $result = $pdo_query->execute(array($userID));
       if ($result == false) {
-          $this->logLastError('usr_delete');
+          $this->logLastError('user_delete');
           return false;
       }
       return $result;
@@ -1290,18 +1292,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return string value of the preference or null if there is no such preference
     * @author sl
     */
-    public function usr_get_preference($key,$userId=null) {
+    public function user_get_preference($key,$userId=null) {
       $p = $this->kga['server_prefix'];
 
       if ($userId === null)
-        $userId = $this->kga['usr']['usr_ID'];
+        $userId = $this->kga['usr']['userID'];
 
-      $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var = ?");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}preferences WHERE userID = ? AND option = ?");
 
       $result = $pdo_query->execute(array($userId,$key));
 
       if ($result == false) {
-          $this->logLastError('usr_get_preference');
+          $this->logLastError('user_get_preference');
           return null;
       }
 
@@ -1321,27 +1323,27 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array  with keys for every found preference and the found value
     * @author sl
     */
-    public function usr_get_preferences(array $keys,$userId=null) {
+    public function user_get_preferences(array $keys,$userId=null) {
       $p = $this->kga['server_prefix'];
 
       if ($userId === null) {
-        $userId = $this->kga['usr']['usr_ID'];
+        $userId = $this->kga['usr']['userID'];
       }
 
       $placeholders = implode(",",array_fill(0,count($keys),'?'));
 
-      $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var IN ($placeholders)");
+      $pdo_query = $this->conn->prepare("SELECT option,value FROM ${p}preferences WHERE userID = ? AND option IN ($placeholders)");
       $result = $pdo_query->execute(array_merge(array($userId, $p), $keys));
 
       if ($result == false) {
-          $this->logLastError('usr_get_preferences');
+          $this->logLastError('user_get_preferences');
           return null;
       }
 
       $preferences = array();
 
       while ($row = $pdo_query->fetch()) {
-        $preferences[$row['var']] = $row['value'];
+        $preferences[$row['option']] = $row['value'];
       }
 
       return $preferences;
@@ -1357,28 +1359,28 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array  with keys for every found preference and the found value
     * @author sl
     */
-    public function usr_get_preferences_by_prefix($prefix,$userId=null) {
+    public function user_get_preferences_by_prefix($prefix,$userId=null) {
       $p = $this->kga['server_prefix'];
 
       if ($userId === null)
-        $userId = $this->kga['usr']['usr_ID'];
+        $userId = $this->kga['usr']['userID'];
 
       $prefixLength = strlen($prefix);
       //$prefix .= '%';
 
-      $pdo_query = $this->conn->prepare("SELECT var,value FROM ${p}preferences WHERE userID = ? AND var LIKE ?");
+      $pdo_query = $this->conn->prepare("SELECT option,value FROM ${p}preferences WHERE userID = ? AND option LIKE ?");
 
       $result = $pdo_query->execute(array($userId,"$prefix%"));
 
       if ($result == false) {
-          $this->logLastError('usr_get_preferences_by_prefix');
+          $this->logLastError('user_get_preferences_by_prefix');
           return null;
       }
 
       $preferences = array();
 
       while ($row = $pdo_query->fetch()) {
-        $key = substr($row['var'],$prefixLength);
+        $key = substr($row['option'],$prefixLength);
         $preferences[$key] = $row['value'];
       }
 
@@ -1399,15 +1401,15 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return boolean        true on success, false on failure
     * @author sl
     */
-    public function usr_set_preferences(array $data,$prefix='',$userId=null) {
+    public function user_set_preferences(array $data,$prefix='',$userId=null) {
       $p = $this->kga['server_prefix'];
 
       if ($userId === null)
-        $userId = $this->kga['usr']['usr_ID'];
+        $userId = $this->kga['usr']['userID'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("INSERT INTO ${p}preferences (`userID`,`var`,`value`)
+      $pdo_query = $this->conn->prepare("INSERT INTO ${p}preferences (`userID`,`option`,`value`)
       VALUES(?,?,?) ON DUPLICATE KEY UPDATE value = ?;");
 
       foreach ($data as $key=>$value) {
@@ -1415,7 +1417,7 @@ class PDODatabaseLayer extends DatabaseLayer
         $result = $pdo_query->execute(array(
           $userId,$key,$value,$value));
         if (! $result) {
-          $this->logLastError('usr_set_preferences');
+          $this->logLastError('user_set_preferences');
           $this->conn->rollBack();
           return false;
         }
@@ -1427,30 +1429,30 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Assigns a leader to 1-n groups by adding entries to the cross table
     *
-    * @param int $ldr_id        usr_id of the group leader to whom the groups will be assigned
-    * @param array $grp_array    contains one or more grp_IDs
+    * @param int $userID        userID of the group leader to whom the groups will be assigned
+    * @param array $grp_array    contains one or more groupIDs
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_ldr2grps($ldr_id, $grp_array) {
+    public function assign_groupleaderToGroups($userID, $grp_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}ldr WHERE grp_leader=?;");
-      $d_result = $pdo_query->execute(array($ldr_id));
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groupleaders WHERE userID=?;");
+      $d_result = $pdo_query->execute(array($userID));
       if ($d_result == false) {
-              $this->logLastError('assign_ldr2grps');
+              $this->logLastError('assign_groupleaderToGroups');
               $this->conn->rollBack();
               return false;
       }
 
       foreach ($grp_array as $current_grp) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}ldr(grp_ID,grp_leader) VALUES (?,?);");
-        $result = $pdo_query->execute(array($current_grp,$ldr_id));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groupleaders(groupID,userID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($current_grp,$userID));
         if ($result == false) {
-            $this->logLastError('assign_ldr2grps');
+            $this->logLastError('assign_groupleaderToGroups');
             $this->conn->rollBack();
             return false;
         }
@@ -1461,7 +1463,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-              $this->logLastError('assign_ldr2grps');
+              $this->logLastError('assign_groupleaderToGroups');
           return false;
       }
     }
@@ -1470,29 +1472,29 @@ class PDODatabaseLayer extends DatabaseLayer
     * Assigns a group to 1-n group leaders by adding entries to the cross table
     * (counterpart to assign_ldr2grp)
     *
-    * @param array $grp_id        grp_id of the group to which the group leaders will be assigned
-    * @param array $ldr_array    contains one or more usr_ids of the leaders)
+    * @param array $groupID        groupID of the group to which the group leaders will be assigned
+    * @param array $ldr_array    contains one or more userIDs of the leaders)
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function assign_grp2ldrs($grp_id, $ldr_array) {
+    public function assign_groupToGroupleaders($groupID, $ldr_array) {
       $p = $this->kga['server_prefix'];
 
       $this->conn->beginTransaction();
 
-      $d_query = $this->conn->prepare("DELETE FROM ${p}ldr WHERE grp_ID=?;");
-      $d_result = $d_query->execute(array($grp_id));
+      $d_query = $this->conn->prepare("DELETE FROM ${p}groupleaders WHERE groupID=?;");
+      $d_result = $d_query->execute(array($groupID));
       if ($d_result == false) {
-          $this->logLastError('assign_grp2ldrs');
+          $this->logLastError('assign_groupToGroupleaders');
           return false;
       }
 
       foreach ($ldr_array as $current_ldr) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}ldr (grp_ID,grp_leader) VALUES (?,?);");
-        $result = $pdo_query->execute(array($grp_id,$current_ldr));
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groupleaders (groupID,userID) VALUES (?,?);");
+        $result = $pdo_query->execute(array($groupID,$current_ldr));
         if ($result == false) {
-            $this->logLastError('assign_grp2ldrs');
+            $this->logLastError('assign_groupToGroupleaders');
             return false;
         }
       }
@@ -1502,7 +1504,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($this->conn->commit() == true) {
           return true;
       } else {
-          $this->logLastError('assign_grp2ldrs');
+          $this->logLastError('assign_groupToGroupleaders');
           return false;
       }
     }
@@ -1510,18 +1512,18 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the groups of the given group leader
     *
-    * @param array $ldr_id        usr_id of the group leader
+    * @param array $userID        userID of the group leader
     * @global array $this->kga         kimai-global-array
-    * @return array            contains the grp_IDs of the groups or false on error
+    * @return array            contains the groupIDs of the groups or false on error
     * @author ob
     */
-    public function ldr_get_grps($ldr_id) {
+    public function groupleader_get_groups($userID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}ldr WHERE grp_leader = ?;");
-      $result = $pdo_query->execute(array($ldr_id));
+      $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groupleaders WHERE userID = ?;");
+      $result = $pdo_query->execute(array($userID));
       if ($result == false) {
-          $this->logLastError('ldr_get_grps');
+          $this->logLastError('groupleader_get_groups');
           return false;
       }
 
@@ -1529,7 +1531,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_grp = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $return_grps[$counter] = $current_grp['grp_ID'];
+          $return_grps[$counter] = $current_grp['groupID'];
           $counter++;
       }
 
@@ -1539,19 +1541,20 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns all the group leaders of the given group
     *
-    * @param array $grp_id        grp_id of the group
+    * @param array $groupID        groupID of the group
     * @global array $this->kga         kimai-global-array
-    * @return array            contains the usr_IDs of the group's group leaders or false on error
+    * @return array            contains the userIDs of the group's group leaders or false on error
     * @author ob
     */
-    public function grp_get_ldrs($grp_id) {
+    public function group_get_groupleaders($groupID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT grp_leader FROM ${p}ldr
-      JOIN ${p}usr ON ${p}usr.usr_ID = ${p}ldr.grp_leader WHERE grp_ID = ? AND usr_trash=0;");
-      $result = $pdo_query->execute(array($grp_id));
+      $pdo_query = $this->conn->prepare("SELECT userID FROM ${p}groupleaders
+      JOIN ${p}users USING(userID)
+      WHERE groupID = ? AND trash=0;");
+      $result = $pdo_query->execute(array($groupID));
       if ($result == false) {
-          $this->logLastError('grp_get_ldrs');
+          $this->logLastError('group_get_groupleaders');
           return false;
       }
 
@@ -1559,7 +1562,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($current_ldr = $pdo_query->fetch()) {
-          $return_ldrs[$counter] = $current_ldr['grp_leader'];
+          $return_ldrs[$counter] = $current_ldr['userID'];
           $counter++;
       }
 
@@ -1571,21 +1574,21 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param array $data         name and other data of the new group
     * @global array $this->kga         kimai-global-array
-    * @return int                the grp_id of the new group, false on failure
+    * @return int                the groupID of the new group, false on failure
     * @author ob
     */
-    public function grp_create($data) {
+    public function group_create($data) {
       $p = $this->kga['server_prefix'];
 
       $data = $this->clean_data($data);
 
-      $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp (grp_name, grp_trash) VALUES (?, ?);");
-      $result = $pdo_query->execute(array($data['grp_name'], 0));
+      $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups (name, trash) VALUES (?, ?);");
+      $result = $pdo_query->execute(array($data['name'], 0));
 
       if ($result == true) {
           return $this->conn->lastInsertId();
       } else {
-          $this->logLastError('grp_create');
+          $this->logLastError('group_create');
           return false;
       }
     }
@@ -1593,19 +1596,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain group
     *
-    * @param array $grp_id        grp_id of the group
+    * @param array $groupID        groupID of the group
     * @global array $this->kga         kimai-global-array
     * @return array            the group's data (name, leader ID, etc) as array, false on failure
     * @author ob
     */
-    public function grp_get_data($grp_id) {
+    public function group_get_data($groupID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}grp WHERE grp_ID = ?");
-      $result = $pdo_query->execute(array($grp_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}groups WHERE groupID = ?");
+      $result = $pdo_query->execute(array($groupID));
 
       if ($result == false) {
-          $this->logLastError('grp_get_data');
+          $this->logLastError('group_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -1617,15 +1620,15 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain status
     *
-    * @param array $status_id  status_id of the group
+    * @param array $statusID  ID of the group
     * @return array         	 the group's data (name) as array, false on failure
     * @author mo
     */
-    public function status_get_data($status_id) {
+    public function status_get_data($statusID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}status WHERE status_id = ?");
-      $result = $pdo_query->execute(array($status_id));
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}statuses WHERE statusID = ?");
+      $result = $pdo_query->execute(array($statusID));
 
       if ($result == false) {
         $this->logLastError('status_get_data');
@@ -1639,19 +1642,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the number of users in a certain group
     *
-    * @param array $grp_id        grp_id of the group
+    * @param array $groupID        groupID of the group
     * @global array $this->kga         kimai-global-array
     * @return int            the number of users in the group
     * @author ob
     */
-    public function grp_count_users($grp_id) {
+    public function group_count_users($groupID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}grp_usr WHERE grp_ID = ?");
-      $result = $pdo_query->execute(array($grp_id));
+      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}groups_users WHERE groupID = ?");
+      $result = $pdo_query->execute(array($groupID));
 
       if ($result == false) {
-          $this->logLastError('grp_count_users');
+          $this->logLastError('group_count_users');
           return false;
       } else {
           $result_array = $pdo_query->fetch();
@@ -1662,22 +1665,22 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Edits a group by replacing its data by the new array
     *
-    * @param array $grp_id        grp_id of the group to be edited
+    * @param array $groupID        groupID of the group to be edited
     * @param array $data    name and other new data of the group
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function grp_edit($grp_id, $data) {
+    public function group_edit($groupID, $data) {
       $p = $this->kga['server_prefix'];
 
       $data = $this->clean_data($data);
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}grp SET grp_name = ? WHERE grp_ID = ?;");
-      $result = $pdo_query->execute(array($data['grp_name'],$grp_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}groups SET name = ? WHERE groupID = ?;");
+      $result = $pdo_query->execute(array($data['name'],$groupID));
 
       if ($result == false) {
-          $this->logLastError('grp_edit');
+          $this->logLastError('group_edit');
           return false;
       }
 
@@ -1687,18 +1690,18 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Edits a status by replacing its data by the new array
     *
-    * @param array $status_id  grp_id of the status to be edited
+    * @param array $statusID  ID of the status to be edited
     * @param array $data    name and other new data of the status
     * @return boolean       true on success, false on failure
     * @author mo
     */
-    public function status_edit($status_id, $data) {
+    public function status_edit($statusID, $data) {
       $p = $this->kga['server_prefix'];
 
       $data = $this->clean_data($data);
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}status SET status = ? WHERE status_id = ?;");
-      $result = $pdo_query->execute(array($data['status'],$status_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}statuses SET status = ? WHERE statusID = ?;");
+      $result = $pdo_query->execute(array($data['status'],$statusID));
 
       if ($result == false) {
           $this->logLastError('status_edit');
@@ -1720,7 +1723,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $this->conn->beginTransaction();
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}grp_usr WHERE usr_ID = ?");
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groups_users WHERE userID = ?");
       $result = $pdo_query->execute(array($userId));
 
       if (!$result) {
@@ -1730,7 +1733,7 @@ class PDODatabaseLayer extends DatabaseLayer
       }
 
       foreach ($groups as $group) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}grp_usr (usr_ID,grp_ID) VALUES (?,?)");
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_users (userID,groupID) VALUES (?,?)");
         $result = $pdo_query->execute(array($userId,$group));
 
         if (!$result) {
@@ -1755,7 +1758,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function getGroupMemberships($userId) {
     $p = $this->kga['server_prefix'];
 
-    $pdo_query = $this->conn->prepare("SELECT grp_ID FROM ${p}grp_usr WHERE usr_ID = ?");
+    $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groups_users WHERE userID = ?");
     $result = $pdo_query->execute(array($userId));
 
     if ($result == false) {
@@ -1765,7 +1768,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
     $arr = array();
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-      $arr[] = $row['grp_ID'];
+      $arr[] = $row['groupID'];
     }
 
     return $arr;
@@ -1774,19 +1777,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * deletes a group
     *
-    * @param array $grp_id        grp_id of the group
+    * @param array $groupID        groupID of the group
     * @global array $this->kga         kimai-global-array
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function grp_delete($grp_id) {
+    public function group_delete($groupID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}grp SET grp_trash=1 WHERE grp_ID = ?;");
-      $result = $pdo_query->execute(array($grp_id));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}groups SET trash=1 WHERE groupID = ?;");
+      $result = $pdo_query->execute(array($groupID));
 
       if ($result == false) {
-          $this->logLastError('grp_delete');
+          $this->logLastError('group_delete');
           return false;
       }
 
@@ -1797,24 +1800,24 @@ class PDODatabaseLayer extends DatabaseLayer
     * Returns all configuration variables
     *
     * @global array $this->kga         kimai-global-array
-    * @return array            array with the vars from the var table
+    * @return array            array with the options from the var table
     * @author ob
     */
-    public function var_get_data() {
+    public function configuration_get_data() {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}var;");
+      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}configuration;");
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('var_get_data');
+          $this->logLastError('configuration_get_data');
           return null;
       }
 
       $var_data = array();
 
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $var_data[$row['var']] = $row['value'];
+          $var_data[$row['option']] = $row['value'];
       }
 
       return $var_data;
@@ -1828,27 +1831,27 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return boolean            true on success, false on failure
     * @author ob
     */
-    public function var_edit($data) {
+    public function configuration_edit($data) {
       $p = $this->kga['server_prefix'];
 
       $data = $this->clean_data($data);
 
       $this->conn->beginTransaction();
 
-      $statement = $this->conn->prepare("UPDATE ${p}var SET value = ? WHERE var = ?");
+      $statement = $this->conn->prepare("UPDATE ${p}configuration SET value = ? WHERE option = ?");
 
       foreach ($data as $key => $value) {
         $statement->bindValue(1,$value);
         $statement->bindValue(2,$key);
 
         if (!$statement->execute()) {
-          $this->logLastError('var_edit');
+          $this->logLastError('configuration_edit');
           return false;
         }
       }
 
       if ($this->conn->commit() == false) {
-          $this->logLastError('var_edit');
+          $this->logLastError('configuration_edit');
           return false;
       }
 
@@ -1861,11 +1864,11 @@ class PDODatabaseLayer extends DatabaseLayer
      * @param integer $user ID of user in table usr
      * @return array with all IDs of current recordings. This array will be empty if there are none.
      */
-    public function get_current_recordings($usr_id) {
+    public function get_current_recordings($userID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT zef_ID FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
-      $result = $pdo_query->execute(array($usr_id));
+      $pdo_query = $this->conn->prepare("SELECT timeEntryID FROM ${p}timeSheet WHERE userID = ? AND start > 0 AND end = 0;");
+      $result = $pdo_query->execute(array($userID));
 
       if ($result == false) {
           $this->logLastError('get_current_recordings');
@@ -1875,7 +1878,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $IDs = array();
 
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $IDs[] = $row['zef_ID'];
+        $IDs[] = $row['timeEntryID'];
       }
 
       return $IDs;
@@ -1884,35 +1887,35 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the data of a certain time record
     *
-    * @param array $zef_id        zef_id of the record
+    * @param array $timeEntryID       timeEntryID of the record
     * @global array $this->kga          kimai-global-array
     * @return array               the record's data (time, event id, project id etc) as array, false on failure
     * @author ob
     */
-    public function zef_get_data($zef_id) {
+    public function timeSheet_get_data($timeEntryID) {
     	 
 	  $table = $this->getZefTable();
 	  $projectTable = $this->getProjectTable();
-	  $eventTable = $this->getEventTable();
+	  $eventTable = $this->getActivityTable();
 	  $customerTable = $this->getCustomerTable();
-	  $select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.knd_ID AS knd_ID
+	  $select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.customerID AS customerID
       				FROM $table
-                	JOIN $projectTable ON $table.zef_pctID = $projectTable.pct_ID
-                	JOIN $customerTable ON $projectTable.pct_kndID = $customerTable.knd_ID
-                	JOIN $eventTable ON $eventTable.evt_ID = $table.zef_evtID";
+                	JOIN $projectTable USING(projectID)
+                	JOIN $customerTable USING(customerID)
+                	JOIN $eventTable USING(activityID)";
 		
 		
 
-      if ($zef_id) {
-          $pdo_query = $this->conn->prepare("$select WHERE zef_ID = ?");
+      if ($timeEntryID) {
+          $pdo_query = $this->conn->prepare("$select WHERE timeEntryID = ?");
       } else {
-          $pdo_query = $this->conn->prepare("$select WHERE zef_usrID = ".$this->kga['usr']['usr_ID']." ORDER BY zef_ID DESC LIMIT 1");
+          $pdo_query = $this->conn->prepare("$select WHERE userID = ".$this->kga['usr']['userID']." ORDER BY timeEntryID DESC LIMIT 1");
       }
 
-      $result = $pdo_query->execute(array($zef_id));
+      $result = $pdo_query->execute(array($timeEntryID));
 
       if ($result == false) {
-          $this->logLastError('zef_get_data');
+          $this->logLastError('timeSheet_get_data');
           return false;
       } else {
           $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -1923,18 +1926,18 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * delete zef entry
     *
-    * @param integer $usr_ID
+    * @param integer $userID
     * @param integer $id -> ID of record
     * @global array  $this->kga kimai-global-array
     * @author th
     */
-    public function zef_delete_record($id) {
+    public function timeEntry_delete($id) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}zef WHERE `zef_ID` = ? LIMIT 1;");
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}timeSheet WHERE `timeEntryID` = ? LIMIT 1;");
       $result = $pdo_query->execute(array($id));
       if ($result == false) {
-          $this->logLastError('zef_delete_record');
+          $this->logLastError('timeEntry_delete');
           return $result;
       }
     }
@@ -1947,42 +1950,42 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array  $this->kga    kimai-global-array
     * @author th
     */
-    public function zef_create_record($data) {
+    public function timeEntry_create($data) {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("INSERT INTO ${p}zef (
-      `zef_pctID`,
-      `zef_evtID`,
-      `zef_location`,
-      `zef_trackingnr`,
-      `zef_description`,
-      `zef_comment`,
-      `zef_comment_type`,
-      `zef_in`,
-      `zef_out`,
-      `zef_time`,
-      `zef_usrID`,
-      `zef_rate`,
-      `zef_cleared`,
-      `zef_budget`,
-      `zef_approved`,
-      `zef_status`,
-      `zef_billable`
+      `projectID`,
+      `activityID`,
+      `location`,
+      `trackingNumber`,
+      `description`,
+      `comment`,
+      `commentType`,
+      `start`,
+      `end`,
+      `duration`,
+      `userID`,
+      `rate`,
+      `cleared`,
+      `budget`,
+      `approved`,
+      `status`,
+      `billable`
       ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ;");
 
       $result = $pdo_query->execute(array(
-      (int)$data['pct_ID'],
-      (int)$data['evt_ID'] ,
+      (int)$data['projectID'],
+      (int)$data['activityID'] ,
       $data['zlocation'],
       $data['trackingnr']==''?null:$data['trackingnr'],
       $data['description'],
       $data['comment'],
-      (int)$data['comment_type'] ,
+      (int)$data['commentType'] ,
       (int)$data['in'],
       (int)$data['out'],
       (int)$data['diff'],
-      (int)$data['zef_usrID'],
+      (int)$data['userID'],
       (int)$data['rate'],
       $data['cleared']?1:0,
       (int)$data['budget'],
@@ -1992,7 +1995,7 @@ class PDODatabaseLayer extends DatabaseLayer
       ));
 
       if ($result === false) {
-          $this->logLastError('zef_create_record');
+          $this->logLastError('timeEntry_create');
           return false;
       }
       else
@@ -2007,10 +2010,10 @@ class PDODatabaseLayer extends DatabaseLayer
     * @param array $data  array with new record data
     * @author th
     */
-    public function zef_edit_record($id, Array $data) {
+    public function timeEntry_edit($id, Array $data) {
       $p = $this->kga['server_prefix'];
 
-      $original_array = $this->zef_get_data($id);
+      $original_array = $this->timeSheet_get_data($id);
       $new_array = array();
 
       foreach ($original_array as $key => $value) {
@@ -2021,49 +2024,49 @@ class PDODatabaseLayer extends DatabaseLayer
           }
       }
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET
-      zef_usrID = ?,
-      zef_pctID = ?,
-      zef_evtID = ?,
-      zef_location = ?,
-      zef_trackingnr = ?,
-      zef_description = ?,
-      zef_comment = ?,
-      zef_comment_type = ?,
-      zef_in = ?,
-      zef_out = ?,
-      zef_time = ?,
-      zef_rate = ?,
-      zef_cleared= ?,
-      zef_budget= ?,
-      zef_approved= ?,
-      zef_status= ?,
-      zef_billable= ?
-      WHERE zef_ID = ?;");
+      $pdo_query = $this->conn->prepare("UPDATE ${p}timeSheet SET
+      userID = ?,
+      projectID = ?,
+      activityID = ?,
+      location = ?,
+      trackingNumber = ?,
+      description = ?,
+      comment = ?,
+      commentType = ?,
+      start = ?,
+      end = ?,
+      duration = ?,
+      rate = ?,
+      cleared= ?,
+      budget= ?,
+      approved= ?,
+      status= ?,
+      billable= ?
+      WHERE timeEntryID = ?;");
 
       $result = $pdo_query->execute(array(
-      (int)$new_array['zef_usrID'],
-      (int)$new_array['zef_pctID'],
-      (int)$new_array['zef_evtID'] ,
-      $new_array['zef_location'],
-      $new_array['zef_trackingnr']==''?null:$new_array['zef_trackingnr'],
-      $new_array['zef_description'],
-      $new_array['zef_comment'],
-      (int)$new_array['zef_comment_type'] ,
-      (int)$new_array['zef_in'],
-      (int)$new_array['zef_out'],
-      (int)$new_array['zef_time'],
-      (int)$new_array['zef_rate'],
-      (int)$new_array['zef_cleared'],
-      (int)$new_array['zef_budget'],
-      (int)$new_array['zef_approved'],
-      (int)$new_array['zef_status'],
-      (int)$new_array['zef_billable'],
+      (int)$new_array['userID'],
+      (int)$new_array['projectID'],
+      (int)$new_array['activityID'] ,
+      $new_array['location'],
+      $new_array['trackingNumber']==''?null:$new_array['trackingNumber'],
+      $new_array['description'],
+      $new_array['comment'],
+      (int)$new_array['commentType'] ,
+      (int)$new_array['start'],
+      (int)$new_array['end'],
+      (int)$new_array['duration'],
+      (int)$new_array['rate'],
+      (int)$new_array['cleared'],
+      (int)$new_array['budget'],
+      (int)$new_array['approved'],
+      (int)$new_array['status'],
+      (int)$new_array['billable'],
       $id
       ));
 
       if ($result == false) {
-          $this->logLastError('zef_edit_record');
+          $this->logLastError('timeEntry_edit');
           return $result;
       }
     }
@@ -2071,37 +2074,37 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * saves timespace of user in database (table conf)
     *
-    * @param string $timespace_in unix seconds
-    * @param string $timespace_out unix seconds
+    * @param string $timeframeBegin unix seconds
+    * @param string $timeframeEnd unix seconds
     * @param string $user ID of user
     *
     * @author th
     */
-    public function save_timespace($timespace_in,$timespace_out,$user) {
+    public function save_timeframe($timeframeBegin,$timeframeEnd,$user) {
       $p = $this->kga['server_prefix'];
 
-      if ($timespace_in == 0 && $timespace_out == 0) {
+      if ($timeframeBegin == 0 && $timeframeEnd == 0) {
           $mon = date("n"); $day = date("j"); $Y = date("Y");
-          $timespace_in  = mktime(0,0,0,$mon,$day,$Y);
-          $timespace_out = mktime(23,59,59,$mon,$day,$Y);
+          $timeframeBegin  = mktime(0,0,0,$mon,$day,$Y);
+          $timeframeEnd = mktime(23,59,59,$mon,$day,$Y);
       }
 
-      if ($timespace_out == mktime(23,59,59,date('n'),date('j'),date('Y')))
-        $timespace_out = 0;
+      if ($timeframeEnd == mktime(23,59,59,date('n'),date('j'),date('Y')))
+        $timeframeEnd = 0;
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET timespace_in  = ? WHERE usr_ID = ?;");
-      $result = $pdo_query->execute(array($timespace_in ,$user));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}users SET timeframeBegin  = ? WHERE userID = ?;");
+      $result = $pdo_query->execute(array($timeframeBegin ,$user));
 
       if ($result == false) {
-          $this->logLastError('save_timespace');
+          $this->logLastError('save_timeframe');
           return false;
       }
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET timespace_out = ? WHERE usr_ID = ?;");
-      $result = $pdo_query->execute(array($timespace_out ,$user));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}users SET timeframeEnd = ? WHERE userID = ?;");
+      $result = $pdo_query->execute(array($timeframeEnd ,$user));
 
       if ($result == false) {
-          $this->logLastError('save_timespace');
+          $this->logLastError('save_timeframe');
           return false;
       }
     }
@@ -2114,44 +2117,48 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_pct(array $groups = null) {
+    public function get_arr_projects(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
 
       if ($groups === null)
-        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID AND pct_trash=0";
+        $query = "SELECT project.*, customer.name AS customerName
+                  FROM ${p}projects AS project
+                  JOIN ${p}customers AS customer ON USING(customerID)
+                  WHERE project.trash=0";
       else
-        $query = "SELECT * FROM ${p}pct
-         JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
-         JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
-         WHERE ${p}grp_pct.grp_ID IN (".implode($groups,',').")
-          AND pct_trash=0";
+        $query = "SELECT project.*, customer.name AS customerName
+                  FROM ${p}projects AS project
+                  JOIN ${p}customers AS customer USING(customerID)
+                  JOIN ${p}groups_projects USING(projectID)
+                  WHERE ${p}groups_projects.groupID IN (".implode($groups,',').")
+                    AND project.trash=0";
 
       if ($this->kga['conf']['flip_pct_display'])
-        $query .= " ORDER BY pct_visible DESC,knd_name,pct_name;";
+        $query .= " ORDER BY project.visible DESC, customerName, name;";
       else
-        $query .= " ORDER BY pct_visible DESC,pct_name,knd_name;";
+        $query .= " ORDER BY project.visible DESC, name, customerName;";
 
       $pdo_query = $this->conn->prepare($query);
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_pct');
+          $this->logLastError('get_arr_projects');
           return false;
       }
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['pct_ID']      = $row['pct_ID'];
-          $arr[$i]['pct_name']    = $row['pct_name'];
-      $arr[$i]['pct_comment'] = $row['pct_comment'];
-          $arr[$i]['knd_name']    = $row['knd_name'];
-          $arr[$i]['knd_ID']      = $row['knd_ID'];
-          $arr[$i]['pct_visible'] = $row['pct_visible'];
-          $arr[$i]['pct_budget'] = $row['pct_budget'];
-          $arr[$i]['pct_effort'] = $row['pct_effort'];
-          $arr[$i]['pct_approved'] = $row['pct_approved'];
+          $arr[$i]['projectID']   = $row['projectID'];
+          $arr[$i]['name']        = $row['name'];
+          $arr[$i]['comment']     = $row['comment'];
+          $arr[$i]['customerNme'] = $row['customerName'];
+          $arr[$i]['customerID']  = $row['customerID'];
+          $arr[$i]['visible']     = $row['visible'];
+          $arr[$i]['budget']      = $row['budget'];
+          $arr[$i]['effort']      = $row['effort'];
+          $arr[$i]['approved']    = $row['approved'];
           $i++;
       }
       return $arr;
@@ -2160,49 +2167,55 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns list of projects for specific group and specific customer as array
     *
-    * @param integer $user ID of user in database
-    * @param integer $knd_id customer id
+    * @param integer $customerID   ID of the customer
+    * @param array $groups group IDs
     * @global array $this->kga kimai-global-array
     * @return array
     * @author ob
     */
-    public function get_arr_pct_by_knd($knd_id, array $groups = null) {
+    public function get_arr_projects_by_customer($customerID, array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
 
       if ($groups == "all" || $groups == null)
-        $query = "SELECT * FROM ${p}pct JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID WHERE ${p}pct.pct_kndID = ? AND pct_internal=0 AND pct_trash=0";
+        $query = "SELECT project.*, customer.name AS customerName
+                  FROM ${p}projects AS project
+                  JOIN ${p}customers USING(customerID)
+                  WHERE customerID = ? 
+                    AND project.internal=0
+                    AND project.trash=0";
       else
-        $query = "SELECT * FROM ${p}pct
-         JOIN ${p}knd ON ${p}pct.pct_kndID = ${p}knd.knd_ID
-         JOIN ${p}grp_pct ON ${p}grp_pct.pct_ID = ${p}pct.pct_ID
-        WHERE ${p}grp_pct.grp_ID  IN (".implode($groups,',').")
-         AND ${p}pct.pct_kndID = ?
-         AND pct_internal=0
-         AND pct_trash=0";
+        $query = "SELECT project.*, customer.name AS customerName
+                  FROM ${p}projects AS project
+                  JOIN ${p}customers USING(customerID)
+                  JOIN ${p}groups_projects USING(projectID)
+                  WHERE groupID  IN (".implode($groups,',').")
+                    AND ${p}projects.customerID = ?
+                    AND project.internal=0
+                    AND project.trash=0";
 
       if ($this->kga['conf']['flip_pct_display'])
-        $query .= " ORDER BY knd_name,pct_name;";
+        $query .= " ORDER BY customerName, name;";
       else
-        $query .= " ORDER BY pct_name,knd_name;";
+        $query .= " ORDER BY name, customerName;";
 
       $pdo_query = $this->conn->prepare($query);
-      $result = $pdo_query->execute(array($knd_id));
+      $result = $pdo_query->execute(array($customerID));
 
       if ($result == false) {
-          $this->logLastError('get_arr_pct_by_knd');
+          $this->logLastError('get_arr_projects_by_customer');
           return false;
       }
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['pct_ID']      = $row['pct_ID'];
-          $arr[$i]['pct_name']    = $row['pct_name'];
-          $arr[$i]['knd_name']    = $row['knd_name'];
-          $arr[$i]['knd_ID']      = $row['knd_ID'];
-          $arr[$i]['pct_visible'] = $row['pct_visible'];
-          $arr[$i]['pct_budget']  = $row['pct_budget'];
+          $arr[$i]['projectID']    = $row['projectID'];
+          $arr[$i]['name']         = $row['name'];
+          $arr[$i]['customerName'] = $row['customerName'];
+          $arr[$i]['customerID']   = $row['customerID'];
+          $arr[$i]['visible']      = $row['visible'];
+          $arr[$i]['budget']       = $row['budget'];
           $i++;
       }
       return $arr;
@@ -2230,19 +2243,19 @@ class PDODatabaseLayer extends DatabaseLayer
       $whereClauses = array();
 
       if (count($users) > 0) {
-        $whereClauses[] = "zef_usrID in (".implode(',',$users).")";
+        $whereClauses[] = "userID in (".implode(',',$users).")";
       }
 
       if (count($customers) > 0) {
-        $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+        $whereClauses[] = "customerID in (".implode(',',$customers).")";
       }
 
       if (count($projects) > 0) {
-        $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+        $whereClauses[] = "projectID in (".implode(',',$projects).")";
       }
 
       if (count($events) > 0) {
-        $whereClauses[] = "evt_ID in (".implode(',',$events).")";
+        $whereClauses[] = "activityID in (".implode(',',$events).")";
       }
 
       return $whereClauses;
@@ -2254,13 +2267,13 @@ class PDODatabaseLayer extends DatabaseLayer
     * TODO: Test it!
     *
     * @param integer $user ID of user in table usr
-    * @param integer $in start of timespace in unix seconds
-    * @param integer $out end of timespace in unix seconds
+    * @param integer $start start of timespace in unix seconds
+    * @param integer $end end of timespace in unix seconds
     * @global array $this->kga kimai-global-array
     * @return array
     * @author th
     */
-    public function get_arr_zef($in,$out,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+    public function get_arr_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -2270,14 +2283,14 @@ class PDODatabaseLayer extends DatabaseLayer
       $whereClauses = $this->zef_whereClausesFromFilters($users, $customers , $projects , $events );
 
       if (isset($this->kga['customer']))
-        $whereClauses[] = "${p}pct.pct_internal = 0";
+        $whereClauses[] = "${p}projects.internal = 0";
 
-      if ($in)
-        $whereClauses[]="(zef_out > $in || zef_out = 0)";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
+      if ($start)
+        $whereClauses[]="(end > $start || end = 0)";
+      if ($end)
+        $whereClauses[]="start < $end";
       if ($filterCleared > -1)
-        $whereClauses[] = "zef_cleared = $filterCleared";
+        $whereClauses[] = "cleared = $filterCleared";
 
       if ($limit) {
       	  if(!empty($limitRows))
@@ -2295,9 +2308,8 @@ class PDODatabaseLayer extends DatabaseLayer
           $limit="";
       }
 		
-      $select = "SELECT zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_budget, zef_approved, status, zef_billable,
-                       zef_pctID, zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment, pct_name,
-                       zef_location, zef_trackingnr, zef_description, zef_comment, zef_comment_type, usr_name, usr_alias, zef_cleared";
+      $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, activity.name AS activityName,
+                        project.name AS projectName, project.comment AS projectComment, user.name AS userName ";
       if($countOnly)
       {
       	$select = "SELECT COUNT(*) AS total";
@@ -2305,21 +2317,21 @@ class PDODatabaseLayer extends DatabaseLayer
       }
       
       $query = "$select
-              FROM ${p}zef
-              Join ${p}pct ON zef_pctID = pct_ID
-              Join ${p}knd ON pct_kndID = knd_ID
-              Join ${p}usr ON zef_usrID = usr_ID
-              Join ${p}status ON zef_status = status_id
-              Join ${p}evt ON evt_ID    = zef_evtID "
+                FROM ${p}timeSheet AS timeSheet
+                Join ${p}projects AS project USING (projectID)
+                Join ${p}customers AS customer USING (customerID)
+                Join ${p}users AS user USING(userID)
+                Join ${p}statuses AS status ON status = statusID
+                Join ${p}activities AS activity USING(activityID) "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-              ' ORDER BY zef_in '.($reverse_order?'ASC ':'DESC ') . $limit . ';';
+              ' ORDER BY start '.($reverse_order?'ASC ':'DESC ') . $limit . ';';
 
       $pdo_query = $this->conn->prepare($query);
 
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_zef');
+          $this->logLastError('get_arr_timeSheet');
           return false;
       }
 		
@@ -2335,55 +2347,55 @@ class PDODatabaseLayer extends DatabaseLayer
       $arr=array();
       /* TODO: needs revision as foreach loop */
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['zef_ID']           = $row['zef_ID'];
+          $arr[$i]['timeEntryID']           = $row['timeEntryID'];
 
           // Start time should not be less than the selected start time. This would confuse the user.
-          if ($in && $row['zef_in'] <= $in)  {
-            $arr[$i]['zef_in'] = $in;
+          if ($start && $row['start'] <= $start)  {
+            $arr[$i]['start'] = $start;
           } else {
-            $arr[$i]['zef_in'] = $row['zef_in'];
+            $arr[$i]['start'] = $row['start'];
           }
 
           // End time should not be less than the selected start time. This would confuse the user.
-          if ($out && $row['zef_out'] >= $out)  {
-            $arr[$i]['zef_out'] = $out;
+          if ($end && $row['end'] >= $end)  {
+            $arr[$i]['end'] = $end;
           } else {
-            $arr[$i]['zef_out'] = $row['zef_out'];
+            $arr[$i]['end'] = $row['end'];
           }
 
-          if ($row['zef_out'] != 0) {
+          if ($row['end'] != 0) {
             // only calculate time after recording is complete
-            $arr[$i]['zef_time']         = $arr[$i]['zef_out'] - $arr[$i]['zef_in'];
-            $arr[$i]['zef_duration']     = Format::formatDuration($arr[$i]['zef_time']);
-            $arr[$i]['wage_decimal']     = $arr[$i]['zef_time']/3600*$row['zef_rate'];
+            $arr[$i]['duration']         = $arr[$i]['end'] - $arr[$i]['start'];
+            $arr[$i]['formattedDuration']     = Format::formatDuration($arr[$i]['duration']);
+            $arr[$i]['wage_decimal']     = $arr[$i]['duration']/3600*$row['rate'];
             $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
           }
 
 
-          $arr[$i]['zef_rate']         = $row['zef_rate'];
-          $arr[$i]['zef_pctID']        = $row['zef_pctID'];
-          $arr[$i]['zef_evtID']        = $row['zef_evtID'];
-          $arr[$i]['zef_usrID']        = $row['zef_usrID'];
-          $arr[$i]['pct_ID']           = $row['pct_ID'];
-          $arr[$i]['knd_name']         = $row['knd_name'];
+          $arr[$i]['rate']         = $row['rate'];
+          $arr[$i]['projectID']        = $row['projectID'];
+          $arr[$i]['activityID']        = $row['activityID'];
+          $arr[$i]['userID']        = $row['userID'];
+          $arr[$i]['projectID']           = $row['projectID'];
+          $arr[$i]['customerName']         = $row['customerName'];
           // $arr[$i]['grp_name']      = $row['grp_name'];
           // $arr[$i]['pct_grpID']     = $row['pct_grpID'];
-          $arr[$i]['pct_kndID']        = $row['pct_kndID'];
-          $arr[$i]['evt_name']         = $row['evt_name'];
-          $arr[$i]['pct_name']         = $row['pct_name'];
-          $arr[$i]['pct_comment']      = $row['pct_comment'];
-          $arr[$i]['zef_location']     = $row['zef_location'];
-          $arr[$i]['zef_trackingnr']   = $row['zef_trackingnr'];
-          $arr[$i]['zef_budget']  	   = $row['zef_budget'];
-          $arr[$i]['zef_approved']     = $row['zef_approved'];
-          $arr[$i]['zef_status']       = $row['status'];
-          $arr[$i]['zef_billable']     = $row['zef_billable'];
-          $arr[$i]['zef_description']  = $row['zef_description'];
-          $arr[$i]['zef_comment']      = $row['zef_comment'];
-          $arr[$i]['zef_cleared']      = $row['zef_cleared'];
-          $arr[$i]['zef_comment_type'] = $row['zef_comment_type'];
-          $arr[$i]['usr_name']         = $row['usr_name'];
-          $arr[$i]['usr_alias']        = $row['usr_alias'];
+          $arr[$i]['customerID']        = $row['customerID'];
+          $arr[$i]['activityName']         = $row['activityName'];
+          $arr[$i]['projectName']         = $row['projectName'];
+          $arr[$i]['projectComment']      = $row['projectComment'];
+          $arr[$i]['location']     = $row['location'];
+          $arr[$i]['trackingNumber']   = $row['trackingNumber'];
+          $arr[$i]['budget']  	   = $row['budget'];
+          $arr[$i]['approved']     = $row['approved'];
+          $arr[$i]['status']       = $row['status'];
+          $arr[$i]['billable']     = $row['billable'];
+          $arr[$i]['description']  = $row['description'];
+          $arr[$i]['comment']      = $row['comment'];
+          $arr[$i]['cleared']      = $row['cleared'];
+          $arr[$i]['commentType'] = $row['commentType'];
+          $arr[$i]['userName']         = $row['userName'];
+          $arr[$i]['alias']        = $row['alias'];
           $i++;
       }
 
@@ -2397,9 +2409,9 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * <pre>
     * returns:
-    * [usr_ID] user ID,
-    * [usr_sts] user status (rights),
-    * [usr_name] username
+    * [userID] user ID,
+    * [status] user status (rights),
+    * [name] username
     * </pre>
     *
     * @param integer $user ID of user in table usr
@@ -2411,7 +2423,7 @@ class PDODatabaseLayer extends DatabaseLayer
     {
     $p = $this->kga['server_prefix'];
     if (strncmp($kimai_usr, 'knd_', 4) == 0) {
-        $data     = $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ? AND NOT knd_trash = '1';");
+        $data     = $pdo_query = $this->conn->prepare("SELECT customerID FROM ${p}customers WHERE name = ? AND NOT trash = '1';");
         $result   = $pdo_query->execute(array(substr($kimai_usr,4)));
 
         if ($result == false) {
@@ -2421,14 +2433,14 @@ class PDODatabaseLayer extends DatabaseLayer
         }
 
         $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        $knd_ID   = $row['knd_ID'];
-        if ($knd_ID < 1) {
+        $customerID   = $row['customerID'];
+        if ($customerID < 1) {
             kickUser();
         }
     }
     else
     {
-        $data     = $pdo_query = $this->conn->prepare("SELECT usr_ID,usr_sts FROM ${p}usr WHERE usr_name = ? AND usr_active = '1' AND NOT usr_trash = '1';");
+        $data     = $pdo_query = $this->conn->prepare("SELECT userID, status FROM ${p}users WHERE name = ? AND active = '1' AND NOT trash = '1';");
         $result   = $pdo_query->execute(array($kimai_usr));
 
         if ($result == false) {
@@ -2438,10 +2450,10 @@ class PDODatabaseLayer extends DatabaseLayer
         }
 
         $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        $usr_ID   = $row['usr_ID'];
-        $usr_sts  = $row['usr_sts']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-        $usr_name = $kimai_usr;
-        if ($usr_ID < 1) {
+        $userID   = $row['userID'];
+        $status  = $row['status']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
+        $name = $kimai_usr;
+        if ($userID < 1) {
             kickUser();
         }
     }
@@ -2449,10 +2461,10 @@ class PDODatabaseLayer extends DatabaseLayer
     // load configuration
     $this->get_global_config();
     if (strncmp($kimai_usr, 'knd_', 4) == 0) {
-        $this->get_customer_config($knd_ID);
+        $this->get_customer_config($customerID);
     } else {
         // get_customer_config
-        $this->get_user_config($usr_ID);
+        $this->get_user_config($userID);
     }
 
     // override default language if user has chosen a language in the prefs
@@ -2476,7 +2488,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $p = $this->kga['server_prefix'];
 
     // get values from global configuration
-    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}var;");
+    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}configuration;");
     $result = $pdo_query->execute();
 
     if ($result == false) {
@@ -2487,7 +2499,7 @@ class PDODatabaseLayer extends DatabaseLayer
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
     do {
-        $this->kga['conf'][$row['var']] = $row['value'];
+        $this->kga['conf'][$row['option']] = $row['value'];
     } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
 
     $this->kga['conf']['timezone'] = $this->kga['conf']['defaultTimezone'];
@@ -2505,7 +2517,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
 
     // get status values
-    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}status;");
+    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}statuses;");
     $result = $pdo_query->execute();
 
     if ($result == false) {
@@ -2516,7 +2528,7 @@ class PDODatabaseLayer extends DatabaseLayer
     $row  = $pdo_query->fetch(PDO::FETCH_ASSOC);
 
     do {
-        $this->kga['conf']['status'][$row['status_id']] = $row['status'];
+        $this->kga['conf']['status'][$row['statusID']] = $row['status'];
     } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
     }
 
@@ -2535,7 +2547,7 @@ class PDODatabaseLayer extends DatabaseLayer
         }
 
         // get values from user record
-        $pdo_query = $this->conn->prepare("SELECT `usr_ID`, `usr_name` FROM ${p}usr WHERE `apikey` = ? AND NOT usr_trash = '1';");
+        $pdo_query = $this->conn->prepare("SELECT `userID`, `name` FROM ${p}users WHERE `apikey` = ? AND NOT trash = '1';");
 
         $result = $pdo_query->execute(array($apikey));
 
@@ -2545,7 +2557,7 @@ class PDODatabaseLayer extends DatabaseLayer
         }
 
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        return $row['usr_name'];
+        return $row['name'];
     }
 
     /**
@@ -2564,25 +2576,25 @@ class PDODatabaseLayer extends DatabaseLayer
 
     // get values from user record
     $pdo_query = $this->conn->prepare("SELECT
-    `usr_ID`,
-    `usr_name`,
-    `usr_sts`,
-    `usr_trash`,
-    `usr_active`,
-    `usr_mail`,
-    `pw`,
+    `userID`,
+    `name`,
+    `status`,
+    `trash`,
+    `active`,
+    `mail`,
+    `password`,
     `ban`,
     `banTime`,
     `secure`,
 
     `lastProject`,
-    `lastEvent`,
+    `lastActivity`,
     `lastRecord`,
-    `timespace_in`,
-    `timespace_out`,
+    `timeframeBegin`,
+    `timeframeEnd`,
     `apikey`
 
-    FROM ${p}usr WHERE usr_ID = ?;");
+    FROM ${p}users WHERE userID = ?;");
 
     $result = $pdo_query->execute(array($user));
 
@@ -2598,8 +2610,8 @@ class PDODatabaseLayer extends DatabaseLayer
 
     $this->kga['usr']['groups'] = $this->getGroupMemberships($user);
 
-    $this->kga['conf'] = array_merge($this->kga['conf'],$this->usr_get_preferences_by_prefix('ui.',$this->kga['usr']['usr_ID']));
-    $userTimezone = $this->usr_get_preference('timezone');
+    $this->kga['conf'] = array_merge($this->kga['conf'],$this->user_get_preferences_by_prefix('ui.',$this->kga['usr']['userID']));
+    $userTimezone = $this->user_get_preference('timezone');
     if ($userTimezone != '')
       $this->kga['conf']['timezone'] = $userTimezone;
 
@@ -2619,7 +2631,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
 
     // get values from customer record
-    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_ID = ?;");
+    $pdo_query = $this->conn->prepare("SELECT * FROM ${p}customers WHERE customerID = ?;");
     $result = $pdo_query->execute(array($customer_ID));
 
     if ($result == false) {
@@ -2646,7 +2658,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function is_customer_name($name) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT knd_ID FROM ${p}knd WHERE knd_name = ?");
+      $pdo_query = $this->conn->prepare("SELECT customerID FROM ${p}customers WHERE name = ?");
       $result = $pdo_query->execute(array($name));
 
       if ($result == false) {
@@ -2661,26 +2673,26 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns time summary of current timesheet
     *
     * @param integer $user ID of user in table usr
-    * @param integer $in start of timespace in unix seconds
-    * @param integer $out end of timespace in unix seconds
+    * @param integer $start start of timespace in unix seconds
+    * @param integer $end end of timespace in unix seconds
     * @global array $this->kga kimai-global-array
     * @return integer
     * @author th
     */
     // correct syntax - but doesn't work with all PDO versions because of a bug
     // reported here: http://pecl.php.net/bugs/bug.php?id=8045
-    // public function get_zef_time($user,$in,$out) {
+    // public function get_duration($user,$start,$end) {
     //     global $this->kga;
     //     global $this->conn;
-    //     $pdo_query = $this->conn->prepare("SELECT SUM(`zef_time`) AS zeit FROM " . $this->kga['server_prefix'] . "zef WHERE zef_usrID = ? AND zef_in > ? AND zef_out < ? LIMIT ?;");
-    //     $pdo_query->execute(array($user,$in,$out,$this->kga['conf']['rowlimit']));
+    //     $pdo_query = $this->conn->prepare("SELECT SUM(`duration`) AS zeit FROM " . $this->kga['server_prefix'] . "zef WHERE userID = ? AND start > ? AND end < ? LIMIT ?;");
+    //     $pdo_query->execute(array($user,$start,$end,$this->kga['conf']['rowlimit']));
     //     $data = $pdo_query->fetch(PDO::FETCH_ASSOC);
     //     $zeit = $data['zeit'];
     //     return $zeit;
     // }
     // th: solving this by doing a loop and add the seconds manually...
     //     btw - using the rowlimit is not correct here because we want the time for the timespace, not for the rows in the timesheet ... my fault
-    public function get_zef_time($in,$out,$users = null, $customers = null, $projects = null, $events = null, $filterCleared = null) {
+    public function get_duration($start,$end,$users = null, $customers = null, $projects = null, $events = null, $filterCleared = null) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -2689,46 +2701,47 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
 
-      if ($in)
-        $whereClauses[]="zef_out > $in";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
+      if ($start)
+        $whereClauses[]="end > $start";
+      if ($end)
+        $whereClauses[]="start < $end";
       if ($filterCleared > -1)
-        $whereClauses[] = "zef_cleared = $filterCleared";
+        $whereClauses[] = "cleared = $filterCleared";
 
-      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out,zef_time FROM ${p}zef
-              Join ${p}pct ON zef_pctID = pct_ID
-              Join ${p}knd ON pct_kndID = knd_ID
-              Join ${p}usr ON zef_usrID = usr_ID
-              Join ${p}evt ON evt_ID    = zef_evtID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+      $pdo_query = $this->conn->prepare("SELECT start, end, duration FROM ${p}timeSheet
+              Join ${p}projects USING(projectID)
+              Join ${p}customers USING(customerID)
+              Join ${p}users USING(userID)
+              Join ${p}activities USING(activityID) "
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_zef_time');
+          $this->logLastError('get_duration');
           return null;
       }
 
       $sum = 0;
-      $zef_in = 0;
-      $zef_out = 0;
+      $start = 0;
+      $end = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
-          $zef_in  = $in;
-          $zef_out = $row['zef_out'];
+        if ($row['start'] <= $start && $row['end'] < $end)  {
+          $start  = $start;
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $in;
-          $zef_out = $out;
+        else if ($row['start'] <= $start && $row['end'] >= $end)  {
+          $start  = $start;
+          $end = $end;
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $row['zef_out'];
+        else if ($row['start'] > $start && $row['end'] < $end)  {
+          $start  = $row['start'];
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $out;
+        else if ($row['start'] > $start && $row['end'] >= $end)  {
+          $start  = $row['start'];
+          $end = $end;
         }
-        $sum+=(int)($zef_out - $zef_in);
+        $sum+=(int)($end - $start);
       }
       return $sum;
     }
@@ -2744,33 +2757,37 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_knd(array $groups = null) {
+    public function get_arr_customers(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
       if ($groups === null) {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd WHERE knd_trash=0 ORDER BY knd_visible DESC,knd_name;");
+          $pdo_query = $this->conn->prepare("SELECT customerID, name, contact, visible
+              FROM ${p}customers
+              WHERE trash=0
+              ORDER BY visible DESC, name;");
           $result = $pdo_query->execute();
       } else {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}knd
-           JOIN ${p}grp_knd ON `${p}grp_knd`.`knd_ID`=`${p}knd`.`knd_ID`
-          WHERE `${p}grp_knd`.`grp_ID` IN (".implode($groups,',').")
-           AND knd_trash=0
-          ORDER BY knd_visible DESC, knd_name;");
+          $pdo_query = $this->conn->prepare("SELECT customerID, name, contact, visible
+              FROM ${p}customers AS customer
+              JOIN ${p}groups_customers AS g_c USING(customerID)
+              WHERE g_c.groupID IN (".implode($groups,',').")
+                AND trash=0
+              ORDER BY visible DESC, name;");
           $result = $pdo_query->execute();
       }
 
       if ($result == false) {
-          $this->logLastError('get_arr_knd');
+          $this->logLastError('get_arr_customers');
           return null;
       }
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['knd_ID']      = $row['knd_ID'];
-          $arr[$i]['knd_name']    = $row['knd_name'];
-          $arr[$i]['knd_contact'] = $row['knd_contact'];
-          $arr[$i]['knd_visible'] = $row['knd_visible'];
+          $arr[$i]['customerID'] = $row['customerID'];
+          $arr[$i]['name']       = $row['name'];
+          $arr[$i]['contact']    = $row['contact'];
+          $arr[$i]['visible']    = $row['visible'];
           $i++;
       }
 
@@ -2790,22 +2807,22 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $arr = array();
 
-      if ($user['usr_sts'] == "0") { // if is admin
-        $pdo_query = $this->conn->prepare("SELECT * FROM ${p}usr WHERE usr_trash=0 ORDER BY usr_name");
+      if ($user['status'] == "0") { // if is admin
+        $pdo_query = $this->conn->prepare("SELECT * FROM ${p}users WHERE trash=0 ORDER BY name");
         $result = $pdo_query->execute();
 
         $arr = array();
         $i=0;
         while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-            $arr[$i]['usr_ID']   = $row['usr_ID'];
-            $arr[$i]['usr_name'] = $row['usr_name'];
+            $arr[$i]['userID']   = $row['userID'];
+            $arr[$i]['name'] = $row['name'];
             $i++;
         }
         return $arr;
       }
 
-      $pdo_query = $this->conn->prepare("SELECT grp_ID FROM " . $this->kga['server_prefix'] . "grp_ldr WHERE grp_leader=?");
-      $success = $pdo_query->execute(array($user['usr_ID']));
+      $pdo_query = $this->conn->prepare("SELECT groupID FROM " . $this->kga['server_prefix'] . "groupleaders WHERE userID=?");
+      $success = $pdo_query->execute(array($user['userID']));
 
       if (!$success) {
         $this->logLastError('get_arr_watchable_users');
@@ -2814,17 +2831,17 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $leadingGroups = array();
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC))
-        $leadingGroups[] = $row['grp_ID'];
+        $leadingGroups[] = $row['groupID'];
 
-      return $this->get_arr_usr(0,$leadingGroups);
+      return $this->get_arr_users(0,$leadingGroups);
     }
 
     /**
     * returns assoc. array where the index is the ID of a user and the value the time
     * this user has accumulated in the given time with respect to the filtersettings
     *
-    * @param integer $in from this timestamp
-    * @param integer $out to this  timestamp
+    * @param integer $start from this timestamp
+    * @param integer $end to this  timestamp
     * @param integer $user ID of user in table usr
     * @param integer $customer ID of customer in table knd
     * @param integer $project ID of project in table pct
@@ -2832,61 +2849,61 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_usr($in,$out,$users = null, $customers = null, $projects = null,$events = null) {
+    public function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null,$events = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
-      $whereClauses[] = "${p}usr.usr_trash=0";
+      $whereClauses[] = "${p}users.trash=0";
 
-      if ($in)
-        $whereClauses[]="zef_out > $in";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
+      if ($start)
+        $whereClauses[]="end > $start";
+      if ($end)
+        $whereClauses[]="start < $end";
 
 
-      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out, usr_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
-              FROM ${p}zef
-              Join ${p}pct ON zef_pctID = pct_ID
-              Join ${p}knd ON pct_kndID = knd_ID
-              Join ${p}usr ON zef_usrID = usr_ID
-              Join ${p}evt ON evt_ID    = zef_evtID "
-              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY zef_in DESC;");
+      $pdo_query = $this->conn->prepare("SELECT start,end, userID, (end - start) / 3600 * rate AS costs
+              FROM ${p}timeSheet
+              Join ${p}projects USING(projectID)
+              Join ${p}customers USING(customerID)
+              Join ${p}users USING(userID)
+              Join ${p}activities USING(activityID) "
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY start DESC;");
 
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_usr');
+          $this->logLastError('get_arr_time_users');
           return array();
       }
 
       $arr = array();
-      $zef_in = 0;
-      $zef_out = 0;
+      $start = 0;
+      $end = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
-          $zef_in  = $in;
-          $zef_out = $row['zef_out'];
+        if ($row['start'] <= $start && $row['end'] < $end)  {
+          $start  = $start;
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $in;
-          $zef_out = $out;
+        else if ($row['start'] <= $start && $row['end'] >= $end)  {
+          $start  = $start;
+          $end = $end;
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $row['zef_out'];
+        else if ($row['start'] > $start && $row['end'] < $end)  {
+          $start  = $row['start'];
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $out;
+        else if ($row['start'] > $start && $row['end'] >= $end)  {
+          $start  = $row['start'];
+          $end = $end;
         }
 
-        if (isset($arr[$row['usr_ID']])) {
-          $arr[$row['usr_ID']]['time']  += (int)($zef_out - $zef_in);
-          $arr[$row['usr_ID']]['costs'] += (int)$row['costs'];
+        if (isset($arr[$row['userID']])) {
+          $arr[$row['userID']]['time']  += (int)($end - $start);
+          $arr[$row['userID']]['costs'] += (int)$row['costs'];
         }
         else  {
-          $arr[$row['usr_ID']]['time']  = (int)($zef_out - $zef_in);
-          $arr[$row['usr_ID']]['costs'] = (int)$row['costs'];
+          $arr[$row['userID']]['time']  = (int)($end - $start);
+          $arr[$row['userID']]['costs'] = (int)$row['costs'];
         }
       }
 
@@ -2897,8 +2914,8 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns list of time summary attached to customer ID's within specific timespace as array
     * !! becomes obsolete with new querys !!
     *
-    * @param integer $in start of timespace in unix seconds
-    * @param integer $out end of timespace in unix seconds
+    * @param integer $start start of timespace in unix seconds
+    * @param integer $end end of timespace in unix seconds
     * @param integer $user filter for only this ID of auser
     * @param integer $customer filter for only this ID of a customer
     * @param integer $project filter for only this ID of a project
@@ -2906,56 +2923,57 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_knd($in,$out,$users = null, $customers = null, $projects = null, $events = null) {
+    public function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $events = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
-      $whereClauses[] = "${p}knd.knd_trash=0";
+      $whereClauses[] = "${p}customers.trash=0";
 
-      if ($in)
-        $whereClauses[]="zef_out > $in";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
+      if ($start)
+        $whereClauses[]="end > $start";
+      if ($end)
+        $whereClauses[]="start < $end";
 
-      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out, knd_ID, (zef_out - zef_in) / 3600 * zef_rate AS costs
-              FROM ${p}zef
-              Left Join ${p}pct ON zef_pctID = pct_ID
-              Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+      $pdo_query = $this->conn->prepare("SELECT start,end, customerID, (end - start) / 3600 * rate AS costs
+              FROM ${p}timeSheet
+              Left Join ${p}projects USING(projectID)
+              Left Join ${p}customers USING(customerID) "
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_knd');
+          $this->logLastError('get_arr_time_customers');
           return array();
       }
 
       $arr = array();
-      $zef_in = 0;
-      $zef_out = 0;
+      $start = 0;
+      $end = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
-          $zef_in  = $in;
-          $zef_out = $row['zef_out'];
+        if ($row['start'] <= $start && $row['end'] < $end)  {
+          $start  = $start;
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $in;
-          $zef_out = $out;
+        else if ($row['start'] <= $start && $row['end'] >= $end)  {
+          $start  = $start;
+          $end = $end;
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $row['zef_out'];
+        else if ($row['start'] > $start && $row['end'] < $end)  {
+          $start  = $row['start'];
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $out;
+        else if ($row['start'] > $start && $row['end'] >= $end)  {
+          $start  = $row['start'];
+          $end = $end;
         }
 
-        if (isset($arr[$row['knd_ID']])) {
-          $arr[$row['knd_ID']]['time']  += (int)($zef_out - $zef_in);
-          $arr[$row['knd_ID']]['costs'] += (int)$row['costs'];
+        if (isset($arr[$row['customerID']])) {
+          $arr[$row['customerID']]['time']  += (int)($end - $start);
+          $arr[$row['customerID']]['costs'] += (int)$row['costs'];
         }
         else {
-          $arr[$row['knd_ID']]['time']  = (int)($zef_out - $zef_in);
-          $arr[$row['knd_ID']]['costs'] = (int)$row['costs'];
+          $arr[$row['customerID']]['time']  = (int)($end - $start);
+          $arr[$row['customerID']]['costs'] = (int)$row['costs'];
         }
       }
 
@@ -2968,27 +2986,27 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @author mo
     */
-    public function get_evt_budget($project_id,$event_id) {
+    public function get_activity_budget($projectID,$activityID) {
     // validate input
-    if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-    if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+    if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+    if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-    $pdo_query = $this->conn->prepare("SELECT evt_budget, evt_approved, evt_effort FROM " . $this->kga['server_prefix'] . "pct_evt WHERE ".
-    (($project_id=="NULL")?"pct_ID is NULL":"pct_ID = $project_id"). " AND ".
-    (($event_id=="NULL")?"evt_ID is NULL":"evt_ID = $event_id"));
+    $pdo_query = $this->conn->prepare("SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
+    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+    (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID"));
 
     $result = $pdo_query->execute();
 
     if ($result == false) {
-        $this->logLastError('get_evt_budget');
+        $this->logLastError('get_activity_budget');
         return array();
     }
     $data = $pdo_query->fetch(PDO::FETCH_ASSOC);
-    $zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+    $zefs = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
     foreach($zefs as $zef) {
-        $data['evt_budget']+= $zef['zef_budget'];
-        $data['evt_approved']+= $zef['zef_approved'];
+        $data['budget']+= $zef['budget'];
+        $data['approved']+= $zef['approved'];
     }
     return $data;
     }
@@ -2996,11 +3014,11 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     *
     * get the whole budget used for the event
-    * @param integer $project_id
-    * @param integer $event_id
+    * @param integer $projectID
+    * @param integer $activityID
     */
-    public function get_budget_used($project_id,$event_id) {
-    $zefs = $this->get_arr_zef(0, time(), null, null, array($project_id), array($event_id));
+    public function get_budget_used($projectID,$activityID) {
+    $zefs = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
     $budgetUsed = 0;
     if(is_array($zefs) && count($zefs) > 0) {
         foreach($zefs as $zef) {
@@ -3015,8 +3033,8 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns list of time summary attached to project ID's within specific timespace as array
     * !! becomes obsolete with new querys !!
     *
-    * @param integer $in start time in unix seconds
-    * @param integer $out end time in unix seconds
+    * @param integer $start start time in unix seconds
+    * @param integer $end end time in unix seconds
     * @param integer $user filter for only this ID of auser
     * @param integer $customer filter for only this ID of a customer
     * @param integer $project filter for only this ID of a project
@@ -3024,89 +3042,94 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_pct($in,$out,$users = null,$customers = null, $projects = null, $events = null) {
+    public function get_arr_time_projects($start,$end,$users = null,$customers = null, $projects = null, $events = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
-      $whereClauses[] = "${p}pct.pct_trash=0";
+      $whereClauses[] = "${p}projects.trash=0";
 
-      if ($in)
-        $whereClauses[]="zef_out > $in";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
+      if ($start)
+        $whereClauses[]="end > $start";
+      if ($end)
+        $whereClauses[]="start < $end";
       $arr = array();
-      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out,zef_pctID, (zef_out - zef_in) / 3600 * zef_rate AS costs
-          FROM ${p}zef
-          Left Join ${p}pct ON zef_pctID = pct_ID
-          Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+      $pdo_query = $this->conn->prepare("SELECT start,end,projectID, (end - start) / 3600 * rate AS costs
+          FROM ${p}timeSheet
+          Left Join ${p}projects USING (projectID)
+          Left Join ${p}customers USING(customerID) "
+          .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_pct');
+          $this->logLastError('get_arr_time_projects');
           return array();
       }
 
       $arr = array();
-      $zef_in = 0;
-      $zef_out = 0;
+      $start = 0;
+      $end = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
-          $zef_in  = $in;
-          $zef_out = $row['zef_out'];
+        if ($row['start'] <= $start && $row['end'] < $end)  {
+          $start  = $start;
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $in;
-          $zef_out = $out;
+        else if ($row['start'] <= $start && $row['end'] >= $end)  {
+          $start  = $start;
+          $end = $end;
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $row['zef_out'];
+        else if ($row['start'] > $start && $row['end'] < $end)  {
+          $start  = $row['start'];
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $out;
+        else if ($row['start'] > $start && $row['end'] >= $end)  {
+          $start  = $row['start'];
+          $end = $end;
         }
 
-        if (isset($arr[$row['zef_pctID']])) {
-          $arr[$row['zef_pctID']]['time']  += (int)($zef_out - $zef_in);
-          $arr[$row['zef_pctID']]['costs'] += (int)$row['costs'];
+        if (isset($arr[$row['projectID']])) {
+          $arr[$row['projectID']]['time']  += (int)($end - $start);
+          $arr[$row['projectID']]['costs'] += (int)$row['costs'];
         }
         else {
-          $arr[$row['zef_pctID']]['time']  = (int)($zef_out - $zef_in);
-          $arr[$row['zef_pctID']]['costs'] = (int)$row['costs'];
+          $arr[$row['projectID']]['time']  = (int)($end - $start);
+          $arr[$row['projectID']]['costs'] = (int)$row['costs'];
         }
       }
       return $arr;
     }
 
     ## Load into Array: Events
-    public function get_arr_evt(array $groups = null) {
+    public function get_arr_activities(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
       if ($groups === null) {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_trash=0 ORDER BY evt_visible DESC,evt_name;");
+          $pdo_query = $this->conn->prepare("SELECT activityID, name, visible, assignable
+              FROM ${p}activities
+              WHERE trash=0
+              ORDER BY visible DESC, name;");
       } else {
-          $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt
-           JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-          WHERE `${p}grp_evt`.`grp_ID` IN (".implode($groups,',').")
-           AND evt_trash=0
-          ORDER BY evt_visible DESC, evt_name;");
+          $pdo_query = $this->conn->prepare("SELECT activityID, name, visible, assignable
+            FROM ${p}activities
+            JOIN ${p}groups_activities AS g_a USING(activityID)
+            WHERE g_a.groupID IN (".implode($groups,',').")
+              AND trash=0
+            ORDER BY visible DESC, name;");
       }
 
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_evt');
+          $this->logLastError('get_arr_activities');
           return array();
       }
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['evt_ID'] = $row['evt_ID'];
-          $arr[$i]['evt_name'] = $row['evt_name'];
-          $arr[$i]['evt_visible'] = $row['evt_visible'];
-          $arr[$i]['evt_assignable'] = $row['evt_assignable'];
+          $arr[$i]['activityID'] = $row['activityID'];
+          $arr[$i]['name'] = $row['name'];
+          $arr[$i]['visible'] = $row['visible'];
+          $arr[$i]['assignable'] = $row['assignable'];
           $i++;
       }
 
@@ -3114,38 +3137,40 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     ## Load into Array: Events
-    public function get_arr_evt_by_pct($pct, array $groups = null) {
+    public function get_arr_activities_by_project($pct, array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
       if ($groups === null) {
-          $pdo_query = $this->conn->prepare("SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
-    LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-    WHERE evt_trash=0
-    AND (pct_ID = ? OR pct_ID IS NULL)
-    ORDER BY evt_visible DESC, evt_name;");
+          $pdo_query = $this->conn->prepare("SELECT activity.*
+            FROM ${p}activities AS activity
+            LEFT JOIN ${p}projects_activities USING(activityID)
+            WHERE trash=0
+              AND (projectID = ? OR projectID IS NULL)
+            ORDER BY visible DESC, name;");
       } else {
-          $pdo_query = $this->conn->prepare("SELECT ${p}evt.evt_ID,evt_name,evt_visible FROM ${p}evt
-    JOIN ${p}grp_evt ON `${p}grp_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-    LEFT JOIN ${p}pct_evt ON `${p}pct_evt`.`evt_ID`=`${p}evt`.`evt_ID`
-    WHERE `${p}grp_evt`.`grp_ID` IN (".implode($groups,',').")
-    AND evt_trash=0
-    AND (pct_ID = ? OR pct_ID IS NULL)
-    ORDER BY evt_visible DESC, evt_name;");
+          $pdo_query = $this->conn->prepare("SELECT activity.*
+            FROM ${p}activities AS activity
+            JOIN ${p}groups_activities USING(activityID)
+            LEFT JOIN ${p}projects_activities USING(activityID)
+            WHERE `${p}groups_activities`.`groupID` IN (".implode($groups,',').")
+              AND trash=0
+              AND (projectID = ? OR projectID IS NULL)
+            ORDER BY visible DESC, name;");
       }
 
       $result = $pdo_query->execute(array($pct));
 
       if ($result == false) {
-          $this->logLastError('get_arr_evt_by_pct');
+          $this->logLastError('get_arr_activities_by_project');
           return array();
       }
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['evt_ID'] = $row['evt_ID'];
-          $arr[$i]['evt_name'] = $row['evt_name'];
-          $arr[$i]['evt_visible'] = $row['evt_visible'];
+          $arr[$i]['activityID'] = $row['activityID'];
+          $arr[$i]['name'] = $row['name'];
+          $arr[$i]['visible'] = $row['visible'];
           $i++;
       }
 
@@ -3161,23 +3186,28 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_evt_by_knd($customer_ID) {
+    public function get_arr_activities_by_customer($customer_ID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}evt WHERE evt_ID IN (SELECT zef_evtID FROM ${p}zef WHERE zef_pctID IN (SELECT pct_ID FROM ${p}pct WHERE pct_kndID = ?)) AND evt_trash=0");
+      $pdo_query = $this->conn->prepare("SELECT activityID, name, visible
+          FROM ${p}activities
+          WHERE activityID IN
+              (SELECT activityID FROM ${p}timeSheet
+                WHERE projectID IN (SELECT projectID FROM ${p}projects WHERE customerID = ?))
+            AND trash=0");
       $result = $pdo_query->execute(array($customer_ID));
 
       if ($result == false) {
-          $this->logLastError('get_arr_evt_by_knd');
+          $this->logLastError('get_arr_activities_by_customer');
           return array();
       }
 
       $arr=array();
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['evt_ID'] = $row['evt_ID'];
-          $arr[$i]['evt_name'] = $row['evt_name'];
-          $arr[$i]['evt_visible'] = $row['evt_visible'];
+          $arr[$i]['activityID'] = $row['activityID'];
+          $arr[$i]['name'] = $row['name'];
+          $arr[$i]['visible'] = $row['visible'];
           $i++;
       }
 
@@ -3187,8 +3217,8 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns list of time summary attached to event ID's within specific timespace as array
     *
-    * @param integer $in start time in unix seconds
-    * @param integer $out end time in unix seconds
+    * @param integer $start start time in unix seconds
+    * @param integer $end end time in unix seconds
     * @param integer $user filter for only this ID of auser
     * @param integer $customer filter for only this ID of a customer
     * @param integer $project filter for only this ID of a project
@@ -3196,56 +3226,57 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_evt($in,$out,$users = null,$customers = null,$projects = null, $events = null) {
+    public function get_arr_time_activities($start,$end,$users = null,$customers = null,$projects = null, $events = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
-      $whereClauses[] = "${p}evt.evt_trash = 0";
+      $whereClauses[] = "${p}activities.trash = 0";
 
-      if ($in)
-        $whereClauses[]="zef_out > $in";
-      if ($out)
-        $whereClauses[]="zef_in < $out";
-      $pdo_query = $this->conn->prepare("SELECT zef_in,zef_out,zef_evtID, (zef_out - zef_in) / 3600 * zef_rate AS costs
-          FROM ${p}zef
-          Left Join ${p}evt ON zef_evtID = evt_ID
-          Left Join ${p}pct ON zef_pctID = pct_ID
-          Left Join ${p}knd ON pct_kndID = knd_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
+      if ($start)
+        $whereClauses[]="end > $start";
+      if ($end)
+        $whereClauses[]="start < $end";
+      $pdo_query = $this->conn->prepare("SELECT start, end, activityID, (end - start) / 3600 * rate AS costs
+          FROM ${p}timeSheet
+          Left Join ${p}activities USING(activityID)
+          Left Join ${p}projects USING(projectID)
+          Left Join ${p}customers USING(customerID) "
+          .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses));
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_evt');
+          $this->logLastError('get_arr_time_activities');
           return array();
       }
 
       $arr = array();
-      $zef_in = 0;
-      $zef_out = 0;
+      $start = 0;
+      $end = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['zef_in'] <= $in && $row['zef_out'] < $out)  {
-          $zef_in  = $in;
-          $zef_out = $row['zef_out'];
+        if ($row['start'] <= $start && $row['end'] < $end)  {
+          $start  = $start;
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] <= $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $in;
-          $zef_out = $out;
+        else if ($row['start'] <= $start && $row['end'] >= $end)  {
+          $start  = $start;
+          $end = $end;
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] < $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $row['zef_out'];
+        else if ($row['start'] > $start && $row['end'] < $end)  {
+          $start  = $row['start'];
+          $end = $row['end'];
         }
-        else if ($row['zef_in'] > $in && $row['zef_out'] >= $out)  {
-          $zef_in  = $row['zef_in'];
-          $zef_out = $out;
+        else if ($row['start'] > $start && $row['end'] >= $end)  {
+          $start  = $row['start'];
+          $end = $end;
         }
 
-        if (isset($arr[$row['zef_evtID']])) {
-          $arr[$row['zef_evtID']]['time']  += (int)($zef_out - $zef_in);
-          $arr[$row['zef_evtID']]['costs'] += (int)$row['costs'];
+        if (isset($arr[$row['activityID']])) {
+          $arr[$row['activityID']]['time']  += (int)($end - $start);
+          $arr[$row['activityID']]['costs'] += (int)$row['costs'];
         }
         else {
-          $arr[$row['zef_evtID']]['time'] = (int)($zef_out - $zef_in);
-          $arr[$row['zef_evtID']]['costs'] = (int)$row['costs'];
+          $arr[$row['activityID']]['time'] = (int)($end - $start);
+          $arr[$row['activityID']]['costs'] = (int)$row['costs'];
         }
       }
       return $arr;
@@ -3272,8 +3303,8 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_current_timer() {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT zef_ID,zef_in FROM ${p}zef WHERE zef_usrID = ? AND zef_out = 0;");
-      $result = $pdo_query->execute(array($this->kga['usr']['usr_ID']));
+      $pdo_query = $this->conn->prepare("SELECT timeEntryID, start FROM ${p}timeSheet WHERE userID = ? AND end = 0;");
+      $result = $pdo_query->execute(array($this->kga['usr']['userID']));
 
       if ($result == false) {
           $this->logLastError('get_current_timer');
@@ -3288,10 +3319,10 @@ class PDODatabaseLayer extends DatabaseLayer
       }
       else {
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        $zef_in    = (int)$row['zef_in'];
+        $start    = (int)$row['start'];
 
-        $aktuelleMessung = Format::hourminsec(time()-$zef_in);
-        $current_timer['all']  = $zef_in;
+        $aktuelleMessung = Format::hourminsec(time()-$start);
+        $current_timer['all']  = $start;
         $current_timer['hour'] = $aktuelleMessung['h'];
         $current_timer['min']  = $aktuelleMessung['i'];
         $current_timer['sec']  = $aktuelleMessung['s'];
@@ -3315,8 +3346,14 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_DBversion() {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'version';");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE option = 'version';");
       $result = $pdo_query->execute(array());
+
+      if ($result == false) {
+        // before database revision 1369 (503 + 866)
+        $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'version';");
+        $result = $pdo_query->execute(array());
+      }
 
       if ($result == false) {
           $this->logLastError('get_DBversion');
@@ -3328,8 +3365,14 @@ class PDODatabaseLayer extends DatabaseLayer
 
       if (!is_array($row)) $return[0] = "0.5.1";
 
-      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'revision';");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE option = 'revision';");
       $result = $pdo_query->execute(array());
+
+      if ($result == false) {
+        // before database revision 1369 (503 + 866)
+        $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'revision';");
+        $result = $pdo_query->execute(array());
+      }
 
       if ($result == false) {
           $this->logLastError('get_DBversion');
@@ -3358,7 +3401,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $p = $this->kga['server_prefix'];
 
       if (strncmp($user, 'knd_', 4) == 0) {
-        $pdo_query = $this->conn->prepare("SELECT knd_secure FROM ${p}knd WHERE knd_name = ?;");
+        $pdo_query = $this->conn->prepare("SELECT secure FROM ${p}customers WHERE name = ?;");
         $result = $pdo_query->execute(array(substr($user,4)));
 
         if ($result == false) {
@@ -3367,10 +3410,10 @@ class PDODatabaseLayer extends DatabaseLayer
         }
 
         $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-        $seq         = $row['knd_secure'];
+        $seq         = $row['secure'];
       }
       else {
-        $pdo_query = $this->conn->prepare("SELECT secure FROM ${p}usr WHERE usr_name = ?;");
+        $pdo_query = $this->conn->prepare("SELECT secure FROM ${p}users WHERE name = ?;");
         $result = $pdo_query->execute(array($user));
 
         if ($result == false) {
@@ -3395,7 +3438,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_status($statusIds) {
       $p = $this->kga['server_prefix'];
       $statusIds = implode(',', $statusIds);
-      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}status where status_id in ( $statusIds ) order by status_id");
+      $pdo_query = $this->conn->prepare("SELECT status FROM ${p}statuses where statusID in ( $statusIds ) order by statusID");
 
       $result = $pdo_query->execute();
       if ($result == false) {
@@ -3414,15 +3457,15 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * Returns the number of zef with a certain status
     *
-    * @param integer $status_id   status_id of the status
+    * @param integer $statusID   statusID of the status
     * @return int            		the number of zef with this status
     * @author mo
     */
-    public function status_count_zef($status_id) {
+    public function status_count_zef($statusID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}zef WHERE zef_status = ?");
-      $result = $pdo_query->execute(array($status_id));
+      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}timeSheet WHERE status = ?");
+      $result = $pdo_query->execute(array($statusID));
 
       if ($result == false) {
           $this->logLastError('status_count_zef');
@@ -3440,7 +3483,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author mo
     */
-    public function get_arr_status() {
+    public function get_arr_statuses() {
       $p = $this->kga['server_prefix'];
 
       $query = "SELECT * FROM ${p}status ORDER BY status;";
@@ -3454,7 +3497,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $i = 0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
           $arr[] = $row;
-          $arr[$i]['count_zef'] = $this->status_count_zef($row['status_id']);
+          $arr[$i]['count_zef'] = $this->status_count_zef($row['statusID']);
           $i++;
       }
       return $arr;
@@ -3466,7 +3509,7 @@ class PDODatabaseLayer extends DatabaseLayer
     */
     public function status_create($status) {
       $p = $this->kga['server_prefix'];
-          $pdo_query = $this->conn->prepare("INSERT INTO ${p}status (status) VALUES (?);");
+          $pdo_query = $this->conn->prepare("INSERT INTO ${p}statuses (status) VALUES (?);");
           $result = $pdo_query->execute(array(trim($status)));
 
           if (! $result) {
@@ -3479,11 +3522,11 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * returns array of all users
     *
-    * [usr_ID] => 23103741
-    * [usr_name] => admin
-    * [usr_sts] => 0
-    * [usr_mail] => 0
-    * [usr_active] => 0
+    * [userID] => 23103741
+    * [name] => admin
+    * [status] => 0
+    * [mail] => 0
+    * [active] => 0
     *
     *
     * @global array $this->kga kimai-global-array
@@ -3491,42 +3534,42 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_usr($trash=0,array $groups = null) {
+    public function get_arr_users($trash=0,array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
 
       if ($groups === null)
-        $query = "SELECT * FROM ${p}usr
-        WHERE usr_trash = ?
-        ORDER BY usr_name ;";
+        $query = "SELECT * FROM ${p}users
+        WHERE trash = ?
+        ORDER BY name ;";
       else
-        $query = "SELECT * FROM ${p}usr
-         JOIN ${p}grp_usr ON usr_ID = usr_ID
-        WHERE ${p}grp_usr.grp_ID IN (".implode($groups,',').") AND
-         usr_trash = ?
-        ORDER BY usr_name ;";
+        $query = "SELECT * FROM ${p}users
+         JOIN ${p}groups_users AS g_u USING(userID)
+        WHERE g_u.groupID IN (".implode($groups,',').") AND
+         trash = ?
+        ORDER BY name ;";
 
       $pdo_query = $this->conn->prepare($query);
       $result = $pdo_query->execute(array($trash));
 
       if ($result == false) {
-          $this->logLastError('get_arr_usr');
+          $this->logLastError('get_arr_users');
           return array();
       }
 
       $i=0;
       while ($row = $pdo_query->fetch()) {
-          $arr[$i]['usr_ID']   = $row['usr_ID'];
-          $arr[$i]['usr_name'] = $row['usr_name'];
-          $arr[$i]['usr_sts']  = $row['usr_sts'];
-          $arr[$i]['usr_mail'] = $row['usr_mail'];
-          $arr[$i]['usr_active'] = $row['usr_active'];
-          $arr[$i]['usr_trash'] = $row['usr_trash'];
-          if ($row['pw']!=''&&$row['pw']!='0') {
-              $arr[$i]['usr_pw'] = "yes";
+          $arr[$i]['userID']   = $row['userID'];
+          $arr[$i]['name'] = $row['name'];
+          $arr[$i]['status']  = $row['status'];
+          $arr[$i]['mail'] = $row['mail'];
+          $arr[$i]['active'] = $row['active'];
+          $arr[$i]['trash'] = $row['trash'];
+          if ($row['password']!=''&&$row['password']!='0') {
+              $arr[$i]['passwordSet'] = "yes";
           } else {
-              $arr[$i]['usr_pw'] = "no";
+              $arr[$i]['passwordSet'] = "no";
           }
           $i++;
       }
@@ -3537,18 +3580,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns array of all groups
     *
     * [0]=>  array(6) {
-    *     ["grp_ID"]=>  string(1) "1"
+    *     ["groupID"]=>  string(1) "1"
     *      ["grp_name"]=>  string(5) "admin"
-    *      ["grp_leader"]=>  string(9) "1234"
+    *      ["userID"]=>  string(9) "1234"
     *      ["grp_trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "2"
     *      ["leader_name"]=>  string(5) "user1"
     * }
     *
     * [1]=>  array(6) {
-    *      ["grp_ID"]=>  string(1) "2"
+    *      ["groupID"]=>  string(1) "2"
     *      ["grp_name"]=>  string(4) "Test"
-    *      ["grp_leader"]=>  string(9) "12345"
+    *      ["userID"]=>  string(9) "12345"
     *      ["grp_trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "1"
     *      ["leader_name"]=>  string(7) "user2"
@@ -3558,30 +3601,30 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_grp($trash=0) {
+    public function get_arr_groups($trash=0) {
       $p = $this->kga['server_prefix'];
 
       // Lock tables
       $pdo_query_l = $this->conn->prepare("LOCK TABLE
-      ${p}usr READ,
-      ${p}grp READ,
-      ${p}ldr READ
+      ${p}users READ,
+      ${p}groups READ,
+      ${p}groupleaders READ
       ");
       $result_l = $pdo_query_l->execute();
 
       if ($result_l == false) {
-          $this->logLastError('get_arr_grp');
+          $this->logLastError('get_arr_groups');
           return array();
       }
 
       if (!$trash) {
-          $trashoption = "WHERE grp_trash !=1";
+          $trashoption = "WHERE ${p}groups.trash !=1";
       }
-      $pdo_query = $this->conn->prepare(sprintf("SELECT * FROM ${p}grp %s ORDER BY grp_name;",$trashoption));
+      $pdo_query = $this->conn->prepare(sprintf("SELECT * FROM ${p}groups %s ORDER BY name;",$trashoption));
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_grp');
+          $this->logLastError('get_arr_groups');
           return array();
       }
 
@@ -3592,14 +3635,14 @@ class PDODatabaseLayer extends DatabaseLayer
           $groups[] = $row;
 
           // append user count
-        $groups[$i]['count_users'] = $this->grp_count_users($row['grp_ID']);
+        $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
 
           // append leader array
-          $ldr_id_array = $this->grp_get_ldrs($row['grp_ID']);
+          $userID_array = $this->group_get_groupleaders($row['groupID']);
           $j = 0;
           $ldr_name_array = array();
-          foreach ($ldr_id_array as $ldr_id) {
-            $ldr_name_array[$j] = $this->usr_id2name($ldr_id);
+          foreach ($userID_array as $userID) {
+            $ldr_name_array[$j] = $this->user_IDToName($userID);
             $j++;
           }
 
@@ -3613,11 +3656,11 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_ul = $pdo_query_ul->execute();
 
       if ($result_ul == false) {
-          $this->logLastError('get_arr_grp');
+          $this->logLastError('get_arr_groups');
           return array();
       }
 
-      // error_log("get_arr_grp: " . serialize($groups));
+      // error_log("get_arr_groups: " . serialize($groups));
 
       return $groups;
     }
@@ -3626,18 +3669,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns array of all groups
     *
     * [0]=>  array(6) {
-    *     ["grp_ID"]=>  string(1) "1"
+    *     ["groupID"]=>  string(1) "1"
     *      ["grp_name"]=>  string(5) "admin"
-    *      ["grp_leader"]=>  string(9) "1234"
+    *      ["userID"]=>  string(9) "1234"
     *      ["grp_trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "2"
     *      ["leader_name"]=>  string(5) "user1"
     * }
     *
     * [1]=>  array(6) {
-    *      ["grp_ID"]=>  string(1) "2"
+    *      ["groupID"]=>  string(1) "2"
     *      ["grp_name"]=>  string(4) "Test"
-    *      ["grp_leader"]=>  string(9) "12345"
+    *      ["userID"]=>  string(9) "12345"
     *      ["grp_trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "1"
     *      ["leader_name"]=>  string(7) "user2"
@@ -3648,33 +3691,34 @@ class PDODatabaseLayer extends DatabaseLayer
     * @author th
     *
     */
-    public function get_arr_grp_by_leader($leader_id,$trash=0)
+    public function get_arr_groups_by_leader($leader_id,$trash=0)
     {
       // Lock tables
       $pdo_query_l = $this->conn->prepare("LOCK TABLE
-      " . $this->kga['server_prefix'] . "usr READ,
-      " . $this->kga['server_prefix'] . "grp READ,
-      " . $this->kga['server_prefix'] . "ldr READ
+      " . $this->kga['server_prefix'] . "users READ,
+      " . $this->kga['server_prefix'] . "groups READ,
+      " . $this->kga['server_prefix'] . "groupleaders READ
       ");
       $result_l = $pdo_query_l->execute();
 
       if ($result_l == false) {
-          $this->logLastError('get_arr_grp_by_leader');
+          $this->logLastError('get_arr_groups_by_leader');
           return array();
       }
 
       if (!$trash) {
-          $trashoption = "AND grp_trash !=1";
+          $trashoption = "AND group.trash !=1";
       }
       $pdo_query = $this->conn->prepare(
-    "SELECT " . $this->kga['server_prefix'] . "grp.*
-      FROM " . $this->kga['server_prefix'] . "grp JOIN " . $this->kga['server_prefix'] . "ldr ON " . $this->kga['server_prefix'] . "grp.grp_ID =" . $this->kga['server_prefix'] . "ldr.grp_ID
-      WHERE grp_leader = ? $trashoption ORDER BY grp_name");
+    "SELECT group.*
+      FROM " . $this->kga['server_prefix'] . "groups AS group 
+      JOIN " . $this->kga['server_prefix'] . "groupleaders USING(groupID)
+      WHERE userID = ? $trashoption ORDER BY group.name");
 
       $result = $pdo_query->execute($leader_id);
 
       if ($result == false) {
-          $this->logLastError('get_arr_grp_by_leader');
+          $this->logLastError('get_arr_groups_by_leader');
           return array();
       }
 
@@ -3685,14 +3729,14 @@ class PDODatabaseLayer extends DatabaseLayer
           $groups[] = $row;
 
           // append user count
-        $groups[$i]['count_users'] = $this->grp_count_users($row['grp_ID']);
+        $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
 
           // append leader array
-          $ldr_id_array = $this->grp_get_ldrs($row['grp_ID']);
+          $userID_array = $this->group_get_groupleaders($row['groupID']);
           $j = 0;
           $ldr_name_array = array();
-          foreach ($ldr_id_array as $ldr_id) {
-            $ldr_name_array[$j] = $this->usr_id2name($ldr_id);
+          foreach ($userID_array as $userID) {
+            $ldr_name_array[$j] = $this->user_IDToName($userID);
             $j++;
           }
 
@@ -3706,11 +3750,11 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_ul = $pdo_query_ul->execute();
 
       if ($result_ul == false) {
-          $this->logLastError('get_arr_grp_by_leader');
+          $this->logLastError('get_arr_groups_by_leader');
           return array();
       }
 
-      // error_log("get_arr_grp: " . serialize($groups));
+      // error_log("get_arr_groups: " . serialize($groups));
 
       return $groups;
     }
@@ -3728,13 +3772,13 @@ class PDODatabaseLayer extends DatabaseLayer
       ## stop running recording
       $p = $this->kga['server_prefix'];
 
-      $task = $this->zef_get_data($id);
+      $task = $this->timeSheet_get_data($id);
 
-      $rounded = Rounding::roundTimespan($task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
+      $rounded = Rounding::roundTimespan($task['start'],time(),$this->kga['conf']['roundPrecision']);
       $difference = $rounded['end']-$rounded['start'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
-      $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$task['zef_ID']));
+      $pdo_query = $this->conn->prepare("UPDATE ${p}timeSheet SET start = ?, end = ?, duration = ? WHERE timeEntryID = ?;");
+      $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$task['timeEntryID']));
 
       if ($result == false) {
           $this->logLastError('stopRecorder');
@@ -3745,19 +3789,19 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * starts timesheet record
     *
-    * @param integer $pct_ID ID of project to record
+    * @param integer $projectID ID of project to record
     * @global array $this->kga kimai-global-array
     * @author th, sl
     * @return id of the new entry or false on failure
     */
-    public function startRecorder($pct_ID,$evt_ID,$user)
+    public function startRecorder($projectID,$activityID,$user)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("INSERT INTO ${p}zef
-      (zef_pctID,zef_evtID,zef_in,zef_usrID,zef_rate) VALUES
+      $pdo_query = $this->conn->prepare("INSERT INTO ${p}timeSheet
+      (projectID,activityID,start,userID,rate) VALUES
       (?, ?, ?, ?, ?);");
-      $result = $pdo_query->execute(array($pct_ID,$evt_ID,time(),$user,$this->get_best_fitting_rate($user,$pct_ID,$evt_ID)));
+      $result = $pdo_query->execute(array($projectID,$activityID,time(),$user,$this->get_best_fitting_rate($user,$projectID,$activityID)));
       if ($result === false) {
           $this->logLastError('startRecorder');
           return false;
@@ -3770,40 +3814,40 @@ class PDODatabaseLayer extends DatabaseLayer
     * Just edit the project for an entry. This is used for changing the project
     * of a running entry.
     *
-    * @param $zef_id of the timesheet entry
-    * @param $pct_id id of the project to change to
+    * @param $timeEntryID of the timesheet entry
+    * @param $projectID id of the project to change to
     */
-    public function zef_edit_pct($zef_id,$pct_id)
+    public function timeEntry_edit_project($timeEntryID,$projectID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef
-      SET zef_pctID = ? WHERE zef_ID = ?");
+      $pdo_query = $this->conn->prepare("UPDATE ${p}timeSheet
+      SET projectID = ? WHERE timeEntryID = ?");
 
-      $result = $pdo_query->execute(array($pct_id,$zef_id));
+      $result = $pdo_query->execute(array($projectID,$timeEntryID));
 
       if ($result == false)
-          $this->logLastError('zef_edit_pct');
+          $this->logLastError('timeEntry_edit_project');
     }
 
     /**
     * Just edit the task for an entry. This is used for changing the task
     * of a running entry.
     *
-    * @param $zef_id of the timesheet entry
-    * @param $evt_id id of the task to change to
+    * @param $timeEntryID of the timesheet entry
+    * @param $activityID id of the task to change to
     */
-    public function zef_edit_evt($zef_id,$evt_id)
+    public function timeEntry_edit_activity($timeEntryID,$activityID)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef
-      SET zef_evtID = ? WHERE zef_ID = ?");
+      $pdo_query = $this->conn->prepare("UPDATE ${p}timeSheet
+      SET activityID = ? WHERE timeEntryID = ?");
 
-      $result = $pdo_query->execute(array($evt_id,$zef_id));
+      $result = $pdo_query->execute(array($activityID,$timeEntryID));
 
       if ($result == false)
-          $this->logLastError('zef_edit_evt');
+          $this->logLastError('timeEntry_edit_activity');
     }
 
     /**
@@ -3812,9 +3856,9 @@ class PDODatabaseLayer extends DatabaseLayer
     * @param string $name name of the customer in table knd
     * @return integer
     */
-    public function knd_name2id($name)
+    public function customer_nameToID($name)
     {
-      return $this->name2id($this->kga['server_prefix']."knd",'knd_ID','knd_name',$name);
+      return $this->name2id($this->kga['server_prefix']."customers",'customerID',$name);
     }
 
     /**
@@ -3824,9 +3868,9 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return string
     * @author th
     */
-    public function usr_name2id($name)
+    public function user_name2id($name)
     {
-      return $this->name2id($this->kga['server_prefix']."usr",'usr_ID','usr_name',$name);
+      return $this->name2id($this->kga['server_prefix']."users",'userID',$name);
     }
 
     /**
@@ -3834,9 +3878,9 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @author sl
     */
-    private function name2id($table,$outColumn,$filterColumn,$value)
+    private function name2id($table,$endColumn,$value)
     {
-      $pdo_query = $this->conn->prepare("SELECT $outColumn FROM $table WHERE $filterColumn = ? LIMIT 1;");
+      $pdo_query = $this->conn->prepare("SELECT $endColumn FROM $table WHERE name = ? LIMIT 1;");
       $result = $pdo_query->execute(array($value));
 
       if ($result == false)
@@ -3846,29 +3890,29 @@ class PDODatabaseLayer extends DatabaseLayer
         return false;
 
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row[$outColumn];
+      return $row[$endColumn];
     }
 
     /**
     * return name of a user with specific ID
     *
-    * @param string $id the user's usr_ID
+    * @param string $id the user's userID
     * @global array $this->kga kimai-global-array
     * @return int
     * @author ob
     */
-    public function usr_id2name($id)
+    public function user_IDToName($id)
     {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT usr_name FROM ${p}usr WHERE usr_ID = ? LIMIT 1;");
+      $pdo_query = $this->conn->prepare("SELECT name FROM ${p}users WHERE userID = ? LIMIT 1;");
       $result = $pdo_query->execute(array($id));
 
       if ($result == false)
-          $this->logLastError('usr_id2name');
+          $this->logLastError('user_IDToName');
 
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row['usr_name'];
+      return $row['name'];
     }
 
     /**
@@ -3878,13 +3922,13 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return integer unix seconds of first timesheet record
     * @author th
     */
-    public function getjointime($usr_id)
+    public function getjointime($userID)
     {
       $p = $this->kga['server_prefix'];
 
-      $query = "SELECT zef_in FROM ${p}zef WHERE zef_usrID = ? ORDER BY zef_in ASC LIMIT 1;";
+      $query = "SELECT start FROM ${p}timeSheet WHERE userID = ? ORDER BY start ASC LIMIT 1;";
       $pdo_query = $this->conn->prepare($query);
-      $result = $pdo_query->execute(array($usr_id));
+      $result = $pdo_query->execute(array($userID));
 
       if ($result == false) {
           $this->logLastError('getjointime');
@@ -3901,7 +3945,7 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * Set field usr_sts for users to 1 if user is a group leader, otherwise to 2.
+    * Set field status for users to 1 if user is a group leader, otherwise to 2.
     * Admin status will never be changed.
     * Calling public function should start and end sql transaction.
     *
@@ -3913,14 +3957,14 @@ class PDODatabaseLayer extends DatabaseLayer
     {
       $p = $this->kga['server_prefix'];
 
-      $query = $this->conn->prepare("UPDATE ${p}usr,${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
+      $query = $this->conn->prepare("UPDATE ${p}users SET status = 2 WHERE status = 1");
       $result = $query->execute();
       if ($result == false) {
           $this->logLastError('update_leader_status');
           return false;
       }
 
-      $query = $this->conn->prepare("UPDATE ${p}usr,${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
+      $query = $this->conn->prepare("UPDATE ${p}users AS user, ${p}groupleaders AS leader SET status = 1 WHERE status = 2 AND user.userID = leader.userID");
       $result = $query->execute();
       if ($result == false) {
           $this->logLastError('update_leader_status');
@@ -3937,26 +3981,26 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function save_rate($user_id,$project_id,$event_id,$rate)
+    public function save_rate($userID,$projectID,$activityID,$rate)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
         if (!is_numeric($rate)) return false;
 
 
         // build update or insert statement
         $query_string = "";
-        if ($this->get_rate($user_id,$project_id,$event_id) === false)
-          $query_string = "INSERT INTO ${p}rates VALUES($user_id,$project_id,$event_id,$rate);";
+        if ($this->get_rate($userID,$projectID,$activityID) === false)
+          $query_string = "INSERT INTO ${p}rates VALUES($userID,$projectID,$activityID,$rate);";
         else
           $query_string = "UPDATE ${p}rates SET rate = $rate WHERE ".
-        (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+        (($userID=="NULL")?"userID is NULL":"userID = $userID"). " AND ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -3976,20 +4020,20 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function get_rate($user_id,$project_id,$event_id)
+    public function get_rate($userID,$projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
         $query_string = "SELECT rate FROM ${p}rates WHERE ".
-        (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+        (($userID=="NULL")?"userID is NULL":"userID = $userID"). " AND ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4013,19 +4057,19 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function remove_rate($user_id,$project_id,$event_id)
+    public function remove_rate($userID,$projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
         $query_string = "DELETE FROM ${p}rates WHERE ".
-        (($user_id=="NULL")?"user_id is NULL":"user_id = $user_id"). " AND ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+        (($userID=="NULL")?"userID is NULL":"userID = $userID"). " AND ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4045,20 +4089,20 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function get_best_fitting_rate($user_id,$project_id,$event_id)
+    public function get_best_fitting_rate($userID,$projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
         $query_string = "SELECT rate FROM ${p}rates WHERE
-        (user_id = $user_id OR user_id IS NULL)  AND
-        (project_id = $project_id OR project_id IS NULL)  AND
-        (event_id = $event_id OR event_id IS NULL)
-        ORDER BY user_id DESC, event_id DESC, project_id DESC
+        (userID = $userID OR userID IS NULL)  AND
+        (projectID = $projectID OR projectID IS NULL)  AND
+        (activityID = $activityID OR activityID IS NULL)
+        ORDER BY userID DESC, activityID DESC, projectID DESC
         LIMIT 1;";
 
         $query = $this->conn->prepare($query_string);
@@ -4083,20 +4127,20 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function allFittingRates($user_id,$project_id,$event_id)
+    public function allFittingRates($userID,$projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($user_id == NULL || !is_numeric($user_id)) $user_id = "NULL";
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
-        $query_string = "SELECT rate, user_id, project_id, event_id FROM ${p}rates WHERE
-        (user_id = $user_id OR user_id IS NULL)  AND
-        (project_id = $project_id OR project_id IS NULL)  AND
-        (event_id = $event_id OR event_id IS NULL)
-        ORDER BY user_id DESC, event_id DESC, project_id DESC;";
+        $query_string = "SELECT rate, userID, projectID, activityID FROM ${p}rates WHERE
+        (userID = $userID OR userID IS NULL)  AND
+        (projectID = $projectID OR projectID IS NULL)  AND
+        (activityID = $activityID OR activityID IS NULL)
+        ORDER BY userID DESC, activityID DESC, projectID DESC;";
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4122,24 +4166,24 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function save_fixed_rate($project_id,$event_id,$rate)
+    public function save_fixed_rate($projectID,$activityID,$rate)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
         if (!is_numeric($rate)) return false;
 
 
         // build update or insert statement
         $query_string = "";
-        if ($this->get_fixed_rate($project_id,$event_id) === false)
-          $query_string = "INSERT INTO ${p}fixed_rates VALUES($project_id,$event_id,$rate);";
+        if ($this->get_fixed_rate($projectID,$activityID) === false)
+          $query_string = "INSERT INTO ${p}fixedRates VALUES($projectID,$activityID,$rate);";
         else
-          $query_string = "UPDATE ${p}fixed_rates SET rate = $rate WHERE ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+          $query_string = "UPDATE ${p}fixedRates SET rate = $rate WHERE ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4159,18 +4203,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function get_fixed_rate($project_id,$event_id)
+    public function get_fixed_rate($projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-        $query_string = "SELECT rate FROM ${p}fixed_rates WHERE ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+        $query_string = "SELECT rate FROM ${p}fixedRates WHERE ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4194,18 +4238,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function remove_fixed_rate($project_id,$event_id)
+    public function remove_fixed_rate($projectID,$activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-        $query_string = "DELETE FROM ${p}fixed_rates WHERE ".
-        (($project_id=="NULL")?"project_id is NULL":"project_id = $project_id"). " AND ".
-        (($event_id=="NULL")?"event_id is NULL":"event_id = $event_id");
+        $query_string = "DELETE FROM ${p}fixedRates WHERE ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4225,18 +4269,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function get_best_fitting_fixed_rate($project_id, $event_id)
+    public function get_best_fitting_fixed_rate($projectID, $activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
-        $query_string = "SELECT rate FROM ${p}rates WHERE
-        (project_id = $project_id OR project_id IS NULL)  AND
-        (event_id = $event_id OR event_id IS NULL)
-        ORDER BY event_id DESC, project_id DESC
+        $query_string = "SELECT rate FROM ${p}fixedRates WHERE
+        (projectID = $projectID OR projectID IS NULL)  AND
+        (activityID = $activityID OR activityID IS NULL)
+        ORDER BY activityID DESC, projectID DESC
         LIMIT 1;";
 
         $query = $this->conn->prepare($query_string);
@@ -4261,18 +4305,18 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $this->conn         PDO connection
     * @author sl
     */
-    public function allFittingFixedRates($project_id, $event_id)
+    public function allFittingFixedRates($projectID, $activityID)
     {
         $p = $this->kga['server_prefix'];
 
         // validate input
-        if ($project_id == NULL || !is_numeric($project_id)) $project_id = "NULL";
-        if ($event_id == NULL || !is_numeric($event_id)) $event_id = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
-        $query_string = "SELECT rate, project_id, event_id FROM ${p}fixed_rates WHERE
-        (project_id = $project_id OR project_id IS NULL)  AND
-        (event_id = $event_id OR event_id IS NULL)
-        ORDER BY event_id DESC, project_id DESC;";
+        $query_string = "SELECT rate, projectID, activityID FROM ${p}fixedRates WHERE
+        (projectID = $projectID OR projectID IS NULL)  AND
+        (activityID = $activityID OR activityID IS NULL)
+        ORDER BY activityID DESC, projectID DESC;";
 
         $query = $this->conn->prepare($query_string);
         $result = $query->execute();
@@ -4299,16 +4343,16 @@ class PDODatabaseLayer extends DatabaseLayer
     * @global array $conn         MySQL connection
     * @author sl
     */
-    public function usr_loginSetKey($userId, $keymai)
+    public function user_loginSetKey($userId, $keymai)
     {
         $p = $this->kga['server_prefix'];
 
-        $query = "UPDATE ${p}usr SET secure=?, ban=0, banTime=0 WHERE usr_ID=?;";
+        $query = "UPDATE ${p}users SET secure=?, ban=0, banTime=0 WHERE userID=?;";
         $query = $this->conn->prepare($query);
         $result = $query->execute(array($keymai,$userId));
 
         if ($result == false)
-          $this->logLastError('usr_loginSetKey');
+          $this->logLastError('user_loginSetKey');
     }
 
     /**
@@ -4317,16 +4361,16 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @author sl
     */
-    public function knd_loginSetKey($customerId, $keymai)
+    public function customer_loginSetKey($customerId, $keymai)
     {
         $p = $this->kga['server_prefix'];
 
-        $query = "UPDATE ${p}knd SET knd_secure=? WHERE knd_ID=?;";
+        $query = "UPDATE ${p}customers SET secure=? WHERE customerID=?;";
         $query = $this->conn->prepare($query);
         $result = $query->execute(array($keymai,$customerId));
 
         if ($result == false)
-          $this->logLastError('knd_loginSetKey');
+          $this->logLastError('customer_loginSetKey');
     }
 
     /**
@@ -4341,10 +4385,10 @@ class PDODatabaseLayer extends DatabaseLayer
     {
         $p = $this->kga['server_prefix'];
 
-        $query = "UPDATE ${p}usr SET ban=ban+1 ";
+        $query = "UPDATE ${p}users SET ban=ban+1 ";
         if ($resetTime)
           $query .= ",banTime = ".time()." ";
-        $query .= "WHERE usr_ID = ?";
+        $query .= "WHERE userID = ?";
 
         $query = $this->conn->prepare($query);
         $result = $query->execute(array($userId));
@@ -4384,7 +4428,7 @@ class PDODatabaseLayer extends DatabaseLayer
   {
   	
   	$table = $this->getProjectTable();
-	$filter = array('pct_ID' => $projectId, 'pct_trash' => 0);
+	$filter = array('projectID' => $projectId, 'trash' => 0);
 	
 	return $this->rowExists($table, $filter);
   }
@@ -4395,11 +4439,11 @@ class PDODatabaseLayer extends DatabaseLayer
    * @param int $eventId
    * @return bool
    */
-  public function isValidEventId($eventId)
+  public function isValidActivityId($eventId)
   {
   	
-  	$table = $this->getEventTable();
-	$filter = array('evt_ID' => $eventId, 'evt_trash' => 0);
+  	$table = $this->getActivityTable();
+	$filter = array('activityID' => $eventId, 'trash' => 0);
 	
 	return $this->rowExists($table, $filter);
   }
@@ -4504,9 +4548,9 @@ class PDODatabaseLayer extends DatabaseLayer
   	}
   	
   	
-  	$select = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID,
-  				knd_name, pct_kndID, pct_name, exp_comment, exp_refundable,
-  				exp_comment_type, usr_name, exp_cleared";
+  	$select = "SELECT expenseID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, projectID,
+  				knd_name, customerID, pct_name, exp_comment, exp_refundable,
+  				exp_commentType, name, exp_cleared";
   				
   	$where = empty($whereClauses) ? '' : "WHERE ".implode(" AND ",$whereClauses);
   	$orderDirection = $reverse_order ? 'ASC' : 'DESC';
@@ -4518,9 +4562,9 @@ class PDODatabaseLayer extends DatabaseLayer
   	 
   	$query = "$select
   		FROM ${p}exp
-	  	Join ${p}pct ON exp_pctID = pct_ID
-	  	Join ${p}knd ON pct_kndID = knd_ID
-	  	Join ${p}usr ON exp_usrID = usr_ID 
+	  	Join ${p}pct ON exp_pctID = projectID
+	  	Join ${p}knd ON customerID = customerID
+	  	Join ${p}usr ON exp_usrID = userID 
 	  	$where
 	  	ORDER BY exp_timestamp $orderDirection $limit";
   	
@@ -4544,21 +4588,21 @@ class PDODatabaseLayer extends DatabaseLayer
   	/* TODO: needs revision as foreach loop */
   	while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
   		$row = $conn->Row();
-  		$arr[$i]['exp_ID']             = $row['exp_ID'];
+  		$arr[$i]['expenseID']             = $row['expenseID'];
   		$arr[$i]['exp_timestamp']      = $row['exp_timestamp'];
   		$arr[$i]['exp_multiplier']     = $row['exp_multiplier'];
   		$arr[$i]['exp_value']          = $row['exp_value'];
   		$arr[$i]['exp_pctID']          = $row['exp_pctID'];
   		$arr[$i]['exp_designation']    = $row['exp_designation'];
   		$arr[$i]['exp_usrID']          = $row['exp_usrID'];
-  		$arr[$i]['pct_ID']             = $row['pct_ID'];
+  		$arr[$i]['projectID']             = $row['projectID'];
   		$arr[$i]['knd_name']           = $row['knd_name'];
-  		$arr[$i]['pct_kndID']          = $row['pct_kndID'];
+  		$arr[$i]['customerID']          = $row['customerID'];
   		$arr[$i]['pct_name']           = $row['pct_name'];
   		$arr[$i]['exp_comment']        = $row['exp_comment'];
-  		$arr[$i]['exp_comment_type']   = $row['exp_comment_type'];
+  		$arr[$i]['exp_commentType']   = $row['exp_commentType'];
   		$arr[$i]['exp_refundable']     = $row['exp_refundable'];
-  		$arr[$i]['usr_name']           = $row['usr_name'];
+  		$arr[$i]['name']           = $row['name'];
   		$arr[$i]['exp_cleared']        = $row['exp_cleared'];
   		$i++;
   	}
@@ -4599,11 +4643,11 @@ class PDODatabaseLayer extends DatabaseLayer
   		}
   
   		if (count($customers) > 0) {
-  		$whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+  		$whereClauses[] = "customerID in (".implode(',',$customers).")";
   		}
   
   				if (count($projects) > 0) {
-  		$whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+  		$whereClauses[] = "projectID in (".implode(',',$projects).")";
   		}
   
   		return $whereClauses;

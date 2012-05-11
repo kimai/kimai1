@@ -16,29 +16,29 @@
             <tbody>
     
 {section name=row loop=$arr_pct}
-{if $arr_pct[row].pct_visible || $arr_pct[row].zeit != "0:00"}            
+{if $arr_pct[row].visible || $arr_pct[row].zeit != "0:00"}            
                 <tr class="{cycle values="odd,even"}">
 
                     <td class="option">
-                        <a href ="#" onClick="editSubject('pct',{$arr_pct[row].pct_ID}); $(this).blur(); return false;">
+                        <a href ="#" onClick="editSubject('pct',{$arr_pct[row].projectID}); $(this).blur(); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
                         
                         &nbsp;
                         
-                        <a href="#" id="delete_pct{$arr_pct[row].pct_ID}" onClick="ap_ext_deleteProject({$arr_pct[row].pct_ID})">
+                        <a href="#" id="delete_pct{$arr_pct[row].projectID}" onClick="ap_ext_deleteProject({$arr_pct[row].projectID})">
                           <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delpct}" width="13" height="13" alt="{$kga.lang.delpct}" border="0">
                         </a>
                     </td>
 
                     <td class="projects">
-                        {if $arr_pct[row].pct_visible != 1}<span style="color:#bbb">{/if}
+                        {if $arr_pct[row].visible != 1}<span style="color:#bbb">{/if}
                         {if $kga.conf.flip_pct_display}    
-                        <span class="lighter">{$arr_pct[row].knd_name|truncate:30:"..."|escape:'html'}:</span> {$arr_pct[row].pct_name|escape:'html'}
+                        <span class="lighter">{$arr_pct[row].customerName|truncate:30:"..."|escape:'html'}:</span> {$arr_pct[row].name|escape:'html'}
                         {else}
-                        {$arr_pct[row].pct_name|escape:'html'} <span class="lighter">({$arr_pct[row].knd_name|truncate:30:"..."|escape:'html'})</span>
+                        {$arr_pct[row].name|escape:'html'} <span class="lighter">({$arr_pct[row].customerName|truncate:30:"..."|escape:'html'})</span>
                         {/if}
-                        {if $arr_pct[row].pct_visible != 1}</span>{/if}
+                        {if $arr_pct[row].visible != 1}</span>{/if}
                     </td>
                     
                     <td>

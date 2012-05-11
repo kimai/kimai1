@@ -90,12 +90,12 @@ class HttpAuth extends AuthBase {
     // User is authenticated by web server. Does the user exist in Kimai yet?
     global $kga;
     $check_username = $this->HTAUTH_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
-    $result = mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';", $kga['server_prefix'], mysql_real_escape_string($check_username)));
+    $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';", $kga['server_prefix'], mysql_real_escape_string($check_username)));
     if (mysql_num_rows($result) == 1) {
 
 	// User found in Kimai DB: get info and return true
     	$row = mysql_fetch_assoc($result);
-        $userId = $row['usr_ID'];
+        $userId = $row['userID'];
         return true;
 	}
 
@@ -103,16 +103,16 @@ class HttpAuth extends AuthBase {
     if ($this->HTAUTH_USER_AUTOCREATE) { 
     
 	// AutoCreate the user and return true
-    	$userId = usr_create(array(
-	    'usr_name' => $check_username,
-    	    'usr_grp' => $this->getDefaultGroupId(),
-    	    'usr_sts' => 2,
-    	    'usr_active' => 1
+    	$userId = $this->database->(array(
+	    'name' => $check_username,
+    	    'groups' => $this->getDefaultGroupId(),
+    	    'status' => 2,
+    	    'active' => 1
     	    ));
 
     	// Set a random password, unknown to the user. Autologin must be used until user sets own password
-	$usr_data = array('pw' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt']));
-	usr_edit($userId, $usr_data);
+	$usr_data = array('password' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt']));
+	$this->database->user_edit($userId, $usr_data);
 	return true;
 	}
 
@@ -124,17 +124,17 @@ class HttpAuth extends AuthBase {
 
       $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
 
-      $result = mysql_query(sprintf("SELECT * FROM %susr WHERE usr_name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
+      $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
       if (mysql_num_rows($result) != 1) {
         $userId = false;
         return false;
       }
 
       $row    = mysql_fetch_assoc($result);
-      $pass    = $row['pw'];        
+      $pass    = $row['password'];        
       $ban     = $row['ban'];
       $banTime = $row['banTime'];   
-      $userId  = $row['usr_ID'];
+      $userId  = $row['userID'];
       
       return $pass==$passCrypt && $username!="";
   }

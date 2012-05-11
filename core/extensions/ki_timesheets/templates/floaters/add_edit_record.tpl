@@ -8,7 +8,7 @@
 
             // only save the value, the update will happen automatically because we trigger a changed
             // event on "edit_out_time"
-			$('#currentTime, #edit_out_day, #edit_in_day').click(function() {
+			$('#currentTime, #end_day, #start_day').click(function() {
     			saveDuration();
 			});
 
@@ -26,17 +26,17 @@
 	            var stepSeconds = $('#stepSeconds').val();
 	            if(isNaN(stepSeconds) || stepSeconds <= 0) {
 		            if(!isNaN(step) && step > 0 && step < 60) {
-		            $('#edit_in_time').timePicker({step: parseInt(step)});
-		            $('#edit_out_time').timePicker({step: parseInt(step)});
+		            $('#start_time').timePicker({step: parseInt(step)});
+		            $('#end_time').timePicker({step: parseInt(step)});
 		            } else {
-		                $('#edit_in_time').timePicker();
-		                $('#edit_out_time').timePicker();
+		                $('#start_time').timePicker();
+		                $('#end_time').timePicker();
 		            }
 	            }
             }
  
             // #rate already has an event on click, so treat it below
-            $("#edit_duration, #edit_out_time, #edit_in_time").focus(function() {
+            $("#eduration, #eend_time, #start_time").focus(function() {
     			saveDuration();
             }).change(function() {
             	updateDuration();
@@ -65,16 +65,16 @@
      			return false;
             });
  			
-            $('#edit_in_day').datepicker({
+            $('#start_day').datepicker({
               onSelect: function(dateText, instance) {
-                $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
+                $('#end_day').datepicker( "option", "minDate", $('#start_day').datepicker("getDate") );
                 ts_timeToDuration();
               }
             });
 
-            $('#edit_out_day').datepicker({
+            $('#end_day').datepicker({
               onSelect: function(dateText, instance) {
-                $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
+                $('#start_day').datepicker( "option", "maxDate", $('#end_day').datepicker("getDate") );
                 ts_timeToDuration();
               }
             });
@@ -113,11 +113,11 @@
                         .appendTo( ul );
             };
 
-            $( "#fixed_rate" ).click(function() {
-              $( "#fixed_rate").autocomplete("search",0);
+            $( "#fixedRate" ).click(function() {
+              $( "#fixedRate").autocomplete("search",0);
             });
             
-            $( "#fixed_rate" ).autocomplete({
+            $( "#fixedRate" ).autocomplete({
               width:"200px",
               source: function(req, add){  
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
@@ -131,7 +131,7 @@
                 );  
               },
               select: function( event, ui ) {
-                $( "#fixed_rate" ).val( ui.item.value );
+                $( "#fixedRate" ).val( ui.item.value );
 
                 return false;
               }
@@ -143,22 +143,22 @@
             };
 
             $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
-                if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
-                    ( !$('#edit_out_day').val().match(ts_dayFormatExp) && $('#edit_out_day').val() != '') ||
-                    !$('#edit_in_time').val().match(ts_timeFormatExp) ||
-                    ( !$('#edit_out_time').val().match(ts_timeFormatExp) && $('#edit_out_time').val() != '')) {
+                if (!$('#start_day').val().match(ts_dayFormatExp) ||
+                    ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
+                    !$('#start_time').val().match(ts_timeFormatExp) ||
+                    ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
                   alert("{/literal}{$kga.lang.TimeDateInputError}{literal}");
                   return false;
                 }
 
-                var endTimeSet = $('#edit_out_day').val() != '' || $('#edit_out_time').val() != '';
+                var endTimeSet = $('#end_day').val() != '' || $('#end_time').val() != '';
 
                 if (!endTimeSet)
                   return true; // no need to validate timerange if end time is not set
 
                 // test if start day is before end day
-                var inDayMatches = $('#edit_in_day').val().match(ts_dayFormatExp);
-                var outDayMatches = $('#edit_out_day').val().match(ts_dayFormatExp);
+                var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
+                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
                 for (var i = 3;i>=1;i--) {
                   var inVal = inDayMatches[i];
                   var outVal = outDayMatches[i];
@@ -180,8 +180,8 @@
                 }
                 if (inDayMatches[0] == outDayMatches[0]) {
                   // test if start time is before end time if it's the same day
-                  var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
-                  var outTimeMatches = $('#edit_out_time').val().match(ts_timeFormatExp);
+                  var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
+                  var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
                   for (var i = 1;i<=3;i++) {
                     var inVal = inTimeMatches[i];
                     var outVal = outTimeMatches[i];
@@ -208,8 +208,8 @@
                   }
                 }
                 
-                var edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
-                var edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
+                var edit_in_time = $('#start_day').val()+$('#start_time').val();
+                var edit_out_time = $('#end_day').val()+$('#end_time').val();
                 var deleted = $('#erase').is(':checked');
                 
                 if (!deleted && edit_in_time == edit_out_time) {
@@ -244,7 +244,7 @@
             // will be set and the duration is added to the budgetUsed eventhough it shouldn't
             // so maually subtract the value again
             var durationArray= new Array();
-            durationArray = $("#edit_duration").val().split(/:|\./);
+            durationArray = $("#duration").val().split(/:|\./);
             if(durationArray.length > 0 && durationArray.length < 4) {
                 secs = durationArray[0]*3600;
                 if(durationArray.length > 1)
@@ -260,7 +260,7 @@
         }); 
 
         function saveDuration() {
-			var durationArray=$("#edit_duration").val().split(/:|\./);
+			var durationArray=$("#duration").val().split(/:|\./);
 			var secs = 0;
 		    if(durationArray.length > 0 && durationArray.length < 4) {
 		        secs = durationArray[0]*3600;
@@ -274,7 +274,7 @@
         }
 
         function updateDuration() {
-        	var durationArray=$("#edit_duration").val().split(/:|\./);
+        	var durationArray=$("#duration").val().split(/:|\./);
 			var secs = 0;
 		    if(durationArray.length > 0 && durationArray.length < 4) {
 		        secs = durationArray[0]*3600;
@@ -378,10 +378,10 @@
                 <ul>
                 
                    <li>
-                       <label for="pct_ID">{$kga.lang.pct}:</label>
+                       <label for="projectID">{$kga.lang.pct}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="pct_ID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_evt($('#add_edit_zef_pct_ID').val(),undefined,$('#add_edit_zef_evt_ID').val(), $('input[name=\'id\']').val());" >
-                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
+                        <select size = "5" name="projectID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_evt($('#add_edit_zef_pct_ID').val(),undefined,$('#add_edit_zef_evt_ID').val(), $('input[name=\'id\']').val());" >
+                            {html_options values=$projectIDs output=$projectNames selected=$projectID}
                         </select>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_pct_ID', this.value); ts_add_edit_validate();"/>
@@ -391,10 +391,10 @@
 
 
                    <li>
-                       <label for="evt_ID">{$kga.lang.evt}:</label>
+                       <label for="activityID">{$kga.lang.evt}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
-                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
+                        <select size = "5" name="activityID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
+                            {html_options values=$activityIDs output=$activityNames selected=$activityID}
                         </select>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_evt_ID', this.value); ts_add_edit_validate();" />
@@ -411,24 +411,24 @@
                    </li>
 
                 <li>
-                     <label for="edit_in_day">{$kga.lang.day}:</label>
-                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day|escape:'html'}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <label>{$kga.lang.day}:</label>
+                     <input id='start_day' type='text' name='start_day' value='{$start_day|escape:'html'}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                      -
-                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day|escape:'html'}' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='end_day' type='text' name='end_day' value='{$end_day|escape:'html'}' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
-                       <label for="time">{$kga.lang.timelabel}:</label>
-                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time|escape:'html'}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                       <label>{$kga.lang.timelabel}:</label>
+                        <input id='start_time' type='text' name='start_time' value='{$start_time|escape:'html'}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
-                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time|escape:'html'}' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='end_time' type='text' name='end_time' value='{$end_time|escape:'html'}' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a id="currentTime" href="#" onClick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
                    <li>
                        <label for="duration">{$kga.lang.durationlabel}:</label>
-                        <input id='edit_duration' type='text' name='edit_duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
                </ul>
              </fieldset>
@@ -438,14 +438,14 @@
                 <ul>
 
                    <li>
-                        <label for="zlocation">{$kga.lang.zlocation}:</label>
-                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="location">{$kga.lang.zlocation}:</label>
+                        <input id='location' type='text' name='location' value='{$location|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
                    <li>
-                        <label for="trackingnr">{$kga.lang.trackingnr}:</label>
-                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr|escape:'html'}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="trackingNumber">{$kga.lang.trackingnr}:</label>
+                        <input id='trackingNumber' type='text' name='trackingNumber' value='{$trackingNumber|escape:'html'}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
                         <label for="comment">{$kga.lang.comment}:</label>
@@ -453,16 +453,16 @@
                    </li>
                    
                    <li>
-                       <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="14" >
-                           {html_options values=$comment_values output=$comment_types selected=$comment_active}
+                       <label for="commentType">{$kga.lang.comment_type}:</label>
+                       <select id="commentType" class="formfield" name="commentType" tabindex="14" >
+                           {html_options values=$commentValues output=$commentTypes selected=$commentType}
                        </select>
                    </li>
-                   {if $kga.usr.usr_sts != 2}   
+                   {if $kga.usr.status != 2}   
                    <li>
-                       <label for="user">{$kga.lang.user}:</label>
-                       <select id="user" class="formfield" name="user" tabindex="14" >
-                           {html_options values=$userIds output=$userNames selected=$user}
+                       <label for="userID">{$kga.lang.user}:</label>
+                       <select id="userID" class="formfield" name="user" tabindex="14" >
+                           {html_options values=$userIDs output=$userNames selected=$userID}
                        </select>
                    </li>
                    {/if}
@@ -512,8 +512,8 @@
                         <label for="rate">{$kga.lang.rate}:</label>
                         <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' size='5' tabindex='10' />
                         </select>
-                        <label for="fixed_rate" style="float: none; margin-left: 60px;">{$kga.lang.fixed_rate}:</label>
-                        <input id='fixed_rate' type='text' name='fixed_rate' value='{$fixed_rate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="fixedRate" style="float: none; margin-left: 60px;">{$kga.lang.fixed_rate}:</label>
+                        <input id='fixedRate' type='text' name='fixedRate' value='{$fixedRate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         </select>
                    </li>
                    

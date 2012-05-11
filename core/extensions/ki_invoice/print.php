@@ -60,7 +60,7 @@ $timespace       = get_timespace();
 $in              = $timespace[0];
 $out             = $timespace[1];
 
-$timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), null,false,false,$_REQUEST['filter_cleared']);
+$timeArray = $database->get_arr_timeSheet($in, $out, null, null, array($_REQUEST['pct_ID']), null,false,false,$_REQUEST['filter_cleared']);
 /* $timeArray now contains: zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID,
 	zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment,
 	pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type,
@@ -73,23 +73,23 @@ $year  = date("Y", $out );
 
 if (count($timeArray) > 0) {
     // customer data
-    $kndArray        = $database->knd_get_data($timeArray[0]['pct_kndID']);
-    $pctArray        = $database->pct_get_data($timeArray[0]['zef_pctID']);
-	$project         = html_entity_decode($timeArray[0]['pct_name']);
-	$customerName    = html_entity_decode($timeArray[0]['knd_name']);
-	$companyName     = $kndArray['knd_company'];
-	$customerStreet  = $kndArray['knd_street'];
-	$customerCity    = $kndArray['knd_city'];
-	$customerZip     = $kndArray['knd_zipcode'];
-	$customerComment = $kndArray['knd_comment'];
-	$customerPhone   = $kndArray['knd_tel'];
-	$customerFax     = $kndArray['knd_fax'];
-	$customerMobile  = $kndArray['knd_mobile'];
-	$customerEmail   = $kndArray['knd_mail'];
-	$customerContact = $kndArray['knd_contact'];
-	$customerURL	 = $kndArray['knd_homepage'];
-	$customerVat     = $kndArray['knd_vat'];
-	$projectComment  = $pctArray['pct_comment'];
+    $kndArray        = $database->customer_get_data($timeArray[0]['customerID']);
+    $pctArray        = $database->project_get_data($timeArray[0]['projectID']);
+	$project         = html_entity_decode($timeArray[0]['projectName']);
+	$customerName    = html_entity_decode($timeArray[0]['customerName']);
+	$companyName     = $kndArray['company'];
+	$customerStreet  = $kndArray['street'];
+	$customerCity    = $kndArray['city'];
+	$customerZip     = $kndArray['zipcode'];
+	$customerComment = $kndArray['comment'];
+	$customerPhone   = $kndArray['phone'];
+	$customerFax     = $kndArray['fax'];
+	$customerMobile  = $kndArray['mobile'];
+	$customerEmail   = $kndArray['mail'];
+	$customerContact = $kndArray['contact'];
+	$customerURL	 = $kndArray['homepage'];
+	$customerVat     = $kndArray['vat'];
+	$projectComment  = $pctArray['projectComment'];
 	$beginDate       = $in;
 	$endDate         = $out;
 	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
@@ -106,13 +106,13 @@ $invoiceArray = array();
 
 while ($time_index < count($timeArray)) {
 	$wage    = $timeArray[$time_index]['wage'];
-	$time    = $timeArray[$time_index]['zef_time']/3600;
-	$event   = html_entity_decode($timeArray[$time_index]['evt_name']);
-	$comment = $timeArray[$time_index]['zef_comment'];
-	$description = $timeArray[$time_index]['zef_description'];
-	$evtdt   = date("m/d/Y", $timeArray[$time_index]['zef_in']);
-	$userName  = $timeArray[$time_index]['usr_name'];
-	$userAlias = $timeArray[$time_index]['usr_alias'];
+	$time    = $timeArray[$time_index]['duration']/3600;
+	$event   = html_entity_decode($timeArray[$time_index]['activityName']);
+	$comment = $timeArray[$time_index]['comment'];
+	$description = $timeArray[$time_index]['description'];
+	$evtdt   = date("m/d/Y", $timeArray[$time_index]['start']);
+	$userName  = $timeArray[$time_index]['userName'];
+	$userAlias = $timeArray[$time_index]['userAlias'];
 
    // do we have to create a short form?
    if ( isset($_REQUEST['short']) ) {

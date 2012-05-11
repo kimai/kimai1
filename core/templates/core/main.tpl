@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" value="noindex,nofollow" />
 
-    <title>{$kga.usr.usr_name|escape:'html'} - Kimai</title>
+    <title>{$kga.usr.name|escape:'html'} - Kimai</title>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
     <!-- Default Stylesheets -->
@@ -69,7 +69,7 @@
         {/if}
         
         {if (isset($kga.usr))}
-        var usr_ID                = {$kga.usr.usr_ID};
+        var usr_ID                = {$kga.usr.userID};
         {else}
         var usr_ID                = null;
         {/if}
@@ -89,12 +89,12 @@
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
 
-        var default_title         = "{$kga.usr.usr_name|escape:'html'} - Kimai";
+        var default_title         = "{$kga.usr.name|escape:'html'} - Kimai";
         var revision              = {$kga.revision};
         var timespaceDateFormat   = "{$kga.date_format.2|escape:'html'}";
 
-        var selected_knd  = '{$knd_data.knd_ID}';
-        var selected_pct  = '{$pct_data.pct_ID}';
+        var selected_knd  = '{$customerData.customerID}';
+        var selected_pct  = '{$projectData.projectID}';
         var selected_evt  = '{$evt_data.evt_ID}';
 
         var pickerClicked = '';
@@ -137,14 +137,14 @@
     $('#extShrink').click(lists_shrinkExtToggle);
     $('#kndShrink').hover(lists_kndShrinkShow,lists_kndShrinkHide);
     $('#kndShrink').click(lists_shrinkKndToggle);
-  {/literal}{if !$kga.usr || $kga.usr.usr_sts < 2}
+  {/literal}{if !$kga.usr || $kga.usr.status < 2}
     $('#usrShrink').hover(lists_usrShrinkShow,lists_usrShrinkHide);
     $('#usrShrink').click(lists_shrinkUsrToggle);
   {else}
     $('#usrShrink').hide();
   {/if}
 
-  {if $kga.conf.user_list_hidden || $kga.usr.usr_sts == 2}
+  {if $kga.conf.user_list_hidden || $kga.usr.status == 2}
     lists_shrinkUsrToggle();
   {/if}
   {literal}
@@ -194,7 +194,7 @@
         <div id="menu">
             <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
             <a id="main_tools_button" href="#" ><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
-            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.usr_name|escape:'html'}</b>
+            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.name|escape:'html'}</b>
         </div>
         
         <div id="main_tools_menu">
@@ -316,7 +316,7 @@
 </div>
 
 <div id="knd_foot">    
-{if $kga.usr && $kga.usr.usr_sts != 2 }    
+{if $kga.usr && $kga.usr.status != 2 }    
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('knd'); $(this).blur(); return false;"></a>
@@ -326,7 +326,7 @@
 </div>
 
 <div id="pct_foot">
-{if $kga.usr && $kga.usr.usr_sts != 2 }  
+{if $kga.usr && $kga.usr.status != 2 }  
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,650,200); $(this).blur(); return false;"></a>
 {/if}
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct'); $(this).blur(); return false;"></a>
@@ -336,7 +336,7 @@
 </div>
 
 <div id="evt_foot">
-{if $kga.usr && $kga.usr.usr_sts != 2 } 
+{if $kga.usr && $kga.usr.status != 2 } 
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('evt'); $(this).blur(); return false;"></a>

@@ -10,48 +10,48 @@
 
 {* edit customers *}
 
-    <div id="ap_ext_sub5">
+    <div id="ap_ext_sub6">
         <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(5)">
+            <a onClick="ap_ext_subtab_expand(6)">
                 <span class="ap_ext_accordeon_triangle"></span>
                 {$kga.lang.knds}
             </a>
         </div>
-        <div id="ap_ext_s5" class="ap_ext_subtab ap_ext_subject">
+        <div id="ap_ext_s6" class="ap_ext_subtab ap_ext_subject">
             {$knd_display}
         </div>
     </div>
 
 {* edit projects *}
 
-    <div id="ap_ext_sub6">
+    <div id="ap_ext_sub7">
         <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(6)">
+            <a onClick="ap_ext_subtab_expand(7)">
                 <span class="ap_ext_accordeon_triangle"></span>
                 {$kga.lang.pcts}
             </a>
         </div>
-        <div id="ap_ext_s6" class="ap_ext_subtab ap_ext_subject">
+        <div id="ap_ext_s7" class="ap_ext_subtab ap_ext_subject">
             {$pct_display}
         </div>
     </div>
 
 {* edit events *}
 
-<div id="ap_ext_sub7">
+<div id="ap_ext_sub8">
     <div class="ap_ext_panel_header">
-        <a onClick="ap_ext_subtab_expand(7)">
+        <a onClick="ap_ext_subtab_expand(8)">
             <span class="ap_ext_accordeon_triangle"></span>
             {$kga.lang.evts}
         </a>
     </div>
-    <div id="ap_ext_s7" class="ap_ext_subtab ap_ext_subject">
+    <div id="ap_ext_s8" class="ap_ext_subtab ap_ext_subject">
         {$evt_display}
     </div>
 </div>
 
 {* edit users *}
-{ if $kga.usr.usr_sts == 0 }
+{ if $kga.usr.status == 0 }
 	<div id="ap_ext_sub1">
 		<div class="ap_ext_panel_header">
 			<a onClick="ap_ext_subtab_expand(1)">
@@ -94,7 +94,7 @@
 	
 
 {* advanced *}
-{ if $kga.usr.usr_sts == 0 }
+{ if $kga.usr.status == 0 }
 	<div id="ap_ext_sub4">
 		<div class="ap_ext_panel_header">
 			<a onClick="ap_ext_subtab_expand(4)">
@@ -109,7 +109,7 @@
 { /if}
 
 {* DB *}
-{ if $kga.usr.usr_sts == 0 }
+{ if $kga.usr.status == 0 }
     <div id="ap_ext_sub5">
         <div class="ap_ext_panel_header">
             <a onClick="ap_ext_subtab_expand(5)">

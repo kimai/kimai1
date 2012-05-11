@@ -29,22 +29,22 @@ switch ($axAction) {
     // = Builds edit-user dialogue =
     // =============================
 
-        $usr_details = $database->usr_get_data($id);        
-        $arr = $database->get_arr_grp();
+        $usr_details = $database->user_get_data($id);        
+        $arr = $database->get_arr_groups();
         
         $i=0;
         foreach ($arr as $row) {
-            $arr_grp_name[$i] = $row['grp_name'];
-            $arr_grp_ID[$i]   = $row['grp_ID'];
+            $arr_grp_name[$i] = $row['name'];
+            $arr_grp_ID[$i]   = $row['groupID'];
             $i++;
         }
         
         $tpl->assign('selectedGroups',$database->getGroupMemberships($id));
         
-        $tpl->assign('arr_grp_ID',   $arr_grp_ID);
-        $tpl->assign('arr_grp_name', $arr_grp_name);
+        $tpl->assign('groupIDs',   $arr_grp_ID);
+        $tpl->assign('groupNames', $arr_grp_name);
                     
-        $tpl->assign('usr_details', $usr_details);
+        $tpl->assign('user_details', $usr_details);
         $tpl->display("edituser.tpl");  
         
     break;
@@ -54,23 +54,23 @@ switch ($axAction) {
     // = Builds edit-group dialogue =
     // =============================
         
-        $grp_details = $database->grp_get_data($_REQUEST['id']);
-        $arr = $database->get_arr_usr();
+        $grp_details = $database->group_get_data($_REQUEST['id']);
+        $arr = $database->get_arr_users();
         
         $i=0;
         foreach ($arr as $row) {
-            $arr_usr_name[$i] = $row['usr_name'];
-            $arr_usr_ID[$i]   = $row['usr_ID'];
+            $arr_usr_name[$i] = $row['name'];
+            $arr_usr_ID[$i]   = $row['userID'];
             $i++;
         }
                 
-        $grp_selection=$database->grp_get_ldrs($_REQUEST['id']);
-        $tpl->assign('grp_selection', $grp_selection);
+        $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
+        $tpl->assign('selectedUsers', $selectedUsers);
                       
-        $tpl->assign('arr_usr_ID',   $arr_usr_ID);
-        $tpl->assign('arr_usr_name', $arr_usr_name);
+        $tpl->assign('userIDs',   $arr_usr_ID);
+        $tpl->assign('userNames', $arr_usr_name);
         
-        $tpl->assign('grp_details', $grp_details);
+        $tpl->assign('group_details', $grp_details);
         $tpl->display("editgroup.tpl"); 
         
     break;     

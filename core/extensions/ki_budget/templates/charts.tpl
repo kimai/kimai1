@@ -13,13 +13,13 @@
 {/literal}
 
 {section name=row loop=$arr_pct}
-{if $arr_pct[row].pct_ID|in_array:$pct_selected}
+{if $arr_pct[row].projectID|in_array:$pct_selected}
 <div class="bgt_project">
 <div class="project_head project_overview">
-{$arr_pct[row].pct_name|escape:'html'}
+{$arr_pct[row].name|escape:'html'}
 </div>
-<div id="bgt_chartdiv_{$arr_pct[row].pct_ID}" class="bgt_plot_area" style="height:140px;width:200px;"></div> 
-{assign var=temp value=$arr_pct[row].pct_ID} 
+<div id="bgt_chartdiv_{$arr_pct[row].projectID}" class="bgt_plot_area" style="height:140px;width:200px;"></div> 
+{assign var=temp value=$arr_pct[row].projectID} 
 <span class="total">Total: {$arr_plotdata[$temp].total|string_format:"%.2f"}</span><br/>
 <span class="budget">Budget: {$arr_plotdata[$temp].budget|string_format:"%.2f"}</span> <br/>
 <span class="approved">Billable: {$arr_plotdata[$temp].billable_total|string_format:"%.2f"}</span><br/>
@@ -33,10 +33,10 @@
 {if $id|in_array:$evt_selected}
 <div class="bgt_project">
 <div class="project_head">
-{$arr_pct[row].pct_name|escape:'html'}&nbsp;
+{$arr_pct[row].name|escape:'html'}&nbsp;
 {$arr_pct[row].events[$id].evt_name|escape:'html'}
 </div>
-<div id="bgt_chartdiv_{$arr_pct[row].pct_ID}_evt_{$id}" class="bgt_plot_area" style="height:140px;width:200px; "></div>
+<div id="bgt_chartdiv_{$arr_pct[row].projectID}_evt_{$id}" class="bgt_plot_area" style="height:140px;width:200px; "></div>
 <span class="total">Total: {$evt.total|string_format:"%.2f"}</span><br>
 <span class="budget">Budget: {$evt.budget_total|string_format:"%.2f"}</span> <br>
 <span class="approved">Approved: {$evt.approved_total|string_format:"%.2f"}</span>

@@ -48,7 +48,7 @@ switch ($axAction) {
       $tpl->assign('designation', $exp_entry['exp_designation']);
 
       // preselected
-      $tpl->assign('pres_pct', $exp_entry['pct_ID']);
+      $tpl->assign('pres_pct', $exp_entry['projectID']);
   
       $tpl->assign('comment_active', $exp_entry['exp_comment_type']);
       $tpl->assign('refundable', $exp_entry['exp_refundable']);

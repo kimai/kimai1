@@ -181,7 +181,7 @@
                             {/if}
                         {/if}
                     ">
-                    {$arr_exp[row].usr_name|escape:'html'}
+                    {$arr_exp[row].name|escape:'html'}
                     </td>
                     
                 </tr>

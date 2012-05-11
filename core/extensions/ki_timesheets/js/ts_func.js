@@ -251,7 +251,7 @@ function ts_ext_updateBudget(data) {
 		budgetUsed = 0;
 	}
     var durationArray= new Array();
-    durationArray = $("#edit_duration").val().split(/:|\./);
+    durationArray = $("#duration").val().split(/:|\./);
     if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
         secs = durationArray[0]*3600;
         if(durationArray.length > 1)
@@ -404,10 +404,10 @@ function pasteNow(value) {
     
     time  = H + ":" + i + ":" + s;
     
-    $("#edit_out_time").val(time);
-    $('#edit_out_time').trigger('change');
+    $("#end_time").val(time);
+    $('#end_time').trigger('change');
     
-    $("#edit_out_day").datepicker( "setDate" , now );
+    $("#end_day").datepicker( "setDate" , now );
 }
 
 //
@@ -446,14 +446,14 @@ function ts_getDateFromStrings(dateStr,timeStr) {
 // Gets the begin Date, while editing a timesheet record
 //
 function ts_getStartDate() {
-    return ts_getDateFromStrings($("#edit_in_day").val(),$("#edit_in_time").val());
+    return ts_getDateFromStrings($("#start_day").val(),$("#start_time").val());
 }
 
 // ----------------------------------------------------------------------------------------
 // Gets the end Date, while editing a timesheet record
 //
 function ts_getEndDate() {
-    return ts_getDateFromStrings($("#edit_out_day").val(),$("#edit_out_time").val());
+    return ts_getDateFromStrings($("#end_day").val(),$("#end_time").val());
 }
 
 // ----------------------------------------------------------------------------------------
@@ -461,7 +461,7 @@ function ts_getEndDate() {
 //
 function ts_durationToTime() {
     end = ts_getEndDate();
-    durationArray=$("#edit_duration").val().split(/:|\./);
+    durationArray=$("#duration").val().split(/:|\./);
     if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
         secs = durationArray[0]*3600;
         if(durationArray.length > 1)
@@ -480,7 +480,7 @@ function ts_durationToTime() {
         if (i<10) i = "0"+i;
         if (s<10) s = "0"+s;
 
-        $("#edit_in_time").val(H + ":" + i + ":" + s);
+        $("#start_time").val(H + ":" + i + ":" + s);
 
         var d = begin.getDate();
         var m = begin.getMonth() + 1;
@@ -488,7 +488,7 @@ function ts_durationToTime() {
         if (d<10) d = "0"+d;
         if (m<10) m = "0"+m;
 
-        $("#edit_in_day").val(d + "." + m + "." + y);
+        $("#start_day").val(d + "." + m + "." + y);
     }
 }
 
@@ -499,13 +499,13 @@ function ts_timeToDuration() {
     begin = ts_getStartDate();
     end = ts_getEndDate();
     if(begin==null || end==null) {
-        $("#edit_duration").val("");
+        $("#duration").val("");
     } else {
         beginSecs = Math.floor(begin.getTime() / 1000);
         endSecs = Math.floor(end.getTime() / 1000);
         durationSecs = endSecs - beginSecs;
         if(durationSecs<0) {
-            $("#edit_duration").val("");
+            $("#duration").val("");
         } else {
             secs = durationSecs%60;
             if(secs<10)
@@ -517,8 +517,8 @@ function ts_timeToDuration() {
             hours = Math.floor(durationSecs / 60);
             if(hours<10)
                 hours="0"+hours;
-            $("#edit_duration").val(hours+":"+mins+":"+secs);
-            $('#edit_duration').trigger('change');
+            $("#duration").val(hours+":"+mins+":"+secs);
+            $('#duration').trigger('change');
         }
     }
 }

@@ -83,7 +83,7 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 		class="bb">{$kga.lang.budget}</span> <span class="cc">&nbsp;</span> </a></li>
 	<li class="tab norm"><a href="#evts"> <span class="aa">&nbsp;</span> <span
 		class="bb">{$kga.lang.evts}</span> <span class="cc">&nbsp;</span> </a></li>
-	{if $sel_grp_IDs|@count gt 1}
+	{if $groupIDs|@count gt 1}
 	<li class="tab norm"><a href="#groups"> <span class="aa">&nbsp;</span>
 	<span class="bb">{$kga.lang.groups}</span> <span class="cc">&nbsp;</span>
 	</a></li>
@@ -107,56 +107,56 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 
 <ul>
 
-	<li><label for="pct_name">{$kga.lang.pct}:</label> <input type="text"
-		name="pct_name" id="focus" value="{$pct_name|escape:'html'}" /></li>
+	<li><label for="name">{$kga.lang.pct}:</label> <input type="text"
+		name="name" id="focus" value="{$name|escape:'html'}" /></li>
 
-	<li><label for="pct_kndID">{$kga.lang.knd}:</label> <select
-		class="formfield" name="pct_kndID">
-		{html_options values=$sel_knd_IDs output=$sel_knd_names
-		selected=$knd_selection}
+	<li><label for="customerID">{$kga.lang.knd}:</label> <select
+		class="formfield" name="customerID">
+		{html_options values=$customerIDs output=$customerNames
+		selected=$selectedCustomer}
 	</select></li>
 
-	<li><label for="pct_visible">{$kga.lang.visibility}:</label> <input
-		name="pct_visible" type="checkbox" value='1'
-		{if $pct_visible || !$id}checked="checked" {/if} /></li>
+	<li><label for="visible">{$kga.lang.visibility}:</label> <input
+		name="visible" type="checkbox" value='1'
+		{if $visible || !$id}checked="checked" {/if} /></li>
 
-	<li><label for="pct_internal">{$kga.lang.internalProject}:</label> <input
-		type="checkbox" name="pct_internal" value='1'
-		{if $pct_internal}checked="checked" {/if} /></li>
+	<li><label for="internal">{$kga.lang.internalProject}:</label> <input
+		type="checkbox" name="internal" value='1'
+		{if $internal}checked="checked" {/if} /></li>
 </ul>
 </fieldset>
 
 <fieldset id="money">
 
 <ul>
-	<li><label for="pct_default_rate">{$kga.lang.default_rate}:</label> <input
-		type="text" name="pct_default_rate"
-		value="{$pct_default_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="defaultRate">{$kga.lang.default_rate}:</label> <input
+		type="text" name="defaultRate"
+		value="{$defaultRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="pct_my_rate">{$kga.lang.my_rate}:</label> <input
-		type="text" name="pct_my_rate"
-		value="{$pct_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="myRate">{$kga.lang.my_rate}:</label> <input
+		type="text" name="myRate"
+		value="{$myRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="pct_fixed_rate">{$kga.lang.fixed_rate}:</label> <input
-		type="text" name="pct_fixed_rate"
-		value="{$pct_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="fixedRate">{$kga.lang.fixed_rate}:</label> <input
+		type="text" name="fixedRate"
+		value="{$fixedRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="pct_budget">{$kga.lang.budget}:</label> <input
-		type='text' name='pct_budget' cols='30' rows='5'
-		value="{$pct_budget|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="budget">{$kga.lang.budget}:</label> <input
+		type='text' name='budget' cols='30' rows='5'
+		value="{$budget|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="pct_effort">{$kga.lang.effort}:</label> <input
-		type='text' name='pct_effort' cols='30' rows='5'
-		value="{$pct_effort|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="effort">{$kga.lang.effort}:</label> <input
+		type='text' name='effort' cols='30' rows='5'
+		value="{$effort|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="pct_approved">{$kga.lang.approved}:</label> <input
-		type='text' name='pct_approved' cols='30' rows='5'
-		value="{$pct_approved|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+	<li><label for="approved">{$kga.lang.approved}:</label> <input
+		type='text' name='approved' cols='30' rows='5'
+		value="{$approved|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 </ul>
 </fieldset>
@@ -164,54 +164,54 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 <fieldset id="evts"><!--            change after upgrade to smarty 3 -->
 <table class="eventsTable">
 	<tr>
-		<td><label for="pct_evts" style="text-align: left;">{$kga.lang.evts}:</label>
+		<td><label for="activities" style="text-align: left;">{$kga.lang.evts}:</label>
 		</td>
-		<td><label for="pct_budget" style="text-align: left;">{$kga.lang.budget}:</label>
+		<td><label for="budget" style="text-align: left;">{$kga.lang.budget}:</label>
 		</td>
-		<td><label for="pct_effort" style="text-align: left;">{$kga.lang.effort}:</label>
+		<td><label for="effort" style="text-align: left;">{$kga.lang.effort}:</label>
 		</td>
-		<td><label for="pct_approved" style="text-align: left;">{$kga.lang.approved}:</label>
+		<td><label for="approved" style="text-align: left;">{$kga.lang.approved}:</label>
 		</td>
 	</tr>
-	{if $evt_selection != false && $evt_selection|@count < $assignableTasks|@count} 
+	{if $selectedActivities != false && $selectedActivities|@count < $assignableTasks|@count} 
 	{php} 
-	$this->append("evt_selection", array('evt_ID' => '')); 
+	$this->append("selectedActivities", array('evt_ID' => '')); 
 	{/php} 
 	{/if}
-	{foreach from=$evt_selection item=evt_assigned}
+	{foreach from=$selectedActivities item=selectedActivity}
 	<tr>
 		<td>
 		<ul>
-			<li><select class="events" class="formfield" name="pct_evt[]"
+			<li><select class="events" class="formfield" name="assignedActivities[]"
 				style="width: 200px">
 				<option value=""></option>
-				{html_options options=$assignableTasks selected=$evt_assigned.evt_ID}
+				{html_options options=$assignableTasks selected=$selectedActivity.activityID}
 			</select></li>
 		</ul>
 		</td>
-		<td><input type="text" name="budget[]" value="{$evt_assigned.evt_budget}"
+		<td><input type="text" name="budget[]" value="{$selectedActivity.budget}"
 			style="width: 100px"> </input></td>
-		<td><input type="text" name="effort[]" value="{$evt_assigned.evt_effort}"
+		<td><input type="text" name="effort[]" value="{$selectedActivity.effort}"
 			style="width: 100px"> </input></td>
-		<td><input type="text" name="approved[]" value="{$evt_assigned.evt_approved}"
+		<td><input type="text" name="approved[]" value="{$selectedActivity.approved}"
 			style="width: 100px"> </input></td>
 	</tr>
 	{/foreach}
 </table>
 </fieldset>
 
-{if $sel_grp_IDs|@count gt 1}
+{if $groupIDs|@count gt 1}
 <fieldset id="groups">
 <ul>
 	<li><!--                        <label for="pct_grp" >{$kga.lang.groups}:</label>-->
-	<select class="formfield" id="pct_grps" name="pct_grp[]" multiple
+	<select class="formfield" id="projectGroups" name="projectGroups[]" multiple
 		size='5' style="width: 255px">
 		{html_options values=$sel_grp_IDs output=$sel_grp_names
 		selected=$grp_selection}
 	</select></li>
 </ul>
 </fieldset>
-{else} <input id="pct_grps" name="pct_grp[]" type="hidden"
+{else} <input id="groups" name="groups[]" type="hidden"
 	value="{$grp_selection.0|escape:'html'}" /> {/if}
 
 <fieldset id="comment">

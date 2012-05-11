@@ -81,7 +81,7 @@ $dp_start = 0;
 if ($kga['calender_start']!="")
     $dp_start = $kga['calender_start'];
 else if (isset($kga['usr']))
-    $dp_start = date("d/m/Y",$database->getjointime($kga['usr']['usr_ID']));    
+    $dp_start = date("d/m/Y",$database->getjointime($kga['usr']['userID']));    
     
 
 $dp_today = date("d/m/Y",time());
@@ -90,9 +90,9 @@ $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $dp_today);
 
 if (isset($kga['customer']))
-  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
+  $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']))));
 else
-  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$kga['usr']['usr_ID'])));
+  $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$kga['usr']['userID'])));
 
 // ===========================
 // = DatePicker localization =
@@ -133,7 +133,7 @@ $tpl->assign('js_extension_files', $extensions->jsExtensionFiles());
 $tpl->assign('currentRecording', -1);
 
 if (isset($kga['usr'])) {
-  $currentRecordings = $database->get_current_recordings($kga['usr']['usr_ID']);
+  $currentRecordings = $database->get_current_recordings($kga['usr']['userID']);
   if (count($currentRecordings) > 0)
     $tpl->assign('currentRecording', $currentRecordings[0]);
 }
@@ -143,23 +143,23 @@ $tpl->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
 $tpl->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 
 
-$knd_data = array('knd_ID'=>false,'knd_name'=>'');
-$pct_data = array('pct_ID'=>false,'pct_name'=>'');
-$evt_data = array('evt_ID'=>false,'evt_name'=>'');
+$customerData = array('customerID'=>false,'name'=>'');
+$projectData = array('projectID'=>false,'name'=>'');
+$evt_data = array('activityID'=>false,'name'=>'');
 
 if (!isset($kga['customer'])) {
-  //$lastZefRecord = $database->zef_get_data(false);
-  $last_pct = $database->pct_get_data($kga['usr']['lastProject']);
-  $last_evt = $database->evt_get_data($kga['usr']['lastEvent']);
-  if (!$last_pct['pct_trash']) {
-    $pct_data = $last_pct;
-    $knd_data = $database->knd_get_data($last_pct['pct_kndID']);
+  //$lastZefRecord = $database->timeSheet_get_data(false);
+  $last_pct = $database->project_get_data($kga['usr']['lastProject']);
+  $last_evt = $database->activity_get_data($kga['usr']['lastActivity']);
+  if (!$last_pct['trash']) {
+    $projectData = $last_pct;
+    $customerData = $database->customer_get_data($last_pct['customerID']);
   }
-  if (!$last_evt['evt_trash'])
+  if (!$last_evt['trash'])
     $evt_data = $last_evt;    
 }
-$tpl->assign('knd_data', $knd_data);
-$tpl->assign('pct_data', $pct_data);
+$tpl->assign('customerData', $customerData);
+$tpl->assign('projectData', $projectData);
 $tpl->assign('evt_data', $evt_data);
 
 // =========================================
@@ -188,11 +188,11 @@ $tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
 // ========================
 if (isset($kga['customer']))
   $arr_knd = array(array(
-      'knd_ID'=>$kga['customer']['knd_ID'],
-      'knd_name'=>$kga['customer']['knd_name'],
-      'knd_visible'=>$kga['customer']['knd_visible']));
+      'knd_ID'=>$kga['customer']['customerID'],
+      'knd_name'=>$kga['customer']['name'],
+      'knd_visible'=>$kga['customer']['visible']));
 else
-  $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
+  $arr_knd = $database->get_arr_customers($kga['usr']['groups']);
 if (count($arr_knd)>0) {
     $tpl->assign('arr_knd', $arr_knd);
 } else {
@@ -204,9 +204,9 @@ $tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
 // = display project table =
 // =========================
 if (isset($kga['customer']))
-  $arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
+  $arr_pct = $database->get_arr_projects_by_customer($kga['customer']['customerID']);
 else
-  $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
+  $arr_pct = $database->get_arr_projects($kga['usr']['groups']);
 if (count($arr_pct)>0) {
     $tpl->assign('arr_pct', $arr_pct);
 } else {
@@ -218,11 +218,11 @@ $tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
 // = display events table =
 // ========================
 if (isset($kga['customer']))
-  $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
-else if ($pct_data['pct_ID'])
-  $arr_evt = $database->get_arr_evt_by_pct($pct_data['pct_ID'],$kga['usr']['groups']);
+  $arr_evt = $database->get_arr_activities_by_customer($kga['customer']['customerID']);
+else if ($projectData['projectID'])
+  $arr_evt = $database->get_arr_activities_by_project($projectData['projectID'],$kga['usr']['groups']);
 else
-  $arr_evt = $database->get_arr_evt($kga['usr']['groups']);
+  $arr_evt = $database->get_arr_activities($kga['usr']['groups']);
 if (count($arr_evt)>0) {
     $tpl->assign('arr_evt', $arr_evt);
 } else {
@@ -231,7 +231,7 @@ if (count($arr_evt)>0) {
 $tpl->assign('evt_display', $tpl->fetch("lists/evt.tpl"));
 
 if (isset($kga['usr']))
-  $tpl->assign('showInstallWarning',$kga['usr']['usr_sts']==0 && file_exists(WEBROOT.'installer'));
+  $tpl->assign('showInstallWarning',$kga['usr']['status']==0 && file_exists(WEBROOT.'installer'));
 else
   $tpl->assign('showInstallWarning',false);
 

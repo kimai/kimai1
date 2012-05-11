@@ -27,14 +27,14 @@
             <fieldset>
                 <ul>
                     <li>
-                        <label for="grp_name">{$kga.lang.groupname}:</label>
-                        <input class="formfield" type="text" name="grp_name" value="{$grp_details.grp_name|escape:'html'}" size=35 />
+                        <label for="name">{$kga.lang.groupname}:</label>
+                        <input class="formfield" type="text" name="name" value="{$group_details.name|escape:'html'}" size=35 />
                     </li>
 
                     <li>
-                        <label for="grp_leader" >{$kga.lang.groupleader}:</label>
-                        <select class="formfield" name="grp_leader[]" multiple size='5' style="width:255px">
-                            {html_options values=$arr_usr_ID output=$arr_usr_name selected=$grp_selection}
+                        <label for="leaders" >{$kga.lang.groupleader}:</label>
+                        <select class="formfield" name="leaders[]" multiple size='5' style="width:255px">
+                            {html_options values=$userIDs output=$userNames selected=$selectedUsers}
                         </select>
                     </li>
                                                 

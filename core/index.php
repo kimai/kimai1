@@ -75,10 +75,16 @@ $authPlugin = new $authClass($database, $kga);
 // =====================================
 $tpl->assign('kga', $kga);
 
+
+// ===================================
+// = current database setup correct? =
+// ===================================
+checkDBversion(".");
+
 // ==========================
 // = installation required? =
 // ==========================
-$users = $database->get_arr_usr();
+$users = $database->get_arr_users();
 if (count($users) == 0) { 
     $tpl->assign('devtimespan', '2006-'.date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {
@@ -91,10 +97,6 @@ if (count($users) == 0) {
     exit;
 }
 
-// ===================================
-// = current database setup correct? =
-// ===================================
-checkDBversion(".");
 
 // =========================
 // = User requested logout =
@@ -122,20 +124,20 @@ if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['ki
 if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId))
 {
     if ($userId === false) {
-    $userId   = $database->usr_create(array(
-                'usr_name' => $name,
-                'usr_sts' => 2,
-                'usr_active' => 1
+    $userId   = $database->user_create(array(
+                'name' => $name,
+                'status' => 2,
+                'active' => 1
               ));
     $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
     }
-    $userData = $database->usr_get_data($userId);
+    $userData = $database->user_get_data($userId);
 
     $keymai=random_code(30);
     setcookie ("kimai_key",$keymai);
-    setcookie ("kimai_usr",$userData['usr_name']);
+    setcookie ("kimai_usr",$userData['name']);
 
-    $database->usr_loginSetKey($userId,$keymai);
+    $database->user_loginSetKey($userId,$keymai);
 
     header("Location: core/kimai.php");
 }
@@ -157,15 +159,15 @@ switch($_REQUEST['a'])
         if ($is_customer) {
           // perform login of customer
           $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-          $id = $database->knd_name2id($name);
-          $data = $database->knd_get_data($id);
+          $id = $database->customer_nameToID($name);
+          $data = $database->customer_get_data($id);
 
           // TODO: add BAN support
-          if ( $data['knd_password']==$passCrypt && $name!='' && $passCrypt!='') {
+          if ( $data['password']==$passCrypt && $name!='' && $passCrypt!='') {
             $keymai=random_code(30);
             setcookie ("kimai_key",$keymai);
             setcookie ("kimai_usr",'knd_'.$name);
-            $database->knd_loginSetKey($id,$keymai);
+            $database->customer_loginSetKey($id,$keymai);
             header("Location: core/kimai.php");
           }
           else {
@@ -183,14 +185,14 @@ switch($_REQUEST['a'])
 
             if ($userId === false) {
               $userId   = $database->usr_create(array(
-                          'usr_name' => $name,
-                          'usr_sts' => 2,
-                          'usr_active' => 1
+                          'name' => $name,
+                          'status' => 2,
+                          'active' => 1
                         ));
               $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
             }
 
-            $userData = $database->usr_get_data($userId);
+            $userData = $database->user_get_data($userId);
 
             if ($userData['ban'] < ($kga['conf']['loginTries']) ||
                 (time() - $userData['banTime']) > $kga['conf']['loginBanTime']) {
@@ -201,9 +203,9 @@ switch($_REQUEST['a'])
 
               $keymai=random_code(30);
               setcookie ("kimai_key",$keymai);
-              setcookie ("kimai_usr",$userData['usr_name']);
+              setcookie ("kimai_usr",$userData['name']);
 
-              $database->usr_loginSetKey($userId,$keymai);
+              $database->user_loginSetKey($userId,$keymai);
 
               header("Location: core/kimai.php");
             } else {

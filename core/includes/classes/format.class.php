@@ -75,7 +75,7 @@ class Format {
     global $database;
 
     if (isset($kga['usr']))
-      $type = $database->usr_get_preference('ui.sublistAnnotations');
+      $type = $database->user_get_preference('ui.sublistAnnotations');
     else
       $type = 2;
 

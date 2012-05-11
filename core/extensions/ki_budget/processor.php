@@ -55,11 +55,11 @@ if (!isset($filters[3]) || $filters[3] == "") {
 
 // if no userfilter is set, set it to current user
 if (isset($kga['usr']) && count($filterUsr) == 0) {
-	array_push($filterUsr,$kga['usr']['usr_ID']);
+	array_push($filterUsr,$kga['usr']['userID']);
 }
 
 if (isset($kga['customer'])) {
-	$filterKnd = array($kga['customer']['knd_ID']);
+	$filterKnd = array($kga['customer']['customerID']);
 }
 
 // ==================
@@ -85,47 +85,47 @@ switch ($axAction)
 		}
 		// Get all project for the logged in customer or the current user.
 		if (isset($kga['customer'])) {
-			$arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
-			$arr_evt = $database->get_arr_evt();
+			$arr_pct = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
+			$arr_evt = $database->get_arr_activities();
 			$customerValues = false;
 		}
 		else {
-			$arr_knd = $database->get_arr_knd($kga['usr']['groups']);
+			$arr_knd = $database->get_arr_customers($kga['usr']['groups']);
 			if (is_array($filterKnd) && count($filterKnd) > 0) {
 				$customerFilter = $filterKnd;
 				$arr_pct = array();
 				foreach ($customerFilter as $customerId) {
-					$arr_pct = array_merge($database->get_arr_pct_by_knd($customerId), $arr_pct);
+					$arr_pct = array_merge($database->get_arr_projects_by_customer(($customerId), $arr_pct));
 				}
 			}
 			else {
-				$arr_pct = $database->get_arr_pct($kga['usr']['groups']);
+				$arr_pct = $database->get_arr_projects($kga['usr']['groups']);
 				// add all customers as selected
 				foreach($arr_knd as $customer) {
-					$customerFilter[] = $customer['knd_ID'];
+					$customerFilter[] = $customer['customerID'];
 				}
 			}
-			$arr_evt = $database->get_arr_evt($kga['usr']['groups']);
+			$arr_evt = $database->get_arr_activities($kga['usr']['groups']);
 			foreach ($arr_knd as $customer) {
-				$customerValues[] = $customer['knd_ID'];
-				$customerNames[] = $customer['knd_name'];
+				$customerValues[] = $customer['customerID'];
+				$customerNames[] = $customer['name'];
 			}
 		}
 		if(is_array($arr_pct) && count($arr_pct) > 0) {
 			foreach ($arr_pct as $index => $project) {
 				if ($projectsFilter === false) {
-					$projectsSelected[] = $project['pct_ID'];
+					$projectsSelected[] = $project['projectID'];
 				}
-				$projectValues[] = $project['pct_ID'];
-				$projectNames[] = $project['pct_name'];
-				$arr_pct[$index]['events'] = $database->get_arr_evt_by_pct($project['pct_ID']);
+				$projectValues[] = $project['projectID'];
+				$projectNames[] = $project['name'];
+				$arr_pct[$index]['events'] = $database->get_arr_activities_by_project($project['projectID']);
 
 					foreach ($arr_pct[$index]['events'] as $index => $event) {
 						if ($eventsFilter === false) {
-							$eventsSelected[] = $event['evt_ID'];
+							$eventsSelected[] = $event['activityID'];
 						}
-						$eventValues[] = $event['evt_ID'];
-						$eventNames[] = $event['evt_name'];
+						$eventValues[] = $event['activityID'];
+						$eventNames[] = $event['name'];
 					}
 			}
 		}

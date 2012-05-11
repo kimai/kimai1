@@ -40,28 +40,28 @@
                 <ul>
                     
                     <li>
-                        <label for="usr_name">{$kga.lang.username}:</label>
-                        <input class="formfield" type="text" name="usr_name" value="{$usr_details.usr_name|escape:'html'}" maxlength=20 size=20 />
+                        <label for="name">{$kga.lang.username}:</label>
+                        <input class="formfield" type="text" name="name" value="{$user_details.name|escape:'html'}" maxlength=20 size=20 />
                     </li> 
 
                     <li>
-                        <label for="usr_sts">{$kga.lang.status}:</label>
+                        <label for="status">{$kga.lang.status}:</label>
 
-        {if $usr_details.usr_sts == 1}
-                        <select name="usr_sts">
-                            <option value="0" {if $usr_details.usr_sts == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
-                            <option value="1" {if $usr_details.usr_sts == 1}selected{/if}>{$kga.lang.groupleader}</option>
-                            <option value="2" {if $usr_details.usr_sts == 2}selected{/if}>{$kga.lang.regusr}</option>
+        {if $user_details.status == 1}
+                        <select name="status">
+                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
+                            <option value="1" {if $user_details.status == 1}selected{/if}>{$kga.lang.groupleader}</option>
+                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.regusr}</option>
                         </select>
         {else}
 
 
-            {if $curr_user == $usr_details.usr_name && $usr_details.usr_sts == 0}                            
+            {if $curr_user == $user_details.name && $user_details.status == 0}                            
                 {$kga.lang.admWarn}
             {else}                
-                        <select name="usr_sts">
-                            <option value="0" {if $usr_details.usr_sts == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
-                            <option value="2" {if $usr_details.usr_sts == 2}selected{/if}>{$kga.lang.regusr}</option>
+                        <select name="status">
+                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
+                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.regusr}</option>
                         </select>
             {/if}              
 
@@ -71,8 +71,8 @@
 
                     <li>
                         <label for="usr_pw">{$kga.lang.newPassword}:</label>
-                        <input class="formfield" type="password" name="usr_pw" size="9" id="password" /> {$kga.lang.minLength}
-        {if $usr_details.pw == ""}
+                        <input class="formfield" type="password" name="password" size="9" id="password" /> {$kga.lang.minLength}
+        {if $user_details.password == ""}
         
                         <br/>
                         <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" alt="Caution" valign=middle />
@@ -82,37 +82,37 @@
 
 
                     <li>
-                        <label for="usr_pw">{$kga.lang.retypePassword}:</label>
+                        <label for="retypePassword">{$kga.lang.retypePassword}:</label>
                         <input class="formfield" type="password" name="retypePassword" id="retypePassword" size="9" />
                     </li>
 
 
                     <li>
-                        <label for="usr_rate">{$kga.lang.rate}:</label>
-                        <input class="formfield" type="text" name="usr_rate" value="{$usr_details.usr_rate|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}" />
+                        <label for="rate">{$kga.lang.rate}:</label>
+                        <input class="formfield" type="text" name="rate" value="{$user_details.rate|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}" />
                     </li>
 
 
                     <li>
-                        <label for="usr_mail">{$kga.lang.mail}:</label>
-                        <input class="formfield" type="text" name="usr_mail" value="{$usr_details.usr_mail|escape:'html'}" />
+                        <label for="mail">{$kga.lang.mail}:</label>
+                        <input class="formfield" type="text" name="mail" value="{$user_details.mail|escape:'html'}" />
                     </li>
 
                     <li>
-                        <label for="usr_alias">{$kga.lang.alias}:</label>
-                        <input class="formfield" type="text" name="usr_alias" value="{$usr_details.usr_alias|escape:'html'}" />
+                        <label for="alias">{$kga.lang.alias}:</label>
+                        <input class="formfield" type="text" name="alias" value="{$user_details.alias|escape:'html'}" />
                     </li>
 
                     <li>
                         <label for="groups">{$kga.lang.group}:</label>
                         <select class="formfield" name="groups[]" size="5" multiple>
-                            {html_options values=$arr_grp_ID output=$arr_grp_name selected=$selectedGroups}
+                            {html_options values=$groupIDs output=$groupNames selected=$selectedGroups}
                         </select>
                   	</li>
 
 				</ul>
 
-                <input name="id" type="hidden" value="{$usr_details.usr_ID}" />
+                <input name="id" type="hidden" value="{$user_details.userID}" />
                 <input name="axAction" type="hidden" value="sendEditUsr" />
 
                 <div id="formbuttons">

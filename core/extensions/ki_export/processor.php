@@ -85,10 +85,10 @@ if ($axAction == 'export_csv'  ||
 
   // if no userfilter is set, set it to current user
   if (isset($kga['usr']) && count($filterUsr) == 0)
-    array_push($filterUsr,$kga['usr']['usr_ID']);
+    array_push($filterUsr,$kga['usr']['userID']);
     
   if (isset($kga['customer']))
-    $filterKnd = array($kga['customer']['knd_ID']);
+    $filterKnd = array($kga['customer']['customerID']);
 }
 
 
@@ -138,7 +138,7 @@ switch ($axAction) {
     	$arr_data = xp_get_arr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $tpl->assign('arr_data', count($arr_data)>0?$arr_data:0);
 
-        $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
+        $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,$filter_cleared)));
 
         $ann = xp_get_arr_usr($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
         Format::formatAnnotations($ann);
@@ -159,7 +159,7 @@ switch ($axAction) {
         $tpl->assign('timeformat',$timeformat);
         $tpl->assign('dateformat',$dateformat);
         if (isset($kga['usr']))
-          $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['usr_ID']));
+          $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['userID']));
         $tpl->display("table.tpl");
     break;
 
@@ -169,7 +169,7 @@ switch ($axAction) {
      */
     case 'export_html':   
 
-        $database->usr_set_preferences(array(
+        $database->user_set_preferences(array(
           'print_summary' => isset($_REQUEST['print_summary'])?1:0,
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.print.');
@@ -196,18 +196,18 @@ switch ($axAction) {
           foreach ($arr_data as $one_entry) {
 
             if ($one_entry['type'] == 'zef') {
-              if (isset($zef_summary[$one_entry['zef_evtID']])) {
-                $zef_summary[$one_entry['zef_evtID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
-                $zef_summary[$one_entry['zef_evtID']]['wage']   += $one_entry['wage']; //Currency
-                $zef_summary[$one_entry['zef_evtID']]['budget'] += $one_entry['budget']; //Currency
-                $zef_summary[$one_entry['zef_evtID']]['approved']+= $one_entry['approved']; //Currency
+              if (isset($zef_summary[$one_entry['activityID']])) {
+                $zef_summary[$one_entry['activityID']]['time']   += $one_entry['dec_zef_time']; //Sekunden
+                $zef_summary[$one_entry['activityID']]['wage']   += $one_entry['wage']; //Currency
+                $zef_summary[$one_entry['activityID']]['budget'] += $one_entry['budget']; //Currency
+                $zef_summary[$one_entry['activityID']]['approved']+= $one_entry['approved']; //Currency
               }
               else {
-                $zef_summary[$one_entry['zef_evtID']]['name']         = html_entity_decode($one_entry['evt_name']);
-                $zef_summary[$one_entry['zef_evtID']]['time']         = $one_entry['dec_zef_time'];
-                $zef_summary[$one_entry['zef_evtID']]['wage']         = $one_entry['wage'];
-                $zef_summary[$one_entry['zef_evtID']]['budget'] 	  = $one_entry['budget']; 
-                $zef_summary[$one_entry['zef_evtID']]['approved']	  = $one_entry['approved'];
+                $zef_summary[$one_entry['activityID']]['name']         = html_entity_decode($one_entry['evt_name']);
+                $zef_summary[$one_entry['activityID']]['time']         = $one_entry['dec_zef_time'];
+                $zef_summary[$one_entry['activityID']]['wage']         = $one_entry['wage'];
+                $zef_summary[$one_entry['activityID']]['budget'] 	  = $one_entry['budget']; 
+                $zef_summary[$one_entry['activityID']]['approved']	  = $one_entry['approved'];
               }
             }
             else {
@@ -229,15 +229,15 @@ switch ($axAction) {
         // Create filter descirption, Same is in PDF export
         $customers = array();
         foreach ($filterKnd as $knd_id) {
-          $customer_info = $database->knd_get_data($knd_id);
-          $customers[] = $customer_info['knd_name'];
+          $customer_info = $database->customer_get_data($knd_id);
+          $customers[] = $customer_info['name'];
         }
         $tpl->assign('customersFilter',implode(', ',$customers));
 
         $projects = array();
         foreach ($filterPct as $pct_id) {
-          $project_info = $database->pct_get_data($pct_id);
-          $projects[] = $project_info['pct_name'];
+          $project_info = $database->project_get_data($pct_id);
+          $projects[] = $project_info['name'];
         }
         $tpl->assign('projectsFilter',implode(', ',$projects));
 
@@ -261,7 +261,7 @@ switch ($axAction) {
      */
     case 'export_xls':
 
-        $database->usr_set_preferences(array(
+        $database->user_set_preferences(array(
           'decimal_separator' => $_REQUEST['decimal_separator'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.xls.');      
@@ -289,7 +289,7 @@ switch ($axAction) {
      */
     case 'export_csv':
 
-        $database->usr_set_preferences(array(
+        $database->user_set_preferences(array(
           'column_delimiter' => $_REQUEST['column_delimiter'],
           'quote_char' => $_REQUEST['quote_char'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
@@ -401,7 +401,7 @@ switch ($axAction) {
      */
     case 'export_pdf':
 
-        $database->usr_set_preferences(array(
+        $database->user_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
           'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
@@ -415,8 +415,8 @@ switch ($axAction) {
 
       $pdf_arr_data = array();
       foreach ($arr_data as $row) {
-        $knd_id = $row['pct_kndID'];
-        $pct_id = $row['pct_ID'];
+        $knd_id = $row['customerID'];
+        $pct_id = $row['projectID'];
 
         // create key for customer, if not present
         if (!array_key_exists($knd_id,$pdf_arr_data))
@@ -441,7 +441,7 @@ switch ($axAction) {
      */
     case 'export_pdf2':
 
-        $database->usr_set_preferences(array(
+        $database->user_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
           'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
@@ -456,8 +456,8 @@ switch ($axAction) {
       // sort data into new array, where first dimension is customer and second dimension is project
       $pdf_arr_data = array();
       foreach ($arr_data as $row) {
-        $knd_id = $row['pct_kndID'];
-        $pct_id = $row['pct_ID'];
+        $knd_id = $row['customerID'];
+        $pct_id = $row['projectID'];
 
         // create key for customer, if not present
         if (!array_key_exists($knd_id,$pdf_arr_data))

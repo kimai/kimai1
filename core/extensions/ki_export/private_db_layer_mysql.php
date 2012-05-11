@@ -30,9 +30,9 @@ function xp_zef_set_cleared($id,$cleared) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
-    $table                 = $kga['server_prefix']."zef";
-    $values['zef_cleared'] = $cleared?1:0;
-    $filter['zef_ID']      = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
+    $table                 = $kga['server_prefix']."timeSheet";
+    $values['cleared'] = $cleared?1:0;
+    $filter['timeEntryID']      = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
@@ -53,9 +53,9 @@ function xp_exp_set_cleared($id,$cleared) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
-    $table                 = $kga['server_prefix']."exp";
-    $values['exp_cleared'] = $cleared?1:0;
-    $filter['exp_ID']      = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
+    $table                 = $kga['server_prefix']."expenses";
+    $values['cleared'] = $cleared?1:0;
+    $filter['expenseID']      = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
@@ -81,8 +81,8 @@ function xp_toggle_header($header) {
 
     $table                 = $kga['server_prefix']."preferences";
     $values['value']       = "`value`^POWER(2,$header_number)";
-    $filter['userID']      = MySQL::SQLValue($kga['usr']['usr_ID'],MySQL::SQLVALUE_NUMBER);
-    $filter['var']         = MySQL::SQLValue('export_disabled_columns');
+    $filter['userID']      = MySQL::SQLValue($kga['usr']['userID'],MySQL::SQLVALUE_NUMBER);
+    $filter['option']         = MySQL::SQLValue('export_disabled_columns');
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
@@ -106,7 +106,7 @@ function xp_get_disabled_headers($user_id) {
     $disabled_headers = array();
 
     $filter['userID'] = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
-    $filter['var']    = MySQL::SQLValue('export_disabled_columns');
+    $filter['option']    = MySQL::SQLValue('export_disabled_columns');
     $table = $kga['server_prefix']."preferences";
 
     if (!$conn->SelectRows($table, $filter)) return 0;

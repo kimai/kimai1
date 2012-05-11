@@ -82,68 +82,68 @@ function makeSelectBox($subject,$groups,$selection=null){
 
     switch ($subject) {
         case 'pct':
-            $arr_pct = $database->get_arr_pct($groups);
+            $arr_pct = $database->get_arr_projects($groups);
             $i=0;
             foreach ($arr_pct as $pct) {
-                if ($pct['pct_visible']) {
+                if ($pct['visible']) {
                     if ($kga['conf']['flip_pct_display']) {
-                        $sel[0][$i] = $pct['knd_name'] . ": " . $pct['pct_name'];
+                        $sel[0][$i] = $pct['customerName'] . ": " . $pct['name'];
                         if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .= "(" . $pct['pct_comment'] .")" ;
+                            $sel[0][$i] .= "(" . $pct['comment'] .")" ;
                         }
                     } else {
-                        $sel[0][$i] = $pct['pct_name'] . " (" . $pct['knd_name'] . ")";
+                        $sel[0][$i] = $pct['name'] . " (" . $pct['customerName'] . ")";
                         if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .=  "(" . $pct['pct_comment'] .")";
+                            $sel[0][$i] .=  "(" . $pct['comment'] .")";
                         }
                     }
-                    $sel[1][$i] = $pct['pct_ID'];
+                    $sel[1][$i] = $pct['projectID'];
                     $i++;
                 }
             }
             break;
 
         case 'evt':
-            $arr_evt = $database->get_arr_evt($groups);
+            $arr_evt = $database->get_arr_activities($groups);
             $i=0;
             foreach ($arr_evt as $evt) {
-                if ($evt['evt_visible']) {
-                    $sel[0][$i] = $evt['evt_name'];
-                    $sel[1][$i] = $evt['evt_ID'];
+                if ($evt['visible']) {
+                    $sel[0][$i] = $evt['name'];
+                    $sel[1][$i] = $evt['activityID'];
                     $i++;
                 }
             }
             break;
 
         case 'knd':
-            $arr_knd = $database->get_arr_knd($groups);
+            $arr_knd = $database->get_arr_customers($groups);
             $i=0;
             $selectionFound = false;
             if(is_array($arr_knd)) {
 	            foreach ($arr_knd as $knd) {
-	                if ($knd['knd_visible']) {
-	                    $sel[0][$i] = $knd['knd_name'];
-	                    $sel[1][$i] = $knd['knd_ID'];
+	                if ($knd['visible']) {
+	                    $sel[0][$i] = $knd['name'];
+	                    $sel[1][$i] = $knd['customerID'];
 	                    $i++;
-	                    if ($selection == $knd['knd_ID'])
+	                    if ($selection == $knd['customerID'])
 	                      $selectionFound = true;
 	                }
 	            }
             }
             if ($selection != null && !$selectionFound) {
-              $data = $database->knd_get_data($selection);
-              $sel[0][$i] = $data['knd_name'];
-              $sel[1][$i] = $data['knd_ID'];
+              $data = $database->customer_get_data($selection);
+              $sel[0][$i] = $data['name'];
+              $sel[1][$i] = $data['customerID'];
             }
             break;
 
         case 'grp':
-            $arr_grp = $database->get_arr_grp();
+            $arr_grp = $database->get_arr_groups();
             $i=0;
             foreach ($arr_grp as $grp) {
-                if (!$grp['grp_trash']) {
-                    $sel[0][$i] = $grp['grp_name'];
-                    $sel[1][$i] = $grp['grp_ID'];
+                if (!$grp['trash']) {
+                    $sel[0][$i] = $grp['name'];
+                    $sel[1][$i] = $grp['groupID'];
                     $i++;
                 }
             }
@@ -265,29 +265,29 @@ function get_cookie($cookie_name, $default=null) {
 function check_zef_data($id, $zef_data) {
   global $database;
   
-  $zef_final_data['zef_usrID']        = $zef_data['zef_usrID'];
-  $zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
-  $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-  $zef_final_data['zef_location']     = $zef_data['zlocation'];
-  $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-  $zef_final_data['zef_description']  = $zef_data['description'];
-  $zef_final_data['zef_comment']      = $zef_data['comment'];
-  $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-  $zef_final_data['zef_rate']         = $zef_data['rate'];
-  $zef_final_data['zef_budget']       = $zef_data['budget'];
-  $zef_final_data['zef_approved']     = $zef_data['approved'];
-  $zef_final_data['zef_status']       = $zef_data['status'];
-  $zef_final_data['zef_billable']     = $zef_data['billable'];
-  $zef_final_data['zef_description']  = $zef_data['description'];
-  $zef_final_data['zef_cleared']      = $zef_data['cleared'];
-  $zef_final_data['zef_in']           = $zef_data['in'];
+  $zef_final_data['userID']        = $zef_data['userID'];
+  $zef_final_data['projectID']        = $zef_data['projectID'];
+  $zef_final_data['activityID']        = $zef_data['activityID'];
+  $zef_final_data['location']     = $zef_data['location'];
+  $zef_final_data['trackingNumber']   = $zef_data['trackingNumber'];
+  $zef_final_data['description']  = $zef_data['description'];
+  $zef_final_data['comment']      = $zef_data['comment'];
+  $zef_final_data['commentType'] = $zef_data['commentType'];
+  $zef_final_data['rate']         = $zef_data['rate'];
+  $zef_final_data['budget']       = $zef_data['budget'];
+  $zef_final_data['approved']     = $zef_data['approved'];
+  $zef_final_data['status']       = $zef_data['status'];
+  $zef_final_data['billable']     = $zef_data['billable'];
+  $zef_final_data['description']  = $zef_data['description'];
+  $zef_final_data['cleared']      = $zef_data['cleared'];
+  $zef_final_data['start']           = $zef_data['start'];
 
   if (isset($zef_data['out'])) {
-    $zef_final_data['zef_out']          = $zef_data['out'];
-    $zef_final_data['zef_time']         = $zef_data['diff'];
+    $zef_final_data['end']          = $zef_data['end'];
+    $zef_final_data['duration']         = $zef_data['duration'];
   }
 
-  return $database->zef_edit_record($id,$zef_final_data);
+  return $database->timeEntry_edit($id,$zef_final_data);
 
 }
 
@@ -375,8 +375,8 @@ function get_timespace() {
     
     if (isset($kga['usr'])) {
 
-        $timespace[0] = $kga['usr']['timespace_in'];
-        $timespace[1] = $kga['usr']['timespace_out'];
+        $timespace[0] = $kga['usr']['timeframeBegin'];
+        $timespace[1] = $kga['usr']['timeframeEnd'];
 
     }
 

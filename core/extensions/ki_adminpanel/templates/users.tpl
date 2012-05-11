@@ -36,12 +36,12 @@
         
 {*########## USER NAME ##########*}
         <td>
-{if $curr_user == $arr_usr[userarray].usr_name}
-            <strong style="color:#00E600">{$arr_usr[userarray].usr_name|escape:'html'}</strong>
+{if $curr_user == $arr_usr[userarray].name}
+            <strong style="color:#00E600">{$arr_usr[userarray].name|escape:'html'}</strong>
 {else}
-    {if $arr_usr[userarray].usr_trash}<span style="color:#999">{/if}
-            {$arr_usr[userarray].usr_name|escape:'html'}
-    {if $arr_usr[userarray].usr_trash}</span>{/if}
+    {if $arr_usr[userarray].trash}<span style="color:#999">{/if}
+            {$arr_usr[userarray].name|escape:'html'}
+    {if $arr_usr[userarray].trash}</span>{/if}
 {/if}
         </td>
 {*########## /USER NAME ##########*}
@@ -55,15 +55,15 @@
 {*########## Option cells ##########*}
         <td>
             
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); $(this).blur(); return false;">
+            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].userID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif" title="{$kga.lang.editusr}" width="13" height="13" alt="{$kga.lang.editusr}" border="0">
             </a>
             
             &nbsp;
 
 {*
-{if $curr_user != $arr_usr[userarray].usr_name}            
-            <a href="#" onClick="switchUsr('{$arr_usr[userarray].usr_ID}'); return false;">
+{if $curr_user != $arr_usr[userarray].name}            
+            <a href="#" onClick="switchUsr('{$arr_usr[userarray].userID}'); return false;">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/auge.png" title="{$kga.lang.switchusr}" width="16" height="13" alt="{$kga.lang.switchusr}" border="0">
             </a>
 {else} 
@@ -72,7 +72,7 @@
 
             &nbsp;
      
-            <a href="#" onClick="backupUsr({$arr_usr[userarray].usr_ID}); return false;">
+            <a href="#" onClick="backupUsr({$arr_usr[userarray].userID}); return false;">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_backup.gif" title="{$kga.lang.backupusr}" width="12" height="13" border=0 alt="{$kga.lang.backupusr}">
             </a>
             
@@ -80,8 +80,8 @@
             
 *}
             
-{if $arr_usr[userarray].usr_mail}            
-            <a href="mailto:{$arr_usr[userarray].usr_mail|escape:'html'}">
+{if $arr_usr[userarray].mail}            
+            <a href="mailto:{$arr_usr[userarray].mail|escape:'html'}">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_mail.gif" title="{$kga.lang.mailusr}" width="12" height="13" alt="{$kga.lang.mailusr}" border="0">
             </a>           
 {else} 
@@ -90,8 +90,8 @@
 
             &nbsp;
 
-{if $curr_user != $arr_usr[userarray].usr_name}
-            <a href="#" id="delete_usr{$arr_usr[userarray].usr_ID}" onClick="ap_ext_deleteUser({$arr_usr[userarray].usr_ID})">
+{if $curr_user != $arr_usr[userarray].name}
+            <a href="#" id="delete_usr{$arr_usr[userarray].userID}" onClick="ap_ext_deleteUser({$arr_usr[userarray].userID})">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delusr}" width="13" height="13" alt="{$kga.lang.delusr}" border="0">
             </a>
 {else} 
@@ -110,23 +110,23 @@
 
 {*########## Status cells ##########*}
         <td>
-{if $arr_usr[userarray].usr_sts == 0}
+{if $arr_usr[userarray].status == 0}
             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/crown.png' alt='{$kga.lang.adminusr}' title='{$kga.lang.adminusr}' border="0">
 {/if}
 
-{if $arr_usr[userarray].usr_sts == 1}
+{if $arr_usr[userarray].status == 1}
             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/leader.gif' alt='{$kga.lang.groupleader}' title='{$kga.lang.groupleader}' border="0">
 {/if}
 
-{if $arr_usr[userarray].usr_sts == 2}
+{if $arr_usr[userarray].status == 2}
             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/user.gif' alt='{$kga.lang.regusr}' title='{$kga.lang.regusr}' border="0">
 {/if}
 
             &nbsp;
             
-{if $arr_usr[userarray].usr_active == 1}
-    {if $curr_user != $arr_usr[userarray].usr_name}
-            <a href="#" id="ban{$arr_usr[userarray].usr_ID}" onClick="ap_ext_banUser('{$arr_usr[userarray].usr_ID}'); return false;">
+{if $arr_usr[userarray].active == 1}
+    {if $curr_user != $arr_usr[userarray].name}
+            <a href="#" id="ban{$arr_usr[userarray].userID}" onClick="ap_ext_banUser('{$arr_usr[userarray].userID}'); return false;">
                 <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/jipp.gif' alt='{$kga.lang.activeusr}' title='{$kga.lang.activeusr}' border="0" width="16" height="16" />
             </a>
     {else}
@@ -134,23 +134,23 @@
     {/if}
 {/if}
             
-{if $arr_usr[userarray].usr_active == 0}
-            <a href="#" id="ban{$arr_usr[userarray].usr_ID}" onClick="ap_ext_unbanUser('{$arr_usr[userarray].usr_ID}'); return false;">
+{if $arr_usr[userarray].active == 0}
+            <a href="#" id="ban{$arr_usr[userarray].userID}" onClick="ap_ext_unbanUser('{$arr_usr[userarray].userID}'); return false;">
                 <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/lock.png' alt='{$kga.lang.bannedusr}' title='{$kga.lang.bannedusr}' border="0" width="16" height="16" />
             </a>
 {/if}
 
             &nbsp;
             
-{if $arr_usr[userarray].usr_pw == "no"}
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].usr_ID}'); $(this).blur(); return false;">
+{if $arr_usr[userarray].passwordSet == "no"}
+            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].userID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" width="16" height="16" title='{$kga.lang.nopasswordset}' border="0">
             </a>
 {/if}
 
             &nbsp;
 
-{if $arr_usr[userarray].usr_trash} 
+{if $arr_usr[userarray].trash} 
             <strong style="color:red">X</strong>
 {/if}
 

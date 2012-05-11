@@ -49,7 +49,7 @@ class KimaiAuth extends AuthBase
         $kga      = $this->getKga();
         $database = $this->getDatabase();
 
-        $id = $database->usr_name2id($username);
+        $id = $database->user_name2id($username);
 
         if ($id === false) {
             $userId = false;
@@ -57,9 +57,9 @@ class KimaiAuth extends AuthBase
         }
 
         $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-        $userData  = $database->usr_get_data($id);
-        $pass      = $userData['pw'];
-        $userId    = $userData['usr_ID'];
+        $userData  = $database->user_get_data($id);
+        $pass      = $userData['password'];
+        $userId    = $userData['userID'];
 
         return $pass==$passCrypt && $username!="";
     }

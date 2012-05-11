@@ -170,18 +170,18 @@ class BasePDF extends TCPDF {
           
             // summary aggregation
             if ($row['type'] == 'zef') {
-              if (isset($zef_summary[$row['zef_evtID']])) {
-            $zef_summary[$row['zef_evtID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time']; //Sekunden
-            $zef_summary[$row['zef_evtID']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
+              if (isset($zef_summary[$row['activityID']])) {
+            $zef_summary[$row['activityID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time']; //Sekunden
+            $zef_summary[$row['activityD']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
           }
             else {
-              $zef_summary[$row['zef_evtID']]['name']         = html_entity_decode($row['evt_name']);
-              $zef_summary[$row['zef_evtID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time'];
-              $zef_summary[$row['zef_evtID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
+              $zef_summary[$row['activityID']]['name']         = html_entity_decode($row['name']);
+              $zef_summary[$row['activityID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time'];
+              $zef_summary[$row['activityID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
         }
             }
             else {
-              $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['evt_name'];
+              $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['name'];
               $exp_info['time']   = -1;
               $exp_info['wage'] = $row['wage'];
               $exp_summary[] = $exp_info;

@@ -55,7 +55,7 @@ class Extensions {
                        	
      	// Check if user has the correct rank to use this extension      
      	if (isset($this->kga['usr']))
-        switch ($this->kga['usr']['usr_sts']) {
+        switch ($this->kga['usr']['status']) {
           case 0:
           if ($settings['ADMIN_ALLOWED'] != "1")
             continue 2;

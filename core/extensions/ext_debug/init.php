@@ -44,7 +44,7 @@
     	$output['server_username'] = "xxx";
     	$output['server_password'] = "xxx";
     	$output['usr']['secure']   = "xxx";
-    	$output['usr']['usr_ID']   = "xxx";
+    	$output['usr']['userID']   = "xxx";
     	$output['usr']['pw']       = "xxx";
     }
 	

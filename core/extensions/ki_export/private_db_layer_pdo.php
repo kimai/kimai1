@@ -31,7 +31,7 @@ function xp_zef_set_cleared($id,$cleared) {
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}timeSheet SET cleared = ? WHERE `timeEntryID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -54,7 +54,7 @@ function xp_exp_set_cleared($id,$cleared) {
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}expenses SET cleared = ? WHERE `expenseID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -85,8 +85,8 @@ function xp_toggle_header($header) {
     $pdo_query = $pdo_conn->prepare(
       "UPDATE ${p}preferences SET 
           `value` = `value`^POWER(2,?) 
-       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
-    $result = $pdo_query->execute(array($header_number,$kga['usr']['usr_ID']));
+       WHERE `option` = \"export_disabled_columns\" AND `userID` = ?;");
+    $result = $pdo_query->execute(array($header_number,$kga['usr']['userID']));
     
     if ($result)
       return true;
@@ -111,7 +111,7 @@ function xp_get_disabled_headers($user_id) {
 
     $pdo_query = $pdo_conn->prepare(
       "SELECT value FROM ${p}preferences
-       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
+       WHERE `option` = \"export_disabled_columns\" AND `userID` = ?;");
     
     if (!$pdo_query->execute(array($user_id))) return 0;
 

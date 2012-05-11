@@ -36,14 +36,14 @@ class MYPDF extends BasePDF {
    * Print a footer on every page.
    */
   public function Footer() { 
-        global $kga,$knd_data, $pct_data;
+        global $kga,$customerData, $projectData;
         
         // Position at 1.5 cm from bottom 
         $this->SetY(-15);
          
         // customer data
         //$this->SetFont('helvetica', '', 8); // Set font
-        //$this->Cell(80, 10, $knd_data['knd_name'].' ('.$pct_data['pct_name'].')', 0, 0, 'L');
+        //$this->Cell(80, 10, $customerData['name'].' ('.$projectData['pct_name'].')', 0, 0, 'L');
         
         // Page number 
         $this->SetFont('helvetica', 'I', 8); // Set font 
@@ -251,8 +251,8 @@ if (isset($_REQUEST['print_summary'])) {
 // Write to the PDF document which, if any, customer filters were applied.
 $customers = array();
 foreach ($filterKnd as $knd_id) {
-  $customer_info = $database->knd_get_data($knd_id);
-  $customers[] = $customer_info['knd_name'];
+  $customer_info = $database->customer_get_data($knd_id);
+  $customers[] = $customer_info['name'];
 }
 if (count($customers)>0) {
   $pdf->cell(20,6,$kga['lang']['knd'].':');
@@ -263,8 +263,8 @@ if (count($customers)>0) {
 // Write to the PDF document which, if any, project filters were applied.
 $projects = array();
 foreach ($filterPct as $pct_id) {
-  $project_info = $database->pct_get_data($pct_id);
-  $projects[] = $project_info['pct_name'];
+  $project_info = $database->project_get_data($pct_id);
+  $projects[] = $project_info['name'];
 }
 if (count($projects)>0) {
   $pdf->cell(20,6,$kga['lang']['pct'].':');

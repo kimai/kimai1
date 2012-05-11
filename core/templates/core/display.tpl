@@ -14,7 +14,7 @@
           }
         });
         
-        setTimespaceStart(new Date({/literal}{$timespace_in*1000}{literal}));
+        setTimespaceStart(new Date({/literal}{$timeframeBegin*1000}{literal}));
         setTimespaceEnd(new Date({/literal}{$timespace_out*1000}{literal}));
         updateTimespaceWarning();
              

@@ -64,14 +64,14 @@ class MYPDF extends BasePDF {
    * Print a footer on every page.
    */
   public function Footer() { 
-    global $kga,$knd_data, $pct_data;
+    global $kga,$customerData, $projectData;
     
     // Position at 1.5 cm from bottom 
     $this->SetY(-15);
       
     // customer data
     /*$this->SetFont('helvetica', '', 8); // Set font
-    $this->Cell(80, 10, $knd_data['knd_name'].' ('.$pct_data['pct_name'].')', 0, 0, 'L');*/
+    $this->Cell(80, 10, $customerData['knd_name'].' ('.$projectData['pct_name'].')', 0, 0, 'L');*/
     
     // Page number 
     $this->SetFont('helvetica', 'I', 8); // Set font 

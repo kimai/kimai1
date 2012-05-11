@@ -5,14 +5,14 @@
             $('.disableInput').click(function(){
               var input = $(this);
               if (input.is (':checked'))
-                $('#evt_pcts').attr("disabled","");
+                $('#activityProjects').attr("disabled","");
               else
-                $('#evt_pcts').attr("disabled","disabled");
+                $('#activityProjects').attr("disabled","disabled");
             });
 
              $('#add_edit_evt').ajaxForm(function() {
 
-                if ($('#evt_grps').val() == null) {
+                if ($('#activityGroups').val() == null) {
                   alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
                   return;
                 }
@@ -47,7 +47,7 @@
                       <span class="bb">{$kga.lang.pcts}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-{if $sel_grp_IDs|@count gt 1}
+{if $groupIDs|@count gt 1}
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb">{$kga.lang.groups}</span>
@@ -79,28 +79,28 @@
                 <ul>
                 
                     <li>
-                        <label for="evt_name" >{$kga.lang.evt}:</label>
-                        <input type="text" name="evt_name" id="focus" value="{$evt_name|escape:'html'}" />
+                        <label for="name" >{$kga.lang.evt}:</label>
+                        <input type="text" name="name" id="focus" value="{$name|escape:'html'}" />
                     </li>
                 
                     <li>
-                        <label for="evt_default_rate" >{$kga.lang.default_rate}:</label>
-                        <input type="text" name="evt_default_rate" value="{$evt_default_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                        <label for="defaultRate" >{$kga.lang.default_rate}:</label>
+                        <input type="text" name="defaultRate" value="{$defaultRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
                 
                     <li>
-                        <label for="evt_my_rate" >{$kga.lang.my_rate}:</label>
-                        <input type="text" name="evt_my_rate" id="focus" value="{$evt_my_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                        <label for="myRate" >{$kga.lang.my_rate}:</label>
+                        <input type="text" name="myRate" id="focus" value="{$myRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
                 
                     <li>
-                        <label for="evt_my_rate" >{$kga.lang.fixed_rate}:</label>
-                        <input type="text" name="evt_fixed_rate" id="focus" value="{$evt_fixed_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
+                        <label for="myRate" >{$kga.lang.fixed_rate}:</label>
+                        <input type="text" name="fixedRate" id="focus" value="{$fixedRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
                     <li>
-                         <label for="evt_visible">{$kga.lang.visibility}:</label>
-                         <input name="evt_visible" type="checkbox" value='1' {if $evt_visible || !$id }checked="checked"{/if} />
+                         <label for="visible">{$kga.lang.visibility}:</label>
+                         <input name="visible" type="checkbox" value='1' {if $visible || !$id }checked="checked"{/if} />
                     </li>
                  </ul>
 
@@ -109,42 +109,42 @@
             <fieldset id="comment">
                 <ul>
                     <li>
-                         <label for="evt_comment">{$kga.lang.comment}:</label>
-                         <textarea class='comment' name='evt_comment' cols='30' rows='5' >{$evt_comment|escape:'html'}</textarea>
+                         <label for="comment">{$kga.lang.comment}:</label>
+                         <textarea class='comment' name='comment' cols='30' rows='5' >{$comment|escape:'html'}</textarea>
                     </li>
                 </ul>
             </fieldset>
           
 
-{if $sel_grp_IDs|@count gt 1}   
+{if $groupIDs|@count gt 1}   
     <fieldset id="groups">
                 <ul>
                  
                     <li>
-                        <label for="evt_grp" >{$kga.lang.groups}:</label>
-                        <select class="formfield" id="evt_grps" name="evt_grp[]" multiple size='5' style="width:255px">
-                            {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
+                        <label for="activityGroups" >{$kga.lang.groups}:</label>
+                        <select class="formfield" id="activityGroups" name="activityGroups[]" multiple size='5' style="width:255px">
+                            {html_options values=$groupIDs output=$groupNames selected=$selectedGroups}
                         </select>
                     </li>      
                 </ul>
             </fieldset>
 {else}
-                    <input id="evt_grps" name="evt_grp[]" type="hidden" value="{$grp_selection.0|escape:'html'}" />
+                    <input id="groups" id="activityGroups" name="groups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
 {/if}        
 
     <fieldset id="projects">
                 <ul>
 
                     <li>
-                        <label for="evt_pct">{$kga.lang.pcts}:</label>
-                        <select class="formfield" id="evt_pcts" name="evt_pct[]" multiple size='5' style="width:255px" {if !$evt_assignable}disabled="disabled"{/if}>
-                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pct_selection}
+                        <label for="projects">{$kga.lang.pcts}:</label>
+                        <select class="formfield" id="activityProjects" name="projects[]" multiple size='5' style="width:255px" {if !$evt_assignable}disabled="disabled"{/if}>
+                            {html_options values=$projectIDs output=$projectNames selected=$selectedProjects}
                         </select>
                     </li>
 
                     <li>
-                        <label for="evt_assignable" >{$kga.lang.taskAssignable}:</label>
-                        <input type="checkbox" class="disableInput formfield" value="1" name="evt_assignable" {if $evt_assignable}checked="checked"{/if}/> {$kga.lang.taskAssignableDescription}
+                        <label for="assignable" >{$kga.lang.taskAssignable}:</label>
+                        <input type="checkbox" class="disableInput formfield" value="1" name="assignable" {if $assignable}checked="checked"{/if}/> {$kga.lang.taskAssignableDescription}
                     </li>
 
 

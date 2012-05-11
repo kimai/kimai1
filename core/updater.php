@@ -30,6 +30,7 @@ if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 $version_temp  = $database->get_DBversion();
 $versionDB  = $version_temp[0];
 $revisionDB = $version_temp[1];
+error_log(serialize($version_temp));
 unset($version_temp);
  
 if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
@@ -1379,6 +1380,188 @@ DROP `evt_approved`;");
     exec_query("ALTER TABLE `${p}evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
+}
+
+if ((int)$revisionDB < 1368) {
+    Logger::logfile("-- update to r1368");
+
+    exec_query("ALTER TABLE `${p}evt` RENAME TO `${p}activities`,
+    CHANGE `evt_ID`         `activityID` int(10) NOT NULL AUTO_INCREMENT,
+    CHANGE `evt_name`       `name`       varchar(255) NOT NULL,
+    CHANGE `evt_comment`    `comment`    text NOT NULL,
+    CHANGE `evt_visible`    `visible`    tinyint(1) NOT NULL DEFAULT '1',
+    CHANGE `evt_filter`     `filter`     tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `evt_trash`      `trash`      tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `evt_assignable` `assignable` tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `evt_budget`     `budget`     decimal(10,2) DEFAULT NULL,
+    CHANGE `evt_effort`     `effort`     decimal(10,2) DEFAULT NULL,
+    CHANGE `evt_approved`   `approved`   decimal(10,2) DEFAULT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}exp` RENAME TO `${p}expenses`,
+    CHANGE `exp_ID`           `expenseID`   int(10) NOT NULL DEFAULT '0',
+    CHANGE `exp_timestamp`    `timestamp`   int(10) NOT NULL DEFAULT '0',
+    CHANGE `exp_usrID`        `userID`      int(10) NOT NULL,
+    CHANGE `exp_pctID`        `projectID`   int(10) NOT NULL,
+    CHANGE `exp_designation`  `designation` text NOT NULL,
+    CHANGE `exp_comment`      `comment`     text NOT NULL,
+    CHANGE `exp_comment_type` `commentType` tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `exp_refundable`   `refundable`  tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)',
+    CHANGE `exp_cleared`      `cleared`     tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `exp_multiplier`   `multiplier`  decimal(10,2) NOT NULL DEFAULT '1.00',
+    CHANGE `exp_value`        `value`       decimal(10,2) NOT NULL DEFAULT '0.00'
+    ;");
+
+    exec_query("ALTER TABLE `${p}fixed_rates` RENAME TO `${p}fixedRates`,
+    CHANGE `project_id` `projectID`  int(10) DEFAULT NULL,
+    CHANGE `event_id`   `activityID` int(10) DEFAULT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}grp` RENAME TO `${p}groups`,
+    CHANGE `grp_ID`    `groupID` int(10) NOT NULL AUTO_INCREMENT,
+    CHANGE `grp_name`  `name`    varchar(160) NOT NULL,
+    CHANGE `grp_trash` `trash`   tinyint(1) NOT NULL DEFAULT '0'
+    ;");
+
+    exec_query("ALTER TABLE `${p}grp_evt` RENAME TO `${p}groups_activities`,
+    CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
+    CHANGE `evt_ID` `activityID` int(10) NOT NULL,
+    DROP `uid`,
+    ADD PRIMARY KEY (`groupID`, `activityID`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}grp_knd` RENAME TO `${p}groups_customers`,
+    CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
+    CHANGE `knd_ID` `customerID` int(10) NOT NULL,
+    DROP `uid`,
+    ADD PRIMARY KEY (`groupID`, `customerID`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}grp_pct` RENAME TO `${p}groups_projects`,
+    CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
+    CHANGE `pct_ID` `projectID` int(10) NOT NULL,
+    DROP `uid`,
+    ADD PRIMARY KEY (`groupID`, `projectID`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}grp_usr` RENAME TO `${p}groups_users`,
+    CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
+    CHANGE `usr_ID` `userID` int(10) NOT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}knd` RENAME TO `${p}customers`,
+    CHANGE `knd_ID`       `customerID` int(10) NOT NULL AUTO_INCREMENT,
+    CHANGE `knd_name`     `name`       varchar(255) NOT NULL,
+    CHANGE `knd_password` `password`   varchar(255) DEFAULT NULL,
+    CHANGE `knd_secure`   `secure`     varchar(60) NOT NULL DEFAULT '0',
+    CHANGE `knd_comment`  `comment`    text NOT NULL,
+    CHANGE `knd_visible`  `visible`    tinyint(1) NOT NULL DEFAULT '1',
+    CHANGE `knd_filter`   `filter`     tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `knd_company`  `company`    varchar(255) NOT NULL,
+    CHANGE `knd_vat`      `vat`        varchar(255) NOT NULL,
+    CHANGE `knd_contact`  `contact`    varchar(255) NOT NULL,
+    CHANGE `knd_street`   `street`     varchar(255) NOT NULL,
+    CHANGE `knd_zipcode`  `zipcode`    varchar(255) NOT NULL,
+    CHANGE `knd_city`     `city`       varchar(255) NOT NULL,
+    CHANGE `knd_tel`      `phone`      varchar(255) NOT NULL,
+    CHANGE `knd_fax`      `fax`        varchar(255) NOT NULL,
+    CHANGE `knd_mobile`   `mobile`     varchar(255) NOT NULL,
+    CHANGE `knd_mail`     `mail`       varchar(255) NOT NULL,
+    CHANGE `knd_homepage` `homepage`   varchar(255) NOT NULL,
+    CHANGE `knd_trash`    `trash`      tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `knd_timezone` `timezone`   varchar(255) NOT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}ldr` RENAME TO `${p}groupleaders`,  
+    CHANGE `grp_ID`     `groupID` int(10) NOT NULL,
+    CHANGE `grp_leader` `userID`  int(10) NOT NULL,
+    DROP `uid`,
+    ADD PRIMARY KEY (`groupID`, `userID`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}pct` RENAME TO `${p}projects`,
+    CHANGE `pct_ID`       `projectID`  int(10) NOT NULL AUTO_INCREMENT,
+    CHANGE `pct_kndID`    `customerID` int(3) NOT NULL,
+    CHANGE `pct_name`     `name`       varchar(255) NOT NULL,
+    CHANGE `pct_comment`  `comment`    text NOT NULL,
+    CHANGE `pct_visible`  `visible`    tinyint(1) NOT NULL DEFAULT '1',
+    CHANGE `pct_filter`   `filter`     tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `pct_trash`    `trash`      tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `pct_budget`   `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHANGE `pct_effort`   `effort`     decimal(10,2) DEFAULT NULL,
+    CHANGE `pct_approved` `approved`   decimal(10,2) DEFAULT NULL,
+    CHANGE `pct_internal` `internal`   tinyint(1) NOT NULL DEFAULT '0'
+    ;");
+
+    exec_query("ALTER TABLE `${p}pct_evt` RENAME TO `${p}projects_activities`,
+    CHANGE `pct_ID` `projectID`  int(10) NOT NULL,
+    CHANGE `evt_ID` `activityID` int(10) NOT NULL,
+    DROP `uid`,
+    ADD PRIMARY KEY (`projectID`, `activityID`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}preferences`
+    CHANGE `var` `option` varchar(255) NOT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}rates`
+    CHANGE `user_id`    `userID`     int(10) DEFAULT NULL,
+    CHANGE `project_id` `projectID`  int(10) DEFAULT NULL,
+    CHANGE `event_id`   `activityID` int(10) DEFAULT NULL
+    ;");
+
+    exec_query("ALTER TABLE `${p}status` RENAME TO `${p}statuses`,
+    CHANGE `status_id` `statusID` tinyint(4) NOT NULL AUTO_INCREMENT
+    ;");
+
+    exec_query("ALTER TABLE `${p}usr` RENAME TO `${p}users`,
+    CHANGE `usr_ID`        `userID`   int(10) NOT NULL,
+    CHANGE `usr_name`      `name`     varchar(160) COLLATE latin1_general_ci NOT NULL,
+    CHANGE `usr_alias`     `alias`    varchar(10) COLLATE latin1_general_ci DEFAULT NULL,
+    CHANGE `usr_sts`       `status`   tinyint(1) NOT NULL DEFAULT '2',
+    CHANGE `usr_trash`     `trash`    tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `usr_active`    `active`   tinyint(1) NOT NULL DEFAULT '1',
+    CHANGE `usr_mail`      `mail`     varchar(160) COLLATE latin1_general_ci NOT NULL DEFAULT '',
+    CHANGE `pw`            `password` varchar(254) COLLATE latin1_general_ci DEFAULT NULL,
+    CHANGE `ban`           `ban`      int(1) NOT NULL DEFAULT '0',
+    CHANGE `banTime`       `banTime`  int(10) NOT NULL DEFAULT '0',
+    CHANGE `secure`        `secure`   varchar(60) COLLATE latin1_general_ci NOT NULL DEFAULT '0',
+    CHANGE `lastEvent`     `lastActivity` int(10) NOT NULL DEFAULT '1',
+    CHANGE `timespace_in`  `timeframeBegin` varchar(60) COLLATE latin1_general_ci NOT NULL DEFAULT '0',
+    CHANGE `timespace_out` `timeframeEnd`   varchar(60) COLLATE latin1_general_ci NOT NULL DEFAULT '0',
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (`userID`),
+    ADD UNIQUE KEY `name` (`name`)
+    ;");
+
+    exec_query("ALTER TABLE `${p}var` RENAME TO `${p}configuration`,
+    CHANGE `var` `option` varchar(255) NOT NULL
+    ;");
+
+
+
+    exec_query("ALTER TABLE `${p}zef` RENAME TO `${p}timeSheet`,
+    CHANGE `zef_ID`           `timeEntryID`     int(10) NOT NULL AUTO_INCREMENT,
+    CHANGE `zef_in`           `start`           int(10) NOT NULL DEFAULT '0',
+    CHANGE `zef_out`          `end`             int(10) NOT NULL DEFAULT '0',
+    CHANGE `zef_time`         `duration`        int(6) NOT NULL DEFAULT '0',
+    CHANGE `zef_usrID`        `userID`          int(10) NOT NULL,
+    CHANGE `zef_pctID`        `projectID`       int(10) NOT NULL,
+    CHANGE `zef_evtID`        `activityID`      int(10) NOT NULL,
+    CHANGE `zef_description`  `description`     text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    CHANGE `zef_comment`      `comment`         text COLLATE latin1_general_ci,
+    CHANGE `zef_comment_type` `commentType`     tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `zef_cleared`      `cleared`         tinyint(1) NOT NULL DEFAULT '0',
+    CHANGE `zef_location`     `location`        varchar(50) COLLATE latin1_general_ci DEFAULT NULL,
+    CHANGE `zef_trackingnr`   `trackingNumber`  varchar(30) COLLATE latin1_general_ci DEFAULT NULL,
+    CHANGE `zef_rate`         `rate`            decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHANGE `zef_fixed_rate`   `fixedRate`       decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHANGE `zef_budget`       `budget`          decimal(10,2) DEFAULT NULL,
+    CHANGE `zef_approved`     `approved`        decimal(10,2) DEFAULT NULL,
+    CHANGE `zef_status`       `status`          smallint(6) DEFAULT '1',
+    CHANGE `zef_billable`     `billable`        tinyint(4) DEFAULT NULL COMMENT 'how many percent are billable to customer'
+    ;");
+
 }
 
 // ============================

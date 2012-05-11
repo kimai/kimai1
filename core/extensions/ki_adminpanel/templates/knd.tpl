@@ -17,30 +17,30 @@
             <tbody>
     
 {section name=row loop=$arr_knd}
-{if $arr_knd[row].knd_visible || $arr_knd[row].zeit != "0:00"}
+{if $arr_knd[row].visible || $arr_knd[row].zeit != "0:00"}
             
                 <tr class="{cycle values="odd,even"}">
 
                     <td class="option">
-                        <a href ="#" onClick="editSubject('knd',{$arr_knd[row].knd_ID}); $(this).blur(); return false;">
+                        <a href ="#" onClick="editSubject('knd',{$arr_knd[row].customerID}); $(this).blur(); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
                         
                         &nbsp;
                         
-                        <a href="#" id="delete_knd{$arr_knd[row].knd_ID}" onClick="ap_ext_deleteCustomer({$arr_knd[row].knd_ID})">
+                        <a href="#" id="delete_knd{$arr_knd[row].customerID}" onClick="ap_ext_deleteCustomer({$arr_knd[row].customerID})">
                           <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delknd}" width="13" height="13" alt="{$kga.lang.delknd}" border="0">
                         </a>
                     </td>
 
                     <td class="clients">
-                            {if $arr_knd[row].knd_visible != 1}<span style="color:#bbb">{/if}
-                            {$arr_knd[row].knd_name|escape:'html'}
-                            {if $arr_knd[row].knd_visible != 1}</span>{/if}
+                            {if $arr_knd[row].visible != 1}<span style="color:#bbb">{/if}
+                            {$arr_knd[row].name|escape:'html'}
+                            {if $arr_knd[row].visible != 1}</span>{/if}
                     </td>
                     
                     <td>
-                      {$arr_knd[row].knd_contact|escape:'html'}
+                      {$arr_knd[row].contact|escape:'html'}
                     </td>
                     
                     <td>

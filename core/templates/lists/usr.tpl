@@ -5,20 +5,20 @@
     
 {section name=row loop=$arr_usr}
             
-                <tr id="row_usr{$arr_usr[row].usr_ID}" class="{cycle values="odd,even"}">
+                <tr id="row_usr{$arr_usr[row].userID}" class="{cycle values="odd,even"}">
                     
 
 
 {* --- option cell ---*}
 
                     <td nowrap class="option">
-                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].usr_ID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
+                      <a href ="#" onClick="lists_update_filter('usr',{$arr_usr[row].userID}); $(this).blur(); return false;"><img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/filter.png' width='13' height='13' alt='{$kga.lang.filter}' title='{$kga.lang.filter}' border='0' /></a>
 
                     </td>
 
 {* --- name cell ---*}
                     <td width="100%" class="clients">
-                            {$arr_usr[row].usr_name|escape:'html'}
+                            {$arr_usr[row].name|escape:'html'}
                     </td>
 
 

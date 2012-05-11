@@ -6,8 +6,8 @@
           <option value="-2" {if $selected_evt_filter==-2}selected="selected"{/if}>{$kga.lang.unassigned}</option>
           <option value="-1" {if $selected_evt_filter==-1}selected="selected"{/if}>{$kga.lang.all_events}</option>
           {section name=row loop=$arr_pct}
-          <option value="{$arr_pct[row].pct_ID}"
-             {if $selected_evt_filter==$arr_pct[row].pct_ID}selected="selected"{/if}>{$arr_pct[row].pct_name|escape:'html'} ({$arr_pct[row].knd_name|truncate:30:"..."|escape:'html'})</option>
+          <option value="{$arr_pct[row].projectID}"
+             {if $selected_evt_filter==$arr_pct[row].projectID}selected="selected"{/if}>{$arr_pct[row].name|escape:'html'} ({$arr_pct[row].customerName|truncate:30:"..."|escape:'html'})</option>
           {/section}
         </select>
 <br/><br/>
@@ -32,21 +32,21 @@
                 <tr class="{cycle values="odd,even"}">
 
                     <td class="option">
-                        <a href ="#" onClick="editSubject('evt',{$evt.evt_ID}); $(this).blur(); return false;">
+                        <a href ="#" onClick="editSubject('evt',{$evt.activityID}); $(this).blur(); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>
                         
                         &nbsp;
                         
-                        <a href="#" id="delete_evt{$evt.evt_ID}" onClick="ap_ext_deleteEvent({$evt.evt_ID})">
+                        <a href="#" id="delete_evt{$evt.activityID}" onClick="ap_ext_deleteEvent({$evt.activityID})">
                           <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delevt}" width="13" height="13" alt="{$kga.lang.delevt}" border="0">
                         </a>
                     </td>
 
                     <td class="events">
-                        {if $evt.evt_visible != 1}<span style="color:#bbb">{/if}
-                        {$evt.evt_name|escape:'html'}
-                        {if $evt.evt_visible != 1}</span>{/if}
+                        {if $evt.visible != 1}<span style="color:#bbb">{/if}
+                        {$evt.name|escape:'html'}
+                        {if $evt.visible != 1}</span>{/if}
                     </td>
                     
                     <td>

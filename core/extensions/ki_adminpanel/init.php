@@ -39,18 +39,18 @@
     // ==========================
     // = display customer table =
     // ==========================
-    if ($kga['usr']['usr_sts']==0)
-      $arr_knd = $database->get_arr_knd();
+    if ($kga['usr']['status']==0)
+      $arr_knd = $database->get_arr_customers();
     else
-      $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
+      $arr_knd = $database->get_arr_customers($kga['usr']['groups']);
 
     foreach ($arr_knd as $row=>$knd_data) {
       $grp_names = array();
-      $grps = $database->knd_get_grps($knd_data['knd_ID']);
-      if ($grps !== false) {
-        foreach ($grps as $grp_id) {
-          $data = $database->grp_get_data($grp_id);
-          $grp_names[] = $data['grp_name'];
+      $groups = $database->customer_get_groupIDs($knd_data['customerID']);
+      if ($groups !== false) {
+        foreach ($groups as $groupID) {
+          $data = $database->group_get_data($groupID);
+          $grp_names[] = $data['name'];
         }
         $arr_knd[$row]['groups'] = implode(", ",$grp_names);
       }
@@ -66,16 +66,16 @@
     // =========================
     // = display project table =
     // =========================
-    if ($kga['usr']['usr_sts']==0)
-      $arr_pct = $database->get_arr_pct();
+    if ($kga['usr']['status']==0)
+      $arr_pct = $database->get_arr_projects();
     else
-      $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
+      $arr_pct = $database->get_arr_projects($kga['usr']['groups']);
 
     foreach ($arr_pct as $row=>$pct_data) {
       $grp_names = array();
-      foreach ($database->pct_get_grps($pct_data['pct_ID']) as $grp_id) {
-        $data = $database->grp_get_data($grp_id);
-         $grp_names[] = $data['grp_name'];
+      foreach ($database->project_get_groupIDs($pct_data['projectID']) as $groupID) {
+        $data = $database->group_get_data($groupID);
+         $grp_names[] = $data['name'];
       }
       $arr_pct[$row]['groups'] = implode(", ",$grp_names);
     }
@@ -90,16 +90,16 @@
     // ========================
     // = display events table =
     // ========================
-    if ($kga['usr']['usr_sts']==0)
-      $arr_evt = $database->get_arr_evt_by_pct(-2);
+    if ($kga['usr']['status']==0)
+      $arr_evt = $database->get_arr_activities_by_project(-2);
     else
-      $arr_evt = $database->get_arr_evt_by_pct(-2,$kga['usr']['groups']);
+      $arr_evt = $database->get_arr_activities_by_project(-2,$kga['usr']['groups']);
 
     foreach ($arr_evt as $row=>$evt_data) {
       $grp_names = array();
-      foreach ($database->evt_get_grps($evt_data['evt_ID']) as $grp_id) {
-        $data = $database->grp_get_data($grp_id);
-         $grp_names[] = $data['grp_name'];
+      foreach ($database->activity_get_groups($evt_data['activityID']) as $grp_id) {
+        $data = $database->group_get_data($grp_id);
+         $grp_names[] = $data['name'];
       }
       $arr_evt[$row]['groups'] = implode(", ",$grp_names);
     }
@@ -113,28 +113,28 @@
     $tpl->assign('evt_display', $tpl->fetch("evt.tpl"));
     $tpl->assign('selected_evt_filter',-2);
 
-    $tpl->assign('curr_user', $kga['usr']['usr_name']);
+    $tpl->assign('curr_user', $kga['usr']['name']);
 
-    if ($kga['usr']['usr_sts']==0)
-      $tpl->assign('arr_grp', $database->get_arr_grp(get_cookie('ap_ext_show_deleted_groups',0)));
+    if ($kga['usr']['status']==0)
+      $tpl->assign('arr_grp', $database->get_arr_groups(get_cookie('ap_ext_show_deleted_groups',0)));
     else
-      $tpl->assign('arr_grp', $database->get_arr_grp_by_leader($kga['usr']['usr_ID'],
+      $tpl->assign('arr_grp', $database->get_arr_groups_by_leader($kga['usr']['userID'],
         get_cookie('ap_ext_show_deleted_groups',0)));
 
-      $tpl->assign('arr_status', $database->get_arr_status());
+      $tpl->assign('arr_statuses', $database->get_arr_statuses());
         
-    if ($kga['usr']['usr_sts']==0)
-      $arr_usr = $database->get_arr_usr(get_cookie('ap_ext_show_deleted_users',0));
+    if ($kga['usr']['status']==0)
+      $arr_usr = $database->get_arr_users(get_cookie('ap_ext_show_deleted_users',0));
     else
       $arr_usr = $database->get_arr_watchable_users($kga['usr']);
 
     // get group names
     foreach ($arr_usr as &$user) {
-      $groups = $database->getGroupMemberships($user['usr_ID']);
+      $groups = $database->getGroupMemberships($user['userID']);
       if(is_array($groups)) {
 	      foreach ($groups as $group) {
-	        $groupData = $database->grp_get_data($group);
-	        $user['groups'][] = $groupData['grp_name'];
+	        $groupData = $database->group_get_data($group);
+	        $user['groups'][] = $groupData['name'];
 	      }
       }
     }
@@ -146,7 +146,7 @@
     $tpl->assign('languages', Translations::langs());
 
     $tpl->assign('timezones', timezoneList());
-    $status = $database->get_arr_status();
+    $status = $database->get_arr_statuses();
     $tpl->assign('arr_status', $status);
 
     $admin['users'] = $tpl->fetch("users.tpl");
