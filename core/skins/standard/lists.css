@@ -1,4 +1,4 @@
-#user, #customer, #activity, #project { 
+#users, #customers, #activities, #projects { 
     height:175px;
     border-top:none;
     z-index:1;
@@ -11,7 +11,7 @@
     left:10px;
 }
 
-#user_head, #customer_head, #project_head, #activity_head {
+#users_head, #customers_head, #projects_head, #activities_head {
     border:1px solid black; 
     border-bottom:none;
     background-image: url('grfx/g3_table_header.png');
@@ -25,7 +25,7 @@
     padding:3px 0 0 5px;
 }
 
-#user_foot, #customer_foot, #project_foot, #activity_foot {
+#users_foot, #customers_foot, #projects_foot, #activities_foot {
     border:1px solid black; 
     border-top:none;
     background-image: url('grfx/g3_table_header.png');
@@ -39,7 +39,7 @@
     padding:3px 0 0 5px;
 }
 
-#customerShrink {
+#customersShrink {
     cursor: pointer;
     background-color:transparent;
     background-image:url('grfx/customerShrink_left.png');
@@ -57,7 +57,7 @@
     filter:alpha(opacity=80);
 }
 
-#userShrink {
+#usersShrink {
     cursor: pointer;
     background-color:transparent;
     background-image:url('grfx/customerShrink_left.png');
@@ -93,34 +93,34 @@
     filter:alpha(opacity=80);
 }
 
-div#user>table>tbody>tr>td.annotation,
-div#customer>table>tbody>tr>td.annotation,
-div#project>table>tbody>tr>td.annotation, 
-div#activity>table>tbody>tr>td.annotation {
+div#users>table>tbody>tr>td.annotation,
+div#customers>table>tbody>tr>td.annotation,
+div#projects>table>tbody>tr>td.annotation, 
+div#activities>table>tbody>tr>td.annotation {
     border-right: none;
 }
 
-div#user td.option img,
-div#customer td.option img,
-div#project td.option img,
-div#activity td.option img 
+div#users td.option img,
+div#customers td.option img,
+div#projects td.option img,
+div#activities td.option img 
 { 
     margin-top:2px;
 }
 
-div#user td.annotation,
-div#customer td.annotation,
-div#project td.annotation,
-div#activity td.annotation 
+div#users td.annotation,
+div#customers td.annotation,
+div#projects td.annotation,
+div#activities td.annotation 
 { 
     width:60px;
     text-align: right;
 }
 
-div#user td,
-div#customer td,
-div#project td,
-div#activity td 
+div#users td,
+div#customers td,
+div#projects td,
+div#activities td 
 { 
     border-right:none;
 }

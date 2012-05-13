@@ -576,19 +576,19 @@ function lists_extShrinkHide() {
 }
 
 function lists_customerShrinkShow() {
-    $('#customerShrink').css("background-color","red");
+    $('#customersShrink').css("background-color","red");
 }
 
 function lists_customerShrinkHide() {
-    $('#customerShrink').css("background-color","transparent");
+    $('#customersShrink').css("background-color","transparent");
 }
 
 function lists_userShrinkShow() {
-    $('#userShrink').css("background-color","red");
+    $('#usersShrink').css("background-color","red");
 }
 
 function lists_userShrinkHide() {
-    $('#userShrink').css("background-color","transparent");
+    $('#usersShrink').css("background-color","transparent");
 }
 
 function lists_shrinkExtToggle() {
@@ -605,29 +605,29 @@ function lists_shrinkExtToggle() {
 function lists_shrinkCustomerToggle() {
     (customerShrinkMode)?customerShrinkMode=0:customerShrinkMode=1;
     if (customerShrinkMode) {
-        $('#customer, #customer_head, #customer_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        $('#customerShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
+        $('#customers, #customers_head, #customers_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
+        $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
         if (!userShrinkMode)
-          $('#userShrink').hide();
+          $('#usersShrink').hide();
     } else {
         lists_set_tableWrapperWidths();
-        $('#customer, #customer_head, #customer_foot').fadeIn(fading_enabled?"slow":0);
-        $('#customerShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
+        $('#customers, #customers_head, #customers_foot').fadeIn(fading_enabled?"slow":0);
+        $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
         lists_resize();
         if (!userShrinkMode)
-          $('#userShrink').show();
+          $('#usersShrink').show();
     }
 }
 
 function lists_shrinkUserToggle() {
     (userShrinkMode)?userShrinkMode=0:userShrinkMode=1;
     if (userShrinkMode) {
-        $('#user, #user_head, #user_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        $('#userShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
+        $('#users, #users_head, #users_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
+        $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
     } else {
-        $('#user, #user_head, #user_foot').fadeIn(fading_enabled?"slow":0);
+        $('#users, #users_head, #users_foot').fadeIn(fading_enabled?"slow":0);
     lists_set_tableWrapperWidths();
-        $('#userShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
+        $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
     }
 }
 
@@ -661,14 +661,14 @@ function lists_set_tableWrapperWidths() {
     lists_get_dimensions();
     $('#extShrink').css("width",pageWidth()-22);
     // set width of faked table heads of subtables -----------------
-    $("#user_head, #user_foot").css("width",userColumnWidth-5);
-    $("#customer_head, #customer_foot").css("width",customerColumnWidth-5); // subtract the left padding inside the header
-    $("#project_head, #project_foot").css("width",projectColumnWidth-5); // which is 5px
-    $("#activity_head, #activity_foot").css("width",activityColumnWidth-5);
-    $("#user").css("width",userColumnWidth);
-    $("#customer").css("width",customerColumnWidth);
-    $("#project").css("width",projectColumnWidth);
-    $("#activity").css("width",activityColumnWidth);
+    $("#users_head, #users_foot").css("width",userColumnWidth-5);
+    $("#customers_head, #customers_foot").css("width",customerColumnWidth-5); // subtract the left padding inside the header
+    $("#projects_head, #projects_foot").css("width",projectColumnWidth-5); // which is 5px
+    $("#activities_head, #activities_foot").css("width",activityColumnWidth-5);
+    $("#users").css("width",userColumnWidth);
+    $("#customers").css("width",customerColumnWidth);
+    $("#projects").css("width",projectColumnWidth);
+    $("#activities").css("width",activityColumnWidth);
     lists_set_left();
     lists_set_TableWidths();
 }
@@ -686,8 +686,8 @@ function lists_set_left() {
       userShrinkPos+=subtableWidth+7;
     }
 
-    $("#customer, #customer_head, #customer_foot").css("left",leftmargin+rightmargin+10);
-    $('#userShrink').css("left",userShrinkPos);
+    $("#customers, #customers_head, #customers_foot").css("left",leftmargin+rightmargin+10);
+    $('#usersShrink').css("left",userShrinkPos);
     
     customerShrinkPos=userShrinkPos;
 
@@ -697,10 +697,10 @@ function lists_set_left() {
       customerShrinkPos+=subtableWidth+7;
     }
 
-    $("#project, #project_head, #project_foot").css("left",leftmargin+rightmargin+10);
+    $("#projects, #projects_head, #projects_foot").css("left",leftmargin+rightmargin+10);
     
-    $("#activity, #activity_head, #activity_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
-    $('#customerShrink').css("left",customerShrinkPos);
+    $("#activities, #activities_head, #activities_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
+    $('#customersShrink').css("left",customerShrinkPos);
     
 }
 
@@ -708,29 +708,29 @@ function lists_set_heightTop() {
     lists_get_dimensions();
     if (!extShrinkMode) {
         $('#gui>div').css("height",pageHeight()-headerHeight()-150-40);
-        $("#user,#customer,#project,#activity").css("height","160px");
-        $("#user_foot, #customer_foot, #project_foot, #activity_foot").css("top",pageHeight()-30);
-        $('#userShrink').css("height","211px");
-        $('#customerShrink').css("height","211px");
+        $("#users,#customers,#projects,#activities").css("height","160px");
+        $("#users_foot, #customers_foot, #projects_foot, #activities_foot").css("top",pageHeight()-30);
+        $('#usersShrink').css("height","211px");
+        $('#customersShrink').css("height","211px");
         // push customer/project/activity subtables in place TOP
         var subs = pageHeight()-headerHeight()-90+25;
-        $("#user,#customer,#project,#activity").css("top",subs);
+        $("#users,#customers,#projects,#activities").css("top",subs);
         // push faked table heads of subtables in place
         var subs = pageHeight()-headerHeight()-90;    
-        $("#user_head,#customer_head,#project_head,#activity_head").css("top",subs);
+        $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
         $('#extShrink').css("top",subs-10);
-        $('#userShrink').css("top",subs);
-        $('#customerShrink').css("top",subs);
+        $('#usersShrink').css("top",subs);
+        $('#customersShrink').css("top",subs);
     } else {
         $("#gui>div").css("height","105px");
-        $("#user_head,#customer_head,#project_head,#activity_head").css("top",headerHeight()+107);
-        $("#user,#customer,#project,#activity").css("top",headerHeight()+135);
-        $("#user,#customer,#project,#activity").css("height",pageHeight()-headerHeight()-165);
-        $('#customerShrink').css("height",pageHeight()-headerHeight()-110);
-        $('#userShrink').css("height",pageHeight()-headerHeight()-110);
+        $("#users_head,#customers_head,#projects_head,#activities_head").css("top",headerHeight()+107);
+        $("#users,#customers,#projects,#activities").css("top",headerHeight()+135);
+        $("#users,#customers,#projects,#activities").css("height",pageHeight()-headerHeight()-165);
+        $('#customersShrink').css("height",pageHeight()-headerHeight()-110);
+        $('#usersShrink').css("height",pageHeight()-headerHeight()-110);
         $('#extShrink').css("top",headerHeight()+97);
-        $('#customerShrink').css("top",headerHeight()+105);
-        $('#userShrink').css("top",headerHeight()+105);
+        $('#customersShrink').css("top",headerHeight()+105);
+        $('#usersShrink').css("top",headerHeight()+105);
     }
     
     lists_set_TableWidths();
@@ -739,14 +739,14 @@ function lists_set_heightTop() {
 function lists_set_TableWidths() {
     lists_get_dimensions();
     // set table widths   
-    ($("#user").innerHeight()-$("#user table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
-    $("#user table").css("width",userColumnWidth-scr);
-    ($("#customer").innerHeight()-$("#customer table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
-    $("#customer table").css("width",customerColumnWidth-scr);
-    ($("#project").innerHeight()-$("#project table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#project table").css("width",projectColumnWidth-scr);
-    ($("#activity").innerHeight()-$("#activity table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#activity table").css("width",activityColumnWidth-scr);
+    ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
+    $("#users table").css("width",userColumnWidth-scr);
+    ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
+    $("#customers table").css("width",customerColumnWidth-scr);
+    ($("#projects").innerHeight()-$("#projects table").outerHeight()>0)?scr=0:scr=scroller_width;
+    $("#projects table").css("width",projectColumnWidth-scr);
+    ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
+    $("#activities table").css("width",activityColumnWidth-scr);
 }
 
 // ----------------------------------------------------------------------------------------
@@ -757,9 +757,9 @@ function lists_reload(subject, callback) {
         case "user":
             $.post("processor.php", { axAction: "reload_user", axValue: 0, id: 0 },
                 function(data) {
-                    $("#user").html(data);
-                    ($("#user").innerHeight()-$("#user table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#user table").css("width",customerColumnWidth-scr);
+                    $("#users").html(data);
+                    ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#users table").css("width",customerColumnWidth-scr);
                     lists_live_filter('user', $('#filt_user').val());
 		    lists_write_annotations('user');
                     if (typeof(callback) != "undefined")
@@ -770,9 +770,9 @@ function lists_reload(subject, callback) {
         case "customer":
             $.post("processor.php", { axAction: "reload_customer", axValue: 0, id: 0 },
                 function(data) {
-                    $("#customer").html(data);
-                    ($("#customer").innerHeight()-$("#customer table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#customer table").css("width",customerColumnWidth-scr);
+                    $("#customers").html(data);
+                    ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#customers table").css("width",customerColumnWidth-scr);
                     lists_live_filter('customer', $('#filter_customer').val());
                     lists_write_annotations('customer');
                     if (typeof(callback) != "undefined")
@@ -783,10 +783,10 @@ function lists_reload(subject, callback) {
         case "project": 
             $.post("processor.php", { axAction: "reload_projects", axValue: 0, id: 0 },
                 function(data) { 
-                    $("#project").html(data);
-                    ($("#project").innerHeight()-$("#project table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#project table").css("width",projectColumnWidth-scr);
-                    $('#project>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+                    $("#projects").html(data);
+                    ($("#projects").innerHeight()-$("#projects table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#projects table").css("width",projectColumnWidth-scr);
+                    $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('project', $('#filter_project').val());
                     lists_write_annotations('project');
                     if (typeof(callback) != "undefined")
@@ -797,10 +797,10 @@ function lists_reload(subject, callback) {
         case "activity": 
             $.post("processor.php", { axAction: "reload_activities", axValue: 0, id: 0, project:selected_project },
                 function(data) { 
-                    $("#activity").html(data);
-                    ($("#activity").innerHeight()-$("#activity table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#activity table").css("width",activityColumnWidth-scr);
-                    $('#activity>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+                    $("#activities").html(data);
+                    ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#activities table").css("width",activityColumnWidth-scr);
+                    $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('activity', $('#filter_activity').val());
 		    lists_write_annotations('activity');
         if ($('#row_activity'+selected_activity).length == 0) {
@@ -835,22 +835,22 @@ function lists_customer_prefilter(customer,type) {
         
         $(".customer").removeClass("filterProjectForPreselection");
         $(".project").removeClass("filterProjectForPreselection");
-        $("#project .customer"+customer).addClass("filterProjectForPreselection");
-        $("#project .project").removeClass("TableRowInvisible");
+        $("#projects .customer"+customer).addClass("filterProjectForPreselection");
+        $("#projects .project").removeClass("TableRowInvisible");
 
         
     } else {
         
         $(".customer").removeClass("filterProjectForPreselection");      
         $(".project").removeClass("filterProjectForPreselection");
-        $("#customer .customer"+customer).addClass("filterProjectForPreselection");
-        $("#project .project").removeClass("highlightProjectForPreselection");
+        $("#customers .customer"+customer).addClass("filterProjectForPreselection");
+        $("#projects .project").removeClass("highlightProjectForPreselection");
         if (customer > 0) {
-          $("#project .project").addClass("TableRowInvisible");
-          $("#project .customer"+customer).removeClass("TableRowInvisible");
+          $("#projects .project").addClass("TableRowInvisible");
+          $("#projects .customer"+customer).removeClass("TableRowInvisible");
         }
         else {
-          $("#project .project").removeClass("TableRowInvisible");
+          $("#projects .project").removeClass("TableRowInvisible");
         }
         
     }
@@ -884,25 +884,25 @@ function lists_write_annotations(part)
   var id = parseInt($('#fliptabs li.act').attr('id').substring(7));
 
   if (!part || part == 'user') {
-    $('#user>table>tbody td.annotation').html("");
+    $('#users>table>tbody td.annotation').html("");
     if (lists_user_annotations[id] != null)
       for (var i in lists_user_annotations[id])
         $('#row_user'+i+'>td.annotation').html(lists_user_annotations[id][i]);
   }
   if (!part || part == 'customer') {
-    $('#customer>table>tbody td.annotation').html("");
+    $('#customers>table>tbody td.annotation').html("");
     if (lists_customer_annotations[id] != null)
       for (var i in lists_customer_annotations[id])
         $('#row_customer'+i+'>td.annotation').html(lists_customer_annotations[id][i]);
   }
   if (!part || part == 'project') {
-    $('#project>table>tbody td.annotation').html("");
+    $('#projects>table>tbody td.annotation').html("");
     if (lists_project_annotations[id] != null)
       for (var i in lists_project_annotations[id])
         $('#row_project'+i+'>td.annotation').html(lists_project_annotations[id][i]);
   }
   if (!part || part == 'activity') {
-    $('#activity>table>tbody td.annotation').html("");
+    $('#activities>table>tbody td.annotation').html("");
     if (lists_activity_annotations[id] != null)
       for (var i in lists_activity_annotations[id])
         $('#row_activity'+i+'>td.annotation').html(lists_activity_annotations[id][i]);

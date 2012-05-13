@@ -135,21 +135,21 @@
         {literal}function kimai_onload() {
     $('#extShrink').hover(lists_extShrinkShow,lists_extShrinkHide);
     $('#extShrink').click(lists_shrinkExtToggle);
-    $('#customerShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
-    $('#customerShrink').click(lists_shrinkCustomerToggle);
+    $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
+    $('#customersShrink').click(lists_shrinkCustomerToggle);
   {/literal}{if !$kga.user || $kga.user.status < 2}
-    $('#userShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
-    $('#userShrink').click(lists_shrinkUserToggle);
+    $('#usersShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
+    $('#usersShrink').click(lists_shrinkUserToggle);
   {else}
-    $('#userShrink').hide();
+    $('#usersShrink').hide();
   {/if}
 
   {if $kga.conf.user_list_hidden || $kga.user.status == 2}
     lists_shrinkUserToggle();
   {/if}
   {literal}
-    $('#project>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-    $('#activity>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
 
     $('#floater').draggable({  
         zIndex:20,
@@ -278,44 +278,44 @@
     </div>
 
 <div class="lists" style="display:none">
-<div id="user_head">
+<div id="users_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('user', this.value);" type="text" id="filt_user" name="filt_user"/>
     {$kga.lang.users} 
 </div>
 
-<div id="customer_head">
+<div id="customers_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('customer', this.value);" type="text" id="filter_customer" name="filter_customer"/>
     {$kga.lang.customers} 
 
 </div>
 
-<div id="project_head">
+<div id="projects_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('project', this.value);" type="text" id="filter_project" name="filter_project"/>
     {$kga.lang.projects}
     
     
 </div>
 
-<div id="activity_head">
+<div id="activities_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('activity', this.value);" type="text" id="filter_activity" name="filter_activity"/>
     {$kga.lang.activities}
     
     
 </div>
 
-<div id="user">{$user_display}</div>
-<div id="customer">{$customer_display}</div>
-<div id="project">{$project_display}</div>
-<div id="activity">{$activity_display}</div>
+<div id="users">{$user_display}</div>
+<div id="customers">{$customer_display}</div>
+<div id="projects">{$project_display}</div>
+<div id="activities">{$activity_display}</div>
 
-<div id="user_foot">
+<div id="users_foot">
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('user'); $(this).blur(); return false;"></a>
 <a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('user'); $(this).blur(); return false;"></a>
 <a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('user'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
-<div id="customer_foot">    
+<div id="customers_foot">    
 {if $kga.user && $kga.user.status != 2 }    
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
@@ -325,7 +325,7 @@
 <div style="clear:both"></div>
 </div>
 
-<div id="project_foot">
+<div id="projects_foot">
 {if $kga.user && $kga.user.status != 2 }  
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_project',0,0,650,200); $(this).blur(); return false;"></a>
 {/if}
@@ -335,7 +335,7 @@
 <div style="clear:both"></div>
 </div>
 
-<div id="activity_foot">
+<div id="activities_foot">
 {if $kga.user && $kga.user.status != 2 } 
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_activity',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
@@ -346,8 +346,8 @@
 </div>
 
 <div id="extShrink">&nbsp;</div>
-<div id="userShrink">&nbsp;</div>
-<div id="customerShrink">&nbsp;</div>
+<div id="usersShrink">&nbsp;</div>
+<div id="customersShrink">&nbsp;</div>
 </div>
     
     <div id="loader">&nbsp;</div>
