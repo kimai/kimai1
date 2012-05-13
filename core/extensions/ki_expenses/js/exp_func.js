@@ -117,37 +117,35 @@ function expense_extension_set_TableWidths() {
 
 function expense_extension_triggerchange() {
     $('#display_total').html(expenses_total);
-    if (expense_tss_hook_flag) {
+    if (expense_timeframe_changed_hook_flag) {
         expense_extension_reload();
-        expense_chk_hook_flag = 0;
-        expense_chp_hook_flag = 0;
-        expense_che_hook_flag = 0;
+        expense_customers_changed_hook_flag = 0;
+        expense_projects_changed_hook_flag = 0;
+        expense_activities_changed_hook_flag = 0;
     }
-    if (expense_chk_hook_flag) {
+    if (expense_customers_changed_hook_flag) {
         expense_extension_triggerCHK();
-        expense_chp_hook_flag = 0;
-        expense_che_hook_flag = 0;
+        expense_projects_changed_hook_flag = 0;
+        expense_activities_changed_hook_flag = 0;
     }
-    if (expense_chp_hook_flag) {
+    if (expense_projects_changed_hook_flag) {
         expense_extension_triggerCHP();
     }
-    if (expense_che_hook_flag) {
+    if (expense_activities_changed_hook_flag) {
         expense_extension_triggerCHE();
     }
     
-    expense_tss_hook_flag = 0;
-    expense_rec_hook_flag = 0;
-    expense_stp_hook_flag = 0;
-    expense_chk_hook_flag = 0;
-    expense_chp_hook_flag = 0;
-    expense_che_hook_flag = 0;
+    expense_timeframe_changed_hook_flag = 0;
+    expense_customers_changed_hook_flag = 0;
+    expense_projects_changed_hook_flag = 0;
+    expense_activities_changed_hook_flag = 0;
 }
 
-function expense_extension_triggerTSS() {
+function expense_extension_timeframe_changed() {
     if ($('.ki_expenses').css('display') == "block") {
         expense_extension_reload();
     } else {
-        expense_tss_hook_flag++;
+        expense_timeframe_changed_hook_flag++;
     }
 }
 
@@ -155,7 +153,7 @@ function expense_extension_triggerCHK() {
     if ($('.ki_expenses').css('display') == "block") {
         expense_extension_reload();
     } else {
-        expense_chk_hook_flag++;
+        expense_customers_changed_hook_flag++;
     }
 }
 
@@ -163,7 +161,7 @@ function expense_extension_triggerCHP() {
     if ($('.ki_expenses').css('display') == "block") {
         expense_extension_reload();
     } else {
-        expense_chp_hook_flag++;
+        expense_projects_changed_hook_flag++;
     }
 }
 
@@ -171,7 +169,7 @@ function expense_extension_triggerCHE() {
     if ($('.ki_expenses').css('display') == "block") {
         expense_extension_reload();
     } else {
-        expense_che_hook_flag++;
+        expense_activities_changed_hook_flag++;
     }
 }
 

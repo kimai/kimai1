@@ -92,7 +92,7 @@ function adminPanel_extension_subtab_autoexpand() {
 // ------------------------------------------------------
 
 
-function adminPanel_extension_triggerchange() {
+function adminPanel_extension_tab_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('customers');
         adminPanel_extension_refreshSubtab('projects');
@@ -100,55 +100,55 @@ function adminPanel_extension_triggerchange() {
     } else {
         tss_hook_flag++;
     }
-    if (ap_chk_hook_flag) {
-        adminPanel_extension_triggerCHK();
+    if (adminPanel_customers_changed_hook_flag) {
+        adminPanel_extension_customers_changed();
     }
-    if (ap_chp_hook_flag) {
-        adminPanel_extension_triggerCHP();
+    if (adminPanel_projects_changed_hook_flag) {
+        adminPanel_extension_projects_changed();
     }
-    if (ap_che_hook_flag) {
-        adminPanel_extension_triggerCHE();
+    if (adminPanel_activities_changed_hook_flag) {
+        dminPanel_extension_activities_changed();
     }
-    if (ap_usr_hook_flag) {
-        adminPanel_extension_triggerUSR();
+    if (adminPanel_users_changed_hook_flag) {
+        dminPanel_extension_users_changed();
     }
     
-    ap_chk_hook_flag = 0;
-    ap_chp_hook_flag = 0;
-    ap_che_hook_flag = 0;
-    ap_usr_hook_flag = 0;
+    adminPanel_customers_changed_hook_flag = 0;
+    adminPanel_projects_changed_hook_flag = 0;
+    adminPanel_activities_changed_hook_flag = 0;
+    adminPanel_users_changed_hook_flag = 0;
 }
 
-function adminPanel_extension_triggerCHK() {
+function adminPanel_extension_customers_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('customers');
         adminPanel_extension_refreshSubtab('projects');
     } else {
-        ap_chk_hook_flag++;
+        adminPanel_customers_changed_hook_flag++;
     }
 }
 
-function adminPanel_extension_triggerCHP() {
+function adminPanel_extension_projects_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('projects');
     } else {
-        ap_chp_hook_flag++;
+        adminPanel_projects_changed_hook_flag++;
     }
 }
 
-function adminPanel_extension_triggerCHE() {
+function dminPanel_extension_activities_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('activities');
     } else {
-        ap_che_hook_flag++;
+        adminPanel_activities_changed_hook_flag++;
     }
 }
 
-function adminPanel_extension_triggerUSR() {
+function dminPanel_extension_users_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('users');
     } else {
-        ap_usr_hook_flag++;
+        adminPanel_users_changed_hook_flag++;
     }
 }
 

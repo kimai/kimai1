@@ -205,65 +205,63 @@ function export_extension_set_TableWidths() {
   );
 }
 
-function export_extension_triggerchange() {
-    if (xp_tss_hook_flag) {
+function export_extension_tab_changed() {
+    if (xp_timeframe_changed_hook_flag) {
         export_extension_reload();
-        xp_chk_hook_flag = 0;
-        xp_chp_hook_flag = 0;
-        xp_che_hook_flag = 0;
+        xp_customers_changed_hook_flag = 0;
+        xp_projects_changed_hook_flag = 0;
+        xp_activities_changed_hook_flag = 0;
     }
-    if (xp_chk_hook_flag) {
-        export_extension_triggerCHK();
-        xp_chp_hook_flag = 0;
-        xp_che_hook_flag = 0;
+    if (xp_customers_changed_hook_flag) {
+        export_extension_customers_changed();
+        xp_projects_changed_hook_flag = 0;
+        xp_activities_changed_hook_flag = 0;
     }
-    if (xp_chp_hook_flag) {
-        export_extension_triggerCHP();
+    if (xp_projects_changed_hook_flag) {
+        export_extension_projects_changed();
     }
-    if (xp_che_hook_flag) {
-        export_extension_triggerCHE();
+    if (xp_activities_changed_hook_flag) {
+        export_extension_activities_changed();
     }
     
-    xp_tss_hook_flag = 0;
-    xp_rec_hook_flag = 0;
-    xp_stp_hook_flag = 0;
-    xp_chk_hook_flag = 0;
-    xp_chp_hook_flag = 0;
-    xp_che_hook_flag = 0;
+    xp_timeframe_changed_hook_flag = 0;
+    xp_customers_changed_hook_flag = 0;
+    xp_projects_changed_hook_flag = 0;
+    xp_activities_changed_hook_flag = 0;
     if ($('.ki_export').html() != '')
       export_extension_reload();
 }
 
-function export_extension_triggerTSS() {
+function export_extension_timeframe_changed() {
     if ($('.ki_export').css('display') == "block") {
         export_extension_reload();
     } else {
-        xp_tss_hook_flag++;
+        xp_timeframe_changed_hook_flag++;
     }
 }
 
 
-function export_extension_triggerCHK() {
+function export_extension_customers_changed() {
     if ($('.ki_export').css('display') == "block") {
         export_extension_reload();
     } else {
-        xp_chk_hook_flag++;
+        xp_customers_changed_hook_flag++;
     }
 }
 
-function export_extension_triggerCHP() {
+function export_extension_projects_changed() {
     if ($('.ki_export').css('display') == "block") {
         export_extension_reload();
     } else {
-        xp_chp_hook_flag++;
+        xp_projects_changed_hook_flag++;
     }
 }
 
-function export_extension_triggerCHE() {
+function export_extension_activities_changed() {
     if ($('.ki_export').css('display') == "block") {
         export_extension_reload();
     } else {
-        xp_che_hook_flag++;
+        xp_activities_changed_hook_flag++;
     }
 }
 

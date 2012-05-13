@@ -29,12 +29,10 @@ var drittel;
 var timeSheet_width;
 var timeSheet_height;
 
-var ts_tss_hook_flag = 0;
-var ts_rec_hook_flag = 0;
-var ts_stp_hook_flag = 0;
-var ts_chk_hook_flag = 0;
-var ts_chp_hook_flag = 0;
-var ts_che_hook_flag = 0;
+var timesheet_timeframe_changed_hook_flag = 0;
+var timesheet_customers_changed_hook_flag = 0;
+var timesheet_projects_changed_hook_flag = 0;
+var timesheet_activities_changed_hook_flag = 0;
 
 
 

@@ -41,11 +41,11 @@ function invoice_extension_resize() {
     $("#invoice_extension").css("height", pageHeight()-headerHeight()-64);
 }
 
-function invoice_extension_triggerchange() {
+function invoice_extension_tab_changed() {
 	invoice_extension_resize();
 }
 
-function invoice_extension_triggerTSS() {
+function invoice_extension_timeframe_changed() {
    $.post(invoice_extension_path + "processor.php", { axAction: "reload_timespan" },
                 function(data) { 
                     $("#invoice_timespan").html(data);

@@ -755,7 +755,7 @@ function lists_set_TableWidths() {
 function lists_reload(subject, callback) {
     switch (subject) {
         case "user":
-            $.post("processor.php", { axAction: "reload_user", axValue: 0, id: 0 },
+            $.post("processor.php", { axAction: "reload_users", axValue: 0, id: 0 },
                 function(data) {
                     $("#users").html(data);
                     ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width;
@@ -768,7 +768,7 @@ function lists_reload(subject, callback) {
             );
     break;
         case "customer":
-            $.post("processor.php", { axAction: "reload_customer", axValue: 0, id: 0 },
+            $.post("processor.php", { axAction: "reload_customers", axValue: 0, id: 0 },
                 function(data) {
                     $("#customers").html(data);
                     ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width;

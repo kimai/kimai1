@@ -32,12 +32,10 @@ var drittel;
 var expenses_width;
 var expenses_height;
 
-var expense_tss_hook_flag = 0;
-var expense_rec_hook_flag = 0;
-var expense_stp_hook_flag = 0;
-var expense_chk_hook_flag = 0;
-var expense_chp_hook_flag = 0;
-var expense_che_hook_flag = 0;
+var expense_timeframe_changed_hook_flag = 0;
+var expense_customers_changed_hook_flag = 0;
+var expense_projects_changed_hook_flag = 0;
+var expense_activities_changed_hook_flag = 0;
 
 $(document).ready(function(){
 

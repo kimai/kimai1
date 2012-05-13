@@ -22,5 +22,3 @@
 
 // set path of extension
 var invoice_extension_path = "../extensions/ki_invoice/";
-
-var invoice_tss_hook_flag = 0;

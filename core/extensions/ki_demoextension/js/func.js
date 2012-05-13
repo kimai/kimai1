@@ -27,7 +27,7 @@ function demo_ext_resize() {
 var background 	= new Array("#000000","#FFFF00","#76EE00","#CD3333","#B23AEE","#CDBE70");
 var text		= new Array("#FFFFFF","#000000","#000000","#FFFFFF","#FFFFFF","#000000");
 
-function demo_ext_triggerchange() {
+function demo_extension_tab_changed() {
     $("#testdiv").append(" This has been put here on tab change.");
 
     array_target = Math.round(Math.random()*background.length);
@@ -36,7 +36,7 @@ function demo_ext_triggerchange() {
     $("#testdiv").css("background-color",background[array_target]);
 }
 
-function demo_ext_triggerTSS() {
+function demo_ext_timeframe_changed() {
     $.post(demo_ext_path + "processor.php", { axAction: "test", axValue: 0, id: 0 }, 
     function(data) {
         $('#demo_timespace > span.timespace_target').html(data);

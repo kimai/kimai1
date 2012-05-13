@@ -234,7 +234,7 @@
         <ul class="menu">
             
            	<li class="tab act" id="exttab_0">
-           	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); ts_ext_triggerchange();">
+           	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();">
            	        <span class="aa">&nbsp;</span>
            	        <span class="bb">
                     {if isset($kga.lang.extensions.ki_timesheet)}

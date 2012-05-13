@@ -115,62 +115,60 @@ function ts_ext_set_TableWidths() {
     $("#timeSheet_head > table > tbody > tr > td.activity").css("width", $("div#timeSheet > div > table > tbody > tr > td.activity").width());
 }
 
-function ts_ext_triggerchange() {
+function timesheet_extension_tab_changed() {
     $('#display_total').html(ts_total);
-    if (ts_tss_hook_flag) {
+    if (timesheet_timeframe_changed_hook_flag) {
         ts_ext_reload();
-        ts_chk_hook_flag = 0;
-        ts_chp_hook_flag = 0;
-        ts_che_hook_flag = 0;
+        timesheet_customers_changed_hook_flag = 0;
+        timesheet_projects_changed_hook_flag = 0;
+        timesheet_activities_changed_hook_flag = 0;
     }
-    if (ts_chk_hook_flag) {
-        ts_ext_triggerCHK();
-        ts_chp_hook_flag = 0;
-        ts_che_hook_flag = 0;
+    if (timesheet_customers_changed_hook_flag) {
+        timesheet_extension_customers_changed();
+        timesheet_projects_changed_hook_flag = 0;
+        timesheet_activities_changed_hook_flag = 0;
     }
-    if (ts_chp_hook_flag) {
-        ts_ext_triggerCHP();
+    if (timesheet_projects_changed_hook_flag) {
+        timesheet_extension_projects_changed();
     }
-    if (ts_che_hook_flag) {
-        ts_ext_triggerCHE();
+    if (timesheet_activities_changed_hook_flag) {
+        timesheet_extension_activities_changed();
     }
     
-    ts_tss_hook_flag = 0;
-    ts_rec_hook_flag = 0;
-    ts_stp_hook_flag = 0;
-    ts_chk_hook_flag = 0;
-    ts_chp_hook_flag = 0;
-    ts_che_hook_flag = 0;
+    timesheet_timeframe_changed_hook_flag = 0;
+    timesheet_customers_changed_hook_flag = 0;
+    timesheet_projects_changed_hook_flag = 0;
+    timesheet_activities_changed_hook_flag = 0;
 }
 
-function ts_ext_triggerTSS() {
+function timesheet_extension_timeframe_changed() {
     if ($('.ki_timesheet').css('display') == "block") {
         ts_ext_reload();
     } else {
-        ts_tss_hook_flag++;
+        timesheet_timeframe_changed_hook_flag++;
     }
 }
-function ts_ext_triggerCHK() {
+function timesheet_extension_customers_changed() {
     if ($('.ki_timesheet').css('display') == "block") {
         ts_ext_reload();
     } else {
-        ts_chk_hook_flag++;
-    }
-}
-
-function ts_ext_triggerCHP() {
-    if ($('.ki_timesheet').css('display') == "block") {
-        ts_ext_reload();
-    } else {
-        ts_chp_hook_flag++;
+        timesheet_customers_changed_hook_flag++;
     }
 }
 
-function ts_ext_triggerCHE() {
+function timesheet_extension_projects_changed() {
     if ($('.ki_timesheet').css('display') == "block") {
         ts_ext_reload();
     } else {
-        ts_che_hook_flag++;
+        timesheet_projects_changed_hook_flag++;
+    }
+}
+
+function timesheet_extension_activities_changed() {
+    if ($('.ki_timesheet').css('display') == "block") {
+        ts_ext_reload();
+    } else {
+        timesheet_activities_changed_hook_flag++;
     }
 }
 

@@ -28,12 +28,10 @@ var drittel;
 var export_width;
 var export_height;
 
-var xp_tss_hook_flag = 0;
-var xp_rec_hook_flag = 0;
-var xp_stp_hook_flag = 0;
-var xp_chk_hook_flag = 0;
-var xp_chp_hook_flag = 0;
-var xp_che_hook_flag = 0;
+var xp_timeframe_changed_hook_flag = 0;
+var xp_customers_changed_hook_flag = 0;
+var xp_projects_changed_hook_flag = 0;
+var xp_activities_changed_hook_flag = 0;
 
 $(document).ready(function(){
     var export_resizeTimer = null;

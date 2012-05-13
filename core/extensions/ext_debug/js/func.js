@@ -70,7 +70,7 @@ function deb_ext_resize() {
 
 }
 
-function deb_ext_triggerchange() {
+function debug_extension_tab_changed() {
     deb_ext_reloadLogfileLoop();
 }
 
