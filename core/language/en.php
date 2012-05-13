@@ -72,7 +72,7 @@ return array(
 "noEntries"         => "No tracking entries for the specified time period...",
 "recordAgain"       => "Record this recording again",
 "comment"           => "Comment",
-"zlocation"         => "Location",
+"location"         => "Location",
 "trackingNumber"        => "Tracking Number",
 "cookiewarning"     => "Turn Cookies on before you proceed.",
 "JSwarning"         => "JavaScript must be active.",

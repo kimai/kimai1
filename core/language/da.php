@@ -69,7 +69,7 @@ return array(
 "noEntries"         => "Ingen registrerede posteringer for det angivne tidsrum...",
 "recordAgain"       => "Registrer denne opgave igen",
 "comment"           => "Kommentar",
-"zlocation"         => "Sted",
+"location"         => "Sted",
 "trackingNumber"        => "Trackingnummer",
 "cookiewarning"     => "Aktiver Cookies, inden du fortsætter.",
 "JSwarning"         => "Javascript er påkrævet.",

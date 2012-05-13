@@ -71,7 +71,7 @@ return array(
 "noEntries"         => "Inga registrerade data för den valda tidsperioden...",
 "recordAgain"       => "Registrera denna händelse igen",
 "comment"           => "Kommentar",
-"zlocation"         => "Plats",
+"location"         => "Plats",
 "trackingNumber"        => "Register Nummer",
 "cookiewarning"     => "Aktivera kakor (Cookies) innan du fortsätter.",
 "JSwarning"         => "JavaScript måste vara aktiverat.",

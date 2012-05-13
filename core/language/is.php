@@ -71,7 +71,7 @@ return array(
 "noEntries"         => "Engar skráningar fyrir þennan tíma...",
 "recordAgain"       => "Skrá samskonar skráningu",
 "comment"           => "Athugasemd",
-"zlocation"         => "Staðsetning",
+"location"         => "Staðsetning",
 "trackingNumber"        => "Tracking Number",
 "cookiewarning"     => "Virkja vefkökur áður haldið er áfram.",
 "JSwarning"         => "JavaScript þarf að vera virkt.",

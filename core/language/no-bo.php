@@ -80,7 +80,7 @@ return array(
 "noEntries"         => "Finner ikke søkeresultat for den angitt tidsperioden...",
 "recordAgain"       => "Registrer denne oppgaven på nytt",
 "comment"           => "Kommentar",
-"zlocation"         => "Sted",
+"location"         => "Sted",
 "trackingNumber"        => "Sporingsnummer",
 "cookiewarning"     => "Slå på informasjons kapsler i nettleseren før du fortsetter.",
 "JSwarning"         => "JavaScript må være aktivert i nettleseren.",

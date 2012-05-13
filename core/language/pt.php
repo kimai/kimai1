@@ -124,7 +124,7 @@ return array(
 
 "comment"           => "Comentário",
 
-"zlocation"         => "Localização",
+"location"         => "Localização",
 
 "trackingNumber"        => "Número de Processo",
 

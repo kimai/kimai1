@@ -71,7 +71,7 @@ return array(
 "noEntries"         => "Keine Messungen für den angegebenen Zeitraum vorhanden...",
 "recordAgain"       => "Dieses Ereignis erneut aufnehmen",
 "comment"           => "Kommentar",
-"zlocation"         => "Ort",
+"location"         => "Ort",
 "trackingNumber"        => "Auftragsnummer",
 "cookiewarning"     => "Bitte schalten Sie Cookies an bevor Sie sich anmelden.",
 "JSwarning"         => "JavaScript muss eingeschaltet sein.",

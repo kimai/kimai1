@@ -69,7 +69,7 @@ return array(
 "noEntries"         => "Brak wpisów w zadanym okresie czasu...",
 "recordAgain"       => "Wprowadź ponownie to zdarzenie",
 "comment"           => "Notatka",
-"zlocation"         => "Lokalizacja",
+"location"         => "Lokalizacja",
 "trackingNumber"        => "Znak",
 "cookiewarning"     => "Przed kontynuacją włącz cookies/ciasteczka.",
 "JSwarning"         => "Skrypt Javy musi być aktywny.",

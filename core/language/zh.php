@@ -98,7 +98,7 @@ return array(
 "noEntries"         => "在指定的时间范围内没有记录",
 "recordAgain"       => "再次记录该事件",
 "comment"           => "注释",
-"zlocation"         => "位置",
+"location"         => "位置",
 "trackingNumber"        => "追踪编号",
 "cookiewarning"     => "浏览器需要打开Cookies.",
 "JSwarning"         => "浏览器需要打开JavaScript.",

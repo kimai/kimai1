@@ -211,7 +211,7 @@
 { if $columns.activity     } <th>{$kga.lang.activity}</th>    { /if }
 { if $columns.decription   } <th>{$kga.lang.description}</th> { /if }
 { if $columns.comment      } <th>{$kga.lang.comment}</th>     { /if }
-{ if $columns.location     } <th>{$kga.lang.zlocation}</th>   { /if }
+{ if $columns.location     } <th>{$kga.lang.location}</th>   { /if }
 { if $columns.trackingNumber   } <th>{$kga.lang.trackingNumber}</th>  { /if }
 { if $columns.user         } <th>{$kga.lang.username}</th>    { /if }
 { if $columns.cleared      } <th>{$kga.lang.cleared}</th>     { /if }

@@ -438,7 +438,7 @@
                 <ul>
 
                    <li>
-                        <label for="location">{$kga.lang.zlocation}:</label>
+                        <label for="location">{$kga.lang.location}:</label>
                         <input id='location' type='text' name='location' value='{$location|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 

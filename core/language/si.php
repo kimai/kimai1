@@ -71,7 +71,7 @@ return array(
 "noEntries"         => "Ni zasledenih vnosov za določen časovni prostor...",
 "recordAgain"       => "Zapiši dogodek ponovno",
 "comment"           => "Komentar",
-"zlocation"         => "Lokacija",
+"location"         => "Lokacija",
 "trackingNumber"        => "Številka za sledenje",
 "cookiewarning"     => "Vključi piškotke preden začneš.",
 "JSwarning"         => "JavaScript mora biti aktiven.",

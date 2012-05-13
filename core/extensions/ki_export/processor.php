@@ -336,7 +336,7 @@ switch ($axAction) {
         if (isset($columns['comment']))
           $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
         if (isset($columns['location']))
-          $row[] = csv_prepare_field($kga['lang']['zlocation'],$column_delimiter,$quote_char);      
+          $row[] = csv_prepare_field($kga['lang']['location'],$column_delimiter,$quote_char);      
         if (isset($columns['trackingNumber']))
           $row[] = csv_prepare_field($kga['lang']['trackingNumber'],$column_delimiter,$quote_char);    
         if (isset($columns['user']))

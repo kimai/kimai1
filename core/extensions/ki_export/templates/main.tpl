@@ -54,7 +54,7 @@
 
                 <td class="moreinfo" colspan="3">
 					<a class="comment {if $disabled_columns.comment}disabled{/if}" onClick="export_toggle_column('comment');">{$kga.lang.comment}</a>,
-	                <a class="location {if $disabled_columns.location}disabled{/if}" onClick="export_toggle_column('location');">{$kga.lang.zlocation}</a>,
+	                <a class="location {if $disabled_columns.location}disabled{/if}" onClick="export_toggle_column('location');">{$kga.lang.location}</a>,
 	                <a class="trackingNumber {if $disabled_columns.trackingNumber}disabled{/if}" onClick="export_toggle_column('trackingNumber');">{$kga.lang.trackingNumber}</a>
 				</td>
 				

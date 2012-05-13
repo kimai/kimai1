@@ -69,7 +69,7 @@ return array(
 "noEntries"         => "Nejsou trekovatelná data pro specifikovaný čas...",
 "recordAgain"       => "Zaznamenej znovu",
 "comment"           => "Komentář",
-"zlocation"         => "Umístění",
+"location"         => "Umístění",
 "trackingNumber"        => "Tracking Number",
 "cookiewarning"     => "Před použitím zapni cookies.",
 "JSwarning"         => "JavaScript musí být zapnutý.",

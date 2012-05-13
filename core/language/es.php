@@ -70,7 +70,7 @@ return array(
 "noEntries"         => "No hay entradas...",
 "recordAgain"       => "Guardar este evento nuevamente",
 "comment"           => "Comentario",
-"zlocation"         => "Localización",
+"location"         => "Localización",
 "trackingNumber"        => "Número de rastro",
 "cookiewarning"     => "¡Las cookies deben estar activadas! Actívelas antes de proceder.",
 "JSwarning"         => "¡JavaScript debe estar activado! Esta versión no funciona sin estar activadas.",

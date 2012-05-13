@@ -80,7 +80,7 @@ return array(
 "noEntries"         => "Pas d'entrées enregistrées pour le moment...",
 "recordAgain"       => "Enregistrer cette tâche de nouveau",
 "comment"           => "Commentaire",
-"zlocation"         => "Lieu",
+"location"         => "Lieu",
 "trackingNumber"        => "N°",
 "cookiewarning"     => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
 "JSwarning"         => "JavaScript doit être activé! Cette version ne fonctionne pas sans.",

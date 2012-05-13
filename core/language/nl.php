@@ -69,7 +69,7 @@ return array(
 "noEntries"         => "Nog geen tracking entries...",
 "recordAgain"       => "Neem deze gebeurtenis nogmaals op",
 "comment"           => "Commentaar",
-"zlocation"         => "Locatie",
+"location"         => "Locatie",
 "trackingNumber"        => "Tracking Nummer",
 "cookiewarning"     => "Cookies moeten geaccepeerd worden! Activeer het ontvangen van cookies voordat u verder gaat.",
 "JSwarning"         => "JavaScript moet aanstaan! Deze versie werkt nog niet zonder JavaScript.",

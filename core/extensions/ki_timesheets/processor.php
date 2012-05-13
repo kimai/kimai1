@@ -46,7 +46,7 @@ switch ($axAction) {
         // copied from check_timeSheet_get_data and inverted assignments
         $timeSheetEntry['projectID'] = $timeSheetEntry['projectID'];
         $timeSheetEntry['activityID'] = $timeSheetEntry['activityID'];
-        $timeSheetEntry['zlocation'] = $timeSheetEntry['location'];
+        $timeSheetEntry['location'] = $timeSheetEntry['location'];
         $timeSheetEntry['trackingNumber'] = $timeSheetEntry['trackingNumber'];
         $timeSheetEntry['description'] = $timeSheetEntry['description'];
         $timeSheetEntry['comment'] = $timeSheetEntry['comment'];

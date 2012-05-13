@@ -65,7 +65,7 @@ mso-number-format:Fixed;
 { if $columns.activity     } <td>{$kga.lang.activity}</td>    { /if }
 { if $columns.description  } <td>{$kga.lang.description}</td> { /if }
 { if $columns.comment      } <td>{$kga.lang.comment}</td>     { /if }
-{ if $columns.location     } <td>{$kga.lang.zlocation}</td>   { /if }
+{ if $columns.location     } <td>{$kga.lang.location}</td>   { /if }
 { if $columns.trackingNumber   } <td>{$kga.lang.trackingNumber}</td>  { /if }
 { if $columns.user         } <td>{$kga.lang.username}</td>    { /if }
 { if $columns.cleared      } <td>{$kga.lang.cleared}</td>     { /if }
