@@ -295,7 +295,7 @@ class Kimai_Remote_Api
      * could be found or an array of users.
      *
      * @param string $apiKey
-     * @see get_arr_watchable_users
+     * @see get_watchable_users
      * @see processor.php: 'reload_user'
      * @return array|boolean
      */
@@ -305,7 +305,7 @@ class Kimai_Remote_Api
 			return $this->getAuthErrorResult();
         }
 
-		$users = $this->getBackend()->get_arr_watchable_users($this->getUser());
+		$users = $this->getBackend()->get_watchable_users($this->getUser());
 
         if (count($users) > 0) {
 			$results = array();
@@ -340,7 +340,7 @@ class Kimai_Remote_Api
           );
 		}
 
-		$customers = $this->getBackend()->get_arr_customers($user['groups']);
+		$customers = $this->getBackend()->get_customers($user['groups']);
 
         if (count($customers) > 0) {
 			$results = array();
@@ -371,9 +371,9 @@ class Kimai_Remote_Api
         $user     = $this->getUser();
 
         if (isset($kga['customer'])) {
-			$projects = $this->getBackend()->get_arr_projects_by_customer(($kga['customer']['customerID']);
+			$projects = $this->getBackend()->get_projects_by_customer(($kga['customer']['customerID']);
 		} else {
-			$projects = $this->getBackend()->get_arr_projects($user['groups']);
+			$projects = $this->getBackend()->get_projects($user['groups']);
 		}
 
         if (count($projects) > 0) {
@@ -406,9 +406,9 @@ class Kimai_Remote_Api
 
         // @FIXME
         if (isset($kga['customer'])) {
-          $tasks = $this->getBackend()->get_arr_activities_by_customer($kga['customer']['customerID']);
+          $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
 		} else if ($projectId !== null) {
-          $tasks = $this->getBackend()->get_arr_activities_by_project($projectId, $user['groups']);
+          $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
 		  /**
 		   * we need to copy the array with new keys (remove the customerID key)
 		   * if we do not do this, soap server will break our response scheme
@@ -427,7 +427,7 @@ class Kimai_Remote_Api
 		  }
 		  $tasks = $tempTasks;
         } else {
-          $tasks = $this->getBackend()->get_arr_activities($user['groups']);
+          $tasks = $this->getBackend()->get_activities($user['groups']);
 		}
 
         if (!empty($tasks)) {
@@ -476,7 +476,7 @@ class Kimai_Remote_Api
 		 * add customerId & Name
 		 */
 		
-		$timeSheet = $this->getBackend()->get_arr_timeSheet($current['start'], $current['end']);
+		$timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end']);
 		$current['customerID'] = $timeSheet[0]['customerID'];
 		$current['customerName'] = $timeSheet[0]['customerName'];
 		$current['projectName'] = $timeSheet[0]['projectName'];
@@ -512,12 +512,12 @@ class Kimai_Remote_Api
 
 		// Get the array of timesheet entries.
 		if (isset($kga['customer'])) {
-		  $timeSheetEntries = $backend->get_arr_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
-		  $totalCount = $backend->get_arr_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit, true);
+		  $timeSheetEntries = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
+		  $totalCount = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit, true);
 		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
 		} else {
-		  $timeSheetEntries = $backend->get_arr_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
-		  $totalCount = $backend->get_arr_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
+		  $timeSheetEntries = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
+		  $totalCount = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
 		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
 		}
 		

@@ -30,7 +30,7 @@ switch ($axAction) {
     // =============================
 
         $userDetails = $database->user_get_data($id);        
-        $arr = $database->get_arr_groups();
+        $arr = $database->get_groups();
         
         $i=0;
         foreach ($arr as $row) {
@@ -55,7 +55,7 @@ switch ($axAction) {
     // =============================
         
         $groupDetails = $database->group_get_data($_REQUEST['id']);
-        $arr = $database->get_arr_users();
+        $arr = $database->get_users();
         
         $i=0;
         foreach ($arr as $row) {

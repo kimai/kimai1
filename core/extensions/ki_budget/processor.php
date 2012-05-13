@@ -85,27 +85,27 @@ switch ($axAction)
 		}
 		// Get all project for the logged in customer or the current user.
 		if (isset($kga['customer'])) {
-			$projects = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
-			$activities = $database->get_arr_activities();
+			$projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
+			$activities = $database->get_activities();
 			$customerValues = false;
 		}
 		else {
-			$customers = $database->get_arr_customers($kga['user']['groups']);
+			$customers = $database->get_customers($kga['user']['groups']);
 			if (is_array($filterCustomers) && count($filterCustomers) > 0) {
 				$customerFilter = $filterCustomers;
 				$projects = array();
 				foreach ($customerFilter as $customerId) {
-					$projects = array_merge($database->get_arr_projects_by_customer(($customerId), $projects));
+					$projects = array_merge($database->get_projects_by_customer(($customerId), $projects));
 				}
 			}
 			else {
-				$projects = $database->get_arr_projects($kga['user']['groups']);
+				$projects = $database->get_projects($kga['user']['groups']);
 				// add all customers as selected
 				foreach($customers as $customer) {
 					$customerFilter[] = $customer['customerID'];
 				}
 			}
-			$activities = $database->get_arr_activities($kga['user']['groups']);
+			$activities = $database->get_activities($kga['user']['groups']);
 			foreach ($customers as $customer) {
 				$customerValues[] = $customer['customerID'];
 				$customerNames[] = $customer['name'];
@@ -118,7 +118,7 @@ switch ($axAction)
 				}
 				$projectValues[] = $project['projectID'];
 				$projectNames[] = $project['name'];
-				$projects[$index]['activities'] = $database->get_arr_activities_by_project($project['projectID']);
+				$projects[$index]['activities'] = $database->get_activities_by_project($project['projectID']);
 
 					foreach ($projects[$index]['activities'] as $index => $activity) {
 						if ($activitiesFilter === false) {

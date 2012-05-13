@@ -60,7 +60,7 @@ $timespace       = get_timespace();
 $in              = $timespace[0];
 $out             = $timespace[1];
 
-$timeArray = $database->get_arr_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
+$timeArray = $database->get_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
 
 $date  = time();
 $month = $kga['lang']['months'][date("n", $out)-1];

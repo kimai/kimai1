@@ -47,7 +47,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 	$timeSheetEntries = array();
 	$expenses = array();
 	if ($filter_type != 1)
-		$timeSheetEntries = $database->get_arr_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
+		$timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
 		
 		if ($filter_type != 0 && $expense_ext_available)
 		$expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
@@ -226,7 +226,7 @@ function merge_annotations(&$timeSheetEntries, &$expenses) {
  */
 function export_get_user_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_users($start, $end, $users, $customers, $projects, $activities);
+	$arr = $database->get_time_users($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
 		$expenses = expenses_by_user($start, $end, $users, $customers, $projects);
 		merge_annotations($arr, $expenses);
@@ -248,7 +248,7 @@ function export_get_user_annotations($start, $end, $users = null, $customers = n
  */
 function export_get_customer_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_customers($start, $end, $users, $customers, $projects, $activities);
+	$arr = $database->get_time_customers($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
 		$expenses = expenses_by_customer($start, $end, $users, $customers, $projects);
 		merge_annotations($arr, $expenses);
@@ -270,7 +270,7 @@ function export_get_customer_annotations($start, $end, $users = null, $customers
  */
 function export_get_project_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_projects($start, $end, $users, $customers, $projects, $activities);
+	$arr = $database->get_time_projects($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
 		$expenses = expenses_by_project($start, $end, $users, $customers, $projects);
 		merge_annotations($arr, $expenses);
@@ -292,7 +292,7 @@ function export_get_project_annotations($start, $end, $users = null, $customers 
  */
 function export_get_activity_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $database;
-	$arr = $database->get_arr_time_activities($start, $end, $users, $customers, $projects, $activities);
+	$arr = $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
 	return $arr;
 }
 

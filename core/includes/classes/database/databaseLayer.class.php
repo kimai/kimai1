@@ -563,7 +563,7 @@ abstract class DatabaseLayer {
   * @param integer $user ID of user in database
   * @return array
   */
-  public abstract function get_arr_projects(array $groups = null);
+  public abstract function get_projects(array $groups = null);
 
   /**
   * returns list of projects for specific group and specific customer as array
@@ -572,7 +572,7 @@ abstract class DatabaseLayer {
   * @param array $groups list of group ids
   * @return array
   */
-  public abstract function get_arr_projects_by_customer($customerID,array $groups = null);
+  public abstract function get_projects_by_customer($customerID,array $groups = null);
 
   /**
   *  Creates an array of clauses which can be joined together in the WHERE part
@@ -599,7 +599,7 @@ abstract class DatabaseLayer {
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
-  public abstract function get_arr_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
+  public abstract function get_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
   /**
    * Returns a username for the given $apikey.
@@ -689,10 +689,10 @@ abstract class DatabaseLayer {
   * @param integer $group ID of group in table groups or "all" for all groups
   * @return array
   */
-  public abstract function get_arr_customers(array $groups = null);
+  public abstract function get_customers(array $groups = null);
 
   ## Load into Array: Activities
-  public abstract function get_arr_activities(array $groups = null);
+  public abstract function get_activities(array $groups = null);
 
   /**
   * Get an array of activities, which should be displayed for a specific project.
@@ -706,7 +706,7 @@ abstract class DatabaseLayer {
   *  to via the projects_activities table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
   */
-  public abstract function get_arr_activities_by_project($projectID, array $groups = null);
+  public abstract function get_activities_by_project($projectID, array $groups = null);
 
   /**
   * returns list of activities used with specified customer
@@ -714,7 +714,7 @@ abstract class DatabaseLayer {
   * @param integer $customer filter for only this ID of a customer
   * @return array
   */
-  public abstract function get_arr_activities_by_customer($customer_ID);
+  public abstract function get_activities_by_customer($customer_ID);
 
   /**
   * returns time of currently running activity recording as array
@@ -770,7 +770,7 @@ abstract class DatabaseLayer {
   * @param array $groups list of group ids the users must be a member of
   * @return array
   */
-  public abstract function get_arr_users($trash=0,array $groups = null);
+  public abstract function get_users($trash=0,array $groups = null);
 
   /**
   * returns array of all groups
@@ -795,7 +795,7 @@ abstract class DatabaseLayer {
   * @return array
   *
   */
-  public abstract function get_arr_groups($trash=0);
+  public abstract function get_groups($trash=0);
 
   /**
   * returns array of all groups of a group leader
@@ -820,7 +820,7 @@ abstract class DatabaseLayer {
   *
   * @return array
   */
-  public abstract function get_arr_groups_by_leader($leader_id,$trash=0);
+  public abstract function get_groups_by_leader($leader_id,$trash=0);
 
   /**
   * Performed when the stop buzzer is hit.
@@ -895,7 +895,7 @@ abstract class DatabaseLayer {
   * @param integer $user the user information array
   * @return array
   */
-  public abstract function get_arr_watchable_users($user);
+  public abstract function get_watchable_users($user);
 
   /**
   * returns assoc. array where the index is the ID of a user and the value the time
@@ -908,7 +908,7 @@ abstract class DatabaseLayer {
   * @param integer $project ID of project in table projects
   * @return array
   */
-  public abstract function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+  public abstract function get_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * returns list of time summary attached to customer ID's within specific timespace as array
@@ -920,7 +920,7 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+  public abstract function get_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * returns list of time summary attached to project ID's within specific timespace as array
@@ -932,7 +932,7 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null);
+  public abstract function get_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null);
 
   /**
   * returns list of time summary attached to activity ID's within specific timespace as array
@@ -944,7 +944,7 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+  public abstract function get_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * Set field status for users to 1 if user is a group leader, otherwise to 2.
@@ -1120,12 +1120,12 @@ abstract class DatabaseLayer {
           switch ($parentSubject . "_" . $subject)
           {
               case 'project_activity':
-                  $allElements = $this->get_arr_activities();
-                  $viewableElements = $this->get_arr_activities($group);
+                  $allElements = $this->get_activities();
+                  $viewableElements = $this->get_activities($group);
                   break;
               case 'activity_project':
-                  $allElements = $this->get_arr_projects();
-                  $viewableElements = $this->get_arr_projects($group);
+                  $allElements = $this->get_projects();
+                  $viewableElements = $this->get_projects($group);
                   break;
           }
           //if there are no elements hidden from the group, there's nothing too much that could get deleted either

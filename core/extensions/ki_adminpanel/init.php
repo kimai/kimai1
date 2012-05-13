@@ -40,9 +40,9 @@
     // = display customer table =
     // ==========================
     if ($kga['user']['status']==0)
-      $customers = $database->get_arr_customers();
+      $customers = $database->get_customers();
     else
-      $customers = $database->get_arr_customers($kga['user']['groups']);
+      $customers = $database->get_customers($kga['user']['groups']);
 
     foreach ($customers as $row=>$data) {
       $groupNames = array();
@@ -67,9 +67,9 @@
     // = display project table =
     // =========================
     if ($kga['user']['status']==0)
-      $projects = $database->get_arr_projects();
+      $projects = $database->get_projects();
     else
-      $projects = $database->get_arr_projects($kga['user']['groups']);
+      $projects = $database->get_projects($kga['user']['groups']);
 
     foreach ($projects as $row=>$project) {
       $groupNames = array();
@@ -91,9 +91,9 @@
     // = display activity table =
     // ========================
     if ($kga['user']['status']==0)
-      $activities = $database->get_arr_activities_by_project(-2);
+      $activities = $database->get_activities_by_project(-2);
     else
-      $activities = $database->get_arr_activities_by_project(-2,$kga['user']['groups']);
+      $activities = $database->get_activities_by_project(-2,$kga['user']['groups']);
 
     foreach ($activities as $row=>$activity) {
       $groupNames = array();
@@ -116,17 +116,17 @@
     $tpl->assign('curr_user', $kga['user']['name']);
 
     if ($kga['user']['status']==0)
-      $tpl->assign('groups', $database->get_arr_groups(get_cookie('adminPanel_extension_show_deleted_groups',0)));
+      $tpl->assign('groups', $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0)));
     else
-      $tpl->assign('groups', $database->get_arr_groups_by_leader($kga['user']['userID'],
+      $tpl->assign('groups', $database->get_groups_by_leader($kga['user']['userID'],
         get_cookie('adminPanel_extension_show_deleted_groups',0)));
 
-      $tpl->assign('arr_statuses', $database->get_arr_statuses());
+      $tpl->assign('arr_statuses', $database->get_statuses());
         
     if ($kga['user']['status']==0)
-      $users = $database->get_arr_users(get_cookie('adminPanel_extension_show_deleted_users',0));
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
     else
-      $users = $database->get_arr_watchable_users($kga['user']);
+      $users = $database->get_watchable_users($kga['user']);
 
     // get group names
     foreach ($users as &$user) {
@@ -146,7 +146,7 @@
     $tpl->assign('languages', Translations::langs());
 
     $tpl->assign('timezones', timezoneList());
-    $status = $database->get_arr_statuses();
+    $status = $database->get_statuses();
     $tpl->assign('arr_status', $status);
 
     $admin['users'] = $tpl->fetch("users.tpl");

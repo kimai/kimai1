@@ -90,7 +90,7 @@ foreach ($projects as $project) {
     $wages[$projectID][0]['exceeded'] = true;
   }
   
-  $projectActivities = $database->get_arr_activities_by_project($projectID);
+  $projectActivities = $database->get_activities_by_project($projectID);
   foreach($projectActivities as $activity) {
   if(is_array($activitiesFilter) && !empty($activitiesFilter)) {
   	if(!in_array($activity['activityID'], $activitiesFilter)) {
@@ -122,7 +122,7 @@ foreach ($projects as $project) {
  */
 foreach ($projects as $project) {
   $projectId = $project['projectID'];
-  $timeSheetEntries = $database->get_arr_timeSheet(0,time(),null,null,array($projectId));
+  $timeSheetEntries = $database->get_timeSheet(0,time(),null,null,array($projectId));
   foreach ($timeSheetEntries as $timeSheetEntry) {
     $projectID = $projectId;
 	$billableLangString = $kga['lang']['billable'];

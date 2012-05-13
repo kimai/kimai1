@@ -2117,7 +2117,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_projects(array $groups = null) {
+    public function get_projects(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -2144,7 +2144,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_projects');
+          $this->logLastError('get_projects');
           return false;
       }
 
@@ -2173,7 +2173,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author ob
     */
-    public function get_arr_projects_by_customer($customerID, array $groups = null) {
+    public function get_projects_by_customer($customerID, array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -2204,7 +2204,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute(array($customerID));
 
       if ($result == false) {
-          $this->logLastError('get_arr_projects_by_customer');
+          $this->logLastError('get_projects_by_customer');
           return false;
       }
 
@@ -2273,7 +2273,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+    public function get_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       $p = $this->kga['server_prefix'];
 
       if (!is_numeric($filterCleared)) {
@@ -2331,7 +2331,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_timeSheet');
+          $this->logLastError('get_timeSheet');
           return false;
       }
 		
@@ -2757,7 +2757,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_customers(array $groups = null) {
+    public function get_customers(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -2778,7 +2778,7 @@ class PDODatabaseLayer extends DatabaseLayer
       }
 
       if ($result == false) {
-          $this->logLastError('get_arr_customers');
+          $this->logLastError('get_customers');
           return null;
       }
 
@@ -2802,7 +2802,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_watchable_users($user) {
+    public function get_watchable_users($user) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -2825,7 +2825,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $success = $pdo_query->execute(array($user['userID']));
 
       if (!$success) {
-        $this->logLastError('get_arr_watchable_users');
+        $this->logLastError('get_watchable_users');
         return array();
       }
 
@@ -2833,7 +2833,7 @@ class PDODatabaseLayer extends DatabaseLayer
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC))
         $leadingGroups[] = $row['groupID'];
 
-      return $this->get_arr_users(0,$leadingGroups);
+      return $this->get_users(0,$leadingGroups);
     }
 
     /**
@@ -2849,7 +2849,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null,$activities = null) {
+    public function get_time_users($start,$end,$users = null, $customers = null, $projects = null,$activities = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
@@ -2872,7 +2872,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_users');
+          $this->logLastError('get_time_users');
           return array();
       }
 
@@ -2923,7 +2923,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null) {
+    public function get_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
@@ -2942,7 +2942,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_customers');
+          $this->logLastError('get_time_customers');
           return array();
       }
 
@@ -3003,7 +3003,7 @@ class PDODatabaseLayer extends DatabaseLayer
         return array();
     }
     $data = $pdo_query->fetch(PDO::FETCH_ASSOC);
-    $timeSheet = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+    $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
     foreach($timeSheet as $timeSheetEntry) {
         $data['budget']+= $timeSheetEntry['budget'];
         $data['approved']+= $timeSheetEntry['approved'];
@@ -3018,7 +3018,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @param integer $activityID
     */
     public function get_budget_used($projectID,$activityID) {
-    $timeSheet = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+    $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
     $budgetUsed = 0;
     if(is_array($timeSheet) && count($timeSheet) > 0) {
         foreach($timeSheet as $timeSheetEntry) {
@@ -3042,7 +3042,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_projects($start,$end,$users = null,$customers = null, $projects = null, $activities = null) {
+    public function get_time_projects($start,$end,$users = null,$customers = null, $projects = null, $activities = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
@@ -3061,7 +3061,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_projects');
+          $this->logLastError('get_time_projects');
           return array();
       }
 
@@ -3099,7 +3099,7 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     ## Load into Array: Activities
-    public function get_arr_activities(array $groups = null) {
+    public function get_activities(array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -3120,7 +3120,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_activities');
+          $this->logLastError('get_activities');
           return array();
       }
 
@@ -3137,7 +3137,7 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     ## Load into Array: Activities
-    public function get_arr_activities_by_project($projectID, array $groups = null) {
+    public function get_activities_by_project($projectID, array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -3162,7 +3162,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute(array($projectID));
 
       if ($result == false) {
-          $this->logLastError('get_arr_activities_by_project');
+          $this->logLastError('get_activities_by_project');
           return array();
       }
 
@@ -3186,7 +3186,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_activities_by_customer($customer_ID) {
+    public function get_activities_by_customer($customer_ID) {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("SELECT DISTINCT activityID, name, visible
@@ -3198,7 +3198,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute(array($customer_ID));
 
       if ($result == false) {
-          $this->logLastError('get_arr_activities_by_customer');
+          $this->logLastError('get_activities_by_customer');
           return array();
       }
 
@@ -3226,7 +3226,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author sl
     */
-    public function get_arr_time_activities($start,$end,$users = null,$customers = null,$projects = null, $activities = null) {
+    public function get_time_activities($start,$end,$users = null,$customers = null,$projects = null, $activities = null) {
       $p = $this->kga['server_prefix'];
 
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
@@ -3245,7 +3245,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_time_activities');
+          $this->logLastError('get_time_activities');
           return array();
       }
 
@@ -3483,7 +3483,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author mo
     */
-    public function get_arr_statuses() {
+    public function get_statuses() {
       $p = $this->kga['server_prefix'];
 
       $query = "SELECT * FROM ${p}status ORDER BY status;";
@@ -3534,7 +3534,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_users($trash=0,array $groups = null) {
+    public function get_users($trash=0,array $groups = null) {
       $p = $this->kga['server_prefix'];
 
       $arr = array();
@@ -3554,7 +3554,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute(array($trash));
 
       if ($result == false) {
-          $this->logLastError('get_arr_users');
+          $this->logLastError('get_users');
           return array();
       }
 
@@ -3601,7 +3601,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @return array
     * @author th
     */
-    public function get_arr_groups($trash=0) {
+    public function get_groups($trash=0) {
       $p = $this->kga['server_prefix'];
 
       // Lock tables
@@ -3613,7 +3613,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_l = $pdo_query_l->execute();
 
       if ($result_l == false) {
-          $this->logLastError('get_arr_groups');
+          $this->logLastError('get_groups');
           return array();
       }
 
@@ -3624,7 +3624,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute();
 
       if ($result == false) {
-          $this->logLastError('get_arr_groups');
+          $this->logLastError('get_groups');
           return array();
       }
 
@@ -3656,11 +3656,11 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_ul = $pdo_query_ul->execute();
 
       if ($result_ul == false) {
-          $this->logLastError('get_arr_groups');
+          $this->logLastError('get_groups');
           return array();
       }
 
-      // error_log("get_arr_groups: " . serialize($groups));
+      // error_log("get_groups: " . serialize($groups));
 
       return $groups;
     }
@@ -3691,7 +3691,7 @@ class PDODatabaseLayer extends DatabaseLayer
     * @author th
     *
     */
-    public function get_arr_groups_by_leader($leader_id,$trash=0)
+    public function get_groups_by_leader($leader_id,$trash=0)
     {
       // Lock tables
       $pdo_query_l = $this->conn->prepare("LOCK TABLE
@@ -3702,7 +3702,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_l = $pdo_query_l->execute();
 
       if ($result_l == false) {
-          $this->logLastError('get_arr_groups_by_leader');
+          $this->logLastError('get_groups_by_leader');
           return array();
       }
 
@@ -3718,7 +3718,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $result = $pdo_query->execute($leader_id);
 
       if ($result == false) {
-          $this->logLastError('get_arr_groups_by_leader');
+          $this->logLastError('get_groups_by_leader');
           return array();
       }
 
@@ -3750,11 +3750,11 @@ class PDODatabaseLayer extends DatabaseLayer
       $result_ul = $pdo_query_ul->execute();
 
       if ($result_ul == false) {
-          $this->logLastError('get_arr_groups_by_leader');
+          $this->logLastError('get_groups_by_leader');
           return array();
       }
 
-      // error_log("get_arr_groups: " . serialize($groups));
+      // error_log("get_groups: " . serialize($groups));
 
       return $groups;
     }

@@ -223,7 +223,7 @@ switch ($axAction) {
     // ==================================================
     case 'reload_activities_options':
         if (isset($kga['customer'])) die();
-        $activities = $database->get_arr_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
+        $activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
         foreach ($activities as $activity) {
           if (!$activity['visible'])
             continue;
@@ -264,7 +264,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $filterCustomers = array($kga['customer']['customerID']);
 
-        $timeSheetEntries = $database->get_arr_timeSheet($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,1);
+        $timeSheetEntries = $database->get_timeSheet($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,1);
         if (count($timeSheetEntries)>0) {
             $tpl->assign('timeSheetEntries', $timeSheetEntries);
         } else {
@@ -272,19 +272,19 @@ switch ($axAction) {
         }
         $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities)));
 
-        $ann = $database->get_arr_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $tpl->assign('user_annotations',$ann);
 
-        $ann = $database->get_arr_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $tpl->assign('customer_annotations',$ann);
 
-        $ann = $database->get_arr_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $tpl->assign('project_annotations',$ann);
 
-        $ann = $database->get_arr_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $tpl->assign('activity_annotations',$ann);
 
@@ -341,7 +341,7 @@ switch ($axAction) {
 
       if (isset($_REQUEST['userID'])) {
         // only take the given user id if it is in the list of watchable users
-        $users = $database->get_arr_watchable_users($kga['user']);
+        $users = $database->get_watchable_users($kga['user']);
         foreach ($users as $user) {
           if ($user['userID'] == $_REQUEST['userID']) {
             $data['userID'] = $user['userID'];

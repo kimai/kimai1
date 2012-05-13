@@ -82,7 +82,7 @@ function makeSelectBox($subject,$groups,$selection=null){
 
     switch ($subject) {
         case 'project':
-            $projects = $database->get_arr_projects($groups);
+            $projects = $database->get_projects($groups);
             $i=0;
             foreach ($projects as $project) {
                 if ($project['visible']) {
@@ -104,7 +104,7 @@ function makeSelectBox($subject,$groups,$selection=null){
             break;
 
         case 'activity':
-            $activities = $database->get_arr_activities($groups);
+            $activities = $database->get_activities($groups);
             $i=0;
             foreach ($activities as $activity) {
                 if ($activity['visible']) {
@@ -116,7 +116,7 @@ function makeSelectBox($subject,$groups,$selection=null){
             break;
 
         case 'customer':
-            $customers = $database->get_arr_customers($groups);
+            $customers = $database->get_customers($groups);
             $i=0;
             $selectionFound = false;
             if(is_array($customers)) {
@@ -138,7 +138,7 @@ function makeSelectBox($subject,$groups,$selection=null){
             break;
 
         case 'group':
-            $groups = $database->get_arr_groups();
+            $groups = $database->get_groups();
             $i=0;
             foreach ($groups as $group) {
                 if (!$group['trash']) {

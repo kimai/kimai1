@@ -84,7 +84,7 @@ checkDBversion(".");
 // ==========================
 // = installation required? =
 // ==========================
-$users = $database->get_arr_users();
+$users = $database->get_users();
 if (count($users) == 0) { 
     $tpl->assign('devtimespan', '2006-'.date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {

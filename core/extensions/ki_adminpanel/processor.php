@@ -50,13 +50,13 @@ switch ($axAction) {
 		// builds either user/group/advanced/DB subtab
 		$tpl->assign('curr_user', $kga['user']['name']);
 		if ($kga['user']['status'] == 0)
-			$tpl->assign('groups', $database->get_arr_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$tpl->assign('groups', $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0)));
 		else
-			$tpl->assign('groups', $database->get_arr_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$tpl->assign('groups', $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0)));
 		if ($kga['user']['status'] == 0)
-			$users = $database->get_arr_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
+			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
 		else
-			$users = $database->get_arr_watchable_users($kga['user']);
+			$users = $database->get_watchable_users($kga['user']);
 			// get group names
 		foreach ($users as &$user) {
 			$groups = $database->getGroupMemberships($user['userID']);
@@ -67,7 +67,7 @@ switch ($axAction) {
 			}
 			}
 		}
-		$arr_status = $database->get_arr_statuses();
+		$arr_status = $database->get_statuses();
 		$tpl->assign('users', $users);
 		$tpl->assign('arr_status', $arr_status);
 		$tpl->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
@@ -101,9 +101,9 @@ switch ($axAction) {
 				break;
 			case "customers" :
 				if ($kga['user']['status'] == 0)
-					$customers = $database->get_arr_customers();
+					$customers = $database->get_customers();
 				else
-					$customers = $database->get_arr_customers($kga['user']['groups']);
+					$customers = $database->get_customers($kga['user']['groups']);
 				foreach ($customers as $row => $data) {
 					$groupNames = array();
 					$groups = $database->customer_get_groupIDs($data['customerID']);
@@ -125,9 +125,9 @@ switch ($axAction) {
 				break;
 			case "projects" :
 				if ($kga['user']['status'] == 0)
-					$projects = $database->get_arr_projects();
+					$projects = $database->get_projects();
 				else
-					$projects = $database->get_arr_projects($kga['user']['groups']);
+					$projects = $database->get_projects($kga['user']['groups']);
 				foreach ($projects as $row => $project) {
 					$groupNames = array();
 					foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
@@ -150,18 +150,18 @@ switch ($axAction) {
 				else
 					$groups = $kga['user']['groups'];
 				if (! isset($_REQUEST['filter']))
-					$activities = $database->get_arr_activities($groups);
+					$activities = $database->get_activities($groups);
 				else
 					switch ($_REQUEST['filter']) {
 						case - 1 :
-							$activities = $database->get_arr_activities($groups);
+							$activities = $database->get_activities($groups);
 							break;
 						case - 2 :
 						// -2 is to get unassigned activities. As -2 is never
 						// an id of a project this will give us all unassigned
 						// activities.
 						default :
-							$activities = $database->get_arr_activities_by_project($_REQUEST['filter'], $groups);
+							$activities = $database->get_activities_by_project($_REQUEST['filter'], $groups);
 					}
 				foreach ($activities as $row => $activity) {
 					$groupNames = array();
@@ -177,7 +177,7 @@ switch ($axAction) {
 				else {
 					$tpl->assign('activities', '0');
 				}
-				$projects = $database->get_arr_projects($groups);
+				$projects = $database->get_projects($groups);
 				$tpl->assign('projects', $projects);
 				$tpl->assign('selected_activity_filter', $_REQUEST['filter']);
 				$tpl->display("activities.tpl");

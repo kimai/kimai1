@@ -55,9 +55,9 @@ $tpl->assign('total', $total);
 
 // Get the array of timesheet entries.
 if (isset($kga['customer']))
-  $timeSheetEntries = $database->get_arr_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
+  $timeSheetEntries = $database->get_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
 else
-  $timeSheetEntries = $database->get_arr_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
+  $timeSheetEntries = $database->get_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
 if (count($timeSheetEntries)>0) {
     $tpl->assign('timeSheetEntries', $timeSheetEntries);
 } else {
@@ -66,33 +66,33 @@ if (count($timeSheetEntries)>0) {
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_arr_time_users($in,$out,null,array($kga['customer']['customerID']));
+  $ann = $database->get_time_users($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_users($in,$out,array($kga['user']['userID']));
+  $ann = $database->get_time_users($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $tpl->assign('user_annotations',$ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_arr_time_customers($in,$out,null,array($kga['customer']['customerID']));
+  $ann = $database->get_time_customers($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_customers($in,$out,array($kga['user']['userID']));
+  $ann = $database->get_time_customers($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $tpl->assign('customer_annotations',$ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_arr_time_projects($in,$out,null,array($kga['customer']['customerID']));
+  $ann = $database->get_time_projects($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_projects($in,$out,array($kga['user']['userID']));
+  $ann = $database->get_time_projects($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $tpl->assign('project_annotations',$ann);
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_arr_time_activities($in,$out,null,array($kga['customer']['customerID']));
+  $ann = $database->get_time_activities($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_activities($in,$out,array($kga['user']['userID']));
+  $ann = $database->get_time_activities($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $tpl->assign('activity_annotations',$ann);
 

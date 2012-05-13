@@ -155,7 +155,7 @@ switch ($axAction) {
 
         // Create a <select> element to chosse the activities.
         $assignableTasks = array();
-        $tasks = $database->get_arr_activities($kga['user']['groups']);
+        $tasks = $database->get_activities($kga['user']['groups']);
         if(is_array($tasks)) {
 	        foreach ($tasks as $task) {
 	          if (!$task['assignable']) continue;

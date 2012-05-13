@@ -143,7 +143,7 @@ switch ($axAction) {
     $tpl->assign('commentTypes', $commentTypes);
     $tpl->assign('commentValues', array('0','1','2'));
 
-    $users = $database->get_arr_watchable_users($kga['user']);
+    $users = $database->get_watchable_users($kga['user']);
     $userIds = array();
     $userNames = array();
 

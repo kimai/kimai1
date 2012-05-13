@@ -142,13 +142,13 @@ switch ($axAction) {
     /**
      * Return a list of users. Customers are not shown any users. The
      * type of the current user decides which users are shown to him.
-     * See get_arr_watchable_users.
+     * See get_watchable_users.
      */
     case 'reload_user':
         if (isset($kga['customer']))
           $users = array();
         else
-          $users = $database->get_arr_watchable_users($kga['user']);
+          $users = $database->get_watchable_users($kga['user']);
 
         if (count($users)>0) {
             $tpl->assign('users', $users);
@@ -168,7 +168,7 @@ switch ($axAction) {
               'name'=>$kga['customer']['name'],
               'visible'=>$kga['customer']['visible']));
         else
-          $customers = $database->get_arr_customers($kga['user']['groups']);
+          $customers = $database->get_customers($kga['user']['groups']);
 
         if (count($customers)>0) {
             $tpl->assign('customers', $customers);
@@ -183,9 +183,9 @@ switch ($axAction) {
      */
     case 'reload_projects':
         if (isset($kga['customer']))
-          $projects = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
+          $projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
         else
-          $projects = $database->get_arr_projects($kga['user']['groups']);
+          $projects = $database->get_projects($kga['user']['groups']);
 
         if (count($projects)>0) {
             $tpl->assign('projects', $projects);
@@ -202,11 +202,11 @@ switch ($axAction) {
      */
     case 'reload_activities':
         if (isset($kga['customer']))
-          $activities = $database->get_arr_activities_by_customer($kga['customer']['customerID']);
+          $activities = $database->get_activities_by_customer($kga['customer']['customerID']);
         else if (isset($_REQUEST['project']))
-          $activities = $database->get_arr_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
+          $activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
         else
-          $activities = $database->get_arr_activities($kga['user']['groups']);
+          $activities = $database->get_activities($kga['user']['groups']);
         if (count($activities)>0) {
             $tpl->assign('activities', $activities);
         } else {
