@@ -87,7 +87,7 @@ function expense_extension_set_tableWrapperWidths() {
  */
 function expense_extension_set_heightTop() {
     expense_extension_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $("#expenses").css("height", expenses_height);
     } else {
         $("#expenses").css("height", "70px");

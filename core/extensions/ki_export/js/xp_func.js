@@ -165,7 +165,7 @@ function export_extension_set_tableWrapperWidths() {
  */
 function export_extension_set_heightTop() {
     export_extension_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $("#xp").css("height", export_height);
     } else {
         $("#xp").css("height", "20px");

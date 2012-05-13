@@ -37,7 +37,7 @@ function budget_extension_onload() {
  */
 function budget_extension_set_heightTop() {
 	budget_extension_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $("#budget").css("height", budget_h);
     } else {
         $("#budget").css("height", "20px");

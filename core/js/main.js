@@ -567,12 +567,12 @@ function lists_visible(visible) {
     $('body>.lists').hide();
 }
 
-function lists_extShrinkShow() {
-    $('#extShrink').css("background-color","red");
+function lists_extensionShrinkShow() {
+    $('#extensionShrink').css("background-color","red");
 }
 
-function lists_extShrinkHide() {
-    $('#extShrink').css("background-color","transparent");
+function lists_extensionShrinkHide() {
+    $('#extensionShrink').css("background-color","transparent");
 }
 
 function lists_customerShrinkShow() {
@@ -592,11 +592,11 @@ function lists_userShrinkHide() {
 }
 
 function lists_shrinkExtToggle() {
-    (extShrinkMode)?extShrinkMode=0:extShrinkMode=1;
-    if (extShrinkMode) {
-        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_down.png')");
+    (extensionShrinkMode)?extensionShrinkMode=0:extensionShrinkMode=1;
+    if (extensionShrinkMode) {
+        $('#extensionShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_down.png')");
     } else {
-        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_up.png')");
+        $('#extensionShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_up.png')");
     }
     lists_set_heightTop();
     hook_resize();
@@ -659,7 +659,7 @@ function lists_resize() {
 
 function lists_set_tableWrapperWidths() {
     lists_get_dimensions();
-    $('#extShrink').css("width",pageWidth()-22);
+    $('#extensionShrink').css("width",pageWidth()-22);
     // set width of faked table heads of subtables -----------------
     $("#users_head, #users_foot").css("width",userColumnWidth-5);
     $("#customers_head, #customers_foot").css("width",customerColumnWidth-5); // subtract the left padding inside the header
@@ -706,7 +706,7 @@ function lists_set_left() {
 
 function lists_set_heightTop() {
     lists_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $('#gui>div').css("height",pageHeight()-headerHeight()-150-40);
         $("#users,#customers,#projects,#activities").css("height","160px");
         $("#users_foot, #customers_foot, #projects_foot, #activities_foot").css("top",pageHeight()-30);
@@ -718,7 +718,7 @@ function lists_set_heightTop() {
         // push faked table heads of subtables in place
         var subs = pageHeight()-headerHeight()-90;    
         $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
-        $('#extShrink').css("top",subs-10);
+        $('#extensionShrink').css("top",subs-10);
         $('#usersShrink').css("top",subs);
         $('#customersShrink').css("top",subs);
     } else {
@@ -728,7 +728,7 @@ function lists_set_heightTop() {
         $("#users,#customers,#projects,#activities").css("height",pageHeight()-headerHeight()-165);
         $('#customersShrink').css("height",pageHeight()-headerHeight()-110);
         $('#usersShrink').css("height",pageHeight()-headerHeight()-110);
-        $('#extShrink').css("top",headerHeight()+97);
+        $('#extensionShrink').css("top",headerHeight()+97);
         $('#customersShrink').css("top",headerHeight()+105);
         $('#usersShrink').css("top",headerHeight()+105);
     }

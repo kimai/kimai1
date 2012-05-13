@@ -133,8 +133,8 @@
         {literal}function kill_reg_timeouts(){{/literal}{$timeoutlist}{literal}}{/literal}
 
         {literal}function kimai_onload() {
-    $('#extShrink').hover(lists_extShrinkShow,lists_extShrinkHide);
-    $('#extShrink').click(lists_shrinkExtToggle);
+    $('#extensionShrink').hover(lists_extensionShrinkShow,lists_extensionShrinkHide);
+    $('#extensionShrink').click(lists_shrinkExtToggle);
     $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
     $('#customersShrink').click(lists_shrinkCustomerToggle);
   {/literal}{if !$kga.user || $kga.user.status < 2}
@@ -345,7 +345,7 @@
 <div style="clear:both"></div>
 </div>
 
-<div id="extShrink">&nbsp;</div>
+<div id="extensionShrink">&nbsp;</div>
 <div id="usersShrink">&nbsp;</div>
 <div id="customersShrink">&nbsp;</div>
 </div>

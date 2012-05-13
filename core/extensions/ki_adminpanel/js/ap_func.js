@@ -113,9 +113,6 @@ function adminPanel_extension_triggerchange() {
         adminPanel_extension_triggerUSR();
     }
     
-    ap_tss_hook_flag = 0;
-    ap_rec_hook_flag = 0;
-    ap_stp_hook_flag = 0;
     ap_chk_hook_flag = 0;
     ap_chp_hook_flag = 0;
     ap_che_hook_flag = 0;

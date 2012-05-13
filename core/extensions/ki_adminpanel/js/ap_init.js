@@ -20,9 +20,6 @@
 // set path of extension
 var adminPanel_extension_path = "../extensions/ki_adminpanel/";
 
-var ap_tss_hook_flag = 0;
-var ap_rec_hook_flag = 0;
-var ap_stp_hook_flag = 0;
 var ap_chk_hook_flag = 0;
 var ap_chp_hook_flag = 0;
 var ap_che_hook_flag = 0;

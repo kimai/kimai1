@@ -31,7 +31,7 @@ var currentDay = (new Date()).getDate();
 
 var fading_enabled = true;
 
-var extShrinkMode = 0; // 0 = show, 1 = hide
+var extensionShrinkMode = 0; // 0 = show, 1 = hide
 var customerShrinkMode = 0; 
 var userShrinkMode = 0; 
 

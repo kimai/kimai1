@@ -87,7 +87,7 @@ function ts_ext_set_tableWrapperWidths() {
  */
 function ts_ext_set_heightTop() {
     ts_ext_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $("#timeSheet").css("height", timeSheet_height);
     } else {
         $("#timeSheet").css("height", "70px");

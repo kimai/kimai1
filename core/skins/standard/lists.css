@@ -75,7 +75,7 @@
     filter:alpha(opacity=80);
 }
 
-#extShrink {
+#extensionShrink {
     cursor: pointer;
     background-color:transparent;
     background-image:url('grfx/timeSheetShrink_up.png');
