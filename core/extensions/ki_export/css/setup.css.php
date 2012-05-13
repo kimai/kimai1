@@ -18,7 +18,7 @@
     z-index:2;
 }
 
-#xp_head {
+#export_head {
     border:1px solid black; 
     border-bottom:none;
     background-image: url('<?php echo $table_header; ?>');
@@ -31,24 +31,24 @@
     font-weight:bold;
 }
 
-#xp_head { top:175px; }
+#export_head { top:175px; }
 
-#xp_head table { border:none; }
+#export_head table { border:none; }
 
-#xp_head td {
+#export_head td {
     font-weight:bold;
     color:white;
 }
 
-.xp_time_help_table {
+.export_time_help_table {
   border-collapse:collapse;
 }
 
-.xp_time_description {
+.export_time_description {
     border-bottom:1px solid gray;
 }
 
-.xp_time_shortcut {
+.export_time_shortcut {
     font-weight:bold;
     border-bottom:1px solid gray;
     padding-right:10px;

@@ -24,7 +24,7 @@ include('../../includes/basics.php');
 
 require("private_func.php");
 
-$usr = $database->checkUser();
+$user = $database->checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -62,56 +62,56 @@ $tpl->assign('dateformat',preg_replace('/([A-Za-z])/','%$1',$dateformat));
 if (isset($kga['customer']))
   $total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
 else
-  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['usr']['userID']),null,null));
+  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
 
 if (isset($kga['customer']))
-  $arr_zef = xp_get_arr($in,$out,null,array($kga['customer']['customerID']));
+  $timeSheetEntries = export_get_data($in,$out,null,array($kga['customer']['customerID']));
 else
-  $arr_zef = xp_get_arr($in,$out,array($kga['usr']['userID']));
+  $timeSheetEntries = export_get_data($in,$out,array($kga['user']['userID']));
 
-if (count($arr_zef)>0) {
-    $tpl->assign('arr_data', $arr_zef);
+if (count($timeSheetEntries)>0) {
+    $tpl->assign('exportData', $timeSheetEntries);
 } else {
-    $tpl->assign('arr_data', 0);
+    $tpl->assign('exportData', 0);
 }
 
 $tpl->assign('total', $total);
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
-  $ann = xp_get_arr_usr($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_user_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = xp_get_arr_usr($in,$out,array($kga['usr']['userID']));
+  $ann = export_get_user_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('usr_ann',$ann);
+$tpl->assign('user_annotations',$ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
-  $ann = xp_get_arr_knd($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_customer_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = xp_get_arr_knd($in,$out,array($kga['usr']['userID']));
+  $ann = export_get_customer_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('knd_ann',$ann);
+$tpl->assign('customer_annotations',$ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
-  $ann = xp_get_arr_pct($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_project_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = xp_get_arr_pct($in,$out,array($kga['usr']['userID']));
+  $ann = export_get_project_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('pct_ann',$ann);
+$tpl->assign('project_annotations',$ann);
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
-  $ann = xp_get_arr_activities($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_activity_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = xp_get_arr_activities($in,$out,array($kga['usr']['userID']));
+  $ann = export_get_activity_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('evt_ann',$ann);
+$tpl->assign('activity_annotations',$ann);
 
 // Get the columns the user had disabled last time.
-if (isset($kga['usr']))
-  $tpl->assign('disabled_columns',xp_get_disabled_headers($kga['usr']['userID']));
+if (isset($kga['user']))
+  $tpl->assign('disabled_columns',export_get_disabled_headers($kga['user']['userID']));
 
 $tpl->assign('table_display', $tpl->fetch("table.tpl"));
 

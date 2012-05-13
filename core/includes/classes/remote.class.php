@@ -181,7 +181,7 @@ class Kimai_Remote_Api
         }
 
         // set the apiKey to the user
-        $this->getBackend()->usr_edit($userId, array('apikey' => $apiKey));
+        $this->getBackend()->user_edit($userId, array('apikey' => $apiKey));
 
         return $this->getSuccessResult(array(array('apiKey' => $apiKey)));
     }
@@ -228,15 +228,15 @@ class Kimai_Remote_Api
 	}
 
     /**
-     * The user started the recording of an event via the buzzer. If this method
+     * The user started the recording of an activity via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
      *
      * @param string $apiKey
      * @param integer $projectId
-     * @param integer $eventId
+     * @param integer $activityId
      * @return array
      */
-	public function startRecord($apiKey, $projectId, $eventId)
+	public function startRecord($apiKey, $projectId, $activityId)
 	{
         if (!$this->init($apiKey, 'startRecord')) {
             return $this->getAuthErrorResult();
@@ -244,7 +244,7 @@ class Kimai_Remote_Api
 		
 		// check for valid params
 		if(!$this->getBackend()->isValidProjectId($projectId) || 
-			!$this->getBackend()->isValidActivityId($eventId))
+			!$this->getBackend()->isValidActivityId($activityId))
 		{
 			return $this->getErrorResult("Invalid project or task");
 		}
@@ -256,7 +256,7 @@ class Kimai_Remote_Api
             $this->getBackend()->stopRecorder();
         }
 
-        $result = $this->getBackend()->startRecorder($projectId, $eventId, $uid);
+        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
 		if($result) {
 			return $this->getSuccessResult(array());
 		} else {
@@ -296,7 +296,7 @@ class Kimai_Remote_Api
      *
      * @param string $apiKey
      * @see get_arr_watchable_users
-     * @see processor.php: 'reload_usr'
+     * @see processor.php: 'reload_user'
      * @return array|boolean
      */
 	public function getUsers($apiKey)
@@ -323,7 +323,7 @@ class Kimai_Remote_Api
      * Return a list of customers. A customer can only see himself.
      *
      * @param string $apiKey
-     * @see 'reload_knd'
+     * @see 'reload_customers'
      * @return array|boolean
      */
 	public function getCustomers($apiKey)
@@ -357,7 +357,7 @@ class Kimai_Remote_Api
      * Return a list of projects. Customers are only shown their projects.
      *
      * @param string $apiKey
-     * @see 'reload_pct'
+     * @see 'reload_projects'
      * @return array|boolean
      */
 	public function getProjects($apiKey)
@@ -386,12 +386,12 @@ class Kimai_Remote_Api
 
     /**
      * Return a list of tasks. Customers are only shown tasks which are
-     * used for them. If a project is set as filter via the pct parameter
+     * used for them. If a project is set as filter via the project parameter
      * only tasks for that project are shown.
      *
      * @param string $apiKey
      * @param integer|array $projectId
-     * @see 'reload_evt'
+     * @see 'reload_activities'
      * @return array|boolean
      */
 	public function getTasks($apiKey, $projectId = null)
@@ -410,7 +410,7 @@ class Kimai_Remote_Api
 		} else if ($projectId !== null) {
           $tasks = $this->getBackend()->get_arr_activities_by_project($projectId, $user['groups']);
 		  /**
-		   * we need to copy the array with new keys (remove the knd_ID key)
+		   * we need to copy the array with new keys (remove the customerID key)
 		   * if we do not do this, soap server will break our response scheme
 		   */
 		  $tempTasks = array();
@@ -451,7 +451,7 @@ class Kimai_Remote_Api
 
         $result = $this->getBackend()->get_current_recordings();
 
-		// no "last" event existing
+		// no "last" activity existing
         if (count($result) == 0) {
 			return $this->getErrorResult('No active recording.');
 		}
@@ -471,16 +471,16 @@ class Kimai_Remote_Api
 		 * add current server time
 		 * this is needed to synchronize time on any extern api calls
 		 */
-		$current['zef_servertime'] =  time();
+		$current['servertime'] =  time();
 		/**
 		 * add customerId & Name
 		 */
 		
-		$zef = $this->getBackend()->get_arr_timeSheet($current['start'], $current['end']);
-		$current['customerID'] = $zef[0]['customerID'];
-		$current['customerName'] = $zef[0]['customerName'];
-		$current['projectName'] = $zef[0]['projectName'];
-		$current['activityName'] = $zef[0]['activityName'];
+		$timeSheet = $this->getBackend()->get_arr_timeSheet($current['start'], $current['end']);
+		$current['customerID'] = $timeSheet[0]['customerID'];
+		$current['customerName'] = $timeSheet[0]['customerName'];
+		$current['projectName'] = $timeSheet[0]['projectName'];
+		$current['activityName'] = $timeSheet[0]['activityName'];
 		
 		
 		$result = $this->getSuccessResult(array($current));
@@ -512,13 +512,13 @@ class Kimai_Remote_Api
 
 		// Get the array of timesheet entries.
 		if (isset($kga['customer'])) {
-		  $arr_zef = $backend->get_arr_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
+		  $timeSheetEntries = $backend->get_arr_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
 		  $totalCount = $backend->get_arr_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit, true);
-		  return $this->getSuccessResult($arr_zef, $totalCount);
+		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
 		} else {
-		  $arr_zef = $backend->get_arr_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
+		  $timeSheetEntries = $backend->get_arr_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
 		  $totalCount = $backend->get_arr_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
-		  return $this->getSuccessResult($arr_zef, $totalCount);
+		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
 		}
 		
 		$result = $this->getErrorResult();
@@ -542,11 +542,11 @@ class Kimai_Remote_Api
 		}
 		
 		$backend = $this->getBackend();
-		$zef_entry = $backend->timeSheet_get_data($id);
+		$timeSheetEntry = $backend->timeSheet_get_data($id);
 		
 		// valid entry?
-		if(!empty($zef_entry)) {
-			return $this->getSuccessResult(array($zef_entry));
+		if(!empty($timeSheetEntry)) {
+			return $this->getSuccessResult(array($timeSheetEntry));
 		}
 		
 		$result = $this->getErrorResult();
@@ -656,7 +656,7 @@ class Kimai_Remote_Api
 				return $this->getErrorResult('Performed an update, but missing id property.');
 			}
 		} else {
-			$id = $backend->zef_add_record($data);
+			$id = $backend->timeEntry_add_record($data);
 			if(!empty($id)) {
 				return $this->getSuccessResult(array(array('id' => $id)));
 			} else {
@@ -721,11 +721,11 @@ class Kimai_Remote_Api
 		
 		// Get the array of timesheet entries.
 		if (isset($kga['customer'])) {
-		  $arr_exp = $backend->get_arr_exp($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit);
-		  $totalCount = $backend->get_arr_exp($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+		  $arr_exp = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit);
+		  $totalCount = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit, true);
 		} else {
-			$arr_exp = $backend->get_arr_exp($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
-			$totalCount = $backend->get_arr_exp($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+			$arr_exp = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
+			$totalCount = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
 		}
 		$result = $this->getSuccessResult($arr_exp, $totalCount);
 		
@@ -749,11 +749,11 @@ class Kimai_Remote_Api
 		}
 		
 		$backend = $this->getBackend();
-		$exp_entry = $backend->get_entry_exp($id);
+		$expense = $backend->get_expense($id);
 		
 		// valid entry?
-		if(!empty($zef_entry)) {
-			return $this->getSuccessResult(array($exp_entry));
+		if(!empty($expense)) {
+			return $this->getSuccessResult(array($expense));
 		}
 		
 		$result = $this->getErrorResult();
@@ -797,47 +797,47 @@ class Kimai_Remote_Api
 		/**
 		 * requried
 		 */
-		$data['exp_usrID'] = $user['userID'];
-		$data['exp_pctID'] = (int)$record['projectId'];
-		$data['exp_timestamp'] = $timestamp;
+		$data['userID'] = $user['userID'];
+		$data['projectID'] = (int)$record['projectId'];
+		$data['timestamp'] = $timestamp;
 		
 		
 		/**
 		 * optional
 		 */
 		if(isset($record['designation'])) {
-	    	$data['exp_designation'] = $record['designation'];
+	    	$data['designation'] = $record['designation'];
 		}
 		if(isset($record['comment'])) {
-	    	$data['exp_comment'] = $record['comment'];
+	    	$data['comment'] = $record['comment'];
 		}
 		if(isset($record['commentType'])) {
-	    	$data['exp_comment_type'] = (int)$record['commentType'];
+	    	$data['commentType'] = (int)$record['commentType'];
 		}
 		if(isset($record['refundable'])) {
-	    	$data['exp_refundable'] = (int)$record['refundable'];
+	    	$data['refundable'] = (int)$record['refundable'];
 		}
 		if(isset($record['cleared'])) {
-	    	$data['exp_cleared'] = (int)$record['cleared'];
+	    	$data['cleared'] = (int)$record['cleared'];
 		}
 		if(isset($record['multiplier'])) {
-	    	$data['exp_multiplier'] = (double)$record['multiplier'];
+	    	$data['multiplier'] = (double)$record['multiplier'];
 		}
 		if(isset($record['value'])) {
-	    	$data['exp_value'] = (double)$record['value'];
+	    	$data['value'] = (double)$record['value'];
 		}
 		
 		
 		if($doUpdate) {
 			$id = isset($record['id']) ? (int)$record['id'] : 0;
 			if(!empty($id)) {
-				$backend->exp_edit_record($id, $data);
+				$backend->expense_edit($id, $data);
 				return $this->getSuccessResult(array());
 			} else {
 				return $this->getErrorResult('Performed an update, but missing id property.');
 			}
 		} else {
-			$id = $backend->exp_create_record($data);
+			$id = $backend->expense_create($data);
 			if(!empty($id)) {
 				return $this->getSuccessResult(array(array('id' => $id)));
 			} else {
@@ -869,7 +869,7 @@ class Kimai_Remote_Api
 		$backend = $this->getBackend();
 		$kga = $this->getKimaiEnv();
 		
-		if($backend->exp_delete_record($id)) {
+		if($backend->expense_delete($id)) {
 			$result = $this->getSuccessResult(array());
 		}
 		return $result;	

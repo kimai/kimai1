@@ -27,7 +27,7 @@ include('../../includes/basics.php');
 include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
-$usr = $database->checkUser();
+$user = $database->checkUser();
 
 // set smarty config
 require_once('../../libraries/smarty/Smarty.class.php');
@@ -38,9 +38,9 @@ $tpl->compile_dir  = 'compile/';
 $tpl->assign('kga', $kga);
 
 // get list of projects for select box
-$sel = makeSelectBox("pct",$kga['usr']['groups']);  
-$tpl->assign('sel_pct_names', $sel[0]);
-$tpl->assign('sel_pct_IDs',   $sel[1]);
+$sel = makeSelectBox("project",$kga['user']['groups']);  
+$tpl->assign('projectNames', $sel[0]);
+$tpl->assign('projectIDs',   $sel[1]);
 
 // Select values for Round Time option
 $tpl->assign('sel_round_names', array('0.1h', '0.25h', '0.5h', '1.0h') );
@@ -48,18 +48,18 @@ $tpl->assign('sel_round_IDs',   array(1, 2.5, 5, 10) );
 
 // Get Invoice Template FileNames
 
-$iv_tmp_arr = Array(); 
+$invoice_template_files = Array(); 
 $handle = opendir('templates/'); 
 while (false!== ($file = readdir($handle))) { 
  if ($file!= "." && $file!= ".." &&!is_dir($file)) { 
  $namearr = explode('.',$file); 
- if ($namearr[count($namearr)-1] == 'odt') $iv_tmp_arr[] = $file; 
- if ($namearr[count($namearr)-1] == 'ods') $iv_tmp_arr[] = $file;
+ if ($namearr[count($namearr)-1] == 'odt') $invoice_template_files[] = $file; 
+ if ($namearr[count($namearr)-1] == 'ods') $invoice_template_files[] = $file;
  } 
 } 
 closedir($handle);
-sort($iv_tmp_arr);
-$tpl->assign('sel_form_files', $iv_tmp_arr);
+sort($invoice_template_files);
+$tpl->assign('sel_form_files', $invoice_template_files);
 
 
 

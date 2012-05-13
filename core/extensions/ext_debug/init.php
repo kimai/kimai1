@@ -20,7 +20,7 @@
 	// Include Basics
 	include('../../includes/basics.php');
 	
-	$usr = $database->checkUser();
+	$user = $database->checkUser();
 	// ============================================
 	// = initialize currently displayed timespace =
 	// ============================================
@@ -43,9 +43,9 @@
     	$output['server_database'] = "xxx";
     	$output['server_username'] = "xxx";
     	$output['server_password'] = "xxx";
-    	$output['usr']['secure']   = "xxx";
-    	$output['usr']['userID']   = "xxx";
-    	$output['usr']['pw']       = "xxx";
+    	$output['user']['secure']   = "xxx";
+    	$output['user']['userID']   = "xxx";
+    	$output['user']['pw']       = "xxx";
     }
 	
     $kga_display = print_r($output,true);

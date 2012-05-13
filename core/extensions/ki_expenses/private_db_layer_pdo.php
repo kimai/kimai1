@@ -19,14 +19,14 @@
 
 
 /**
- * delete zef entry 
+ * delete expense entry 
  *
- * @param integer $usr_ID 
+ * @param integer $userID 
  * @param integer $id -> ID of record
  * @global array  $kga kimai-global-array
  * @author th
  */
-function exp_delete_record($id) {
+function expense_delete($id) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -48,7 +48,7 @@ function exp_delete_record($id) {
  * @global array  $kga    kimai-global-array
  * @author sl
  */
-function exp_create_record($usr_ID,$data) {
+function expense_create($userID,$data) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -74,7 +74,7 @@ function exp_create_record($usr_ID,$data) {
     $data['timestamp'],
     $data['multiplier'],
     $data['value'],
-    $usr_ID,
+    $userID,
     $data['refundable']
     ));
     
@@ -97,11 +97,11 @@ function exp_create_record($usr_ID,$data) {
  * @param Array list of IDs of users to include
  * @param Array list of IDs of customers to include
  * @param Array list of IDs of projects to include
- * @param Array list of IDs of events to include
+ * @param Array list of IDs of activities to include
  * @return Array list of where clauses to include in the query
  *
  */
-function exp_whereClausesFromFilters($users, $customers , $projects ) {
+function expenses_widthhereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -132,13 +132,13 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
 /**
  * returns expenses for specific user as multidimensional array
  *
- * @param integer $user ID of user in table usr
+ * @param integer $user ID of user in table users
  * @global array $kga kimai-global-array
  * @return array
  * @author th 
  */
 
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false, $filter_refundable = -1,$filterCleared = null) {
+function get_expenses($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false, $filter_refundable = -1,$filterCleared = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -149,7 +149,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
 
 
     
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
 
     if (isset($kga['customer']))
       $whereClauses[] = "${p}projects.internal = 0";
@@ -182,8 +182,8 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-    $pdo_query = $pdo_conn->prepare("SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID,
-              projectID, customer.name AS customerName, customerID, project.name AS projectName, comment, commentType, refundable, user.name AS userName, cleared
+    $pdo_query = $pdo_conn->prepare("SELECT *
+              projectID, customer.name AS customerName, project.name AS projectName, user.name AS userName
              FROM ${p}expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -229,7 +229,7 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
  * @return array
  * @author sl
  */
-function get_entry_exp($id) {
+function get_expense($id) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -249,23 +249,23 @@ function get_entry_exp($id) {
 /**
  * Returns the data of a certain expense record
  *
- * @param array $exp_id        exp_id of the record
+ * @param array $expenseID        expenseID of the record
  * @global array $kga          kimai-global-array
  * @return array               the record's data as array, false on failure
  * @author ob
  */
-function exp_get_data($exp_id) {
+function expense_get($expenseID) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    if ($exp_id) {
+    if ($expenseID) {
         $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses WHERE expenseID = ?");
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses WHERE userID = ".$kga['usr']['userID']." ORDER BY expenseID DESC LIMIT 1");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses WHERE userID = ".$kga['user']['userID']." ORDER BY expenseID DESC LIMIT 1");
     }
     
-    $result = $pdo_query->execute(array($exp_id));
+    $result = $pdo_query->execute(array($expenseID));
 
     if ($result == false) {
         return false;
@@ -285,12 +285,12 @@ function exp_get_data($exp_id) {
  * @author th
  */
  
-function exp_edit_record($id,$data) {
+function expense_edit($id,$data) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
     
-    $original_array = exp_get_data($id);
+    $original_array = expense_get($id);
     $new_array = array();
     
     foreach ($original_array as $key => $value) {
@@ -342,12 +342,12 @@ function exp_edit_record($id,$data) {
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
-function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_user($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}users.trash = 0";
 
     if ($in)
@@ -383,12 +383,12 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
-function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_customer($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}customers.trash = 0";
 
     if ($in)
@@ -420,13 +420,13 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
-function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_project($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}projects.trash = 0";
 
     if ($in)

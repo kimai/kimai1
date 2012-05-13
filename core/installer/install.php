@@ -308,20 +308,20 @@ exec_query($query);
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
 // GROUPS
-$defaultgrp=$kga['lang']['defaultgrp'];
+$defaultGroup=$kga['lang']['defaultGroup'];
 $query="INSERT INTO `${p}groups` (`name`) VALUES ('admin');";
 exec_query($query);
 
 
 
 // MISC
-$query="INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '".$kga['lang']['testEVT']."', '');";
+$query="INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '".$kga['lang']['testActivity']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `vat`, `timezone`) VALUES (1, '".$kga['lang']['testKND']."', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
+$query="INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `vat`, `timezone`) VALUES (1, '".$kga['lang']['testCustomer']."', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
-$query="INSERT INTO `${p}projects` (`projectID`, `customerID`, `name`, `comment`) VALUES (1, 1, '".$kga['lang']['testPCT']."', '');";
+$query="INSERT INTO `${p}projects` (`projectID`, `customerID`, `name`, `comment`) VALUES (1, 1, '".$kga['lang']['testProject']."', '');";
 exec_query($query);
 
 

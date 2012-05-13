@@ -42,19 +42,19 @@ switch ($axAction) {
     break;
 
     /**
-     * Remember which project and event the user has selected for 
+     * Remember which project and activity the user has selected for 
      * the quick recording via the buzzer.
      */
     case 'saveBuzzerPreselection':
-      if (!isset($kga['usr'])) return;
+      if (!isset($kga['user'])) return;
 
       $data= array();
       if (isset($_REQUEST['project']))
         $data['lastProject'] = $_REQUEST['project'];
-      if (isset($_REQUEST['event']))
-        $data['lastActivity']   = $_REQUEST['event'];
+      if (isset($_REQUEST['activity']))
+        $data['lastActivity']   = $_REQUEST['activity'];
 
-      $database->user_edit($kga['usr']['userID'],$data);
+      $database->user_edit($kga['user']['userID'],$data);
     break;
 
 
@@ -69,8 +69,8 @@ switch ($axAction) {
         $preferences['quickdelete']        = $_REQUEST['quickdelete'];
         $preferences['rowlimit']           = $_REQUEST['rowlimit'];
         $preferences['lang']               = $_REQUEST['lang'];
-        $preferences['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
-        $preferences['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
+        $preferences['flip_project_display']   = isset($_REQUEST['flip_project_display'])?1:0;
+        $preferences['project_comment_flag']   = isset($_REQUEST['project_comment_flag'])?1:0;
         $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
         $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
         $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
@@ -84,14 +84,14 @@ switch ($axAction) {
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))
-          $database->save_rate($kga['usr']['userID'],null,NULL,$rate);
+          $database->save_rate($kga['user']['userID'],null,NULL,$rate);
         else
-          $database->remove_rate($kga['usr']['userID'],null,NULL);
+          $database->remove_rate($kga['user']['userID'],null,NULL);
         
         // If the password field is empty don't overwrite the old password.
         if ($_REQUEST['password'] != "") {
-        	$usr_data['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
-          $database->user_edit($kga['usr']['userID'], $usr_data);
+        	$userData['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
+          $database->user_edit($kga['user']['userID'], $userData);
         }
         
         
@@ -102,7 +102,7 @@ switch ($axAction) {
      * it can be restored, when the user reloads the page.
      */
     case 'setTimespace':
-        if (!isset($kga['usr'])) die();
+        if (!isset($kga['user'])) die();
     
         $timespace = explode('|',$axValue);
          
@@ -114,11 +114,11 @@ switch ($axAction) {
         $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
         if ($timespace_out < 950000000) $timespace_out = $out;
         
-        $database->save_timeframe($timespace_in,$timespace_out,$kga['usr']['userID']);
+        $database->save_timeframe($timespace_in,$timespace_out,$kga['user']['userID']);
     break;
 
     /**
-     * The user started the recording of an event via the buzzer. If this method
+     * The user started the recording of an activity via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
      */
     case 'startRecord':
@@ -144,92 +144,92 @@ switch ($axAction) {
      * type of the current user decides which users are shown to him.
      * See get_arr_watchable_users.
      */
-    case 'reload_usr':
+    case 'reload_user':
         if (isset($kga['customer']))
-          $arr_usr = array();
+          $users = array();
         else
-          $arr_usr = $database->get_arr_watchable_users($kga['usr']);
+          $users = $database->get_arr_watchable_users($kga['user']);
 
-        if (count($arr_usr)>0) {
-            $tpl->assign('arr_usr', $arr_usr);
+        if (count($users)>0) {
+            $tpl->assign('users', $users);
         } else {
-            $tpl->assign('arr_usr', 0);
+            $tpl->assign('users', 0);
         }
-        $tpl->display("../lists/usr.tpl");
+        $tpl->display("../lists/users.tpl");
     break;
 
     /**
      * Return a list of customers. A customer can only see himself.
      */
-    case 'reload_knd':
+    case 'reload_customers':
         if (isset($kga['customer']))
-          $arr_knd = array(array(
-              'knd_ID'=>$kga['customer']['customerID'],
-              'knd_name'=>$kga['customer']['knd_name'],
-              'knd_visible'=>$kga['customer']['knd_visible']));
+          $customers = array(array(
+              'customerID'=>$kga['customer']['customerID'],
+              'name'=>$kga['customer']['name'],
+              'visible'=>$kga['customer']['visible']));
         else
-          $arr_knd = $database->get_arr_customers($kga['usr']['groups']);
+          $customers = $database->get_arr_customers($kga['user']['groups']);
 
-        if (count($arr_knd)>0) {
-            $tpl->assign('arr_knd', $arr_knd);
+        if (count($customers)>0) {
+            $tpl->assign('customers', $customers);
         } else {
-            $tpl->assign('arr_knd', 0);
+            $tpl->assign('customers', 0);
         }
-        $tpl->display("../lists/knd.tpl");
+        $tpl->display("../lists/customers.tpl");
     break;
 
     /**
      * Return a list of projects. Customers are only shown their projects.
      */
-    case 'reload_pct':
+    case 'reload_projects':
         if (isset($kga['customer']))
-          $arr_pct = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
+          $projects = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
         else
-          $arr_pct = $database->get_arr_projects($kga['usr']['groups']);
+          $projects = $database->get_arr_projects($kga['user']['groups']);
 
-        if (count($arr_pct)>0) {
-            $tpl->assign('arr_pct', $arr_pct);
+        if (count($projects)>0) {
+            $tpl->assign('projects', $projects);
         } else {
-            $tpl->assign('arr_pct', 0);
+            $tpl->assign('projects', 0);
         }
-        $tpl->display("../lists/pct.tpl");
+        $tpl->display("../lists/projects.tpl");
     break;
 
     /**
      * Return a list of tasks. Customers are only shown tasks which are
-     * used for them. If a project is set as filter via the pct parameter
+     * used for them. If a project is set as filter via the project parameter
      * only tasks for that project are shown.
      */
-    case 'reload_evt':
+    case 'reload_activities':
         if (isset($kga['customer']))
-          $arr_evt = $database->get_arr_activities_by_customer($kga['customer']['customerID']);
-        else if (isset($_REQUEST['pct']))
-          $arr_evt = $database->get_arr_activities_by_project($_REQUEST['pct'],$kga['usr']['groups']);
+          $activities = $database->get_arr_activities_by_customer($kga['customer']['customerID']);
+        else if (isset($_REQUEST['project']))
+          $activities = $database->get_arr_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
         else
-          $arr_evt = $database->get_arr_activities($kga['usr']['groups']);
-        if (count($arr_evt)>0) {
-            $tpl->assign('arr_evt', $arr_evt);
+          $activities = $database->get_arr_activities($kga['user']['groups']);
+        if (count($activities)>0) {
+            $tpl->assign('activities', $activities);
         } else {
-            $tpl->assign('arr_evt', 0);
+            $tpl->assign('activities', 0);
         }
-        $tpl->display("../lists/evt.tpl");
+        $tpl->display("../lists/activities.tpl");
     break;
 
 
     /**
-     * Add a new customer, project or event. This is a core function as it's
+     * Add a new customer, project or activity. This is a core function as it's
      * used at least by the admin panel and the timesheet extension.
      */
-    case 'add_edit_KndPctEvt':
+    case 'add_edit_CustomerProjectActivity':
     
-        if(isset($kga['customer']) || $kga['usr']['status']==2) die(); // only admins and grpleaders can do this ...
+        if(isset($kga['customer']) || $kga['user']['status']==2) die(); // only admins and groupleaders can do this ...
         
     	
         switch($axValue) {
             /**
              * add or edit a customer
              */
-            case "knd":
+            case "customer":
               if (count($_REQUEST['customerGroups']) == 0) die(); // no group would mean it is never accessable
 
             	$data['name']     = $_REQUEST['name'];
@@ -271,7 +271,7 @@ switch ($axAction) {
             /**
              * add or edit a project
              */
-            case "pct":
+            case "project":
               if (count($_REQUEST['projectGroups']) == 0) die(); // no group would mean it is never accessable
 
               $data['name']         = $_REQUEST['name'];
@@ -291,7 +291,7 @@ switch ($axAction) {
               $data['myRate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['my_rate']);
               $data['fixedRate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixed_rate']);
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
                 
                 // add or update the project
               if (!$id) {
@@ -304,9 +304,9 @@ switch ($axAction) {
               if (isset($_REQUEST['projectGroups']))
                 $database->assign_projectToGroups($id, $_REQUEST['projectGroups']);
               if (isset($_REQUEST['assignedActivities']))
-                $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['usr']['groups']);
-                foreach($_REQUEST['assignedActivitiest'] as $index => $evt_id) {
-                	if($evt_id <= 0) {
+                $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['user']['groups']);
+                foreach($_REQUEST['assignedActivitiest'] as $index => $activityID) {
+                	if($activityID <= 0) {
                 		continue;
                 	}
                 	if($_REQUEST['budget'][$index] <= 0) {
@@ -318,14 +318,14 @@ switch ($axAction) {
                 	if($_REQUEST['approved'][$index] <= 0) {
                 		$_REQUEST['approved'][$index] = 0;
                 	}
-               		$database->projects_activities_edit($id, $evt_id, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
+               		$database->projects_activities_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
                 }
             break;
             
             /**
              * add or edit a task
              */
-            case "evt":
+            case "activity":
               if (count($_REQUEST['activityGroups']) == 0) die(); // no group would mean it is never accessable
 
               $data['name']         = $_REQUEST['name'];
@@ -349,14 +349,14 @@ switch ($axAction) {
 
               // set the task group and task project mappings
               if (isset($_REQUEST['activityGroups']))
-                $database->assign_activityToGroups($id, $_REQUEST['groups']);
+                $database->assign_activityToGroups($id, $_REQUEST['activityGroups']);
               else
                 $database->assign_activityToGroups($id, array());
 
               if (isset($_REQUEST['projects']))
-                $database->assignActivityToProjectsForGroup($id, $_REQUEST['projects'], $kga['usr']['groups']);
+                $database->assignActivityToProjectsForGroup($id, $_REQUEST['projects'], $kga['user']['groups']);
               else
-                $database->assignActivityToProjectsForGroup($id, array(), $kga['usr']['groups']);
+                $database->assignActivityToProjectsForGroup($id, array(), $kga['user']['groups']);
             break;
         }
     break;

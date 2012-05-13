@@ -1,10 +1,10 @@
-#xp_ext_tab_filter {
+#export_extension_tab_filter {
   padding: 10px 0 0 0;
   font-size: 20px;
   color: #3a3b34;
   display: none;
 }
-#xp_ext_tab_filter input[type=text] {
+#export_extension_tab_filter input[type=text] {
   font-size: 20px;
   display: block;
   float: left;
@@ -16,18 +16,18 @@
   padding-left: 3px;
   background-color: #ddddcd;
 }
-#xp_ext_tab_filter span {
+#export_extension_tab_filter span {
   margin-left: 10px;
   float: left;
   display: block;
 }
-#xp_ext_tab_location {
+#export_extension_tab_location {
   padding: 10px 0 0 0;
   font-size: 20px;
   color: #3a3b34;
   display: none;
 }
-#xp_ext_tab_location input[type=text] {
+#export_extension_tab_location input[type=text] {
   font-size: 20px;
   display: block;
   float: left;
@@ -39,18 +39,18 @@
   padding-left: 3px;
   background-color: #ddddcd;
 }
-#xp_ext_tab_location span {
+#export_extension_tab_location span {
   margin-left: 10px;
   float: left;
   display: block;
 }
-#xp_ext_tab_timeformat {
+#export_extension_tab_timeformat {
   padding: 10px 0 0 0;
   font-size: 20px;
   color: #3a3b34;
   display: none;
 }
-#xp_ext_tab_timeformat input[type=text] {
+#export_extension_tab_timeformat input[type=text] {
   font-size: 20px;
   display: block;
   float: left;
@@ -62,9 +62,9 @@
   padding-left: 3px;
   background-color: #ddddcd;
 }
-#xp_ext_tab_timeformat span {
+#export_extension_tab_timeformat span {
   margin-left: 10px;
   float: left;
   display: block;
 }
-#xp_ext_tab_timeformat { display: block; }
+#export_extension_tab_timeformat { display: block; }

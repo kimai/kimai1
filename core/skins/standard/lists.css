@@ -1,4 +1,4 @@
-#usr, #knd, #evt, #pct { 
+#user, #customer, #activity, #project { 
     height:175px;
     border-top:none;
     z-index:1;
@@ -11,7 +11,7 @@
     left:10px;
 }
 
-#usr_head, #knd_head, #pct_head, #evt_head {
+#user_head, #customer_head, #project_head, #activity_head {
     border:1px solid black; 
     border-bottom:none;
     background-image: url('grfx/g3_table_header.png');
@@ -25,7 +25,7 @@
     padding:3px 0 0 5px;
 }
 
-#usr_foot, #knd_foot, #pct_foot, #evt_foot {
+#user_foot, #customer_foot, #project_foot, #activity_foot {
     border:1px solid black; 
     border-top:none;
     background-image: url('grfx/g3_table_header.png');
@@ -39,10 +39,10 @@
     padding:3px 0 0 5px;
 }
 
-#kndShrink {
+#customerShrink {
     cursor: pointer;
     background-color:transparent;
-    background-image:url('grfx/kndShrink_left.png');
+    background-image:url('grfx/customerShrink_left.png');
     background-position:center;
     background-repeat:no-repeat;
     position:absolute;
@@ -57,10 +57,10 @@
     filter:alpha(opacity=80);
 }
 
-#usrShrink {
+#userShrink {
     cursor: pointer;
     background-color:transparent;
-    background-image:url('grfx/kndShrink_left.png');
+    background-image:url('grfx/customerShrink_left.png');
     background-position:center;
     background-repeat:no-repeat;
     position:absolute;
@@ -78,7 +78,7 @@
 #extShrink {
     cursor: pointer;
     background-color:transparent;
-    background-image:url('grfx/zefShrink_up.png');
+    background-image:url('grfx/timeSheetShrink_up.png');
     background-position:center;
     background-repeat:no-repeat;
     position:absolute;
@@ -93,34 +93,34 @@
     filter:alpha(opacity=80);
 }
 
-div#usr>table>tbody>tr>td.annotation,
-div#knd>table>tbody>tr>td.annotation,
-div#pct>table>tbody>tr>td.annotation, 
-div#evt>table>tbody>tr>td.annotation {
+div#user>table>tbody>tr>td.annotation,
+div#customer>table>tbody>tr>td.annotation,
+div#project>table>tbody>tr>td.annotation, 
+div#activity>table>tbody>tr>td.annotation {
     border-right: none;
 }
 
-div#usr td.option img,
-div#knd td.option img,
-div#pct td.option img,
-div#evt td.option img 
+div#user td.option img,
+div#customer td.option img,
+div#project td.option img,
+div#activity td.option img 
 { 
     margin-top:2px;
 }
 
-div#usr td.annotation,
-div#knd td.annotation,
-div#pct td.annotation,
-div#evt td.annotation 
+div#user td.annotation,
+div#customer td.annotation,
+div#project td.annotation,
+div#activity td.annotation 
 { 
     width:60px;
     text-align: right;
 }
 
-div#usr td,
-div#knd td,
-div#pct td,
-div#evt td 
+div#user td,
+div#customer td,
+div#project td,
+div#activity td 
 { 
     border-right:none;
 }
@@ -192,14 +192,14 @@ a.selectInvertLink
 }
 
 
-.highlightPctForPreselection td
+.highlightProjectForPreselection td
  {
     background: #C5E6C3 !important;
     cursor:pointer !important;
     font-weight:bold;
 }
 
-.filterPctForPreselection td
+.filterProjectForPreselection td
  {
     background: #64BE5E !important;
 }
@@ -211,7 +211,7 @@ a.selectInvertLink
     float:left;
 }
 
-.filterPctForPreselection td .ids {
+.filterProjectForPreselection td .ids {
     color:#4D9247 !important;
 }
 

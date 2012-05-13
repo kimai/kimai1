@@ -47,7 +47,7 @@ class BasePDF extends TCPDF {
     if ($number == -1)
       return "-------";
     else
-      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['xp_ext']['duration_unit'];
+      return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['export_extension']['duration_unit'];
   } 
 
   /**
@@ -117,7 +117,7 @@ class BasePDF extends TCPDF {
       if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
         $this->Cell(array_sum($w), 0, '', 'T'); 
         $this->Ln();  
-        $this->Cell($w[0], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
+        $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false); 
         if (isset($this->columns['dec_time']))
           $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
         if (isset($this->columns['wage']))
@@ -145,7 +145,7 @@ class BasePDF extends TCPDF {
     $this->Cell(array_sum($w), 0, '', 'T'); 
     $this->Ln();
 
-    $this->Cell($w[0], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
+    $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false); 
     $this->SetFont('', 'B'); 
     if (isset($this->columns['dec_time']))
       $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
@@ -157,40 +157,40 @@ class BasePDF extends TCPDF {
   /**
    * Create the summary data array.
    */
-  function summarize($pdf_arr_data) {
+  function summarize($orderedExportData) {
     global $kga;
     // arrays for keeping track to print summary
-      $zef_summary = array();
-      $exp_summary = array();
+      $timeSheetSummary = array();
+      $expenseSummary = array();
 
-      foreach ($pdf_arr_data as $customer) {
+      foreach ($orderedExportData as $customer) {
         $project_ids = array_keys($customer);
         foreach ($project_ids as $project_id) {
           foreach ($customer[$project_id] as $row) {
           
             // summary aggregation
-            if ($row['type'] == 'zef') {
-              if (isset($zef_summary[$row['activityID']])) {
-            $zef_summary[$row['activityID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time']; //Sekunden
-            $zef_summary[$row['activityD']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
+            if ($row['type'] == 'timeSheet') {
+              if (isset($timeSheetSummary[$row['activityID']])) {
+            $timeSheetSummary[$row['activityID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration']; //Sekunden
+            $timeSheetSummary[$row['activityD']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
           }
             else {
-              $zef_summary[$row['activityID']]['name']         = html_entity_decode($row['name']);
-              $zef_summary[$row['activityID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['zef_time']/3600:$row['dec_zef_time'];
-              $zef_summary[$row['activityID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
+              $timeSheetSummary[$row['activityID']]['name']         = html_entity_decode($row['name']);
+              $timeSheetSummary[$row['activityID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration'];
+              $timeSheetSummary[$row['activityID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
         }
             }
             else {
-              $exp_info['name']   = $kga['lang']['xp_ext']['expense'].': '.$row['name'];
-              $exp_info['time']   = -1;
-              $exp_info['wage'] = $row['wage'];
-              $exp_summary[] = $exp_info;
+              $expenseInfo['name']   = $kga['lang']['export_extension']['expense'].': '.$row['name'];
+              $expenseInfo['time']   = -1;
+              $expenseInfo['wage'] = $row['wage'];
+              $expenseSummary[] = $expenseInfo;
             }
           }
         }
       }
       
-      return array_merge($zef_summary,$exp_summary);
+      return array_merge($timeSheetSummary,$expenseSummary);
   }
 
 }

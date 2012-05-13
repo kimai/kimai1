@@ -31,53 +31,53 @@ require("../../includes/kspi.php");
 // ==================
 switch ($axAction) {
 
-    // =========================
-    // = record an event AGAIN =
-    // =========================
+    // ==============================================
+    // = start a new recording based on another one =
+    // ==============================================
     case 'record':
         if (isset($kga['customer'])) die();
 
-        $zefData = $database->timeSheet_get_data($id);
+        $timeSheetEntry = $database->timeSheet_get_data($id);
 
-        $zefData['start'] = time();
-        $zefData['end'] = 0;
-        $zefData['duration'] = 0;
+        $timeSheetEntry['start'] = time();
+        $timeSheetEntry['end'] = 0;
+        $timeSheetEntry['duration'] = 0;
 
-        // copied from check_zef_data and inverted assignments
-        $zefData['projectID'] = $zefData['projectID'];
-        $zefData['activityID'] = $zefData['activityID'];
-        $zefData['zlocation'] = $zefData['location'];
-        $zefData['trackingNumber'] = $zefData['trackingNumber'];
-        $zefData['description'] = $zefData['description'];
-        $zefData['comment'] = $zefData['comment'];
-        $zefData['commentType'] = $zefData['commentType'];
-        $zefData['rate'] = $zefData['rate'];
-        $zefData['cleared'] = $zefData['cleared'];
+        // copied from check_timeSheet_get_data and inverted assignments
+        $timeSheetEntry['projectID'] = $timeSheetEntry['projectID'];
+        $timeSheetEntry['activityID'] = $timeSheetEntry['activityID'];
+        $timeSheetEntry['zlocation'] = $timeSheetEntry['location'];
+        $timeSheetEntry['trackingNumber'] = $timeSheetEntry['trackingNumber'];
+        $timeSheetEntry['description'] = $timeSheetEntry['description'];
+        $timeSheetEntry['comment'] = $timeSheetEntry['comment'];
+        $timeSheetEntry['commentType'] = $timeSheetEntry['commentType'];
+        $timeSheetEntry['rate'] = $timeSheetEntry['rate'];
+        $timeSheetEntry['cleared'] = $timeSheetEntry['cleared'];
         //fcw: status hatte hier noch gefehlt
-        $zefData['status'] = $zefData['status'];
-        $zefData['userID'] = $kga['usr']['userID'];
+        $timeSheetEntry['status'] = $timeSheetEntry['status'];
+        $timeSheetEntry['userID'] = $kga['user']['userID'];
 
-        $newZefId = $database->timeEntry_create($zefData);
+        $newTimeSheetEntryID = $database->timeEntry_create($timeSheetEntry);
 
-        $usrData = array();
-        $usrData['lastRecord'] = $newZefId;
-        $usrData['lastProject'] = $zefData['projectID'];
-        $usrData['lastActivity'] = $zefData['activityID'];
-        $database->user_edit($kga['usr']['userID'], $usrData);
+        $userData = array();
+        $userData['lastRecord'] = $newTimeSheetEntryID;
+        $userData['lastProject'] = $timeSheetEntry['projectID'];
+        $userData['lastActivity'] = $timeSheetEntry['activityID'];
+        $database->user_edit($kga['user']['userID'], $userData);
 
 
-        $pctdata = $database->project_get_data($zefData['projectID']);
-        $return =  'pct_name = "' . $pctdata['name'] .'"; ';
+        $project = $database->project_get_data($timeSheetEntry['projectID']);
+        $return =  'projectName = "' . $project['name'] .'"; ';
 
-        $return .=  'knd = "' . $pctdata['customerID'] .'"; ';
+        $return .=  'customer = "' . $project['customerID'] .'"; ';
 
-        $knddata = $database->customer_get_data($pctdata['customerID']);
-        $return .=  'knd_name = "' . $knddata['name'] .'"; ';
+        $customer = $database->customer_get_data($project['customerID']);
+        $return .=  'customerName = "' . $customer['name'] .'"; ';
 
-        $evtdata = $database->activity_get_data($zefData['activityID']);
-        $return .= 'evt_name = "' . $evtdata['name'] .'"; ';
+        $activity = $database->activity_get_data($timeSheetEntry['activityID']);
+        $return .= 'activityName = "' . $activity['name'] .'"; ';
         
-        $return .= "currentRecording = $newZefId; ";
+        $return .= "currentRecording = $newTimeSheetEntryID; ";
 
         echo $return;
         // TODO return false if error
@@ -92,9 +92,9 @@ switch ($axAction) {
         echo 1;
     break;
 
-    // ===================================
-    // = set comment for a running event =
-    // ===================================
+    // =======================================
+    // = set comment for a running recording =
+    // =======================================
     case 'edit_running_project':
         if (isset($kga['customer'])) die();
 
@@ -104,9 +104,9 @@ switch ($axAction) {
         echo 1;
     break;
 
-    // ===================================
-    // = set comment for a running event =
-    // ===================================
+    // =======================================
+    // = set comment for a running recording =
+    // =======================================
     case 'edit_running_task':
         if (isset($kga['customer'])) die();
 
@@ -124,49 +124,49 @@ switch ($axAction) {
         echo 1;
     break;
 
-    // ===============================================
-    // = Get the best rate for the project and event =
-    // ===============================================
+    // ==================================================
+    // = Get the best rate for the project and activity =
+    // ==================================================
     case 'bestFittingRates':
         if (isset($kga['customer'])) die();
 
         $data = array(
-          'hourlyRate' => $database->get_best_fitting_rate($kga['usr']['userID'],$_REQUEST['project_id'],$_REQUEST['event_id']),
-          'fixedRate' => $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['event_id'])
+          'hourlyRate' => $database->get_best_fitting_rate($kga['user']['userID'],$_REQUEST['project_id'],$_REQUEST['activity_id']),
+          'fixedRate' => $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['activity_id'])
         );
         echo json_encode($data);
     break;
 
 
-    // ===============================================
-    // = Get the new budget data after changing project or event =
-    // ===============================================
+    // ==============================================================
+    // = Get the new budget data after changing project or activity =
+    // ==============================================================
     case 'budgets':
         if (isset($kga['customer'])) die();
-        $zefData = $database->timeSheet_get_data($_REQUEST['zef_id']);
-        // we subtract the used data in case the event is the same as in the db, otherwise
+        $timeSheetEntry = $database->timeSheet_get_data($_REQUEST['timeSheetEntryID']);
+        // we subtract the used data in case the activity is the same as in the db, otherwise
         // it would get counted twice. For all aother cases, just set the values to 0
         // so we don't subtract too much
-        if($zefData['activityID'] != $_REQUEST['event_id'] || $zefData['projectID'] != $_REQUEST['project_id']) {
-        	$zefData['budget'] = 0;
-        	$zefData['approved'] = 0;
-        	$zefData['rate'] = 0;
+        if($timeSheetEntry['activityID'] != $_REQUEST['activity_id'] || $timeSheetEntry['projectID'] != $_REQUEST['project_id']) {
+        	$timeSheetEntry['budget'] = 0;
+        	$timeSheetEntry['approved'] = 0;
+        	$timeSheetEntry['rate'] = 0;
         }
         $data = array(
-          'eventBudgets' => $database->get_activity_budget($_REQUEST['project_id'],$_REQUEST['event_id']),
-          'eventUsed' => $database->get_budget_used($_REQUEST['project_id'],$_REQUEST['event_id']),
-          'zefData' => $zefData
+          'activityBudgets' => $database->get_activity_budget($_REQUEST['project_id'],$_REQUEST['activity_id']),
+          'activityUsed' => $database->get_budget_used($_REQUEST['project_id'],$_REQUEST['activity_id']),
+          'timeSheetEntry' => $timeSheetEntry
         );
         echo json_encode($data);
     break;
 
-    // ===========================================
-    // = Get all rates for the project and event =
-    // ===========================================
+    // ==============================================
+    // = Get all rates for the project and activity =
+    // ==============================================
     case 'allFittingRates':
         if (isset($kga['customer'])) die();
 
-        $rates = $database->allFittingRates($kga['usr']['userID'],$_REQUEST['project'],$_REQUEST['task']);
+        $rates = $database->allFittingRates($kga['user']['userID'],$_REQUEST['project'],$_REQUEST['task']);
         $processedData = array();
 
         if ($rates !== false)
@@ -177,9 +177,9 @@ switch ($axAction) {
             if ($rate['userID'] != null)
               $setFor[] = $kga['lang']['username'];
             if ($rate['projectID'] != null)
-              $setFor[] =  $kga['lang']['pct'];
-            if ($rate['eventID'] != null)
-              $setFor[] =  $kga['lang']['evt'];
+              $setFor[] =  $kga['lang']['project'];
+            if ($rate['activityID'] != null)
+              $setFor[] =  $kga['lang']['activity'];
 
             if (count($setFor) != 0)
               $line .= ' ('.implode($setFor,', ').')';
@@ -190,9 +190,9 @@ switch ($axAction) {
         echo json_encode($processedData);
     break;
 
-    // ===========================================
-    // = Get all rates for the project and event =
-    // ===========================================
+    // ==============================================
+    // = Get all rates for the project and activity =
+    // ==============================================
     case 'allFittingFixedRates':
         if (isset($kga['customer'])) die();
 
@@ -205,9 +205,9 @@ switch ($axAction) {
 
             $setFor = array(); // contains the list of "types" for which this rate was set
             if ($rate['projectID'] != null)
-              $setFor[] =  $kga['lang']['pct'];
-            if ($rate['eventID'] != null)
-              $setFor[] =  $kga['lang']['evt'];
+              $setFor[] =  $kga['lang']['project'];
+            if ($rate['activityID'] != null)
+              $setFor[] =  $kga['lang']['activity'];
 
             if (count($setFor) != 0)
               $line .= ' ('.implode($setFor,', ').')';
@@ -218,94 +218,94 @@ switch ($axAction) {
         echo json_encode($processedData);
     break;
 
-    // ===============================================
-    // = Get the best rate for the project and event =
-    // ===============================================
-    case 'reload_evt_options':
+    // ==================================================
+    // = Get the best rate for the project and activity =
+    // ==================================================
+    case 'reload_activities_options':
         if (isset($kga['customer'])) die();
-        $arr_evt = $database->get_arr_activities_by_project($_REQUEST['pct'],$kga['usr']['groups']);
-        foreach ($arr_evt as $event) {
-          if (!$event['visible'])
+        $activities = $database->get_arr_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
+        foreach ($activities as $activity) {
+          if (!$activity['visible'])
             continue;
-          echo '<option value="'.$event['activityID'].'">'.
-          $event['name'].'</option>\n';
+          echo '<option value="'.$activity['activityID'].'">'.
+          $activity['name'].'</option>\n';
         }
     break;
 
-    // ===================================================
-    // = Load timesheet data (zef) from DB and return it =
-    // ===================================================
-    case 'reload_zef':
+    // =============================================
+    // = Load timesheet data from DB and return it =
+    // =============================================
+    case 'reload_timeSheet':
         $filters = explode('|',$axValue);
         if ($filters[0] == "")
-          $filterUsr = array();
+          $filterUsers = array();
         else
-          $filterUsr = explode(':',$filters[0]);
+          $filterUsers = explode(':',$filters[0]);
 
         if ($filters[1] == "")
-          $filterKnd = array();
+          $filterCustomers = array();
         else
-          $filterKnd = explode(':',$filters[1]);
+          $filterCustomers = explode(':',$filters[1]);
 
         if ($filters[2] == "")
-          $filterPct = array();
+          $filterProjects = array();
         else
-          $filterPct = explode(':',$filters[2]);
+          $filterProjects = explode(':',$filters[2]);
 
         if ($filters[3] == "")
-          $filterEvt = array();
+          $filterActivities = array();
         else
-          $filterEvt = explode(':',$filters[3]);
+          $filterActivities = explode(':',$filters[3]);
 
         // if no userfilter is set, set it to current user
-        if (isset($kga['usr']) && count($filterUsr) == 0)
-          array_push($filterUsr,$kga['usr']['userID']);
+        if (isset($kga['user']) && count($filterUsers) == 0)
+          array_push($filterUsers,$kga['user']['userID']);
 
         if (isset($kga['customer']))
-          $filterKnd = array($kga['customer']['customerID']);
+          $filterCustomers = array($kga['customer']['customerID']);
 
-        $arr_zef = $database->get_arr_timeSheet($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt,1);
-        if (count($arr_zef)>0) {
-            $tpl->assign('arr_zef', $arr_zef);
+        $timeSheetEntries = $database->get_arr_timeSheet($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,1);
+        if (count($timeSheetEntries)>0) {
+            $tpl->assign('timeSheetEntries', $timeSheetEntries);
         } else {
-            $tpl->assign('arr_zef', 0);
+            $tpl->assign('timeSheetEntries', 0);
         }
-        $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt)));
+        $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities)));
 
-        $ann = $database->get_arr_time_users($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        $ann = $database->get_arr_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('usr_ann',$ann);
+        $tpl->assign('user_annotations',$ann);
 
-        $ann = $database->get_arr_time_customers($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        $ann = $database->get_arr_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('knd_ann',$ann);
+        $tpl->assign('customer_annotations',$ann);
 
-        $ann = $database->get_arr_time_projects($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        $ann = $database->get_arr_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('pct_ann',$ann);
+        $tpl->assign('project_annotations',$ann);
 
-        $ann = $database->get_arr_time_activities($in,$out,$filterUsr,$filterKnd,$filterPct,$filterEvt);
+        $ann = $database->get_arr_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('evt_ann',$ann);
+        $tpl->assign('activity_annotations',$ann);
 
-        if (isset($kga['usr']))
+        if (isset($kga['user']))
           $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
         else
           $tpl->assign('hideComments',true);
 
-        if (isset($kga['usr']))
+        if (isset($kga['user']))
           $tpl->assign('showOverlapLines',$database->user_get_preference('ui.hideOverlapLines')!=1);
         else
           $tpl->assign('showOverlapLines',false);
 
-        $tpl->display("zef.tpl");
+        $tpl->display("timeSheet.tpl");
     break;
 
 
-    // =========================
-    // = add / edit zef record =
-    // =========================
-    case 'add_edit_record':
+    // ==============================
+    // = add / edit timeSheet entry =
+    // ==============================
+    case 'add_edit_timeSheetEntry':
       if (isset($kga['customer'])) die();
 
       if ($id) {
@@ -339,17 +339,19 @@ switch ($axAction) {
       $data['budget']          = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
       $data['approved']        = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
 
-      // only take the given user id if it is in the list of watchable users
-      $users = $database->get_arr_watchable_users($kga['usr']);
-      foreach ($users as $user) {
-        if ($user['userID'] == $_REQUEST['user']) {
-          $data['userID'] = $user['userID'];
-          break;
+      if (isset($_REQUEST['userID'])) {
+        // only take the given user id if it is in the list of watchable users
+        $users = $database->get_arr_watchable_users($kga['user']);
+        foreach ($users as $user) {
+          if ($user['userID'] == $_REQUEST['userID']) {
+            $data['userID'] = $user['userID'];
+            break;
+          }
         }
       }
 
       if (!isset($data['userID']))
-        $data['userID'] = $kga['usr']['userID'];
+        $data['userID'] = $kga['user']['userID'];
 
       // check if the posted time values are possible
 
@@ -403,7 +405,7 @@ switch ($axAction) {
 
           // TIME RIGHT - EDIT ENTRY
           Logger::logfile("timeEntry_edit: " .$id);
-          check_zef_data($id,$data);
+          check_timeSheetEntry($id,$data);
 
       } else {
 

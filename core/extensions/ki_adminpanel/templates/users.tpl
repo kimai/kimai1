@@ -1,11 +1,11 @@
 {*########## field for add new user ##########*}
 <form>
     <input type=text id="newuser" class="formfield"></input>
-    <input class='btn_ok' type="submit" value="{$kga.lang.adduser}" onclick="ap_ext_newUser(); return false;">
+    <input class='btn_ok' type="submit" value="{$kga.lang.adduser}" onclick="adminPanel_extension_newUser(); return false;">
 {if $showDeletedUsers}    
-    <input class='btn_ok' type="button" value="{$kga.lang.hidedeletedusers}" onclick="ap_ext_hideDeletedUsers(); return false;">
+    <input class='btn_ok' type="button" value="{$kga.lang.hidedeletedusers}" onclick="adminPanel_extension_hideDeletedUsers(); return false;">
 {else}
-    <input class='btn_ok' type="button" value="{$kga.lang.showdeletedusers}" onclick="ap_ext_showDeletedUsers(); return false;">
+    <input class='btn_ok' type="button" value="{$kga.lang.showdeletedusers}" onclick="adminPanel_extension_showDeletedUsers(); return false;">
 {/if}
 </form>
 {*########## field for add new user ##########*}
@@ -29,19 +29,19 @@
 
 
     <tbody>
-{section name=userarray loop=$arr_usr}{strip}
+{section name=userarray loop=$users}{strip}
     <tr class='{cycle values="even,odd"}'>
     
     
         
 {*########## USER NAME ##########*}
         <td>
-{if $curr_user == $arr_usr[userarray].name}
-            <strong style="color:#00E600">{$arr_usr[userarray].name|escape:'html'}</strong>
+{if $curr_user == $users[userarray].name}
+            <strong style="color:#00E600">{$users[userarray].name|escape:'html'}</strong>
 {else}
-    {if $arr_usr[userarray].trash}<span style="color:#999">{/if}
-            {$arr_usr[userarray].name|escape:'html'}
-    {if $arr_usr[userarray].trash}</span>{/if}
+    {if $users[userarray].trash}<span style="color:#999">{/if}
+            {$users[userarray].name|escape:'html'}
+    {if $users[userarray].trash}</span>{/if}
 {/if}
         </td>
 {*########## /USER NAME ##########*}
@@ -55,47 +55,47 @@
 {*########## Option cells ##########*}
         <td>
             
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].userID}'); $(this).blur(); return false;">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif" title="{$kga.lang.editusr}" width="13" height="13" alt="{$kga.lang.editusr}" border="0">
+            <a href="#" onClick="adminPanel_extension_editUser('{$users[userarray].userID}'); $(this).blur(); return false;">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif" title="{$kga.lang.editUser}" width="13" height="13" alt="{$kga.lang.editUser}" border="0">
             </a>
             
             &nbsp;
 
 {*
-{if $curr_user != $arr_usr[userarray].name}            
-            <a href="#" onClick="switchUsr('{$arr_usr[userarray].userID}'); return false;">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/auge.png" title="{$kga.lang.switchusr}" width="16" height="13" alt="{$kga.lang.switchusr}" border="0">
+{if $curr_user != $users[userarray].name}            
+            <a href="#" onClick="switchUser('{$users[userarray].userID}'); return false;">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/auge.png" title="{$kga.lang.switchUser}" width="16" height="13" alt="{$kga.lang.switchUser}" border="0">
             </a>
 {else} 
-            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/auge_.gif" title="{$kga.lang.switchusr}" width="16" height="13" alt="{$kga.lang.switchusr}" border="0">
+            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/auge_.gif" title="{$kga.lang.switchUser}" width="16" height="13" alt="{$kga.lang.switchUser}" border="0">
 {/if}
 
             &nbsp;
      
-            <a href="#" onClick="backupUsr({$arr_usr[userarray].userID}); return false;">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_backup.gif" title="{$kga.lang.backupusr}" width="12" height="13" border=0 alt="{$kga.lang.backupusr}">
+            <a href="#" onClick="backupUser({$users[userarray].userID}); return false;">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_backup.gif" title="{$kga.lang.backupUser}" width="12" height="13" border=0 alt="{$kga.lang.backupUser}">
             </a>
             
             &nbsp;
             
 *}
             
-{if $arr_usr[userarray].mail}            
-            <a href="mailto:{$arr_usr[userarray].mail|escape:'html'}">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_mail.gif" title="{$kga.lang.mailusr}" width="12" height="13" alt="{$kga.lang.mailusr}" border="0">
+{if $users[userarray].mail}            
+            <a href="mailto:{$users[userarray].mail|escape:'html'}">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_mail.gif" title="{$kga.lang.mailUser}" width="12" height="13" alt="{$kga.lang.mailUser}" border="0">
             </a>           
 {else} 
-            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_mail_.gif" title="{$kga.lang.mailusr}" width="12" height="13" alt="{$kga.lang.mailusr}" border="0">
+            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_mail_.gif" title="{$kga.lang.mailUser}" width="12" height="13" alt="{$kga.lang.mailUser}" border="0">
 {/if}
 
             &nbsp;
 
-{if $curr_user != $arr_usr[userarray].name}
-            <a href="#" id="delete_usr{$arr_usr[userarray].userID}" onClick="ap_ext_deleteUser({$arr_usr[userarray].userID})">
-                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.delusr}" width="13" height="13" alt="{$kga.lang.delusr}" border="0">
+{if $curr_user != $users[userarray].name}
+            <a href="#" id="deleteUser{$users[userarray].userID}" onClick="adminPanel_extension_deleteUser({$users[userarray].userID})">
+                <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png" title="{$kga.lang.deleteUser}" width="13" height="13" alt="{$kga.lang.deleteUser}" border="0">
             </a>
 {else} 
-            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan_.png" title="{$kga.lang.delusr}" width="13" height="13" alt="{$kga.lang.delusr}" border="0">
+            <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan_.png" title="{$kga.lang.deleteUser}" width="13" height="13" alt="{$kga.lang.deleteUser}" border="0">
 {/if}
             
         </td>      
@@ -110,47 +110,47 @@
 
 {*########## Status cells ##########*}
         <td>
-{if $arr_usr[userarray].status == 0}
-            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/crown.png' alt='{$kga.lang.adminusr}' title='{$kga.lang.adminusr}' border="0">
+{if $users[userarray].status == 0}
+            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/crown.png' alt='{$kga.lang.adminUser}' title='{$kga.lang.adminUser}' border="0">
 {/if}
 
-{if $arr_usr[userarray].status == 1}
+{if $users[userarray].status == 1}
             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/leader.gif' alt='{$kga.lang.groupleader}' title='{$kga.lang.groupleader}' border="0">
 {/if}
 
-{if $arr_usr[userarray].status == 2}
-            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/user.gif' alt='{$kga.lang.regusr}' title='{$kga.lang.regusr}' border="0">
+{if $users[userarray].status == 2}
+            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/user.gif' alt='{$kga.lang.user}' title='{$kga.lang.user}' border="0">
 {/if}
 
             &nbsp;
             
-{if $arr_usr[userarray].active == 1}
-    {if $curr_user != $arr_usr[userarray].name}
-            <a href="#" id="ban{$arr_usr[userarray].userID}" onClick="ap_ext_banUser('{$arr_usr[userarray].userID}'); return false;">
-                <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/jipp.gif' alt='{$kga.lang.activeusr}' title='{$kga.lang.activeusr}' border="0" width="16" height="16" />
+{if $users[userarray].active == 1}
+    {if $curr_user != $users[userarray].name}
+            <a href="#" id="ban{$users[userarray].userID}" onClick="adminPanel_extension_banUser('{$users[userarray].userID}'); return false;">
+                <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/jipp.gif' alt='{$kga.lang.activeAccount}' title='{$kga.lang.activeAccount}' border="0" width="16" height="16" />
             </a>
     {else}
-            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/jipp_.gif' alt='{$kga.lang.activeusr}' title='{$kga.lang.activeusr}' border="0" width="16" height="16" />
+            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/jipp_.gif' alt='{$kga.lang.activeAccount}' title='{$kga.lang.activeAccount}' border="0" width="16" height="16" />
     {/if}
 {/if}
             
-{if $arr_usr[userarray].active == 0}
-            <a href="#" id="ban{$arr_usr[userarray].userID}" onClick="ap_ext_unbanUser('{$arr_usr[userarray].userID}'); return false;">
-                <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/lock.png' alt='{$kga.lang.bannedusr}' title='{$kga.lang.bannedusr}' border="0" width="16" height="16" />
+{if $users[userarray].active == 0}
+            <a href="#" id="ban{$users[userarray].userID}" onClick="adminPanel_extension_unbanUser('{$users[userarray].userID}'); return false;">
+                <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/lock.png' alt='{$kga.lang.bannedUser}' title='{$kga.lang.bannedUser}' border="0" width="16" height="16" />
             </a>
 {/if}
 
             &nbsp;
             
-{if $arr_usr[userarray].passwordSet == "no"}
-            <a href="#" onClick="ap_ext_editUser('{$arr_usr[userarray].userID}'); $(this).blur(); return false;">
+{if $users[userarray].passwordSet == "no"}
+            <a href="#" onClick="adminPanel_extension_editUser('{$users[userarray].userID}'); $(this).blur(); return false;">
                 <img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/caution_mini.png" width="16" height="16" title='{$kga.lang.nopasswordset}' border="0">
             </a>
 {/if}
 
             &nbsp;
 
-{if $arr_usr[userarray].trash} 
+{if $users[userarray].trash} 
             <strong style="color:red">X</strong>
 {/if}
 
@@ -163,8 +163,8 @@
 
 {*########## Group cells ##########*}
         <td>
-            {section name=group loop=$arr_usr[userarray].groups} 
-              {$arr_usr[userarray].groups[group]|escape:'html'}{if $smarty.section.group.last eq false}, {/if}
+            {section name=group loop=$users[userarray].groups} 
+              {$users[userarray].groups[group]|escape:'html'}{if $smarty.section.group.last eq false}, {/if}
             {/section}
         </td>      
 {*########## Group cells ##########*}
@@ -175,4 +175,4 @@
 
 </table>
 
-<p><strong>{$kga.lang.hint}</strong> {$kga.lang.usr_caution1} '{$curr_user|escape:'html'}' {$kga.lang.usr_caution2}</p>
+<p><strong>{$kga.lang.hint}</strong> {$kga.lang.rename_caution_before_username} '{$curr_user|escape:'html'}' {$kga.lang.rename_caution_after_username}</p>

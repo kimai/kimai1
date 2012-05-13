@@ -3,15 +3,15 @@
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
-#ap_ext_panel {
+#adminPanel_extension_panel {
     top:120px;
     z-index:2;
 }
 
-#ap_ext_panel,
-#ap_ext_knd,
-#ap_ext_pct,
-#ap_ext_evt 
+#adminPanel_extension_panel,
+#adminPanel_extension_knd,
+#adminPanel_extension_pct,
+#adminPanel_extension_evt 
 {
     border:1px solid black; 
     margin:0;
@@ -22,9 +22,9 @@
     left:10px;
 }
 
-#ap_ext_knd, 
-#ap_ext_evt, 
-#ap_ext_pct 
+#adminPanel_extension_knd, 
+#adminPanel_extension_evt, 
+#adminPanel_extension_pct 
 { 
 	width:200px;
 	background-color:#FFF;
@@ -34,9 +34,9 @@
     z-index:1;
 }
 
-#ap_ext_knd_head,
-#ap_ext_pct_head,
-#ap_ext_evt_head
+#adminPanel_extension_knd_head,
+#adminPanel_extension_project_head,
+#adminPanel_extension_activity_head
 {
     border:1px solid black; 
     border-bottom:none;
@@ -51,7 +51,7 @@
     padding:3px 0 0 5px;
 }
 
-ap_ext_panel {
+adminPanel_extension_panel {
 	padding:0;
 }
 

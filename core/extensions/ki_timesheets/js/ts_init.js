@@ -26,8 +26,8 @@ var ts_total = '';
 
 var scroller_width;
 var drittel;
-var zef_w;
-var zef_h;
+var timeSheet_width;
+var timeSheet_height;
 
 var ts_tss_hook_flag = 0;
 var ts_rec_hook_flag = 0;

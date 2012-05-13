@@ -108,18 +108,18 @@
             {$kga.lang.sublistAnnotations}:
             <select name="sublistAnnotations">
               <option value="0" {if $kga.conf.sublistAnnotations==0}selected="selected"{/if}>{$kga.lang.timelabel}</option>
-              <option value="1" {if $kga.conf.sublistAnnotations==1}selected="selected"{/if}>{$kga.lang.xp_ext.costs}</option>
-              <option value="2" {if $kga.conf.sublistAnnotations==2}selected="selected"{/if}>{$kga.lang.timelabel} &amp; {$kga.lang.xp_ext.costs}</option>
+              <option value="1" {if $kga.conf.sublistAnnotations==1}selected="selected"{/if}>{$kga.lang.export_extension.costs}</option>
+              <option value="2" {if $kga.conf.sublistAnnotations==2}selected="selected"{/if}>{$kga.lang.timelabel} &amp; {$kga.lang.export_extension.costs}</option>
             </select>
           </li>
 
           <li>
-            <label for="flip_pct_display"></label>
-            <input type="checkbox" name="flip_pct_display" value="1" {if $kga.conf.flip_pct_display}checked{/if} /> {$kga.lang.flip_pct_display}
+            <label for="flip_project_display"></label>
+            <input type="checkbox" name="flip_project_display" value="1" {if $kga.conf.flip_project_display}checked{/if} /> {$kga.lang.flip_project_display}
           </li>
           <li>
-            <label for="pct_comment_flag"></label>
-            <input type="checkbox" name="pct_comment_flag" value="1" {if $kga.conf.pct_comment_flag}checked{/if} /> {$kga.lang.pct_comment_flag}
+            <label for="project_comment_flag"></label>
+            <input type="checkbox" name="project_comment_flag" value="1" {if $kga.conf.project_comment_flag}checked{/if} /> {$kga.lang.project_comment_flag}
           </li>
           <li>
             <label for="showIDs"></label>

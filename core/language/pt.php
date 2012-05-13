@@ -58,17 +58,17 @@ return array(
 "timelabel"         => "Tempo",
 
 "durationlabel"     => "Duração",
-"knd"               => "Cliente",
+"customer"          => "Cliente",
 
-"pct"               => "Projecto",
+"project"           => "Projecto",
 
-"evt"               => "Tarefa",
+"activity"          => "Tarefa",
 
-"knds"              => "Clientes",
+"customers"         => "Clientes",
 
-"pcts"              => "Projectos",
+"projects"          => "Projectos",
 
-"evts"              => "Tarefas",
+"activities"        => "Tarefas",
 
 "admin"             => "Admin",
 
@@ -108,11 +108,11 @@ return array(
 
 "erase"             => "Apagar entrada",
 
-"new_knd"           => "Adicionar cliente",
+"new_customer"      => "Adicionar cliente",
 
-"new_pct"           => "Adicionar projecto",
+"new_project"       => "Adicionar projecto",
 
-"new_evt"           => "Adicionar evento",
+"new_activity"      => "Adicionar evento",
 
 "day_summary"       => "Resumo de tempo",
 
@@ -126,7 +126,7 @@ return array(
 
 "zlocation"         => "Localização",
 
-"trackingnr"        => "Número de Processo",
+"trackingNumber"        => "Número de Processo",
 
 "cookiewarning"     => "Permissões de Cookies devem ser activadas! Por favor active esta opção no seu browser antes de ontinuar.",
 
@@ -230,32 +230,32 @@ return array(
 
 "runbackup"         => "Executar Backup",
 
-"defaultgrp"        => "Por omissão (0)",
+"defaultGroup"        => "Por omissão (0)",
 
-"regusr"            => "Utilizador Normal",
+"user"              => "Utilizador Normal",
 
-"adminusr"          => "Utilizador Admin",
+"adminUser"         => "Utilizador Admin",
 
-"editusr"           => "Editar utilizador",
+"editUser"          => "Editar utilizador",
 
-"editgrp"           => "Editar grupo",
+"editGroup"           => "Editar grupo",
 
-"delgrp"            => "delete group",
-"delpct"            => "delete project",
-"delknd"            => "delete customer",
-"delevt"            => "delete task",
+"delete_group"            => "delete group",
+"delete_project"    => "delete project",
+"delete_customer"   => "delete customer",
+"delete_activity"   => "delete task",
 
-"switchusr"         => "Mudar para este utilizador",
+"switchUser"        => "Mudar para este utilizador",
 
-"backupusr"         => "Make backup of this user",
+"backupUser"        => "Make backup of this user",
 
-"mailusr"           => "Send email to this user",
+"mailUser"          => "Send email to this user",
 
-"delusr"            => "Apagar este utilizador",
+"deleteUser"        => "Apagar este utilizador",
 
-"bannedusr"         => "Utilizador banido - clique para reactivar",
+"bannedUser"        => "Utilizador banido - clique para reactivar",
 
-"activeusr"         => "Utilizador activo - clique para banir",
+"activeAccount"     => "Utilizador activo - clique para banir",
 
 "changegrp"         => "Alterar grupo",
 
@@ -308,7 +308,7 @@ return array(
 
 "ac_error"          => "Automatically continued entry with error (timespan too long).",
 
-"comment_type"      => "Tipo de comentário",
+"commentType"      => "Tipo de comentário",
 
 "ctype0"            => "Comentário",
 
@@ -318,9 +318,9 @@ return array(
 
 "hint"              => "Dica:",
 
-"usr_caution1"      => "If you change the user-name of",
+"rename_caution_before_username"      => "If you change the user-name of",
 
-"usr_caution2"      => "you have to re-login under your new username immediately!",
+"rename_caution_after_username"      => "you have to re-login under your new username immediately!",
 
 "timediff_warn"     => "You must enter different times into the time in-/out fields!",
 
@@ -342,9 +342,9 @@ return array(
 
 "admWarn"           => "Você é administrador. O estado apenas pode ser menor que outro administrador.",
 
-"flip_pct_display"  => "Order project table by customers",
+"flip_project_display"  => "Order project table by customers",
 
-"pct_comment_flag"  => "Always show comments beside projects",
+"project_comment_flag"  => "Always show comments beside projects",
 
 "showIDs"           => "Mostrar IDs",
 
@@ -353,20 +353,20 @@ return array(
 "checkupdate"       => "Verificar actualizações",
 
 
-"selectR"           => "Seleccionado para gravação:",
+"selectedForRecording"           => "Seleccionado para gravação:",
 
-"selectKND"         => "C:",
+"selectedCustomerLabel"         => "C:",
 
-"selectPCT"         => "P:",
+"selectedProjectLabel"         => "P:",
 
-"selectEVT"         => "T:",
+"selectedActivityLabel"         => "T:",
 
 
-"testKND"           => "Cliente-teste",
+"testCustomer"      => "Cliente-teste",
 
-"testPCT"           => "Projecto-teste",
+"testProject"       => "Projecto-teste",
 
-"testEVT"           => "testar",
+"testActivity"      => "testar",
 
 
 "budget"            => "Orçamento",
@@ -415,7 +415,7 @@ return array(
 
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
-'all_events' => '&lt;&lt;all&gt;&gt;',
+'all_activities' => '&lt;&lt;all&gt;&gt;',
 
 'durationWithSeconds' => 'Show duration exact to the second.',
 
@@ -495,7 +495,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
 
 
-'xp_ext' => array(
+'export_extension' => array(
 
 "print_hint"      		   => "Clique em OK para abrir a tabela imprimida.",
 

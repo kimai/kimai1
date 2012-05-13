@@ -20,13 +20,13 @@
  // ADMIN PANEL
  // ===========
 
-function ap_ext_onload() {
-    ap_ext_resize();  
-	subactivelink = "#ap_ext_sub1";
+function adminPanel_extension_onload() {
+    adminPanel_extension_resize();  
+	subactivelink = "#adminPanel_extension_sub1";
     $("#loader").hide();
 }
 
-function ap_ext_resize() {
+function adminPanel_extension_resize() {
 
 	scroller_width = 14;
 	if (navigator.platform.substr(0,3)=='Mac') {
@@ -39,50 +39,51 @@ function ap_ext_resize() {
 	panel_w = pagew-24;
 	panel_h = pageHeight()-10-headerHeight();
 	
-	$(".ap_ext_subtab").css("display", "none");
+	$(".adminPanel_extension_subtab").css("display", "none");
 	    
-	$("#ap_ext_panel").css("width", panel_w);
-	$(".ap_ext_panel_header").css("width", panel_w);
-	$("#ap_ext_panel").css("height", panel_h);
+	$("#adminPanel_extension_panel").css("width", panel_w);
+	$(".adminPanel_extension_panel_header").css("width", panel_w);
+	$("#adminPanel_extension_panel").css("height", panel_h);
 	
-	$(".ap_ext_subtab").css("height", panel_h - (7*25)-20-1);
+	$(".adminPanel_extension_subtab").css("height", panel_h - (7*25)-20-1);
 	
-    ap_ext_subtab_autoexpand();
+    adminPanel_extension_subtab_autoexpand();
 }
 
 /**
  * Show one of the subtabs. All others are collapsed, so only their header
  * is visible.
  */
-function ap_ext_subtab_expand(id) {
-	$("#ap_ext_sub1").removeClass("active");
-	$("#ap_ext_sub2").removeClass("active");
-	$("#ap_ext_sub3").removeClass("active");
-	$("#ap_ext_sub4").removeClass("active");
-	$("#ap_ext_sub5").removeClass("active");
-	$("#ap_ext_sub6").removeClass("active");
-	$("#ap_ext_sub7").removeClass("active");
-	$(".ap_ext_subtab").css("display", "none");	
+function adminPanel_extension_subtab_expand(id) {
+	$("#adminPanel_extension_sub1").removeClass("active");
+	$("#adminPanel_extension_sub2").removeClass("active");
+	$("#adminPanel_extension_sub3").removeClass("active");
+	$("#adminPanel_extension_sub4").removeClass("active");
+	$("#adminPanel_extension_sub5").removeClass("active");
+	$("#adminPanel_extension_sub6").removeClass("active");
+        $("#adminPanel_extension_sub7").removeClass("active");
+        $("#adminPanel_extension_sub8").removeClass("active");
+	$(".adminPanel_extension_subtab").css("display", "none");	
 	
-	sub_id="#ap_ext_sub" +id;
+	sub_id="#adminPanel_extension_sub" +id;
 	$(sub_id).addClass("active");
 	
-	subtab="#ap_ext_s"+id;
+	subtab="#adminPanel_extension_s"+id;
 	$(subtab).css("display", "block");
 	
-	$.cookie('ap_ext_activePanel_'+usr_ID, id);
+	$.cookie('adminPanel_extension_activePanel_'+userID, id);
 }
 
 /**
  * Show the last subtab, the user has seen. This information is stored in a
  * cookie. If we're unable to read it show the first subtab.
  */
-function ap_ext_subtab_autoexpand() {
-	ap_ext_activePanel  = $.cookie('ap_ext_activePanel_'+usr_ID);
-    if (ap_ext_activePanel) {
-        ap_ext_subtab_expand(ap_ext_activePanel);
+function adminPanel_extension_subtab_autoexpand() {
+	adminPanel_extension_activePanel  = $.cookie('adminPanel_extension_activePanel_'+userID);
+    if (adminPanel_extension_activePanel) {
+        adminPanel_extension_subtab_expand(adminPanel_extension_activePanel);
     } else {
-        ap_ext_subtab_expand(1);
+        adminPanel_extension_subtab_expand(1);
     }
 }
 
@@ -91,25 +92,25 @@ function ap_ext_subtab_autoexpand() {
 // ------------------------------------------------------
 
 
-function ap_ext_triggerchange() {
-    if ($('.ap_ext').css('display') == "block") {
-        ap_ext_refreshSubtab('knd');
-        ap_ext_refreshSubtab('pct');
-        ap_ext_refreshSubtab('evt');
+function adminPanel_extension_triggerchange() {
+    if ($('.adminPanel_extension').css('display') == "block") {
+        adminPanel_extension_refreshSubtab('customers');
+        adminPanel_extension_refreshSubtab('projects');
+        adminPanel_extension_refreshSubtab('activities');
     } else {
         tss_hook_flag++;
     }
     if (ap_chk_hook_flag) {
-        ap_ext_triggerCHK();
+        adminPanel_extension_triggerCHK();
     }
     if (ap_chp_hook_flag) {
-        ap_ext_triggerCHP();
+        adminPanel_extension_triggerCHP();
     }
     if (ap_che_hook_flag) {
-        ap_ext_triggerCHE();
+        adminPanel_extension_triggerCHE();
     }
     if (ap_usr_hook_flag) {
-        ap_ext_triggerUSR();
+        adminPanel_extension_triggerUSR();
     }
     
     ap_tss_hook_flag = 0;
@@ -121,34 +122,34 @@ function ap_ext_triggerchange() {
     ap_usr_hook_flag = 0;
 }
 
-function ap_ext_triggerCHK() {
-    if ($('.ap_ext').css('display') == "block") {
-        ap_ext_refreshSubtab('knd');
-        ap_ext_refreshSubtab('pct');
+function adminPanel_extension_triggerCHK() {
+    if ($('.adminPanel_extension').css('display') == "block") {
+        adminPanel_extension_refreshSubtab('customers');
+        adminPanel_extension_refreshSubtab('projects');
     } else {
         ap_chk_hook_flag++;
     }
 }
 
-function ap_ext_triggerCHP() {
-    if ($('.ap_ext').css('display') == "block") {
-        ap_ext_refreshSubtab('pct');
+function adminPanel_extension_triggerCHP() {
+    if ($('.adminPanel_extension').css('display') == "block") {
+        adminPanel_extension_refreshSubtab('projects');
     } else {
         ap_chp_hook_flag++;
     }
 }
 
-function ap_ext_triggerCHE() {
-    if ($('.ap_ext').css('display') == "block") {
-        ap_ext_refreshSubtab('evt');
+function adminPanel_extension_triggerCHE() {
+    if ($('.adminPanel_extension').css('display') == "block") {
+        adminPanel_extension_refreshSubtab('activities');
     } else {
         ap_che_hook_flag++;
     }
 }
 
-function ap_ext_triggerUSR() {
-    if ($('.ap_ext').css('display') == "block") {
-        ap_ext_refreshSubtab('usr');
+function adminPanel_extension_triggerUSR() {
+    if ($('.adminPanel_extension').css('display') == "block") {
+        adminPanel_extension_refreshSubtab('users');
     } else {
         ap_usr_hook_flag++;
     }
@@ -161,65 +162,65 @@ function ap_ext_triggerUSR() {
 
 // ----------------------------------------------------------------------------------------
 // graps the value of the newUser input field 
-// and ajaxes it to the createUsr function of the processor
+// and ajaxes it to the createUser function of the processor
 //
-function ap_ext_newUser() {
+function adminPanel_extension_newUser() {
     newuser = $("#newuser").val();
     if (newuser == "") {
         alert(lang_checkUsername);
         return false;
     }
-    $.post(ap_ext_path + "processor.php", { axAction: "createUsr", axValue: newuser, id: 0 }, 
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "createUser", axValue: newuser, id: 0 }, 
     function(data) {
-        ap_ext_refreshSubtab('usr');
-        ap_ext_editUser(data);
+        adminPanel_extension_refreshSubtab('users');
+        adminPanel_extension_editUser(data);
     });
 }
 
-function ap_ext_showDeletedUsers() {
-    $.post(ap_ext_path + "processor.php", { axAction: "toggleDeletedUsers", axValue: 1, id: 0 }, 
+function adminPanel_extension_showDeletedUsers() {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "toggleDeletedUsers", axValue: 1, id: 0 }, 
     function(data) {
-        ap_ext_refreshSubtab('usr');
+        adminPanel_extension_refreshSubtab('users');
     });
 }
 
-function ap_ext_hideDeletedUsers() {
-    $.post(ap_ext_path + "processor.php", { axAction: "toggleDeletedUsers", axValue: 0, id: 0 }, 
+function adminPanel_extension_hideDeletedUsers() {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "toggleDeletedUsers", axValue: 0, id: 0 }, 
     function(data) {
-        ap_ext_refreshSubtab('usr');
+        adminPanel_extension_refreshSubtab('users');
     });
 }
 
 
 // ----------------------------------------------------------------------------------------
 // graps the value of the newGroup input field 
-// and ajaxes it to the createGrp function of the processor
+// and ajaxes it to the createGroup function of the processor
 //
-function ap_ext_newGroup() {
+function adminPanel_extension_newGroup() {
     newgroup = $("#newgroup").val();
     if (newgroup == "") {
         alert(lang_checkGroupname);
         return false;
     }
-    $.post(ap_ext_path + "processor.php", { axAction: "createGrp", axValue: newgroup, id: 0 }, 
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "createGroup", axValue: newgroup, id: 0 }, 
     function(data) {
-        ap_ext_refreshSubtab('grp');
+        adminPanel_extension_refreshSubtab('groups');
     });
 }
 
 //----------------------------------------------------------------------------------------
 //graps the value of the newGroup input field 
-//and ajaxes it to the createGrp function of the processor
+//and ajaxes it to the createGroup function of the processor
 //
-function ap_ext_newStatus() {
+function adminPanel_extension_newStatus() {
  newstatus = $("#newstatus").val();
  if (newstatus == "") {
      alert(lang_checkStatusname);
      return false;
  }
- $.post(ap_ext_path + "processor.php", { axAction: "createStatus", axValue: newstatus, id: 0 }, 
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "createStatus", axValue: newstatus, id: 0 }, 
  function(data) {
-     ap_ext_refreshSubtab('status');
+     adminPanel_extension_refreshSubtab('status');
  });
 }
 
@@ -228,44 +229,44 @@ function ap_ext_newStatus() {
 // ----------------------------------------------------------------------------------------
 // by clicking on the edit button of a user the edit dialogue pops up
 //
-function ap_ext_editUser(id) {
-    floaterShow(ap_ext_path + "floaters.php","editUsr",0,id,400,230);
+function adminPanel_extension_editUser(id) {
+    floaterShow(adminPanel_extension_path + "floaters.php","editUser",0,id,400,230);
 }
 
 // ----------------------------------------------------------------------------------------
 // by clicking on the edit button of a group the edit dialogue pops up
 //
-function ap_ext_editGroup(id) {
-    floaterShow(ap_ext_path + "floaters.php","editGrp",0,id,450,100);
+function adminPanel_extension_editGroup(id) {
+    floaterShow(adminPanel_extension_path + "floaters.php","editGroup",0,id,450,100);
 }
 
 
 //----------------------------------------------------------------------------------------
 //by clicking on the edit button of a status the edit dialogue pops up
 //
-function ap_ext_editStatus(id) {
- floaterShow(ap_ext_path + "floaters.php","editStatus",0,id,450,100);
+function adminPanel_extension_editStatus(id) {
+ floaterShow(adminPanel_extension_path + "floaters.php","editStatus",0,id,450,100);
 }
 
 // ----------------------------------------------------------------------------------------
 // refreshes either user/group/advanced/DB subtab
 //
-function ap_ext_refreshSubtab(tab) {
+function adminPanel_extension_refreshSubtab(tab) {
     options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
-    if (tab == 'evt') {
-      options.evt_filter = $('#evt_pct_filter').val();
+    if (tab == 'activity') {
+      options.activity_filter = $('#activity_project_filter').val();
     }
-    $.post(ap_ext_path + "processor.php", options, 
+    $.post(adminPanel_extension_path + "processor.php", options, 
     function(data) {
         switch(tab) {
-            case "usr":  	target = "#ap_ext_s1"; break
-            case "grp":  	target = "#ap_ext_s2"; break
-            case "status":  target = "#ap_ext_s3"; break
-            case "adv":  	target = "#ap_ext_s4"; break
-            case "db":   	target = "#ap_ext_s5"; break
-            case "knd":  	target = "#ap_ext_s6"; break
-            case "pct": 	target = "#ap_ext_s7"; break
-            case "evt": 	target = "#ap_ext_s8"; break
+            case "users":  	target = "#adminPanel_extension_s1"; break
+            case "groups":  	target = "#adminPanel_extension_s2"; break
+            case "status":  target = "#adminPanel_extension_s3"; break
+            case "advanced":  	target = "#adminPanel_extension_s4"; break
+            case "database":   	target = "#adminPanel_extension_s5"; break
+            case "customers":  	target = "#adminPanel_extension_s6"; break
+            case "projects": 	target = "#adminPanel_extension_s7"; break
+            case "activities": 	target = "#adminPanel_extension_s8"; break
         }
         $(target).html(data);
     });
@@ -274,15 +275,15 @@ function ap_ext_refreshSubtab(tab) {
 // ----------------------------------------------------------------------------------------
 // delete user
 //
-function ap_ext_deleteUser(id) {
-    $.post(ap_ext_path + "processor.php", { axAction: "deleteUsr", axValue: 0, id: id }, 
+function adminPanel_extension_deleteUser(id) {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteUser", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                $.post(ap_ext_path + "processor.php", {axAction: "deleteUsr", axValue: 1, id: id }, 
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: 1, id: id }, 
                     function() { 
-                      ap_ext_refreshSubtab('usr');
-                      ap_ext_refreshSubtab('grp');
-                      hook_chgUsr(); }
+                      adminPanel_extension_refreshSubtab('users');
+                      adminPanel_extension_refreshSubtab('groups');
+                      hook_users_changed(); }
                 );
             }
         }
@@ -292,12 +293,12 @@ function ap_ext_deleteUser(id) {
 // ----------------------------------------------------------------------------------------
 // delete group
 //
-function ap_ext_deleteGroup(id) {
-    $.post(ap_ext_path + "processor.php", { axAction: "deleteGrp", axValue: 0, id: id }, 
+function adminPanel_extension_deleteGroup(id) {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGroup", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                $.post(ap_ext_path + "processor.php", {axAction: "deleteGrp", axValue: 1, id: id }, 
-                    function() { ap_ext_refreshSubtab('grp'); }
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGroup", axValue: 1, id: id }, 
+                    function() { adminPanel_extension_refreshSubtab('groups'); }
                 );
             }
         }
@@ -307,12 +308,12 @@ function ap_ext_deleteGroup(id) {
 //----------------------------------------------------------------------------------------
 //delete status
 //
-function ap_ext_deleteStatus(id) {
- $.post(ap_ext_path + "processor.php", { axAction: "deleteStatus", axValue: 0, id: id }, 
+function adminPanel_extension_deleteStatus(id) {
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteStatus", axValue: 0, id: id }, 
      function(data) {
          if (confirm(data)) {
-             $.post(ap_ext_path + "processor.php", {axAction: "deleteStatus", axValue: 1, id: id }, 
-                 function() { ap_ext_refreshSubtab('status'); }
+             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteStatus", axValue: 1, id: id }, 
+                 function() { adminPanel_extension_refreshSubtab('status'); }
              );
          }
      }
@@ -322,18 +323,18 @@ function ap_ext_deleteStatus(id) {
 // ----------------------------------------------------------------------------------------
 // delete project
 //
-function ap_ext_deleteProject(id) {
-    $.post(ap_ext_path + "processor.php", { axAction: "deletePct", axValue: 0, id: id }, 
+function adminPanel_extension_deleteProject(id) {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteProject", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                if (currentRecording == -1 && selected_pct == id) {
+                if (currentRecording == -1 && selected_project == id) {
                   $('#buzzer').addClass('disabled');
-                  selected_pct = false;
-                  $("#sel_pct").html('');
+                  selected_project = false;
+                  $("#sel_project").html('');
                 }
-                $.post(ap_ext_path + "processor.php", {axAction: "deletePct", axValue: 1, id: id }, 
-                    function() { ap_ext_refreshSubtab('pct');
-                 hook_chgPct(); }
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteProject", axValue: 1, id: id }, 
+                    function() { adminPanel_extension_refreshSubtab('projects');
+                 hook_projects_changed(); }
                 );
             }
         }
@@ -343,18 +344,18 @@ function ap_ext_deleteProject(id) {
 // ----------------------------------------------------------------------------------------
 // delete customer
 //
-function ap_ext_deleteCustomer(id) {
-    $.post(ap_ext_path + "processor.php", { axAction: "deleteKnd", axValue: 0, id: id }, 
+function adminPanel_extension_deleteCustomer(id) {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteCustomer", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                if (currentRecording == -1 && selected_knd == id) {
+                if (currentRecording == -1 && selected_customer == id) {
                   $('#buzzer').addClass('disabled');
-                  selected_knd = false;
-                  $("#sel_knd").html('');
+                  selected_customer = false;
+                  $("#sel_customer").html('');
                 }
-                $.post(ap_ext_path + "processor.php", {axAction: "deleteKnd", axValue: 1, id: id }, 
-                    function() { ap_ext_refreshSubtab('knd');
-                 hook_chgKnd(); }
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteCustomer", axValue: 1, id: id }, 
+                    function() { adminPanel_extension_refreshSubtab('customers');
+                 hook_customers_changed(); }
                 );
             }
         }
@@ -362,21 +363,21 @@ function ap_ext_deleteCustomer(id) {
 }
 
 // ----------------------------------------------------------------------------------------
-// delete event
+// delete activity
 //
-function ap_ext_deleteEvent(id) {
-    $.post(ap_ext_path + "processor.php", { axAction: "deleteEvt", axValue: 0, id: id }, 
+function adminPanel_extension_deleteActivity(id) {
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteActivity", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                if (currentRecording == -1 && selected_evt == id) {
+                if (currentRecording == -1 && selected_activity == id) {
                   $('#buzzer').addClass('disabled');
-                  selected_evt = false;
-                  $("#sel_evt").html('');
+                  selected_activity = false;
+                  $("#selected_activity").html('');
                 }
                 
-                $.post(ap_ext_path + "processor.php", {axAction: "deleteEvt", axValue: 1, id: id }, 
-                    function() { ap_ext_refreshSubtab('evt');
-                 hook_chgEvt(); }
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteActivity", axValue: 1, id: id }, 
+                    function() { adminPanel_extension_refreshSubtab('activities');
+                 hook_activities_changed(); }
                 );
             }
         }
@@ -386,13 +387,13 @@ function ap_ext_deleteEvent(id) {
 // ----------------------------------------------------------------------------------------
 // activates user for login
 //
-function ap_ext_unbanUser(id) {
+function adminPanel_extension_unbanUser(id) {
     $("#ban"+id).blur();
     $("#ban"+id).html("<img border='0' width='16' height='16' src='../skins/"+skin+"/grfx/loading13.gif'/>");
-    $.post(ap_ext_path + "processor.php", { axAction: "unbanUsr", axValue: 0, id: id }, 
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "unbanUser", axValue: 0, id: id }, 
         function(data) {
             $("#ban"+id).html(data);
-            $("#ban"+id).attr({ "ONCLICK": "ap_ext_banUser('"+id+"'); return false;" });
+            $("#ban"+id).attr({ "ONCLICK": "adminPanel_extension_banUser('"+id+"'); return false;" });
         }
     );
 }
@@ -400,21 +401,21 @@ function ap_ext_unbanUser(id) {
 // ----------------------------------------------------------------------------------------
 // toggle ban and unban of users in admin panel
 //
-function ap_ext_banUser(id) {
+function adminPanel_extension_banUser(id) {
     $("#ban"+id).blur();
     $("#ban"+id).html("<img border='0' width='16' height='16' src='../skins/"+skin+"/grfx/loading13.gif'/>");
-    $.post(ap_ext_path + "processor.php", { axAction: "banUsr", axValue: 0, id: id },
+    $.post(adminPanel_extension_path + "processor.php", { axAction: "banUser", axValue: 0, id: id },
         function(data) {
             $("#ban"+id).html(data);
-            $("#ban"+id).attr({ "ONCLICK": "ap_ext_unbanUser('"+id+"'); return false;" });
+            $("#ban"+id).attr({ "ONCLICK": "adminPanel_extension_unbanUser('"+id+"'); return false;" });
         }
     );
 }
 
-function ap_ext_checkupdate() {
+function adminPanel_extension_checkupdate() {
     $.post("checkupdate.php",
         function(data) {
-           $('#ap_ext_checkupdate').html(data);
+           $('#adminPanel_extension_checkupdate').html(data);
         }
     );
     

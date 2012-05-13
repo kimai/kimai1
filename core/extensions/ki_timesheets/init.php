@@ -22,7 +22,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-$usr = $database->checkUser();
+$user = $database->checkUser();
 
 // ============================================
 // = initialize currently displayed timespace =
@@ -50,86 +50,86 @@ header("Pragma: no-cache");
 if (isset($kga['customer']))
   $total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
 else
-  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['usr']['userID']),null,null));
+  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
 $tpl->assign('total', $total);
 
 // Get the array of timesheet entries.
 if (isset($kga['customer']))
-  $arr_zef = $database->get_arr_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
+  $timeSheetEntries = $database->get_arr_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
 else
-  $arr_zef = $database->get_arr_timeSheet($in,$out,array($kga['usr']['userID']),null,null,1);
-if (count($arr_zef)>0) {
-    $tpl->assign('arr_zef', $arr_zef);
+  $timeSheetEntries = $database->get_arr_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
+if (count($timeSheetEntries)>0) {
+    $tpl->assign('timeSheetEntries', $timeSheetEntries);
 } else {
-    $tpl->assign('arr_zef', 0);
+    $tpl->assign('timeSheetEntries', 0);
 }
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
   $ann = $database->get_arr_time_users($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_users($in,$out,array($kga['usr']['userID']));
+  $ann = $database->get_arr_time_users($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('usr_ann',$ann);
+$tpl->assign('user_annotations',$ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
   $ann = $database->get_arr_time_customers($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_customers($in,$out,array($kga['usr']['userID']));
+  $ann = $database->get_arr_time_customers($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('knd_ann',$ann);
+$tpl->assign('customer_annotations',$ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
   $ann = $database->get_arr_time_projects($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_projects($in,$out,array($kga['usr']['userID']));
+  $ann = $database->get_arr_time_projects($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('pct_ann',$ann);
+$tpl->assign('project_annotations',$ann);
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
   $ann = $database->get_arr_time_activities($in,$out,null,array($kga['customer']['customerID']));
 else
-  $ann = $database->get_arr_time_activities($in,$out,array($kga['usr']['userID']));
+  $ann = $database->get_arr_time_activities($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('evt_ann',$ann);
+$tpl->assign('activity_annotations',$ann);
 
-if (isset($kga['usr']))
+if (isset($kga['user']))
   $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
 else
   $tpl->assign('hideComments',true);
 
-if (isset($kga['usr']))
+if (isset($kga['user']))
   $tpl->assign('showOverlapLines',$database->user_get_preference('ui.hideOverlapLines')!=1);
 else
   $tpl->assign('showOverlapLines',false);
 
-$tpl->assign('zef_display', $tpl->fetch("zef.tpl"));
+$tpl->assign('timeSheet_display', $tpl->fetch("timeSheet.tpl"));
 
 $tpl->assign('buzzerAction', "startRecord()");
 
 // select for projects
 if (isset($kga['customer'])) {
-  $tpl->assign('sel_pct_names', array());
-  $tpl->assign('sel_pct_IDs',   array());
+  $tpl->assign('projectNames', array());
+  $tpl->assign('projectIDs',   array());
 }
 else {
-  $sel = makeSelectBox("pct",$kga['usr']['groups']);
-  $tpl->assign('sel_pct_names', $sel[0]);
-  $tpl->assign('sel_pct_IDs',   $sel[1]);
+  $sel = makeSelectBox("project",$kga['user']['groups']);
+  $tpl->assign('projectNames', $sel[0]);
+  $tpl->assign('projectIDs',   $sel[1]);
 }
 
-// select for events
+// select for activities
 if (isset($kga['customer'])) {
-  $tpl->assign('sel_evt_names', array());
-  $tpl->assign('sel_evt_IDs',   array());
+  $tpl->assign('activityNames', array());
+  $tpl->assign('activityIDs',   array());
 }
 else {
-  $sel = makeSelectBox("evt",$kga['usr']['groups']);
-  $tpl->assign('sel_evt_names', $sel[0]);
-  $tpl->assign('sel_evt_IDs',   $sel[1]);
+  $sel = makeSelectBox("activity",$kga['user']['groups']);
+  $tpl->assign('activityNames', $sel[0]);
+  $tpl->assign('activityIDs',   $sel[1]);
 }
 
 $tpl->display('main.tpl');

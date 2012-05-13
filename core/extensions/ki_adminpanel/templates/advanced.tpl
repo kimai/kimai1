@@ -5,10 +5,10 @@
               window.location.reload();
               return;
             }
-            $("#ap_ext_form_editadv_submit").blur();
-            $("#ap_ext_output").width($(".ap_ext_panel_header").width()-22);
-            $("#ap_ext_output").fadeIn(fading_enabled?500:0,function(){
-                $("#ap_ext_output").fadeOut(fading_enabled?4000:0);
+            $("#adminPanel_extension_form_editadv_submit").blur();
+            $("#adminPanel_extension_output").width($(".adminPanel_extension_panel_header").width()-22);
+            $("#adminPanel_extension_output").fadeIn(fading_enabled?500:0,function(){
+                $("#adminPanel_extension_output").fadeOut(fading_enabled?4000:0);
             });
         }
         $(document).ready(function() {
@@ -25,18 +25,18 @@
               }
             });
 
-            $('#ap_ext_form_editadv').ajaxForm({target:'#ap_ext_output',success:cb}); 
+            $('#adminPanel_extension_form_editadv').ajaxForm({target:'#adminPanel_extension_output',success:cb}); 
         }); 
     </script>
 {/literal}
 
 <div class="content">
     
-    <div id="ap_ext_output"></div>
+    <div id="adminPanel_extension_output"></div>
         
-    <form id="ap_ext_form_editadv" action="../extensions/ki_adminpanel/processor.php" method="post">
+    <form id="adminPanel_extension_form_editadv" action="../extensions/ki_adminpanel/processor.php" method="post">
         
-        <fieldset class="ap_ext_advanced">
+        <fieldset class="adminPanel_extension_advanced">
             <div>
                 <input type="text" name="adminmail" size="20" value="{$kga.conf.adminmail|escape:'html'}" class="formfield"> {$kga.lang.adminmail}
             </div>
@@ -47,8 +47,8 @@
                 <input type="text" name="loginbantime" size="4" value="{$kga.conf.loginBanTime|escape:'html'}" class="formfield"> {$kga.lang.bantime}
             </div>
 
-            <div id="ap_ext_checkupdate">
-                <a href="javascript:ap_ext_checkupdate();">{$kga.lang.checkupdate}</a>
+            <div id="adminPanel_extension_checkupdate">
+                <a href="javascript:adminPanel_extension_checkupdate();">{$kga.lang.checkupdate}</a>
             </div>
 
             <div>
@@ -164,7 +164,7 @@
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         
             <div id="formbuttons">
-                <input id="ap_ext_form_editadv_submit" class='btn_ok' type='submit' value='{$kga.lang.save}' />
+                <input id="adminPanel_extension_form_editadv_submit" class='btn_ok' type='submit' value='{$kga.lang.save}' />
             </div>
             
         

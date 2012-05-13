@@ -10,7 +10,7 @@
                 $('#activityProjects').attr("disabled","disabled");
             });
 
-             $('#add_edit_evt').ajaxForm(function() {
+             $('#add_edit_activity').ajaxForm(function() {
 
                 if ($('#activityGroups').val() == null) {
                   alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
@@ -18,7 +18,7 @@
                 }
 
                  floaterClose();
-                 hook_chgEvt();
+                 hook_activities_changed();
              });
              $('#floater_innerwrap').tabs({ selected: 0 });
          }); 
@@ -28,7 +28,7 @@
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.evt}{else}{$kga.lang.new_evt}{/if}</span>
+        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.activity}{else}{$kga.lang.new_activity}{/if}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>       
@@ -44,7 +44,7 @@
                       </a></li>
           <li class="tab norm"><a href="#projects">
                       <span class="aa">&nbsp;</span>
-                      <span class="bb">{$kga.lang.pcts}</span>
+                      <span class="bb">{$kga.lang.projects}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
 {if $groupIDs|@count gt 1}
@@ -62,12 +62,12 @@
       </ul>
     </div>
     
-        <form id="add_edit_evt" action="processor.php" method="post"> 
+        <form id="add_edit_activity" action="processor.php" method="post"> 
                 
-                <input name="evt_filter"   type="hidden" value="0" />
+                <input name="activity_filter"   type="hidden" value="0" />
  
-                <input name="axAction" type="hidden" value="add_edit_KndPctEvt" />   
-                <input name="axValue" type="hidden" value="evt" />   
+                <input name="axAction" type="hidden" value="add_edit_CustomerProjectActivity" />   
+                <input name="axValue" type="hidden" value="activity" />   
                 <input name="id" type="hidden" value="{$id}" />   
 
 
@@ -79,7 +79,7 @@
                 <ul>
                 
                     <li>
-                        <label for="name" >{$kga.lang.evt}:</label>
+                        <label for="name" >{$kga.lang.activity}:</label>
                         <input type="text" name="name" id="focus" value="{$name|escape:'html'}" />
                     </li>
                 
@@ -94,7 +94,7 @@
                     </li>
                 
                     <li>
-                        <label for="myRate" >{$kga.lang.fixed_rate}:</label>
+                        <label for="myRate" >{$kga.lang.fixedRate}:</label>
                         <input type="text" name="fixedRate" id="focus" value="{$fixedRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
                     </li>
 
@@ -136,8 +136,8 @@
                 <ul>
 
                     <li>
-                        <label for="projects">{$kga.lang.pcts}:</label>
-                        <select class="formfield" id="activityProjects" name="projects[]" multiple size='5' style="width:255px" {if !$evt_assignable}disabled="disabled"{/if}>
+                        <label for="projects">{$kga.lang.projects}:</label>
+                        <select class="formfield" id="activityProjects" name="projects[]" multiple size='5' style="width:255px" {if !$assignable}disabled="disabled"{/if}>
                             {html_options values=$projectIDs output=$projectNames selected=$selectedProjects}
                         </select>
                     </li>

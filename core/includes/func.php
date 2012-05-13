@@ -64,11 +64,11 @@ function timezoneList() {
  *
  * <pre>
  * returns:
- * [0] -> pct/evt names
+ * [0] -> project/activity names
  * [1] -> values as IDs
  * </pre>
  *
- * @param string either 'pct', 'evt', 'knd', 'grp'
+ * @param string either 'project', 'activity', 'customer', 'group'
  * @return array
  * @author th, sl, kp
  */
@@ -81,51 +81,51 @@ function makeSelectBox($subject,$groups,$selection=null){
     $sel[1] = array();
 
     switch ($subject) {
-        case 'pct':
-            $arr_pct = $database->get_arr_projects($groups);
+        case 'project':
+            $projects = $database->get_arr_projects($groups);
             $i=0;
-            foreach ($arr_pct as $pct) {
-                if ($pct['visible']) {
-                    if ($kga['conf']['flip_pct_display']) {
-                        $sel[0][$i] = $pct['customerName'] . ": " . $pct['name'];
-                        if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .= "(" . $pct['comment'] .")" ;
+            foreach ($projects as $project) {
+                if ($project['visible']) {
+                    if ($kga['conf']['flip_project_display']) {
+                        $sel[0][$i] = $project['customerName'] . ": " . $project['name'];
+                        if ($kga['conf']['project_comment_flag']) {
+                            $sel[0][$i] .= "(" . $project['comment'] .")" ;
                         }
                     } else {
-                        $sel[0][$i] = $pct['name'] . " (" . $pct['customerName'] . ")";
-                        if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .=  "(" . $pct['comment'] .")";
+                        $sel[0][$i] = $project['name'] . " (" . $project['customerName'] . ")";
+                        if ($kga['conf']['project_comment_flag']) {
+                            $sel[0][$i] .=  "(" . $project['comment'] .")";
                         }
                     }
-                    $sel[1][$i] = $pct['projectID'];
+                    $sel[1][$i] = $project['projectID'];
                     $i++;
                 }
             }
             break;
 
-        case 'evt':
-            $arr_evt = $database->get_arr_activities($groups);
+        case 'activity':
+            $activities = $database->get_arr_activities($groups);
             $i=0;
-            foreach ($arr_evt as $evt) {
-                if ($evt['visible']) {
-                    $sel[0][$i] = $evt['name'];
-                    $sel[1][$i] = $evt['activityID'];
+            foreach ($activities as $activity) {
+                if ($activity['visible']) {
+                    $sel[0][$i] = $activity['name'];
+                    $sel[1][$i] = $activity['activityID'];
                     $i++;
                 }
             }
             break;
 
-        case 'knd':
-            $arr_knd = $database->get_arr_customers($groups);
+        case 'customer':
+            $customers = $database->get_arr_customers($groups);
             $i=0;
             $selectionFound = false;
-            if(is_array($arr_knd)) {
-	            foreach ($arr_knd as $knd) {
-	                if ($knd['visible']) {
-	                    $sel[0][$i] = $knd['name'];
-	                    $sel[1][$i] = $knd['customerID'];
+            if(is_array($customers)) {
+	            foreach ($customers as $customer) {
+	                if ($customer['visible']) {
+	                    $sel[0][$i] = $customer['name'];
+	                    $sel[1][$i] = $customer['customerID'];
 	                    $i++;
-	                    if ($selection == $knd['customerID'])
+	                    if ($selection == $customer['customerID'])
 	                      $selectionFound = true;
 	                }
 	            }
@@ -137,13 +137,13 @@ function makeSelectBox($subject,$groups,$selection=null){
             }
             break;
 
-        case 'grp':
-            $arr_grp = $database->get_arr_groups();
+        case 'group':
+            $groups = $database->get_arr_groups();
             $i=0;
-            foreach ($arr_grp as $grp) {
-                if (!$grp['trash']) {
-                    $sel[0][$i] = $grp['name'];
-                    $sel[1][$i] = $grp['groupID'];
+            foreach ($groups as $group) {
+                if (!$group['trash']) {
+                    $sel[0][$i] = $group['name'];
+                    $sel[1][$i] = $group['groupID'];
                     $i++;
                 }
             }
@@ -254,40 +254,40 @@ function get_cookie($cookie_name, $default=null) {
 
 
 /**
- * check if there are 0s (erroneuos entries) in the zef data while editing and prevent overwriting old data in this case
+ * check if there are 0s (erroneuos entries) in the timeSheetEntry data while editing and prevent overwriting old data in this case
  *
  * @param int $id the id of the entry to be edited
- * @param array $zef_data
+ * @param array $timeSheetEntryData
  * @return boolean the return value of the actual editing function
  *
  * @author Oleg
  */
-function check_zef_data($id, $zef_data) {
+function check_timeSheetEntry($id, $timeSheetEntry) {
   global $database;
   
-  $zef_final_data['userID']        = $zef_data['userID'];
-  $zef_final_data['projectID']        = $zef_data['projectID'];
-  $zef_final_data['activityID']        = $zef_data['activityID'];
-  $zef_final_data['location']     = $zef_data['location'];
-  $zef_final_data['trackingNumber']   = $zef_data['trackingNumber'];
-  $zef_final_data['description']  = $zef_data['description'];
-  $zef_final_data['comment']      = $zef_data['comment'];
-  $zef_final_data['commentType'] = $zef_data['commentType'];
-  $zef_final_data['rate']         = $zef_data['rate'];
-  $zef_final_data['budget']       = $zef_data['budget'];
-  $zef_final_data['approved']     = $zef_data['approved'];
-  $zef_final_data['status']       = $zef_data['status'];
-  $zef_final_data['billable']     = $zef_data['billable'];
-  $zef_final_data['description']  = $zef_data['description'];
-  $zef_final_data['cleared']      = $zef_data['cleared'];
-  $zef_final_data['start']           = $zef_data['start'];
+  $finalTimeSheetEntry['userID']        = $timeSheetEntry['userID'];
+  $finalTimeSheetEntry['projectID']        = $timeSheetEntry['projectID'];
+  $finalTimeSheetEntry['activityID']        = $timeSheetEntry['activityID'];
+  $finalTimeSheetEntry['location']     = $timeSheetEntry['location'];
+  $finalTimeSheetEntry['trackingNumber']   = $timeSheetEntry['trackingNumber'];
+  $finalTimeSheetEntry['description']  = $timeSheetEntry['description'];
+  $finalTimeSheetEntry['comment']      = $timeSheetEntry['comment'];
+  $finalTimeSheetEntry['commentType'] = $timeSheetEntry['commentType'];
+  $finalTimeSheetEntry['rate']         = $timeSheetEntry['rate'];
+  $finalTimeSheetEntry['budget']       = $timeSheetEntry['budget'];
+  $finalTimeSheetEntry['approved']     = $timeSheetEntry['approved'];
+  $finalTimeSheetEntry['status']       = $timeSheetEntry['status'];
+  $finalTimeSheetEntry['billable']     = $timeSheetEntry['billable'];
+  $finalTimeSheetEntry['description']  = $timeSheetEntry['description'];
+  $finalTimeSheetEntry['cleared']      = $timeSheetEntry['cleared'];
+  $finalTimeSheetEntry['start']           = $timeSheetEntry['start'];
 
-  if (isset($zef_data['out'])) {
-    $zef_final_data['end']          = $zef_data['end'];
-    $zef_final_data['duration']         = $zef_data['duration'];
+  if (isset($timeSheetEntry['out'])) {
+    $finalTimeSheetEntry['end']          = $timeSheetEntry['end'];
+    $finalTimeSheetEntry['duration']         = $timeSheetEntry['duration'];
   }
 
-  return $database->timeEntry_edit($id,$zef_final_data);
+  return $database->timeEntry_edit($id,$finalTimeSheetEntry);
 
 }
 
@@ -373,10 +373,10 @@ function get_timespace() {
 
     $timespace = array(null,null);
     
-    if (isset($kga['usr'])) {
+    if (isset($kga['user'])) {
 
-        $timespace[0] = $kga['usr']['timeframeBegin'];
-        $timespace[1] = $kga['usr']['timeframeEnd'];
+        $timespace[0] = $kga['user']['timeframeBegin'];
+        $timespace[1] = $kga['user']['timeframeEnd'];
 
     }
 

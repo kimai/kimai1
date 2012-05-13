@@ -1,23 +1,23 @@
 {literal}
 <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#addPct').ajaxForm(function() { 
+            $('#addProject').ajaxForm(function() { 
 
-                if ($('#pct_grps').val() == null) {
+                if ($('#projectGroups').val() == null) {
                   alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
                   return;
                 }
 
                 floaterClose();
-                hook_chgPct();
-                hook_chgEvt();
+                hook_projects_changed();
+                hook_activities_changed();
             });
              $('#floater_innerwrap').tabs({ selected: 0 });
              // uniform will mess up cloning select elements, which already are "uniformed"
              // maybe the issue is the same? https://github.com/pixelmatrix/uniform/pull/138
 //          	 $("select, input:checkbox, input:radio, input:file").uniform();
              var optionsToRemove = new Array();
-             $('select.events').each(function(index) {
+             $('select.activities').each(function(index) {
 	                 if($(this).val() != '') {
 	                	 $(this).children('[value=""]').remove();
 		   				 optionsToRemove.push($(this).val());
@@ -25,17 +25,17 @@
              });
              var len = 0;
              for(var i=0, len=optionsToRemove.length; i<len; i++) {
-            	 $('.events option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
+            	 $('.activities option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
              }
              var previousValue;
              var previousText;
-          	 $('.events').live('focus', function() {
+          	 $('.activities').live('focus', function() {
            		previousValue = this.value;
                 previousText = $(this).children('[value="'+previousValue+'"]').text();
           	 }).live('change', function() {
       			if(previousValue != '') {
           			// the value we "deselected" has to be added to all other dropdowns to select it again
-     	             $('.events').each(function(index) {
+     	             $('.activities').each(function(index) {
          	             if($(this).children('[value="'+previousValue+'"]').length == 0) {
       	            		$(this).append('<option label="'+previousText+'" value="'+previousValue+'">'+previousText+'</option>');
          	             }
@@ -54,7 +54,7 @@
                     }
  				return true;
           	 });
-//          	 $("#pct_grps").sexyselect({title: '{/literal}{$kga.lang.groups}{literal}',
+//          	 $("#projectGroups").sexyselect({title: '{/literal}{$kga.lang.groups}{literal}',
 //  					allowCollapse: false,
 //  					allowDelete: false,
 //  					selectionMode : 'multiple',
@@ -68,7 +68,7 @@
 <div id="floater_innerwrap">
 
 <div id="floater_handle"><span id="floater_title">{if
-$id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
+$id}{$kga.lang.edit}: {$kga.lang.project}{else}{$kga.lang.new_project}{/if}</span>
 <div class="right"><a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
 </div>
 </div>
@@ -81,8 +81,8 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 	</a></li>
 	<li class="tab norm"><a href="#money"> <span class="aa">&nbsp;</span> <span
 		class="bb">{$kga.lang.budget}</span> <span class="cc">&nbsp;</span> </a></li>
-	<li class="tab norm"><a href="#evts"> <span class="aa">&nbsp;</span> <span
-		class="bb">{$kga.lang.evts}</span> <span class="cc">&nbsp;</span> </a></li>
+	<li class="tab norm"><a href="#activities"> <span class="aa">&nbsp;</span> <span
+		class="bb">{$kga.lang.activities}</span> <span class="cc">&nbsp;</span> </a></li>
 	{if $groupIDs|@count gt 1}
 	<li class="tab norm"><a href="#groups"> <span class="aa">&nbsp;</span>
 	<span class="bb">{$kga.lang.groups}</span> <span class="cc">&nbsp;</span>
@@ -94,10 +94,10 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 </ul>
 </div>
 
-<form id="addPct" action="processor.php" method="post"><input
-	name="pct_filter" type="hidden" value="0" /> <input name="axAction"
-	type="hidden" value="add_edit_KndPctEvt" /> <input name="axValue"
-	type="hidden" value="pct" /> <input name="id" type="hidden"
+<form id="addProject" action="processor.php" method="post"><input
+	name="project_filter" type="hidden" value="0" /> <input name="axAction"
+	type="hidden" value="add_edit_CustomerProjectActivity" /> <input name="axValue"
+	type="hidden" value="project" /> <input name="id" type="hidden"
 	value="{$id}" />
 
 
@@ -107,10 +107,10 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 
 <ul>
 
-	<li><label for="name">{$kga.lang.pct}:</label> <input type="text"
+	<li><label for="name">{$kga.lang.project}:</label> <input type="text"
 		name="name" id="focus" value="{$name|escape:'html'}" /></li>
 
-	<li><label for="customerID">{$kga.lang.knd}:</label> <select
+	<li><label for="customerID">{$kga.lang.customer}:</label> <select
 		class="formfield" name="customerID">
 		{html_options values=$customerIDs output=$customerNames
 		selected=$selectedCustomer}
@@ -139,7 +139,7 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 		value="{$myRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
 
-	<li><label for="fixedRate">{$kga.lang.fixed_rate}:</label> <input
+	<li><label for="fixedRate">{$kga.lang.fixedRate}:</label> <input
 		type="text" name="fixedRate"
 		value="{$fixedRate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}" />
 	</li>
@@ -161,10 +161,10 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 </ul>
 </fieldset>
 
-<fieldset id="evts"><!--            change after upgrade to smarty 3 -->
-<table class="eventsTable">
+<fieldset id="activities"><!--            change after upgrade to smarty 3 -->
+<table class="activitiesTable">
 	<tr>
-		<td><label for="activities" style="text-align: left;">{$kga.lang.evts}:</label>
+		<td><label for="activities" style="text-align: left;">{$kga.lang.activities}:</label>
 		</td>
 		<td><label for="budget" style="text-align: left;">{$kga.lang.budget}:</label>
 		</td>
@@ -175,14 +175,14 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 	</tr>
 	{if $selectedActivities != false && $selectedActivities|@count < $assignableTasks|@count} 
 	{php} 
-	$this->append("selectedActivities", array('evt_ID' => '')); 
+	$this->append("selectedActivities", array('activityID' => '')); 
 	{/php} 
 	{/if}
 	{foreach from=$selectedActivities item=selectedActivity}
 	<tr>
 		<td>
 		<ul>
-			<li><select class="events" class="formfield" name="assignedActivities[]"
+			<li><select class="activities" class="formfield" name="assignedActivities[]"
 				style="width: 200px">
 				<option value=""></option>
 				{html_options options=$assignableTasks selected=$selectedActivity.activityID}
@@ -206,18 +206,18 @@ $id}{$kga.lang.edit}: {$kga.lang.pct}{else}{$kga.lang.new_pct}{/if}</span>
 	<li><!--                        <label for="pct_grp" >{$kga.lang.groups}:</label>-->
 	<select class="formfield" id="projectGroups" name="projectGroups[]" multiple
 		size='5' style="width: 255px">
-		{html_options values=$sel_grp_IDs output=$sel_grp_names
-		selected=$grp_selection}
+		{html_options values=$groupIDs output=$groupNames
+		selected=$selectedGroups}
 	</select></li>
 </ul>
 </fieldset>
 {else} <input id="groups" name="groups[]" type="hidden"
-	value="{$grp_selection.0|escape:'html'}" /> {/if}
+	value="{$selectedGroup.0|escape:'html'}" /> {/if}
 
 <fieldset id="comment">
 <ul>
-	<li><label for="pct_comment">{$kga.lang.comment}:</label> <textarea
-		class='comment' name='pct_comment' cols='30' rows='5'>{$pct_comment|escape:'html'}</textarea>
+	<li><label for="projectComment">{$kga.lang.comment}:</label> <textarea
+		class='comment' name='projectComment' cols='30' rows='5'>{$projectComment|escape:'html'}</textarea>
 	</li>
 </ul>
 </fieldset>

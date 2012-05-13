@@ -30,36 +30,36 @@ require ("private_func.php");
 $filters = explode('|',$axValue);
 
 if ($filters[0] == "") {
-	$filterUsr = array();
+	$filterUsers = array();
 } else {
-	$filterUsr = explode(':',$filters[0]);
+	$filterUsers = explode(':',$filters[0]);
 }
 
 if ($filters[1] == "") {
-	$filterKnd = array();
+	$filterCustomers = array();
 } else {
-	$filterKnd = explode(':',$filters[1]);
+	$filterCustomers = explode(':',$filters[1]);
 }
 
 if ($filters[2] == "") {
-	$filterPct = array();
+	$filterProjects = array();
 } else {
-	$filterPct = explode(':',$filters[2]);
+	$filterProjects = explode(':',$filters[2]);
 }
 
 if (!isset($filters[3]) || $filters[3] == "") {
-	$filterEvt = array();
+	$filterActivities = array();
 } else {
-	$filterEvt = explode(':',$filters[3]);
+	$filterActivities = explode(':',$filters[3]);
 }
 
 // if no userfilter is set, set it to current user
-if (isset($kga['usr']) && count($filterUsr) == 0) {
-	array_push($filterUsr,$kga['usr']['userID']);
+if (isset($kga['user']) && count($filterUsers) == 0) {
+	array_push($filterUsers,$kga['user']['userID']);
 }
 
 if (isset($kga['customer'])) {
-	$filterKnd = array($kga['customer']['customerID']);
+	$filterCustomers = array($kga['customer']['customerID']);
 }
 
 // ==================
@@ -68,88 +68,88 @@ if (isset($kga['customer'])) {
 switch ($axAction)
 {
     // ===========================================
-    // = Filter the charts by projects and events =
+    // = Filter the charts by projects and activities =
     // ===========================================
     case 'reload':
-		// track which events we want to see, so we can exclude them when we create the plot
-		$eventsFilter = false;
+		// track which activities we want to see, so we can exclude them when we create the plot
+		$activitiesFilter = false;
 		$projectsFilter = false;
 		$customerFilter = false;
-		if (is_array($filterPct) && count($filterPct) > 0) {
-			$projectsFilter = $filterPct;
+		if (is_array($filterProjects) && count($filterProjects) > 0) {
+			$projectsFilter = $filterProjects;
 			$projectsSelected = $projectsFilter;
 		}
-		if (is_array($filterEvt) && count($filterEvt) > 0) {
-			$eventsFilter = $filterEvt;
-			$eventsSelected = $eventsFilter;
+		if (is_array($filterActivities) && count($filterActivities) > 0) {
+			$activitiesFilter = $filterActivities;
+			$activitiesSelected = $activitiesFilter;
 		}
 		// Get all project for the logged in customer or the current user.
 		if (isset($kga['customer'])) {
-			$arr_pct = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
-			$arr_evt = $database->get_arr_activities();
+			$projects = $database->get_arr_projects_by_customer(($kga['customer']['customerID']));
+			$activities = $database->get_arr_activities();
 			$customerValues = false;
 		}
 		else {
-			$arr_knd = $database->get_arr_customers($kga['usr']['groups']);
-			if (is_array($filterKnd) && count($filterKnd) > 0) {
-				$customerFilter = $filterKnd;
-				$arr_pct = array();
+			$customers = $database->get_arr_customers($kga['user']['groups']);
+			if (is_array($filterCustomers) && count($filterCustomers) > 0) {
+				$customerFilter = $filterCustomers;
+				$projects = array();
 				foreach ($customerFilter as $customerId) {
-					$arr_pct = array_merge($database->get_arr_projects_by_customer(($customerId), $arr_pct));
+					$projects = array_merge($database->get_arr_projects_by_customer(($customerId), $projects));
 				}
 			}
 			else {
-				$arr_pct = $database->get_arr_projects($kga['usr']['groups']);
+				$projects = $database->get_arr_projects($kga['user']['groups']);
 				// add all customers as selected
-				foreach($arr_knd as $customer) {
+				foreach($customers as $customer) {
 					$customerFilter[] = $customer['customerID'];
 				}
 			}
-			$arr_evt = $database->get_arr_activities($kga['usr']['groups']);
-			foreach ($arr_knd as $customer) {
+			$activities = $database->get_arr_activities($kga['user']['groups']);
+			foreach ($customers as $customer) {
 				$customerValues[] = $customer['customerID'];
 				$customerNames[] = $customer['name'];
 			}
 		}
-		if(is_array($arr_pct) && count($arr_pct) > 0) {
-			foreach ($arr_pct as $index => $project) {
+		if(is_array($projects) && count($projects) > 0) {
+			foreach ($projects as $index => $project) {
 				if ($projectsFilter === false) {
 					$projectsSelected[] = $project['projectID'];
 				}
 				$projectValues[] = $project['projectID'];
 				$projectNames[] = $project['name'];
-				$arr_pct[$index]['events'] = $database->get_arr_activities_by_project($project['projectID']);
+				$projects[$index]['activities'] = $database->get_arr_activities_by_project($project['projectID']);
 
-					foreach ($arr_pct[$index]['events'] as $index => $event) {
-						if ($eventsFilter === false) {
-							$eventsSelected[] = $event['activityID'];
+					foreach ($projects[$index]['activities'] as $index => $activity) {
+						if ($activitiesFilter === false) {
+							$activitiesSelected[] = $activity['activityID'];
 						}
-						$eventValues[] = $event['activityID'];
-						$eventNames[] = $event['name'];
+						$activityValues[] = $activity['activityID'];
+						$activityNames[] = $activity['name'];
 					}
 			}
 		}
 		$expensesOccured = false;
 		// If there are any projects create the plot data.
-		if (count($arr_pct) > 0) {
-			$arr_plotdata = budget_plot_data($arr_pct, $projectsSelected, $eventsSelected, $expensesOccured, $kga);
+		if (count($projects) > 0) {
+			$arr_plotdata = budget_plot_data($projects, $projectsSelected, $activitiesSelected, $expensesOccured, $kga);
 			$tpl->assign('javascript_arr_plotdata', json_encode($arr_plotdata));
 			$tpl->assign('arr_plotdata', $arr_plotdata);
-			$tpl->assign('arr_pct', $arr_pct);
-			$tpl->assign('arr_evt', $arr_evt);
+			$tpl->assign('projects', $projects);
+			$tpl->assign('activities', $activities);
 		}
 		else {
-			$tpl->assign('arr_pct', 0);
+			$tpl->assign('projects', 0);
 		}
-		$tpl->assign('knd_selected', $customerFilter);
-		$tpl->assign('pct_selected', $projectsSelected);
-		$tpl->assign('evt_selected', $eventsSelected);
-		$tpl->assign('pct_values', $projectValues);
-		$tpl->assign('evt_values', $eventValues);
-		$tpl->assign('knd_values', $customerValues);
-		$tpl->assign('pct_names', $projectNames);
-		$tpl->assign('knd_names', $customerNames);
-		$tpl->assign('evt_names', $eventNames);
+		$tpl->assign('customers_selected', $customerFilter);
+		$tpl->assign('projects_selected', $projectsSelected);
+		$tpl->assign('activities_selected', $activitiesSelected);
+		$tpl->assign('project_values', $projectValues);
+		$tpl->assign('activity_values', $activityValues);
+		$tpl->assign('customer_values', $customerValues);
+		$tpl->assign('project_names', $projectNames);
+		$tpl->assign('customer_names', $customerNames);
+		$tpl->assign('activity_names', $activityNames);
 
 		$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
 		$tpl->assign('chartColors', json_encode($chartColors));
@@ -157,35 +157,35 @@ switch ($axAction)
 		$keys = array();
 		$keys[] = array('color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
 		if ($expensesOccured)
-			$keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['xp_ext']['expenses']);
+			$keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
 		/*for ($i = 0; $i < count($usedEvents); $i++) {
 			$keys[] = array('color' => $chartColors[($i + 2) % (count($chartColors) - 1)], 'name' => $usedEvents[$i]['evt_name']);
 		}*/
-		// the event based charts only need numbers
+		// the activity based charts only need numbers
 		$tpl->assign('arr_keys', $keys);
 		$tpl->display("charts.tpl");
 
 		//if (is_array($_REQUEST['projects'])) {
 		//	// HERE ARE ONLY IDS!!!
 		//	$pcts = $_REQUEST['projects'];
-		//	if (is_array($_REQUEST['events'])) {
-		//		$evts = $_REQUEST['events'];
+		//	if (is_array($_REQUEST['activities'])) {
+		//		$evts = $_REQUEST['activities'];
 		//	}
 		//	else {
 		//		foreach ($pcts as $index => $project) {
-		//			$arr_pct[$index]['events'] = $database->get_arr_evt_by_pct($project);
+		//			$projects[$index]['activities'] = $database->get_activities_by_pct($project);
 		//		}
 		//	}
 		//}
-		//if (count($arr_pct) > 0) {
-		//	$arr_plotdata = budget_plot_data($arr_pct, $usedEvents, $expensesOccured, $kga);
+		//if (count($projects) > 0) {
+		//	$arr_plotdata = budget_plot_data($projects, $usedEvents, $expensesOccured, $kga);
 		//	$tpl->assign('javascript_arr_plotdata', json_encode($arr_plotdata));
 		//	$tpl->assign('arr_plotdata', $arr_plotdata);
-		//	$tpl->assign('arr_pct', $arr_pct);
-		//	$tpl->assign('arr_evt', $arr_evt);
+		//	$tpl->assign('projects', $projects);
+		//	$tpl->assign('activities', $activities);
 		//}
 		//else {
-		//	$tpl->assign('arr_pct', 0);
+		//	$tpl->assign('projects', 0);
 		//}
 		//$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
 		//$tpl->assign('chartColors', json_encode($chartColors));

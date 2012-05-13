@@ -23,9 +23,9 @@
 /**
  * Called when the extension loaded. Do some initial stuff.
  */
-function exp_ext_onload() {
-    exp_ext_applyHoverIntent2expRows();
-    exp_ext_resize();
+function expense_extension_onload() {
+    expense_extension_applyHoverIntent();
+    expense_extension_resize();
     $("#loader").hide();
     lists_visible(true);
 }
@@ -33,29 +33,29 @@ function exp_ext_onload() {
 /**
  * Update the dimension variables to reflect new height and width.
  */
-function exp_ext_get_dimensions() {
+function expense_extension_get_dimensions() {
     scroller_width = 17;
     if (navigator.platform.substr(0,3)=='Mac') {
         scroller_width = 16;
     }
 
-    (kndShrinkMode)?subtableCount=2:subtableCount=3;
+    (customerShrinkMode)?subtableCount=2:subtableCount=3;
     subtableWidth = (pageWidth()-10)/subtableCount-7 ;
     
-    exp_w = pageWidth()-24;
-    exp_h = pageHeight()-224-headerHeight()-28;
+    expenses_width = pageWidth()-24;
+    expenses_height = pageHeight()-224-headerHeight()-28;
 }
 
 /**
  * Hover a row if the mouse is over it for more than half a second.
  */
-function exp_ext_applyHoverIntent2expRows() {
-    $('#exp tr').hoverIntent({
+function expense_extension_applyHoverIntent() {
+    $('#expenses tr').hoverIntent({
         sensitivity: 1,
         interval: 500,
         over:
           function() { 
-              $('#exp tr').removeClass('hover');
+              $('#expenses tr').removeClass('hover');
               $(this).addClass('hover');},
         out:
           function() {
@@ -67,134 +67,134 @@ function exp_ext_applyHoverIntent2expRows() {
 /**
  * The window has been resized, we have to adjust to the new space.
  */
-function exp_ext_resize() {
-    exp_ext_set_tableWrapperWidths();
-    exp_ext_set_heightTop();
+function expense_extension_resize() {
+    expense_extension_set_tableWrapperWidths();
+    expense_extension_set_heightTop();
 }
 
 /**
  * Set width of table and faked table head.
  */
-function exp_ext_set_tableWrapperWidths() {
-    exp_ext_get_dimensions();
-    $("#exp_head,#exp").css("width",exp_w);
-    exp_ext_set_TableWidths();
+function expense_extension_set_tableWrapperWidths() {
+    expense_extension_get_dimensions();
+    $("#expenses_head,#expenses").css("width",expenses_width);
+    expense_extension_set_TableWidths();
 }
 
 /**
  * If the extension is being shrinked so the sublists are shown larger
  * adjust to that.
  */
-function exp_ext_set_heightTop() {
-    exp_ext_get_dimensions();
+function expense_extension_set_heightTop() {
+    expense_extension_get_dimensions();
     if (!extShrinkMode) {
-        $("#exp").css("height", exp_h);
+        $("#expenses").css("height", expenses_height);
     } else {
-        $("#exp").css("height", "70px");
+        $("#expenses").css("height", "70px");
     }
     
-    exp_ext_set_TableWidths();
+    expense_extension_set_TableWidths();
 }
 
 /**
  * Set the width of the table.
  */
-function exp_ext_set_TableWidths() {
-    exp_ext_get_dimensions();
+function expense_extension_set_TableWidths() {
+    expense_extension_get_dimensions();
     // set table widths   
-    ($("#exp").innerHeight()-$("#exp table").outerHeight()>0)?scr=0:scr=scroller_width; // width of exp table depending on scrollbar or not
-    $("#exp table").css("width",exp_w-scr);
-    $("div#exp > div > table > tbody > tr > td.refundable").css("width", $("#exp_head > table > tbody > tr > td.refundable").width());  
-    $("#exp_head > table > tbody > tr > td.time").css("width", $("div#exp > div > table > tbody > tr > td.time").width());
-    $("#exp_head > table > tbody > tr > td.value").css("width", $("div#exp > div > table > tbody > tr > td.value").width());
-    $("#exp_head > table > tbody > tr > td.refundable").css("width", $("div#exp > div > table > tbody > tr > td.refundable").width());
-    // stretch customer column in faked exp table head
-    $("#exp_head > table > tbody > tr > td.knd").css("width", $("div#exp > div > table > tbody > tr > td.knd").width());    
-    // stretch project column in faked exp table head
-    $("#exp_head > table > tbody > tr > td.pct").css("width", $("div#exp > div > table > tbody > tr > td.pct").width());
-    $("#exp_head > table > tbody > tr > td.designation").css("width", $("div#exp > div > table > tbody > tr > td.designation").width());
+    ($("#expenses").innerHeight()-$("#expenses table").outerHeight()>0)?scr=0:scr=scroller_width; // width of expenses table depending on scrollbar or not
+    $("#expenses table").css("width",expenses_width-scr);
+    $("div#expenses > div > table > tbody > tr > td.refundable").css("width", $("#expenses_head > table > tbody > tr > td.refundable").width());  
+    $("#expenses_head > table > tbody > tr > td.time").css("width", $("div#expenses > div > table > tbody > tr > td.time").width());
+    $("#expenses_head > table > tbody > tr > td.value").css("width", $("div#expenses > div > table > tbody > tr > td.value").width());
+    $("#expenses_head > table > tbody > tr > td.refundable").css("width", $("div#expenses > div > table > tbody > tr > td.refundable").width());
+    // stretch customer column in faked expenses table head
+    $("#expenses_head > table > tbody > tr > td.customer").css("width", $("div#expenses > div > table > tbody > tr > td.customer").width());    
+    // stretch project column in faked expenses table head
+    $("#expenses_head > table > tbody > tr > td.project").css("width", $("div#expenses > div > table > tbody > tr > td.project").width());
+    $("#expenses_head > table > tbody > tr > td.designation").css("width", $("div#expenses > div > table > tbody > tr > td.designation").width());
 }
 
-function exp_ext_triggerchange() {
-    $('#display_total').html(exp_total);
-    if (exp_tss_hook_flag) {
-        exp_ext_reload();
-        exp_chk_hook_flag = 0;
-        exp_chp_hook_flag = 0;
-        exp_che_hook_flag = 0;
+function expense_extension_triggerchange() {
+    $('#display_total').html(expenses_total);
+    if (expense_tss_hook_flag) {
+        expense_extension_reload();
+        expense_chk_hook_flag = 0;
+        expense_chp_hook_flag = 0;
+        expense_che_hook_flag = 0;
     }
-    if (exp_chk_hook_flag) {
-        exp_ext_triggerCHK();
-        exp_chp_hook_flag = 0;
-        exp_che_hook_flag = 0;
+    if (expense_chk_hook_flag) {
+        expense_extension_triggerCHK();
+        expense_chp_hook_flag = 0;
+        expense_che_hook_flag = 0;
     }
-    if (exp_chp_hook_flag) {
-        exp_ext_triggerCHP();
+    if (expense_chp_hook_flag) {
+        expense_extension_triggerCHP();
     }
-    if (exp_che_hook_flag) {
-        exp_ext_triggerCHE();
+    if (expense_che_hook_flag) {
+        expense_extension_triggerCHE();
     }
     
-    exp_tss_hook_flag = 0;
-    exp_rec_hook_flag = 0;
-    exp_stp_hook_flag = 0;
-    exp_chk_hook_flag = 0;
-    exp_chp_hook_flag = 0;
-    exp_che_hook_flag = 0;
+    expense_tss_hook_flag = 0;
+    expense_rec_hook_flag = 0;
+    expense_stp_hook_flag = 0;
+    expense_chk_hook_flag = 0;
+    expense_chp_hook_flag = 0;
+    expense_che_hook_flag = 0;
 }
 
-function exp_ext_triggerTSS() {
+function expense_extension_triggerTSS() {
     if ($('.ki_expenses').css('display') == "block") {
-        exp_ext_reload();
+        expense_extension_reload();
     } else {
-        exp_tss_hook_flag++;
+        expense_tss_hook_flag++;
     }
 }
 
-function exp_ext_triggerCHK() {
+function expense_extension_triggerCHK() {
     if ($('.ki_expenses').css('display') == "block") {
-        exp_ext_reload();
+        expense_extension_reload();
     } else {
-        exp_chk_hook_flag++;
+        expense_chk_hook_flag++;
     }
 }
 
-function exp_ext_triggerCHP() {
+function expense_extension_triggerCHP() {
     if ($('.ki_expenses').css('display') == "block") {
-        exp_ext_reload();
+        expense_extension_reload();
     } else {
-        exp_chp_hook_flag++;
+        expense_chp_hook_flag++;
     }
 }
 
-function exp_ext_triggerCHE() {
+function expense_extension_triggerCHE() {
     if ($('.ki_expenses').css('display') == "block") {
-        exp_ext_reload();
+        expense_extension_reload();
     } else {
-        exp_che_hook_flag++;
+        expense_che_hook_flag++;
     }
 }
 
 
 // ----------------------------------------------------------------------------------------
-// reloads timesheet, customer, project and event tables
+// reloads timesheet, customer, project and activity tables
 //
-function exp_ext_reload() {
-            $.post(exp_ext_path + "processor.php", { axAction: "reload_exp", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"), id: 0,
+function expense_extension_reload() {
+            $.post(expense_extension_path + "processor.php", { axAction: "reload_exp", axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"), id: 0,
                 first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000 },
                 function(data) { 
-                    $("#exp").html(data);
+                    $("#expenses").html(data);
                 
-                    // set exp table width
-                    ($("#exp").innerHeight()-$("#exp table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of exp table depending on scrollbar or not
-                    $("#exp table").css("width",exp_w-scr);
-                    // stretch refundable column in faked exp table head
-                    $("#exp_head > table > tbody > tr > td.refundable").css("width", $("div#exp > div > table > tbody > tr > td.refundable").width());
-                    // stretch customer column in faked exp table head
-                    $("#exp_head > table > tbody > tr > td.knd").css("width", $("div#exp > div > table > tbody > tr > td.knd").width());
-                    // stretch project column in faked exp table head
-                    $("#exp_head > table > tbody > tr > td.pct").css("width", $("div#exp > div > table > tbody > tr > td.pct").width());
-                    exp_ext_applyHoverIntent2expRows();
+                    // set expenses table width
+                    ($("#expenses").innerHeight()-$("#expenses table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of exp table depending on scrollbar or not
+                    $("#expenses table").css("width",expenses_width-scr);
+                    // stretch refundable column in faked expenses table head
+                    $("#expenses_head > table > tbody > tr > td.refundable").css("width", $("div#expenses > div > table > tbody > tr > td.refundable").width());
+                    // stretch customer column in faked expenses table head
+                    $("#expenses_head > table > tbody > tr > td.customer").css("width", $("div#expenses > div > table > tbody > tr > td.customer").width());
+                    // stretch project column in faked expenses table head
+                    $("#expenses_head > table > tbody > tr > td.project").css("width", $("div#expenses > div > table > tbody > tr > td.project").width());
+                    expense_extension_applyHoverIntent();
                 }
             );
 }
@@ -203,21 +203,21 @@ function exp_ext_reload() {
 // ----------------------------------------------------------------------------------------
 // delete a timesheet record immediately
 //
-function exp_quickdelete(id) {
-    $('#expEntry'+id+'>td>a').blur();
+function expense_quickdelete(id) {
+    $('#expensesEntry'+id+'>td>a').blur();
     
     if (confirmText != undefined) {
       var check = confirm(confirmText);
       if (check == false) return;
     }
     
-    $('#expEntry'+id+'>td>a').removeAttr('onClick');
-    $('#expEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
+    $('#expensesEntry'+id+'>td>a').removeAttr('onClick');
+    $('#expensesEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
     
-    $.post(exp_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
+    $.post(expense_extension_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
         function(data){
             if (data == 1) {
-                exp_ext_reload();
+                expense_extension_reload();
             } else {
                 alert("~~an error occured!~~")
             }
@@ -228,15 +228,15 @@ function exp_quickdelete(id) {
 // ----------------------------------------------------------------------------------------
 // edit a timesheet record
 //
-function exp_editRecord(id) {
-    floaterShow(exp_ext_path + "floaters.php","add_edit_record",0,id,600,300);
+function expense_editRecord(id) {
+    floaterShow(expense_extension_path + "floaters.php","add_edit_record",0,id,600,300);
 }
 
 // ----------------------------------------------------------------------------------------
 // shows comment line for expense entry
 //
-function exp_comment(id) {
-    $('#exp_c'+id).toggle();
+function comment(id) {
+    $('#expenses_c'+id).toggle();
     return false;
 }
 // ----------------------------------------------------------------------------------------
@@ -245,7 +245,7 @@ function exp_comment(id) {
 //
 //         $tpl->assign('pasteValue', date("d.m.Y - H:i:s",$kga['now']));
 //
-function exp_pasteNow(value) {
+function expense_pasteNow(value) {
     
     now = new Date();
 
@@ -267,10 +267,10 @@ function exp_pasteNow(value) {
 // ----------------------------------------------------------------------------------------
 // check if the input in the add_edit floater is valid and handle it appropriately
 //
-function exp_add_edit_validate() {
+function expense_add_edit_validate() {
     
-    if ($('#add_edit_exp_pct_ID').val() == undefined)
-      $('#exp_ext_form_add_edit_record .btn_ok').hide();
+    if ($('#add_edit_expense_project_ID').val() == undefined)
+      $('#expenses_ext_form_add_edit_record .btn_ok').hide();
     else
-      $('#exp_ext_form_add_edit_record .btn_ok').show();
+      $('#expenses_ext_form_add_edit_record .btn_ok').show();
 }

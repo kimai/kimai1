@@ -151,11 +151,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Assigns a customer to 1-n groups by adding entries to the cross table
   *
   * @param int $customerID     id of the customer to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   * @author ob/th
   */
-  public function assign_customerToGroups($customerID, $grp_array) {
+  public function assign_customerToGroups($customerID, $groupIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_customerToGroups');
         return false;
@@ -172,8 +172,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               return false;
       }
 
-      foreach ($grp_array as $current_grp) {
-          $values['groupID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+      foreach ($groupIDs as $groupID) {
+          $values['groupID'] = MySQL::SQLValue($groupID , MySQL::SQLVALUE_NUMBER);
           $values['customerID'] = MySQL::SQLValue($customerID      , MySQL::SQLVALUE_NUMBER);
           $query = MySQL::BuildSQLInsert($table, $values);
           $result = $this->conn->Query($query);
@@ -210,17 +210,17 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_grps = array();
+      $groupIDs = array();
       $counter     = 0;
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
 
       if ($this->conn->RowCount()) {
-          foreach ($rows as $current_grp) {
-              $return_grps[$counter] = $current_grp['groupID'];
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['groupID'];
               $counter++;
           }
-          return $return_grps;
+          return $groupIDs;
       } else {
           $this->logLastError('customer_get_groupIDs');
           return false;
@@ -263,7 +263,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values['internal']   = MySQL::SQLValue($data['internal']  , MySQL::SQLVALUE_NUMBER );
       $values['filter']     = MySQL::SQLValue($data['filter']    , MySQL::SQLVALUE_NUMBER );
 
-      $table = $this->kga['server_prefix']."pct";
+      $table = $this->kga['server_prefix']."projects";
       $result = $this->conn->InsertRow($table, $values);
 
       if (! $result) {
@@ -282,9 +282,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       if (isset($data['myRate'])) {
         if (is_numeric($data['myRate']))
-          $this->save_rate($this->kga['usr']['userID'],$projectID,NULL,$data['myRate']);
+          $this->save_rate($this->kga['user']['userID'],$projectID,NULL,$data['myRate']);
         else
-          $this->remove_rate($this->kga['usr']['userID'],$projectID,NULL);
+          $this->remove_rate($this->kga['user']['userID'],$projectID,NULL);
       }
 
       if (isset($data['fixedRate'])) {
@@ -321,7 +321,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $result_array = $this->conn->RowArray(0,MYSQL_ASSOC);
       $result_array['defaultRate'] = $this->get_rate(NULL,$projectID,NULL);
-      $result_array['myRate'] = $this->get_rate($this->kga['usr']['userID'],$projectID,NULL);
+      $result_array['myRate'] = $this->get_rate($this->kga['user']['userID'],$projectID,NULL);
       $result_array['fixedRate'] = $this->get_fixed_rate($projectID,NULL);
       return $result_array;
   }
@@ -372,9 +372,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
           if (isset($data['myRate'])) {
             if (is_numeric($data['myRate']))
-              $this->save_rate($this->kga['usr']['userID'],$projectID,NULL,$data['myRate']);
+              $this->save_rate($this->kga['user']['userID'],$projectID,NULL,$data['myRate']);
             else
-              $this->remove_rate($this->kga['usr']['userID'],$projectID,NULL);
+              $this->remove_rate($this->kga['user']['userID'],$projectID,NULL);
           }
 
           if (isset($data['fixedRate'])) {
@@ -403,11 +403,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Assigns a project to 1-n groups by adding entries to the cross table
   *
   * @param int $projectID        ID of the project to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   * @author ob/th
   */
-  public function assign_projectToGroups($projectID, $grp_array) {
+  public function assign_projectToGroups($projectID, $groupIDs) {
 
 
       if (! $this->conn->TransactionBegin()) {
@@ -426,9 +426,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               return false;
       }
 
-      foreach ($grp_array as $current_grp) {
+      foreach ($groupIDs as $groupID) {
 
-        $values['groupID']   = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+        $values['groupID']   = MySQL::SQLValue($groupID , MySQL::SQLVALUE_NUMBER);
         $values['projectID']   = MySQL::SQLValue($projectID      , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
@@ -468,17 +468,17 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_grps = array();
+      $groupIDs = array();
       $counter     = 0;
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
 
       if ($this->conn->RowCount()) {
-          foreach ($rows as $current_grp) {
-              $return_grps[$counter] = $current_grp['groupID'];
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['groupID'];
               $counter++;
           }
-          return $return_grps;
+          return $groupIDs;
       } else {
           return false;
       }
@@ -503,9 +503,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Adds a new event
+  * Adds a new activity
   *
-  * @param array $data   name, comment and other data of the new event
+  * @param array $data   name, comment and other data of the new activity
   * @return int          the activityID of the new project, false on failure
   * @author th
   */
@@ -537,9 +537,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       if (isset($data['myRate'])) {
         if (is_numeric($data['myRate']))
-          $this->save_rate($this->kga['usr']['userID'],NULL,$activityID,$data['myRate']);
+          $this->save_rate($this->kga['user']['userID'],NULL,$activityID,$data['myRate']);
         else
-          $this->remove_rate($this->kga['usr']['userID'],NULL,$activityID);
+          $this->remove_rate($this->kga['user']['userID'],NULL,$activityID);
       }
 
       if (isset($data['fixedRate'])) {
@@ -556,7 +556,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Returns the data of a certain task
   *
   * @param array $activityID  activityID of the project
-  * @return array         the event's data (name, comment etc) as array, false on failure
+  * @return array         the activity's data (name, comment etc) as array, false on failure
   * @author th
   */
   public function activity_get_data($activityID) {
@@ -573,17 +573,17 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result_array = $this->conn->RowArray(0,MYSQL_ASSOC);
 
       $result_array['defaultRate'] = $this->get_rate(NULL,NULL,$result_array['activityID']);
-      $result_array['myRate'] = $this->get_rate($this->kga['usr']['userID'],NULL,$result_array['activityID']);
+      $result_array['myRate'] = $this->get_rate($this->kga['user']['userID'],NULL,$result_array['activityID']);
       $result_array['fixedRate'] = $this->get_fixed_rate(NULL,$result_array['activityID']);
 
       return $result_array;
   }
 
   /**
-  * Edits an event by replacing its data by the new array
+  * Edits an activity by replacing its data by the new array
   *
   * @param array $activityID  activityID of the project to be edited
-  * @param array $data    name, comment and other new data of the event
+  * @param array $data    name, comment and other new data of the activity
   * @return boolean       true on success, false on failure
   * @author th
   */
@@ -626,9 +626,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
           if (isset($data['myRate'])) {
             if (is_numeric($data['myRate']))
-              $this->save_rate($this->kga['usr']['userID'],NULL,$activityID,$data['myRate']);
+              $this->save_rate($this->kga['user']['userID'],NULL,$activityID,$data['myRate']);
             else
-              $this->remove_rate($this->kga['usr']['userID'],NULL,$activityID);
+              $this->remove_rate($this->kga['user']['userID'],NULL,$activityID);
           }
 
           if (isset($data['fixedRate'])) {
@@ -654,14 +654,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Assigns an event to 1-n groups by adding entries to the cross table
+  * Assigns an activity to 1-n groups by adding entries to the cross table
   *
   * @param int $activityID         activityID of the project to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   * @author ob/th
   */
-  public function assign_activityToGroups($activityID, $grp_array) {
+  public function assign_activityToGroups($activityID, $groupIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_activityToGroups');
         return false;
@@ -678,8 +678,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($grp_array as $current_grp) {
-        $values['groupID'] = MySQL::SQLValue($current_grp , MySQL::SQLVALUE_NUMBER);
+      foreach ($groupIDs as $groupID) {
+        $values['groupID'] = MySQL::SQLValue($groupID , MySQL::SQLVALUE_NUMBER);
         $values['activityID'] = MySQL::SQLValue($activityID      , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
@@ -700,14 +700,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Assigns an event to 1-n projects by adding entries to the cross table
+  * Assigns an activity to 1-n projects by adding entries to the cross table
   *
-  * @param int $activityID         id of the event to which projects will be assigned
-  * @param array $pct_array    contains one or more projectIDs
+  * @param int $activityID         id of the activity to which projects will be assigned
+  * @param array $projectIDs    contains one or more projectIDs
   * @return boolean            true on success, false on failure
   * @author ob/th
   */
-  public function assign_activityToProjects($activityID, $pct_array) {
+  public function assign_activityToProjects($activityID, $projectIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_activityToProjects');
         return false;
@@ -724,8 +724,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($pct_array as $current_pct) {
-        $values['projectID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+      foreach ($projectIDs as $projectID) {
+        $values['projectID'] = MySQL::SQLValue($projectID , MySQL::SQLVALUE_NUMBER);
         $values['activityID'] = MySQL::SQLValue($activityID      , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
@@ -746,14 +746,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Assigns 1-n events to a project by adding entries to the cross table
+  * Assigns 1-n activities to a project by adding entries to the cross table
   *
-  * @param int $projectID         id of the project to which events will be assigned
-  * @param array $evt_array    contains one or more activityIDs
+  * @param int $projectID         id of the project to which activities will be assigned
+  * @param array $activityID    contains one or more activityIDs
   * @return boolean            true on success, false on failure
   * @author sl
   */
-  public function assign_projectToActivities($projectID, $evt_array) {
+  public function assign_projectToActivities($projectID, $activityID) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_projectToActivities');
         return false;
@@ -770,8 +770,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($evt_array as $current_evt) {
-        $values['activityID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+      foreach ($activityID as $activityID) {
+        $values['activityID'] = MySQL::SQLValue($activityID , MySQL::SQLVALUE_NUMBER);
         $values['projectID'] = MySQL::SQLValue($projectID      , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
@@ -792,7 +792,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns all the projects to which the event was assigned
+  * returns all the projects to which the activity was assigned
   *
   * @param array $activityID  activityID of the project
   * @return array         contains the IDs of the projects or false on error
@@ -809,23 +809,23 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_grps = array();
+      $groupIDs = array();
       $counter     = 0;
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
 
       if ($this->conn->RowCount()) {
-          foreach ($rows as $current_grp) {
-              $return_grps[$counter] = $current_grp['projectID'];
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['projectID'];
               $counter++;
           }
       }
-      return $return_grps;
+      return $groupIDs;
   }
 
   /**
    *
-   * update the data for event per project, which is budget, approved and effort
+   * update the data for activity per project, which is budget, approved and effort
    * @param integer $projectID
    * @param integer $activityID
    * @param array $data
@@ -862,10 +862,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns all the events which were assigned to a project
+  * returns all the activities which were assigned to a project
   *
   * @param integer $projectID  ID of the project
-  * @return array         contains the activityIDs of the events or false on error
+  * @return array         contains the activityIDs of the activities or false on error
   * @author sl
   */
   public function project_get_activities($projectID) {
@@ -884,7 +884,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_evts = array();
       $counter     = 0;
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
@@ -892,7 +891,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns all the groups of the given event
+  * returns all the groups of the given activity
   *
   * @param array $activityID  activityID of the project
   * @return array         contains the groupIDs of the groups or false on error
@@ -909,26 +908,26 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_grps = array();
+      $groupIDs = array();
       $counter     = 0;
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
 
       if ($this->conn->RowCount()) {
-          foreach ($rows as $current_grp) {
-              $return_grps[$counter] = $current_grp['groupID'];
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['groupID'];
               $counter++;
           }
-          return $return_grps;
+          return $groupIDs;
       } else {
           return false;
       }
   }
 
   /**
-  * deletes an event
+  * deletes an activity
   *
-  * @param array $activityID  activityID of the event
+  * @param array $activityID  activityID of the activity
   * @return boolean       true on success, false on failure
   * @author th
   */
@@ -948,11 +947,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * (counterpart to assign_customerToGroups)
   *
   * @param array $groupID      ID of the group to which the customers will be assigned
-  * @param array $knd_array    contains one or more IDs of customers
+  * @param array $customerIDs  contains one or more IDs of customers
   * @return boolean            true on success, false on failure
   * @author ob/th
   */
-  public function assign_groupToCustomers($groupID, $knd_array) {
+  public function assign_groupToCustomers($groupID, $customerIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_groupToCustomers');
         return false;
@@ -970,9 +969,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               return false;
       }
 
-      foreach ($knd_array as $current_knd) {
+      foreach ($customerIDs as $customerID) {
         $values['groupID']       = MySQL::SQLValue($groupID      , MySQL::SQLVALUE_NUMBER);
-        $values['customerID']       = MySQL::SQLValue($current_knd , MySQL::SQLVALUE_NUMBER);
+        $values['customerID']       = MySQL::SQLValue($customerID , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
 
@@ -993,14 +992,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * Assigns a group to 1-n projects by adding entries to the cross table
-  * (counterpart to assign_pct2grp)
+  * (counterpart to assign_projectToGroups)
   *
   * @param array $groupID        groupID of the group to which the projects will be assigned
-  * @param array $pct_array    contains one or more project IDs
+  * @param array $projectIDs    contains one or more project IDs
   * @return boolean            true on success, false on failure
   * @author ob
   */
-  public function assign_groupToProjects($groupID, $pct_array) {
+  public function assign_groupToProjects($groupID, $projectIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_groupToProjects');
         return false;
@@ -1017,9 +1016,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               return false;
       }
 
-      foreach ($pct_array as $current_pct) {
+      foreach ($projectIDs as $projectID) {
         $values['groupID'] = MySQL::SQLValue($groupID      , MySQL::SQLVALUE_NUMBER);
-        $values['projectID'] = MySQL::SQLValue($current_pct , MySQL::SQLVALUE_NUMBER);
+        $values['projectID'] = MySQL::SQLValue($projectID , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
 
@@ -1039,15 +1038,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Assigns a group to 1-n events by adding entries to the cross table
-  * (counterpart to assign_evt2grp)
+  * Assigns a group to 1-n activities by adding entries to the cross table
+  * (counterpart to assign_activityToGroups)
   *
-  * @param array $groupID        groupID of the group to which the events will be assigned
-  * @param array $evt_array    contains one or more activityIDs
+  * @param array $groupID        groupID of the group to which the activities will be assigned
+  * @param array $activityID    contains one or more activityIDs
   * @return boolean            true on success, false on failure
   * @author ob
   */
-  public function assign_groupToActivities($groupID, $evt_array) {
+  public function assign_groupToActivities($groupID, $activityID) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_groupToActivities');
         return false;
@@ -1064,9 +1063,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($evt_array as $current_evt) {
+      foreach ($activityID as $activityID) {
         $values['groupID'] = MySQL::SQLValue($groupID      , MySQL::SQLVALUE_NUMBER);
-        $values['activityID'] = MySQL::SQLValue($current_evt , MySQL::SQLVALUE_NUMBER);
+        $values['activityID'] = MySQL::SQLValue($activityID , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
 
@@ -1127,7 +1126,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * Returns the data of a certain user
   *
-  * @param array $userID  knd_id of the user
+  * @param array $userID  ID of the user
   * @return array         the user's data (username, email-address, status etc) as array, false on failure
   * @author th
   */
@@ -1233,7 +1232,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   public function user_get_preference($key,$userId=null) {
       if ($userId === null)
-        $userId = $this->kga['usr']['userID'];
+        $userId = $this->kga['user']['userID'];
 
       $table  = $this->kga['server_prefix']."preferences";
       $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
@@ -1262,7 +1261,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   public function user_get_preferences(array $keys,$userId=null) {
       if ($userId === null)
-        $userId = $this->kga['usr']['userID'];
+        $userId = $this->kga['user']['userID'];
 
       $table  = $this->kga['server_prefix']."preferences";
       $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
@@ -1299,7 +1298,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   public function user_get_preferences_by_prefix($prefix,$userId=null) {
       if ($userId === null)
-        $userId = $this->kga['usr']['userID'];
+        $userId = $this->kga['user']['userID'];
 
       $prefixLength = strlen($prefix);
 
@@ -1336,7 +1335,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   public function user_set_preferences(array $data,$prefix='',$userId=null) {
       if ($userId === null)
-        $userId = $this->kga['usr']['userID'];
+        $userId = $this->kga['user']['userID'];
 
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('user_set_preferences');
@@ -1362,11 +1361,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Assigns a leader to 1-n groups by adding entries to the cross table
   *
   * @param int $userID        userID of the group leader to whom the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   * @author ob
   */
-  public function assign_groupleaderToGroups($userID, $grp_array) {
+  public function assign_groupleaderToGroups($userID, $groupIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_groupleaderToGroups');
         return false;
@@ -1384,8 +1383,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($grp_array as $current_grp) {
-        $values['groupID']       = MySQL::SQLValue($current_grp, MySQL::SQLVALUE_NUMBER);
+      foreach ($groupIDs as $groupID) {
+        $values['groupID']       = MySQL::SQLValue($groupID, MySQL::SQLVALUE_NUMBER);
         $values['userID']   = MySQL::SQLValue($userID     , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
 
@@ -1410,14 +1409,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
   * Assigns a group to 1-n group leaders by adding entries to the cross table
-  * (counterpart to assign_ldr2grp)
+  * (counterpart to assign_groupleaderToGroups)
   *
   * @param array $groupID        groupID of the group to which the group leaders will be assigned
-  * @param array $ldr_array    contains one or more userIDs of the leaders)
+  * @param array $leaderIDs    contains one or more userIDs of the leaders)
   * @return boolean            true on success, false on failure
   * @author ob
   */
-  public function assign_groupToGroupleaders($groupID, $ldr_array) {
+  public function assign_groupToGroupleaders($groupID, $leaderIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_groupToGroupleaders');
         return false;
@@ -1435,9 +1434,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               return false;
       }
 
-      foreach ($ldr_array as $current_ldr) {
+      foreach ($leaderIDs as $leaderID) {
         $values['groupID']       = MySQL::SQLValue($groupID      , MySQL::SQLVALUE_NUMBER);
-        $values['userID']   = MySQL::SQLValue($current_ldr , MySQL::SQLVALUE_NUMBER);
+        $values['userID']   = MySQL::SQLValue($leaderID , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
 
         $result = $this->conn->Query($query);
@@ -1477,17 +1476,17 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_grps = array();
+      $groupIDs = array();
       $counter = 0;
 
       $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
 
       if ($this->conn->RowCount()) {
-          foreach ($rows as $current_grp) {
-              $return_grps[$counter] = $current_grp['groupID'];
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['groupID'];
               $counter++;
           }
-          return $return_grps;
+          return $groupIDs;
       } else {
           $this->logLastError('groupleader_get_groups');
           return false;
@@ -1515,7 +1514,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $return_ldrs = array();
+      $leaderIDs = array();
       $counter     = 0;
 
       $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -1524,10 +1523,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $this->conn->MoveFirst();
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
-              $return_ldrs[$counter] = $row->userID;
+              $leaderIDs[$counter] = $row->userID;
               $counter++;
           }
-          return $return_ldrs;
+          return $leaderIDs;
       } else {
           return array();
       }
@@ -1612,7 +1611,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $result = $this->conn->SelectRows($table, $filter);
 
       if (! $result) {
-        $this->logLastError('grp_count_data');
+        $this->logLastError('group_count_data');
         return false;
       }
 
@@ -1621,19 +1620,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
 
   /**
-  * Returns the number of zef with a certain status
+  * Returns the number of time sheet entries with a certain status
   *
   * @param integer $statusID   ID of the status
-  * @return int            		the number of zef with this status
+  * @return int            		the number of timesheet entries with this status
   * @author mo
   */
-  public function status_count_zef($statusID) {
+  public function status_timeSheetEntryCount($statusID) {
       $filter['status'] = MySQL::SQLValue($statusID, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
       $result = $this->conn->SelectRows($table, $filter);
 
       if (! $result) {
-        $this->logLastError('status_count_zef');
+        $this->logLastError('status_timeSheetEntryCount');
         return false;
       }
 
@@ -1791,15 +1790,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $table = $this->kga['server_prefix']."configuration";
       $result = $this->conn->SelectRows($table);
 
-      $var_data = array();
+      $config_data = array();
 
       $this->conn->MoveFirst();
       while (! $this->conn->EndOfSeek()) {
           $row = $this->conn->Row();
-          $var_data[$row->option] = $row->value;
+          $config_data[$row->option] = $row->value;
       }
 
-      return $var_data;
+      return $config_data;
   }
 
   /**
@@ -1844,7 +1843,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * Returns a list of IDs of all current recordings.
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array with all IDs of current recordings. This array will be empty if there are none.
   * @author sl
   */
@@ -1874,7 +1873,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * Returns the data of a certain time record
   *
   * @param array $timeEntryID  timeEntryID of the record
-  * @return array         the record's data (time, event id, project id etc) as array, false on failure
+  * @return array         the record's data (time, activity id, project id etc) as array, false on failure
   * @author th
   */
   public function timeSheet_get_data($timeEntryID) {
@@ -1882,22 +1881,22 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $timeEntryID = MySQL::SQLValue($timeEntryID, MySQL::SQLVALUE_NUMBER);
 	
-		$table = $this->getZefTable();
+		$table = $this->getTimeSheetTable();
 		$projectTable = $this->getProjectTable();
-		$eventTable = $this->getActivityTable();
+		$activityTable = $this->getActivityTable();
 		$customerTable = $this->getCustomerTable();
 		
-      	$select = "SELECT $table.*, $projectTable.pct_name AS pct_name, $customerTable.knd_name AS knd_name, $eventTable.evt_name AS evt_name, $customerTable.customerID AS customerID
+      	$select = "SELECT $table.*, $projectTable.name AS projectName, $customerTable.name AS customerName, $activityTable.name AS activityName, $customerTable.customerID AS customerID
       				FROM $table
                 	JOIN $projectTable USING(projectID)
                 	JOIN $customerTable USING(customerID)
-                	JOIN $eventTable USING(activityID)";
+                	JOIN $activityTable USING(activityID)";
 		
 		
       if ($timeEntryID) {
           $result = $this->conn->Query("$select WHERE timeEntryID = " . $timeEntryID);
       } else {
-          $result = $this->conn->Query("$select WHERE userID = ".$this->kga['usr']['userID']." ORDER BY timeEntryID DESC LIMIT 1");
+          $result = $this->conn->Query("$select WHERE userID = ".$this->kga['user']['userID']." ORDER BY timeEntryID DESC LIMIT 1");
       }
 
       if (! $result) {
@@ -1909,7 +1908,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * delete zef entry
+  * delete time sheet entry
   *
   * @param integer $id -> ID of record
   * @author th
@@ -1917,37 +1916,37 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   public function timeEntry_delete($id) {
 
       $filter["timeEntryID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-      $table = $this->getZefTable();
+      $table = $this->getTimeSheetTable();
       $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
 
  /**
-  * create zef entry
+  * create time sheet entry
   *
   * @param integer $id    ID of record
   * @param integer $data  array with record data
   * @author th
   * @FIXME alex - 	the $data of timeEntry_create & timeEntry_edit are hell different, WHY, WHY, WHY?
-  * 				to keep the API clean, added new function => zef_add_record
+  * 				to keep the API clean, added new function => timeEntry_add_record
   */
   public function timeEntry_create($data) {
       $data = $this->clean_data($data);
 
-      $values ['location']     =   MySQL::SQLValue( $data ['zlocation'] );
+      $values ['location']     =   MySQL::SQLValue( $data ['location'] );
       $values ['comment']      =   MySQL::SQLValue( $data ['comment'] );
       $values ['description']      =   MySQL::SQLValue( $data ['description'] );
-      if ($data ['trackingnr'] == '')
+      if ($data ['trackingNumber'] == '')
         $values ['trackingNumber'] = 'NULL';
       else
-        $values ['trackingNumber'] =   MySQL::SQLValue( $data ['trackingnr'] );
+        $values ['trackingNumber'] =   MySQL::SQLValue( $data ['trackingNumber'] );
       $values ['userID']        =   MySQL::SQLValue( $data ['userID']       , MySQL::SQLVALUE_NUMBER );
       $values ['projectID']        =   MySQL::SQLValue( $data ['projectID']       , MySQL::SQLVALUE_NUMBER );
       $values ['activityID']        =   MySQL::SQLValue( $data ['activityID']       , MySQL::SQLVALUE_NUMBER );
       $values ['commentType'] =   MySQL::SQLValue( $data ['commentType'] , MySQL::SQLVALUE_NUMBER );
-      $values ['start']           =   MySQL::SQLValue( $data ['in']           , MySQL::SQLVALUE_NUMBER );
-      $values ['end']          =   MySQL::SQLValue( $data ['out']          , MySQL::SQLVALUE_NUMBER );
-      $values ['duration']         =   MySQL::SQLValue( $data ['diff']         , MySQL::SQLVALUE_NUMBER );
+      $values ['start']           =   MySQL::SQLValue( $data ['start']           , MySQL::SQLVALUE_NUMBER );
+      $values ['end']          =   MySQL::SQLValue( $data ['end']          , MySQL::SQLVALUE_NUMBER );
+      $values ['duration']         =   MySQL::SQLValue( $data ['duration']         , MySQL::SQLVALUE_NUMBER );
       $values ['rate']         =   MySQL::SQLValue( $data ['rate']         , MySQL::SQLVALUE_NUMBER );
       $values ['cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
       $values ['budget']   	   =   MySQL::SQLValue($data ['budget']   	   , MySQL::SQLVALUE_NUMBER );
@@ -1955,7 +1954,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
 
-      $table = $this->getZefTable();
+      $table = $this->getTimeSheetTable();
       $success =  $this->conn->InsertRow($table, $values);
       if ($success)
         return  $this->conn->GetLastInsertID();
@@ -1967,7 +1966,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
 
   /**
-  * edit zef entry
+  * edit time sheet entry
   *
   * @param integer $id ID of record
   * @param array $data array with new record data
@@ -2102,14 +2101,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                   JOIN ${p}customers AS customer USING(customerID)
                   WHERE project.trash=0";
       else
-        $query = "SELECT project.*, customer.name AS customerName
+        $query = "SELECT DISTINCT project.*, customer.name AS customerName
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
                   WHERE ${p}groups_projects.groupID IN (".implode($groups,',').")
                     AND project.trash=0";
 
-      if ($this->kga['conf']['flip_pct_display'])
+      if ($this->kga['conf']['flip_project_display'])
         $query .= " ORDER BY project.visible DESC, customerName, name;";
       else
         $query .= " ORDER BY project.visible DESC, name, customerName;";
@@ -2155,7 +2154,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $customerID  = MySQL::SQLValue($customerID, MySQL::SQLVALUE_NUMBER);
       $p       = $this->kga['server_prefix'];
 
-      if ($this->kga['conf']['flip_pct_display']) {
+      if ($this->kga['conf']['flip_project_display']) {
           $sort = "customerName, name";
       } else {
           $sort = "name, customerName";
@@ -2169,7 +2168,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                     AND project.trash=0
                   ORDER BY $sort;";
       } else {
-        $query = "SELECT project.*, customer.name AS customerName
+        $query = "SELECT DISTINCT project.*, customer.name AS customerName
                   FROM ${p}proejcts AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
@@ -2211,16 +2210,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @param Array list of IDs of users to include
   * @param Array list of IDs of customers to include
   * @param Array list of IDs of projects to include
-  * @param Array list of IDs of events to include
+  * @param Array list of IDs of activities to include
   * @return Array list of where clauses to include in the query
   *
   */
-  public function zef_whereClausesFromFilters($users, $customers , $projects , $events ) {
+  public function timeSheet_whereClausesFromFilters($users, $customers , $projects , $activities ) {
 
       if (!is_array($users)) $users = array();
       if (!is_array($customers)) $customers = array();
       if (!is_array($projects)) $projects = array();
-      if (!is_array($events)) $events = array();
+      if (!is_array($activities)) $activities = array();
 
       for ($i = 0;$i<count($users);$i++)
         $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
@@ -2228,8 +2227,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
       for ($i = 0;$i<count($projects);$i++)
         $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-      for ($i = 0;$i<count($events);$i++)
-        $events[$i] = MySQL::SQLValue($events[$i], MySQL::SQLVALUE_NUMBER);
+      for ($i = 0;$i<count($activities);$i++)
+        $activities[$i] = MySQL::SQLValue($activities[$i], MySQL::SQLVALUE_NUMBER);
 
       $whereClauses = array();
 
@@ -2245,8 +2244,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         $whereClauses[] = "projectID in (".implode(',',$projects).")";
       }
 
-      if (count($events) > 0) {
-        $whereClauses[] = "activityID in (".implode(',',$events).")";
+      if (count($activities) > 0) {
+        $whereClauses[] = "activityID in (".implode(',',$activities).")";
       }
 
       return $whereClauses;
@@ -2255,7 +2254,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * returns timesheet for specific user as multidimensional array
   * @TODO: needs new comments
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @param integer $start start of timespace in unix seconds
   * @param integer $end end of timespace in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
@@ -2263,7 +2262,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return array
   * @author th
   */
-  public function get_arr_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+  public function get_arr_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
       if (!is_numeric($filterCleared)) {
         $filterCleared = $this->kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
       }
@@ -2275,7 +2274,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users, $customers, $projects, $events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
 
       if (isset($this->kga['customer']))
         $whereClauses[] = "${p}projects.internal = 0";
@@ -2306,8 +2305,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
       
       
-      $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, activity.name AS activityName,
-                        project.name AS projectName, project.comment AS projectComment, user.name AS userName ";
+      $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, customer.customerID as customerID, activity.name AS activityName,
+                        project.name AS projectName, project.comment AS projectComment, user.name AS userName, user.alias AS userAlias ";
       
       if($countOnly) {
       	$select = "SELECT COUNT(*) AS total";
@@ -2319,14 +2318,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                 Join ${p}projects AS project USING (projectID)
                 Join ${p}customers AS customer USING (customerID)
                 Join ${p}users AS user USING(userID)
-                Join ${p}statuses AS status ON status = statusID
+                Join ${p}statuses AS status ON timeSheet.status = statusID
                 Join ${p}activities AS activity USING(activityID) "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY start '.($reverse_order?'ASC ':'DESC ') . $limit.';';
       
-      $this->conn->Query($query);
-		
-      
+      $result = $this->conn->Query($query);
+
+      if ($result === false)
+        $this->logLastError('get_arr_timeSheet');
+
       if($countOnly)
       {
       	$this->conn->MoveFirst();
@@ -2385,7 +2386,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['comment']      = $row->comment;
               $arr[$i]['cleared']      = $row->cleared;
               $arr[$i]['commentType'] = $row->commentType;
-              $arr[$i]['alias']        = $row->alias;
+              $arr[$i]['userAlias']        = $row->userAlias;
               $arr[$i]['userName']         = $row->userName;
               $i++;
           }
@@ -2404,20 +2405,20 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * [name] username
   * </pre>
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array
   * @author th/kp
   */
   public function checkUser()
   {
-    if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
-        $kimai_usr = addslashes($_COOKIE['kimai_usr']);
+    if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+        $kimai_user = addslashes($_COOKIE['kimai_user']);
         $kimai_key = addslashes($_COOKIE['kimai_key']);
 
-		if ($this->get_seq($kimai_usr) != $kimai_key) {
+		if ($this->get_seq($kimai_user) != $kimai_key) {
 			kickUser();
 		} else {
-			return $this->checkUserInternal($kimai_usr);
+			return $this->checkUserInternal($kimai_user);
 		}
 	}
 	kickUser();
@@ -2428,13 +2429,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
    *
    * @author th/kp
    */
-  public function checkUserInternal($kimai_usr)
+  public function checkUserInternal($kimai_user)
   {
     $p = $this->kga['server_prefix'];
 
-	if (strncmp($kimai_usr, 'knd_', 4) == 0) {
-		$knd_name = MySQL::SQLValue(substr($kimai_usr,4));
-		$query = "SELECT customerID FROM ${p}customers WHERE name = $knd_name AND NOT trash = '1';";
+	if (strncmp($kimai_user, 'customer_', 4) == 0) {
+		$customerName = MySQL::SQLValue(substr($kimai_user,4));
+		$query = "SELECT customerID FROM ${p}customers WHERE name = $customerName AND NOT trash = '1';";
 		$this->conn->Query($query);
 		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
@@ -2445,13 +2446,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 	}
 	else
 	{
-		$query = "SELECT userID, status FROM ${p}users WHERE name = '$kimai_usr' AND active = '1' AND NOT trash = '1';";
+		$query = "SELECT userID, status FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
 		$this->conn->Query($query);
 		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
 		$userID   = $row['userID'];
 		$status  = $row['status']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
-		$name = $kimai_usr;
+		$name = $kimai_user;
 
 		if ($userID < 1) {
 			kickUser();
@@ -2460,7 +2461,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
 	// load configuration and language
 	$this->get_global_config();
-	if (strncmp($kimai_usr, 'knd_', 4) == 0) {
+	if (strncmp($kimai_user, 'customer_', 4) == 0) {
 		$this->get_customer_config($customerID);
 	} else {
 		$this->get_user_config($userID);
@@ -2472,13 +2473,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 		$this->kga['lang'] = array_replace_recursive($this->kga['lang'],include(WEBROOT.'language/'.$this->kga['language'].'.php'));
 	}
 
-	return (isset($this->kga['usr'])?$this->kga['usr']:null);
+	return (isset($this->kga['user'])?$this->kga['user']:null);
   }
 
   /**
   * write global configuration into $this->kga including defaults for user settings.
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   * @author th
   *
@@ -2500,8 +2501,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $this->kga['conf']['skin'] = 'standard';
     $this->kga['conf']['autoselection'] = 1;
     $this->kga['conf']['quickdelete'] = 0;
-    $this->kga['conf']['flip_pct_display'] = 0;
-    $this->kga['conf']['pct_comment_flag'] = 0;
+    $this->kga['conf']['flip_project_display'] = 0;
+    $this->kga['conf']['project_comment_flag'] = 0;
     $this->kga['conf']['showIDs'] = 0;
     $this->kga['conf']['noFading'] = 0;
     $this->kga['conf']['lang'] = '';
@@ -2547,7 +2548,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * write details of a specific user into $this->kga
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   * @author th
   *
@@ -2580,10 +2581,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $this->conn->SelectRows($table, $filter, $columns);
     $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
     foreach($rows as $key => $value) {
-        $this->kga['usr'][$key] = $value;
+        $this->kga['user'][$key] = $value;
     }
 
-    $this->kga['usr']['groups'] = $this->getGroupMemberships($user);
+    $this->kga['user']['groups'] = $this->getGroupMemberships($user);
 
     // get values from user configuration (user-preferences)
     unset($columns);
@@ -2600,7 +2601,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * write details of a specific customer into $this->kga
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   * @author sl
   *
@@ -2660,13 +2661,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * returns time summary of current timesheet
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @param integer $start start of timespace in unix seconds
   * @param integer $end end of timespace in unix seconds
   * @return integer
   * @author th
   */
-  public function get_duration($start,$end,$users = null, $customers = null, $projects = null, $events = null,$filterCleared = null) {
+  public function get_duration($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$filterCleared = null) {
       if (!is_numeric($filterCleared)) {
         $filterCleared = $this->kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
       }
@@ -2676,7 +2677,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
 
       if ($start)
         $whereClauses[]="end > $start";
@@ -2695,28 +2696,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $this->conn->MoveFirst();
       $sum = 0;
-      $start = 0;
-      $end = 0;
+      $consideredStart = 0; // Consider start of selected range if real start is before
+      $consideredEnd = 0; // Consider end of selected range if real end is afterwards
       while (! $this->conn->EndOfSeek()) {
         $row = $this->conn->Row();
         if ($row->start <= $start && $row->end < $end)  {
-          $start  = $start;
-          $end = $row->end;
+          $consideredStart  = $start;
+          $consideredEnd = $row->end;
         }
         else if ($row->start <= $start && $row->end >= $end)  {
-          $start  = $start;
-          $end = $end;
+          $consideredStart  = $start;
+          $consideredEnd = $end;
         }
         else if ($row->start > $start && $row->end < $end)  {
-          $start  = $row->start;
-          $end = $row->end;
+          $consideredStart  = $row->start;
+          $consideredEnd = $row->end;
         }
         else if ($row->start > $start && $row->end >= $end)  {
-          $start  = $row->start;
-          $end = $end;
+          $consideredStart  = $row->start;
+          $consideredEnd = $end;
         }
-        $sum+=(int)($end - $start);
-
+        $sum+=(int)($consideredEnd - $consideredStart);
+        error_log($sum);
       }
       return $sum;
   }
@@ -2724,7 +2725,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * returns list of customers in a group as array
   *
-  * @param integer $group ID of group in table grp or "all" for all groups
+  * @param integer $group ID of group in table groups or "all" for all groups
   * @return array
   * @author th
   */
@@ -2737,7 +2738,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               WHERE trash=0
               ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT customerID, name, contact, visible
+          $query = "SELECT DISTINCT customerID, name, contact, visible
               FROM ${p}customers
               JOIN ${p}groups_customers AS g_c USING (customerID)
               WHERE g_c.groupID IN (".implode($groups,',').")
@@ -2769,7 +2770,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
   }
 
-  ## Load into Array: Events
+  ## Load into Array: Activities
   public function get_arr_activities(array $groups = null) {
   $p = $this->kga['server_prefix'];
 
@@ -2779,7 +2780,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               WHERE trash=0
               ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT activityID, name, visible, assignable
+          $query = "SELECT DISTINCT activityID, name, visible, assignable
               FROM ${p}activities
               JOIN ${p}groups_activities AS g_a USING(activityID)
               WHERE g_a.groupID IN (".implode($groups,',').")
@@ -2812,21 +2813,21 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Get an array of events, which should be displayed for a specific project.
-  * Those are events which were assigned to the project or which are assigned to
+  * Get an array of activities, which should be displayed for a specific project.
+  * Those are activities which were assigned to the project or which are assigned to
   * no project.
   *
   * Two joins can occur:
-  *  The JOIN is for filtering the events by groups.
+  *  The JOIN is for filtering the activities by groups.
   *
-  *  The LEFT JOIN gives each event row the project id which it has been assigned
-  *  to via the pct_evt table or NULL when there is no assignment. So we only
+  *  The LEFT JOIN gives each activity row the project id which it has been assigned
+  *  to via the projects_activities table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
   *
   *  @author sl
   */
-  public function get_arr_activities_by_project($pct, array $groups = null) {
-      $pct = MySQL::SQLValue($pct , MySQL::SQLVALUE_NUMBER);
+  public function get_arr_activities_by_project($projectID, array $groups = null) {
+      $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
 
       $p = $this->kga['server_prefix'];
 
@@ -2835,16 +2836,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
             FROM ${p}activities AS activity
             LEFT JOIN ${p}projects_activities USING(activityID)
             WHERE activity.trash=0
-              AND (projectID = $pct OR projectID IS NULL)
+              AND (projectID = $projectID OR projectID IS NULL)
             ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT activity.*
+          $query = "SELECT DISTINCT activity.*
             FROM ${p}activities AS activity
             JOIN ${p}groups_activities USING(activityID)
             LEFT JOIN ${p}projects_activities USING(activityID)
             WHERE `${p}groups_activities`.`groupID`  IN (".implode($groups,',').")
               AND activity.trash=0
-              AND (projectID = $pct OR projectID IS NULL)
+              AND (projectID = $projectID OR projectID IS NULL)
             ORDER BY visible DESC, name;";
       }
 
@@ -2873,7 +2874,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns list of events used with specified customer
+  * returns list of activities used with specified customer
   *
   * @param integer $customer filter for only this ID of a customer
   * @return array
@@ -2884,7 +2885,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $customer_ID = MySQL::SQLValue($customer_ID , MySQL::SQLVALUE_NUMBER);
 
-      $query = "SELECT activityID, name, visible
+      $query = "SELECT DISTINCT activityID, name, visible
           FROM ${p}activities
           WHERE activityID IN
               (SELECT activityID FROM ${p}timeSheet
@@ -2916,7 +2917,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns time of currently running event recording as array
+  * returns time of currently running activity recording as array
   *
   * result is meant as params for the stopwatch if the window is reloaded
   *
@@ -2928,15 +2929,15 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * [sec]
   * </pre>
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array
   * @author th
   */
   public function get_current_timer() {
-      $user  = MySQL::SQLValue($this->kga['usr']['userID'] , MySQL::SQLVALUE_NUMBER);
+      $user  = MySQL::SQLValue($this->kga['user']['userID'] , MySQL::SQLVALUE_NUMBER);
     $p     = $this->kga['server_prefix'];
 
-      $this->conn->Query("SELECT timeEntryID, start FROM ${p}zef WHERE userID = $user AND end = 0;");
+      $this->conn->Query("SELECT timeEntryID, start FROM ${p}timeSheet WHERE userID = $user AND end = 0;");
 
       if ($this->conn->RowCount() == 0) {
           $current_timer['all']  = 0;
@@ -3007,16 +3008,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * returns the key for the session of a specific user
   *
-  * the key is both stored in the database (usr table) and a cookie on the client.
+  * the key is both stored in the database (users table) and a cookie on the client.
   * when the keys match the user is allowed to access the Kimai GUI.
   * match test is performed via public function userCheck()
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return string
   * @author th
   */
   public function get_seq($user) {
-      if (strncmp($user, 'knd_', 4) == 0) {
+      if (strncmp($user, 'customer_', 4) == 0) {
         $filter['name'] = MySQL::SQLValue(substr($user,4));
         $table = $this->getCustomerTable();
       }
@@ -3078,7 +3079,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       foreach($rows as $row) {
           $arr[] = $row;
-          $arr[$i]['count_zef'] = $this->status_count_zef($row['statusID']);
+          $arr[$i]['timeSheetEntryCount'] = $this->status_timeSheetEntryCount($row['statusID']);
           $i++;
       }
 
@@ -3164,18 +3165,18 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   *
   * [0]=> array(6) {
   *      ["groupID"]      =>  string(1) "1"
-  *      ["grp_name"]    =>  string(5) "admin"
+  *      ["groupName"]    =>  string(5) "admin"
   *      ["userID"]  =>  string(9) "1234"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
   *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
   *      ["groupID"]      =>  string(1) "2"
-  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["groupName"]    =>  string(4) "Test"
   *      ["userID"]  =>  string(9) "12345"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
   *      ["leader_name"] =>  string(7) "user2"
   *  }
@@ -3218,14 +3219,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
           // append leader array
           $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $ldr_name_array = array();
+          $leaderNames = array();
           $j = 0;
           foreach ($userID_array as $userID) {
-              $ldr_name_array[$j] = $this->user_IDToName($userID);
+              $leaderNames[$j] = $this->userIDToName($userID);
               $j++;
           }
 
-          $groups[$i]['leader_name'] = $ldr_name_array;
+          $groups[$i]['leader_name'] = $leaderNames;
 
           $i++;
       }
@@ -3248,18 +3249,18 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   *
   * [0]=> array(6) {
   *      ["groupID"]      =>  string(1) "1"
-  *      ["grp_name"]    =>  string(5) "admin"
+  *      ["groupName"]    =>  string(5) "admin"
   *      ["userID"]  =>  string(9) "1234"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
   *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
   *      ["groupID"]      =>  string(1) "2"
-  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["groupName"]    =>  string(4) "Test"
   *      ["userID"]  =>  string(9) "12345"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
   *      ["leader_name"] =>  string(7) "user2"
   *  }
@@ -3310,14 +3311,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
           // append leader array
           $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $ldr_name_array = array();
+          $leaderNames = array();
           $j = 0;
           foreach ($userID_array as $userID) {
-              $ldr_name_array[$j] = $this->user_IDToName($userID);
+              $leaderNames[$j] = $this->userIDToName($userID);
               $j++;
           }
 
-          $groups[$i]['leader_name'] = $ldr_name_array;
+          $groups[$i]['leader_name'] = $leaderNames;
 
           $i++;
       }
@@ -3442,7 +3443,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * return ID of specific user named 'XXX'
   *
-  * @param integer $name name of user in table usr
+  * @param integer $name name of user in table users
   * @return id of the customer
   */
   public function customer_nameToID($name) {
@@ -3452,7 +3453,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * return ID of specific user named 'XXX'
   *
-  * @param integer $name name of user in table usr
+  * @param integer $name name of user in table users
   * @return string
   * @author th
   */
@@ -3489,14 +3490,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return int
   * @author th
   */
-  public function user_IDToName($id) {
+  public function userIDToName($id) {
       $filter ['userID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $columns[] = "name";
       $table = $this->kga['server_prefix']."users";
 
       $result = $this->conn->SelectRows($table, $filter, $columns);
       if ($result == false) {
-          $this->logLastError('user_IDToName');
+          $this->logLastError('userIDToName');
           return false;
       }
 
@@ -3535,7 +3536,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   /**
   * returns list of users the given user can watch
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array
   * @author sl
   */
@@ -3575,19 +3576,19 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   *
   * @param integer $start from this timestamp
   * @param integer $end to this  timestamp
-  * @param integer $user ID of user in table usr
-  * @param integer $customer ID of customer in table knd
-  * @param integer $project ID of project in table pct
+  * @param integer $user ID of user in table users
+  * @param integer $customer ID of customer in table customers
+  * @param integer $project ID of project in table projects
   * @return array
   * @author sl
   */
-  public function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null, $events = null) {
+  public function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null) {
       $start    = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
       $end   = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
 
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
       $whereClauses[] = "${p}users.trash=0";
 
       if ($start)
@@ -3613,32 +3614,32 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if (!$rows) return array();
 
       $arr = array();
-      $start = 0;
-      $end = 0;
+      $consideredStart = 0;
+      $consideredEnd = 0;
       foreach($rows as $row) {
         if ($row['start'] <= $start && $row['end'] < $end)  {
-          $start  = $start;
-          $end = $row['end'];
+          $consideredStart  = $start;
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] <= $start && $row['end'] >= $end)  {
-          $start  = $start;
-          $end = $end;
+          $consideredStart  = $start;
+          $consideredEnd = $end;
         }
         else if ($row['start'] > $start && $row['end'] < $end)  {
-          $start  = $row['start'];
-          $end = $row['end'];
+          $consideredStart  = $row['start'];
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] > $start && $row['end'] >= $end)  {
-          $start  = $row['start'];
-          $end = $end;
+          $consideredStart  = $row['start'];
+          $consideredEnd = $end;
         }
 
         if (isset($arr[$row['userID']])) {
-          $arr[$row['userID']]['time']  += (int)($end - $start);
+          $arr[$row['userID']]['time']  += (int)($consideredEnd - $consideredStart);
           $arr[$row['userID']]['costs'] += (double)$row['costs'];
         }
         else  {
-          $arr[$row['userID']]['time']  = (int)($end - $start);
+          $arr[$row['userID']]['time']  = (int)($consideredEnd - $consideredStart);
           $arr[$row['userID']]['costs'] = (double)$row['costs'];
         }
       }
@@ -3657,13 +3658,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return array
   * @author sl
   */
-  public function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $events = null) {
+  public function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null) {
       $start    = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
       $end   = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
 
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
       $whereClauses[] = "${p}customers.trash=0";
 
       if ($start)
@@ -3687,32 +3688,32 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if (!$rows) return array();
 
       $arr = array();
-      $start = 0;
-      $end = 0;
+      $consideredStart = 0;
+      $consideredEnd = 0;
       foreach ($rows as $row) {
         if ($row['start'] <= $start && $row['end'] < $end)  {
-          $start  = $start;
-          $end = $row['end'];
+          $consideredStart  = $start;
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] <= $start && $row['end'] >= $end)  {
-          $start  = $start;
-          $end = $end;
+          $consideredStart  = $start;
+          $consideredEnd = $end;
         }
         else if ($row['start'] > $start && $row['end'] < $end)  {
-          $start  = $row['start'];
-          $end = $row['end'];
+          $consideredStart  = $row['start'];
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] > $start && $row['end'] >= $end)  {
-          $start  = $row['start'];
-          $end = $end;
+          $consideredStart  = $row['start'];
+          $consideredEnd = $end;
         }
 
         if (isset($arr[$row['customerID']])) {
-          $arr[$row['customerID']]['time']  += (int)($end - $start);
+          $arr[$row['customerID']]['time']  += (int)($consideredEnd - $consideredStart);
           $arr[$row['customerID']]['costs'] += (double)$row['costs'];
         }
         else {
-          $arr[$row['customerID']]['time']  = (int)($end - $start);
+          $arr[$row['customerID']]['time']  = (int)($consideredEnd - $consideredStart);
           $arr[$row['customerID']]['costs'] = (double)$row['costs'];
         }
       }
@@ -3731,13 +3732,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return array
   * @author sl
   */
-  public function get_arr_time_projects($start,$end,$users = null, $customers = null, $projects = null,$events = null) {
+  public function get_arr_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null) {
       $start    = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
       $end   = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
 
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
       $whereClauses[] = "${p}projects.trash=0";
 
       if ($start)
@@ -3760,32 +3761,32 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if (!$rows) return array();
 
       $arr = array();
-      $start = 0;
-      $end = 0;
+      $consideredStart = 0;
+      $consideredEnd = 0;
       foreach ($rows as $row) {
         if ($row['start'] <= $start && $row['end'] < $end)  {
-          $start  = $start;
-          $end = $row['end'];
+          $consideredStart  = $start;
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] <= $start && $row['end'] >= $end)  {
-          $start  = $start;
-          $end = $end;
+          $consideredStart  = $start;
+          $consideredEnd = $end;
         }
         else if ($row['start'] > $start && $row['end'] < $end)  {
-          $start  = $row['start'];
-          $end = $row['end'];
+          $consideredStart  = $row['start'];
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] > $start && $row['end'] >= $end)  {
-          $start  = $row['start'];
-          $end = $end;
+          $consideredStart  = $row['start'];
+          $consideredEnd = $end;
         }
 
         if (isset($arr[$row['projectID']])) {
-          $arr[$row['projectID']]['time']  += (int)($end - $start);
+          $arr[$row['projectID']]['time']  += (int)($consideredEnd - $consideredStart);
           $arr[$row['projectID']]['costs'] += (double)$row['costs'];
         }
         else {
-          $arr[$row['projectID']]['time']  = (int)($end - $start);
+          $arr[$row['projectID']]['time']  = (int)($consideredEnd - $consideredStart);
           $arr[$row['projectID']]['costs'] = (double)$row['costs'];
         }
       }
@@ -3793,7 +3794,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns list of time summary attached to event ID's within specific timespace as array
+  * returns list of time summary attached to activity ID's within specific timespace as array
   *
   * @param integer $start start time in unix seconds
   * @param integer $end end time in unix seconds
@@ -3803,13 +3804,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return array
   * @author sl
   */
-  public function get_arr_time_activities($start,$end,$users = null, $customers = null, $projects = null, $events = null) {
+  public function get_arr_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null) {
       $start    = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
       $end   = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
 
       $p     = $this->kga['server_prefix'];
 
-      $whereClauses = $this->zef_whereClausesFromFilters($users,$customers,$projects,$events);
+      $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
       $whereClauses[] = "${p}activities.trash = 0";
 
       if ($start)
@@ -3833,28 +3834,28 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       if (!$rows) return array();
 
       $arr = array();
-      $start = 0;
-      $end = 0;
+      $consideredStart = 0;
+      $consideredEnd = 0;
       foreach ($rows as $row) {
         if ($row['start'] <= $start && $row['end'] < $end)  {
-          $start  = $start;
-          $end = $row['end'];
+          $consideredStart  = $start;
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] <= $start && $row['end'] >= $end)  {
-          $start  = $start;
-          $end = $end;
+          $consideredStart  = $start;
+          $consideredEnd = $end;
         }
         else if ($row['start'] > $start && $row['end'] < $end)  {
-          $start  = $row['start'];
-          $end = $row['end'];
+          $consideredStart  = $row['start'];
+          $consideredEnd = $row['end'];
         }
         else if ($row['start'] > $start && $row['end'] >= $end)  {
-          $start  = $row['start'];
-          $end = $end;
+          $consideredStart  = $row['start'];
+          $consideredEnd = $end;
         }
 
         if (isset($arr[$row['activityID']])) {
-          $arr[$row['activityID']]['time']  += (int)($end - $start);
+          $arr[$row['activityID']]['time']  += (int)($consideredEnd - $consideredStart);
           $arr[$row['activityID']]['costs'] += (double)$row['costs'];
         }
         else {
@@ -3976,7 +3977,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Query the database for the best fitting rate for the given user, project and event.
+  * Query the database for the best fitting rate for the given user, project and activity.
   *
   * @author sl
   */
@@ -4010,7 +4011,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Query the database for all fitting rates for the given user, project and event.
+  * Query the database for all fitting rates for the given user, project and activity.
   *
   * @author sl
   */
@@ -4099,23 +4100,23 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
   /**
    *
-   * get the whole budget used for the event
+   * get the whole budget used for the activity
    * @param integer $projectID
    * @param integer $activityID
    */
   public function get_budget_used($projectID,$activityID) {
-  	$zefs = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+  	$timeSheet = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
   	$budgetUsed = 0;
-  	if(is_array($zefs)) {
-	  	foreach($zefs as $zef) {
-	  		$budgetUsed+= $zef['wage_decimal'];
+  	if(is_array($timeSheet)) {
+	  	foreach($timeSheet as $timeSheetEntry) {
+	  		$budgetUsed+= $timeSheetEntry['wage_decimal'];
 	  	}
   	}
   	return $budgetUsed;
   }
 
   /**
-  * Read event budgets
+  * Read activity budgets
   *
   * @author mo
   */
@@ -4137,10 +4138,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     }
     $data = $this->conn->rowArray(0,MYSQL_ASSOC);
 
-  	$zefs = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
-  	foreach($zefs as $zef) {
-    	$data['budget']+= $zef['budget'];
-    	$data['approved']+= $zef['approved'];
+  	$timeSheet = $this->get_arr_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+  	foreach($timeSheet as $timeSheetEntry) {
+    	$data['budget']+= $timeSheetEntry['budget'];
+    	$data['approved']+= $timeSheetEntry['approved'];
   	}
     return $data;
   }
@@ -4171,7 +4172,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Query the database for the best fitting fixed rate for the given user, project and event.
+  * Query the database for the best fitting fixed rate for the given user, project and activity.
   *
   * @author sl
   */
@@ -4203,7 +4204,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * Query the database for all fitting fixed rates for the given user, project and event.
+  * Query the database for all fitting fixed rates for the given user, project and activity.
   *
   * @author sl
   */
@@ -4302,16 +4303,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
   
   /**
-   * checks if given $eventId exists in the db
+   * checks if given $activityId exists in the db
    * 
-   * @param int $eventId
+   * @param int $activityId
    * @return bool
    */
-  public function isValidActivityId($eventId)
+  public function isValidActivityId($activityId)
   {
   	
   	$table = $this->getActivityTable();
-	$filter = array('activityID' => $eventId, 'trash' => 0);
+	$filter = array('activityID' => $activityId, 'trash' => 0);
 	return $this->rowExists($table, $filter);
   }
   

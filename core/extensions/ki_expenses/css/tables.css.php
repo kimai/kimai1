@@ -40,7 +40,7 @@ div.ki_expenses tr.odd td
 /*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
-#exp_head td {padding: 3px 4px 4px 6px;}
+#expenses_head td {padding: 3px 4px 4px 6px;}
 
 div.ki_expenses tr.hover td {
     background: #FFC !important;
@@ -56,16 +56,16 @@ div.ki_expenses tr.odd td {
     background: #EEE;
 }
 
-div#exptable tr td.time {
+div#expensestable tr td.time {
     border-bottom:1px dotted white;;
 }
 
 
-div#exptable tr.even td.value {
+div#expensestable tr.even td.value {
     background: #A4E7A5;
 }
 
-div#exptable tr.odd td.value {
+div#expensestable tr.odd td.value {
     background: #64BF61;
 }
 
@@ -79,44 +79,44 @@ div.ki_expenses a {
     margin: 0 3px;
 }
 
-div.ki_expenses>div#exp>div#exptable>table>tbody>tr>td.evt {
+div.ki_expenses>div#expenses>div#expensestable>table>tbody>tr>td.activity {
     border-right: none;
 }
 
 
-#exp_head td { white-space:nowrap; }
+#expenses_head td { white-space:nowrap; }
 
-#exp_head td.option,
-#exp td.option
+#expenses_head td.option,
+#expenses td.option
 {
     width:70px;
 }
 
-#exp_head td.date,
-#exp td.date
+#expenses_head td.date,
+#expenses td.date
 {
     width:50px;
 }
 
-#exp_head td.time,
-#exp td.time
+#expenses_head td.time,
+#expenses td.time
 {
     width:40px;
 }
 
-#exp_head td.value,
-#exp td.value
+#expenses_head td.value,
+#expenses td.value
 {
     width:40px;
 }
 
-#exp_head td.designation,
-#exp td.designation
+#expenses_head td.designation,
+#expenses td.designation
 {
     min-width:20px;
 }
 
-div#exp_head div.left
+div#expenses_head div.left
 { 
     position:absolute;
     overflow:hidden;
@@ -126,7 +126,7 @@ div#exp_head div.left
     left:3px;
 }
 
-div#exp_head div.left a
+div#expenses_head div.left a
 { 
     background-image: url('<?php echo $add; ?>');
     overflow:hidden;
@@ -136,7 +136,7 @@ div#exp_head div.left a
     text-indent:-500px;
 }
 
-div#exp_head td {padding: 3px 4px 4px 6px;}
+div#expenses_head td {padding: 3px 4px 4px 6px;}
 
 
 

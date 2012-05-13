@@ -99,7 +99,7 @@ abstract class DatabaseLayer {
   }
 
 
-  public function getZefTable()
+  public function getTimeSheetTable()
   {
   	return $this->kga['server_prefix'].'timeSheet';
   }
@@ -141,10 +141,10 @@ abstract class DatabaseLayer {
   * Assigns a customer to 1-n groups by adding entries to the cross table
   *
   * @param int $customerID     id of the customer to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_customerToGroups($customerID, $grp_array);
+  public abstract function assign_customerToGroups($customerID, $groupIDs);
 
   /**
   * returns all IDs of the groups of the given customer
@@ -192,10 +192,10 @@ abstract class DatabaseLayer {
   * Assigns a project to 1-n groups by adding entries to the cross table
   *
   * @param int $projectID        ID of the project to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_projectToGroups($projectID, $grp_array);
+  public abstract function assign_projectToGroups($projectID, $groupIDs);
 
   /**
   * returns all the groups of the given project
@@ -225,48 +225,48 @@ abstract class DatabaseLayer {
   * Returns the data of a certain task
   *
   * @param array $activityID  activityID of the project
-  * @return array         the event's data (name, comment etc) as array, false on failure
+  * @return array         the activity's data (name, comment etc) as array, false on failure
   */
   public abstract function activity_get_data($activityID);
 
   /**
-  * Edits an event by replacing its data by the new array
+  * Edits an activity by replacing its data by the new array
   *
   * @param array $activityID  activityID of the project to be edited
-  * @param array $data    name, comment and other new data of the event
+  * @param array $data    name, comment and other new data of the activity
   * @return boolean       true on success, false on failure
   */
   public abstract function activity_edit($activityID, $data);
 
   /**
-  * Assigns an event to 1-n groups by adding entries to the cross table
+  * Assigns an activity to 1-n groups by adding entries to the cross table
   *
   * @param int $activityID         activityID of the project to which the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_activityToGroups($activityID, $grp_array);
+  public abstract function assign_activityToGroups($activityID, $groupIDs);
 
   /**
-  * Assigns an event to 1-n projects by adding entries to the cross table
+  * Assigns an activity to 1-n projects by adding entries to the cross table
   *
-  * @param int $activityID         id of the event to which projects will be assigned
-  * @param array $gpct_array    contains one or more projectIDs
+  * @param int $activityID         id of the activity to which projects will be assigned
+  * @param array $projectIDs    contains one or more projectIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_activityToProjects($activityID, $pct_array);
+  public abstract function assign_activityToProjects($activityID, $projectIDs);
 
   /**
-  * Assigns 1-n events to a project by adding entries to the cross table
+  * Assigns 1-n activities to a project by adding entries to the cross table
   *
-  * @param int $projectID         id of the project to which events will be assigned
-  * @param array $evt_array    contains one or more activityIDs
+  * @param int $projectID         id of the project to which activities will be assigned
+  * @param array $activityIDs    contains one or more activityIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_projectToActivities($projectID, $evt_array);
+  public abstract function assign_projectToActivities($projectID, $activityIDs);
 
   /**
-  * returns all the projects to which the event was assigned
+  * returns all the projects to which the activity was assigned
   *
   * @param array $activityID  activityID of the project
   * @return array         contains the projectIDs of the projects or false on error
@@ -274,15 +274,15 @@ abstract class DatabaseLayer {
   public abstract function activity_get_projects($activityID);
 
   /**
-  * returns all the events which were assigned to a project
+  * returns all the activities which were assigned to a project
   *
   * @param integer $projectID  ID of the project
-  * @return array         contains the activityIDs of the events or false on error
+  * @return array         contains the activityIDs of the activities or false on error
   */
   public abstract function project_get_activities($projectID);
 
   /**
-  * returns all the groups of the given event
+  * returns all the groups of the given activity
   *
   * @param array $activityID  activityID of the project
   * @return array         contains the groupIDs of the groups or false on error
@@ -290,9 +290,9 @@ abstract class DatabaseLayer {
   public abstract function activity_get_groups($activityID);
 
   /**
-  * deletes an event
+  * deletes an activity
   *
-  * @param array $activityID  activityID of the event
+  * @param array $activityID  activityID of the activity
   * @return boolean       true on success, false on failure
   */
   public abstract function activity_delete($activityID);
@@ -301,31 +301,31 @@ abstract class DatabaseLayer {
   * Assigns a group to 1-n customers by adding entries to the cross table
   * (counterpart to assign_customerToGroups)
   *
-  * @param array $grp_id        grp_id of the group to which the customers will be assigned
-  * @param array $knd_array    contains one or more IDs of customers
-  * @return boolean            true on success, false on failure
+  * @param array $groupID        groupID of the group to which the customers will be assigned
+  * @param array $customerIDs   contains one or more IDs of customers
+  * @return boolean             true on success, false on failure
   */
-  public abstract function assign_groupToCustomers($grp_id, $knd_array);
+  public abstract function assign_groupToCustomers($groupID, $customerIDs);
 
   /**
   * Assigns a group to 1-n projects by adding entries to the cross table
-  * (counterpart to assign_pct2grp)
+  * (counterpart to assign_projectToGroups)
   *
-  * @param array $grp_id        grp_id of the group to which the projects will be assigned
-  * @param array $pct_array    contains one or more projectIDs
+  * @param array $groupID        groupID of the group to which the projects will be assigned
+  * @param array $projectIDs    contains one or more projectIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_groupToProjects($grp_id, $pct_array);
+  public abstract function assign_groupToProjects($groupID, $projectIDs);
 
   /**
-  * Assigns a group to 1-n events by adding entries to the cross table
-  * (counterpart to assign_evt2grp)
+  * Assigns a group to 1-n activities by adding entries to the cross table
+  * (counterpart to assign_activityToGroups)
   *
-  * @param array $grp_id        grp_id of the group to which the events will be assigned
-  * @param array $evt_array    contains one or more activityIDs
+  * @param array $groupID        groupID of the group to which the activities will be assigned
+  * @param array $activityIDs    contains one or more activityIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_groupToActivities($grp_id, $evt_array);
+  public abstract function assign_groupToActivities($groupID, $activityIDs);
 
   /**
   * Adds a new user
@@ -407,20 +407,20 @@ abstract class DatabaseLayer {
   * Assigns a leader to 1-n groups by adding entries to the cross table
   *
   * @param int $userID        userID of the group leader to whom the groups will be assigned
-  * @param array $grp_array    contains one or more groupIDs
+  * @param array $groupIDs    contains one or more groupIDs
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_groupleaderToGroups($userID, $grp_array);
+  public abstract function assign_groupleaderToGroups($userID, $groupIDs);
 
   /**
   * Assigns a group to 1-n group leaders by adding entries to the cross table
-  * (counterpart to assign_ldr2grp)
+  * (counterpart to assign_groupleaderToGroups)
   *
-  * @param array $grp_id        grp_id of the group to which the group leaders will be assigned
-  * @param array $ldr_array    contains one or more userIDs of the leaders)
+  * @param array $groupID        groupID of the group to which the group leaders will be assigned
+  * @param array $leaderIDs    contains one or more userIDs of the leaders)
   * @return boolean            true on success, false on failure
   */
-  public abstract function assign_groupToGroupleaders($grp_id, $ldr_array);
+  public abstract function assign_groupToGroupleaders($groupID, $leaderIDs);
 
   /**
   * returns all the groups of the given group leader
@@ -433,43 +433,43 @@ abstract class DatabaseLayer {
   /**
   * returns all the group leaders of the given group
   *
-  * @param array $grp_id  grp_id of the group
+  * @param array $groupID  groupID of the group
   * @return array         contains the userIDs of the group's group leaders or false on error
   */
-  public abstract function group_get_groupleaders($grp_id);
+  public abstract function group_get_groupleaders($groupID);
 
   /**
   * Adds a new group
   *
   * @param array $data  name and other data of the new group
-  * @return int         the grp_id of the new group, false on failure
+  * @return int         the groupID of the new group, false on failure
   */
   public abstract function group_create($data);
 
   /**
   * Returns the data of a certain group
   *
-  * @param array $grp_id  grp_id of the group
+  * @param array $groupID  groupID of the group
   * @return array         the group's data (name, leader ID, etc) as array, false on failure
   */
-  public abstract function group_get_data($grp_id);
+  public abstract function group_get_data($groupID);
 
   /**
   * Returns the number of users in a certain group
   *
-  * @param array $grp_id   grp_id of the group
+  * @param array $groupID   groupID of the group
   * @return int            the number of users in the group
   */
-  public abstract function group_count_users($grp_id);
+  public abstract function group_count_users($groupID);
 
   /**
   * Edits a group by replacing its data by the new array
   *
-  * @param array $grp_id  grp_id of the group to be edited
+  * @param array $groupID  groupID of the group to be edited
   * @param array $data    name and other new data of the group
   * @return boolean       true on success, false on failure
   */
-  public abstract function group_edit($grp_id, $data);
+  public abstract function group_edit($groupID, $data);
 
   /**
    * Set the groups in which the user is a member in.
@@ -489,10 +489,10 @@ abstract class DatabaseLayer {
   /**
   * deletes a group
   *
-  * @param array $grp_id  grp_id of the group
+  * @param array $groupID  groupID of the group
   * @return boolean       true on success, false on failure
   */
-  public abstract function group_delete($grp_id);
+  public abstract function group_delete($groupID);
 
   /**
   * Returns all configuration variables
@@ -512,7 +512,7 @@ abstract class DatabaseLayer {
   /**
   * Returns a list of IDs of all current recordings.
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array with all IDs of current recordings. This array will be empty if there are none.
   */
   public abstract function get_current_recordings($userID);
@@ -520,27 +520,27 @@ abstract class DatabaseLayer {
   /**
   * Returns the data of a certain time record
   *
-  * @param array $zef_id  zef_id of the record
-  * @return array         the record's data (time, event id, project id etc) as array, false on failure
+  * @param array $timeSheetEntryID  timeSheetEntryID of the record
+  * @return array         the record's data (time, activity id, project id etc) as array, false on failure
   */
-  public abstract function timeSheet_get_data($zef_id);
+  public abstract function timeSheet_get_data($timeSheetEntryID);
 
   /**
-  * delete zef entry
+  * delete timeSheet entry
   *
   * @param integer $id -> ID of record
   */
   public abstract function timeEntry_delete($id);
 
   /**
-  * create zef entry
+  * create timeSheet entry
   *
   * @param integer $data  array with record data
   */
   public abstract function timeEntry_create($data);
 
   /**
-  * edit zef entry
+  * edit timeSheet entry
   *
   * @param integer $id ID of record
   * @param array $data  array with new record data
@@ -584,22 +584,22 @@ abstract class DatabaseLayer {
   * @param Array list of IDs of users to include
   * @param Array list of IDs of customers to include
   * @param Array list of IDs of projects to include
-  * @param Array list of IDs of events to include
+  * @param Array list of IDs of activities to include
   * @return Array list of where clauses to include in the query
   *
   */
-  public abstract function zef_whereClausesFromFilters($users, $customers , $projects , $events );
+  public abstract function timeSheet_whereClausesFromFilters($users, $customers , $projects , $activities );
 
   /**
   * returns timesheet for specific user as multidimensional array
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @param integer $start start of timespace in unix seconds
   * @param integer $end end of timespace in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
-  public abstract function get_arr_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $events = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
+  public abstract function get_arr_timeSheet($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
   /**
    * Returns a username for the given $apikey.
@@ -621,21 +621,21 @@ abstract class DatabaseLayer {
   * [name] username
   * </pre>
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array
   */
-  public abstract function checkUserInternal($kimai_usr);
+  public abstract function checkUserInternal($kimai_user);
 
   public function checkUser()
   {
-    if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr'] != "0" && $_COOKIE['kimai_key'] != "0") {
-        $kimai_usr = addslashes($_COOKIE['kimai_usr']);
+    if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+        $kimai_user = addslashes($_COOKIE['kimai_user']);
         $kimai_key = addslashes($_COOKIE['kimai_key']);
 
-		if ($this->get_seq($kimai_usr) != $kimai_key) {
+		if ($this->get_seq($kimai_user) != $kimai_key) {
 			kickUser();
 		} else {
-			return $this->checkUserInternal($kimai_usr);
+			return $this->checkUserInternal($kimai_user);
 		}
 	}
 	kickUser();
@@ -644,7 +644,7 @@ abstract class DatabaseLayer {
   /**
   * write global configuration into $this->kga including defaults for user settings.
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   */
   public abstract function get_global_config();
@@ -652,7 +652,7 @@ abstract class DatabaseLayer {
   /**
   * write details of a specific user into $this->kga
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   */
   public abstract function get_user_config($user);
@@ -660,7 +660,7 @@ abstract class DatabaseLayer {
   /**
   * write details of a specific customer into $this->kga
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array $this->kga
   */
   public abstract function get_customer_config($user);
@@ -676,40 +676,40 @@ abstract class DatabaseLayer {
   /**
   * returns time summary of current timesheet
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @param integer $start start of timespace in unix seconds
   * @param integer $end end of timespace in unix seconds
   * @return integer
   */
-  public abstract function get_duration($start,$end,$users = null, $customers = null, $projects = null, $events = null,$filterCleared = null);
+  public abstract function get_duration($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$filterCleared = null);
 
   /**
   * returns list of customers in a group as array
   *
-  * @param integer $group ID of group in table grp or "all" for all groups
+  * @param integer $group ID of group in table groups or "all" for all groups
   * @return array
   */
   public abstract function get_arr_customers(array $groups = null);
 
-  ## Load into Array: Events
+  ## Load into Array: Activities
   public abstract function get_arr_activities(array $groups = null);
 
   /**
-  * Get an array of events, which should be displayed for a specific project.
-  * Those are events which were assigned to the project or which are assigned to
+  * Get an array of activities, which should be displayed for a specific project.
+  * Those are activities which were assigned to the project or which are assigned to
   * no project.
   *
   * Two joins can occur:
-  *  The JOIN is for filtering the events by groups.
+  *  The JOIN is for filtering the activities by groups.
   *
-  *  The LEFT JOIN gives each event row the project id which it has been assigned
-  *  to via the pct_evt table or NULL when there is no assignment. So we only
+  *  The LEFT JOIN gives each activity row the project id which it has been assigned
+  *  to via the projects_activities table or NULL when there is no assignment. So we only
   *  take rows which have NULL or the project id in that column.
   */
-  public abstract function get_arr_activities_by_project($pct, array $groups = null);
+  public abstract function get_arr_activities_by_project($projectID, array $groups = null);
 
   /**
-  * returns list of events used with specified customer
+  * returns list of activities used with specified customer
   *
   * @param integer $customer filter for only this ID of a customer
   * @return array
@@ -717,7 +717,7 @@ abstract class DatabaseLayer {
   public abstract function get_arr_activities_by_customer($customer_ID);
 
   /**
-  * returns time of currently running event recording as array
+  * returns time of currently running activity recording as array
   *
   * result is meant as params for the stopwatch if the window is reloaded
   *
@@ -729,7 +729,7 @@ abstract class DatabaseLayer {
   * [sec]
   * </pre>
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return array
   */
   public abstract function get_current_timer();
@@ -749,11 +749,11 @@ abstract class DatabaseLayer {
   /**
   * returns the key for the session of a specific user
   *
-  * the key is both stored in the database (usr table) and a cookie on the client.
+  * the key is both stored in the database (users table) and a cookie on the client.
   * when the keys match the user is allowed to access the Kimai GUI.
   * match test is performed via function userCheck()
   *
-  * @param integer $user ID of user in table usr
+  * @param integer $user ID of user in table users
   * @return string
   */
   public abstract function get_seq($user);
@@ -764,7 +764,6 @@ abstract class DatabaseLayer {
   * [userID] => 23103741
   * [name] => admin
   * [status] => 0
-  * [grp_name] => miesepriem
   * [mail] => 0
   * [active] => 0
   *
@@ -778,18 +777,17 @@ abstract class DatabaseLayer {
   *
   * [0]=> array(6) {
   *      ["groupID"]      =>  string(1) "1"
-  *      ["grp_name"]    =>  string(5) "admin"
   *      ["userID"]  =>  string(9) "1234"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
   *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
   *      ["groupID"]      =>  string(1) "2"
-  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["name"]    =>  string(4) "Test"
   *      ["userID"]  =>  string(9) "12345"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
   *      ["leader_name"] =>  string(7) "user2"
   *  }
@@ -804,18 +802,18 @@ abstract class DatabaseLayer {
   *
   * [0]=> array(6) {
   *      ["groupID"]      =>  string(1) "1"
-  *      ["grp_name"]    =>  string(5) "admin"
+  *      ["name"]    =>  string(5) "admin"
   *      ["userID"]  =>  string(9) "1234"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
   *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
   *      ["groupID"]      =>  string(1) "2"
-  *      ["grp_name"]    =>  string(4) "Test"
+  *      ["name"]    =>  string(4) "Test"
   *      ["userID"]  =>  string(9) "12345"
-  *      ["grp_trash"]   =>  string(1) "0"
+  *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
   *      ["leader_name"] =>  string(7) "user2"
   *  }
@@ -844,25 +842,25 @@ abstract class DatabaseLayer {
   * Just edit the project for an entry. This is used for changing the project
   * of a running entry.
   *
-  * @param $zef_id id of the timesheet entry
+  * @param $timeSheetEntryID id of the timesheet entry
   * @param $projectID id of the project to change to
   */
-  public abstract function timeEntry_edit_project($zef_id,$projectID);
+  public abstract function timeEntry_edit_project($timeSheetEntryID,$projectID);
 
   /**
   * Just edit the task for an entry. This is used for changing the task
   * of a running entry.
   *
-  * @param $zef_id id of the timesheet entry
+  * @param $timeSheetEntryID id of the timesheet entry
   * @param $activityID id of the task to change to
   */
-  public abstract function timeEntry_edit_activity($zef_id,$activityID);
+  public abstract function timeEntry_edit_activity($timeSheetEntryID,$activityID);
 
 
   /**
    * return ID of specific customer named 'XXX'
    *
-   * @param string $name name of the customer in table knd
+   * @param string $name name of the customer in table customers
    * @return integer
    */
   public abstract function customer_nameToID($name);
@@ -870,7 +868,7 @@ abstract class DatabaseLayer {
   /**
   * return ID of specific user named 'XXX'
   *
-  * @param integer $name name of user in table usr
+  * @param integer $name name of user in table users
   * @return id of the customer
   */
   public abstract function user_name2id($name);
@@ -881,7 +879,7 @@ abstract class DatabaseLayer {
   * @param string $id the user's userID
   * @return int
   */
-  public abstract function user_IDToName($id);
+  public abstract function userIDToName($id);
 
   /**
   * returns the date of the first timerecord of a user (when did the user join?)
@@ -905,12 +903,12 @@ abstract class DatabaseLayer {
   *
   * @param integer $start from this timestamp
   * @param integer $end to this  timestamp
-  * @param integer $user ID of user in table usr
-  * @param integer $customer ID of customer in table knd
-  * @param integer $project ID of project in table pct
+  * @param integer $user ID of user in table users
+  * @param integer $customer ID of customer in table customers
+  * @param integer $project ID of project in table projects
   * @return array
   */
-  public abstract function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null, $events = null);
+  public abstract function get_arr_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * returns list of time summary attached to customer ID's within specific timespace as array
@@ -922,7 +920,7 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $events = null);
+  public abstract function get_arr_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * returns list of time summary attached to project ID's within specific timespace as array
@@ -934,10 +932,10 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_projects($start,$end,$users = null, $customers = null, $projects = null,$events = null);
+  public abstract function get_arr_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null);
 
   /**
-  * returns list of time summary attached to event ID's within specific timespace as array
+  * returns list of time summary attached to activity ID's within specific timespace as array
   *
   * @param integer $start start time in unix seconds
   * @param integer $end end time in unix seconds
@@ -946,7 +944,7 @@ abstract class DatabaseLayer {
   * @param integer $project filter for only this ID of a project
   * @return array
   */
-  public abstract function get_arr_time_activities($start,$end,$users = null, $customers = null, $projects = null, $events = null);
+  public abstract function get_arr_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
   * Set field status for users to 1 if user is a group leader, otherwise to 2.
@@ -971,12 +969,12 @@ abstract class DatabaseLayer {
   public abstract function remove_rate($userID,$projectID,$activityID);
 
   /**
-  * Query the database for the best fitting hourly rate for the given user, project and event.
+  * Query the database for the best fitting hourly rate for the given user, project and activity.
   */
   public abstract function get_best_fitting_rate($userID,$projectID,$activityID);
 
   /**
-  * Query the database for all fitting hourly rates for the given user, project and event.
+  * Query the database for all fitting hourly rates for the given user, project and activity.
   */
   public abstract function allFittingRates($userID,$projectID,$activityID);
 
@@ -996,12 +994,12 @@ abstract class DatabaseLayer {
   public abstract function remove_fixed_rate($projectID,$activityID);
 
   /**
-  * Query the database for the best fitting fixed rate for the given user, project and event.
+  * Query the database for the best fitting fixed rate for the given user, project and activity.
   */
   public abstract function get_best_fitting_fixed_rate($projectID,$activityID);
 
   /**
-  * Query the database for all fitting fixed rates for the given user, project and event.
+  * Query the database for all fitting fixed rates for the given user, project and activity.
   */
   public abstract function allFittingFixedRates($projectID,$activityID);
 
@@ -1041,12 +1039,12 @@ abstract class DatabaseLayer {
   public abstract function isValidProjectId($projectId);
   
   /**
-   * checks if given $eventId exists in the db
+   * checks if given $activityId exists in the db
    * 
-   * @param int $eventId
+   * @param int $activityId
    * @return bool
    */
-  public abstract function isValidActivityId($eventId);
+  public abstract function isValidActivityId($activityId);
   
   /**
    * checks if a given db row based on the $idColumn & $id exists
@@ -1058,47 +1056,47 @@ abstract class DatabaseLayer {
   
 
   /**
-  * associates an Event with a collection of Projects in the context of a user group.
-  * Projects that are currently associated with the Event but not mentioned in the specified id collection, will get un-assigned.
-  * The fundamental difference to assign_activityToProjects(activityID, pct_array) is that this method is aware of potentially existing assignments 
+  * associates an Activity with a collection of Projects in the context of a user group.
+  * Projects that are currently associated with the Activity but not mentioned in the specified id collection, will get un-assigned.
+  * The fundamental difference to assign_activityToProjects(activityID, projectIDs) is that this method is aware of potentially existing assignments 
   * that are invisible and thus unmanagable to the user as the user lacks access to the Projects.
-  * It is implicitly assumed that the user has access to the Event and the Projects designated by the method parameters.
-  * @param integer $activityID the id of the Event to associate
-  * @param array $pct_array the array of Project ids to associate
+  * It is implicitly assumed that the user has access to the Activity and the Projects designated by the method parameters.
+  * @param integer $activityID the id of the Activity to associate
+  * @param array $projectIDs the array of Project ids to associate
   * @param integer $group the user's group id 
   */
-  function assignActivityToProjectsForGroup($activityID, $pct_array, $group)
+  function assignActivityToProjectsForGroup($activityID, $projectIDs, $group)
   {
-      $projectIds = array_merge($pct_array, $this->getNonManagableAssignedElementIds("evt", "pct", $activityID, $group));
+      $projectIds = array_merge($projectIDs, $this->getNonManagableAssignedElementIds("activity", "project", $activityID, $group));
       $this->assign_activityToProjects($activityID, $projectIds);
   }
 
   /**
-  * associates a Project with a collection of Events in the context of a user group.
-  * Events that are currently associated with the Project but not mentioned in the specified id collection, will get un-assigned.
-  * The fundamental difference to assign_projectToActivities($projectID, $evt_array) is that this method is aware of potentially existing assignments 
-  * that are invisible and thus unmanagable to the user as the user lacks access to the Events.
-  * It is implicitly assumed that the user has access to the Project and the Events designated by the method parameters.
+  * associates a Project with a collection of Activities in the context of a user group.
+  * Activities that are currently associated with the Project but not mentioned in the specified id collection, will get un-assigned.
+  * The fundamental difference to assign_projectToActivities($projectID, $activityIDs) is that this method is aware of potentially existing assignments 
+  * that are invisible and thus unmanagable to the user as the user lacks access to the Activities.
+  * It is implicitly assumed that the user has access to the Project and the Activities designated by the method parameters.
   * @param integer $projectID the id of the Project to associate
-  * @param array $evt_array the array of Event ids to associate
+  * @param array $activityIDs the array of Activity ids to associate
   * @param integer $group the user's group id 
   */
-  function assignProjectToActivitiesForGroup($projectID, $evt_array, $group)
+  function assignProjectToActivitiesForGroup($projectID, $activityIDs, $group)
   {
-      $eventIds = array_merge($evt_array, $this->getNonManagableAssignedElementIds("pct", "evt", $projectID, $group));
-      $this->assign_projectToActivities($projectID, $eventIds);
+      $activityIds = array_merge($activityIDs, $this->getNonManagableAssignedElementIds("project", "activity", $projectID, $group));
+      $this->assign_projectToActivities($projectID, $activityIds);
   }
 
   /**
-  * computes an array of (project- or event-) ids for Project-Event-Assignments that are unmanage-able for the given group.
-  * This method supports Project-Event-Assignments as seen from both end points.
-  * The returned array contains the ids of all those Projects or Events that are assigned to Events or Projects but cannot be seen by the user that 
+  * computes an array of (project- or activity-) ids for Project-Activity-Assignments that are unmanage-able for the given group.
+  * This method supports Project-Activity-Assignments as seen from both end points.
+  * The returned array contains the ids of all those Projects or Activities that are assigned to Activities or Projects but cannot be seen by the user that 
   * looks at the assignments.
-  * @param string $parentSubject a string designating the parent in the assignment, must be one of "pct" or "evt"  
-  * @param string $subject a string designating the child in the assignment, must be one of "pct" or "evt"  
+  * @param string $parentSubject a string designating the parent in the assignment, must be one of "project" or "activity"  
+  * @param string $subject a string designating the child in the assignment, must be one of "project" or "activity"  
   * @param integer $parentId the id of the parent 
   * @param integer $group the id of the user's group 
-  * @return array the array of ids of those child Projects or Events that are assigned to the parent Event or Project but are invisible to the user
+  * @return array the array of ids of those child Projects or Activities that are assigned to the parent Activity or Project but are invisible to the user
   */
   function getNonManagableAssignedElementIds($parentSubject, $subject, $parentId, $group)
   {
@@ -1108,10 +1106,10 @@ abstract class DatabaseLayer {
       $viewableElements = array();
       switch ($parentSubject . "_" . $subject)
       {
-          case 'pct_evt':
+          case 'project_activity':
               $selectedIds = $this->project_get_activities($parentId);
               break;
-          case 'evt_pct':
+          case 'activity_project':
               $selectedIds = $this->activity_get_projects($parentId);
               break;
       }
@@ -1121,11 +1119,11 @@ abstract class DatabaseLayer {
       {
           switch ($parentSubject . "_" . $subject)
           {
-              case 'pct_evt':
+              case 'project_activity':
                   $allElements = $this->get_arr_activities();
                   $viewableElements = $this->get_arr_activities($group);
                   break;
-              case 'evt_pct':
+              case 'activity_project':
                   $allElements = $this->get_arr_projects();
                   $viewableElements = $this->get_arr_projects($group);
                   break;

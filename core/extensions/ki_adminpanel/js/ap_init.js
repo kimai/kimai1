@@ -18,7 +18,7 @@
 
 
 // set path of extension
-var ap_ext_path = "../extensions/ki_adminpanel/";
+var adminPanel_extension_path = "../extensions/ki_adminpanel/";
 
 var ap_tss_hook_flag = 0;
 var ap_rec_hook_flag = 0;
@@ -30,11 +30,11 @@ var ap_usr_hook_flag = 0;
 
 $(document).ready(function(){
 	
-	var ap_ext_resizeTimer = null;
+	var adminPanel_extension_resizeTimer = null;
 	
 	$(window).bind('resize', function() {
-	   if (ap_ext_resizeTimer) clearTimeout(ap_ext_resizeTimer);
-	   ap_ext_resizeTimer = setTimeout(ap_ext_resize, 500);
+	   if (adminPanel_extension_resizeTimer) clearTimeout(adminPanel_extension_resizeTimer);
+	   adminPanel_extension_resizeTimer = setTimeout(adminPanel_extension_resize, 500);
 	});
 	
 });

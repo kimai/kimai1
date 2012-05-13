@@ -10,7 +10,7 @@
                 input.siblings().attr("disabled","");
             });
 
-            $('#add_edit_knd').ajaxForm(function() { 
+            $('#add_edit_customer').ajaxForm(function() { 
 
                 if ($('#customerGroups').val() == null) {
                   alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
@@ -18,7 +18,7 @@
                 }
 
                 floaterClose();
-                hook_chgKnd();
+                hook_customers_changed();
             });
              $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
@@ -28,7 +28,7 @@
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.knd}{else}{$kga.lang.new_knd}{/if}</span>
+        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.customer}{else}{$kga.lang.new_customer}{/if}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>       
@@ -67,12 +67,12 @@
       </ul>
     </div>
     
-    <form id="add_edit_knd" action="processor.php" method="post"> 
+    <form id="add_edit_customer" action="processor.php" method="post"> 
                 
-    <input name="knd_filter"   type="hidden" value="0" />
+    <input name="customer_filter"   type="hidden" value="0" />
 
-    <input name="axAction"     type="hidden" value="add_edit_KndPctEvt" />   
-    <input name="axValue"      type="hidden" value="knd" />   
+    <input name="axAction"     type="hidden" value="add_edit_CustomerProjectActivity" />   
+    <input name="axValue"      type="hidden" value="customer" />   
     <input name="id"           type="hidden" value="{$id}" />   
 
     <div id="floater_tabs" class="floater_content">
@@ -82,7 +82,7 @@
                 <ul>
                 
                     <li>
-                        <label for="name" >{$kga.lang.knd}:</label>
+                        <label for="name" >{$kga.lang.customer}:</label>
                         <input type="text" name="name" id="focus" value="{$name|escape:'html'}" />
                     </li>
 

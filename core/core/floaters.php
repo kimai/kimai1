@@ -64,8 +64,8 @@ switch ($axAction) {
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', Translations::langs());
         $tpl->assign('timezones', timezoneList());
-        $tpl->assign('usr', $kga['usr']);
-        $tpl->assign('rate', $database->get_rate($kga['usr']['userID'],NULL,NULL));
+        $tpl->assign('user', $kga['user']);
+        $tpl->assign('rate', $database->get_rate($kga['user']['userID'],NULL,NULL));
 
         $tpl->display("preferences.tpl");
     break;
@@ -73,8 +73,8 @@ switch ($axAction) {
     /**
      * Display the dialog to add or edit a customer.
      */
-    case 'add_edit_knd':
-        if (isset($kga['customer']) || $kga['usr']['status']==2) die();
+    case 'add_edit_customer':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
@@ -103,30 +103,30 @@ switch ($axAction) {
             }
         }
         else {
-          $tpl->assign('knd_timezone' , $kga['conf']['timezone']);
+          $tpl->assign('timezone' , $kga['conf']['timezone']);
         }
 
         $tpl->assign('timezones', timezoneList());
 
         // create the <select> element for the groups
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
         $tpl->assign('groupNames', $sel[0]);
         $tpl->assign('groupIDs',   $sel[1]);
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $tpl->assign('selectedGroups', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_knd.tpl");
+        $tpl->display("add_edit_customer.tpl");
     break;
         
     /**
      * Display the dialog to add or edit a project.
      */
-    case 'add_edit_pct':
-        if (isset($kga['customer']) || $kga['usr']['status']==2) die();
+    case 'add_edit_project':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
  
         if ($id) {
             $data = $database->project_get_data($id);
@@ -149,13 +149,13 @@ switch ($axAction) {
             }
         }
         // Create a <select> element to chosse the customer.
-        $sel = makeSelectBox("knd",$kga['usr']['groups'],isset($data)?$data['customerID']:null);
+        $sel = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
         $tpl->assign('customerNames', $sel[0]);
         $tpl->assign('customerIDs',   $sel[1]);
 
-        // Create a <select> element to chosse the events.
+        // Create a <select> element to chosse the activities.
         $assignableTasks = array();
-        $tasks = $database->get_arr_activities($kga['usr']['groups']);
+        $tasks = $database->get_arr_activities($kga['user']['groups']);
         if(is_array($tasks)) {
 	        foreach ($tasks as $task) {
 	          if (!$task['assignable']) continue;
@@ -165,26 +165,26 @@ switch ($axAction) {
         $tpl->assign('assignableTasks',$assignableTasks);
         
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
         $tpl->assign('groupNames', $sel[0]);
         $tpl->assign('groupIDs',   $sel[1]);
         
         // Set defaults for a new project.
         if (!$id) {
-            $tpl->assign('selectedGroups', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
 
             $tpl->assign('selectedCustomer', null);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_pct.tpl");
+        $tpl->display("add_edit_project.tpl");
     break;
     
     /**
-     * Display the dialog to add or edit an event.
+     * Display the dialog to add or edit an activity.
      */
-    case 'add_edit_evt':
-        if (isset($kga['customer']) || $kga['usr']['status']==2) die();
+    case 'add_edit_activity':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
 
         if ($id) {
             $data = $database->activity_get_data($id);
@@ -205,22 +205,22 @@ switch ($axAction) {
         }
 
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
         $tpl->assign('groupNames', $sel[0]);
         $tpl->assign('groupIDs',   $sel[1]);
 
         // Create a <select> element to chosse the projects.
-        $sel = makeSelectBox("pct",$kga['usr']['groups']);
+        $sel = makeSelectBox("project",$kga['user']['groups']);
         $tpl->assign('projectNames', $sel[0]);
         $tpl->assign('projectIDs',   $sel[1]);
 
         // Set defaults for a new project.
         if (!$id) {
-            $tpl->assign('selectedGroups', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_evt.tpl");
+        $tpl->display("add_edit_activity.tpl");
     break;
     
 }

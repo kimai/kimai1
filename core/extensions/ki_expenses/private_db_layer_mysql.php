@@ -18,14 +18,14 @@
  */
 
 /**
- * delete exp entry 
+ * delete expense entry 
  *
- * @param integer $usr_ID 
+ * @param integer $userID 
  * @param integer $id -> ID of record
  * @global array  $kga kimai-global-array
  * @author th
  */
-function exp_delete_record($id) {
+function expense_delete($id) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     $filter["expenseID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
@@ -42,7 +42,7 @@ function exp_delete_record($id) {
  * @global array  $kga    kimai-global-array
  * @author sl
  */
-function exp_create_record($usr_ID,$data) {
+function expense_create($userID,$data) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
  
@@ -55,7 +55,7 @@ function exp_create_record($usr_ID,$data) {
     $values ['timestamp']    =   MySQL::SQLValue( $data ['timestamp']   , MySQL::SQLVALUE_NUMBER );
     $values ['multiplier']   =   MySQL::SQLValue( $data ['multiplier']  , MySQL::SQLVALUE_NUMBER );
     $values ['value']        =   MySQL::SQLValue( $data ['value']       , MySQL::SQLVALUE_NUMBER );
-    $values ['userID']       =   MySQL::SQLValue( $usr_ID               , MySQL::SQLVALUE_NUMBER );
+    $values ['userID']       =   MySQL::SQLValue( $userID               , MySQL::SQLVALUE_NUMBER );
     $values ['refundable']   =   MySQL::SQLValue( $data ['refundable']  , MySQL::SQLVALUE_NUMBER );
     
     $table = $kga['server_prefix']."expenses";
@@ -74,12 +74,12 @@ function exp_create_record($usr_ID,$data) {
  * @param Array list of IDs of users to include
  * @param Array list of IDs of customers to include
  * @param Array list of IDs of projects to include
- * @param Array list of IDs of events to include
+ * @param Array list of IDs of activities to include
  * @return Array list of where clauses to include in the query
  *
  */
 
-function exp_whereClausesFromFilters($users, $customers , $projects ) {
+function expenses_widthhereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -113,14 +113,14 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
 /**
  * returns expenses for specific user as multidimensional array
  *
- * @param integer $user ID of user in table usr
+ * @param integer $user ID of user in table users
  * @global array $kga kimai-global-array
  * @return array
  * @author th 
  */
 
 // TODO: Test it!
-function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
+function get_expenses($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     $p     = $kga['server_prefix'];
@@ -135,7 +135,7 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
 
     $p     = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
 
     if (isset($kga['customer']))
       $whereClauses[] = "${p}projects.internal = 0";
@@ -167,9 +167,8 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
     } else {
         $limit="";
     }
-    $query = "SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID, projectID,
-              customer.name AS customerName, customerID, project.name AS projectName, comment, refundable,
-              commentType, user.name AS userName, cleared
+    $query = "SELECT *,
+              customer.name AS customerName, project.name AS projectName, user.name AS userName
              FROM ${p}expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -178,13 +177,14 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
              ' ORDER BY timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";";
     
     $conn->Query($query);
-    
+
     $i=0;
     $arr=array();
     /* TODO: needs revision as foreach loop */
     $conn->MoveFirst();
     while (! $conn->EndOfSeek()) {
       $row = $conn->Row();
+      $arr[$i]['expenseID']             = $row->expenseID;
       $arr[$i]['customerID']             = $row->customerID;
       $arr[$i]['timestamp']      = $row->timestamp;
       $arr[$i]['multiplier']     = $row->multiplier;
@@ -216,7 +216,7 @@ function get_arr_exp($start, $end, $users = null, $customers = null, $projects =
  * @return array
  * @author sl
  */
-function get_entry_exp($id) {
+function get_expense($id) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
@@ -237,23 +237,23 @@ function get_entry_exp($id) {
 /**
  * Returns the data of a certain expense record
  *
- * @param array $exp_id        exp_id of the record
+ * @param array $expenseID        expenseID of the record
  * @global array $kga          kimai-global-array
  * @return array               the record's data as array, false on failure
  * @author ob
  */
-function exp_get_data($exp_id) {
+function expense_get($expenseID) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
     $p = $kga['server_prefix'];
     
-    $exp_id = MySQL::SQLValue($exp_id, MySQL::SQLVALUE_NUMBER);
+    $expenseID = MySQL::SQLValue($expenseID, MySQL::SQLVALUE_NUMBER);
 
-    if ($exp_id) {
-        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE expenseID = " . $exp_id);
+    if ($expenseID) {
+        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE expenseID = " . $expenseID);
     } else {
-        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE userID = ".$kga['usr']['userID']." ORDER BY expenseID DESC LIMIT 1");
+        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE userID = ".$kga['user']['userID']." ORDER BY expenseID DESC LIMIT 1");
     }
     
     if (! $result) {
@@ -273,13 +273,13 @@ function exp_get_data($exp_id) {
  * @author th
  */
  
-function exp_edit_record($id,$data) {
+function expense_edit($id,$data) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
     $data = $database->clean_data($data);
    
-    $original_array = exp_get_data($id);
+    $original_array = expense_get($id);
     $new_array = array();
     
     foreach ($original_array as $key => $value) {
@@ -307,15 +307,9 @@ function exp_edit_record($id,$data) {
     
     if (! $conn->Query($query)) $success = false;
     
-    if ($success) {
-        if (! $conn->TransactionEnd()) $conn->Kill();
-    } else {
-        if (! $conn->TransactionRollback()) $conn->Kill();
-    }
-
     return $success;
     //@FIXME: wtf? remove this
-    $original_array = exp_get_data($id);
+    $original_array = expense_get($id);
     $new_array = array();
     
     foreach ($original_array as $key => $value) {
@@ -337,7 +331,7 @@ function exp_edit_record($id,$data) {
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
-function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects = null) {
+function expenses_by_user($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -345,7 +339,7 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}users.trash = 0";
 
     if ($start)
@@ -384,7 +378,7 @@ function get_arr_exp_usr($start,$end,$users = null,$customers = null,$projects =
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
-function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects = null) {
+function expenses_by_customer($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -393,7 +387,7 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
 
     $p     = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}customers.trash = 0";
 
     if ($start)
@@ -428,7 +422,7 @@ function get_arr_exp_knd($start,$end,$users = null,$customers = null,$projects =
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
-function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects = null) {
+function expenses_by_project($start,$end,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -436,7 +430,7 @@ function get_arr_exp_pct($start,$end,$users = null,$customers = null,$projects =
     $end   = MySQL::SQLValue($end  , MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
     $whereClauses[] = "${p}projects.trash = 0";
 
     if ($start)

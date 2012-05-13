@@ -16,16 +16,16 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =============
-// BGT EXT funcs
-// =============
+// ==========================
+// Budget extension functions
+// ==========================
 
-function bgt_ext_onload() {
-    bgt_ext_resize();
+function budget_extension_onload() {
+    budget_extension_resize();
     $("#loader").hide();
     lists_visible(true);
     try {
-    bgt_ext_reload();
+    budget_extension_reload();
     } catch(e) {
     	alert(e);
     }
@@ -35,58 +35,58 @@ function bgt_ext_onload() {
  * If the extension is being shrinked so the sublists are shown larger
  * adjust to that.
  */
-function bgt_ext_set_heightTop() {
-	bgt_ext_get_dimensions();
+function budget_extension_set_heightTop() {
+	budget_extension_get_dimensions();
     if (!extShrinkMode) {
-        $("#bgt").css("height", bgt_h);
+        $("#budget").css("height", budget_h);
     } else {
-        $("#bgt").css("height", "20px");
+        $("#budget").css("height", "20px");
     }
     
-    xp_ext_set_TableWidths();
+    export_extension_set_TableWidths();
 }
 
 /**
  * Update the dimension variables to reflect new height and width.
  */
-function bgt_ext_get_dimensions() {
+function budget_extension_get_dimensions() {
     scroller_width = 17;
     if (navigator.platform.substr(0,3)=='Mac') {
         scroller_width = 16;
     }
 
-    (kndShrinkMode)?subtableCount=2:subtableCount=3;
+    (customerShrinkMode)?subtableCount=2:subtableCount=3;
     subtableWidth = (pageWidth()-10)/subtableCount-7 ;
     
-    bgt_w = pageWidth()-24;
-    bgt_h = pageHeight()-184-headerHeight()-28;
+    budget_w = pageWidth()-24;
+    budget_h = pageHeight()-184-headerHeight()-28;
 }
 
-//function bgt_ext_get_dimensions() {
-//    bgt_h = pageHeight()-224;//-headerHeight()-28;
+//function budget_extension_get_dimensions() {
+//    budget_h = pageHeight()-224;//-headerHeight()-28;
 //}
 
-function bgt_ext_resize() {
-    bgt_ext_set_heightTop();
+function budget_extension_resize() {
+    budget_extension_set_heightTop();
 }
 
 
-function bgt_ext_plot(plotdata) {
+function budget_extension_plot(plotdata) {
 	var target;
     for (var projectId in plotdata) {
     	var background = false;
-        for (var eventId in plotdata[projectId]) {
-        	if(eventId == 0) {
-        		target = 'bgt_chartdiv_'+projectId;
+        for (var activityId in plotdata[projectId]) {
+        	if(activityId == 0) {
+        		target = 'budget_chartdiv_'+projectId;
         	} else {
-        		target = 'bgt_chartdiv_'+projectId+'_evt_'+eventId;
+        		target = 'budget_chartdiv_'+projectId+'_activity_'+activityId;
         	}
             if ($('#'+target).length == 0) {
             	continue;
             }
         var actualData = new Array();
         // turn the object into an array, since the jqplot wants an array, eventhough it's considered bad practice
-        for( var index in plotdata[projectId][eventId]) {
+        for( var index in plotdata[projectId][activityId]) {
         	if(index == 'exceeded') {
         		// here we could add some more highlighting, for example setting the background to a color
 //        		background = 'red';
@@ -105,7 +105,7 @@ function bgt_ext_plot(plotdata) {
         		if(background == false) {
         		background = $('#'+target).css("background-color");
         		}
-        	actualData.push(new Array(index, plotdata[projectId][eventId][index]));
+        	actualData.push(new Array(index, plotdata[projectId][activityId][index]));
         	}
         }
         try {
@@ -141,20 +141,20 @@ function bgt_ext_plot(plotdata) {
 }
 
 // ----------------------------------------------------------------------------------------
-// reloads timesheet, customer, project and event tables
+// reloads timesheet, customer, project and activity tables
 //
-function bgt_ext_reload() {
+function budget_extension_reload() {
 	$.ajax({
 		dataType: "html",
-		url: bgt_ext_path+'processor.php',
+		url: budget_extension_path+'processor.php',
 		data: {
 			axAction: "reload",
-			axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":"),
+			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"),
 			first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000,
 			id: 0
 		},
 		success: function( data ) {
-            $('#bgt').html(data);
+            $('#budget').html(data);
 			},
 		error: function(error) {
 				alert(error);

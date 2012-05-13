@@ -26,7 +26,7 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
     case 'test':
-        echo $kga['usr']['timeframeBegin'];
+        echo $kga['user']['timeframeBegin'];
     break;
 }
 

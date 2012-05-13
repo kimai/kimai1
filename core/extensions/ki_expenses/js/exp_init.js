@@ -24,27 +24,27 @@
 
 
 // set path of extension
-var exp_ext_path = "../extensions/ki_expenses/";
-var exp_total = '';
+var expense_extension_path = "../extensions/ki_expenses/";
+var expenses_total = '';
 
 var scroller_width;
 var drittel;
-var exp_w;
-var exp_h;
+var expenses_width;
+var expenses_height;
 
-var exp_tss_hook_flag = 0;
-var exp_rec_hook_flag = 0;
-var exp_stp_hook_flag = 0;
-var exp_chk_hook_flag = 0;
-var exp_chp_hook_flag = 0;
-var exp_che_hook_flag = 0;
+var expense_tss_hook_flag = 0;
+var expense_rec_hook_flag = 0;
+var expense_stp_hook_flag = 0;
+var expense_chk_hook_flag = 0;
+var expense_chp_hook_flag = 0;
+var expense_che_hook_flag = 0;
 
 $(document).ready(function(){
 
-    var exp_resizeTimer = null;
+    var expense_resizeTimer = null;
     $(window).bind('resize', function() {
-       if (exp_resizeTimer) clearTimeout(exp_resizeTimer);
-       exp_resizeTimer = setTimeout(exp_ext_resize, 500);
+       if (expense_resizeTimer) clearTimeout(expense_resizeTimer);
+       expense_resizeTimer = setTimeout(expense_extension_resize, 500);
     });
 
     

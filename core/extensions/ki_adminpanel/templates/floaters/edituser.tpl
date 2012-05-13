@@ -11,13 +11,13 @@
                 floaterClose();
             	},
     success: function() {
-          hook_chgUsr();
-          ap_ext_refreshSubtab('grp');
+          hook_users_changed();
+          adminPanel_extension_refreshSubtab('groups');
           return false;
           }
 	    }; 
 	 
-	    $('#ap_ext_form_editusr').ajaxForm(options); 
+	    $('#adminPanel_extension_form_editUser').ajaxForm(options); 
 
         }); 
     </script>
@@ -26,7 +26,7 @@
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.editusr}</span>
+        <span id="floater_title">{$kga.lang.editUser}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>       
@@ -34,7 +34,7 @@
 
     <div class="floater_content">
 
-        <form id="ap_ext_form_editusr" action="../extensions/ki_adminpanel/processor.php" method="post"> 
+        <form id="adminPanel_extension_form_editUser" action="../extensions/ki_adminpanel/processor.php" method="post"> 
             <fieldset>
                 
                 <ul>
@@ -49,9 +49,9 @@
 
         {if $user_details.status == 1}
                         <select name="status">
-                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
+                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminUser} (!)</option>
                             <option value="1" {if $user_details.status == 1}selected{/if}>{$kga.lang.groupleader}</option>
-                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.regusr}</option>
+                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.user}</option>
                         </select>
         {else}
 
@@ -60,8 +60,8 @@
                 {$kga.lang.admWarn}
             {else}                
                         <select name="status">
-                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminusr} (!)</option>
-                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.regusr}</option>
+                            <option value="0" {if $user_details.status == 0}selected{/if}>{$kga.lang.adminUser} (!)</option>
+                            <option value="2" {if $user_details.status == 2}selected{/if}>{$kga.lang.user}</option>
                         </select>
             {/if}              
 
@@ -70,7 +70,7 @@
 
 
                     <li>
-                        <label for="usr_pw">{$kga.lang.newPassword}:</label>
+                        <label for="password">{$kga.lang.newPassword}:</label>
                         <input class="formfield" type="password" name="password" size="9" id="password" /> {$kga.lang.minLength}
         {if $user_details.password == ""}
         
@@ -113,7 +113,7 @@
 				</ul>
 
                 <input name="id" type="hidden" value="{$user_details.userID}" />
-                <input name="axAction" type="hidden" value="sendEditUsr" />
+                <input name="axAction" type="hidden" value="sendEditUser" />
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />

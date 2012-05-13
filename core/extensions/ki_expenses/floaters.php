@@ -33,25 +33,25 @@ switch ($axAction) {
     // ==============================================
     $selected = explode('|',$axValue);
     if ($id) {
-      $exp_entry = get_entry_exp($id);
+      $expense = get_expense($id);
       $tpl->assign('id', $id);
-      $tpl->assign('comment', $exp_entry['exp_comment']);
+      $tpl->assign('comment', $expense['comment']);
   
-      $tpl->assign('edit_day', date("d.m.Y",$exp_entry['exp_timestamp']));
+      $tpl->assign('edit_day', date("d.m.Y",$expense['timestamp']));
   
-      $tpl->assign('edit_time',  date("H:i:s",$exp_entry['exp_timestamp']));
+      $tpl->assign('edit_time',  date("H:i:s",$expense['timestamp']));
   
-      $tpl->assign('multiplier',  $exp_entry['exp_multiplier']);
+      $tpl->assign('multiplier',  $expense['multiplier']);
   
-      $tpl->assign('edit_value',  $exp_entry['exp_value']);
+      $tpl->assign('edit_value',  $expense['value']);
   
-      $tpl->assign('designation', $exp_entry['exp_designation']);
+      $tpl->assign('designation', $expense['designation']);
 
       // preselected
-      $tpl->assign('pres_pct', $exp_entry['projectID']);
+      $tpl->assign('preselected_project', $expense['projectID']);
   
-      $tpl->assign('comment_active', $exp_entry['exp_comment_type']);
-      $tpl->assign('refundable', $exp_entry['exp_refundable']);
+      $tpl->assign('comment_active', $expense['commentType']);
+      $tpl->assign('refundable', $expense['refundable']);
 
     } else {
       
@@ -67,18 +67,18 @@ switch ($axAction) {
 
     }
     
-    $tpl->assign('comment_types', $comment_types);
-    $tpl->assign('comment_values', array('0','1','2'));
+    $tpl->assign('commentTypes', $commentTypes);
+    $tpl->assign('commentValues', array('0','1','2'));
 
     // select for projects
-    $sel = makeSelectBox("pct",$kga['usr']['groups']);
-    $tpl->assign('sel_pct_names', $sel[0]);
-    $tpl->assign('sel_pct_IDs',   $sel[1]);
+    $sel = makeSelectBox("project",$kga['user']['groups']);
+    $tpl->assign('projectNames', $sel[0]);
+    $tpl->assign('projectIDs',   $sel[1]);
 
-    // select for events
-    $sel = makeSelectBox("evt",$kga['usr']['groups']);
-    $tpl->assign('sel_evt_names', $sel[0]);
-    $tpl->assign('sel_evt_IDs',   $sel[1]);
+    // select for activities
+    $sel = makeSelectBox("activity",$kga['user']['groups']);
+    $tpl->assign('activityNames', $sel[0]);
+    $tpl->assign('activityIDs',   $sel[1]);
 
 
 

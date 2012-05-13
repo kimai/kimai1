@@ -104,15 +104,15 @@ if (count($users) == 0) {
 $justLoggedOut = false;
 if ($_REQUEST['a']=="logout") {
     setcookie ("kimai_key","0"); 
-    setcookie ("kimai_usr","0");    
+    setcookie ("kimai_user","0");    
     $justLoggedOut = true;
 }
 
 // ===========================
 // = User already logged in? =
 // ===========================
-if (isset($_COOKIE['kimai_usr']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_usr']!='0' && $_COOKIE['kimai_key']!='0' && !$_REQUEST['a']=="logout") {
-    if ($database->get_seq($_COOKIE['kimai_usr']) == $_COOKIE['kimai_key']) { 
+if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user']!='0' && $_COOKIE['kimai_key']!='0' && !$_REQUEST['a']=="logout") {
+    if ($database->get_seq($_COOKIE['kimai_user']) == $_COOKIE['kimai_key']) { 
         header("Location: core/kimai.php");
         exit;
     }
@@ -135,7 +135,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
 
     $keymai=random_code(30);
     setcookie ("kimai_key",$keymai);
-    setcookie ("kimai_usr",$userData['name']);
+    setcookie ("kimai_user",$userData['name']);
 
     $database->user_loginSetKey($userId,$keymai);
 
@@ -166,12 +166,12 @@ switch($_REQUEST['a'])
           if ( $data['password']==$passCrypt && $name!='' && $passCrypt!='') {
             $keymai=random_code(30);
             setcookie ("kimai_key",$keymai);
-            setcookie ("kimai_usr",'knd_'.$name);
+            setcookie ("kimai_user",'customer_'.$name);
             $database->customer_loginSetKey($id,$keymai);
             header("Location: core/kimai.php");
           }
           else {
-            setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+            setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
             $tpl->assign('headline', $kga['lang']['accessDenied']);
             $tpl->assign('message', $kga['lang']['wrongPass']);
             $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
@@ -184,7 +184,7 @@ switch($_REQUEST['a'])
           if ($authPlugin->authenticate($name,$password,$userId)) {
 
             if ($userId === false) {
-              $userId   = $database->usr_create(array(
+              $userId   = $database->user_create(array(
                           'name' => $name,
                           'status' => 2,
                           'active' => 1
@@ -203,14 +203,14 @@ switch($_REQUEST['a'])
 
               $keymai=random_code(30);
               setcookie ("kimai_key",$keymai);
-              setcookie ("kimai_usr",$userData['name']);
+              setcookie ("kimai_user",$userData['name']);
 
               $database->user_loginSetKey($userId,$keymai);
 
               header("Location: core/kimai.php");
             } else {
               // login attempt even though logintries are used up and bantime is not over => deny
-              setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+              setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
               $database->loginUpdateBan($userId);
 
               $tpl->assign('headline', $kga['lang']['banned']);
@@ -221,7 +221,7 @@ switch($_REQUEST['a'])
           }
           else {
             // wrong username/password => deny
-            setcookie ("kimai_key","0"); setcookie ("kimai_usr","0");
+            setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
             if ($userId !== false)
               $database->loginUpdateBan($userId,true);
 

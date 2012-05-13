@@ -21,12 +21,12 @@
 // ===========
 
 // set path of extension
-var xp_ext_path = "../extensions/ki_export/";
+var export_extension_path = "../extensions/ki_export/";
 
 var scroller_width;
 var drittel;
-var xp_w;
-var xp_h;
+var export_width;
+var export_height;
 
 var xp_tss_hook_flag = 0;
 var xp_rec_hook_flag = 0;
@@ -36,9 +36,9 @@ var xp_chp_hook_flag = 0;
 var xp_che_hook_flag = 0;
 
 $(document).ready(function(){
-    var xp_resizeTimer = null;
+    var export_resizeTimer = null;
     $(window).bind('resize', function() {
-       if (xp_resizeTimer) clearTimeout(xp_resizeTimer);
-       xp_resizeTimer = setTimeout(xp_ext_resize, 500);
+       if (export_resizeTimer) clearTimeout(export_resizeTimer);
+       export_resizeTimer = setTimeout(export_extension_resize, 500);
     });
 });

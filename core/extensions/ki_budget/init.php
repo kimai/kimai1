@@ -19,13 +19,13 @@
 // Include Basics
 include ('../../includes/basics.php');
 
-$usr = $database->checkUser();
+$user = $database->checkUser();
 // set smarty config
 require_once (WEBROOT . 'libraries/smarty/Smarty.class.php');
 $tpl = new Smarty();
 $tpl->template_dir = 'templates/';
 $tpl->compile_dir = 'compile/';
-// track which events we want to see, so we can exclude them when we create the plot
+// track which activities we want to see, so we can exclude them when we create the plot
 
 $tpl->assign('kga', $kga);
 $tpl->display('index.tpl');

@@ -1,8 +1,8 @@
 <div class="preselection">
     
-    <strong>{$kga.lang.selectR}</strong><br />
+    <strong>{$kga.lang.selectedForRecording}</strong><br />
 
-    <strong class="short">{$kga.lang.selectKND}</strong><span class="selection" id="sel_knd">{$customerData.name|escape:'html'}</span><br/>
-    <strong class="short">{$kga.lang.selectPCT}</strong><span class="selection" id="sel_pct">{$projectData.name|escape:'html'}</span><br/>    
-    <strong class="short">{$kga.lang.selectEVT}</strong><span class="selection" id="sel_evt">{$evt_data.evt_name|escape:'html'}</span><br/>    
+    <strong class="short">{$kga.lang.selectedCustomerLabel}</strong><span class="selection" id="selected_customer">{$customerData.name|escape:'html'}</span><br/>
+    <strong class="short">{$kga.lang.selectedProjectLabel}</strong><span class="selection" id="selected_project">{$projectData.name|escape:'html'}</span><br/>    
+    <strong class="short">{$kga.lang.selectedActivityLabel}</strong><span class="selection" id="selected_activity">{$activityData.name|escape:'html'}</span><br/>    
 </div>

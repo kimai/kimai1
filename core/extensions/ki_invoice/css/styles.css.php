@@ -3,7 +3,7 @@
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
-#iv_ext_wrap {
+#invoice_extension_wrap {
     border:1px solid #000;
 	border-top:none;
     position:absolute;
@@ -11,7 +11,7 @@
     margin:0;
 }
 
-#iv_ext {
+#invoice_extension {
     padding:10px;
     font-size: 20px;
     background-color: #eee;
@@ -20,7 +20,7 @@
 }
 
 
-#iv_ext_header {
+#invoice_extension_header {
     background-image: url('<?php echo $table_header; ?>');
     border:1px solid #000;
     color:#fff;
@@ -30,20 +30,20 @@
     position:absolute;
 }
 
-#iv_ext_advanced {
+#invoice_extension_advanced {
    padding:10px;
  }
 
-#iv_timespan {
+#invoice_timespan {
    padding: 20px 0px;
 }
 
 
-#iv_button {
+#invoice_button {
    padding: 20px 0px;
 }
 
-#iv_screenshot
+#invoice_screenshot
 {
 float:left;	
 margin-right:10px;

@@ -24,7 +24,7 @@
  * Called when the extension loaded. Do some initial stuff.
  */
 function ts_ext_onload() {
-    ts_ext_applyHoverIntent2zefRows();
+    ts_ext_applyHoverIntent();
     ts_ext_resize();
     $("#loader").hide();
     lists_visible(true);
@@ -39,23 +39,23 @@ function ts_ext_get_dimensions() {
         scroller_width = 16;
     }
 
-    (kndShrinkMode)?subtableCount=2:subtableCount=3;
+    (customerShrinkMode)?subtableCount=2:subtableCount=3;
     subtableWidth = (pageWidth()-10)/subtableCount-7 ;
     
-    zef_w = pageWidth()-24;
-    zef_h = pageHeight()-224-headerHeight()-28;
+    timeSheet_width = pageWidth()-24;
+    timeSheet_height = pageHeight()-224-headerHeight()-28;
 }
 
 /**
  * Hover a row if the mouse is over it for more than half a second.
  */
-function ts_ext_applyHoverIntent2zefRows() {
-    $('#zef tr').hoverIntent({
+function ts_ext_applyHoverIntent() {
+    $('#timeSheet tr').hoverIntent({
         sensitivity: 1,
         interval: 500,
         over:
           function() { 
-              $('#zef tr').removeClass('hover');
+              $('#timeSheet tr').removeClass('hover');
               $(this).addClass('hover');},
         out:
           function() {
@@ -77,8 +77,7 @@ function ts_ext_resize() {
  */
 function ts_ext_set_tableWrapperWidths() {
     ts_ext_get_dimensions();
-    // zef: set width of table and faked table head  
-    $("#zef_head,#zef").css("width",zef_w);
+    $("#timeSheet_head,#timeSheet").css("width",timeSheet_width);
     ts_ext_set_TableWidths();
 }
 
@@ -89,9 +88,9 @@ function ts_ext_set_tableWrapperWidths() {
 function ts_ext_set_heightTop() {
     ts_ext_get_dimensions();
     if (!extShrinkMode) {
-        $("#zef").css("height", zef_h);
+        $("#timeSheet").css("height", timeSheet_height);
     } else {
-        $("#zef").css("height", "70px");
+        $("#timeSheet").css("height", "70px");
     }
     
     ts_ext_set_TableWidths();
@@ -103,17 +102,17 @@ function ts_ext_set_heightTop() {
 function ts_ext_set_TableWidths() {
     ts_ext_get_dimensions();
     // set table widths   
-    ($("#zef").innerHeight()-$("#zef table").outerHeight()>0)?scr=0:scr=scroller_width; // width of zef table depending on scrollbar or not
-    $("#zef table").css("width",zef_w-scr);
-    $("div#zef > div > table > tbody > tr > td.trackingnumber").css("width", $("#zef_head > table > tbody > tr > td.trackingnumber").width());
-    // stretch duration column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.time").css("width", $("div#zef > div > table > tbody > tr > td.time").width());    
-    // stretch customer column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.knd").css("width", $("div#zef > div > table > tbody > tr > td.knd").width());    
-    // stretch project column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.pct").css("width", $("div#zef > div > table > tbody > tr > td.pct").width());
-    // stretch event column in faked zef table head
-    $("#zef_head > table > tbody > tr > td.evt").css("width", $("div#zef > div > table > tbody > tr > td.evt").width());
+    ($("#timeSheet").innerHeight()-$("#timeSheet table").outerHeight()>0)?scr=0:scr=scroller_width; // width of timeSheet table depending on scrollbar or not
+    $("#timeSheet table").css("width",timeSheet_width-scr);
+    $("div#timeSheet > div > table > tbody > tr > td.trackingnumber").css("width", $("#timeSheet_head > table > tbody > tr > td.trackingnumber").width());
+    // stretch duration column in faked timeSheet table head
+    $("#timeSheet_head > table > tbody > tr > td.time").css("width", $("div#timeSheet > div > table > tbody > tr > td.time").width());    
+    // stretch customer column in faked timeSheet table head
+    $("#timeSheet_head > table > tbody > tr > td.customer").css("width", $("div#timeSheet > div > table > tbody > tr > td.customer").width());    
+    // stretch project column in faked timeSheet table head
+    $("#timeSheet_head > table > tbody > tr > td.project").css("width", $("div#timeSheet > div > table > tbody > tr > td.project").width());
+    // stretch activity column in faked timeSheet table head
+    $("#timeSheet_head > table > tbody > tr > td.activity").css("width", $("div#timeSheet > div > table > tbody > tr > td.activity").width());
 }
 
 function ts_ext_triggerchange() {
@@ -177,39 +176,39 @@ function ts_ext_triggerCHE() {
 
 
 // ----------------------------------------------------------------------------------------
-// reloads timesheet, customer, project and event tables
+// reloads timesheet, customer, project and activity tables
 //
 function ts_ext_reload() {
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_zef", axValue: filterUsr.join(":")+'|'+filterKnd.join(":")+'|'+filterPct.join(":")+'|'+filterEvt.join(":"), id: 0,
+            $.post(ts_ext_path + "processor.php", { axAction: "reload_timeSheet", axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"), id: 0,
                 first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000  },
                 function(data) { 
-                    $("#zef").html(data);
+                    $("#timeSheet").html(data);
                 
                     ts_ext_set_TableWidths()
-                    ts_ext_applyHoverIntent2zefRows();
+                    ts_ext_applyHoverIntent();
                 }
             );
 }
 
 
 // ----------------------------------------------------------------------------------------
-// reloads timesheet, customer, project and event tables
+// reloads timesheet, customer, project and activity tables
 //
-function ts_ext_reload_evt(pct,noUpdateRate, evt, zef) {
-  var selected_evt = $('#add_edit_zef_evt_ID').val();
-            $.post(ts_ext_path + "processor.php", { axAction: "reload_evt_options", axValue: 0, id: 0, pct:pct },
+function ts_ext_reload_activities(project,noUpdateRate, activity, timeSheetEntry) {
+  var selected_activity = $('#add_edit_timeSheetEntry_activityID').val();
+            $.post(ts_ext_path + "processor.php", { axAction: "reload_activities_options", axValue: 0, id: 0, project:project },
                 function(data) { 
-                    $("#add_edit_zef_evt_ID").html(data);
-                    $("#add_edit_zef_evt_ID").val(selected_evt);
+                    $("#add_edit_timeSheetEntry_activityID").html(data);
+                    $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
                     if (noUpdateRate == undefined)
                     getBestRates();
                     ts_add_edit_validate();
-                    if(evt > 0) {
+                    if(activity > 0) {
 	                    $.getJSON("../extensions/ki_timesheets/processor.php", {
 	                        axAction: "budgets",
-	                        project_id: pct,
-	                        event_id: evt,
-	                        zef_id: zef
+	                        project_id: project,
+	                        activity_id: activity,
+	                        timeSheetEntryID: timeSheetEntry
 	                      },
 	                      function(data) {
 	                    	  ts_ext_updateBudget(data);
@@ -223,30 +222,30 @@ function ts_ext_reload_evt(pct,noUpdateRate, evt, zef) {
 //----------------------------------------------------------------------------------------
 //reloads budget
 //
-// everything in data['zefData'] has to be subtracted in case the zef is in the db already
-// part of this event. In other cases, we already took case on server side that the values are 0
+// everything in data['timeSheetEntry'] has to be subtracted in case the time sheet entry is in the db already
+// part of this activity. In other cases, we already took case on server side that the values are 0
 function ts_ext_updateBudget(data) {
-	var budget = data['eventBudgets']['evt_budget'];
-	// that is the case if we changed the project and no event is selected
+	var budget = data['activityBudgets']['budget'];
+	// that is the case if we changed the project and no activity is selected
 	if(isNaN(budget)) {
 		budget = 0;
 	}
 	if($('#budget_val').val() != '') {
 		budget+= parseFloat($('#budget_val').val());
 	}
-	budget-= data['zefData']['zef_budget'];
-	$('#budget_event').text(budget);
-	var approved = data['eventBudgets']['evt_approved'];
-	// that is the case if we changed the project and no event is selected
+	budget-= data['timeSheetEntry']['budget'];
+	$('#budget_activity').text(budget);
+	var approved = data['activityBudgets']['approved'];
+	// that is the case if we changed the project and no activity is selected
 	if(isNaN(approved)) {
 		approved = 0;
 	}
 	if($('#approved').val() != '') {
 		approved+= parseFloat($('#approved').val());
 	}
-	approved-= data['zefData']['zef_approved'];
-	$('#budget_event_approved').text(approved);
-	var budgetUsed = data['eventUsed'];
+	approved-= data['timeSheetEntry']['approved'];
+	$('#budget_activity_approved').text(approved);
+	var budgetUsed = data['activityUsed'];
 	if(isNaN(budgetUsed)) {
 		budgetUsed = 0;
 	}
@@ -261,40 +260,40 @@ function ts_ext_updateBudget(data) {
 		var rate = $('#rate').val();
 		if(rate != '') {
 	    	budgetUsed+= secs/3600*rate;
-			budgetUsed-=data['zefData']['zef_time']/3600*data['zefData']['zef_rate'];
+			budgetUsed-=data['timeSheetEntry']['duration']/3600*data['timeSheetEntry']['rate'];
 		}
     }
-	$('#budget_event_used').text(Math.round(budgetUsed,2));
+	$('#budget_activity_used').text(Math.round(budgetUsed,2));
 }
 
 // ----------------------------------------------------------------------------------------
 // this function is attached to the little green arrows in front of each timesheet record
-// and starts recording that event anew
+// and starts recording that activity anew
 //
-function ts_ext_recordAgain(pct,evt,id) {
-    $('#zefEntry'+id+'>td>a').blur();
+function ts_ext_recordAgain(project,activity,id) {
+    $('#timeSheetEntry'+id+'>td>a').blur();
 
     if (currentRecording > -1) {
         stopRecord();
     }
 
-    $('#zefEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
+    $('#timeSheetEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
     offset = now;
     startsec = 0;
     show_stopwatch();
-    $('#zefEntry'+id+'>td>a').removeAttr('onClick');
+    $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
  
     $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: 0, id: id },
         function(data) {
                 eval(data);
                 ts_ext_reload();
-                buzzer_preselect('pct',pct,pct_name,knd,knd_name,false);
-                buzzer_preselect('evt',evt,evt_name,0,0,false);
-                $("#ticker_knd").html(knd_name);
-                $("#ticker_pct").html(pct_name);
-                $("#ticker_evt").html(evt_name);
+                buzzer_preselect('project',project,projectName,customer,customerName,false);
+                buzzer_preselect('activity',activity,activityName,0,0,false);
+                $("#ticker_customer").html(customerName);
+                $("#ticker_project").html(projectName);
+                $("#ticker_activity").html(activityName);
         }
     );
 }
@@ -302,18 +301,18 @@ function ts_ext_recordAgain(pct,evt,id) {
 
 // ----------------------------------------------------------------------------------------
 // this function is attached to the little green arrows in front of each timesheet record
-// and starts recording that event anew
+// and starts recording that activity anew
 //
 function ts_ext_stopRecord(id) {
     ts_ext_recordAgain=-1;
     ticktack_off();
     show_selectors();
     if (id) {
-        $('#zefEntry'+id+'>td').css( "background-color", "#F00" );
-        $('#zefEntry'+id+'>td>a.stop>img').attr("src","../skins/"+skin+"/grfx/loading13_red.gif");     
-        $('#zefEntry'+id+'>td>a').blur();
-        $('#zefEntry'+id+'>td>a').removeAttr('onClick');
-        $('#zefEntry'+id+'>td').css( "color", "#FFF" );
+        $('#timeSheetEntry'+id+'>td').css( "background-color", "#F00" );
+        $('#timeSheetEntry'+id+'>td>a.stop>img').attr("src","../skins/"+skin+"/grfx/loading13_red.gif");     
+        $('#timeSheetEntry'+id+'>td>a').blur();
+        $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
+        $('#timeSheetEntry'+id+'>td').css( "color", "#FFF" );
     }
     $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: id },
         function(data) {
@@ -331,15 +330,15 @@ function ts_ext_stopRecord(id) {
 // delete a timesheet record immediately
 //
 function quickdelete(id) {
-    $('#zefEntry'+id+'>td>a').blur();
+    $('#timeSheetEntry'+id+'>td>a').blur();
     
     if (confirmText != undefined) {
       var check = confirm(confirmText);
       if (check == false) return;
     }
     
-    $('#zefEntry'+id+'>td>a').removeAttr('onClick');
-    $('#zefEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
+    $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
+    $('#timeSheetEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     
     $.post(ts_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
         function(data){
@@ -356,7 +355,7 @@ function quickdelete(id) {
 // edit a timesheet record
 //
 function editRecord(id) {
-    floaterShow(ts_ext_path + "floaters.php","add_edit_record",0,id,650,500);
+    floaterShow(ts_ext_path + "floaters.php","add_edit_timeSheetEntry",0,id,650,500);
 }
 
 // ----------------------------------------------------------------------------------------
@@ -364,19 +363,19 @@ function editRecord(id) {
 //
 function getBestRates() {
     $.getJSON(ts_ext_path + "processor.php", { axAction: "bestFittingRates", axValue: 0,
-        project_id: $("#add_edit_zef_pct_ID").val(), event_id: $("#add_edit_zef_evt_ID").val()},
+        project_id: $("#add_edit_timeSheetEntry_projectID").val(), activity_id: $("#add_edit_timeSheetEntry_activityID").val()},
         function(data){
             if (data.hourlyRate == false) {
             	//TODO: why does Kimai do this? If we already set a rate
             	// we might want to keep it, not just reset it to empty..?
-//              $("#ts_ext_form_add_edit_record #rate").val('');
+//              $("#ts_ext_form_add_edit_timeSheetEntry #rate").val('');
               } else {
-              $("#ts_ext_form_add_edit_record #rate").val(data.hourlyRate);
+              $("#ts_ext_form_add_edit_timeSheetEntry #rate").val(data.hourlyRate);
               }
             if (data.fixedRate == false) {
-              $("#ts_ext_form_add_edit_record #fixed_rate").val('');
+              $("#ts_ext_form_add_edit_timeSheetEntry #fixedRate").val('');
             } else {
-              $("#ts_ext_form_add_edit_record #fixed_rate").val(data.fixedRate);
+              $("#ts_ext_form_add_edit_timeSheetEntry #fixedRate").val(data.fixedRate);
             }
         }
     );
@@ -539,9 +538,9 @@ function ts_comment(id) {
 //
 function ts_add_edit_validate() {
     
-    if ($('#add_edit_zef_pct_ID').val() == undefined ||
-        $('#add_edit_zef_evt_ID').val() == undefined)
-      $('#ts_ext_form_add_edit_record .btn_ok').hide();
+    if ($('#add_edit_timeSheetEntry_projectID').val() == undefined ||
+        $('#add_edit_timeSheetEntry_activityID').val() == undefined)
+      $('#ts_ext_form_add_edit_timeSheetEntry .btn_ok').hide();
     else
-      $('#ts_ext_form_add_edit_record .btn_ok').show();
+      $('#ts_ext_form_add_edit_timeSheetEntry .btn_ok').show();
 }

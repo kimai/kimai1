@@ -19,14 +19,14 @@
 
 
 /**
- * set cleared state for zef entry
+ * set cleared state for timeSheet entry
  *
  * @param integer $id -> ID of record
  * @param boolean $cleared -> true if record is cleared, otherwise false
  * @global array  $kga kimai-global-array
  * @author sl
  */
-function xp_zef_set_cleared($id,$cleared) {
+function export_timeSheetEntry_set_cleared($id,$cleared) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
@@ -49,7 +49,7 @@ function xp_zef_set_cleared($id,$cleared) {
  * @global array  $kga kimai-global-array
  * @author sl
  */
-function xp_exp_set_cleared($id,$cleared) {
+function export_expense_set_cleared($id,$cleared) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
@@ -73,7 +73,7 @@ function xp_exp_set_cleared($id,$cleared) {
  * @global array  $all_column_headers array containing all columns
  * @author sl
  */
-function xp_toggle_header($header) {
+function export_toggle_header($header) {
     global $kga, $database,$all_column_headers;    
     $conn = $database->getConnectionHandler();
 
@@ -81,7 +81,7 @@ function xp_toggle_header($header) {
 
     $table                 = $kga['server_prefix']."preferences";
     $values['value']       = "`value`^POWER(2,$header_number)";
-    $filter['userID']      = MySQL::SQLValue($kga['usr']['userID'],MySQL::SQLVALUE_NUMBER);
+    $filter['userID']      = MySQL::SQLValue($kga['user']['userID'],MySQL::SQLVALUE_NUMBER);
     $filter['option']         = MySQL::SQLValue('export_disabled_columns');
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
@@ -94,18 +94,18 @@ function xp_toggle_header($header) {
 /**
  * get list of deselected columns
  *
- * @param integer $user_id -> header name
+ * @param integer $userID -> header name
  * @global array  $kga kimai-global-array
  * @global array  $all_column_headers array containing all columns
  * @author sl
  */
-function xp_get_disabled_headers($user_id) {
+function export_get_disabled_headers($userID) {
     global $kga, $database,$all_column_headers;
     $conn = $database->getConnectionHandler();
 
     $disabled_headers = array();
 
-    $filter['userID'] = MySQL::SQLValue($user_id, MySQL::SQLVALUE_NUMBER);
+    $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
     $filter['option']    = MySQL::SQLValue('export_disabled_columns');
     $table = $kga['server_prefix']."preferences";
 

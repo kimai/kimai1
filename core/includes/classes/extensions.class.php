@@ -54,8 +54,8 @@ class Extensions {
       $settings = parse_ini_file($dir.'config.ini');
                        	
      	// Check if user has the correct rank to use this extension      
-     	if (isset($this->kga['usr']))
-        switch ($this->kga['usr']['status']) {
+     	if (isset($this->kga['user']))
+        switch ($this->kga['user']['status']) {
           case 0:
           if ($settings['ADMIN_ALLOWED'] != "1")
             continue 2;
@@ -91,10 +91,10 @@ class Extensions {
       $this->addOptionalValue($settings,'TIMESPACE_CHANGE_TRIGGER', $this->tss_hooks);
       $this->addOptionalValue($settings,'BUZZER_RECORD_TRIGGER', $this->rec_hooks);
       $this->addOptionalValue($settings,'BUZZER_STOP_TRIGGER', $this->stp_hooks);
-      $this->addOptionalValue($settings,'CHANGE_USR_TRIGGER', $this->chu_hooks);
-      $this->addOptionalValue($settings,'CHANGE_KND_TRIGGER', $this->chk_hooks);
-      $this->addOptionalValue($settings,'CHANGE_PCT_TRIGGER', $this->chp_hooks);
-      $this->addOptionalValue($settings,'CHANGE_EVT_TRIGGER', $this->che_hooks);
+      $this->addOptionalValue($settings,'CHANGE_USER_TRIGGER', $this->chu_hooks);
+      $this->addOptionalValue($settings,'CHANGE_CUSTOMER_TRIGGER', $this->chk_hooks);
+      $this->addOptionalValue($settings,'CHANGE_PROJECT_TRIGGER', $this->chp_hooks);
+      $this->addOptionalValue($settings,'CHANGE_ACTIVITY_TRIGGER', $this->che_hooks);
       $this->addOptionalValue($settings,'LIST_FILTER_TRIGGER', $this->lft_hooks);
       $this->addOptionalValue($settings,'RESIZE_TRIGGER', $this->rsz_hooks);
                     
@@ -142,39 +142,39 @@ class Extensions {
     return $this->js_extension_files;
   }
 
-  public function tssHooks() {
+  public function timeframeChangedHooks() {
     return implode($this->tss_hooks);
   }
 
-  public function recHooks() {
+  public function buzzerRecordHooks() {
     return implode($this->rec_hooks);
   }
 
-  public function stpHooks() {
+  public function buzzerStopHooks() {
     return implode($this->stp_hooks);
   }
 
-  public function chuHooks() {
+  public function usersChangedHooks() {
     return implode($this->chu_hooks);
   }
 
-  public function chkHooks() {
+  public function customersChangedHooks() {
     return implode($this->chk_hooks);
   }
 
-  public function chpHooks() {
+  public function projectsChangedHooks() {
     return implode($this->chp_hooks);
   }
 
-  public function cheHooks() {
+  public function activitiesChangedHooks() {
     return implode($this->che_hooks);
   }
 
-  public function lftHooks() {
+  public function filterHooks() {
     return implode($this->lft_hooks);
   }
 
-  public function rszHooks() {
+  public function resizeHooks() {
     return implode($this->rsz_hooks);
   }
 
