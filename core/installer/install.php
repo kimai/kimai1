@@ -83,7 +83,7 @@ $p = $kga['server_prefix'];
 
 $query =
 "CREATE TABLE `${p}users` (
-  `userID` int(10) NOT NULL,
+  `userID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
   `alias` varchar(10),
   `status` tinyint(1) NOT NULL default '2',
@@ -95,12 +95,11 @@ $query =
   `banTime` int(10) NOT NULL default '0',
   `secure` varchar(60) NOT NULL default '0',
   `lastProject` int(10) NOT NULL default '1',
-  `lastEvent` int(10) NOT NULL default '1',
+  `lastActivity` int(10) NOT NULL default '1',
   `lastRecord` int(10) NOT NULL default '0',
   `timeframeBegin` varchar(60) NOT NULL default '0',
   `timeframeEnd` varchar(60) NOT NULL default '0',
   `apikey` varchar(30) NULL DEFAULT NULL,
-  PRIMARY KEY  (`userID`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `apikey` (`apikey`)
 );";
@@ -110,13 +109,13 @@ $query = "CREATE TABLE `${p}preferences` (
   `userID` int(10) NOT NULL,
   `option` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`userID`,`var`)
+  PRIMARY KEY (`userID`,`option`)
 );";
 exec_query($query);
 
 $query=
 "CREATE TABLE `${p}activities` (
-  `activityID` int(10) NOT NULL auto_increment,
+  `activityID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `comment` TEXT NOT NULL,
   `visible` TINYINT(1) NOT NULL DEFAULT '1',
@@ -125,17 +124,15 @@ $query=
   `assignable` TINYINT(1) NOT NULL DEFAULT '0',
   `budget` DECIMAL( 10, 2 ) NULL ,
   `effort` DECIMAL( 10, 2 ) NULL ,
-  `approved` DECIMAL( 10, 2 ) NULL,
-  PRIMARY KEY (`activityID`)
+  `approved` DECIMAL( 10, 2 ) NULL
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
 $query=
 "CREATE TABLE `${p}groups` (
-  `groupID` int(10) NOT NULL auto_increment,
+  `groupID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
-  `trash` TINYINT(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`groupID`)
+  `trash` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
@@ -169,7 +166,7 @@ $query="CREATE TABLE `${p}groups_projects` (
 exec_query($query);
 
 // group/event cross-table (groups n:m events)
-$query="CREATE TABLE `${p}group_activities` (
+$query="CREATE TABLE `${p}groups_activities` (
   `groupID` INT NOT NULL,
   `activityID` INT NOT NULL,
   UNIQUE (`groupID` ,`activityID`)) ;";
@@ -184,7 +181,7 @@ exec_query($query);
 
 $query=
 "CREATE TABLE `${p}customers` (
-  `customerID` int(10) NOT NULL auto_increment,
+  `customerID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `password` varchar(255),
   `secure` varchar(60) NOT NULL default '0',
@@ -203,14 +200,13 @@ $query=
   `mail` varchar(255) NOT NULL,
   `homepage` varchar(255) NOT NULL,
   `timezone` varchar(255) NOT NULL,
-  `trash` TINYINT(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`customerID`)
+  `trash` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
 $query=
 "CREATE TABLE `${p}projects` (
-  `projectID` int(10) NOT NULL auto_increment,
+  `projectID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `customerID` int(3) NOT NULL,
   `name` varchar(255) NOT NULL,
   `comment` TEXT NOT NULL,
@@ -221,14 +217,13 @@ $query=
   `effort` DECIMAL( 10, 2 ) NULL,
   `approved` DECIMAL( 10, 2 ) NULL,
   `internal` TINYINT( 1 ) NOT NULL DEFAULT 0,
-  PRIMARY KEY  (`projectID`),
   INDEX ( `customerID` )
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
 $query=
 "CREATE TABLE `${p}timeSheet` (
-  `timeEntryID` int(10) NOT NULL auto_increment,
+  `timeEntryID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `start` int(10) NOT NULL default '0',
   `end` int(10) NOT NULL default '0',
   `duration` int(6) NOT NULL default '0',
@@ -247,7 +242,6 @@ $query=
   `approved` DECIMAL( 10, 2 ) NULL,
   `statusID` SMALLINT NOT NULL,
   `billable` TINYINT NULL,
-  PRIMARY KEY  (`timeEntryID`),
   INDEX ( `userID` ),
   INDEX ( `projectID` ),
   INDEX ( `activityID` )
@@ -258,7 +252,7 @@ $query=
 "CREATE TABLE `${p}configuration` (
   `option` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`var`)
+  PRIMARY KEY  (`option`)
 );";
 exec_query($query);
 
@@ -281,7 +275,7 @@ exec_query($query);
 
 $query=
 "CREATE TABLE `${p}expenses` (
-  `expenseID` int(10) NOT NULL AUTO_INCREMENT,
+  `expenseID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `timestamp` int(10) NOT NULL DEFAULT '0',
   `userID` int(10) NOT NULL,
   `projectID` int(10) NOT NULL,
@@ -292,7 +286,6 @@ $query=
   `cleared` tinyint(1) NOT NULL DEFAULT '0',
   `multiplier` decimal(10,2) NOT NULL DEFAULT '1.00',
   `value` decimal(10,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`expenseID`),
   INDEX ( `userID` ),
   INDEX ( `projectID` )
 ) AUTO_INCREMENT=1;";
@@ -300,7 +293,7 @@ exec_query($query);
 
 $query = 
 "CREATE TABLE `${p}statuses` (
-`statusID` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`statusID` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `status` VARCHAR( 200 ) NOT NULL
 ) ENGINE = InnoDB ";
 exec_query($query);
