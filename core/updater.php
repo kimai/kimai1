@@ -1538,6 +1538,7 @@ if ((int)$revisionDB < 1368) {
     CHANGE `var` `option` varchar(255) NOT NULL
     ;");
 
+    exec_query("UPDATE `${p}configuration` SET `option` = 'project_comment_flag' WHERE `option` = 'pct_comment_flag';");
 
 
     exec_query("ALTER TABLE `${p}zef` RENAME TO `${p}timeSheet`,
