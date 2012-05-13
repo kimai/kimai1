@@ -24,7 +24,7 @@ include('../../includes/basics.php');
 
 require("private_func.php");
 
-$user = $database->checkUser();
+$user = checkUser();
 
 // ============================================
 // = initialize currently displayed timeframe =

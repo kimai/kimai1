@@ -611,8 +611,6 @@ abstract class DatabaseLayer {
 
   /**
   * checks if user is logged on and returns user information as array
-  * kicks client if is not verified
-  * TODO: this and get_config should be one function
   *
   * <pre>
   * returns:
@@ -625,21 +623,6 @@ abstract class DatabaseLayer {
   * @return array
   */
   public abstract function checkUserInternal($kimai_user);
-
-  public function checkUser()
-  {
-    if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
-        $kimai_user = addslashes($_COOKIE['kimai_user']);
-        $kimai_key = addslashes($_COOKIE['kimai_key']);
-
-		if ($this->get_seq($kimai_user) != $kimai_key) {
-			kickUser();
-		} else {
-			return $this->checkUserInternal($kimai_user);
-		}
-	}
-	kickUser();
-  }
 
   /**
   * write global configuration into $this->kga including defaults for user settings.

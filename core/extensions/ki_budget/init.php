@@ -19,7 +19,7 @@
 // Include Basics
 include ('../../includes/basics.php');
 
-$user = $database->checkUser();
+$user = checkUser();
 // set smarty config
 require_once (WEBROOT . 'libraries/smarty/Smarty.class.php');
 $tpl = new Smarty();

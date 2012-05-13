@@ -73,7 +73,7 @@ if ($isCoreProcessor) {
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
-$user = $database->checkUser();
+$user = checkUser();
 
 $tpl->assign('kga',$kga);
 

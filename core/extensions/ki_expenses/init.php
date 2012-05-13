@@ -22,7 +22,7 @@
 // ==================================
 include('../../includes/basics.php');
 include('private_db_layer_'.$kga['server_conn'].'.php');
-$database->checkUser();
+checkUser();
 
 
 // ============================================

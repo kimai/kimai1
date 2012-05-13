@@ -20,7 +20,7 @@
   // Include Basics
   include('../../includes/basics.php');
 
-  $user = $database->checkUser();
+  $user = checkUser();
   // =========================================
   // = Get the currently displayed timeframe =
   // =========================================

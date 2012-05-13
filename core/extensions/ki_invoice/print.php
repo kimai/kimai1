@@ -55,7 +55,7 @@ function RoundValue( $value, $prec ) {
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates   = "templates/";
-$user             = $database->checkUser();
+$user             = checkUser();
 $timeframe       = get_timeframe();
 $in              = $timeframe[0];
 $out             = $timeframe[1];

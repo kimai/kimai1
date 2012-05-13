@@ -22,6 +22,26 @@
  */
 
 /**
+ * Check if a user is logged in or kick them.
+ */
+function checkUser()
+{
+  global $database;
+
+  if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+      $kimai_user = addslashes($_COOKIE['kimai_user']);
+      $kimai_key = addslashes($_COOKIE['kimai_key']);
+
+              if ($database->get_seq($kimai_user) != $kimai_key) {
+                      kickUser();
+              } else {
+                      return $database->checkUserInternal($kimai_user);
+              }
+      }
+      kickUser();
+}
+
+/**
  * Kill the current users session by redirecting him to the logout page.
  */
 function kickUser() {
@@ -72,7 +92,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$groups,$selection=null){
+function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false){
 
     global $kga, $database;
 
@@ -129,7 +149,7 @@ function makeSelectBox($subject,$groups,$selection=null){
         case 'group':
             $groups = $database->get_groups();
             foreach ($groups as $group) {
-                if (!$group['trash']) {
+                if ($includeDeleted || !$group['trash']) {
                     $sel[$group['groupID']] = $group['name'];
                 }
             }
@@ -139,7 +159,7 @@ function makeSelectBox($subject,$groups,$selection=null){
             $users = $database->get_watchable_users($kga['user']);
 
             foreach ($users as $user) {
-              if (!$user['trash']) {
+              if ($includeDeleted || !$user['trash']) {
                 $sel[$user['userID']] = $user['name'];
               }
             }

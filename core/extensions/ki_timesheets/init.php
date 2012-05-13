@@ -22,7 +22,7 @@
 // ==================================
 include('../../includes/basics.php');
 
-$user = $database->checkUser();
+$user = checkUser();
 
 // ============================================
 // = initialize currently displayed timeframe =

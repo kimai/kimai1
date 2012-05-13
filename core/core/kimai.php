@@ -36,7 +36,7 @@ header("Pragma: no-cache");
 // ==================================
 include('../includes/basics.php');
 
-$user = $database->checkUser();
+$user = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
