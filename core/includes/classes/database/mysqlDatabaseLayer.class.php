@@ -1927,8 +1927,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @param integer $id    ID of record
   * @param integer $data  array with record data
   * @author th
-  * @FIXME alex - 	the $data of timeEntry_create & timeEntry_edit are hell different, WHY, WHY, WHY?
-  * 				to keep the API clean, added new function => timeEntry_add_record
   */
   public function timeEntry_create($data) {
       $data = $this->clean_data($data);

@@ -656,7 +656,7 @@ class Kimai_Remote_Api
 				return $this->getErrorResult('Performed an update, but missing id property.');
 			}
 		} else {
-			$id = $backend->timeEntry_add_record($data);
+			$id = $backend->timeEntry_create($data);
 			if(!empty($id)) {
 				return $this->getSuccessResult(array(array('id' => $id)));
 			} else {

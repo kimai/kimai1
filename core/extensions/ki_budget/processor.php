@@ -74,7 +74,6 @@ switch ($axAction)
 		// track which activities we want to see, so we can exclude them when we create the plot
 		$activitiesFilter = false;
 		$projectsFilter = false;
-		$customerFilter = false;
 		if (is_array($filterProjects) && count($filterProjects) > 0) {
 			$projectsFilter = $filterProjects;
 			$projectsSelected = $projectsFilter;
@@ -87,45 +86,32 @@ switch ($axAction)
 		if (isset($kga['customer'])) {
 			$projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
 			$activities = $database->get_activities();
-			$customerValues = false;
 		}
 		else {
 			$customers = $database->get_customers($kga['user']['groups']);
 			if (is_array($filterCustomers) && count($filterCustomers) > 0) {
-				$customerFilter = $filterCustomers;
 				$projects = array();
-				foreach ($customerFilter as $customerId) {
-					$projects = array_merge($database->get_projects_by_customer(($customerId), $projects));
+				foreach ($filterCustomers as $customerId) {
+                                error_log($customerId);
+					$projects = array_merge($database->get_projects_by_customer($customerId), $projects);
 				}
 			}
 			else {
 				$projects = $database->get_projects($kga['user']['groups']);
-				// add all customers as selected
-				foreach($customers as $customer) {
-					$customerFilter[] = $customer['customerID'];
-				}
 			}
 			$activities = $database->get_activities($kga['user']['groups']);
-			foreach ($customers as $customer) {
-				$customerValues[] = $customer['customerID'];
-				$customerNames[] = $customer['name'];
-			}
 		}
 		if(is_array($projects) && count($projects) > 0) {
 			foreach ($projects as $index => $project) {
 				if ($projectsFilter === false) {
 					$projectsSelected[] = $project['projectID'];
 				}
-				$projectValues[] = $project['projectID'];
-				$projectNames[] = $project['name'];
 				$projects[$index]['activities'] = $database->get_activities_by_project($project['projectID']);
 
 					foreach ($projects[$index]['activities'] as $index => $activity) {
 						if ($activitiesFilter === false) {
 							$activitiesSelected[] = $activity['activityID'];
 						}
-						$activityValues[] = $activity['activityID'];
-						$activityNames[] = $activity['name'];
 					}
 			}
 		}
@@ -141,15 +127,8 @@ switch ($axAction)
 		else {
 			$tpl->assign('projects', 0);
 		}
-		$tpl->assign('customers_selected', $customerFilter);
 		$tpl->assign('projects_selected', $projectsSelected);
 		$tpl->assign('activities_selected', $activitiesSelected);
-		$tpl->assign('project_values', $projectValues);
-		$tpl->assign('activity_values', $activityValues);
-		$tpl->assign('customer_values', $customerValues);
-		$tpl->assign('project_names', $projectNames);
-		$tpl->assign('customer_names', $customerNames);
-		$tpl->assign('activity_names', $activityNames);
 
 		$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
 		$tpl->assign('chartColors', json_encode($chartColors));

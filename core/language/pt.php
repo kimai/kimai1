@@ -80,12 +80,6 @@ return array(
 
 "breiteDatumspalte" => "largura coluna data",
 
-"def_pctID"         => "ID Projecto prédefinida",
-
-"def_kndID"         => "ID CLiente prédefinida",
-
-"def_evtID"         => "ID Evento prédefinida",
-
 "recommended"       => "recomendado",
 
 "submit"            => "OK",
@@ -256,8 +250,6 @@ return array(
 "bannedUser"        => "Utilizador banido - clique para reactivar",
 
 "activeAccount"     => "Utilizador activo - clique para banir",
-
-"changegrp"         => "Alterar grupo",
 
 "members"           => "Membros",
 

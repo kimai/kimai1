@@ -43,20 +43,6 @@ switch ($axAction) {
         $timeSheetEntry['end'] = 0;
         $timeSheetEntry['duration'] = 0;
 
-        // copied from check_timeSheet_get_data and inverted assignments
-        $timeSheetEntry['projectID'] = $timeSheetEntry['projectID'];
-        $timeSheetEntry['activityID'] = $timeSheetEntry['activityID'];
-        $timeSheetEntry['location'] = $timeSheetEntry['location'];
-        $timeSheetEntry['trackingNumber'] = $timeSheetEntry['trackingNumber'];
-        $timeSheetEntry['description'] = $timeSheetEntry['description'];
-        $timeSheetEntry['comment'] = $timeSheetEntry['comment'];
-        $timeSheetEntry['commentType'] = $timeSheetEntry['commentType'];
-        $timeSheetEntry['rate'] = $timeSheetEntry['rate'];
-        $timeSheetEntry['cleared'] = $timeSheetEntry['cleared'];
-        //fcw: status hatte hier noch gefehlt
-        $timeSheetEntry['statusID'] = $timeSheetEntry['statusID'];
-        $timeSheetEntry['userID'] = $kga['user']['userID'];
-
         $newTimeSheetEntryID = $database->timeEntry_create($timeSheetEntry);
 
         $userData = array();
@@ -405,7 +391,7 @@ switch ($axAction) {
 
           // TIME RIGHT - EDIT ENTRY
           Logger::logfile("timeEntry_edit: " .$id);
-          check_timeSheetEntry($id,$data);
+          $database->timeEntry_edit($id,$data);
 
       } else {
 

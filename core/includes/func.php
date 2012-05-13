@@ -252,46 +252,6 @@ function get_cookie($cookie_name, $default=null) {
     return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
 }
 
-
-/**
- * check if there are 0s (erroneuos entries) in the timeSheetEntry data while editing and prevent overwriting old data in this case
- *
- * @param int $id the id of the entry to be edited
- * @param array $timeSheetEntryData
- * @return boolean the return value of the actual editing function
- *
- * @author Oleg
- */
-function check_timeSheetEntry($id, $timeSheetEntry) {
-  global $database;
-  
-  $finalTimeSheetEntry['userID']        = $timeSheetEntry['userID'];
-  $finalTimeSheetEntry['projectID']        = $timeSheetEntry['projectID'];
-  $finalTimeSheetEntry['activityID']        = $timeSheetEntry['activityID'];
-  $finalTimeSheetEntry['location']     = $timeSheetEntry['location'];
-  $finalTimeSheetEntry['trackingNumber']   = $timeSheetEntry['trackingNumber'];
-  $finalTimeSheetEntry['description']  = $timeSheetEntry['description'];
-  $finalTimeSheetEntry['comment']      = $timeSheetEntry['comment'];
-  $finalTimeSheetEntry['commentType'] = $timeSheetEntry['commentType'];
-  $finalTimeSheetEntry['rate']         = $timeSheetEntry['rate'];
-  $finalTimeSheetEntry['budget']       = $timeSheetEntry['budget'];
-  $finalTimeSheetEntry['approved']     = $timeSheetEntry['approved'];
-  $finalTimeSheetEntry['status']       = $timeSheetEntry['status'];
-  $finalTimeSheetEntry['billable']     = $timeSheetEntry['billable'];
-  $finalTimeSheetEntry['description']  = $timeSheetEntry['description'];
-  $finalTimeSheetEntry['cleared']      = $timeSheetEntry['cleared'];
-  $finalTimeSheetEntry['start']           = $timeSheetEntry['start'];
-
-  if (isset($timeSheetEntry['out'])) {
-    $finalTimeSheetEntry['end']          = $timeSheetEntry['end'];
-    $finalTimeSheetEntry['duration']         = $timeSheetEntry['duration'];
-  }
-
-  return $database->timeEntry_edit($id,$finalTimeSheetEntry);
-
-}
-
-
 // based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
 function createPassword($length) {
         $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

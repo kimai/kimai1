@@ -103,9 +103,8 @@ class HttpAuth extends AuthBase {
     if ($this->HTAUTH_USER_AUTOCREATE) { 
     
 	// AutoCreate the user and return true
-    	$userId = $this->database->(array(
+    	$userId = $this->database->user_create(array(
 	    'name' => $check_username,
-    	    'groups' => $this->getDefaultGroupId(),
     	    'status' => 2,
     	    'active' => 1
     	    ));
