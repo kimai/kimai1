@@ -2165,6 +2165,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   WHERE customerID = $customerID
+                    AND project.internal=0
                     AND project.trash=0
                   ORDER BY $sort;";
       } else {
@@ -2174,6 +2175,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                   JOIN ${p}groups_projects USING(projectID)
                   WHERE ${p}groups_projects.groupID  IN (".implode($groups,',').")
                     AND customerID = $customerID
+                    AND project.internal=0
                     AND project.trash=0
                   ORDER BY $sort;";
       }
