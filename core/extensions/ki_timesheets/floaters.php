@@ -135,35 +135,24 @@ switch ($axAction) {
     $tpl->assign('status', $kga['conf']['status']);
     
     $billableValues = Config::getConfig('billable');
-    $tpl->assign('billableValues', $billableValues); 
-    foreach($billableValues as $index => $billableValue) {
-    	$billableValues[$index] = $billableValue.'%';
+    $billableText = array();
+    foreach($billableValues as $billableValue) {
+    	$billableText[] = $billableValue.'%';
     }
-    $tpl->assign('billable', $billableValues);
+    $tpl->assign('billable', array_combine($billableValues, $billableText));
     $tpl->assign('commentTypes', $commentTypes);
     $tpl->assign('commentValues', array('0','1','2'));
 
-    $users = $database->get_watchable_users($kga['user']);
-    $userIds = array();
-    $userNames = array();
-
-    foreach ($users as $user) {
-      $userIds[] = $user['userID'];
-      $userNames[] = $user['name'];
-    }
-
-    $tpl->assign('userIds', $userIds);
-    $tpl->assign('userNames', $userNames);
+      
+    $tpl->assign('users', makeSelectBox("user",$kga['user']['groups']));
 
     // select for projects
     $sel = makeSelectBox("project",$kga['user']['groups']);
-    $tpl->assign('projectNames', $sel[0]);
-    $tpl->assign('projectIDs',   $sel[1]);
+    $tpl->assign('projects', $sel);
 
     // select for activities
     $sel = makeSelectBox("activity",$kga['user']['groups']);
-    $tpl->assign('activityNames', $sel[0]);
-    $tpl->assign('activityIDs',   $sel[1]);
+    $tpl->assign('activities', $sel);
 
 
 

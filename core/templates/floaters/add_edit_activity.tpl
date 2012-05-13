@@ -123,7 +123,7 @@
                     <li>
                         <label for="activityGroups" >{$kga.lang.groups}:</label>
                         <select class="formfield" id="activityGroups" name="activityGroups[]" multiple size='5' style="width:255px">
-                            {html_options values=$groupIDs output=$groupNames selected=$selectedGroups}
+                            {html_options options=$groups selected=$selectedGroups}
                         </select>
                     </li>      
                 </ul>
@@ -138,7 +138,7 @@
                     <li>
                         <label for="projects">{$kga.lang.projects}:</label>
                         <select class="formfield" id="activityProjects" name="projects[]" multiple size='5' style="width:255px" {if !$assignable}disabled="disabled"{/if}>
-                            {html_options values=$projectIDs output=$projectNames selected=$selectedProjects}
+                            {html_options options=$projects selected=$selectedProjects}
                         </select>
                     </li>
 

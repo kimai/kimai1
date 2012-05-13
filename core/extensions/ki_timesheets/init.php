@@ -112,24 +112,20 @@ $tpl->assign('buzzerAction', "startRecord()");
 
 // select for projects
 if (isset($kga['customer'])) {
-  $tpl->assign('projectNames', array());
-  $tpl->assign('projectIDs',   array());
+  $tpl->assign('projects', array());
 }
 else {
   $sel = makeSelectBox("project",$kga['user']['groups']);
-  $tpl->assign('projectNames', $sel[0]);
-  $tpl->assign('projectIDs',   $sel[1]);
+  $tpl->assign('projects', $sel);
 }
 
 // select for activities
 if (isset($kga['customer'])) {
-  $tpl->assign('activityNames', array());
-  $tpl->assign('activityIDs',   array());
+  $tpl->assign('activities', array());
 }
 else {
   $sel = makeSelectBox("activity",$kga['user']['groups']);
-  $tpl->assign('activityNames', $sel[0]);
-  $tpl->assign('activityIDs',   $sel[1]);
+  $tpl->assign('activities', $sel);
 }
 
 $tpl->display('main.tpl');

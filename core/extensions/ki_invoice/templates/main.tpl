@@ -22,7 +22,7 @@
 			<div id="invoice_extension_form">
 			{$kga.lang.ext_invoice.invoiceProject} 
 			<select id="invoice_projectID" name="projectID" class="formfield">
-			  {html_options values=$projectIDs output=$projectNames selected=$preselected_project}
+			  {html_options options=$projects selected=$preselected_project}
 			</select>
 			</div>
 			<div id="invoice_timespan">
@@ -32,7 +32,7 @@
 <!--Work in Progress: Select box for form type-->
 			{$kga.lang.ext_invoice.invoiceTemplate}
 			<select id="invoice_form_docs" name="ivform_file" class="formfield">
-			 {html_options values=$sel_form_files output=$sel_form_files selected=$pres_form}
+			 {html_options values=$sel_form_files output=$sel_form_files}
 			</select><br/><br/>
 
 
@@ -42,7 +42,7 @@
 		<input type=checkbox name="short" checked> {$kga.lang.ext_invoice.invoiceOptionShort}<br/>
     		<input type=checkbox name="round" checked> {$kga.lang.ext_invoice.invoiceOptionRound}
     		<select id="invoice_round_ID" name="round" class="formfield">
-			  {html_options values=$sel_round_IDs output=$sel_round_names selected=$pres_round}
+			  {html_options options=$roundingOptions}
 			</select>
      
             <br/>

@@ -136,7 +136,7 @@
                     <li>
                         <label for="customerGroups" >{$kga.lang.groups}:</label>
                         <select class="formfield" id ="customerGroups" name="customerGroups[]" multiple size='3' style="width:255px">
-                            {html_options values=$groupIDs output=$groupNames selected=$selectedGroups}
+                            {html_options options=$groups selected=$selectedGroups}
                         </select>
                     </li>
 

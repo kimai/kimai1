@@ -381,7 +381,7 @@
                        <label for="projectID">{$kga.lang.project}:</label>
                        <div class="multiFields">
                         <select size = "5" name="projectID" id="add_edit_timeSheetEntry_projectID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());" >
-                            {html_options values=$projectIDs output=$projectNames selected=$projectID}
+                            {html_options options=$projects selected=$projectID}
                         </select>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value); ts_add_edit_validate();"/>
@@ -394,7 +394,7 @@
                        <label for="activityID">{$kga.lang.activity}:</label>
                        <div class="multiFields">
                         <select size = "5" name="activityID" id="add_edit_timeSheetEntry_activityID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
-                            {html_options values=$activityIDs output=$activityNames selected=$activityID}
+                            {html_options options=$activities selected=$activityID}
                         </select>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value); ts_add_edit_validate();" />
@@ -462,7 +462,7 @@
                    <li>
                        <label for="userID">{$kga.lang.user}:</label>
                        <select id="userID" class="formfield" name="userID" tabindex="14" >
-                           {html_options values=$userIDs output=$userNames selected=$userID}
+                           {html_options options=$users selected=$userID}
                        </select>
                    </li>
                    {/if}
@@ -505,7 +505,7 @@
                    <li>
                        <label for="billable">{$kga.lang.billable}:</label>
                        <select id="billable" class="formfield" name="billable" tabindex="16" >
-                           {html_options values=$billableValues output=$billable selected=$billable_active}
+                           {html_options options=$billable selected=$billable_active}
                        </select>
                    </li>
                    <li>

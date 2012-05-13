@@ -72,13 +72,11 @@ switch ($axAction) {
 
     // select for projects
     $sel = makeSelectBox("project",$kga['user']['groups']);
-    $tpl->assign('projectNames', $sel[0]);
-    $tpl->assign('projectIDs',   $sel[1]);
+    $tpl->assign('projects', $sel);
 
     // select for activities
     $sel = makeSelectBox("activity",$kga['user']['groups']);
-    $tpl->assign('activityNames', $sel[0]);
-    $tpl->assign('activityIDs',   $sel[1]);
+    $tpl->assign('activities', $sel);
 
 
 

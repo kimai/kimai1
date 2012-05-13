@@ -77,7 +77,7 @@
                        <label for="projectID">{$kga.lang.project}:</label>
                        <div class="multiFields">
                         <select size = "5" name="projectID" id="add_edit_expense_project_ID" class="formfield" style="width:400px" tabindex="1" onchange="expense_add_edit_validate();">
-                            {html_options values=$projectIDs output=$projectNames selected=$preselected_project}
+                            {html_options options=$projects selected=$preselected_project}
                         </select>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_expense_project_ID', this.value); expense_add_edit_validate();"/>

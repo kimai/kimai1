@@ -110,8 +110,7 @@ switch ($axAction) {
 
         // create the <select> element for the groups
         $sel = makeSelectBox("group",$kga['user']['groups']);
-        $tpl->assign('groupNames', $sel[0]);
-        $tpl->assign('groupIDs',   $sel[1]);
+        $tpl->assign('groups', $sel);
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
@@ -150,8 +149,7 @@ switch ($axAction) {
         }
         // Create a <select> element to chosse the customer.
         $sel = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
-        $tpl->assign('customerNames', $sel[0]);
-        $tpl->assign('customerIDs',   $sel[1]);
+        $tpl->assign('customers', $sel);
 
         // Create a <select> element to chosse the activities.
         $assignableTasks = array();
@@ -166,8 +164,7 @@ switch ($axAction) {
         
         // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("group",$kga['user']['groups']);
-        $tpl->assign('groupNames', $sel[0]);
-        $tpl->assign('groupIDs',   $sel[1]);
+        $tpl->assign('groups', $sel);
         
         // Set defaults for a new project.
         if (!$id) {
@@ -206,13 +203,11 @@ switch ($axAction) {
 
         // Create a <select> element to chosse the groups.
         $sel = makeSelectBox("group",$kga['user']['groups']);
-        $tpl->assign('groupNames', $sel[0]);
-        $tpl->assign('groupIDs',   $sel[1]);
+        $tpl->assign('groups', $sel);
 
         // Create a <select> element to chosse the projects.
         $sel = makeSelectBox("project",$kga['user']['groups']);
-        $tpl->assign('projectNames', $sel[0]);
-        $tpl->assign('projectIDs',   $sel[1]);
+        $tpl->assign('projects', $sel);
 
         // Set defaults for a new project.
         if (!$id) {

@@ -34,12 +34,12 @@
                     <li>
                         <label for="leaders" >{$kga.lang.groupleader}:</label>
                         <select class="formfield" name="leaders[]" multiple size='5' style="width:255px">
-                            {html_options values=$userIDs output=$userNames selected=$selectedUsers}
+                            {html_options options=$users selected=$selectedUsers}
                         </select>
                     </li>
                                                 
                 </ul>
-                <input name="id" type="hidden" value="{$group.groupID}" />
+                <input name="id" type="hidden" value="{$group_details.groupID}" />
                 <input name="axAction" type="hidden" value="sendEditGroup" />
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />

@@ -112,7 +112,7 @@ $id}{$kga.lang.edit}: {$kga.lang.project}{else}{$kga.lang.new_project}{/if}</spa
 
 	<li><label for="customerID">{$kga.lang.customer}:</label> <select
 		class="formfield" name="customerID">
-		{html_options values=$customerIDs output=$customerNames
+		{html_options options=$customers 
 		selected=$selectedCustomer}
 	</select></li>
 
@@ -206,7 +206,7 @@ $id}{$kga.lang.edit}: {$kga.lang.project}{else}{$kga.lang.new_project}{/if}</spa
 	<li><!--                        <label for="pct_grp" >{$kga.lang.groups}:</label>-->
 	<select class="formfield" id="projectGroups" name="projectGroups[]" multiple
 		size='5' style="width: 255px">
-		{html_options values=$groupIDs output=$groupNames
+		{html_options options=$groups 
 		selected=$selectedGroups}
 	</select></li>
 </ul>

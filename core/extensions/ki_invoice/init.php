@@ -39,12 +39,16 @@ $tpl->assign('kga', $kga);
 
 // get list of projects for select box
 $sel = makeSelectBox("project",$kga['user']['groups']);  
-$tpl->assign('projectNames', $sel[0]);
-$tpl->assign('projectIDs',   $sel[1]);
+$tpl->assign('projects', $sel);
 
 // Select values for Round Time option
-$tpl->assign('sel_round_names', array('0.1h', '0.25h', '0.5h', '1.0h') );
-$tpl->assign('sel_round_IDs',   array(1, 2.5, 5, 10) );
+$roundingOptions = array(
+  1 => '0.1h',
+  2.5 =>'0.25h',
+  5 => '0.5h',
+  10 => '1.0h'
+);
+$tpl->assign('roundingOptions', $roundingOptions);
 
 // Get Invoice Template FileNames
 

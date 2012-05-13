@@ -77,54 +77,44 @@ function makeSelectBox($subject,$groups,$selection=null){
     global $kga, $database;
 
     $sel = array();
-    $sel[0] = array();
-    $sel[1] = array();
 
     switch ($subject) {
         case 'project':
             $projects = $database->get_projects($groups);
-            $i=0;
             foreach ($projects as $project) {
                 if ($project['visible']) {
                     if ($kga['conf']['flip_project_display']) {
-                        $sel[0][$i] = $project['customerName'] . ": " . $project['name'];
+                        $projectName = $project['customerName'] . ": " . $project['name'];
                         if ($kga['conf']['project_comment_flag']) {
-                            $sel[0][$i] .= "(" . $project['comment'] .")" ;
+                            $projectName .= "(" . $project['comment'] .")" ;
                         }
                     } else {
-                        $sel[0][$i] = $project['name'] . " (" . $project['customerName'] . ")";
+                        $projectName = $project['name'] . " (" . $project['customerName'] . ")";
                         if ($kga['conf']['project_comment_flag']) {
-                            $sel[0][$i] .=  "(" . $project['comment'] .")";
+                            $projectName .=  "(" . $project['comment'] .")";
                         }
                     }
-                    $sel[1][$i] = $project['projectID'];
-                    $i++;
+                    $sel[$project['projectID']] = $projectName;
                 }
             }
             break;
 
         case 'activity':
             $activities = $database->get_activities($groups);
-            $i=0;
             foreach ($activities as $activity) {
                 if ($activity['visible']) {
-                    $sel[0][$i] = $activity['name'];
-                    $sel[1][$i] = $activity['activityID'];
-                    $i++;
+                    $sel[$activity['activityID']] = $activity['name'];
                 }
             }
             break;
 
         case 'customer':
             $customers = $database->get_customers($groups);
-            $i=0;
             $selectionFound = false;
             if(is_array($customers)) {
 	            foreach ($customers as $customer) {
 	                if ($customer['visible']) {
-	                    $sel[0][$i] = $customer['name'];
-	                    $sel[1][$i] = $customer['customerID'];
-	                    $i++;
+	                    $sel[$customer['customerID']] = $customer['name'];
 	                    if ($selection == $customer['customerID'])
 	                      $selectionFound = true;
 	                }
@@ -132,20 +122,26 @@ function makeSelectBox($subject,$groups,$selection=null){
             }
             if ($selection != null && !$selectionFound) {
               $data = $database->customer_get_data($selection);
-              $sel[0][$i] = $data['name'];
-              $sel[1][$i] = $data['customerID'];
+              $sel[$data['customerID']] = $data['name'];
             }
             break;
 
         case 'group':
             $groups = $database->get_groups();
-            $i=0;
             foreach ($groups as $group) {
                 if (!$group['trash']) {
-                    $sel[0][$i] = $group['name'];
-                    $sel[1][$i] = $group['groupID'];
-                    $i++;
+                    $sel[$group['groupID']] = $group['name'];
                 }
+            }
+            break;
+
+        case 'user':
+            $users = $database->get_watchable_users($kga['user']);
+
+            foreach ($users as $user) {
+              if (!$user['trash']) {
+                $sel[$user['userID']] = $user['name'];
+              }
             }
             break;
 

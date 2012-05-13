@@ -29,20 +29,11 @@ switch ($axAction) {
     // = Builds edit-user dialogue =
     // =============================
 
-        $userDetails = $database->user_get_data($id);        
-        $arr = $database->get_groups();
-        
-        $i=0;
-        foreach ($arr as $row) {
-            $groupNames[$i] = $row['name'];
-            $groupIDs[$i]   = $row['groupID'];
-            $i++;
-        }
+        $userDetails = $database->user_get_data($id);
         
         $tpl->assign('selectedGroups',$database->getGroupMemberships($id));
         
-        $tpl->assign('groupIDs',   $groupIDs);
-        $tpl->assign('groupNames', $groupNames);
+        $tpl->assign('groups', makeSelectBox('group',null,null,true));
                     
         $tpl->assign('user_details', $userDetails);
         $tpl->display("edituser.tpl");  
@@ -55,20 +46,11 @@ switch ($axAction) {
     // =============================
         
         $groupDetails = $database->group_get_data($_REQUEST['id']);
-        $arr = $database->get_users();
-        
-        $i=0;
-        foreach ($arr as $row) {
-            $userNames[$i] = $row['name'];
-            $userIDs[$i]   = $row['userID'];
-            $i++;
-        }
                 
         $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
         $tpl->assign('selectedUsers', $selectedUsers);
                       
-        $tpl->assign('userIDs',   $userIDs);
-        $tpl->assign('userNames', $userNames);
+        $tpl->assign('users',   makeSelectBox('user',null,null,true));
         
         $tpl->assign('group_details', $groupDetails);
         $tpl->display("editgroup.tpl"); 
