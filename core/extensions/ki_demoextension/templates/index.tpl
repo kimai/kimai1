@@ -21,8 +21,8 @@
     This DIV is going to be changed via jQuery when the tab has been changed to another extension and back.
 </div>
 
-<div id="demo_timespace">
-    When you change the timespace it will be entered here ====> <span class="timespace_target">__________</span> via jQuery. (only timespace_in for the sake of this demonstration...) 
+<div id="demo_timeframe">
+    When you change the timeframe it will be entered here ====> <span class="timeframe_target">__________</span> via jQuery. (only timeframe_in for the sake of this demonstration...) 
 </div>
 
 

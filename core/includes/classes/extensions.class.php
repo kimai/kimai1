@@ -88,7 +88,7 @@ class Extensions {
       $this->addOptionalValue($settings,'TAB_CHANGE_TRIGGER',$this->tab_change_trigger);
                                   
       // read hook triggers
-      $this->addOptionalValue($settings,'TIMESPACE_CHANGE_TRIGGER', $this->timeframe_changed_hooks);
+      $this->addOptionalValue($settings,'TIMEFRAME_CHANGE_TRIGGER', $this->timeframe_changed_hooks);
       $this->addOptionalValue($settings,'BUZZER_RECORD_TRIGGER', $this->record_hooks);
       $this->addOptionalValue($settings,'BUZZER_STOP_TRIGGER', $this->buzzer_stop_hooks);
       $this->addOptionalValue($settings,'CHANGE_USER_TRIGGER', $this->users_changed_hooks);

@@ -39,7 +39,7 @@ function demo_extension_tab_changed() {
 function demo_ext_timeframe_changed() {
     $.post(demo_ext_path + "processor.php", { axAction: "test", axValue: 0, id: 0 }, 
     function(data) {
-        $('#demo_timespace > span.timespace_target').html(data);
+        $('#demo_timeframe > span.timeframe_target').html(data);
     });
 }
 

@@ -170,7 +170,7 @@ return array(
 
 "start"             => "Iniciar!",
 
-"setTimespace"      => "definir intervalo",
+"setTimeframe"      => "definir intervalo",
 
 "now"               => "agora!",
 
@@ -338,7 +338,7 @@ return array(
 
 "clock"             => "Relógio",
 
-"currSum"           => "Current Timespace Summary",
+"currSum"           => "Current Timeframe Summary",
 
 "admWarn"           => "Você é administrador. O estado apenas pode ser menor que outro administrador.",
 

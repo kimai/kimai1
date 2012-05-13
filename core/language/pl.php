@@ -95,7 +95,7 @@ return array(
 "updateNow"         => "Zaktualizuj bazę danych!",
 "stop"              => "Stop!",
 "start"             => "Start!",
-"setTimespace"      => "ustaw odstęp czasu",
+"setTimeframe"      => "ustaw odstęp czasu",
 "now"               => "teraz",
 "specify"           => "specyfikacja",
 "add"               => "Dodaj",

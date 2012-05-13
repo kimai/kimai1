@@ -91,7 +91,7 @@
 
         var default_title         = "{$kga.user.name|escape:'html'} - Kimai";
         var revision              = {$kga.revision};
-        var timespaceDateFormat   = "{$kga.date_format.2|escape:'html'}";
+        var timeframeDateFormat   = "{$kga.date_format.2|escape:'html'}";
 
         var selected_customer  = '{$customerData.customerID}';
         var selected_project  = '{$projectData.projectID}';
@@ -159,7 +159,7 @@
         handle: '#floater_handle'
       });   
 
-    $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timespaceDateFormat,new Date()));
+    $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timeframeDateFormat,new Date()));
     
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);

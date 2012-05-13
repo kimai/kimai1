@@ -92,7 +92,7 @@ return array(
 "updateNow"         => "Opdater databasen nu!",
 "stop"              => "Stop!",
 "start"             => "Start!",
-"setTimespace"      => "sæt tidsrum",   
+"setTimeframe"      => "sæt tidsrum",   
 "now"               => "nu",
 "specify"           => "angiv liste",
 "add"               => "Tilføj",

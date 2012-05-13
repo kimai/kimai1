@@ -56,9 +56,9 @@ function RoundValue( $value, $prec ) {
 $isCoreProcessor = 0;
 $dir_templates   = "templates/";
 $user             = $database->checkUser();
-$timespace       = get_timespace();
-$in              = $timespace[0];
-$out             = $timespace[1];
+$timeframe       = get_timeframe();
+$in              = $timeframe[0];
+$out             = $timeframe[1];
 
 $timeArray = $database->get_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
 

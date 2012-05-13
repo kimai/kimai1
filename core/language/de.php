@@ -97,7 +97,7 @@ return array(
 "updateNow"         => "Datenbank-Aktualisierung jetzt durchführen!",
 "stop"              => "Stopp!",
 "start"             => "Start!",
-"setTimespace"      => "Zeitraum setzen",
+"setTimeframe"      => "Zeitraum setzen",
 "now"               => "Aktuelle Zeit",
 "specify"           => "Liste spezifizieren",
 "add"               => "Hinzufügen",

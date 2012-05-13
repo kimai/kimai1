@@ -2072,7 +2072,7 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * saves timespace of user in database (table conf)
+    * saves timeframe of user in database (table conf)
     *
     * @param string $timeframeBegin unix seconds
     * @param string $timeframeEnd unix seconds
@@ -2267,8 +2267,8 @@ class PDODatabaseLayer extends DatabaseLayer
     * TODO: Test it!
     *
     * @param integer $user ID of user in table users
-    * @param integer $start start of timespace in unix seconds
-    * @param integer $end end of timespace in unix seconds
+    * @param integer $start start of timeframe in unix seconds
+    * @param integer $end end of timeframe in unix seconds
     * @global array $this->kga kimai-global-array
     * @return array
     * @author th
@@ -2673,8 +2673,8 @@ class PDODatabaseLayer extends DatabaseLayer
     * returns time summary of current timesheet
     *
     * @param integer $user ID of user in table users
-    * @param integer $start start of timespace in unix seconds
-    * @param integer $end end of timespace in unix seconds
+    * @param integer $start start of timeframe in unix seconds
+    * @param integer $end end of timeframe in unix seconds
     * @global array $this->kga kimai-global-array
     * @return integer
     * @author th
@@ -2691,7 +2691,7 @@ class PDODatabaseLayer extends DatabaseLayer
     //     return $zeit;
     // }
     // th: solving this by doing a loop and add the seconds manually...
-    //     btw - using the rowlimit is not correct here because we want the time for the timespace, not for the rows in the timesheet ... my fault
+    //     btw - using the rowlimit is not correct here because we want the time for the timeframe, not for the rows in the timesheet ... my fault
     public function get_duration($start,$end,$users = null, $customers = null, $projects = null, $activities = null, $filterCleared = null) {
       $p = $this->kga['server_prefix'];
 
@@ -2911,11 +2911,11 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * returns list of time summary attached to customer ID's within specific timespace as array
+    * returns list of time summary attached to customer ID's within specific timeframe as array
     * !! becomes obsolete with new querys !!
     *
-    * @param integer $start start of timespace in unix seconds
-    * @param integer $end end of timespace in unix seconds
+    * @param integer $start start of timeframe in unix seconds
+    * @param integer $end end of timeframe in unix seconds
     * @param integer $user filter for only this ID of auser
     * @param integer $customer filter for only this ID of a customer
     * @param integer $project filter for only this ID of a project
@@ -3030,7 +3030,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
 
     /**
-    * returns list of time summary attached to project ID's within specific timespace as array
+    * returns list of time summary attached to project ID's within specific timeframe as array
     * !! becomes obsolete with new querys !!
     *
     * @param integer $start start time in unix seconds
@@ -3215,7 +3215,7 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * returns list of time summary attached to activity ID's within specific timespace as array
+    * returns list of time summary attached to activity ID's within specific timeframe as array
     *
     * @param integer $start start time in unix seconds
     * @param integer $end end time in unix seconds

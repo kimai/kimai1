@@ -98,23 +98,23 @@ switch ($axAction) {
     break;
     
     /**
-     * When the user changes the timespace it is stored in the database so
+     * When the user changes the timeframe it is stored in the database so
      * it can be restored, when the user reloads the page.
      */
-    case 'setTimespace':
+    case 'setTimeframe':
         if (!isset($kga['user'])) die();
     
-        $timespace = explode('|',$axValue);
+        $timeframe = explode('|',$axValue);
          
-        $timespace_in  = explode('-',$timespace[0]);
-        $timespace_in  = (int)mktime(0,0,0,$timespace_in[0],$timespace_in[1],$timespace_in[2]);
-        if ($timespace_in < 950000000) $timespace_in = $in;
+        $timeframe_in  = explode('-',$timeframe[0]);
+        $timeframe_in  = (int)mktime(0,0,0,$timeframe_in[0],$timeframe_in[1],$timeframe_in[2]);
+        if ($timeframe_in < 950000000) $timeframe_in = $in;
         
-        $timespace_out = explode('-',$timespace[1]);
-        $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
-        if ($timespace_out < 950000000) $timespace_out = $out;
+        $timeframe_out = explode('-',$timeframe[1]);
+        $timeframe_out = (int)mktime(23,59,59,$timeframe_out[0],$timeframe_out[1],$timeframe_out[2]);
+        if ($timeframe_out < 950000000) $timeframe_out = $out;
         
-        $database->save_timeframe($timespace_in,$timespace_out,$kga['user']['userID']);
+        $database->save_timeframe($timeframe_in,$timeframe_out,$kga['user']['userID']);
     break;
 
     /**

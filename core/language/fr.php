@@ -103,7 +103,7 @@ return array(
 "updateNow"         => "Mise à jour de la base de données en cours!",
 "stop"              => "Stop!",
 "start"             => "Démarre!",
-"setTimespace"      => "Choisir plage",
+"setTimeframe"      => "Choisir plage",
 "now"               => "Maintenant",
 "specify"           => "Spécifier la liste",
 "add"               => "Ajouter",

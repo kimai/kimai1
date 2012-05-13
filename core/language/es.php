@@ -93,7 +93,7 @@ return array(
 "updateNow"         => "¡Actualizar la base de datos ahora!",
 "stop"              => "¡Parar!",
 "start"             => "¡Iniciar!",
-"setTimespace"      => "establecer rango",
+"setTimeframe"      => "establecer rango",
 "now"               => "ahora",
 "specify"           => "Lista de especificaciones",
 "add"               => "añadir",

@@ -22,11 +22,11 @@
 	
 	$user = $database->checkUser();
 	// ============================================
-	// = initialize currently displayed timespace =
+	// = initialize currently displayed timeframe =
 	// ============================================
-	$timespace = get_timespace();
-	$in = $timespace[0];
-	$out = $timespace[1];
+	$timeframe = get_timeframe();
+	$in = $timeframe[0];
+	$out = $timeframe[1];
 	
 	// set smarty config
 	require_once(WEBROOT.'libraries/smarty/Smarty.class.php');

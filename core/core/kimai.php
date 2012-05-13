@@ -47,11 +47,11 @@ $extensions = new Extensions($kga, WEBROOT.'/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
-// = initialize currently displayed timespace =
+// = initialize currently displayed timeframe =
 // ============================================
-$timespace = get_timespace();
-$in = $timespace[0];
-$out = $timespace[1];
+$timeframe = get_timeframe();
+$in = $timeframe[0];
+$out = $timeframe[1];
 
 // ============================================
 // = load the config =
@@ -121,8 +121,8 @@ $tpl->assign('current_timer_sec',  $current_timer['sec'] );
 $tpl->assign('current_timer_start',  $current_timer['all']?$current_timer['all']:time());
 $tpl->assign('current_time',time());
 
-$tpl->assign('timespace_in', $in);
-$tpl->assign('timespace_out', $out);
+$tpl->assign('timeframe_in', $in);
+$tpl->assign('timeframe_out', $out);
 
 $tpl->assign('kga',$kga);
                        

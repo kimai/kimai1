@@ -97,7 +97,7 @@ return array(
 "updateNow"         => "Posodobi bazo podatkov!",
 "stop"              => "Ustavi!",
 "start"             => "Začni!",
-"setTimespace"      => "nastavi časovni presledek",   
+"setTimeframe"      => "nastavi časovni presledek",   
 "now"               => "zdaj",
 "specify"           => "določi listo",
 "add"               => "dodaj",

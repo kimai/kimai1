@@ -368,28 +368,28 @@ EOD;
 
 // checked
 
-function get_timespace() {
+function get_timeframe() {
     global $kga, $conn;
 
-    $timespace = array(null,null);
+    $timeframe = array(null,null);
     
     if (isset($kga['user'])) {
 
-        $timespace[0] = $kga['user']['timeframeBegin'];
-        $timespace[1] = $kga['user']['timeframeEnd'];
+        $timeframe[0] = $kga['user']['timeframeBegin'];
+        $timeframe[1] = $kga['user']['timeframeEnd'];
 
     }
 
     /* database has no entries? */
     $mon = date("n"); $day = date("j"); $Y = date("Y");
-    if (!$timespace[0]) {
-        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
+    if (!$timeframe[0]) {
+        $timeframe[0] = mktime(0,0,0,$mon,1,$Y);
     }
-    if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
+    if (!$timeframe[1]) {
+        $timeframe[1] = mktime(23,59,59,$mon,$day,$Y);
     }
     
-    return $timespace;
+    return $timeframe;
 }
 
 function endsWith($haystack,$needle) {

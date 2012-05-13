@@ -213,13 +213,13 @@ function n_uhr() {
         
         if (currentDay != Jetzt.getDate()) {
           // it's the next day
-          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timespaceDateFormat,Jetzt));
+          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
           currentDay = Jetzt.getDate();
           
           // If the difference to the datepicker end date is less than one and a half day.
           // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
           if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
-            setTimespace(undefined,Jetzt);
+            setTimeframe(undefined,Jetzt);
           }
         }
         
@@ -250,53 +250,53 @@ function n_uhr() {
 }
 
 // ----------------------------------------------------------------------------------------
-// grabs entered timespace and writes it to database
+// grabs entered timeframe and writes it to database
 // after that it reloads all tables
 //
-function setTimespace(fromDate,toDate) {
+function setTimeframe(fromDate,toDate) {
     
-    timespace = '';
+    timeframe = '';
     
     if (fromDate != undefined) {
-      setTimespaceStart(fromDate);
-      timespace += strftime('%m-%d-%Y',fromDate);
+      setTimeframeStart(fromDate);
+      timeframe += strftime('%m-%d-%Y',fromDate);
     }
     else {
-      timespace += "0-0-0";
+      timeframe += "0-0-0";
     }
     
-    timespace += "|";
+    timeframe += "|";
     
     if (toDate != undefined) {
-      setTimespaceEnd(toDate);
-      timespace += strftime('%m-%d-%Y',toDate);
+      setTimeframeEnd(toDate);
+      timeframe += strftime('%m-%d-%Y',toDate);
     }
     else {
-      timespace += "0-0-0";
+      timeframe += "0-0-0";
     }
     
-    $.post("processor.php", { axAction: "setTimespace", axValue: timespace, id: 0 }, 
+    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 }, 
         function(response) {
             hook_timeframe_changed();
         }
     );
     
-    updateTimespaceWarning();
+    updateTimeframeWarning();
 }
 
-function setTimespaceStart(fromDate) {
-  $('#ts_in').html(strftime(timespaceDateFormat,fromDate));
+function setTimeframeStart(fromDate) {
+  $('#ts_in').html(strftime(timeframeDateFormat,fromDate));
   $('#pick_in').val(strftime('%m/%d/%Y',fromDate));
   $('#pick_out').datepicker( "option", "minDate", fromDate );
 }
 
-function setTimespaceEnd(toDate) {
-  $('#ts_out').html(strftime(timespaceDateFormat,toDate));
+function setTimeframeEnd(toDate) {
+  $('#ts_out').html(strftime(timeframeDateFormat,toDate));
   $('#pick_out').val(strftime('%m/%d/%Y',toDate));
   $('#pick_in').datepicker( "option", "maxDate", toDate );
 }
 
-function updateTimespaceWarning() {
+function updateTimeframeWarning() {
     
     today = new Date();
     today.setMilliseconds(0);
@@ -402,7 +402,7 @@ function buzzer() {
       currentRecording=0;
       stopRecord();
     } else {
-        setTimespace(undefined,new Date());
+        setTimeframe(undefined,new Date());
         startRecord(selected_project,selected_activity,userID);
         $('#buzzer').addClass('disabled');
     }

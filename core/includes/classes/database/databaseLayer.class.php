@@ -549,7 +549,7 @@ abstract class DatabaseLayer {
   public abstract function timeEntry_edit($id, Array $data);
 
   /**
-  * saves timespace of user in database (table conf)
+  * saves timeframe of user in database (table conf)
   *
   * @param string $timeframeBegin unix seconds
   * @param string $timeframeEnd unix seconds
@@ -594,8 +594,8 @@ abstract class DatabaseLayer {
   * returns timesheet for specific user as multidimensional array
   *
   * @param integer $user ID of user in table users
-  * @param integer $start start of timespace in unix seconds
-  * @param integer $end end of timespace in unix seconds
+  * @param integer $start start of timeframe in unix seconds
+  * @param integer $end end of timeframe in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
   * @return array
   */
@@ -677,8 +677,8 @@ abstract class DatabaseLayer {
   * returns time summary of current timesheet
   *
   * @param integer $user ID of user in table users
-  * @param integer $start start of timespace in unix seconds
-  * @param integer $end end of timespace in unix seconds
+  * @param integer $start start of timeframe in unix seconds
+  * @param integer $end end of timeframe in unix seconds
   * @return integer
   */
   public abstract function get_duration($start,$end,$users = null, $customers = null, $projects = null, $activities = null,$filterCleared = null);
@@ -911,10 +911,10 @@ abstract class DatabaseLayer {
   public abstract function get_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
-  * returns list of time summary attached to customer ID's within specific timespace as array
+  * returns list of time summary attached to customer ID's within specific timeframe as array
   *
-  * @param integer $start start of timespace in unix seconds
-  * @param integer $end end of timespace in unix seconds
+  * @param integer $start start of timeframe in unix seconds
+  * @param integer $end end of timeframe in unix seconds
   * @param integer $user filter for only this ID of auser
   * @param integer $customer filter for only this ID of a customer
   * @param integer $project filter for only this ID of a project
@@ -923,7 +923,7 @@ abstract class DatabaseLayer {
   public abstract function get_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
 
   /**
-  * returns list of time summary attached to project ID's within specific timespace as array
+  * returns list of time summary attached to project ID's within specific timeframe as array
   *
   * @param integer $start start time in unix seconds
   * @param integer $end end time in unix seconds
@@ -935,7 +935,7 @@ abstract class DatabaseLayer {
   public abstract function get_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null);
 
   /**
-  * returns list of time summary attached to activity ID's within specific timespace as array
+  * returns list of time summary attached to activity ID's within specific timeframe as array
   *
   * @param integer $start start time in unix seconds
   * @param integer $end end time in unix seconds

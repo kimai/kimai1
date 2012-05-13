@@ -64,9 +64,9 @@ $tpl->assign('sel_form_files', $invoice_template_files);
 
 
 // Retrieve start & stop times
-$timespace = get_timespace();
-$tpl->assign('in', $timespace[0]);
-$tpl->assign('out', $timespace[1]);
+$timeframe = get_timeframe();
+$tpl->assign('in', $timeframe[0]);
+$tpl->assign('out', $timeframe[1]);
 
 $tpl->assign('timespan_display', $tpl->fetch("timespan.tpl"));
 

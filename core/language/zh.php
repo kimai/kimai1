@@ -124,7 +124,7 @@ return array(
 "updateNow"         => "立刻更新数据!",
 "stop"              => "停止!",
 "start"             => "开始!",
-"setTimespace"      => "设置时间范围",   
+"setTimeframe"      => "设置时间范围",   
 "now"               => "当前",
 "specify"           => "指定列表",
 "add"               => "添加",

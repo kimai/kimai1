@@ -93,11 +93,11 @@ $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
 
 
 // ============================================
-// = initialize currently displayed timespace =
+// = initialize currently displayed timeframe =
 // ============================================
-$timespace = get_timespace();
-$in = $timespace[0];
-$out = $timespace[1];
+$timeframe = get_timeframe();
+$in = $timeframe[0];
+$out = $timeframe[1];
 
 if (isset($_REQUEST['first_day']))
   $in  = (int)$_REQUEST['first_day'];

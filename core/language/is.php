@@ -97,7 +97,7 @@ return array(
 "updateNow"         => "Uppfæra gagnagrunn!",
 "stop"              => "Stöðva!",
 "start"             => "Byrja!",
-"setTimespace"      => "set timespace",   
+"setTimeframe"      => "set timeframe",   
 "now"               => "Núna",
 "specify"           => "Veldu lista",
 "add"               => "Bæta við",

@@ -94,7 +94,7 @@ return array(
 "updateNow"         => "Uppdatera databasen nu!",
 "stop"              => "Stopp!",
 "start"             => "Start!",
-"setTimespace"      => "Ange tidsperiod",   
+"setTimeframe"      => "Ange tidsperiod",   
 "now"               => "nu",
 "specify"           => "Ange lista",
 "add"               => "lägg till",

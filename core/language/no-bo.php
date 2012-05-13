@@ -103,7 +103,7 @@ return array(
 "updateNow"         => "Oppdater databasen nå!",
 "stop"              => "Stopp!",
 "start"             => "Start!",
-"setTimespace"      => "angi tiden",   
+"setTimeframe"      => "angi tiden",   
 "now"               => "nå",
 "specify"           => "angi liste",
 "add"               => "legg til",
