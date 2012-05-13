@@ -1399,7 +1399,7 @@ if ((int)$revisionDB < 1368) {
     ;");
 
     exec_query("ALTER TABLE `${p}exp` RENAME TO `${p}expenses`,
-    CHANGE `exp_ID`           `expenseID`   int(10) NOT NULL DEFAULT '0',
+    CHANGE `exp_ID`           `expenseID`   int(10) NOT NULL AUTO_INCREMENT,
     CHANGE `exp_timestamp`    `timestamp`   int(10) NOT NULL DEFAULT '0',
     CHANGE `exp_usrID`        `userID`      int(10) NOT NULL,
     CHANGE `exp_pctID`        `projectID`   int(10) NOT NULL,
@@ -1558,7 +1558,7 @@ if ((int)$revisionDB < 1368) {
     CHANGE `zef_fixed_rate`   `fixedRate`       decimal(10,2) NOT NULL DEFAULT '0.00',
     CHANGE `zef_budget`       `budget`          decimal(10,2) DEFAULT NULL,
     CHANGE `zef_approved`     `approved`        decimal(10,2) DEFAULT NULL,
-    CHANGE `zef_status`       `status`          smallint(6) DEFAULT '1',
+    CHANGE `zef_status`       `statusID`        smallint(6) NOT NULL,
     CHANGE `zef_billable`     `billable`        tinyint(4) DEFAULT NULL COMMENT 'how many percent are billable to customer'
     ;");
 

@@ -71,7 +71,8 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 				$arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
 				$arr['budget'] = $timeSheetEntries[$timeSheetEntries_index]['budget'];
 				$arr['approved'] = $timeSheetEntries[$timeSheetEntries_index]['approved'];
-				$arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
+				$arr['statusID'] = $timeSheetEntries[$timeSheetEntries_index]['statusID'];
+                                $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
 				$arr['billable'] = $timeSheetEntries[$timeSheetEntries_index]['billable'];
 				$arr['customerID'] = $timeSheetEntries[$timeSheetEntries_index]['customerID'];
 				$arr['customerName'] = $timeSheetEntries[$timeSheetEntries_index]['customerName'];
@@ -140,7 +141,8 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
 			$arr['budget'] = $timeSheetEntries[$timeSheetEntries_index]['budget'];
 			$arr['approved'] = $timeSheetEntries[$timeSheetEntries_index]['approved'];
-			$arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
+			$arr['statusID'] = $timeSheetEntries[$timeSheetEntries_index]['statusID'];
+                        $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
 			$arr['billable'] = $timeSheetEntries[$timeSheetEntries_index]['billable'];
 			$arr['customerID'] = $timeSheetEntries[$timeSheetEntries_index]['customerID'];
 			$arr['customerName'] = $timeSheetEntries[$timeSheetEntries_index]['customerName'];

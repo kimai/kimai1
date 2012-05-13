@@ -1969,7 +1969,7 @@ class PDODatabaseLayer extends DatabaseLayer
       `cleared`,
       `budget`,
       `approved`,
-      `status`,
+      `statusID`,
       `billable`
       ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ;");
@@ -1990,7 +1990,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $data['cleared']?1:0,
       (int)$data['budget'],
       (int)$data['approved'],
-      (int)$data['status'],
+      (int)$data['statusID'],
       (int)$data['billable']
       ));
 
@@ -2040,7 +2040,7 @@ class PDODatabaseLayer extends DatabaseLayer
       cleared= ?,
       budget= ?,
       approved= ?,
-      status= ?,
+      statusID= ?,
       billable= ?
       WHERE timeEntryID = ?;");
 
@@ -2060,7 +2060,7 @@ class PDODatabaseLayer extends DatabaseLayer
       (int)$new_array['cleared'],
       (int)$new_array['budget'],
       (int)$new_array['approved'],
-      (int)$new_array['status'],
+      (int)$new_array['statusID'],
       (int)$new_array['billable'],
       $id
       ));
@@ -2321,7 +2321,7 @@ class PDODatabaseLayer extends DatabaseLayer
                 Join ${p}projects AS project USING (projectID)
                 Join ${p}customers AS customer USING (customerID)
                 Join ${p}users AS user USING(userID)
-                Join ${p}statuses AS status ON timeSheet.status = statusID
+                Join ${p}statuses AS status USING(statusID)
                 Join ${p}activities AS activity USING(activityID) "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
               ' ORDER BY start '.($reverse_order?'ASC ':'DESC ') . $limit . ';';
@@ -3464,7 +3464,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function status_timeSheetEntryCount($statusID) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}timeSheet WHERE status = ?");
+      $pdo_query = $this->conn->prepare("SELECT COUNT(*) FROM ${p}timeSheet WHERE statusID = ?");
       $result = $pdo_query->execute(array($statusID));
 
       if ($result == false) {

@@ -54,7 +54,7 @@ switch ($axAction) {
         $timeSheetEntry['rate'] = $timeSheetEntry['rate'];
         $timeSheetEntry['cleared'] = $timeSheetEntry['cleared'];
         //fcw: status hatte hier noch gefehlt
-        $timeSheetEntry['status'] = $timeSheetEntry['status'];
+        $timeSheetEntry['statusID'] = $timeSheetEntry['statusID'];
         $timeSheetEntry['userID'] = $kga['user']['userID'];
 
         $newTimeSheetEntryID = $database->timeEntry_create($timeSheetEntry);
@@ -334,7 +334,7 @@ switch ($axAction) {
       $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
       $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
-      $data['status']          = $_REQUEST['status'];
+      $data['statusID']          = $_REQUEST['statusID'];
       $data['billable']        = $_REQUEST['billable'];
       $data['budget']          = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
       $data['approved']        = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);

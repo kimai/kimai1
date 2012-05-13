@@ -1627,7 +1627,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author mo
   */
   public function status_timeSheetEntryCount($statusID) {
-      $filter['status'] = MySQL::SQLValue($statusID, MySQL::SQLVALUE_NUMBER);
+      $filter['statusID'] = MySQL::SQLValue($statusID, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
       $result = $this->conn->SelectRows($table, $filter);
 
@@ -1951,7 +1951,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
       $values ['budget']   	   =   MySQL::SQLValue($data ['budget']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['approved'] 	   =   MySQL::SQLValue($data ['approved']      , MySQL::SQLVALUE_NUMBER );
-      $values ['status']   	   =   MySQL::SQLValue($data ['status']   	   , MySQL::SQLVALUE_NUMBER );
+      $values ['statusID']   	   =   MySQL::SQLValue($data ['statusID']   	   , MySQL::SQLVALUE_NUMBER );
       $values ['billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
 
       $table = $this->getTimeSheetTable();
@@ -2014,7 +2014,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['cleared']      = MySQL::SQLValue($new_array ['cleared']?1:0   , MySQL::SQLVALUE_NUMBER );
       $values ['budget'] 	   = MySQL::SQLValue($new_array ['budget']     	  , MySQL::SQLVALUE_NUMBER );
       $values ['approved'] 	   = MySQL::SQLValue($new_array ['approved']  	  , MySQL::SQLVALUE_NUMBER );
-      $values ['status'] 	   = MySQL::SQLValue($new_array ['status']		  , MySQL::SQLVALUE_NUMBER );
+      $values ['statusID'] 	   = MySQL::SQLValue($new_array ['statusID']		  , MySQL::SQLVALUE_NUMBER );
       $values ['billable'] 	   = MySQL::SQLValue($new_array ['billable']	  , MySQL::SQLVALUE_NUMBER );
 	  //@FIXME: description is evaluated twice? number?
      // $values ['description']  = MySQL::SQLValue($new_array ['description']	  , MySQL::SQLVALUE_NUMBER );
@@ -2318,7 +2318,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
                 Join ${p}projects AS project USING (projectID)
                 Join ${p}customers AS customer USING (customerID)
                 Join ${p}users AS user USING(userID)
-                Join ${p}statuses AS status ON timeSheet.status = statusID
+                Join ${p}statuses AS status USING(statusID)
                 Join ${p}activities AS activity USING(activityID) "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY start '.($reverse_order?'ASC ':'DESC ') . $limit.';';

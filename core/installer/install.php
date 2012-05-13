@@ -245,7 +245,7 @@ $query=
   `fixedRate` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0',
   `budget` DECIMAL( 10, 2 ) NULL,
   `approved` DECIMAL( 10, 2 ) NULL,
-  `status` SMALLINT DEFAULT 1,
+  `statusID` SMALLINT NOT NULL,
   `billable` TINYINT NULL,
   PRIMARY KEY  (`timeEntryID`),
   INDEX ( `userID` ),

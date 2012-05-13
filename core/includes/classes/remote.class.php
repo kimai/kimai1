@@ -634,7 +634,7 @@ class Kimai_Remote_Api
 			$data['cleared'] = (int)$record['flagCleared'];
 		}
 		if(isset($record['statusId'])) {
-			$data['status'] = (int)$record['statusId'];
+			$data['statusID'] = (int)$record['statusId'];
 		}
 		if(isset($record['flagBillable'])) {
 			$data['billable'] = (int)$record['flagBillable'];
