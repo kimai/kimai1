@@ -22,22 +22,6 @@ require(WEBROOT.'auth/base.php');
 
 class KimaiAuth extends AuthBase
 {
-
-    /**
-     * @param DatabaseLayer $database
-     * @param array $kga
-     */
-    public function __construct($database = null, $kga = null)
-    {
-        if ($database !== null) {
-            $this->setDatabase($database);
-        }
-
-        if ($kga !== null) {
-            $this->setKga($kga);
-        }
-    }
-
     /**
      * @param $username
      * @param $password

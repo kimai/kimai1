@@ -42,6 +42,21 @@ abstract class AuthBase
     protected $database = null;
 
     /**
+     * @param DatabaseLayer $database
+     * @param array $kga
+     */
+    public function __construct($database = null, $kga = null)
+    {
+        if ($database !== null) {
+            $this->setDatabase($database);
+        }
+
+        if ($kga !== null) {
+            $this->setKga($kga);
+        }
+    }
+
+    /**
      * @param array $kga
      */
     public function setKga(array $kga)
