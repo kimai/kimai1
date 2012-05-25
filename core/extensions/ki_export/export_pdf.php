@@ -255,8 +255,10 @@ foreach ($filterKnd as $knd_id) {
   $customers[] = $customer_info['knd_name'];
 }
 if (count($customers)>0) {
-  $pdf->cell(20,6,$kga['lang']['knd'].':');
-  $pdf->cell(20,6,implode(', ',$customers));
+  $label = $kga['lang']['knd'].': ';
+  $labelWidth = $pdf->GetStringWidth($label);
+  $pdf->cell($labelWidth,6,$label);
+  $pdf->cell($labelWidth,6,implode(', ',$customers));
   $pdf->ln();
 }
 
@@ -267,8 +269,10 @@ foreach ($filterPct as $pct_id) {
   $projects[] = $project_info['pct_name'];
 }
 if (count($projects)>0) {
-  $pdf->cell(20,6,$kga['lang']['pct'].':');
-  $pdf->cell(20,6,implode(', ',$projects));
+  $label = $kga['lang']['pct'].': ';
+  $labelWidth = $pdf->GetStringWidth($label);
+  $pdf->cell($labelWidth,6,$label);
+  $pdf->cell($labelWidth,6,implode(', ',$projects));
   $pdf->ln();
 }
 
