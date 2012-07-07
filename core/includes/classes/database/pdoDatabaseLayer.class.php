@@ -1986,10 +1986,10 @@ class PDODatabaseLayer extends DatabaseLayer
       (int)$data['end'],
       (int)$data['duration'],
       (int)$data['userID'],
-      (int)$data['rate'],
+      doubleval($data['rate']),
       $data['cleared']?1:0,
-      (int)$data['budget'],
-      (int)$data['approved'],
+      doubleval($data['budget']),
+      doubleval($data['approved']),
       (int)$data['statusID'],
       (int)$data['billable']
       ));
@@ -2056,10 +2056,10 @@ class PDODatabaseLayer extends DatabaseLayer
       (int)$new_array['start'],
       (int)$new_array['end'],
       (int)$new_array['duration'],
-      (int)$new_array['rate'],
+      doubleval($new_array['rate']),
       (int)$new_array['cleared'],
-      (int)$new_array['budget'],
-      (int)$new_array['approved'],
+      doubleval($new_array['budget']),
+      doubleval($new_array['approved']),
       (int)$new_array['statusID'],
       (int)$new_array['billable'],
       $id
@@ -2899,11 +2899,11 @@ class PDODatabaseLayer extends DatabaseLayer
 
         if (isset($arr[$row['userID']])) {
           $arr[$row['userID']]['time']  += (int)($consideredEnd - $consideredStart);
-          $arr[$row['userID']]['costs'] += (int)$row['costs'];
+          $arr[$row['userID']]['costs'] += doubleval($row['costs']);
         }
         else  {
           $arr[$row['userID']]['time']  = (int)($consideredEnd - $consideredStart);
-          $arr[$row['userID']]['costs'] = (int)$row['costs'];
+          $arr[$row['userID']]['costs'] = doubleval($row['costs']);
         }
       }
 
@@ -2969,11 +2969,11 @@ class PDODatabaseLayer extends DatabaseLayer
 
         if (isset($arr[$row['customerID']])) {
           $arr[$row['customerID']]['time']  += (int)($consideredEnd - $consideredStart);
-          $arr[$row['customerID']]['costs'] += (int)$row['costs'];
+          $arr[$row['customerID']]['costs'] += doubleval($row['costs']);
         }
         else {
           $arr[$row['customerID']]['time']  = (int)($consideredEnd - $consideredStart);
-          $arr[$row['customerID']]['costs'] = (int)$row['costs'];
+          $arr[$row['customerID']]['costs'] = doubleval($row['costs']);
         }
       }
 
@@ -3088,11 +3088,11 @@ class PDODatabaseLayer extends DatabaseLayer
 
         if (isset($arr[$row['projectID']])) {
           $arr[$row['projectID']]['time']  += (int)($consideredEnd - $consideredStart);
-          $arr[$row['projectID']]['costs'] += (int)$row['costs'];
+          $arr[$row['projectID']]['costs'] += doubleval($row['costs']);
         }
         else {
           $arr[$row['projectID']]['time']  = (int)($consideredEnd - $consideredStart);
-          $arr[$row['projectID']]['costs'] = (int)$row['costs'];
+          $arr[$row['projectID']]['costs'] = doubleval($row['costs']);
         }
       }
       return $arr;
@@ -3272,11 +3272,11 @@ class PDODatabaseLayer extends DatabaseLayer
 
         if (isset($arr[$row['activityID']])) {
           $arr[$row['activityID']]['time']  += (int)($consideredEnd - $consideredStart);
-          $arr[$row['activityID']]['costs'] += (int)$row['costs'];
+          $arr[$row['activityID']]['costs'] += doubleval($row['costs']);
         }
         else {
           $arr[$row['activityID']]['time'] = (int)($consideredEnd - $consideredStart);
-          $arr[$row['activityID']]['costs'] = (int)$row['costs'];
+          $arr[$row['activityID']]['costs'] = doubleval($row['costs']);
         }
       }
       return $arr;
