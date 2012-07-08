@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
@@ -19,381 +18,201 @@
  */
 
 
-
 /**
-
  * Portuguese (Portugal)
-
  * by José Ricardo Cardoso and Marco Rodrigues <gothicx@sapo.pt>
-
  */
 
-
 return array(
-
 "countryCode"       => "pt-PT",
-
 "preferences"       => "Preferências",
-
 "total"		        => "Total",
-
 "monatzeit"         => "Mês",
-
 "heute"             => "hoje",
-
 "gestern"           => "ontem",
-
 "autoOn"            => "Auto On",
-
 "autoOff"           => "Auto Off",
-
 "datum"             => "Data",
-
 "in"                => "Início",
-
 "out"               => "Fim",
-
 "time"              => "h'm",
-
 "timelabel"         => "Tempo",
-
 "durationlabel"     => "Duração",
 "knd"               => "Cliente",
-
 "pct"               => "Projecto",
-
 "evt"               => "Tarefa",
-
 "knds"              => "Clientes",
-
 "pcts"              => "Projectos",
-
 "evts"              => "Tarefas",
-
 "admin"             => "Admin",
-
 "rowlimit"          => "max. linhas",
-
 "breiteZeitspalte"  => "largura coluna tempo",
-
 "breiteUhrspalte"   => "largura coluna relógio",
-
 "breiteDatumspalte" => "largura coluna data",
-
 "def_pctID"         => "ID Projecto prédefinida",
-
 "def_kndID"         => "ID CLiente prédefinida",
-
 "def_evtID"         => "ID Evento prédefinida",
-
 "recommended"       => "recomendado",
-
 "submit"            => "OK",
-
 "cancel"            => "Cancelar",
-
 "edit"              => "Editar entrada",
-
 "construction"      => "em construção...",
-
 "about"             => "Acerca de",
-
 "hours"             => "horas",
-
 "mins"              => "minutos",
-
 "secs"              => "segundos",
-
 "skin"              => "Tema",
-
 "erase"             => "Apagar entrada",
-
 "new_knd"           => "Adicionar cliente",
-
 "new_pct"           => "Adicionar projecto",
-
 "new_evt"           => "Adicionar evento",
-
 "day_summary"       => "Resumo de tempo",
-
 "plzChoose"         => "por favor seleccione",
-
 "noEntries"         => "Não existem entradas registadas...",
-
 "recordAgain"       => "Gravar esta tarefa novamente",
-
 "comment"           => "Comentário",
-
 "zlocation"         => "Localização",
-
 "trackingnr"        => "Número de Processo",
-
 "cookiewarning"     => "Permissões de Cookies devem ser activadas! Por favor active esta opção no seu browser antes de ontinuar.",
-
 "JSwarning"         => "JavaScript deve estar ligado! Esta opção é indispensável para o funcionamento da aplicação..",
-
 "designation"       => "designação",
-
 "banned"            => "Banido (Conta bloqueada)",
-
 "tooManyLogins"     => "Demasiadas tentativas - conta de utilizador suspensa.",
-
 "accessDenied"      => "Acesso negado!",
-
 "wrongPass"         => "Username ou Senha estão errados!",
-
 "tryAgain"          => "Tente novamente.. perdeu a senha?",
-
 "back"              => "Voltar à área de Login.",
-
 "bye"               => "Até breve!",
-
 "login"             => "Entrar",
-
 "logout"            => "Saír",
-
 "loggedon"          => "Utilizador:",
-
 "username"          => "Username",
-
 "password"          => "Senha",
-
 "newPassword"       => "Nova Senha",
-
 "minLength"         => "min. 5 caracteres!",
-
 "update"            => "A estrutura da base de dados da versão instalada do Kimai deve ser actualizada.<br />Recomendamos que faça uma cópia de segurança das tarefas já gravadas de forma<br />a assegurar que nenhuma informação é perdida durante o processo de actualização.",
-
 "updateNow"         => "Actualizar a base de dados!",
-
 "stop"              => "Parar!",
-
 "start"             => "Iniciar!",
-
 "setTimespace"      => "definir intervalo",
-
 "now"               => "agora!",
-
 "specify"           => "specify list",
-
 "add"               => "adicionar",
-
 "running"           => "A executar...",
-
 "company"           => "Empresa",
-
 "street"            => "Rua",
-
 "zipcode"           => "Código Postal",
-
 "city"              => "Cidade",
-
 "telephon"          => "Telefone",
-
 "fax"               => "Fax",
-
 "mobilephone"       => "Telemóvel",
-
 "mail"              => "E-Mail",
-
 "homepage"          => "Website",
-
 "users"             => "Utilizadores",
-
 "name"              => "Nome",
-
 "alias"             => "Alcunha",
-
 "adduser"           => "Adicionar utilizador",
-
 "addgroup"          => "Adicionar grupo",
-
 "group"             => "Grupo",
-
 "groups"            => "Grupos",
-
 "advanced"          => "Avançadas",
-
 "database"          => "Base de Dados",
-
 "options"           => "Opções",
-
 "status"            => "Estado",
-
 "adminmail"         => "endereço de e-mail do administrador",
-
 "logintries"        => "número de falsos logins antes do utilizador ser banido",
-
 "bantime"           => "login bantime in seconds",
-
 "lastdbbackup"      => "Último backup",
-
 "runbackup"         => "Executar Backup",
-
 "defaultgrp"        => "Por omissão (0)",
-
 "regusr"            => "Utilizador Normal",
-
 "adminusr"          => "Utilizador Admin",
-
 "editusr"           => "Editar utilizador",
-
 "editgrp"           => "Editar grupo",
-
 "delgrp"            => "delete group",
 "delpct"            => "delete project",
 "delknd"            => "delete customer",
 "delevt"            => "delete task",
-
 "switchusr"         => "Mudar para este utilizador",
-
 "backupusr"         => "Make backup of this user",
-
 "mailusr"           => "Send email to this user",
-
 "delusr"            => "Apagar este utilizador",
-
 "bannedusr"         => "Utilizador banido - clique para reactivar",
-
 "activeusr"         => "Utilizador activo - clique para banir",
-
 "changegrp"         => "Alterar grupo",
-
 "members"           => "Membros",
-
 "groupleader"       => "Líder do Grupo",
-
 "nopasswordset"     => "Nenhuma senha definida!",
-
 "noItems"           => "sem Entradas",
-
 "DBname"            => "Nome da Base de dados",
-
 "autoselection"     => "Selecção automática",
-
 "quickdelete"       => "Quick-Delete",
-
 "tools"             => "Ferramentas",
-
 "print"             => "Imprimir",
-
 "save"              => "Guardar",
-
 "export"            => "Exportar",
-
 "groupname"         => "O nome do grupo",
-
 "help"              => "Ajudar",
-
 "select"            => "Seleccionar",
-
 "hidedeletedusers"  => "Esconder utilizadores apagados",
-
 "showdeletedusers"  => "Mostrar utilizadores apagados",
 
-
 "month"             => "Mês",
-
 "day"               => "Dia",
-
 "year"              => "Ano",
-
-
 
 
 "lang"              => "Idioma",
 
-
 "ac"                => "Automatically continued entry.",
-
 "ac_error"          => "Automatically continued entry with error (timespan too long).",
-
 "comment_type"      => "Tipo de comentário",
-
 "ctype0"            => "Comentário",
-
 "ctype1"            => "Aviso",
-
 "ctype2"            => "Alerta!",
-
 "hint"              => "Dica:",
-
 "usr_caution1"      => "If you change the user-name of",
-
 "usr_caution2"      => "you have to re-login under your new username immediately!",
-
 "timediff_warn"     => "You must enter different times into the time in-/out fields!",
-
 "visibility"        => "Visibilidade",
-
 "showitem"          => "tornar visível",
-
 "hideitem"          => "tornar invisível",
-
 "checkUsername"     => "You must enter a username in the field left from the add-button!",
-
 "clickToReload"     => "Click here to reload the GUI",
-
 "sure"              => "De certeza?",
-
 "clock"             => "Relógio",
-
 "currSum"           => "Current Timespace Summary",
-
 "admWarn"           => "Você é administrador. O estado apenas pode ser menor que outro administrador.",
-
 "flip_pct_display"  => "Order project table by customers",
-
 "pct_comment_flag"  => "Always show comments beside projects",
-
 "showIDs"           => "Mostrar IDs",
-
 "error"             => "Ocorreu um erro!",
-
 "checkupdate"       => "Verificar actualizações",
 
-
 "selectR"           => "Seleccionado para gravação:",
-
 "selectKND"         => "C:",
-
 "selectPCT"         => "P:",
-
 "selectEVT"         => "T:",
 
-
 "testKND"           => "Cliente-teste",
-
 "testPCT"           => "Projecto-teste",
-
 "testEVT"           => "testar",
-
 
 "budget"            => "Orçamento",
 "rate"              => "Preço (por hora)",
-
 "rate_short"        => "Preço",
-
 "default_rate"      => "Preço por omissão",
-
 "my_rate"           => "O meu Preço",
 
-
 "wage"              => "Preço",
-
 "customerlogin"     => "login de cliente",
 
-
 "expense"           => "Despesa",
-
 "designation"       => "Designação",
 
-
 "cleared"           => "apuradas",
-
 "noFading"          => "sem efeito fading",
 "user_list_hidden"  => "hide user list by default",
-
 'show_sensible_data' => 'Display sensible data as well in the debug extension.',
 'show_update_warn' => 'Turn off warning before an update.',
 'check_at_startup' => 'Show a message on the login page if a newer version is available.',
@@ -410,202 +229,115 @@ return array(
 'round_time' => 'Round time to ',
 'round_time_minute' => ' minute(s).',
 'logged_in_as' => 'logged in as:',
-
 'decimal_separator'  => 'Decimal separator',
-
 'view_filter' => 'view filter',
 'unassigned' => 'unassigned',
 'all_events' => '&lt;&lt;all&gt;&gt;',
-
 'durationWithSeconds' => 'Show duration exact to the second.',
-
 'multiplier' => 'Multiplier',
 
 
-
 'months'         => array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"),
-
 'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
-
 'weekdays'       => array("Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"),
-
 'weekdays_short' => array("Dom","Seg","Ter","Qua","Qui","Sex","Sáb"),
-
 
 'errors' => array (
   0 => array ('hdl' => "Database could not be connected!",
               'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
-
   1 => array('hdl' => "Erro durante a instalação!",
               'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
 Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
 ),
-
 'updater' => array (
 0        => "Yes, I have a backup of my Kimai database! Proceed updating!",
-
 10       => "Legenda:",
-
 20       => "Query was executed successfully.",
-
 30       => "Query caused error - most likely irrelevant.",
-
 40       => "Query caused fatal error.",
-
 50       => "Backup Log:",
-
 60       => "Backup failed - Update aborded!",
-
 70       => "Update Log:",
-
 80       => "The database was updated successfully and a backup was created.",
-
 90       => "Queries processed.",
-
 100      => "The database-update failed due to fatal error(s). A backup was made which can be used to recreate the database in case Kimai does not work properly.",
-
 110      => "New Passwords",
-
 120      => "See below for new passwords for every user.",
-
 130      => "Could not write to autoconf.php.",
-
 140      => "update file autoconf.php"),
-
 'backup' => array(
 0        => "This backup restore utility is not yet tested! Use at your own risk!",
-
 1        => "Backups disponíveis:",
-
 2        => "recuperar",
-
 3        => "remover",
-
 4        => "OK",
-
 5        => "You can only recover *one* backup at a time!",
-
 6        => "Backup from",
-
 7        => "was recovered.",
-
 8        => "create backup",
-
 9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
 
-
 'xp_ext' => array(
-
 "print_hint"      		   => "Clique em OK para abrir a tabela imprimida.",
-
 "dl_hint"         		   => "Clique em OK para descarregar o ficheiro exportado.",
-
 "tab_filter"	 		   => "Filtro",
-
 "tab_location"	 		   => "Localização",
-
 "tab_timeformat"	 	   => "Formato da hora",
-
 "cleared_all"	 		   => "todos",
-
 "cleared_cleared" 		   => "apenas apurados",
-
 "cleared_open"	 		   => "apenas em curso",
-
 "stdrd_location"  		   => "Localização por omissão",
-
 "timeformat"	     	   => "Formato da hora",
-
 "dateformat"			   => "Formato da data",
-
 "print_comment"   		   => "imprimir comentários",
-
 "print_summary"   		   => "imprimir sumário",
-
 "create_bookmarks"		   => "create bookmarks",
-
 "download_pdf"    		   => "descarregar como PDF",
 
-
 "pdf_format"             => "formato",
-
 "export_pdf"             => "tabela",
-
 "export_pdf2"            => "lista",
 
-
 "column_delimiter"		   => "delimiter for columns",
-
 "quote_char"      		   => "boundary character for fields",
 
-
 "exportCSV"         	   => "Exportar para CSV",
-
 "exportPDF"         	   => "Exportar para PDF",
-
 "exportXLS"         	   => "Exportar para Excel",
-
 "print"         	       => "Imprimir",
-
 "export_timeformat_help"   => "Ajuda do Timeformat",
 
 
-
 'subtotal'              => 'Sub-Total',
-
 'finalamount'           => 'Total',
-
 'pdf_headline'          => 'Listagem de trabalho realizado e despesas',
-
 'costs'                 => 'Custos',
-
 'expense'               => 'Despesa',
-
 'summary'               => 'Sumário',
-
 'full_list'             => 'Full List',
-
 'page'                  => 'Página',
-
 'by'                    => 'por',
-
 'done_by'               => 'executado por',
-
 'duration'              => 'Duração',
-
 'customer_new_page'     => 'new page for each customer',
-
 'times_and_expenses' => 'times and expenses',
 'times' => 'times',
 'expenses' => 'expenses',
-
 'reverse_order' => 'older entries first',
 'time_period'  => 'time period',
-
 'duration_unit' => 'h',
-
 ),
 
-
 'ext_invoice' => array(
-
 "invoiceTitle" 			=> "Criar factura",
-
 "invoiceProject" 		=> "Projectos:",
-
 "invoiceTimePeriod" 	=> "Período de tempo:",
-
 "invoiceOptionShort" 	=> "Short Invoice",
-
 "invoiceOptionRound" 	=> "Arredondar tempo",
-
 "invoiceButton" 		=> "Criar",
-
 'noData'                => 'There are no time entries for the selected project & time period.'
-
 )
 );
-
 
 ?>
