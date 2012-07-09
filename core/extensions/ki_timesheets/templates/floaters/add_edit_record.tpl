@@ -143,14 +143,18 @@
             };
 
             $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
-
                 if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
-                    !$('#edit_out_day').val().match(ts_dayFormatExp) ||
+                    ( !$('#edit_out_day').val().match(ts_dayFormatExp) && $('#edit_out_day').val() != '') ||
                     !$('#edit_in_time').val().match(ts_timeFormatExp) ||
-                    !$('#edit_out_time').val().match(ts_timeFormatExp)) {
+                    ( !$('#edit_out_time').val().match(ts_timeFormatExp) && $('#edit_out_time').val() != '')) {
                   alert("{/literal}{$kga.lang.TimeDateInputError}{literal}");
                   return false;
                 }
+
+                var endTimeSet = $('#edit_out_day').val() != '' || $('#edit_out_time').val() != '';
+
+                if (!endTimeSet)
+                  return true; // no need to validate timerange if end time is not set
 
                 // test if start day is before end day
                 var inDayMatches = $('#edit_in_day').val().match(ts_dayFormatExp);

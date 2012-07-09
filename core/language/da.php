@@ -300,7 +300,7 @@ return array(
         <a href='http://www.kimai.org' target='_blank'>Officiel hjemmeside</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Projektside på Sourceforge</a> | 
-        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Subversion-repository</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
         
         <br /><br />

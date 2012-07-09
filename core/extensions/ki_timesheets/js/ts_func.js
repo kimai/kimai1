@@ -274,7 +274,7 @@ function ts_ext_updateBudget(data) {
 function ts_ext_recordAgain(pct,evt,id) {
     $('#zefEntry'+id+'>td>a').blur();
 
-    if (recstate) {
+    if (currentRecording > -1) {
         stopRecord();
     }
 
@@ -283,7 +283,6 @@ function ts_ext_recordAgain(pct,evt,id) {
     now = Math.floor(((new Date()).getTime())/1000);
     offset = now;
     startsec = 0;
-    recstate=1;
     show_stopwatch();
     $('#zefEntry'+id+'>td>a').removeAttr('onClick');
  
@@ -291,8 +290,6 @@ function ts_ext_recordAgain(pct,evt,id) {
         function(data) {
                 eval(data);
                 ts_ext_reload();
-                $("#stopwatch_edit_comment").show();
-                $("#stopwatch_edit_starttime").show();
                 buzzer_preselect('pct',pct,pct_name,knd,knd_name,false);
                 buzzer_preselect('evt',evt,evt_name,0,0,false);
                 $("#ticker_knd").html(knd_name);
@@ -308,7 +305,7 @@ function ts_ext_recordAgain(pct,evt,id) {
 // and starts recording that event anew
 //
 function ts_ext_stopRecord(id) {
-    recstate=0;
+    ts_ext_recordAgain=-1;
     ticktack_off();
     show_selectors();
     if (id) {
@@ -318,7 +315,7 @@ function ts_ext_stopRecord(id) {
         $('#zefEntry'+id+'>td>a').removeAttr('onClick');
         $('#zefEntry'+id+'>td').css( "color", "#FFF" );
     }
-    $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: 0 },
+    $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: id },
         function(data) {
             if (data == 1) {
                 ts_ext_reload();

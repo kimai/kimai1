@@ -65,7 +65,7 @@
         var lang_passwordsDontMatch   = "{$kga.lang.passwordsDontMatch}";
         var lang_passwordTooShort = "{$kga.lang.passwordTooShort}";
 
-        var recstate              = {$recstate};
+        var currentRecording      = {$currentRecording};
 
         {if $kga.conf.quickdelete == 2}
         var confirmText           = "{$kga.lang.sure}";
@@ -222,14 +222,6 @@
    
         <div id="stopwatch">
             <span class="watch"><span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span></span>
-        </div>
-
-        <div id="stopwatch_edit_starttime">
-            <a href="#" onclick="edit_running_starttime();$(this).blur();return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/uhr.gif"/></a>
-        </div>
-
-        <div id="stopwatch_edit_comment">
-            <a href="#" onclick="edit_running_comment();$(this).blur();return false;"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/blase.gif"/></a>
         </div>
         
         <div id="stopwatch_ticker">

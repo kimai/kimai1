@@ -302,7 +302,7 @@ return array(
         <a href='http://www.kimai.org' target='_blank'>Oficjalna strona</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Strona projektu Sourceforge</a> | 
-        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Repozytorium podwersji</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>Repozytorium podwersji</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Pobieranie</a>
         
         <br /><br />

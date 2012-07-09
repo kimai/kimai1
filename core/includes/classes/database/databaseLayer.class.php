@@ -510,12 +510,12 @@ abstract class DatabaseLayer {
   public abstract function var_edit($data);
 
   /**
-  * checks whether there is a running zef-entry for a given user
+  * Returns a list of IDs of all current recordings.
   *
   * @param integer $user ID of user in table usr
-  * @return boolean true=there is an entry, false=there is none (actually 1 or 0 is returnes as number!)
+  * @return array with all IDs of current recordings. This array will be empty if there are none.
   */
-  public abstract function get_rec_state($usr_id);
+  public abstract function get_current_recordings($usr_id);
 
   /**
   * Returns the data of a certain time record
@@ -674,20 +674,6 @@ abstract class DatabaseLayer {
   public abstract function is_customer_name($name);
 
   /**
-  * returns ID of running timesheet event for specific user
-  *
-  * <pre>
-  * ['zef_ID'] ID of last recorded task
-  * ['zef_in'] in point of timesheet record in unix seconds
-  * ['zef_pctID']
-  * ['zef_evtID']
-  * </pre>
-  *
-  * @return integer
-  */
-  public abstract function get_event_last();
-
-  /**
   * returns time summary of current timesheet
   *
   * @param integer $user ID of user in table usr
@@ -839,22 +825,18 @@ abstract class DatabaseLayer {
   public abstract function get_arr_grp_by_leader($leader_id,$trash=0);
 
   /**
-  * performed when the stop buzzer is hit.
-  * Checks which record is currently recording and
-  * writes the end time into that entry.
-  * if the measured timevalue is longer than one calendar day
-  * it is split up and stored in the DB by days
+  * Performed when the stop buzzer is hit.
   *
-  * @param integer $user ID of user
+  * @param integer $id id of the entry to stop
   * @return boolean
   */
-  public abstract function stopRecorder();
+  public abstract function stopRecorder($id);
 
   /**
   * starts timesheet record
   *
   * @param integer $pct_ID ID of project to record
-  * @return boolean
+  * @return id of the new entry or false on failure
   */
   public abstract function startRecorder($pct_ID,$evt_ID,$user);
 
@@ -875,16 +857,6 @@ abstract class DatabaseLayer {
   * @param $evt_id id of the task to change to
   */
   public abstract function zef_edit_evt($zef_id,$evt_id);
-
-  /**
-  * Just edit the comment an entry. This is used for editing the comment
-  * of a running entry.
-  *
-  * @param $zef_ID id of the timesheet entry
-  * @param $comment_type new type of the comment
-  * @param $comment the comment text
-  */
-  public abstract function zef_edit_comment($zef_ID,$comment_type,$comment);
 
 
   /**

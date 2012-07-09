@@ -37,10 +37,6 @@ switch ($axAction) {
     case 'record':
         if (isset($kga['customer'])) die();
 
-        if ($database->get_rec_state($kga['usr']['usr_ID'])) {
-            $database->stopRecorder($kga['usr']['usr_ID']);
-        }
-
         $zefData = $database->zef_get_data($id);
 
         $zefData['in'] = time();
@@ -80,6 +76,8 @@ switch ($axAction) {
 
         $evtdata = $database->evt_get_data($zefData['zef_evtID']);
         $return .= 'evt_name = "' . $evtdata['evt_name'] .'"; ';
+        
+        $return .= "currentRecording = $newZefId; ";
 
         echo $return;
         // TODO return false if error
@@ -90,7 +88,7 @@ switch ($axAction) {
     // ==================
     case 'stop':
         if (isset($kga['customer'])) die();
-        $database->stopRecorder($kga['usr']['usr_ID']);
+        $database->stopRecorder($id);
         echo 1;
     break;
 
@@ -100,10 +98,8 @@ switch ($axAction) {
     case 'edit_running_project':
         if (isset($kga['customer'])) die();
 
-        $last_event = $database->get_event_last();
-
         $database->zef_edit_pct(
-            $last_event['zef_ID'],
+            $_REQUEST['id'],
             $_REQUEST['project']);
         echo 1;
     break;
@@ -114,43 +110,13 @@ switch ($axAction) {
     case 'edit_running_task':
         if (isset($kga['customer'])) die();
 
-        $last_event = $database->get_event_last();
-
         $database->zef_edit_evt(
-            $last_event['zef_ID'],
+            $_REQUEST['id'],
             $_REQUEST['task']);
         echo 1;
     break;
 
-    // ===================================
-    // = set comment for a running event =
-    // ===================================
-    case 'edit_running_comment':
-        if (isset($kga['customer'])) die();
 
-        $database->zef_edit_comment(
-            $axValue,
-            $_REQUEST['comment_type'],
-            $_REQUEST['comment']);
-        echo 1;
-    break;
-
-    // ===================================
-    // = set time for a running event =
-    // ===================================
-    case 'edit_running_starttime':
-        if (isset($kga['customer'])) die();
-            // fcw: 2011-07-23: Neue Startzeit aus heutigem Datum holen und aus dem REQUEST.
-            // Schon fuer convert_time_strings (aus /includes/func.php) passend machen (als String, z.B.: "23.07.2011-16:25:57")
-            $new_starttime = Format::expand_date_shortcut($_REQUEST['startday']).'-'.Format::expand_time_shortcut($_REQUEST['starttime']);
-            // UNIX-Time holen, zwei Mal den selben Parameter, nur einer wird gebraucht
-            $new_time = convert_time_strings($new_starttime, $new_starttime);
-            // neue Startuhrzeit in die DB schreiben
-            $database->zef_edit_starttime(
-                $axValue,
-                $new_time['in']);
-        echo $new_time['in'];
-    break;
 
 
     // TODO 5 -o fcw -c BugFix:No search result but an icon to edit is displayed anyway, but shouldn't
@@ -182,6 +148,7 @@ switch ($axAction) {
         }
     break;
     
+
     // =========================================
     // = Erase timesheet entry via quickdelete =
     // =========================================
@@ -418,82 +385,66 @@ switch ($axAction) {
         $data['zef_usrID'] = $kga['usr']['usr_ID'];
 
       // check if the posted time values are possible
-      $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
 
-      $edit_in_day       = Format::expand_date_shortcut($_REQUEST['edit_in_day']);
-      $edit_out_day      = Format::expand_date_shortcut($_REQUEST['edit_out_day']);
-      $edit_in_time   = Format::expand_time_shortcut($_REQUEST['edit_in_time']);
-      $edit_out_time  = Format::expand_time_shortcut($_REQUEST['edit_out_time']);
-      $new_in  = "${edit_in_day}-${edit_in_time}";
-      $new_out = "${edit_out_day}-${edit_out_time}";
+      $validateDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy'));
+      $validateTime = new Zend_Validate_Date(array('format' => 'HH:mm:ss'));
 
-      if (Format::check_time_format($new_in) && Format::check_time_format($new_out)) {
-          // if this is TRUE the values PASSED the test!
-          $setTimeValue = 1;
+      if (!$validateDate->isValid($_REQUEST['edit_in_day']) ||
+          !$validateTime->isValid($_REQUEST['edit_in_time'])) {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
+          return;
+      }
+
+      if ( ($_REQUEST['edit_out_day'] != '' || $_REQUEST['edit_out_time'] != '') && (
+          !$validateDate->isValid($_REQUEST['edit_in_day']) ||
+          !$validateTime->isValid($_REQUEST['edit_in_time']))) {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
+          return;
+      }
+
+      $edit_in_day = Zend_Locale_Format::getDate($_REQUEST['edit_in_day'],
+                                          array('date_format' => 'dd.MM.yyyy'));
+      $edit_in_time = Zend_Locale_Format::getTime($_REQUEST['edit_in_time'],
+                                          array('date_format' => 'HH:mm:ss'));
+
+      $edit_in = array_merge($edit_in_day, $edit_in_time);
+
+      $inDate = new Zend_Date($edit_in);
+
+      if ($_REQUEST['edit_out_day'] != '' || $_REQUEST['edit_out_time'] != '') {
+        $edit_out_day = Zend_Locale_Format::getDate($_REQUEST['edit_out_day'],
+                                            array('date_format' => 'dd.MM.yyyy'));
+        $edit_out_time = Zend_Locale_Format::getTime($_REQUEST['edit_out_time'],
+                                            array('date_format' => 'HH:mm:ss'));
+
+        $edit_out = array_merge($edit_out_day, $edit_out_time);
+
+        $outDate = new Zend_Date($edit_out);
       }
       else {
-        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
-        break;
+        $outDate = null;
       }
 
-      $new_time = convert_time_strings($new_in,$new_out);
+      $data['in']   = $inDate->getTimestamp();
 
-      // if the difference between in and out value is zero or below this can't be correct ...
-
-      // TIME WRONG - NEW ENTRY
-
-      if ($kga['conf']['editLimit'] != "-" && time()-$new_time['out'] > $kga['conf']['editLimit']) {
-        echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
-        return;
+      if ($outDate != null) {
+        $data['out']  = $outDate->getTimestamp();
+        $data['diff'] = $data['out'] - $data['in'];
       }
 
+      if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
-      if (!$new_time['diff'] && !$id) {
-          // if this is an ADD record dialog it makes no sense to create the record
-          // when it doesn't have any TIME attached ... so this stops the processing.
-          // TODO: throw a warning message when this happens ...
-          echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
-          break;
-      }
-
-      // TIME WRONG - EDIT ENTRY
-
-      if (!$new_time['diff']) {
-          // obviously this is an edit of an existing record. but still it contains no correct timespan.
-          // here somebody didn't mean to change the timespace like that. so we leave the timespan as is.
-          // TODO: throw a warning message when this happens ...
-          $data['in']   = 0;
-          $data['out']  = 0;
-          $data['diff'] = 0;
-          // we send zeros instead of unix timestamps to the db-layer
-          $database->zef_edit_record($id,$data);
-          echo json_encode(array('result'=>'ok'));
-          break;
+          // TIME RIGHT - EDIT ENTRY
+          Logger::logfile("zef_edit_record: " .$id);
+          check_zef_data($id,$data);
 
       } else {
 
-          // TIME RIGHT !
-
-          $data['in']   = $new_time['in'];
-          $data['out']  = $new_time['out'];
-          $data['diff'] = $new_time['diff'];
-
-          if ($id) { // TIME RIGHT - NEW OR EDIT ?
-
-              // TIME RIGHT - EDIT ENTRY
-              Logger::logfile("zef_edit_record: " .$id);
-              check_zef_data($id,$data);
-
-          } else {
-
-              // TIME RIGHT - NEW ENTRY
-              Logger::logfile("zef_create_record");
-              $database->zef_create_record($data);
-
-          }
-
-
+          // TIME RIGHT - NEW ENTRY
+          Logger::logfile("zef_create_record");
+          $database->zef_create_record($data);
       }
+
       echo json_encode(array('result'=>'ok'));
 
     break;

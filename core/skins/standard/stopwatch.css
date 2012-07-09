@@ -52,19 +52,3 @@
 *+html #stopwatch_ticker ul li {
     margin-top:-3px;
 }
-
-#stopwatch_edit_comment {
-  position: absolute;
-  right: 105px;
-  top: 55px;
-  z-index: 70;
-  display:none;
-}
-
-#stopwatch_edit_starttime {
-  position: absolute;
-  right: 295px;
-  top: 55px;
-  z-index: 70;
-  display:none;
-}

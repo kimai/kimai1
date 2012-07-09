@@ -24,34 +24,6 @@ require("../../includes/kspi.php");
 require('../../core/Config.php');
 
 switch ($axAction) {
-   
-    // =================================================
-    // = displays edit comment dialog for running task =
-    // =================================================
-    case 'edit_running_comment':
-        if (isset($kga['customer'])) die();
-
-        $last_event = $database->get_event_last();
-        $tpl->assign('id', $last_event['zef_ID']);
-        $tpl->assign('comment', $last_event['zef_comment']);
-        $tpl->assign('comment_active', $last_event['zef_comment_type']);
-        $tpl->assign('comment_types', $comment_types);
-        $tpl->assign('comment_values', array('0','1','2'));
-        $tpl->display("edit_running_comment.tpl");
-    break;
-
-    // =================================================
-    // = displays edit time dialog for running task =
-    // =================================================
-    case 'edit_running_starttime':
-        if (isset($kga['customer'])) die();
-
-        $last_event = $database->get_event_last();
-        $tpl->assign('id', $last_event['zef_ID']);
-        $tpl->assign('startday', date("d.m.Y",$last_event['zef_in']));
-        $tpl->assign('starttime', date("H:i:s",$last_event['zef_in']));
-        $tpl->display("edit_running_starttime.tpl");
-    break;
 
     // =================================================
     // = display search dialog for event comments =
@@ -84,10 +56,16 @@ switch ($axAction) {
         $tpl->assign('user', $zef_entry['zef_usrID']);
     
         $tpl->assign('edit_in_day', date("d.m.Y",$zef_entry['zef_in']));
-        $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));
-    
         $tpl->assign('edit_in_time',  date("H:i:s",$zef_entry['zef_in']));
-        $tpl->assign('edit_out_time', date("H:i:s",$zef_entry['zef_out']));
+
+        if ($zef_entry['zef_out'] == 0) {
+          $tpl->assign('edit_out_day', '');
+          $tpl->assign('edit_out_time', '');
+        }
+        else {
+          $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));
+          $tpl->assign('edit_out_time', date("H:i:s",$zef_entry['zef_out']));
+        }
 
         $tpl->assign('approved', $zef_entry['zef_approved']);
         $tpl->assign('budget', $zef_entry['zef_budget']);

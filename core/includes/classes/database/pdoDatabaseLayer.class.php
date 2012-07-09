@@ -1856,31 +1856,29 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * checks whether there is a running zef-entry for a given user
-    *
-    * @param integer $user ID of user in table usr
-    * @global array $this->kga kimai-global-array
-    * @return boolean true=there is an entry, false=there is none
-    * @author ob
-    */
-    public function get_rec_state($usr_id) {
+     * Returns a list of IDs of all current recordings.
+     *
+     * @param integer $user ID of user in table usr
+     * @return array with all IDs of current recordings. This array will be empty if there are none.
+     */
+    public function get_current_recordings($usr_id) {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT COUNT( * ) FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
+      $pdo_query = $this->conn->prepare("SELECT zef_ID FROM ${p}zef WHERE zef_usrID = ? AND zef_in > 0 AND zef_out = 0;");
       $result = $pdo_query->execute(array($usr_id));
 
       if ($result == false) {
-          $this->logLastError('get_rec_state');
-          return false;
+          $this->logLastError('get_current_recordings');
+          return array();
       }
 
-      $result_array = $pdo_query->fetch();
+      $IDs = array();
 
-      if ($result_array[0] == 0) {
-          return 0;
-      } else {
-          return 1;
+      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
+        $IDs[] = $row['zef_ID'];
       }
+
+      return $IDs;
     }
 
     /**
@@ -2660,39 +2658,6 @@ class PDODatabaseLayer extends DatabaseLayer
       }
 
       return $pdo_query->rowCount() == 1;
-    }
-
-    /**
-    * returns ID of running timesheet event for specific user
-    *
-    *
-    * TODO: this public function is not really returning USERdata - it simply returns the last record of ALL records ...
-    *
-    * <pre>
-    * ['zef_ID'] ID of last recorded task
-    * ['zef_in'] in point of timesheet record in unix seconds
-    * ['zef_pctID']
-    * ['zef_evtID']
-    * </pre>
-    *
-    * @global array $this->kga kimai-global-array
-    * @return integer
-    * @author th
-    */
-    public function get_event_last() {
-      $p = $this->kga['server_prefix'];
-
-      $lastRecord = $this->kga['usr']['lastRecord'];
-      $pdo_query = $this->conn->prepare("SELECT * FROM ${p}zef WHERE zef_ID = ?");
-      $result = $pdo_query->execute(array($lastRecord));
-
-      if ($result == false) {
-          $this->logLastError('get_event_last');
-          return null;
-      }
-
-      $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
-      return $row;
     }
 
     /**
@@ -3760,32 +3725,25 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * performed when the stop buzzer is hit.
-    * Checks which record is currently recording and
-    * writes the end time into that entry.
-    * if the measured timevalue is longer than one calendar day
-    * it is split up and stored in the DB by days
+    * Performed when the stop buzzer is hit.
     *
     * @global array $this->kga kimai-global-array
-    * @param integer $user ID of user
-    * @author th
+    * @param integer $id id of the entry to stop
+    * @author th, sl
     * @return boolean
     */
-    public function stopRecorder()
+    public function stopRecorder($id)
     {
       ## stop running recording
       $p = $this->kga['server_prefix'];
 
-      $last_task = $this->get_event_last();      // aktuelle vorgangs-ID auslesen
+      $task = $this->zef_get_data($id);
 
-      $zef_ID = $last_task['zef_ID'];
-
-
-      $rounded = Rounding::roundTimespan($last_task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
+      $rounded = Rounding::roundTimespan($task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
       $difference = $rounded['end']-$rounded['start'];
 
       $pdo_query = $this->conn->prepare("UPDATE ${p}zef SET zef_in = ?, zef_out = ?, zef_time = ? WHERE zef_ID = ?;");
-      $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$zef_ID));
+      $result = $pdo_query->execute(array($rounded['start'],$rounded['end'],$difference,$task['zef_ID']));
 
       if ($result == false) {
           $this->logLastError('stopRecorder');
@@ -3798,8 +3756,8 @@ class PDODatabaseLayer extends DatabaseLayer
     *
     * @param integer $pct_ID ID of project to record
     * @global array $this->kga kimai-global-array
-    * @author th
-    * @return boolean
+    * @author th, sl
+    * @return id of the new entry or false on failure
     */
     public function startRecorder($pct_ID,$evt_ID,$user)
     {
@@ -3814,14 +3772,7 @@ class PDODatabaseLayer extends DatabaseLayer
           return false;
       }
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}usr SET lastRecord = LAST_INSERT_ID() WHERE usr_ID = ?;");
-      $result = $pdo_query->execute(array($user));
-
-      if ($result === false) {
-          $this->logLastError('startRecorder');
-      }
-
-      return $result;
+      return $this->conn->lastInsertId();
     }
 
     /**
@@ -3862,44 +3813,6 @@ class PDODatabaseLayer extends DatabaseLayer
 
       if ($result == false)
           $this->logLastError('zef_edit_evt');
-    }
-
-    /**
-    * Just edit the comment an entry. This is used for editing the comment
-    * of a running entry.
-    *
-    * @param $zef_ID id of the timesheet entry
-    * @param $comment_type new type of the comment
-    * @param $comment the comment text
-    */
-    public function zef_edit_comment($zef_ID,$comment_type,$comment)
-    {
-      $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef
-      SET zef_comment_type = ?, zef_comment = ? WHERE zef_ID = ?");
-
-      $result = $pdo_query->execute(array($comment_type,$comment,$zef_ID));
-
-      if ($result == false)
-          $this->logLastError('zef_edit_comment');
-    }
-
-    /**
-    * Just edit the starttime of an entry. This is used for editing the starttime
-    * of a running entry.
-    *
-    * @param $zef_ID id of the timesheet entry
-    * @param $starttime the new starttime
-    */
-    public function zef_edit_starttime($zef_ID,$starttime)
-    {
-      $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("UPDATE ${p}zef
-      SET zef_in = ? WHERE zef_ID = ?");
-
-      $pdo_query->execute(array($starttime,$zef_ID));
     }
 
   /**

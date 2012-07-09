@@ -332,9 +332,10 @@ function startRecord(pct_ID,evt_ID,user_ID) {
     value = pct_ID +"|"+ evt_ID;
     $.post("processor.php", { axAction: "startRecord", axValue: value, id: user_ID},
         function(response){
+            var data = jQuery.parseJSON(response);
+            currentRecording = data['id'];
+            $('#buzzer').removeClass('disabled');
             ts_ext_reload();
-            $("#stopwatch_edit_comment").show();
-            $("#stopwatch_edit_starttime").show();
         }
     );
 }
@@ -349,14 +350,28 @@ function stopRecord() {
     $("#zeftable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
     $("#zeftable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
     show_selectors();
-    $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: 0},
+    $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(){
-            if (recstate == 0) {
               ts_ext_reload();
               document.title = default_title;
-            }
         }
     );
+}
+
+function updateRecordStatus(record_ID, record_startTime, knd_ID, knd_name, pct_ID, pct_name, evt_ID, evt_name) {
+  startsec = record_startTime;
+  if (record_ID == false) {
+    // no recording is running anymore
+    currentRecording = -1;
+    show_selectors();
+    return;
+  }
+  
+  buzzer_preselect('pct', pct_ID, pct_name, knd_ID, knd_name, false);
+  lists_reload('evt', function() {
+    buzzer_preselect('evt', evt_ID, evt_name, 0, '', false);
+  });
+  
 }
 
 function show_stopwatch() {
@@ -375,23 +390,11 @@ function show_selectors() {
     ticktack_off();
     $("#selector").css('display','block');
     $("#stopwatch").css('display','none');
-    $("#stopwatch_edit_comment").css('display','none');
-    $("#stopwatch_edit_starttime").css('display','none');    
     $("#stopwatch_ticker").css('display','none');
     $("#buzzer").removeClass("act");
     if (!(selected_knd && selected_pct && selected_evt)) {
       $('#buzzer').addClass('disabled');
     }
-}
-
-function edit_running_comment() {
-  floaterShow('../extensions/ki_timesheets/floaters.php',
-      'edit_running_comment',0,0,600,200);
-}
-
-function edit_running_starttime() {
-  floaterShow('../extensions/ki_timesheets/floaters.php',
-      'edit_running_starttime',0,0,600,200);
 }
 
 // fcw: 2012-04-02 AJAX-Search through comments of events
@@ -401,16 +404,16 @@ function search_event_comment() {
 }
 
 function buzzer() {
-    if ( recstate!=1 && $('#buzzer').hasClass('disabled') ) return;
+  if ( currentRecording == -1 && $('#buzzer').hasClass('disabled') ) return;
 
 
-    if (recstate) {
-        recstate=0;
-        stopRecord();
+  if (currentRecording > -1) {
+      currentRecording=0;
+      stopRecord();
     } else {
         setTimespace(undefined,new Date());
         startRecord(selected_pct,selected_evt,usr_ID);
-        recstate=1;
+        $('#buzzer').addClass('disabled');
     }
 }
 
@@ -449,30 +452,30 @@ function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
       $('#buzzer').removeClass('disabled');
     }
 
-    if (recstate && updateRecording) {
+    if (currentRecording > -1 && updateRecording) {
 
 
       switch (subject) {
           case "pct":
-              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", project:id},
+              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", id: currentRecording, project:id},
                 function(data) {
                     ts_ext_reload();
                   }
                 );
           break;
           case "evt":
-              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", task:id},
+            $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", id: currentRecording, task:id},
                 function(data) {
                     ts_ext_reload();
                   }
               );
           break;
       }
-
-      $("#ticker_knd").html($("#sel_knd").html());
-      $("#ticker_pct").html($("#sel_pct").html());
-      $("#ticker_evt").html($("#sel_evt").html());
     }
+    
+    $("#ticker_knd").html($("#sel_knd").html());
+    $("#ticker_pct").html($("#sel_pct").html());
+    $("#ticker_evt").html($("#sel_evt").html());
 }
 
 // ----------------------------------------------------------------------------------------
@@ -758,7 +761,7 @@ function lists_set_TableWidths() {
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and event tables
 //
-function lists_reload(subject) {
+function lists_reload(subject, callback) {
     switch (subject) {
         case "usr":
             $.post("processor.php", { axAction: "reload_usr", axValue: 0, id: 0 },
@@ -768,6 +771,8 @@ function lists_reload(subject) {
                     $("#usr table").css("width",knd_w-scr);
                     lists_live_filter('usr', $('#filt_usr').val());
 		    lists_write_annotations('usr');
+                    if (typeof(callback) != "undefined")
+                      callback();
                 }
             );
     break;
@@ -778,7 +783,9 @@ function lists_reload(subject) {
                     ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#knd table").css("width",knd_w-scr);
                     lists_live_filter('knd', $('#filt_knd').val());
-		    lists_write_annotations('knd');
+                    lists_write_annotations('knd');
+                    if (typeof(callback) != "undefined")
+                      callback();
                 }
             );
     break;
@@ -790,7 +797,9 @@ function lists_reload(subject) {
                     $("#pct table").css("width",pct_w-scr);
                     $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('pct', $('#filt_pct').val());
-		    lists_write_annotations('pct');
+                    lists_write_annotations('pct');
+                    if (typeof(callback) != "undefined")
+                      callback();
                 }
             );
     break;
@@ -809,6 +818,8 @@ function lists_reload(subject) {
         else {
           $('#buzzer').removeClass('disabled');
         }
+        if (typeof(callback) != "undefined")
+          callback();
                 }
             );
     break;

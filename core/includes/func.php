@@ -280,9 +280,9 @@ function check_zef_data($id, $zef_data) {
   $zef_final_data['zef_billable']     = $zef_data['billable'];
   $zef_final_data['zef_description']  = $zef_data['description'];
   $zef_final_data['zef_cleared']      = $zef_data['cleared'];
+  $zef_final_data['zef_in']           = $zef_data['in'];
 
-  if (($zef_data['in'] != 0) || ($zef_data['out'] != 0) || ($zef_data['diff'] != 0)) {
-    $zef_final_data['zef_in']           = $zef_data['in'];
+  if (isset($zef_data['out'])) {
     $zef_final_data['zef_out']          = $zef_data['out'];
     $zef_final_data['zef_time']         = $zef_data['diff'];
   }

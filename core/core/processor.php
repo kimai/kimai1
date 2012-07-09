@@ -126,21 +126,19 @@ switch ($axAction) {
      */
     case 'startRecord':
         if (isset($kga['customer'])) die();
-
-        if ($database->get_rec_state($kga['usr']['usr_ID'])) {
-            $database->stopRecorder();
-        }
     
         $IDs = explode('|',$axValue);
-        $database->startRecorder($IDs[0],$IDs[1],$id);
-        echo 1;
+        $newID = $database->startRecorder($IDs[0],$IDs[1],$id);
+        echo json_encode(array(
+          'id' =>  $newID
+        ));
     break;
     
     /**
      * Stop the running recording.
      */
     case 'stopRecord':
-        $database->stopRecorder();
+        $database->stopRecorder($id);
         echo 1;
     break;
 

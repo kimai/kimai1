@@ -85,13 +85,13 @@ $(document).ready(function() {
       buzzer();
     });
 
-    if (recstate==1 || (selected_knd && selected_pct && selected_evt)) {
+    if (currentRecording > -1 || (selected_knd && selected_pct && selected_evt)) {
       $('#buzzer').removeClass('disabled');
     }
  
     n_uhr();
     
-    if (recstate==1) {
+    if (currentRecording > -1) {
         show_stopwatch();
     } else {
         show_selectors();

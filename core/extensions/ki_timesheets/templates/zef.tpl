@@ -20,6 +20,7 @@
 
             <tbody>
 
+{assign var="latest_running_task" value="-1"}
 {assign var="time_buffer" value="0"}
 {assign var="day_buffer" value="0"}
 {assign var="zef_in_buffer" value=0}
@@ -33,7 +34,11 @@
 
 {if $arr_zef[row].zef_out}                
                 <tr id="zefEntry{$arr_zef[row].zef_ID}" class="{cycle values="odd,even"}">
-{else}                    
+{else}
+
+{if $latest_running_task == -1}
+  {assign var="latest_running_task" value=$arr_zef[row].zef_ID}
+{/if}
                 <tr id="zefEntry{$arr_zef[row].zef_ID}" class="{cycle values="odd,even"} active">
 {/if}
                
@@ -51,42 +56,40 @@
 {if $kga.usr}
 
                         
-{*Stop oder Record Button?*}
-{if $arr_zef[row].zef_out}
+  {*Stop oder Record Button?*}
+  {if $arr_zef[row].zef_out}
 
 
-{*--OPTIONS----------------------------------------------------*}
+  {*--OPTIONS----------------------------------------------------*}
 
                         {if $kga.show_RecordAgain}{strip}<a href ='#' class='recordAgain' onClick="ts_ext_recordAgain({$arr_zef[row].zef_pctID},{$arr_zef[row].zef_evtID},{$arr_zef[row].zef_ID}); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_recordthis.gif' width='13' height='13' alt='{$kga.lang.recordAgain}' title='{$kga.lang.recordAgain} (ID:{$arr_zef[row].zef_ID})' border='0' />
                         </a>{/strip}{/if}
 
 
-{else}
+  {else}
 
 
                         {strip}<a href ='#' class='stop' onClick="ts_ext_stopRecord({$arr_zef[row].zef_ID}); return false;">
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_stopthis.gif' width='13' height='13' alt='{$kga.lang.stop}' title='{$kga.lang.stop} (ID:{$arr_zef[row].zef_ID})' border='0' />
                         </a>{/strip}
 
-{/if}
+  {/if}
 
                         
-{*Edit Record Button - nur einblenden wenn fertig recorded*}
-{if $arr_zef[row].zef_out && ($kga.conf.editLimit == "-" || time()-$arr_zef[row].zef_out <= $kga.conf.editLimit)}
+  {*Edit Record Button*}
+  {if $kga.conf.editLimit == "-" || time()-$arr_zef[row].zef_out <= $kga.conf.editLimit}
                         {strip}<a href ='#' onClick="editRecord({$arr_zef[row].zef_ID}); $(this).blur(); return false;" title='{$kga.lang.edit}'>
                             <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/edit2.gif' width='13' height='13' alt='{$kga.lang.edit}' title='{$kga.lang.edit}' border='0' />
                         </a>{/strip}
-                        
+  {/if} 
 
-    {* quick erase trashcan *}
-    {if $kga.conf.quickdelete > 0}
-                        {strip}<a href ='#' class='quickdelete' onClick="quickdelete({$arr_zef[row].zef_ID}); return false;">
-                            <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
-                        </a>{/strip}
-    {/if}
-
-{/if} 
+  {* quick erase trashcan *}
+  {if $kga.conf.quickdelete > 0}
+                      {strip}<a href ='#' class='quickdelete' onClick="quickdelete({$arr_zef[row].zef_ID}); return false;">
+                          <img src='../skins/{$kga.conf.skin|escape:'html'}/grfx/button_trashcan.png' width='13' height='13' alt='{$kga.lang.quickdelete}' title='{$kga.lang.quickdelete}' border=0 />
+                      </a>{/strip}
+  {/if}
 
 {/if}
 
@@ -352,5 +355,14 @@
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_usr_ann,ts_knd_ann,ts_pct_ann,ts_evt_ann);
     $('#display_total').html(ts_total);
     {/literal}
+
+  {if $latest_running_task == -1}
+    updateRecordStatus(false);
+  {else}
+    updateRecordStatus({$latest_running_task},{$arr_zef[0].zef_in},
+                             {$arr_zef[0].pct_kndID},'{$arr_zef[0].knd_name|replace:"'":"\\'"|escape:'html'}',
+                             {$arr_zef[0].zef_pctID},'{$arr_zef[0].pct_name|replace:"'":"\\'"|escape:'html'}',
+                             {$arr_zef[0].zef_evtID},'{$arr_zef[0].evt_name|replace:"'":"\\'"|escape:'html'}');
+  {/if}
     
 </script>

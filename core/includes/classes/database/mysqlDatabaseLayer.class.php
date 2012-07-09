@@ -1842,22 +1842,32 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * checks whether there is a running zef-entry for a given user
+  * Returns a list of IDs of all current recordings.
   *
   * @param integer $user ID of user in table usr
-  * @return boolean true=there is an entry, false=there is none (actually 1 or 0 is returnes as number!)
-  * @author ob/th
+  * @return array with all IDs of current recordings. This array will be empty if there are none.
+  * @author sl
   */
-  public function get_rec_state($usr_id) {
+  public function get_current_recordings($usr_id) {
 
       $p = $this->kga['server_prefix'];
       $usr_id = MySQL::SQLValue($usr_id, MySQL::SQLVALUE_NUMBER);
-      $this->conn->Query("SELECT * FROM ${p}zef WHERE zef_usrID = $usr_id AND zef_in > 0 AND zef_out = 0 LIMIT 1;");
-      if ($this->conn->RowCount()) {
-          return "1";
-      } else {
-          return "0";
+      $result = $this->conn->Query("SELECT zef_ID FROM ${p}zef WHERE zef_usrID = $usr_id AND zef_in > 0 AND zef_out = 0");
+
+      if ($result === false) {
+          $this->logLastError('get_current_recordings');
+          return array();
       }
+
+      $IDs = array();
+
+      $this->conn->MoveFirst();
+      while (! $this->conn->EndOfSeek()) {
+          $row = $this->conn->Row();
+          $IDs[] = $row->zef_ID;
+      }
+
+      return $IDs;
   }
 
   /**
@@ -2643,30 +2653,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * returns ID of running timesheet event for specific user
-  *
-  * <pre>
-  * ['zef_ID'] ID of last recorded task
-  * ['zef_in'] in point of timesheet record in unix seconds
-  * ['zef_pctID']
-  * ['zef_evtID']
-  * </pre>
-  *
-  * @return integer
-  * @author th
-  */
-  public function get_event_last() {
-      $p     = $this->kga['server_prefix'];
-
-      $lastRecord = $this->kga['usr']['lastRecord'];
-
-      $query = "SELECT * FROM ${p}zef WHERE zef_ID = $lastRecord ;";
-
-      $this->conn->Query($query);
-      return $this->conn->RowArray(0,MYSQL_ASSOC);
-  }
-
-  /**
   * returns time summary of current timesheet
   *
   * @param integer $user ID of user in table usr
@@ -3345,30 +3331,22 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * performed when the stop buzzer is hit.
-  * Checks which record is currently recording and
-  * writes the end time into that entry.
-  * if the measured timevalue is longer than one calendar day
-  * it is split up and stored in the DB by days
+  * Performed when the stop buzzer is hit.
   *
-  * @param integer $user ID of user
-  * @author th
+  * @param integer $id id of the entry to stop
+  * @author th, sl
   * @return boolean
   */
-  public function stopRecorder() {
+  public function stopRecorder($id) {
   ## stop running recording |
       $table = $this->kga['server_prefix']."zef";
 
-      $last_task        = $this->get_event_last(); // aktuelle vorgangs-ID auslesen
+      $task = $this->zef_get_data($id);
 
-	  if(!empty($last_task['zef_out']))
-	  { // last event was already stopped!
-	  	return false;
-	  }		
-		
-      $filter['zef_ID'] = $last_task['zef_ID'];
+      $filter['zef_ID'] = $task['zef_ID'];
+      $filter['zef_out'] = 0; // only update running tasks
 
-      $rounded = Rounding::roundTimespan($last_task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
+      $rounded = Rounding::roundTimespan($task['zef_in'],time(),$this->kga['conf']['roundPrecision']);
 
       $values['zef_in'] = $rounded['start'];
       $values['zef_out']  = $rounded['end'];
@@ -3384,15 +3362,10 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * starts timesheet record
   *
   * @param integer $pct_ID ID of project to record
-  * @author th
-  * @return boolean
+  * @author th, sl
+  * @return id of the new entry or false on failure
   */
   public function startRecorder($pct_ID,$evt_ID,$user) {
-      if (! $this->conn->TransactionBegin()) {
-        $this->logLastError('startRecorder');
-        return false;
-      }
-
       $pct_ID = MySQL::SQLValue($pct_ID, MySQL::SQLVALUE_NUMBER  );
       $evt_ID = MySQL::SQLValue($evt_ID, MySQL::SQLVALUE_NUMBER  );
       $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
@@ -3414,29 +3387,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
         return false;
       }
 
-      unset($values);
-      $values ['lastRecord'] = $this->conn->GetLastInsertID();
-      $table = $this->kga['server_prefix']."usr";
-      $filter  ['usr_ID'] = $user;
-      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-
-      $success = true;
-
-      if (!$this->conn->Query($query)) $success = false;
-
-      if ($success) {
-          if (! $this->conn->TransactionEnd()) {
-            $this->logLastError('startRecorder');
-            return false;
-          }
-      } else {
-          if (! $this->conn->TransactionRollback()) {
-            $this->logLastError('startRecorder');
-            return false;
-          }
-      }
-
-      return $success;
+      return $this->conn->GetLastInsertID();
   }
 
   /**
@@ -3481,54 +3432,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
       return $this->conn->Query($query);
-  }
-
-  /**
-  * Just edit the comment an entry. This is used for editing the comment
-  * of a running entry.
-  *
-  * @param $zef_ID id of the timesheet entry
-  * @param $comment_type new type of the comment
-  * @param $comment the comment text
-  */
-  public function zef_edit_comment($zef_ID,$comment_type,$comment) {
-      $zef_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
-      $comment_type = MySQL::SQLValue($comment_type );
-      $comment      = MySQL::SQLValue($comment );
-
-      $table = $this->kga['server_prefix']."zef";
-
-      $filter['zef_ID'] = $zef_ID;
-
-      $values['zef_comment_type'] = $comment_type;
-      $values['zef_comment']      = $comment;
-
-      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-
-      return $this->conn->Query($query);
-  }
-
-  /**
-  * Just edit the starttime of an entry. This is used for editing the starttime
-  * of a running entry.
-  *
-  * @param $zef_ID id of the timesheet entry
-  * @param $starttime the new starttime
-  */
-  function zef_edit_starttime($zef_ID,$starttime) {
-      $zef_ID       = MySQL::SQLValue($zef_ID, MySQL::SQLVALUE_NUMBER  );
-      $starttime    = MySQL::SQLValue($starttime );
-
-      $table = $this->kga['server_prefix']."zef";
-
-      $filter['zef_ID'] = $zef_ID;
-
-      $values['zef_in'] = $starttime;
-
-      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-
-      return $this->conn->Query($query);
-
   }
 
   /**
