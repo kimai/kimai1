@@ -225,6 +225,13 @@ function checkDBversion($path) {
     $installedVersion = $database->get_DBversion();
     $checkVersion = $installedVersion[0];
     $checkVersion = "$checkVersion";
+
+    if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
+      // fresh install
+      header("Location: $path/installer");
+      exit;
+    }
+
     if ($checkVersion != $kga['version']) {
         header("Location: $path/updater.php");
         exit;
