@@ -6,17 +6,17 @@
           {dateFormat:'mm/dd/yy',
           onSelect: function(dateText, instance) {
             if (this == $('#pick_in')[0]) {
-              setTimespace(new Date(dateText),undefined);
+              setTimeframe(new Date(dateText),undefined);
             }
             if (this == $('#pick_out')[0]) {
-              setTimespace(undefined,new Date(dateText));
+              setTimeframe(undefined,new Date(dateText));
             }
           }
         });
         
-        setTimespaceStart(new Date({/literal}{$timespace_in*1000}{literal}));
-        setTimespaceEnd(new Date({/literal}{$timespace_out*1000}{literal}));
-        updateTimespaceWarning();
+        setTimeframeStart(new Date({/literal}{$timeframeBegin*1000}{literal}));
+        setTimeframeEnd(new Date({/literal}{$timeframe_out*1000}{literal}));
+        updateTimeframeWarning();
              
     });
 </script>

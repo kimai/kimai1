@@ -16,14 +16,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-function iv_ext_onload() {
+function invoice_extension_onload() {
         
-    iv_ext_resize();
+    invoice_extension_resize();
     $("#loader").hide(); 
     
 }
 
-function iv_ext_resize() {
+function invoice_extension_resize() {
 
 	scroller_width = 17;
 	if (navigator.platform.substr(0,3)=='Mac') {
@@ -31,24 +31,24 @@ function iv_ext_resize() {
 	}
 	pagew = pageWidth()-15;
 
-    $("#iv_ext_header").css("width", pagew-27);
-    $("#iv_ext_header").css("top", headerHeight());
-    $("#iv_ext_header").css("left", 10);
+    $("#invoice_extension_header").css("width", pagew-27);
+    $("#invoice_extension_header").css("top", headerHeight());
+    $("#invoice_extension_header").css("left", 10);
     
-    $("#iv_ext_wrap").css("top", headerHeight()+30);
-    $("#iv_ext_wrap").css("left", 10);
-    $("#iv_ext_wrap").css("width", pagew-7);
-    $("#iv_ext").css("height", pageHeight()-headerHeight()-64);
+    $("#invoice_extension_wrap").css("top", headerHeight()+30);
+    $("#invoice_extension_wrap").css("left", 10);
+    $("#invoice_extension_wrap").css("width", pagew-7);
+    $("#invoice_extension").css("height", pageHeight()-headerHeight()-64);
 }
 
-function iv_ext_triggerchange() {
-	iv_ext_resize();
+function invoice_extension_tab_changed() {
+	invoice_extension_resize();
 }
 
-function iv_ext_triggerTSS() {
-   $.post(iv_ext_path + "processor.php", { axAction: "reload_timespan" },
+function invoice_extension_timeframe_changed() {
+   $.post(invoice_extension_path + "processor.php", { axAction: "reload_timespan" },
                 function(data) { 
-                    $("#iv_timespan").html(data);
+                    $("#invoice_timespan").html(data);
                 }
             );
 }

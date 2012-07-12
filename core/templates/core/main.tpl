@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" value="noindex,nofollow" />
 
-    <title>{$kga.usr.usr_name|escape:'html'} - Kimai</title>
+    <title>{$kga.user.name|escape:'html'} - Kimai</title>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
     <!-- Default Stylesheets -->
@@ -68,10 +68,10 @@
         var confirmText           = undefined;
         {/if}
         
-        {if (isset($kga.usr))}
-        var usr_ID                = {$kga.usr.usr_ID};
+        {if (isset($kga.user))}
+        var userID                = {$kga.user.userID};
         {else}
-        var usr_ID                = null;
+        var userID                = null;
         {/if}
 
 
@@ -89,13 +89,13 @@
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
 
-        var default_title         = "{$kga.usr.usr_name|escape:'html'} - Kimai";
+        var default_title         = "{$kga.user.name|escape:'html'} - Kimai";
         var revision              = {$kga.revision};
-        var timespaceDateFormat   = "{$kga.date_format.2|escape:'html'}";
+        var timeframeDateFormat   = "{$kga.date_format.2|escape:'html'}";
 
-        var selected_knd  = '{$knd_data.knd_ID}';
-        var selected_pct  = '{$pct_data.pct_ID}';
-        var selected_evt  = '{$evt_data.evt_ID}';
+        var selected_customer  = '{$customerData.customerID}';
+        var selected_project  = '{$projectData.projectID}';
+        var selected_activity  = '{$activityData.activityID}';
 
         var pickerClicked = '';
         
@@ -121,35 +121,35 @@
 
         
         // HOOKS
-        {literal}function hook_tss(){{/literal}{$hook_tss}{literal}}{/literal}
-        {literal}function hook_bzzRec(){{/literal}{$hook_bzzRec}{literal}}{/literal}
-        {literal}function hook_bzzStp(){{/literal}{$hook_bzzStp}{literal}}{/literal}
-        {literal}function hook_chgUsr(){lists_reload("usr");{/literal}{$hook_chgUsr}{literal}}{/literal}
-        {literal}function hook_chgKnd(){lists_reload("knd");lists_reload("pct");{/literal}{$hook_chgKnd}{literal}}{/literal}
-        {literal}function hook_chgPct(){lists_reload("pct");{/literal}{$hook_chgPct}{literal}}{/literal}
-        {literal}function hook_chgEvt(){lists_reload("evt");{/literal}{$hook_chgEvt}{literal}}{/literal}
+        {literal}function hook_timeframe_changed(){{/literal}{$hook_timeframe_changed}{literal}}{/literal}
+        {literal}function hook_buzzer_record(){{/literal}{$hook_buzzer_record}{literal}}{/literal}
+        {literal}function hook_buzzer_stopped(){{/literal}{$hook_buzzer_stopped}{literal}}{/literal}
+        {literal}function hook_users_changed(){lists_reload("user");{/literal}{$hook_users_changed}{literal}}{/literal}
+        {literal}function hook_customers_changed(){lists_reload("customer");lists_reload("project");{/literal}{$hook_customers_changed}{literal}}{/literal}
+        {literal}function hook_projects_changed(){lists_reload("project");{/literal}{$hook_projects_changed}{literal}}{/literal}
+        {literal}function hook_activities_changed(){lists_reload("activity");{/literal}{$hook_activities_changed}{literal}}{/literal}
         {literal}function hook_filter(){{/literal}{$hook_filter}{literal}}{/literal}
         {literal}function hook_resize(){{/literal}{$hook_resize}{literal}}{/literal}
         {literal}function kill_reg_timeouts(){{/literal}{$timeoutlist}{literal}}{/literal}
 
         {literal}function kimai_onload() {
-    $('#extShrink').hover(lists_extShrinkShow,lists_extShrinkHide);
-    $('#extShrink').click(lists_shrinkExtToggle);
-    $('#kndShrink').hover(lists_kndShrinkShow,lists_kndShrinkHide);
-    $('#kndShrink').click(lists_shrinkKndToggle);
-  {/literal}{if !$kga.usr || $kga.usr.usr_sts < 2}
-    $('#usrShrink').hover(lists_usrShrinkShow,lists_usrShrinkHide);
-    $('#usrShrink').click(lists_shrinkUsrToggle);
+    $('#extensionShrink').hover(lists_extensionShrinkShow,lists_extensionShrinkHide);
+    $('#extensionShrink').click(lists_shrinkExtToggle);
+    $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
+    $('#customersShrink').click(lists_shrinkCustomerToggle);
+  {/literal}{if !$kga.user || $kga.user.status < 2}
+    $('#usersShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
+    $('#usersShrink').click(lists_shrinkUserToggle);
   {else}
-    $('#usrShrink').hide();
+    $('#usersShrink').hide();
   {/if}
 
-  {if $kga.conf.user_list_hidden || $kga.usr.usr_sts == 2}
-    lists_shrinkUsrToggle();
+  {if $kga.conf.user_list_hidden || $kga.user.status == 2}
+    lists_shrinkUserToggle();
   {/if}
   {literal}
-    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
 
     $('#floater').draggable({  
         zIndex:20,
@@ -159,14 +159,14 @@
         handle: '#floater_handle'
       });   
 
-    $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timespaceDateFormat,new Date()));
+    $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timeframeDateFormat,new Date()));
     
     // give browser time to render page. afterwards make sure lists are resized correctly
     setTimeout(lists_resize,500);
     clearTimeout(lists_resize);
 
 
-        if ($('#row_evt'+selected_evt).length == 0) {
+        if ($('#row_activity'+selected_activity).length == 0) {
           $('#buzzer').addClass('disabled');
         }
 
@@ -194,7 +194,7 @@
         <div id="menu">
             <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
             <a id="main_tools_button" href="#" ><img src="../skins/{$kga.conf.skin|escape:'html'}/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
-            <br/>{$kga.lang.logged_in_as} <b>{$kga.usr.usr_name|escape:'html'}</b>
+            <br/>{$kga.lang.logged_in_as} <b>{$kga.user.name|escape:'html'}</b>
         </div>
         
         <div id="main_tools_menu">
@@ -209,7 +209,7 @@
             {include file="core/display.tpl"}
         </div> 
         
-        {if $kga.usr}
+        {if $kga.user}
         
         <div id="selector">
             {include file="core/selector.tpl"}
@@ -220,7 +220,7 @@
         </div>
         
         <div id="stopwatch_ticker">
-            <ul id="ticker"><li id="ticker_knd">&nbsp;</li><li id="ticker_pct">&nbsp;</li><li id="ticker_evt">&nbsp;</li></ul>
+            <ul id="ticker"><li id="ticker_customer">&nbsp;</li><li id="ticker_project">&nbsp;</li><li id="ticker_activity">&nbsp;</li></ul>
         </div>
         
         <div id="buzzer" class="disabled">
@@ -234,7 +234,7 @@
         <ul class="menu">
             
            	<li class="tab act" id="exttab_0">
-           	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); ts_ext_triggerchange();">
+           	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();">
            	        <span class="aa">&nbsp;</span>
            	        <span class="bb">
                     {if isset($kga.lang.extensions.ki_timesheet)}
@@ -278,76 +278,76 @@
     </div>
 
 <div class="lists" style="display:none">
-<div id="usr_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('usr', this.value);" type="text" id="filt_usr" name="filt_usr"/>
+<div id="users_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('user', this.value);" type="text" id="filt_user" name="filt_user"/>
     {$kga.lang.users} 
 </div>
 
-<div id="knd_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('knd', this.value);" type="text" id="filt_knd" name="filt_knd"/>
-    {$kga.lang.knds} 
+<div id="customers_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('customer', this.value);" type="text" id="filter_customer" name="filter_customer"/>
+    {$kga.lang.customers} 
 
 </div>
 
-<div id="pct_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('pct', this.value);" type="text" id="filt_pct" name="filt_pct"/>
-    {$kga.lang.pcts}
-    
-    
-</div>
-
-<div id="evt_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('evt', this.value);" type="text" id="filt_evt" name="filt_evt"/>
-    {$kga.lang.evts}
+<div id="projects_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('project', this.value);" type="text" id="filter_project" name="filter_project"/>
+    {$kga.lang.projects}
     
     
 </div>
 
-<div id="usr">{$usr_display}</div>
-<div id="knd">{$knd_display}</div>
-<div id="pct">{$pct_display}</div>
-<div id="evt">{$evt_display}</div>
+<div id="activities_head">
+        <input class="livefilterfield" onkeyup="lists_live_filter('activity', this.value);" type="text" id="filter_activity" name="filter_activity"/>
+    {$kga.lang.activities}
+    
+    
+</div>
 
-<div id="usr_foot">
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('usr'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('usr'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('usr'); $(this).blur(); return false;"></a>
+<div id="users">{$user_display}</div>
+<div id="customers">{$customer_display}</div>
+<div id="projects">{$project_display}</div>
+<div id="activities">{$activity_display}</div>
+
+<div id="users_foot">
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('user'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('user'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('user'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
-<div id="knd_foot">    
-{if $kga.usr && $kga.usr.usr_sts != 2 }    
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_knd',0,0,450,200); $(this).blur(); return false;"></a>
+<div id="customers_foot">    
+{if $kga.user && $kga.user.status != 2 }    
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('knd'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('knd'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('knd'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('customer'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('customer'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('customer'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
-<div id="pct_foot">
-{if $kga.usr && $kga.usr.usr_sts != 2 }  
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_pct',0,0,650,200); $(this).blur(); return false;"></a>
+<div id="projects_foot">
+{if $kga.user && $kga.user.status != 2 }  
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_project',0,0,650,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('pct'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('pct'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('pct'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('project'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('project'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('project'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
-<div id="evt_foot">
-{if $kga.usr && $kga.usr.usr_sts != 2 } 
-        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_evt',0,0,450,200); $(this).blur(); return false;"></a>
+<div id="activities_foot">
+{if $kga.user && $kga.user.status != 2 } 
+        <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_activity',0,0,450,200); $(this).blur(); return false;"></a>
 {/if}
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('evt'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('evt'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('evt'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('activity'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('activity'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('activity'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
-<div id="extShrink">&nbsp;</div>
-<div id="usrShrink">&nbsp;</div>
-<div id="kndShrink">&nbsp;</div>
+<div id="extensionShrink">&nbsp;</div>
+<div id="usersShrink">&nbsp;</div>
+<div id="customersShrink">&nbsp;</div>
 </div>
     
     <div id="loader">&nbsp;</div>

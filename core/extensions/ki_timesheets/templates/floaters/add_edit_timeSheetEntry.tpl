@@ -7,8 +7,8 @@
             $('#help').hide();
 
             // only save the value, the update will happen automatically because we trigger a changed
-            // event on "edit_out_time"
-			$('#currentTime, #edit_out_day, #edit_in_day').click(function() {
+            // activity on "edit_out_time"
+			$('#currentTime, #end_day, #start_day').click(function() {
     			saveDuration();
 			});
 
@@ -18,7 +18,7 @@
                 if(isNaN($(this).val()) || $(this).val() == '') {
 					$(this).val(0);
                 }
-            	$('#budget_event_approved').text(parseFloat($('#budget_event_approved').text())-previousApproved+parseFloat($(this).val()));
+            	$('#budget_activity_approved').text(parseFloat($('#budget_activity_approved').text())-previousApproved+parseFloat($(this).val()));
      			return false;
             });
             if($('#roundTimesheetEntries').val().length > 0) {
@@ -26,17 +26,17 @@
 	            var stepSeconds = $('#stepSeconds').val();
 	            if(isNaN(stepSeconds) || stepSeconds <= 0) {
 		            if(!isNaN(step) && step > 0 && step < 60) {
-		            $('#edit_in_time').timePicker({step: parseInt(step)});
-		            $('#edit_out_time').timePicker({step: parseInt(step)});
+		            $('#start_time').timePicker({step: parseInt(step)});
+		            $('#end_time').timePicker({step: parseInt(step)});
 		            } else {
-		                $('#edit_in_time').timePicker();
-		                $('#edit_out_time').timePicker();
+		                $('#start_time').timePicker();
+		                $('#end_time').timePicker();
 		            }
 	            }
             }
  
-            // #rate already has an event on click, so treat it below
-            $("#edit_duration, #edit_out_time, #edit_in_time").focus(function() {
+            // #rate already has an activity on click, so treat it below
+            $("#eduration, #eend_time, #start_time").focus(function() {
     			saveDuration();
             }).change(function() {
             	updateDuration();
@@ -44,12 +44,12 @@
      			return false;
             });
 
-            $('#add_edit_zef_evt_ID').change(function() {
+            $('#add_edit_timeSheetEntry_activityID').change(function() {
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "budgets",
-                    project_id: $("#add_edit_zef_pct_ID").val(),
-                    event_id: $("#add_edit_zef_evt_ID").val(),
-                    zef_id: $('input[name="id"]').val()
+                    project_id: $("#add_edit_timeSheetEntry_projectID").val(),
+                    activity_id: $("#add_edit_timeSheetEntry_activityID").val(),
+                    timeSheetEntryID: $('input[name="id"]').val()
                   },
                   function(data) {
                 	  ts_ext_updateBudget(data);
@@ -60,21 +60,21 @@
             $("#budget").focus(function () {
             	previousBudget = this.value;
             }).change(function() {
-            	$('#eventBudget').text(parseFloat($('#eventBudget').text())-previousBudget+$(this).val());
+            	$('#activityBudget').text(parseFloat($('#activityBudget').text())-previousBudget+$(this).val());
      			generateChart();
      			return false;
             });
  			
-            $('#edit_in_day').datepicker({
+            $('#start_day').datepicker({
               onSelect: function(dateText, instance) {
-                $('#edit_out_day').datepicker( "option", "minDate", $('#edit_in_day').datepicker("getDate") );
+                $('#end_day').datepicker( "option", "minDate", $('#start_day').datepicker("getDate") );
                 ts_timeToDuration();
               }
             });
 
-            $('#edit_out_day').datepicker({
+            $('#end_day').datepicker({
               onSelect: function(dateText, instance) {
-                $('#edit_in_day').datepicker( "option", "maxDate", $('#edit_out_day').datepicker("getDate") );
+                $('#start_day').datepicker( "option", "maxDate", $('#end_day').datepicker("getDate") );
                 ts_timeToDuration();
               }
             });
@@ -93,15 +93,15 @@
               source: function(req, add){  
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingRates",
-                    project: $("#add_edit_zef_pct_ID").val(),
-                    task: $("#add_edit_zef_evt_ID").val()
+                    project: $("#add_edit_timeSheetEntry_projectID").val(),
+                    task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
                     add(data);
                   }
                 );  
               },
-              select: function( event, ui ) {
+              select: function( activity, ui ) {
                 $( "#rate" ).val( ui.item.value );
 
                 return false;
@@ -113,25 +113,25 @@
                         .appendTo( ul );
             };
 
-            $( "#fixed_rate" ).click(function() {
-              $( "#fixed_rate").autocomplete("search",0);
+            $( "#fixedRate" ).click(function() {
+              $( "#fixedRate").autocomplete("search",0);
             });
             
-            $( "#fixed_rate" ).autocomplete({
+            $( "#fixedRate" ).autocomplete({
               width:"200px",
               source: function(req, add){  
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingFixedRates",
-                    project: $("#add_edit_zef_pct_ID").val(),
-                    task: $("#add_edit_zef_evt_ID").val()
+                    project: $("#add_edit_timeSheetEntry_projectID").val(),
+                    task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
                     add(data);
                   }
                 );  
               },
-              select: function( event, ui ) {
-                $( "#fixed_rate" ).val( ui.item.value );
+              select: function( activity, ui ) {
+                $( "#fixedRate" ).val( ui.item.value );
 
                 return false;
               }
@@ -142,23 +142,23 @@
                         .appendTo( ul );
             };
 
-            $('#ts_ext_form_add_edit_record').ajaxForm( { 'beforeSubmit' :function() { 
-                if (!$('#edit_in_day').val().match(ts_dayFormatExp) ||
-                    ( !$('#edit_out_day').val().match(ts_dayFormatExp) && $('#edit_out_day').val() != '') ||
-                    !$('#edit_in_time').val().match(ts_timeFormatExp) ||
-                    ( !$('#edit_out_time').val().match(ts_timeFormatExp) && $('#edit_out_time').val() != '')) {
+            $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( { 'beforeSubmit' :function() { 
+                if (!$('#start_day').val().match(ts_dayFormatExp) ||
+                    ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
+                    !$('#start_time').val().match(ts_timeFormatExp) ||
+                    ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
                   alert("{/literal}{$kga.lang.TimeDateInputError}{literal}");
                   return false;
                 }
 
-                var endTimeSet = $('#edit_out_day').val() != '' || $('#edit_out_time').val() != '';
+                var endTimeSet = $('#end_day').val() != '' || $('#end_time').val() != '';
 
                 if (!endTimeSet)
                   return true; // no need to validate timerange if end time is not set
 
                 // test if start day is before end day
-                var inDayMatches = $('#edit_in_day').val().match(ts_dayFormatExp);
-                var outDayMatches = $('#edit_out_day').val().match(ts_dayFormatExp);
+                var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
+                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
                 for (var i = 3;i>=1;i--) {
                   var inVal = inDayMatches[i];
                   var outVal = outDayMatches[i];
@@ -180,8 +180,8 @@
                 }
                 if (inDayMatches[0] == outDayMatches[0]) {
                   // test if start time is before end time if it's the same day
-                  var inTimeMatches = $('#edit_in_time').val().match(ts_timeFormatExp);
-                  var outTimeMatches = $('#edit_out_time').val().match(ts_timeFormatExp);
+                  var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
+                  var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
                   for (var i = 1;i<=3;i++) {
                     var inVal = inTimeMatches[i];
                     var outVal = outTimeMatches[i];
@@ -208,8 +208,8 @@
                   }
                 }
                 
-                var edit_in_time = $('#edit_in_day').val()+$('#edit_in_time').val();
-                var edit_out_time = $('#edit_out_day').val()+$('#edit_out_time').val();
+                var edit_in_time = $('#start_day').val()+$('#start_time').val();
+                var edit_out_time = $('#end_day').val()+$('#end_time').val();
                 var deleted = $('#erase').is(':checked');
                 
                 if (!deleted && edit_in_time == edit_out_time) {
@@ -231,11 +231,11 @@
               }
             });
             {/literal}{if $id}
-            ts_ext_reload_evt({$pres_pct},true);
+            ts_ext_reload_activities({$preselected_project},true);
             {else}{literal}
-            $("#add_edit_zef_pct_ID").selectOptions(""+selected_pct+"");
-            $("#add_edit_zef_evt_ID").selectOptions(""+selected_evt+"");
-            ts_ext_reload_evt(selected_pct);
+            $("#add_edit_timeSheetEntry_projectID").selectOptions(""+selected_project+"");
+            $("#add_edit_timeSheetEntry_activityID").selectOptions(""+selected_activity+"");
+            ts_ext_reload_activities(selected_project);
             {/literal}{/if}{literal}
 
             $('#floater_innerwrap').tabs({ selected: 0 });
@@ -244,7 +244,7 @@
             // will be set and the duration is added to the budgetUsed eventhough it shouldn't
             // so maually subtract the value again
             var durationArray= new Array();
-            durationArray = $("#edit_duration").val().split(/:|\./);
+            durationArray = $("#duration").val().split(/:|\./);
             if(durationArray.length > 0 && durationArray.length < 4) {
                 secs = durationArray[0]*3600;
                 if(durationArray.length > 1)
@@ -253,14 +253,14 @@
                     secs += parseInt(durationArray[2]);
         		var rate = $('#rate').val();
         		var budgetCalculatedTwice = secs/3600*rate;
-            $('#budget_event_used').text(Math.round(parseFloat($('#budget_event_used').text())-budgetCalculatedTwice),2);
+            $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-budgetCalculatedTwice),2);
             }
             //TODO: chart will not be generated..WHY??
 //            generateChart();
         }); 
 
         function saveDuration() {
-			var durationArray=$("#edit_duration").val().split(/:|\./);
+			var durationArray=$("#duration").val().split(/:|\./);
 			var secs = 0;
 		    if(durationArray.length > 0 && durationArray.length < 4) {
 		        secs = durationArray[0]*3600;
@@ -274,7 +274,7 @@
         }
 
         function updateDuration() {
-        	var durationArray=$("#edit_duration").val().split(/:|\./);
+        	var durationArray=$("#duration").val().split(/:|\./);
 			var secs = 0;
 		    if(durationArray.length > 0 && durationArray.length < 4) {
 		        secs = durationArray[0]*3600;
@@ -285,7 +285,7 @@
 		    }
 			var rate = $('#rate').val();
 			var used = secs/3600*rate;
-        	$('#budget_event_used').text(Math.round(parseFloat($('#budget_event_used').text())-previousUsed+used),2);
+        	$('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-previousUsed+used),2);
         }
         function generateChart() {
 			var durationArray=$("#edit_duration").val().split(/:|\./);
@@ -365,9 +365,9 @@
       </ul>
     </div>
 
-    <form id="ts_ext_form_add_edit_record" action="../extensions/ki_timesheets/processor.php" method="post"> 
+    <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post"> 
     <input name="id" type="hidden" value="{$id}" />
-    <input name="axAction" type="hidden" value="add_edit_record" />
+    <input name="axAction" type="hidden" value="add_edit_timeSheetEntry" />
 	<input id="stepMinutes" type="hidden" value="{$kga.conf.roundMinutes}" />
 	<input id="stepSeconds" type="hidden" value="{$kga.conf.roundSeconds}" />
 	<input id="roundTimesheetEntries" type="hidden" value="{$kga.conf.roundTimesheetEntries}" />
@@ -378,26 +378,26 @@
                 <ul>
                 
                    <li>
-                       <label for="pct_ID">{$kga.lang.pct}:</label>
+                       <label for="projectID">{$kga.lang.project}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="pct_ID" id="add_edit_zef_pct_ID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_evt($('#add_edit_zef_pct_ID').val(),undefined,$('#add_edit_zef_evt_ID').val(), $('input[name=\'id\']').val());" >
-                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
+                        <select size = "5" name="projectID" id="add_edit_timeSheetEntry_projectID" class="formfield" style="width:400px" tabindex="1" onChange="ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());" >
+                            {html_options options=$projects selected=$projectID}
                         </select>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_pct_ID', this.value); ts_add_edit_validate();"/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value); ts_add_edit_validate();"/>
                        </div>
                    </li>
                    
 
 
                    <li>
-                       <label for="evt_ID">{$kga.lang.evt}:</label>
+                       <label for="activityID">{$kga.lang.activity}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="evt_ID" id="add_edit_zef_evt_ID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
-                            {html_options values=$sel_evt_IDs output=$sel_evt_names selected=$pres_evt}
+                        <select size = "5" name="activityID" id="add_edit_timeSheetEntry_activityID" class="formfield" style="width:400px" tabindex="3" onChange="getBestRates();ts_add_edit_validate();" >
+                            {html_options options=$activities selected=$activityID}
                         </select>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_zef_evt_ID', this.value); ts_add_edit_validate();" />
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value); ts_add_edit_validate();" />
                       </div>
                    </li>
                 
@@ -411,24 +411,24 @@
                    </li>
 
                 <li>
-                     <label for="edit_in_day">{$kga.lang.day}:</label>
-                     <input id='edit_in_day' type='text' name='edit_in_day' value='{$edit_in_day|escape:'html'}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <label>{$kga.lang.day}:</label>
+                     <input id='start_day' type='text' name='start_day' value='{$start_day|escape:'html'}' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                      -
-                     <input id='edit_out_day' type='text' name='edit_out_day' value='{$edit_out_day|escape:'html'}' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                     <input id='end_day' type='text' name='end_day' value='{$end_day|escape:'html'}' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                 </li>
 
 
               
                    <li>
-                       <label for="time">{$kga.lang.timelabel}:</label>
-                        <input id='edit_in_time' type='text' name='edit_in_time' value='{$edit_in_time|escape:'html'}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                       <label>{$kga.lang.timelabel}:</label>
+                        <input id='start_time' type='text' name='start_time' value='{$start_time|escape:'html'}' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         -
-                        <input id='edit_out_time' type='text' name='edit_out_time' value='{$edit_out_time|escape:'html'}' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='end_time' type='text' name='end_time' value='{$end_time|escape:'html'}' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         <a id="currentTime" href="#" onClick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
                    <li>
                        <label for="duration">{$kga.lang.durationlabel}:</label>
-                        <input id='edit_duration' type='text' name='edit_duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
                </ul>
              </fieldset>
@@ -438,14 +438,14 @@
                 <ul>
 
                    <li>
-                        <label for="zlocation">{$kga.lang.zlocation}:</label>
-                        <input id='zlocation' type='text' name='zlocation' value='{$zlocation|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="location">{$kga.lang.location}:</label>
+                        <input id='location' type='text' name='location' value='{$location|escape:'html'}' maxlength='50' size='20' tabindex='11' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 
 				{if $kga.show_TrackingNr}
                    <li>
-                        <label for="trackingnr">{$kga.lang.trackingnr}:</label>
-                        <input id='trackingnr' type='text' name='trackingnr' value='{$trackingnr|escape:'html'}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="trackingNumber">{$kga.lang.trackingNumber}:</label>
+                        <input id='trackingNumber' type='text' name='trackingNumber' value='{$trackingNumber|escape:'html'}' maxlength='20' size='20' tabindex='12' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                    </li>
 				{/if}
                         <label for="comment">{$kga.lang.comment}:</label>
@@ -453,16 +453,16 @@
                    </li>
                    
                    <li>
-                       <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="14" >
-                           {html_options values=$comment_values output=$comment_types selected=$comment_active}
+                       <label for="commentType">{$kga.lang.commentType}:</label>
+                       <select id="commentType" class="formfield" name="commentType" tabindex="14" >
+                           {html_options values=$commentValues output=$commentTypes selected=$commentType}
                        </select>
                    </li>
-                   {if $kga.usr.usr_sts != 2}   
+                   {if $kga.user.status != 2}   
                    <li>
-                       <label for="user">{$kga.lang.user}:</label>
-                       <select id="user" class="formfield" name="user" tabindex="14" >
-                           {html_options values=$userIds output=$userNames selected=$user}
+                       <label for="userID">{$kga.lang.user}:</label>
+                       <select id="userID" class="formfield" name="userID" tabindex="14" >
+                           {html_options options=$users selected=$userID}
                        </select>
                    </li>
                    {/if}
@@ -496,8 +496,8 @@
                    </li>
                    
                    <li>
-                       <label for="status">{$kga.lang.status}:</label>
-                       <select id="status" class="formfield" name="status" tabindex="15" >
+                       <label for="statusID">{$kga.lang.status}:</label>
+                       <select id="statusID" class="formfield" name="statusID" tabindex="15" >
                            {html_options options=$status selected=$status_active}
                        </select>
                    </li>
@@ -505,25 +505,25 @@
                    <li>
                        <label for="billable">{$kga.lang.billable}:</label>
                        <select id="billable" class="formfield" name="billable" tabindex="16" >
-                           {html_options values=$billableValues output=$billable selected=$billable_active}
+                           {html_options options=$billable selected=$billable_active}
                        </select>
                    </li>
                    <li>
                         <label for="rate">{$kga.lang.rate}:</label>
                         <input id='rate' type='text' name='rate' value='{$rate|escape:'html'}' size='5' tabindex='10' />
                         </select>
-                        <label for="fixed_rate" style="float: none; margin-left: 60px;">{$kga.lang.fixed_rate}:</label>
-                        <input id='fixed_rate' type='text' name='fixed_rate' value='{$fixed_rate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
+                        <label for="fixedRate" style="float: none; margin-left: 60px;">{$kga.lang.fixedRate}:</label>
+                        <input id='fixedRate' type='text' name='fixedRate' value='{$fixedRate|escape:'html'}' size='5' tabindex='10' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
                         </select>
                    </li>
                    
                    <li>
-                   <table><tr><td align="right">{$kga.lang.budget_event}:</td><td>
-                        <span id="budget_event">{$budget_event}</span></td></tr>
-                        <tr><td align="right">{$kga.lang.budget_event_used}:</td><td>
-                        <span id="budget_event_used">{$budget_event_used}</span></td></tr>
-                        <tr><td align="right">{$kga.lang.budget_event_approved}:</td><td>
-                        <span id="budget_event_approved">{$approved_event}</span></td></tr>
+                   <table><tr><td align="right">{$kga.lang.budget_activity}:</td><td>
+                        <span id="budget_activity">{$budget_activity}</span></td></tr>
+                        <tr><td align="right">{$kga.lang.budget_activity_used}:</td><td>
+                        <span id="budget_activity_used">{$budget_activity_used}</span></td></tr>
+                        <tr><td align="right">{$kga.lang.budget_activity_approved}:</td><td>
+                        <span id="budget_activity_approved">{$approved_activity}</span></td></tr>
                         </table>
                    </li>
         <li id="chart">

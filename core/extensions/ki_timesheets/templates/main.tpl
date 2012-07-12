@@ -6,10 +6,10 @@
     </script>
 {/literal}
 
-<div id="zef_head">
+<div id="timeSheet_head">
     <div class="left">
-    {if $kga.usr}
-        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_record',selected_pct+'|'+selected_evt,0,650,580); $(this).blur(); return false;">{$kga.lang.add}</a>
+    {if $kga.user}
+        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_timeSheetEntry',selected_project+'|'+selected_activity,0,650,580); $(this).blur(); return false;">{$kga.lang.add}</a>
     {/if}
     </div>
     <table>
@@ -20,9 +20,9 @@
           <col class="to" />
           <col class="time" />
           <col class="wage" />
-          <col class="knd" />
-          <col class="pct" />
-          <col class="evt" />
+          <col class="customer" />
+          <col class="project" />
+          <col class="activity" />
           <col class="trackingnumber" />
           <col class="username" />
         </colgroup>
@@ -34,14 +34,14 @@
                 <td class="to">{$kga.lang.out}</td>
                 <td class="time">{$kga.lang.time}</td>
                 <td class="wage">{$kga.lang.wage}</td>
-                <td class="knd">{$kga.lang.knd}</td>
-                <td class="pct">{$kga.lang.pct}</td>
-                <td class="evt">{$kga.lang.evt}</td>
-                <td class="trackingnumber">{$kga.lang.trackingnr}</td>
+                <td class="customer">{$kga.lang.customer}</td>
+                <td class="project">{$kga.lang.project}</td>
+                <td class="activity">{$kga.lang.activity}</td>
+                <td class="trackingnumber">{$kga.lang.trackingNumber}</td>
                 <td class="username">{$kga.lang.username}</td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<div id="zef">{$zef_display} </div>
+<div id="timeSheet">{$timeSheet_display} </div>

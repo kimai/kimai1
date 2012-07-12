@@ -118,15 +118,15 @@ abstract class AuthBase
     public function getDefaultGroupId()
     {
         $database = $this->getDatabase();
-        $groups   = $database->get_arr_grp();
+        $groups   = $database->get_groups();
 
         $group = 0;
         if (count($groups) > 1) {
-            $group = $groups[1]['grp_ID'];
+            $group = $groups[1]['groupID'];
         }
 
         if (count($groups) === 1) {
-            $group = $groups[0]['grp_ID'];
+            $group = $groups[0]['groupID'];
         }
 
         return $group;

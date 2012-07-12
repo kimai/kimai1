@@ -110,7 +110,7 @@ if ($kga['language'] != 'en')
   $translations->load($kga['language']);
 
 
-$vars = $database->var_get_data();
+$vars = $database->configuration_get_data();
 if (!empty($vars)) {
   $kga['currency_name']          = $vars['currency_name'];
   $kga['currency_sign']          = $vars['currency_sign'];

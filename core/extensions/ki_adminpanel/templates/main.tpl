@@ -1,123 +1,123 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            ap_ext_onload();
+            adminPanel_extension_onload();
         }); 
     </script>
 {/literal}
 
-<div id="ap_ext_panel">
+<div id="adminPanel_extension_panel">
 
 {* edit customers *}
 
-    <div id="ap_ext_sub6">
-        <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(6)">
-                <span class="ap_ext_accordeon_triangle"></span>
-                {$kga.lang.knds}
+    <div id="adminPanel_extension_sub6">
+        <div class="adminPanel_extension_panel_header">
+            <a onClick="adminPanel_extension_subtab_expand(6)">
+                <span class="adminPanel_extension_accordeon_triangle"></span>
+                {$kga.lang.customers}
             </a>
         </div>
-        <div id="ap_ext_s6" class="ap_ext_subtab ap_ext_subject">
-            {$knd_display}
+        <div id="adminPanel_extension_s6" class="adminPanel_extension_subtab adminPanel_extension_subject">
+            {$customer_display}
         </div>
     </div>
 
 {* edit projects *}
 
-    <div id="ap_ext_sub7">
-        <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(7)">
-                <span class="ap_ext_accordeon_triangle"></span>
-                {$kga.lang.pcts}
+    <div id="adminPanel_extension_sub7">
+        <div class="adminPanel_extension_panel_header">
+            <a onClick="adminPanel_extension_subtab_expand(7)">
+                <span class="adminPanel_extension_accordeon_triangle"></span>
+                {$kga.lang.projects}
             </a>
         </div>
-        <div id="ap_ext_s7" class="ap_ext_subtab ap_ext_subject">
-            {$pct_display}
+        <div id="adminPanel_extension_s7" class="adminPanel_extension_subtab adminPanel_extension_subject">
+            {$project_display}
         </div>
     </div>
 
-{* edit events *}
+{* edit activities *}
 
-<div id="ap_ext_sub8">
-    <div class="ap_ext_panel_header">
-        <a onClick="ap_ext_subtab_expand(8)">
-            <span class="ap_ext_accordeon_triangle"></span>
-            {$kga.lang.evts}
+<div id="adminPanel_extension_sub8">
+    <div class="adminPanel_extension_panel_header">
+        <a onClick="adminPanel_extension_subtab_expand(8)">
+            <span class="adminPanel_extension_accordeon_triangle"></span>
+            {$kga.lang.activities}
         </a>
     </div>
-    <div id="ap_ext_s8" class="ap_ext_subtab ap_ext_subject">
-        {$evt_display}
+    <div id="adminPanel_extension_s8" class="adminPanel_extension_subtab adminPanel_extension_subject">
+        {$activity_display}
     </div>
 </div>
 
 {* edit users *}
-{ if $kga.usr.usr_sts == 0 }
-	<div id="ap_ext_sub1">
-		<div class="ap_ext_panel_header">
-			<a onClick="ap_ext_subtab_expand(1)">
-			    <span class="ap_ext_accordeon_triangle"></span>
+{ if $kga.user.status == 0 }
+	<div id="adminPanel_extension_sub1">
+		<div class="adminPanel_extension_panel_header">
+			<a onClick="adminPanel_extension_subtab_expand(1)">
+			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    {$kga.lang.users}
 			</a>
 		</div>
-		<div id="ap_ext_s1" class="ap_ext_subtab ap_ext_4cols">
+		<div id="adminPanel_extension_s1" class="adminPanel_extension_subtab adminPanel_extension_4cols">
 			{$admin.users}
 		</div>
 	</div>
 {/if}
 {* edit groups *}
 
-	<div id="ap_ext_sub2">
-		<div class="ap_ext_panel_header">
-			<a onClick="ap_ext_subtab_expand(2)">
-			    <span class="ap_ext_accordeon_triangle"></span>
+	<div id="adminPanel_extension_sub2">
+		<div class="adminPanel_extension_panel_header">
+			<a onClick="adminPanel_extension_subtab_expand(2)">
+			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    {$kga.lang.groups}
 			</a>
 		</div>
-		<div id="ap_ext_s2" class="ap_ext_subtab ap_ext_4cols">
+		<div id="adminPanel_extension_s2" class="adminPanel_extension_subtab adminPanel_extension_4cols">
 			{$admin.groups}
 		</div>
 	</div>
 	
 {* edit status *}
 
-	<div id="ap_ext_sub3">
-		<div class="ap_ext_panel_header">
-			<a onClick="ap_ext_subtab_expand(3)">
-			    <span class="ap_ext_accordeon_triangle"></span>
+	<div id="adminPanel_extension_sub3">
+		<div class="adminPanel_extension_panel_header">
+			<a onClick="adminPanel_extension_subtab_expand(3)">
+			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    {$kga.lang.status}
 			</a>
 		</div>
-		<div id="ap_ext_s3" class="ap_ext_subtab ap_ext_4cols">
+		<div id="adminPanel_extension_s3" class="adminPanel_extension_subtab adminPanel_extension_4cols">
 			{$admin.status}
 		</div>
 	</div>
 	
 
 {* advanced *}
-{ if $kga.usr.usr_sts == 0 }
-	<div id="ap_ext_sub4">
-		<div class="ap_ext_panel_header">
-			<a onClick="ap_ext_subtab_expand(4)">
-			    <span class="ap_ext_accordeon_triangle"></span>
+{ if $kga.user.status == 0 }
+	<div id="adminPanel_extension_sub4">
+		<div class="adminPanel_extension_panel_header">
+			<a onClick="adminPanel_extension_subtab_expand(4)">
+			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    {$kga.lang.advanced}
 			</a>
 		</div>
-		<div id="ap_ext_s4" class="ap_ext_subtab ap_ext_4cols">
+		<div id="adminPanel_extension_s4" class="adminPanel_extension_subtab adminPanel_extension_4cols">
 			{$admin.advanced}
 		</div>
 	</div>
 { /if}
 
 {* DB *}
-{ if $kga.usr.usr_sts == 0 }
-    <div id="ap_ext_sub5">
-        <div class="ap_ext_panel_header">
-            <a onClick="ap_ext_subtab_expand(5)">
-                <span class="ap_ext_accordeon_triangle"></span>
+{ if $kga.user.status == 0 }
+    <div id="adminPanel_extension_sub5">
+        <div class="adminPanel_extension_panel_header">
+            <a onClick="adminPanel_extension_subtab_expand(5)">
+                <span class="adminPanel_extension_accordeon_triangle"></span>
                 {$kga.lang.database}
             </a>
         </div>
-        <div id="ap_ext_s5" class="ap_ext_subtab ap_ext_4cols">
+        <div id="adminPanel_extension_s5" class="adminPanel_extension_subtab adminPanel_extension_4cols">
             {$admin.database}
         </div>
     </div>

@@ -36,18 +36,18 @@ class MYPDF extends BasePDF {
    * Print a footer on every page.
    */
   public function Footer() { 
-        global $kga,$knd_data, $pct_data;
+        global $kga,$customerData, $projectData;
         
         // Position at 1.5 cm from bottom 
         $this->SetY(-15);
          
         // customer data
         //$this->SetFont('helvetica', '', 8); // Set font
-        //$this->Cell(80, 10, $knd_data['knd_name'].' ('.$pct_data['pct_name'].')', 0, 0, 'L');
+        //$this->Cell(80, 10, $customerData['name'].' ('.$projectData['pct_name'].')', 0, 0, 'L');
         
         // Page number 
         $this->SetFont('helvetica', 'I', 8); // Set font 
-        $this->Cell(30, 10, $kga['lang']['xp_ext']['page'].' '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
+        $this->Cell(30, 10, $kga['lang']['export_extension']['page'].' '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, 0, 'C');
         
         //Date
         $this->SetFont('helvetica', '', 8); // Set font
@@ -95,7 +95,7 @@ class MYPDF extends BasePDF {
         $this->Cell(array_sum($w), 0, '', 'T');
         if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) { 
           $this->Ln();  
-          $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['subtotal'].':', '', 0, 'R', false); 
+          $this->Cell($w[0]+$w[1], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false); 
           if (isset($this->columns['dec_time']))
             $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
           if (isset($this->columns['wage']))
@@ -111,10 +111,10 @@ class MYPDF extends BasePDF {
         $this->SetFont(''); 
       }
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-      $this->Cell($w[1], 6, $row['knd_name'] . ' - ' . $row['evt_name'], 'LR', 0, 'L', $fill);    
+      $this->Cell($w[1], 6, $row['customerName'] . ' - ' . $row['activityName'], 'LR', 0, 'L', $fill);    
       
       if (isset($this->columns['dec_time']))
-        $this->Cell($w[2], 6, $this->timespan(isset($row['dec_zef_time'])?$row['dec_zef_time']:0), 'LR', 0, 'R', $fill); 
+        $this->Cell($w[2], 6, $this->timespan(isset($row['decimalDuration'])?$row['decimalDuration']:0), 'LR', 0, 'R', $fill); 
       if (isset($this->columns['wage']))
         $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
       $this->Ln(); 
@@ -150,14 +150,14 @@ class MYPDF extends BasePDF {
      }
      $fill=!$fill; 
       $moneySum+=$row['wage'];
-      $timeSum += $row['dec_zef_time']==-1?0:$row['dec_zef_time']; 
+      $timeSum += $row['decimalDuration']==-1?0:$row['decimalDuration']; 
         
     } 
     $this->Cell(array_sum($w), 0, '', 'T'); 
     $this->Ln();
 
     if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) {
-      $this->Cell($w[0]+$w[1], 6, $kga['lang']['xp_ext']['finalamount'].':', '', 0, 'R', false); 
+      $this->Cell($w[0]+$w[1], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false); 
       $this->SetFont('', 'B'); 
       if (isset($this->columns['dec_time']))
         $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
@@ -178,31 +178,31 @@ $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
 // determine page title
 switch ($filter_type) {
  case 0:
-   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_times'];
+   $pdf_title = $kga['lang']['export_extension']['pdf_headline_only_times'];
    break;
  case 1:
-   $pdf_title = $kga['lang']['xp_ext']['pdf_headline_only_expenses'];
+   $pdf_title = $kga['lang']['export_extension']['pdf_headline_only_expenses'];
    break;
  case -1:
  default:
-   $pdf_title = $kga['lang']['xp_ext']['pdf_headline'];
+   $pdf_title = $kga['lang']['export_extension']['pdf_headline'];
 }
 // determine filter values
 switch ($filter_cleared) {
  case 0:
-   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_open'];
+   $pdf_filter[] = $kga['lang']['export_extension']['cleared_open'];
    break;
  case 1:
-   $pdf_filter[] = $kga['lang']['xp_ext']['cleared_cleared'];
+   $pdf_filter[] = $kga['lang']['export_extension']['cleared_cleared'];
    break;
 }
 
 switch ($filter_refundable) {
  case 0:
-   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_refundable'];
+   $pdf_filter[] = $kga['lang']['export_extension']['refundable_refundable'];
    break;
  case 1:
-   $pdf_filter[] = $kga['lang']['xp_ext']['refundable_not_refundable'];
+   $pdf_filter[] = $kga['lang']['export_extension']['refundable_not_refundable'];
    break;
 }
 
@@ -221,12 +221,12 @@ if (isset($_REQUEST['create_bookmarks']))
 $pdf->WriteHtml('<h1>' . $pdf_title . '</h1>');
 $pdf->ln();
 
-$pdf->WriteHtml('<b>'.$kga['lang']['xp_ext']['time_period'].':</b> '.
+$pdf->WriteHtml('<b>'.$kga['lang']['export_extension']['time_period'].':</b> '.
 strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
 
 if (isset($pdf_filter)) {
   $pdf->ln();
-  $pdf->WriteHtml('<b>' . $kga['lang']['xp_ext']['filter'] . ':</b> ' . implode(' | ', $pdf_filter));
+  $pdf->WriteHtml('<b>' . $kga['lang']['export_extension']['filter'] . ':</b> ' . implode(' | ', $pdf_filter));
 }
 
 if (!empty($_REQUEST['document_comment'])) {
@@ -237,12 +237,12 @@ if (!empty($_REQUEST['document_comment'])) {
 if (isset($_REQUEST['print_summary'])) {
   
   if (isset($_REQUEST['create_bookmarks']))
-    $pdf->Bookmark($kga['lang']['xp_ext']['summary'], 0, 0);
+    $pdf->Bookmark($kga['lang']['export_extension']['summary'], 0, 0);
   
   $pdf->ln();
-  $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['summary'].'</h3>');
+  $pdf->WriteHtml('<h3>'.$kga['lang']['export_extension']['summary'].'</h3>');
   $pdf->ln();
-  $pdf->printSummary(array($kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']), $pdf_arr_data);
+  $pdf->printSummary(array($kga['lang']['activity'],$kga['lang']['export_extension']['duration'],$kga['lang']['export_extension']['costs']), $orderedExportData);
   
   $pdf->AddPage();
   
@@ -250,12 +250,12 @@ if (isset($_REQUEST['print_summary'])) {
 
 // Write to the PDF document which, if any, customer filters were applied.
 $customers = array();
-foreach ($filterKnd as $knd_id) {
-  $customer_info = $database->knd_get_data($knd_id);
-  $customers[] = $customer_info['knd_name'];
+foreach ($filterCustomers as $customerID) {
+  $customer_info = $database->customer_get_data($customerID);
+  $customers[] = $customer_info['name'];
 }
 if (count($customers)>0) {
-  $label = $kga['lang']['knd'].': ';
+  $label = $kga['lang']['customer'].': ';
   $labelWidth = $pdf->GetStringWidth($label);
   $pdf->cell($labelWidth,6,$label);
   $pdf->cell($labelWidth,6,implode(', ',$customers));
@@ -264,12 +264,12 @@ if (count($customers)>0) {
 
 // Write to the PDF document which, if any, project filters were applied.
 $projects = array();
-foreach ($filterPct as $pct_id) {
-  $project_info = $database->pct_get_data($pct_id);
-  $projects[] = $project_info['pct_name'];
+foreach ($filterProjects as $projectID) {
+  $project_info = $database->project_get_data($projectID);
+  $projects[] = $project_info['name'];
 }
 if (count($projects)>0) {
-  $label = $kga['lang']['pct'].': ';
+  $label = $kga['lang']['project'].': ';
   $labelWidth = $pdf->GetStringWidth($label);
   $pdf->cell($labelWidth,6,$label);
   $pdf->cell($labelWidth,6,implode(', ',$projects));
@@ -277,7 +277,7 @@ if (count($projects)>0) {
 }
 
 $firstRun = true;
-foreach ($pdf_arr_data as $customer) {
+foreach ($orderedExportData as $customer) {
   // process each customer in first dimension
 
   if ($firstRun)
@@ -286,14 +286,14 @@ foreach ($pdf_arr_data as $customer) {
     $pdf->AddPage();
 
   $pdf->ln();
-  $pdf->WriteHtml('<h3>'.$kga['lang']['xp_ext']['full_list'].'</h3>');
+  $pdf->WriteHtml('<h3>'.$kga['lang']['export_extension']['full_list'].'</h3>');
   $pdf->ln();  
 
   $project_ids = array_keys($customer);
 
   foreach ($project_ids as $project_id) {
     // process each project in second dimension
-    $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['evt'],$kga['lang']['xp_ext']['duration'],$kga['lang']['xp_ext']['costs']),$customer[$project_id]);
+    $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['activity'],$kga['lang']['export_extension']['duration'],$kga['lang']['export_extension']['costs']),$customer[$project_id]);
   }
 }
 

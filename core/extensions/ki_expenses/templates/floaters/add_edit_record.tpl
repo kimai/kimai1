@@ -6,12 +6,12 @@
 
             $('#edit_day').datepicker();
 
-            $('#exp_ext_form_add_edit_record').ajaxForm( {
+            $('#expense_extension_form_add_edit_record').ajaxForm( {
               'success' : function(data) {
                 var result = jQuery.parseJSON(data);
                 if (result.result == "ok") {
                   floaterClose();
-                  exp_ext_reload();
+                  expense_extension_reload();
                 }
                 else {
                   alert(result.message);
@@ -21,7 +21,7 @@
 
             {/literal}{if $id}{literal}
             {/literal}{else}{literal}
-            $("#add_edit_exp_pct_ID").selectOptions(""+selected_pct+"");
+            $("#add_edit_expense_project_ID").selectOptions(""+selected_project+"");
             {/literal}{/if}{literal}
             $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
@@ -33,7 +33,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{if $id}{$kga.lang.edit}{else}{$kga.lang.add}{/if} {$pres_evt|escape:'html'}</span>
+        <span id="floater_title">{if $id}{$kga.lang.edit}{else}{$kga.lang.add}{/if}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();">{$kga.lang.help}</a>
@@ -62,7 +62,7 @@
       </ul>
     </div>
 
-    <form id="exp_ext_form_add_edit_record" action="../extensions/ki_expenses/processor.php" method="post"> 
+    <form id="expense_extension_form_add_edit_record" action="../extensions/ki_expenses/processor.php" method="post"> 
                 <input name="id" type="hidden" value="{$id}" />
                 <input name="axAction" type="hidden" value="add_edit_record" />
 
@@ -74,13 +74,13 @@
                 <ul>
                 
                    <li>
-                       <label for="pct_ID">{$kga.lang.pct}:</label>
+                       <label for="projectID">{$kga.lang.project}:</label>
                        <div class="multiFields">
-                        <select size = "5" name="pct_ID" id="add_edit_exp_pct_ID" class="formfield" style="width:400px" tabindex="1" onchange="exp_add_edit_validate();">
-                            {html_options values=$sel_pct_IDs output=$sel_pct_names selected=$pres_pct}
+                        <select size = "5" name="projectID" id="add_edit_expense_project_ID" class="formfield" style="width:400px" tabindex="1" onchange="expense_add_edit_validate();">
+                            {html_options options=$projects selected=$preselected_project}
                         </select>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_exp_pct_ID', this.value); exp_add_edit_validate();"/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_expense_project_ID', this.value); expense_add_edit_validate();"/>
                        </div>
                    </li>
                 
@@ -96,7 +96,7 @@
                    <li>
                        <label for="edit_time">{$kga.lang.timelabel}:</label>
                         <input id='edit_time' type='text' name='edit_time' value='{$edit_time|escape:'html'}' maxlength='8'  size='8'  tabindex='7' {if $kga.conf.autoselection}onClick="this.select();"{/if} />
-                        <a href="#" onClick="exp_pasteNow(); $(this).blur(); return false;">{$kga.lang.now}</a>
+                        <a href="#" onClick="expense_pasteNow(); $(this).blur(); return false;">{$kga.lang.now}</a>
                    </li>
 
                    
@@ -147,9 +147,9 @@
                    </li>
                    
                    <li>
-                       <label for="comment_type">{$kga.lang.comment_type}:</label>
-                       <select id="comment_type" class="formfield" name="comment_type" tabindex="14" >
-                           {html_options values=$comment_values output=$comment_types selected=$comment_active}
+                       <label for="commentType">{$kga.lang.commentType}:</label>
+                       <select id="commentType" class="formfield" name="commentType" tabindex="14" >
+                           {html_options values=$commentValues output=$commentTypes selected=$comment_active}
                        </select>
                    </li>
                    

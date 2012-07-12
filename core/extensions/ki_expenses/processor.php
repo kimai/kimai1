@@ -26,102 +26,102 @@ include('private_db_layer_'.$kga['server_conn'].'.php');
 
 switch ($axAction) {
 
-    // ===================================================
-    // = Load timesheet data (zef) from DB and return it =
-    // ===================================================
+    // ===========================================
+    // = Load expense data from DB and return it =
+    // ===========================================
     case 'reload_exp':
       $filters = explode('|',$axValue);
       if ($filters[0] == "")
-        $filterUsr = array();
+        $filterUsers = array();
       else
-        $filterUsr = explode(':',$filters[0]);
+        $filterUsers = explode(':',$filters[0]);
 
       if ($filters[1] == "")
-        $filterKnd = array();
+        $filterCustomers = array();
       else
-        $filterKnd = explode(':',$filters[1]);
+        $filterCustomers = explode(':',$filters[1]);
 
       if ($filters[2] == "")
-        $filterPct = array();
+        $filterProjects = array();
       else
-        $filterPct = explode(':',$filters[2]);
+        $filterProjects = explode(':',$filters[2]);
 
       // if no userfilter is set, set it to current user
-      if (isset($kga['usr']) && count($filterUsr) == 0)
-        array_push($filterUsr,$kga['usr']['usr_ID']);
+      if (isset($kga['user']) && count($filterUsers) == 0)
+        array_push($filterUsers,$kga['user']['userID']);
         
       if (isset($kga['customer']))
-        $filterKnd = array($kga['customer']['knd_ID']);
+        $filterCustomers = array($kga['customer']['customerID']);
 
-      $arr_exp = get_arr_exp($in,$out,$filterUsr,$filterKnd,$filterPct,1);
-      if (count($arr_exp)>0) {
-          $tpl->assign('arr_exp', $arr_exp);
+      $expenses = get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
+      if (count($expenses)>0) {
+          $tpl->assign('expenses', $expenses);
       } else {
-          $tpl->assign('arr_exp', 0);
+          $tpl->assign('expenses', 0);
       }
       $tpl->assign('total', "");
 
 
-      $ann = get_arr_exp_usr($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('usr_ann',$ann);
+      $tpl->assign('user_annotations',$ann);
 
       // TODO: function for loops or convert it in template with new function
-      $ann = get_arr_exp_knd($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = expenses_by_customer($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('knd_ann',$ann);
+      $tpl->assign('customer_annotations',$ann);
 
-      $ann = get_arr_exp_pct($in,$out,$filterUsr,$filterKnd,$filterPct);
+      $ann = expenses_by_project($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('pct_ann',$ann);
+      $tpl->assign('project_annotations',$ann);
 
-      $tpl->assign('evt_ann',array());
+      $tpl->assign('activity_annotations',array());
 
-      if (isset($kga['usr']))
-        $tpl->assign('hideComments',$database->usr_get_preference('ui.showCommentsByDefault')!=1);
+      if (isset($kga['user']))
+        $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
       else
         $tpl->assign('hideComments',true);
 
-      $tpl->display("exp.tpl");
+      $tpl->display("expenses.tpl");
     break;
 
     // =======================================
     // = Erase expense entry via quickdelete =
     // =======================================
     case 'quickdelete':
-      exp_delete_record($id);
+      expense_delete($id);
       echo 1;
     break;
 
-    // =========================
-    // = add / edit zef record =
-    // =========================
+    // =============================
+    // = add / edit expense record =
+    // =============================
     case 'add_edit_record':
-    if (!is_array($kga['usr']))
+    if (!is_array($kga['user']))
       break;
 
       if ($id) {
-        $data = exp_get_data($id);
-        if ($kga['conf']['editLimit'] != "-" && time()-$data['exp_timestamp'] > $kga['conf']['editLimit']) {
+        $data = expense_get($id);
+        if ($kga['conf']['editLimit'] != "-" && time()-$data['timestamp'] > $kga['conf']['editLimit']) {
           echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
           return;
         }
       }
     
-      $data['exp_pctID']        = $_REQUEST['pct_ID'];
-      $data['exp_designation']  = $_REQUEST['designation'];
-      $data['exp_multiplier']   = $_REQUEST['multiplier'];
-      $data['exp_value']        = $_REQUEST['edit_value'];
-      $data['exp_comment']      = $_REQUEST['comment'];
-      $data['exp_comment_type'] = $_REQUEST['comment_type'];
-      $data['exp_refundable']   = isset($_REQUEST['refundable']);
+      $data['projectID']        = $_REQUEST['projectID'];
+      $data['designation']  = $_REQUEST['designation'];
+      $data['multiplier']   = $_REQUEST['multiplier'];
+      $data['value']        = $_REQUEST['edit_value'];
+      $data['comment']      = $_REQUEST['comment'];
+      $data['commentType'] = $_REQUEST['commentType'];
+      $data['refundable']   = isset($_REQUEST['refundable']);
       $data['erase']            = isset($_REQUEST['erase']);
 
 
       if ($data['erase']) {
         // delete checkbox set ?
         // then the record is simply dropped and processing stops at this point
-        exp_delete_record($id);
+        expense_delete($id);
         echo json_encode(array('result'=>'ok'));
         break;
       }
@@ -146,23 +146,23 @@ switch ($axAction) {
         return;
       }
 
-      $data['exp_timestamp'] = $new_time['in'];
+      $data['timestamp'] = $new_time['in'];
       //Logger::logfile("new_time: " .serialize($new_time));
 
-      $data['exp_multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_multiplier']);
-      $data['exp_value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['exp_value']);
+      $data['multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['multiplier']);
+      $data['value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['value']);
         
       if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
         // TIME RIGHT - EDIT ENTRY
-        Logger::logfile("exp_edit_record: " .$id);
-        exp_edit_record($id,$data);
+        Logger::logfile("expense_edit: " .$id);
+        expense_edit($id,$data);
     
       } else {
           
         // TIME RIGHT - NEW ENTRY
-        Logger::logfile("exp_create_record");
-        exp_create_record($kga['usr']['usr_ID'],$data);
+        Logger::logfile("expense_create");
+        expense_create($kga['user']['userID'],$data);
           
       }
       echo json_encode(array('result'=>'ok'));

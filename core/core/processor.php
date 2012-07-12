@@ -42,19 +42,19 @@ switch ($axAction) {
     break;
 
     /**
-     * Remember which project and event the user has selected for 
+     * Remember which project and activity the user has selected for 
      * the quick recording via the buzzer.
      */
     case 'saveBuzzerPreselection':
-      if (!isset($kga['usr'])) return;
+      if (!isset($kga['user'])) return;
 
       $data= array();
       if (isset($_REQUEST['project']))
         $data['lastProject'] = $_REQUEST['project'];
-      if (isset($_REQUEST['event']))
-        $data['lastEvent']   = $_REQUEST['event'];
+      if (isset($_REQUEST['activity']))
+        $data['lastActivity']   = $_REQUEST['activity'];
 
-      $database->usr_edit($kga['usr']['usr_ID'],$data);
+      $database->user_edit($kga['user']['userID'],$data);
     break;
 
 
@@ -69,8 +69,8 @@ switch ($axAction) {
         $preferences['quickdelete']        = $_REQUEST['quickdelete'];
         $preferences['rowlimit']           = $_REQUEST['rowlimit'];
         $preferences['lang']               = $_REQUEST['lang'];
-        $preferences['flip_pct_display']   = isset($_REQUEST['flip_pct_display'])?1:0;
-        $preferences['pct_comment_flag']   = isset($_REQUEST['pct_comment_flag'])?1:0;
+        $preferences['flip_project_display']   = isset($_REQUEST['flip_project_display'])?1:0;
+        $preferences['project_comment_flag']   = isset($_REQUEST['project_comment_flag'])?1:0;
         $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
         $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
         $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
@@ -79,46 +79,46 @@ switch ($axAction) {
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']   = isset($_REQUEST['hideOverlapLines'])?1:0;
 
-        $database->usr_set_preferences($preferences,'ui.');
-        $database->usr_set_preferences(array('timezone'=>$_REQUEST['timezone']));
+        $database->user_set_preferences($preferences,'ui.');
+        $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))
-          $database->save_rate($kga['usr']['usr_ID'],null,NULL,$rate);
+          $database->save_rate($kga['user']['userID'],null,NULL,$rate);
         else
-          $database->remove_rate($kga['usr']['usr_ID'],null,NULL);
+          $database->remove_rate($kga['user']['userID'],null,NULL);
         
         // If the password field is empty don't overwrite the old password.
-        if ($_REQUEST['pw'] != "") {
-        	$usr_data['pw'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
-          $database->usr_edit($kga['usr']['usr_ID'], $usr_data);
+        if ($_REQUEST['password'] != "") {
+        	$userData['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
+          $database->user_edit($kga['user']['userID'], $userData);
         }
         
         
     break;
     
     /**
-     * When the user changes the timespace it is stored in the database so
+     * When the user changes the timeframe it is stored in the database so
      * it can be restored, when the user reloads the page.
      */
-    case 'setTimespace':
-        if (!isset($kga['usr'])) die();
+    case 'setTimeframe':
+        if (!isset($kga['user'])) die();
     
-        $timespace = explode('|',$axValue);
+        $timeframe = explode('|',$axValue);
          
-        $timespace_in  = explode('-',$timespace[0]);
-        $timespace_in  = (int)mktime(0,0,0,$timespace_in[0],$timespace_in[1],$timespace_in[2]);
-        if ($timespace_in < 950000000) $timespace_in = $in;
+        $timeframe_in  = explode('-',$timeframe[0]);
+        $timeframe_in  = (int)mktime(0,0,0,$timeframe_in[0],$timeframe_in[1],$timeframe_in[2]);
+        if ($timeframe_in < 950000000) $timeframe_in = $in;
         
-        $timespace_out = explode('-',$timespace[1]);
-        $timespace_out = (int)mktime(23,59,59,$timespace_out[0],$timespace_out[1],$timespace_out[2]);
-        if ($timespace_out < 950000000) $timespace_out = $out;
+        $timeframe_out = explode('-',$timeframe[1]);
+        $timeframe_out = (int)mktime(23,59,59,$timeframe_out[0],$timeframe_out[1],$timeframe_out[2]);
+        if ($timeframe_out < 950000000) $timeframe_out = $out;
         
-        $database->save_timespace($timespace_in,$timespace_out,$kga['usr']['usr_ID']);
+        $database->save_timeframe($timeframe_in,$timeframe_out,$kga['user']['userID']);
     break;
 
     /**
-     * The user started the recording of an event via the buzzer. If this method
+     * The user started the recording of an activity via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
      */
     case 'startRecord':
@@ -142,172 +142,171 @@ switch ($axAction) {
     /**
      * Return a list of users. Customers are not shown any users. The
      * type of the current user decides which users are shown to him.
-     * See get_arr_watchable_users.
+     * See get_watchable_users.
      */
-    case 'reload_usr':
+    case 'reload_user':
         if (isset($kga['customer']))
-          $arr_usr = array();
+          $users = array();
         else
-          $arr_usr = $database->get_arr_watchable_users($kga['usr']);
+          $users = $database->get_watchable_users($kga['user']);
 
-        if (count($arr_usr)>0) {
-            $tpl->assign('arr_usr', $arr_usr);
+        if (count($users)>0) {
+            $tpl->assign('users', $users);
         } else {
-            $tpl->assign('arr_usr', 0);
+            $tpl->assign('users', 0);
         }
-        $tpl->display("../lists/usr.tpl");
+        $tpl->display("../lists/users.tpl");
     break;
 
     /**
      * Return a list of customers. A customer can only see himself.
      */
-    case 'reload_knd':
+    case 'reload_customers':
         if (isset($kga['customer']))
-          $arr_knd = array(array(
-              'knd_ID'=>$kga['customer']['knd_ID'],
-              'knd_name'=>$kga['customer']['knd_name'],
-              'knd_visible'=>$kga['customer']['knd_visible']));
+          $customers = array(array(
+              'customerID'=>$kga['customer']['customerID'],
+              'name'=>$kga['customer']['name'],
+              'visible'=>$kga['customer']['visible']));
         else
-          $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
+          $customers = $database->get_customers($kga['user']['groups']);
 
-        if (count($arr_knd)>0) {
-            $tpl->assign('arr_knd', $arr_knd);
+        if (count($customers)>0) {
+            $tpl->assign('customers', $customers);
         } else {
-            $tpl->assign('arr_knd', 0);
+            $tpl->assign('customers', 0);
         }
-        $tpl->display("../lists/knd.tpl");
+        $tpl->display("../lists/customers.tpl");
     break;
 
     /**
      * Return a list of projects. Customers are only shown their projects.
      */
-    case 'reload_pct':
+    case 'reload_projects':
         if (isset($kga['customer']))
-          $arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
+          $projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
         else
-          $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
+          $projects = $database->get_projects($kga['user']['groups']);
 
-        if (count($arr_pct)>0) {
-            $tpl->assign('arr_pct', $arr_pct);
+        if (count($projects)>0) {
+            $tpl->assign('projects', $projects);
         } else {
-            $tpl->assign('arr_pct', 0);
+            $tpl->assign('projects', 0);
         }
-        $tpl->display("../lists/pct.tpl");
+        $tpl->display("../lists/projects.tpl");
     break;
 
     /**
      * Return a list of tasks. Customers are only shown tasks which are
-     * used for them. If a project is set as filter via the pct parameter
+     * used for them. If a project is set as filter via the project parameter
      * only tasks for that project are shown.
      */
-    case 'reload_evt':
+    case 'reload_activities':
         if (isset($kga['customer']))
-          $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
-        else if (isset($_REQUEST['pct']))
-          $arr_evt = $database->get_arr_evt_by_pct($_REQUEST['pct'],$kga['usr']['groups']);
+          $activities = $database->get_activities_by_customer($kga['customer']['customerID']);
+        else if (isset($_REQUEST['project']))
+          $activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
         else
-          $arr_evt = $database->get_arr_evt($kga['usr']['groups']);
-        if (count($arr_evt)>0) {
-            $tpl->assign('arr_evt', $arr_evt);
+          $activities = $database->get_activities($kga['user']['groups']);
+        if (count($activities)>0) {
+            $tpl->assign('activities', $activities);
         } else {
-            $tpl->assign('arr_evt', 0);
+            $tpl->assign('activities', 0);
         }
-        $tpl->display("../lists/evt.tpl");
+        $tpl->display("../lists/activities.tpl");
     break;
 
 
     /**
-     * Add a new customer, project or event. This is a core function as it's
+     * Add a new customer, project or activity. This is a core function as it's
      * used at least by the admin panel and the timesheet extension.
      */
-    case 'add_edit_KndPctEvt':
+    case 'add_edit_CustomerProjectActivity':
     
-        if(isset($kga['customer']) || $kga['usr']['usr_sts']==2) die(); // only admins and grpleaders can do this ...
+        if(isset($kga['customer']) || $kga['user']['status']==2) die(); // only admins and groupleaders can do this ...
         
     	
         switch($axValue) {
             /**
              * add or edit a customer
              */
-            case "knd":
-              if (count($_REQUEST['knd_grp']) == 0) die(); // no group would mean it is never accessable
+            case "customer":
+              if (count($_REQUEST['customerGroups']) == 0) die(); // no group would mean it is never accessable
 
-            	$data['knd_name']     = $_REQUEST['knd_name'];
-            	$data['knd_comment']  = $_REQUEST['knd_comment'];
-            	$data['knd_company']  = $_REQUEST['knd_company'];
-                $data['knd_vat']      = $_REQUEST['knd_vat'];
-                $data['knd_contact']  = $_REQUEST['knd_contact'];
-                $data['knd_timezone'] = $_REQUEST['knd_timezone'];
-            	$data['knd_street']   = $_REQUEST['knd_street'];
-            	$data['knd_zipcode']  = $_REQUEST['knd_zipcode'];
-            	$data['knd_city']     = $_REQUEST['knd_city'];
-            	$data['knd_tel']      = $_REQUEST['knd_tel'];
-            	$data['knd_fax']      = $_REQUEST['knd_fax'];
-            	$data['knd_mobile']   = $_REQUEST['knd_mobile'];
-            	$data['knd_mail']     = $_REQUEST['knd_mail'];
-            	$data['knd_homepage'] = $_REQUEST['knd_homepage'];
-            	$data['knd_visible']  = $_REQUEST['knd_visible'];
-            	$data['knd_filter']   = $_REQUEST['knd_filter'];
+            	$data['name']     = $_REQUEST['name'];
+            	$data['comment']  = $_REQUEST['comment'];
+            	$data['company']  = $_REQUEST['company'];
+                $data['vat']      = $_REQUEST['vat'];
+                $data['contact']  = $_REQUEST['contact'];
+                $data['timezone'] = $_REQUEST['timezone'];
+            	$data['street']   = $_REQUEST['street'];
+            	$data['zipcode']  = $_REQUEST['zipcode'];
+            	$data['city']     = $_REQUEST['city'];
+            	$data['phone']    = $_REQUEST['phone'];
+            	$data['fax']      = $_REQUEST['fax'];
+            	$data['mobile']   = $_REQUEST['mobile'];
+            	$data['mail']     = $_REQUEST['mail'];
+            	$data['homepage'] = $_REQUEST['homepage'];
+            	$data['visible']  = $_REQUEST['visible'];
+            	$data['filter']   = $_REQUEST['filter'];
         
               // If password field is empty dont overwrite the password.
-              if (isset($_REQUEST['knd_password']) && $_REQUEST['knd_password'] != "") {
-                $data['knd_password'] = md5($kga['password_salt'].$_REQUEST['knd_password'].$kga['password_salt']);
+              if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
+                $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
               }
-              if (isset($_REQUEST['knd_no_password'])) {
-                $data['knd_password'] = '';
+              if (isset($_REQUEST['no_password'])) {
+                $data['password'] = '';
               }
             	
               // add or update the customer
             	if (!$id) {
-                    $id = $database->knd_create($data);
+                    $id = $database->customer_create($data);
             	} else {
-            	    $database->knd_edit($id, $data);
+            	    $database->customer_edit($id, $data);
             	}
 
               // set the customer group mappings
-              $grp_array = $_REQUEST['knd_grp'];
-              $database->assign_knd2grps($id, $grp_array);
+              $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
             break;
             
             /**
              * add or edit a project
              */
-            case "pct":
-              if (count($_REQUEST['pct_grp']) == 0) die(); // no group would mean it is never accessable
+            case "project":
+              if (count($_REQUEST['projectGroups']) == 0) die(); // no group would mean it is never accessable
 
-              $data['pct_name']         = $_REQUEST['pct_name'];
-              $data['pct_kndID']        = $_REQUEST['pct_kndID'];
-              $data['pct_comment']      = $_REQUEST['pct_comment'];
-              $data['pct_visible']      = isset($_REQUEST['pct_visible'])?1:0;
-              $data['pct_internal']     = isset($_REQUEST['pct_internal'])?1:0;
-              $data['pct_filter']       = $_REQUEST['pct_filter'];
-              $data['pct_budget']       = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_budget']);
-              $data['pct_effort']       = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_effort']);
-              $data['pct_approved']       = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_approved']);
-              $data['pct_default_rate'] = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_default_rate']);
-              $data['pct_my_rate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_my_rate']);
-              $data['pct_fixed_rate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['pct_fixed_rate']);
+              $data['name']         = $_REQUEST['name'];
+              $data['customerID']        = $_REQUEST['customerID'];
+              $data['comment']      = $_REQUEST['comment'];
+              $data['visible']      = isset($_REQUEST['visible'])?1:0;
+              $data['internal']     = isset($_REQUEST['internal'])?1:0;
+              $data['filter']       = $_REQUEST['filter'];
+              $data['budget']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
+              $data['effort']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['effort']);
+              $data['approved']       = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
+              $data['defaultRate'] = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['default_rate']);
+              $data['myRate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['my_rate']);
+              $data['fixedRate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
                 
                 // add or update the project
               if (!$id) {
-                $id = $database->pct_create($data);
+                $id = $database->project_create($data);
             	} else {
-                $database->pct_edit($id, $data);
+                $database->project_edit($id, $data);
             	}
 
               // set the project group mappings
-              if (isset($_REQUEST['pct_grp']))
-                $database->assign_pct2grps($id, $_REQUEST['pct_grp']);
-              if (isset($_REQUEST['pct_evt']))
-                $database->assignPct2EvtsForGroup($id, $_REQUEST['pct_evt'], $kga['usr']['groups']);
-                foreach($_REQUEST['pct_evt'] as $index => $evt_id) {
-                	if($evt_id <= 0) {
+              if (isset($_REQUEST['projectGroups']))
+                $database->assign_projectToGroups($id, $_REQUEST['projectGroups']);
+              if (isset($_REQUEST['assignedActivities']))
+                $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['user']['groups']);
+                foreach($_REQUEST['assignedActivitiest'] as $index => $activityID) {
+                	if($activityID <= 0) {
                 		continue;
                 	}
                 	if($_REQUEST['budget'][$index] <= 0) {
@@ -319,45 +318,45 @@ switch ($axAction) {
                 	if($_REQUEST['approved'][$index] <= 0) {
                 		$_REQUEST['approved'][$index] = 0;
                 	}
-               		$database->pct_evt_edit($id, $evt_id, array('evt_budget' => $_REQUEST['budget'][$index], 'evt_effort' => $_REQUEST['effort'][$index], 'evt_approved' => $_REQUEST['approved'][$index]));
+               		$database->projects_activities_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
                 }
             break;
             
             /**
              * add or edit a task
              */
-            case "evt":
-              if (count($_REQUEST['evt_grp']) == 0) die(); // no group would mean it is never accessable
+            case "activity":
+              if (count($_REQUEST['activityGroups']) == 0) die(); // no group would mean it is never accessable
 
-              $data['evt_name']         = $_REQUEST['evt_name'];
-              $data['evt_comment']      = $_REQUEST['evt_comment'];
-              $data['evt_visible']      = $_REQUEST['evt_visible'];
-              $data['evt_filter']       = $_REQUEST['evt_filter'];
-              $data['evt_assignable']   = isset($_REQUEST['evt_assignable'])?1:0;
-              $data['evt_default_rate'] = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_default_rate']);
-              $data['evt_my_rate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_my_rate']);
-              $data['evt_fixed_rate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['evt_fixed_rate']);
+              $data['name']         = $_REQUEST['name'];
+              $data['comment']      = $_REQUEST['comment'];
+              $data['visible']      = $_REQUEST['visible'];
+              $data['filter']       = $_REQUEST['filter'];
+              $data['assignable']   = isset($_REQUEST['assignable'])?1:0;
+              $data['defaultRate'] = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
+              $data['myRate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['myRate']);
+              $data['fixedRate']      = 
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
                 
                 // add or update the project
               if (!$id) {
-                $id = $database->evt_create($data);
+                $id = $database->activity_create($data);
             	} else {
-                $database->evt_edit($id, $data);
+                $database->activity_edit($id, $data);
             	}
 
               // set the task group and task project mappings
-              if (isset($_REQUEST['evt_grp']))
-                $database->assign_evt2grps($id, $_REQUEST['evt_grp']);
+              if (isset($_REQUEST['activityGroups']))
+                $database->assign_activityToGroups($id, $_REQUEST['activityGroups']);
               else
-                $database->assign_evt2grps($id, array());
+                $database->assign_activityToGroups($id, array());
 
-              if (isset($_REQUEST['evt_pct']))
-                $database->assignEvt2PctsForGroup($id, $_REQUEST['evt_pct'], $kga['usr']['groups']);
+              if (isset($_REQUEST['projects']))
+                $database->assignActivityToProjectsForGroup($id, $_REQUEST['projects'], $kga['user']['groups']);
               else
-                $database->assignEvt2PctsForGroup($id, array(), $kga['usr']['groups']);
+                $database->assignActivityToProjectsForGroup($id, array(), $kga['user']['groups']);
             break;
         }
     break;

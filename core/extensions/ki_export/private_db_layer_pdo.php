@@ -19,19 +19,19 @@
 
 
 /**
- * set cleared state for zef entry
+ * set cleared state for timeSheet entry
  *
  * @param integer $id -> ID of record
  * @param boolean $cleared -> true if record is cleared, otherwise false
  * @global array  $kga kimai-global-array
  * @author sl
  */
-function xp_zef_set_cleared($id,$cleared) {
+function export_timeSheetEntry_set_cleared($id,$cleared) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}zef SET zef_cleared = ? WHERE `zef_ID` = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}timeSheet SET cleared = ? WHERE `timeEntryID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -49,12 +49,12 @@ function xp_zef_set_cleared($id,$cleared) {
  * @global array  $kga kimai-global-array
  * @author sl
  */
-function xp_exp_set_cleared($id,$cleared) {
+function export_expense_set_cleared($id,$cleared) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET exp_cleared = ? WHERE `exp_ID` = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}expenses SET cleared = ? WHERE `expenseID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($cleared?1:0,$id));
     
     if ($result)
@@ -74,7 +74,7 @@ function xp_exp_set_cleared($id,$cleared) {
  * @global array  $all_column_headers array containing all columns
  * @author sl
  */
-function xp_toggle_header($header) {
+function export_toggle_header($header) {
     global $kga, $database,$all_column_headers;
     $pdo_conn = $database->getConnectionHandler(); 
     $p = $kga['server_prefix'];
@@ -85,8 +85,8 @@ function xp_toggle_header($header) {
     $pdo_query = $pdo_conn->prepare(
       "UPDATE ${p}preferences SET 
           `value` = `value`^POWER(2,?) 
-       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
-    $result = $pdo_query->execute(array($header_number,$kga['usr']['usr_ID']));
+       WHERE `option` = \"export_disabled_columns\" AND `userID` = ?;");
+    $result = $pdo_query->execute(array($header_number,$kga['user']['userID']));
     
     if ($result)
       return true;
@@ -97,12 +97,12 @@ function xp_toggle_header($header) {
 /**
  * get list of deselected columns
  *
- * @param integer $user_id -> header name
+ * @param integer $userID -> header name
  * @global array  $kga kimai-global-array
  * @global array  $all_column_headers array containing all columns
  * @author sl
  */
-function xp_get_disabled_headers($user_id) {
+function export_get_disabled_headers($userID) {
     global $kga, $database,$all_column_headers;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -111,9 +111,9 @@ function xp_get_disabled_headers($user_id) {
 
     $pdo_query = $pdo_conn->prepare(
       "SELECT value FROM ${p}preferences
-       WHERE `var` = \"export_disabled_columns\" AND `userID` = ?;");
+       WHERE `option` = \"export_disabled_columns\" AND `userID` = ?;");
     
-    if (!$pdo_query->execute(array($user_id))) return 0;
+    if (!$pdo_query->execute(array($userID))) return 0;
 
     
     $result_array = $pdo_query->fetch(PDO::FETCH_ASSOC);

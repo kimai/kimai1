@@ -36,9 +36,9 @@ switch ($axAction) {
     // =====================================
     case 'reload_timespan':
         
-        $timespace = get_timespace();
-        $tpl->assign('in', $timespace[0]);
-        $tpl->assign('out', $timespace[1]);
+        $timeframe = get_timeframe();
+        $tpl->assign('in', $timeframe[0]);
+        $tpl->assign('out', $timeframe[1]);
 
         $tpl->display("timespan.tpl");
     break;
@@ -55,7 +55,7 @@ switch ($axAction) {
           return;
         }
 
-        $database->var_edit(array('defaultVat'=>$vat));
+        $database->configuration_edit(array('defaultVat'=>$vat));
         echo "1";
     break;
 

@@ -44,71 +44,6 @@ class ApiDatabase {
 		return call_user_func_array(array($this->dbLayer, $fnName), $arguments);
 	}
 	
-	
-	/**
-	 * @TODO: add to PDO
-	 * @see zef_create_record 
-	 * @param array $data
-	 */
-	public function zef_add_record(Array $data) {
-		$data = $this->clean_data($data);
-		$values = array();
-		
-		$values ['zef_in'] = MySQL::SQLValue($data['zef_in'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_out'] = MySQL::SQLValue($data['zef_out'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_time'] = MySQL::SQLValue($data['zef_time'], MySQL::SQLVALUE_NUMBER );
-		$values ['zef_usrID'] = MySQL::SQLValue($data['zef_usrID'], MySQL::SQLVALUE_NUMBER );
-      	$values ['zef_pctID'] = MySQL::SQLValue($data['zef_pctID'], MySQL::SQLVALUE_NUMBER );
-      	$values ['zef_evtID'] = MySQL::SQLValue($data['zef_evtID'], MySQL::SQLVALUE_NUMBER );
-		
-		if(isset($data ['zef_description'])) {
-			$values ['zef_description'] = MySQL::SQLValue($data ['zef_description']);	
-		}
-		
-		if(isset($data ['zef_comment'])) {
-      		$values ['zef_comment'] = MySQL::SQLValue($data ['zef_comment']);
-		}
-		if(isset($data ['zef_comment_type'])) {
-			$values ['zef_comment_type'] = MySQL::SQLValue($data ['zef_comment_type'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_cleared'])) {
-			$values ['zef_cleared'] = MySQL::SQLValue($data ['zef_cleared'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_location'])) {
-      		$values ['zef_location'] = MySQL::SQLValue($data ['zef_location']);
-		}
-		if(isset($data ['zef_trackingnr'])) {
-        	$values ['zef_trackingnr'] = MySQL::SQLValue($data ['zef_trackingnr']);
-		}
-		if(isset($data ['zef_rate'])) {
-			$values ['zef_rate'] = MySQL::SQLValue($data ['zef_rate'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_fixed_rate'])) {
-			$values ['zef_fixed_rate'] = MySQL::SQLValue($data ['zef_fixed_rate'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_budget'])) {
-			$values ['zef_budget'] = MySQL::SQLValue($data ['zef_budget'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_approved'])) {
-			$values ['zef_approved'] = MySQL::SQLValue($data ['zef_approved'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_status'])) {
-			$values ['zef_status'] = MySQL::SQLValue($data ['zef_status'], MySQL::SQLVALUE_NUMBER );
-		}
-		if(isset($data ['zef_billable'])) {
-			$values ['zef_billable'] = MySQL::SQLValue($data ['zef_billable'], MySQL::SQLVALUE_NUMBER );
-		}
-	
-		$table = $this->getZefTable();
-		$success =  $this->conn->InsertRow($table, $values);
-		if ($success) {
-			return  $this->conn->GetLastInsertID();
-		} else {
-	        $this->logLastError('zef_add_record');
-	        return false;
-		}
-	}
-	
 	/***************************************************************************************************************
 	 * Expenses
 	 *********************************************/
@@ -121,7 +56,7 @@ class ApiDatabase {
 	 * @return array
 	 * @author sl
 	 */
-	public function get_entry_exp($id) {
+	public function get_expense($id) {
 	    $id    = MySQL::SQLValue($id   , MySQL::SQLVALUE_NUMBER);
 		
 	    $table = $this->getExpenseTable();
@@ -129,9 +64,9 @@ class ApiDatabase {
 		$customerTable = $this->getCustomerTable();
 	  	
 	    $query = "SELECT * FROM $table 
-	              LEFT JOIN $projectTable ON $table.exp_pctID = $projectTable.pct_ID 
-	              LEFT JOIN $customerTable ON $projectTable.pct_kndID = $customerTable.knd_ID 
-	              WHERE $table.exp_ID = $id LIMIT 1;";
+	              LEFT JOIN $projectTable USING(projectID)
+	              LEFT JOIN $customerTable USING(customerID)
+	              WHERE $table.expenseID = $id LIMIT 1;";
 	
 	    $this->conn->Query($query);
 	    return $this->conn->RowArray(0, MYSQL_ASSOC);
@@ -140,11 +75,11 @@ class ApiDatabase {
 	/**
 	 * Returns the data of a certain expense record
 	 *
-	 * @param array $exp_id exp_id of the record
+	 * @param array $expenseID expenseID of the record
 	 * @return array the record's data as array, false on failure
 	 * @author ob
 	 */
-	public function exp_get_data($expId) {
+	public function expense_get($expId) {
 		$kga = $this->kga;
 	    $conn = $this->conn;
 	    
@@ -153,9 +88,9 @@ class ApiDatabase {
 	    $expId = MySQL::SQLValue($expId, MySQL::SQLVALUE_NUMBER);
 	
 	    if ($expId) {
-	        $result = $conn->Query("SELECT * FROM $table WHERE exp_ID = " . $expId);
+	        $result = $conn->Query("SELECT * FROM $table WHERE expenseID = " . $expId);
 	    } else {
-	        $result = $conn->Query("SELECT * FROM $table WHERE exp_usrID = ".$kga['usr']['usr_ID']." ORDER BY exp_ID DESC LIMIT 1");
+	        $result = $conn->Query("SELECT * FROM $table WHERE userID = ".$kga['user']['userID']." ORDER BY expenseID DESC LIMIT 1");
 	    }
 	    
 	    if (! $result) {
@@ -168,12 +103,12 @@ class ApiDatabase {
 	/**
 	 * returns expenses for specific user as multidimensional array
 	 * @TODO: needs comments
-	 * @param integer $user ID of user in table usr
+	 * @param integer $user ID of user in table users
 	 * @return array
 	 * @author th
 	 * @author Alexander Bauer
 	 */
-	public function get_arr_exp($start, $end, $users = null, $customers = null, $projects = null, $reverse_order=false, $filter_refundable = -1, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+	public function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $reverse_order=false, $filter_refundable = -1, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
 	  	$conn = $this->conn;
 	  	$kga = $this->kga;
 	  
@@ -186,27 +121,27 @@ class ApiDatabase {
 	  
 	  	$p     = $kga['server_prefix'];
   
-	  	$whereClauses = $this->exp_whereClausesFromFilters($users, $customers, $projects);
+	  	$whereClauses = $this->expenses_widthhereClausesFromFilters($users, $customers, $projects);
 	  
 	  	if (isset($kga['customer']))
-	  		$whereClauses[] = "${p}pct.pct_internal = 0";
+	  		$whereClauses[] = "${p}projects.internal = 0";
 	
 	  	if (!empty($start)) {
-	  		$whereClauses[]="exp_timestamp >= $start";
+	  		$whereClauses[]="timestamp >= $start";
 		}
 	  	if (!empty($end)) {
-	  		$whereClauses[]="exp_timestamp <= $end";
+	  		$whereClauses[]="timestamp <= $end";
 		}
 	  	if ($filterCleared > -1) {
-	  		$whereClauses[] = "exp_cleared = $filterCleared";
+	  		$whereClauses[] = "cleared = $filterCleared";
 		}
 
 	  	switch ($filter_refundable) {
 	  		case 0:
-	  			$whereClauses[] = "exp_refundable > 0";
+	  			$whereClauses[] = "refundable > 0";
 	  			break;
 	  		case 1:
-	  			$whereClauses[] = "exp_refundable <= 0";
+	  			$whereClauses[] = "refundable <= 0";
 	  			break;
 	  		case -1:
 	  		default:
@@ -220,9 +155,9 @@ class ApiDatabase {
 	  		$limit="";
 	  	}
   	
-  		$select = "SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID, pct_ID,
-  					knd_name, pct_kndID, pct_name, exp_comment, exp_refundable,
-  					exp_comment_type, usr_name, exp_cleared";
+  		$select = "SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID, projectID,
+  					customerName, customerID, projectName, comment, refundable,
+  					commentType, userName, cleared";
 				
   		$where = empty($whereClauses) ? '' : "WHERE ".implode(" AND ",$whereClauses);
   		$orderDirection = $reverse_order ? 'ASC' : 'DESC';
@@ -233,12 +168,12 @@ class ApiDatabase {
 	  	}
   	 
   		$query = "$select
-  			FROM ${p}exp
-	  		Join ${p}pct ON exp_pctID = pct_ID
-	  		Join ${p}knd ON pct_kndID = knd_ID
-	  		Join ${p}usr ON exp_usrID = usr_ID 
+  			FROM ${p}expenses
+	  		Join ${p}projects USING(projectID)
+	  		Join ${p}customers USING(customerID)
+	  		Join ${p}users USING(userID)
 	  		$where
-	  		ORDER BY exp_timestamp $orderDirection $limit";
+	  		ORDER BY timestamp $orderDirection $limit";
   	
   		$conn->Query($query);
   	
@@ -273,10 +208,10 @@ class ApiDatabase {
    * @param Array list of IDs of users to include
    * @param Array list of IDs of customers to include
    * @param Array list of IDs of projects to include
-   * @param Array list of IDs of events to include
+   * @param Array list of IDs of activities to include
    * @return Array list of where clauses to include in the query
    */
-  public function exp_whereClausesFromFilters($users, $customers, $projects ) {
+  public function expenses_widthhereClausesFromFilters($users, $customers, $projects ) {
   
   	if (!is_array($users)) $users = array();
   	if (!is_array($customers)) $customers = array();
@@ -292,15 +227,15 @@ class ApiDatabase {
   			$whereClauses = array();
   
   			if (count($users) > 0) {
-  			$whereClauses[] = "exp_usrID in (".implode(',',$users).")";
+  			$whereClauses[] = "userID in (".implode(',',$users).")";
   		}
   
   		if (count($customers) > 0) {
-  		$whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+  		$whereClauses[] = "customerID in (".implode(',',$customers).")";
   		}
   
   				if (count($projects) > 0) {
-  		$whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+  		$whereClauses[] = "projectID in (".implode(',',$projects).")";
   		}
   
   		return $whereClauses;
@@ -315,40 +250,40 @@ class ApiDatabase {
 	 * @author sl
 	 * @author Alexander Bauer
 	 */
-	function exp_create_record(Array $data) {
+	function expense_create(Array $data) {
 	    $conn = $this->conn;
 	    $data = $this->dbLayer->clean_data($data);
 	    
 		
-		if(isset($data ['exp_timestamp'])) {
-	    	$values ['exp_timestamp']    =   MySQL::SQLValue($data['exp_timestamp'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['timestamp'])) {
+	    	$values ['timestamp']    =   MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_usrID'])) {
-	    	$values ['exp_usrID']        =   MySQL::SQLValue($data['exp_usrID'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['userID'])) {
+	    	$values ['userID']        =   MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_pctID'])) {
-	    	$values ['exp_pctID']        =   MySQL::SQLValue($data['exp_pctID'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['projectID'])) {
+	    	$values ['projectID']        =   MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_designation'])) {
-	    	$values ['exp_designation']  =   MySQL::SQLValue($data['exp_designation']);
+		if(isset($data ['designation'])) {
+	    	$values ['designation']  =   MySQL::SQLValue($data['designation']);
 		}
-		if(isset($data ['exp_comment'])) {
-	    	$values ['exp_comment']      =   MySQL::SQLValue($data['exp_comment']);
+		if(isset($data ['comment'])) {
+	    	$values ['comment']      =   MySQL::SQLValue($data['comment']);
 		}
-		if(isset($data ['exp_comment_type'])) {
-	    	$values ['exp_comment_type'] =   MySQL::SQLValue($data['exp_comment_type'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['commentType'])) {
+	    	$values ['commentType'] =   MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_refundable'])) {
-	    	$values ['exp_refundable']   =   MySQL::SQLValue($data['exp_refundable'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['refundable'])) {
+	    	$values ['refundable']   =   MySQL::SQLValue($data['refundable'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_cleared'])) {
-	    	$values ['exp_cleared']   =   MySQL::SQLValue($data['exp_cleared'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['cleared'])) {
+	    	$values ['cleared']   =   MySQL::SQLValue($data['cleared'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_multiplier'])) {
-	    	$values ['exp_multiplier']   =   MySQL::SQLValue($data['exp_multiplier'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['multiplier'])) {
+	    	$values ['multiplier']   =   MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER );
 		}
-		if(isset($data ['exp_value'])) {
-	    	$values ['exp_value']        =   MySQL::SQLValue($data['exp_value'], MySQL::SQLVALUE_NUMBER );
+		if(isset($data ['value'])) {
+	    	$values ['value']        =   MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER );
 		}
 		
 	    $table = $this->getExpenseTable();
@@ -363,11 +298,11 @@ class ApiDatabase {
 	 * @author th
 	 * @author Alexander Bauer
 	 */
-	function exp_edit_record($id, Array $data) {
+	function expense_edit($id, Array $data) {
 	    $conn = $this->conn;
 	    $data = $this->dbLayer->clean_data($data);
 	   
-	    $original_array = $this->exp_get_data($id);
+	    $original_array = $this->expense_get($id);
 	    $new_array = array();
 	    
 	    foreach ($original_array as $key => $value) {
@@ -378,17 +313,17 @@ class ApiDatabase {
 	        }
 	    }
 	
-	    $values ['exp_pctID']        = MySQL::SQLValue($new_array ['exp_pctID']       , MySQL::SQLVALUE_NUMBER );
-	    $values ['exp_designation']  = MySQL::SQLValue($new_array ['exp_designation']                          );
-	    $values ['exp_comment']      = MySQL::SQLValue($new_array ['exp_comment']                              );
-	    $values ['exp_comment_type'] = MySQL::SQLValue($new_array ['exp_comment_type'], MySQL::SQLVALUE_NUMBER );
-	    $values ['exp_timestamp']    = MySQL::SQLValue($new_array ['exp_timestamp']   , MySQL::SQLVALUE_NUMBER );
-	    $values ['exp_multiplier']   = MySQL::SQLValue($new_array ['exp_multiplier']  , MySQL::SQLVALUE_NUMBER );
-	    $values ['exp_value']        = MySQL::SQLValue($new_array ['exp_value']       , MySQL::SQLVALUE_NUMBER );
-	    $values ['exp_refundable']   = MySQL::SQLValue($new_array ['exp_refundable']  , MySQL::SQLVALUE_NUMBER );
-		$values ['exp_cleared']   	 = MySQL::SQLValue($new_array ['exp_cleared']  , MySQL::SQLVALUE_NUMBER );
+	    $values ['projectID']        = MySQL::SQLValue($new_array ['projectID']       , MySQL::SQLVALUE_NUMBER );
+	    $values ['designation']  = MySQL::SQLValue($new_array ['designation']                          );
+	    $values ['comment']      = MySQL::SQLValue($new_array ['comment']                              );
+	    $values ['commentType'] = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER );
+	    $values ['timestamp']    = MySQL::SQLValue($new_array ['timestamp']   , MySQL::SQLVALUE_NUMBER );
+	    $values ['multiplier']   = MySQL::SQLValue($new_array ['multiplier']  , MySQL::SQLVALUE_NUMBER );
+	    $values ['value']        = MySQL::SQLValue($new_array ['value']       , MySQL::SQLVALUE_NUMBER );
+	    $values ['refundable']   = MySQL::SQLValue($new_array ['refundable']  , MySQL::SQLVALUE_NUMBER );
+		$values ['cleared']   	 = MySQL::SQLValue($new_array ['cleared']  , MySQL::SQLVALUE_NUMBER );
 	                                   
-	    $filter ['exp_ID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+	    $filter ['expenseID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
 	    $table = $this->getExpenseTable();
 	    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 	
@@ -399,13 +334,13 @@ class ApiDatabase {
   	/**
 	 * delete exp entry 
 	 *
-	 * @param integer $usr_ID 
+	 * @param integer $userID 
 	 * @param integer $id -> ID of record
 	 * @global array  $kga kimai-global-array
 	 * @author th
 	 */
-	function exp_delete_record($id) {
-	    $filter["exp_ID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+	function expense_delete($id) {
+	    $filter["expenseID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
 		
 	    $table = $this->getExpenseTable();
 	    $query = MySQL::BuildSQLDelete($table, $filter);

@@ -36,7 +36,7 @@ header("Pragma: no-cache");
 // ==================================
 include('../includes/basics.php');
 
-$usr = $database->checkUser();
+$user = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
@@ -47,11 +47,11 @@ $extensions = new Extensions($kga, WEBROOT.'/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
-// = initialize currently displayed timespace =
+// = initialize currently displayed timeframe =
 // ============================================
-$timespace = get_timespace();
-$in = $timespace[0];
-$out = $timespace[1];
+$timeframe = get_timeframe();
+$in = $timeframe[0];
+$out = $timeframe[1];
 
 // ============================================
 // = load the config =
@@ -80,8 +80,8 @@ $wd       = $kga['lang']['weekdays_short'][date("w",time())];
 $dp_start = 0;
 if ($kga['calender_start']!="")
     $dp_start = $kga['calender_start'];
-else if (isset($kga['usr']))
-    $dp_start = date("d/m/Y",$database->getjointime($kga['usr']['usr_ID']));    
+else if (isset($kga['user']))
+    $dp_start = date("d/m/Y",$database->getjointime($kga['user']['userID']));    
     
 
 $dp_today = date("d/m/Y",time());
@@ -90,9 +90,9 @@ $tpl->assign('dp_start', $dp_start);
 $tpl->assign('dp_today', $dp_today);
 
 if (isset($kga['customer']))
-  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,null,array($kga['customer']['knd_ID']))));
+  $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']))));
 else
-  $tpl->assign('total', Format::formatDuration($database->get_zef_time($in,$out,$kga['usr']['usr_ID'])));
+  $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID'])));
 
 // ===========================
 // = DatePicker localization =
@@ -121,8 +121,8 @@ $tpl->assign('current_timer_sec',  $current_timer['sec'] );
 $tpl->assign('current_timer_start',  $current_timer['all']?$current_timer['all']:time());
 $tpl->assign('current_time',time());
 
-$tpl->assign('timespace_in', $in);
-$tpl->assign('timespace_out', $out);
+$tpl->assign('timeframe_in', $in);
+$tpl->assign('timeframe_out', $out);
 
 $tpl->assign('kga',$kga);
                        
@@ -132,8 +132,8 @@ $tpl->assign('js_extension_files', $extensions->jsExtensionFiles());
 
 $tpl->assign('currentRecording', -1);
 
-if (isset($kga['usr'])) {
-  $currentRecordings = $database->get_current_recordings($kga['usr']['usr_ID']);
+if (isset($kga['user'])) {
+  $currentRecordings = $database->get_current_recordings($kga['user']['userID']);
   if (count($currentRecordings) > 0)
     $tpl->assign('currentRecording', $currentRecordings[0]);
 }
@@ -143,24 +143,24 @@ $tpl->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
 $tpl->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 
 
-$knd_data = array('knd_ID'=>false,'knd_name'=>'');
-$pct_data = array('pct_ID'=>false,'pct_name'=>'');
-$evt_data = array('evt_ID'=>false,'evt_name'=>'');
+$customerData = array('customerID'=>false,'name'=>'');
+$projectData = array('projectID'=>false,'name'=>'');
+$activityData = array('activityID'=>false,'name'=>'');
 
 if (!isset($kga['customer'])) {
-  //$lastZefRecord = $database->zef_get_data(false);
-  $last_pct = $database->pct_get_data($kga['usr']['lastProject']);
-  $last_evt = $database->evt_get_data($kga['usr']['lastEvent']);
-  if (!$last_pct['pct_trash']) {
-    $pct_data = $last_pct;
-    $knd_data = $database->knd_get_data($last_pct['pct_kndID']);
+  //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
+  $lastProject = $database->project_get_data($kga['user']['lastProject']);
+  $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
+  if (!$lastProject['trash']) {
+    $projectData = $lastProject;
+    $customerData = $database->customer_get_data($lastProject['customerID']);
   }
-  if (!$last_evt['evt_trash'])
-    $evt_data = $last_evt;    
+  if (!$lastActivity['trash'])
+    $activityData = $lastActivity;    
 }
-$tpl->assign('knd_data', $knd_data);
-$tpl->assign('pct_data', $pct_data);
-$tpl->assign('evt_data', $evt_data);
+$tpl->assign('customerData', $customerData);
+$tpl->assign('projectData', $projectData);
+$tpl->assign('activityData', $activityData);
 
 // =========================================
 // = INCLUDE EXTENSION PHP FILE            =
@@ -173,65 +173,65 @@ foreach ($extensions->phpIncludeFiles() as $includeFile) {
 // = display user table =
 // =======================
 if (isset($kga['customer']))
-  $arr_usr = array();
+  $users = array();
 else
-  $arr_usr = $database->get_arr_watchable_users($kga['usr']);
-if (count($arr_usr)>0) {
-    $tpl->assign('arr_usr', $arr_usr);
+  $users = $database->get_watchable_users($kga['user']);
+if (count($users)>0) {
+    $tpl->assign('users', $users);
 } else {
-    $tpl->assign('arr_usr', '0');
+    $tpl->assign('users', '0');
 }
-$tpl->assign('usr_display', $tpl->fetch("lists/usr.tpl"));
+$tpl->assign('user_display', $tpl->fetch("lists/users.tpl"));
 
 // ==========================
 // = display customer table =
 // ========================
 if (isset($kga['customer']))
-  $arr_knd = array(array(
-      'knd_ID'=>$kga['customer']['knd_ID'],
-      'knd_name'=>$kga['customer']['knd_name'],
-      'knd_visible'=>$kga['customer']['knd_visible']));
+  $customers = array(array(
+      'customerID'=>$kga['customer']['customerID'],
+      'name'=>$kga['customer']['name'],
+      'visible'=>$kga['customer']['visible']));
 else
-  $arr_knd = $database->get_arr_knd($kga['usr']['groups']);
-if (count($arr_knd)>0) {
-    $tpl->assign('arr_knd', $arr_knd);
+  $customers = $database->get_customers($kga['user']['groups']);
+if (count($customers)>0) {
+    $tpl->assign('customers', $customers);
 } else {
-    $tpl->assign('arr_knd', '0');
+    $tpl->assign('customers', '0');
 }
-$tpl->assign('knd_display', $tpl->fetch("lists/knd.tpl"));
+$tpl->assign('customer_display', $tpl->fetch("lists/customers.tpl"));
 
 // =========================
 // = display project table =
 // =========================
 if (isset($kga['customer']))
-  $arr_pct = $database->get_arr_pct_by_knd($kga['customer']['knd_ID']);
+  $projects = $database->get_projects_by_customer($kga['customer']['customerID']);
 else
-  $arr_pct = $database->get_arr_pct($kga['usr']['groups']);
-if (count($arr_pct)>0) {
-    $tpl->assign('arr_pct', $arr_pct);
+  $projects = $database->get_projects($kga['user']['groups']);
+if (count($projects)>0) {
+    $tpl->assign('projects', $projects);
 } else {
-    $tpl->assign('arr_pct', '0');
+    $tpl->assign('projects', '0');
 }
-$tpl->assign('pct_display', $tpl->fetch("lists/pct.tpl"));
+$tpl->assign('project_display', $tpl->fetch("lists/projects.tpl"));
 
 // ========================
-// = display events table =
+// = display activity table =
 // ========================
 if (isset($kga['customer']))
-  $arr_evt = $database->get_arr_evt_by_knd($kga['customer']['knd_ID']);
-else if ($pct_data['pct_ID'])
-  $arr_evt = $database->get_arr_evt_by_pct($pct_data['pct_ID'],$kga['usr']['groups']);
+  $activities = $database->get_activities_by_customer($kga['customer']['customerID']);
+else if ($projectData['projectID'])
+  $activities = $database->get_activities_by_project($projectData['projectID'],$kga['user']['groups']);
 else
-  $arr_evt = $database->get_arr_evt($kga['usr']['groups']);
-if (count($arr_evt)>0) {
-    $tpl->assign('arr_evt', $arr_evt);
+  $activities = $database->get_activities($kga['user']['groups']);
+if (count($activities)>0) {
+    $tpl->assign('activities', $activities);
 } else {
-    $tpl->assign('arr_evt', '0');
+    $tpl->assign('activities', '0');
 }
-$tpl->assign('evt_display', $tpl->fetch("lists/evt.tpl"));
+$tpl->assign('activity_display', $tpl->fetch("lists/activities.tpl"));
 
-if (isset($kga['usr']))
-  $tpl->assign('showInstallWarning',$kga['usr']['usr_sts']==0 && file_exists(WEBROOT.'installer'));
+if (isset($kga['user']))
+  $tpl->assign('showInstallWarning',$kga['user']['status']==0 && file_exists(WEBROOT.'installer'));
 else
   $tpl->assign('showInstallWarning',false);
 
@@ -242,15 +242,15 @@ else
 // ========================
 
 
-$tpl->assign('hook_tss',      $extensions->tssHooks());
-$tpl->assign('hook_bzzRec',   $extensions->recHooks());
-$tpl->assign('hook_bzzStp',   $extensions->stpHooks());
-$tpl->assign('hook_chgUsr',   $extensions->chuHooks());
-$tpl->assign('hook_chgKnd',   $extensions->chkHooks());
-$tpl->assign('hook_chgPct',   $extensions->chpHooks());
-$tpl->assign('hook_chgEvt',   $extensions->cheHooks());
-$tpl->assign('hook_filter',   $extensions->lftHooks());
-$tpl->assign('hook_resize',   $extensions->rszHooks());
+$tpl->assign('hook_timeframe_changed',      $extensions->timeframeChangedHooks());
+$tpl->assign('hook_buzzer_record',   $extensions->buzzerRecordHooks());
+$tpl->assign('hook_buzzer_stopped',   $extensions->buzzerStopHooks());
+$tpl->assign('hook_users_changed',   $extensions->usersChangedHooks());
+$tpl->assign('hook_customers_changed',   $extensions->customersChangedHooks());
+$tpl->assign('hook_projects_changed',   $extensions->projectsChangedHooks());
+$tpl->assign('hook_activities_changed',   $extensions->activitiesChangedHooks());
+$tpl->assign('hook_filter',   $extensions->filterHooks());
+$tpl->assign('hook_resize',   $extensions->resizeHooks());
 $tpl->assign('timeoutlist',   $extensions->timeoutList());
 
 $tpl->display('core/main.tpl');

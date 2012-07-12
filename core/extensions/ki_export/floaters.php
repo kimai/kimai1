@@ -27,7 +27,7 @@ switch ($axAction) {
     case "PDF":
       $defaults = array('print_comments'=>1, 'print_summary'=>1, 'create_bookmarks'=>1, 'download_pdf'=>1,
            'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf');
-      $prefs = $database->usr_get_preferences_by_prefix('ki_export.pdf.');
+      $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
       $tpl->assign('prefs', array_merge($defaults,$prefs));
       
 	    $tpl->display("export_PDF.tpl"); 
@@ -35,7 +35,7 @@ switch ($axAction) {
 
     case "XLS":  
       $defaults = array('reverse_order'=>0);
-      $prefs = $database->usr_get_preferences_by_prefix('ki_export.xls.');
+      $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
       $tpl->assign('prefs', array_merge($defaults,$prefs));
 
 	    $tpl->display("export_XLS.tpl"); 
@@ -43,7 +43,7 @@ switch ($axAction) {
 
     case "CSV":  
       $defaults = array('column_delimiter'=>',','quote_char'=>'"','reverse_order'=>0);
-      $prefs = $database->usr_get_preferences_by_prefix('ki_export.csv.');
+      $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
       $tpl->assign('prefs', array_merge($defaults,$prefs));
 
 	    $tpl->display("export_CSV.tpl"); 
@@ -51,7 +51,7 @@ switch ($axAction) {
 
     case "print":  
       $defaults = array('print_summary'=>1,'reverse_order'=>0);
-      $prefs = $database->usr_get_preferences_by_prefix('ki_export.print.');
+      $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
       $tpl->assign('prefs', array_merge($defaults,$prefs));
 
 	    $tpl->display("print.tpl"); 

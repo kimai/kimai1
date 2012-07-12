@@ -73,11 +73,11 @@ if ($isCoreProcessor) {
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
-$usr = $database->checkUser();
+$user = checkUser();
 
 $tpl->assign('kga',$kga);
 
-$comment_types   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
+$commentTypes   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
 
 // ==================
 // = security check =
@@ -93,11 +93,11 @@ $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
 
 
 // ============================================
-// = initialize currently displayed timespace =
+// = initialize currently displayed timeframe =
 // ============================================
-$timespace = get_timespace();
-$in = $timespace[0];
-$out = $timespace[1];
+$timeframe = get_timeframe();
+$in = $timeframe[0];
+$out = $timeframe[1];
 
 if (isset($_REQUEST['first_day']))
   $in  = (int)$_REQUEST['first_day'];
@@ -105,7 +105,7 @@ if (isset($_REQUEST['last_day']))
   $out = mktime(23,59,59,date("n",$_REQUEST['last_day']),date("j",$_REQUEST['last_day']),date("Y",$_REQUEST['last_day']));
 
 if ($axAction != "reloadLogfile") {
-    Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['knd_name']:$kga['usr']['usr_name'])."): " . $axAction);
+    Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['name']:$kga['user']['name'])."): " . $axAction);
 }
 
 

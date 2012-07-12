@@ -3,7 +3,7 @@
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
-#exp {
+#expenses {
     border:1px solid black; 
     margin:0;
     padding:0;
@@ -15,12 +15,12 @@
 
 
 
-#exp { 
+#expenses { 
     top:150px;
     z-index:2;
 }
 
-#exp_head {
+#expenses_head {
     border:1px solid black; 
     border-bottom:none;
     background-image: url('<?php echo $table_header; ?>');
@@ -33,11 +33,11 @@
     font-weight:bold;
 }
 
-#exp_head { top:125px; }
+#expenses_head { top:125px; }
 
-#exp_head table { border:none; }
+#expenses_head table { border:none; }
 
-#exp_head td {
+#expenses_head td {
     font-weight:bold;
     color:white;
 }

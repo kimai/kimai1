@@ -24,53 +24,35 @@ require("../../includes/kspi.php");
 
 switch ($axAction) {
 
-    case "editUsr":
+    case "editUser":
     // =============================
     // = Builds edit-user dialogue =
     // =============================
 
-        $usr_details = $database->usr_get_data($id);        
-        $arr = $database->get_arr_grp();
-        
-        $i=0;
-        foreach ($arr as $row) {
-            $arr_grp_name[$i] = $row['grp_name'];
-            $arr_grp_ID[$i]   = $row['grp_ID'];
-            $i++;
-        }
+        $userDetails = $database->user_get_data($id);
         
         $tpl->assign('selectedGroups',$database->getGroupMemberships($id));
         
-        $tpl->assign('arr_grp_ID',   $arr_grp_ID);
-        $tpl->assign('arr_grp_name', $arr_grp_name);
+        $tpl->assign('groups', makeSelectBox('group',null,null,true));
                     
-        $tpl->assign('usr_details', $usr_details);
+        $tpl->assign('user_details', $userDetails);
         $tpl->display("edituser.tpl");  
         
     break;
 
-    case "editGrp":    
+    case "editGroup":    
     // =============================
     // = Builds edit-group dialogue =
     // =============================
         
-        $grp_details = $database->grp_get_data($_REQUEST['id']);
-        $arr = $database->get_arr_usr();
-        
-        $i=0;
-        foreach ($arr as $row) {
-            $arr_usr_name[$i] = $row['usr_name'];
-            $arr_usr_ID[$i]   = $row['usr_ID'];
-            $i++;
-        }
+        $groupDetails = $database->group_get_data($_REQUEST['id']);
                 
-        $grp_selection=$database->grp_get_ldrs($_REQUEST['id']);
-        $tpl->assign('grp_selection', $grp_selection);
+        $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
+        $tpl->assign('selectedUsers', $selectedUsers);
                       
-        $tpl->assign('arr_usr_ID',   $arr_usr_ID);
-        $tpl->assign('arr_usr_name', $arr_usr_name);
+        $tpl->assign('users',   makeSelectBox('user',null,null,true));
         
-        $tpl->assign('grp_details', $grp_details);
+        $tpl->assign('group_details', $groupDetails);
         $tpl->display("editgroup.tpl"); 
         
     break;     
@@ -80,9 +62,9 @@ switch ($axAction) {
     // = Builds edit-status dialogue =
     // =============================
         
-        $status_details = $database->status_get_data($_REQUEST['id']);
+        $statusDetails = $database->status_get_data($_REQUEST['id']);
         
-        $tpl->assign('status_details', $status_details);
+        $tpl->assign('status_details', $statusDetails);
         $tpl->display("editstatus.tpl"); 
         
     break;       

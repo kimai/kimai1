@@ -40,7 +40,7 @@ div.ki_export tr.odd td
 /*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
-#xp_head td {
+#export_head td {
 	overflow:hidden;
 	padding: 3px 4px 4px 6px;
 	}
@@ -61,13 +61,13 @@ div.ki_export tr.odd td {
 
 
 div#xptable tr.odd td.comment,
-div#xptable tr.odd td.trackingnr,
+div#xptable tr.odd td.trackingNumber,
 div#xptable tr.odd td.location {
     background: #CFE3F5;
 }
 
 div#xptable tr.even td.comment,
-div#xptable tr.even td.trackingnr,
+div#xptable tr.even td.trackingNumber,
 div#xptable tr.even td.location {
     background: #ECF7FD;
 }
@@ -80,13 +80,13 @@ div#xptable tr.odd.expense td {
 }
 
 div#xptable tr.odd.expense td.comment,
-div#xptable tr.odd.expense td.trackingnr,
+div#xptable tr.odd.expense td.trackingNumber,
 div#xptable tr.odd.expense td.location {
     background: #A3F1A6;
 }
 
 div#xptable tr.even.expense td.comment,
-div#xptable tr.even.expense td.trackingnr,
+div#xptable tr.even.expense td.trackingNumber,
 div#xptable tr.even.expense td.location {
     background: #C8F1CC;
 }
@@ -137,35 +137,35 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     border-right: none;
 }
 
-#xp_head table {
+#export_head table {
 	width:100%;
 }
 
-#xp_head td.option,
+#export_head td.option,
 #xp td.option
 {
     width:70px;
 }
 
-#xp_head td.date,
+#export_head td.date,
 #xp td.date
 {
     width:50px;
 }
 
-#xp_head td.time,
+#export_head td.time,
 #xp td.time
 {
     width:40px;
 }
 
-#xp_head td.dec_time,
+#export_head td.dec_time,
 #xp td.dec_time
 {
     width:40px;
 }
 
-#xp_head td.cash
+#export_head td.cash
 {
     width: 90px;
 }
@@ -201,26 +201,26 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width:50px;
 }
 
-#xp_head td { white-space:nowrap; }
+#export_head td { white-space:nowrap; }
 
 
-#xp_head td.from,
-#xp_head td.to,
+#export_head td.from,
+#export_head td.to,
 #xp td.from,
 #xp td.to
 {
     width:50px;
 }
 
-#xp td.knd {
+#xp td.customer {
     min-width:50px;
 }
 
-#xp td.pct {
+#xp td.project {
     min-width:50px;
 }
 
-#xp td.evt {
+#xp td.activity {
     min-width:60px;
 }
 
@@ -237,7 +237,7 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
     width:30px;
 }
 
-#xp td.trackingnr {
+#xp td.trackingNumber {
     width:40px;
 }
 
@@ -255,7 +255,7 @@ div.ki_export table td.user
 	text-align:left;
 }
 
-#xp_head td.user
+#export_head td.user
 {
 	width:100px;
 }
@@ -288,7 +288,7 @@ background:url('../grfx/cleared.png') no-repeat;
 
 
 
-div#xp_head div.right
+div#export_head div.right
 { 
     position:absolute;
     overflow:hidden;
@@ -298,7 +298,7 @@ div#xp_head div.right
     right:3px;
 }
 
-div#xp_head div.right a
+div#export_head div.right a
 { 
     background-image: url('../grfx/invert.png');
     overflow:hidden;
@@ -309,7 +309,7 @@ div#xp_head div.right a
 
 }
 
-div#xp_head td {padding: 3px 4px 4px 6px;}
+div#export_head td {padding: 3px 4px 4px 6px;}
 
 
 

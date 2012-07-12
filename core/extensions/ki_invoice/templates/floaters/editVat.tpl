@@ -3,7 +3,7 @@
        
         $(document).ready(function() {
 
-            $('#iv_ext_editVat').ajaxForm(function() { 
+            $('#invoice_extension_editVat').ajaxForm(function() { 
                 floaterClose();
             });
 
@@ -18,7 +18,7 @@
             }; 
             
             // pass options to ajaxForm 
-            $('#iv_ext_editVat').ajaxForm(options);
+            $('#invoice_extension_editVat').ajaxForm(options);
 
         });
         
@@ -37,7 +37,7 @@
     <div class="floater_content">
 
         
-        <form id="iv_ext_editVat" action="../extensions/ki_invoice/processor.php" method="post">
+        <form id="invoice_extension_editVat" action="../extensions/ki_invoice/processor.php" method="post">
         <input name="id" type="hidden" value="0" />
         <input name="axAction" type="hidden" value="editVat" />
             <fieldset>   

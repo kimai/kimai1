@@ -16,11 +16,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// ===========
-// IV EXT init
-// ===========
+// ======================
+// Invoice Extension init
+// ======================
 
 // set path of extension
-var iv_ext_path = "../extensions/ki_invoice/";
-
-var iv_tss_hook_flag = 0;
+var invoice_extension_path = "../extensions/ki_invoice/";

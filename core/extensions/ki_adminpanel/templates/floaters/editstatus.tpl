@@ -1,12 +1,12 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#ap_ext_form_editstatus').ajaxForm( { 'beforeSubmit' :function() { 
+            $('#adminPanel_extension_form_editstatus').ajaxForm( { 'beforeSubmit' :function() { 
                 floaterClose();
                 return true;
             },
             'success': function () {
-                ap_ext_refreshSubtab('status');
+                adminPanel_extension_refreshSubtab('status');
             }}); 
         }); 
     </script>
@@ -22,11 +22,11 @@
     </div>
 
     <div class="floater_content">
-        <form id="ap_ext_form_editstatus" action="../extensions/ki_adminpanel/processor.php" method="post"> 
+        <form id="adminPanel_extension_form_editstatus" action="../extensions/ki_adminpanel/processor.php" method="post"> 
             <fieldset>
                 <ul>
                     <li>
-                        <label for="grp_name">{$kga.lang.status}:</label>
+                        <label for="groupName">{$kga.lang.status}:</label>
                         <input class="formfield" type="text" name="status" value="{$status_details.status|escape:'html'}" size=35 />
                     </li>
                                                 

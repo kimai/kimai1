@@ -44,7 +44,7 @@ div.ki_timesheet tr.odd td
 /*    border-top: 1px solid #DDD;*/
     padding: 3px 4px 4px 5px;
 }
-#zef_head td {padding: 3px 4px 4px 6px;}
+#timeSheet_head td {padding: 3px 4px 4px 6px;}
 
 div.ki_timesheet tr.hover td {
     background: #FFC !important;
@@ -60,19 +60,19 @@ div.ki_timesheet tr.odd td {
     background: #EEE;
 }
 
-div#zeftable tr td.time {
+div#timeSheetTable tr td.time {
     border-bottom:1px dotted white;;
 }
 
-div#zeftable tr.even td.time {
+div#timeSheetTable tr.even td.time {
     background: #A4E7A5;
 }
 
-div#zeftable tr.odd td.time {
+div#timeSheetTable tr.odd td.time {
     background: #64BF61;
 }
 
-div#zeftable tr.active td.time {
+div#timeSheetTable tr.active td.time {
     background: #F00;
 }
 
@@ -85,45 +85,45 @@ div.ki_timesheet tr td.wage {
     text-align:center;
 }
 
-div.ki_timesheet>div#zef>div#zeftable>table>tbody>tr>td.username {
+div.ki_timesheet>div#timeSheet>div#timeSheetTable>table>tbody>tr>td.username {
     border-right: none;
 }
 
-#zef_head td { white-space:nowrap; }
+#timeSheet_head td { white-space:nowrap; }
 
-#zef_head td.option,
-#zef td.option
+#timeSheet_head td.option,
+#timeSheet td.option
 {
     width:70px;
 }
 
-#zef_head td.date,
-#zef td.date
+#timeSheet_head td.date,
+#timeSheet td.date
 {
     width:50px;
 }
 
-#zef_head td.time,
-#zef td.time
+#timeSheet_head td.time,
+#timeSheet td.time
 {
     width:40px;
 }
 
-#zef_head td.wage,
-#zef td.wage
+#timeSheet_head td.wage,
+#timeSheet td.wage
 {
     width:40px;
 }
 
-#zef_head td.from,
-#zef_head td.to,
-#zef td.from,
-#zef td.to
+#timeSheet_head td.from,
+#timeSheet_head td.to,
+#timeSheet td.from,
+#timeSheet td.to
 {
     width:50px;
 }
 
-div#zef_head div.left
+div#timeSheet_head div.left
 { 
     position:absolute;
     overflow:hidden;
@@ -133,7 +133,7 @@ div#zef_head div.left
     left:3px;
 }
 
-div#zef_head div.left a
+div#timeSheet_head div.left a
 { 
     background-image: url('<?php echo $add; ?>');
     overflow:hidden;
@@ -143,7 +143,7 @@ div#zef_head div.left a
     text-indent:-500px;
 }
 
-div#zef_head td {padding: 3px 4px 4px 6px;}
+div#timeSheet_head td {padding: 3px 4px 4px 6px;}
 
 
 tbody tr.comm0 td {

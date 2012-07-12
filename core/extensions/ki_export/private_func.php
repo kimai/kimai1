@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
-$all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'knd', 'pct', 'evt', 'comment', 'location', 'trackingnr', 'user', 'cleared');
+$all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'customer', 'project', 'activity', 'comment', 'location', 'trackingNumber', 'user', 'cleared');
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php')) {
@@ -33,7 +33,7 @@ include ('private_db_layer_' . $kga['server_conn'] . '.php');
  * @param array $users Array of user IDs to filter by.
  * @param array $customers Array of customer IDs to filter by.
  * @param array $projects Array of project IDs to filter by.
- * @param array $events Array of event IDs to filter by.
+ * @param array $activities Array of activity IDs to filter by.
  * @param bool $limit sbould the amount of entries be limited
  * @param bool $reverse_order should the entries be put out in reverse order
  * @param string $default_location use this string if no location is set for the entry
@@ -42,155 +42,155 @@ include ('private_db_layer_' . $kga['server_conn'] . '.php');
  * @param int $limitCommentSize should comments be cut off, when they are too long
  * @return array with time recordings and expenses chronologically sorted
  */
-function xp_get_arr($start, $end, $users = null, $customers = null, $projects = null, $events = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1) {
+function export_get_data($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1) {
 	global $expense_ext_available, $database;
-	$zef_arr = array();
-	$exp_arr = array();
+	$timeSheetEntries = array();
+	$expenses = array();
 	if ($filter_type != 1)
-		$zef_arr = $database->get_arr_zef($start, $end, $users, $customers, $projects, $events, $limit, $reverse_order, $filter_cleared);
+		$timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
 		
 		if ($filter_type != 0 && $expense_ext_available)
-		$exp_arr = get_arr_exp($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
+		$expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
 	$result_arr = array();
-	$zef_arr_index = 0;
-	$exp_arr_index = 0;
-	while ($zef_arr_index < count($zef_arr) && $exp_arr_index < count($exp_arr)) {
+	$timeSheetEntries_index = 0;
+	$expenses_index = 0;
+	while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
 		$arr = array();
-		if ((! $reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] > $exp_arr[$exp_arr_index]['exp_timestamp'])) || ($reverse_order && ($zef_arr[$zef_arr_index]['zef_in'] < $exp_arr[$exp_arr_index]['exp_timestamp']))) {
-			if ($zef_arr[$zef_arr_index]['zef_out'] != 0) {
+		if ((! $reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
+			if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 				// active recordings will be omitted
-				$arr['type'] = 'zef';
-				$arr['id'] = $zef_arr[$zef_arr_index]['zef_ID'];
-				$arr['time_in'] = $zef_arr[$zef_arr_index]['zef_in'];
-				$arr['time_out'] = $zef_arr[$zef_arr_index]['zef_out'];
-				$arr['zef_time'] = $zef_arr[$zef_arr_index]['zef_time'];
-				$arr['zef_duration'] = $zef_arr[$zef_arr_index]['zef_duration'];
-				$arr['dec_zef_time'] = sprintf("%01.2f", $zef_arr[$zef_arr_index]['zef_time'] / 3600);
-				$arr['zef_rate'] = $zef_arr[$zef_arr_index]['zef_rate'];
-				$arr['wage'] = $zef_arr[$zef_arr_index]['wage'];
-				$arr['wage_decimal'] = $zef_arr[$zef_arr_index]['wage_decimal'];
-				$arr['budget'] = $zef_arr[$zef_arr_index]['zef_budget'];
-				$arr['approved'] = $zef_arr[$zef_arr_index]['zef_approved'];
-				$arr['status'] = $zef_arr[$zef_arr_index]['zef_status'];
-				$arr['billable'] = $zef_arr[$zef_arr_index]['zef_billable'];
-				$arr['pct_kndID'] = $zef_arr[$zef_arr_index]['pct_kndID'];
-				$arr['knd_name'] = $zef_arr[$zef_arr_index]['knd_name'];
-				$arr['pct_ID'] = $zef_arr[$zef_arr_index]['pct_ID'];
-				$arr['pct_name'] = $zef_arr[$zef_arr_index]['pct_name'];
-				$arr['description'] = $zef_arr[$zef_arr_index]['zef_description'];
-				$arr['pct_comment'] = $zef_arr[$zef_arr_index]['pct_comment'];
-				$arr['zef_evtID'] = $zef_arr[$zef_arr_index]['zef_evtID'];
-				$arr['evt_name'] = $zef_arr[$zef_arr_index]['evt_name'];
+				$arr['type'] = 'timeSheet';
+				$arr['id'] = $timeSheetEntries[$timeSheetEntries_index]['timeEntryID'];
+				$arr['time_in'] = $timeSheetEntries[$timeSheetEntries_index]['start'];
+				$arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
+				$arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
+				$arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
+				$arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+				$arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
+				$arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
+				$arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
+				$arr['budget'] = $timeSheetEntries[$timeSheetEntries_index]['budget'];
+				$arr['approved'] = $timeSheetEntries[$timeSheetEntries_index]['approved'];
+				$arr['statusID'] = $timeSheetEntries[$timeSheetEntries_index]['statusID'];
+                                $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
+				$arr['billable'] = $timeSheetEntries[$timeSheetEntries_index]['billable'];
+				$arr['customerID'] = $timeSheetEntries[$timeSheetEntries_index]['customerID'];
+				$arr['customerName'] = $timeSheetEntries[$timeSheetEntries_index]['customerName'];
+				$arr['projectID'] = $timeSheetEntries[$timeSheetEntries_index]['projectID'];
+				$arr['projectName'] = $timeSheetEntries[$timeSheetEntries_index]['projectName'];
+				$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
+				$arr['projectComment'] = $timeSheetEntries[$timeSheetEntries_index]['projectComment'];
+				$arr['activityID'] = $timeSheetEntries[$timeSheetEntries_index]['activityID'];
+				$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
 				if ($limitCommentSize)
-					$arr['comment'] = Format::addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+					$arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
 				else
-					$arr['comment'] = $zef_arr[$zef_arr_index]['zef_comment'];
-				$arr['comment_type'] = $zef_arr[$zef_arr_index]['zef_comment_type'];
-				$arr['location'] = $zef_arr[$zef_arr_index]['zef_location'];
+					$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+				$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
+				$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
 				if (empty($arr['location']))
 					$arr['location'] = $default_location;
-				$arr['trackingnr'] = $zef_arr[$zef_arr_index]['zef_trackingnr'];
-				$arr['username'] = $zef_arr[$zef_arr_index]['usr_name'];
-				$arr['cleared'] = $zef_arr[$zef_arr_index]['zef_cleared'];
+				$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
+				$arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
+				$arr['cleared'] = $timeSheetEntries[$timeSheetEntries_index]['cleared'];
 			}
-			$zef_arr_index++;
+			$timeSheetEntries_index++;
 		}
 		else {
-			$arr['type'] = 'exp';
-			$arr['id'] = $exp_arr[$exp_arr_index]['exp_ID'];
-			$arr['time_in'] = $exp_arr[$exp_arr_index]['exp_timestamp'];
-			$arr['time_out'] = $exp_arr[$exp_arr_index]['exp_timestamp'];
-			$arr['zef_time'] = null;
-			$arr['zef_apos'] = null;
-			$arr['dec_zef_time'] = null;
-			$arr['zef_rate'] = null;
-			$arr['wage'] = sprintf("%01.2f", $exp_arr[$exp_arr_index]['exp_value'] * $exp_arr[$exp_arr_index]['exp_multiplier']);
-			$arr['pct_kndID'] = $exp_arr[$exp_arr_index]['pct_kndID'];
-			$arr['knd_name'] = $exp_arr[$exp_arr_index]['knd_name'];
-			$arr['pct_ID'] = $exp_arr[$exp_arr_index]['pct_ID'];
-			$arr['pct_name'] = $exp_arr[$exp_arr_index]['pct_name'];
-			$arr['zef_description'] = $zef_arr[$zef_arr_index]['exp_description'];
+			$arr['type'] = 'expense';
+			$arr['id'] = $expenses[$expenses_index]['expenseID'];
+			$arr['time_in'] = $expenses[$expenses_index]['timestamp'];
+			$arr['time_out'] = $expenses[$expenses_index]['timestamp'];
+			$arr['duration'] = null;
+			$arr['decimalDuration'] = null;
+			$arr['rate'] = null;
+			$arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+			$arr['customerID'] = $expenses[$expenses_index]['customerID'];
+			$arr['customerName'] = $expenses[$expenses_index]['customerName'];
+			$arr['projectID'] = $expenses[$expenses_index]['projectID'];
+			$arr['projectName'] = $expenses[$expenses_index]['projectName'];
+			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
 			if ($limitCommentSize)
-				$arr['comment'] = Format::addEllipsis($exp_arr[$exp_arr_index]['exp_comment'], 150);
+				$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 			else
-				$arr['comment'] = $exp_arr[$exp_arr_index]['exp_comment'];
-			$arr['evt_name'] = $exp_arr[$exp_arr_index]['exp_designation'];
-			$arr['comment'] = $exp_arr[$exp_arr_index]['exp_comment'];
-			$arr['comment_type'] = $exp_arr[$exp_arr_index]['exp_comment_type'];
+				$arr['comment'] = $expenses[$expenses_index]['comment'];
+			$arr['activityName'] = $expenses[$expenses_index]['designation'];
+			$arr['comment'] = $expenses[$expenses_index]['comment'];
+			$arr['commentType'] = $expenses[$expenses_index]['commentType'];
 			$arr['location'] = $default_location;
-			$arr['trackingnr'] = null;
-			$arr['username'] = $exp_arr[$exp_arr_index]['usr_name'];
-			$arr['cleared'] = $exp_arr[$exp_arr_index]['exp_cleared'];
-			$exp_arr_index++;
+			$arr['trackingNumber'] = null;
+			$arr['username'] = $expenses[$expenses_index]['userName'];
+			$arr['cleared'] = $expenses[$expenses_index]['cleared'];
+			$expenses_index++;
 		}
 		$result_arr[] = $arr;
 	}
-	while ($zef_arr_index < count($zef_arr)) {
-		if ($zef_arr[$zef_arr_index]['zef_out'] != 0) {
+	while ($timeSheetEntries_index < count($timeSheetEntries)) {
+		if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 			// active recordings will be omitted
 			$arr = array();
-			$arr['type'] = 'zef';
-			$arr['id'] = $zef_arr[$zef_arr_index]['zef_ID'];
-			$arr['time_in'] = $zef_arr[$zef_arr_index]['zef_in'];
-			$arr['time_out'] = $zef_arr[$zef_arr_index]['zef_out'];
-			$arr['zef_time'] = $zef_arr[$zef_arr_index]['zef_time'];
-			$arr['zef_duration'] = $zef_arr[$zef_arr_index]['zef_duration'];
-			$arr['dec_zef_time'] = sprintf("%01.2f", $zef_arr[$zef_arr_index]['zef_time'] / 3600);
-			$arr['zef_rate'] = $zef_arr[$zef_arr_index]['zef_rate'];
-			$arr['wage'] = $zef_arr[$zef_arr_index]['wage'];
-			$arr['wage_decimal'] = $zef_arr[$zef_arr_index]['wage_decimal'];
-			$arr['budget'] = $zef_arr[$zef_arr_index]['zef_budget'];
-			$arr['approved'] = $zef_arr[$zef_arr_index]['zef_approved'];
-			$arr['status'] = $zef_arr[$zef_arr_index]['zef_status'];
-			$arr['billable'] = $zef_arr[$zef_arr_index]['zef_billable'];
-			$arr['pct_kndID'] = $zef_arr[$zef_arr_index]['pct_kndID'];
-			$arr['knd_name'] = $zef_arr[$zef_arr_index]['knd_name'];
-			$arr['pct_ID'] = $zef_arr[$zef_arr_index]['pct_ID'];
-			$arr['pct_name'] = $zef_arr[$zef_arr_index]['pct_name'];
-			$arr['pct_comment'] = $zef_arr[$zef_arr_index]['pct_comment'];
-			$arr['zef_evtID'] = $zef_arr[$zef_arr_index]['zef_evtID'];
-			$arr['evt_name'] = $zef_arr[$zef_arr_index]['evt_name'];
-			$arr['description'] = $zef_arr[$zef_arr_index]['zef_description'];
+			$arr['type'] = 'timeSheet';
+			$arr['id'] = $timeSheetEntries[$timeSheetEntries_index]['timeEntryID'];
+			$arr['time_in'] = $timeSheetEntries[$timeSheetEntries_index]['start'];
+			$arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
+			$arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
+			$arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
+			$arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+			$arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
+			$arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
+			$arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
+			$arr['budget'] = $timeSheetEntries[$timeSheetEntries_index]['budget'];
+			$arr['approved'] = $timeSheetEntries[$timeSheetEntries_index]['approved'];
+			$arr['statusID'] = $timeSheetEntries[$timeSheetEntries_index]['statusID'];
+                        $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
+			$arr['billable'] = $timeSheetEntries[$timeSheetEntries_index]['billable'];
+			$arr['customerID'] = $timeSheetEntries[$timeSheetEntries_index]['customerID'];
+			$arr['customerName'] = $timeSheetEntries[$timeSheetEntries_index]['customerName'];
+			$arr['projectID'] = $timeSheetEntries[$timeSheetEntries_index]['projectID'];
+			$arr['projectName'] = $timeSheetEntries[$timeSheetEntries_index]['projectName'];
+			$arr['projectComment'] = $timeSheetEntries[$timeSheetEntries_index]['projectComment'];
+			$arr['activityID'] = $timeSheetEntries[$timeSheetEntries_index]['activityID'];
+			$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
+			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
 			if ($limitCommentSize)
-				$arr['comment'] = Format::addEllipsis($zef_arr[$zef_arr_index]['zef_comment'], 150);
+				$arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
 			else
-				$arr['comment'] = $zef_arr[$zef_arr_index]['zef_comment'];
-			$arr['comment_type'] = $zef_arr[$zef_arr_index]['zef_comment_type'];
-			$arr['location'] = $zef_arr[$zef_arr_index]['zef_location'];
+				$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+			$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
+			$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
 			if (empty($arr['location']))
 				$arr['location'] = $default_location;
-			$arr['trackingnr'] = $zef_arr[$zef_arr_index]['zef_trackingnr'];
-			$arr['username'] = $zef_arr[$zef_arr_index]['usr_name'];
-			$arr['cleared'] = $zef_arr[$zef_arr_index]['zef_cleared'];
+			$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
+			$arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
+			$arr['cleared'] = $timeSheetEntries[$timeSheetEntries_index]['cleared'];
 			$result_arr[] = $arr;
 		}
-		$zef_arr_index++;
+		$timeSheetEntries_index++;
 	}
-	while ($exp_arr_index < count($exp_arr)) {
+	while ($expenses_index < count($expenses)) {
 		$arr = array();
-		$arr['type'] = 'exp';
-		$arr['id'] = $exp_arr[$exp_arr_index]['exp_ID'];
-		$arr['time_in'] = $exp_arr[$exp_arr_index]['exp_timestamp'];
-		$arr['time_out'] = $exp_arr[$exp_arr_index]['exp_timestamp'];
-		$arr['zef_time'] = null;
-		$arr['zef_apos'] = null;
-		$arr['dec_zef_time'] = null;
-		$arr['zef_rate'] = null;
-		$arr['wage'] = sprintf("%01.2f", $exp_arr[$exp_arr_index]['exp_value'] * $exp_arr[$exp_arr_index]['exp_multiplier']);
-		$arr['pct_kndID'] = $exp_arr[$exp_arr_index]['pct_kndID'];
-		$arr['knd_name'] = $exp_arr[$exp_arr_index]['knd_name'];
-		$arr['pct_ID'] = $exp_arr[$exp_arr_index]['pct_ID'];
-		$arr['pct_name'] = $exp_arr[$exp_arr_index]['pct_name'];
+		$arr['type'] = 'expense';
+		$arr['id'] = $expenses[$expenses_index]['customerID'];
+		$arr['time_in'] = $expenses[$expenses_index]['timestamp'];
+		$arr['time_out'] = $expenses[$expenses_index]['timestamp'];
+		$arr['duration'] = null;
+		$arr['decimalDuration'] = null;
+		$arr['rate'] = null;
+		$arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+		$arr['customerID'] = $expenses[$expenses_index]['customerID'];
+		$arr['customerName'] = $expenses[$expenses_index]['customerName'];
+		$arr['projectID'] = $expenses[$expenses_index]['projectID'];
+		$arr['projectName'] = $expenses[$expenses_index]['projectName'];
 		if ($limitCommentSize)
-			$arr['comment'] = Format::addEllipsis($exp_arr[$exp_arr_index]['exp_comment'], 150);
+			$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 		else
-			$arr['comment'] = $exp_arr[$exp_arr_index]['exp_comment'];
-		$arr['evt_name'] = $exp_arr[$exp_arr_index]['exp_designation'];
-		$arr['comment'] = $exp_arr[$exp_arr_index]['exp_comment'];
-		$arr['comment_type'] = $exp_arr[$exp_arr_index]['exp_comment_type'];
-		$arr['username'] = $exp_arr[$exp_arr_index]['usr_name'];
-		$arr['cleared'] = $exp_arr[$exp_arr_index]['exp_cleared'];
-		$exp_arr_index++;
+			$arr['comment'] = $expenses[$expenses_index]['comment'];
+		$arr['activityName'] = $expenses[$expenses_index]['designation'];
+		$arr['comment'] = $expenses[$expenses_index]['comment'];
+		$arr['commentType'] = $expenses[$expenses_index]['commentType'];
+		$arr['username'] = $expenses[$expenses_index]['userName'];
+		$arr['cleared'] = $expenses[$expenses_index]['cleared'];
+		$expenses_index++;
 		$result_arr[] = $arr;
 	}
 	return $result_arr;
@@ -203,12 +203,12 @@ function xp_get_arr($start, $end, $users = null, $customers = null, $projects = 
  * @param array the timesheet annotations array
  * @param array the expense annotations array
  */
-function merge_annotations(&$zef_arr, &$exp_arr) {
-	foreach ($exp_arr as $id => $costs) {
-		if (! isset($zef_arr[$id]))
-			$zef_arr[$id]['costs'] = $costs;
+function merge_annotations(&$timeSheetEntries, &$expenses) {
+	foreach ($expenses as $id => $costs) {
+		if (! isset($timeSheetEntries[$id]))
+			$timeSheetEntries[$id]['costs'] = $costs;
 		else
-			$zef_arr[$id]['costs'] += $costs;
+			$timeSheetEntries[$id]['costs'] += $costs;
 	}
 }
 
@@ -221,15 +221,15 @@ function merge_annotations(&$zef_arr, &$exp_arr) {
  * @param array $users Array of user IDs to filter by.
  * @param array $customers Array of customer IDs to filter by.
  * @param array $projects Array of project IDs to filter by.
- * @param array $events Array of event IDs to filter by.
+ * @param array $activities Array of activity IDs to filter by.
  * @return array Array which assigns every user (via his ID) the data to show.
  */
-function xp_get_arr_usr($start, $end, $users = null, $customers = null, $projects = null, $events = null) {
+function export_get_user_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_usr($start, $end, $users, $customers, $projects, $events);
+	$arr = $database->get_time_users($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
-		$exp_arr = get_arr_exp_usr($start, $end, $users, $customers, $projects);
-		merge_annotations($arr, $exp_arr);
+		$expenses = expenses_by_user($start, $end, $users, $customers, $projects);
+		merge_annotations($arr, $expenses);
 	}
 	return $arr;
 }
@@ -243,15 +243,15 @@ function xp_get_arr_usr($start, $end, $users = null, $customers = null, $project
  * @param array $users Array of user IDs to filter by.
  * @param array $customers Array of customer IDs to filter by.
  * @param array $projects Array of project IDs to filter by.
- * @param array $events Array of event IDs to filter by.
+ * @param array $activities Array of activity IDs to filter by.
  * @return array Array which assigns every customer (via his ID) the data to show.
  */
-function xp_get_arr_knd($start, $end, $users = null, $customers = null, $projects = null, $events = null) {
+function export_get_customer_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_knd($start, $end, $users, $customers, $projects, $events);
+	$arr = $database->get_time_customers($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
-		$exp_arr = get_arr_exp_knd($start, $end, $users, $customers, $projects);
-		merge_annotations($arr, $exp_arr);
+		$expenses = expenses_by_customer($start, $end, $users, $customers, $projects);
+		merge_annotations($arr, $expenses);
 	}
 	return $arr;
 }
@@ -265,15 +265,15 @@ function xp_get_arr_knd($start, $end, $users = null, $customers = null, $project
  * @param array $users Array of user IDs to filter by.
  * @param array $customers Array of customer IDs to filter by.
  * @param array $projects Array of project IDs to filter by.
- * @param array $events Array of event IDs to filter by.
+ * @param array $activities Array of activity IDs to filter by.
  * @return array Array which assigns every project (via his ID) the data to show.
  */
-function xp_get_arr_pct($start, $end, $users = null, $customers = null, $projects = null, $events = null) {
+function export_get_project_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $expense_ext_available, $database;
-	$arr = $database->get_arr_time_pct($start, $end, $users, $customers, $projects, $events);
+	$arr = $database->get_time_projects($start, $end, $users, $customers, $projects, $activities);
 	if ($expense_ext_available) {
-		$exp_arr = get_arr_exp_pct($start, $end, $users, $customers, $projects);
-		merge_annotations($arr, $exp_arr);
+		$expenses = expenses_by_project($start, $end, $users, $customers, $projects);
+		merge_annotations($arr, $expenses);
 	}
 	return $arr;
 }
@@ -287,12 +287,12 @@ function xp_get_arr_pct($start, $end, $users = null, $customers = null, $project
  * @param array $users Array of user IDs to filter by.
  * @param array $customers Array of customer IDs to filter by.
  * @param array $projects Array of project IDs to filter by.
- * @param array $events Array of event IDs to filter by.
+ * @param array $activities Array of activity IDs to filter by.
  * @return array Array which assigns every taks (via his ID) the data to show.
  */
-function xp_get_arr_evt($start, $end, $users = null, $customers = null, $projects = null, $events = null) {
+function export_get_activity_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null) {
 	global $database;
-	$arr = $database->get_arr_time_evt($start, $end, $users, $customers, $projects, $events);
+	$arr = $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
 	return $arr;
 }
 

@@ -2,7 +2,7 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
 try {
-        	bgt_ext_onload();
+        	budget_extension_onload();
 } catch(e) {
 	alert(e);
 }
@@ -52,10 +52,10 @@ try {
 {/literal}
 
 
-<div id="bgt">
-<div class="bgt_project">
+<div id="budget">
+<div class="budget_project">
 <div class="project_head project_overview">
 </div>
 </div>
-<div class="bgt_project_end"/>
+<div class="budget_project_end"/>
 </div>

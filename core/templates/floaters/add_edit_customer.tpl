@@ -10,15 +10,15 @@
                 input.siblings().attr("disabled","");
             });
 
-            $('#add_edit_knd').ajaxForm(function() { 
+            $('#add_edit_customer').ajaxForm(function() { 
 
-                if ($('#knd_grps').val() == null) {
+                if ($('#customerGroups').val() == null) {
                   alert("{/literal}{$kga.lang.atLeastOneGroup}{literal}");
                   return;
                 }
 
                 floaterClose();
-                hook_chgKnd();
+                hook_customers_changed();
             });
              $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
@@ -28,7 +28,7 @@
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.knd}{else}{$kga.lang.new_knd}{/if}</span>
+        <span id="floater_title">{if $id}{$kga.lang.edit}: {$kga.lang.customer}{else}{$kga.lang.new_customer}{/if}</span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
         </div>       
@@ -52,7 +52,7 @@
                       <span class="bb">{$kga.lang.contact}</span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-{if $sel_grp_IDs|@count gt 1}
+{if $groupIDs|@count gt 1}
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb">{$kga.lang.groups}</span>
@@ -67,12 +67,12 @@
       </ul>
     </div>
     
-    <form id="add_edit_knd" action="processor.php" method="post"> 
+    <form id="add_edit_customer" action="processor.php" method="post"> 
                 
-    <input name="knd_filter"   type="hidden" value="0" />
+    <input name="customer_filter"   type="hidden" value="0" />
 
-    <input name="axAction"     type="hidden" value="add_edit_KndPctEvt" />   
-    <input name="axValue"      type="hidden" value="knd" />   
+    <input name="axAction"     type="hidden" value="add_edit_CustomerProjectActivity" />   
+    <input name="axValue"      type="hidden" value="customer" />   
     <input name="id"           type="hidden" value="{$id}" />   
 
     <div id="floater_tabs" class="floater_content">
@@ -82,32 +82,32 @@
                 <ul>
                 
                     <li>
-                        <label for="knd_name" >{$kga.lang.knd}:</label>
-                        <input type="text" name="knd_name" id="focus" value="{$knd_name|escape:'html'}" />
+                        <label for="name" >{$kga.lang.customer}:</label>
+                        <input type="text" name="name" id="focus" value="{$name|escape:'html'}" />
                     </li>
 
                     <li>
-                        <label for="knd_vat" >{$kga.lang.vat}:</label>
-                        <input type="text" name="knd_vat"  value="{$knd_vat|escape:'html'}" />
+                        <label for="vat" >{$kga.lang.vat}:</label>
+                        <input type="text" name="vat"  value="{$vat|escape:'html'}" />
                     </li> 
 
                     <li>
-                         <label for="knd_visible">{$kga.lang.visibility}:</label>
-                         <input name="knd_visible" type="checkbox" value='1' {if $knd_visible || !$id }checked="checked"{/if} />
+                         <label for="visible">{$kga.lang.visibility}:</label>
+                         <input name="visible" type="checkbox" value='1' {if $visible || !$id }checked="checked"{/if} />
                     </li>   
 
                     <li>
-                      <label for="knd_password">{$kga.lang.password}:</label>
+                      <label for="password">{$kga.lang.password}:</label>
                       <div class="multiFields">
-                        <input type="password" name='knd_password' cols='30' rows='3' value="" {if !$knd_password}disabled="disabled"{/if}/><br/>
-                        <input type="checkbox" name="knd_no_password" value="1" class="disableInput" {if !$knd_password}checked="checked"{/if}>{$kga.lang.nopassword}
+                        <input type="password" name='password' cols='30' rows='3' value="" {if !$password}disabled="disabled"{/if}/><br/>
+                        <input type="checkbox" name="no_password" value="1" class="disableInput" {if !$password}checked="checked"{/if}>{$kga.lang.nopassword}
                       </div>
                     </li> 
 
                     <li>
-                      <label for="knd_timezone">{$kga.lang.timezone}:</label>
-                      <select name="knd_timezone">
-                        {html_options values=$timezones output=$timezones selected=$knd_timezone}
+                      <label for="timezone">{$kga.lang.timezone}:</label>
+                      <select name="timezone">
+                        {html_options values=$timezones output=$timezones selected=$timezone}
                       </select>
                     </li>
 
@@ -120,23 +120,23 @@
                 <ul>
 
                     <li>
-                         <label for="knd_comment">{$kga.lang.comment}:</label>
-                         <textarea class='comment' name='knd_comment' cols='30' rows='3' >{$knd_comment|escape:'html'}</textarea>
+                         <label for="comment">{$kga.lang.comment}:</label>
+                         <textarea class='comment' name='comment' cols='30' rows='3' >{$comment|escape:'html'}</textarea>
                     </li>   
 
                 </ul>
                 
             </fieldset>
 
-{if $sel_grp_IDs|@count gt 1}
+{if $groupIDs|@count gt 1}
             <fieldset id="groups">
 
                 <ul>
                     
                     <li>
-                        <label for="knd_grp" >{$kga.lang.groups}:</label>
-                        <select class="formfield" id ="knd_grps" name="knd_grp[]" multiple size='3' style="width:255px">
-                            {html_options values=$sel_grp_IDs output=$sel_grp_names selected=$grp_selection}
+                        <label for="customerGroups" >{$kga.lang.groups}:</label>
+                        <select class="formfield" id ="customerGroups" name="customerGroups[]" multiple size='3' style="width:255px">
+                            {html_options options=$groups selected=$selectedGroups}
                         </select>
                     </li>
 
@@ -144,7 +144,7 @@
                 
             </fieldset>
 {else}
-                    <input id="knd_grps" name="knd_grp[]" type="hidden" value="{$grp_selection.0|escape:'html'}" />
+                    <input id="customerGroups" name="groups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
 {/if}  
 
             <fieldset id="address">
@@ -152,28 +152,28 @@
                 <ul>
 
                     <li>
-                        <label for="knd_company" >{$kga.lang.company}:</label>
-                        <input type="text" name="knd_company"  value="{$knd_company|escape:'html'}" />
+                        <label for="company" >{$kga.lang.company}:</label>
+                        <input type="text" name="company"  value="{$company|escape:'html'}" />
                     </li>
 
                     <li>
-                        <label for="knd_contact" >{$kga.lang.contactPerson}:</label>
-                        <input type="text" name="knd_contact"  value="{$knd_contact|escape:'html'}" />
+                        <label for="contact" >{$kga.lang.contactPerson}:</label>
+                        <input type="text" name="contact"  value="{$contact|escape:'html'}" />
                     </li>
                                       
                     <li>
-                        <label for="knd_street" >{$kga.lang.street}:</label>
-                        <input type="text" name="knd_street"  value="{$knd_street|escape:'html'}" />
+                        <label for="street" >{$kga.lang.street}:</label>
+                        <input type="text" name="street"  value="{$street|escape:'html'}" />
                     </li>
                           
                     <li>
-                        <label for="knd_zipcode" >{$kga.lang.zipcode}:</label>
-                        <input type="text" name="knd_zipcode"  value="{$knd_zipcode|escape:'html'}" />
+                        <label for="zipcode" >{$kga.lang.zipcode}:</label>
+                        <input type="text" name="zipcode"  value="{$zipcode|escape:'html'}" />
                     </li>
                           
                     <li>
-                        <label for="knd_city" >{$kga.lang.city}:</label>
-                        <input type="text" name="knd_city"  value="{$knd_city|escape:'html'}" />
+                        <label for="city" >{$kga.lang.city}:</label>
+                        <input type="text" name="city"  value="{$city|escape:'html'}" />
                     </li>     
 
                 </ul>
@@ -185,28 +185,28 @@
                 <ul>   
                           
                     <li>
-                        <label for="knd_tel" >{$kga.lang.telephon}:</label>
-                        <input type="text" name="knd_tel"  value="{$knd_tel|escape:'html'}" />
+                        <label for="phone" >{$kga.lang.telephon}:</label>
+                        <input type="text" name="phone"  value="{$phone|escape:'html'}" />
                     </li>        
                           
                     <li>
-                        <label for="knd_fax" >{$kga.lang.fax}:</label>
-                        <input type="text" name="knd_fax"  value="{$knd_fax|escape:'html'}" />
+                        <label for="fax" >{$kga.lang.fax}:</label>
+                        <input type="text" name="fax"  value="{$fax|escape:'html'}" />
                     </li>        
                           
                     <li>
-                        <label for="knd_mobile" >{$kga.lang.mobilephone}:</label>
-                        <input type="text" name="knd_mobile"  value="{$knd_mobile|escape:'html'}" />
+                        <label for="mobile" >{$kga.lang.mobilephone}:</label>
+                        <input type="text" name="mobile"  value="{$mobile|escape:'html'}" />
                     </li>        
                           
                     <li>
-                        <label for="knd_mail" >{$kga.lang.mail}:</label>
-                        <input type="text" name="knd_mail"  value="{$knd_mail|escape:'html'}" />
+                        <label for="mail" >{$kga.lang.mail}:</label>
+                        <input type="text" name="mail"  value="{$mail|escape:'html'}" />
                     </li>        
                           
                     <li>
-                        <label for="knd_homepage" >{$kga.lang.homepage}:</label>
-                        <input type="text" name="knd_homepage"  value="{$knd_homepage|escape:'html'}" />
+                        <label for="homepage" >{$kga.lang.homepage}:</label>
+                        <input type="text" name="homepage"  value="{$homepage|escape:'html'}" />
                     </li>        
 
                 </ul>

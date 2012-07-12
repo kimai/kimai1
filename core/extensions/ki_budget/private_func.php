@@ -24,14 +24,14 @@ include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
  * Sum up expenses for the project.
  */
 function calculate_expenses_sum($projectId) {
-  $expSum = 0;
-  $exp_arr = get_arr_exp(0,time(),null,null,array($projectId));
+  $expenseSum = 0;
+  $expenses = get_expenses(0,time(),null,null,array($projectId));
 
-  foreach ($exp_arr as $exp) {
-    $expSum += $exp['exp_value'];
+  foreach ($expenses as $expense) {
+    $expenseSum += $expense['value'];
   }
 
-  return $expSum;
+  return $expenseSum;
 }
 
 /**
@@ -40,7 +40,7 @@ function calculate_expenses_sum($projectId) {
  * The first element in the inner arrays represents the unused budget costs,
  * the second element in the inner arrays represents the expense costs,
  * the third and all other elements in the inner arrays represents the
- * costs for individual events.
+ * costs for individual activities.
  * 
  * An visual example for two projects with the ID 2 and 5:
  * $array = {
@@ -49,11 +49,11 @@ function calculate_expenses_sum($projectId) {
  * };
  * 
  * @param array $projects IDs of all projects to include in the plot data
- * @param array $usedEvents array of all used events (each as an array of its data)
+ * @param array $usedActivities array of all used activities (each as an array of its data)
  * @return array containing arrays for every project which hold the size of the pie chart elements
  * 
  */
-function budget_plot_data($projects,$projectsFilter, $eventsFilter,&$expensesOccured, &$kga) {
+function budget_plot_data($projects,$projectsFilter, $activitiesFilter,&$expensesOccured, &$kga) {
 global $database;
 
 $wages = array();
@@ -64,121 +64,121 @@ $expensesOccured = false;
   */
 foreach ($projects as $project) {
   if(is_array($projectsFilter) && !empty($projectsFilter)) {
-  	if(!in_array($project['pct_ID'], $projectsFilter)) {
+  	if(!in_array($project['projectID'], $projectsFilter)) {
   		continue;
   	}
   }
   
-  $pctId = $project['pct_ID'];
-  // in "event 0" we will track the available budget, while in the project array directly,
+  $projectID = $project['projectID'];
+  // in "activity 0" we will track the available budget, while in the project array directly,
   // we will track the total budget for the project
-  $wages[$pctId][0]['budget']   = $project['pct_budget'];
-  $wages[$pctId][0]['approved']   = $project['pct_approved'];
-  $wages[$pctId]['budget']   = $project['pct_budget'];
-  $wages[$pctId]['approved']   = $project['pct_approved'];
-  $expenses = calculate_expenses_sum($project['pct_ID']);
+  $wages[$projectID][0]['budget']   = $project['budget'];
+  $wages[$projectID][0]['approved']   = $project['approved'];
+  $wages[$projectID]['budget']   = $project['budget'];
+  $wages[$projectID]['approved']   = $project['approved'];
+  $expenses = calculate_expenses_sum($project['projectID']);
   if($expenses > 0) {
-   $wages[$pctId][0]['expenses'] = $expenses;
+   $wages[$projectID][0]['expenses'] = $expenses;
   }
 
   if ($expenses > 0)
     $expensesOccured = true;
 
-  if ($wages[$pctId][0]['budget'] < 0) {
+  if ($wages[$projectID][0]['budget'] < 0) {
     //Costs over budget, set remaining budget to 0.
-    $wages[$pctId][0]['budget'] = 0;
-    $wages[$pctId][0]['exceeded'] = true;
+    $wages[$projectID][0]['budget'] = 0;
+    $wages[$projectID][0]['exceeded'] = true;
   }
   
-  $pct_evts = $database->get_arr_evt_by_pct($pctId);
-  foreach($pct_evts as $event) {
-  if(is_array($eventsFilter) && !empty($eventsFilter)) {
-  	if(!in_array($event['evt_ID'], $eventsFilter)) {
+  $projectActivities = $database->get_activities_by_project($projectID);
+  foreach($projectActivities as $activity) {
+  if(is_array($activitiesFilter) && !empty($activitiesFilter)) {
+  	if(!in_array($activity['activityID'], $activitiesFilter)) {
   		continue;
   	}
   }
-    $wages[$pctId][$event['evt_ID']] = array();
-    if($event['evt_budget'] <= 0) {
+    $wages[$projectID][$activity['activityID']] = array();
+    if($activity['budget'] <= 0) {
     	continue;
     }
-    $wages[$pctId][$event['evt_ID']]['budget'] = $event['evt_budget'];
-    $wages[$pctId][$event['evt_ID']]['budget_total'] = $event['evt_budget'];
+    $wages[$projectID][$activity['activityID']]['budget'] = $activity['budget'];
+    $wages[$projectID][$activity['activityID']]['budget_total'] = $activity['budget'];
     // this budget shall not be added, otherwise we have the project budget in all tasks
     // so they would be doubled.
-//  	$wages[$pctId][$event['evt_ID']]['budget_total'] += $project['pct_budget'];
-//  	$wages[$pctId][$event['evt_ID']]['approved_total'] = $project['pct_approved'];
-    $wages[$pctId][$event['evt_ID']]['approved_total'] += $event['evt_approved'];
-    $wages[$pctId][$event['evt_ID']]['approved'] = $event['evt_approved'];
+//  	$wages[$projectID][$activity['evt_ID']]['budget_total'] += $project['pct_budget'];
+//  	$wages[$projectID][$activity['evt_ID']]['approved_total'] = $project['pct_approved'];
+    $wages[$projectID][$activity['activityID']]['approved_total'] += $activity['approved'];
+    $wages[$projectID][$activity['activityID']]['approved'] = $activity['approved'];
     // add to the project budget
-    $wages[$pctId][0]['budget'] += $event['evt_budget'];
-    $wages[$pctId][0]['approved'] += $event['evt_approved'];
+    $wages[$projectID][0]['budget'] += $activity['budget'];
+    $wages[$projectID][0]['approved'] += $activity['approved'];
     // add to the total budget
-    $wages[$pctId]['budget'] += $event['evt_budget'];
-    $wages[$pctId]['approved'] += $event['evt_approved'];
+    $wages[$projectID]['budget'] += $activity['budget'];
+    $wages[$projectID]['approved'] += $activity['approved'];
   }
 }
 /*
- * sum up wages for every project and every event
+ * sum up wages for every project and every activity
  */
 foreach ($projects as $project) {
-  $projectId = $project['pct_ID'];
-  $zef_arr = $database->get_arr_zef(0,time(),null,null,array($projectId));
-  foreach ($zef_arr as $zef) {
-    $pctId = $projectId;
+  $projectId = $project['projectID'];
+  $timeSheetEntries = $database->get_timeSheet(0,time(),null,null,array($projectId));
+  foreach ($timeSheetEntries as $timeSheetEntry) {
+    $projectID = $projectId;
 	$billableLangString = $kga['lang']['billable'];
 	$timebillableLangString = $kga['lang']['time_billable'];
-    if (is_array($wages[$pctId][$zef['zef_evtID']])) {
-      $tmpCost = $zef['wage_decimal'] * $zef['zef_billable'] / 100;
-      if($zef['wage_decimal'] - $tmpCost <= 0 && $tmpCost <= 0) {
+    if (is_array($wages[$projectID][$timeSheetEntry['activityID']])) {
+      $tmpCost = $timeSheetEntry['wage_decimal'] * $timeSheetEntry['billable'] / 100;
+      if($timeSheetEntry['wage_decimal'] - $tmpCost <= 0 && $tmpCost <= 0) {
       	continue;
       } else {
       }
       // decrease budget by "already used up" amount
-      $wages[$pctId][$zef['zef_evtID']]['budget_total'] += $zef['zef_budget'];
-      $wages[$pctId][$zef['zef_evtID']]['budget']       -= $zef['wage_decimal'];
-      $wages[$pctId][$zef['zef_evtID']]['budget']       += $zef['zef_budget'];
-      $wages[$pctId][$zef['zef_evtID']]['approved']     += $zef['zef_approved'];
-      $wages[$pctId][$zef['zef_evtID']]['approved_total'] += $zef['zef_approved'];
-      $wages[$pctId][$zef['zef_evtID']]['approved']     -= $tmpCost;
-      $wages[$pctId][$zef['zef_evtID']]['total']+= $zef['wage_decimal'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['budget_total'] += $timeSheetEntry['budget'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['budget']       -= $timeSheetEntry['wage_decimal'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['budget']       += $timeSheetEntry['budget'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['approved']     += $timeSheetEntry['approved'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['approved_total'] += $timeSheetEntry['approved'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['approved']     -= $tmpCost;
+      $wages[$projectID][$timeSheetEntry['activityID']]['total']+= $timeSheetEntry['wage_decimal'];
       // decrease budget by "already used up" amount also for the total budget for the project
-      $wages[$pctId][0]['budget']       -= $zef['wage_decimal'];
-      $wages[$pctId][0]['approved']       -= $tmpCost;
-      $wages[$pctId][0]['budget']       += $zef['zef_budget'];
-      $wages[$pctId][0]['approved']     += $zef['zef_approved'];
+      $wages[$projectID][0]['budget']       -= $timeSheetEntry['wage_decimal'];
+      $wages[$projectID][0]['approved']       -= $tmpCost;
+      $wages[$projectID][0]['budget']       += $timeSheetEntry['budget'];
+      $wages[$projectID][0]['approved']     += $timeSheetEntry['approved'];
       if($tmpCost > 0) {
-	      $wages[$pctId][0][$zef['evt_name'].' '.$billableLangString]+= $tmpCost;
-      	  $wages[$pctId][$zef['zef_evtID']][$billableLangString]+= $tmpCost;
+	      $wages[$projectID][0][$timeSheetEntry['name'].' '.$billableLangString]+= $tmpCost;
+      	  $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]+= $tmpCost;
       }
-      if($zef['wage_decimal'] - $tmpCost > 0) {
-	     $wages[$pctId][0][$zef['evt_name']] += $zef['wage_decimal'] - $tmpCost;
-      	 $wages[$pctId][$zef['zef_evtID']][$zef['evt_name']] += $zef['wage_decimal'] - $tmpCost;
+      if($timeSheetEntry['wage_decimal'] - $tmpCost > 0) {
+	     $wages[$projectID][0][$timeSheetEntry['name']] += $timeSheetEntry['wage_decimal'] - $tmpCost;
+      	 $wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['name']] += $timeSheetEntry['wage_decimal'] - $tmpCost;
       }
     // add to the total budget
-      $wages[$pctId]['budget']       += $zef['zef_budget'];
-      $wages[$pctId]['approved']     += $zef['zef_approved'];
-      $wages[$pctId]['billable_total']+= $tmpCost;
-      $wages[$pctId]['total']     += $zef['wage_decimal'];
-      $wages[$pctId][$timebillableLangString]+= $tmpCost;
+      $wages[$projectID]['budget']       += $timeSheetEntry['budget'];
+      $wages[$projectID]['approved']     += $timeSheetEntry['approved'];
+      $wages[$projectID]['billable_total']+= $tmpCost;
+      $wages[$projectID]['total']     += $timeSheetEntry['wage_decimal'];
+      $wages[$projectID][$timebillableLangString]+= $tmpCost;
       // mark entries which are over budget
-      if ($wages[$pctId][$zef['zef_evtID']]['budget'] < 0) {
-      	$wages[$pctId][$zef['zef_evtID']]['budget'] = 0;
-	    $wages[$pctId][$zef['zef_evtID']]['exceeded'] = true;
+      if ($wages[$projectID][$timeSheetEntry['activityID']]['budget'] < 0) {
+      	$wages[$projectID][$timeSheetEntry['activityID']]['budget'] = 0;
+	    $wages[$projectID][$timeSheetEntry['activityID']]['exceeded'] = true;
 	  }
-      if ($wages[$pctId][$zef['zef_evtID']]['approved'] < 0) {
-      	$wages[$pctId][$zef['zef_evtID']]['approved'] = 0;
-	  	$wages[$pctId][$zef['zef_evtID']]['approved_exceeded'] = true;
+      if ($wages[$projectID][$timeSheetEntry['activityID']]['approved'] < 0) {
+      	$wages[$projectID][$timeSheetEntry['activityID']]['approved'] = 0;
+	  	$wages[$projectID][$timeSheetEntry['activityID']]['approved_exceeded'] = true;
 	  }
     }
   }
   //cleanup: don't show charts without any data
   if(is_array($wages[$projectId])) {
-  foreach($wages[$projectId] as $eventId => $entry) {
-  	if($eventId == 0) {
+  foreach($wages[$projectId] as $activityId => $entry) {
+  	if($activityId == 0) {
   		continue;
   	}
   	if(!isset($entry['total']) || is_null($entry['total'])) {
-  		unset($wages[$projectId][$eventId]);
+  		unset($wages[$projectId][$activityId]);
   	}
   }
   }

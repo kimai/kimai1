@@ -19,19 +19,19 @@
 
 
 /**
- * delete zef entry 
+ * delete expense entry 
  *
- * @param integer $usr_ID 
+ * @param integer $userID 
  * @param integer $id -> ID of record
  * @global array  $kga kimai-global-array
  * @author th
  */
-function exp_delete_record($id) {
+function expense_delete($id) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("DELETE FROM ${p}exp WHERE `exp_ID` = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("DELETE FROM ${p}expenses WHERE `expenseID` = ? LIMIT 1;");
     $result = $pdo_query->execute(array($id));
     
     if ($result == false) {
@@ -48,34 +48,34 @@ function exp_delete_record($id) {
  * @global array  $kga    kimai-global-array
  * @author sl
  */
-function exp_create_record($usr_ID,$data) {
+function expense_create($userID,$data) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}exp (  
-    `exp_pctID`, 
-    `exp_designation`,
-    `exp_comment`,
-    `exp_comment_type`,
-    `exp_timestamp`,
-    `exp_multiplier`,
-    `exp_value`,
-    `exp_usrID`,
-    `exp_refundable`
+    $pdo_query = $pdo_conn->prepare("INSERT INTO ${p}expense (  
+    `projectID`, 
+    `designation`,
+    `comment`,
+    `commentType`,
+    `timestamp`,
+    `multiplier`,
+    `value`,
+    `userID`,
+    `refundable`
     ) VALUES (?,?,?,?,?,?,?,?,?)
     ;");
     
     $result = $pdo_query->execute(array(
-    $data['exp_pctID'],
-    $data['exp_designation'],
-    $data['exp_comment'],
-    $data['exp_comment_type'] ,
-    $data['exp_timestamp'],
-    $data['exp_multiplier'],
-    $data['exp_value'],
-    $usr_ID,
-    $data['exp_refundable']
+    $data['projectID'],
+    $data['designation'],
+    $data['comment'],
+    $data['commentType'] ,
+    $data['timestamp'],
+    $data['multiplier'],
+    $data['value'],
+    $userID,
+    $data['refundable']
     ));
     
 
@@ -97,11 +97,11 @@ function exp_create_record($usr_ID,$data) {
  * @param Array list of IDs of users to include
  * @param Array list of IDs of customers to include
  * @param Array list of IDs of projects to include
- * @param Array list of IDs of events to include
+ * @param Array list of IDs of activities to include
  * @return Array list of where clauses to include in the query
  *
  */
-function exp_whereClausesFromFilters($users, $customers , $projects ) {
+function expenses_widthhereClausesFromFilters($users, $customers , $projects ) {
     
     if (!is_array($users)) $users = array();
     if (!is_array($customers)) $customers = array();
@@ -111,15 +111,15 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
     $whereClauses = array();
     
     if (count($users) > 0) {
-      $whereClauses[] = "exp_usrID in (".implode(',',$users).")";
+      $whereClauses[] = "userID in (".implode(',',$users).")";
     }
     
     if (count($customers) > 0) {
-      $whereClauses[] = "knd_ID in (".implode(',',$customers).")";
+      $whereClauses[] = "customerID in (".implode(',',$customers).")";
     }
     
     if (count($projects) > 0) {
-      $whereClauses[] = "pct_ID in (".implode(',',$projects).")";
+      $whereClauses[] = "projectID in (".implode(',',$projects).")";
     }  
     return $whereClauses;
 
@@ -132,13 +132,13 @@ function exp_whereClausesFromFilters($users, $customers , $projects ) {
 /**
  * returns expenses for specific user as multidimensional array
  *
- * @param integer $user ID of user in table usr
+ * @param integer $user ID of user in table users
  * @global array $kga kimai-global-array
  * @return array
  * @author th 
  */
 
-function get_arr_exp($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false, $filter_refundable = -1,$filterCleared = null) {
+function get_expenses($start,$end,$users = null,$customers = null,$projects = null,$limit=false, $reverse_order = false, $filter_refundable = -1,$filterCleared = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
@@ -149,24 +149,24 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
 
 
     
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
 
     if (isset($kga['customer']))
-      $whereClauses[] = "${p}pct.pct_internal = 0";
+      $whereClauses[] = "${p}projects.internal = 0";
 
     if ($start)
-      $whereClauses[]="exp_timestamp >= $start";
+      $whereClauses[]="timestamp >= $start";
     if ($end)
-      $whereClauses[]="exp_timestamp <= $end";
+      $whereClauses[]="timestamp <= $end";
     if ($filterCleared > -1)
-      $whereClauses[] = "exp_cleared = $filterCleared";
+      $whereClauses[] = "cleared = $filterCleared";
       
     switch ($filter_refundable) {
     	case 0:
-    		$whereClauses[] = "exp_refundable > 0";
+    		$whereClauses[] = "refundable > 0";
     		break;
     	case 1:
-    		$whereClauses[] = "exp_refundable <= 0";
+    		$whereClauses[] = "refundable <= 0";
     		break;
     	case -1:
     	default:
@@ -182,14 +182,14 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     } else {
         $limit="";
     }
-    $pdo_query = $pdo_conn->prepare("SELECT exp_ID, exp_timestamp, exp_multiplier, exp_value, exp_pctID, exp_designation, exp_usrID,
-              pct_ID, knd_name, pct_kndID, pct_name, exp_comment, exp_comment_type, exp_refundable, usr_name, exp_cleared
-             FROM ${p}exp 
-             Join ${p}pct ON exp_pctID = pct_ID
-             Join ${p}knd ON pct_kndID = knd_ID
-             Join ${p}usr ON exp_usrID = usr_ID "
+    $pdo_query = $pdo_conn->prepare("SELECT *
+              projectID, customer.name AS customerName, project.name AS projectName, user.name AS userName
+             FROM ${p}expenses
+             Join ${p}projects AS project USING(projectID)
+             Join ${p}customers AS customer USING(customerID)
+             Join ${p}users AS user USING(userID) "
               .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-             ' ORDER BY exp_timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";");
+             ' ORDER BY timestamp '.($reverse_order?'ASC ':'DESC ') . $limit . ";");
     
              $pdo_query->execute();  
   
@@ -198,22 +198,22 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
     $arr=array();
     /* TODO: needs revision as foreach loop */
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        $arr[$i]['exp_ID']             = $row['exp_ID'];
-        $arr[$i]['exp_timestamp']      = $row['exp_timestamp'];
-        $arr[$i]['exp_multiplier']     = $row['exp_multiplier'];
-        $arr[$i]['exp_value']          = $row['exp_value'];
-        $arr[$i]['exp_pctID']          = $row['exp_pctID'];
-        $arr[$i]['exp_designation']    = $row['exp_designation'];
-        $arr[$i]['exp_usrID']          = $row['exp_usrID'];
-        $arr[$i]['pct_ID']             = $row['pct_ID'];
-        $arr[$i]['knd_name']           = $row['knd_name'];
-        $arr[$i]['pct_kndID']          = $row['pct_kndID'];
-        $arr[$i]['pct_name']           = $row['pct_name'];
-        $arr[$i]['exp_comment']        = $row['exp_comment'];
-        $arr[$i]['exp_comment_type']   = $row['exp_comment_type'];
-        $arr[$i]['exp_refundable']     = $row['exp_refundable'];
-        $arr[$i]['usr_name']           = $row['usr_name'];
-        $arr[$i]['exp_cleared']        = $row['exp_cleared'];
+        $arr[$i]['expenseID']      = $row['expenseID'];
+        $arr[$i]['timestamp']      = $row['timestamp'];
+        $arr[$i]['multiplier']     = $row['multiplier'];
+        $arr[$i]['value']          = $row['value'];
+        $arr[$i]['projectID']      = $row['projectID'];
+        $arr[$i]['designation']    = $row['designation'];
+        $arr[$i]['userID']         = $row['userID'];
+        $arr[$i]['projectID']      = $row['projectID'];
+        $arr[$i]['customerName']   = $row['customerName'];
+        $arr[$i]['customerID']     = $row['customerID'];
+        $arr[$i]['projectName']    = $row['projectName'];
+        $arr[$i]['comment']        = $row['comment'];
+        $arr[$i]['commentType']    = $row['commentType'];
+        $arr[$i]['refundable']     = $row['refundable'];
+        $arr[$i]['userName']       = $row['userName'];
+        $arr[$i]['cleared']        = $row['cleared'];
         $i++;
     }
     
@@ -229,15 +229,15 @@ function get_arr_exp($start,$end,$users = null,$customers = null,$projects = nul
  * @return array
  * @author sl
  */
-function get_entry_exp($id) {
+function get_expense($id) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
   
-    $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp 
-    Left Join ${p}pct ON exp_pctID = pct_ID 
-    Left Join ${p}knd ON pct_kndID = knd_ID 
-    WHERE exp_ID = ? LIMIT 1;");
+    $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses
+    Left Join ${p}projects USING(projectID)
+    Left Join ${p}customers USING(customerID)
+    WHERE expenseID = ? LIMIT 1;");
   
     $pdo_query->execute(array($id));
     $row    = $pdo_query->fetch(PDO::FETCH_ASSOC);
@@ -249,23 +249,23 @@ function get_entry_exp($id) {
 /**
  * Returns the data of a certain expense record
  *
- * @param array $exp_id        exp_id of the record
+ * @param array $expenseID        expenseID of the record
  * @global array $kga          kimai-global-array
  * @return array               the record's data as array, false on failure
  * @author ob
  */
-function exp_get_data($exp_id) {
+function expense_get($expenseID) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    if ($exp_id) {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp WHERE exp_ID = ?");
+    if ($expenseID) {
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses WHERE expenseID = ?");
     } else {
-        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}exp WHERE exp_usrID = ".$kga['usr']['usr_ID']." ORDER BY exp_ID DESC LIMIT 1");
+        $pdo_query = $pdo_conn->prepare("SELECT * FROM ${p}expenses WHERE userID = ".$kga['user']['userID']." ORDER BY expenseID DESC LIMIT 1");
     }
     
-    $result = $pdo_query->execute(array($exp_id));
+    $result = $pdo_query->execute(array($expenseID));
 
     if ($result == false) {
         return false;
@@ -285,12 +285,12 @@ function exp_get_data($exp_id) {
  * @author th
  */
  
-function exp_edit_record($id,$data) {
+function expense_edit($id,$data) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
     
-    $original_array = exp_get_data($id);
+    $original_array = expense_get($id);
     $new_array = array();
     
     foreach ($original_array as $key => $value) {
@@ -304,26 +304,26 @@ function exp_edit_record($id,$data) {
 
 
 
-    $pdo_query = $pdo_conn->prepare("UPDATE ${p}exp SET
-    exp_pctID = ?,
-    exp_designation = ?,
-    exp_comment = ?,
-    exp_comment_type = ?,
-    exp_timestamp = ?,
-    exp_multiplier = ?,
-    exp_value = ?,
-    exp_refundable = ?
-    WHERE exp_id = ?;");    
+    $pdo_query = $pdo_conn->prepare("UPDATE ${p}expense SET
+    projectID = ?,
+    designation = ?,
+    comment = ?,
+    commentType = ?,
+    timestamp = ?,
+    multiplier = ?,
+    value = ?,
+    refundable = ?
+    WHERE expenseID = ?;");    
     
     $result = $pdo_query->execute(array(
-    $new_array['exp_pctID'],
-    $new_array['exp_designation'] ,
-    $new_array['exp_comment'],
-    $new_array['exp_comment_type'] ,
-    $new_array['exp_timestamp'],
-    $new_array['exp_multiplier'],
-    $new_array['exp_value'],
-    $new_array['exp_refundable'],
+    $new_array['projectID'],
+    $new_array['designation'] ,
+    $new_array['comment'],
+    $new_array['commentType'] ,
+    $new_array['timestamp'],
+    $new_array['multiplier'],
+    $new_array['value'],
+    $new_array['refundable'],
     $id
     ));
     
@@ -342,32 +342,32 @@ function exp_edit_record($id,$data) {
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
-function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_user($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = "${p}usr.usr_trash = 0";
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}users.trash = 0";
 
     if ($in)
-      $whereClauses[]="exp_timestamp >= $in";
+      $whereClauses[]="timestamp >= $in";
     if ($out)
-      $whereClauses[]="exp_timestamp <= $out"; 
+      $whereClauses[]="timestamp <= $out"; 
 
-   $pdo_query = $pdo_conn->prepare("SELECT sum(exp_value) as expenses, usr_ID
-             FROM ${p}exp 
-             Join ${p}pct ON exp_pctID = pct_ID
-             Join ${p}knd ON pct_kndID = knd_ID
-             Join ${p}usr ON exp_usrID = usr_ID ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-             " GROUP BY usr_ID;");
+   $pdo_query = $pdo_conn->prepare("SELECT sum(value) as expenses, userID
+             FROM ${p}expenses
+             Join ${p}projects USING(projectID)
+             Join ${p}customers USING(customerID)
+             Join ${p}users USING(userID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+             " GROUP BY userID;");
              $pdo_query->execute();
    
 
     $arr = array(); 
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (!isset($row['usr_ID'])) break;
-        $arr[$row['usr_ID']] = $row['expenses'];
+        if (!isset($row['userID'])) break;
+        $arr[$row['userID']] = $row['expenses'];
     }
     
     return $arr;
@@ -383,29 +383,29 @@ function get_arr_exp_usr($in,$out,$users = null,$customers = null,$projects = nu
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
-function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_customer($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = "${p}knd.knd_trash = 0";
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}customers.trash = 0";
 
     if ($in)
-      $whereClauses[]="exp_timestamp >= $in";
+      $whereClauses[]="timestamp >= $in";
     if ($out)
-      $whereClauses[]="exp_timestamp <= $out"; 
+      $whereClauses[]="timestamp <= $out"; 
     
-    $pdo_query = $pdo_conn->prepare("SELECT SUM(exp_value) as expenses, knd_ID FROM ${p}exp 
-            Left Join ${p}pct ON exp_pctID = pct_ID
-            Left Join ${p}knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-            " GROUP BY knd_ID;");
+    $pdo_query = $pdo_conn->prepare("SELECT SUM(value) as expenses, customerID FROM ${p}expenses
+            Left Join ${p}projects USING(projectID)
+            Left Join ${p}customers USING(customerID)  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+            " GROUP BY customerID;");
     $pdo_query->execute();
 
     $arr = array();
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (!isset($row['knd_ID'])) break;
-        $arr[$row['knd_ID']] = $row['expenses'];
+        if (!isset($row['customerID'])) break;
+        $arr[$row['customerID']] = $row['expenses'];
     }
     
     return $arr;
@@ -420,29 +420,29 @@ function get_arr_exp_knd($in,$out,$users = null,$customers = null,$projects = nu
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
-function get_arr_exp_pct($in,$out,$users = null,$customers = null,$projects = null) {
+function expenses_by_project($in,$out,$users = null,$customers = null,$projects = null) {
     global $kga, $database;
     $pdo_conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
 
-    $whereClauses = exp_whereClausesFromFilters($users,$customers,$projects);
-    $whereClauses[] = "${p}pct.pct_trash = 0";
+    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
+    $whereClauses[] = "${p}projects.trash = 0";
 
     if ($in)
-      $whereClauses[]="exp_timestamp >= $in";
+      $whereClauses[]="timestamp >= $in";
     if ($out)
-      $whereClauses[]="exp_timestamp <= $out"; 
-    $pdo_query = $pdo_conn->prepare("SELECT sum(exp_value) as expenses,exp_pctID FROM ${p}exp
-            Left Join ${p}pct ON exp_pctID = pct_ID
-            Left Join ${p}knd ON pct_kndID = knd_ID  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
-       " GROUP BY exp_pctID;");
+      $whereClauses[]="timestamp <= $out"; 
+    $pdo_query = $pdo_conn->prepare("SELECT sum(value) as expenses, projectID FROM ${p}expenses
+            Left Join ${p}projects USING(projectID)
+            Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
+       " GROUP BY projectID;");
     $pdo_query->execute();
 
     $arr = array();
     while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-        if (!isset($row['exp_pctID'])) break;
-        $arr[$row['exp_pctID']] = $row['expenses'];
+        if (!isset($row['projectID'])) break;
+        $arr[$row['projectID']] = $row['expenses'];
     }
     return $arr;
 }

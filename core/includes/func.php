@@ -22,6 +22,26 @@
  */
 
 /**
+ * Check if a user is logged in or kick them.
+ */
+function checkUser()
+{
+  global $database;
+
+  if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+      $kimai_user = addslashes($_COOKIE['kimai_user']);
+      $kimai_key = addslashes($_COOKIE['kimai_key']);
+
+              if ($database->get_seq($kimai_user) != $kimai_key) {
+                      kickUser();
+              } else {
+                      return $database->checkUserInternal($kimai_user);
+              }
+      }
+      kickUser();
+}
+
+/**
  * Kill the current users session by redirecting him to the logout page.
  */
 function kickUser() {
@@ -64,88 +84,84 @@ function timezoneList() {
  *
  * <pre>
  * returns:
- * [0] -> pct/evt names
+ * [0] -> project/activity names
  * [1] -> values as IDs
  * </pre>
  *
- * @param string either 'pct', 'evt', 'knd', 'grp'
+ * @param string either 'project', 'activity', 'customer', 'group'
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$groups,$selection=null){
+function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false){
 
     global $kga, $database;
 
     $sel = array();
-    $sel[0] = array();
-    $sel[1] = array();
 
     switch ($subject) {
-        case 'pct':
-            $arr_pct = $database->get_arr_pct($groups);
-            $i=0;
-            foreach ($arr_pct as $pct) {
-                if ($pct['pct_visible']) {
-                    if ($kga['conf']['flip_pct_display']) {
-                        $sel[0][$i] = $pct['knd_name'] . ": " . $pct['pct_name'];
-                        if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .= "(" . $pct['pct_comment'] .")" ;
+        case 'project':
+            $projects = $database->get_projects($groups);
+            foreach ($projects as $project) {
+                if ($project['visible']) {
+                    if ($kga['conf']['flip_project_display']) {
+                        $projectName = $project['customerName'] . ": " . $project['name'];
+                        if ($kga['conf']['project_comment_flag']) {
+                            $projectName .= "(" . $project['comment'] .")" ;
                         }
                     } else {
-                        $sel[0][$i] = $pct['pct_name'] . " (" . $pct['knd_name'] . ")";
-                        if ($kga['conf']['pct_comment_flag']) {
-                            $sel[0][$i] .=  "(" . $pct['pct_comment'] .")";
+                        $projectName = $project['name'] . " (" . $project['customerName'] . ")";
+                        if ($kga['conf']['project_comment_flag']) {
+                            $projectName .=  "(" . $project['comment'] .")";
                         }
                     }
-                    $sel[1][$i] = $pct['pct_ID'];
-                    $i++;
+                    $sel[$project['projectID']] = $projectName;
                 }
             }
             break;
 
-        case 'evt':
-            $arr_evt = $database->get_arr_evt($groups);
-            $i=0;
-            foreach ($arr_evt as $evt) {
-                if ($evt['evt_visible']) {
-                    $sel[0][$i] = $evt['evt_name'];
-                    $sel[1][$i] = $evt['evt_ID'];
-                    $i++;
+        case 'activity':
+            $activities = $database->get_activities($groups);
+            foreach ($activities as $activity) {
+                if ($activity['visible']) {
+                    $sel[$activity['activityID']] = $activity['name'];
                 }
             }
             break;
 
-        case 'knd':
-            $arr_knd = $database->get_arr_knd($groups);
-            $i=0;
+        case 'customer':
+            $customers = $database->get_customers($groups);
             $selectionFound = false;
-            if(is_array($arr_knd)) {
-	            foreach ($arr_knd as $knd) {
-	                if ($knd['knd_visible']) {
-	                    $sel[0][$i] = $knd['knd_name'];
-	                    $sel[1][$i] = $knd['knd_ID'];
-	                    $i++;
-	                    if ($selection == $knd['knd_ID'])
+            if(is_array($customers)) {
+	            foreach ($customers as $customer) {
+	                if ($customer['visible']) {
+	                    $sel[$customer['customerID']] = $customer['name'];
+	                    if ($selection == $customer['customerID'])
 	                      $selectionFound = true;
 	                }
 	            }
             }
             if ($selection != null && !$selectionFound) {
-              $data = $database->knd_get_data($selection);
-              $sel[0][$i] = $data['knd_name'];
-              $sel[1][$i] = $data['knd_ID'];
+              $data = $database->customer_get_data($selection);
+              $sel[$data['customerID']] = $data['name'];
             }
             break;
 
-        case 'grp':
-            $arr_grp = $database->get_arr_grp();
-            $i=0;
-            foreach ($arr_grp as $grp) {
-                if (!$grp['grp_trash']) {
-                    $sel[0][$i] = $grp['grp_name'];
-                    $sel[1][$i] = $grp['grp_ID'];
-                    $i++;
+        case 'group':
+            $groups = $database->get_groups();
+            foreach ($groups as $group) {
+                if ($includeDeleted || !$group['trash']) {
+                    $sel[$group['groupID']] = $group['name'];
                 }
+            }
+            break;
+
+        case 'user':
+            $users = $database->get_watchable_users($kga['user']);
+
+            foreach ($users as $user) {
+              if ($includeDeleted || !$user['trash']) {
+                $sel[$user['userID']] = $user['name'];
+              }
             }
             break;
 
@@ -252,46 +268,6 @@ function get_cookie($cookie_name, $default=null) {
     return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
 }
 
-
-/**
- * check if there are 0s (erroneuos entries) in the zef data while editing and prevent overwriting old data in this case
- *
- * @param int $id the id of the entry to be edited
- * @param array $zef_data
- * @return boolean the return value of the actual editing function
- *
- * @author Oleg
- */
-function check_zef_data($id, $zef_data) {
-  global $database;
-  
-  $zef_final_data['zef_usrID']        = $zef_data['zef_usrID'];
-  $zef_final_data['zef_pctID']        = $zef_data['pct_ID'];
-  $zef_final_data['zef_evtID']        = $zef_data['evt_ID'];
-  $zef_final_data['zef_location']     = $zef_data['zlocation'];
-  $zef_final_data['zef_trackingnr']   = $zef_data['trackingnr'];
-  $zef_final_data['zef_description']  = $zef_data['description'];
-  $zef_final_data['zef_comment']      = $zef_data['comment'];
-  $zef_final_data['zef_comment_type'] = $zef_data['comment_type'];
-  $zef_final_data['zef_rate']         = $zef_data['rate'];
-  $zef_final_data['zef_budget']       = $zef_data['budget'];
-  $zef_final_data['zef_approved']     = $zef_data['approved'];
-  $zef_final_data['zef_status']       = $zef_data['status'];
-  $zef_final_data['zef_billable']     = $zef_data['billable'];
-  $zef_final_data['zef_description']  = $zef_data['description'];
-  $zef_final_data['zef_cleared']      = $zef_data['cleared'];
-  $zef_final_data['zef_in']           = $zef_data['in'];
-
-  if (isset($zef_data['out'])) {
-    $zef_final_data['zef_out']          = $zef_data['out'];
-    $zef_final_data['zef_time']         = $zef_data['diff'];
-  }
-
-  return $database->zef_edit_record($id,$zef_final_data);
-
-}
-
-
 // based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
 function createPassword($length) {
         $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -368,28 +344,28 @@ EOD;
 
 // checked
 
-function get_timespace() {
+function get_timeframe() {
     global $kga, $conn;
 
-    $timespace = array(null,null);
+    $timeframe = array(null,null);
     
-    if (isset($kga['usr'])) {
+    if (isset($kga['user'])) {
 
-        $timespace[0] = $kga['usr']['timespace_in'];
-        $timespace[1] = $kga['usr']['timespace_out'];
+        $timeframe[0] = $kga['user']['timeframeBegin'];
+        $timeframe[1] = $kga['user']['timeframeEnd'];
 
     }
 
     /* database has no entries? */
     $mon = date("n"); $day = date("j"); $Y = date("Y");
-    if (!$timespace[0]) {
-        $timespace[0] = mktime(0,0,0,$mon,1,$Y);
+    if (!$timeframe[0]) {
+        $timeframe[0] = mktime(0,0,0,$mon,1,$Y);
     }
-    if (!$timespace[1]) {
-        $timespace[1] = mktime(23,59,59,$mon,$day,$Y);
+    if (!$timeframe[1]) {
+        $timeframe[1] = mktime(23,59,59,$mon,$day,$Y);
     }
     
-    return $timespace;
+    return $timeframe;
 }
 
 function endsWith($haystack,$needle) {

@@ -120,29 +120,29 @@
   </head>
   <body>
 
-<h2> {$kga.lang.xp_ext.time_period}: {$timespan|escape:'html'} </h2>
+<h2> {$kga.lang.export_extension.time_period}: {$timespan|escape:'html'} </h2>
 
 { if $customersFilter != "" }
-<br/><b>{$kga.lang.knds}</b>: {$customersFilter|escape:'html'}
+<br/><b>{$kga.lang.customers}</b>: {$customersFilter|escape:'html'}
 {/if}
 { if $projectsFilter != "" }
-<br/><b>{$kga.lang.pcts}</b>: {$projectsFilter|escape:'html'}
+<br/><b>{$kga.lang.projects}</b>: {$projectsFilter|escape:'html'}
 {/if}
 <br/>
 
 {if $summary != 0}
-  <h2>{$kga.lang.xp_ext.summary}</h2>
+  <h2>{$kga.lang.export_extension.summary}</h2>
 
 
   <table border="1">
     <tbody>
       <tr>
-        <th>{$kga.lang.evt}</th>
+        <th>{$kga.lang.activity}</th>
   { if $columns.dec_time }
-        <th>{$kga.lang.xp_ext.duration}</th>
+        <th>{$kga.lang.export_extension.duration}</th>
   {/if}
   { if $columns.wage }
-        <th>{$kga.lang.xp_ext.costs}</th>
+        <th>{$kga.lang.export_extension.costs}</th>
   {/if}
       </tr>
 
@@ -168,7 +168,7 @@
 
       <tr>
         <td>
-          <i>{$kga.lang.xp_ext.finalamount}</i>
+          <i>{$kga.lang.export_extension.finalamount}</i>
         </td>
   { if $columns.dec_time }
         <td>{$timeSum|number_format:2:$kga.conf.decimalSeparator:""|escape:'html'}</td>
@@ -188,7 +188,7 @@
   </table>
 {/if}
 
-<h2>{$kga.lang.xp_ext.full_list}</h2>
+<h2>{$kga.lang.export_extension.full_list}</h2>
 
           <table border="1">
             <tbody>
@@ -206,19 +206,19 @@
 { if $columns.approved     } <th>{$kga.lang.approved}</th>    { /if }
 { if $columns.status       } <th>{$kga.lang.status}</th>      { /if }
 { if $columns.billable     } <th>{$kga.lang.billable}</th>    { /if }
-{ if $columns.knd          } <th>{$kga.lang.knd}</th>         { /if }
-{ if $columns.pct          } <th>{$kga.lang.pct}</th>         { /if }
-{ if $columns.action       } <th>{$kga.lang.evt}</th>         { /if }
+{ if $columns.customer     } <th>{$kga.lang.customer}</th>    { /if }
+{ if $columns.project      } <th>{$kga.lang.project}</th>     { /if }
+{ if $columns.activity     } <th>{$kga.lang.activity}</th>    { /if }
 { if $columns.decription   } <th>{$kga.lang.description}</th> { /if }
 { if $columns.comment      } <th>{$kga.lang.comment}</th>     { /if }
-{ if $columns.location     } <th>{$kga.lang.zlocation}</th>   { /if }
-{ if $columns.trackingnr   } <th>{$kga.lang.trackingnr}</th>  { /if }
+{ if $columns.location     } <th>{$kga.lang.location}</th>   { /if }
+{ if $columns.trackingNumber   } <th>{$kga.lang.trackingNumber}</th>  { /if }
 { if $columns.user         } <th>{$kga.lang.username}</th>    { /if }
 { if $columns.cleared      } <th>{$kga.lang.cleared}</th>     { /if }
 
                 </tr>
                
-{section name=row loop=$arr_data}
+{section name=row loop=$exportData}
 
     
                 <tr>
@@ -227,9 +227,9 @@
 { if $columns.date }
                     <td>
                         { if $custom_dateformat }
-                        {$arr_data[row].time_in|date_format:$custom_dateformat|escape:'html'}
+                        {$exportData[row].time_in|date_format:$custom_dateformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:$kga.date_format.1|escape:'html'}
+                        {$exportData[row].time_in|date_format:$kga.date_format.1|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -238,9 +238,9 @@
 { if $columns.from }
                     <td>
                         { if $custom_timeformat }
-                        {$arr_data[row].time_in|date_format:$custom_timeformat|escape:'html'}
+                        {$exportData[row].time_in|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_in|date_format:"%H:%M"|escape:'html'}
+                        {$exportData[row].time_in|date_format:"%H:%M"|escape:'html'}
                         { /if }
                     </td>
 {/if}
@@ -249,11 +249,11 @@
 { if $columns.to }
                     <td>
                     
-{if $arr_data[row].time_out}
+{if $exportData[row].time_out}
                         { if $custom_timeformat }
-                        {$arr_data[row].time_out|date_format:$custom_timeformat|escape:'html'}
+                        {$exportData[row].time_out|date_format:$custom_timeformat|escape:'html'}
                         { else }
-                        {$arr_data[row].time_out|date_format:"%H:%M"|escape:'html'}
+                        {$exportData[row].time_out|date_format:"%H:%M"|escape:'html'}
                         { /if }
 {else}                     
                         &ndash;&ndash;:&ndash;&ndash;
@@ -265,9 +265,9 @@
 { if $columns.time }
                     <td>
                     
-{if $arr_data[row].zef_time}
+{if $exportData[row].duration}
 
-                            {$arr_data[row].zef_duration}
+                            {$exportData[row].formattedDuration}
                       
 {else}  
                         &ndash;:&ndash;&ndash;
@@ -279,8 +279,8 @@
 { if $columns.dec_time }
                     <td>
                     
-{if $arr_data[row].dec_zef_time}
-                            {$arr_data[row].dec_zef_time|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
+{if $exportData[row].decimalDuration}
+                            {$exportData[row].decimalDuration|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;:&ndash;&ndash;
@@ -292,7 +292,7 @@
 { if $columns.rate }
                     <td>
                     
-                            {$arr_data[row].zef_rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
+                            {$exportData[row].rate|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                     </td>
 {/if}
 
@@ -300,9 +300,9 @@
 { if $columns.wage }
                     <td>
                     
-{if $arr_data[row].wage}
+{if $exportData[row].wage}
                     
-                        {$arr_data[row].wage|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
+                        {$exportData[row].wage|replace:'.':$kga.conf.decimalSeparator|escape:'html'}
                       
 {else}  
                         &ndash;
@@ -313,78 +313,78 @@
 {*budget --------------------------------------------------*}
 { if $columns.budget }
                     <td>
-                        {$arr_data[row].budget|escape:'html'}
+                        {$exportData[row].budget|escape:'html'}
                     </td>
 {/if}
 
 {*approved --------------------------------------------------*}
 { if $columns.approved }
                     <td>
-                        {$arr_data[row].approved|escape:'html'}
+                        {$exportData[row].approved|escape:'html'}
                     </td>
 {/if}
 
 {*status --------------------------------------------------*}
 { if $columns.status }
                     <td>
-                        {$arr_data[row].status|escape:'html'}
+                        {$exportData[row].status|escape:'html'}
                     </td>
 {/if}
 
 {*billable --------------------------------------------------*}
 { if $columns.billable }
                     <td>
-                        {$arr_data[row].billable|escape:'html'}
+                        {$exportData[row].billable|escape:'html'}
                     </td>
 {/if}
 {*client name --------------------------------------------------*}
-{ if $columns.knd }
+{ if $columns.customer }
                     <td>
-                        {$arr_data[row].knd_name|escape:'html'}
+                        {$exportData[row].customerName|escape:'html'}
                     </td>
 {/if}
 
 {*project name -------------------------------------------------*}
-{ if $columns.pct }
+{ if $columns.project }
                     <td>
-                            {$arr_data[row].pct_name|escape:'html'}
+                            {$exportData[row].projectName|escape:'html'}
                     </td>
 {/if}
 
 
-{*event name and comment bubble --------------------------------*}
-{ if $columns.action }
+{*activity name and comment bubble --------------------------------*}
+{ if $columns.activity }
                     <td>
-                            {$arr_data[row].evt_name|escape:'html'} 
+                            {$exportData[row].activityName|escape:'html'} 
                     </td>
 {/if}
 
 {*description --------------------------------------------------*}
 { if $columns.description }
                     <td>
-                        {$arr_data[row].description|escape:'html'}
+                        {$exportData[row].description|escape:'html'}
                     </td>
 {/if}
 
 {*comment -----------------------------------------------------*}
 { if $columns.comment }
                     <td>
-                        {$arr_data[row].comment|escape:'html'|nl2br}
+                        {$exportData[row].comment|escape:'html'|nl2br}
                     </td>
 {/if}
 
 {*location ----------------------------------------------------*}
 { if $columns.location }
                     <td>
-                        {$arr_data[row].location|escape:'html'}
+                        {$exportData[row].location|escape:'html'}
                         
                     </td>
 {/if}
 
 {*tracking number ---------------------------------------------*}
-{ if $columns.trackingnr }
+{ if $columns.trackingNumber }
                     <td>
-                        {$arr_data[row].trackingnr|escape:'html'}
+                        {$exportData[row].trackingNumber|escape:'html'}
                         
                     </td>
 {/if}
@@ -392,7 +392,7 @@
 {*user --------------------------------------------------------*}
 { if $columns.user }
                     <td>
-                        {$arr_data[row].username|escape:'html'}
+                        {$exportData[row].username|escape:'html'}
                         
                     </td>
 {/if}
@@ -400,7 +400,7 @@
 {*cleared -----------------------------------------------------*}
 { if $columns.cleared }
 					<td>
-                      {if $arr_data[row].cleared}{$kga.lang.cleared}{else}{/if}
+                      {if $exportData[row].cleared}{$kga.lang.cleared}{else}{/if}
 					</td>
 {/if}
 					
@@ -412,7 +412,7 @@
 {if $timeSum > 0 || $wageSum > 0}
 <tr>
 <td colspan="{$columns|@count}">
-{$kga.lang.xp_ext.finalamount}
+{$kga.lang.export_extension.finalamount}
 </td>
 </tr>
 <tr>
@@ -433,13 +433,13 @@
     {$approvedSum|escape:'html'}</td> {/if}
   { if $columns.status } <td></td> {/if}
   { if $columns.billable } <td></td> {/if}
-  { if $columns.knd } <td></td> {/if}
-  { if $columns.pct } <td></td> {/if}
-  { if $columns.action } <td></td> {/if}
+  { if $columns.customer } <td></td> {/if}
+  { if $columns.project } <td></td> {/if}
+  { if $columns.activity } <td></td> {/if}
   { if $columns.description } <td></td> {/if}
   { if $columns.comment } <td></td> {/if}
   { if $columns.location } <td></td> {/if}
-  { if $columns.trackingnr } <td></td> {/if}
+  { if $columns.trackingNumber } <td></td> {/if}
   { if $columns.user } <td></td> {/if}
   { if $columns.cleared } <td></td> {/if}
 </tr>

@@ -22,39 +22,39 @@
 // =====================================================================
 
 
-var usr_w;
-var knd_w;
-var pct_w;
-var evt_w;
+var userColumnWidth;
+var customerColumnWidth;
+var projectColumnWidth;
+var activityColumnWidth;
 
 var currentDay = (new Date()).getDate();
 
 var fading_enabled = true;
 
-var extShrinkMode = 0; // 0 = show, 1 = hide
-var kndShrinkMode = 0; 
-var usrShrinkMode = 0; 
+var extensionShrinkMode = 0; // 0 = show, 1 = hide
+var customerShrinkMode = 0; 
+var userShrinkMode = 0; 
 
-var filterUsr = new Array();
-var filterKnd = new Array();
-var filterPct = new Array();
-var filterEvt = new Array();
+var filterUsers = new Array();
+var filterCustomers = new Array();
+var filterProjects = new Array();
+var filterActivities = new Array();
 
 var lists_visibility = new Array();
 
-var lists_ann_usr = new Array();
-var lists_ann_knd = new Array();
-var lists_ann_pct = new Array();
-var lists_ann_evt = new Array();
+var lists_user_annotations = new Array();
+var lists_customer_annotations = new Array();
+var lists_project_annotations = new Array();
+var lists_activity_annotations = new Array();
 
 $(document).ready(function() {
   
-    var preselected_knd = 0;
+    var preselected_customer = 0;
 
-    if (usr_ID) {
+    if (userID) {
       // automatic tab-change on reload
-      ki_active_tab_target  = $.cookie('ki_active_tab_target_'+usr_ID);
-      ki_active_tab_path    = $.cookie('ki_active_tab_path_'+usr_ID);
+      ki_active_tab_target  = $.cookie('ki_active_tab_target_'+userID);
+      ki_active_tab_path    = $.cookie('ki_active_tab_path_'+userID);
     }
     else {
       ki_active_tab_target  = null;
@@ -85,7 +85,7 @@ $(document).ready(function() {
       buzzer();
     });
 
-    if (currentRecording > -1 || (selected_knd && selected_pct && selected_evt)) {
+    if (currentRecording > -1 || (selected_customer && selected_project && selected_activity)) {
       $('#buzzer').removeClass('disabled');
     }
  

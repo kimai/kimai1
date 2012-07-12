@@ -24,16 +24,16 @@ include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
 /**
- * returns true if event is in the arrays
+ * returns true if activity is in the arrays
  *
  * @param $arrays
- * @return true if $event is in the array
+ * @return true if $activity is in the array
  * @author AA
  */
-function array_event_exists($arrays, $event) {
+function array_activity_exists($arrays, $activity) {
    $index = 0;
    foreach ($arrays as $array) {
-      if ( in_array($event,$array) ) {
+      if ( in_array($activity,$array) ) {
           return $index;
       }
       $index++;
@@ -55,17 +55,12 @@ function RoundValue( $value, $prec ) {
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates   = "templates/";
-$usr             = $database->checkUser();
-$timespace       = get_timespace();
-$in              = $timespace[0];
-$out             = $timespace[1];
+$user             = checkUser();
+$timeframe       = get_timeframe();
+$in              = $timeframe[0];
+$out             = $timeframe[1];
 
-$timeArray = $database->get_arr_zef($in, $out, null, null, array($_REQUEST['pct_ID']), null,false,false,$_REQUEST['filter_cleared']);
-/* $timeArray now contains: zef_ID, zef_in, zef_out, zef_time, zef_rate, zef_pctID,
-	zef_evtID, zef_usrID, pct_ID, knd_name, pct_kndID, evt_name, pct_comment,
-	pct_name, zef_location, zef_trackingnr, zef_comment, zef_comment_type,
-	usr_name, usr_alias, zef_cleared
-*/
+$timeArray = $database->get_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
 
 $date  = time();
 $month = $kga['lang']['months'][date("n", $out)-1];
@@ -73,23 +68,24 @@ $year  = date("Y", $out );
 
 if (count($timeArray) > 0) {
     // customer data
-    $kndArray        = $database->knd_get_data($timeArray[0]['pct_kndID']);
-    $pctArray        = $database->pct_get_data($timeArray[0]['zef_pctID']);
-	$project         = html_entity_decode($timeArray[0]['pct_name']);
-	$customerName    = html_entity_decode($timeArray[0]['knd_name']);
-	$companyName     = $kndArray['knd_company'];
-	$customerStreet  = $kndArray['knd_street'];
-	$customerCity    = $kndArray['knd_city'];
-	$customerZip     = $kndArray['knd_zipcode'];
-	$customerComment = $kndArray['knd_comment'];
-	$customerPhone   = $kndArray['knd_tel'];
-	$customerFax     = $kndArray['knd_fax'];
-	$customerMobile  = $kndArray['knd_mobile'];
-	$customerEmail   = $kndArray['knd_mail'];
-	$customerContact = $kndArray['knd_contact'];
-	$customerURL	 = $kndArray['knd_homepage'];
-	$customerVat     = $kndArray['knd_vat'];
-	$projectComment  = $pctArray['pct_comment'];
+    $customer        = $database->customer_get_data($timeArray[0]['customerID']);
+    $projectObject   = $database->project_get_data($timeArray[0]['projectID']);
+
+	$project         = html_entity_decode($timeArray[0]['projectName']);
+	$customerName    = html_entity_decode($timeArray[0]['customerName']);
+	$companyName     = $customer['company'];
+	$customerStreet  = $customer['street'];
+	$customerCity    = $customer['city'];
+	$customerZip     = $customer['zipcode'];
+	$customerComment = $customer['comment'];
+	$customerPhone   = $customer['phone'];
+	$customerFax     = $customer['fax'];
+	$customerMobile  = $customer['mobile'];
+	$customerEmail   = $customer['mail'];
+	$customerContact = $customer['contact'];
+	$customerURL	 = $customer['homepage'];
+	$customerVat     = $customer['vat'];
+	$projectComment  = $projectObject['comment'];
 	$beginDate       = $in;
 	$endDate         = $out;
 	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
@@ -106,36 +102,36 @@ $invoiceArray = array();
 
 while ($time_index < count($timeArray)) {
 	$wage    = $timeArray[$time_index]['wage'];
-	$time    = $timeArray[$time_index]['zef_time']/3600;
-	$event   = html_entity_decode($timeArray[$time_index]['evt_name']);
-	$comment = $timeArray[$time_index]['zef_comment'];
-	$description = $timeArray[$time_index]['zef_description'];
-	$evtdt   = date("m/d/Y", $timeArray[$time_index]['zef_in']);
-	$userName  = $timeArray[$time_index]['usr_name'];
-	$userAlias = $timeArray[$time_index]['usr_alias'];
+	$time    = $timeArray[$time_index]['duration']/3600;
+	$activity   = html_entity_decode($timeArray[$time_index]['activityName']);
+	$comment = $timeArray[$time_index]['comment'];
+	$description = $timeArray[$time_index]['description'];
+	$activityDate   = date("m/d/Y", $timeArray[$time_index]['start']);
+	$userName  = $timeArray[$time_index]['userName'];
+	$userAlias = $timeArray[$time_index]['userAlias'];
 
    // do we have to create a short form?
    if ( isset($_REQUEST['short']) ) {
 
-      $index = array_event_exists($invoiceArray,$event);
+      $index = array_activity_exists($invoiceArray,$activity);
       if ( $index >= 0 ) {
          $totalTime = $invoiceArray[$index]['hour'];
          $totalAmount = $invoiceArray[$index]['amount'];
          $invoiceArray[$index] = array(
-            'desc'    => $event,
+            'desc'    => $activity,
             'hour'    => $totalTime+$time,
             "amount"  => $totalAmount+$wage,
-            'date'    => $evtdt,
+            'date'    => $activityDate,
             'description' => $description,
             'comment' => $comment
          );
 	  }
 	  else {
-   	     $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment,  'username'=>'', 'useralias'=>'');
+   	     $invoiceArray[] = array('desc'=>$activity, 'hour'=>$time, 'amount'=>$wage, 'date'=>$activityDate, 'description'=>$description, 'comment'=>$comment,  'username'=>'', 'useralias'=>'');
 	  }
    }
    else {
-      $invoiceArray[] = array('desc'=>$event, 'hour'=>$time, 'amount'=>$wage, 'date'=>$evtdt, 'description'=>$description, 'comment'=>$comment, 'username'=>$userName, 'useralias'=>$userAlias);
+      $invoiceArray[] = array('desc'=>$activity, 'hour'=>$time, 'amount'=>$wage, 'date'=>$activityDate, 'description'=>$description, 'comment'=>$comment, 'username'=>$userName, 'useralias'=>$userAlias);
    }
    $time_index++;
 }
@@ -143,7 +139,7 @@ while ($time_index < count($timeArray)) {
 $round = 0;
 // do we have to round the time ?
 if (isset($_REQUEST['round'])) {
-   $round      = $_REQUEST['pct_round'];
+   $round      = $_REQUEST['round'];
    $time_index = 0;
    $amount     = count($invoiceArray);
 
@@ -168,7 +164,7 @@ while (list($id, $fd) = each($invoiceArray)) {
     $ttltime += $invoiceArray[$id]['hour'];
 }
 
-$vat_rate = $kndArray['knd_vat'];
+$vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
     $vat_rate = $kga['conf']['defaultVat'];
 }

@@ -1,14 +1,14 @@
 {literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
-            exp_ext_onload();
+            expense_extension_onload();
         }); 
     </script>
 {/literal}
 
-<div id="exp_head">
+<div id="expenses_head">
     <div class="left">
-    {if $kga.usr}
+    {if $kga.user}
         <a href="#" onClick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600,300); $(this).blur(); return false;">{$kga.lang.add}</a>
     {/if}
     </div>
@@ -19,8 +19,8 @@
           <col class="time" />
           <col class="value" />
           <col class="refundable" />
-          <col class="knd" />
-          <col class="pct" />
+          <col class="customer" />
+          <col class="project" />
           <col class="designation" />
               <col class="username" />
         </colgroup>
@@ -31,8 +31,8 @@
                 <td class="time">{$kga.lang.timelabel}</td>
                 <td class="value">{$kga.lang.expense}</td>
                 <td class="refundable">{$kga.lang.refundable}</td>
-                <td class="knd">{$kga.lang.knd}</td>
-                <td class="pct">{$kga.lang.pct}</td>
+                <td class="customer">{$kga.lang.customer}</td>
+                <td class="project">{$kga.lang.project}</td>
                 <td class="designation">{$kga.lang.designation}</td>
                 <td class="username">{$kga.lang.username}</td>
             </tr>
@@ -40,4 +40,4 @@
     </table>
 </div>
 
-<div id="exp">{$exp_display} </div>
+<div id="expenses">{$expenses_display} </div>

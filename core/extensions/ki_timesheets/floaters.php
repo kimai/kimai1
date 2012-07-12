@@ -25,68 +25,68 @@ require('../../core/Config.php');
 
 switch ($axAction) {
 
-    case "add_edit_record":  
+    case "add_edit_timeSheetEntry":  
         if (isset($kga['customer'])) die();  
     // ==============================================
     // = display edit dialog for timesheet record   =
     // ==============================================
     $selected = explode('|',$axValue);
     if ($id) {
-        $zef_entry = $database->zef_get_data($id);
+        $timeSheetEntry = $database->timeSheet_get_data($id);
         $tpl->assign('id', $id);
-        $tpl->assign('zlocation', $zef_entry['zef_location']);
+        $tpl->assign('location', $timeSheetEntry['location']);
         
-        $tpl->assign('trackingnr', $zef_entry['zef_trackingnr']);
-        $tpl->assign('description', $zef_entry['zef_description']);
-        $tpl->assign('comment', $zef_entry['zef_comment']);
+        $tpl->assign('trackingNumber', $timeSheetEntry['trackingNumber']);
+        $tpl->assign('description', $timeSheetEntry['description']);
+        $tpl->assign('comment', $timeSheetEntry['comment']);
         
-        $tpl->assign('rate', $zef_entry['zef_rate']);
-        $tpl->assign('fixed_rate', $zef_entry['zef_fixed_rate']);
+        $tpl->assign('rate', $timeSheetEntry['rate']);
+        $tpl->assign('fixedRate', $timeSheetEntry['fixedRate']);
         
-        $tpl->assign('cleared', $zef_entry['zef_cleared']!=0);
+        $tpl->assign('cleared', $timeSheetEntry['cleared']!=0);
 
-        $tpl->assign('user', $zef_entry['zef_usrID']);
+        $tpl->assign('userID', $timeSheetEntry['userID']);
     
-        $tpl->assign('edit_in_day', date("d.m.Y",$zef_entry['zef_in']));
-        $tpl->assign('edit_in_time',  date("H:i:s",$zef_entry['zef_in']));
+        $tpl->assign('start_day', date("d.m.Y",$timeSheetEntry['start']));
+        $tpl->assign('start_time',  date("H:i:s",$timeSheetEntry['start']));
 
-        if ($zef_entry['zef_out'] == 0) {
-          $tpl->assign('edit_out_day', '');
-          $tpl->assign('edit_out_time', '');
+        if ($timeSheetEntry['end'] == 0) {
+          $tpl->assign('end_day', '');
+          $tpl->assign('end_time', '');
         }
         else {
-          $tpl->assign('edit_out_day', date("d.m.Y",$zef_entry['zef_out']));
-          $tpl->assign('edit_out_time', date("H:i:s",$zef_entry['zef_out']));
+          $tpl->assign('end_day', date("d.m.Y",$timeSheetEntry['end']));
+          $tpl->assign('end_time', date("H:i:s",$timeSheetEntry['end']));
         }
 
-        $tpl->assign('approved', $zef_entry['zef_approved']);
-        $tpl->assign('budget', $zef_entry['zef_budget']);
+        $tpl->assign('approved', $timeSheetEntry['approved']);
+        $tpl->assign('budget', $timeSheetEntry['budget']);
         
         // preselected
-        $tpl->assign('pres_pct', $zef_entry['zef_pctID']);
-        $tpl->assign('pres_evt', $zef_entry['zef_evtID']);
+        $tpl->assign('projectID', $timeSheetEntry['projectID']);
+        $tpl->assign('activityID', $timeSheetEntry['activityID']);
     
-        $tpl->assign('comment_active', $zef_entry['zef_comment_type']);
-        $tpl->assign('status_active', $zef_entry['zef_status']);
-        $tpl->assign('billable_active', $zef_entry['zef_billable']);
+        $tpl->assign('commentType', $timeSheetEntry['commentType']);
+        $tpl->assign('status', $timeSheetEntry['status']);
+        $tpl->assign('billable', $timeSheetEntry['billable']);
 
         // budget
-        $eventBudgets = $database->get_evt_budget($zef_entry['zef_pctID'], $zef_entry['zef_evtID']);
-        $eventUsed = $database->get_budget_used($zef_entry['zef_pctID'], $zef_entry['zef_evtID']);
-        $tpl->assign('budget_event', round($eventBudgets['evt_budget'], 2));
-        $tpl->assign('approved_event', round($eventBudgets['evt_approved'], 2));
-        $tpl->assign('budget_event_used', $eventUsed);
+        $activityBudgets = $database->get_activity_budget($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
+        $activityUsed = $database->get_budget_used($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
+        $tpl->assign('budget_activity', round($activityBudgets['budget'], 2));
+        $tpl->assign('approved_activity', round($activityBudgets['approved'], 2));
+        $tpl->assign('budget_activity_used', $activityUsed);
 
     } else {
         $tpl->assign('id', 0);
         
-        $tpl->assign('edit_in_day', date("d.m.Y"));
-        $tpl->assign('edit_out_day', date("d.m.Y"));
+        $tpl->assign('start_day', date("d.m.Y"));
+        $tpl->assign('end_day', date("d.m.Y"));
 
-        $tpl->assign('user', $kga['usr']['usr_ID']);
+        $tpl->assign('userID', $kga['user']['userID']);
 
         if($kga['conf']['roundTimesheetEntries'] != '') {
-	        $zefData = $database->zef_get_data(false);
+	        $timeSheetData = $database->timeSheet_get_data(false);
 	        $minutes = date('i');
 	        if($kga['conf']['roundMinutes'] < 60) {
 	        	if($kga['conf']['roundMinutes'] <= 0) {
@@ -117,57 +117,46 @@ switch ($axAction) {
 	        }
 	        $end = mktime(date("H"), $minutes, $seconds);
 	        $day = date("d");
-	        $dayEntry = date("d", $zefData['zef_out']);
+	        $dayEntry = date("d", $timeSheetData['end']);
 	        if($day == $dayEntry) {
-	        	$tpl->assign('edit_in_time',  date("H:i:s", $zefData['zef_out']));
+	        	$tpl->assign('start_time',  date("H:i:s", $timeSheetData['end']));
 	        } else {
-	        	$tpl->assign('edit_in_time',  date("H:i:s"));
+	        	$tpl->assign('start_time',  date("H:i:s"));
 	        }
-	        $tpl->assign('edit_out_time', date("H:i:s", $end));
+	        $tpl->assign('end_time', date("H:i:s", $end));
         } else {
-	        $tpl->assign('edit_in_time', date("H:i:s"));
-	        $tpl->assign('edit_out_time', date("H:i:s"));
+	        $tpl->assign('start_time', date("H:i:s"));
+	        $tpl->assign('end_time', date("H:i:s"));
         }
-        $tpl->assign('rate',$database->get_best_fitting_rate($kga['usr']['usr_ID'],$selected[0],$selected[1]));
-        $tpl->assign('fixed_rate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
+        $tpl->assign('rate',$database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]));
+        $tpl->assign('fixedRate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
     }
 
     $tpl->assign('status', $kga['conf']['status']);
     
     $billableValues = Config::getConfig('billable');
-    $tpl->assign('billableValues', $billableValues); 
-    foreach($billableValues as $index => $billableValue) {
-    	$billableValues[$index] = $billableValue.'%';
+    $billableText = array();
+    foreach($billableValues as $billableValue) {
+    	$billableText[] = $billableValue.'%';
     }
-    $tpl->assign('billable', $billableValues);
-    $tpl->assign('comment_types', $comment_types);
-    $tpl->assign('comment_values', array('0','1','2'));
+    $tpl->assign('billable', array_combine($billableValues, $billableText));
+    $tpl->assign('commentTypes', $commentTypes);
+    $tpl->assign('commentValues', array('0','1','2'));
 
-    $users = $database->get_arr_watchable_users($kga['usr']);
-    $userIds = array();
-    $userNames = array();
-
-    foreach ($users as $user) {
-      $userIds[] = $user['usr_ID'];
-      $userNames[] = $user['usr_name'];
-    }
-
-    $tpl->assign('userIds', $userIds);
-    $tpl->assign('userNames', $userNames);
+      
+    $tpl->assign('users', makeSelectBox("user",$kga['user']['groups']));
 
     // select for projects
-    $sel = makeSelectBox("pct",$kga['usr']['groups']);
-    $tpl->assign('sel_pct_names', $sel[0]);
-    $tpl->assign('sel_pct_IDs',   $sel[1]);
+    $sel = makeSelectBox("project",$kga['user']['groups']);
+    $tpl->assign('projects', $sel);
 
-    // select for events
-    $sel = makeSelectBox("evt",$kga['usr']['groups']);
-    $tpl->assign('sel_evt_names', $sel[0]);
-    $tpl->assign('sel_evt_IDs',   $sel[1]);
+    // select for activities
+    $sel = makeSelectBox("activity",$kga['user']['groups']);
+    $tpl->assign('activities', $sel);
 
 
 
-    $tpl->display("add_edit_record.tpl"); 
+    $tpl->display("add_edit_timeSheetEntry.tpl"); 
 
     break;        
 

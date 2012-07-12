@@ -20,13 +20,13 @@
 	// Include Basics
 	include('../../includes/basics.php');
 	
-	$usr = $database->checkUser();
+	$user = checkUser();
 	// ============================================
-	// = initialize currently displayed timespace =
+	// = initialize currently displayed timeframe =
 	// ============================================
-	$timespace = get_timespace();
-	$in = $timespace[0];
-	$out = $timespace[1];
+	$timeframe = get_timeframe();
+	$in = $timeframe[0];
+	$out = $timeframe[1];
 	
 	// set smarty config
 	require_once(WEBROOT.'libraries/smarty/Smarty.class.php');
@@ -43,9 +43,9 @@
     	$output['server_database'] = "xxx";
     	$output['server_username'] = "xxx";
     	$output['server_password'] = "xxx";
-    	$output['usr']['secure']   = "xxx";
-    	$output['usr']['usr_ID']   = "xxx";
-    	$output['usr']['pw']       = "xxx";
+    	$output['user']['secure']   = "xxx";
+    	$output['user']['userID']   = "xxx";
+    	$output['user']['pw']       = "xxx";
     }
 	
     $kga_display = print_r($output,true);

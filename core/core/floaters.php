@@ -64,8 +64,8 @@ switch ($axAction) {
         $tpl->assign('skins', ls("../skins"));
         $tpl->assign('langs', Translations::langs());
         $tpl->assign('timezones', timezoneList());
-        $tpl->assign('usr', $kga['usr']);
-        $tpl->assign('rate', $database->get_rate($kga['usr']['usr_ID'],NULL,NULL));
+        $tpl->assign('user', $kga['user']);
+        $tpl->assign('rate', $database->get_rate($kga['user']['userID'],NULL,NULL));
 
         $tpl->display("preferences.tpl");
     break;
@@ -73,154 +73,149 @@ switch ($axAction) {
     /**
      * Display the dialog to add or edit a customer.
      */
-    case 'add_edit_knd':
-        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+    case 'add_edit_customer':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
 
-            $data = $database->knd_get_data($id);
+            $data = $database->customer_get_data($id);
             if ($data) {
-                $tpl->assign('knd_name'     , $data['knd_name'    ]);
-                $tpl->assign('knd_comment'  , $data['knd_comment' ]);
-                $tpl->assign('knd_password' , $data['knd_password']);
-                $tpl->assign('knd_timezone' , $data['knd_timezone']);
-                $tpl->assign('knd_company'  , $data['knd_company' ]);
-                $tpl->assign('knd_vat'      , $data['knd_vat'     ]);
-                $tpl->assign('knd_contact'  , $data['knd_contact' ]);
-                $tpl->assign('knd_street'   , $data['knd_street'  ]);
-                $tpl->assign('knd_zipcode'  , $data['knd_zipcode' ]);
-                $tpl->assign('knd_city'     , $data['knd_city'    ]);
-                $tpl->assign('knd_tel'      , $data['knd_tel'     ]);
-                $tpl->assign('knd_fax'      , $data['knd_fax'     ]);
-                $tpl->assign('knd_mobile'   , $data['knd_mobile'  ]);
-                $tpl->assign('knd_mail'     , $data['knd_mail'    ]);
-                $tpl->assign('knd_homepage' , $data['knd_homepage']);
-                $tpl->assign('knd_visible'  , $data['knd_visible' ]);
-                $tpl->assign('knd_filter'   , $data['knd_filter'  ]);
-                $tpl->assign('grp_selection', $database->knd_get_grps($id));
+                $tpl->assign('name'     , $data['name'    ]);
+                $tpl->assign('comment'  , $data['comment' ]);
+                $tpl->assign('password' , $data['password']);
+                $tpl->assign('timezone' , $data['timezone']);
+                $tpl->assign('company'  , $data['company' ]);
+                $tpl->assign('vat'      , $data['vat'     ]);
+                $tpl->assign('contact'  , $data['contact' ]);
+                $tpl->assign('street'   , $data['street'  ]);
+                $tpl->assign('zipcode'  , $data['zipcode' ]);
+                $tpl->assign('city'     , $data['city'    ]);
+                $tpl->assign('phone'    , $data['phone'   ]);
+                $tpl->assign('fax'      , $data['fax'     ]);
+                $tpl->assign('mobile'   , $data['mobile'  ]);
+                $tpl->assign('mail'     , $data['mail'    ]);
+                $tpl->assign('homepage' , $data['homepage']);
+                $tpl->assign('visible'  , $data['visible' ]);
+                $tpl->assign('filter'   , $data['filter'  ]);
+                $tpl->assign('selectedGroups', $database->customer_get_groupIDs($id));
                 $tpl->assign('id', $id);
             }
         }
         else {
-          $tpl->assign('knd_timezone' , $kga['conf']['timezone']);
+          $tpl->assign('timezone' , $kga['conf']['timezone']);
         }
 
         $tpl->assign('timezones', timezoneList());
 
         // create the <select> element for the groups
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
-        $tpl->assign('sel_grp_names', $sel[0]);
-        $tpl->assign('sel_grp_IDs',   $sel[1]);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
+        $tpl->assign('groups', $sel);
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $tpl->assign('grp_selection', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_knd.tpl");
+        $tpl->display("add_edit_customer.tpl");
     break;
         
     /**
      * Display the dialog to add or edit a project.
      */
-    case 'add_edit_pct':
-        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+    case 'add_edit_project':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
  
         if ($id) {
-            $data = $database->pct_get_data($id);
+            $data = $database->project_get_data($id);
             if ($data) {
-                $tpl->assign('pct_name'        , $data['pct_name'        ]);
-                $tpl->assign('pct_comment'     , $data['pct_comment'     ]);
-                $tpl->assign('pct_visible'     , $data['pct_visible'     ]);
-                $tpl->assign('pct_internal'    , $data['pct_internal'    ]);
-                $tpl->assign('pct_filter'      , $data['pct_filter'      ]);
-                $tpl->assign('pct_budget'      , $data['pct_budget'      ]);
-                $tpl->assign('pct_effort'      , $data['pct_effort'      ]);
-                $tpl->assign('pct_approved'    , $data['pct_approved' 	 ]);
-                $tpl->assign('knd_selection'   , $data['pct_kndID'       ]);
-                $tpl->assign('evt_selection'   , $database->pct_get_evts($id));
-                $tpl->assign('pct_default_rate', $data['pct_default_rate']);
-                $tpl->assign('pct_my_rate'     , $data['pct_my_rate'     ]);
-                $tpl->assign('pct_fixed_rate'  , $data['pct_fixed_rate'  ]);
-                $tpl->assign('grp_selection', $database->pct_get_grps($id));
+                $tpl->assign('name'        , $data['name'        ]);
+                $tpl->assign('comment'     , $data['comment'     ]);
+                $tpl->assign('visible'     , $data['visible'     ]);
+                $tpl->assign('internal'    , $data['internal'    ]);
+                $tpl->assign('filter'      , $data['filter'      ]);
+                $tpl->assign('budget'      , $data['budget'      ]);
+                $tpl->assign('effort'      , $data['effort'      ]);
+                $tpl->assign('approved'    , $data['approved' 	 ]);
+                $tpl->assign('selectedCustomer' , $data['customerID']);
+                $tpl->assign('selectedActivities'   , $database->project_get_activities($id));
+                $tpl->assign('defaultRate', $data['defaultRate']);
+                $tpl->assign('myRate'     , $data['myRate'     ]);
+                $tpl->assign('fixedRate'  , $data['fixedRate'  ]);
+                $tpl->assign('selectedGroups', $database->project_get_groupIDs($id));
                 $tpl->assign('id', $id);
             }
         }
         // Create a <select> element to chosse the customer.
-        $sel = makeSelectBox("knd",$kga['usr']['groups'],isset($data)?$data['pct_kndID']:null);
-        $tpl->assign('sel_knd_names', $sel[0]);
-        $tpl->assign('sel_knd_IDs',   $sel[1]);
+        $sel = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
+        $tpl->assign('customers', $sel);
 
-        // Create a <select> element to chosse the events.
+        // Create a <select> element to chosse the activities.
         $assignableTasks = array();
-        $tasks = $database->get_arr_evt($kga['usr']['groups']);
+        $tasks = $database->get_activities($kga['user']['groups']);
         if(is_array($tasks)) {
 	        foreach ($tasks as $task) {
-	          if (!$task['evt_assignable']) continue;
-	          $assignableTasks[$task['evt_ID']] = $task['evt_name'];
+	          if (!$task['assignable']) continue;
+	          $assignableTasks[$task['activityID']] = $task['name'];
 	        }
         }
         $tpl->assign('assignableTasks',$assignableTasks);
         
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
-        $tpl->assign('sel_grp_names', $sel[0]);
-        $tpl->assign('sel_grp_IDs',   $sel[1]);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
+        $tpl->assign('groups', $sel);
         
         // Set defaults for a new project.
         if (!$id) {
-            $tpl->assign('grp_selection', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
 
-            $tpl->assign('knd_selection', null);
+            $tpl->assign('selectedCustomer', null);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_pct.tpl");
+        $tpl->display("add_edit_project.tpl");
     break;
     
     /**
-     * Display the dialog to add or edit an event.
+     * Display the dialog to add or edit an activity.
      */
-    case 'add_edit_evt':
-        if (isset($kga['customer']) || $kga['usr']['usr_sts']==2) die();
+    case 'add_edit_activity':
+        if (isset($kga['customer']) || $kga['user']['status']==2) die();
 
         if ($id) {
-            $data = $database->evt_get_data($id);
+            $data = $database->activity_get_data($id);
             if ($data) {
-                $tpl->assign('evt_name'        , $data['evt_name'        ]);
-                $tpl->assign('evt_comment'     , $data['evt_comment'     ]);
-                $tpl->assign('evt_visible'     , $data['evt_visible'     ]);
-                $tpl->assign('evt_filter'      , $data['evt_filter'      ]);
-                $tpl->assign('evt_default_rate', $data['evt_default_rate']);
-                $tpl->assign('evt_my_rate'     , $data['evt_my_rate'     ]);
-                $tpl->assign('evt_fixed_rate'  , $data['evt_fixed_rate'  ]);
-                $tpl->assign('evt_assignable'  , $data['evt_assignable'  ]);
-                $tpl->assign('grp_selection', $database->evt_get_grps($id));
-                $tpl->assign('pct_selection', $database->evt_get_pcts($id));
+                $tpl->assign('name'        , $data['name'        ]);
+                $tpl->assign('comment'     , $data['comment'     ]);
+                $tpl->assign('visible'     , $data['visible'     ]);
+                $tpl->assign('filter'      , $data['filter'      ]);
+                $tpl->assign('defaultRate', $data['defaultRate']);
+                $tpl->assign('myRate'     , $data['myRate'     ]);
+                $tpl->assign('fixedRate'  , $data['fixedRate'  ]);
+                $tpl->assign('assignable'  , $data['assignable'  ]);
+                $tpl->assign('selectedGroups', $database->activity_get_groups($id));
+                $tpl->assign('selectedProjects', $database->activity_get_projects($id));
                 $tpl->assign('id', $id);
         
             }
         }
 
         // Create a <select> element to chosse the groups.
-        $sel = makeSelectBox("grp",$kga['usr']['groups']);
-        $tpl->assign('sel_grp_names', $sel[0]);
-        $tpl->assign('sel_grp_IDs',   $sel[1]);
+        $sel = makeSelectBox("group",$kga['user']['groups']);
+        $tpl->assign('groups', $sel);
 
         // Create a <select> element to chosse the projects.
-        $sel = makeSelectBox("pct",$kga['usr']['groups']);
-        $tpl->assign('sel_pct_names', $sel[0]);
-        $tpl->assign('sel_pct_IDs',   $sel[1]);
+        $sel = makeSelectBox("project",$kga['user']['groups']);
+        $tpl->assign('projects', $sel);
 
         // Set defaults for a new project.
         if (!$id) {
-            $tpl->assign('grp_selection', $kga['usr']['groups']);
+            $tpl->assign('selectedGroups', $kga['user']['groups']);
             $tpl->assign('id', 0);
         }
 
-        $tpl->display("add_edit_evt.tpl");
+        $tpl->display("add_edit_activity.tpl");
     break;
     
 }

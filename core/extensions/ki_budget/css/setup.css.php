@@ -3,14 +3,14 @@
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
-#bgt {
+#budget {
     border:1px solid black; 
     margin:10px;
     background-color:#eee;
     overflow:auto;
 }
 
-#bgt { 
+#budget { 
     top:150px;
     z-index:2;
 }
@@ -24,7 +24,7 @@
         text-align:center;
 }
 
-.bgt_project {
+.budget_project {
   float:left;
   /*min-width:150px;
   height:150px;*/
@@ -36,12 +36,12 @@
   padding:2px;
 }
 
-.bgt_plot_area {
+.budget_plot_area {
   margin-left: auto;
   margin-right: auto;
 }
 
-.bgt_project_end {
+.budget_project_end {
   clear:both;
 }
 

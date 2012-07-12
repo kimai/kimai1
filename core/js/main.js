@@ -166,9 +166,9 @@ function changeTab(target,path) {
       lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
       lists_write_annotations();
 	}
-        if (usr_ID) {
-	  $.cookie('ki_active_tab_target_'+usr_ID, target);
-	  $.cookie('ki_active_tab_path_'+usr_ID, path);
+        if (userID) {
+	  $.cookie('ki_active_tab_target_'+userID, target);
+	  $.cookie('ki_active_tab_path_'+userID, path);
 	}
 }
 
@@ -213,13 +213,13 @@ function n_uhr() {
         
         if (currentDay != Jetzt.getDate()) {
           // it's the next day
-          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timespaceDateFormat,Jetzt));
+          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
           currentDay = Jetzt.getDate();
           
           // If the difference to the datepicker end date is less than one and a half day.
           // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
           if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
-            setTimespace(undefined,Jetzt);
+            setTimeframe(undefined,Jetzt);
           }
         }
         
@@ -250,53 +250,53 @@ function n_uhr() {
 }
 
 // ----------------------------------------------------------------------------------------
-// grabs entered timespace and writes it to database
+// grabs entered timeframe and writes it to database
 // after that it reloads all tables
 //
-function setTimespace(fromDate,toDate) {
+function setTimeframe(fromDate,toDate) {
     
-    timespace = '';
+    timeframe = '';
     
     if (fromDate != undefined) {
-      setTimespaceStart(fromDate);
-      timespace += strftime('%m-%d-%Y',fromDate);
+      setTimeframeStart(fromDate);
+      timeframe += strftime('%m-%d-%Y',fromDate);
     }
     else {
-      timespace += "0-0-0";
+      timeframe += "0-0-0";
     }
     
-    timespace += "|";
+    timeframe += "|";
     
     if (toDate != undefined) {
-      setTimespaceEnd(toDate);
-      timespace += strftime('%m-%d-%Y',toDate);
+      setTimeframeEnd(toDate);
+      timeframe += strftime('%m-%d-%Y',toDate);
     }
     else {
-      timespace += "0-0-0";
+      timeframe += "0-0-0";
     }
     
-    $.post("processor.php", { axAction: "setTimespace", axValue: timespace, id: 0 }, 
+    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 }, 
         function(response) {
-            hook_tss();
+            hook_timeframe_changed();
         }
     );
     
-    updateTimespaceWarning();
+    updateTimeframeWarning();
 }
 
-function setTimespaceStart(fromDate) {
-  $('#ts_in').html(strftime(timespaceDateFormat,fromDate));
+function setTimeframeStart(fromDate) {
+  $('#ts_in').html(strftime(timeframeDateFormat,fromDate));
   $('#pick_in').val(strftime('%m/%d/%Y',fromDate));
   $('#pick_out').datepicker( "option", "minDate", fromDate );
 }
 
-function setTimespaceEnd(toDate) {
-  $('#ts_out').html(strftime(timespaceDateFormat,toDate));
+function setTimeframeEnd(toDate) {
+  $('#ts_out').html(strftime(timeframeDateFormat,toDate));
   $('#pick_out').val(strftime('%m/%d/%Y',toDate));
   $('#pick_in').datepicker( "option", "maxDate", toDate );
 }
 
-function updateTimespaceWarning() {
+function updateTimeframeWarning() {
     
     today = new Date();
     today.setMilliseconds(0);
@@ -320,14 +320,14 @@ function updateTimespaceWarning() {
 // ----------------------------------------------------------------------------------------
 // starts a new recording task when the start-buzzer is hidden
 //
-function startRecord(pct_ID,evt_ID,user_ID) {
+function startRecord(projectID,activityID,userID) {
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
     offset = 0;
     startsec = now;
     show_stopwatch();
-    value = pct_ID +"|"+ evt_ID;
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: user_ID},
+    value = projectID +"|"+ activityID;
+    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
@@ -343,9 +343,9 @@ function startRecord(pct_ID,evt_ID,user_ID) {
 // stops the current recording task when the stop-buzzer is hidden
 //
 function stopRecord() {
-    $("#zeftable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
-    $("#zeftable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
-    $("#zeftable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
+    $("#timeSheetTable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
+    $("#timeSheetTable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
+    $("#timeSheetTable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
     show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(){
@@ -355,7 +355,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, knd_ID, knd_name, pct_ID, pct_name, evt_ID, evt_name) {
+function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
   startsec = record_startTime;
   if (record_ID == false) {
     // no recording is running anymore
@@ -364,9 +364,9 @@ function updateRecordStatus(record_ID, record_startTime, knd_ID, knd_name, pct_I
     return;
   }
   
-  buzzer_preselect('pct', pct_ID, pct_name, knd_ID, knd_name, false);
-  lists_reload('evt', function() {
-    buzzer_preselect('evt', evt_ID, evt_name, 0, '', false);
+  buzzer_preselect('project', projectID, projectName, customerID, customerName, false);
+  lists_reload('activity', function() {
+    buzzer_preselect('activity', activityID, activityName, 0, '', false);
   });
   
 }
@@ -376,9 +376,9 @@ function show_stopwatch() {
     $("#stopwatch").css('display','block');
     $("#stopwatch_ticker").css('display','block');
     $("#buzzer").addClass("act");
-    $("#ticker_knd").html($("#sel_knd").html());
-    $("#ticker_pct").html($("#sel_pct").html());
-    $("#ticker_evt").html($("#sel_evt").html());
+    $("#ticker_customer").html($("#selected_customer").html());
+    $("#ticker_project").html($("#selected_project").html());
+    $("#ticker_activity").html($("#selected_activity").html());
     $("ul#ticker").newsticker();
     ticktac();
 }
@@ -389,7 +389,7 @@ function show_selectors() {
     $("#stopwatch").css('display','none');
     $("#stopwatch_ticker").css('display','none');
     $("#buzzer").removeClass("act");
-    if (!(selected_knd && selected_pct && selected_evt)) {
+    if (!(selected_customer && selected_project && selected_activity)) {
       $('#buzzer').addClass('disabled');
     }
 }
@@ -402,44 +402,44 @@ function buzzer() {
       currentRecording=0;
       stopRecord();
     } else {
-        setTimespace(undefined,new Date());
-        startRecord(selected_pct,selected_evt,usr_ID);
+        setTimeframe(undefined,new Date());
+        startRecord(selected_project,selected_activity,userID);
         $('#buzzer').addClass('disabled');
     }
 }
 
 // preselections for buzzer
-function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
+function buzzer_preselect(subject,id,name,customerID,customerName,updateRecording) {
   
     if (updateRecording == undefined) {
       updateRecording = true;
     }
     
     switch (subject) {
-        case "knd":
+        case "customer":
         // TODO: build filter for project selection (by customer)
-            $("#sel_knd").html("select project");
-            $("#sel_knd").addClass("none");
+            $("#selected_customer").html("select project");
+            $("#selected_customer").addClass("none");
         break;
-        case "pct":
-            selected_knd = kndID;
-            selected_pct = id;
+        case "project":
+            selected_customer = customerID;
+            selected_project = id;
             $.post("processor.php", { axAction: "saveBuzzerPreselection", project:id});
-            $("#sel_knd").html(kndName);
-            $("#sel_pct").html(name);
-            $("#sel_knd").removeClass("none");
+            $("#selected_customer").html(customerName);
+            $("#selected_project").html(name);
+            $("#selected_customer").removeClass("none");
         break;
-        case "evt":
-            selected_evt = id;
-            $.post("processor.php", { axAction: "saveBuzzerPreselection", event:id});
-            $("#sel_evt").html(name);
+        case "activity":
+            selected_activity = id;
+            $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:id});
+            $("#selected_activity").html(name);
         break;
     }
     $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
     $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
     $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id).blur();
     
-    if (selected_knd && selected_pct && selected_evt) {
+    if (selected_customer && selected_project && selected_activity) {
       $('#buzzer').removeClass('disabled');
     }
 
@@ -447,14 +447,14 @@ function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
 
 
       switch (subject) {
-          case "pct":
+          case "project":
               $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", id: currentRecording, project:id},
                 function(data) {
                     ts_ext_reload();
                   }
                 );
           break;
-          case "evt":
+          case "activity":
             $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", id: currentRecording, task:id},
                 function(data) {
                     ts_ext_reload();
@@ -464,9 +464,9 @@ function buzzer_preselect(subject,id,name,kndID,kndName,updateRecording) {
       }
     }
     
-    $("#ticker_knd").html($("#sel_knd").html());
-    $("#ticker_pct").html($("#sel_pct").html());
-    $("#ticker_evt").html($("#sel_evt").html());
+    $("#ticker_customer").html($("#selected_customer").html());
+    $("#ticker_project").html($("#selected_project").html());
+    $("#ticker_activity").html($("#selected_activity").html());
 }
 
 // ----------------------------------------------------------------------------------------
@@ -517,12 +517,12 @@ function ticktack_off() {
 
 
 // ----------------------------------------------------------------------------------------
-// shows dialogue for editing an item in either customer, project or event list
+// shows dialogue for editing an item in either customer, project or activity list
 //
 function editSubject(subject,id) {
     var height = 180;
     var width = 450;
-    if (subject == 'pct') {
+    if (subject == 'project') {
       height = 250;
       width = 650;
     }
@@ -567,67 +567,67 @@ function lists_visible(visible) {
     $('body>.lists').hide();
 }
 
-function lists_extShrinkShow() {
-    $('#extShrink').css("background-color","red");
+function lists_extensionShrinkShow() {
+    $('#extensionShrink').css("background-color","red");
 }
 
-function lists_extShrinkHide() {
-    $('#extShrink').css("background-color","transparent");
+function lists_extensionShrinkHide() {
+    $('#extensionShrink').css("background-color","transparent");
 }
 
-function lists_kndShrinkShow() {
-    $('#kndShrink').css("background-color","red");
+function lists_customerShrinkShow() {
+    $('#customersShrink').css("background-color","red");
 }
 
-function lists_kndShrinkHide() {
-    $('#kndShrink').css("background-color","transparent");
+function lists_customerShrinkHide() {
+    $('#customersShrink').css("background-color","transparent");
 }
 
-function lists_usrShrinkShow() {
-    $('#usrShrink').css("background-color","red");
+function lists_userShrinkShow() {
+    $('#usersShrink').css("background-color","red");
 }
 
-function lists_usrShrinkHide() {
-    $('#usrShrink').css("background-color","transparent");
+function lists_userShrinkHide() {
+    $('#usersShrink').css("background-color","transparent");
 }
 
 function lists_shrinkExtToggle() {
-    (extShrinkMode)?extShrinkMode=0:extShrinkMode=1;
-    if (extShrinkMode) {
-        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/zefShrink_down.png')");
+    (extensionShrinkMode)?extensionShrinkMode=0:extensionShrinkMode=1;
+    if (extensionShrinkMode) {
+        $('#extensionShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_down.png')");
     } else {
-        $('#extShrink').css("background-image","url('../skins/"+skin+"/grfx/zefShrink_up.png')");
+        $('#extensionShrink').css("background-image","url('../skins/"+skin+"/grfx/timeSheetShrink_up.png')");
     }
     lists_set_heightTop();
     hook_resize();
 }
 
-function lists_shrinkKndToggle() {
-    (kndShrinkMode)?kndShrinkMode=0:kndShrinkMode=1;
-    if (kndShrinkMode) {
-        $('#knd, #knd_head, #knd_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
-        if (!usrShrinkMode)
-          $('#usrShrink').hide();
+function lists_shrinkCustomerToggle() {
+    (customerShrinkMode)?customerShrinkMode=0:customerShrinkMode=1;
+    if (customerShrinkMode) {
+        $('#customers, #customers_head, #customers_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
+        $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
+        if (!userShrinkMode)
+          $('#usersShrink').hide();
     } else {
         lists_set_tableWrapperWidths();
-        $('#knd, #knd_head, #knd_foot').fadeIn(fading_enabled?"slow":0);
-        $('#kndShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
+        $('#customers, #customers_head, #customers_foot').fadeIn(fading_enabled?"slow":0);
+        $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
         lists_resize();
-        if (!usrShrinkMode)
-          $('#usrShrink').show();
+        if (!userShrinkMode)
+          $('#usersShrink').show();
     }
 }
 
-function lists_shrinkUsrToggle() {
-    (usrShrinkMode)?usrShrinkMode=0:usrShrinkMode=1;
-    if (usrShrinkMode) {
-        $('#usr, #usr_head, #usr_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
-        $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_right.png')");
+function lists_shrinkUserToggle() {
+    (userShrinkMode)?userShrinkMode=0:userShrinkMode=1;
+    if (userShrinkMode) {
+        $('#users, #users_head, #users_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
+        $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
     } else {
-        $('#usr, #usr_head, #usr_foot').fadeIn(fading_enabled?"slow":0);
+        $('#users, #users_head, #users_foot').fadeIn(fading_enabled?"slow":0);
     lists_set_tableWrapperWidths();
-        $('#usrShrink').css("background-image","url('../skins/"+skin+"/grfx/kndShrink_left.png')");
+        $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
     }
 }
 
@@ -638,18 +638,18 @@ function lists_get_dimensions() {
     }
 
     subtableCount=4;
-    if (kndShrinkMode) {
+    if (customerShrinkMode) {
       subtableCount--;
     }
-    if (usrShrinkMode) {
+    if (userShrinkMode) {
       subtableCount--;
     }
     subtableWidth = (pageWidth()-10)/subtableCount-7;
 
-    usr_w = subtableWidth-5;
-    knd_w = subtableWidth-5; // subtract the space between the panels
-    pct_w = subtableWidth-6;
-    evt_w = subtableWidth-5;
+    userColumnWidth = subtableWidth-5;
+    customerColumnWidth = subtableWidth-5; // subtract the space between the panels
+    projectColumnWidth = subtableWidth-6;
+    activityColumnWidth = subtableWidth-5;
 }
 
 function lists_resize() {
@@ -659,78 +659,78 @@ function lists_resize() {
 
 function lists_set_tableWrapperWidths() {
     lists_get_dimensions();
-    $('#extShrink').css("width",pageWidth()-22);
+    $('#extensionShrink').css("width",pageWidth()-22);
     // set width of faked table heads of subtables -----------------
-    $("#usr_head, #usr_foot").css("width",usr_w-5);
-    $("#knd_head, #knd_foot").css("width",knd_w-5); // subtract the left padding inside the header
-    $("#pct_head, #pct_foot").css("width",pct_w-5); // which is 5px
-    $("#evt_head, #evt_foot").css("width",evt_w-5);
-    $("#usr").css("width",usr_w);
-    $("#knd").css("width",knd_w);
-    $("#pct").css("width",pct_w);
-    $("#evt").css("width",evt_w);
+    $("#users_head, #users_foot").css("width",userColumnWidth-5);
+    $("#customers_head, #customers_foot").css("width",customerColumnWidth-5); // subtract the left padding inside the header
+    $("#projects_head, #projects_foot").css("width",projectColumnWidth-5); // which is 5px
+    $("#activities_head, #activities_foot").css("width",activityColumnWidth-5);
+    $("#users").css("width",userColumnWidth);
+    $("#customers").css("width",customerColumnWidth);
+    $("#projects").css("width",projectColumnWidth);
+    $("#activities").css("width",activityColumnWidth);
     lists_set_left();
     lists_set_TableWidths();
 }
 
 function lists_set_left() {
     
-    // push pct/evt subtables in place LEFT
+    // push project/activity subtables in place LEFT
 
     leftmargin=0;
     rightmargin=0;
-    usrShrinkPos=0;
-    if (usrShrinkMode==0) {
+    userShrinkPos=0;
+    if (userShrinkMode==0) {
       leftmargin+=subtableWidth;
       rightmargin+=7;
-      usrShrinkPos+=subtableWidth+7;
+      userShrinkPos+=subtableWidth+7;
     }
 
-    $("#knd, #knd_head, #knd_foot").css("left",leftmargin+rightmargin+10);
-    $('#usrShrink').css("left",usrShrinkPos);
+    $("#customers, #customers_head, #customers_foot").css("left",leftmargin+rightmargin+10);
+    $('#usersShrink').css("left",userShrinkPos);
     
-    kndShrinkPos=usrShrinkPos;
+    customerShrinkPos=userShrinkPos;
 
-    if (kndShrinkMode==0) {
+    if (customerShrinkMode==0) {
       leftmargin+=subtableWidth;
       rightmargin+=7;
-      kndShrinkPos+=subtableWidth+7;
+      customerShrinkPos+=subtableWidth+7;
     }
 
-    $("#pct, #pct_head, #pct_foot").css("left",leftmargin+rightmargin+10);
+    $("#projects, #projects_head, #projects_foot").css("left",leftmargin+rightmargin+10);
     
-    $("#evt, #evt_head, #evt_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
-    $('#kndShrink').css("left",kndShrinkPos);
+    $("#activities, #activities_head, #activities_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
+    $('#customersShrink').css("left",customerShrinkPos);
     
 }
 
 function lists_set_heightTop() {
     lists_get_dimensions();
-    if (!extShrinkMode) {
+    if (!extensionShrinkMode) {
         $('#gui>div').css("height",pageHeight()-headerHeight()-150-40);
-        $("#usr,#knd,#pct,#evt").css("height","160px");
-        $("#usr_foot, #knd_foot, #pct_foot, #evt_foot").css("top",pageHeight()-30);
-        $('#usrShrink').css("height","211px");
-        $('#kndShrink').css("height","211px");
-        // push knd/pct/evt subtables in place TOP
+        $("#users,#customers,#projects,#activities").css("height","160px");
+        $("#users_foot, #customers_foot, #projects_foot, #activities_foot").css("top",pageHeight()-30);
+        $('#usersShrink').css("height","211px");
+        $('#customersShrink').css("height","211px");
+        // push customer/project/activity subtables in place TOP
         var subs = pageHeight()-headerHeight()-90+25;
-        $("#usr,#knd,#pct,#evt").css("top",subs);
+        $("#users,#customers,#projects,#activities").css("top",subs);
         // push faked table heads of subtables in place
         var subs = pageHeight()-headerHeight()-90;    
-        $("#usr_head,#knd_head,#pct_head,#evt_head").css("top",subs);
-        $('#extShrink').css("top",subs-10);
-        $('#usrShrink').css("top",subs);
-        $('#kndShrink').css("top",subs);
+        $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
+        $('#extensionShrink').css("top",subs-10);
+        $('#usersShrink').css("top",subs);
+        $('#customersShrink').css("top",subs);
     } else {
         $("#gui>div").css("height","105px");
-        $("#usr_head,#knd_head,#pct_head,#evt_head").css("top",headerHeight()+107);
-        $("#usr,#knd,#pct,#evt").css("top",headerHeight()+135);
-        $("#usr,#knd,#pct,#evt").css("height",pageHeight()-headerHeight()-165);
-        $('#kndShrink').css("height",pageHeight()-headerHeight()-110);
-        $('#usrShrink').css("height",pageHeight()-headerHeight()-110);
-        $('#extShrink').css("top",headerHeight()+97);
-        $('#kndShrink').css("top",headerHeight()+105);
-        $('#usrShrink').css("top",headerHeight()+105);
+        $("#users_head,#customers_head,#projects_head,#activities_head").css("top",headerHeight()+107);
+        $("#users,#customers,#projects,#activities").css("top",headerHeight()+135);
+        $("#users,#customers,#projects,#activities").css("height",pageHeight()-headerHeight()-165);
+        $('#customersShrink').css("height",pageHeight()-headerHeight()-110);
+        $('#usersShrink').css("height",pageHeight()-headerHeight()-110);
+        $('#extensionShrink').css("top",headerHeight()+97);
+        $('#customersShrink').css("top",headerHeight()+105);
+        $('#usersShrink').css("top",headerHeight()+105);
     }
     
     lists_set_TableWidths();
@@ -739,71 +739,71 @@ function lists_set_heightTop() {
 function lists_set_TableWidths() {
     lists_get_dimensions();
     // set table widths   
-    ($("#usr").innerHeight()-$("#usr table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
-    $("#usr table").css("width",usr_w-scr);
-    ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
-    $("#knd table").css("width",knd_w-scr);
-    ($("#pct").innerHeight()-$("#pct table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#pct table").css("width",pct_w-scr);
-    ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
-    $("#evt table").css("width",evt_w-scr);
+    ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
+    $("#users table").css("width",userColumnWidth-scr);
+    ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
+    $("#customers table").css("width",customerColumnWidth-scr);
+    ($("#projects").innerHeight()-$("#projects table").outerHeight()>0)?scr=0:scr=scroller_width;
+    $("#projects table").css("width",projectColumnWidth-scr);
+    ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
+    $("#activities table").css("width",activityColumnWidth-scr);
 }
 
 // ----------------------------------------------------------------------------------------
-// reloads timesheet, customer, project and event tables
+// reloads timesheet, customer, project and activity tables
 //
 function lists_reload(subject, callback) {
     switch (subject) {
-        case "usr":
-            $.post("processor.php", { axAction: "reload_usr", axValue: 0, id: 0 },
+        case "user":
+            $.post("processor.php", { axAction: "reload_users", axValue: 0, id: 0 },
                 function(data) {
-                    $("#usr").html(data);
-                    ($("#usr").innerHeight()-$("#usr table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#usr table").css("width",knd_w-scr);
-                    lists_live_filter('usr', $('#filt_usr').val());
-		    lists_write_annotations('usr');
+                    $("#users").html(data);
+                    ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#users table").css("width",customerColumnWidth-scr);
+                    lists_live_filter('user', $('#filt_user').val());
+		    lists_write_annotations('user');
                     if (typeof(callback) != "undefined")
                       callback();
                 }
             );
     break;
-        case "knd":
-            $.post("processor.php", { axAction: "reload_knd", axValue: 0, id: 0 },
+        case "customer":
+            $.post("processor.php", { axAction: "reload_customers", axValue: 0, id: 0 },
                 function(data) {
-                    $("#knd").html(data);
-                    ($("#knd").innerHeight()-$("#knd table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#knd table").css("width",knd_w-scr);
-                    lists_live_filter('knd', $('#filt_knd').val());
-                    lists_write_annotations('knd');
+                    $("#customers").html(data);
+                    ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#customers table").css("width",customerColumnWidth-scr);
+                    lists_live_filter('customer', $('#filter_customer').val());
+                    lists_write_annotations('customer');
                     if (typeof(callback) != "undefined")
                       callback();
                 }
             );
     break;
-        case "pct": 
-            $.post("processor.php", { axAction: "reload_pct", axValue: 0, id: 0 },
+        case "project": 
+            $.post("processor.php", { axAction: "reload_projects", axValue: 0, id: 0 },
                 function(data) { 
-                    $("#pct").html(data);
-                    ($("#pct").innerHeight()-$("#pct table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#pct table").css("width",pct_w-scr);
-                    $('#pct>table>tbody>tr>td>a.preselect#ps'+selected_pct+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-                    lists_live_filter('pct', $('#filt_pct').val());
-                    lists_write_annotations('pct');
+                    $("#projects").html(data);
+                    ($("#projects").innerHeight()-$("#projects table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#projects table").css("width",projectColumnWidth-scr);
+                    $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+                    lists_live_filter('project', $('#filter_project').val());
+                    lists_write_annotations('project');
                     if (typeof(callback) != "undefined")
                       callback();
                 }
             );
     break;
-        case "evt": 
-            $.post("processor.php", { axAction: "reload_evt", axValue: 0, id: 0, pct:selected_pct },
+        case "activity": 
+            $.post("processor.php", { axAction: "reload_activities", axValue: 0, id: 0, project:selected_project },
                 function(data) { 
-                    $("#evt").html(data);
-                    ($("#evt").innerHeight()-$("#evt table").outerHeight()>0)?scr=0:scr=scroller_width;
-                    $("#evt table").css("width",evt_w-scr);
-                    $('#evt>table>tbody>tr>td>a.preselect#ps'+selected_evt+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-                    lists_live_filter('evt', $('#filt_evt').val());
-		    lists_write_annotations('evt');
-        if ($('#row_evt'+selected_evt).length == 0) {
+                    $("#activities").html(data);
+                    ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
+                    $("#activities table").css("width",activityColumnWidth-scr);
+                    $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+                    lists_live_filter('activity', $('#filter_activity').val());
+		    lists_write_annotations('activity');
+        if ($('#row_activity'+selected_activity).length == 0) {
           $('#buzzer').addClass('disabled');
         }
         else {
@@ -830,27 +830,27 @@ function lists_live_filter(div_list, needle) {
 }
 
 
-function lists_knd_prefilter(knd,type) {
+function lists_customer_prefilter(customer,type) {
     if (type=="highlight") {
         
-        $(".knd").removeClass("filterPctForPreselection");
-        $(".pct").removeClass("filterPctForPreselection");
-        $("#pct .knd"+knd).addClass("filterPctForPreselection");
-        $("#pct .pct").removeClass("TableRowInvisible");
+        $(".customer").removeClass("filterProjectForPreselection");
+        $(".project").removeClass("filterProjectForPreselection");
+        $("#projects .customer"+customer).addClass("filterProjectForPreselection");
+        $("#projects .project").removeClass("TableRowInvisible");
 
         
     } else {
         
-        $(".knd").removeClass("filterPctForPreselection");      
-        $(".pct").removeClass("filterPctForPreselection");
-        $("#knd .knd"+knd).addClass("filterPctForPreselection");
-        $("#pct .pct").removeClass("highlightPctForPreselection");
-        if (knd > 0) {
-          $("#pct .pct").addClass("TableRowInvisible");
-          $("#pct .knd"+knd).removeClass("TableRowInvisible");
+        $(".customer").removeClass("filterProjectForPreselection");      
+        $(".project").removeClass("filterProjectForPreselection");
+        $("#customers .customer"+customer).addClass("filterProjectForPreselection");
+        $("#projects .project").removeClass("highlightProjectForPreselection");
+        if (customer > 0) {
+          $("#projects .project").addClass("TableRowInvisible");
+          $("#projects .customer"+customer).removeClass("TableRowInvisible");
         }
         else {
-          $("#pct .pct").removeClass("TableRowInvisible");
+          $("#projects .project").removeClass("TableRowInvisible");
         }
         
     }
@@ -862,18 +862,18 @@ function lists_knd_prefilter(knd,type) {
 //
 function lists_change_color(tableRow,highLight) {
   if (highLight) {
-    $(tableRow).parents("tr").addClass("highlightPctForPreselection");
+    $(tableRow).parents("tr").addClass("highlightProjectForPreselection");
   } else {
-    $(tableRow).parents("tr").removeClass("highlightPctForPreselection");
+    $(tableRow).parents("tr").removeClass("highlightProjectForPreselection");
   }
 }
 
-function lists_update_annotations(id,usr,knd,pct,evt)
+function lists_update_annotations(id,user,customer,project,activity)
 {
-  lists_ann_usr[id] = usr;
-  lists_ann_knd[id] = knd;
-  lists_ann_pct[id] = pct;
-  lists_ann_evt[id] = evt;
+  lists_user_annotations[id] = user;
+  lists_customer_annotations[id] = customer;
+  lists_project_annotations[id] = project;
+  lists_activity_annotations[id] = activity;
 
   if ($('.menu li#exttab_'+id).hasClass('act'))
     lists_write_annotations();
@@ -883,29 +883,29 @@ function lists_write_annotations(part)
 {
   var id = parseInt($('#fliptabs li.act').attr('id').substring(7));
 
-  if (!part || part == 'usr') {
-    $('#usr>table>tbody td.annotation').html("");
-    if (lists_ann_usr[id] != null)
-      for (var i in lists_ann_usr[id])
-        $('#row_usr'+i+'>td.annotation').html(lists_ann_usr[id][i]);
+  if (!part || part == 'user') {
+    $('#users>table>tbody td.annotation').html("");
+    if (lists_user_annotations[id] != null)
+      for (var i in lists_user_annotations[id])
+        $('#row_user'+i+'>td.annotation').html(lists_user_annotations[id][i]);
   }
-  if (!part || part == 'knd') {
-    $('#knd>table>tbody td.annotation').html("");
-    if (lists_ann_knd[id] != null)
-      for (var i in lists_ann_knd[id])
-        $('#row_knd'+i+'>td.annotation').html(lists_ann_knd[id][i]);
+  if (!part || part == 'customer') {
+    $('#customers>table>tbody td.annotation').html("");
+    if (lists_customer_annotations[id] != null)
+      for (var i in lists_customer_annotations[id])
+        $('#row_customer'+i+'>td.annotation').html(lists_customer_annotations[id][i]);
   }
-  if (!part || part == 'pct') {
-    $('#pct>table>tbody td.annotation').html("");
-    if (lists_ann_pct[id] != null)
-      for (var i in lists_ann_pct[id])
-        $('#row_pct'+i+'>td.annotation').html(lists_ann_pct[id][i]);
+  if (!part || part == 'project') {
+    $('#projects>table>tbody td.annotation').html("");
+    if (lists_project_annotations[id] != null)
+      for (var i in lists_project_annotations[id])
+        $('#row_project'+i+'>td.annotation').html(lists_project_annotations[id][i]);
   }
-  if (!part || part == 'evt') {
-    $('#evt>table>tbody td.annotation').html("");
-    if (lists_ann_evt[id] != null)
-      for (var i in lists_ann_evt[id])
-        $('#row_evt'+i+'>td.annotation').html(lists_ann_evt[id][i]);
+  if (!part || part == 'activity') {
+    $('#activities>table>tbody td.annotation').html("");
+    if (lists_activity_annotations[id] != null)
+      for (var i in lists_activity_annotations[id])
+        $('#row_activity'+i+'>td.annotation').html(lists_activity_annotations[id][i]);
   }
 }
 
@@ -936,18 +936,18 @@ function lists_toggle_filter(subject,id) {
     $('#row_'+subject+id).removeClass('fhighlighted');
     if (alreadySelected) {
         switch (subject) {
-        case 'usr':
-          filterUsr.splice(filterUsr.indexOf(id),1);
+        case 'user':
+          filterUsers.splice(filterUsers.indexOf(id),1);
         break;
-        case 'knd':
-          filterKnd.splice(filterKnd.indexOf(id),1);
-          lists_knd_prefilter(0,'filter');
+        case 'customer':
+          filterCustomers.splice(filterCustomers.indexOf(id),1);
+          lists_customer_prefilter(0,'filter');
         break;
-        case 'pct':
-          filterPct.splice(filterPct.indexOf(id),1);
+        case 'project':
+          filterProjects.splice(filterProjects.indexOf(id),1);
         break;
-        case 'evt':
-          filterEvt.splice(filterEvt.indexOf(id),1);
+        case 'activity':
+          filterActivities.splice(filterActivities.indexOf(id),1);
         break;
       }
     }
@@ -955,18 +955,18 @@ function lists_toggle_filter(subject,id) {
     {
       $('#row_'+subject+id).addClass('fhighlighted');
       switch (subject) {
-        case 'usr':
-          filterUsr.push(id);
+        case 'user':
+          filterUsers.push(id);
         break;
-        case 'knd':
-          filterKnd.push(id);
-          lists_knd_prefilter(id,'filter');
+        case 'customer':
+          filterCustomers.push(id);
+          lists_customer_prefilter(id,'filter');
         break;
-        case 'pct':
-          filterPct.push(id);
+        case 'project':
+          filterProjects.push(id);
         break;
-        case 'evt':
-          filterEvt.push(id);
+        case 'activity':
+          filterActivities.push(id);
         break;
       }
     }

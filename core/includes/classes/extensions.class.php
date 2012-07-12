@@ -9,15 +9,15 @@ class Extensions {
   private $js_extension_files  = array();
   private $extensions          = array();
   private $tab_change_trigger  = array();
-  private $tss_hooks           = array();
-  private $rec_hooks           = array();
-  private $stp_hooks           = array();
-  private $chu_hooks           = array();
-  private $chk_hooks           = array();
-  private $chp_hooks           = array();
-  private $che_hooks           = array();
-  private $lft_hooks           = array(); // list filter hooks
-  private $rsz_hooks           = array(); // resize hooks
+  private $timeframe_changed_hooks           = array();
+  private $record_hooks           = array();
+  private $buzzer_stop_hooks           = array();
+  private $users_changed_hooks           = array();
+  private $customers_changed_hooks           = array();
+  private $projects_changed_hooks           = array();
+  private $activities_changed_hooks           = array();
+  private $filter_hooks           = array(); // list filter hooks
+  private $resize_hooks           = array(); // resize hooks
   private $timeouts            = array();
 
   private $extensionsDir;
@@ -54,8 +54,8 @@ class Extensions {
       $settings = parse_ini_file($dir.'config.ini');
                        	
      	// Check if user has the correct rank to use this extension      
-     	if (isset($this->kga['usr']))
-        switch ($this->kga['usr']['usr_sts']) {
+     	if (isset($this->kga['user']))
+        switch ($this->kga['user']['status']) {
           case 0:
           if ($settings['ADMIN_ALLOWED'] != "1")
             continue 2;
@@ -88,15 +88,15 @@ class Extensions {
       $this->addOptionalValue($settings,'TAB_CHANGE_TRIGGER',$this->tab_change_trigger);
                                   
       // read hook triggers
-      $this->addOptionalValue($settings,'TIMESPACE_CHANGE_TRIGGER', $this->tss_hooks);
-      $this->addOptionalValue($settings,'BUZZER_RECORD_TRIGGER', $this->rec_hooks);
-      $this->addOptionalValue($settings,'BUZZER_STOP_TRIGGER', $this->stp_hooks);
-      $this->addOptionalValue($settings,'CHANGE_USR_TRIGGER', $this->chu_hooks);
-      $this->addOptionalValue($settings,'CHANGE_KND_TRIGGER', $this->chk_hooks);
-      $this->addOptionalValue($settings,'CHANGE_PCT_TRIGGER', $this->chp_hooks);
-      $this->addOptionalValue($settings,'CHANGE_EVT_TRIGGER', $this->che_hooks);
-      $this->addOptionalValue($settings,'LIST_FILTER_TRIGGER', $this->lft_hooks);
-      $this->addOptionalValue($settings,'RESIZE_TRIGGER', $this->rsz_hooks);
+      $this->addOptionalValue($settings,'TIMEFRAME_CHANGE_TRIGGER', $this->timeframe_changed_hooks);
+      $this->addOptionalValue($settings,'BUZZER_RECORD_TRIGGER', $this->record_hooks);
+      $this->addOptionalValue($settings,'BUZZER_STOP_TRIGGER', $this->buzzer_stop_hooks);
+      $this->addOptionalValue($settings,'CHANGE_USER_TRIGGER', $this->users_changed_hooks);
+      $this->addOptionalValue($settings,'CHANGE_CUSTOMER_TRIGGER', $this->customers_changed_hooks);
+      $this->addOptionalValue($settings,'CHANGE_PROJECT_TRIGGER', $this->projects_changed_hooks);
+      $this->addOptionalValue($settings,'CHANGE_ACTIVITY_TRIGGER', $this->activities_changed_hooks);
+      $this->addOptionalValue($settings,'LIST_FILTER_TRIGGER', $this->filter_hooks);
+      $this->addOptionalValue($settings,'RESIZE_TRIGGER', $this->resize_hooks);
                     
       // add Timeout clearing
       $this->addOptionalValue($settings,'REG_TIMEOUTS', $this->timeouts);
@@ -142,40 +142,40 @@ class Extensions {
     return $this->js_extension_files;
   }
 
-  public function tssHooks() {
-    return implode($this->tss_hooks);
+  public function timeframeChangedHooks() {
+    return implode($this->timeframe_changed_hooks);
   }
 
-  public function recHooks() {
-    return implode($this->rec_hooks);
+  public function buzzerRecordHooks() {
+    return implode($this->record_hooks);
   }
 
-  public function stpHooks() {
-    return implode($this->stp_hooks);
+  public function buzzerStopHooks() {
+    return implode($this->buzzer_stop_hooks);
   }
 
-  public function chuHooks() {
-    return implode($this->chu_hooks);
+  public function usersChangedHooks() {
+    return implode($this->users_changed_hooks);
   }
 
-  public function chkHooks() {
-    return implode($this->chk_hooks);
+  public function customersChangedHooks() {
+    return implode($this->customers_changed_hooks);
   }
 
-  public function chpHooks() {
-    return implode($this->chp_hooks);
+  public function projectsChangedHooks() {
+    return implode($this->projects_changed_hooks);
   }
 
-  public function cheHooks() {
-    return implode($this->che_hooks);
+  public function activitiesChangedHooks() {
+    return implode($this->activities_changed_hooks);
   }
 
-  public function lftHooks() {
-    return implode($this->lft_hooks);
+  public function filterHooks() {
+    return implode($this->filter_hooks);
   }
 
-  public function rszHooks() {
-    return implode($this->rsz_hooks);
+  public function resizeHooks() {
+    return implode($this->resize_hooks);
   }
 
   public function timeoutList() {
