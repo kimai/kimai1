@@ -1298,7 +1298,7 @@ class PDODatabaseLayer extends DatabaseLayer
       if ($userId === null)
         $userId = $this->kga['user']['userID'];
 
-      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}preferences WHERE userID = ? AND option = ?");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}preferences WHERE userID = ? AND `option` = ?");
 
       $result = $pdo_query->execute(array($userId,$key));
 
@@ -1332,7 +1332,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $placeholders = implode(",",array_fill(0,count($keys),'?'));
 
-      $pdo_query = $this->conn->prepare("SELECT option,value FROM ${p}preferences WHERE userID = ? AND option IN ($placeholders)");
+      $pdo_query = $this->conn->prepare("SELECT `option`,value FROM ${p}preferences WHERE userID = ? AND `option` IN ($placeholders)");
       $result = $pdo_query->execute(array_merge(array($userId, $p), $keys));
 
       if ($result == false) {
@@ -1368,7 +1368,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $prefixLength = strlen($prefix);
       //$prefix .= '%';
 
-      $pdo_query = $this->conn->prepare("SELECT option,value FROM ${p}preferences WHERE userID = ? AND option LIKE ?");
+      $pdo_query = $this->conn->prepare("SELECT `option`, value FROM ${p}preferences WHERE userID = ? AND `option` LIKE ?");
 
       $result = $pdo_query->execute(array($userId,"$prefix%"));
 
@@ -1562,7 +1562,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $counter = 0;
 
       while ($leader = $pdo_query->fetch()) {
-          $leaderIDs[$counter] = $leader'userID'];
+          $leaderIDs[$counter] = $leader['userID'];
           $counter++;
       }
 
@@ -1838,7 +1838,7 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $this->conn->beginTransaction();
 
-      $statement = $this->conn->prepare("UPDATE ${p}configuration SET value = ? WHERE option = ?");
+      $statement = $this->conn->prepare("UPDATE ${p}configuration SET value = ? WHERE `option` = ?");
 
       foreach ($data as $key => $value) {
         $statement->bindValue(1,$value);
@@ -3346,7 +3346,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function get_DBversion() {
       $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE option = 'version';");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE `option` = 'version';");
       $result = $pdo_query->execute(array());
 
       if ($result == false) {
@@ -3355,28 +3355,18 @@ class PDODatabaseLayer extends DatabaseLayer
         $result = $pdo_query->execute(array());
       }
 
-      if ($result == false) {
-          $this->logLastError('get_DBversion');
-          return false;
-      }
-
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
       $return[0]   = $row['value'];
 
       if (!is_array($row)) $return[0] = "0.5.1";
 
-      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE option = 'revision';");
+      $pdo_query = $this->conn->prepare("SELECT value FROM ${p}configuration WHERE `option` = 'revision';");
       $result = $pdo_query->execute(array());
 
       if ($result == false) {
         // before database revision 1369 (503 + 866)
         $pdo_query = $this->conn->prepare("SELECT value FROM ${p}var WHERE var = 'revision';");
         $result = $pdo_query->execute(array());
-      }
-
-      if ($result == false) {
-          $this->logLastError('get_DBversion');
-          return false;
       }
 
       $row = $pdo_query->fetch(PDO::FETCH_ASSOC);
