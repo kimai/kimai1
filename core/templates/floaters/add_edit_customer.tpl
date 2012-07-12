@@ -69,7 +69,7 @@
     
     <form id="add_edit_customer" action="processor.php" method="post"> 
                 
-    <input name="customer_filter"   type="hidden" value="0" />
+    <input name="customerFilter"   type="hidden" value="0" />
 
     <input name="axAction"     type="hidden" value="add_edit_CustomerProjectActivity" />   
     <input name="axValue"      type="hidden" value="customer" />   
@@ -144,7 +144,7 @@
                 
             </fieldset>
 {else}
-                    <input id="customerGroups" name="groups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
+                    <input id="customerGroups" name="customerGroups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
 {/if}  
 
             <fieldset id="address">

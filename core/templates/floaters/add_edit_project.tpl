@@ -94,11 +94,11 @@ $id}{$kga.lang.edit}: {$kga.lang.project}{else}{$kga.lang.new_project}{/if}</spa
 </ul>
 </div>
 
-<form id="addProject" action="processor.php" method="post"><input
-	name="project_filter" type="hidden" value="0" /> <input name="axAction"
-	type="hidden" value="add_edit_CustomerProjectActivity" /> <input name="axValue"
-	type="hidden" value="project" /> <input name="id" type="hidden"
-	value="{$id}" />
+<form id="addProject" action="processor.php" method="post">
+  <input name="projectFilter" type="hidden" value="0" />
+  <input name="axAction" type="hidden" value="add_edit_CustomerProjectActivity" />
+  <input name="axValue" type="hidden" value="project" />
+  <input name="id" type="hidden" value="{$id}" />
 
 
 <div id="floater_tabs" class="floater_content">
@@ -211,8 +211,8 @@ $id}{$kga.lang.edit}: {$kga.lang.project}{else}{$kga.lang.new_project}{/if}</spa
 	</select></li>
 </ul>
 </fieldset>
-{else} <input id="groups" name="groups[]" type="hidden"
-	value="{$selectedGroup.0|escape:'html'}" /> {/if}
+{else} <input id="projectGroups" name="projectGroups[]" type="hidden"
+	value="{$selectedGroups.0|escape:'html'}" /> {/if}
 
 <fieldset id="comment">
 <ul>

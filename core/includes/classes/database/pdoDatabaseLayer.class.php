@@ -615,20 +615,14 @@ class PDODatabaseLayer extends DatabaseLayer
       comment,
       visible,
       filter,
-      budget.
-      effort,
-      approved,
       assignable
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+      ) VALUES (?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
       $data['name'],
       $data['comment'],
       $data['visible'],
       $data['filter'],
-      $data['budget'],
-      $data['effort'],
-      $data['approved'],
       $data['assignable']
       ));
 
@@ -2150,15 +2144,15 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $arr[$i]['projectID']   = $row['projectID'];
-          $arr[$i]['name']        = $row['name'];
-          $arr[$i]['comment']     = $row['comment'];
-          $arr[$i]['customerNme'] = $row['customerName'];
-          $arr[$i]['customerID']  = $row['customerID'];
-          $arr[$i]['visible']     = $row['visible'];
-          $arr[$i]['budget']      = $row['budget'];
-          $arr[$i]['effort']      = $row['effort'];
-          $arr[$i]['approved']    = $row['approved'];
+          $arr[$i]['projectID']    = $row['projectID'];
+          $arr[$i]['name']         = $row['name'];
+          $arr[$i]['comment']      = $row['comment'];
+          $arr[$i]['customerName'] = $row['customerName'];
+          $arr[$i]['customerID']   = $row['customerID'];
+          $arr[$i]['visible']      = $row['visible'];
+          $arr[$i]['budget']       = $row['budget'];
+          $arr[$i]['effort']       = $row['effort'];
+          $arr[$i]['approved']     = $row['approved'];
           $i++;
       }
       return $arr;

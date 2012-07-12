@@ -64,7 +64,7 @@
     
         <form id="add_edit_activity" action="processor.php" method="post"> 
                 
-                <input name="activity_filter"   type="hidden" value="0" />
+                <input name="activityFilter"   type="hidden" value="0" />
  
                 <input name="axAction" type="hidden" value="add_edit_CustomerProjectActivity" />   
                 <input name="axValue" type="hidden" value="activity" />   
@@ -129,7 +129,7 @@
                 </ul>
             </fieldset>
 {else}
-                    <input id="groups" id="activityGroups" name="groups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
+                    <input id="activityGroups" name="activityGroups[]" type="hidden" value="{$selectedGroups.0|escape:'html'}" />
 {/if}        
 
     <fieldset id="projects">

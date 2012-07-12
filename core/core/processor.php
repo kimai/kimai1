@@ -247,7 +247,7 @@ switch ($axAction) {
             	$data['mail']     = $_REQUEST['mail'];
             	$data['homepage'] = $_REQUEST['homepage'];
             	$data['visible']  = $_REQUEST['visible'];
-            	$data['filter']   = $_REQUEST['filter'];
+            	$data['filter']   = $_REQUEST['customerFilter'];
         
               // If password field is empty dont overwrite the password.
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
@@ -276,10 +276,10 @@ switch ($axAction) {
 
               $data['name']         = $_REQUEST['name'];
               $data['customerID']        = $_REQUEST['customerID'];
-              $data['comment']      = $_REQUEST['comment'];
+              $data['comment']      = $_REQUEST['projectComment'];
               $data['visible']      = isset($_REQUEST['visible'])?1:0;
               $data['internal']     = isset($_REQUEST['internal'])?1:0;
-              $data['filter']       = $_REQUEST['filter'];
+              $data['filter']       = $_REQUEST['projectFilter'];
               $data['budget']       = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
               $data['effort']       = 
@@ -287,9 +287,9 @@ switch ($axAction) {
               $data['approved']       = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
               $data['defaultRate'] = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['default_rate']);
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
               $data['myRate']      = 
-                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['my_rate']);
+                  str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['myRate']);
               $data['fixedRate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
                 
@@ -303,9 +303,9 @@ switch ($axAction) {
               // set the project group mappings
               if (isset($_REQUEST['projectGroups']))
                 $database->assign_projectToGroups($id, $_REQUEST['projectGroups']);
-              if (isset($_REQUEST['assignedActivities']))
+              if (isset($_REQUEST['assignedActivities'])) {
                 $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['user']['groups']);
-                foreach($_REQUEST['assignedActivitiest'] as $index => $activityID) {
+                foreach($_REQUEST['assignedActivities'] as $index => $activityID) {
                 	if($activityID <= 0) {
                 		continue;
                 	}
@@ -320,6 +320,7 @@ switch ($axAction) {
                 	}
                		$database->projects_activities_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
                 }
+              }
             break;
             
             /**
@@ -331,7 +332,7 @@ switch ($axAction) {
               $data['name']         = $_REQUEST['name'];
               $data['comment']      = $_REQUEST['comment'];
               $data['visible']      = $_REQUEST['visible'];
-              $data['filter']       = $_REQUEST['filter'];
+              $data['filter']       = $_REQUEST['activityFilter'];
               $data['assignable']   = isset($_REQUEST['assignable'])?1:0;
               $data['defaultRate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
