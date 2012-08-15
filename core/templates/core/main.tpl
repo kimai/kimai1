@@ -279,25 +279,25 @@
 
 <div class="lists" style="display:none">
 <div id="users_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('user', this.value);" type="text" id="filt_user" name="filt_user"/>
+        <input class="livefilterfield" onkeyup="lists_live_filter('users', this.value);" type="text" id="filt_user" name="filt_user"/>
     {$kga.lang.users} 
 </div>
 
 <div id="customers_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('customer', this.value);" type="text" id="filter_customer" name="filter_customer"/>
+        <input class="livefilterfield" onkeyup="lists_live_filter('customers', this.value);" type="text" id="filter_customer" name="filter_customer"/>
     {$kga.lang.customers} 
 
 </div>
 
 <div id="projects_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('project', this.value);" type="text" id="filter_project" name="filter_project"/>
+        <input class="livefilterfield" onkeyup="lists_live_filter('projects', this.value);" type="text" id="filter_project" name="filter_project"/>
     {$kga.lang.projects}
     
     
 </div>
 
 <div id="activities_head">
-        <input class="livefilterfield" onkeyup="lists_live_filter('activity', this.value);" type="text" id="filter_activity" name="filter_activity"/>
+        <input class="livefilterfield" onkeyup="lists_live_filter('activities', this.value);" type="text" id="filter_activity" name="filter_activity"/>
     {$kga.lang.activities}
     
     
