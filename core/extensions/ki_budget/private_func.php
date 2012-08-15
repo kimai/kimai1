@@ -98,7 +98,7 @@ foreach ($projects as $project) {
   	}
   }
     $wages[$projectID][$activity['activityID']] = array();
-    if($activity['budget'] <= 0) {
+    if(!isset( $activity['budget'] ) || $activity['budget'] <= 0) {
     	continue;
     }
     $wages[$projectID][$activity['activityID']]['budget'] = $activity['budget'];
