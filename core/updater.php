@@ -1574,10 +1574,10 @@ if ((int)$revisionDB < $kga['revision'] && !$errors) {
     $versionDB_e[1] = 8;
     $versionDB_e[2] = 2;
     
-    $query=sprintf("UPDATE `${p}var` SET value = '%s' WHERE var = 'version';", $kga['version']);
+    $query=sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
     exec_query($query,0);
 
-    $query=sprintf("UPDATE `${p}var` SET value = '%d' WHERE var = 'revision';", $kga['revision']);
+    $query=sprintf("UPDATE `${p}configuration` SET value = '%d' WHERE `option` = 'revision';", $kga['revision']);
     exec_query($query,0);
 
 }
