@@ -355,10 +355,11 @@
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
     {/literal}
-
-  {if $latest_running_task == -1}
+    
+  {if $latest_running_task == -1 || $latest_running_task == ''}
     updateRecordStatus(false);
   {else}
+
     updateRecordStatus({$latest_running_task},{$timeSheetEntries[0].start},
                              {$timeSheetEntries[0].customerID},'{$timeSheetEntries[0].customerName|replace:"'":"\\'"|escape:'html'}',
                              {$timeSheetEntries[0].projectID},'{$timeSheetEntries[0].projectName|replace:"'":"\\'"|escape:'html'}',

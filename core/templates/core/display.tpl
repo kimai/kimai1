@@ -14,7 +14,7 @@
           }
         });
         
-        setTimeframeStart(new Date({/literal}{$timeframeBegin*1000}{literal}));
+        setTimeframeStart(new Date({/literal}{$timeframe_in*1000}{literal}));
         setTimeframeEnd(new Date({/literal}{$timeframe_out*1000}{literal}));
         updateTimeframeWarning();
              
