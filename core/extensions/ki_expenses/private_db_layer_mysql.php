@@ -347,7 +347,7 @@ function expenses_by_user($start,$end,$users = null,$customers = null,$projects 
     if ($end)
       $whereClauses[]="timestamp <= $end"; 
 
-   $query = "SELECT SUM(value) as expenses, userID
+   $query = "SELECT SUM(value*multiplier) as expenses, userID
              FROM ${p}expenses
              Join ${p}projects USING(projectID)
              Join ${p}customers USING(customerID)
@@ -395,7 +395,7 @@ function expenses_by_customer($start,$end,$users = null,$customers = null,$proje
     if ($end)
       $whereClauses[]="timestamp <= $end"; 
     
-    $query = "SELECT SUM(value) as expenses, customerID FROM ${p}expenses
+    $query = "SELECT SUM(value*multiplier) as expenses, customerID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
             " GROUP BY customerID;";
@@ -438,7 +438,7 @@ function expenses_by_project($start,$end,$users = null,$customers = null,$projec
     if ($end)
       $whereClauses[]="timestamp <= $end";
  
-    $query = "SELECT sum(value) as expenses, projectID FROM ${p}expenses
+    $query = "SELECT sum(value*multiplier) as expenses, projectID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
        " GROUP BY projectID;";
