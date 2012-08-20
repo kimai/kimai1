@@ -90,7 +90,7 @@
           <li>
             <label for="timezone">{$kga.lang.timezone}:</label>
             <select name="timezone">
-              {html_options values=$timezones output=$timezones selected=$kga.conf.timezone}
+              {html_options values=$timezones output=$timezones selected=$kga.timezone}
             </select>
           </li>
 

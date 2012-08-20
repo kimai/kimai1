@@ -393,7 +393,7 @@ function write_config() {
   
     step_ahead();
 
-    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database },
+    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database, timezone:timezone },
         function(data) {
             $('#wrapper').fadeOut(2000);
             $('#footer').fadeOut(2000, function() {

@@ -184,13 +184,14 @@ switch ($axAction) {
     $hostname    = addcslashes($_REQUEST['hostname'],'"$');
     $username    = addcslashes($_REQUEST['username'],'"$');
     $password    = addcslashes($_REQUEST['password'],'"$');
+    $timezone    = addcslashes($_REQUEST['timezone'],'"$');
     $db_layer    = $_REQUEST['db_layer'];
     $db_type     = $_REQUEST['db_type'];
     $prefix      = addcslashes($_REQUEST['prefix'],'"$');
     $lang        = $_REQUEST['lang'];
     $salt        = createPassword(20);
 
-    write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt);
+    write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone);
 
     break;
     

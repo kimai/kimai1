@@ -103,7 +103,7 @@ switch ($axAction) {
             }
         }
         else {
-          $tpl->assign('timezone' , $kga['conf']['timezone']);
+          $tpl->assign('timezone' , $kga['timezone']);
         }
 
         $tpl->assign('timezones', timezoneList());

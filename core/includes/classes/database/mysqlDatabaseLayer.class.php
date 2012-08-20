@@ -2465,7 +2465,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     }
 
 
-    $this->kga['conf']['timezone'] = $this->kga['conf']['defaultTimezone'];
     $this->kga['conf']['rowlimit'] = 100;
     $this->kga['conf']['skin'] = 'standard';
     $this->kga['conf']['autoselection'] = 1;
@@ -2562,9 +2561,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $this->kga['conf'] = array_merge($this->kga['conf'],$this->user_get_preferences_by_prefix('ui.'));
     $userTimezone = $this->user_get_preference('timezone');
     if ($userTimezone != '')
-      $this->kga['conf']['timezone'] = $userTimezone;
+      $this->kga['timezone'] = $userTimezone;
+    else
+      $this->kga['timezone'] = $this->kga['defaultTimezone'];
 
-    date_default_timezone_set($this->kga['conf']['timezone']);
+    date_default_timezone_set($this->kga['timezone']);
   }
 
   /**

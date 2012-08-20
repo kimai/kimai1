@@ -388,7 +388,6 @@ exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('language'
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('decimalSeparator',',')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('durationWithSeconds','0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('defaultTimezone',".quoteForSql($_REQUEST['timezone']).")");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('defaultVat','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('editLimit','-')");

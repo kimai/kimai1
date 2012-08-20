@@ -300,8 +300,6 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
     $conn = $database->getConnectionHandler();
     
     $executed_queries++;
-    
-    echo "<tr>";
 
     if ($kga['server_conn'] == "pdo") {
       $pdo_query = $conn->prepare($query);
@@ -321,21 +319,19 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
     
     $query = htmlspecialchars($query);
     $displayQuery = htmlspecialchars($displayQuery);
-
-    echo "<td>".($displayQuery==null?$query:$displayQuery) ."<br/>";
-    echo "<span class='error_info'>" . $err . "</span>";
-    echo "</td>";
     
     if ($success) {
-        echo "<td class='green'>&nbsp;&nbsp;</td>"; 
+      $level = 'green';
     } else {
-        if ($errorProcessing) {
-            echo "<td class='red'>!</td>";
-            $errors++;
-        } else {
-            echo "<td class='orange'>&nbsp;&nbsp;</td>";
-        }
+      if ($errorProcessing) {
+        $level = 'red';
+        $errors++;
+      } else {
+        $level = 'orange'; // something went wrong but it's not an error
+      }
     }
+
+    printLine($level,($displayQuery==null?$query:$displayQuery),$err);
 
     if (!$success) {
 
@@ -351,6 +347,27 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
         Logger::logfile("Error text: $err");
     }
     
+}
+
+function printLine($level, $text, $errorInfo = '') {
+  echo "<tr>";
+  echo "<td>".$text ."<br/>";
+  echo "<span class='error_info'>" . $errorInfo . "</span>";
+  echo "</td>";
+  
+  switch ($level) {
+  case 'green':
+      echo "<td class='green'>&nbsp;&nbsp;</td>"; 
+      break;
+  case 'red':
+          echo "<td class='red'>!</td>";
+      break;
+  case 'orange':
+          echo "<td class='orange'>&nbsp;&nbsp;</td>";
+      break;
+  }
+
+  echo "</tr>";
 }
 
 function quoteForSql($input) {
@@ -1563,6 +1580,36 @@ if ((int)$revisionDB < 1368) {
     CHANGE `zef_billable`     `billable`        tinyint(4) DEFAULT NULL COMMENT 'how many percent are billable to customer'
     ;");
 
+}
+
+if ((int)$revisionDB < 1370) {
+    $result = $database->queryAll("SELECT `value` FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
+    $defaultTimezone = $result[0][0];
+
+    $success = write_config_file(
+      $kga['server_database'],
+      $kga['server_hostname'],
+      $kga['server_username'],
+      $kga['server_password'],
+      $kga['server_conn'],
+      $kga['server_type'],
+      $kga['server_prefix'],
+      $kga['language'],
+      $kga['password_salt'],
+      $defaultTimezone);
+
+    if ($success) {
+      $level = 'green';
+      $additional = 'Timezone: '. $defaultTimezone;
+    } else {
+      $level = 'red';
+      $additional = 'Unable to write to file.';
+    }
+
+    printLine($level,'Store default timezone in configuration file <i>autoconf.php</i>.',$additional);
+
+    if ($success)
+      exec_query("DELETE FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
 }
 
 // ============================

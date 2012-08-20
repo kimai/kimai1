@@ -2496,7 +2496,6 @@ class PDODatabaseLayer extends DatabaseLayer
         $this->kga['conf'][$row['option']] = $row['value'];
     } while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC));
 
-    $this->kga['conf']['timezone'] = $this->kga['conf']['defaultTimezone'];
     $this->kga['conf']['rowlimit'] = 100;
     $this->kga['conf']['skin'] = 'standard';
     $this->kga['conf']['autoselection'] = 1;
@@ -2607,9 +2606,11 @@ class PDODatabaseLayer extends DatabaseLayer
     $this->kga['conf'] = array_merge($this->kga['conf'],$this->user_get_preferences_by_prefix('ui.',$this->kga['user']['userID']));
     $userTimezone = $this->user_get_preference('timezone');
     if ($userTimezone != '')
-      $this->kga['conf']['timezone'] = $userTimezone;
+      $this->kga['timezone'] = $userTimezone;
+    else
+      $this->kga['timezone'] = $this->kga['defaultTimezone'];
 
-    date_default_timezone_set($this->kga['conf']['timezone']);
+    date_default_timezone_set($this->kga['timezone']);
     }
 
     /**

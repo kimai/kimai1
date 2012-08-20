@@ -128,7 +128,4 @@ if (!empty($vars)) {
     $kga['language']             = $vars['language'];
   else if ($kga['language'] == '')
     $kga['language'] = 'en';
-
-  if ($vars['defaultTimezone'])
-    date_default_timezone_set($vars['defaultTimezone']);
 }

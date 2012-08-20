@@ -330,7 +330,6 @@ switch ($axAction) {
 		$config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];
 		$config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
 		$config_data['durationWithSeconds'] = isset($_REQUEST['durationWithSeconds']);
-		$config_data['defaultTimezone'] = $_REQUEST['defaultTimezone'];
 		$config_data['exactSums'] = isset($_REQUEST['exactSums']);
 		$editLimit = false;
 		if (isset($_REQUEST['editLimitEnabled'])) {
@@ -344,7 +343,17 @@ switch ($axAction) {
 		else
 			$config_data['editLimit'] = $editLimit;
 		$success = $database->configuration_edit($config_data);
-		
+		write_config_file(
+                $kga['server_database'],
+                $kga['server_hostname'],
+                $kga['server_username'],
+                $kga['server_password'],
+                $kga['server_conn'],
+                $kga['server_type'],
+                $kga['server_prefix'],
+                $kga['language'],
+                $kga['password_salt'],
+                $_REQUEST['defaultTimezone']);
 //		if(strlen($_REQUEST['new_status']) > 0) {
 //			$status = $_REQUEST['new_status'];
 //			if(stristr($status, ',')) {

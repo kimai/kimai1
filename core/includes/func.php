@@ -287,7 +287,7 @@ function createPassword($length) {
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt) {
+function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone) {
   $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
   if (!$file) return false;
 
@@ -322,6 +322,7 @@ $config=<<<EOD
 \$server_prefix   = "$prefix";
 \$language        = "$lang";
 \$password_salt   = "$salt";
+\$defaultTimezone = "$timezone";
 
 ?>
 EOD;

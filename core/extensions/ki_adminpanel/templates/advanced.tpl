@@ -131,7 +131,7 @@
 
             <div>
                <select name="defaultTimezone">
-                    {html_options values=$timezones output=$timezones selected=$kga.conf.defaultTimezone}
+                    {html_options values=$timezones output=$timezones selected=$kga.defaultTimezone}
                 </select> {$kga.lang.defaultTimezone}
             </div>
 
