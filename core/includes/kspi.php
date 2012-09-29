@@ -67,6 +67,7 @@ if ($isCoreProcessor) {
 } else {
   $tpl->template_dir = WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates;
   $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';
+  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
 
 
