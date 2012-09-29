@@ -53,21 +53,14 @@
                     }
  				return true;
           	 });
-//          	 $("#projectGroups").sexyselect({title: '{/literal}<?php echo $this->kga['lang']['groups}{literal}',
-//  					allowCollapse: false,
-//  					allowDelete: false,
-//  					selectionMode : 'multiple',
-//  					nooptionstext : '',
-//  					autoSort : true
-//  					});
         }); 
     </script>
 
 <div id="floater_innerwrap">
 
-<div id="floater_handle"><span id="floater_title">{if
-$id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project}{else}<?php echo $this->kga['lang']['new_project}{/if}</span>
-<div class="right"><a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close}</a>
+<div id="floater_handle"><span id="floater_title">
+<?php if ($id) echo $this->kga['lang']['edit'], ':', $this->kga['lang']['project']; else echo $this->kga['lang']['new_project']; ?></span>
+<div class="right"><a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
 </div>
 </div>
 
@@ -81,11 +74,11 @@ $id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project
 		class="bb"><?php echo $this->kga['lang']['budget']?></span> <span class="cc">&nbsp;</span> </a></li>
 	<li class="tab norm"><a href="#activities"> <span class="aa">&nbsp;</span> <span
 		class="bb"><?php echo $this->kga['lang']['activities']?></span> <span class="cc">&nbsp;</span> </a></li>
-	{if $groupIDs|@count gt 1}
+	<?php if (count($groupIDs) > 1): ?>
 	<li class="tab norm"><a href="#groups"> <span class="aa">&nbsp;</span>
 	<span class="bb"><?php echo $this->kga['lang']['groups']?></span> <span class="cc">&nbsp;</span>
 	</a></li>
-	{/if}
+	<?php endif; ?>
 	<li class="tab norm"><a href="#comment"> <span class="aa">&nbsp;</span>
 	<span class="bb"><?php echo $this->kga['lang']['comment']?></span> <span class="cc">&nbsp;</span>
 	</a></li>
@@ -108,11 +101,9 @@ $id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project
 	<li><label for="name"><?php echo $this->kga['lang']['project']?>:</label>
             <?php echo $this->formText('name', $this->name);?> </li>
 
-	<li><label for="customerID"><?php echo $this->kga['lang']['customer']?>:</label> <select
-		class="formfield" name="customerID">
-		{html_options options=$customers 
-		selected=$selectedCustomer}
-	</select></li>
+	<li><label for="customerID"><?php echo $this->kga['lang']['customer']?>:</label> 
+		<?php echo $this->formSelect('customerID', $this->selectedCustomer, array('class' => 'formfield'), $this->customers); ?>
+        </li>
 
 	<li><label for="visible"><?php echo $this->kga['lang']['visibility']?>:</label>
             <?php echo $this->formCheckbox('visible', '1',array('checked' => $this->visible || !$this->id));?>
@@ -128,27 +119,27 @@ $id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project
 
 <ul>
 	<li><label for="defaultRate"><?php echo $this->kga['lang']['default_rate']?>:</label>
-            <?php echo $this->formText('defaultRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->defaultRate));
+            <?php echo $this->formText('defaultRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->defaultRate)); ?>
 	</li>
 
 	<li><label for="myRate"><?php echo $this->kga['lang']['my_rate']?>:</label>
-            <?php echo $this->formText('myRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->myRate));
+            <?php echo $this->formText('myRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->myRate)); ?>
 	</li>
 
 	<li><label for="fixedRate"><?php echo $this->kga['lang']['fixedRate']?>:</label>
-            <?php echo $this->formText('fixedRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->fixedRate));
+            <?php echo $this->formText('fixedRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->fixedRate)); ?>
 	</li>
 
 	<li><label for="budget"><?php echo $this->kga['lang']['budget']?>:</label>
-            <?php echo $this->formText('budget', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->budget));
+            <?php echo $this->formText('budget', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->budget)); ?>
 	</li>
 
 	<li><label for="effort"><?php echo $this->kga['lang']['effort']?>:</label>
-            <?php echo $this->formText('effort', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->effort));
+            <?php echo $this->formText('effort', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->effort)); ?>
 	</li>
 
 	<li><label for="approved"><?php echo $this->kga['lang']['approved']?>:</label>
-            <?php echo $this->formText('approved', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->approved));
+            <?php echo $this->formText('approved', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->approved)); ?>
 	</li>
 </ul>
 </fieldset>
@@ -168,7 +159,7 @@ $id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project
 	<?php
         if ($this->selectedActivities != false && count($this->selectedActivities) < count($this->assignableTasks))
 		$this->selectedActivities[] = array('activityID' => '');
-	foreach ($this->selectedActivities as selectedActivity): ?>
+	foreach ($this->selectedActivities as $selectedActivity): ?>
 	<tr>
 		<td>
 		<ul>
@@ -194,18 +185,18 @@ $id}<?php echo $this->kga['lang']['edit}: <?php echo $this->kga['lang']['project
 <?php if (count($groupIDs) > 1): ?>
 <fieldset id="groups">
 <ul>
-	<li><!--                        <label for="pct_grp" ><?php echo $this->kga['lang']['groups}:</label>-->
+	<li>
               <?php echo $this->formSelect('projectGroups[]', $this->selectedGroups, array(
 		'class' => 'formfield',
 		'id' => 'projectGroups',
 		'multiple' => 'multiple',
-		'size' = 3,
+		'size' => 3,
 		'style' => 'width:255px'), $this->groups); ?>
 	</li>
 </ul>
 </fieldset>
 <?php else: 
- echo $this->formHidden('projectGroups[]', $this->selectedGroups[0], ,array('id' => 'projectGroups'));
+ echo $this->formHidden('projectGroups[]', $this->selectedGroups[0], array('id' => 'projectGroups'));
 endif; ?>
 
 <fieldset id="comment">

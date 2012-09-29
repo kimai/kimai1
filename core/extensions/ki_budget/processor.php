@@ -119,19 +119,19 @@ switch ($axAction)
 		// If there are any projects create the plot data.
 		if (count($projects) > 0) {
 			$arr_plotdata = budget_plot_data($projects, $projectsSelected, $activitiesSelected, $expensesOccured, $kga);
-			$tpl->assign('javascript_arr_plotdata', json_encode($arr_plotdata));
-			$tpl->assign('arr_plotdata', $arr_plotdata);
-			$tpl->assign('projects', $projects);
-			$tpl->assign('activities', $activities);
+			$view->javascript_arr_plotdata = json_encode($arr_plotdata);
+			$view->arr_plotdata = $arr_plotdata;
+			$view->projects = $projects;
+			$view->activities = $activities;
 		}
 		else {
-			$tpl->assign('projects', 0);
+			$view->projects = 0;
 		}
-		$tpl->assign('projects_selected', $projectsSelected);
-		$tpl->assign('activities_selected', $activitiesSelected);
+		$view->projects_selected = $projectsSelected;
+		$view->activities_selected = $activitiesSelected;
 
 		$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
-		$tpl->assign('chartColors', json_encode($chartColors));
+		$view->chartColors = json_encode($chartColors);
 		// Create the keys which explain to the user which color means what for the project based charts
 		$keys = array();
 		$keys[] = array('color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
@@ -141,8 +141,8 @@ switch ($axAction)
 			$keys[] = array('color' => $chartColors[($i + 2) % (count($chartColors) - 1)], 'name' => $usedEvents[$i]['evt_name']);
 		}*/
 		// the activity based charts only need numbers
-		$tpl->assign('arr_keys', $keys);
-		$tpl->display("charts.tpl");
+		$view->arr_keys = $keys;
+		echo $view->render("charts.php");
 
 		//if (is_array($_REQUEST['projects'])) {
 		//	// HERE ARE ONLY IDS!!!
@@ -158,16 +158,16 @@ switch ($axAction)
 		//}
 		//if (count($projects) > 0) {
 		//	$arr_plotdata = budget_plot_data($projects, $usedEvents, $expensesOccured, $kga);
-		//	$tpl->assign('javascript_arr_plotdata', json_encode($arr_plotdata));
-		//	$tpl->assign('arr_plotdata', $arr_plotdata);
-		//	$tpl->assign('projects', $projects);
-		//	$tpl->assign('activities', $activities);
+		//	$view->javascript_arr_plotdata = json_encode($arr_plotdata);
+		//	$view->arr_plotdata = $arr_plotdata;
+		//	$view->projects = $projects;
+		//	$view->activities = $activities;
 		//}
 		//else {
-		//	$tpl->assign('projects', 0);
+		//	$view->projects = 0;
 		//}
 		//$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
-		//$tpl->assign('chartColors', json_encode($chartColors));
+		//$view->chartColors = json_encode($chartColors);
 		//
 		//        echo json_encode($arr_plotdata);
     break;

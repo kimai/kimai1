@@ -1,4 +1,3 @@
-{literal}    
     <script type="text/javascript"> 
         $(document).ready(function() {
 try {
@@ -49,7 +48,6 @@ try {
                 });
             }
     </script>
-{/literal}
 
 
 <div id="budget">
