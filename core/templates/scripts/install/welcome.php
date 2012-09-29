@@ -26,9 +26,9 @@
                         <div class="txt">
                             <input type="checkbox" name="accept" value=1 style="width:15px;height:15px;display:inline;">
                   
-                            {if $disagreedGPL}<strong style="color:red">{/if} I accept the terms of the GNU GPL Version 3{if $disagreedGPL}</strong>{/if}
+                            <?php if ($this->disagreedGPL):?><strong style="color:red"><?php endif; ?> I accept the terms of the GNU GPL Version 3<?php if ($this->disagreedGPL):?></strong><?php endif; ?>
                     
-                            {if $disagreedGPL}<br /><img src="grfx/caution_small.png" alt="Caution" /> <span style="color:red">You have to accept the the terms!</span>{/if}
+                            <?php if ($this->disagreedGPL): ?><br /><img src="grfx/caution_small.png" alt="Caution" /> <span style="color:red">You have to accept the the terms!</span><?php endif; ?>
                         </div>
                         
                     </div>
@@ -38,7 +38,7 @@
                 </fieldset>
             </form>
         
-            {include file="misc/copyrightnotes.tpl"} 
+            <?php echo $this->partial('misc/copyrightnotes.tpl', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
     </div>
 </body>
 </html>

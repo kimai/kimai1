@@ -46,19 +46,13 @@ if (!isset($_POST['database']) || is_array($_POST['database'])) {
 
 ob_start();
 
-// =============================
-// = Smarty (initialize class) =
-// =============================
-require_once('libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir  = 'compile/';
-
 // =====================
 // = standard includes =
 // =====================
 require('includes/basics.php');
 
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . '/templates');
 
 // =========================
 // = authentication method =
@@ -70,11 +64,7 @@ require(WEBROOT.'auth/' . $kga['authenticator'] . '.php');
 $authClass = ucfirst($kga['authenticator']).'Auth';
 $authPlugin = new $authClass($database, $kga);
 
-// =====================================
-// = send kimai-global-array to smarty =
-// =====================================
-$tpl->assign('kga', $kga);
-
+$view->kga = $kga;
 
 // ===================================
 // = current database setup correct? =
@@ -86,13 +76,13 @@ checkDBversion(".");
 // ==========================
 $users = $database->get_users();
 if (count($users) == 0) { 
-    $tpl->assign('devtimespan', '2006-'.date('y'));
+    $view->devtimespan = '2006-'.date('y');
     if (isset($_REQUEST['disagreedGPL'])) {
-        $tpl->assign('disagreedGPL', 1);
+        $view->disagreedGPL = 1;
     } else {
-        $tpl->assign('disagreedGPL', 0);
+        $view->disagreedGPL = 0;
     }
-    $tpl->display('install/welcome.tpl');
+    echo $view->render('install/welcome.php');
     ob_end_flush();
     exit;
 }
@@ -172,10 +162,10 @@ switch($_REQUEST['a'])
           }
           else {
             setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
-            $tpl->assign('headline', $kga['lang']['accessDenied']);
-            $tpl->assign('message', $kga['lang']['wrongPass']);
-            $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-            $tpl->display('misc/error.tpl');
+            $view->headline = $kga['lang']['accessDenied'];
+            $view->message = $kga['lang']['wrongPass'];
+            $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+            echo $view->render('misc/error.php');
           }
         }
         else
@@ -213,10 +203,10 @@ switch($_REQUEST['a'])
               setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
               $database->loginUpdateBan($userId);
 
-              $tpl->assign('headline', $kga['lang']['banned']);
-              $tpl->assign('message', $kga['lang']['tooManyLogins']);
-              $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-              $tpl->display('misc/error.tpl');
+              $view->headline = $kga['lang']['banned'];
+              $view->message = $kga['lang']['tooManyLogins'];
+              $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+              echo $view->render('misc/error.php');
             }
           }
           else {
@@ -225,10 +215,10 @@ switch($_REQUEST['a'])
             if ($userId !== false)
               $database->loginUpdateBan($userId,true);
 
-            $tpl->assign('headline', $kga['lang']['accessDenied']);
-            $tpl->assign('message', $kga['lang']['wrongPass']);
-            $tpl->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
-            $tpl->display('misc/error.tpl');
+            $view->headline = $kga['lang']['accessDenied'];
+            $view->message = $kga['lang']['wrongPass'];
+            $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+            echo $view->render('misc/error.php');
           }
         }
     break;
@@ -241,7 +231,7 @@ switch($_REQUEST['a'])
         // ===========================
         // = Send HEADER information =
         // ===========================
-        $tpl->display('login/header.tpl');
+        echo $view->render('login/header.php');
 
         // ======================================
         // = Selectbox for additional databases =
@@ -269,11 +259,11 @@ switch($_REQUEST['a'])
             }
             $selectbox .= "\n</select>";
         }
-        $tpl->assign('selectbox', $selectbox);
+        $view->selectbox = $selectbox;
 
-        $tpl->assign('devtimespan', '2006-'.date('y'));
+        $view->devtimespan = '2006-'.date('y');
 
-        $tpl->display('login/panel.tpl');
+        echo $view->render('login/panel.php');
     break;
 }
 
