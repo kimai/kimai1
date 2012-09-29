@@ -60,10 +60,10 @@ if (!$isCoreProcessor) {
 // = Smarty (initialize class) =
 // =============================
 require_once(WEBROOT . 'libraries/smarty/Smarty.class.php');
+$view = new Zend_View();
 $tpl = new Smarty();
 if ($isCoreProcessor) {
-  $tpl->template_dir = WEBROOT . $dir_templates;
-  $tpl->compile_dir  = WEBROOT . 'compile/';
+  $view->setBasePath(WEBROOT . '/templates');
 } else {
   $tpl->template_dir = WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates;
   $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';

@@ -151,11 +151,11 @@ switch ($axAction) {
           $users = $database->get_watchable_users($kga['user']);
 
         if (count($users)>0) {
-            $tpl->assign('users', $users);
+            $view->users = $users;
         } else {
-            $tpl->assign('users', 0);
+            $view->users = 0;
         }
-        $tpl->display("../lists/users.tpl");
+        echo $view->render("lists/users.php");
     break;
 
     /**
@@ -171,11 +171,11 @@ switch ($axAction) {
           $customers = $database->get_customers($kga['user']['groups']);
 
         if (count($customers)>0) {
-            $tpl->assign('customers', $customers);
+            $view->customers = $customers;
         } else {
-            $tpl->assign('customers', 0);
+            $view->customers = 0;
         }
-        $tpl->display("../lists/customers.tpl");
+        echo $view->render("lists/customers.php");
     break;
 
     /**
@@ -188,11 +188,11 @@ switch ($axAction) {
           $projects = $database->get_projects($kga['user']['groups']);
 
         if (count($projects)>0) {
-            $tpl->assign('projects', $projects);
+            $view->projects = $projects;
         } else {
-            $tpl->assign('projects', 0);
+            $view->projects = 0;
         }
-        $tpl->display("../lists/projects.tpl");
+        echo $view->render("lists/projects.php");
     break;
 
     /**
@@ -208,11 +208,11 @@ switch ($axAction) {
         else
           $activities = $database->get_activities($kga['user']['groups']);
         if (count($activities)>0) {
-            $tpl->assign('activities', $activities);
+            $view->activities = $activities;
         } else {
-            $tpl->assign('activities', 0);
+            $view->activities = 0;
         }
-        $tpl->display("../lists/activities.tpl");
+        echo $view->render("lists/activities.php");
     break;
 
 

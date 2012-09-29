@@ -231,6 +231,10 @@ div.lists table {
     color: #363636;
     border-bottom:1px solid #888;
 }
+
+div.lists table a {
+  text-decoration: none;
+}
 div.lists table a.preselect_lnk {
     color: #363636;
     text-decoration:none;

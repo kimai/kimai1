@@ -29,6 +29,20 @@
 if (!defined('WEBROOT'))
     define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(WEBROOT . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+
+new Zend_View();
+
 require(WEBROOT.'includes/5.3.functions.php');
 
 if (!file_exists(WEBROOT.'includes/autoconf.php')) {
