@@ -23,23 +23,25 @@
 // ==================================
 include('../../includes/basics.php');
 
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 // libs TinyButStrong
 include_once('TinyButStrong/tinyButStrong.class.php');
 include_once('TinyButStrong/tinyDoc.class.php');
 
 $user = checkUser();
 
-// set smarty config
-require_once('../../libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir  = 'compile/';
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
-$tpl->assign('kga', $kga);
+$view->kga = $kga;
 
 // get list of projects for select box
 $sel = makeSelectBox("project",$kga['user']['groups']);  
-$tpl->assign('projects', $sel);
+$view->projects = $sel;
 
 // Select values for Round Time option
 $roundingOptions = array(
@@ -48,7 +50,7 @@ $roundingOptions = array(
   5 => '0.5h',
   10 => '1.0h'
 );
-$tpl->assign('roundingOptions', $roundingOptions);
+$view->roundingOptions = $roundingOptions;
 
 // Get Invoice Template FileNames
 
@@ -63,17 +65,17 @@ while (false!== ($file = readdir($handle))) {
 } 
 closedir($handle);
 sort($invoice_template_files);
-$tpl->assign('sel_form_files', $invoice_template_files);
+$view->sel_form_files = $invoice_template_files;
 
 
 
 // Retrieve start & stop times
 $timeframe = get_timeframe();
-$tpl->assign('in', $timeframe[0]);
-$tpl->assign('out', $timeframe[1]);
+$view->in = $timeframe[0];
+$view->out = $timeframe[1];
 
-$tpl->assign('timespan_display', $tpl->fetch("timespan.tpl"));
+$view->timespan_display = $view->render("timespan.php");
 
-$tpl->display('main.tpl');
+echo $view->render('main.php');
 
 ?>

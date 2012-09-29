@@ -1,4 +1,3 @@
-{literal}    
     <script type="text/javascript"> 
        
         $(document).ready(function() {
@@ -23,14 +22,13 @@
         });
         
     </script>
-{/literal}
 
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.editVat}</span>
+        <span id="floater_title"><?php echo $this->kga['lang']['editVat']?></span>
         <div class="right">
-            <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
+            <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>  
     </div>
 
@@ -42,18 +40,13 @@
         <input name="axAction" type="hidden" value="editVat" />
             <fieldset>   
 
-{* -------------------------------------------------------------------- *} 
-
                 
-                <label for="vat">{$kga.lang.vat}</label>
-                <input size="4" name="vat" id="vat" type="text" value="{$kga.conf.defaultVat|replace:'.':$kga.conf.decimalSeparator|escape:'html'}"/> % 
+                <label for="vat"><?php echo $this->kga['lang']['vat']?></label>
+                <input size="4" name="vat" id="vat" type="text" value="<?php $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>"/> % 
 
                 <div id="formbuttons">
-                    <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
-                    <input class='btn_ok' type='submit' value='{$kga.lang.submit}'/>
-                </div>
-
-{* -------------------------------------------------------------------- *} 
+                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
+                    <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
 
             </fieldset>
 	</form>
