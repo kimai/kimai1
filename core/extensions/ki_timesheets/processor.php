@@ -252,39 +252,39 @@ switch ($axAction) {
 
         $timeSheetEntries = $database->get_timeSheet($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,1);
         if (count($timeSheetEntries)>0) {
-            $tpl->assign('timeSheetEntries', $timeSheetEntries);
+            $view->timeSheetEntries = $timeSheetEntries;
         } else {
-            $tpl->assign('timeSheetEntries', 0);
+            $view->timeSheetEntries = 0;
         }
-        $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities)));
+        $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities));
 
         $ann = $database->get_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('user_annotations',$ann);
+        $view->user_annotations = $ann;
 
         $ann = $database->get_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('customer_annotations',$ann);
+        $view->customer_annotations = $ann;
 
         $ann = $database->get_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('project_annotations',$ann);
+        $view->project_annotations = $ann;
 
         $ann = $database->get_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('activity_annotations',$ann);
+        $view->activity_annotations = $ann;
 
         if (isset($kga['user']))
-          $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
+          $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
         else
-          $tpl->assign('hideComments',true);
+          $view->hideComments = true;
 
         if (isset($kga['user']))
-          $tpl->assign('showOverlapLines',$database->user_get_preference('ui.hideOverlapLines')!=1);
+          $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
         else
-          $tpl->assign('showOverlapLines',false);
+          $view->showOverlapLines = false;
 
-        $tpl->display("timeSheet.tpl");
+        echo $view->render("timeSheet.php");
     break;
 
 

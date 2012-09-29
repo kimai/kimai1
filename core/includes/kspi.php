@@ -69,6 +69,7 @@ if ($isCoreProcessor) {
   $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';
   $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
 
 // ============================================================================================
