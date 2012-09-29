@@ -76,6 +76,7 @@ if ($isCoreProcessor) {
 $user = checkUser();
 
 $tpl->assign('kga',$kga);
+$view->kga = $kga;
 
 $commentTypes   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
 
