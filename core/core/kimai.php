@@ -21,7 +21,6 @@
 // = Smarty (initialize class) =
 // ============================= 
 include('../includes/basics.php');
-require_once('../libraries/smarty/Smarty.class.php');
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
