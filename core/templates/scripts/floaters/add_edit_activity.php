@@ -83,17 +83,17 @@ $(document).ready(function() {
                 
                     <li>
                         <label for="defaultRate" ><?php echo $this->kga['lang']['default_rate']?>:</label>
-            <?php echo $this->formText('defaultRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->defaultRate));
+            <?php echo $this->formText('defaultRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->defaultRate)); ?>
                     </li>
                 
                     <li>
                         <label for="myRate" ><?php echo $this->kga['lang']['my_rate']?>:</label>
-            <?php echo $this->formText('myRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->myRate));
+            <?php echo $this->formText('myRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->myRate)); ?>
                     </li>
                 
                     <li>
                         <label for="myRate" ><?php echo $this->kga['lang']['fixedRate']?>:</label>
-            <?php echo $this->formText('fixedRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->fixedRate));
+            <?php echo $this->formText('fixedRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->fixedRate)); ?>
                     </li>
 
                     <li>
@@ -128,13 +128,13 @@ $(document).ready(function() {
 		'class' => 'formfield',
 		'id' => 'activityGroups',
 		'multiple' => 'multiple',
-		'size' = 3,
+		'size' => 3,
 		'style' => 'width:255px'), $this->groups); ?>
                     </li>      
                 </ul>
             </fieldset>
 <?php else:
- echo $this->formHidden('activityGroups[]', $this->selectedGroups[0], ,array('id' => 'activityGroups'));
+ echo $this->formHidden('activityGroups[]', $this->selectedGroups[0], array('id' => 'activityGroups'));
 endif; ?>
 
     <fieldset id="projects">
@@ -146,8 +146,8 @@ endif; ?>
 		'class' => 'formfield',
 		'id' => 'activityProjects',
 		'multiple' => 'multiple',
-		'size' = 15,
-		'disabled' => !$this->assignable?'disabled','',
+		'size' => 15,
+		'disabled' => !$this->assignable?'disabled':'',
 		'style' => 'width:255px'), $this->projects); ?>
                     </li>
 
