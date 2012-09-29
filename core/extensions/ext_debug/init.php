@@ -21,11 +21,10 @@
 	include('../../includes/basics.php');
 	
 $dir_templates = "templates/";
-if (!$isCoreProcessor) {
-  $datasrc = "config.ini";
-  $settings = parse_ini_file($datasrc);
-  $dir_ext = $settings['EXTENSION_DIR'];
-}
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 	$user = checkUser();
 	// ============================================
 	// = initialize currently displayed timeframe =
