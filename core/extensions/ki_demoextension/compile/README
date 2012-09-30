@@ -1,2 +1,0 @@
-Compiled Smarty templates of your Kimai extension will be stored in this directory. 
-It needs to exist, otherwise Smarty will fail for your extension.

@@ -104,8 +104,7 @@ switch ($axAction) {
       break;
 
     /**
-     * Check access rights to autoconf.php, the logfile, the temporary folder
-     * and all compile folders (also for the extensions).
+     * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
     case "checkRights":
         if (!$fp = @fopen("../includes/autoconf.php", "w")) {
@@ -119,43 +118,6 @@ switch ($axAction) {
         }
 
         $filename = "%%" . getpass();
-
-        if (!$fp = @fopen("../compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile').addClass('fail');";
-        }
-        if (!$fp = @fopen("../extensions/ki_timesheets/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_tsext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_adminpanel/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_apext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_expenses/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_epext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_export/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_xpext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_budget/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_bgtext').addClass('fail');";
-        }
-
-         if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
-             $errors++;
-             $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
-         }
-
-
-
 
         if (!$fp = @fopen("../temporary/".$filename ."_testfile.txt", "w")) {
             $errors++;

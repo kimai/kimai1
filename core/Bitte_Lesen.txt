@@ -42,13 +42,6 @@ die Datei '/includes/autoconf.php' von der alten Version behalten.
 
 Zusätzlich müssen sie sicherstellen, dass die Berechtigungen noch stimmen. Die folgenden
 Ordner und Dateien müssen für den Webserver schreibbar sein:
-/compile
-/extensions/ki_timesheets/compile
-/extensions/ki_adminpanel/compile
-/extensions/ki_expenses/compile
-/extensions/ki_export/compile
-/extensions/ki_budget/compile
-/extensions/ki_invoice/compile
 /temporary
 /temporary/logfile.txt
 /includes/autoconf.php

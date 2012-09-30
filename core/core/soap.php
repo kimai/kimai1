@@ -59,7 +59,7 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
 require(APPLICATION_PATH.'/includes/classes/remote.class.php');
 
 ini_set('soap.wsdl_cache_enabled', 0);                              // @TODO
-ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/compile/');     // @TODO
+ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/temporary/');     // @TODO
 ini_set('soap.wsdl_cache', WSDL_CACHE_NONE);                        // WSDL_CACHE_DISK
 ini_set('soap.wsdl_cache_ttl', 0);                                  // cache lifetime
 
