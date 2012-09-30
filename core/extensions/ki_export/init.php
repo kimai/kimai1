@@ -26,6 +26,11 @@ require("private_func.php");
 
 $user = checkUser();
 
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 // ============================================
 // = initialize currently displayed timeframe =
 // ============================================
@@ -33,13 +38,11 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-// set smarty config
-require_once('../../libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir  = 'compile/';
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
-$tpl->assign('kga', $kga);
+$view->kga = $kga;
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -49,14 +52,14 @@ header("Pragma: no-cache");
 
 $timeformat = 'H:M';
 $dateformat = 'd.m.';
-$tpl->assign('timeformat',$timeformat);
-$tpl->assign('dateformat',$dateformat);
+$view->timeformat = $timeformat;
+$view->dateformat = $dateformat;
 
-$tpl->display('panel.tpl');
+echo $view->render('panel.php');
 
 
-$tpl->assign('timeformat',preg_replace('/([A-Za-z])/','%$1',$timeformat));
-$tpl->assign('dateformat',preg_replace('/([A-Za-z])/','%$1',$dateformat));
+$view->timeformat = preg_replace('/([A-Za-z])/','%$1',$timeformat);
+$view->dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
 
 // Get the total amount of time shown in the table.
 if (isset($kga['customer']))
@@ -70,12 +73,12 @@ else
   $timeSheetEntries = export_get_data($in,$out,array($kga['user']['userID']));
 
 if (count($timeSheetEntries)>0) {
-    $tpl->assign('exportData', $timeSheetEntries);
+    $view->exportData = $timeSheetEntries;
 } else {
-    $tpl->assign('exportData', 0);
+    $view->exportData = 0;
 }
 
-$tpl->assign('total', $total);
+$view->total = $total;
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
@@ -83,7 +86,7 @@ if (isset($kga['customer']))
 else
   $ann = export_get_user_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('user_annotations',$ann);
+$view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
@@ -91,7 +94,7 @@ if (isset($kga['customer']))
 else
   $ann = export_get_customer_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('customer_annotations',$ann);
+$view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
@@ -99,7 +102,7 @@ if (isset($kga['customer']))
 else
   $ann = export_get_project_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('project_annotations',$ann);
+$view->project_annotations = $ann;
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
@@ -107,14 +110,14 @@ if (isset($kga['customer']))
 else
   $ann = export_get_activity_annotations($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('activity_annotations',$ann);
+$view->activity_annotations = $ann;
 
 // Get the columns the user had disabled last time.
 if (isset($kga['user']))
-  $tpl->assign('disabled_columns',export_get_disabled_headers($kga['user']['userID']));
+  $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
 
-$tpl->assign('table_display', $tpl->fetch("table.tpl"));
+$view->table_display = $view->render("table.php");
 
-$tpl->display('main.tpl');
+echo $view->render('main.php');
 
 ?>

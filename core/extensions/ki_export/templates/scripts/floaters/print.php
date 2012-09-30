@@ -1,4 +1,3 @@
-{literal}    
     <script type="text/javascript"> 
         
         $(document).ready(function() {
@@ -15,61 +14,48 @@
             
             $('#floater input#first_day').attr('value',new Date($('#pick_in').val()).getTime()/1000);
             $('#floater input#last_day').attr('value',new Date($('#pick_out').val()).getTime()/1000);
-
         }); 
         
     </script>
-{/literal}
-
 
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title">{$kga.lang.export_extension.exportCSV}</span>
+        <span id="floater_title"><?php echo $this->kga['lang']['export_extension.print']?></span>
         <div class="right">
-            <a href="#" class="close" onClick="floaterClose();">{$kga.lang.close}</a>
+            <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>  
     </div>
 
     <div id="help">
-        <div class="content">   
+        <div class="content">
         </div>
     </div>
 
 
     <div class="floater_content">
+
         
-        <form id="export_extension_form_export_CSV" action="../extensions/ki_export/processor.php" method="post">
-	
-            <fieldset>
-                
-                <ul>
+        <form id="export_extension_form_print" action="../extensions/ki_export/processor.php" method="post" target="_blank"> 
+            <fieldset>                  
+
+		        <ul>
+			        <li>
+				      <?php echo $this->kga['lang']['export_extension']['print_hint']?>
+              </li>
                 
                    <li>
-                       <label for="column_delimiter">{$kga.lang.export_extension.column_delimiter}:</label>
-                       <input type="text" value="{$prefs.column_delimiter|escape:'html'}" name="column_delimiter" id="column_delimiter" size="1"/>
+                       <label for="print_summary"><?php echo $this->kga['lang']['export_extension']['print_summary']?>:</label>
+                       <input type="checkbox" value="true" name="print_summary" id="print_summary" <?php if ($this->prefs['print_summary']): ?> checked="checked" <?php endif; ?>>
                    </li>
                 
                    <li>
-                       <label for="quote_char">{$kga.lang.export_extension.quote_char}:</label>
-                       <input type="text" value="{$prefs.quote_char|escape:'html'}" name="quote_char" id="quote_char" size="1">
+                       <label for="reverse_order"><?php echo $this->kga['lang']['export_extension']['reverse_order']?>:</label>
+                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order" <?php if ($this->prefs['reverse_order']): ?> checked="checked" <?php endif; ?>/>
                    </li>
-                
-                   <li>
-                       <label for="reverse_order">{$kga.lang.export_extension.reverse_order}:</label>
-                       <input type="checkbox" value="true" name="reverse_order" id="reverse_order"/>
-                   </li>
+				</ul>
 
-                   <li>
-	      				{$kga.lang.export_extension.dl_hint}
-					</li>
-                 </ul>
-                   
-
-{* -------------------------------------------------------------------- *} 
-
-                <!-- <input name="id" type="hidden" value="" /> -->
-                <input name="axAction" type="hidden" value="export_csv" />
+                <input name="axAction" type="hidden" value="export_html" />
                 <input name="axValue" id="axValue" type="hidden" value="" />
                 <input name="first_day" id="first_day" type="hidden" value="" />
                 <input name="last_day" id="last_day" type="hidden" value="" />
@@ -82,14 +68,11 @@
                 <input name="filter_type" id="filter_type" type="hidden" value=""/>
 
                 <div id="formbuttons">
-                    <input class='btn_norm' type='button' value='{$kga.lang.cancel}' onClick='floaterClose(); return false;' />
-                    <input class='btn_ok' type='submit' value='{$kga.lang.submit}' onClick="floaterClose();"/>
+                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
+                    <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' onClick="floaterClose();"/>
                 </div>
 
-{* -------------------------------------------------------------------- *} 
-
             </fieldset>
-        </form>
-
+	</form>
     </div>
 </div>
