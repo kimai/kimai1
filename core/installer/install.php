@@ -396,13 +396,25 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundMi
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundSeconds', '0');");
 
 if ($errors) {
-    require_once('../libraries/smarty/Smarty.class.php');
-    $tpl = new Smarty();
-    $tpl->template_dir = '../templates/';
-    $tpl->compile_dir  = '../compile/';
-    $tpl->assign('headline',$kga['lang']['errors'][1]['hdl']);
-    $tpl->assign('message',$kga['lang']['errors'][1]['txt']);
-    $tpl->display('misc/error.tpl');
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(WEBROOT . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . '/templates');
+
+    $view->headline = $kga['lang']['errors'][1]['hdl'];
+    $view->message = $kga['lang']['errors'][1]['txt'];
+    echo $view->render('misc/error.php');
     Logger::logfile("-- showing install error --------------------------");
 } else {
     Logger::logfile("-- installation finished without error ------------");

@@ -38,7 +38,7 @@
                 </fieldset>
             </form>
         
-            <?php echo $this->partial('misc/copyrightnotes.tpl', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
+            <?php echo $this->partial('misc/copyrightnotes.php', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
     </div>
 </body>
 </html>

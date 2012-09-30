@@ -57,16 +57,12 @@ if (!$isCoreProcessor) {
 }
 
 // =============================
-// = Smarty (initialize class) =
+// = Zend_View (configuration) =
 // =============================
-require_once(WEBROOT . 'libraries/smarty/Smarty.class.php');
 $view = new Zend_View();
-$tpl = new Smarty();
 if ($isCoreProcessor) {
   $view->setBasePath(WEBROOT . '/templates');
 } else {
-  $tpl->template_dir = WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates;
-  $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';
   $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
 $view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
@@ -77,7 +73,6 @@ $view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 // ============================================================================================
 $user = checkUser();
 
-$tpl->assign('kga',$kga);
 $view->kga = $kga;
 
 $commentTypes   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);

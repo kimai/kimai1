@@ -17,13 +17,20 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =============================
-// = Smarty (initialize class) =
-// =============================
-require_once('libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/misc/';
-$tpl->compile_dir  = 'compile/';
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(WEBROOT . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . '/templates');
 
 if (!file_exists('includes/autoconf.php')) {
        $headline = "Fatal Error!";
@@ -47,10 +54,10 @@ else {
   }
 }
 
-$tpl->assign('headline', $headline);
-$tpl->assign('message', $message);
+$view->headline = $headline;
+$view->message = $message;
 
-$tpl->display('error.tpl');
+echo $view->render('error.php');
 
 
 ?>
