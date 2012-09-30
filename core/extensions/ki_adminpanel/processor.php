@@ -48,11 +48,11 @@ switch ($axAction) {
 		break;
 	case "refreshSubtab" :
 		// builds either user/group/advanced/DB subtab
-		$tpl->assign('curr_user', $kga['user']['name']);
+		$view->curr_user = $kga['user']['name'];
 		if ($kga['user']['status'] == 0)
-			$tpl->assign('groups', $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$view->groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
 		else
-			$tpl->assign('groups', $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$view->groups = $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0));
 		if ($kga['user']['status'] == 0)
 			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
 		else
@@ -68,36 +68,36 @@ switch ($axAction) {
 			}
 		}
 		$arr_status = $database->get_statuses();
-		$tpl->assign('users', $users);
-		$tpl->assign('arr_status', $arr_status);
-		$tpl->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
-		$tpl->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users', 0));
+		$view->users = $users;
+		$view->arr_status = $arr_status;
+		$view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
+		$view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
 		switch ($axValue) {
 			case "users" :
-				$tpl->display("users.tpl");
+				echo $view->render('users.php');
 				break;
 			case "groups" :
-				$tpl->display("groups.tpl");
+				echo $view->render('groups.php');
 				break;
 			case "status" :
-				$tpl->display("status.tpl");
+				echo $view->render('status.php');
 				break;
 			case "advanced" :
 				if ($kga['conf']['editLimit'] != '-') {
-					$tpl->assign('editLimitEnabled', true);
+					$view->editLimitEnabled = true;
 					$editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
-					$tpl->assign('editLimitDays', (int) ($editLimit / 24));
-					$tpl->assign('editLimitHours', (int) ($editLimit % 24));
+					$view->editLimitDays = (int) ($editLimit / 24);
+					$view->editLimitHours = (int) ($editLimit % 24);
 				}
 				else {
-					$tpl->assign('editLimitEnabled', false);
-					$tpl->assign('editLimitDays', '');
-					$tpl->assign('editLimitHours', '');
+					$view->editLimitEnabled = false;
+					$view->editLimitDays = '';
+					$view->editLimitHours = '';
 				}
-				$tpl->display("advanced.tpl");
+				echo $view->render('advanced.php');
 				break;
 			case "database" :
-				$tpl->display("database.tpl");
+				echo $view->render('database.php');
 				break;
 			case "customers" :
 				if ($kga['user']['status'] == 0)
@@ -116,12 +116,12 @@ switch ($axAction) {
 					}
 				}
 				if (count($customers) > 0) {
-					$tpl->assign('customers', $customers);
+					$view->customers = $customers;
 				}
 				else {
-					$tpl->assign('customers', '0');
+					$view->customers = '0';
 				}
-				$tpl->display("customers.tpl");
+				echo $view->render('customers.php');
 				break;
 			case "projects" :
 				if ($kga['user']['status'] == 0)
@@ -137,12 +137,12 @@ switch ($axAction) {
 					$projects[$row]['groups'] = implode(", ", $groupNames);
 				}
 				if (count($projects) > 0) {
-					$tpl->assign('projects', $projects);
+					$view->projects = $projects;
 				}
 				else {
-					$tpl->assign('projects', '0');
+					$view->projects = '0';
 				}
-				$tpl->display("projects.tpl");
+				echo $view->render('projects.php');
 				break;
 			case "activities" :
 				if ($kga['user']['status'] == 0)
@@ -172,15 +172,15 @@ switch ($axAction) {
 					$activities[$row]['groups'] = implode(", ", $groupNames);
 				}
 				if (count($activities) > 0) {
-					$tpl->assign('activities', $activities);
+					$view->activities = $activities;
 				}
 				else {
-					$tpl->assign('activities', '0');
+					$view->activities = '0';
 				}
 				$projects = $database->get_projects($groups);
-				$tpl->assign('projects', $projects);
-				$tpl->assign('selected_activity_filter', $_REQUEST['filter']);
-				$tpl->display("activities.tpl");
+				$view->projects = $projects;
+				$view->selected_activity_filter = $_REQUEST['filter'];
+				echo $view->render('activities.php');
 				break;
 		}
 		break;
