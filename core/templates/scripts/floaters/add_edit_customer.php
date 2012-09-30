@@ -12,7 +12,7 @@
             $('#add_edit_customer').ajaxForm(function() { 
 
                 if ($('#customerGroups').val() == null) {
-                  alert("{/literal}<?php echo $this->kga['lang']['atLeastOneGroup}{literal}");
+                  alert("<?php echo $this->kga['lang']['atLeastOneGroup']?>");
                   return;
                 }
 
