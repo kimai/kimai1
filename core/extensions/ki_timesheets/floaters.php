@@ -142,7 +142,6 @@ switch ($axAction) {
     }
     $view->billable = array_combine($billableValues, $billableText);
     $view->commentTypes = $commentTypes;
-    $view->commentValues = array('0','1','2');
 
       
     $view->users = makeSelectBox("user",$kga['user']['groups']);

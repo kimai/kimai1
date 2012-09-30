@@ -55,34 +55,34 @@ switch ($axAction) {
 
       $expenses = get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
       if (count($expenses)>0) {
-          $tpl->assign('expenses', $expenses);
+          $view->expenses = $expenses;
       } else {
-          $tpl->assign('expenses', 0);
+          $view->expenses = 0;
       }
-      $tpl->assign('total', "");
+      $view->total = "";
 
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('user_annotations',$ann);
+      $view->user_annotations = $ann;
 
       // TODO: function for loops or convert it in template with new function
       $ann = expenses_by_customer($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('customer_annotations',$ann);
+      $view->customer_annotations = $ann;
 
       $ann = expenses_by_project($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('project_annotations',$ann);
+      $view->project_annotations = $ann;
 
-      $tpl->assign('activity_annotations',array());
+      $view->activity_annotations = array();
 
       if (isset($kga['user']))
-        $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
+        $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
       else
-        $tpl->assign('hideComments',true);
+        $view->hideComments = true;
 
-      $tpl->display("expenses.tpl");
+      echo $view->render("expenses.php");
     break;
 
     // =======================================

@@ -19,7 +19,7 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates/";
 require("../../includes/kspi.php");
 
 include('private_db_layer_'.$kga['server_conn'].'.php');
@@ -34,53 +34,50 @@ switch ($axAction) {
     $selected = explode('|',$axValue);
     if ($id) {
       $expense = get_expense($id);
-      $tpl->assign('id', $id);
-      $tpl->assign('comment', $expense['comment']);
+      $view->id = $id;
+      $view->comment = $expense['comment'];
   
-      $tpl->assign('edit_day', date("d.m.Y",$expense['timestamp']));
+      $view->edit_day = date("d.m.Y",$expense['timestamp']);
   
-      $tpl->assign('edit_time',  date("H:i:s",$expense['timestamp']));
+      $view->edit_time = date("H:i:s",$expense['timestamp']);
   
-      $tpl->assign('multiplier',  $expense['multiplier']);
+      $view->multiplier = $expense['multiplier'];
   
-      $tpl->assign('edit_value',  $expense['value']);
+      $view->edit_value = $expense['value'];
   
-      $tpl->assign('designation', $expense['designation']);
+      $view->designation = $expense['designation'];
 
       // preselected
-      $tpl->assign('preselected_project', $expense['projectID']);
+      $view->preselected_project = $expense['projectID'];
   
-      $tpl->assign('comment_active', $expense['commentType']);
-      $tpl->assign('refundable', $expense['refundable']);
+      $view->comment_active = $expense['commentType'];
+      $view->refundable = $expense['refundable'];
 
     } else {
       
-      $tpl->assign('id', 0);
+      $view->id = 0;
       
-      $tpl->assign('edit_day', date("d.m.Y"));
+      $view->edit_day = date("d.m.Y");
   
-      $tpl->assign('edit_time',  date("H:i:s"));
+      $view->edit_time = date("H:i:s");
   
-      $tpl->assign('multiplier',  '1'.$kga['conf']['decimalSeparator'].'0');
+      $view->multiplier = '1'.$kga['conf']['decimalSeparator'].'0';
 
 
 
     }
     
-    $tpl->assign('commentTypes', $commentTypes);
-    $tpl->assign('commentValues', array('0','1','2'));
+    $view->commentTypes = $commentTypes;
 
     // select for projects
-    $sel = makeSelectBox("project",$kga['user']['groups']);
-    $tpl->assign('projects', $sel);
+    $view->projects = makeSelectBox("project",$kga['user']['groups']);
 
     // select for activities
-    $sel = makeSelectBox("activity",$kga['user']['groups']);
-    $tpl->assign('activities', $sel);
+    $view->activities = makeSelectBox("activity",$kga['user']['groups']);
 
 
 
-    $tpl->display("add_edit_record.tpl"); 
+    echo $view->render("floaters/add_edit_record.php"); 
 
     break;        
 
