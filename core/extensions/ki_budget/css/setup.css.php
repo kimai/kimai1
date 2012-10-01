@@ -3,14 +3,14 @@
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
 ?>
 
-#budget {
+#budgetArea {
     border:1px solid black; 
     margin:10px;
     background-color:#eee;
     overflow:auto;
 }
 
-#budget { 
+#budgetArea { 
     top:150px;
     z-index:2;
 }

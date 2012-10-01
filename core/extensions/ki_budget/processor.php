@@ -125,7 +125,7 @@ switch ($axAction)
 			$view->activities = $activities;
 		}
 		else {
-			$view->projects = 0;
+			$view->projects = array();
 		}
 		$view->projects_selected = $projectsSelected;
 		$view->activities_selected = $activitiesSelected;

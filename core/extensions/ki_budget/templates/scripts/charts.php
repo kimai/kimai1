@@ -16,7 +16,7 @@
 <div class="project_head project_overview">
 <?php echo $this->escape($project['name']) ?>
 </div>
-<div id="budget_chartdiv_{$projects[row].projectID}" class="budget_plot_area" style="height:140px;width:200px;"></div> 
+<div id="budget_chartdiv_<?php echo $project['projectID']?>" class="budget_plot_area" style="height:140px;width:200px;"></div> 
 <?php $temp = $project['projectID']?>
 <span class="total">Total: <?php echo sprintf("%.2f", $this->arr_plotdata[$temp]['total']) ?></span><br/>
 <span class="budget">Budget: <?php echo sprintf("%.2f", $this->arr_plotdata[$temp]['budget']) ?></span> <br/>
@@ -36,7 +36,7 @@ echo round(($budget-$total)*-$makePlus,2)?> </span> <br/>
 <div class="budget_project">
 <div class="project_head">
 <?php echo $this->escape($project['name']), '&nbsp',
-$this->escape($project['activities'][$id]['activityName'])?>
+$this->escape($activity['name'])?>
 </div>
 <div id="budget_chartdiv_<?php echo $project['projectID']?>_activity_<?php echo $id?>" class="budget_plot_area" style="height:140px;width:200px; "></div>
 <span class="total">Total: <?php echo sprintf("%.2f", $activity['total'])?></span><br>

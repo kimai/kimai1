@@ -50,7 +50,7 @@ try {
     </script>
 
 
-<div id="budget">
+<div id="budgetArea">
 <div class="budget_project">
 <div class="project_head project_overview">
 </div>
