@@ -265,11 +265,11 @@ $time_buffer = $row['start'];
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
     
-  <?php if ($this->latest_running_task == -1 || $this->latest_running_task == ''): ?>
+  <?php if ($latest_running_task == -1 || $latest_running_task == ''): ?>
     updateRecordStatus(false);
   <?php else: ?>
 
-    updateRecordStatus(<?php echo $this->latest_running_task?>,<?php echo $this->timeSheetEntries[0]['start']?>,
+    updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[0]['start']?>,
                              <?php echo $this->timeSheetEntries[0]['customerID']?>,'<?php $this->jsEscape($this->timeSheetEntries[0]['customerName'])?>',
                              <?php echo $this->timeSheetEntries[0]['projectID']?> ,'<?php $this->jsEscape($this->timeSheetEntries[0]['projectName'])?>',
                              <?php echo $this->timeSheetEntries[0]['activityID']?>,'<?php $this->jsEscape($this->timeSheetEntries[0]['activityName'])?>');

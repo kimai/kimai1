@@ -3349,6 +3349,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['activityID'] = $activityID;
       $values ['start']    = time();
       $values ['userID'] = $user;
+      $values ['statusID'] = 1;
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
       if ($rate)
         $values ['rate'] = $rate;
