@@ -141,6 +141,7 @@ return array(
 "delete_project"    => "delete project",
 "delete_customer"   => "delete customer",
 "delete_activity"   => "delete task",
+"delete_status"     => "delete status",
 "switchUser"        => "Switch to this user",
 "backupUser"        => "Make backup of this user",
 "mailUser"          => "Send email to this user",
@@ -295,6 +296,8 @@ return array(
 'list'=> 'List',
 'sublists' => 'Lower Lists',
 
+"filter" => "Filter",
+
 'internalProject' => 'internal project',
 
 'exactSums' => 'Use exact sums instead of adding the displayed rounded values.',
@@ -420,8 +423,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "stdrd_location"  		   => "Standard-Location",
 "timeformat"	     	   => "Timeformat",
 "dateformat"			   => "Dateformat",
-
-"filter"	 		       => "Filter",
 
 "refundable_all"	 	   => "all",
 "refundable_refundable"    => "only refundable",

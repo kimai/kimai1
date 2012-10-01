@@ -26,7 +26,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['editVat']?></span>
+        <span id="floater_title"><?php echo $this->kga['lang']['vat']?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>  
@@ -42,7 +42,7 @@
 
                 
                 <label for="vat"><?php echo $this->kga['lang']['vat']?></label>
-                <input size="4" name="vat" id="vat" type="text" value="<?php $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>"/> % 
+                <input size="4" name="vat" id="vat" type="text" value="<?php echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>"/> % 
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />

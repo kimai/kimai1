@@ -26,7 +26,7 @@ $(document).ready(function() {
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title"><?php if ($id) echo $this->kga['lang']['edit'], ': ', $this->kga['lang']['activity']; else echo $this->kga['lang']['new_activity'];?></span>
+        <span id="floater_title"><?php if (isset($id)) echo $this->kga['lang']['edit'], ': ', $this->kga['lang']['activity']; else echo $this->kga['lang']['new_activity'];?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>       

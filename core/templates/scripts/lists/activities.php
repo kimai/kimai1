@@ -8,12 +8,12 @@ foreach ($this->activities as $activity):
       <td nowrap class="option">
         <?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
         <a href ="#" onClick="editSubject('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
-          <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->$kga['lang']['edit']?> (ID:<?php echo $activity['activityID']?>)' border='0' />
+          <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?> (ID:<?php echo $activity['activityID']?>)' border='0' />
         </a>
         <?php endif; ?>
 
         <a href ="#" onClick="lists_update_filter('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
-          <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->$kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
+          <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
         </a>
 
         <a href ="#" class="preselect" onClick="buzzer_preselect('activity',<?php echo $activity['activityID']?>,'<?php $this->jsEscape($activity['name'])?>',0,0); return false;" id="ps<?php echo $activity['activityID']?>">

@@ -140,6 +140,7 @@ return array(
 "delete_project"    => "Projekt löschen",
 "delete_customer"   => "Kunde löschen",
 "delete_activity"   => "Tätigkeit löschen",
+"delete_status"     => "Status löschen",
 "switchUser"        => "Zu Diesem Benutzerkonto wechseln",
 "backupUser"        => "Backup des Account Anlegen",
 "mailUser"          => "Email an diesen Benutzer senden",
@@ -293,6 +294,8 @@ return array(
 'list'=> 'Liste',
 'sublists' => 'Untere Listen',
 
+"filter" => "Filter",
+
 'internalProject' => 'internes Projekt',
 
 'exactSums' => 'Exakte Summen bilden statt die angezeigten gerundeten Werte zu addieren.',
@@ -418,8 +421,6 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "stdrd_location"  		   => "Standard-Ort",
 "timeformat"	     	   => "Zeitformat",
 "dateformat"			   => "Datumsformat",
-
-"filter"	 		       => "Filter",
 
 "refundable_all"	 	   => "alle",
 "refundable_refundable"    => "nur rückerstattbare",

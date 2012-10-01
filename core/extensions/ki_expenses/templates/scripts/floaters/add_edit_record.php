@@ -18,7 +18,7 @@
               }
             });
 
-            <?php if ($id == 0): ?>
+            <?php if (!isset($id)): ?>
             $("#add_edit_expense_project_ID").selectOptions(""+selected_project+"");
             <?php endif; ?>
             $('#floater_innerwrap').tabs({ selected: 0 });
@@ -30,7 +30,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php echo ($id == 0) ? $this->kga['lang']['add'] : $this->kga['lang']['edit']?></span>
+        <span id="floater_title"><?php echo !isset($id) ? $this->kga['lang']['add'] : $this->kga['lang']['edit']?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
@@ -124,7 +124,7 @@
             <ul>
           <li>
                         <label for="erase"><?php echo $this->kga['lang']['refundable_long']?>:</label>
-                        <input type='checkbox' id='refundable' name='refundable' <?php if ($refundable):?> checked="checked" <?php endif; ?> tabindex='12'/>
+                        <input type='checkbox' id='refundable' name='refundable' <?php if ($this->refundable):?> checked="checked" <?php endif; ?> tabindex='12'/>
                    </li>
 
                    <li>

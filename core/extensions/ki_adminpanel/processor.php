@@ -179,7 +179,7 @@ switch ($axAction) {
 				}
 				$projects = $database->get_projects($groups);
 				$view->projects = $projects;
-				$view->selected_activity_filter = $_REQUEST['filter'];
+				$view->selected_activity_filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 0;
 				echo $view->render('activities.php');
 				break;
 		}
@@ -282,7 +282,7 @@ switch ($axAction) {
 		$userData['sts'] = $_REQUEST['status'];
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
-		$userData['rate'] = $_REQUEST['rate'];
+                $userData['rate'] = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
 		// if password field is empty => password unchanged (not overwritten with "")
 		if ($_REQUEST['password'] != "") {
 			$userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);

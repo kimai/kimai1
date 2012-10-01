@@ -26,7 +26,7 @@
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
-        <span id="floater_title"><?php if ($id) echo $this->kga['lang']['edit'],': ',$this->kga['lang']['customer']; else echo $this->kga['lang']['new_customer']; endif;</span>
+        <span id="floater_title"><?php if (isset($id)) echo $this->kga['lang']['edit'],': ',$this->kga['lang']['customer']; else echo $this->kga['lang']['new_customer'];?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>       
@@ -50,7 +50,7 @@
                       <span class="bb"><?php echo $this->kga['lang']['contact']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php if (count($groupIDs) > 1): ?>
+<?php if (count($this->groupIDs) > 1): ?>
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['groups']?></span>
@@ -100,7 +100,7 @@
             <?php echo $this->formPassword('password', '', array(
 		'cols' => 30,
 		'rows' => 3,
-		'disabled' => !$password?:'disabled':''
+		'disabled' => !$this->password?'disabled':''
 ));?><br/>
             <?php echo $this->formCheckbox('no_password', '1',array('class' => 'disableInput', 'checked' => !$this->password)); echo $this->kga['lang']['nopassword']?>
                       </div>
@@ -143,7 +143,7 @@
 		'class' => 'formfield',
 		'id' => 'activityGroups',
 		'multiple' => 'multiple',
-		'size' = 3,
+		'size' => 3,
 		'style' => 'width:255px'), $this->groups); ?>
                     </li>
 
@@ -151,7 +151,7 @@
                 
             </fieldset>
 <?php else: 
- echo $this->formHidden('customerGroups[]', $this->selectedGroups[0], ,array('id' => 'customerGroups'));
+ echo $this->formHidden('customerGroups[]', $this->selectedGroups[0], null ,array('id' => 'customerGroups'));
 endif; ?>
 
             <fieldset id="address">

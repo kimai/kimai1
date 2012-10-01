@@ -884,8 +884,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $counter     = 0;
-
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       return $rows;
   }
@@ -2380,6 +2378,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['trackingNumber']   = $row->trackingNumber;
               $arr[$i]['budget']  	   = $row->budget;
               $arr[$i]['approved']     = $row->approved;
+              $arr[$i]['statusID']       = $row->statusID;
               $arr[$i]['status']       = $row->status;
               $arr[$i]['billable']     = $row->billable;
               $arr[$i]['description']  = $row->description;
@@ -2687,7 +2686,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           $consideredEnd = $end;
         }
         $sum+=(int)($consideredEnd - $consideredStart);
-        error_log($sum);
       }
       return $sum;
   }

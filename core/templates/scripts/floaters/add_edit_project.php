@@ -59,7 +59,7 @@
 <div id="floater_innerwrap">
 
 <div id="floater_handle"><span id="floater_title">
-<?php if ($id) echo $this->kga['lang']['edit'], ':', $this->kga['lang']['project']; else echo $this->kga['lang']['new_project']; ?></span>
+<?php if (isset($id)) echo $this->kga['lang']['edit'], ':', $this->kga['lang']['project']; else echo $this->kga['lang']['new_project']; ?></span>
 <div class="right"><a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
 </div>
 </div>
@@ -74,7 +74,7 @@
 		class="bb"><?php echo $this->kga['lang']['budget']?></span> <span class="cc">&nbsp;</span> </a></li>
 	<li class="tab norm"><a href="#activities"> <span class="aa">&nbsp;</span> <span
 		class="bb"><?php echo $this->kga['lang']['activities']?></span> <span class="cc">&nbsp;</span> </a></li>
-	<?php if (count($groupIDs) > 1): ?>
+	<?php if (count($this->groupIDs) > 1): ?>
 	<li class="tab norm"><a href="#groups"> <span class="aa">&nbsp;</span>
 	<span class="bb"><?php echo $this->kga['lang']['groups']?></span> <span class="cc">&nbsp;</span>
 	</a></li>
@@ -182,7 +182,7 @@
 </table>
 </fieldset>
 
-<?php if (count($groupIDs) > 1): ?>
+<?php if (count($this->groupIDs) > 1): ?>
 <fieldset id="groups">
 <ul>
 	<li>

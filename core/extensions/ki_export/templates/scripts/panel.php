@@ -48,7 +48,7 @@
 	<div class="l">
 		<div class="w">
 			<div class="c">
-				<a id="export_extension_select_filter"     href="#" class="select_btn"><?php echo $this->kga['lang']['export_extension']['filter']?></a>
+				<a id="export_extension_select_filter"     href="#" class="select_btn"><?php echo $this->kga['lang']['filter']?></a>
 				<a id="export_extension_select_location"   href="#" class="select_btn"><?php echo $this->kga['lang']['export_extension']['stdrd_location']?></a>
 				<a id="export_extension_select_timeformat" href="#" class="select_btn"><?php echo $this->kga['lang']['export_extension']['timeformat']?></a>
 			</div>

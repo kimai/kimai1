@@ -229,7 +229,7 @@
                 }
               }
             });
-            <?php if ($id): ?>
+            <?php if (isset($id)): ?>
             ts_ext_reload_activities(<?php echo $this->preselected_project?>,true);
             <?php else: ?>
             $("#add_edit_timeSheetEntry_projectID").selectOptions(""+selected_project+"");
@@ -299,8 +299,8 @@
 			var rate = $('#rate').val();
 			var budget = $('#budget_val').val();
 			var used = secs/3600*rate;
-			var usedString = '{/literal}<?php echo $this->kga['lang']['used}{literal']?>';
-			var budgetString = '{/literal}<?php echo $this->kga['lang']['budget_available}{literal']?>';
+			var usedString = '<?php echo $this->kga['lang']['used']?>';
+			var budgetString = '<?php echo $this->kga['lang']['budget_available']?>';
 			var chartdata = [[usedString, used], [budgetString, budget-used]];
 
             $.jqplot('chart',  [chartdata], {              
@@ -329,7 +329,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php if ($id) echo $this->kga['lang']['edit']; else $this->kga['lang']['add']; ?></span>
+        <span id="floater_title"><?php if (isset($id)) echo $this->kga['lang']['edit']; else $this->kga['lang']['add']; ?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php $this->kga['lang']['help']?></a>
@@ -482,7 +482,7 @@
 
                     <li>
                         <label for="cleared"><?php echo $this->kga['lang']['cleared']?>:</label>
-                        <input type='checkbox' id='cleared' name='cleared' <?php if ($cleared): ?> checked="checked" <?php endif; ?> tabindex='16'/>
+                        <input type='checkbox' id='cleared' name='cleared' <?php if ($this->cleared): ?> checked="checked" <?php endif; ?> tabindex='16'/>
                            
                    </li>
         

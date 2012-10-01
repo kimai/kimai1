@@ -2382,6 +2382,7 @@ class PDODatabaseLayer extends DatabaseLayer
           $arr[$i]['trackingNumber']   = $row['trackingNumber'];
           $arr[$i]['budget']  	   = $row['budget'];
           $arr[$i]['approved']     = $row['approved'];
+          $arr[$i]['statusID']     = $row['statusID'];
           $arr[$i]['status']       = $row['status'];
           $arr[$i]['billable']     = $row['billable'];
           $arr[$i]['description']  = $row['description'];

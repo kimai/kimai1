@@ -34,7 +34,7 @@ $time_in_buffer = 0;
 ?>
                 
 <?php foreach ($this->exportData as $row):
-$isExpense = $row['type']=="exp"; ?>
+$isExpense = $row['type']=="expense"; ?>
 
 <tr id="xp<?php echo $row['type'], $row['id']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> <?php if (!$row['time_out']): ?>active<?php endif; ?>
  <?php if ($isExpense):?> expense<?php endif; ?>">
@@ -109,7 +109,7 @@ $isExpense = $row['type']=="exp"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap";
                                                   if (isset($this->disabled_columns['budget'])) echo "disabled"; ?>
                     ">
-                        <?php if ($isExpense) echo $this->escape($row['budget']) ?>
+                        <?php echo !$isExpense ? $this->escape($row['budget']) : '&ndash;'; ?>
                     </td>
                     
                     
@@ -118,7 +118,7 @@ $isExpense = $row['type']=="exp"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap";
                                                   if (isset($this->disabled_columns['approved'])) echo "disabled"; ?>
                     ">
-                        <?php if ($isExpense) echo $this->escape($row['approved']) ?>
+                        <?php echo !$isExpense ? $this->escape($row['approved']) : '&ndash;'; ?>
                     </td>
                     
                     
@@ -127,7 +127,7 @@ $isExpense = $row['type']=="exp"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap";
                                                   if (isset($this->disabled_columns['status'])) echo "disabled"; ?>
                     ">
-                        <?php echo $this->escape($row['status']) ?>
+                        <?php echo !$isExpense ? $this->escape($row['status']) : '&ndash;'; ?>
                     </td>
                     
                     
@@ -136,7 +136,7 @@ $isExpense = $row['type']=="exp"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap";
                                                   if (isset($this->disabled_columns['billable'])) echo "disabled"; ?>
                     ">
-                        <?php if ($isExpense) echo $this->escape($row['billable']) ?>%
+                        <?php echo !$isExpense ? $this->escape($row['billable']) . '%' : '&ndash;'; ?>
                     </td>
 
 
@@ -173,11 +173,14 @@ $isExpense = $row['type']=="exp"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap";
                                                   if (isset($this->disabled_columns['activity'])) echo "disabled"; ?>
                     ">
-                        
+                        <?php if (!$isExpense): ?>
                         <a href ="#" class="preselect_lnk" 
                             onClick="buzzer_preselect('activity',<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
                             return false;">
-                            <?php echo $this->escape($row['activityName'])?>
+                        <?php $this->escape($row['activityName']);
+                        else: ?>
+                            &ndash;
+                        <?php endif; ?>
                         </a>
                     </td>
 

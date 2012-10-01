@@ -21,7 +21,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['export_extension.print']?></span>
+        <span id="floater_title"><?php echo $this->kga['lang']['export_extension']['print']?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>  

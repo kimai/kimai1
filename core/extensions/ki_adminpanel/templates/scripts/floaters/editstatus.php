@@ -29,7 +29,7 @@
                     </li>
                                                 
                 </ul>
-                <input name="id" type="hidden" value="<?php echo $this->status_details['status_id']?>" />
+                <input name="id" type="hidden" value="<?php echo $this->status_details['statusID']?>" />
                 <input name="axAction" type="hidden" value="sendEditStatus" />
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />

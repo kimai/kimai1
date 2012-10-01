@@ -131,6 +131,8 @@ switch ($axAction) {
         }
         $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
         $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);
+        
+        $view->cleared = false;
     }
 
     $view->status = $kga['conf']['status'];

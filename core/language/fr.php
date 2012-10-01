@@ -276,6 +276,8 @@ return array(
 'address' => 'Address',
 'contact' => 'Contact',
 
+"filter" => "Filtre",
+
 'internalProject' => 'Project interne',
 
 'exactSums' => 'Utiliser les sommes exactes au lieu d\' additionner les valeurs arrondies indiquées.',
@@ -390,8 +392,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 "stdrd_location"  		   => "Lieu standard",
 "timeformat"	     	   => "Format temps",
 "dateformat"			   => "Format date",
-
-"filter"	 		       => "Filtre",
 
 "refundable_all"	 	   => "Tous",
 "refundable_refundable"    => "Frais remboursables seulement",

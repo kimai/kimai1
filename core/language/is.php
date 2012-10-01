@@ -291,6 +291,7 @@ return array(
 'address' => 'Heimilisfang',
 'contact' => 'Tengiliður',
 
+"filter" => "Sía",
 
 'internalProject' => 'Innanhús verkefni',
 
@@ -431,9 +432,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "stdrd_location"  		   => "Stöðluð-Staðsetning",
 "timeformat"	     	   => "Form Tíma",
 "dateformat"			   => "Form dagssetningar",
-
-
-"filter"	 		       => "Sía",
 
 
 "refundable_all"	 	   => "allt",

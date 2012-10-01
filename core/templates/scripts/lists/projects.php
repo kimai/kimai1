@@ -30,7 +30,7 @@
             <?php endif; ?>
             <span class="lighter"><?php echo $this->escape($this->truncate($project['customerName'],30,'...'))?>:</span> <?php echo $this->escape($project['name']) ?>
         <?php else: ?>
-            <?php if ($this->kga['conf']['comment_flag'] == 1): ?>
+            <?php if ($this->kga['conf']['project_comment_flag'] == 1): ?>
                 <?php if ($this->kga['conf']['showIDs'] == 1): ?>
                   <span class="ids"><?php echo $project['projectID']?></span>
                 <?php endif; ?>

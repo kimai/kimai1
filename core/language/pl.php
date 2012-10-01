@@ -262,6 +262,8 @@ return array(
 'address' => 'Adres',
 'contact' => 'Kontakt',
 
+"filter" => "Filtr",
+
 'internalProject' => 'projekt wewnętrzny',
 
 'exactSums' => 'Użyj dokładnych sum zamiast dodawania pokazanych zaokrąglonych wartości.',
@@ -382,8 +384,6 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
 "stdrd_location"  		   => "Lokalizacja stadardowa",
 "timeformat"	     	   => "Format czasu",
 "dateformat"			   => "Format daty",
-
-"filter"	 		       => "Filtr",
 
 "refundable_all"	 	   => "wszystkie",
 "refundable_refundable"    => "tylko refundowane",

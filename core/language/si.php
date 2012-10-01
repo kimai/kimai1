@@ -268,6 +268,8 @@ return array(
 'address' => 'Naslov',
 'contact' => 'Kontakt',
 
+"filter" => "Filter",
+
 'internalProject' => 'notranji projekt',
 
 'exactSums' => 'Uporabi natančne vsote namesto vnašanja zaokroženih vrednosti.',
@@ -390,8 +392,6 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
 "stdrd_location"  		   => "Standardno-Lokacija",
 "timeformat"	     	   => "Format časa",
 "dateformat"			   => "Format datuma",
-
-"filter"	 		       => "Filter",
 
 "refundable_all"	 	   => "vse",
 "refundable_refundable"    => "samo povratne",

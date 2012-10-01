@@ -265,6 +265,8 @@ return array(
 'address' => 'Adresse',
 'contact' => 'Kontakt',
 
+"filter" => "Filter",
+
 'internalProject' => 'internt projekt',
 
 'exactSums' => 'Brug eksakte værdier i stedet for at summere afrundede værdier.',
@@ -380,8 +382,6 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
 "stdrd_location"  		   => "Standardarbejdssted",
 "timeformat"	     	   => "Tidsformat",
 "dateformat"			   => "Datoformat",
-
-"filter"	 		       => "Filter",
 
 "refundable_all"	 	   => "alle",
 "refundable_refundable"    => "kun til refusion",

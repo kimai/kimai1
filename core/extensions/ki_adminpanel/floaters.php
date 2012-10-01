@@ -30,6 +30,8 @@ switch ($axAction) {
     // =============================
 
         $userDetails = $database->user_get_data($id);
+
+        $userDetails['rate'] = $database->get_rate($userDetails['userID'],NULL,NULL);
         
         $view->selectedGroups = $database->getGroupMemberships($id);
         
