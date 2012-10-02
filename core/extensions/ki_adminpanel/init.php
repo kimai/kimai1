@@ -59,11 +59,7 @@
       }
     }
 
-    if (count($customers)>0) {
-      $view->customers = $customers;
-    } else {
-      $view->customers = '0';
-    }
+    $view->customers = $customers;
     $view->customer_display = $view->render("customers.php");
 
     // =========================
@@ -83,11 +79,7 @@
       $projects[$row]['groups'] = implode(", ",$groupNames);
     }
 
-    if (count($projects)>0) {
-      $view->projects = $projects;
-    } else {
-      $view->projects = '0';
-    }
+    $view->projects = $projects;
     $view->project_display = $view->render("projects.php");
 
     // ========================
@@ -107,11 +99,7 @@
       $activities[$row]['groups'] = implode(", ",$groupNames);
     }
 
-    if (count($activities)>0) {
-      $view->activities = $activities;
-    } else {
-      $view->activities = '0';
-    }
+    $view->activities = $activities;
 
     $view->activity_display = $view->render("activities.php");
     $view->selected_activity_filter = -2;

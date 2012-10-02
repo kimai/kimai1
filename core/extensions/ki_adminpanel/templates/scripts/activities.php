@@ -59,7 +59,7 @@
 
 
 
-<?php if ($this->activities == '0'): ?>
+<?php if (count($this->activities) == 0): ?>
                 <tr>
                     <td colspan='3'>
                         <strong style="color:red"><?php echo $this->kga['lang']['noItems']?></strong>
