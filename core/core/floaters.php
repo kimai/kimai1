@@ -197,6 +197,10 @@ switch ($axAction) {
         
             }
         }
+        
+        if (!isset($view->id)) {
+          $view->assignable = false;
+        }
 
         // Create a <select> element to chosse the groups.
         $view->groups = makeSelectBox("group",$kga['user']['groups']);
