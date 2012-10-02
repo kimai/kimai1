@@ -1,4 +1,4 @@
-#users, #customers, #activities, #projects { 
+.lists > #users, .lists > #customers, .lists > #activities, .lists > #projects { 
     height:175px;
     border-top:none;
     z-index:1;
