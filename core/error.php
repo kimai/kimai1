@@ -17,11 +17,17 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+if (!defined('WEBROOT')) {
+    define('WEBROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+}
+
 set_include_path(
     implode(
         PATH_SEPARATOR,
         array(
-            realpath(WEBROOT . '/libraries/'),
+            realpath(WEBROOT . 'libraries/'),
+            get_include_path()
         )
     )
 );
@@ -30,18 +36,20 @@ require_once 'Zend/Loader/Autoloader.php';
 Zend_Loader_Autoloader::getInstance();
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 if (!file_exists('includes/autoconf.php')) {
        $headline = "Fatal Error!";
        $message = "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.";
 }
 else {
-  if (!isset($_REQUEST['err']))
-    $_REQUEST['err'] = '';
+  if (!isset($_REQUEST['err'])) {
+      $_REQUEST['err'] = '';
+  }
 
   switch ($_REQUEST['err']) {
 
+    // TODO - can we make sure $kga exists?
     case 'db':
         $headline = $kga['lang']['errors'][0]['hdl'];
         $message  = $kga['lang']['errors'][0]['txt'];
@@ -54,10 +62,7 @@ else {
   }
 }
 
-$view->headline = $headline;
-$view->message = $message;
+$view->assign('headline', $headline);
+$view->assign('message', $message);
 
-echo $view->render('error.php');
-
-
-?>
+echo $view->render('misc/error.php');
