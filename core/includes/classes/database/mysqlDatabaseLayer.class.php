@@ -1154,11 +1154,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   public function user_edit($userID, $data)
   {
       $data = $this->clean_data($data);
-
       $strings = array('name', 'mail', 'alias', 'password', 'apikey');
+      $values = array();
+
       foreach ($strings as $key) {
-        if (isset($data[$key]))
+        if (isset($data[$key])) {
           $values[$key] = MySQL::SQLValue($data[$key]);
+        }
       }
 
       $numbers = array('status' ,'trash' ,'active', 'lastProject' ,'lastActivity' ,'lastRecord');
