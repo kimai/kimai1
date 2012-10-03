@@ -36,6 +36,4 @@
 
 <link rel="stylesheet" type="text/css" media="screen" href="css/login.css" />
 </head>
-<?php if (!$kga.virtual_users): ?><body onLoad='setfocus();'>
-<?php else: ?><body>
-<?php endif; ?>
+<body onLoad="setfocus();">
