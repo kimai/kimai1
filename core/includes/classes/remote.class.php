@@ -252,9 +252,11 @@ class Kimai_Remote_Api
         $user = $this->getUser();
         $uid  = $user['userID'];
 
+        /*
         if (count($this->getBackend()->get_current_recordings($uid)) > 0) {
             $this->getBackend()->stopRecorder();
         }
+        */
 
         $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
 		if($result) {
