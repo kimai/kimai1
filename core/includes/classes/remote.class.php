@@ -269,15 +269,16 @@ class Kimai_Remote_Api
      * Stops the currently running recording.
      *
      * @param string $apiKey
+     * @param integer $entryId
      * @return boolean
      */
-	public function stopRecord($apiKey)
+	public function stopRecord($apiKey, $entryId)
 	{
         if (!$this->init($apiKey, 'stopRecord')) {
 			return $this->getAuthErrorResult();
         }
 
-        $result = $this->getBackend()->stopRecorder();
+        $result = $this->getBackend()->stopRecorder($entryId);
 		if($result) {
 			return $this->getSuccessResult(array());
 		} else {
@@ -371,7 +372,7 @@ class Kimai_Remote_Api
         $user     = $this->getUser();
 
         if (isset($kga['customer'])) {
-			$projects = $this->getBackend()->get_projects_by_customer(($kga['customer']['customerID']);
+			$projects = $this->getBackend()->get_projects_by_customer($kga['customer']['customerID']);
 		} else {
 			$projects = $this->getBackend()->get_projects($user['groups']);
 		}
@@ -449,7 +450,10 @@ class Kimai_Remote_Api
 			return $this->getAuthErrorResult();
         }
 
-        $result = $this->getBackend()->get_current_recordings();
+        $user = $this->getUser();
+        $uid  = $user['userID'];
+
+        $result = $this->getBackend()->get_current_recordings($uid);
 
 		// no "last" activity existing
         if (count($result) == 0) {
