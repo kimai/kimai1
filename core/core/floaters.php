@@ -59,14 +59,19 @@ switch ($axAction) {
     case 'prefs':
         if (isset($kga['customer'])) die();
 
-        $temp = ls("../skins");
         $skins = array();
-        foreach($temp as $id => $skin) {
+        $langs = array();
+
+        foreach(ls("../skins") as $id => $skin) {
             $skins[$skin] = $skin;
         }
 
+        foreach(Translations::langs() as $lang) {
+            $langs[$lang] = $lang;
+        }
+
         $view->skins = $skins;
-        $view->langs = Translations::langs();
+        $view->langs = $langs;
         $view->timezones = timezoneList();
         $view->user = $kga['user'];
         $view->rate = $database->get_rate($kga['user']['userID'],NULL,NULL);
