@@ -63,7 +63,7 @@
 
           <li>
             <label for="pw"><?php echo $this->kga['lang']['newPassword']?>:</label>
-            <input type="password" name="pw" size="15" id="password" /> <?php echo $this->kga['lang']['minLength']?>
+            <input type="password" name="password" size="15" id="password" /> <?php echo $this->kga['lang']['minLength']?>
           </li>
 
           <li>
