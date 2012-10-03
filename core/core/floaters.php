@@ -143,6 +143,10 @@ switch ($axAction) {
                 $view->id = $id;
             }
         }
+        
+        if (!isset($view->id)) {
+          $view->selectedActivities = array();
+        }
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
 
         // Create a <select> element to chosse the activities.
@@ -192,6 +196,10 @@ switch ($axAction) {
                 $view->id = $id;
         
             }
+        }
+        
+        if (!isset($view->id)) {
+          $view->assignable = false;
         }
 
         // Create a <select> element to chosse the groups.

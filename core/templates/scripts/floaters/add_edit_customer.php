@@ -164,8 +164,8 @@ endif; ?>
                     </li>
 
                     <li>
-                        <label for="contact" ><?php echo $this->kga['lang']['contactPerson']?>:</label>
-            <?php echo $this->formText('contact', $this->contact);?>
+                        <label for="contactPerson" ><?php echo $this->kga['lang']['contactPerson']?>:</label>
+            <?php echo $this->formText('contactPerson', $this->contact);?>
                     </li>
                                       
                     <li>

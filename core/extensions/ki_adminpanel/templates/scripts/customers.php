@@ -49,7 +49,7 @@
                 </tr>
 <?php endforeach; ?>
 
-<?php if ($this->customers == '0'): ?>
+<?php if (count($this->customers) == 0): ?>
                 <tr>
                     <td colspan='3'>
                         <strong style="color:red"><?php echo $this->kga['lang']['noItems']?></strong>

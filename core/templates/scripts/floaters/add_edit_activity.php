@@ -1,13 +1,15 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
 
-    $('.disableInput').click(function(){
-      var input = $(this);
+    function updateActivityProjectsDisabledStatus() {
+      var input = $('.disableInput');
       if (input.is (':checked'))
         $('#activityProjects').attr("disabled","");
       else
         $('#activityProjects').attr("disabled","disabled");
-    });
+    }
+
+    $('.disableInput').click(updateActivityProjectsDisabledStatus);
 
      $('#add_edit_activity').ajaxForm(function() {
 
@@ -20,6 +22,8 @@ $(document).ready(function() {
          hook_activities_changed();
      });
      $('#floater_innerwrap').tabs({ selected: 0 });
+
+    updateActivityProjectsDisabledStatus();
  }); 
 </script>
 
