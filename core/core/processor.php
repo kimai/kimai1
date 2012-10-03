@@ -89,9 +89,9 @@ switch ($axAction) {
           $database->remove_rate($kga['user']['userID'],null,NULL);
         
         // If the password field is empty don't overwrite the old password.
-        if ($_REQUEST['password'] != "") {
-        	$userData['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
-          $database->user_edit($kga['user']['userID'], $userData);
+        if (trim($_REQUEST['password']) != "") {
+            $userData['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
+            $database->user_edit($kga['user']['userID'], $userData);
         }
         
         
