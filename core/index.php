@@ -184,8 +184,8 @@ switch($_REQUEST['a'])
 
             $userData = $database->user_get_data($userId);
 
-            if ($userData['ban'] < ($kga['conf']['loginTries']) ||
-                (time() - $userData['banTime']) > $kga['conf']['loginBanTime']) {
+            if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) ||
+                ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
 
               // logintries not used up OR
               // bantime is over
