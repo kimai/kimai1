@@ -270,9 +270,9 @@ $time_buffer = $row['start'];
   <?php else: ?>
 
     updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[0]['start']?>,
-                             <?php echo $this->timeSheetEntries[0]['customerID']?>,'<?php $this->jsEscape($this->timeSheetEntries[0]['customerName'])?>',
-                             <?php echo $this->timeSheetEntries[0]['projectID']?> ,'<?php $this->jsEscape($this->timeSheetEntries[0]['projectName'])?>',
-                             <?php echo $this->timeSheetEntries[0]['activityID']?>,'<?php $this->jsEscape($this->timeSheetEntries[0]['activityName'])?>');
+                             <?php echo $this->timeSheetEntries[0]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['customerName'])?>',
+                             <?php echo $this->timeSheetEntries[0]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['projectName'])?>',
+                             <?php echo $this->timeSheetEntries[0]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['activityName'])?>');
   <?php endif; ?>
     
 </script>

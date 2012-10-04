@@ -16,12 +16,12 @@ foreach ($this->activities as $activity):
           <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
         </a>
 
-        <a href ="#" class="preselect" onClick="buzzer_preselect('activity',<?php echo $activity['activityID']?>,'<?php $this->jsEscape($activity['name'])?>',0,0); return false;" id="ps<?php echo $activity['activityID']?>">
+        <a href ="#" class="preselect" onClick="buzzer_preselect('activity',<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>',0,0); return false;" id="ps<?php echo $activity['activityID']?>">
           <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/preselect_off.png' width='13' height='13' alt='<?php echo $this->kga['lang']['select']?>' title='<?php echo $this->kga['lang']['select']?> (ID:<?php echo $activity['activityID']?>)' border='0' />
         </a>
             </td>
 
-            <td width="100%" class="activities" onClick="buzzer_preselect('activity',<?php echo $activity['activityID']?>,'<?php $this->jsEscape($activity['name'])?>',0,0); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
+            <td width="100%" class="activities" onClick="buzzer_preselect('activity',<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>',0,0); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
                 <?php if ($activity['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
                 <?php if ($this->kga['conf']['showIDs'] == 1): ?><span class="ids"><?php echo $activity['activityID']?></span> <?php endif; echo $this->escape($activity['name']) ?>
                 <?php if ($activity['visible'] != 1): ?></span><?php endif; ?>
