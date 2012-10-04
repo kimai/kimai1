@@ -20,14 +20,12 @@
 
                     <td class="option">
                         <a href ="#" onClick="editSubject('project',<?php echo $row['projectID']?>); $(this).blur(); return false;">
-                            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
-                        </a>
+                            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
                         
                         &nbsp;
                         
                         <a href="#" id="delete_project<?php echo $row['projectID']?>" onClick="adminPanel_extension_deleteProject(<?php echo $row['projectID']?>)">
-                          <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_project']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_project']?>" border="0">
-                        </a>
+                          <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_project']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_project']?>" border="0"></a>
                     </td>
 
                     <td class="projects">
