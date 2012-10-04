@@ -2,16 +2,11 @@
        Javascript or jQuery stuff that should run when your extension *has finished loading*  
        should sit in an special onload function like this:
 -->
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            demo_ext_onload();
-        }); 
-    </script>
-
-<div id="demo_ext_header">
-     <strong>Demo Extension</strong>
-</div>
-
+<script type="text/javascript">
+    $(document).ready(function() {
+        demo_ext_onload();
+    });
+</script>
 
 <h1>My Extension</h1>
 
