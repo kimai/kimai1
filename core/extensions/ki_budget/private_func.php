@@ -133,7 +133,7 @@ foreach ($projects as $project) {
   $timeSheetEntries = $database->get_timeSheet(0,time(),null,null,array($projectId));
   foreach ($timeSheetEntries as $timeSheetEntry) {
     $projectID = $projectId;
-    if (is_array($wages[$projectID][$timeSheetEntry['activityID']])) {
+    if (isset($wages[$projectID][$timeSheetEntry['activityID']]) && is_array($wages[$projectID][$timeSheetEntry['activityID']])) {
       $tmpCost = $timeSheetEntry['wage_decimal'] * $timeSheetEntry['billable'] / 100;
       if($timeSheetEntry['wage_decimal'] - $tmpCost <= 0 && $tmpCost <= 0) {
       	continue;
