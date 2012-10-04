@@ -37,10 +37,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     else
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
-  
-  public function getConnection() {
-  	return $this->conn;
-  }
 
   private function logLastError($scope) {
       Logger::logfile($scope.': '.$this->conn->Error());
