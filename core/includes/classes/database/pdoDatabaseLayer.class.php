@@ -2988,8 +2988,9 @@ class PDODatabaseLayer extends DatabaseLayer
     if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-    $pdo_query = $this->conn->prepare("SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
-    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+    $pdo_query = $this->conn->prepare("SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "activities WHERE ".
+    // FIXME kevin: the table was project_activities before, this ust be wrong, but what is correct?
+    //(($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
     (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID"));
 
     $result = $pdo_query->execute();

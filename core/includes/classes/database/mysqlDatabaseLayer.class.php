@@ -4093,8 +4093,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
-    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "activities WHERE ".
+    // FIXME kevin: the table was project_activities before, this ust be wrong, but what is correct?
+    //(($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
     (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
     $result = $this->conn->Query($query);

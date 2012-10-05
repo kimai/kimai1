@@ -31,6 +31,8 @@ switch ($axAction) {
     // = display edit dialog for timesheet record   =
     // ==============================================
     $selected = explode('|',$axValue);
+
+    // edit record
     if ($id) {
         $timeSheetEntry = $database->timeSheet_get_data($id);
         $view->id = $id;
@@ -67,7 +69,8 @@ switch ($axAction) {
         $view->activityID = $timeSheetEntry['activityID'];
     
         $view->commentType = $timeSheetEntry['commentType'];
-        $view->status = $timeSheetEntry['status'];
+        // FIXME kevin: what to do here, it is not returned from db query
+        //$view->status = $timeSheetEntry['status'];
         $view->billable = $timeSheetEntry['billable'];
 
         // budget
@@ -78,7 +81,8 @@ switch ($axAction) {
         $view->budget_activity_used = $activityUsed;
 
     } else {
-        $view->id = 0;
+        // create new record
+        //$view->id = 0;
         
         $view->start_day = date("d.m.Y");
         $view->end_day = date("d.m.Y");
@@ -161,7 +165,3 @@ switch ($axAction) {
     break;        
 
 }
-
-?>
-
-    

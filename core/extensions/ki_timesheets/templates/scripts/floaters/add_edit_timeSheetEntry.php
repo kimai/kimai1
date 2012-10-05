@@ -229,13 +229,13 @@
                 }
               }
             });
-            <?php if (isset($id)): ?>
-            ts_ext_reload_activities(<?php echo $this->preselected_project?>,true);
-            <?php else: ?>
+            <?php if (isset($this->id)) { ?>
+            ts_ext_reload_activities(<?php echo $this->projectID?>,true);
+            <?php } else { ?>
             $("#add_edit_timeSheetEntry_projectID").selectOptions(""+selected_project+"");
             $("#add_edit_timeSheetEntry_activityID").selectOptions(""+selected_activity+"");
             ts_ext_reload_activities(selected_project);
-            <?php endif; ?>
+            <?php } ?>
 
             $('#floater_innerwrap').tabs({ selected: 0 });
             ts_timeToDuration();
@@ -254,9 +254,12 @@
         		var budgetCalculatedTwice = secs/3600*rate;
             $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-budgetCalculatedTwice),2);
             }
+            <?php if (isset($this->id)) { ?>
             //TODO: chart will not be generated..WHY??
-//            generateChart();
-        }); 
+            //generateChart();
+            <?php } ?>
+        });
+        // document ready
 
         function saveDuration() {
 			var durationArray=$("#duration").val().split(/:|\./);
@@ -286,8 +289,9 @@
 			var used = secs/3600*rate;
         	$('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-previousUsed+used),2);
         }
-        function generateChart() {
-			var durationArray=$("#edit_duration").val().split(/:|\./);
+        function generateChart()
+        {
+            var durationArray = $("#duration").val().split(/:|\./);
 			var secs = 0;
 		    if(durationArray.length > 0 && durationArray.length < 4) {
 		        secs = durationArray[0]*3600;
@@ -301,27 +305,35 @@
 			var used = secs/3600*rate;
 			var usedString = '<?php echo $this->kga['lang']['used']?>';
 			var budgetString = '<?php echo $this->kga['lang']['budget_available']?>';
-			var chartdata = [[usedString, used], [budgetString, budget-used]];
+			var chartdata = [[usedString, used], [budgetString, budget - used]];
 
-            $.jqplot('chart',  [chartdata], {              
-                seriesDefaults:{renderer:$.jqplot.PieRenderer,
-                    rendererOptions: {padding:10,
-                        showDataLabels: true,
-//                        // By default, data labels show the percentage of the donut/pie.
-//                        // You can show the data 'value' or data 'label' instead.
-                        dataLabels: 'value'
-                    }
-                },
-                    // Show the legend and put it outside the grid, but inside the
-                    // plot container, shrinking the grid to accomodate the legend.
-                    // A value of "outside" would not shrink the grid and allow
-                    // the legend to overflow the container.
-                    legend: {
-                        show: true,
-                        placement: 'insideGrid'
+            try {
+                $.jqplot('chart',  [chartdata], {
+                    seriesDefaults:{
+                        renderer:$.jqplot.PieRenderer,
+                        rendererOptions: {
+                            showDataLabels: true,
+    //                        // By default, data labels show the percentage of the donut/pie.
+    //                        // You can show the data 'value' or data 'label' instead.
+                            dataLabels: 'value'
+                        }
                     },
-                grid:{background: 'white', borderWidth:0, shadow:false}
-            });
+                        // Show the legend and put it outside the grid, but inside the
+                        // plot container, shrinking the grid to accomodate the legend.
+                        // A value of "outside" would not shrink the grid and allow
+                        // the legend to overflow the container.
+                        legend: {
+                            show: true,
+                            placement: 'insideGrid'
+                        },
+                    grid:{background: 'white', borderWidth:0, shadow:false}
+                });
+            }
+            catch (err) {
+                // probably no data, so remove the chart
+                $('#chart').remove();
+            }
+
         }
     </script>
 
@@ -329,10 +341,10 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php if (isset($id)) echo $this->kga['lang']['edit']; else $this->kga['lang']['add']; ?></span>
+        <span id="floater_title"><?php if (isset($this->id)) echo $this->kga['lang']['edit']; else echo $this->kga['lang']['add']; ?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
-            <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php $this->kga['lang']['help']?></a>
+            <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
         </div>  
     </div>
 
@@ -374,7 +386,7 @@
             <fieldset id="general">
                 
                 <ul>
-                
+
                    <li>
                        <label for="projectID"><?php echo $this->kga['lang']['project']?>:</label>
                        <div class="multiFields">
@@ -413,7 +425,7 @@
 
                    <li>
                        <label for="description"><?php echo $this->kga['lang']['description']?>:</label>
-                        <textarea tabindex="5" style="width:395px" cols='40' rows='5' name="description" id="description"><?php $this->escape($this->description)?></textarea>
+                        <textarea tabindex="5" style="width:395px" cols='40' rows='5' name="description" id="description"><?php echo $this->escape($this->description)?></textarea>
                    </li>
 
                 <li>
@@ -535,8 +547,12 @@
                         <span id="budget_activity_approved"><?php echo $this->approved_activity?></span></td></tr>
                         </table>
                    </li>
-        <li id="chart">
-        </li>
+                    <?php if (isset($this->id)) { ?>
+                    <li>
+                        <div id="chart"></div>
+                    </li>
+                    <?php } ?>
+
                 </ul>
 
             </fieldset>
