@@ -71,15 +71,16 @@
       $projects = $database->get_projects($kga['user']['groups']);
 
     $projectsAll = array();
-    foreach ($projects as $row=>$project) {
-      $groupNames = array();
-      foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-        $data = $database->group_get_data($groupID);
-         $groupNames[] = $data['name'];
-      }
-        $projectsAll[$row]['groups'] = implode(", ",$groupNames);
+    if ($projects !== null && is_array($projects)) {
+        foreach ($projects as $row=>$project) {
+          $groupNames = array();
+          foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+            $data = $database->group_get_data($groupID);
+             $groupNames[] = $data['name'];
+          }
+            $projectsAll[$row]['groups'] = implode(", ",$groupNames);
+        }
     }
-
     $view->projects = $projectsAll;
     $view->project_display = $view->render("projects.php");
 

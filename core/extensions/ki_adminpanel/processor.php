@@ -124,24 +124,31 @@ switch ($axAction) {
 				echo $view->render('customers.php');
 				break;
 			case "projects" :
-				if ($kga['user']['status'] == 0)
+                $projectsAll = array();
+				if ($kga['user']['status'] == 0) {
 					$projects = $database->get_projects();
-				else
+                } else {
 					$projects = $database->get_projects($kga['user']['groups']);
-				foreach ($projects as $row => $project) {
-					$groupNames = array();
-					foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-						$data = $database->group_get_data($groupID);
-						$groupNames[] = $data['name'];
-					}
-					$projects[$row]['groups'] = implode(", ", $groupNames);
-				}
-				if (count($projects) > 0) {
-					$view->projects = $projects;
+                }
+
+                if ($projects !== null && is_array($projects)) {
+                    foreach ($projects as $row => $project) {
+                        $groupNames = array();
+                        foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+                            $data = $database->group_get_data($groupID);
+                            $groupNames[] = $data['name'];
+                        }
+                        $projectsAll[$row]['groups'] = implode(", ", $groupNames);
+                    }
+                }
+
+				if (count($projectsAll) > 0) {
+					$view->projects = $projectsAll;
 				}
 				else {
 					$view->projects = '0';
 				}
+
 				echo $view->render('projects.php');
 				break;
 			case "activities" :
