@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-<?php
+    <?php
     if (!isset($this->arr_status) || $this->arr_status == '0' || count($this->arr_status) == 0)
     {
         ?>

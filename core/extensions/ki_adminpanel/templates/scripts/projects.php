@@ -3,18 +3,27 @@
 
 <table>
 
-  <thead>
-      <tr class="headerrow">
-          <th><?php echo $this->kga['lang']['options']?></th>
-          <th><?php echo $this->kga['lang']['projects']?></th>
-          <th><?php echo $this->kga['lang']['groups']?></th>
-      </tr>
-  </thead>
-
+<thead>
+  <tr class="headerrow">
+      <th><?php echo $this->kga['lang']['options']?></th>
+      <th><?php echo $this->kga['lang']['projects']?></th>
+      <th><?php echo $this->kga['lang']['groups']?></th>
+  </tr>
+</thead>
 
 <tbody>
 <?php
-    if (isset($this->projects))
+    if (!isset($this->projects) || $this->projects == '0' || count($this->projects) == 0)
+    {
+        ?>
+        <tr>
+            <td nowrap colspan='3'>
+                <?php echo $this->error(); ?>
+            </td>
+        </tr>
+        <?php
+    }
+    else
     {
         foreach ($this->projects as $row)
         {
@@ -49,16 +58,6 @@
         <?php
         }
     }
-    else
-    {
-        ?>
-                    <tr>
-                        <td colspan='3'>
-                            <strong style="color:red"><?php echo $this->kga['lang']['noItems']?></strong>
-                        </td>
-                    </tr>
-        <?php
-    }
-?>
+    ?>
     </tbody>
 </table>

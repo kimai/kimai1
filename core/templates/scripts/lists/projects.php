@@ -1,7 +1,7 @@
 <table>
   <tbody>
  <?php
-    if (!isset($this->projects) || $this->projects == '0')
+    if (!isset($this->projects) || $this->projects == '0' || count($this->projects) == 0)
     {
         ?>
         <tr>
