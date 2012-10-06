@@ -144,17 +144,13 @@ switch ($axAction) {
      * type of the current user decides which users are shown to him.
      * See get_watchable_users.
      */
-    case 'reload_user':
-        if (isset($kga['customer']))
-          $users = array();
-        else
-          $users = $database->get_watchable_users($kga['user']);
-
-        if (count($users)>0) {
-            $view->users = $users;
+    case 'reload_users':
+        if (isset($kga['customer'])) {
+            $view->users = array();
         } else {
-            $view->users = 0;
+            $view->users = $database->get_watchable_users($kga['user']);
         }
+
         echo $view->render("lists/users.php");
     break;
 
@@ -363,5 +359,3 @@ switch ($axAction) {
     break;
 
 }
-
-?>
