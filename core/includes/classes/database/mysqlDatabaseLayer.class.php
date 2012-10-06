@@ -2736,9 +2736,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      $arr = array();
       $i = 0;
       if ($this->conn->RowCount()) {
+          $arr = array();
           $this->conn->MoveFirst();
           while (! $this->conn->EndOfSeek()) {
               $row = $this->conn->Row();
@@ -2749,9 +2749,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $i++;
           }
           return $arr;
-      } else {
-          return array();
+
       }
+      return array();
   }
 
   ## Load into Array: Activities
