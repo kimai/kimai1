@@ -235,8 +235,8 @@ if ($this->timeSheetEntries)
 else
 {
     ?>
-    <div style='padding:5px;color:#f00'>
-        <strong><?php echo $this->kga['lang']['noEntries']?></strong>
+    <div class="error">
+        <?php echo $this->kga['lang']['noEntries']?>
     </div>
     <?php
 }

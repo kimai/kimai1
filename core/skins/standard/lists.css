@@ -224,6 +224,15 @@ a.selectInvertLink
     color:#777;
 }
 
+.error {
+    padding: 5px;
+    color: #f00;
+    font-weight: bold;
+}
+
+.floater_content .error {
+    font-size: 13px;
+}
 
 div.lists table {
     border-collapse: collapse;

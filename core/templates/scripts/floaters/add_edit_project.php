@@ -145,43 +145,54 @@
 </fieldset>
 
 <fieldset id="activitiestab">
-    <table class="activitiesTable">
-        <tr>
-            <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->kga['lang']['activities']?>:</label>
-            </td>
-            <td><label for="budget" style="text-align: left;"><?php echo $this->kga['lang']['budget']?>:</label>
-            </td>
-            <td><label for="effort" style="text-align: left;"><?php echo $this->kga['lang']['effort']?>:</label>
-            </td>
-            <td><label for="approved" style="text-align: left;"><?php echo $this->kga['lang']['approved']?>:</label>
-            </td>
-        </tr>
-        <?php
-        if ($this->selectedActivities != false && count($this->selectedActivities) < count($this->assignableTasks)) {
-            $this->selectedActivities[] = array('activityID' => '');
-        }
+    <?php
+    if (!isset($this->selectedActivities) || $this->selectedActivities == false) {
+        echo '<div class="error">'.$this->kga['lang']['no_project_activities'].'</div>';
+    }
+    else
+    {
+        ?>
 
-        foreach ($this->selectedActivities as $selectedActivity): ?>
-        <tr>
-            <td>
-            <ul>
-                <li>
-                  <?php echo $this->formSelect('assignedActivities[]', $selectedActivity['activityID'], array('class'=>'activities formfield'), $this->assignableTasks); ?>
-                </li>
-            </ul>
-            </td>
-            <td>
-                <?php echo $this->formText('budget[]', $selectedActivity['budget'], array('style' => 'width: 100px'));?>
-            </td>
-            <td>
-                <?php echo $this->formText('effort[]', $selectedActivity['effort'], array('style' => 'width: 100px'));?>
-            </td>
-            <td>
-                <?php echo $this->formText('approved[]', $selectedActivity['approved'], array('style' => 'width: 100px'));?>
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+        <table class="activitiesTable">
+            <tr>
+                <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->kga['lang']['activities']?>:</label>
+                </td>
+                <td><label for="budget" style="text-align: left;"><?php echo $this->kga['lang']['budget']?>:</label>
+                </td>
+                <td><label for="effort" style="text-align: left;"><?php echo $this->kga['lang']['effort']?>:</label>
+                </td>
+                <td><label for="approved" style="text-align: left;"><?php echo $this->kga['lang']['approved']?>:</label>
+                </td>
+            </tr>
+            <?php
+            if (count($this->selectedActivities) < count($this->assignableTasks)) {
+                $this->selectedActivities[] = array('activityID' => '');
+            }
+
+            foreach ($this->selectedActivities as $selectedActivity): ?>
+            <tr>
+                <td>
+                <ul>
+                    <li>
+                      <?php echo $this->formSelect('assignedActivities[]', $selectedActivity['activityID'], array('class'=>'activities formfield'), $this->assignableTasks); ?>
+                    </li>
+                </ul>
+                </td>
+                <td>
+                    <?php echo $this->formText('budget[]', $selectedActivity['budget'], array('style' => 'width: 100px'));?>
+                </td>
+                <td>
+                    <?php echo $this->formText('effort[]', $selectedActivity['effort'], array('style' => 'width: 100px'));?>
+                </td>
+                <td>
+                    <?php echo $this->formText('approved[]', $selectedActivity['approved'], array('style' => 'width: 100px'));?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php
+    }
+?>
 </fieldset>
 
 <?php if (count($this->groupIDs) > 1): ?>
