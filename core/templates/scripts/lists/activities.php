@@ -1,7 +1,11 @@
+<?php
+// remove hidden entries from list
+$activities = $this->filterListEntries($this->activities);
+?>
 <table>
   <tbody>
     <?php
-    if (!isset($this->activities) || $this->activities == '0' || count($this->activities) == 0)
+    if (count($activities) == 0)
     {
         ?>
         <tr>
@@ -13,11 +17,8 @@
     }
     else
     {
-        foreach ($this->activities as $activity)
+        foreach ($activities as $activity)
         {
-            if (!$activity['visible']) {
-                continue;
-            }
             ?>
             <tr id="row_activity<?php echo $activity['activityID']?>" class="<?php echo $this->cycle(array('odd','even'))->next()?>" >
 
