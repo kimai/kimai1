@@ -12,6 +12,7 @@
     background-color:#eee;
     position:absolute;
     overflow:auto;
+    overflow-x:hidden;
     left:10px;
 }
 

@@ -18,14 +18,17 @@
  */
 
 /**
- * Escapes a string to be used in a javascript string.
+ * Returns the translated string ($key refers to the entry in your language file).
  *
- * @author Severin
+ * @author Kevin Papst
  */
-class Zend_View_Helper_JsEscape extends Zend_View_Helper_Abstract
+class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
 {
-    public function jsEscape($text)
+    public function translate($key, $subpackage = null)
     {
-        return str_replace("'","\\'",$this->view->escape($text));
+        if ($subpackage !== null) {
+            return $this->view->kga['lang'][$subpackage][$key];
+        }
+        return $this->view->kga['lang'][$key];
     }
 } 

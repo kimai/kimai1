@@ -1,4 +1,4 @@
-<script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#addProject').ajaxForm(function() { 
 
@@ -183,17 +183,17 @@
 </fieldset>
 
 <fieldset id="activitiestab">
-    <table class="activitiesTable">
-        <tr>
-            <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->kga['lang']['activities']?>:</label>
-            </td>
-            <td><label for="budget" style="text-align: left;"><?php echo $this->kga['lang']['budget']?>:</label>
-            </td>
-            <td><label for="effort" style="text-align: left;"><?php echo $this->kga['lang']['effort']?>:</label>
-            </td>
-            <td><label for="approved" style="text-align: left;"><?php echo $this->kga['lang']['approved']?>:</label>
-            </td>
-        </tr>
+        <table class="activitiesTable">
+            <tr>
+                <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->kga['lang']['activities']?>:</label>
+                </td>
+                <td><label for="budget" style="text-align: left;"><?php echo $this->kga['lang']['budget']?>:</label>
+                </td>
+                <td><label for="effort" style="text-align: left;"><?php echo $this->kga['lang']['effort']?>:</label>
+                </td>
+                <td><label for="approved" style="text-align: left;"><?php echo $this->kga['lang']['approved']?>:</label>
+                </td>
+            </tr>
         <?php
         $assignedTasks = array();
         foreach ($this->selectedActivities as $selectedActivity):

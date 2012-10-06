@@ -536,7 +536,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function status_delete($statusID)
     {
       $p = $this->kga['server_prefix'];
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE projectID=?;");
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}statuses WHERE statusID=?;");
       $d_result = $pdo_query->execute(array($statusID));
       if ($d_result == false) {
           $this->logLastError('status_delete');
@@ -2145,14 +2145,17 @@ class PDODatabaseLayer extends DatabaseLayer
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
           $arr[$i]['projectID']    = $row['projectID'];
+          $arr[$i]['customerID']   = $row['customerID'];
           $arr[$i]['name']         = $row['name'];
           $arr[$i]['comment']      = $row['comment'];
-          $arr[$i]['customerName'] = $row['customerName'];
-          $arr[$i]['customerID']   = $row['customerID'];
           $arr[$i]['visible']      = $row['visible'];
+          $arr[$i]['filter']       = $row['filter'];
+          $arr[$i]['trash']        = $row['trash'];
           $arr[$i]['budget']       = $row['budget'];
           $arr[$i]['effort']       = $row['effort'];
           $arr[$i]['approved']     = $row['approved'];
+          $arr[$i]['internal']     = $row['internal'];
+          $arr[$i]['customerName'] = $row['customerName'];
           $i++;
       }
       return $arr;

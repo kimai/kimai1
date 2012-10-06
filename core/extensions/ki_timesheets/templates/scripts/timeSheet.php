@@ -1,4 +1,10 @@
-<?php if ($this->timeSheetEntries): ?>
+<?php
+
+$latest_running_task = "-1";
+
+if ($this->timeSheetEntries)
+{
+    ?>
         <div id="timeSheetTable">
         
           <table>
@@ -19,217 +25,222 @@
 
             <tbody>
 
-<?php
-$latest_running_task = "-1";
-$time_buffer = "0";
-$day_buffer = "0";
-$start_buffer = 0;
-?>
-                
-<?php foreach ($this->timeSheetEntries as $row):
- //Assign initial value to time buffer which must be larger than or equal to "end"
- if ($time_buffer==0) $time_buffer = $row['end']; ?>
+    <?php
+    $time_buffer = "0";
+    $day_buffer = "0";
+    $start_buffer = 0;
+    ?>
 
-<?php if ($row['end']): ?>
-                <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
-<?php else: ?>
+    <?php foreach ($this->timeSheetEntries as $row):
+     //Assign initial value to time buffer which must be larger than or equal to "end"
+     if ($time_buffer==0) $time_buffer = $row['end']; ?>
 
-<?php if ($latest_running_task == -1) $latest_running_task = $row['timeEntryID'] ?>
-                <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
-<?php endif; ?>
-               
-                    <td nowrap class="option 
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
+    <?php if ($row['end']): ?>
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
+    <?php else: ?>
 
-<?php if ($this->kga['user']):
-// only users can see options ?>
-
-                        
-  <?php if ($row['end']):
-// Stop oder Record Button? ?>
-
-    <?php if ($this->kga['show_RecordAgain']): ?>
-      <a href ='#' class='recordAgain' onClick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;">
-        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_recordthis.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' />
-    </a>
+    <?php if ($latest_running_task == -1) { $latest_running_task = $row['timeEntryID']; } ?>
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
     <?php endif; ?>
 
+                        <td nowrap class="option
+                                                <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                                      elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                                      elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                                ?>
+                        ">
 
-  <?php else: ?>
+    <?php if ($this->kga['user']):
+    // only users can see options ?>
 
 
-    <a href ='#' class='stop' onClick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;">
-        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_stopthis.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' />
-    </a>
+      <?php if ($row['end']):
+    // Stop oder Record Button? ?>
 
-  <?php endif; ?>
+        <?php if ($this->kga['show_RecordAgain']): ?>
+          <a href ='#' class='recordAgain' onClick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;">
+            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_recordthis.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' />
+        </a>
+        <?php endif; ?>
 
-                        
-  <?php if ($this->kga['conf']['editLimit'] == "-" || time()-$row['end'] <= $this->kga['conf']['editLimit']):
-//Edit Record Button ?>
-    <a href ='#' onClick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
-        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
-    </a>
-  <?php endif; ?>
 
-  <?php if ($this->kga['conf']['quickdelete'] > 0):
-// quick erase trashcan  ?>
-    <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;">
-        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
-    </a>
-  <?php endif; ?>
+      <?php else: ?>
 
-<?php endif; ?>
-                    
-                    </td>
 
-                    <td class="date
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                        <?php echo $this->escape(strftime($this->kga['date_format'][1],$row['start']));?>
-                    </td>
+        <a href ='#' class='stop' onClick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;">
+            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_stopthis.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' />
+        </a>
 
-                    <td class="from
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                        <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
-                    </td>
+      <?php endif; ?>
 
-                    <td class="to
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                    
-                        <?php if ($row['end']) echo $this->escape(strftime("%H:%M",$row['end']));
-                              else echo "&ndash;&ndash;:&ndash;&ndash;" ?>
-                    </td>
 
-                    <td class="time
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                    
-                        <?php if ($row['duration']) echo $row['formattedDuration'];
-                              else echo "&ndash;:&ndash;&ndash;" ?>
-                    </td>
+      <?php if ($this->kga['conf']['editLimit'] == "-" || time()-$row['end'] <= $this->kga['conf']['editLimit']):
+    //Edit Record Button ?>
+        <a href ='#' onClick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
+            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
+        </a>
+      <?php endif; ?>
 
-                    <td class="wage
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                    
-                        <?php if ($row['wage']) echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $row['wage']));
-                              else echo "&ndash;" ?>
-                    </td>
+      <?php if ($this->kga['conf']['quickdelete'] > 0):
+    // quick erase trashcan  ?>
+        <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;">
+            <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
+        </a>
+      <?php endif; ?>
 
-                    <td class="customer
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                        <?php echo $this->escape($row['customerName']) ?>
-                    </td>
-
-                    <td class="project
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                        
-                        <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('project',<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>'); 
-                            return false;">
-                            <?php echo $this->escape($row['projectName'])?>
-                            <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
-                                <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
-                            <?php endif; ?>
-                        </a>
-                    </td>
-
-                    <td class="activity
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                        
-                        <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect('activity',<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
-                            return false;">
-                            <?php echo $this->escape($row['activityName'])?>
-                        </a>
-                        
-<?php if ($row['comment']): ?>
-    <?php if ($row['commentType'] == '0'): ?>
-                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
-    <?php elseif ($row['commentType'] == '1'): ?>
-                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
-    <?php elseif ($row['commentType'] == '2'): ?>
-                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
     <?php endif; ?>
-<?php endif; ?>
-                    </td>
 
-                    <td class="trackingnumber
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                    <?php echo $this->escape($row['trackingNumber']) ?>
-                    </td>
+            </td>
 
-                    <td class="username
-                                            <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                                  elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                                  elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                            ?>
-                    ">
-                    <?php echo $this->escape($row['userName']) ?>
-                    </td>
+            <td class="date
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+                <?php echo $this->escape(strftime($this->kga['date_format'][1],$row['start']));?>
+            </td>
 
-                </tr>
+            <td class="from
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+                <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
+            </td>
 
-<?php if ($row['comment']): ?>
-                <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($hideComments): ?> style="display:none;" <?php endif; ?>>
-                    <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
-                </tr>
-<?php endif; ?>
+            <td class="to
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
 
-<?php
-$day_buffer = strftime("%d",$row['start']);
-$start_buffer = $row['start'];
-$time_buffer = $row['start'];
+                <?php if ($row['end']) echo $this->escape(strftime("%H:%M",$row['end']));
+                      else echo "&ndash;&ndash;:&ndash;&ndash;" ?>
+            </td>
+
+            <td class="time
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+
+                <?php if ($row['duration']) echo $row['formattedDuration'];
+                      else echo "&ndash;:&ndash;&ndash;" ?>
+            </td>
+
+            <td class="wage
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+
+                <?php if ($row['wage']) echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $row['wage']));
+                      else echo "&ndash;" ?>
+            </td>
+
+            <td class="customer
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+                <?php echo $this->escape($row['customerName']) ?>
+            </td>
+
+            <td class="project
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+
+                <a href ="#" class="preselect_lnk"
+                    onClick="buzzer_preselect('project',<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                    return false;">
+                    <?php echo $this->escape($row['projectName'])?>
+                    <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
+                        <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
+                    <?php endif; ?>
+                </a>
+            </td>
+
+            <td class="activity
+                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                    ?>
+            ">
+
+                <a href ="#" class="preselect_lnk"
+                    onClick="buzzer_preselect('activity',<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
+                    return false;">
+                    <?php echo $this->escape($row['activityName'])?>
+                </a>
+
+        <?php if ($row['comment']): ?>
+            <?php if ($row['commentType'] == '0'): ?>
+                                <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+            <?php elseif ($row['commentType'] == '1'): ?>
+                                <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+            <?php elseif ($row['commentType'] == '2'): ?>
+                                <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+            <?php endif; ?>
+        <?php endif; ?>
+                </td>
+
+                <td class="trackingnumber
+                                        <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                              elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                              elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                        ?>
+                ">
+                <?php echo $this->escape($row['trackingNumber']) ?>
+                </td>
+
+                <td class="username
+                                        <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                                              elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                                              elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+                                        ?>
+                ">
+                <?php echo $this->escape($row['userName']) ?>
+                </td>
+
+            </tr>
+
+    <?php if ($row['comment']): ?>
+                    <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($hideComments): ?> style="display:none;" <?php endif; ?>>
+                        <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
+                    </tr>
+    <?php endif; ?>
+
+    <?php
+    $day_buffer = strftime("%d",$row['start']);
+    $start_buffer = $row['start'];
+    $time_buffer = $row['start'];
+    ?>
+
+    <?php endforeach; ?>
+
+                </tbody>
+            </table>
+        </div>
+    <?php
+}
+else
+{
+    ?>
+    <div class="error">
+        <?php echo $this->kga['lang']['noEntries']?>
+    </div>
+    <?php
+}
 ?>
-               
-<?php endforeach; ?>
-                
-            </tbody>   
-        </table>
-    </div>  
-<?php else: ?>
-<div style='padding:5px;color:#f00'>
-    <strong><?php echo $this->kga['lang']['noEntries']?></strong>
-</div>
-<?php endif; ?>
 
 <script type="text/javascript"> 
     ts_user_annotations = null;

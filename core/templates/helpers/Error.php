@@ -18,14 +18,18 @@
  */
 
 /**
- * Escapes a string to be used in a javascript string.
+ * Displays a error message in a pre-formatted way.
+ * If no message is passed, the default message "noItems" (no entry is available) is used.
  *
- * @author Severin
+ * @author Kevin Papst
  */
-class Zend_View_Helper_JsEscape extends Zend_View_Helper_Abstract
+class Zend_View_Helper_Error extends Zend_View_Helper_Abstract
 {
-    public function jsEscape($text)
+    public function error($message = null)
     {
-        return str_replace("'","\\'",$this->view->escape($text));
+        if ($message === null) {
+            $message = $this->view->translate('noItems');
+        }
+        return '<div class="error">'.$message.'</div>';
     }
 } 
