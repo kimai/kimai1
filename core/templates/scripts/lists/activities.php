@@ -1,7 +1,7 @@
 <table>
   <tbody>
     <?php
-    if (!isset($this->activities) || $this->activities == '0')
+    if (!isset($this->activities) || $this->activities == '0' || count($this->activities) == 0)
     {
         ?>
         <tr>
