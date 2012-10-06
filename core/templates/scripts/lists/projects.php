@@ -1,7 +1,11 @@
+<?php
+// remove hidden entries from list
+$projects = $this->filterListEntries($this->projects);
+?>
 <table>
   <tbody>
  <?php
-    if (!isset($this->projects) || $this->projects == '0' || count($this->projects) == 0)
+    if (count($projects) == 0)
     {
         ?>
         <tr>
@@ -13,11 +17,8 @@
     }
     else
     {
-        foreach ($this->projects as $project)
+        foreach ($projects as $project)
         {
-            if (!$project['visible']) {
-                continue;
-            }
             ?>
             <tr id="row_project<?php echo $project['projectID']?>" class="project customer<?php echo $project['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>" >
 
