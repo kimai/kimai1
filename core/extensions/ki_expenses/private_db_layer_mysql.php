@@ -308,18 +308,6 @@ function expense_edit($id,$data) {
     if (! $conn->Query($query)) $success = false;
     
     return $success;
-    //@FIXME: wtf? remove this
-    $original_array = expense_get($id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    
-    }
 } 
 
 /**
