@@ -1,4 +1,4 @@
-<script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#addProject').ajaxForm(function() { 
 
@@ -147,7 +147,7 @@
 <fieldset id="activitiestab">
     <?php
     if (!isset($this->selectedActivities) || $this->selectedActivities == false) {
-        echo '<div class="error">'.$this->kga['lang']['no_project_activities'].'</div>';
+        echo $this->error();
     }
     else
     {
