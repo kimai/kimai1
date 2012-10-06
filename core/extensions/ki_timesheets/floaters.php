@@ -69,8 +69,7 @@ switch ($axAction) {
         $view->activityID = $timeSheetEntry['activityID'];
     
         $view->commentType = $timeSheetEntry['commentType'];
-        // FIXME kevin: what to do here, it is not returned from db query
-        //$view->status = $timeSheetEntry['status'];
+        $view->statusID = $timeSheetEntry['statusID'];
         $view->billable = $timeSheetEntry['billable'];
 
         // budget

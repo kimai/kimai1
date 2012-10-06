@@ -516,7 +516,7 @@
                    
                    <li>
                        <label for="statusID"><?php echo $this->kga['lang']['status']?>:</label>
-                       <?php echo $this->formSelect('statusID', $this->status_active, array(
+                       <?php echo $this->formSelect('statusID', $this->statusID, array(
                          'id' => 'statusID',
                          'class' => 'formfield',
                          'tabindex' => '15'), $this->status); ?>
