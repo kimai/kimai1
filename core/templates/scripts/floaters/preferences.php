@@ -84,7 +84,7 @@
 
           <li>
             <label for="timezone"><?php echo $this->kga['lang']['timezone']?>:</label>
-              <?php echo $this->formSelect('timezone', array_search($this->kga['timezone'],$this->timezones), null, $this->timezones); ?>
+              <?php echo $this->timeZoneSelect('timezone', $this->kga['timezone']); ?>
           </li>
 
           <li>
@@ -101,7 +101,7 @@
           <li>
             <?php echo $this->kga['lang']['sublistAnnotations']?>:
             <?php echo $this->formSelect('sublistAnnotations', $this->kga['conf']['sublistAnnotations'], null, array(
-$this->kga['lang']['timelabel'], $this->kga['lang']['export_extension.costs'], $this->kga['lang']['timelabel'].'&amp;'. $this->kga['lang']['export_extension.costs']
+$this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs'], $this->kga['lang']['timelabel'].' & '. $this->kga['lang']['export_extension']['costs']
 )); ?>
           </li>
 
