@@ -536,7 +536,7 @@ class PDODatabaseLayer extends DatabaseLayer
     public function status_delete($statusID)
     {
       $p = $this->kga['server_prefix'];
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}status WHERE projectID=?;");
+      $pdo_query = $this->conn->prepare("DELETE FROM ${p}statuses WHERE statusID=?;");
       $d_result = $pdo_query->execute(array($statusID));
       if ($d_result == false) {
           $this->logLastError('status_delete');

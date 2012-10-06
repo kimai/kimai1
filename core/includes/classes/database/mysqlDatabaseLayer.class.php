@@ -1771,7 +1771,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   */
   public function status_delete($statusID) {
       $filter['statusID'] = MySQL::SQLValue($statusID, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."status";
+      $table = $this->kga['server_prefix']."statuses";
       $query = MySQL::BuildSQLDelete($table, $filter);
       return $this->conn->Query($query);
   }
