@@ -184,18 +184,15 @@ $view->user_display = $view->render("lists/users.php");
 // ==========================
 // = display customer table =
 // ========================
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $customers = array(array(
       'customerID'=>$kga['customer']['customerID'],
       'name'=>$kga['customer']['name'],
       'visible'=>$kga['customer']['visible']));
-else
+} else{
   $customers = $database->get_customers($kga['user']['groups']);
-if (count($customers)>0) {
-    $view->customers = $customers;
-} else {
-    $view->customers = 0;
 }
+$view->customers = $customers;
 $view->customer_display = $view->render("lists/customers.php");
 
 // =========================
