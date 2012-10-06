@@ -1988,8 +1988,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-		
-	//@FIXME: description is evaluated twice?
+
       $values ['description']  = MySQL::SQLValue($new_array ['description']    						   );
       $values ['comment']      = MySQL::SQLValue($new_array ['comment']                                );
       $values ['location']     = MySQL::SQLValue($new_array ['location']                               );
@@ -2010,8 +2009,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['approved'] 	   = MySQL::SQLValue($new_array ['approved']  	  , MySQL::SQLVALUE_NUMBER );
       $values ['statusID'] 	   = MySQL::SQLValue($new_array ['statusID']		  , MySQL::SQLVALUE_NUMBER );
       $values ['billable'] 	   = MySQL::SQLValue($new_array ['billable']	  , MySQL::SQLVALUE_NUMBER );
-	  //@FIXME: description is evaluated twice? number?
-     // $values ['description']  = MySQL::SQLValue($new_array ['description']	  , MySQL::SQLVALUE_NUMBER );
 
       $filter ['timeEntryID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
