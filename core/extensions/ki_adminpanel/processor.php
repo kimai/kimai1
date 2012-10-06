@@ -213,6 +213,7 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "deleteGroup" :
 		// set the trashflag of a group
 		switch ($axValue) {
@@ -227,8 +228,9 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "deleteStatus" :
-		// set the trashflag of a group
+		// asks for confirmation and deletes a status
 		switch ($axValue) {
 			case 0 :
 				// Fire JavaScript confirm when a status is about to be deleted
@@ -240,6 +242,7 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "deleteProject" :
 		// set the trashflag of a project
 		switch ($axValue) {
@@ -253,6 +256,7 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "deleteCustomer" :
 		// set the trashflag of a customer
 		switch ($axValue) {
@@ -266,6 +270,7 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "deleteActivity" :
 		// set the trashflag of an activity
 		switch ($axValue) {
@@ -279,18 +284,21 @@ switch ($axAction)
 				break;
 		}
 		break;
+
 	case "banUser" :
 		// Ban a user from login
 		$sts['active'] = 0;
 		$database->user_edit($id, $sts);
 		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['banneduser'], $kga['lang']['banneduser'], $kga['conf']['skin']);
 		break;
+
 	case "unbanUser" :
 		// Unban a user from login
 		$sts['active'] = 1;
 		$database->user_edit($id, $sts);
 		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeuser'], $kga['lang']['activeuser'], $kga['conf']['skin']);
 		break;
+
 	case "sendEditUser" :
 		// process editUser form
 		$userData['name'] = trim($_REQUEST['name']);
@@ -305,6 +313,7 @@ switch ($axAction)
 		$database->user_edit($id, $userData);
 		$database->setGroupMemberships($id, $_REQUEST['groups']);
 		break;
+
 	case "sendEditGroup" :
 		// process editGroup form
 		$group['name'] = trim($_REQUEST['name']);
@@ -312,11 +321,13 @@ switch ($axAction)
 		$leaders = $_REQUEST['leaders'];
 		$database->assign_groupToGroupleaders($id, $leaders);
 		break;
+
 	case "sendEditStatus" :
 		// process editStatus form
 		$status_data['status'] = trim($_REQUEST['status']);
 		$database->status_edit($id, $status_data);
 		break;
+
 	case "sendEditAdvanced" :
 		// process AdvancedOptions form
 		$config_data['adminmail'] = $_REQUEST['adminmail'];
@@ -383,6 +394,7 @@ switch ($axAction)
 		// and return one of these:
 		echo $success ? "ok" : $kga['lang']['error'];
 		break;
+
 	case "toggleDeletedUsers" :
 		setcookie("adminPanel_extension_show_deleted_users", $axValue);
 		break;
