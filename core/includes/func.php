@@ -380,5 +380,21 @@ function endsWith($haystack,$needle) {
   return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
 }
 
+/**
+ * Returns the boolean value as integer, submitted via checkbox.
+ *
+ * @param $name
+ * @return int
+ */
+function getRequestBool($name)
+{
+    if (isset($_REQUEST[$name])) {
+        $temp = intval($_REQUEST[$name]);
+        if ($temp == 1 || $temp == 0) {
+            return $temp;
+        }
+        return 1;
+    }
 
-?>
+    return 0;
+}
