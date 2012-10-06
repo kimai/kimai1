@@ -250,7 +250,7 @@ function adminPanel_extension_editStatus(id) {
 //
 function adminPanel_extension_refreshSubtab(tab) {
     options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
-    if (tab == 'activity') {
+    if (tab == 'activities') {
       options.activity_filter = $('#activity_project_filter').val();
     }
     $.post(adminPanel_extension_path + "processor.php", options, 
