@@ -213,7 +213,6 @@ return array(
 "testCustomer"              => "Test-Customer",
 "testProject"               => "Test-Project",
 "testActivity"              => "testing",
-"no_project_activities"     => "No linked activities",
 "time_billable"             => "Billable",
 "billable"                  => "Billable",
 "budget"                    => "Budget",

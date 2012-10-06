@@ -208,7 +208,6 @@ return array(
 "testCustomer"              => "Testkunde",
 "testProject"               => "TestProjekt",
 "testActivity"              => "testen",
-"no_project_activities"     => "Keine zugeordneten Tätigkeiten",
 "time_billable"             => "Verrechenbar",
 "billable"                  => "Verrechenbar",
 "budget"                    => "Budget",
