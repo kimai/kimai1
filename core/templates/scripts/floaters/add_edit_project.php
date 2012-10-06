@@ -215,7 +215,7 @@ endif; ?>
 <fieldset id="comment">
 <ul>
 	<li><label for="projectComment"><?php echo $this->kga['lang']['comment']?>:</label>
-            <?php echo $this->formTextarea('projectComment', $this->projectComment,array(
+            <?php echo $this->formTextarea('projectComment', $this->comment,array(
 		'cols' => 30,
 		'rows' => 5,
 		'class' => 'comment'
