@@ -749,13 +749,13 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return boolean            true on success, false on failure
   * @author sl
   */
-  public function assign_projectToActivities($projectID, $activityID) {
+  public function assign_projectToActivities($projectID, $activityIDs) {
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('assign_projectToActivities');
         return false;
       }
 
-      $table = $this->kga['server_prefix']."project_activities";
+      $table = $this->kga['server_prefix']."projects_activities";
       $filter['projectID'] = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
       $d_query = MySQL::BuildSQLDelete($table, $filter);
       $d_result = $this->conn->Query($d_query);
@@ -766,9 +766,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           return false;
       }
 
-      foreach ($activityID as $activityID) {
+      foreach ($activityIDs as $activityID) {
         $values['activityID'] = MySQL::SQLValue($activityID , MySQL::SQLVALUE_NUMBER);
-        $values['projectID'] = MySQL::SQLValue($projectID      , MySQL::SQLVALUE_NUMBER);
+        $values['projectID'] = MySQL::SQLValue($projectID   , MySQL::SQLVALUE_NUMBER);
         $query = MySQL::BuildSQLInsert($table, $values);
         $result = $this->conn->Query($query);
 
@@ -868,7 +868,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $projectId = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
       $p = $this->kga['server_prefix'];
 
-      $query = "SELECT activityID, activity.budget, activity.effort, activity.approved
+      $query = "SELECT activity.*, activityID, budget, effort, approved
                 FROM ${p}projects_activities AS p_a
                 JOIN ${p}activities AS activity USING(activityID)
                 WHERE projectID = $projectId AND activity.trash=0;";
@@ -2005,8 +2005,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $new_array[$key] = $original_array[$key];
           }
       }
-		
-	//@FIXME: description is evaluated twice?
+
       $values ['description']  = MySQL::SQLValue($new_array ['description']    						   );
       $values ['comment']      = MySQL::SQLValue($new_array ['comment']                                );
       $values ['location']     = MySQL::SQLValue($new_array ['location']                               );
@@ -2027,8 +2026,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $values ['approved'] 	   = MySQL::SQLValue($new_array ['approved']  	  , MySQL::SQLVALUE_NUMBER );
       $values ['statusID'] 	   = MySQL::SQLValue($new_array ['statusID']		  , MySQL::SQLVALUE_NUMBER );
       $values ['billable'] 	   = MySQL::SQLValue($new_array ['billable']	  , MySQL::SQLVALUE_NUMBER );
-	  //@FIXME: description is evaluated twice? number?
-     // $values ['description']  = MySQL::SQLValue($new_array ['description']	  , MySQL::SQLVALUE_NUMBER );
 
       $filter ['timeEntryID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
@@ -2394,8 +2391,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['projectComment']      = $row->projectComment;
               $arr[$i]['location']     = $row->location;
               $arr[$i]['trackingNumber']   = $row->trackingNumber;
-              $arr[$i]['budget']  	   = $row->budget;
-              $arr[$i]['approved']     = $row->approved;
               $arr[$i]['statusID']       = $row->statusID;
               $arr[$i]['status']       = $row->status;
               $arr[$i]['billable']     = $row->billable;
@@ -2818,17 +2813,17 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT activity.*
+          $query = "SELECT activity.*, p_a.budget, p_a.approved, p_a.effort
             FROM ${p}activities AS activity
-            LEFT JOIN ${p}projects_activities USING(activityID)
+            LEFT JOIN ${p}projects_activities AS p_a USING(activityID)
             WHERE activity.trash=0
               AND (projectID = $projectID OR projectID IS NULL)
             ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT DISTINCT activity.*
+          $query = "SELECT DISTINCT activity.*, p_a.budget, p_a.approved, p_a.effort
             FROM ${p}activities AS activity
             JOIN ${p}groups_activities USING(activityID)
-            LEFT JOIN ${p}projects_activities USING(activityID)
+            LEFT JOIN ${p}projects_activities p_a USING(activityID)
             WHERE `${p}groups_activities`.`groupID`  IN (".implode($groups,',').")
               AND activity.trash=0
               AND (projectID = $projectID OR projectID IS NULL)
@@ -4118,9 +4113,8 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "activities WHERE ".
-    // FIXME kevin: the table was project_activities before, this ust be wrong, but what is correct?
-    //(($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
+    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
     (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
 
     $result = $this->conn->Query($query);

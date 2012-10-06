@@ -1052,7 +1052,7 @@ abstract class DatabaseLayer {
   function assignActivityToProjectsForGroup($activityID, $projectIDs, $group)
   {
       $projectIds = array_merge($projectIDs, $this->getNonManagableAssignedElementIds("activity", "project", $activityID, $group));
-      $this->assign_activityToProjects($activityID, $projectIds);
+      return $this->assign_activityToProjects($activityID, $projectIds);
   }
 
   /**
@@ -1068,7 +1068,7 @@ abstract class DatabaseLayer {
   function assignProjectToActivitiesForGroup($projectID, $activityIDs, $group)
   {
       $activityIds = array_merge($activityIDs, $this->getNonManagableAssignedElementIds("project", "activity", $projectID, $group));
-      $this->assign_projectToActivities($projectID, $activityIds);
+      return $this->assign_projectToActivities($projectID, $activityIds);
   }
 
   /**

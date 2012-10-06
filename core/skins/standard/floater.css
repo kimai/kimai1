@@ -166,3 +166,7 @@
 .ui-tabs .ui-tabs-hide {
   display:none;
 }
+
+.activitiesTable input {
+  width: 100px
+}

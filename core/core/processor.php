@@ -296,7 +296,7 @@ switch ($axAction) {
               if (isset($_REQUEST['projectGroups']))
                 $database->assign_projectToGroups($id, $_REQUEST['projectGroups']);
               if (isset($_REQUEST['assignedActivities'])) {
-                $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['user']['groups']);
+                $database->assignProjectToActivitiesForGroup($id, array_values($_REQUEST['assignedActivities']), $kga['user']['groups']);
                 foreach($_REQUEST['assignedActivities'] as $index => $activityID) {
                 	if($activityID <= 0) {
                 		continue;
@@ -310,7 +310,7 @@ switch ($axAction) {
                 	if($_REQUEST['approved'][$index] <= 0) {
                 		$_REQUEST['approved'][$index] = 0;
                 	}
-               		$database->projects_activities_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
+               		$database->project_activity_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
                 }
               }
             break;

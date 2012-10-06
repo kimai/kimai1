@@ -950,7 +950,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare(
-        "SELECT activityID, activity.budget, activity.effort, activity.approved
+        "SELECT activity.*, activityID, budget, effort, approved
         FROM ${p}projects_activities AS p_a
         JOIN ${p}activities AS activity USING (activityID)
         WHERE projectID = ? AND activity.trash = 0;"
@@ -2999,9 +2999,8 @@ class PDODatabaseLayer extends DatabaseLayer
     if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
 
 
-    $pdo_query = $this->conn->prepare("SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "activities WHERE ".
-    // FIXME kevin: the table was project_activities before, this ust be wrong, but what is correct?
-    //(($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+    $pdo_query = $this->conn->prepare("SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
+    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
     (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID"));
 
     $result = $pdo_query->execute();
@@ -3150,17 +3149,17 @@ class PDODatabaseLayer extends DatabaseLayer
 
       $arr = array();
       if ($groups === null) {
-          $pdo_query = $this->conn->prepare("SELECT activity.*
+          $pdo_query = $this->conn->prepare("SELECT activity.*, p_a.budget, p_a.approved, p_a.effort
             FROM ${p}activities AS activity
-            LEFT JOIN ${p}projects_activities USING(activityID)
+            LEFT JOIN ${p}projects_activities p_a USING(activityID)
             WHERE trash=0
               AND (projectID = ? OR projectID IS NULL)
             ORDER BY visible DESC, name;");
       } else {
-          $pdo_query = $this->conn->prepare("SELECT DISTINCT activity.*
+          $pdo_query = $this->conn->prepare("SELECT DISTINCT activity.*, p_a.budget, p_a.approved, p_a.effort
             FROM ${p}activities AS activity
             JOIN ${p}groups_activities USING(activityID)
-            LEFT JOIN ${p}projects_activities USING(activityID)
+            LEFT JOIN ${p}projects_activities p_a USING(activityID)
             WHERE `${p}groups_activities`.`groupID` IN (".implode($groups,',').")
               AND trash=0
               AND (projectID = ? OR projectID IS NULL)
@@ -3429,9 +3428,6 @@ class PDODatabaseLayer extends DatabaseLayer
     /**
     * return status names
     * @param integer $statusIds
-    * @FIXME kpapst - here we fetch the description of the entries which are already known
-    *                 SELECT status from status WHERE status in ('open') - doesn't make
-    *                 really sense, only the values will be ordered
     */
     public function get_status($statusIds) {
       $p = $this->kga['server_prefix'];
