@@ -64,20 +64,20 @@ switch ($axAction) {
     case 'editPrefs':
         if (isset($kga['customer'])) die();
     
-        $preferences['skin']               = $_REQUEST['skin'];
-        $preferences['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
-        $preferences['quickdelete']        = $_REQUEST['quickdelete'];
-        $preferences['rowlimit']           = $_REQUEST['rowlimit'];
-        $preferences['lang']               = $_REQUEST['lang'];
-        $preferences['flip_project_display']   = isset($_REQUEST['flip_project_display'])?1:0;
-        $preferences['project_comment_flag']   = isset($_REQUEST['project_comment_flag'])?1:0;
-        $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
-        $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
-        $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
-        $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
-        $preferences['showCommentsByDefault'] = isset($_REQUEST['showCommentsByDefault'])?1:0;
-        $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
-        $preferences['hideOverlapLines']   = isset($_REQUEST['hideOverlapLines'])?1:0;
+        $preferences['skin']                    = $_REQUEST['skin'];
+        $preferences['autoselection']           = getRequestBool('autoselection');
+        $preferences['quickdelete']             = $_REQUEST['quickdelete'];
+        $preferences['rowlimit']                = $_REQUEST['rowlimit'];
+        $preferences['lang']                    = $_REQUEST['lang'];
+        $preferences['flip_project_display']    = getRequestBool('flip_project_display');
+        $preferences['project_comment_flag']    = getRequestBool('project_comment_flag');
+        $preferences['showIDs']                 = getRequestBool('showIDs');
+        $preferences['noFading']                = getRequestBool('noFading');
+        $preferences['user_list_hidden']        = getRequestBool('user_list_hidden');
+        $preferences['hideClearedEntries']      = getRequestBool('hideClearedEntries');
+        $preferences['showCommentsByDefault']   = getRequestBool('showCommentsByDefault');
+        $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
+        $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 
         $database->user_set_preferences($preferences,'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
@@ -158,19 +158,15 @@ switch ($axAction) {
      * Return a list of customers. A customer can only see himself.
      */
     case 'reload_customers':
-        if (isset($kga['customer']))
+        if (isset($kga['customer'])) {
           $customers = array(array(
               'customerID'=>$kga['customer']['customerID'],
               'name'=>$kga['customer']['name'],
               'visible'=>$kga['customer']['visible']));
-        else
-          $customers = $database->get_customers($kga['user']['groups']);
-
-        if (count($customers)>0) {
-            $view->customers = $customers;
         } else {
-            $view->customers = 0;
+          $customers = $database->get_customers($kga['user']['groups']);
         }
+        $view->customers = $customers;
         echo $view->render("lists/customers.php");
     break;
 
@@ -242,7 +238,7 @@ switch ($axAction) {
             	$data['mobile']   = $_REQUEST['mobile'];
             	$data['mail']     = $_REQUEST['mail'];
             	$data['homepage'] = $_REQUEST['homepage'];
-            	$data['visible']  = $_REQUEST['visible'];
+            	$data['visible']  = getRequestBool('visible');
             	$data['filter']   = $_REQUEST['customerFilter'];
         
               // If password field is empty dont overwrite the password.
@@ -271,10 +267,10 @@ switch ($axAction) {
               if (count($_REQUEST['projectGroups']) == 0) die(); // no group would mean it is never accessable
 
               $data['name']         = $_REQUEST['name'];
-              $data['customerID']        = $_REQUEST['customerID'];
+              $data['customerID']   = $_REQUEST['customerID'];
               $data['comment']      = $_REQUEST['projectComment'];
-              $data['visible']      = isset($_REQUEST['visible'])?1:0;
-              $data['internal']     = isset($_REQUEST['internal'])?1:0;
+              $data['visible']      = getRequestBool('visible');
+              $data['internal']     = getRequestBool('internal');
               $data['filter']       = $_REQUEST['projectFilter'];
               $data['budget']       = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
@@ -292,9 +288,9 @@ switch ($axAction) {
                 // add or update the project
               if (!$id) {
                 $id = $database->project_create($data);
-            	} else {
+              } else {
                 $database->project_edit($id, $data);
-            	}
+              }
 
               // set the project group mappings
               if (isset($_REQUEST['projectGroups']))
@@ -327,9 +323,9 @@ switch ($axAction) {
 
               $data['name']         = $_REQUEST['name'];
               $data['comment']      = $_REQUEST['comment'];
-              $data['visible']      = $_REQUEST['visible'];
+              $data['visible']      = getRequestBool('visible');
               $data['filter']       = $_REQUEST['activityFilter'];
-              $data['assignable']   = isset($_REQUEST['assignable'])?1:0;
+              $data['assignable']   = getRequestBool('assignable');
               $data['defaultRate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
               $data['myRate']      = 
