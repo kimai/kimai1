@@ -163,10 +163,10 @@ switch ($axAction)
 					$groups = null;
 				else
 					$groups = $kga['user']['groups'];
-				if (! isset($_REQUEST['filter']))
+				if (! isset($_REQUEST['activity_filter'])) {
 					$activities = $database->get_activities($groups);
-				else
-					switch ($_REQUEST['filter']) {
+                } else {
+					switch ($_REQUEST['activity_filter']) {
 						case - 1 :
 							$activities = $database->get_activities($groups);
 							break;
@@ -175,8 +175,10 @@ switch ($axAction)
 						// an id of a project this will give us all unassigned
 						// activities.
 						default :
-							$activities = $database->get_activities_by_project($_REQUEST['filter'], $groups);
+							$activities = $database->get_activities_by_project($_REQUEST['activity_filter'], $groups);
 					}
+                }
+
 				foreach ($activities as $row => $activity) {
 					$groupNames = array();
 					foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
@@ -193,7 +195,7 @@ switch ($axAction)
 				}
 				$projects = $database->get_projects($groups);
 				$view->projects = $projects;
-				$view->selected_activity_filter = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : 0;
+				$view->selected_activity_filter = isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2;
 				echo $view->render('activities.php');
 				break;
 		}
