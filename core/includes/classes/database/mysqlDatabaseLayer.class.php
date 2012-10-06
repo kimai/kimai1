@@ -1249,7 +1249,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
       $key    = MySQL::SQLValue($key);
 
-      $query = "SELECT value FROM $table WHERE userID = $userId AND option = $key";
+      $query = "SELECT `value` FROM $table WHERE userID = $userId AND `option` = $key";
 
       $this->conn->Query($query);
 
@@ -1283,7 +1283,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $keysString = implode(",",$preparedKeys);
 
-      $query = "SELECT option,value FROM $table WHERE userID = $userId AND option IN ($keysString)";
+      $query = "SELECT `option`,`value` FROM $table WHERE userID = $userId AND `option` IN ($keysString)";
 
       $this->conn->Query($query);
 
@@ -1317,7 +1317,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
       $prefix = MySQL::SQLValue($prefix.'%');
 
-      $query = "SELECT option,value FROM $table WHERE userID = $userId AND option LIKE $prefix";
+      $query = "SELECT `option`,`value` FROM $table WHERE userID = $userId AND `option` LIKE $prefix";
       $this->conn->Query($query);
 
       $preferences = array();
@@ -1344,9 +1344,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @return boolean        true on success, false on failure
   * @author sl
   */
-  public function user_set_preferences(array $data,$prefix='',$userId=null) {
-      if ($userId === null)
+  public function user_set_preferences(array $data, $prefix='', $userId=null)
+  {
+      if ($userId === null) {
         $userId = $this->kga['user']['userID'];
+      }
 
       if (! $this->conn->TransactionBegin()) {
         $this->logLastError('user_set_preferences');
