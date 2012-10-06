@@ -2374,8 +2374,6 @@ class MySQLDatabaseLayer extends DatabaseLayer {
               $arr[$i]['projectComment']      = $row->projectComment;
               $arr[$i]['location']     = $row->location;
               $arr[$i]['trackingNumber']   = $row->trackingNumber;
-              $arr[$i]['budget']  	   = $row->budget;
-              $arr[$i]['approved']     = $row->approved;
               $arr[$i]['statusID']       = $row->statusID;
               $arr[$i]['status']       = $row->status;
               $arr[$i]['billable']     = $row->billable;
