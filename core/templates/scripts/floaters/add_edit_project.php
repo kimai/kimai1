@@ -11,6 +11,44 @@
                 hook_projects_changed();
                 hook_activities_changed();
             });
+
+
+            function deleteButtonClicked() {
+              var row = $(this).parent().parent()[0];
+              var id = $('#assignedActivities', row).val();
+              var text = $('td', row).text().trim();
+              $('#newActivity').append('<option label = "' + text + '" value = "' + id + '">' + text + '</option>');
+              $(row).remove();
+              
+              if ($('#newActivity option').length > 1)
+                $('#activitiestab .addRow').show();
+            }
+            
+            $('#activitiestab .deleteButton').click(deleteButtonClicked);
+
+            $('#newActivity').change(function() {
+              if ($(this).val() == -1) return;
+
+              var row = $('<tr>' + 
+                '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedActivities[]" value="' + $(this).val() + '"/></td>' +
+                '<td><input type="text" name="budget[]"/></td>' +
+                '<td><input type="text" name="effort[]"/></td>' +
+                '<td><input type="text" name="approved[]"/></td>' +
+                '<td> <a class="deleteButton">' + 
+                '<img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" />' +
+                '</a> </td>' +
+                '</tr>');
+              $('#activitiestab .activitiesTable tr.addRow').before(row);
+              $('.deleteButton', row).click(deleteButtonClicked);
+              
+              $('option:selected', this).remove();
+
+              $(this).val(-1);
+              
+              if ($('option', this).length <= 1)
+                $('#activitiestab .addRow').hide();
+            });
+
              $('#floater_innerwrap').tabs({ selected: 0 });
              // uniform will mess up cloning select elements, which already are "uniformed"
              // maybe the issue is the same? https://github.com/pixelmatrix/uniform/pull/138
@@ -157,30 +195,40 @@
             </td>
         </tr>
         <?php
-        if ($this->selectedActivities != false && count($this->selectedActivities) < count($this->assignableTasks)) {
-            $this->selectedActivities[] = array('activityID' => '');
-        }
-
-        foreach ($this->selectedActivities as $selectedActivity): ?>
+        $assignedTasks = array();
+        foreach ($this->selectedActivities as $selectedActivity):
+          $assignedTasks[] = $selectedActivity['activityID']; ?>
         <tr>
             <td>
-            <ul>
-                <li>
-                  <?php echo $this->formSelect('assignedActivities[]', $selectedActivity['activityID'], array('class'=>'activities formfield'), $this->assignableTasks); ?>
-                </li>
-            </ul>
+                <?php echo $this->escape($selectedActivity['name']), $this->formHidden('assignedActivities[]', $selectedActivity['activityID']); ?>
             </td>
             <td>
-                <?php echo $this->formText('budget[]', $selectedActivity['budget'], array('style' => 'width: 100px'));?>
+                <?php echo $this->formText('budget[]', $selectedActivity['budget']);?>
             </td>
             <td>
-                <?php echo $this->formText('effort[]', $selectedActivity['effort'], array('style' => 'width: 100px'));?>
+                <?php echo $this->formText('effort[]', $selectedActivity['effort']);?>
             </td>
             <td>
-                <?php echo $this->formText('approved[]', $selectedActivity['approved'], array('style' => 'width: 100px'));?>
+                <?php echo $this->formText('approved[]', $selectedActivity['approved']);?>
+            </td>
+            <td>
+              <a class="deleteButton">
+                <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/close.png" width="22" height="16" />
+              </a>
             </td>
         </tr>
-        <?php endforeach; ?>
+        <?php endforeach;
+        
+        $selectArray = array(-1 => '');
+        foreach ($this->allActivities as $task) {
+          if (array_search($task['activityID'], $assignedTasks) === false)
+            $selectArray[$task['activityID']] = $task['name'];
+        }
+        ?>
+        <tr class="addRow" <?php if (count($selectArray) <= 1):?> style="display:none" <?php endif; ?> >
+          <td> <?php
+           echo $this->formSelect('newActivity',null,null,$selectArray); ?> </td>
+        </tr>
     </table>
 </fieldset>
 

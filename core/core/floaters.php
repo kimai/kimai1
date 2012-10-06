@@ -160,16 +160,7 @@ switch ($axAction) {
         }
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
 
-        // Create a <select> element to chosse the activities.
-        $assignableTasks = array();
-        $tasks = $database->get_activities($kga['user']['groups']);
-        if(is_array($tasks)) {
-	        foreach ($tasks as $task) {
-	          if (!$task['assignable']) continue;
-	          $assignableTasks[$task['activityID']] = $task['name'];
-	        }
-        }
-        $view->assignableTasks = $assignableTasks;
+        $view->allActivities = $database->get_activities($kga['user']['groups']);
         
         // Create a <select> element to chosse the groups.
         $view->groups = makeSelectBox("group",$kga['user']['groups']);

@@ -1389,16 +1389,6 @@ if ((int)$revisionDB < 1349) {
     exec_query("ALTER TABLE `${p}usr` ADD UNIQUE (`apikey`)");
 }
 
-if ((int)$revisionDB < 1367) {
-    Logger::logfile("-- update to r1367");
-    exec_query("ALTER TABLE `${p}pct_evt` DROP `evt_budget`,
-DROP `evt_effort`,
-DROP `evt_approved`;");
-    exec_query("ALTER TABLE `${p}evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
-ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
-ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
-}
-
 if ((int)$revisionDB < 1368) {
     Logger::logfile("-- update to r1368");
 
@@ -1513,6 +1503,9 @@ if ((int)$revisionDB < 1368) {
     exec_query("ALTER TABLE `${p}pct_evt` RENAME TO `${p}projects_activities`,
     CHANGE `pct_ID` `projectID`  int(10) NOT NULL,
     CHANGE `evt_ID` `activityID` int(10) NOT NULL,
+    CHAGNE `evt_budget`   `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHAGNE `evt_effort`   `effort`     decimal(10,2) DEFAULT NULL,
+    CHAGNE `evt_approved` `approved`   decimal(10,2) DEFAULT NULL
     DROP `uid`,
     ADD PRIMARY KEY (`projectID`, `activityID`)
     ;");
@@ -1610,6 +1603,26 @@ if ((int)$revisionDB < 1370) {
 
     if ($success)
       exec_query("DELETE FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
+}
+
+
+if ((int)$revisionDB < 1371) {
+    // The mentioned columns were accidentially removed by the update script. But there was no release since then.
+    // Therefore this updater was fixed to to the right thing now: Keep the column and rename it correctly.
+    // But there might be people using the development version. They lost their data but we have to add the columns again.
+    // That's why these queries are allowed to fail. This will happen for all not using a development version.
+
+    exec_query("ALTER TABLE `${p}activities`
+    DROP `budget`,
+    DROP `effort`,
+    DROP `approved`
+    ;", false);
+
+    exec_query("ALTER TABLE `${p}projects_activities`
+    ADD `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    ADD `effort`     decimal(10,2) DEFAULT NULL,
+    ADD `approved`   decimal(10,2) DEFAULT NULL
+    ;", false);
 }
 
 // ============================
