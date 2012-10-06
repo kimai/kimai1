@@ -2086,26 +2086,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author th
   */
   public function get_projects(array $groups = null) {
-      $arr = array();
       $p = $this->kga['server_prefix'];
 
-      if ($groups === null)
+      if ($groups === null) {
         $query = "SELECT project.*, customer.name AS customerName
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   WHERE project.trash=0";
-      else
+      } else {
         $query = "SELECT DISTINCT project.*, customer.name AS customerName
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
                   WHERE ${p}groups_projects.groupID IN (".implode($groups,',').")
-                    AND project.trash=0";
+                  AND project.trash=0";
+      }
 
-      if ($this->kga['conf']['flip_project_display'])
+      if ($this->kga['conf']['flip_project_display']) {
         $query .= " ORDER BY project.visible DESC, customerName, name;";
-      else
+      } else {
         $query .= " ORDER BY project.visible DESC, name, customerName;";
+      }
 
       $result = $this->conn->Query($query);
       if ($result == false) {
@@ -2115,25 +2116,27 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
 
-      $arr = array();
-      $i = 0;
       if ($rows) {
+          $arr = array();
+          $i = 0;
           foreach ($rows as $row) {
               $arr[$i]['projectID']    = $row['projectID'];
+              $arr[$i]['customerID']   = $row['customerID'];
               $arr[$i]['name']         = $row['name'];
               $arr[$i]['comment']      = $row['comment'];
-              $arr[$i]['customerName'] = $row['customerName'];
-              $arr[$i]['customerID']   = $row['customerID'];
               $arr[$i]['visible']      = $row['visible'];
+              $arr[$i]['filter']       = $row['filter'];
+              $arr[$i]['trash']        = $row['trash'];
               $arr[$i]['budget']       = $row['budget'];
               $arr[$i]['effort']       = $row['effort'];
               $arr[$i]['approved']     = $row['approved'];
+              $arr[$i]['internal']     = $row['internal'];
+              $arr[$i]['customerName'] = $row['customerName'];
               $i++;
           }
           return $arr;
-      } else {
-          return array();
       }
+      return array();
   }
 
   /**

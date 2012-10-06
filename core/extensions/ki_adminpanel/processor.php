@@ -23,7 +23,9 @@
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require ("../../includes/kspi.php");
-switch ($axAction) {
+
+switch ($axAction)
+{
 	case "createUser" :
 		// create new user account
 		$userData['name'] = trim($axValue);
@@ -33,11 +35,13 @@ switch ($axAction) {
 		$database->setGroupMemberships($userId, $kga['user']['groups']);
 		echo $userId;
 		break;
+
 	case "createStatus" :
 		// create new status
 		$status_data['status'] = trim($axValue);
 		$new_status_id = $database->status_create($status_data);
 		break;
+
 	case "createGroup" :
 		// create new group
 		$group['name'] = trim($axValue);
@@ -46,6 +50,7 @@ switch ($axAction) {
 			$database->assign_groupToGroupleaders($newGroupID, array($kga['user']['userID']));
 		}
 		break;
+
 	case "refreshSubtab" :
 		// builds either user/group/advanced/DB subtab
 		$view->curr_user = $kga['user']['name'];
@@ -72,16 +77,20 @@ switch ($axAction) {
 		$view->arr_status = $arr_status;
 		$view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
 		$view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
+
 		switch ($axValue) {
 			case "users" :
 				echo $view->render('users.php');
 				break;
+
 			case "groups" :
 				echo $view->render('groups.php');
 				break;
+
 			case "status" :
 				echo $view->render('status.php');
 				break;
+
 			case "advanced" :
 				if ($kga['conf']['editLimit'] != '-') {
 					$view->editLimitEnabled = true;
@@ -96,9 +105,11 @@ switch ($axAction) {
 				}
 				echo $view->render('advanced.php');
 				break;
+
 			case "database" :
 				echo $view->render('database.php');
 				break;
+
 			case "customers" :
 				if ($kga['user']['status'] == 0)
 					$customers = $database->get_customers();
@@ -123,34 +134,30 @@ switch ($axAction) {
 				}
 				echo $view->render('customers.php');
 				break;
+
 			case "projects" :
-                $projectsAll = array();
 				if ($kga['user']['status'] == 0) {
 					$projects = $database->get_projects();
                 } else {
 					$projects = $database->get_projects($kga['user']['groups']);
                 }
 
-                if ($projects !== null && is_array($projects)) {
+                if ($projects !== null && is_array($projects))
+                {
                     foreach ($projects as $row => $project) {
                         $groupNames = array();
                         foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
                             $data = $database->group_get_data($groupID);
                             $groupNames[] = $data['name'];
                         }
-                        $projectsAll[$row]['groups'] = implode(", ", $groupNames);
+                        $projects[$row]['groups'] = implode(", ", $groupNames);
                     }
+                    $view->projects = $projects;
                 }
-
-				if (count($projectsAll) > 0) {
-					$view->projects = $projectsAll;
-				}
-				else {
-					$view->projects = '0';
-				}
 
 				echo $view->render('projects.php');
 				break;
+
 			case "activities" :
 				if ($kga['user']['status'] == 0)
 					$groups = null;
@@ -191,6 +198,7 @@ switch ($axAction) {
 				break;
 		}
 		break;
+
 	case "deleteUser" :
 		// set the trashflag of a user
 		switch ($axValue) {

@@ -2145,14 +2145,17 @@ class PDODatabaseLayer extends DatabaseLayer
       $i=0;
       while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
           $arr[$i]['projectID']    = $row['projectID'];
+          $arr[$i]['customerID']   = $row['customerID'];
           $arr[$i]['name']         = $row['name'];
           $arr[$i]['comment']      = $row['comment'];
-          $arr[$i]['customerName'] = $row['customerName'];
-          $arr[$i]['customerID']   = $row['customerID'];
           $arr[$i]['visible']      = $row['visible'];
+          $arr[$i]['filter']       = $row['filter'];
+          $arr[$i]['trash']        = $row['trash'];
           $arr[$i]['budget']       = $row['budget'];
           $arr[$i]['effort']       = $row['effort'];
           $arr[$i]['approved']     = $row['approved'];
+          $arr[$i]['internal']     = $row['internal'];
+          $arr[$i]['customerName'] = $row['customerName'];
           $i++;
       }
       return $arr;
