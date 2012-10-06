@@ -236,7 +236,7 @@ switch ($axAction) {
             	$data['comment']  = $_REQUEST['comment'];
             	$data['company']  = $_REQUEST['company'];
                 $data['vat']      = $_REQUEST['vat'];
-                $data['contact']  = $_REQUEST['contact'];
+                $data['contact']  = $_REQUEST['contactPerson'];
                 $data['timezone'] = $_REQUEST['timezone'];
             	$data['street']   = $_REQUEST['street'];
             	$data['zipcode']  = $_REQUEST['zipcode'];
