@@ -272,11 +272,12 @@ function adminPanel_extension_refreshSubtab(tab) {
 // ----------------------------------------------------------------------------------------
 // delete user
 //
-function adminPanel_extension_deleteUser(id) {
+function adminPanel_extension_deleteUser(id, trash) {
+    var axData = (trash ? 1 : 2);
     $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteUser", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: 1, id: id }, 
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: axData, id: id },
                     function() { 
                       adminPanel_extension_refreshSubtab('users');
                       adminPanel_extension_refreshSubtab('groups');

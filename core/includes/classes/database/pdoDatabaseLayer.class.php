@@ -1259,23 +1259,31 @@ class PDODatabaseLayer extends DatabaseLayer
     }
 
     /**
-    * deletes a user
-    *
-    * @param array $userID        userID of the user
-    * @global array $this->kga         kimai-global-array
-    * @return boolean            true on success, false on failure
-    * @author ob
-    */
-    public function user_delete($userID) {
-      $p = $this->kga['server_prefix'];
+     * deletes a user
+     *
+     * @param array $userID        userID of the user
+     * @param boolean $moveToTrash whether to delete user or move to trash
+     * @global array $this->kga         kimai-global-array
+     * @return boolean            true on success, false on failure
+     * @author ob
+     */
+    public function user_delete($userID, $moveToTrash = false)
+    {
+        $p = $this->kga['server_prefix'];
 
-      $pdo_query = $this->conn->prepare("UPDATE ${p}user SET trash=1 WHERE userID = ?;");
-      $result = $pdo_query->execute(array($userID));
-      if ($result == false) {
+        if ($moveToTrash)
+            $pdo_query = $this->conn->prepare("UPDATE ${p}user SET trash=1 WHERE userID = ?;");
+        else
+          $pdo_query = $this->conn->prepare("DELETE FROM ${p}user WHERE userID = ?;");
+
+        $result = $pdo_query->execute(array($userID));
+        if ($result == false) {
           $this->logLastError('user_delete');
+          $this->conn->rollBack();
           return false;
-      }
-      return $result;
+        }
+
+        return $result;
     }
 
     /**

@@ -69,13 +69,13 @@
 
                     &nbsp;
 
-                   <?php if ($this->curr_user != $userarray['name']): ?>
-                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>)"><img
+                   <?php if ($this->curr_user != $userarray['name']) { ?>
+                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, <?php echo ($userarray['trash'] ? "false" : "true"); ?>)"><img
                                 src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['deleteUser']?>"
                                 width="13" height="13" alt="<?php echo $this->kga['lang']['deleteUser']?>" border="0"></a>
-                    <?php else: ?>
+                    <?php } else { ?>
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan_.png" title="<?php echo $this->kga['lang']['deleteUser']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['deleteUser']?>" border="0">
-                    <?php endif; ?>
+                    <?php } ?>
                 </td>
                 <!-- ########## /Option cells ########## -->
 

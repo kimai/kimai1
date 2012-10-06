@@ -208,22 +208,24 @@ switch ($axAction)
 				break;
 			case 1 :
 				// If the confirmation is returned the user gets the trash-flag. 
-				// TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
-				$database->user_delete($id);
+				$database->user_delete($id, true);
 				break;
+            case 2 :
+                // User is finally deleted after confirmed through trash view
+                $database->user_delete($id, false);
+                break;
 		}
 		break;
 
 	case "deleteGroup" :
-		// set the trashflag of a group
+		// removes a group
 		switch ($axValue) {
 			case 0 :
 				// Fire JavaScript confirm when a group is about to be deleted
 				echo $kga['lang']['sure'];
 				break;
 			case 1 :
-				// If the confirmation is returned the group gets the trash-flag. 
-				// TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
+				// If the confirmation is returned the group is deleted.
 				$database->group_delete($id);
 				break;
 		}

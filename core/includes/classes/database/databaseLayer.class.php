@@ -353,12 +353,13 @@ abstract class DatabaseLayer {
   public abstract function user_edit($userID, $data);
 
   /**
-  * deletes a user
-  *
-  * @param array $userID  userID of the user
-  * @return boolean       true on success, false on failure
-  */
-  public abstract function user_delete($userID);
+   * deletes a user
+   *
+   * @param array $userID  userID of the user
+   * @param boolean $moveToTrash whether to delete user or move to trash
+   * @return boolean       true on success, false on failure
+   */
+  public abstract function user_delete($userID, $moveToTrash = false);
 
   /**
   * Get a preference for a user. If no user ID is given the current user is used.

@@ -1203,19 +1203,34 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   }
 
   /**
-  * deletes a user
-  *
-  * @param array $userID  userID of the user
-  * @return boolean       true on success, false on failure
-  * @author th
-  */
-  public function user_delete($userID) {
-      $values['trash'] = 1;
-      $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-      $table = $this->kga['server_prefix']."users";
+   * deletes a user
+   *
+   * @param array $userID  userID of the user
+   * @param boolean $moveToTrash whether to delete user or move to trash
+   * @return boolean       true on success, false on failure
+   * @author th
+   */
+  public function user_delete($userID, $moveToTrash = false)
+  {
+      $userID = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
+      if ($moveToTrash) {
+          $values['trash'] = 1;
+          $filter['userID'] = $userID;
+          $table = $this->kga['server_prefix']."users";
 
-      $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-      return $this->conn->Query($query);
+          $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+          return $this->conn->Query($query);
+      }
+
+      $query = "DELETE FROM " . $this->kga['server_prefix'] . "users WHERE userID = ".$userID;
+      $result = $this->conn->Query($query);
+
+      if ($result === false) {
+          $this->logLastError('user_delete');
+          return false;
+      }
+
+      return true;
   }
 
   /**
