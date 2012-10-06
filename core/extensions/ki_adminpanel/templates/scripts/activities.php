@@ -38,9 +38,6 @@
     {
         foreach ($this->activities as $activity)
         {
-            if (!$activity['visible']) {
-                continue;
-            }
             ?>
 
             <tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
