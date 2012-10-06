@@ -3046,6 +3046,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $this->conn->MoveFirst();
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+
+      if ($rows === false) {
+          return array();
+      }
+
       foreach($rows as $row) {
           $arr[] = $row;
           $arr[$i]['timeSheetEntryCount'] = $this->status_timeSheetEntryCount($row['statusID']);
