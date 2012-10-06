@@ -1,7 +1,11 @@
+<?php
+// remove hidden entries from list
+$customers = $this->filterListEntries($this->customers);
+?>
 <table>
   <tbody>
     <?php
-    if (!isset($this->customers) || $this->customers == '0' || count($this->customers) == 0)
+    if (count($customers) == 0)
     {
         ?>
         <tr>
@@ -13,11 +17,8 @@
     }
     else
     {
-        foreach ($this->customers as  $customer)
+        foreach ($customers as  $customer)
         {
-            if (!$customer['visible']) {
-                continue;
-            }
             ?>
 
             <tr id="row_customer<?php echo $customer['customerID']?>" class="customer customer<?php echo $customer['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>">
