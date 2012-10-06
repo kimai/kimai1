@@ -299,7 +299,7 @@ class Kimai_Remote_Api
      *
      * @param string $apiKey
      * @see get_watchable_users
-     * @see processor.php: 'reload_user'
+     * @see processor.php: 'reload_users'
      * @return array|boolean
      */
 	public function getUsers($apiKey)
