@@ -73,7 +73,7 @@
         <?php if ($this->user_details['password'] == ""): ?>
         
                         <br/>
-                        <img src="../skins/<?php echo $this->escape($kga['conf']['skin'])?>/grfx/caution_mini.png" alt="Caution" valign=middle />
+                        <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/caution_mini.png" alt="Caution" valign="middle" />
                         <strong style="color:red"><?php echo $this->kga['lang']['nopasswordset']?></strong>
         <?php endif; ?>
                     </li>
