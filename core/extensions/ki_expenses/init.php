@@ -38,6 +38,7 @@ $out = $timeframe[1];
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
 $view->kga = $kga;
 
