@@ -121,10 +121,7 @@ $query=
   `visible` TINYINT(1) NOT NULL DEFAULT '1',
   `filter` TINYINT(1) NOT NULL DEFAULT '0',
   `trash` TINYINT(1) NOT NULL DEFAULT '0',
-  `assignable` TINYINT(1) NOT NULL DEFAULT '0',
-  `budget` DECIMAL( 10, 2 ) NULL ,
-  `effort` DECIMAL( 10, 2 ) NULL ,
-  `approved` DECIMAL( 10, 2 ) NULL
+  `assignable` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
@@ -176,6 +173,9 @@ exec_query($query);
 $query="CREATE TABLE `${p}projects_activities` (
   `projectID` INT NOT NULL,
   `activityID` INT NOT NULL,
+  `budget` DECIMAL( 10, 2 ) NULL DEFAULT '0.00',
+  `effort` DECIMAL( 10, 2 ) NULL ,
+  `approved` DECIMAL( 10, 2 ) NULL,
   UNIQUE (`projectID` ,`activityID`)) ;";
 exec_query($query);
 
