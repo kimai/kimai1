@@ -128,19 +128,27 @@ if ($this->timeSheetEntries)
                                     ?>
             ">
 
-                <?php if ($row['duration']) echo $row['formattedDuration'];
-                      else echo "&ndash;:&ndash;&ndash;" ?>
+                <?php
+                if (isset($row['duration'])) {
+                    echo $row['formattedDuration'];
+                } else {
+                    echo "&ndash;:&ndash;&ndash;";
+                }
+                ?>
             </td>
 
-            <td class="wage
-                                    <?php if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-                                          elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                                          elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-                                    ?>
-            ">
-
-                <?php if ($row['wage']) echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $row['wage']));
-                      else echo "&ndash;" ?>
+            <td class="wage <?php
+                if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
+                elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
+                elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
+            ?>">
+            <?php
+                if (isset($row['wage'])) {
+                    echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $row['wage']));
+                } else {
+                    echo "&ndash;";
+                }
+            ?>
             </td>
 
             <td class="customer
