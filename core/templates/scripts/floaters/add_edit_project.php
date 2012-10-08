@@ -196,29 +196,34 @@
             </tr>
         <?php
         $assignedTasks = array();
-        foreach ($this->selectedActivities as $selectedActivity):
-          $assignedTasks[] = $selectedActivity['activityID']; ?>
-        <tr>
-            <td>
-                <?php echo $this->escape($selectedActivity['name']), $this->formHidden('assignedActivities[]', $selectedActivity['activityID']); ?>
-            </td>
-            <td>
-                <?php echo $this->formText('budget[]', $selectedActivity['budget']);?>
-            </td>
-            <td>
-                <?php echo $this->formText('effort[]', $selectedActivity['effort']);?>
-            </td>
-            <td>
-                <?php echo $this->formText('approved[]', $selectedActivity['approved']);?>
-            </td>
-            <td>
-              <a class="deleteButton">
-                <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/close.png" width="22" height="16" />
-              </a>
-            </td>
-        </tr>
-        <?php endforeach;
-        
+        if (isset($this->selectedActivities) && is_array($this->selectedActivities))
+        {
+            foreach ($this->selectedActivities as $selectedActivity) {
+            $assignedTasks[] = $selectedActivity['activityID'];
+            ?>
+            <tr>
+                <td>
+                    <?php echo $this->escape($selectedActivity['name']), $this->formHidden('assignedActivities[]', $selectedActivity['activityID']); ?>
+                </td>
+                <td>
+                    <?php echo $this->formText('budget[]', $selectedActivity['budget']);?>
+                </td>
+                <td>
+                    <?php echo $this->formText('effort[]', $selectedActivity['effort']);?>
+                </td>
+                <td>
+                    <?php echo $this->formText('approved[]', $selectedActivity['approved']);?>
+                </td>
+                <td>
+                  <a class="deleteButton">
+                    <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/close.png" width="22" height="16" />
+                  </a>
+                </td>
+            </tr>
+            <?php
+            }
+        }
+
         $selectArray = array(-1 => '');
         foreach ($this->allActivities as $task) {
           if (array_search($task['activityID'], $assignedTasks) === false)
