@@ -216,6 +216,7 @@ return array(
 "time_billable"             => "Billable",
 "billable"                  => "Billable",
 "budget"                    => "Budget",
+"effort"                    => "Effort",
 "rate"                      => "Rate (by hour)",
 "rate_short"                => "Rate",
 "approved"                  => "Approved",
