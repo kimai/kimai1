@@ -141,6 +141,8 @@
               <input type="text" name="editLimitHours" size="3" class="formfield" value="<?php echo $this->editLimitHours?>" <?php if (!$this->editLimitEnabled): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['editLimitPart3']?>
             </div>
 
+            <?php /* FIXME make status field editable */ ?>
+?>
 <!--        -->
 <!--            <div>-->
 <!--               <select name="status[]" multiple="multiple">-->
