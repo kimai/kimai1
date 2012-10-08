@@ -73,13 +73,15 @@
                    <li>
                        <label for="projectID"><?php echo $this->kga['lang']['project']?>:</label>
                        <div class="multiFields">
-                        <?php echo $this->formSelect('projectID', $this->preselected_project, array(
-                          'id' => 'add_edit_expense_project_ID',
-                          'class' => 'formfield',
-                          'size' => '5',
-                          'style' => 'width:400px',
-                          'tabindex' => '1',
-                          'onchange' => 'expense_add_edit_validate();'), $this->projects); ?>
+                        <?php
+                           echo $this->formSelect('projectID', $this->selected_project, array(
+                              'id' => 'add_edit_expense_project_ID',
+                              'class' => 'formfield',
+                              'size' => '5',
+                              'style' => 'width:400px',
+                              'tabindex' => '1',
+                              'onchange' => 'expense_add_edit_validate();'), $this->projects);
+                        ?>
                         <br/>
                         <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_expense_project_ID', this.value); expense_add_edit_validate();"/>
                        </div>
