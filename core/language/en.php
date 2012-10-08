@@ -492,13 +492,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'extensions' => array(
   'ki_timesheet' => 'Timesheet',
   'adminPanel_extension' => 'Admin Panel',
-  'ki_expenses' => 'Expeneses',
+  'ki_expenses' => 'Expenses',
   'ki_export' => 'Export',
   'ki_budget' => 'Budget',
   'ki_invoice' => 'Invoice' 
 )
 
 );
-
-
-?>
