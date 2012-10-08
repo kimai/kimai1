@@ -389,10 +389,15 @@ function endsWith($haystack,$needle) {
 function getRequestBool($name)
 {
     if (isset($_REQUEST[$name])) {
+        if (strtolower($_REQUEST[$name]) == 'on') {
+            return 1;
+        }
+
         $temp = intval($_REQUEST[$name]);
         if ($temp == 1 || $temp == 0) {
             return $temp;
         }
+
         return 1;
     }
 
