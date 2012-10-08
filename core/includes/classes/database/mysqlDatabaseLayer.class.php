@@ -2372,34 +2372,34 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
               if ($row->end != 0) {
                 // only calculate time after recording is complete
-                $arr[$i]['duration']         = $arr[$i]['end'] - $arr[$i]['start'];
-                $arr[$i]['formattedDuration']     = Format::formatDuration($arr[$i]['duration']);
-                $arr[$i]['wage_decimal']     = $arr[$i]['duration']/3600*$row->rate;
-                $arr[$i]['wage']             = sprintf("%01.2f",$arr[$i]['wage_decimal']);
+                $arr[$i]['duration']            = $arr[$i]['end'] - $arr[$i]['start'];
+                $arr[$i]['formattedDuration']   = Format::formatDuration($arr[$i]['duration']);
+                $arr[$i]['wage_decimal']        = $arr[$i]['duration']/3600*$row->rate;
+                $arr[$i]['wage']                = sprintf("%01.2f",$arr[$i]['wage_decimal']);
               }
-              $arr[$i]['budget']   	   = $row->budget;
-              $arr[$i]['approved']     = $row->approved;
-              $arr[$i]['rate']         = $row->rate;
-              $arr[$i]['projectID']        = $row->projectID;
+              $arr[$i]['budget']   	        = $row->budget;
+              $arr[$i]['approved']          = $row->approved;
+              $arr[$i]['rate']              = $row->rate;
+              $arr[$i]['projectID']         = $row->projectID;
               $arr[$i]['activityID']        = $row->activityID;
-              $arr[$i]['userID']        = $row->userID;
-              $arr[$i]['projectID']           = $row->projectID;
-              $arr[$i]['customerName']         = $row->customerName;
+              $arr[$i]['userID']            = $row->userID;
+              $arr[$i]['projectID']         = $row->projectID;
+              $arr[$i]['customerName']      = $row->customerName;
               $arr[$i]['customerID']        = $row->customerID;
-              $arr[$i]['activityName']         = $row->activityName;
-              $arr[$i]['projectName']         = $row->projectName;
-              $arr[$i]['projectComment']      = $row->projectComment;
-              $arr[$i]['location']     = $row->location;
-              $arr[$i]['trackingNumber']   = $row->trackingNumber;
-              $arr[$i]['statusID']       = $row->statusID;
-              $arr[$i]['status']       = $row->status;
-              $arr[$i]['billable']     = $row->billable;
-              $arr[$i]['description']  = $row->description;
-              $arr[$i]['comment']      = $row->comment;
-              $arr[$i]['cleared']      = $row->cleared;
-              $arr[$i]['commentType'] = $row->commentType;
-              $arr[$i]['userAlias']        = $row->userAlias;
-              $arr[$i]['userName']         = $row->userName;
+              $arr[$i]['activityName']      = $row->activityName;
+              $arr[$i]['projectName']       = $row->projectName;
+              $arr[$i]['projectComment']    = $row->projectComment;
+              $arr[$i]['location']          = $row->location;
+              $arr[$i]['trackingNumber']    = $row->trackingNumber;
+              $arr[$i]['statusID']          = $row->statusID;
+              $arr[$i]['status']            = $row->status;
+              $arr[$i]['billable']          = $row->billable;
+              $arr[$i]['description']       = $row->description;
+              $arr[$i]['comment']           = $row->comment;
+              $arr[$i]['cleared']           = $row->cleared;
+              $arr[$i]['commentType']       = $row->commentType;
+              $arr[$i]['userAlias']         = $row->userAlias;
+              $arr[$i]['userName']          = $row->userName;
               $i++;
           }
           return $arr;
@@ -4126,9 +4126,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
     $data = $this->conn->rowArray(0,MYSQL_ASSOC);
 
   	$timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
-  	foreach($timeSheet as $timeSheetEntry) {
-    	$data['budget']+= $timeSheetEntry['budget'];
-    	$data['approved']+= $timeSheetEntry['approved'];
+  	foreach($timeSheet as $timeSheetEntry)
+    {
+        if (isset($timeSheetEntry['budget'])) {
+    	    $data['budget']+= $timeSheetEntry['budget'];
+        }
+        if (isset($timeSheetEntry['approved'])) {
+        	$data['approved']+= $timeSheetEntry['approved'];
+        }
   	}
     return $data;
   }
