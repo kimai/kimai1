@@ -142,7 +142,7 @@
             </div>
 
             <?php /* FIXME make status field editable */ ?>
-?>
+
 <!--        -->
 <!--            <div>-->
 <!--               <select name="status[]" multiple="multiple">-->
