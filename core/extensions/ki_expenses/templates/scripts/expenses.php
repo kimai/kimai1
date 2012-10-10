@@ -4,23 +4,23 @@ if ($this->expenses)
     ?>
     <div id="exptable">
 
-      <table>
+    <table>
 
         <colgroup>
-          <col class="option" />
-          <col class="date" />
-          <col class="time" />
-          <col class="value" />
-          <col class="refundable" />
-          <col class="client" />
-          <col class="project" />
-          <col class="designation" />
-          <col class="username" />
+        <col class="option" />
+        <col class="date" />
+        <col class="time" />
+        <col class="value" />
+        <col class="refundable" />
+        <col class="client" />
+        <col class="project" />
+        <col class="designation" />
+        <col class="username" />
         </colgroup>
 
-        <tbody>
+    <tbody>
 
-<?php
+    <?php
     $day_buffer = 0;
     $timestamp_buffer = 0;
 
@@ -142,17 +142,17 @@ if ($this->expenses)
     }
     ?>
                 
-      </tbody>
+    </tbody>
     </table>
-  </div>
-  <?php
+    </div>
+
+    <?php
 }
 else
 {
     echo $this->error();
 }
 ?>
-
 
 <script type="text/javascript"> 
     expense_user_annotations = null;
