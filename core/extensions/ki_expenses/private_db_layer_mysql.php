@@ -47,7 +47,7 @@ function expense_create($userID,$data) {
     $conn = $database->getConnectionHandler();
  
     $data = $database->clean_data($data);
-    
+
     $values ['projectID']    =   MySQL::SQLValue( $data ['projectID']   , MySQL::SQLVALUE_NUMBER );
     $values ['designation']  =   MySQL::SQLValue( $data ['designation'] );
     $values ['comment']      =   MySQL::SQLValue( $data ['comment'] );
@@ -57,9 +57,16 @@ function expense_create($userID,$data) {
     $values ['value']        =   MySQL::SQLValue( $data ['value']       , MySQL::SQLVALUE_NUMBER );
     $values ['userID']       =   MySQL::SQLValue( $userID               , MySQL::SQLVALUE_NUMBER );
     $values ['refundable']   =   MySQL::SQLValue( $data ['refundable']  , MySQL::SQLVALUE_NUMBER );
-    
+
     $table = $kga['server_prefix']."expenses";
-    return $conn->InsertRow($table, $values);    
+    $result = $conn->InsertRow($table, $values);
+
+    if (!$result) {
+        Logger::logfile('expense_create: '.$conn->Error());
+        return false;
+    }
+
+    return $result;
 } 
 
 
