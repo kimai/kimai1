@@ -807,7 +807,7 @@ function lists_reload(subject, callback) {
                     $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('activity', $('#filter_activity').val());
 		    lists_write_annotations('activity');
-        if ($('#row_activity'+selected_activity).length == 0) {
+        if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
           $('#buzzer').addClass('disabled');
         }
         else {
@@ -891,54 +891,60 @@ function lists_write_annotations(part)
     $('#users>table>tbody td.annotation').html("");
     if (lists_user_annotations[id] != null)
       for (var i in lists_user_annotations[id])
-        $('#row_user'+i+'>td.annotation').html(lists_user_annotations[id][i]);
+        $('#row_user[data-id="'+i+'"]>td.annotation').html(lists_user_annotations[id][i]);
   }
   if (!part || part == 'customer') {
     $('#customers>table>tbody td.annotation').html("");
     if (lists_customer_annotations[id] != null)
       for (var i in lists_customer_annotations[id])
-        $('#row_customer'+i+'>td.annotation').html(lists_customer_annotations[id][i]);
+        $('#row_customer[data-id="'+i+'"]>td.annotation').html(lists_customer_annotations[id][i]);
   }
   if (!part || part == 'project') {
     $('#projects>table>tbody td.annotation').html("");
     if (lists_project_annotations[id] != null)
       for (var i in lists_project_annotations[id])
-        $('#row_project'+i+'>td.annotation').html(lists_project_annotations[id][i]);
+        $('#row_project[data-id="'+i+'"]>td.annotation').html(lists_project_annotations[id][i]);
   }
   if (!part || part == 'activity') {
     $('#activities>table>tbody td.annotation').html("");
     if (lists_activity_annotations[id] != null)
       for (var i in lists_activity_annotations[id])
-        $('#row_activity'+i+'>td.annotation').html(lists_activity_annotations[id][i]);
+        $('#row_activity[data-id="'+i+'"]>td.annotation').html(lists_activity_annotations[id][i]);
   }
 }
 
-function lists_filter_select_all(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    if ( !$(this).hasClass('fhighlighted') )
-      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_select_all(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    if ( $(this).hasClass('fhighlighted') ) return;
+
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
-function lists_filter_deselect_all(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    if ( $(this).hasClass('fhighlighted') )
-      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_deselect_all(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    if (! $(this).hasClass('fhighlighted') ) return;
+                            
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
 
-function lists_filter_select_invert(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_select_invert(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
 
 function lists_toggle_filter(subject,id) {
-    alreadySelected = $('#row_'+subject+id).hasClass('fhighlighted');
-    $('#row_'+subject+id).removeClass('fhighlighted');
-    if (alreadySelected) {
+    var rowElement = $('#row_'+subject+'[data-id="'+id+'"]');
+    
+    if (rowElement.hasClass('fhighlighted')) {
+        rowElement.removeClass('fhighlighted');
         switch (subject) {
         case 'user':
           filterUsers.splice(filterUsers.indexOf(id),1);
@@ -957,7 +963,7 @@ function lists_toggle_filter(subject,id) {
     }
     else
     {
-      $('#row_'+subject+id).addClass('fhighlighted');
+      rowElement.addClass('fhighlighted');
       switch (subject) {
         case 'user':
           filterUsers.push(id);

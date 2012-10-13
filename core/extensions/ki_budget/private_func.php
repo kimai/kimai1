@@ -187,27 +187,29 @@ foreach ($projects as $project) {
 	  }
     }
   }
+
+  if(!isset($wages[$projectId]))
+    continue;
+
   //cleanup: don't show charts without any data
-  if(is_array($wages[$projectId])) {
   foreach($wages[$projectId] as $activityId => $entry) {
-  	if($activityId == 0) {
-  		continue;
-  	}
-  	if(!isset($entry['total']) || is_null($entry['total'])) {
-  		unset($wages[$projectId][$activityId]);
-  	}
-  }
+    if($activityId == 0) {
+      continue;
+    }
+    if(!isset($entry['total']) || is_null($entry['total'])) {
+      unset($wages[$projectId][$activityId]);
+    }
   }
   
   if ($wages[$projectId][0]['budget'] < 0) {
     //Costs over budget, set remaining budget to 0.
     $wages[$projectId][0]['budget'] = 0;
- 	$wages[$projectId][0]['exceeded'] = true;
+    $wages[$projectId][0]['exceeded'] = true;
   }
   if ($wages[$projectId][0]['approved'] < 0) {
     //Costs over budget approved, set remaining approved to 0.
     $wages[$projectId][0]['approved'] = 0;
-	$wages[$projectId][0]['approved_exceeded'] = true;
+    $wages[$projectId][0]['approved_exceeded'] = true;
   }
 }
 
