@@ -1503,9 +1503,9 @@ if ((int)$revisionDB < 1368) {
     exec_query("ALTER TABLE `${p}pct_evt` RENAME TO `${p}projects_activities`,
     CHANGE `pct_ID` `projectID`  int(10) NOT NULL,
     CHANGE `evt_ID` `activityID` int(10) NOT NULL,
-    CHAGNE `evt_budget`   `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
-    CHAGNE `evt_effort`   `effort`     decimal(10,2) DEFAULT NULL,
-    CHAGNE `evt_approved` `approved`   decimal(10,2) DEFAULT NULL
+    CHANGE `evt_budget`   `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHANGE `evt_effort`   `effort`     decimal(10,2) DEFAULT NULL,
+    CHANGE `evt_approved` `approved`   decimal(10,2) DEFAULT NULL,
     DROP `uid`,
     ADD PRIMARY KEY (`projectID`, `activityID`)
     ;");
