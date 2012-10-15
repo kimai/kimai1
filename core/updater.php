@@ -413,38 +413,17 @@ if ((int)$revisionDB < $kga['revision']) {
     echo "<strong>".$kga['lang']['updater'][50]."</strong>";
     echo "<table style='width:100%'>";
 
-    foreach ($result_backup as $row) {
-    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
-	
-			$primaryKey = "";
-			
-			if (substr($row[0],$prefix_length) == "evt") { $primaryKey = "evt_ID";}
-			if (substr($row[0],$prefix_length) == "grp") { $primaryKey = "grp_ID";}
-			if (substr($row[0],$prefix_length) == "knd") { $primaryKey = "knd_ID";}
-			if (substr($row[0],$prefix_length) == "pct") { $primaryKey = "pct_ID";}
-			if (substr($row[0],$prefix_length) == "zef") { $primaryKey = "zef_ID";}
-			if (substr($row[0],$prefix_length) == "usr") { $primaryKey = "usr_name";}
-			if (substr($row[0],$prefix_length) == "var") { $primaryKey = "var";}
-			if ( (substr($row[0],$prefix_length) == "ldr") 
-				|| (substr($row[0],$prefix_length) == "grp_evt") 
-				|| (substr($row[0],$prefix_length) == "pct_evt")
-				|| (substr($row[0],$prefix_length) == "grp_knd") 
-				|| (substr($row[0],$prefix_length) == "grp_pct")) 
-			{ 
-				$primaryKey = "uid";
-			}
-			
-			if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
-			
-			if ($primaryKey!="") {
-				$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
-			}
+    foreach($result_backup as $row) {
+      if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
+        $backupTable = "kimai_bak_" . $backup_stamp . "_" . $row[0];
+        $query = "CREATE TABLE ". $backupTable . " LIKE " . $row[0];
+        exec_query($query);
 
-	    	$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";				
-				
-    		exec_query($query,1);
-    		if ($errors) die($kga['lang']['updater'][60]);
-    	}
+        $query = "INSERT INTO " . $backupTable . " SELECT * FROM " . $row[0];
+        exec_query($query);
+
+        if ($errors) die($kga['lang']['updater'][60]);
+      }
     }
 
     Logger::logfile("-- backup finished -----------------------------------");

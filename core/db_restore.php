@@ -88,10 +88,10 @@ if (isset($_REQUEST['submit']))
       if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
         $backupTable = "kimai_bak_" . $backup_stamp . "_" . $row[0];
         $query = "CREATE TABLE ". $backupTable . " LIKE " . $row[0];
-        exec_query($query,1);
+        exec_query($query);
 
         $query = "INSERT INTO " . $backupTable . " SELECT * FROM " . $row[0];
-        exec_query($query,1);
+        exec_query($query);
 
         if ($errors) die($kga['lang']['updater'][60]);
       }
