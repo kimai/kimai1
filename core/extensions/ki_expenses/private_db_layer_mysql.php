@@ -175,7 +175,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
         $limit="";
     }
     $query = "SELECT *,
-              customer.name AS customerName, project.name AS projectName, user.name AS userName
+              customer.name AS customerName, project.name AS projectName, project.comment AS projectComment, user.name AS userName
              FROM ${p}expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -203,6 +203,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
       $arr[$i]['customerName']           = $row->customerName;
       $arr[$i]['customerID']          = $row->customerID;
       $arr[$i]['projectName']           = $row->projectName;
+      $arr[$i]['projectComment']           = $row->projectComment;
       $arr[$i]['comment']        = $row->comment;
       $arr[$i]['commentType']   = $row->commentType;
       $arr[$i]['refundable']     = $row->refundable;

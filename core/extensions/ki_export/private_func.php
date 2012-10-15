@@ -110,6 +110,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['projectID'] = $expenses[$expenses_index]['projectID'];
 			$arr['projectName'] = $expenses[$expenses_index]['projectName'];
 			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
+                        $arr['projectComment'] = $timeSheetEntries[$timeSheetEntries_index]['projectComment'];
 			if ($limitCommentSize)
 				$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 			else
@@ -181,6 +182,8 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 		$arr['customerName'] = $expenses[$expenses_index]['customerName'];
 		$arr['projectID'] = $expenses[$expenses_index]['projectID'];
 		$arr['projectName'] = $expenses[$expenses_index]['projectName'];
+                $arr['description'] = $expenses[$expenses_index]['description'];
+                $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
 		if ($limitCommentSize)
 			$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 		else
@@ -190,6 +193,8 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 		$arr['commentType'] = $expenses[$expenses_index]['commentType'];
 		$arr['username'] = $expenses[$expenses_index]['userName'];
 		$arr['cleared'] = $expenses[$expenses_index]['cleared'];
+                $arr['location'] = $default_location;
+                $arr['trackingNumber'] = null;
 		$expenses_index++;
 		$result_arr[] = $arr;
 	}

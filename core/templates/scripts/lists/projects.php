@@ -20,7 +20,7 @@ $projects = $this->filterListEntries($this->projects);
         foreach ($projects as $project)
         {
             ?>
-            <tr id="row_project<?php echo $project['projectID']?>" class="project customer<?php echo $project['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>" >
+            <tr id="row_project" data-id="<?php echo $project['projectID']?>" class="project customer<?php echo $project['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>" >
 
               <td nowrap class="option">
 

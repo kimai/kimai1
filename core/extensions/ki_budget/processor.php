@@ -74,6 +74,9 @@ switch ($axAction)
 		// track which activities we want to see, so we can exclude them when we create the plot
 		$activitiesFilter = false;
 		$projectsFilter = false;
+                $projectsSelected = array();
+                $activitiesSelected = array();
+
 		if (is_array($filterProjects) && count($filterProjects) > 0) {
 			$projectsFilter = $filterProjects;
 			$projectsSelected = $projectsFilter;
@@ -92,7 +95,6 @@ switch ($axAction)
 			if (is_array($filterCustomers) && count($filterCustomers) > 0) {
 				$projects = array();
 				foreach ($filterCustomers as $customerId) {
-                                error_log($customerId);
 					$projects = array_merge($database->get_projects_by_customer($customerId), $projects);
 				}
 			}

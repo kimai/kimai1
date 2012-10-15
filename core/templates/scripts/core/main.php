@@ -164,7 +164,7 @@
     clearTimeout(lists_resize);
 
 
-        if ($('#row_activity'+selected_activity).length == 0) {
+        if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
           $('#buzzer').addClass('disabled');
         }
 
@@ -350,9 +350,9 @@
 <div id="activities"><?php echo $this->activity_display?></div>
 
 <div id="users_foot">
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('user'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('user'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('user'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('users'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('users'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('users'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
@@ -360,9 +360,9 @@
 <?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('customer'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('customer'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('customer'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('customers'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('customers'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('customers'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
@@ -370,9 +370,9 @@
 <?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_project',0,0,650,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('project'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('project'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('project'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('projects'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('projects'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('projects'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 
@@ -380,9 +380,9 @@
 <?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_activity',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
-<a href="#" class="selectAllLink" onClick="lists_filter_select_all('activity'); $(this).blur(); return false;"></a>
-<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('activity'); $(this).blur(); return false;"></a>
-<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('activity'); $(this).blur(); return false;"></a>
+<a href="#" class="selectAllLink" onClick="lists_filter_select_all('activities'); $(this).blur(); return false;"></a>
+<a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('activities'); $(this).blur(); return false;"></a>
+<a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('activities'); $(this).blur(); return false;"></a>
 <div style="clear:both"></div>
 </div>
 

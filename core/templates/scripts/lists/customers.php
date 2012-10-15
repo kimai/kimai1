@@ -21,7 +21,7 @@ $customers = $this->filterListEntries($this->customers);
         {
             ?>
 
-            <tr id="row_customer<?php echo $customer['customerID']?>" class="customer customer<?php echo $customer['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>">
+            <tr id="row_customer" data-id="<?php echo $customer['customerID']?>" class="customer customer<?php echo $customer['customerID']?> <?php echo $this->cycle(array('odd','even'))->next()?>">
 
               <!-- option cell -->
               <td nowrap class="option">
