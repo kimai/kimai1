@@ -85,7 +85,7 @@ $query =
 "CREATE TABLE `${p}users` (
   `userID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
-  `alias` varchar(10),
+  `alias` varchar(160),
   `status` tinyint(1) NOT NULL default '2',
   `trash` tinyint(1) NOT NULL default '0',
   `active` tinyint(1) NOT NULL default '1',

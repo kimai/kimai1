@@ -1625,6 +1625,11 @@ if ((int)$revisionDB < 1371) {
     ;", false);
 }
 
+
+if ((int)$revisionDB < 1372) {
+    exec_query("ALTER TABLE `${p}users` CHANGE `alias` `alias` varchar(160);");
+}
+
 // ============================
 // = update DB version number =
 // ============================
