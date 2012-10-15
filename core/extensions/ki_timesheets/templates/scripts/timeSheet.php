@@ -288,10 +288,10 @@ else
     updateRecordStatus(false);
   <?php else: ?>
 
-    updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[0]['start']?>,
-                             <?php echo $this->timeSheetEntries[0]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['customerName'])?>',
-                             <?php echo $this->timeSheetEntries[0]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['projectName'])?>',
-                             <?php echo $this->timeSheetEntries[0]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[0]['activityName'])?>');
+    updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[$latest_running_task]['start']?>,
+                             <?php echo $this->timeSheetEntries[$latest_running_task]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['customerName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_task]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['projectName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_task]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['activityName'])?>');
   <?php endif; ?>
     
 </script>
