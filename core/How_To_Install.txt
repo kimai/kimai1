@@ -54,19 +54,11 @@ If you already have a autoconf.php in your installation skip this.
 
 Rename your conf.php file to autoconf.php.
 
-Then edit it and add three new variables:
+Then edit it and add two new variables:
 
-$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
-						  // check the PHP PDO manual if you are using a different
-						  // database
 $server_conn = "mysql";
 
 $password_salt   = "";
-
-Kimai will then work in non-PDO mode. If you want to
-use PDO $server_conn must be set to "pdo".
-
-
 
 Finally visit your Kimai installation with your web browser and the
 auto update process will perform all further necessary updates.

@@ -53,25 +53,15 @@ Existiert bereits eine autoconf.php sind diese Schritte nicht durchzuführen.
 
 Die Datei conf.php in autoconf.php umbenennen.
 
-Anschließend müssen 3 Variablen zu autoconf.php hinzugefügt werden:
+Anschließend müssen 2 Variablen zu autoconf.php hinzugefügt werden:
 
-$server_type = 'mysql';	  // the database type (needed for PDO) usually 'mysql'
-						  // check the PHP PDO manual if you are using a different
-						  // database
 $server_conn = "mysql";
 
 $password_salt = "";
-
-Die Installation laeuft dann nicht mit PDO. Soll PDO genutzt werden,
-muss $server_conn = "pdo" gesetzt werden.
-
-
 
 Noch ein Hinweis: 
 -----------------
 Diese Software ist kostenlos. Wir bitten Sie die Copyright-Vermerke auf dem
 Login-Screen und im About-Fenster nicht zu entfernen.
-
-
 
 Have Fun!
