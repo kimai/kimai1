@@ -30,7 +30,7 @@
  * @author sl
  * @author Kevin Papst
  */
-abstract class AuthBase
+abstract class Kimai_Auth_Abstract
 {
     /**
      * @var array

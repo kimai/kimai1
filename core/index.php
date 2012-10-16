@@ -57,11 +57,10 @@ $view->setBasePath(WEBROOT . '/templates');
 // =========================
 // = authentication method =
 // =========================
-if (!is_file(WEBROOT.'auth/' . $kga['authenticator'] . '.php')) {
-    $kga['authenticator'] = 'kimai';
+$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
+if (!class_exists($authClass)) {
+    $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 }
-require(WEBROOT.'auth/' . $kga['authenticator'] . '.php');
-$authClass = ucfirst($kga['authenticator']).'Auth';
 $authPlugin = new $authClass($database, $kga);
 
 $view->kga = $kga;

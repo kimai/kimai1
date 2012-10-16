@@ -23,9 +23,7 @@
  * Last revision: February 21, 2012
 */
 
-require(WEBROOT.'auth/base.php');
-
-class HttpAuth extends AuthBase {
+class Kimai_Auth_Http extends Kimai_Auth_Abstract {
 
     // Set true to allow web server authorized automatic logins
     private $HTAUTH_ALLOW_AUTOLOGIN=true;

@@ -5,10 +5,8 @@
  *  
  * This is free software. Use it however you want.
  */
-//require_once(WEBROOT.'auth/base.php');
-require_once(WEBROOT . 'auth/kimai.php');
 
-class LdapAuth extends AuthBase {
+class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
 
     /** Your LDAP-Server */
     private $LADP_SERVER = 'ldap://localhost';
@@ -22,13 +20,14 @@ class LdapAuth extends AuthBase {
     private $LDAP_LOCAL_ACCOUNTS = array('admin');
     /** Automatically create a user in kimai if the login is successful. */
     private $LDAP_USER_AUTOCREATE = true;
-
+    /**
+     * @var Kimai_Auth_Kimai|null
+     */
     private $kimaiAuth = null;
-
 
     public function __construct($database = null, $kga = null) {
         parent::__construct($database, $kga);
-        $this->kimaiAuth = new KimaiAuth($database, $kga);
+        $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
     }
 
     public function authenticate($username, $password, &$userId) {
