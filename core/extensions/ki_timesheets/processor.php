@@ -284,6 +284,8 @@ switch ($axAction) {
         else
           $view->showOverlapLines = false;
 
+        $view->showTrackingNumber = true;
+
         echo $view->render("timeSheet.php");
     break;
 
