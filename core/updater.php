@@ -1609,6 +1609,33 @@ if ((int)$revisionDB < 1372) {
     exec_query("ALTER TABLE `${p}users` CHANGE `alias` `alias` varchar(160);");
 }
 
+// FIXME kevin - removed pdo - update autoconf file!
+/*
+if ((int)$revisionDB < 2000) {
+
+    $success = write_config_file(
+        $kga['server_database'],
+        $kga['server_hostname'],
+        $kga['server_username'],
+        $kga['server_password'],
+        'mysql',
+        '',
+        $kga['server_prefix'],
+        $kga['language'],
+        $kga['password_salt'],
+        $defaultTimezone);
+
+    if ($success) {
+        $level = 'green';
+    } else {
+        $level = 'red';
+    }
+
+    printLine($level,'Updated autoconf.php to use MYSQL configuration in <i>autoconf.php</i>.');
+}
+*/
+
+
 // ============================
 // = update DB version number =
 // ============================
