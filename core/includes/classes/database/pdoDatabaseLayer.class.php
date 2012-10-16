@@ -2288,7 +2288,7 @@ class PDODatabaseLayer extends DatabaseLayer
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers , $projects , $activities );
 
       if (isset($this->kga['customer']))
-        $whereClauses[] = "${p}projects.internal = 0";
+        $whereClauses[] = "project.internal = 0";
 
       if ($start)
         $whereClauses[]="(end > $start || end = 0)";

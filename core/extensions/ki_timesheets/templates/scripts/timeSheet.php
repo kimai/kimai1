@@ -50,7 +50,7 @@ if ($this->timeSheetEntries)
                                                 ?>
                         ">
 
-    <?php if ($this->kga['user']):
+    <?php if (isset($this->kga['user'])):
     // only users can see options ?>
 
 

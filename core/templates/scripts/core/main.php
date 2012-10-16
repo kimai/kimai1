@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" value="noindex,nofollow" />
 
-    <title><?php echo $this->escape($this->kga['user']['name'])?> - Kimai</title>
+    <title><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai</title>
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
     <!-- Default Stylesheets -->
@@ -89,7 +89,7 @@
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
         
 
-        var default_title         = "<?php echo $this->escape($this->kga['user']['name']) ?> - Kimai";
+        var default_title         = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
         var revision              = <?php echo $this->kga['revision'] ?>;
         var timeframeDateFormat   = "<?php echo $this->escape($this->kga['date_format'][2]) ?>";
 
@@ -136,14 +136,14 @@
     $('#extensionShrink').click(lists_shrinkExtToggle);
     $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
     $('#customersShrink').click(lists_shrinkCustomerToggle);
-  <?php if (!$this->kga['user'] || $this->kga['user']['status'] < 2): ?>
+  <?php if (!isset($this->kga['user']) || $this->kga['user']['status'] < 2): ?>
     $('#usersShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
     $('#usersShrink').click(lists_shrinkUserToggle);
   <?php else: ?>
     $('#usersShrink').hide();
   <?php endif; ?>
 
-  <?php if ($this->kga['conf']['user_list_hidden'] || $this->kga['user']['status'] == 2): ?>
+  <?php if ($this->kga['conf']['user_list_hidden'] || (isset($this->kga['user']) && $this->kga['user']['status'] == 2)): ?>
     lists_shrinkUserToggle();
   <?php endif; ?>
     $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
@@ -192,7 +192,7 @@
         <div id="menu">
             <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
             <a id="main_tools_button" href="#" ><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
-            <br/><?php echo $this->kga['lang']['logged_in_as']?> <b><?php echo $this->escape($this->kga['user']['name'])?></b>
+            <br/><?php echo $this->kga['lang']['logged_in_as']?> <b><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?></b>
         </div>
         
         <div id="main_tools_menu">
@@ -244,7 +244,7 @@
           </div>
         </div> 
         
-        <?php if ($this->kga['user']): ?>
+        <?php if (isset($this->kga['user'])): ?>
         
         <div id="selector">
           <div class="preselection">
@@ -357,7 +357,7 @@
 </div>
 
 <div id="customers_foot">    
-<?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
+<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('customers'); $(this).blur(); return false;"></a>
@@ -367,7 +367,7 @@
 </div>
 
 <div id="projects_foot">
-<?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
+<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_project',0,0,650,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('projects'); $(this).blur(); return false;"></a>
@@ -377,7 +377,7 @@
 </div>
 
 <div id="activities_foot">
-<?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
+<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_activity',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('activities'); $(this).blur(); return false;"></a>

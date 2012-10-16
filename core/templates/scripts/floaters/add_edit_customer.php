@@ -93,14 +93,14 @@
                             <?php echo $this->formPassword('password', '', array(
                                         'cols' => 30,
                                         'rows' => 3,
-                                        'disabled' => !$this->password?'disabled':''
+                                        'disabled' => (!$this->password)?'disabled':''
                                 ));?><br/>
                             <?php echo $this->formCheckbox('no_password', '1',array('class' => 'disableInput', 'checked' => !$this->password)); echo $this->kga['lang']['nopassword']?>
                           </div>
                         </li>
                         <li>
                             <label for="timezone"><?php echo $this->kga['lang']['timezone']?>:</label>
-                            <?php echo $this->formSelect('timezone', $this->timezone, null, $this->timezones); ?>
+                            <?php echo $this->timeZoneSelect('timezone', $this->timezone); ?>
                         </li>
                     </ul>
                 </fieldset>

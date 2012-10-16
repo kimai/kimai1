@@ -24,7 +24,7 @@ $projects = $this->filterListEntries($this->projects);
 
               <td nowrap class="option">
 
-                <?php if ($this->kga['user'] && $this->kga['user']['status'] != 2): ?>
+                <?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
                 <a href ="#" onClick="editSubject('project',<?php echo $project['projectID']?>); $(this).blur(); return false;">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?> (ID:<?php echo $project['projectID']?>)' border='0' />
                 </a>
