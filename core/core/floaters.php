@@ -157,6 +157,7 @@ switch ($axAction) {
         
         if (!isset($view->id)) {
           $view->selectedActivities = array();
+          $view->internal = false;
         }
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
 

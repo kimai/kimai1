@@ -6,7 +6,7 @@
 
 <div id="expenses_head">
     <div class="left">
-    <?php if ($this->kga['user']): ?>
+    <?php if (isset($this->kga['user'])): ?>
         <a href="#" onClick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600,300); $(this).blur(); return false;"><?php echo $this->kga['lang']['add']?></a>
     <?php endif; ?>
     </div>

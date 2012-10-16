@@ -2290,7 +2290,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
 
       if (isset($this->kga['customer']))
-        $whereClauses[] = "${p}projects.internal = 0";
+        $whereClauses[] = "project.internal = 0";
 
       if ($start)
         $whereClauses[]="(end > $start || end = 0)";
@@ -2335,7 +2335,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                 Join ${p}activities AS activity USING(activityID) "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
                 ' ORDER BY start '.($reverse_order?'ASC ':'DESC ') . $limit.';';
-      
+
       $result = $this->conn->Query($query);
 
       if ($result === false)
@@ -2414,8 +2414,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   {
     $p = $this->kga['server_prefix'];
 
-	if (strncmp($kimai_user, 'customer_', 4) == 0) {
-		$customerName = MySQL::SQLValue(substr($kimai_user,4));
+	if (strncmp($kimai_user, 'customer_', 9) == 0) {
+		$customerName = MySQL::SQLValue(substr($kimai_user,9));
 		$query = "SELECT customerID FROM ${p}customers WHERE name = $customerName AND NOT trash = '1';";
 		$this->conn->Query($query);
 		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -2998,8 +2998,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @author th
   */
   public function get_seq($user) {
-      if (strncmp($user, 'customer_', 4) == 0) {
-        $filter['name'] = MySQL::SQLValue(substr($user,4));
+      if (strncmp($user, 'customer_', 9) == 0) {
+        $filter['name'] = MySQL::SQLValue(substr($user,9));
         $table = $this->getCustomerTable();
       }
       else {
