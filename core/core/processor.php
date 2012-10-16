@@ -245,7 +245,7 @@ switch ($axAction) {
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
                 $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
               }
-              if (isset($_REQUEST['no_password'])) {
+              if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                 $data['password'] = '';
               }
             	
