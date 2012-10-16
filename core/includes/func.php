@@ -35,7 +35,9 @@ function checkUser()
       if ($database->get_seq($kimai_user) != $kimai_key) {
           kickUser();
       } else {
-          return $database->checkUserInternal($kimai_user);
+          $user = $database->checkUserInternal($kimai_user);
+          Kimai_Registry::setUser(new Kimai_User($user));
+          return $user;
       }
     }
     kickUser();
