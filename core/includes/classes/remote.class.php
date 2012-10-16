@@ -39,9 +39,10 @@ class Kimai_Remote_Api
 	private $kga = null;
 	
 	/**
-	 * one of mysqlDatabaseLayer or pdoDatabaseLayer
+	 * @var Kimai_Database_Abstract
 	 */
 	private $oldDatabase = null;
+
 	public function __construct()
 	{
 		// Bootstrap Kimai the old fashioned way ;-)
