@@ -121,7 +121,7 @@ class Kimai_Remote_Api
     /**
      * Returns the configured Authenticator for Kimai.
      *
-     * @return AuthBase
+     * @return Kimai_Auth_Abstract
      */
     protected function getAuthenticator()
     {
@@ -129,15 +129,15 @@ class Kimai_Remote_Api
         $database = $this->getBackend();
 
         // load authenticator
-        if (!is_file(WEBROOT.'auth/' . $kga['authenticator'] . '.php')) {
-            $kga['authenticator'] = 'kimai';
+        $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
+        if (!class_exists($authClass)) {
+            $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
         }
-        require(WEBROOT.'auth/' . $kga['authenticator'] . '.php');
-        $authClass = ucfirst($kga['authenticator']).'Auth';
 
         $authPlugin = new $authClass();
         $authPlugin->setDatabase($this->oldDatabase);
         $authPlugin->setKga($kga);
+
         return $authPlugin;
     }
 
