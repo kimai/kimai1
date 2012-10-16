@@ -306,7 +306,7 @@ switch ($axAction)
 	case "sendEditUser" :
 		// process editUser form
 		$userData['name'] = trim($_REQUEST['name']);
-		$userData['sts'] = $_REQUEST['status'];
+		$userData['status'] = $_REQUEST['status'];
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
                 $userData['rate'] = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
@@ -403,4 +403,3 @@ switch ($axAction)
 		setcookie("adminPanel_extension_show_deleted_users", $axValue);
 		break;
 }
-?>
