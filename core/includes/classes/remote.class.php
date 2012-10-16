@@ -58,7 +58,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns the database object to access Kimais system.
 	 *
-	 * @return DatabaseLayer
+	 * @return Kimai_Database_Abstract
 	 */
 	private function getBackend()
 	{
