@@ -323,8 +323,13 @@ $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
 $query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`,`status` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0');";
 exec_query($query);
 
-$query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES ('$randomAdminID','ui.rowlimit','100'),
-('$randomAdminID','ui.skin','standard'),('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
+$query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
+('$randomAdminID','ui.rowlimit','100'),
+('$randomAdminID','ui.skin','standard'),
+('$randomAdminID','ui.showCommentsByDefault','0'),
+('$randomAdminID','ui.hideOverlapLines','1'),
+('$randomAdminID','ui.showTrackingNumber','1'),
+('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
 $query="INSERT INTO `${p}groupleaders` (`groupID`,`userID`) VALUES ('1','$randomAdminID');";
