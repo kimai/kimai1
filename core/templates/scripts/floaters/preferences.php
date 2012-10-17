@@ -137,29 +137,27 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
         <ul>
           <li>
             <label for="rowlimit"><?php echo $this->kga['lang']['rowlimit']?>:</label>
-            <?php echo $this->formText('rowlimit', $this->kga['conf']['rowlimit'], array(
-              'size' => 9)); ?>
+            <?php echo $this->formText('rowlimit', $this->kga['conf']['rowlimit'], array('size' => 9)); ?>
           </li>
           <li>
             <label for="hideClearedEntries"></label>
-            <?php echo $this->formCheckbox('hideClearedEntries', '1',array('checked' => $this->kga['conf']['hideClearedEntries'])),
-                $this->kga['lang']['hideClearedEntries']?>
+            <?php echo $this->formCheckbox('hideClearedEntries', '1',array('checked' => $this->kga['conf']['hideClearedEntries'])), $this->kga['lang']['hideClearedEntries']?>
           </li>
           <li>
             <?php echo $this->kga['lang']['quickdelete']?>:
-            <?php echo $this->formSelect('quickdelete', $this->kga['conf']['quickdelete'], null, array(
-$this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm']
-)); ?>
+            <?php echo $this->formSelect('quickdelete', $this->kga['conf']['quickdelete'], null, array($this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm'])); ?>
           </li>
           <li>
             <label for="showCommentsByDefault"></label>
-            <?php echo $this->formCheckbox('showCommentsByDefault', '1',array('checked' => $this->kga['conf']['showCommentsByDefault'])),
-                $this->kga['lang']['showCommentsByDefault']?>
+            <?php echo $this->formCheckbox('showCommentsByDefault', '1',array('checked' => $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault']?>
+          </li>
+          <li>
+            <label for="showTrackingNumber"></label>
+            <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber']?>
           </li>     
           <li>
             <label for="hideOverlapLines"></label>
-            <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => $this->kga['conf']['hideOverlapLines'])),
-                $this->kga['lang']['hideOverlapLines']?>
+            <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
           </li>     
         </ul>
       </fieldset>
