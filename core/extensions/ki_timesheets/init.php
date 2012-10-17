@@ -99,17 +99,15 @@ else
 Format::formatAnnotations($ann);
 $view->activity_annotations = $ann;
 
-if (isset($kga['user']))
-  $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-else
-  $view->hideComments = true;
+$view->hideComments = true;
+$view->showOverlapLines = false;
+$view->showTrackingNumber = false;
 
-if (isset($kga['user']))
-  $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
-else
-  $view->showOverlapLines = false;
-
-$view->showTrackingNumber = true;
+if (isset($kga['user'])) {
+    $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
+    $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
+    $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
+}
 
 $view->timeSheet_display = $view->render("timeSheet.php");
 
