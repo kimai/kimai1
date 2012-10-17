@@ -4102,41 +4102,43 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   	return $budgetUsed;
   }
 
-  /**
-  * Read activity budgets
-  *
-  * @author mo
-  */
-  public function get_activity_budget($projectID,$activityID) {
-    // validate input
-    if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-    if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
-
-
-    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
-    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
-    (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
-
-    $result = $this->conn->Query($query);
-
-    if ($result === false) {
-      $this->logLastError('get_activity_budget');
-      return false;
-    }
-    $data = $this->conn->rowArray(0,MYSQL_ASSOC);
-
-  	$timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
-  	foreach($timeSheet as $timeSheetEntry)
+    /**
+     * Read activity budgets
+     *
+     * @author mo
+     */
+    public function get_activity_budget($projectID,$activityID)
     {
-        if (isset($timeSheetEntry['budget'])) {
-    	    $data['budget']+= $timeSheetEntry['budget'];
+        // validate input
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+
+        $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
+
+        $result = $this->conn->Query($query);
+
+        if ($result === false) {
+          $this->logLastError('get_activity_budget');
+          return false;
         }
-        if (isset($timeSheetEntry['approved'])) {
-        	$data['approved']+= $timeSheetEntry['approved'];
+        $data = $this->conn->rowArray(0,MYSQL_ASSOC);
+        if (!isset($data['budget'])) $data['budget'] = 0;
+        if (!isset($data['approved'])) $data['approved'] = 0;
+
+        $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+        foreach($timeSheet as $timeSheetEntry)
+        {
+            if (isset($timeSheetEntry['budget'])) {
+                $data['budget']+= $timeSheetEntry['budget'];
+            }
+            if (isset($timeSheetEntry['approved'])) {
+                $data['approved']+= $timeSheetEntry['approved'];
+            }
         }
-  	}
-    return $data;
-  }
+        return $data;
+    }
 
   /**
   * Remove fixed rate from database.
