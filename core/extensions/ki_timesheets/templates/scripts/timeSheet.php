@@ -1,6 +1,6 @@
 <?php
 
-$latest_running_task = "-1";
+$latest_running_row_index = -1;
 
 if ($this->timeSheetEntries)
 {
@@ -31,7 +31,7 @@ if ($this->timeSheetEntries)
     $start_buffer = 0;
     ?>
 
-    <?php foreach ($this->timeSheetEntries as $row):
+    <?php foreach ($this->timeSheetEntries as $rowIndex => $row):
      //Assign initial value to time buffer which must be larger than or equal to "end"
      if ($time_buffer==0) $time_buffer = $row['end']; ?>
 
@@ -39,7 +39,7 @@ if ($this->timeSheetEntries)
                     <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
     <?php else: ?>
 
-    <?php if ($latest_running_task == -1) { $latest_running_task = $row['timeEntryID']; } ?>
+    <?php if ($latest_running_row_index == -1) { $latest_running_row_index = $rowIndex; } ?>
                     <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
     <?php endif; ?>
 
@@ -284,14 +284,14 @@ else
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
     
-  <?php if ($latest_running_task == -1 || $latest_running_task == ''): ?>
+  <?php if ($latest_running_row_index == -1): ?>
     updateRecordStatus(false);
   <?php else: ?>
 
-    updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[$latest_running_task]['start']?>,
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['customerName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['projectName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['activityName'])?>');
+    updateRecordStatus(<?php echo $this->timeSheetEntries[$latest_running_row_index]['timeEntryID']?>,<?php echo $this->timeSheetEntries[$latest_running_row_index]['start']?>,
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['customerName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['projectName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityName'])?>');
   <?php endif; ?>
     
 </script>
