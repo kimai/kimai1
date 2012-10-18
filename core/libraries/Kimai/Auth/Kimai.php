@@ -17,10 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-require(WEBROOT.'auth/base.php');
-
-
-class KimaiAuth extends AuthBase
+class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
 {
     /**
      * @param $username

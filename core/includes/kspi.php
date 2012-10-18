@@ -30,26 +30,11 @@
  * - Ensure library/ is on include_path
  * - Register Autoloader
  */
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
-
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-
-// ==================================
-// = implementing standard includes =
-// ==================================
+// bootstrap kimai
 require("basics.php");
 
+// check if we are in an extension
 if (!$isCoreProcessor) {
   $datasrc = "config.ini";
   $settings = parse_ini_file($datasrc);
@@ -106,11 +91,8 @@ if ($axAction != "reloadLogfile") {
     Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['name']:$kga['user']['name'])."): " . $axAction);
 }
 
-
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-
-?>

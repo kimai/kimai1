@@ -30,19 +30,19 @@
  * @author sl
  * @author Kevin Papst
  */
-abstract class AuthBase
+abstract class Kimai_Auth_Abstract
 {
     /**
      * @var array
      */
     protected $kga = null;
     /**
-     * @var DatabaseLayer
+     * @var Kimai_Database_Abstract
      */
     protected $database = null;
 
     /**
-     * @param DatabaseLayer $database
+     * @param Kimai_Database_Abstract $database
      * @param array $kga
      */
     public function __construct($database = null, $kga = null)
@@ -73,15 +73,15 @@ abstract class AuthBase
     }
 
     /**
-     * @param DatabaseLayer $database
+     * @param Kimai_Database_Abstract $database
      */
-    public function setDatabase(DatabaseLayer $database)
+    public function setDatabase(Kimai_Database_Abstract $database)
     {
         $this->database = $database;
     }
 
     /**
-     * @return DatabaseLayer
+     * @return Kimai_Database_Abstract
      */
     protected function getDatabase()
     {

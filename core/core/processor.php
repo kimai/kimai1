@@ -76,6 +76,7 @@ switch ($axAction) {
         $preferences['user_list_hidden']        = getRequestBool('user_list_hidden');
         $preferences['hideClearedEntries']      = getRequestBool('hideClearedEntries');
         $preferences['showCommentsByDefault']   = getRequestBool('showCommentsByDefault');
+        $preferences['showTrackingNumber']      = getRequestBool('showTrackingNumber');
         $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 

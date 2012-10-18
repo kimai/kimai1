@@ -24,7 +24,7 @@
  * @author sl
  * @author Kevin Papst
  */
-class PDODatabaseLayer extends DatabaseLayer
+class Kimai_Database_Pdo extends Kimai_Database_Abstract
 {
 
     /**

@@ -39,9 +39,10 @@ class Kimai_Remote_Api
 	private $kga = null;
 	
 	/**
-	 * one of mysqlDatabaseLayer or pdoDatabaseLayer
+	 * @var Kimai_Database_Abstract
 	 */
 	private $oldDatabase = null;
+
 	public function __construct()
 	{
 		// Bootstrap Kimai the old fashioned way ;-)
@@ -57,7 +58,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns the database object to access Kimais system.
 	 *
-	 * @return DatabaseLayer
+	 * @return Kimai_Database_Abstract
 	 */
 	private function getBackend()
 	{
@@ -120,7 +121,7 @@ class Kimai_Remote_Api
     /**
      * Returns the configured Authenticator for Kimai.
      *
-     * @return AuthBase
+     * @return Kimai_Auth_Abstract
      */
     protected function getAuthenticator()
     {
@@ -128,15 +129,15 @@ class Kimai_Remote_Api
         $database = $this->getBackend();
 
         // load authenticator
-        if (!is_file(WEBROOT.'auth/' . $kga['authenticator'] . '.php')) {
-            $kga['authenticator'] = 'kimai';
+        $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
+        if (!class_exists($authClass)) {
+            $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
         }
-        require(WEBROOT.'auth/' . $kga['authenticator'] . '.php');
-        $authClass = ucfirst($kga['authenticator']).'Auth';
 
         $authPlugin = new $authClass();
         $authPlugin->setDatabase($this->oldDatabase);
         $authPlugin->setKga($kga);
+
         return $authPlugin;
     }
 

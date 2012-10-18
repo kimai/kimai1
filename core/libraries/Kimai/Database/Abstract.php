@@ -21,7 +21,7 @@
  * Definition of all public abstract functions that need to be implemented for accessing a database.
  * Must be subclassed by all available database drivers like MySQL.
  */
-abstract class DatabaseLayer {
+abstract class Kimai_Database_Abstract {
 
   protected $kga;
   protected $conn;

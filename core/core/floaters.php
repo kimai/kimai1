@@ -221,5 +221,3 @@ switch ($axAction) {
     break;
     
 }
-
-?>

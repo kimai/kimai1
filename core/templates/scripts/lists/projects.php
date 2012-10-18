@@ -49,7 +49,7 @@ $projects = $this->filterListEntries($this->projects);
                         <?php if ($this->kga['conf']['showIDs'] == 1): ?>
                           <span class="ids"><?php echo $project['projectID']?></span>
                         <?php endif; ?>
-                        <?php echo $this->escape($projects['name'])?>
+                        <?php echo $this->escape($project['name'])?>
                         <span class="lighter">
                         <?php if ($project['comment']): ?>
                           (<?php echo $this->escape($this->truncate($project['comment'],30,'...')) ?>)

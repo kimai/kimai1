@@ -26,7 +26,7 @@ include(WEBROOT.'libraries/mysql.class.php');
  * @author sl
  * @author Kevin Papst
  */
-class MySQLDatabaseLayer extends DatabaseLayer {
+class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
   /**
    * Connect to the database.
@@ -1162,14 +1162,14 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       $numbers = array('status' ,'trash' ,'active', 'lastProject' ,'lastActivity' ,'lastRecord');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
-          $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
+          $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER);
       }
 
       $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
       $table            = $this->getUserTable();
 
       if (!$this->conn->TransactionBegin()) {
-        $this->logLastError('user_edit');
+        $this->logLastError('user_edit transaction begin');
         return false;
       }
 
@@ -1186,7 +1186,7 @@ class MySQLDatabaseLayer extends DatabaseLayer {
           }
 
           if (! $this->conn->TransactionEnd()) {
-            $this->logLastError('user_edit');
+            $this->logLastError('user_edit transaction end');
             return false;
           }
 
@@ -1194,11 +1194,11 @@ class MySQLDatabaseLayer extends DatabaseLayer {
       }
 
       if (!$this->conn->TransactionRollback()) {
-        $this->logLastError('user_edit');
+        $this->logLastError('user_edit rollback');
         return false;
       }
 
-      $this->logLastError('user_edit');
+      $this->logLastError('user_edit failed');
       return false;
   }
 
@@ -1247,9 +1247,9 @@ class MySQLDatabaseLayer extends DatabaseLayer {
 
       $table  = $this->kga['server_prefix']."preferences";
       $userId = MySQL::SQLValue($userId,  MySQL::SQLVALUE_NUMBER);
-      $key    = MySQL::SQLValue($key);
+      $key2    = MySQL::SQLValue($key);
 
-      $query = "SELECT `value` FROM $table WHERE userID = $userId AND `option` = $key";
+      $query = "SELECT `value` FROM $table WHERE userID = $userId AND `option` = $key2";
 
       $this->conn->Query($query);
 
@@ -4103,41 +4103,43 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   	return $budgetUsed;
   }
 
-  /**
-  * Read activity budgets
-  *
-  * @author mo
-  */
-  public function get_activity_budget($projectID,$activityID) {
-    // validate input
-    if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-    if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
-
-
-    $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
-    (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
-    (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
-
-    $result = $this->conn->Query($query);
-
-    if ($result === false) {
-      $this->logLastError('get_activity_budget');
-      return false;
-    }
-    $data = $this->conn->rowArray(0,MYSQL_ASSOC);
-
-  	$timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
-  	foreach($timeSheet as $timeSheetEntry)
+    /**
+     * Read activity budgets
+     *
+     * @author mo
+     */
+    public function get_activity_budget($projectID,$activityID)
     {
-        if (isset($timeSheetEntry['budget'])) {
-    	    $data['budget']+= $timeSheetEntry['budget'];
+        // validate input
+        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
+        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+
+        $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE ".
+        (($projectID=="NULL")?"projectID is NULL":"projectID = $projectID"). " AND ".
+        (($activityID=="NULL")?"activityID is NULL":"activityID = $activityID");
+
+        $result = $this->conn->Query($query);
+
+        if ($result === false) {
+          $this->logLastError('get_activity_budget');
+          return false;
         }
-        if (isset($timeSheetEntry['approved'])) {
-        	$data['approved']+= $timeSheetEntry['approved'];
+        $data = $this->conn->rowArray(0,MYSQL_ASSOC);
+        if (!isset($data['budget'])) $data['budget'] = 0;
+        if (!isset($data['approved'])) $data['approved'] = 0;
+
+        $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+        foreach($timeSheet as $timeSheetEntry)
+        {
+            if (isset($timeSheetEntry['budget'])) {
+                $data['budget']+= $timeSheetEntry['budget'];
+            }
+            if (isset($timeSheetEntry['approved'])) {
+                $data['approved']+= $timeSheetEntry['approved'];
+            }
         }
-  	}
-    return $data;
-  }
+        return $data;
+    }
 
   /**
   * Remove fixed rate from database.
