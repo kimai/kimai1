@@ -28,10 +28,6 @@ $datasrc = "config.ini";
 $settings = parse_ini_file($datasrc);
 $dir_ext = $settings['EXTENSION_DIR'];
 
-// libs TinyButStrong
-include_once('TinyButStrong/tinyButStrong.class.php');
-include_once('TinyButStrong/tinyDoc.class.php');
-
 $user = checkUser();
 
 $view = new Zend_View();
@@ -55,19 +51,15 @@ $view->roundingOptions = $roundingOptions;
 // Get Invoice Template FileNames
 
 $invoice_template_files = Array(); 
-$handle = opendir('templates/'); 
+$handle = opendir('invoices/');
 while (false!== ($file = readdir($handle))) { 
- if ($file!= "." && $file!= ".." &&!is_dir($file)) { 
- $namearr = explode('.',$file); 
- if ($namearr[count($namearr)-1] == 'odt') $invoice_template_files[] = $file; 
- if ($namearr[count($namearr)-1] == 'ods') $invoice_template_files[] = $file;
- } 
-} 
+    if (stripos($file, '.') !== 0) {
+        $invoice_template_files[$file] = $file;
+    }
+}
 closedir($handle);
-sort($invoice_template_files);
+asort($invoice_template_files);
 $view->sel_form_files = $invoice_template_files;
-
-
 
 // Retrieve start & stop times
 $timeframe = get_timeframe();
@@ -77,5 +69,3 @@ $view->out = $timeframe[1];
 $view->timespan_display = $view->render("timespan.php");
 
 echo $view->render('main.php');
-
-?>
