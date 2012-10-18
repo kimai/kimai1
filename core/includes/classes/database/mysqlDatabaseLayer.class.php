@@ -3357,15 +3357,16 @@ class MySQLDatabaseLayer extends DatabaseLayer {
   * @author th, sl
   * @return id of the new entry or false on failure
   */
-  public function startRecorder($projectID,$activityID,$user) {
+  public function startRecorder($projectID,$activityID,$user,$startTime) {
       $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER  );
       $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER  );
       $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
+      $startTime = MySQL::SQLValue($startTime  , MySQL::SQLVALUE_NUMBER  );
 
 
       $values ['projectID'] = $projectID;
       $values ['activityID'] = $activityID;
-      $values ['start']    = time();
+      $values ['start']    = $startTime;
       $values ['userID'] = $user;
       $values ['statusID'] = 1;
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);

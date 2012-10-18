@@ -3788,14 +3788,14 @@ class PDODatabaseLayer extends DatabaseLayer
     * @author th, sl
     * @return id of the new entry or false on failure
     */
-    public function startRecorder($projectID,$activityID,$user)
+    public function startRecorder($projectID,$activityID,$user,$startTime)
     {
       $p = $this->kga['server_prefix'];
 
       $pdo_query = $this->conn->prepare("INSERT INTO ${p}timeSheet
       (projectID,activityID,start,userID,rate) VALUES
       (?, ?, ?, ?, ?);");
-      $result = $pdo_query->execute(array($projectID,$activityID,time(),$user,$this->get_best_fitting_rate($user,$projectID,$activityID)));
+      $result = $pdo_query->execute(array($projectID,$activityID,$startTime,$user,$this->get_best_fitting_rate($user,$projectID,$activityID)));
       if ($result === false) {
           $this->logLastError('startRecorder');
           return false;

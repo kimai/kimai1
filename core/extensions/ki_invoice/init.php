@@ -65,7 +65,7 @@ while (false!== ($file = readdir($handle))) {
 } 
 closedir($handle);
 sort($invoice_template_files);
-$view->sel_form_files = $invoice_template_files;
+$view->sel_form_files = array_combine($invoice_template_files,$invoice_template_files);
 
 
 

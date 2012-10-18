@@ -125,7 +125,7 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
     
         $IDs = explode('|',$axValue);
-        $newID = $database->startRecorder($IDs[0],$IDs[1],$id);
+        $newID = $database->startRecorder($IDs[0],$IDs[1],$id, $_REQUEST['startTime']);
         echo json_encode(array(
           'id' =>  $newID
         ));
