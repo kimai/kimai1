@@ -91,12 +91,12 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * cache directory for temporary files (full path)
 	 */
-	define ('K_PATH_CACHE', K_PATH_MAIN.'cache/');
+	define ('K_PATH_CACHE', APPLICATION_PATH.'/temporary/');
 
 	/**
 	 * cache directory for temporary files (url path)
 	 */
-	define ('K_PATH_URL_CACHE', K_PATH_URL.'cache/');
+	define ('K_PATH_URL_CACHE', WEBROOT.'/temporary/');
 
 	/**
 	 *images directory
@@ -126,17 +126,17 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * document author
 	 */
-	define ('PDF_AUTHOR', 'TCPDF');
+	define ('PDF_AUTHOR', 'Kimai Time Tracking');
 
 	/**
 	 * header title
 	 */
-	define ('PDF_HEADER_TITLE', 'TCPDF Example');
+	define ('PDF_HEADER_TITLE', 'Kimai - Invoice');
 
 	/**
 	 * header description string
 	 */
-	define ('PDF_HEADER_STRING', "by Nicola Asuni - Tecnick.com\nwww.tcpdf.org");
+	define ('PDF_HEADER_STRING', "created with Kimai Time Tracker\nwww.kimai.org");
 
 	/**
 	 * image logo
