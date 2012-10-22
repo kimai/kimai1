@@ -3847,7 +3847,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           $arr[$row['activityID']]['costs'] += (double)$row['costs'];
         }
         else {
-          $arr[$row['activityID']]['time'] = (int)($end - $start);
+          $arr[$row['activityID']]['time'] = (int)($consideredEnd - $consideredStart);
           $arr[$row['activityID']]['costs'] = (double)$row['costs'];
         }
       }
