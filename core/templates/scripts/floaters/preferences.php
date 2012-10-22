@@ -125,11 +125,13 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <?php echo $this->formCheckbox('noFading', '1',array('checked' => $this->kga['conf']['noFading'])),
                 $this->kga['lang']['noFading']?>
           </li>
+          <?php if ($this->kga['user']['status'] < 2): ?>
           <li>
             <label for="user_list_hidden"></label>
             <?php echo $this->formCheckbox('user_list_hidden', '1',array('checked' => $this->kga['conf']['user_list_hidden'])),
                 $this->kga['lang']['user_list_hidden']?>
           </li>
+          <?php endif; ?>
         </ul>
       </fieldset>
 
