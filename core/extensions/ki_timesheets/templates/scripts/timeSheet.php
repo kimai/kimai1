@@ -195,8 +195,8 @@ if ($this->timeSheetEntries)
 
         </tr>
 
-        <?php if (!$this->hideComments && $row['comment']): ?>
-            <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>">
+        <?php if ($row['comment']): ?>
+            <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($this->hideComments): ?> style="display:none" <?php endif; ?> >
                         <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
             </tr>
         <?php endif; ?>
