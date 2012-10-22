@@ -158,9 +158,9 @@ if (isset($_REQUEST['round'])) {
 
 // calculate invoice sums
 $ttltime = 0;
-$gtotal  = 0;
+$total  = 0;
 while (list($id, $fd) = each($invoiceArray)) {
-    $gtotal  += $invoiceArray[$id]['amount'];
+    $total  += $invoiceArray[$id]['amount'];
     $ttltime += $invoiceArray[$id]['hour'];
 }
 
@@ -169,8 +169,8 @@ if (!is_numeric($vat_rate)) {
     $vat_rate = $kga['conf']['defaultVat'];
 }
 
-$vat   = $vat_rate*$gtotal/100;
-$total = $gtotal-$vat;
+$vat   = $vat_rate*$total/100;
+$gtotal = $total+$vat;
 $doc   = new tinyDoc();
 
 // use zip extension if available
