@@ -365,11 +365,8 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
   
   startsec = record_startTime;
   
-  buzzer_preselect('project', projectID, projectName, customerID, customerName, false);
-  lists_reload('activity', function() {
-    buzzer_preselect('activity', activityID, activityName, 0, '', false);
-  });
-  
+  if (selected_project != projectID)
+    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -409,69 +406,53 @@ function buzzer() {
     }
 }
 
-// preselections for buzzer
-function buzzer_preselect(subject,id,name,customerID,customerName,updateRecording) {
+function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
+  selected_customer = customerID;
+  selected_project = projectID;
+  $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
+  $("#selected_customer").html(customerName);
+  $("#selected_project").html(name);
+  $("#selected_customer").removeClass("none");
   
-    if (updateRecording == undefined) {
-      updateRecording = true;
-    }
+  lists_reload('activity', function() {
+    buzzer_preselect_update_ui('projects', projectID, updateRecording);
+  }); 
+}
 
-    var selector = subject;
-    switch (subject) {
-        case "customer":
-        // TODO: build filter for project selection (by customer)
-            $("#selected_customer").html("select project");
-            $("#selected_customer").addClass("none");
-            selector = 'customers';
-        break;
-        case "project":
-            selected_customer = customerID;
-            selected_project = id;
-            $.post("processor.php", { axAction: "saveBuzzerPreselection", project:id});
-            $("#selected_customer").html(customerName);
-            $("#selected_project").html(name);
-            $("#selected_customer").removeClass("none");
-            selector = 'projects';
-        break;
-        case "activity":
-            selected_activity = id;
-            $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:id});
-            $("#selected_activity").html(name);
-            selector = 'activities';
-        break;
-    }
-    $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
-    $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-    $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+id).blur();
+function buzzer_preselect_activity(activityID,activityName,updateRecording) {
+    selected_activity = activityID;
+    $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
+    $("#selected_activity").html(name);
+    buzzer_preselect_update_ui('activities', activityID, updateRecording);
+}
+
+function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
+  
+  if (updateRecording == undefined) {
+    updateRecording = true;
+  }
     
-    if (selected_customer && selected_project && selected_activity) {
-      $('#buzzer').removeClass('disabled');
-    }
-
-    if (currentRecording > -1 && updateRecording) {
-
-
-      switch (subject) {
-          case "project":
-              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", id: currentRecording, project:id},
-                function(data) {
-                    ts_ext_reload();
-                  }
-                );
-          break;
-          case "activity":
-            $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", id: currentRecording, task:id},
-                function(data) {
-                    ts_ext_reload();
-                  }
-              );
-          break;
+  $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
+  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID).blur();
+  
+  if (selected_project && selected_activity && $('#activities>table>tbody>tr>td>a.preselect>img[src$="preselect_on.png"]').length > 0) {
+    $('#buzzer').removeClass('disabled');
+  }
+  else
+    return;
+    
+  $("#ticker_customer").html($("#selected_customer").html());
+  $("#ticker_project").html($("#selected_project").html());
+  $("#ticker_activity").html($("#selected_activity").html());
+  
+  if (currentRecording > -1 && updateRecording) {
+    $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running", id: currentRecording, project:selected_project, activity:selected_activity},
+      function(data) {
+        ts_ext_reload();
       }
-    }
-    
-    $("#ticker_customer").html($("#selected_customer").html());
-    $("#ticker_project").html($("#selected_project").html());
-    $("#ticker_activity").html($("#selected_activity").html());
+    );
+  }
 }
 
 // ----------------------------------------------------------------------------------------

@@ -81,24 +81,14 @@ switch ($axAction) {
     // =======================================
     // = set comment for a running recording =
     // =======================================
-    case 'edit_running_project':
+    case 'edit_running':
         if (isset($kga['customer'])) die();
 
-        $database->timeEntry_edit_project(
-            $_REQUEST['id'],
-            $_REQUEST['project']);
-        echo 1;
-    break;
+        if (isset($_REQUEST['project']))
+          $database->timeEntry_edit_project($_REQUEST['id'], $_REQUEST['project']);
 
-    // =======================================
-    // = set comment for a running recording =
-    // =======================================
-    case 'edit_running_task':
-        if (isset($kga['customer'])) die();
-
-        $database->timeEntry_edit_activity(
-            $_REQUEST['id'],
-            $_REQUEST['task']);
+        if (isset($_REQUEST['activity']))
+          $database->timeEntry_edit_activity($_REQUEST['id'], $_REQUEST['activity']);
         echo 1;
     break;
 

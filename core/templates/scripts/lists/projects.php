@@ -32,12 +32,12 @@ $projects = $this->filterListEntries($this->projects);
                 <a href ="#" onClick="lists_update_filter('project',<?php echo $project['projectID']?>); $(this).blur(); return false;">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
                 </a>
-                <a href ="#" class="preselect" onClick="buzzer_preselect('project',<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); lists_reload('activity'); return false;" id="ps<?php echo $project['projectID']?>">
+                <a href ="#" class="preselect" onClick="buzzer_preselect_project(<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); return false;" id="ps<?php echo $project['projectID']?>">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/preselect_off.png' width='13' height='13' alt='<?php echo $this->kga['lang']['select']?>' title='<?php echo $this->kga['lang']['select']?> (ID:<?php echo $project['projectID']?>)' border='0' />
                 </a>
             </td>
 
-            <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="buzzer_preselect('project',<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); lists_reload('activity'); return false;">
+            <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="buzzer_preselect_project(<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); lists_reload('activity'); return false;">
                 <?php if ($project['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
                 <?php if ($this->kga['conf']['flip_project_display']): ?>
                     <?php if ($this->kga['conf']['showIDs'] == 1): ?>

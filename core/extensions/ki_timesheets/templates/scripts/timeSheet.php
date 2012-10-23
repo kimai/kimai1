@@ -156,7 +156,7 @@ if ($this->timeSheetEntries)
 
             <td class="project <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect('project',<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                    onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                     return false;">
                     <?php echo $this->escape($row['projectName'])?>
                     <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
@@ -167,7 +167,7 @@ if ($this->timeSheetEntries)
 
             <td class="activity <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect('activity',<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
+                    onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                     return false;">
                     <?php echo $this->escape($row['activityName'])?>
                 </a>
