@@ -193,16 +193,11 @@ switch ($axAction) {
                 $view->defaultRate  = $data['defaultRate'];
                 $view->myRate       = $data['myRate'     ];
                 $view->fixedRate    = $data['fixedRate'  ];
-                $view->assignable   = $data['assignable'  ];
                 $view->selectedGroups = $database->activity_get_groups($id);
                 $view->selectedProjects = $database->activity_get_projects($id);
                 $view->id = $id;
         
             }
-        }
-        
-        if (!isset($view->id)) {
-          $view->assignable = false;
         }
 
         // Create a <select> element to chosse the groups.

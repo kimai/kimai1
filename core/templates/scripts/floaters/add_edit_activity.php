@@ -1,16 +1,6 @@
 <script type="text/javascript"> 
 $(document).ready(function() {
 
-    function updateActivityProjectsDisabledStatus() {
-      var input = $('.disableInput');
-      if (input.is (':checked'))
-        $('#activityProjects').attr("disabled","");
-      else
-        $('#activityProjects').attr("disabled","disabled");
-    }
-
-    $('.disableInput').click(updateActivityProjectsDisabledStatus);
-
      $('#add_edit_activity').ajaxForm(function() {
 
         if ($('#activityGroups').val() == null) {
@@ -22,8 +12,6 @@ $(document).ready(function() {
          hook_activities_changed();
      });
      $('#floater_innerwrap').tabs({ selected: 0 });
-
-    updateActivityProjectsDisabledStatus();
  }); 
 </script>
 
@@ -142,13 +130,7 @@ $(document).ready(function() {
                             'id' => 'activityProjects',
                             'multiple' => 'multiple',
                             'size' => 5,
-                            'disabled' => !$this->assignable?'disabled':'',
                             'style' => 'width:255px'), $this->projects); ?>
-                    </li>
-                    <li>
-                        <label for="assignable"><?php echo $this->kga['lang']['taskAssignable']?>:</label>
-                        <?php echo $this->formCheckbox('assignable', '1',array('checked' => $this->assignable,'class' => 'disableInput formfield'));
-                            echo $this->kga['lang']['taskAssignableDescription']?>
                     </li>
                 </ul>
             </fieldset>

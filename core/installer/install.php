@@ -120,8 +120,7 @@ $query=
   `comment` TEXT NOT NULL,
   `visible` TINYINT(1) NOT NULL DEFAULT '1',
   `filter` TINYINT(1) NOT NULL DEFAULT '0',
-  `trash` TINYINT(1) NOT NULL DEFAULT '0',
-  `assignable` TINYINT(1) NOT NULL DEFAULT '0'
+  `trash` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 

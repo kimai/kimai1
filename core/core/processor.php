@@ -326,7 +326,6 @@ switch ($axAction) {
               $data['comment']      = $_REQUEST['comment'];
               $data['visible']      = getRequestBool('visible');
               $data['filter']       = $_REQUEST['activityFilter'];
-              $data['assignable']   = getRequestBool('assignable');
               $data['defaultRate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
               $data['myRate']      = 

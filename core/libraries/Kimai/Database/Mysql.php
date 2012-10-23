@@ -512,7 +512,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $values['comment'] = MySQL::SQLValue($data['comment'] );
       $values['visible'] = MySQL::SQLValue($data['visible'] , MySQL::SQLVALUE_NUMBER );
       $values['filter']  = MySQL::SQLValue($data['filter']  , MySQL::SQLVALUE_NUMBER );
-      $values['assignable'] = MySQL::SQLValue($data['assignable']  , MySQL::SQLVALUE_NUMBER );
 
       $table =  $this->getActivityTable();
       $result = $this->conn->InsertRow($table, $values);
@@ -595,7 +594,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           $values[$key] = MySQL::SQLValue($data[$key]);
       }
 
-      $numbers = array('visible', 'filter', 'assignable');
+      $numbers = array('visible', 'filter');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
@@ -2756,12 +2755,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT activityID, name, visible, assignable
+          $query = "SELECT activityID, name, visible
               FROM ${p}activities
               WHERE trash=0
               ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT DISTINCT activityID, name, visible, assignable
+          $query = "SELECT DISTINCT activityID, name, visible
               FROM ${p}activities
               JOIN ${p}groups_activities AS g_a USING(activityID)
               WHERE g_a.groupID IN (".implode($groups,',').")
@@ -2784,7 +2783,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$i]['activityID']       = $row->activityID;
               $arr[$i]['name']     = $row->name;
               $arr[$i]['visible']  = $row->visible;
-              $arr[$i]['assignable']  = $row->assignable;
               $i++;
           }
           return $arr;

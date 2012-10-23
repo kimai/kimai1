@@ -338,9 +338,6 @@ return array(
 
 'StartTimeBeforeEndTime' => '开始时间一定要在结束时间之前.',
 
-'taskAssignable' => '可转让',
-'taskAssignableDescription' => '项目中可转让',
-
 
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />

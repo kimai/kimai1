@@ -314,9 +314,6 @@ return array(
 
 'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
-'taskAssignable' => 'Assignable',
-'taskAssignableDescription' => 'Assignable to individual projects',
-
 'user' => 'User',
 
 

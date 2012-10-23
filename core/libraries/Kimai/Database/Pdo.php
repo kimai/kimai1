@@ -614,16 +614,14 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
       name,
       comment,
       visible,
-      filter,
-      assignable
+      filter
       ) VALUES (?, ?, ?, ?, ?);");
 
       $result = $pdo_query->execute(array(
       $data['name'],
       $data['comment'],
       $data['visible'],
-      $data['filter'],
-      $data['assignable']
+      $data['filter']
       ));
 
       if ($result == true) {
@@ -761,7 +759,7 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
         unset($data['fixedRate']);
       }
 
-      $keys = array('name', 'comment', 'visible', 'filter', 'budget', 'effort', 'approved', 'assignable');
+      $keys = array('name', 'comment', 'visible', 'filter', 'budget', 'effort', 'approved');
 
       $query = 'UPDATE ' . $this->kga['server_prefix'] . 'activities SET ';
       $query .= $this->buildSQLUpdateSet($keys,$data);
@@ -3111,12 +3109,12 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
 
       $arr = array();
       if ($groups === null) {
-          $pdo_query = $this->conn->prepare("SELECT activityID, name, visible, assignable
+          $pdo_query = $this->conn->prepare("SELECT activityID, name, visible
               FROM ${p}activities
               WHERE trash=0
               ORDER BY visible DESC, name;");
       } else {
-          $pdo_query = $this->conn->prepare("SELECT DISTINCT activityID, name, visible, assignable
+          $pdo_query = $this->conn->prepare("SELECT DISTINCT activityID, name, visible
             FROM ${p}activities
             JOIN ${p}groups_activities AS g_a USING(activityID)
             WHERE g_a.groupID IN (".implode($groups,',').")
@@ -3136,7 +3134,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
           $arr[$i]['activityID'] = $row['activityID'];
           $arr[$i]['name'] = $row['name'];
           $arr[$i]['visible'] = $row['visible'];
-          $arr[$i]['assignable'] = $row['assignable'];
           $i++;
       }
 
