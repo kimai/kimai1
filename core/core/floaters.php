@@ -161,6 +161,12 @@ switch ($axAction) {
         }
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
 
+        if (!isset($view->customers[$data['customerID']])) {
+          // add the currently assigned customer to the list although the user is in no group to see him
+          $customerData = $database->customer_get_data($data['customerID']);
+          $view->customers[$data['customerID']] = $customerData['name'];
+        }
+
         $view->allActivities = $database->get_activities($kga['user']['groups']);
         
         // Create a <select> element to chosse the groups.
