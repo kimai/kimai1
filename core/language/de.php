@@ -331,6 +331,11 @@ EOF
 'weekdays'          => array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"),
 'weekdays_short'    => array("So","Mo","Di","Mi","Do","Fr","Sa"),
 
+'errorMessages' => array(
+  'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
+  'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.'
+),
+
 'errors' => array(
     0 => array ('hdl' => "Datenbankverbindung verweigert!",
         'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."),

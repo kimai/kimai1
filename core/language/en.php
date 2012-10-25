@@ -363,6 +363,11 @@ EOF
 'weekdays'       => array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"),
 'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
 
+'errorMessages' => array(
+  'userWithSameName' => 'A customer name can not be the same as a user name.',
+  'customerWithSameName' => 'A user name can not be the same as a customer name.'
+),
+
 'errors' => array (
   0 => array ('hdl' => "Database could not be connected!",
               'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),

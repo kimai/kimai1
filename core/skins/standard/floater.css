@@ -170,3 +170,16 @@
 .activitiesTable input {
   width: 100px
 }
+
+
+#floater_innerwrap .errorMessage {
+  color:white;
+  text-align:center;
+  padding-bottom:5px;
+  font-weight: bold;
+}
+
+#floater_innerwrap .errorField {
+  background-color:#af0000;
+  border:1px dotted white;
+}

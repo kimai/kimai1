@@ -991,3 +991,14 @@ function validatePassword(password,retypePassword) {
     else
         return true;
 }
+
+function setFloaterErrorMessage(fieldName,message) {
+  var li = $("#floater_innerwrap #"+fieldName).parent()
+  li.prepend('<div class="errorMessage">'+message+'</div>');
+  li.addClass('errorField');
+}
+
+function clearFloaterErrorMessages() {
+  $("#floater_innerwrap .errorMessage").remove();
+  $("#floater_tabs li").removeClass("errorField");
+}

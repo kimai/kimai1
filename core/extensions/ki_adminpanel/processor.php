@@ -31,9 +31,22 @@ switch ($axAction)
 		$userData['name'] = trim($axValue);
 		$userData['status'] = 2;
 		$userData['active'] = 0;
-		$userId = $database->user_create($userData);
-		$database->setGroupMemberships($userId, $kga['user']['groups']);
-		echo $userId;
+
+                // validate data
+                $error = false;
+                if ($database->customer_nameToID($userData['name']) !== false)
+                  $error = $kga['lang']['errorMessages']['customerWithSameName'];
+
+                $userId = false;
+                if ($error === false) {
+                  $userId = $database->user_create($userData);
+                  $database->setGroupMemberships($userId, $kga['user']['groups']);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'error' => $error,
+                  'userId' => $userId));
 		break;
 
 	case "createStatus" :
@@ -314,8 +327,24 @@ switch ($axAction)
 		if ($_REQUEST['password'] != "") {
 			$userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
 		}
-		$database->user_edit($id, $userData);
-		$database->setGroupMemberships($id, $_REQUEST['groups']);
+
+                // validate data
+                $errorMessages = array();
+
+                if ($database->customer_nameToID($userData['name']) !== false)
+                  $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
+
+                $success = false;
+                if (count($errorMessages) == 0) {
+                  $database->user_edit($id, $userData);
+                  $database->setGroupMemberships($id, $_REQUEST['groups']);
+                  $success = true;
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errorMessages,
+                  'success' => $success));
 		break;
 
 	case "sendEditGroup" :
