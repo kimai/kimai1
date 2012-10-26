@@ -31,6 +31,11 @@ switch ($axAction)
         if (isset($kga['customer'])) {
             die();
         }
+
+        $view->commentTypes = $commentTypes;
+        $view->projects     = makeSelectBox("project",$kga['user']['groups']); // select for projects
+        $view->activities   = makeSelectBox("activity",$kga['user']['groups']); // select for activities
+
         // ==============================================
         // = display edit dialog for timesheet record   =
         // ==============================================
@@ -47,6 +52,13 @@ switch ($axAction)
             $view->selected_project = $expense['projectID'];
             $view->comment_active   = $expense['commentType'];
             $view->refundable       = $expense['refundable'];
+
+            if (!isset($view->projects[$expense['projectID']])) {
+              // add the currently assigned project to the list
+              $projectData = $database->project_get_data($expense['projectID']);
+              $customerData = $database->customer_get_data($projectData['customerID']);
+              $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
+            }
         }
         else
         {
@@ -55,10 +67,6 @@ switch ($axAction)
           $view->edit_time  = date("H:i:s");
           $view->multiplier = '1'.$kga['conf']['decimalSeparator'].'0';
         }
-
-        $view->commentTypes = $commentTypes;
-        $view->projects     = makeSelectBox("project",$kga['user']['groups']); // select for projects
-        $view->activities   = makeSelectBox("activity",$kga['user']['groups']); // select for activities
 
         echo $view->render("floaters/add_edit_record.php");
 

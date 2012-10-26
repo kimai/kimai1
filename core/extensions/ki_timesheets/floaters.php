@@ -87,7 +87,8 @@ switch ($axAction) {
         if (!isset($view->projects[$timeSheetEntry['projectID']])) {
           // add the currently assigned project to the list
           $projectData = $database->project_get_data($timeSheetEntry['projectID']);
-          $view->projects[$projectData['projectID']] = $projectData['name'];
+          $customerData = $database->customer_get_data($projectData['customerID']);
+          $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
         }
 
     } else {
