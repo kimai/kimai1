@@ -259,7 +259,7 @@ class Kimai_Remote_Api
         }
         */
 
-        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
+        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, time());
 		if($result) {
 			return $this->getSuccessResult(array());
 		} else {
