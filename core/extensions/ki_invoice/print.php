@@ -167,7 +167,7 @@ if (!is_numeric($vat_rate)) {
 $vat   = $vat_rate*$gtotal/100;
 $total = $gtotal-$vat;
 
-$baseFolder = "invoices/";
+$baseFolder = dirname(__FILE__) . "/invoices/";
 $tplFilename = $_REQUEST['ivform_file'];
 
 $model = new Kimai_Invoice_PrintModel();
@@ -190,6 +190,6 @@ else
 
 $renderer->setTemplateDir($baseFolder);
 $renderer->setTemplateFile($tplFilename);
-$renderer->setTemporaryDirectory('../../temporary');
+$renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
 $renderer->setModel($model);
 $renderer->render();
