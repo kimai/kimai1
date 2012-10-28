@@ -14,6 +14,7 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
      */
     public function render()
     {
+        /* @var $l array */
         require_once('tcpdf/config/lang/eng.php');
         require_once('tcpdf/tcpdf.php');
 
@@ -57,7 +58,9 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
         // add a page
         $pdf->AddPage();
 
-        $html = file_get_contents($this->getTemplateDir().$this->getTemplateFile().'/index.html');
+        $view = new Kimai_View();
+        $view->setScriptPath($this->getTemplateDir().$this->getTemplateFile());
+        $html = $view->render('index.html');
 
         // output the HTML content
         $pdf->writeHTML($html, true, false, true, false, '');
