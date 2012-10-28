@@ -9,16 +9,26 @@
                 input.siblings().attr("disabled","");
             });
 
-            $('#add_edit_customer').ajaxForm(function() { 
+            $('#add_edit_customer').ajaxForm({
+              'beforeSubmit': function() { 
+                clearFloaterErrorMessages();
 
                 if ($('#customerGroups').val() == null) {
                   alert("<?php echo $this->kga['lang']['atLeastOneGroup']?>");
                   return;
                 }
 
-                floaterClose();
-                hook_customers_changed();
-            });
+              },
+              'success': function(result) {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+                
+                
+                if (result.success) {
+                  floaterClose();
+                  hook_customers_changed();
+                }
+              }});
              $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
     </script>
@@ -50,7 +60,7 @@
                       <span class="bb"><?php echo $this->kga['lang']['contact']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php if (count($this->groupIDs) > 1): ?>
+<?php if (count($this->groups) > 1): ?>
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['groups']?></span>
@@ -118,14 +128,14 @@
                     </ul>
                 </fieldset>
 
-    <?php if (count($this->groupIDs) > 1): ?>
+    <?php if (count($this->groups) > 1): ?>
                 <fieldset id="groups">
                     <ul>
                         <li>
                             <label for="customerGroups" ><?php echo $this->kga['lang']['groups']?>:</label>
                             <?php echo $this->formSelect('customerGroups[]', $this->selectedGroups, array(
                                 'class' => 'formfield',
-                                'id' => 'activityGroups',
+                                'id' => 'customerGroups',
                                 'multiple' => 'multiple',
                                 'size' => 3,
                                 'style' => 'width:255px'), $this->groups); ?>

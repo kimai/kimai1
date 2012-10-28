@@ -134,6 +134,10 @@ switch ($axAction) {
     case 'add_edit_project':
         if (isset($kga['customer']) || $kga['user']['status']==2) die();
  
+        $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
+        $view->groups = makeSelectBox("group",$kga['user']['groups']);
+        $view->allActivities = $database->get_activities($kga['user']['groups']);
+
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
@@ -152,6 +156,12 @@ switch ($axAction) {
                 $view->fixedRate   = $data['fixedRate'  ];
                 $view->selectedGroups = $database->project_get_groupIDs($id);
                 $view->id = $id;
+
+                if (!isset($view->customers[$data['customerID']])) {
+                  // add the currently assigned customer to the list although the user is in no group to see him
+                  $customerData = $database->customer_get_data($data['customerID']);
+                  $view->customers[$data['customerID']] = $customerData['name'];
+                }
             }
         }
         
@@ -159,12 +169,6 @@ switch ($axAction) {
           $view->selectedActivities = array();
           $view->internal = false;
         }
-        $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
-
-        $view->allActivities = $database->get_activities($kga['user']['groups']);
-        
-        // Create a <select> element to chosse the groups.
-        $view->groups = makeSelectBox("group",$kga['user']['groups']);
         
         // Set defaults for a new project.
         if (!$id) {
@@ -193,16 +197,11 @@ switch ($axAction) {
                 $view->defaultRate  = $data['defaultRate'];
                 $view->myRate       = $data['myRate'     ];
                 $view->fixedRate    = $data['fixedRate'  ];
-                $view->assignable   = $data['assignable'  ];
                 $view->selectedGroups = $database->activity_get_groups($id);
                 $view->selectedProjects = $database->activity_get_projects($id);
                 $view->id = $id;
         
             }
-        }
-        
-        if (!isset($view->id)) {
-          $view->assignable = false;
         }
 
         // Create a <select> element to chosse the groups.

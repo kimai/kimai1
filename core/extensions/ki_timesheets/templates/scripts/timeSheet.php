@@ -1,6 +1,6 @@
 <?php
 
-$latest_running_task = "-1";
+$latest_running_row_index = -1;
 
 if ($this->timeSheetEntries)
 {
@@ -33,7 +33,7 @@ if ($this->timeSheetEntries)
     $end_buffer     = 0; // last time entry
     $ts_buffer      = 0; // current time entry
 
-    foreach ($this->timeSheetEntries as $row)
+    foreach ($this->timeSheetEntries as $rowIndex => $row)
     {
         //Assign initial value to time buffer which must be larger than or equal to "end"
         if ($time_buffer == 0) {
@@ -67,7 +67,7 @@ if ($this->timeSheetEntries)
         <?php if ($row['end']): ?>
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
         <?php else: ?>
-            <?php if ($latest_running_task == -1) { $latest_running_task = $row['timeEntryID']; } ?>
+            <?php if ($latest_running_row_index == -1) { $latest_running_row_index = $rowIndex; } ?>
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
         <?php endif; ?>
 
@@ -156,7 +156,7 @@ if ($this->timeSheetEntries)
 
             <td class="project <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect('project',<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                    onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                     return false;">
                     <?php echo $this->escape($row['projectName'])?>
                     <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
@@ -167,7 +167,7 @@ if ($this->timeSheetEntries)
 
             <td class="activity <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect('activity',<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
+                    onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                     return false;">
                     <?php echo $this->escape($row['activityName'])?>
                 </a>
@@ -195,8 +195,8 @@ if ($this->timeSheetEntries)
 
         </tr>
 
-        <?php if (!$this->hideComments && $row['comment']): ?>
-            <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>">
+        <?php if ($row['comment']): ?>
+            <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($this->hideComments): ?> style="display:none" <?php endif; ?> >
                         <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
             </tr>
         <?php endif; ?>
@@ -253,14 +253,14 @@ else
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
     
-  <?php if ($latest_running_task == -1 || $latest_running_task == ''): ?>
+  <?php if ($latest_running_row_index == -1): ?>
     updateRecordStatus(false);
   <?php else: ?>
 
-    updateRecordStatus(<?php echo $latest_running_task?>,<?php echo $this->timeSheetEntries[$latest_running_task]['start']?>,
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['customerName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['projectName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_task]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_task]['activityName'])?>');
+    updateRecordStatus(<?php echo $this->timeSheetEntries[$latest_running_row_index]['timeEntryID']?>,<?php echo $this->timeSheetEntries[$latest_running_row_index]['start']?>,
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['customerName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['projectName'])?>',
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityName'])?>');
   <?php endif; ?>
 
     function timesheet_hide_column(name) {

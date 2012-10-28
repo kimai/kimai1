@@ -1609,6 +1609,11 @@ if ((int)$revisionDB < 1372) {
     exec_query("ALTER TABLE `${p}users` CHANGE `alias` `alias` varchar(160);");
 }
 
+
+if ((int)$revisionDB < 1373) {
+    exec_query("ALTER TABLE `${p}activities` DROP `assignable`;");
+}
+
 // FIXME kevin - removed pdo - update autoconf file!
 /*
 if ((int)$revisionDB < 2000) {

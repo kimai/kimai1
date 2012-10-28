@@ -284,8 +284,6 @@ return array(
 'sublistAnnotations'        => 'Anmerkungen bei den Listen',
 'TimeDateInputError'        => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
 'StartTimeBeforeEndTime'    => 'Die Startzeit muss vor der Endzeit liegen.',
-'taskAssignable'            => 'Zuweisbar',
-'taskAssignableDescription' => 'Zuweisbar an einzelne Projekte',
 'user'                      => 'Benutzer',
 'credits'                   => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow und andere...<br />
@@ -332,6 +330,11 @@ EOF
 'months_short'      => array("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"),
 'weekdays'          => array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"),
 'weekdays_short'    => array("So","Mo","Di","Mi","Do","Fr","Sa"),
+
+'errorMessages' => array(
+  'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
+  'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.'
+),
 
 'errors' => array(
     0 => array ('hdl' => "Datenbankverbindung verweigert!",

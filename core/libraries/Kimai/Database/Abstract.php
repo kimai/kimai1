@@ -820,7 +820,7 @@ abstract class Kimai_Database_Abstract {
   * @param integer $projectID ID of project to record
   * @return id of the new entry or false on failure
   */
-  public abstract function startRecorder($projectID,$activityID,$user);
+  public abstract function startRecorder($projectID,$activityID,$user,$startTime);
 
   /**
   * Just edit the project for an entry. This is used for changing the project

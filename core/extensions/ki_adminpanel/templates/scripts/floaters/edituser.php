@@ -7,13 +7,19 @@
                 	if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
                 	    return false;
 
-                floaterClose();
             	},
-    success: function() {
+    success: function(result) {
+        for (var fieldName in result.errors)
+          setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+        
+        if (result.success) {
           hook_users_changed();
           adminPanel_extension_refreshSubtab('groups');
-          return false;
-          }
+          floaterClose();
+        }
+
+        return false;
+    }
 	    }; 
 	 
 	    $('#adminPanel_extension_form_editUser').ajaxForm(options); 
@@ -39,14 +45,14 @@
                     
                     <li>
                         <label for="name"><?php echo $this->kga['lang']['username']?>:</label>
-                        <input class="formfield" type="text" name="name" value="<?php echo $this->escape($this->user_details['name'])?>" maxlength=20 size=20 />
+                        <input class="formfield" type="text" id="name" name="name" value="<?php echo $this->escape($this->user_details['name'])?>" maxlength=20 size=20 />
                     </li> 
 
                     <li>
                         <label for="status"><?php echo $this->kga['lang']['status']?>:</label>
 
         <?php if ($this->user_details['status'] == 1): ?>
-                        <select name="status">
+                        <select id="status" name="status">
                             <option value="0" <?php if ($this->user_details['status'] == 0): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['adminUser']?> (!)</option>
                             <option value="1" <?php if ($this->user_details['status'] == 1): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['groupleader']?></option>
                             <option value="2" <?php if ($this->user_details['status'] == 2): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['user']?></option>
@@ -57,7 +63,7 @@
             <?php if ($this->curr_user == $this->user_details['name'] && $this->user_details['status'] == 0): ?>
                 <?php echo $this->kga['lang']['admWarn']?>
             <?php else: ?>
-                        <select name="status">
+                        <select id="status" name="status">
                             <option value="0" <?php if ($this->user_details['status'] == 0): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['adminUser']?> (!)</option>
                             <option value="2" <?php if ($this->user_details['status'] == 2): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['user']?></option>
                         </select>
@@ -69,7 +75,7 @@
 
                     <li>
                         <label for="password"><?php echo $this->kga['lang']['newPassword']?>:</label>
-                        <input class="formfield" type="password" name="password" size="9" id="password" /> <?php echo $this->kga['lang']['minLength']?>
+                        <input class="formfield" type="password" id="password" name="password" size="9" id="password" /> <?php echo $this->kga['lang']['minLength']?>
         <?php if ($this->user_details['password'] == ""): ?>
         
                         <br/>
@@ -81,24 +87,24 @@
 
                     <li>
                         <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword']?>:</label>
-                        <input class="formfield" type="password" name="retypePassword" id="retypePassword" size="9" />
+                        <input class="formfield" type="password" id="retypePassword" name="retypePassword" id="retypePassword" size="9" />
                     </li>
 
 
                     <li>
                         <label for="rate"><?php echo $this->kga['lang']['rate']?>:</label>
-                        <input class="formfield" type="text" name="rate" value="<?php echo $this->escape(number_format($this->user_details['rate'], 2, $this->kga['conf']['decimalSeparator'],""))?>" />
+                        <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(number_format($this->user_details['rate'], 2, $this->kga['conf']['decimalSeparator'],""))?>" />
                     </li>
 
 
                     <li>
                         <label for="mail"><?php echo $this->kga['lang']['mail']?>:</label>
-                        <input class="formfield" type="text" name="mail" value="<?php echo $this->escape($this->user_details['mail'])?>" />
+                        <input class="formfield" type="text" id="mail" name="mail" value="<?php echo $this->escape($this->user_details['mail'])?>" />
                     </li>
 
                     <li>
                         <label for="alias"><?php echo $this->kga['lang']['alias']?>:</label>
-                        <input class="formfield" type="text" name="alias" value="<?php echo $this->escape($this->user_details['alias'])?>" />
+                        <input class="formfield" type="text" id="alias" name="alias" value="<?php echo $this->escape($this->user_details['alias'])?>" />
                     </li>
 
                     <li>

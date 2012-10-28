@@ -314,9 +314,6 @@ return array(
 
 'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
 
-'taskAssignable' => 'Assignable',
-'taskAssignableDescription' => 'Assignable to individual projects',
-
 'user' => 'User',
 
 
@@ -365,6 +362,11 @@ EOF
 'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
 'weekdays'       => array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"),
 'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
+
+'errorMessages' => array(
+  'userWithSameName' => 'A customer name can not be the same as a user name.',
+  'customerWithSameName' => 'A user name can not be the same as a customer name.'
+),
 
 'errors' => array (
   0 => array ('hdl' => "Database could not be connected!",

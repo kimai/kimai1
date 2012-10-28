@@ -126,7 +126,7 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
     
         $IDs = explode('|',$axValue);
-        $newID = $database->startRecorder($IDs[0],$IDs[1],$id);
+        $newID = $database->startRecorder($IDs[0],$IDs[1],$id, $_REQUEST['startTime']);
         echo json_encode(array(
           'id' =>  $newID
         ));
@@ -249,16 +249,33 @@ switch ($axAction) {
               if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                 $data['password'] = '';
               }
-            	
-              // add or update the customer
-            	if (!$id) {
-                    $id = $database->customer_create($data);
-            	} else {
-            	    $database->customer_edit($id, $data);
-            	}
 
-              // set the customer group mappings
-              $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
+              // validate data
+              $errorMessages = array();
+              $success = false;
+
+              if ($database->user_name2id($data['name']) !== false)
+                $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
+              
+              if (count($errorMessages) == 0) {
+            	
+                // add or update the customer
+                  if (!$id) {
+                      $id = $database->customer_create($data);
+                  } else {
+                      $database->customer_edit($id, $data);
+                  }
+
+                // set the customer group mappings
+                $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
+                $success = true;
+              }
+              
+              header('Content-Type: application/json;charset=utf-8');
+              echo json_encode(array(
+                'errors' => $errorMessages,
+                'success' => $success));
+              
             break;
             
             /**
@@ -326,7 +343,6 @@ switch ($axAction) {
               $data['comment']      = $_REQUEST['comment'];
               $data['visible']      = getRequestBool('visible');
               $data['filter']       = $_REQUEST['activityFilter'];
-              $data['assignable']   = getRequestBool('assignable');
               $data['defaultRate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
               $data['myRate']      = 
