@@ -18,7 +18,7 @@
               }
             });
 
-            <?php if (!isset($id)): ?>
+            <?php if (!isset($this->id)): ?>
             $("#add_edit_expense_project_ID").selectOptions(""+selected_project+"");
             <?php endif; ?>
             $('#floater_innerwrap').tabs({ selected: 0 });
@@ -30,7 +30,7 @@
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
-        <span id="floater_title"><?php echo !isset($id) ? $this->kga['lang']['add'] : $this->kga['lang']['edit']?></span>
+        <span id="floater_title"><?php echo !isset($this->id) ? $this->kga['lang']['add'] : $this->kga['lang']['edit']?></span>
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>

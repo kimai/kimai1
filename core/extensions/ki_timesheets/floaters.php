@@ -32,6 +32,10 @@ switch ($axAction) {
     // ==============================================
     $selected = explode('|',$axValue);
 
+    $view->users = makeSelectBox("user",$kga['user']['groups']);
+    $view->projects = makeSelectBox("project",$kga['user']['groups']);
+    $view->activities = makeSelectBox("activity",$kga['user']['groups']);
+
     // edit record
     if ($id) {
         $timeSheetEntry = $database->timeSheet_get_data($id);
@@ -78,6 +82,14 @@ switch ($axAction) {
         $view->budget_activity = round($activityBudgets['budget'], 2);
         $view->approved_activity = round($activityBudgets['approved'], 2);
         $view->budget_activity_used = $activityUsed;
+
+
+        if (!isset($view->projects[$timeSheetEntry['projectID']])) {
+          // add the currently assigned project to the list
+          $projectData = $database->project_get_data($timeSheetEntry['projectID']);
+          $customerData = $database->customer_get_data($projectData['customerID']);
+          $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
+        }
 
     } else {
         // create new record
@@ -147,17 +159,6 @@ switch ($axAction) {
     }
     $view->billable = array_combine($billableValues, $billableText);
     $view->commentTypes = $commentTypes;
-
-      
-    $view->users = makeSelectBox("user",$kga['user']['groups']);
-
-    // select for projects
-    $view->projects = makeSelectBox("project",$kga['user']['groups']);
-
-    // select for activities
-    $view->activities = makeSelectBox("activity",$kga['user']['groups']);
-
-
 
     echo $view->render("floaters/add_edit_timeSheetEntry.php"); 
 
