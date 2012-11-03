@@ -411,7 +411,7 @@ function buzzer_preselect_project(projectID,projectName,customerID,customerName,
   selected_project = projectID;
   $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
   $("#selected_customer").html(customerName);
-  $("#selected_project").html(name);
+  $("#selected_project").html(projectName);
   $("#selected_customer").removeClass("none");
   
   lists_reload('activity', function() {
@@ -422,7 +422,7 @@ function buzzer_preselect_project(projectID,projectName,customerID,customerName,
 function buzzer_preselect_activity(activityID,activityName,updateRecording) {
     selected_activity = activityID;
     $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
-    $("#selected_activity").html(name);
+    $("#selected_activity").html(activityName);
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
 
