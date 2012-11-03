@@ -1,2 +1,4 @@
 /.project
 *.*~
+autoconf.php
+.settings

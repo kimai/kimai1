@@ -34,7 +34,3 @@ switch ($axAction) {
     break;        
 
 }
-
-?>
-
-    
