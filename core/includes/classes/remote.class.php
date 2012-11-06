@@ -496,7 +496,7 @@ class Kimai_Remote_Api
 		 * add customerId & Name
 		 */
 		
-		$timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end']);
+    $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
 		$current['customerID'] = $timeSheet[0]['customerID'];
 		$current['customerName'] = $timeSheet[0]['customerName'];
 		$current['projectName'] = $timeSheet[0]['projectName'];
