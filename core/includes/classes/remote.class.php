@@ -213,6 +213,19 @@ class Kimai_Remote_Api
         return array('success' => false, 'error' => array('msg' => $msg));
     }
 	
+  /**
+   * Returns the array for success responses.
+   * 
+   * @param array $items
+   * @param int $total = 0
+   * @return array
+   */
+  protected function getDebugResult(Array $items, Array $debugItems) {
+    $total = count($items);
+    return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
+  }
+
+  
 	/**
 	 * Returns the array for success responses.
 	 * 
@@ -483,12 +496,17 @@ class Kimai_Remote_Api
 		 * add customerId & Name
 		 */
 		
-		$timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end']);
+    $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
 		$current['customerID'] = $timeSheet[0]['customerID'];
 		$current['customerName'] = $timeSheet[0]['customerName'];
 		$current['projectName'] = $timeSheet[0]['projectName'];
 		$current['activityName'] = $timeSheet[0]['activityName'];
 		
+    /*
+    $debugItems = array();
+    $debugItems['get_timeSheet'] = $timeSheet;
+    $result = $this->getDebugResult(array($current), array($debugItems));
+    */	
 		
 		$result = $this->getSuccessResult(array($current));
         return $result;
