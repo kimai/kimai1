@@ -24,6 +24,10 @@ include('../../includes/basics.php');
 include('private_db_layer_'.$kga['server_conn'].'.php');
 checkUser();
 
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
 
 // ============================================
 // = initialize currently displayed timeframe =
@@ -32,13 +36,11 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-// set smarty config
-require_once('../../libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir  = 'compile/';
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
-$tpl->assign('kga', $kga);
+$view->kga = $kga;
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -52,11 +54,11 @@ else // customer logged in
   $expenses = get_expenses($in,$out,null,array($kga['customer']['customerID']),null,1);
 
 if (count($expenses)>0) {
-    $tpl->assign('expenses', $expenses);
+    $view->expenses = $expenses;
 } else {
-    $tpl->assign('expenses', 0);
+    $view->expenses = 0;
 }
-$tpl->assign('total', "");
+$view->total = "";
 
 
 
@@ -65,7 +67,7 @@ if (isset($kga['user'])) // user logged in
 else // customer logged in
   $ann = expenses_by_user($in,$out,null,array($kga['customer']['customerID']));
 $ann = Format::formatCurrency($ann);
-$tpl->assign('user_annotations',$ann);
+$view->user_annotations = $ann;
 
 // TODO: function for loops or convert it in template with new function
 if (isset($kga['user'])) // user logged in
@@ -73,22 +75,22 @@ if (isset($kga['user'])) // user logged in
 else // customer logged in
   $ann = expenses_by_customer($in,$out,null,array($kga['customer']['customerID']));
 $ann = Format::formatCurrency($ann);
-$tpl->assign('customer_annotations',$ann);
+$view->customer_annotations = $ann;
 
 if (isset($kga['user'])) // user logged in
   $ann = expenses_by_project($in,$out,array($kga['user']['userID']));
 else // customer logged in
   $ann = expenses_by_project($in,$out,null,array($kga['customer']['customerID']));
 $ann = Format::formatCurrency($ann);
-$tpl->assign('project_annotations',$ann);
+$view->project_annotations = $ann;
 
 if (isset($kga['user']))
-  $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
+  $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
 else
-  $tpl->assign('hideComments',true);
+  $view->hideComments = true;
 
-$tpl->assign('expenses_display', $tpl->fetch("expenses.tpl"));
+$view->expenses_display = $view->render("expenses.php");
 
-$tpl->display('main.tpl');
+echo $view->render('main.php');
 
 ?>

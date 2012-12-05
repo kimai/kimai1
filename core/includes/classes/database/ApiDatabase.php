@@ -32,12 +32,12 @@ class ApiDatabase {
 	private $conn = null;
 	
 	public function __construct($kga, $database) {
-		$odlDatabaseLayer = $database;
+		$oldDatabase = $database;
 		
 		$this->tablePrefix = $kga['server_prefix'];
 		$this->kga = $kga;
-		$this->dbLayer = $odlDatabaseLayer;
-		$this->conn = $this->dbLayer->getConnection();
+		$this->dbLayer = $oldDatabase;
+		$this->conn = $this->dbLayer->getConnectionHandler();
 	}
 	
 	public function __call($fnName, $arguments) {

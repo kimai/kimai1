@@ -19,6 +19,11 @@
 
   // Include Basics
   include('../../includes/basics.php');
+        
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
 
   $user = checkUser();
   // =========================================
@@ -28,11 +33,8 @@
   $in = $timeframe[0];
   $out = $timeframe[1];
 
-  // Set smarty config.
-  require_once(WEBROOT.'libraries/smarty/Smarty.class.php');
-  $tpl = new Smarty();
-  $tpl->template_dir = 'templates/';
-  $tpl->compile_dir  = 'compile/';
+  $view = new Zend_View();
+  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
-  $tpl->display('index.tpl');
+  echo $view->render('index.php');
 ?>

@@ -68,8 +68,8 @@ return array(
 "noEntries"         => "Keine Messungen für den angegebenen Zeitraum vorhanden...",
 "recordAgain"       => "Dieses Ereignis erneut aufnehmen",
 "comment"           => "Kommentar",
-"location"         => "Ort",
-"trackingNumber"        => "Auftragsnummer",
+"location"          => "Ort",
+"trackingNumber"    => "Auftragsnummer",
 "cookiewarning"     => "Bitte schalten Sie Cookies an bevor Sie sich anmelden.",
 "JSwarning"         => "JavaScript muss eingeschaltet sein.",
 "designation"       => "Bezeichnung",
@@ -140,6 +140,7 @@ return array(
 "delete_project"    => "Projekt löschen",
 "delete_customer"   => "Kunde löschen",
 "delete_activity"   => "Tätigkeit löschen",
+"delete_status"     => "Status löschen",
 "switchUser"        => "Zu Diesem Benutzerkonto wechseln",
 "backupUser"        => "Backup des Account Anlegen",
 "mailUser"          => "Email an diesen Benutzer senden",
@@ -166,157 +167,125 @@ return array(
 "select"            => "Auswählen",
 "hidedeletedusers"  => "Gelöschte Benutzer verstecken",
 "showdeletedusers"  => "Gelöschte Benutzer anzeigen",
-
 "month"             => "Monat",
 "day"               => "Tag",
 "year"              => "Jahr",
-
 "lang"              => "Sprache",
-
 "ac"                => "Automatisch fortgesetzter Eintrag.",
 "ac_error"          => "Automatisch fortgesetzter Eintrag mit Fehler (Zeitraum zu lang).",
 "refundable_long"   => "Rückerstattbar (Mitarbeiter)",
 "refundable"        => "Rückerstattbar",
-"yes"               => "ja",
-"no"                => "nein",
-"commentType"      => "Kommentar-Art",
-"ctype0"            => "Kommentar",
-"ctype1"            => "Notiz",
-"ctype2"            => "Achtung!",
-"hint"              => "Hinweis:",
+"yes"                       => "ja",
+"no"                        => "nein",
+"commentType"               => "Kommentar-Art",
+"ctype0"                    => "Kommentar",
+"ctype1"                    => "Notiz",
+"ctype2"                    => "Achtung!",
+"hint"                      => "Hinweis:",
 "rename_caution_before_username"      => "Wenn Sie den Benutzernamen von",
 "rename_caution_after_username"      => "ändern, müssen Sie sich danach direkt mit dem neuen Namen wieder einloggen!",
-"timediff_warn"     => "Sie müssen unterschiedliche Werte in die Zeiten-Felder eintragen!",
-"visibility"        => "Sichtbarkeit",
-"showitem"          => "sichtbar machen",
-"hideitem"          => "unsichtbar machen",
-"checkUsername"     => "Bitte einen Usernamen in das Feld eintragen!",
-"checkGroupname"    => "Bitte einen Gruppennamen in das Feld eintragen!",
-"checkStatusname"    => "Bitte einen Statusnamen in das Feld eintragen!",
-"clickToReload"     => "Klicken um die Seite neu zu laden",
-"sure"              => "Sicher?",
-"clock"             => "Uhr",
-"currSum"           => "Summe der aktuell angezeigten Einträge",
-"admWarn"           => "Sie sind Admin. Ihr Status kann nur von einem anderen Admin herabgesetzt werden.",
-"flip_project_display"  => "Im Projektfenster nach Kunden sortieren",
-"project_comment_flag"  => "Projekte mit Kommentar anzeigen",
-"showIDs"           => "IDs anzeigen",
-"error"             => "Ein Fehler ist aufgetreten!",
-"checkupdate"       => "Nach Update suchen",
-
-"selectedForRecording"           => "Zur Aufzeichnung ausgewählt:",
-"selectedCustomerLabel"         => "K:",
-"selectedProjectLabel"         => "P:",
-"selectedActivityLabel"         => "T:",
-
-"testCustomer"      => "Testkunde",
-"testProject"       => "TestProjekt",
-"testActivity"      => "testen",
-
-"time_billable"     => "Verrechenbar",
-"billable"          => "Verrechenbar",
-"budget"            => "Budget",
-"effort"            => "Effort",
-"approved"          => "Approved",
-"rate"              => "Stundenlohn",
-"rate_short"        => "Satz",
-"default_rate"      => "Stundenlohn",
-"my_rate"           => "Mein Stundenlohn",
-"fixedRate"        => "Pauschale",
-"used"          	=> "Aufgebraucht",
-"budget_available" 	=> "Verfügbares Budget",
-"budget_activity" 		=> "Budget der Tätigkeit",
-"budget_activity_used" => "Aufgebrauchtes Budget",
-"budget_activity_approved" => "Genehmigtes Budget",
-"budget_minus"		=> "Über Budget",
-"roundTimesheetEntries" => "Runde Zeiterfassungseinträge beim Erfassen auf",
-"minutes"			=> "Minuten",
-"seconds" 			=> "Sekunden",
-"and" 				=> "und",
-
-"wage"              => "Lohn",
-
-"customerlogin"     => "Kundenlogin",
-
-"expense"           => "Betrag",
-"designation"       => "Verwendung",
-
-"cleared"           => "abgerechnet",
-
-"atLeastOneGroup" => 'Es muss mindestens eine Gruppe ausgewählt sein.',
-
-"noFading"          => "Ein-/Ausblenden deaktivieren",
-"user_list_hidden"  => "standardmäßig Liste mit Benutzern ausblenden",
-
-'show_sensible_data' => 'Zeige in der Debug Extension auch sensible Daten an.',
-'show_update_warn' => 'Warnung vor dem Update nicht mehr anzeigen.',
-'check_at_startup' => 'Auf der Login-Seite über eine neue Version informieren.',
-'show_daySeperatorLines' => 'Trennlinie zwischen Tagen in den Tabellen anzeigen.',
-'show_gabBreaks' => 'Linie zwischen zwei Einträgen zeichnen, wenn dort eine zeitliche Lücke ist.',
-'show_RecordAgain' => 'Den &quot;Erneut Aufnehmen&quot;-Button vor jedem Eintrag anzeigen.',
-'show_TrackingNr' => 'Das Feld Auftragsnummer ist bearbeitbar.',
-'currency_name' => 'Name der zu verwendenden Währung.',
-'currency_sign' => 'Symbol der zu verwendenden Währung.',
-'currency_first' => 'Währung vor Wert anzeigen (z.B. &euro; 100,00)',
-'display_date_format' => 'Format des Datums der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
+"timediff_warn"             => "Sie müssen unterschiedliche Werte in die Zeiten-Felder eintragen!",
+"visibility"                => "Sichtbarkeit",
+"showitem"                  => "sichtbar machen",
+"hideitem"                  => "unsichtbar machen",
+"checkUsername"             => "Bitte einen Usernamen in das Feld eintragen!",
+"checkGroupname"            => "Bitte einen Gruppennamen in das Feld eintragen!",
+"checkStatusname"           => "Bitte einen Statusnamen in das Feld eintragen!",
+"clickToReload"             => "Klicken um die Seite neu zu laden",
+"sure"                      => "Sicher?",
+"clock"                     => "Uhr",
+"currSum"                   => "Summe der aktuell angezeigten Einträge",
+"admWarn"                   => "Sie sind Admin. Ihr Status kann nur von einem anderen Admin herabgesetzt werden.",
+"flip_project_display"      => "Im Projektfenster nach Kunden sortieren",
+"project_comment_flag"      => "Projekte mit Kommentar anzeigen",
+"showIDs"                   => "IDs anzeigen",
+"error"                     => "Ein Fehler ist aufgetreten!",
+"checkupdate"               => "Nach Update suchen",
+"selectedForRecording"      => "Zur Aufzeichnung ausgewählt:",
+"selectedCustomerLabel"     => "K:",
+"selectedProjectLabel"      => "P:",
+"selectedActivityLabel"     => "T:",
+"testCustomer"              => "Testkunde",
+"testProject"               => "TestProjekt",
+"testActivity"              => "testen",
+"time_billable"             => "Verrechenbar",
+"billable"                  => "Verrechenbar",
+"budget"                    => "Budget",
+"effort"                    => "Aufwand",
+"approved"                  => "Bestätigt",
+"rate"                      => "Stundenlohn",
+"rate_short"                => "Satz",
+"default_rate"              => "Stundenlohn",
+"my_rate"                   => "Mein Stundenlohn",
+"fixedRate"                 => "Pauschale",
+"used"          	        => "Aufgebraucht",
+"budget_available" 	        => "Verfügbares Budget",
+"budget_activity" 		    => "Budget der Tätigkeit",
+"budget_activity_used"      => "Aufgebrauchtes Budget",
+"budget_activity_approved"  => "Genehmigtes Budget",
+"budget_minus"		        => "Über Budget",
+"roundTimesheetEntries"     => "Runde Zeiterfassungseinträge beim Erfassen auf",
+"minutes"			        => "Minuten",
+"seconds" 			        => "Sekunden",
+"and" 				        => "und",
+"wage"                      => "Lohn",
+"customerlogin"             => "Kundenlogin",
+"expense"                   => "Betrag",
+"designation"               => "Verwendung",
+"cleared"                   => "abgerechnet",
+"atLeastOneGroup"           => 'Es muss mindestens eine Gruppe ausgewählt sein.',
+"noFading"                  => "Ein-/Ausblenden deaktivieren",
+"user_list_hidden"          => "standardmäßig Liste mit Benutzern ausblenden",
+'show_sensible_data'        => 'Zeige in der Debug Extension auch sensible Daten an.',
+'show_update_warn'          => 'Warnung vor dem Update nicht mehr anzeigen.',
+'check_at_startup'          => 'Auf der Login-Seite über eine neue Version informieren.',
+'show_daySeperatorLines'    => 'Trennlinie zwischen Tagen in den Tabellen anzeigen.',
+'show_gabBreaks'            => 'Linie zwischen zwei Einträgen zeichnen, wenn dort eine zeitliche Lücke ist.',
+'show_RecordAgain'          => 'Den &quot;Erneut Aufnehmen&quot;-Button vor jedem Eintrag anzeigen.',
+'show_TrackingNr'           => 'Das Feld Auftragsnummer ist bearbeitbar.',
+'currency_name'             => 'Name der zu verwendenden Währung.',
+'currency_sign'             => 'Symbol der zu verwendenden Währung.',
+'currency_first'            => 'Währung vor Wert anzeigen (z.B. &euro; 100,00)',
+'display_date_format'       => 'Format des Datums der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
 'display_currentDate_format' => 'Format des Datums in dem Feld unterhalb der Zeitspanne (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
-'table_date_format' => ' Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
-'round_time' => 'Zeit runden auf ',
-'round_time_minute' => ' Minute(n).',
-'logged_in_as' => 'Angemeldet als:',
-
-'decimal_separator'  => 'Dezimal-Trennzeichen',
-
-'view_filter' => 'Ansichtsfilter',
-'unassigned' => 'nicht zugewiesen',
-'all_activities' => '&lt;&lt;alle&gt;&gt;',
-'all' => 'alle',
-
-'durationWithSeconds' => 'Dauer sekundengenau anzeigen.',
-
-'multiplier' => 'Multiplikator',
-
-'timezone' => 'Zeitzone',
-'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
-'editLimitPart1' => 'Es können keine Einträge hinzugefügt oder bearbeitet werden, die',
-'editLimitPart2' => 'Tag(e) und',
-'editLimitPart3' => 'Stunde(n) in der Vergangenheit liegen.',
-'editLimitError' => 'Das Enddatum liegt weiter in der Vergangenheit, als es erlaubt wurde.',
-
-'hideClearedEntries' => 'abgerechnete Einträge verstecken',
-'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
-'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
-
-'general' => 'Allgemein',
-'address' => 'Adresse',
-'contact' => 'Kontakt',
-'list'=> 'Liste',
-'sublists' => 'Untere Listen',
-
-'internalProject' => 'internes Projekt',
-
-'exactSums' => 'Exakte Summen bilden statt die angezeigten gerundeten Werte zu addieren.',
-
-'securityWarning' => 'Sicherheitswarnung',
-'installerWarningHeadline' => 'installer Ordner noch vorhanden!',
-'installerWarningText' => 'Sie sollten den Ordner löschen, damit niemand anderes Kimai neu installieren kann.',
-
-'change' => 'ändern',
-
-'sublistAnnotations' => 'Anmerkungen bei den Listen',
-
-'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
-
-'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
-
-'taskAssignable' => 'Zuweisbar',
-'taskAssignableDescription' => 'Zuweisbar an einzelne Projekte',
-
-'user' => 'Benutzer',
-
-
-
-'credits' => <<<EOF
+'table_date_format'         => ' Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
+'round_time'                => 'Zeit runden auf ',
+'round_time_minute'         => ' Minute(n).',
+'logged_in_as'              => 'Angemeldet als:',
+'decimal_separator'         => 'Dezimal-Trennzeichen',
+'view_filter'               => 'Ansichtsfilter',
+'unassigned'                => 'nicht zugewiesen',
+'all_activities'            => '&lt;&lt;alle&gt;&gt;',
+'all'                       => 'alle',
+'durationWithSeconds'       => 'Dauer sekundengenau anzeigen.',
+'multiplier'                => 'Multiplikator',
+'timezone'                  => 'Zeitzone',
+'defaultTimezone'           => 'Zeitzone für neue Benutzer und Kunden',
+'editLimitPart1'            => 'Es können keine Einträge hinzugefügt oder bearbeitet werden, die',
+'editLimitPart2'            => 'Tag(e) und',
+'editLimitPart3'            => 'Stunde(n) in der Vergangenheit liegen.',
+'editLimitError'            => 'Das Enddatum liegt weiter in der Vergangenheit, als es erlaubt wurde.',
+'hideClearedEntries'        => 'abgerechnete Einträge verstecken',
+'showCommentsByDefault'     => 'Kommentare standardmäßig anzeigen',
+'showTrackingNumber'        => 'Auftragsnummer anzeigen',
+'hideOverlapLines'          => 'Zeitüberschneidungen nicht markieren',
+'general'                   => 'Allgemein',
+'address'                   => 'Adresse',
+'contact'                   => 'Kontakt',
+'list'                      => 'Liste',
+'sublists'                  => 'Untere Listen',
+"filter"                    => "Filter",
+'internalProject'           => 'internes Projekt',
+'exactSums'                 => 'Exakte Summen bilden statt die angezeigten gerundeten Werte zu addieren.',
+'securityWarning'           => 'Sicherheitswarnung',
+'installerWarningHeadline'  => 'installer Ordner noch vorhanden!',
+'installerWarningText'      => 'Sie sollten den Ordner löschen, damit niemand anderes Kimai neu installieren kann.',
+'change'                    => 'ändern',
+'sublistAnnotations'        => 'Anmerkungen bei den Listen',
+'TimeDateInputError'        => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
+'StartTimeBeforeEndTime'    => 'Die Startzeit muss vor der Endzeit liegen.',
+'user'                      => 'Benutzer',
+'credits'                   => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow und andere...<br />
         
         <br />
@@ -357,11 +326,15 @@ EOF
 ,
 
 
-'months' =>  array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"),
-'months_short'   => array("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"),
-'weekdays'        => array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"),
-'weekdays_short' => array("So","Mo","Di","Mi","Do","Fr","Sa"),
+'months'            =>  array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"),
+'months_short'      => array("Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"),
+'weekdays'          => array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"),
+'weekdays_short'    => array("So","Mo","Di","Mi","Do","Fr","Sa"),
 
+'errorMessages' => array(
+  'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
+  'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.'
+),
 
 'errors' => array(
     0 => array ('hdl' => "Datenbankverbindung verweigert!",
@@ -373,7 +346,7 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
   ),
 
 'updater' => array (
-  0        => "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!",
+0        => "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!",
 10       => "Legende:",
 20       => "Query wurde erfolgreich ausgeführt.",
 30       => "Query verursachte Fehler - sehr wahrscheinlich irrelevant.",
@@ -419,8 +392,6 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 "timeformat"	     	   => "Zeitformat",
 "dateformat"			   => "Datumsformat",
 
-"filter"	 		       => "Filter",
-
 "refundable_all"	 	   => "alle",
 "refundable_refundable"    => "nur rückerstattbare",
 "refundable_not_refundable"=> "nur nicht rückerstattbare",
@@ -456,31 +427,25 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 'done_by'               => 'durchgeführt von',
 'duration'              => 'Dauer',
 'customer_new_page'     => 'Kunden jeweils auf neue Seite',
-
-'times_and_expenses' => 'Zeiten und Auslagen',
-'times' => 'Zeiten',
-'expenses' => 'Auslagen',
-
-'reverse_order' => 'Ältere Einträge zuerst',
-'time_period'  => 'Zeitraum',
-
-'duration_unit' => 'Std.',
-
+'times_and_expenses'    => 'Zeiten und Auslagen',
+'times'                 => 'Zeiten',
+'expenses'              => 'Auslagen',
+'reverse_order'         => 'Ältere Einträge zuerst',
+'time_period'           => 'Zeitraum',
+'duration_unit'         => 'Std.',
 ),
 
 
 'ext_invoice' => array(
-
-"invoiceTemplate"           => "Rechnungsvorlage:",
-"invoiceTitle" 				=> "Rechnung Erstellen",
-"invoiceProject" 			=> "Projekte:",
-"invoiceTimePeriod" 		=> "Zeitspanne:",
-"invoiceOptionShort" 		=> "Kurze Abrechnung",
-"invoiceOptionRound" 		=> "Zeiten Runden",
-"invoiceButton" 			=> "Erstellen",
+"invoiceTemplate"       => "Rechnungsvorlage:",
+"invoiceTitle" 			=> "Rechnung Erstellen",
+"invoiceProject" 		=> "Projekte:",
+"invoiceTimePeriod" 	=> "Zeitspanne:",
+"invoiceOptionShort" 	=> "Kurze Abrechnung",
+"invoiceOptionRound" 	=> "Zeiten Runden",
+"invoiceButton" 		=> "Erstellen",
 'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!',
-'defaultVat'        => 'Standard-Mehrwertsteuer'
-
+'defaultVat'            => 'Standard-Mehrwertsteuer'
 ),
 
 'ext_budget' => array(
@@ -494,8 +459,3 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 )
 
 );
-
-
-
-
-?>

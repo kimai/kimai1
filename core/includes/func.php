@@ -26,19 +26,21 @@
  */
 function checkUser()
 {
-  global $database;
+    $database = Kimai_Registry::getDatabase();
 
-  if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+    if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
       $kimai_user = addslashes($_COOKIE['kimai_user']);
       $kimai_key = addslashes($_COOKIE['kimai_key']);
 
-              if ($database->get_seq($kimai_user) != $kimai_key) {
-                      kickUser();
-              } else {
-                      return $database->checkUserInternal($kimai_user);
-              }
+      if ($database->get_seq($kimai_user) != $kimai_key) {
+          kickUser();
+      } else {
+          $user = $database->checkUserInternal($kimai_user);
+          Kimai_Registry::setUser(new Kimai_User($user));
+          return $user;
       }
-      kickUser();
+    }
+    kickUser();
 }
 
 /**
@@ -287,7 +289,7 @@ function createPassword($length) {
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt) {
+function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone) {
   $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
   if (!$file) return false;
 
@@ -322,6 +324,7 @@ $config=<<<EOD
 \$server_prefix   = "$prefix";
 \$language        = "$lang";
 \$password_salt   = "$salt";
+\$defaultTimezone = "$timezone";
 
 ?>
 EOD;
@@ -379,5 +382,26 @@ function endsWith($haystack,$needle) {
   return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
 }
 
+/**
+ * Returns the boolean value as integer, submitted via checkbox.
+ *
+ * @param $name
+ * @return int
+ */
+function getRequestBool($name)
+{
+    if (isset($_REQUEST[$name])) {
+        if (strtolower($_REQUEST[$name]) == 'on') {
+            return 1;
+        }
 
-?>
+        $temp = intval($_REQUEST[$name]);
+        if ($temp == 1 || $temp == 0) {
+            return $temp;
+        }
+
+        return 1;
+    }
+
+    return 0;
+}

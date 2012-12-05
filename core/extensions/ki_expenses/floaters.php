@@ -19,73 +19,57 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates/";
 require("../../includes/kspi.php");
 
 include('private_db_layer_'.$kga['server_conn'].'.php');
 
-switch ($axAction) {
+switch ($axAction)
+{
 
-  case "add_edit_record":  
-    if (isset($kga['customer'])) die();  
-    // ==============================================
-    // = display edit dialog for timesheet record   =
-    // ==============================================
-    $selected = explode('|',$axValue);
-    if ($id) {
-      $expense = get_expense($id);
-      $tpl->assign('id', $id);
-      $tpl->assign('comment', $expense['comment']);
-  
-      $tpl->assign('edit_day', date("d.m.Y",$expense['timestamp']));
-  
-      $tpl->assign('edit_time',  date("H:i:s",$expense['timestamp']));
-  
-      $tpl->assign('multiplier',  $expense['multiplier']);
-  
-      $tpl->assign('edit_value',  $expense['value']);
-  
-      $tpl->assign('designation', $expense['designation']);
+    case "add_edit_record":
+        if (isset($kga['customer'])) {
+            die();
+        }
 
-      // preselected
-      $tpl->assign('preselected_project', $expense['projectID']);
-  
-      $tpl->assign('comment_active', $expense['commentType']);
-      $tpl->assign('refundable', $expense['refundable']);
+        $view->commentTypes = $commentTypes;
+        $view->projects     = makeSelectBox("project",$kga['user']['groups']); // select for projects
+        $view->activities   = makeSelectBox("activity",$kga['user']['groups']); // select for activities
 
-    } else {
-      
-      $tpl->assign('id', 0);
-      
-      $tpl->assign('edit_day', date("d.m.Y"));
-  
-      $tpl->assign('edit_time',  date("H:i:s"));
-  
-      $tpl->assign('multiplier',  '1'.$kga['conf']['decimalSeparator'].'0');
+        // ==============================================
+        // = display edit dialog for timesheet record   =
+        // ==============================================
+        if ($id)
+        {
+            $expense                = get_expense($id);
+            $view->id               = $id;
+            $view->comment          = $expense['comment'];
+            $view->edit_day         = date("d.m.Y",$expense['timestamp']);
+            $view->edit_time        = date("H:i:s",$expense['timestamp']);
+            $view->multiplier       = $expense['multiplier'];
+            $view->edit_value       = $expense['value'];
+            $view->designation      = $expense['designation'];
+            $view->selected_project = $expense['projectID'];
+            $view->comment_active   = $expense['commentType'];
+            $view->refundable       = $expense['refundable'];
 
+            if (!isset($view->projects[$expense['projectID']])) {
+              // add the currently assigned project to the list
+              $projectData = $database->project_get_data($expense['projectID']);
+              $customerData = $database->customer_get_data($projectData['customerID']);
+              $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
+            }
+        }
+        else
+        {
+          $view->id         = 0;
+          $view->edit_day   = date("d.m.Y");
+          $view->edit_time  = date("H:i:s");
+          $view->multiplier = '1'.$kga['conf']['decimalSeparator'].'0';
+        }
 
+        echo $view->render("floaters/add_edit_record.php");
 
-    }
-    
-    $tpl->assign('commentTypes', $commentTypes);
-    $tpl->assign('commentValues', array('0','1','2'));
-
-    // select for projects
-    $sel = makeSelectBox("project",$kga['user']['groups']);
-    $tpl->assign('projects', $sel);
-
-    // select for activities
-    $sel = makeSelectBox("activity",$kga['user']['groups']);
-    $tpl->assign('activities', $sel);
-
-
-
-    $tpl->display("add_edit_record.tpl"); 
-
-    break;        
+    break;
 
 }
-
-?>
-
-    

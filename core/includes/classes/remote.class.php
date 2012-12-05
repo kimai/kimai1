@@ -39,9 +39,10 @@ class Kimai_Remote_Api
 	private $kga = null;
 	
 	/**
-	 * one of mysqlDatabaseLayer or pdoDatabaseLayer
+	 * @var Kimai_Database_Abstract
 	 */
 	private $oldDatabase = null;
+
 	public function __construct()
 	{
 		// Bootstrap Kimai the old fashioned way ;-)
@@ -57,7 +58,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns the database object to access Kimais system.
 	 *
-	 * @return DatabaseLayer
+	 * @return Kimai_Database_Abstract
 	 */
 	private function getBackend()
 	{
@@ -120,7 +121,7 @@ class Kimai_Remote_Api
     /**
      * Returns the configured Authenticator for Kimai.
      *
-     * @return AuthBase
+     * @return Kimai_Auth_Abstract
      */
     protected function getAuthenticator()
     {
@@ -128,15 +129,15 @@ class Kimai_Remote_Api
         $database = $this->getBackend();
 
         // load authenticator
-        if (!is_file(WEBROOT.'auth/' . $kga['authenticator'] . '.php')) {
-            $kga['authenticator'] = 'kimai';
+        $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
+        if (!class_exists($authClass)) {
+            $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
         }
-        require(WEBROOT.'auth/' . $kga['authenticator'] . '.php');
-        $authClass = ucfirst($kga['authenticator']).'Auth';
 
         $authPlugin = new $authClass();
         $authPlugin->setDatabase($this->oldDatabase);
         $authPlugin->setKga($kga);
+
         return $authPlugin;
     }
 
@@ -212,6 +213,19 @@ class Kimai_Remote_Api
         return array('success' => false, 'error' => array('msg' => $msg));
     }
 	
+  /**
+   * Returns the array for success responses.
+   * 
+   * @param array $items
+   * @param int $total = 0
+   * @return array
+   */
+  protected function getDebugResult(Array $items, Array $debugItems) {
+    $total = count($items);
+    return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
+  }
+
+  
 	/**
 	 * Returns the array for success responses.
 	 * 
@@ -252,11 +266,13 @@ class Kimai_Remote_Api
         $user = $this->getUser();
         $uid  = $user['userID'];
 
+        /*
         if (count($this->getBackend()->get_current_recordings($uid)) > 0) {
             $this->getBackend()->stopRecorder();
         }
+        */
 
-        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
+        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, time());
 		if($result) {
 			return $this->getSuccessResult(array());
 		} else {
@@ -269,15 +285,16 @@ class Kimai_Remote_Api
      * Stops the currently running recording.
      *
      * @param string $apiKey
+     * @param integer $entryId
      * @return boolean
      */
-	public function stopRecord($apiKey)
+	public function stopRecord($apiKey, $entryId)
 	{
         if (!$this->init($apiKey, 'stopRecord')) {
 			return $this->getAuthErrorResult();
         }
 
-        $result = $this->getBackend()->stopRecorder();
+        $result = $this->getBackend()->stopRecorder($entryId);
 		if($result) {
 			return $this->getSuccessResult(array());
 		} else {
@@ -296,7 +313,7 @@ class Kimai_Remote_Api
      *
      * @param string $apiKey
      * @see get_watchable_users
-     * @see processor.php: 'reload_user'
+     * @see processor.php: 'reload_users'
      * @return array|boolean
      */
 	public function getUsers($apiKey)
@@ -371,7 +388,7 @@ class Kimai_Remote_Api
         $user     = $this->getUser();
 
         if (isset($kga['customer'])) {
-			$projects = $this->getBackend()->get_projects_by_customer(($kga['customer']['customerID']);
+			$projects = $this->getBackend()->get_projects_by_customer($kga['customer']['customerID']);
 		} else {
 			$projects = $this->getBackend()->get_projects($user['groups']);
 		}
@@ -449,7 +466,10 @@ class Kimai_Remote_Api
 			return $this->getAuthErrorResult();
         }
 
-        $result = $this->getBackend()->get_current_recordings();
+        $user = $this->getUser();
+        $uid  = $user['userID'];
+
+        $result = $this->getBackend()->get_current_recordings($uid);
 
 		// no "last" activity existing
         if (count($result) == 0) {
@@ -476,12 +496,17 @@ class Kimai_Remote_Api
 		 * add customerId & Name
 		 */
 		
-		$timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end']);
+    $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
 		$current['customerID'] = $timeSheet[0]['customerID'];
 		$current['customerName'] = $timeSheet[0]['customerName'];
 		$current['projectName'] = $timeSheet[0]['projectName'];
 		$current['activityName'] = $timeSheet[0]['activityName'];
 		
+    /*
+    $debugItems = array();
+    $debugItems['get_timeSheet'] = $timeSheet;
+    $result = $this->getDebugResult(array($current), array($debugItems));
+    */	
 		
 		$result = $this->getSuccessResult(array($current));
         return $result;

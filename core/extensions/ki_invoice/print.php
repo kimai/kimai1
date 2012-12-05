@@ -19,10 +19,6 @@
 
 include_once('../../includes/basics.php');
 
-// libs TinyButStrong
-include_once('TinyButStrong/tinyButStrong.class.php');
-include_once('TinyButStrong/tinyDoc.class.php');
-
 /**
  * returns true if activity is in the arrays
  *
@@ -54,8 +50,7 @@ function RoundValue( $value, $prec ) {
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates   = "templates/";
-$user             = checkUser();
+$user            = checkUser();
 $timeframe       = get_timeframe();
 $in              = $timeframe[0];
 $out             = $timeframe[1];
@@ -158,9 +153,9 @@ if (isset($_REQUEST['round'])) {
 
 // calculate invoice sums
 $ttltime = 0;
-$gtotal  = 0;
+$total  = 0;
 while (list($id, $fd) = each($invoiceArray)) {
-    $gtotal  += $invoiceArray[$id]['amount'];
+    $total  += $invoiceArray[$id]['amount'];
     $ttltime += $invoiceArray[$id]['hour'];
 }
 
@@ -169,39 +164,32 @@ if (!is_numeric($vat_rate)) {
     $vat_rate = $kga['conf']['defaultVat'];
 }
 
-$vat   = $vat_rate*$gtotal/100;
-$total = $gtotal-$vat;
-$doc   = new tinyDoc();
+$vat   = $vat_rate*$total/100;
+$gtotal = $total+$vat;
 
-// use zip extension if available
-if (class_exists('ZipArchive')) {
-    $doc->setZipMethod('ziparchive');
+$baseFolder = dirname(__FILE__) . "/invoices/";
+$tplFilename = $_REQUEST['ivform_file'];
+
+$model = new Kimai_Invoice_PrintModel();
+$model->setEntries($invoiceArray);
+
+$renderer = null;
+
+if(stripos($tplFilename, '.odt') !== false && is_file($baseFolder . $tplFilename))
+{
+    $renderer = new Kimai_Invoice_OdtRenderer();
 }
-else {
-    $doc->setZipMethod('shell');
-    try {
-        $doc->setZipBinary('zip');
-        $doc->setUnzipBinary('unzip');
-    }
-    catch (tinyDocException $e) {
-        $doc->setZipMethod('pclzip');
-    }
+else if(is_dir($baseFolder . $tplFilename) && is_file($baseFolder . $tplFilename . '/index.html'))
+{
+    $renderer = new Kimai_Invoice_HtmlToPdfRenderer();
+}
+else
+{
+    throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
 }
 
-$doc->setProcessDir('../../temporary');
-
-//This is where the template is selected
-
-$templateform = "templates/" . $_REQUEST['ivform_file'];
-$doc->createFrom($templateform);
-
-$doc->loadXml('content.xml');
-
-$doc->mergeXmlBlock('row', $invoiceArray);
-
-$doc->saveXml();
-$doc->close();
-
-// send and remove the document
-$doc->sendResponse();
-$doc->remove();
+$renderer->setTemplateDir($baseFolder);
+$renderer->setTemplateFile($tplFilename);
+$renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
+$renderer->setModel($model);
+$renderer->render();

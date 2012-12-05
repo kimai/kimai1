@@ -37,10 +37,10 @@ switch ($axAction) {
     case 'reload_timespan':
         
         $timeframe = get_timeframe();
-        $tpl->assign('in', $timeframe[0]);
-        $tpl->assign('out', $timeframe[1]);
+        $view->in = $timeframe[0];
+        $view->out = $timeframe[1];
 
-        $tpl->display("timespan.tpl");
+        echo $view->render("timespan.php");
     break;
 
     // ==========================
@@ -60,5 +60,3 @@ switch ($axAction) {
     break;
 
 }
-
-?>

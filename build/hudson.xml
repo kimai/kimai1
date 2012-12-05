@@ -83,7 +83,7 @@
     </target>
 
 	<!-- The main build task -->
-    <target name="hudson" depends="clean,prepare,pdepend,phpcpd,phpmd,artifacts,cleanup" />	
+    <target name="hudson" depends="clean,prepare,pdepend,artifacts,cleanup" />
 
 	<target name="help" description="Show help">
 		<echo taskname="INFO" level="info">

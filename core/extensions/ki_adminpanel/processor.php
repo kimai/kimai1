@@ -23,21 +23,38 @@
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require ("../../includes/kspi.php");
-switch ($axAction) {
+
+switch ($axAction)
+{
 	case "createUser" :
 		// create new user account
 		$userData['name'] = trim($axValue);
 		$userData['status'] = 2;
 		$userData['active'] = 0;
-		$userId = $database->user_create($userData);
-		$database->setGroupMemberships($userId, $kga['user']['groups']);
-		echo $userId;
+
+                // validate data
+                $error = false;
+                if ($database->customer_nameToID($userData['name']) !== false)
+                  $error = $kga['lang']['errorMessages']['customerWithSameName'];
+
+                $userId = false;
+                if ($error === false) {
+                  $userId = $database->user_create($userData);
+                  $database->setGroupMemberships($userId, $kga['user']['groups']);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'error' => $error,
+                  'userId' => $userId));
 		break;
+
 	case "createStatus" :
 		// create new status
 		$status_data['status'] = trim($axValue);
 		$new_status_id = $database->status_create($status_data);
 		break;
+
 	case "createGroup" :
 		// create new group
 		$group['name'] = trim($axValue);
@@ -46,13 +63,14 @@ switch ($axAction) {
 			$database->assign_groupToGroupleaders($newGroupID, array($kga['user']['userID']));
 		}
 		break;
+
 	case "refreshSubtab" :
 		// builds either user/group/advanced/DB subtab
-		$tpl->assign('curr_user', $kga['user']['name']);
+		$view->curr_user = $kga['user']['name'];
 		if ($kga['user']['status'] == 0)
-			$tpl->assign('groups', $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$view->groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
 		else
-			$tpl->assign('groups', $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0)));
+			$view->groups = $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0));
 		if ($kga['user']['status'] == 0)
 			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
 		else
@@ -68,37 +86,43 @@ switch ($axAction) {
 			}
 		}
 		$arr_status = $database->get_statuses();
-		$tpl->assign('users', $users);
-		$tpl->assign('arr_status', $arr_status);
-		$tpl->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
-		$tpl->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users', 0));
+		$view->users = $users;
+		$view->arr_status = $arr_status;
+		$view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
+		$view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
+
 		switch ($axValue) {
 			case "users" :
-				$tpl->display("users.tpl");
+				echo $view->render('users.php');
 				break;
+
 			case "groups" :
-				$tpl->display("groups.tpl");
+				echo $view->render('groups.php');
 				break;
+
 			case "status" :
-				$tpl->display("status.tpl");
+				echo $view->render('status.php');
 				break;
+
 			case "advanced" :
 				if ($kga['conf']['editLimit'] != '-') {
-					$tpl->assign('editLimitEnabled', true);
+					$view->editLimitEnabled = true;
 					$editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
-					$tpl->assign('editLimitDays', (int) ($editLimit / 24));
-					$tpl->assign('editLimitHours', (int) ($editLimit % 24));
+					$view->editLimitDays = (int) ($editLimit / 24);
+					$view->editLimitHours = (int) ($editLimit % 24);
 				}
 				else {
-					$tpl->assign('editLimitEnabled', false);
-					$tpl->assign('editLimitDays', '');
-					$tpl->assign('editLimitHours', '');
+					$view->editLimitEnabled = false;
+					$view->editLimitDays = '';
+					$view->editLimitHours = '';
 				}
-				$tpl->display("advanced.tpl");
+				echo $view->render('advanced.php');
 				break;
+
 			case "database" :
-				$tpl->display("database.tpl");
+				echo $view->render('database.php');
 				break;
+
 			case "customers" :
 				if ($kga['user']['status'] == 0)
 					$customers = $database->get_customers();
@@ -116,43 +140,46 @@ switch ($axAction) {
 					}
 				}
 				if (count($customers) > 0) {
-					$tpl->assign('customers', $customers);
+					$view->customers = $customers;
 				}
 				else {
-					$tpl->assign('customers', '0');
+					$view->customers = '0';
 				}
-				$tpl->display("customers.tpl");
+				echo $view->render('customers.php');
 				break;
+
 			case "projects" :
-				if ($kga['user']['status'] == 0)
+				if ($kga['user']['status'] == 0) {
 					$projects = $database->get_projects();
-				else
+                } else {
 					$projects = $database->get_projects($kga['user']['groups']);
-				foreach ($projects as $row => $project) {
-					$groupNames = array();
-					foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-						$data = $database->group_get_data($groupID);
-						$groupNames[] = $data['name'];
-					}
-					$projects[$row]['groups'] = implode(", ", $groupNames);
-				}
-				if (count($projects) > 0) {
-					$tpl->assign('projects', $projects);
-				}
-				else {
-					$tpl->assign('projects', '0');
-				}
-				$tpl->display("projects.tpl");
+                }
+
+                if ($projects !== null && is_array($projects))
+                {
+                    foreach ($projects as $row => $project) {
+                        $groupNames = array();
+                        foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+                            $data = $database->group_get_data($groupID);
+                            $groupNames[] = $data['name'];
+                        }
+                        $projects[$row]['groups'] = implode(", ", $groupNames);
+                    }
+                    $view->projects = $projects;
+                }
+
+				echo $view->render('projects.php');
 				break;
+
 			case "activities" :
 				if ($kga['user']['status'] == 0)
 					$groups = null;
 				else
 					$groups = $kga['user']['groups'];
-				if (! isset($_REQUEST['filter']))
+				if (! isset($_REQUEST['activity_filter'])) {
 					$activities = $database->get_activities($groups);
-				else
-					switch ($_REQUEST['filter']) {
+                } else {
+					switch ($_REQUEST['activity_filter']) {
 						case - 1 :
 							$activities = $database->get_activities($groups);
 							break;
@@ -161,8 +188,10 @@ switch ($axAction) {
 						// an id of a project this will give us all unassigned
 						// activities.
 						default :
-							$activities = $database->get_activities_by_project($_REQUEST['filter'], $groups);
+							$activities = $database->get_activities_by_project($_REQUEST['activity_filter'], $groups);
 					}
+                }
+
 				foreach ($activities as $row => $activity) {
 					$groupNames = array();
 					foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
@@ -172,18 +201,19 @@ switch ($axAction) {
 					$activities[$row]['groups'] = implode(", ", $groupNames);
 				}
 				if (count($activities) > 0) {
-					$tpl->assign('activities', $activities);
+					$view->activities = $activities;
 				}
 				else {
-					$tpl->assign('activities', '0');
+					$view->activities = '0';
 				}
 				$projects = $database->get_projects($groups);
-				$tpl->assign('projects', $projects);
-				$tpl->assign('selected_activity_filter', $_REQUEST['filter']);
-				$tpl->display("activities.tpl");
+				$view->projects = $projects;
+				$view->selected_activity_filter = isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2;
+				echo $view->render('activities.php');
 				break;
 		}
 		break;
+
 	case "deleteUser" :
 		// set the trashflag of a user
 		switch ($axValue) {
@@ -193,27 +223,31 @@ switch ($axAction) {
 				break;
 			case 1 :
 				// If the confirmation is returned the user gets the trash-flag. 
-				// TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
-				$database->user_delete($id);
+				$database->user_delete($id, true);
 				break;
+            case 2 :
+                // User is finally deleted after confirmed through trash view
+                $database->user_delete($id, false);
+                break;
 		}
 		break;
+
 	case "deleteGroup" :
-		// set the trashflag of a group
+		// removes a group
 		switch ($axValue) {
 			case 0 :
 				// Fire JavaScript confirm when a group is about to be deleted
 				echo $kga['lang']['sure'];
 				break;
 			case 1 :
-				// If the confirmation is returned the group gets the trash-flag. 
-				// TODO: Users with trashflag can be deleted by 'empty trashcan' or so ...
+				// If the confirmation is returned the group is deleted.
 				$database->group_delete($id);
 				break;
 		}
 		break;
+
 	case "deleteStatus" :
-		// set the trashflag of a group
+		// asks for confirmation and deletes a status
 		switch ($axValue) {
 			case 0 :
 				// Fire JavaScript confirm when a status is about to be deleted
@@ -225,6 +259,7 @@ switch ($axAction) {
 				break;
 		}
 		break;
+
 	case "deleteProject" :
 		// set the trashflag of a project
 		switch ($axValue) {
@@ -238,6 +273,7 @@ switch ($axAction) {
 				break;
 		}
 		break;
+
 	case "deleteCustomer" :
 		// set the trashflag of a customer
 		switch ($axValue) {
@@ -251,6 +287,7 @@ switch ($axAction) {
 				break;
 		}
 		break;
+
 	case "deleteActivity" :
 		// set the trashflag of an activity
 		switch ($axValue) {
@@ -264,32 +301,52 @@ switch ($axAction) {
 				break;
 		}
 		break;
+
 	case "banUser" :
 		// Ban a user from login
 		$sts['active'] = 0;
 		$database->user_edit($id, $sts);
 		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['banneduser'], $kga['lang']['banneduser'], $kga['conf']['skin']);
 		break;
+
 	case "unbanUser" :
 		// Unban a user from login
 		$sts['active'] = 1;
 		$database->user_edit($id, $sts);
 		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeuser'], $kga['lang']['activeuser'], $kga['conf']['skin']);
 		break;
+
 	case "sendEditUser" :
 		// process editUser form
 		$userData['name'] = trim($_REQUEST['name']);
-		$userData['sts'] = $_REQUEST['status'];
+		$userData['status'] = $_REQUEST['status'];
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
-		$userData['rate'] = $_REQUEST['rate'];
+                $userData['rate'] = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
 		// if password field is empty => password unchanged (not overwritten with "")
 		if ($_REQUEST['password'] != "") {
 			$userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
 		}
-		$database->user_edit($id, $userData);
-		$database->setGroupMemberships($id, $_REQUEST['groups']);
+
+                // validate data
+                $errorMessages = array();
+
+                if ($database->customer_nameToID($userData['name']) !== false)
+                  $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
+
+                $success = false;
+                if (count($errorMessages) == 0) {
+                  $database->user_edit($id, $userData);
+                  $database->setGroupMemberships($id, $_REQUEST['groups']);
+                  $success = true;
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errorMessages,
+                  'success' => $success));
 		break;
+
 	case "sendEditGroup" :
 		// process editGroup form
 		$group['name'] = trim($_REQUEST['name']);
@@ -297,11 +354,13 @@ switch ($axAction) {
 		$leaders = $_REQUEST['leaders'];
 		$database->assign_groupToGroupleaders($id, $leaders);
 		break;
+
 	case "sendEditStatus" :
 		// process editStatus form
 		$status_data['status'] = trim($_REQUEST['status']);
 		$database->status_edit($id, $status_data);
 		break;
+
 	case "sendEditAdvanced" :
 		// process AdvancedOptions form
 		$config_data['adminmail'] = $_REQUEST['adminmail'];
@@ -321,7 +380,7 @@ switch ($axAction) {
 		$config_data['date_format_1'] = $_REQUEST['date_format_1'];
 		$config_data['date_format_2'] = $_REQUEST['date_format_2'];
 		$config_data['language'] = $_REQUEST['language'];
-		if(is_array($_REQUEST['status'])) {
+		if(isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
 			$config_data['status'] = implode(',', $_REQUEST['status']);
 		}
 		$config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
@@ -330,7 +389,6 @@ switch ($axAction) {
 		$config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];
 		$config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
 		$config_data['durationWithSeconds'] = isset($_REQUEST['durationWithSeconds']);
-		$config_data['defaultTimezone'] = $_REQUEST['defaultTimezone'];
 		$config_data['exactSums'] = isset($_REQUEST['exactSums']);
 		$editLimit = false;
 		if (isset($_REQUEST['editLimitEnabled'])) {
@@ -344,7 +402,17 @@ switch ($axAction) {
 		else
 			$config_data['editLimit'] = $editLimit;
 		$success = $database->configuration_edit($config_data);
-		
+		write_config_file(
+                $kga['server_database'],
+                $kga['server_hostname'],
+                $kga['server_username'],
+                $kga['server_password'],
+                $kga['server_conn'],
+                $kga['server_type'],
+                $kga['server_prefix'],
+                $kga['language'],
+                $kga['password_salt'],
+                $_REQUEST['defaultTimezone']);
 //		if(strlen($_REQUEST['new_status']) > 0) {
 //			$status = $_REQUEST['new_status'];
 //			if(stristr($status, ',')) {
@@ -359,8 +427,8 @@ switch ($axAction) {
 		// and return one of these:
 		echo $success ? "ok" : $kga['lang']['error'];
 		break;
+
 	case "toggleDeletedUsers" :
 		setcookie("adminPanel_extension_show_deleted_users", $axValue);
 		break;
 }
-?>

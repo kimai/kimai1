@@ -38,9 +38,9 @@ function budget_extension_onload() {
 function budget_extension_set_heightTop() {
 	budget_extension_get_dimensions();
     if (!extensionShrinkMode) {
-        $("#budget").css("height", budget_h);
+        $("#budgetArea").css("height", budget_h);
     } else {
-        $("#budget").css("height", "20px");
+        $("#budgetArea").css("height", "20px");
     }
     
     export_extension_set_TableWidths();
@@ -59,7 +59,7 @@ function budget_extension_get_dimensions() {
     subtableWidth = (pageWidth()-10)/subtableCount-7 ;
     
     budget_w = pageWidth()-24;
-    budget_h = pageHeight()-184-headerHeight()-28;
+    budget_h = pageHeight()-198-headerHeight()-28;
 }
 
 //function budget_extension_get_dimensions() {
@@ -101,7 +101,9 @@ function budget_extension_plot(plotdata) {
         		// do nothing, that just means we have not used up the approved budget or is a number
         		// we use to display
         		// but we don't want it in the chart anyways
-        	} else {
+        	} else if (index == 'name') {
+                 // ignore
+                } else {
         		if(background == false) {
         		background = $('#'+target).css("background-color");
         		}
@@ -154,7 +156,7 @@ function budget_extension_reload() {
 			id: 0
 		},
 		success: function( data ) {
-            $('#budget').html(data);
+            $('#budgetArea').html(data);
 			},
 		error: function(error) {
 				alert(error);

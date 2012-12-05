@@ -85,7 +85,7 @@ $query =
 "CREATE TABLE `${p}users` (
   `userID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
-  `alias` varchar(10),
+  `alias` varchar(160),
   `status` tinyint(1) NOT NULL default '2',
   `trash` tinyint(1) NOT NULL default '0',
   `active` tinyint(1) NOT NULL default '1',
@@ -120,11 +120,7 @@ $query=
   `comment` TEXT NOT NULL,
   `visible` TINYINT(1) NOT NULL DEFAULT '1',
   `filter` TINYINT(1) NOT NULL DEFAULT '0',
-  `trash` TINYINT(1) NOT NULL DEFAULT '0',
-  `assignable` TINYINT(1) NOT NULL DEFAULT '0',
-  `budget` DECIMAL( 10, 2 ) NULL ,
-  `effort` DECIMAL( 10, 2 ) NULL ,
-  `approved` DECIMAL( 10, 2 ) NULL
+  `trash` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
@@ -176,6 +172,9 @@ exec_query($query);
 $query="CREATE TABLE `${p}projects_activities` (
   `projectID` INT NOT NULL,
   `activityID` INT NOT NULL,
+  `budget` DECIMAL( 10, 2 ) NULL DEFAULT '0.00',
+  `effort` DECIMAL( 10, 2 ) NULL ,
+  `approved` DECIMAL( 10, 2 ) NULL,
   UNIQUE (`projectID` ,`activityID`)) ;";
 exec_query($query);
 
@@ -323,8 +322,13 @@ $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
 $query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`,`status` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0');";
 exec_query($query);
 
-$query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES ('$randomAdminID','ui.rowlimit','100'),
-('$randomAdminID','ui.skin','standard'),('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
+$query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
+('$randomAdminID','ui.rowlimit','100'),
+('$randomAdminID','ui.skin','standard'),
+('$randomAdminID','ui.showCommentsByDefault','0'),
+('$randomAdminID','ui.hideOverlapLines','1'),
+('$randomAdminID','ui.showTrackingNumber','1'),
+('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
 $query="INSERT INTO `${p}groupleaders` (`groupID`,`userID`) VALUES ('1','$randomAdminID');";
@@ -388,7 +392,6 @@ exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('language'
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('decimalSeparator',',')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('durationWithSeconds','0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('defaultTimezone',".quoteForSql($_REQUEST['timezone']).")");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('exactSums','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('defaultVat','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('editLimit','-')");
@@ -397,13 +400,25 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundMi
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundSeconds', '0');");
 
 if ($errors) {
-    require_once('../libraries/smarty/Smarty.class.php');
-    $tpl = new Smarty();
-    $tpl->template_dir = '../templates/';
-    $tpl->compile_dir  = '../compile/';
-    $tpl->assign('headline',$kga['lang']['errors'][1]['hdl']);
-    $tpl->assign('message',$kga['lang']['errors'][1]['txt']);
-    $tpl->display('misc/error.tpl');
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(WEBROOT . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . '/templates');
+
+    $view->headline = $kga['lang']['errors'][1]['hdl'];
+    $view->message = $kga['lang']['errors'][1]['txt'];
+    echo $view->render('misc/error.php');
     Logger::logfile("-- showing install error --------------------------");
 } else {
     Logger::logfile("-- installation finished without error ------------");

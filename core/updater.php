@@ -300,8 +300,6 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
     $conn = $database->getConnectionHandler();
     
     $executed_queries++;
-    
-    echo "<tr>";
 
     if ($kga['server_conn'] == "pdo") {
       $pdo_query = $conn->prepare($query);
@@ -321,21 +319,19 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
     
     $query = htmlspecialchars($query);
     $displayQuery = htmlspecialchars($displayQuery);
-
-    echo "<td>".($displayQuery==null?$query:$displayQuery) ."<br/>";
-    echo "<span class='error_info'>" . $err . "</span>";
-    echo "</td>";
     
     if ($success) {
-        echo "<td class='green'>&nbsp;&nbsp;</td>"; 
+      $level = 'green';
     } else {
-        if ($errorProcessing) {
-            echo "<td class='red'>!</td>";
-            $errors++;
-        } else {
-            echo "<td class='orange'>&nbsp;&nbsp;</td>";
-        }
+      if ($errorProcessing) {
+        $level = 'red';
+        $errors++;
+      } else {
+        $level = 'orange'; // something went wrong but it's not an error
+      }
     }
+
+    printLine($level,($displayQuery==null?$query:$displayQuery),$err);
 
     if (!$success) {
 
@@ -351,6 +347,27 @@ function exec_query($query,$errorProcessing=true,$displayQuery=null) {
         Logger::logfile("Error text: $err");
     }
     
+}
+
+function printLine($level, $text, $errorInfo = '') {
+  echo "<tr>";
+  echo "<td>".$text ."<br/>";
+  echo "<span class='error_info'>" . $errorInfo . "</span>";
+  echo "</td>";
+  
+  switch ($level) {
+  case 'green':
+      echo "<td class='green'>&nbsp;&nbsp;</td>"; 
+      break;
+  case 'red':
+          echo "<td class='red'>!</td>";
+      break;
+  case 'orange':
+          echo "<td class='orange'>&nbsp;&nbsp;</td>";
+      break;
+  }
+
+  echo "</tr>";
 }
 
 function quoteForSql($input) {
@@ -396,38 +413,17 @@ if ((int)$revisionDB < $kga['revision']) {
     echo "<strong>".$kga['lang']['updater'][50]."</strong>";
     echo "<table style='width:100%'>";
 
-    foreach ($result_backup as $row) {
-    	if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
-	
-			$primaryKey = "";
-			
-			if (substr($row[0],$prefix_length) == "evt") { $primaryKey = "evt_ID";}
-			if (substr($row[0],$prefix_length) == "grp") { $primaryKey = "grp_ID";}
-			if (substr($row[0],$prefix_length) == "knd") { $primaryKey = "knd_ID";}
-			if (substr($row[0],$prefix_length) == "pct") { $primaryKey = "pct_ID";}
-			if (substr($row[0],$prefix_length) == "zef") { $primaryKey = "zef_ID";}
-			if (substr($row[0],$prefix_length) == "usr") { $primaryKey = "usr_name";}
-			if (substr($row[0],$prefix_length) == "var") { $primaryKey = "var";}
-			if ( (substr($row[0],$prefix_length) == "ldr") 
-				|| (substr($row[0],$prefix_length) == "grp_evt") 
-				|| (substr($row[0],$prefix_length) == "pct_evt")
-				|| (substr($row[0],$prefix_length) == "grp_knd") 
-				|| (substr($row[0],$prefix_length) == "grp_pct")) 
-			{ 
-				$primaryKey = "uid";
-			}
-			
-			if ( ((int)$revisionDB < 733) && (strlen(strstr($row[0],"ldr"))>0) ) { $primaryKey = ""; }
-			
-			if ($primaryKey!="") {
-				$primaryKey = " (PRIMARY KEY (`" .$primaryKey. "`))";
-			}
+    foreach($result_backup as $row) {
+      if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
+        $backupTable = "kimai_bak_" . $backup_stamp . "_" . $row[0];
+        $query = "CREATE TABLE ". $backupTable . " LIKE " . $row[0];
+        exec_query($query);
 
-	    	$query = "CREATE TABLE kimai_bak_" . $backup_stamp . "_" . $row[0] . $primaryKey . " SELECT * FROM " . $row[0] . ";";				
-				
-    		exec_query($query,1);
-    		if ($errors) die($kga['lang']['updater'][60]);
-    	}
+        $query = "INSERT INTO " . $backupTable . " SELECT * FROM " . $row[0];
+        exec_query($query);
+
+        if ($errors) die($kga['lang']['updater'][60]);
+      }
     }
 
     Logger::logfile("-- backup finished -----------------------------------");
@@ -1372,16 +1368,6 @@ if ((int)$revisionDB < 1349) {
     exec_query("ALTER TABLE `${p}usr` ADD UNIQUE (`apikey`)");
 }
 
-if ((int)$revisionDB < 1367) {
-    Logger::logfile("-- update to r1367");
-    exec_query("ALTER TABLE `${p}pct_evt` DROP `evt_budget`,
-DROP `evt_effort`,
-DROP `evt_approved`;");
-    exec_query("ALTER TABLE `${p}evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
-ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
-ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
-}
-
 if ((int)$revisionDB < 1368) {
     Logger::logfile("-- update to r1368");
 
@@ -1496,6 +1482,9 @@ if ((int)$revisionDB < 1368) {
     exec_query("ALTER TABLE `${p}pct_evt` RENAME TO `${p}projects_activities`,
     CHANGE `pct_ID` `projectID`  int(10) NOT NULL,
     CHANGE `evt_ID` `activityID` int(10) NOT NULL,
+    CHANGE `evt_budget`   `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    CHANGE `evt_effort`   `effort`     decimal(10,2) DEFAULT NULL,
+    CHANGE `evt_approved` `approved`   decimal(10,2) DEFAULT NULL,
     DROP `uid`,
     ADD PRIMARY KEY (`projectID`, `activityID`)
     ;");
@@ -1565,6 +1554,93 @@ if ((int)$revisionDB < 1368) {
 
 }
 
+if ((int)$revisionDB < 1370) {
+    $result = $database->queryAll("SELECT `value` FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
+    $defaultTimezone = $result[0][0];
+
+    $success = write_config_file(
+      $kga['server_database'],
+      $kga['server_hostname'],
+      $kga['server_username'],
+      $kga['server_password'],
+      $kga['server_conn'],
+      $kga['server_type'],
+      $kga['server_prefix'],
+      $kga['language'],
+      $kga['password_salt'],
+      $defaultTimezone);
+
+    if ($success) {
+      $level = 'green';
+      $additional = 'Timezone: '. $defaultTimezone;
+    } else {
+      $level = 'red';
+      $additional = 'Unable to write to file.';
+    }
+
+    printLine($level,'Store default timezone in configuration file <i>autoconf.php</i>.',$additional);
+
+    if ($success)
+      exec_query("DELETE FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
+}
+
+
+if ((int)$revisionDB < 1371) {
+    // The mentioned columns were accidentially removed by the update script. But there was no release since then.
+    // Therefore this updater was fixed to to the right thing now: Keep the column and rename it correctly.
+    // But there might be people using the development version. They lost their data but we have to add the columns again.
+    // That's why these queries are allowed to fail. This will happen for all not using a development version.
+
+    exec_query("ALTER TABLE `${p}activities`
+    DROP `budget`,
+    DROP `effort`,
+    DROP `approved`
+    ;", false);
+
+    exec_query("ALTER TABLE `${p}projects_activities`
+    ADD `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
+    ADD `effort`     decimal(10,2) DEFAULT NULL,
+    ADD `approved`   decimal(10,2) DEFAULT NULL
+    ;", false);
+}
+
+
+if ((int)$revisionDB < 1372) {
+    exec_query("ALTER TABLE `${p}users` CHANGE `alias` `alias` varchar(160);");
+}
+
+
+if ((int)$revisionDB < 1373) {
+    exec_query("ALTER TABLE `${p}activities` DROP `assignable`;");
+}
+
+// FIXME kevin - removed pdo - update autoconf file!
+/*
+if ((int)$revisionDB < 2000) {
+
+    $success = write_config_file(
+        $kga['server_database'],
+        $kga['server_hostname'],
+        $kga['server_username'],
+        $kga['server_password'],
+        'mysql',
+        '',
+        $kga['server_prefix'],
+        $kga['language'],
+        $kga['password_salt'],
+        $defaultTimezone);
+
+    if ($success) {
+        $level = 'green';
+    } else {
+        $level = 'red';
+    }
+
+    printLine($level,'Updated autoconf.php to use MYSQL configuration in <i>autoconf.php</i>.');
+}
+*/
+
+
 // ============================
 // = update DB version number =
 // ============================
@@ -1574,10 +1650,10 @@ if ((int)$revisionDB < $kga['revision'] && !$errors) {
     $versionDB_e[1] = 8;
     $versionDB_e[2] = 2;
     
-    $query=sprintf("UPDATE `${p}var` SET value = '%s' WHERE var = 'version';", $kga['version']);
+    $query=sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
     exec_query($query,0);
 
-    $query=sprintf("UPDATE `${p}var` SET value = '%d' WHERE var = 'revision';", $kga['revision']);
+    $query=sprintf("UPDATE `${p}configuration` SET value = '%d' WHERE `option` = 'revision';", $kga['revision']);
     exec_query($query,0);
 
 }

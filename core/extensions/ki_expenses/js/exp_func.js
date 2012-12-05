@@ -241,7 +241,7 @@ function comment(id) {
 // pastes the current date and time in the outPoint field of the
 // change dialog for timesheet entries 
 //
-//         $tpl->assign('pasteValue', date("d.m.Y - H:i:s",$kga['now']));
+//         $view->pasteValue = date("d.m.Y - H:i:s",$kga['now']);
 //
 function expense_pasteNow(value) {
     

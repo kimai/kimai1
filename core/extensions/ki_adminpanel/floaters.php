@@ -19,7 +19,7 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates";
 require("../../includes/kspi.php");
 
 switch ($axAction) {
@@ -30,13 +30,15 @@ switch ($axAction) {
     // =============================
 
         $userDetails = $database->user_get_data($id);
+
+        $userDetails['rate'] = $database->get_rate($userDetails['userID'],NULL,NULL);
         
-        $tpl->assign('selectedGroups',$database->getGroupMemberships($id));
+        $view->selectedGroups = $database->getGroupMemberships($id);
         
-        $tpl->assign('groups', makeSelectBox('group',null,null,true));
+        $view->groups = makeSelectBox('group',null,null,true);
                     
-        $tpl->assign('user_details', $userDetails);
-        $tpl->display("edituser.tpl");  
+        $view->user_details = $userDetails;
+        echo $view->render("floaters/edituser.php");  
         
     break;
 
@@ -48,12 +50,12 @@ switch ($axAction) {
         $groupDetails = $database->group_get_data($_REQUEST['id']);
                 
         $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
-        $tpl->assign('selectedUsers', $selectedUsers);
+        $view->selectedUsers = $selectedUsers;
                       
-        $tpl->assign('users',   makeSelectBox('user',null,null,true));
+        $view->users = makeSelectBox('user',null,null,true);
         
-        $tpl->assign('group_details', $groupDetails);
-        $tpl->display("editgroup.tpl"); 
+        $view->group_details = $groupDetails;
+        echo $view->render("floaters/editgroup.php"); 
         
     break;     
     
@@ -64,8 +66,8 @@ switch ($axAction) {
         
         $statusDetails = $database->status_get_data($_REQUEST['id']);
         
-        $tpl->assign('status_details', $statusDetails);
-        $tpl->display("editstatus.tpl"); 
+        $view->status_details = $statusDetails;
+        echo $view->render("floaters/editstatus.php"); 
         
     break;       
 

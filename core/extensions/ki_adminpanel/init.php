@@ -20,6 +20,11 @@
     // Include Basics
     include('../../includes/basics.php');
 
+    $dir_templates = "templates/";
+    $datasrc = "config.ini";
+    $settings = parse_ini_file($datasrc);
+    $dir_ext = $settings['EXTENSION_DIR'];
+
     $user = checkUser();
     // ============================================
     // = initialize currently displayed timeframe =
@@ -28,13 +33,11 @@
     $in = $timeframe[0];
     $out = $timeframe[1];
 
-    // set smarty config
-    require_once('../../libraries/smarty/Smarty.class.php');
-    $tpl = new Smarty();
-    $tpl->template_dir = 'templates/';
-    $tpl->compile_dir  = 'compile/';
+    $view = new Zend_View();
+    $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+    $view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
-    $tpl->assign('kga', $kga);
+    $view->kga = $kga;
 
     // ==========================
     // = display customer table =
@@ -56,12 +59,8 @@
       }
     }
 
-    if (count($customers)>0) {
-      $tpl->assign('customers', $customers);
-    } else {
-      $tpl->assign('customers', '0');
-    }
-    $tpl->assign('customer_display', $tpl->fetch("customers.tpl"));
+    $view->customers = $customers;
+    $view->customer_display = $view->render("customers.php");
 
     // =========================
     // = display project table =
@@ -71,21 +70,19 @@
     else
       $projects = $database->get_projects($kga['user']['groups']);
 
-    foreach ($projects as $row=>$project) {
-      $groupNames = array();
-      foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-        $data = $database->group_get_data($groupID);
-         $groupNames[] = $data['name'];
-      }
-      $projects[$row]['groups'] = implode(", ",$groupNames);
+    $view->projects = array();
+    if ($projects !== null && is_array($projects)) {
+        foreach ($projects as $row=>$project) {
+            $groupNames = array();
+            foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+                $data = $database->group_get_data($groupID);
+                $groupNames[] = $data['name'];
+            }
+            $projects[$row]['groups'] = implode(", ",$groupNames);
+        }
+        $view->projects = $projects;
     }
-
-    if (count($projects)>0) {
-      $tpl->assign('projects', $projects);
-    } else {
-      $tpl->assign('projects', '0');
-    }
-    $tpl->assign('project_display', $tpl->fetch("projects.tpl"));
+    $view->project_display = $view->render("projects.php");
 
     // ========================
     // = display activity table =
@@ -104,24 +101,20 @@
       $activities[$row]['groups'] = implode(", ",$groupNames);
     }
 
-    if (count($activities)>0) {
-      $tpl->assign('activities', $activities);
-    } else {
-      $tpl->assign('activities', '0');
-    }
+    $view->activities = $activities;
 
-    $tpl->assign('activity_display', $tpl->fetch("activities.tpl"));
-    $tpl->assign('selected_activity_filter',-2);
+    $view->activity_display = $view->render("activities.php");
+    $view->selected_activity_filter = -2;
 
-    $tpl->assign('curr_user', $kga['user']['name']);
+    $view->curr_user = $kga['user']['name'];
 
     if ($kga['user']['status']==0)
-      $tpl->assign('groups', $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0)));
+      $view->groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
     else
-      $tpl->assign('groups', $database->get_groups_by_leader($kga['user']['userID'],
-        get_cookie('adminPanel_extension_show_deleted_groups',0)));
+      $view->groups = $database->get_groups_by_leader($kga['user']['userID'],
+        get_cookie('adminPanel_extension_show_deleted_groups',0));
 
-      $tpl->assign('arr_statuses', $database->get_statuses());
+      $view->arr_statuses = $database->get_statuses();
         
     if ($kga['user']['status']==0)
       $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
@@ -139,52 +132,52 @@
       }
     }
 
-    $tpl->assign('users',$users);
+    $view->users = $users;
 
-    $tpl->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups',0));
-    $tpl->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users',0));
-    $tpl->assign('languages', Translations::langs());
+    $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups',0);
+    $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users',0);
+    $view->languages = Translations::langs();
 
-    $tpl->assign('timezones', timezoneList());
+    $view->timezones = timezoneList();
     $status = $database->get_statuses();
-    $tpl->assign('arr_status', $status);
+    $view->arr_status = $status;
 
-    $admin['users'] = $tpl->fetch("users.tpl");
-    $admin['groups'] = $tpl->fetch("groups.tpl");
-    $admin['status'] = $tpl->fetch("status.tpl");
+    $admin['users'] = $view->render("users.php");
+    $admin['groups'] = $view->render("groups.php");
+    $admin['status'] = $view->render("status.php");
 
 
 
     if ($kga['conf']['editLimit'] != '-') {
-      $tpl->assign('editLimitEnabled',true);
+      $view->editLimitEnabled = true;
       $editLimit = $kga['conf']['editLimit']/(60*60); // convert to hours
-      $tpl->assign('editLimitDays',(int) ($editLimit/24) );
-      $tpl->assign('editLimitHours',(int) ($editLimit%24) );
+      $view->editLimitDays = (int) ($editLimit/24) ;
+      $view->editLimitHours = (int) ($editLimit%24) ;
     }
     else {
-      $tpl->assign('editLimitEnabled',false);
-      $tpl->assign('editLimitDays','');
-      $tpl->assign('editLimitHours','');
+      $view->editLimitEnabled = false;
+      $view->editLimitDays = '';
+      $view->editLimitHours = '';
     }
         if ($kga['conf']['roundTimesheetEntries'] != '') {
-      $tpl->assign('roundTimesheetEntries',true);
-      $tpl->assign('roundMinutes',$kga['conf']['roundMinutes']);
-      $tpl->assign('roundSeconds',$kga['conf']['roundSeconds']);
+      $view->roundTimesheetEntries = true;
+      $view->roundMinutes = $kga['conf']['roundMinutes'];
+      $view->roundSeconds = $kga['conf']['roundSeconds'];
     }
     else {
-      $tpl->assign('roundTimesheetEntries',false);
-      $tpl->assign('roundMinutes','');
-      $tpl->assign('roundSeconds','');
+      $view->roundTimesheetEntries = false;
+      $view->roundMinutes = '';
+      $view->roundSeconds = '';
     }
-    $admin['advanced'] = $tpl->fetch("advanced.tpl");
+    $admin['advanced'] = $view->render("advanced.php");
     
     if ($kga['show_sensible_data']) {
-        $admin['database'] = $tpl->fetch("database.tpl");
+        $admin['database'] = $view->render("database.php");
     } else {
         $admin['database'] = "You don't have permission to see this information ...";
     }
 
-    $tpl->assign('admin',  $admin);
+    $view->admin = $admin;
 
-    $tpl->display('main.tpl');
+    echo $view->render('main.php');
 ?>

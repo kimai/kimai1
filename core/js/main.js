@@ -327,7 +327,7 @@ function startRecord(projectID,activityID,userID) {
     startsec = now;
     show_stopwatch();
     value = projectID +"|"+ activityID;
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
+    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID, startTime: now},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
@@ -356,7 +356,6 @@ function stopRecord() {
 }
 
 function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
-  startsec = record_startTime;
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
@@ -364,11 +363,10 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
     return;
   }
   
-  buzzer_preselect('project', projectID, projectName, customerID, customerName, false);
-  lists_reload('activity', function() {
-    buzzer_preselect('activity', activityID, activityName, 0, '', false);
-  });
+  startsec = record_startTime;
   
+  if (selected_project != projectID)
+    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -408,65 +406,53 @@ function buzzer() {
     }
 }
 
-// preselections for buzzer
-function buzzer_preselect(subject,id,name,customerID,customerName,updateRecording) {
+function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
+  selected_customer = customerID;
+  selected_project = projectID;
+  $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
+  $("#selected_customer").html(customerName);
+  $("#selected_project").html(projectName);
+  $("#selected_customer").removeClass("none");
   
-    if (updateRecording == undefined) {
-      updateRecording = true;
-    }
+  lists_reload('activity', function() {
+    buzzer_preselect_update_ui('projects', projectID, updateRecording);
+  }); 
+}
+
+function buzzer_preselect_activity(activityID,activityName,updateRecording) {
+    selected_activity = activityID;
+    $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
+    $("#selected_activity").html(activityName);
+    buzzer_preselect_update_ui('activities', activityID, updateRecording);
+}
+
+function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
+  
+  if (updateRecording == undefined) {
+    updateRecording = true;
+  }
     
-    switch (subject) {
-        case "customer":
-        // TODO: build filter for project selection (by customer)
-            $("#selected_customer").html("select project");
-            $("#selected_customer").addClass("none");
-        break;
-        case "project":
-            selected_customer = customerID;
-            selected_project = id;
-            $.post("processor.php", { axAction: "saveBuzzerPreselection", project:id});
-            $("#selected_customer").html(customerName);
-            $("#selected_project").html(name);
-            $("#selected_customer").removeClass("none");
-        break;
-        case "activity":
-            selected_activity = id;
-            $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:id});
-            $("#selected_activity").html(name);
-        break;
-    }
-    $('#'+subject+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
-    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-    $('#'+subject+'>table>tbody>tr>td>a.preselect#ps'+id).blur();
+  $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
+  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID).blur();
+  
+  if (selected_project && selected_activity && $('#activities>table>tbody>tr>td>a.preselect>img[src$="preselect_on.png"]').length > 0) {
+    $('#buzzer').removeClass('disabled');
+  }
+  else
+    return;
     
-    if (selected_customer && selected_project && selected_activity) {
-      $('#buzzer').removeClass('disabled');
-    }
-
-    if (currentRecording > -1 && updateRecording) {
-
-
-      switch (subject) {
-          case "project":
-              $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_project", id: currentRecording, project:id},
-                function(data) {
-                    ts_ext_reload();
-                  }
-                );
-          break;
-          case "activity":
-            $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running_task", id: currentRecording, task:id},
-                function(data) {
-                    ts_ext_reload();
-                  }
-              );
-          break;
+  $("#ticker_customer").html($("#selected_customer").html());
+  $("#ticker_project").html($("#selected_project").html());
+  $("#ticker_activity").html($("#selected_activity").html());
+  
+  if (currentRecording > -1 && updateRecording) {
+    $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running", id: currentRecording, project:selected_project, activity:selected_activity},
+      function(data) {
+        ts_ext_reload();
       }
-    }
-    
-    $("#ticker_customer").html($("#selected_customer").html());
-    $("#ticker_project").html($("#selected_project").html());
-    $("#ticker_activity").html($("#selected_activity").html());
+    );
+  }
 }
 
 // ----------------------------------------------------------------------------------------
@@ -803,7 +789,7 @@ function lists_reload(subject, callback) {
                     $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('activity', $('#filter_activity').val());
 		    lists_write_annotations('activity');
-        if ($('#row_activity'+selected_activity).length == 0) {
+        if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
           $('#buzzer').addClass('disabled');
         }
         else {
@@ -887,54 +873,60 @@ function lists_write_annotations(part)
     $('#users>table>tbody td.annotation').html("");
     if (lists_user_annotations[id] != null)
       for (var i in lists_user_annotations[id])
-        $('#row_user'+i+'>td.annotation').html(lists_user_annotations[id][i]);
+        $('#row_user[data-id="'+i+'"]>td.annotation').html(lists_user_annotations[id][i]);
   }
   if (!part || part == 'customer') {
     $('#customers>table>tbody td.annotation').html("");
     if (lists_customer_annotations[id] != null)
       for (var i in lists_customer_annotations[id])
-        $('#row_customer'+i+'>td.annotation').html(lists_customer_annotations[id][i]);
+        $('#row_customer[data-id="'+i+'"]>td.annotation').html(lists_customer_annotations[id][i]);
   }
   if (!part || part == 'project') {
     $('#projects>table>tbody td.annotation').html("");
     if (lists_project_annotations[id] != null)
       for (var i in lists_project_annotations[id])
-        $('#row_project'+i+'>td.annotation').html(lists_project_annotations[id][i]);
+        $('#row_project[data-id="'+i+'"]>td.annotation').html(lists_project_annotations[id][i]);
   }
   if (!part || part == 'activity') {
     $('#activities>table>tbody td.annotation').html("");
     if (lists_activity_annotations[id] != null)
       for (var i in lists_activity_annotations[id])
-        $('#row_activity'+i+'>td.annotation').html(lists_activity_annotations[id][i]);
+        $('#row_activity[data-id="'+i+'"]>td.annotation').html(lists_activity_annotations[id][i]);
   }
 }
 
-function lists_filter_select_all(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    if ( !$(this).hasClass('fhighlighted') )
-      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_select_all(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    if ( $(this).hasClass('fhighlighted') ) return;
+
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
-function lists_filter_deselect_all(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    if ( $(this).hasClass('fhighlighted') )
-      lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_deselect_all(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    if (! $(this).hasClass('fhighlighted') ) return;
+                            
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
 
-function lists_filter_select_invert(subject) {
-  $('#'+subject+' tr').each(function(index) {
-    lists_toggle_filter(subject,parseInt($(this).attr('id').substring(7)));
+function lists_filter_select_invert(subjectPlural) {
+  $('#'+subjectPlural+' tr').each(function(index) {
+    var subjectSingular = $(this).attr('id').substring(4);
+    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
     hook_filter();
 }
 
 function lists_toggle_filter(subject,id) {
-    alreadySelected = $('#row_'+subject+id).hasClass('fhighlighted');
-    $('#row_'+subject+id).removeClass('fhighlighted');
-    if (alreadySelected) {
+    var rowElement = $('#row_'+subject+'[data-id="'+id+'"]');
+    
+    if (rowElement.hasClass('fhighlighted')) {
+        rowElement.removeClass('fhighlighted');
         switch (subject) {
         case 'user':
           filterUsers.splice(filterUsers.indexOf(id),1);
@@ -953,7 +945,7 @@ function lists_toggle_filter(subject,id) {
     }
     else
     {
-      $('#row_'+subject+id).addClass('fhighlighted');
+      rowElement.addClass('fhighlighted');
       switch (subject) {
         case 'user':
           filterUsers.push(id);
@@ -998,4 +990,15 @@ function validatePassword(password,retypePassword) {
     }
     else
         return true;
+}
+
+function setFloaterErrorMessage(fieldName,message) {
+  var li = $("#floater_innerwrap #"+fieldName).parent()
+  li.prepend('<div class="errorMessage">'+message+'</div>');
+  li.addClass('errorField');
+}
+
+function clearFloaterErrorMessages() {
+  $("#floater_innerwrap .errorMessage").remove();
+  $("#floater_tabs li").removeClass("errorField");
 }

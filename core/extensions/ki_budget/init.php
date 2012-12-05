@@ -19,15 +19,18 @@
 // Include Basics
 include ('../../includes/basics.php');
 
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 $user = checkUser();
-// set smarty config
-require_once (WEBROOT . 'libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir = 'compile/';
+
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 // track which activities we want to see, so we can exclude them when we create the plot
 
-$tpl->assign('kga', $kga);
-$tpl->display('index.tpl');
+$view->kga = $kga;
+echo $view->render('index.php');
 
 ?>

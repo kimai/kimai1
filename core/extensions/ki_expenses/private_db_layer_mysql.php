@@ -47,7 +47,7 @@ function expense_create($userID,$data) {
     $conn = $database->getConnectionHandler();
  
     $data = $database->clean_data($data);
-    
+
     $values ['projectID']    =   MySQL::SQLValue( $data ['projectID']   , MySQL::SQLVALUE_NUMBER );
     $values ['designation']  =   MySQL::SQLValue( $data ['designation'] );
     $values ['comment']      =   MySQL::SQLValue( $data ['comment'] );
@@ -57,9 +57,16 @@ function expense_create($userID,$data) {
     $values ['value']        =   MySQL::SQLValue( $data ['value']       , MySQL::SQLVALUE_NUMBER );
     $values ['userID']       =   MySQL::SQLValue( $userID               , MySQL::SQLVALUE_NUMBER );
     $values ['refundable']   =   MySQL::SQLValue( $data ['refundable']  , MySQL::SQLVALUE_NUMBER );
-    
+
     $table = $kga['server_prefix']."expenses";
-    return $conn->InsertRow($table, $values);    
+    $result = $conn->InsertRow($table, $values);
+
+    if (!$result) {
+        Logger::logfile('expense_create: '.$conn->Error());
+        return false;
+    }
+
+    return $result;
 } 
 
 
@@ -168,7 +175,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
         $limit="";
     }
     $query = "SELECT *,
-              customer.name AS customerName, project.name AS projectName, user.name AS userName
+              customer.name AS customerName, project.name AS projectName, project.comment AS projectComment, user.name AS userName
              FROM ${p}expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -196,6 +203,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
       $arr[$i]['customerName']           = $row->customerName;
       $arr[$i]['customerID']          = $row->customerID;
       $arr[$i]['projectName']           = $row->projectName;
+      $arr[$i]['projectComment']           = $row->projectComment;
       $arr[$i]['comment']        = $row->comment;
       $arr[$i]['commentType']   = $row->commentType;
       $arr[$i]['refundable']     = $row->refundable;
@@ -308,18 +316,6 @@ function expense_edit($id,$data) {
     if (! $conn->Query($query)) $success = false;
     
     return $success;
-    //@FIXME: wtf? remove this
-    $original_array = expense_get($id);
-    $new_array = array();
-    
-    foreach ($original_array as $key => $value) {
-        if (isset($data[$key]) == true) {
-            $new_array[$key] = $data[$key];
-        } else {
-            $new_array[$key] = $original_array[$key];
-        }
-    
-    }
 } 
 
 /**
@@ -347,7 +343,7 @@ function expenses_by_user($start,$end,$users = null,$customers = null,$projects 
     if ($end)
       $whereClauses[]="timestamp <= $end"; 
 
-   $query = "SELECT SUM(value) as expenses, userID
+   $query = "SELECT SUM(value*multiplier) as expenses, userID
              FROM ${p}expenses
              Join ${p}projects USING(projectID)
              Join ${p}customers USING(customerID)
@@ -395,7 +391,7 @@ function expenses_by_customer($start,$end,$users = null,$customers = null,$proje
     if ($end)
       $whereClauses[]="timestamp <= $end"; 
     
-    $query = "SELECT SUM(value) as expenses, customerID FROM ${p}expenses
+    $query = "SELECT SUM(value*multiplier) as expenses, customerID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
             " GROUP BY customerID;";
@@ -438,7 +434,7 @@ function expenses_by_project($start,$end,$users = null,$customers = null,$projec
     if ($end)
       $whereClauses[]="timestamp <= $end";
  
-    $query = "SELECT sum(value) as expenses, projectID FROM ${p}expenses
+    $query = "SELECT sum(value*multiplier) as expenses, projectID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
        " GROUP BY projectID;";

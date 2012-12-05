@@ -169,8 +169,13 @@ function adminPanel_extension_newUser() {
     }
     $.post(adminPanel_extension_path + "processor.php", { axAction: "createUser", axValue: newuser, id: 0 }, 
     function(data) {
+        if (data.userId === false) {
+          alert(data.error);
+          return;
+        }
+        
         adminPanel_extension_refreshSubtab('users');
-        adminPanel_extension_editUser(data);
+        adminPanel_extension_editUser(data.userId);
     });
 }
 
@@ -250,7 +255,7 @@ function adminPanel_extension_editStatus(id) {
 //
 function adminPanel_extension_refreshSubtab(tab) {
     options = { axAction: "refreshSubtab", axValue: tab, id: 0 };
-    if (tab == 'activity') {
+    if (tab == 'activities') {
       options.activity_filter = $('#activity_project_filter').val();
     }
     $.post(adminPanel_extension_path + "processor.php", options, 
@@ -272,11 +277,12 @@ function adminPanel_extension_refreshSubtab(tab) {
 // ----------------------------------------------------------------------------------------
 // delete user
 //
-function adminPanel_extension_deleteUser(id) {
+function adminPanel_extension_deleteUser(id, trash) {
+    var axData = (trash ? 1 : 2);
     $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteUser", axValue: 0, id: id }, 
         function(data) {
             if (confirm(data)) {
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: 1, id: id }, 
+                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: axData, id: id },
                     function() { 
                       adminPanel_extension_refreshSubtab('users');
                       adminPanel_extension_refreshSubtab('groups');

@@ -289,6 +289,7 @@ return array(
 'address' => 'Adresa',
 'contact' => 'Kontakt',
 
+"filter" => "Filtr",
 
 'internalProject' => 'interní projekt',
 
@@ -430,10 +431,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "stdrd_location"  		   => "Standard-Location",
 "timeformat"	     	   => "Formát času",
 "dateformat"			   => "Formát data",
-
-
-"filter"	 		       => "Filtr",
-
 
 "refundable_all"	 	   => "vše",
 "refundable_refundable"    => "only refundable",

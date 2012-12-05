@@ -69,8 +69,8 @@ return array(
 "noEntries"         => "No tracking entries for the specified time period...",
 "recordAgain"       => "Record this recording again",
 "comment"           => "Comment",
-"location"         => "Location",
-"trackingNumber"        => "Tracking Number",
+"location"          => "Location",
+"trackingNumber"    => "Tracking Number",
 "cookiewarning"     => "Turn Cookies on before you proceed.",
 "JSwarning"         => "JavaScript must be active.",
 "designation"       => "Description",
@@ -141,6 +141,7 @@ return array(
 "delete_project"    => "delete project",
 "delete_customer"   => "delete customer",
 "delete_activity"   => "delete task",
+"delete_status"     => "delete status",
 "switchUser"        => "Switch to this user",
 "backupUser"        => "Make backup of this user",
 "mailUser"          => "Send email to this user",
@@ -205,32 +206,31 @@ return array(
 "error"             => "An error occured!",
 "checkupdate"       => "Look for update",
 
-"selectedForRecording"           => "Selected for recording:",
-"selectedCustomerLabel"         => "C:",
-"selectedProjectLabel"         => "P:",
-"selectedActivityLabel"         => "T:",
-
-"testCustomer"      => "Test-Customer",
-"testProject"       => "Test-Project",
-"testActivity"      => "testing",
-
-"time_billable"     => "Billable",
-"billable"          => "Billable",
-"budget"            => "Budget",
-"rate"              => "Rate (by hour)",
-"rate_short"        => "Rate",
-"approved"          => "Approved",
-"default_rate"      => "Default rate",
-"my_rate"           => "My rate",
-"fixedRate"        => "Fixed rate",
-"used"          	=> "Used",
-"budget_available" 	=> "Budget available",
-"budget_activity" 		=> "Budget of activity",
-"budget_activity_used" => "Budget used",
-"budget_activity_approved" => "Budget approved",
-"budget_minus"		=> "over budget",
-"wage"              => "Amount",
-"roundTimesheetEntries" => "Round new timesheet entries to",
+"selectedForRecording"      => "Selected for recording:",
+"selectedCustomerLabel"     => "C:",
+"selectedProjectLabel"      => "P:",
+"selectedActivityLabel"     => "T:",
+"testCustomer"              => "Test-Customer",
+"testProject"               => "Test-Project",
+"testActivity"              => "testing",
+"time_billable"             => "Billable",
+"billable"                  => "Billable",
+"budget"                    => "Budget",
+"effort"                    => "Effort",
+"rate"                      => "Rate (by hour)",
+"rate_short"                => "Rate",
+"approved"                  => "Approved",
+"default_rate"              => "Default rate",
+"my_rate"                   => "My rate",
+"fixedRate"                 => "Fixed rate",
+"used"          	        => "Used",
+"budget_available" 	        => "Budget available",
+"budget_activity" 		    => "Budget of activity",
+"budget_activity_used"      => "Budget used",
+"budget_activity_approved"  => "Budget approved",
+"budget_minus"		        => "over budget",
+"wage"                      => "Amount",
+"roundTimesheetEntries"     => "Round new timesheet entries to",
 "minutes"			=> "Minutes",
 "seconds" 			=> "Seconds",
 "and" 				=> "and",
@@ -285,15 +285,18 @@ return array(
 'editLimitPart3' => 'hour(s) in the past.',
 'editLimitError' => 'The end date is further in the past than it was allowed to be.',
 
-'hideClearedEntries' => 'hide cleared entries',
-'showCommentsByDefault' => 'show comments by default',
-'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
+'hideClearedEntries'        => 'hide cleared entries',
+'showCommentsByDefault'     => 'show comments by default',
+'showTrackingNumber'        => 'show tracking number',
+'hideOverlapLines'          => 'Don\'t indicate time overlap of entries',
 
 'general' => 'General',
 'address' => 'Address',
 'contact' => 'Contact',
 'list'=> 'List',
 'sublists' => 'Lower Lists',
+
+"filter" => "Filter",
 
 'internalProject' => 'internal project',
 
@@ -310,9 +313,6 @@ return array(
 'TimeDateInputError' => 'The time or date you entered is not valid.',
 
 'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
-
-'taskAssignable' => 'Assignable',
-'taskAssignableDescription' => 'Assignable to individual projects',
 
 'user' => 'User',
 
@@ -362,6 +362,11 @@ EOF
 'months_short'   => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"),
 'weekdays'       => array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"),
 'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
+
+'errorMessages' => array(
+  'userWithSameName' => 'A customer name can not be the same as a user name.',
+  'customerWithSameName' => 'A user name can not be the same as a customer name.'
+),
 
 'errors' => array (
   0 => array ('hdl' => "Database could not be connected!",
@@ -420,8 +425,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "stdrd_location"  		   => "Standard-Location",
 "timeformat"	     	   => "Timeformat",
 "dateformat"			   => "Dateformat",
-
-"filter"	 		       => "Filter",
 
 "refundable_all"	 	   => "all",
 "refundable_refundable"    => "only refundable",
@@ -492,13 +495,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'extensions' => array(
   'ki_timesheet' => 'Timesheet',
   'adminPanel_extension' => 'Admin Panel',
-  'ki_expenses' => 'Expeneses',
+  'ki_expenses' => 'Expenses',
   'ki_export' => 'Export',
   'ki_budget' => 'Budget',
   'ki_invoice' => 'Invoice' 
 )
 
 );
-
-
-?>

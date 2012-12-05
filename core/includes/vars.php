@@ -52,16 +52,19 @@ $kga['server_hostname'] = $server_hostname;
 $kga['server_database'] = $server_database;
 $kga['server_username'] = $server_username;
 $kga['server_password'] = $server_password;
-$kga['server_type']     = $server_type;
-$kga['server_conn']     = $server_conn;
+$kga['server_type']     = "";
+$kga['server_conn']     = 'mysql';
 $kga['language']        = isset($language)      ? $language            : 'en';
 $kga['password_salt']   = isset($password_salt) ? $password_salt       : '';
 $kga['authenticator']   = isset($authenticator) ? trim($authenticator) : 'kimai';
+$kga['defaultTimezone'] = $defaultTimezone;
 
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
-    'server_type', 'server_conn', 'language', 'password_salt', 'authenticator'
+    'server_type', 'server_conn', 'language', 'password_salt', 'authenticator', 'defaultTimezone'
 );
+
+date_default_timezone_set($defaultTimezone);
 
 foreach($cleanup as $varName) {
     if (isset($$varName)) {

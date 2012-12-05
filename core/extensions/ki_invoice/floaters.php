@@ -19,7 +19,7 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates/";
 require("../../includes/kspi.php");
 
 switch ($axAction) {
@@ -27,14 +27,10 @@ switch ($axAction) {
   case "editVat":  
     if (isset($kga['customer'])) die();  
 
-    $tpl->assign('kga',$kga);
+    $view->kga = $kga;
 
-    $tpl->display("editVat.tpl"); 
+    echo $view->render("floaters/editVat.php"); 
 
     break;        
 
 }
-
-?>
-
-    

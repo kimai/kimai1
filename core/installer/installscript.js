@@ -41,23 +41,11 @@ function step_back() {
         case 25: target = "20_gpl"; break;
         case 28: target = "25_system_requirements"; break;
         case 30: target = "28_timezone"; break;
-        case 40: target = "30_select_layer"; break;
+        case 40: target = "28_timezone"; break;
         case 45: target = "40_permissions"; break;
-        case 50:
-            if (db_layer == "pdo") {
-                target = "45_pdo_db_type";
-            } else {
-                target = "40_permissions";
-            }
-            break;
+        case 50: target = "40_permissions"; break;
         case 60: target = "50_enter_access_data"; break;
-        case 70:
-            if (db_layer == "pdo") {
-                target = "60_db_select_pdo";
-            } else {
-                target = "60_db_select_mysql";
-            }
-            break;
+        case 70: target = "60_db_select_mysql"; break;
     }
 
     step=step-2;
@@ -155,23 +143,6 @@ function timezone_proceed() {
     step_ahead();
     timezone = $('#timezone').val();
     $('#installsteps').slideUp(500,function() {
-        target = "30_select_layer";
-        $.post("steps/"+target+".php", {lang:language},
-            function(data) {
-                $('#installsteps').html(data);
-                $('#installsteps').slideDown(500);
-            }
-        );
-    });
-}
-
-// -------------------------------------------------
-// DB-Layer selection
-
-function layer_selected(layer) {
-    step_ahead();
-    db_layer = layer;
-    $('#installsteps').slideUp(500,function() {
         target = "40_permissions";
         $.post("steps/"+target+".php", {lang:language},
             function(data) {
@@ -195,29 +166,13 @@ function check_permissions() {
 }
 
 function resetPermissionIndicators() {
-    $('span.ch_compile').removeClass("fail");
     $('span.ch_autoconf').removeClass("fail");
     $('span.ch_logfile').removeClass("fail");
     $('span.ch_temporary').removeClass("fail");
-    $('span.ch_compile_tsext').removeClass("fail");
-    $('span.ch_compile_apext').removeClass("fail");
-
-    $('span.ch_compile_epext').removeClass("fail");
-    $('span.ch_compile_xpext').removeClass("fail");
-    $('span.ch_compile_bgtext').removeClass("fail");
-    $('span.ch_compile_ivext').removeClass("fail");
     
-    $('span.ch_compile').addClass("ok");
     $('span.ch_autoconf').addClass("ok");
     $('span.ch_logfile').addClass("ok");
     $('span.ch_temporary').addClass("ok");
-    $('span.ch_compile_tsext').addClass("ok");
-    $('span.ch_compile_apext').addClass("ok");
-    
-    $('span.ch_compile_epext').addClass("ok");
-    $('span.ch_compile_xpext').addClass("ok");
-    $('span.ch_compile_bgtext').addClass("ok");
-    $('span.ch_compile_ivext').addClass("ok");
 
     $('span.ch_correctit').fadeOut(500); 
 }
@@ -225,13 +180,8 @@ function resetPermissionIndicators() {
 function cp_proceed() {
     step_ahead();
     $('#installsteps').slideUp(500,function(){
-        
-        if (db_layer == "mysql") {
-            target = "50_enter_access_data";
-        } else {
-            target = "45_pdo_db_type";
-        }
-        
+        target = "50_enter_access_data";
+
         $.post("steps/"+target+".php", {lang:language, db_layer:db_layer},
             function(data) {
                 $('#installsteps').html(data);
@@ -393,7 +343,7 @@ function write_config() {
   
     step_ahead();
 
-    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database },
+    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database, timezone:timezone },
         function(data) {
             $('#wrapper').fadeOut(2000);
             $('#footer').fadeOut(2000, function() {

@@ -19,7 +19,7 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates/";
 require("../../includes/kspi.php");
 require('../../core/Config.php');
 
@@ -31,137 +31,137 @@ switch ($axAction) {
     // = display edit dialog for timesheet record   =
     // ==============================================
     $selected = explode('|',$axValue);
+
+    $view->users = makeSelectBox("user",$kga['user']['groups']);
+    $view->projects = makeSelectBox("project",$kga['user']['groups']);
+    $view->activities = makeSelectBox("activity",$kga['user']['groups']);
+
+    // edit record
     if ($id) {
         $timeSheetEntry = $database->timeSheet_get_data($id);
-        $tpl->assign('id', $id);
-        $tpl->assign('location', $timeSheetEntry['location']);
+        $view->id = $id;
+        $view->location = $timeSheetEntry['location'];
         
-        $tpl->assign('trackingNumber', $timeSheetEntry['trackingNumber']);
-        $tpl->assign('description', $timeSheetEntry['description']);
-        $tpl->assign('comment', $timeSheetEntry['comment']);
+        $view->trackingNumber = $timeSheetEntry['trackingNumber'];
+        $view->description = $timeSheetEntry['description'];
+        $view->comment = $timeSheetEntry['comment'];
         
-        $tpl->assign('rate', $timeSheetEntry['rate']);
-        $tpl->assign('fixedRate', $timeSheetEntry['fixedRate']);
+        $view->rate = $timeSheetEntry['rate'];
+        $view->fixedRate = $timeSheetEntry['fixedRate'];
         
-        $tpl->assign('cleared', $timeSheetEntry['cleared']!=0);
+        $view->cleared = $timeSheetEntry['cleared']!=0;
 
-        $tpl->assign('userID', $timeSheetEntry['userID']);
+        $view->userID = $timeSheetEntry['userID'];
     
-        $tpl->assign('start_day', date("d.m.Y",$timeSheetEntry['start']));
-        $tpl->assign('start_time',  date("H:i:s",$timeSheetEntry['start']));
+        $view->start_day = date("d.m.Y",$timeSheetEntry['start']);
+        $view->start_time = date("H:i:s",$timeSheetEntry['start']);
 
         if ($timeSheetEntry['end'] == 0) {
-          $tpl->assign('end_day', '');
-          $tpl->assign('end_time', '');
+          $view->end_day = '';
+          $view->end_time = '';
         }
         else {
-          $tpl->assign('end_day', date("d.m.Y",$timeSheetEntry['end']));
-          $tpl->assign('end_time', date("H:i:s",$timeSheetEntry['end']));
+          $view->end_day = date("d.m.Y",$timeSheetEntry['end']);
+          $view->end_time = date("H:i:s",$timeSheetEntry['end']);
         }
 
-        $tpl->assign('approved', $timeSheetEntry['approved']);
-        $tpl->assign('budget', $timeSheetEntry['budget']);
+        $view->approved = $timeSheetEntry['approved'];
+        $view->budget = $timeSheetEntry['budget'];
         
         // preselected
-        $tpl->assign('projectID', $timeSheetEntry['projectID']);
-        $tpl->assign('activityID', $timeSheetEntry['activityID']);
+        $view->projectID = $timeSheetEntry['projectID'];
+        $view->activityID = $timeSheetEntry['activityID'];
     
-        $tpl->assign('commentType', $timeSheetEntry['commentType']);
-        $tpl->assign('status', $timeSheetEntry['status']);
-        $tpl->assign('billable', $timeSheetEntry['billable']);
+        $view->commentType = $timeSheetEntry['commentType'];
+        $view->statusID = $timeSheetEntry['statusID'];
+        $view->billable = $timeSheetEntry['billable'];
 
         // budget
         $activityBudgets = $database->get_activity_budget($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
         $activityUsed = $database->get_budget_used($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
-        $tpl->assign('budget_activity', round($activityBudgets['budget'], 2));
-        $tpl->assign('approved_activity', round($activityBudgets['approved'], 2));
-        $tpl->assign('budget_activity_used', $activityUsed);
+        $view->budget_activity = round($activityBudgets['budget'], 2);
+        $view->approved_activity = round($activityBudgets['approved'], 2);
+        $view->budget_activity_used = $activityUsed;
+
+
+        if (!isset($view->projects[$timeSheetEntry['projectID']])) {
+          // add the currently assigned project to the list
+          $projectData = $database->project_get_data($timeSheetEntry['projectID']);
+          $customerData = $database->customer_get_data($projectData['customerID']);
+          $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
+        }
 
     } else {
-        $tpl->assign('id', 0);
+        // create new record
+        //$view->id = 0;
         
-        $tpl->assign('start_day', date("d.m.Y"));
-        $tpl->assign('end_day', date("d.m.Y"));
+        $view->start_day = date("d.m.Y");
+        $view->end_day = date("d.m.Y");
 
-        $tpl->assign('userID', $kga['user']['userID']);
+        $view->userID = $kga['user']['userID'];
 
-        if($kga['conf']['roundTimesheetEntries'] != '') {
-	        $timeSheetData = $database->timeSheet_get_data(false);
-	        $minutes = date('i');
-	        if($kga['conf']['roundMinutes'] < 60) {
-	        	if($kga['conf']['roundMinutes'] <= 0) {
-	        		$minutes = 0;
-	        	} else {
-			        while($minutes % $kga['conf']['roundMinutes'] != 0) {
-			        	if($minutes >= 60) {
-			        		$minutes = 0;
-			        	} else {
-			        		$minutes++;
-			        	}
-			        }
-	        	}
-	        }
-	        $seconds = date('s');
-	        if($kga['conf']['roundSeconds'] < 60) {
-	        	if($kga['conf']['roundSeconds'] <= 0) {
-	        		$seconds = 0;
-	        	} else {
-			        while($seconds % $kga['conf']['roundSeconds'] != 0) {
-		        		    if($seconds >= 60) {
-				        		$seconds = 0;
-				        	} else {
-				        		$seconds++;
-				        	}
-			        }
-	        	}
-	        }
-	        $end = mktime(date("H"), $minutes, $seconds);
-	        $day = date("d");
-	        $dayEntry = date("d", $timeSheetData['end']);
-	        if($day == $dayEntry) {
-	        	$tpl->assign('start_time',  date("H:i:s", $timeSheetData['end']));
-	        } else {
-	        	$tpl->assign('start_time',  date("H:i:s"));
-	        }
-	        $tpl->assign('end_time', date("H:i:s", $end));
+        if($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
+          $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
+          $minutes = date('i');
+          if($kga['conf']['roundMinutes'] < 60) {
+            if($kga['conf']['roundMinutes'] <= 0) {
+                    $minutes = 0;
+            } else {
+              while($minutes % $kga['conf']['roundMinutes'] != 0) {
+                if($minutes >= 60) {
+                  $minutes = 0;
+                } else {
+                  $minutes++;
+                }
+              }
+            }
+          }
+          $seconds = date('s');
+          if($kga['conf']['roundSeconds'] < 60) {
+            if($kga['conf']['roundSeconds'] <= 0) {
+                    $seconds = 0;
+            } else {
+              while($seconds % $kga['conf']['roundSeconds'] != 0) {
+                if($seconds >= 60) {
+                  $seconds = 0;
+                } else {
+                  $seconds++;
+                }
+              }
+            }
+          }
+          $end = mktime(date("H"), $minutes, $seconds);
+          $day = date("d");
+          $dayEntry = date("d", $timeSheetData['end']);
+
+          if($day == $dayEntry) {
+                  $view->start_time = date("H:i:s", $timeSheetData['end']);
+          } else {
+                  $view->start_time = date("H:i:s");
+          }
+          $view->end_time = date("H:i:s", $end);
         } else {
-	        $tpl->assign('start_time', date("H:i:s"));
-	        $tpl->assign('end_time', date("H:i:s"));
+          $view->start_time = date("H:i:s");
+          $view->end_time = date("H:i:s");
         }
-        $tpl->assign('rate',$database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]));
-        $tpl->assign('fixedRate',$database->get_best_fitting_fixed_rate($selected[0],$selected[1]));
+        $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
+        $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);
+        
+        $view->cleared = false;
     }
 
-    $tpl->assign('status', $kga['conf']['status']);
+    $view->status = $kga['conf']['status'];
     
     $billableValues = Config::getConfig('billable');
     $billableText = array();
     foreach($billableValues as $billableValue) {
     	$billableText[] = $billableValue.'%';
     }
-    $tpl->assign('billable', array_combine($billableValues, $billableText));
-    $tpl->assign('commentTypes', $commentTypes);
-    $tpl->assign('commentValues', array('0','1','2'));
+    $view->billable = array_combine($billableValues, $billableText);
+    $view->commentTypes = $commentTypes;
 
-      
-    $tpl->assign('users', makeSelectBox("user",$kga['user']['groups']));
-
-    // select for projects
-    $sel = makeSelectBox("project",$kga['user']['groups']);
-    $tpl->assign('projects', $sel);
-
-    // select for activities
-    $sel = makeSelectBox("activity",$kga['user']['groups']);
-    $tpl->assign('activities', $sel);
-
-
-
-    $tpl->display("add_edit_timeSheetEntry.tpl"); 
+    echo $view->render("floaters/add_edit_timeSheetEntry.php"); 
 
     break;        
 
 }
-
-?>
-
-    

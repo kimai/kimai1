@@ -20,6 +20,11 @@
 	// Include Basics
 	include('../../includes/basics.php');
 	
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 	$user = checkUser();
 	// ============================================
 	// = initialize currently displayed timeframe =
@@ -28,11 +33,8 @@
 	$in = $timeframe[0];
 	$out = $timeframe[1];
 	
-	// set smarty config
-	require_once(WEBROOT.'libraries/smarty/Smarty.class.php');
-	$tpl = new Smarty();
-	$tpl->template_dir = 'templates/';
-	$tpl->compile_dir  = 'compile/';
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 	
 // read kga --------------------------------------- 
 	$output = $kga;
@@ -48,16 +50,15 @@
     	$output['user']['pw']       = "xxx";
     }
 	
-    $kga_display = print_r($output,true);
-    $tpl->assign('kga', $kga);
-    $tpl->assign('kga_display', $kga_display);
+    $view->kga = $kga;
+    $view->kga_display = print_r($output,true);
 // /read kga -------------------------------------- 
 
     if ($kga['logfile_lines'] =="@") {
-        $tpl->assign('limitText', "(unlimited lines)");
+        $view->limitText = "(unlimited lines)";
     } else {
-        $tpl->assign('limitText', "(limited to " .$kga['logfile_lines'] ." lines)");
+        $view->limitText = "(limited to " .$kga['logfile_lines'] ." lines)";
     }
    
-	$tpl->display('index.tpl');
+	echo $view->render('index.php');
 ?>

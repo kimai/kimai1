@@ -55,34 +55,34 @@ switch ($axAction) {
 
       $expenses = get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
       if (count($expenses)>0) {
-          $tpl->assign('expenses', $expenses);
+          $view->expenses = $expenses;
       } else {
-          $tpl->assign('expenses', 0);
+          $view->expenses = 0;
       }
-      $tpl->assign('total', "");
+      $view->total = "";
 
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('user_annotations',$ann);
+      $view->user_annotations = $ann;
 
       // TODO: function for loops or convert it in template with new function
       $ann = expenses_by_customer($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('customer_annotations',$ann);
+      $view->customer_annotations = $ann;
 
       $ann = expenses_by_project($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
-      $tpl->assign('project_annotations',$ann);
+      $view->project_annotations = $ann;
 
-      $tpl->assign('activity_annotations',array());
+      $view->activity_annotations = array();
 
       if (isset($kga['user']))
-        $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
+        $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
       else
-        $tpl->assign('hideComments',true);
+        $view->hideComments = true;
 
-      $tpl->display("expenses.tpl");
+      echo $view->render("expenses.php");
     break;
 
     // =======================================
@@ -97,78 +97,71 @@ switch ($axAction) {
     // = add / edit expense record =
     // =============================
     case 'add_edit_record':
-    if (!is_array($kga['user']))
-      break;
-
-      if ($id) {
-        $data = expense_get($id);
-        if ($kga['conf']['editLimit'] != "-" && time()-$data['timestamp'] > $kga['conf']['editLimit']) {
-          echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
-          return;
+        if (!is_array($kga['user'])) {
+            break;
         }
-      }
-    
-      $data['projectID']        = $_REQUEST['projectID'];
-      $data['designation']  = $_REQUEST['designation'];
-      $data['multiplier']   = $_REQUEST['multiplier'];
-      $data['value']        = $_REQUEST['edit_value'];
-      $data['comment']      = $_REQUEST['comment'];
-      $data['commentType'] = $_REQUEST['commentType'];
-      $data['refundable']   = isset($_REQUEST['refundable']);
-      $data['erase']            = isset($_REQUEST['erase']);
 
+        if ($id) {
+            $data = expense_get($id);
+            if ($kga['conf']['editLimit'] != "-" && time()-$data['timestamp'] > $kga['conf']['editLimit']) {
+              echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+              return;
+            }
+        }
 
-      if ($data['erase']) {
-        // delete checkbox set ?
-        // then the record is simply dropped and processing stops at this point
-        expense_delete($id);
+        $data['projectID']    = $_REQUEST['projectID'];
+        $data['designation']  = $_REQUEST['designation'];
+        $data['multiplier']   = $_REQUEST['multiplier'];
+        $data['value']        = $_REQUEST['edit_value'];
+        $data['comment']      = $_REQUEST['comment'];
+        $data['commentType']  = $_REQUEST['commentType'];
+        $data['refundable']   = getRequestBool('refundable');
+        $data['erase']        = getRequestBool('erase');
+
+        // delete checkbox set ? the record is dropped and processing stops
+        if ($id && $data['erase']) {
+            expense_delete($id);
+            echo json_encode(array('result'=>'ok'));
+            break;
+        }
+
+        // check if the posted time values are possible
+        $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
+
+        $edit_day  = Format::expand_date_shortcut($_REQUEST['edit_day']);
+        $edit_time = Format::expand_time_shortcut($_REQUEST['edit_time']);
+
+        $new = "${edit_day}-${edit_time}";
+        if (!Format::check_time_format($new)) {
+            // if this is TRUE the values PASSED the test!
+            //$setTimeValue = 1;
+            echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
+            break;
+        }
+        $new_time = convert_time_strings($new,$new);
+
+        if ($kga['conf']['editLimit'] != "-" && time()-$new_time['in'] > $kga['conf']['editLimit']) {
+            echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
+            return;
+        }
+
+        $data['timestamp'] = $new_time['in'];
+        //Logger::logfile("new_time: " .serialize($new_time));
+
+        $data['multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['multiplier']);
+        $data['value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['value']);
+
+        if ($id) {
+            // TIME RIGHT - EDIT ENTRY
+            Logger::logfile("expense_edit: " .$id);
+            expense_edit($id,$data);
+        } else {
+            // TIME RIGHT - NEW ENTRY
+            Logger::logfile("expense_create");
+            expense_create($kga['user']['userID'],$data);
+        }
         echo json_encode(array('result'=>'ok'));
-        break;
-      }
-    
-      // check if the posted time values are possible
-      $setTimeValue = 0; // 0 means the values are incorrect. now we check if this is true ...
-        
-      $edit_day  = Format::expand_date_shortcut($_REQUEST['edit_day']);
-      $edit_time = Format::expand_time_shortcut($_REQUEST['edit_time']);
-    
-      $new = "${edit_day}-${edit_time}";
-      if (!Format::check_time_format($new)) {
-        // if this is TRUE the values PASSED the test! 
-        //$setTimeValue = 1;   
-        echo json_encode(array('result'=>'error','message'=>$kga['lang']['TimeDateInputError']));
-        break;
-      }
-      $new_time = convert_time_strings($new,$new);        
-
-      if ($kga['conf']['editLimit'] != "-" && time()-$new_time['in'] > $kga['conf']['editLimit']) {
-        echo json_encode(array('result'=>'error','message'=>$kga['lang']['editLimitError']));
-        return;
-      }
-
-      $data['timestamp'] = $new_time['in'];
-      //Logger::logfile("new_time: " .serialize($new_time));
-
-      $data['multiplier'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['multiplier']);
-      $data['value'] = str_replace($kga['conf']['decimalSeparator'],'.',$data['value']);
-        
-      if ($id) { // TIME RIGHT - NEW OR EDIT ?
-
-        // TIME RIGHT - EDIT ENTRY
-        Logger::logfile("expense_edit: " .$id);
-        expense_edit($id,$data);
-    
-      } else {
-          
-        // TIME RIGHT - NEW ENTRY
-        Logger::logfile("expense_create");
-        expense_create($kga['user']['userID'],$data);
-          
-      }
-      echo json_encode(array('result'=>'ok'));
 
     break;
 
 }
-
-?>

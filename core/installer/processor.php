@@ -104,8 +104,7 @@ switch ($axAction) {
       break;
 
     /**
-     * Check access rights to autoconf.php, the logfile, the temporary folder
-     * and all compile folders (also for the extensions).
+     * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
     case "checkRights":
         if (!$fp = @fopen("../includes/autoconf.php", "w")) {
@@ -119,43 +118,6 @@ switch ($axAction) {
         }
 
         $filename = "%%" . getpass();
-
-        if (!$fp = @fopen("../compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile').addClass('fail');";
-        }
-        if (!$fp = @fopen("../extensions/ki_timesheets/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_tsext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_adminpanel/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_apext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_expenses/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_epext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_export/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_xpext').addClass('fail');";
-        }
-
-        if (!$fp = @fopen("../extensions/ki_budget/compile/".$filename ."_testfile.txt", "w")) {
-            $errors++;
-            $javascript .= "$('span.ch_compile_bgtext').addClass('fail');";
-        }
-
-         if (!$fp = @fopen("../extensions/ki_invoice/compile/".$filename ."_testfile.txt", "w")) {
-             $errors++;
-             $javascript .= "$('span.ch_compile_ivext').addClass('fail');";
-         }
-
-
-
 
         if (!$fp = @fopen("../temporary/".$filename ."_testfile.txt", "w")) {
             $errors++;
@@ -184,13 +146,14 @@ switch ($axAction) {
     $hostname    = addcslashes($_REQUEST['hostname'],'"$');
     $username    = addcslashes($_REQUEST['username'],'"$');
     $password    = addcslashes($_REQUEST['password'],'"$');
+    $timezone    = addcslashes($_REQUEST['timezone'],'"$');
     $db_layer    = $_REQUEST['db_layer'];
     $db_type     = $_REQUEST['db_type'];
     $prefix      = addcslashes($_REQUEST['prefix'],'"$');
     $lang        = $_REQUEST['lang'];
     $salt        = createPassword(20);
 
-    write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt);
+    write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone);
 
     break;
     
@@ -208,26 +171,9 @@ switch ($axAction) {
         $db_error = false;
         $result = false;
 
-        if ($db_layer == "pdo") {
-
-                $pdo_dsn = $server_type . ':host=' . $hostname;
-                try {
-                    $pdo_conn = @new PDO($pdo_dsn, $username, $password);
-                    $pdo_query = $pdo_conn->prepare("CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-                    $result = $pdo_query->execute();
-                } catch (PDOException $pdo_ex) {
-                    error_log('PDO CONNECTION FAILED: ' . $pdo_ex->getMessage());
-                    $db_error = true;
-                }
-
-        } else {
-
-                $con = mysql_connect($hostname,$username,$password);
-                $query = "CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
-                $result = mysql_query($query);
-
-        }
-
+        $con = mysql_connect($hostname,$username,$password);
+        $query = "CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+        $result = mysql_query($query);
 
         if ($result != false) {
             echo "1"; // <-- hat geklappt

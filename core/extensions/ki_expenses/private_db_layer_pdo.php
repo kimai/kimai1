@@ -183,7 +183,7 @@ function get_expenses($start,$end,$users = null,$customers = null,$projects = nu
         $limit="";
     }
     $pdo_query = $pdo_conn->prepare("SELECT *
-              projectID, customer.name AS customerName, project.name AS projectName, user.name AS userName
+              projectID, customer.name AS customerName, project.name AS projectName, project.comment AS projectComment user.name AS userName
              FROM ${p}expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -209,6 +209,7 @@ function get_expenses($start,$end,$users = null,$customers = null,$projects = nu
         $arr[$i]['customerName']   = $row['customerName'];
         $arr[$i]['customerID']     = $row['customerID'];
         $arr[$i]['projectName']    = $row['projectName'];
+        $arr[$i]['projectComment'] = $row['projectComment'];
         $arr[$i]['comment']        = $row['comment'];
         $arr[$i]['commentType']    = $row['commentType'];
         $arr[$i]['refundable']     = $row['refundable'];
@@ -355,7 +356,7 @@ function expenses_by_user($in,$out,$users = null,$customers = null,$projects = n
     if ($out)
       $whereClauses[]="timestamp <= $out"; 
 
-   $pdo_query = $pdo_conn->prepare("SELECT sum(value) as expenses, userID
+   $pdo_query = $pdo_conn->prepare("SELECT sum(value*multiplier) as expenses, userID
              FROM ${p}expenses
              Join ${p}projects USING(projectID)
              Join ${p}customers USING(customerID)
@@ -396,7 +397,7 @@ function expenses_by_customer($in,$out,$users = null,$customers = null,$projects
     if ($out)
       $whereClauses[]="timestamp <= $out"; 
     
-    $pdo_query = $pdo_conn->prepare("SELECT SUM(value) as expenses, customerID FROM ${p}expenses
+    $pdo_query = $pdo_conn->prepare("SELECT SUM(value*multiplier) as expenses, customerID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID)  ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
             " GROUP BY customerID;");
@@ -433,7 +434,7 @@ function expenses_by_project($in,$out,$users = null,$customers = null,$projects 
       $whereClauses[]="timestamp >= $in";
     if ($out)
       $whereClauses[]="timestamp <= $out"; 
-    $pdo_query = $pdo_conn->prepare("SELECT sum(value) as expenses, projectID FROM ${p}expenses
+    $pdo_query = $pdo_conn->prepare("SELECT sum(value*multiplier) as expenses, projectID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
             Left Join ${p}customers USING(customerID) ".(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
        " GROUP BY projectID;");

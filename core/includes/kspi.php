@@ -30,26 +30,11 @@
  * - Ensure library/ is on include_path
  * - Register Autoloader
  */
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
-
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-
-// ==================================
-// = implementing standard includes =
-// ==================================
+// bootstrap kimai
 require("basics.php");
 
+// check if we are in an extension
 if (!$isCoreProcessor) {
   $datasrc = "config.ini";
   $settings = parse_ini_file($datasrc);
@@ -57,17 +42,15 @@ if (!$isCoreProcessor) {
 }
 
 // =============================
-// = Smarty (initialize class) =
+// = Zend_View (configuration) =
 // =============================
-require_once(WEBROOT . 'libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
+$view = new Zend_View();
 if ($isCoreProcessor) {
-  $tpl->template_dir = WEBROOT . $dir_templates;
-  $tpl->compile_dir  = WEBROOT . 'compile/';
+  $view->setBasePath(WEBROOT . '/templates');
 } else {
-  $tpl->template_dir = WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates;
-  $tpl->compile_dir  = WEBROOT . 'extensions/' . $dir_ext . '/' . 'compile/';
+  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
 
 // ============================================================================================
@@ -75,7 +58,7 @@ if ($isCoreProcessor) {
 // ============================================================================================
 $user = checkUser();
 
-$tpl->assign('kga',$kga);
+$view->kga = $kga;
 
 $commentTypes   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
 
@@ -108,11 +91,8 @@ if ($axAction != "reloadLogfile") {
     Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['name']:$kga['user']['name'])."): " . $axAction);
 }
 
-
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
-
-?>

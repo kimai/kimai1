@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-$installsteps=9;
+$installsteps=8;
 $kga = array();
 require("../includes/version.php");
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -36,7 +36,7 @@ require("../includes/version.php");
         var back         = "";
         var new_database = -1;
         var language     = "";
-        var db_layer     = "";
+        var db_layer     = "mysql";
         var database     = "";
         var db_type      = "";
         var prefix       = "";

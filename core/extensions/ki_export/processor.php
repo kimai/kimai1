@@ -136,31 +136,31 @@ switch ($axAction) {
     // ===========================
     case 'reload':
     	$exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
-        $tpl->assign('exportData', count($exportData)>0?$exportData:0);
+        $view->exportData = count($exportData)>0?$exportData:0;
 
-        $tpl->assign('total', Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,$filter_cleared)));
+        $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,$filter_cleared));
 
         $ann = export_get_user_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('user_annotations',$ann);
+        $view->user_annotations = $ann;
         
         $ann = export_get_customer_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('customer_annotations',$ann);
+        $view->customer_annotations = $ann;
 
         $ann = export_get_project_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('project_annotations',$ann);
+        $view->project_annotations = $ann;
 
         $ann = export_get_activity_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
-        $tpl->assign('activity_annotations',$ann);
+        $view->activity_annotations = $ann;
 
-        $tpl->assign('timeformat',$timeformat);
-        $tpl->assign('dateformat',$dateformat);
+        $view->timeformat = $timeformat;
+        $view->dateformat = $dateformat;
         if (isset($kga['user']))
-          $tpl->assign('disabled_columns',export_get_disabled_headers($kga['user']['userID']));
-        $tpl->display("table.tpl");
+          $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+        echo $view->render("table.php");
     break;
 
 
@@ -187,7 +187,7 @@ switch ($axAction) {
           $approvedSum += $data['approved'];
         }
         
-        $tpl->assign('timespan',strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) );
+        $view->timespan = strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) ;
 
         if (isset($_REQUEST['print_summary'])) {
           //Create the summary. Same as in PDF export
@@ -220,10 +220,10 @@ switch ($axAction) {
           }
           
           $summary = array_merge($timeSheetSummary,$expenseSummary);
-          $tpl->assign('summary',$summary);
+          $view->summary = $summary;
         }
         else
-          $tpl->assign('summary',0);
+          $view->summary = 0;
 
 
         // Create filter descirption, Same is in PDF export
@@ -232,27 +232,27 @@ switch ($axAction) {
           $customer_info = $database->customer_get_data($customerID);
           $customers[] = $customer_info['name'];
         }
-        $tpl->assign('customersFilter',implode(', ',$customers));
+        $view->customersFilter = implode(', ',$customers);
 
         $projects = array();
         foreach ($filterProjects as $projectID) {
           $project_info = $database->project_get_data($projectID);
           $projects[] = $project_info['name'];
         }
-        $tpl->assign('projectsFilter',implode(', ',$projects));
+        $view->projectsFilter = implode(', ',$projects);
 
-        $tpl->assign('exportData', count($exportData)>0?$exportData:0);
+        $view->exportData = count($exportData)>0?$exportData:0;
 
-        $tpl->assign('columns',$columns);
-        $tpl->assign('custom_timeformat',$timeformat);
-        $tpl->assign('custom_dateformat',$dateformat);
-        $tpl->assign('timeSum',$timeSum);
-        $tpl->assign('wageSum',$wageSum);
-        $tpl->assign('budgetSum',$budgetSum);
-        $tpl->assign('approvedSum',$approvedSum);
+        $view->columns = $columns;
+        $view->custom_timeformat = $timeformat;
+        $view->custom_dateformat = $dateformat;
+        $view->timeSum = $timeSum;
+        $view->wageSum = $wageSum;
+        $view->budgetSum = $budgetSum;
+        $view->approvedSum = $approvedSum;
 
         header("Content-Type: text/html");
-        $tpl->display("formats/html.tpl");
+        echo $view->render("formats/html.php");
     break;
 
 
@@ -272,15 +272,15 @@ switch ($axAction) {
           $exportData[$i]['rate'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['rate']);
           $exportData[$i]['wage'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['wage']);
         }
-        $tpl->assign('exportData', count($exportData)>0?$exportData:0);
+        $view->exportData = count($exportData)>0?$exportData:0;
 
-        $tpl->assign('columns',$columns);
-        $tpl->assign('custom_timeformat',$timeformat);
-        $tpl->assign('custom_dateformat',$dateformat);
+        $view->columns = $columns;
+        $view->custom_timeformat = $timeformat;
+        $view->custom_dateformat = $dateformat;
 
         header("Content-Disposition:attachment;filename=export.xls");
         header("Content-Type: application/vnd.ms-excel");
-        $tpl->display("formats/excel.tpl");
+        echo $view->render("formats/excel.php");
     break;
 
 

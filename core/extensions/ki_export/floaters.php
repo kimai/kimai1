@@ -19,7 +19,7 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/floaters/";
+$dir_templates = "templates";
 require("../../includes/kspi.php");
 
 switch ($axAction) {
@@ -28,37 +28,37 @@ switch ($axAction) {
       $defaults = array('print_comments'=>1, 'print_summary'=>1, 'create_bookmarks'=>1, 'download_pdf'=>1,
            'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf');
       $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
-      $tpl->assign('prefs', array_merge($defaults,$prefs));
+      $view->prefs = array_merge($defaults,$prefs);
       
-	    $tpl->display("export_PDF.tpl"); 
+      echo $view->render("floaters/export_PDF.php"); 
     break;
 
     case "XLS":  
       $defaults = array('reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
-      $tpl->assign('prefs', array_merge($defaults,$prefs));
+      $view->prefs = array_merge($defaults,$prefs);
 
-	    $tpl->display("export_XLS.tpl"); 
+      echo $view->render("floaters/export_XLS.php"); 
     break;
 
     case "CSV":  
       $defaults = array('column_delimiter'=>',','quote_char'=>'"','reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
-      $tpl->assign('prefs', array_merge($defaults,$prefs));
+      $view->prefs = array_merge($defaults,$prefs);
 
-	    $tpl->display("export_CSV.tpl"); 
+      echo $view->render("floaters/export_CSV.php"); 
     break;
 
     case "print":  
       $defaults = array('print_summary'=>1,'reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
-      $tpl->assign('prefs', array_merge($defaults,$prefs));
+      $view->prefs = array_merge($defaults,$prefs);
 
-	    $tpl->display("print.tpl"); 
+      echo $view->render("floaters/print.php"); 
     break;
 
     case "help_timeformat":  
-	    $tpl->display("help_timeformat.tpl"); 
+      echo $view->render("floaters/help_timeformat.php"); 
     break;
 
 }

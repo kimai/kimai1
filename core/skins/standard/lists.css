@@ -1,4 +1,4 @@
-#users, #customers, #activities, #projects { 
+.lists > #users, .lists > #customers, .lists > #activities, .lists > #projects { 
     height:175px;
     border-top:none;
     z-index:1;
@@ -224,12 +224,26 @@ a.selectInvertLink
     color:#777;
 }
 
+/* below two definitions still used? */
+.error {
+    padding: 5px;
+    color: #f00;
+    font-weight: bold;
+}
+
+.floater_content .error {
+    font-size: 13px;
+}
 
 div.lists table {
     border-collapse: collapse;
     font-size: 11px;
     color: #363636;
     border-bottom:1px solid #888;
+}
+
+div.lists table a {
+  text-decoration: none;
 }
 div.lists table a.preselect_lnk {
     color: #363636;

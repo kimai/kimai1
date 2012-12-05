@@ -21,22 +21,38 @@
  * Basic initialization takes place here.
  * From loading the configuration to connecting to the database this all is done
  * here.
- *
- * What does NOT happen here is including the database dependant functions.
  */
 
-
-if (!defined('WEBROOT'))
+defined('WEBROOT') ||
     define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+
+defined('APPLICATION_PATH') ||
+    define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(APPLICATION_PATH . '/libraries/'),
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+$autoloader->registerNamespace('Kimai');
 
 require(WEBROOT.'includes/5.3.functions.php');
 
 if (!file_exists(WEBROOT.'includes/autoconf.php')) {
-  if (preg_match('|core/[^?]*\.php|',$_SERVER['PHP_SELF'])>0)
-    header('location:../error.php');
-  else
-    header('location:error.php');
+    if (preg_match('|core/[^?]*\.php|',$_SERVER['PHP_SELF'])>0) {
+        header('location:../error.php');
+    } else {
+        header('location:error.php');
+    }
+    exit;
 }
+
 require(WEBROOT.'includes/autoconf.php');
 if (!isset($server_hostname)) {
   header('location:installer/index.php');
@@ -93,17 +109,9 @@ if (isset($_REQUEST['database'])) {
     }
 }
 
-require(WEBROOT."includes/classes/database/databaseLayer.class.php");
-
-if ($kga['server_conn'] == 'mysql') {
-  require(WEBROOT."includes/classes/database/mysqlDatabaseLayer.class.php");
-  $database = new MysqlDatabaseLayer($kga);
-}
-else {
-  require(WEBROOT."includes/classes/database/pdoDatabaseLayer.class.php");
-  $database = new PdoDatabaseLayer($kga);
-}
+$database = new Kimai_Database_Mysql($kga);
 $database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
+Kimai_Registry::setDatabase($database);
 
 $translations = new Translations($kga);
 if ($kga['language'] != 'en')
@@ -128,7 +136,4 @@ if (!empty($vars)) {
     $kga['language']             = $vars['language'];
   else if ($kga['language'] == '')
     $kga['language'] = 'en';
-
-  if ($vars['defaultTimezone'])
-    date_default_timezone_set($vars['defaultTimezone']);
 }

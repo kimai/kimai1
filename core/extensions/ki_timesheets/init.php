@@ -22,6 +22,11 @@
 // ==================================
 include('../../includes/basics.php');
 
+$dir_templates = "templates/";
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+
 $user = checkUser();
 
 // ============================================
@@ -31,13 +36,11 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-// set smarty config
-require_once('../../libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/';
-$tpl->compile_dir  = 'compile/';
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
 
-$tpl->assign('kga', $kga);
+$view->kga = $kga;
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -51,7 +54,7 @@ if (isset($kga['customer']))
   $total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
 else
   $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
-$tpl->assign('total', $total);
+$view->total = $total;
 
 // Get the array of timesheet entries.
 if (isset($kga['customer']))
@@ -59,9 +62,9 @@ if (isset($kga['customer']))
 else
   $timeSheetEntries = $database->get_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
 if (count($timeSheetEntries)>0) {
-    $tpl->assign('timeSheetEntries', $timeSheetEntries);
+    $view->timeSheetEntries = $timeSheetEntries;
 } else {
-    $tpl->assign('timeSheetEntries', 0);
+    $view->timeSheetEntries = 0;
 }
 
 // Get the annotations for the user sub list.
@@ -70,7 +73,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_users($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('user_annotations',$ann);
+$view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
@@ -78,7 +81,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_customers($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('customer_annotations',$ann);
+$view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
@@ -86,7 +89,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_projects($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('project_annotations',$ann);
+$view->project_annotations = $ann;
 
 // Get the annotations for the task sub list.
 if (isset($kga['customer']))
@@ -94,40 +97,38 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_activities($in,$out,array($kga['user']['userID']));
 Format::formatAnnotations($ann);
-$tpl->assign('activity_annotations',$ann);
+$view->activity_annotations = $ann;
 
-if (isset($kga['user']))
-  $tpl->assign('hideComments',$database->user_get_preference('ui.showCommentsByDefault')!=1);
-else
-  $tpl->assign('hideComments',true);
+$view->hideComments = true;
+$view->showOverlapLines = false;
+$view->showTrackingNumber = false;
 
-if (isset($kga['user']))
-  $tpl->assign('showOverlapLines',$database->user_get_preference('ui.hideOverlapLines')!=1);
-else
-  $tpl->assign('showOverlapLines',false);
+if (isset($kga['user'])) {
+    $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
+    $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
+    $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
+}
 
-$tpl->assign('timeSheet_display', $tpl->fetch("timeSheet.tpl"));
+$view->timeSheet_display = $view->render("timeSheet.php");
 
-$tpl->assign('buzzerAction', "startRecord()");
+$view->buzzerAction = "startRecord()";
 
 // select for projects
 if (isset($kga['customer'])) {
-  $tpl->assign('projects', array());
+  $view->projects = array();
 }
 else {
   $sel = makeSelectBox("project",$kga['user']['groups']);
-  $tpl->assign('projects', $sel);
+  $view->projects = $sel;
 }
 
 // select for activities
 if (isset($kga['customer'])) {
-  $tpl->assign('activities', array());
+  $view->activities = array();
 }
 else {
   $sel = makeSelectBox("activity",$kga['user']['groups']);
-  $tpl->assign('activities', $sel);
+  $view->activities = $sel;
 }
 
-$tpl->display('main.tpl');
-
-?>
+echo $view->render('main.php');

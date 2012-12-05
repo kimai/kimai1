@@ -64,20 +64,21 @@ switch ($axAction) {
     case 'editPrefs':
         if (isset($kga['customer'])) die();
     
-        $preferences['skin']               = $_REQUEST['skin'];
-        $preferences['autoselection']      = isset($_REQUEST['autoselection'])?1:0;
-        $preferences['quickdelete']        = $_REQUEST['quickdelete'];
-        $preferences['rowlimit']           = $_REQUEST['rowlimit'];
-        $preferences['lang']               = $_REQUEST['lang'];
-        $preferences['flip_project_display']   = isset($_REQUEST['flip_project_display'])?1:0;
-        $preferences['project_comment_flag']   = isset($_REQUEST['project_comment_flag'])?1:0;
-        $preferences['showIDs']            = isset($_REQUEST['showIDs'])?1:0;
-        $preferences['noFading']           = isset($_REQUEST['noFading'])?1:0;
-        $preferences['user_list_hidden']   = isset($_REQUEST['user_list_hidden'])?1:0;
-        $preferences['hideClearedEntries'] = isset($_REQUEST['hideClearedEntries'])?1:0;
-        $preferences['showCommentsByDefault'] = isset($_REQUEST['showCommentsByDefault'])?1:0;
-        $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
-        $preferences['hideOverlapLines']   = isset($_REQUEST['hideOverlapLines'])?1:0;
+        $preferences['skin']                    = $_REQUEST['skin'];
+        $preferences['autoselection']           = getRequestBool('autoselection');
+        $preferences['quickdelete']             = $_REQUEST['quickdelete'];
+        $preferences['rowlimit']                = $_REQUEST['rowlimit'];
+        $preferences['lang']                    = $_REQUEST['lang'];
+        $preferences['flip_project_display']    = getRequestBool('flip_project_display');
+        $preferences['project_comment_flag']    = getRequestBool('project_comment_flag');
+        $preferences['showIDs']                 = getRequestBool('showIDs');
+        $preferences['noFading']                = getRequestBool('noFading');
+        $preferences['user_list_hidden']        = getRequestBool('user_list_hidden');
+        $preferences['hideClearedEntries']      = getRequestBool('hideClearedEntries');
+        $preferences['showCommentsByDefault']   = getRequestBool('showCommentsByDefault');
+        $preferences['showTrackingNumber']      = getRequestBool('showTrackingNumber');
+        $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
+        $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 
         $database->user_set_preferences($preferences,'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
@@ -89,9 +90,9 @@ switch ($axAction) {
           $database->remove_rate($kga['user']['userID'],null,NULL);
         
         // If the password field is empty don't overwrite the old password.
-        if ($_REQUEST['password'] != "") {
-        	$userData['password'] = md5($kga['password_salt'].$_REQUEST['pw'].$kga['password_salt']);
-          $database->user_edit($kga['user']['userID'], $userData);
+        if (trim($_REQUEST['password']) != "") {
+            $userData['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
+            $database->user_edit($kga['user']['userID'], $userData);
         }
         
         
@@ -125,7 +126,7 @@ switch ($axAction) {
         if (isset($kga['customer'])) die();
     
         $IDs = explode('|',$axValue);
-        $newID = $database->startRecorder($IDs[0],$IDs[1],$id);
+        $newID = $database->startRecorder($IDs[0],$IDs[1],$id, $_REQUEST['startTime']);
         echo json_encode(array(
           'id' =>  $newID
         ));
@@ -144,38 +145,30 @@ switch ($axAction) {
      * type of the current user decides which users are shown to him.
      * See get_watchable_users.
      */
-    case 'reload_user':
-        if (isset($kga['customer']))
-          $users = array();
-        else
-          $users = $database->get_watchable_users($kga['user']);
-
-        if (count($users)>0) {
-            $tpl->assign('users', $users);
+    case 'reload_users':
+        if (isset($kga['customer'])) {
+            $view->users = array();
         } else {
-            $tpl->assign('users', 0);
+            $view->users = $database->get_watchable_users($kga['user']);
         }
-        $tpl->display("../lists/users.tpl");
+
+        echo $view->render("lists/users.php");
     break;
 
     /**
      * Return a list of customers. A customer can only see himself.
      */
     case 'reload_customers':
-        if (isset($kga['customer']))
+        if (isset($kga['customer'])) {
           $customers = array(array(
               'customerID'=>$kga['customer']['customerID'],
               'name'=>$kga['customer']['name'],
               'visible'=>$kga['customer']['visible']));
-        else
-          $customers = $database->get_customers($kga['user']['groups']);
-
-        if (count($customers)>0) {
-            $tpl->assign('customers', $customers);
         } else {
-            $tpl->assign('customers', 0);
+          $customers = $database->get_customers($kga['user']['groups']);
         }
-        $tpl->display("../lists/customers.tpl");
+        $view->customers = $customers;
+        echo $view->render("lists/customers.php");
     break;
 
     /**
@@ -188,11 +181,11 @@ switch ($axAction) {
           $projects = $database->get_projects($kga['user']['groups']);
 
         if (count($projects)>0) {
-            $tpl->assign('projects', $projects);
+            $view->projects = $projects;
         } else {
-            $tpl->assign('projects', 0);
+            $view->projects = 0;
         }
-        $tpl->display("../lists/projects.tpl");
+        echo $view->render("lists/projects.php");
     break;
 
     /**
@@ -208,11 +201,11 @@ switch ($axAction) {
         else
           $activities = $database->get_activities($kga['user']['groups']);
         if (count($activities)>0) {
-            $tpl->assign('activities', $activities);
+            $view->activities = $activities;
         } else {
-            $tpl->assign('activities', 0);
+            $view->activities = 0;
         }
-        $tpl->display("../lists/activities.tpl");
+        echo $view->render("lists/activities.php");
     break;
 
 
@@ -236,7 +229,7 @@ switch ($axAction) {
             	$data['comment']  = $_REQUEST['comment'];
             	$data['company']  = $_REQUEST['company'];
                 $data['vat']      = $_REQUEST['vat'];
-                $data['contact']  = $_REQUEST['contact'];
+                $data['contact']  = $_REQUEST['contactPerson'];
                 $data['timezone'] = $_REQUEST['timezone'];
             	$data['street']   = $_REQUEST['street'];
             	$data['zipcode']  = $_REQUEST['zipcode'];
@@ -246,26 +239,43 @@ switch ($axAction) {
             	$data['mobile']   = $_REQUEST['mobile'];
             	$data['mail']     = $_REQUEST['mail'];
             	$data['homepage'] = $_REQUEST['homepage'];
-            	$data['visible']  = $_REQUEST['visible'];
+            	$data['visible']  = getRequestBool('visible');
             	$data['filter']   = $_REQUEST['customerFilter'];
         
               // If password field is empty dont overwrite the password.
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
                 $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
               }
-              if (isset($_REQUEST['no_password'])) {
+              if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                 $data['password'] = '';
               }
-            	
-              // add or update the customer
-            	if (!$id) {
-                    $id = $database->customer_create($data);
-            	} else {
-            	    $database->customer_edit($id, $data);
-            	}
 
-              // set the customer group mappings
-              $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
+              // validate data
+              $errorMessages = array();
+              $success = false;
+
+              if ($database->user_name2id($data['name']) !== false)
+                $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
+              
+              if (count($errorMessages) == 0) {
+            	
+                // add or update the customer
+                  if (!$id) {
+                      $id = $database->customer_create($data);
+                  } else {
+                      $database->customer_edit($id, $data);
+                  }
+
+                // set the customer group mappings
+                $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
+                $success = true;
+              }
+              
+              header('Content-Type: application/json;charset=utf-8');
+              echo json_encode(array(
+                'errors' => $errorMessages,
+                'success' => $success));
+              
             break;
             
             /**
@@ -275,10 +285,10 @@ switch ($axAction) {
               if (count($_REQUEST['projectGroups']) == 0) die(); // no group would mean it is never accessable
 
               $data['name']         = $_REQUEST['name'];
-              $data['customerID']        = $_REQUEST['customerID'];
+              $data['customerID']   = $_REQUEST['customerID'];
               $data['comment']      = $_REQUEST['projectComment'];
-              $data['visible']      = isset($_REQUEST['visible'])?1:0;
-              $data['internal']     = isset($_REQUEST['internal'])?1:0;
+              $data['visible']      = getRequestBool('visible');
+              $data['internal']     = getRequestBool('internal');
               $data['filter']       = $_REQUEST['projectFilter'];
               $data['budget']       = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
@@ -296,15 +306,15 @@ switch ($axAction) {
                 // add or update the project
               if (!$id) {
                 $id = $database->project_create($data);
-            	} else {
+              } else {
                 $database->project_edit($id, $data);
-            	}
+              }
 
               // set the project group mappings
               if (isset($_REQUEST['projectGroups']))
                 $database->assign_projectToGroups($id, $_REQUEST['projectGroups']);
               if (isset($_REQUEST['assignedActivities'])) {
-                $database->assignProjectsToActivityForGroup($id, $_REQUEST['assignedActivities'], $kga['user']['groups']);
+                $database->assignProjectToActivitiesForGroup($id, array_values($_REQUEST['assignedActivities']), $kga['user']['groups']);
                 foreach($_REQUEST['assignedActivities'] as $index => $activityID) {
                 	if($activityID <= 0) {
                 		continue;
@@ -318,7 +328,7 @@ switch ($axAction) {
                 	if($_REQUEST['approved'][$index] <= 0) {
                 		$_REQUEST['approved'][$index] = 0;
                 	}
-               		$database->projects_activities_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
+               		$database->project_activity_edit($id, $activityID, array('budget' => $_REQUEST['budget'][$index], 'effort' => $_REQUEST['effort'][$index], 'approved' => $_REQUEST['approved'][$index]));
                 }
               }
             break;
@@ -331,9 +341,8 @@ switch ($axAction) {
 
               $data['name']         = $_REQUEST['name'];
               $data['comment']      = $_REQUEST['comment'];
-              $data['visible']      = $_REQUEST['visible'];
+              $data['visible']      = getRequestBool('visible');
               $data['filter']       = $_REQUEST['activityFilter'];
-              $data['assignable']   = isset($_REQUEST['assignable'])?1:0;
               $data['defaultRate'] = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['defaultRate']);
               $data['myRate']      = 
@@ -363,5 +372,3 @@ switch ($axAction) {
     break;
 
 }
-
-?>

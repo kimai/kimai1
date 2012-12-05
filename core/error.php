@@ -17,24 +17,39 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =============================
-// = Smarty (initialize class) =
-// =============================
-require_once('libraries/smarty/Smarty.class.php');
-$tpl = new Smarty();
-$tpl->template_dir = 'templates/misc/';
-$tpl->compile_dir  = 'compile/';
+
+if (!defined('WEBROOT')) {
+    define('WEBROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+}
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(WEBROOT . 'libraries/'),
+            get_include_path()
+        )
+    )
+);
+
+require_once 'Zend/Loader/Autoloader.php';
+Zend_Loader_Autoloader::getInstance();
+
+$view = new Zend_View();
+$view->setBasePath(WEBROOT . 'templates');
 
 if (!file_exists('includes/autoconf.php')) {
        $headline = "Fatal Error!";
        $message = "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.";
 }
 else {
-  if (!isset($_REQUEST['err']))
-    $_REQUEST['err'] = '';
+  if (!isset($_REQUEST['err'])) {
+      $_REQUEST['err'] = '';
+  }
 
   switch ($_REQUEST['err']) {
 
+    // TODO - can we make sure $kga exists?
     case 'db':
         $headline = $kga['lang']['errors'][0]['hdl'];
         $message  = $kga['lang']['errors'][0]['txt'];
@@ -47,10 +62,7 @@ else {
   }
 }
 
-$tpl->assign('headline', $headline);
-$tpl->assign('message', $message);
+$view->assign('headline', $headline);
+$view->assign('message', $message);
 
-$tpl->display('error.tpl');
-
-
-?>
+echo $view->render('misc/error.php');

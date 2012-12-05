@@ -320,6 +320,8 @@ return array(
 'list'=> '列表',
 'sublists' => '子列表',
 
+"filter" => "过滤",
+
 'internalProject' => '内部项目',
 
 'exactSums' => '不应该使用四舍五入后的数值，应该使用精确数值.',
@@ -335,9 +337,6 @@ return array(
 'TimeDateInputError' => '时间或日期不是有效的.',
 
 'StartTimeBeforeEndTime' => '开始时间一定要在结束时间之前.',
-
-'taskAssignable' => '可转让',
-'taskAssignableDescription' => '项目中可转让',
 
 
 'credits' => <<<EOF
@@ -441,8 +440,6 @@ EOF
 "stdrd_location"  		   => "标准定位",
 "timeformat"	     	   => "时间格式",
 "dateformat"			   => "日期格式",
-
-"filter"	 		       => "过滤",
 
 "refundable_all"	 	   => "全部",
 "refundable_refundable"    => "可返还",
