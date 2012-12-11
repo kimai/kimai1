@@ -100,6 +100,7 @@ $query =
   `timeframeBegin` varchar(60) NOT NULL default '0',
   `timeframeEnd` varchar(60) NOT NULL default '0',
   `apikey` varchar(30) NULL DEFAULT NULL,
+  `globalRoleID` int(10) NOT NULL,
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `apikey` (`apikey`)
 );";
@@ -136,6 +137,7 @@ $query=
 "CREATE TABLE `${p}groups_users` (
   `groupID` int(10) NOT NULL,
   `userID` int(10) NOT NULL,
+  `membershipRoleID` int(10) NOT NULL,
   PRIMARY KEY (`groupID`,`userID`)
 ) AUTO_INCREMENT=1;";
 exec_query($query);
@@ -297,6 +299,8 @@ $query =
 ) ENGINE = InnoDB ";
 exec_query($query);
 
+require("installPermissions.php");
+
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
 // GROUPS
@@ -319,7 +323,7 @@ exec_query($query);
 
 // ADMIN USER
 $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
-$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`,`status` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0');";
+$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`,`status`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0',1);";
 exec_query($query);
 
 $query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
@@ -334,11 +338,11 @@ exec_query($query);
 $query="INSERT INTO `${p}groupleaders` (`groupID`,`userID`) VALUES ('1','$randomAdminID');";
 exec_query($query);
 
-$query="INSERT INTO `${p}groups_users` (`groupID`,`userID`) VALUES ('1','$randomAdminID');";
-exec_query($query);
-
 
 // CROSS TABLES
+$query="INSERT INTO `${p}groups_users` (`groupID`,`userID`, `roleID`) VALUES ('1','$randomAdminID','1');";
+exec_query($query);
+
 $query="INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
 exec_query($query);
 

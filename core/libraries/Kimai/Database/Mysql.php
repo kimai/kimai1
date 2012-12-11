@@ -2549,13 +2549,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     $columns[] = "ban";
     $columns[] = "banTime";
     $columns[] = "secure";
-
     $columns[] = "lastProject";
     $columns[] = "lastActivity";
     $columns[] = "lastRecord";
     $columns[] = "timeframeBegin";
     $columns[] = "timeframeEnd";
     $columns[] = "apikey";
+    $columns[] = "globalRoleID";
 
     $this->conn->SelectRows($table, $filter, $columns);
     $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
@@ -3557,6 +3557,27 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
+  * Checks if a user (given by user ID) can be accessed by another user (given by user array):
+  *
+  * @see get_watchable_users
+  * @param integer $user user to check for
+  * @param integer $userID user to check if watchable
+  * @return true if watchable, false otherwiese
+  * @author sl
+  */
+  public function is_watchable_user($user, $userID) {
+      $arr = array();
+      $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
+
+      $watchableUsers = $this->get_watchable_users($user);
+      foreach ($watchableUsers as $watchableUser) {
+        if ($watchableUser['userID'] == $userID)
+          return true;
+      }
+      return false;
+  }
+
+  /**
   * returns assoc. array where the index is the ID of a user and the value the time
   * this user has accumulated in the given time with respect to the filtersettings
   *
@@ -4307,6 +4328,274 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   	$table = $this->getActivityTable();
 	$filter = array('activityID' => $activityId, 'trash' => 0);
 	return $this->rowExists($table, $filter);
+  }
+
+
+  /**
+   * Check if a user is allowed to access an object for a given action.
+   * 
+   * @param integer the ID of the user
+   * @param array list of group IDs of the object to check
+   * @param string name of the permission to check for
+   * @param string (all|any) whether the permission must be present for all groups or at least one
+   */
+  public function checkMembershipPermission($userId,$objectGroups,$permission,$requiredFor='all') {
+    $userGroups = $this->getGroupMemberships($userId);
+    $commonGroups = array_intersect($userGroups, $objectGroups);
+
+    if (count($commonGroups) == 0)
+      return false;
+
+    foreach ($commonGroups as $commonGroup) {
+      $roleId = $this->user_get_membership_role($userId,$commonGroup);
+
+      if ($requiredFor == 'any' && $this->membership_role_allows($roleId,$permission))
+        return true;
+      if ($requiredFor == 'all' && !$this->membership_role_allows($roleId,$permission))
+        return false;
+    }
+
+    return $requiredFor == 'all';
+  }
+
+  /**
+   * Returns the membership roleID the user has in the given group.
+   * 
+   * @param integer the ID of the user
+   * @param integer the ID of the group
+   * @return integer|bool membership roleID or false if user is not in the group
+   */
+  public function user_get_membership_role($userID, $groupID) {
+    $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
+    $filter['groupID'] = MySQL::SQLValue($groupID, MySQL::SQLVALUE_NUMBER);
+    $columns[]        = "membershipRoleID";
+    $table = $this->kga['server_prefix']."groups_users";
+
+    $result = $this->conn->SelectRows($table, $filter, $columns);
+
+    if ($result === false)
+      return false;
+
+    $row = $this->conn->RowArray(0,MYSQL_ASSOC);
+    return $row['membershipRoleID'];
+  }
+
+  /**
+   * Check if a membership role gives permission for a specific action.
+   * 
+   * @param integer the ID of the membership role
+   * @param string name of the action / permission
+   * @return bool true if permissions is granted, false otherwise
+   */
+  public function membership_role_allows($roleID, $permission) {
+    $filter['membershipRoleID'] = MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER);
+    $filter[$permission] = 1;
+    $columns[]        = "membershipRoleID";
+    $table = $this->kga['server_prefix']."membershipRoles";
+
+    $result = $this->conn->SelectRows($table, $filter, $columns);
+
+    if ($result === false)
+      return false;
+
+    return $this->conn->RowCount() > 0;
+  }
+
+  /**
+   * Check if a global role gives permission for a specific action.
+   * 
+   * @param integer the ID of the global role
+   * @param string name of the action / permission
+   * @return bool true if permissions is granted, false otherwise
+   */
+  public function global_role_allows($roleID, $permission) {
+    $filter['globalRoleID'] = MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER);
+    $filter[$permission] = 1;
+    $columns[]        = "globalRoleID";
+    $table = $this->kga['server_prefix']."globalRoles";
+
+    $result = $this->conn->SelectRows($table, $filter, $columns);
+
+    if ($result === false)
+      return false;
+
+    $result = $this->conn->RowCount() > 0;
+    
+    Logger::logfile("Global role $roleID gave $result for $permission.");
+    return $result;
+  }
+
+  public function global_role_create($data) {
+    $values = array();
+    
+    foreach ($data as $key => $value) {
+      if ($key == 'name')
+        $values[$key] = MySQL::SQLValue($value);
+      else
+        $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+    }
+    
+    $table = $this->kga['server_prefix']."globalRoles";
+    $result = $this->conn->InsertRow($table, $values);
+
+    if (! $result) {
+      $this->logLastError('global_role_create');
+      return false;
+    }
+
+    return $this->conn->GetLastInsertID();
+  }
+
+  public function global_role_edit($globalRoleID, $data) {
+
+    $values = array();
+    
+    foreach ($data as $key => $value) {
+      if ($key == 'name')
+        $values[$key] = MySQL::SQLValue($value);
+      else
+        $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+    }
+
+    $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);    
+    $table = $this->kga['server_prefix']."globalRoles";
+
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
+    $result = $this->conn->Query($query);
+
+    if ($result == false) {
+        $this->logLastError('global_role_edit');
+        return false;
+    }
+    
+    return true;
+  }
+
+  public function global_role_delete($globalRoleID) {
+    $table = $this->kga['server_prefix']."globalRoles";
+    $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
+    $query = MySQL::BuildSQLDelete($table, $filter);
+    $result = $this->conn->Query($query);
+
+    if ($result == false) {
+        $this->logLastError('global_role_delete');
+        return false;
+    }
+    
+    return true;
+  }
+
+  public function globalRole_get_data($globalRoleID) {
+    $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
+    $table = $this->kga['server_prefix']."globalRoles";
+    $result = $this->conn->SelectRows($table, $filter);
+
+    if (! $result) {
+      $this->logLastError('globalRole_get_data');
+      return false;
+    } else {
+        return $this->conn->RowArray(0,MYSQL_ASSOC);
+    }
+  }
+
+  public function global_roles() {
+      $p = $this->kga['server_prefix'];
+
+      $query = "SELECT a.*, COUNT(b.globalRoleID) AS count_users FROM `${p}globalRoles` a LEFT JOIN `${p}users` b USING(globalRoleID) GROUP BY a.globalRoleID";
+
+      $result = $this->conn->Query($query);
+
+      if ($result == false) {
+          $this->logLastError('global_roles');
+          return false;
+      }
+
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      return $rows;
+  }
+
+  public function membership_role_create($data) {
+    $values = array();
+    
+    foreach ($data as $key => $value) {
+      if ($key == 'name')
+        $values[$key] = MySQL::SQLValue($value);
+      else
+        $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+    }
+    
+    $table = $this->kga['server_prefix']."membershipRoles";
+    $result = $this->conn->InsertRow($table, $values);
+
+    if (! $result) {
+      $this->logLastError('membership_role_create');
+      return false;
+    }
+
+    return $this->conn->GetLastInsertID();
+  }
+
+  public function membership_role_edit($membershipRoleID, $data) {
+
+    $values = array();
+    
+    foreach ($data as $key => $value) {
+      if ($key == 'name')
+        $values[$key] = MySQL::SQLValue($value);
+      else
+        $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+    }
+
+    $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);    
+    $table = $this->kga['server_prefix']."membershipRoles";
+
+    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
+    return $this->conn->Query($query);
+  }
+
+  public function membership_role_delete($membershipRoleID) {
+    $table = $this->kga['server_prefix']."membershipRoles";
+    $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
+    $query = MySQL::BuildSQLDelete($table, $filter);
+    $result = $this->conn->Query($query);
+
+    if ($result == false) {
+        $this->logLastError('membership_role_delete');
+        return false;
+    }
+    
+    return true;
+  }
+
+  public function membershipRole_get_data($membershipRoleID) {
+    $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
+    $table = $this->kga['server_prefix']."membershipRoles";
+    $result = $this->conn->SelectRows($table, $filter);
+
+    if (! $result) {
+      $this->logLastError('membershipRole_get_data');
+      return false;
+    } else {
+        return $this->conn->RowArray(0,MYSQL_ASSOC);
+    }
+  }
+
+  public function membership_roles() {
+      $p = $this->kga['server_prefix'];
+
+      $query = "SELECT a.*, COUNT(DISTINCT b.userID) as count_users FROM `${p}membershipRoles` a LEFT JOIN `${p}groups_users` b USING(membershipRoleID) GROUP BY a.membershipRoleID";
+
+      $result = $this->conn->Query($query);
+
+      if ($result == false) {
+          $this->logLastError('membership_roles');
+          return false;
+      }
+
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+      return $rows;
   }
   
   

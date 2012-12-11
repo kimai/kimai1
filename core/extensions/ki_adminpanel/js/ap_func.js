@@ -45,7 +45,7 @@ function adminPanel_extension_resize() {
 	$(".adminPanel_extension_panel_header").css("width", panel_w);
 	$("#adminPanel_extension_panel").css("height", panel_h);
 	
-	$(".adminPanel_extension_subtab").css("height", panel_h - (7*25)-20-1);
+	$(".adminPanel_extension_subtab").css("height", panel_h - (10*25)-20-1);
 	
     adminPanel_extension_subtab_autoexpand();
 }
@@ -63,6 +63,8 @@ function adminPanel_extension_subtab_expand(id) {
 	$("#adminPanel_extension_sub6").removeClass("active");
         $("#adminPanel_extension_sub7").removeClass("active");
         $("#adminPanel_extension_sub8").removeClass("active");
+        $("#adminPanel_extension_sub9").removeClass("active");
+        $("#adminPanel_extension_sub10").removeClass("active");
 	$(".adminPanel_extension_subtab").css("display", "none");	
 	
 	sub_id="#adminPanel_extension_sub" +id;
@@ -226,6 +228,38 @@ function adminPanel_extension_newStatus() {
  });
 }
 
+//----------------------------------------------------------------------------------------
+//graps the value of the newGlobalRole input field 
+//and ajaxes it to the createGlobalRole function of the processor
+//
+function adminPanel_extension_newGlobalRole() {
+ newGlobalRole = $("#newGlobalRole").val();
+ if (newGlobalRole == "") {
+     alert(lang_checkGlobalRoleName);
+     return false;
+ }
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "createGlobalRole", axValue: newGlobalRole, id: 0 }, 
+ function(data) {
+     adminPanel_extension_refreshSubtab('globalRole');
+ });
+}
+
+//----------------------------------------------------------------------------------------
+//graps the value of the newMembershipRole input field 
+//and ajaxes it to the createMembershipRole function of the processor
+//
+function adminPanel_extension_newMembershipRole() {
+ newMembershipRole = $("#newMembershipRole").val();
+ if (newMembershipRole == "") {
+     alert(lang_checkMembershipRoleName);
+     return false;
+ }
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "createMembershipRole", axValue: newMembershipRole, id: 0 }, 
+ function(data) {
+     adminPanel_extension_refreshSubtab('membershipRole');
+ });
+}
+
 
 
 // ----------------------------------------------------------------------------------------
@@ -250,6 +284,24 @@ function adminPanel_extension_editStatus(id) {
  floaterShow(adminPanel_extension_path + "floaters.php","editStatus",0,id,450,100);
 }
 
+//----------------------------------------------------------------------------------------
+//by clicking on the edit button of a global role the edit dialogue pops up
+//
+function adminPanel_extension_editGlobalRole(id) {
+ floaterShow(adminPanel_extension_path + "floaters.php","editGlobalRole",0,id,550,200, function() {
+            $('.floatingTabLayout').each(doFloatingTabLayout);
+});
+}
+
+//----------------------------------------------------------------------------------------
+//by clicking on the edit button of a membership role the edit dialogue pops up
+//
+function adminPanel_extension_editMembershipRole(id) {
+ floaterShow(adminPanel_extension_path + "floaters.php","editMembershipRole",0,id,550,200, function() {
+            $('.floatingTabLayout').each(doFloatingTabLayout);
+});
+}
+
 // ----------------------------------------------------------------------------------------
 // refreshes either user/group/advanced/DB subtab
 //
@@ -269,6 +321,8 @@ function adminPanel_extension_refreshSubtab(tab) {
             case "customers":  	target = "#adminPanel_extension_s6"; break
             case "projects": 	target = "#adminPanel_extension_s7"; break
             case "activities": 	target = "#adminPanel_extension_s8"; break
+            case "globalRole":  target = "#adminPanel_extension_s9"; break
+            case "membershipRole": target = "#adminPanel_extension_s10"; break
         }
         $(target).html(data);
     });
@@ -385,6 +439,36 @@ function adminPanel_extension_deleteActivity(id) {
             }
         }
     );
+}
+
+//----------------------------------------------------------------------------------------
+//delete global role
+//
+function adminPanel_extension_deleteGlobalRole(id) {
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGlobalRole", axValue: 0, id: id }, 
+     function(data) {
+         if (confirm(data)) {
+             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGlobalRole", axValue: 1, id: id }, 
+                 function() { adminPanel_extension_refreshSubtab('globalRole'); }
+             );
+         }
+     }
+ );
+}
+
+//----------------------------------------------------------------------------------------
+//delete membership role
+//
+function adminPanel_extension_deleteMembershipRole(id) {
+ $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteMembershipRole", axValue: 0, id: id }, 
+     function(data) {
+         if (confirm(data)) {
+             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteMembershipRole", axValue: 1, id: id }, 
+                 function() { adminPanel_extension_refreshSubtab('membershipRole'); }
+             );
+         }
+     }
+ );
 }
 
 // ----------------------------------------------------------------------------------------

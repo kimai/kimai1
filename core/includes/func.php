@@ -157,8 +157,18 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
             }
             break;
 
-        case 'user':
-            $users = $database->get_watchable_users($kga['user']);
+        case 'sameGroupUser':
+            $users = $database->get_users(0,$database->getGroupMemberships($kga['user']['userID']));
+
+            foreach ($users as $user) {
+              if ($includeDeleted || !$user['trash']) {
+                $sel[$user['userID']] = $user['name'];
+              }
+            }
+            break;
+
+        case 'allUser':
+            $users = $database->get_users($kga['user']);
 
             foreach ($users as $user) {
               if ($includeDeleted || !$user['trash']) {
@@ -404,4 +414,89 @@ function getRequestBool($name)
     }
 
     return 0;
+}
+
+/**
+ * @brief Check the permission to access an object.
+ * 
+ * This method is meant to check permissions for adding, editing and deleting customers,
+ * projects, activities and users. The input is not checked whether it falls within those boundaries since
+ * it can also work with others, if the permissions match the pattern.
+ * 
+ * @param $objectTypeName string name of the object type being edited (e.g. Project)
+ * @param $action the action being performed (e.g. add)
+ * @param $oldGroups the old groups of the object (empty array for new objects)
+ * @param $newGroups the new groups of the object (same as oldGroups if nothing should be changed in group assignment)
+ * @return true if the permission is granted, false otherwise
+ */
+function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups) {
+  global $database, $kga;
+    $assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+    $assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+
+  if (count($assignedOtherGroups) > 0) {
+    $permissionName = "core-${objectTypeName}-otherGroup-${action}";
+    if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+      return false;
+    }
+  }
+
+  if (count($assignedOwnGroups) > 0) {
+    $permissionName = "core-${objectTypeName}-${action}";
+    if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
+      Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+      return false;
+    }
+  }
+
+  if (count($oldGroups) != array_intersect($oldGroups,$newGroups)) {
+    // group assignment has changed
+
+      $addToGroups = array_diff($newGroups, $oldGroups);
+      $removeFromGroups = array_diff($oldGroups, $newGroups);
+
+      $addToOtherGroups = array_diff     ($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
+      $addToOwnGroups   = array_intersect($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
+      $removeFromOtherGroups = array_diff     ($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
+      $removeFromOwnGroups   = array_intersect($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
+
+      $action = 'assign';
+      if (count($addToOtherGroups) > 0) {
+        $permissionName = "core-${objectTypeName}-otherGroup-${action}";
+        if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          return false;
+        }
+      }
+
+      if (count($addToOwnGroups) > 0) {
+        $permissionName = "core-${objectTypeName}-${action}";
+        if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
+          Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          return false;
+        }
+      }
+
+      $action = 'unassign';
+      if (count($removeFromOtherGroups) > 0) {
+        $permissionName = "core-${objectTypeName}-otherGroup-${action}";
+        if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          return false;
+        }
+      }
+
+      if (count($removeFromOwnGroups) > 0) {
+        $permissionName = "core-${objectTypeName}-${action}";
+        if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
+          Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          return false;
+        }
+      }
+
+    
+  }
+
+  return true;
 }

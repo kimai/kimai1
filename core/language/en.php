@@ -124,6 +124,17 @@ return array(
 "database"          => "Database",
 "options"           => "Options",
 "status"            => "Status",
+"globalRole"        => "global role",
+"addGlobalRole"     => "add global role",
+"editGlobalRole"    => "edit global role",
+"deleteGlobalRole"  => "delete global role",
+"globalRoles"       => "global roles",
+"membershipRole"    => "gruppenbezogene Rolle",
+"addMembershipRole" => "gruppenbezogene Rolle hinzufügen",
+"editMembershipRole"=> "gruppenbezogene Rolle bearbeiten",
+"deleteMembershipRole"=> "gruppenbezogene Rolle löschen",
+"membershipRoles"   => "gruppenbezogene Rollen",
+"rolename"          => "Rollenname",
 "editstatus"		=> "Edit status",
 "new_status"        => "Add status",
 "description"       => "Description",
@@ -195,6 +206,8 @@ return array(
 "checkUsername"     => "You must enter a username in the field left from the add-button!",
 "checkGroupname"    => "You must enter a group name in the field left from the add-button!",
 "checkStatusname"    => "You must enter a status name in the field left from the add-button!",
+"checkGlobalRoleName"       =>  "You must enter a role name in the field left from the add-button!",
+"checkMembershipRoleName"   =>  "You must enter a role name in the field left from the add-button!",
 "clickToReload"     => "Click here to reload the GUI",
 "sure"              => "Sure?",
 "clock"             => "Clock",
@@ -364,6 +377,7 @@ EOF
 'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
 
 'errorMessages' => array(
+  'permissionDenied' => 'Permission denied',
   'userWithSameName' => 'A customer name can not be the same as a user name.',
   'customerWithSameName' => 'A user name can not be the same as a customer name.'
 ),
@@ -492,6 +506,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'unusedBudget' => 'unused'
 ),
 
+'extensionsTitle' => 'Extensions',
 'extensions' => array(
   'ki_timesheet' => 'Timesheet',
   'adminPanel_extension' => 'Admin Panel',
@@ -499,6 +514,20 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'ki_export' => 'Export',
   'ki_budget' => 'Budget',
   'ki_invoice' => 'Invoice' 
+),
+
+'permissions' => array(
+  'edit' => 'edit',
+  'delete' => 'delete',
+  'assign' => 'assign',
+  'unassign' => 'unassign',
+  'ownEntry' => 'own entry',
+  'otherEntry' => 'entry of other user',
+  'ownGroup' => 'same group',
+  'otherGroup' => 'different group',
+  'showRates' => 'show rates',
+  'editRates' => 'edit rates',
+  'editAdvanced' => 'edit advanced settings'
 )
 
 );

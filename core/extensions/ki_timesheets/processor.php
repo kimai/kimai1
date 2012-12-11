@@ -275,6 +275,8 @@ switch ($axAction) {
             $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
         }
 
+        $view->showRates = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
+
         echo $view->render("timeSheet.php");
     break;
 
@@ -293,6 +295,34 @@ switch ($axAction) {
         }
       }
 
+      $action = 'add';
+      if ($id)
+        $action = 'edit';
+      if (isset($_REQUEST['erase']))
+        $action = 'delete';
+
+      if ($id)
+        $userID = $data['userID'];
+      else
+        $userID = $_REQUEST['userID'];
+
+      if ($userID == $kga['user']['userID']) {
+        if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-'.$action)) {
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['errorMessages']['permissionDenied']));
+          return;
+        }
+      }
+      else if ($database->is_watchable_user($kga['user'], $userID)) {
+        if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($userID),'ki_timesheets-otherEntry-ownGroup-'.$action)) {
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['errorMessages']['permissionDenied']));
+          return;
+        }
+      }
+      else if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-'.$action)) {
+        echo json_encode(array('result'=>'error','message'=>$kga['lang']['errorMessages']['permissionDenied']));
+        return;
+      }
+
       if (isset($_REQUEST['erase'])) {
         // delete checkbox set ?
         // then the record is simply dropped and processing stops at this point
@@ -308,27 +338,18 @@ switch ($axAction) {
       $data['description']     = $_REQUEST['description'];
       $data['comment']         = $_REQUEST['comment'];
       $data['commentType']    = $_REQUEST['commentType'];
-      $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+      if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates'))
+        $data['rate']            = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+      else if (!$id)
+        $data['rate']            = $database->get_best_fitting_rate($kga['user']['userID'],$data['projectID'],$data['activityID']);
       $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
       $data['cleared']         = isset($_REQUEST['cleared']);
       $data['statusID']          = $_REQUEST['statusID'];
       $data['billable']        = $_REQUEST['billable'];
       $data['budget']          = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
       $data['approved']        = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
+      $data['userID']          = $userID;
 
-      if (isset($_REQUEST['userID'])) {
-        // only take the given user id if it is in the list of watchable users
-        $users = $database->get_watchable_users($kga['user']);
-        foreach ($users as $user) {
-          if ($user['userID'] == $_REQUEST['userID']) {
-            $data['userID'] = $user['userID'];
-            break;
-          }
-        }
-      }
-
-      if (!isset($data['userID']))
-        $data['userID'] = $kga['user']['userID'];
 
       // check if the posted time values are possible
 

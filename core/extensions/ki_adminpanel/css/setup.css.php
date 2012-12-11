@@ -16,3 +16,15 @@
     left:10px;
 }
 
+.floater_content .permission {
+  margin-right: 1em;
+  display: inline-block;
+}
+
+fieldset legend {
+  font-weight: bold;
+}
+
+fieldset {
+  margin-top: 8px;
+}

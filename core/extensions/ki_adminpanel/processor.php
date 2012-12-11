@@ -37,6 +37,9 @@ switch ($axAction)
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $error = $kga['lang']['errorMessages']['customerWithSameName'];
 
+                if (!checkGroupedObjectPermission('user', 'add', array(), $kga['user']['groups']))
+                  $error = $kga['lang']['errorMessages']['permissionDenied'];
+
                 $userId = false;
                 if ($error === false) {
                   $userId = $database->user_create($userData);
@@ -50,12 +53,18 @@ switch ($axAction)
 		break;
 
 	case "createStatus" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-add'))
+                  break;
+
 		// create new status
 		$status_data['status'] = trim($axValue);
 		$new_status_id = $database->status_create($status_data);
 		break;
 
 	case "createGroup" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-add'))
+                  break;
+
 		// create new group
 		$group['name'] = trim($axValue);
 		$newGroupID = $database->group_create($group);
@@ -211,10 +220,28 @@ switch ($axAction)
 				$view->selected_activity_filter = isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2;
 				echo $view->render('activities.php');
 				break;
+
+                        case "globalRole":
+                                $view->globalRoles = $database->global_roles();
+                                echo $view->render('globalRoles.php');
+                                break;
+
+                        case "membershipRole":
+                                $view->membershipRoles = $database->membership_roles();
+                                echo $view->render('membershipRoles.php');
+                                break;
 		}
 		break;
 
-	case "deleteUser" :
+	case "deleteUser":
+        
+                $oldGroups = $database->getGroupMemberships($id);
+
+                if (!checkGroupedObjectPermission('user', 'delete', $oldGroups, $oldGroups)) {
+                  echo $kga['lang']['errorMessages']['permissionDenied'];
+                  break;
+                }
+
 		// set the trashflag of a user
 		switch ($axValue) {
 			case 0 :
@@ -233,6 +260,9 @@ switch ($axAction)
 		break;
 
 	case "deleteGroup" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core_deleteGroup'))
+                  break;
+
 		// removes a group
 		switch ($axValue) {
 			case 0 :
@@ -247,6 +277,9 @@ switch ($axAction)
 		break;
 
 	case "deleteStatus" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-delete'))
+                  break;
+
 		// asks for confirmation and deletes a status
 		switch ($axValue) {
 			case 0 :
@@ -261,6 +294,14 @@ switch ($axAction)
 		break;
 
 	case "deleteProject" :
+        
+                $oldGroups = $database->project_get_groupIDs($id);
+
+                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups)) {
+                  echo $kga['lang']['errorMessages']['permissionDenied'];
+                  break;
+                }
+
 		// set the trashflag of a project
 		switch ($axValue) {
 			case 0 :
@@ -275,6 +316,14 @@ switch ($axAction)
 		break;
 
 	case "deleteCustomer" :
+        
+                $oldGroups = $database->customer_get_groupIDs($id);
+
+                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups)) {
+                  echo $kga['lang']['errorMessages']['permissionDenied'];
+                  break;
+                }
+
 		// set the trashflag of a customer
 		switch ($axValue) {
 			case 0 :
@@ -289,6 +338,14 @@ switch ($axAction)
 		break;
 
 	case "deleteActivity" :
+        
+                $oldGroups = $database->activity_get_groupIDs($id);
+
+                if (!checkGroupedObjectPermission('activity', 'delete', $oldGroups, $oldGroups)) {
+                  echo $kga['lang']['errorMessages']['permissionDenied'];
+                  break;
+                }
+
 		// set the trashflag of an activity
 		switch ($axValue) {
 			case 0 :
@@ -317,6 +374,7 @@ switch ($axAction)
 		break;
 
 	case "sendEditUser" :
+
 		// process editUser form
 		$userData['name'] = trim($_REQUEST['name']);
 		$userData['status'] = $_REQUEST['status'];
@@ -328,17 +386,26 @@ switch ($axAction)
 			$userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
 		}
 
+                $oldGroups = $database->getGroupMemberships($id);
+
                 // validate data
                 $errorMessages = array();
 
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
+        
 
-                $success = false;
-                if (count($errorMessages) == 0) {
-                  $database->user_edit($id, $userData);
-                  $database->setGroupMemberships($id, $_REQUEST['groups']);
-                  $success = true;
+                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['groups'])) {
+                  $errorMessages[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $success = false;
+                }
+                else {
+
+                  if (count($errorMessages) == 0) {
+                    $database->user_edit($id, $userData);
+                    $database->setGroupMemberships($id, $_REQUEST['groups']);
+                    $success = true;
+                  }
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
@@ -348,6 +415,8 @@ switch ($axAction)
 		break;
 
 	case "sendEditGroup" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-edit'))
+                  break;
 		// process editGroup form
 		$group['name'] = trim($_REQUEST['name']);
 		$database->group_edit($id, $group);
@@ -356,12 +425,16 @@ switch ($axAction)
 		break;
 
 	case "sendEditStatus" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-edit'))
+                  break;
 		// process editStatus form
 		$status_data['status'] = trim($_REQUEST['status']);
 		$database->status_edit($id, $status_data);
 		break;
 
 	case "sendEditAdvanced" :
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'adminPanel_extension-editAdvanced'))
+                  break;
 		// process AdvancedOptions form
 		$config_data['adminmail'] = $_REQUEST['adminmail'];
 		$config_data['loginTries'] = $_REQUEST['logintries'];
@@ -431,4 +504,90 @@ switch ($axAction)
 	case "toggleDeletedUsers" :
 		setcookie("adminPanel_extension_show_deleted_users", $axValue);
 		break;
+
+        case "createGlobalRole":
+                if (!isset($kga['user']))
+                  break;
+
+                // create new status
+                $role_data['name'] = trim($axValue);
+                $database->global_role_create($role_data);
+                break;
+
+        case "createMembershipRole":
+                if (!isset($kga['user']))
+                  break;
+
+                // create new status
+                $role_data['name'] = trim($axValue);
+                $database->membership_role_create($role_data);
+                break;
+
+        case "editGlobalRole":
+                $id = $_REQUEST['id'];
+                $newData = $_REQUEST;
+                unset($newData['id']);
+                unset($newData['axAction']);
+                
+                $roleData = $database->globalRole_get_data($id);
+                
+                foreach ($roleData as $key => &$value) {
+                  if (isset($newData[$key]))
+                    $value = $newData[$key];
+                  else if ($key != "globalRoleID" && $key != "name")
+                    $value = 0;
+                }
+
+                $database->global_role_edit($id, $roleData);
+                break;
+
+        case "editMembershipRole":
+                $id = $_REQUEST['id'];
+                $data = $_REQUEST;
+                unset($newData['id']);
+                unset($newData['axAction']);
+                
+                $roleData = $database->membershipRole_get_data($id);
+                
+                foreach ($roleData as $key => &$value) {
+                  if (isset($newData[$key]))
+                    $value = $newData[$key];
+                  else if ($key != "membershipRoleID" && $key != "name")
+                    $value = 0;
+                }
+
+                $database->membership_role_edit($id, $roleData);
+                break;
+
+        case "deleteGlobalRole":
+                if (!isset($kga['user']))
+                  break;
+
+                switch ($axValue) {
+                  case 0:
+                    // Fire JavaScript confirm when a user is about to be deleted
+                    echo $kga['lang']['sure'];
+                    break;
+                  case 1:
+                    $database->global_role_delete($id);
+                    break;
+                }
+
+                break;
+
+        case "deleteMembershipRole":
+                if (!isset($kga['user']))
+                  break;
+
+                switch ($axValue) {
+                  case 0:
+                    // Fire JavaScript confirm when a user is about to be deleted
+                    echo $kga['lang']['sure'];
+                    break;
+                  case 1:
+                    $database->membership_role_delete($id);
+                    break;
+                }
+
+                break;
 }

@@ -250,12 +250,20 @@ switch ($axAction) {
                 $data['password'] = '';
               }
 
+              $oldGroups = array();
+              if ($id)
+                $oldGroups = $database->customer_get_groupIDs($id);
+
               // validate data
               $errorMessages = array();
               $success = false;
 
               if ($database->user_name2id($data['name']) !== false)
                 $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
+
+              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
+                $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
+              
               
               if (count($errorMessages) == 0) {
             	
@@ -302,6 +310,13 @@ switch ($axAction) {
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['myRate']);
               $data['fixedRate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
+
+              $oldGroups = array();
+              if ($id)
+                $oldGroups = $database->project_get_groupIDs($id);
+
+              if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $_REQUEST['projectGroups']))
+                break;
                 
                 // add or update the project
               if (!$id) {
@@ -349,6 +364,13 @@ switch ($axAction) {
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['myRate']);
               $data['fixedRate']      = 
                   str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
+
+              $oldGroups = array();
+              if ($id)
+                $oldGroups = $database->activity_get_groupIDs($id);
+
+              if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $_REQUEST['activityGroups']))
+                break;
                 
                 // add or update the project
               if (!$id) {

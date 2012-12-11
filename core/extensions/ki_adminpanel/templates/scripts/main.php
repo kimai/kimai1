@@ -76,6 +76,34 @@
 			<?php echo $this->admin['groups']?>
 		</div>
 	</div>
+
+<!-- edit global roles -->
+
+        <div id="adminPanel_extension_sub9">
+                <div class="adminPanel_extension_panel_header">
+                        <a onClick="adminPanel_extension_subtab_expand(9)">
+                            <span class="adminPanel_extension_accordeon_triangle"></span>
+                            <?php echo $this->kga['lang']['globalRoles']?>
+                        </a>
+                </div>
+                <div id="adminPanel_extension_s9" class="adminPanel_extension_subtab">
+                        <?php echo $this->globalRoles_display?>
+                </div>
+        </div>
+
+<!-- edit membership roles -->
+
+        <div id="adminPanel_extension_sub10">
+                <div class="adminPanel_extension_panel_header">
+                        <a onClick="adminPanel_extension_subtab_expand(10)">
+                            <span class="adminPanel_extension_accordeon_triangle"></span>
+                            <?php echo $this->kga['lang']['membershipRoles']?>
+                        </a>
+                </div>
+                <div id="adminPanel_extension_s10" class="adminPanel_extension_subtab">
+                        <?php echo $this->membershipRoles_display?>
+                </div>
+        </div>
 	
 <!-- edit status -->
 

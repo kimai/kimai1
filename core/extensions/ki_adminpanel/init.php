@@ -134,6 +134,19 @@
 
     $view->users = $users;
 
+    // ==============================
+    // = display global roles table =
+    // ==============================
+    $view->globalRoles = $database->global_roles();
+    $view->globalRoles_display = $view->render("globalRoles.php");
+
+    // ==================================
+    // = display membership roles table =
+    // ==================================
+    $view->membershipRoles = $database->membership_roles();
+    $view->membershipRoles_display = $view->render("membershipRoles.php");
+
+
     $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups',0);
     $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users',0);
     $view->languages = Translations::langs();

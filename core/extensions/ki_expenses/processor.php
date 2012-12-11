@@ -109,6 +109,22 @@ switch ($axAction) {
             }
         }
 
+        $action = 'add';
+        if ($id)
+          $action = 'edit';
+        if (isset($_REQUEST['erase']))
+          $action = 'delete';
+
+        if ($id)
+          $userID = $data['userID'];
+        else
+          $userID = $_REQUEST['userID'];
+
+        if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_expenses-ownEntry-'.$action)) {
+          echo json_encode(array('result'=>'error','message'=>$kga['lang']['errorMessages']['permissionDenied']));
+          return;
+        }
+
         $data['projectID']    = $_REQUEST['projectID'];
         $data['designation']  = $_REQUEST['designation'];
         $data['multiplier']   = $_REQUEST['multiplier'];

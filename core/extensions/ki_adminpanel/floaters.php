@@ -22,6 +22,12 @@ $isCoreProcessor = 0;
 $dir_templates = "templates";
 require("../../includes/kspi.php");
 
+
+$datasrc = "config.ini";
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
+$view->addHelperPath(WEBROOT . 'extensions/' . $dir_ext . '/templates/helpers','Zend_View_Helper');
+
 switch ($axAction) {
 
     case "editUser":
@@ -52,7 +58,7 @@ switch ($axAction) {
         $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
         $view->selectedUsers = $selectedUsers;
                       
-        $view->users = makeSelectBox('user',null,null,true);
+        $view->users = makeSelectBox('sameGroupUser',null,null,true);
         
         $view->group_details = $groupDetails;
         echo $view->render("floaters/editgroup.php"); 
@@ -69,7 +75,45 @@ switch ($axAction) {
         $view->status_details = $statusDetails;
         echo $view->render("floaters/editstatus.php"); 
         
-    break;       
+    break;    
+
+    case "editGlobalRole":    
+    // =============================
+    // = Builds edit-group dialogue =
+    // =============================
+        
+        $globalRoleDetails = $database->globalRole_get_data($_REQUEST['id']);
+        
+        $view->id = $globalRoleDetails['globalRoleID'];
+        $view->name = $globalRoleDetails['name'];
+        $view->action = 'editGlobalRole';
+        $view->reloadSubtab = 'globalRoles';
+        $view->title =  $kga['lang']['editGlobalRole'];
+        $view->permissions = $globalRoleDetails;
+        unset($view->permissions['globalRoleID']);
+        unset($view->permissions['name']);
+        echo $view->render("floaters/editglobalrole.php"); 
+        
+    break;     
+
+    case "editMembershipRole":    
+    // =============================
+    // = Builds edit-group dialogue =
+    // =============================
+        
+        $membershipRoleDetails = $database->membershipRole_get_data($_REQUEST['id']);
+        
+        $view->id = $membershipRoleDetails['membershipRoleID'];
+        $view->name = $membershipRoleDetails['name'];
+        $view->action = 'editGlobalRole';
+        $view->reloadSubtab = 'membershipRoles';
+        $view->title =  $kga['lang']['editMembershipRole'];
+        $view->permissions = $membershipRoleDetails;
+        unset($view->permissions['membershipRoleID']);
+        unset($view->permissions['name']);
+        echo $view->render("floaters/editglobalrole.php"); 
+        
+    break;     
 
 }
 
