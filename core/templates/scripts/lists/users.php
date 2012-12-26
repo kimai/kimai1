@@ -1,7 +1,7 @@
 <table>
   <tbody>
     <?php
-    if (!isset($this->users) || $this->users == '0' || count($this->users) == 0)
+    if (count($this->users) == 0)
     {
         ?>
         <tr>

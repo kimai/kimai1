@@ -7,12 +7,13 @@
                 	if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
                 	    return false;
 
+                clearFloaterErrorMessages();
             	},
     success: function(result) {
         for (var fieldName in result.errors)
           setFloaterErrorMessage(fieldName,result.errors[fieldName]);
         
-        if (result.success) {
+        if (result.errors.length == 0) {
           hook_users_changed();
           adminPanel_extension_refreshSubtab('groups');
           floaterClose();

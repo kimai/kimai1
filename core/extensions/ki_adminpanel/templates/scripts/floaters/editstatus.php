@@ -1,11 +1,17 @@
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#adminPanel_extension_form_editstatus').ajaxForm( { 'beforeSubmit' :function() { 
-                floaterClose();
-                return true;
-            },
-            'success': function () {
-                adminPanel_extension_refreshSubtab('status');
+            $('#adminPanel_extension_form_editstatus').ajaxForm( {
+              'beforeSubmit' :function() { 
+                clearFloaterErrorMessages();
+              },
+              'success': function () {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+                
+                if (result.errors.length == 0) {
+                  floaterClose();
+                  adminPanel_extension_refreshSubtab('status');
+                }
             }}); 
         }); 
     </script>

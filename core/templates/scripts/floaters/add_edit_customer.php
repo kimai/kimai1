@@ -12,23 +12,18 @@
             $('#add_edit_customer').ajaxForm({
               'beforeSubmit': function() { 
                 clearFloaterErrorMessages();
-
-                if ($('#customerGroups').val() == null) {
-                  alert("<?php echo $this->kga['lang']['atLeastOneGroup']?>");
-                  return;
-                }
-
               },
               'success': function(result) {
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 
                 
-                if (result.success) {
+                if (result.errors.length == 0) {
                   floaterClose();
                   hook_customers_changed();
                 }
               }});
+
              $('#floater_innerwrap').tabs({ selected: 0 });
         }); 
     </script>

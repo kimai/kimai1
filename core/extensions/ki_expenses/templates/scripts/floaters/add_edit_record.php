@@ -6,14 +6,17 @@
             $('#edit_day').datepicker();
 
             $('#expense_extension_form_add_edit_record').ajaxForm( {
+              'beforeSubmit' :function() { 
+                clearFloaterErrorMessages();
+              },
               'success' : function(data) {
-                var result = jQuery.parseJSON(data);
-                if (result.result == "ok") {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+                
+                
+                if (result.errors.length == 0) {
                   floaterClose();
                   expense_extension_reload();
-                }
-                else {
-                  alert(result.message);
                 }
               }
             });

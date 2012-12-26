@@ -1,16 +1,19 @@
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#addProject').ajaxForm(function() { 
+            $('#addProject').ajaxForm({
+              'beforeSubmit': function() { 
+                clearFloaterErrorMessages();
+              },
+              'success': function(result) {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
 
-                if ($('#projectGroups').val() == null) {
-                  alert("<?php echo $this->kga['lang']['atLeastOneGroup']?>");
-                  return;
+                if (result.errors.length == 0) {
+                  floaterClose();
+                  hook_projects_changed();
+                  hook_activities_changed();
                 }
-
-                floaterClose();
-                hook_projects_changed();
-                hook_activities_changed();
-            });
+            }});
 
 
             function deleteButtonClicked() {

@@ -98,7 +98,8 @@
                     task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
-                    add(data);
+                    if (data.errors.length != 0) return;
+                    add(data.rates);
                   }
                 );  
               },
@@ -127,7 +128,8 @@
                     task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
-                    add(data);
+                    if (data.errors.length != 0) return;
+                    add(data.rates);
                   }
                 );  
               },
@@ -145,6 +147,7 @@
 <?php endif; ?>
 
             $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( { 'beforeSubmit' :function() { 
+                clearFloaterErrorMessages();
                 if (!$('#start_day').val().match(ts_dayFormatExp) ||
                     ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
                     !$('#start_time').val().match(ts_timeFormatExp) ||
@@ -221,14 +224,13 @@
 
               return true;
             },
-              'success' : function(data) {
-                var result = jQuery.parseJSON(data);
-                if (result.result == "ok") {
+              'success' : function(result) {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
                   floaterClose();
                   ts_ext_reload();
-                }
-                else {
-                  alert(result.message);
                 }
               }
             });

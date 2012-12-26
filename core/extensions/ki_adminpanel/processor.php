@@ -33,44 +33,62 @@ switch ($axAction)
 		$userData['active'] = 0;
 
                 // validate data
-                $error = false;
+                $errors = array();
                 if ($database->customer_nameToID($userData['name']) !== false)
-                  $error = $kga['lang']['errorMessages']['customerWithSameName'];
+                  $errors['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
 
                 if (!checkGroupedObjectPermission('user', 'add', array(), $kga['user']['groups']))
-                  $error = $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 $userId = false;
-                if ($error === false) {
+                if (count($errors) == 0) {
                   $userId = $database->user_create($userData);
                   $database->setGroupMemberships($userId, $kga['user']['groups']);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
                 echo json_encode(array(
-                  'error' => $error,
+                  'errors' => $errors,
                   'userId' => $userId));
 		break;
 
 	case "createStatus" :
+                $status_data['status'] = trim($axValue);
+
+                // validate data
+                $errors = array();
+
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-add'))
-                  break;
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		// create new status
-		$status_data['status'] = trim($axValue);
 		$new_status_id = $database->status_create($status_data);
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors,
+                  'statusId' => $new_status_id));
 		break;
 
 	case "createGroup" :
+                $group['name'] = trim($axValue);
+
+                // validate data
+                $errors = array();
+
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-add'))
-                  break;
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		// create new group
-		$group['name'] = trim($axValue);
 		$newGroupID = $database->group_create($group);
 		if ($newGroupID != false) {
 			$database->assign_groupToGroupleaders($newGroupID, array($kga['user']['userID']));
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors,
+                  'groupId' => $newGroupID));
 		break;
 
 	case "refreshSubtab" :
@@ -234,129 +252,113 @@ switch ($axAction)
 		break;
 
 	case "deleteUser":
-        
                 $oldGroups = $database->getGroupMemberships($id);
+                $errors = array();
 
                 if (!checkGroupedObjectPermission('user', 'delete', $oldGroups, $oldGroups)) {
-                  echo $kga['lang']['errorMessages']['permissionDenied'];
-                  break;
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
-		// set the trashflag of a user
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when a user is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
-				// If the confirmation is returned the user gets the trash-flag. 
-				$database->user_delete($id, true);
-				break;
-            case 2 :
-                // User is finally deleted after confirmed through trash view
-                $database->user_delete($id, false);
-                break;
-		}
-		break;
+                if (count($errors) == 0) {
+
+                  switch ($axValue) {
+                    case 1 :
+                      // If the confirmation is returned the user gets the trash-flag. 
+                      $database->user_delete($id, true);
+                    break;
+                    case 2 :
+                      // User is finally deleted after confirmed through trash view
+                      $database->user_delete($id, false);
+                    break;
+                  }
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
+        break;
 
 	case "deleteGroup" :
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core_deleteGroup'))
-                  break;
+                $errors = array();
 
-		// removes a group
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when a group is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
-				// If the confirmation is returned the group is deleted.
-				$database->group_delete($id);
-				break;
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core_deleteGroup'))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+
+		if (count($errors) == 0) {
+                  // removes a group
+                  $database->group_delete($id);
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "deleteStatus" :
+                $errors = array();
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-delete'))
-                  break;
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
-		// asks for confirmation and deletes a status
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when a status is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
+		if (count($errors) == 0) {
 				// If the confirmation is returned the status gets deleted. 
 				$database->status_delete($id);
-				break;
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "deleteProject" :
-        
+                $errors = array();
                 $oldGroups = $database->project_get_groupIDs($id);
 
-                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups)) {
-                  echo $kga['lang']['errorMessages']['permissionDenied'];
-                  break;
-                }
+                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
-		// set the trashflag of a project
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when a project is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
+		if (count($errors) == 0) {
 				// If the confirmation is returned the project gets the trash-flag. 
 				$database->project_delete($id);
 				break;
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "deleteCustomer" :
-        
+                $errors = array();
                 $oldGroups = $database->customer_get_groupIDs($id);
 
-                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups)) {
-                  echo $kga['lang']['errorMessages']['permissionDenied'];
-                  break;
-                }
+                if (!checkGroupedObjectPermission('project', 'delete', $oldGroups, $oldGroups))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
-		// set the trashflag of a customer
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when a customer is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
+		if (count($errors) == 0) {
 				// If the confirmation is returned the customer gets the trash-flag. 
 				$database->customer_delete($id);
-				break;
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "deleteActivity" :
-        
+                $errors = array();
                 $oldGroups = $database->activity_get_groupIDs($id);
 
-                if (!checkGroupedObjectPermission('activity', 'delete', $oldGroups, $oldGroups)) {
-                  echo $kga['lang']['errorMessages']['permissionDenied'];
-                  break;
-                }
+                if (!checkGroupedObjectPermission('activity', 'delete', $oldGroups, $oldGroups))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
-		// set the trashflag of an activity
-		switch ($axValue) {
-			case 0 :
-				// Fire JavaScript confirm when an activity is about to be deleted
-				echo $kga['lang']['sure'];
-				break;
-			case 1 :
+		if (count($errors) == 0) {
 				// If the confirmation is returned the activity gets the trash-flag. 
 				$database->activity_delete($id);
-				break;
 		}
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "banUser" :
@@ -393,112 +395,125 @@ switch ($axAction)
 
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
-        
 
-                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['groups'])) {
+                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['groups']))
                   $errorMessages[''] =  $kga['lang']['errorMessages']['permissionDenied'];
-                  $success = false;
-                }
-                else {
 
-                  if (count($errorMessages) == 0) {
-                    $database->user_edit($id, $userData);
-                    $database->setGroupMemberships($id, $_REQUEST['groups']);
-                    $success = true;
-                  }
+                if (count($errorMessages) == 0) {
+                  $database->user_edit($id, $userData);
+                  $database->setGroupMemberships($id, $_REQUEST['groups']);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
                 echo json_encode(array(
-                  'errors' => $errorMessages,
-                  'success' => $success));
+                  'errors' => $errorMessages));
 		break;
 
 	case "sendEditGroup" :
+                // process editGroup form
+                $group['name'] = trim($_REQUEST['name']);
+
+                $errors = array();
+
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-edit'))
-                  break;
-		// process editGroup form
-		$group['name'] = trim($_REQUEST['name']);
-		$database->group_edit($id, $group);
-		$leaders = $_REQUEST['leaders'];
-		$database->assign_groupToGroupleaders($id, $leaders);
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  $database->group_edit($id, $group);
+                  $leaders = $_REQUEST['leaders'];
+                  $database->assign_groupToGroupleaders($id, $leaders);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "sendEditStatus" :
+                // process editStatus form
+                $status_data['status'] = trim($_REQUEST['status']);
+
+                $errors = array();
+
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-edit'))
-                  break;
-		// process editStatus form
-		$status_data['status'] = trim($_REQUEST['status']);
-		$database->status_edit($id, $status_data);
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  $database->status_edit($id, $status_data);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "sendEditAdvanced" :
+                $errors = array();
                 if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'adminPanel_extension-editAdvanced'))
-                  break;
-		// process AdvancedOptions form
-		$config_data['adminmail'] = $_REQUEST['adminmail'];
-		$config_data['loginTries'] = $_REQUEST['logintries'];
-		$config_data['loginBanTime'] = $_REQUEST['loginbantime'];
-		$config_data['show_sensible_data'] = isset($_REQUEST['show_sensible_data']);
-		$config_data['show_update_warn'] = isset($_REQUEST['show_update_warn']);
-		$config_data['check_at_startup'] = isset($_REQUEST['check_at_startup']);
-		$config_data['show_daySeperatorLines'] = isset($_REQUEST['show_daySeperatorLines']);
-		$config_data['show_gabBreaks'] = isset($_REQUEST['show_gabBreaks']);
-		$config_data['show_RecordAgain'] = isset($_REQUEST['show_RecordAgain']);
-		$config_data['show_TrackingNr'] = isset($_REQUEST['show_TrackingNr']);
-		$config_data['currency_name'] = $_REQUEST['currency_name'];
-		$config_data['currency_sign'] = $_REQUEST['currency_sign'];
-		$config_data['currency_first'] = isset($_REQUEST['currency_first']);
-		$config_data['date_format_0'] = $_REQUEST['date_format_0'];
-		$config_data['date_format_1'] = $_REQUEST['date_format_1'];
-		$config_data['date_format_2'] = $_REQUEST['date_format_2'];
-		$config_data['language'] = $_REQUEST['language'];
-		if(isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
-			$config_data['status'] = implode(',', $_REQUEST['status']);
-		}
-		$config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
-		$config_data['roundMinutes'] = $_REQUEST['roundMinutes'];
-		$config_data['roundSeconds'] = $_REQUEST['roundSeconds'];
-		$config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];
-		$config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
-		$config_data['durationWithSeconds'] = isset($_REQUEST['durationWithSeconds']);
-		$config_data['exactSums'] = isset($_REQUEST['exactSums']);
-		$editLimit = false;
-		if (isset($_REQUEST['editLimitEnabled'])) {
-			$hours = (int) $_REQUEST['editLimitHours'];
-			$days = (int) $_REQUEST['editLimitDays'];
-			$editLimit = $hours + $days * 24;
-			$editLimit *= 60 * 60; // convert to seconds
-		}
-		if ($editLimit === false || $editLimit === 0)
-			$config_data['editLimit'] = '-';
-		else
-			$config_data['editLimit'] = $editLimit;
-		$success = $database->configuration_edit($config_data);
-		write_config_file(
-                $kga['server_database'],
-                $kga['server_hostname'],
-                $kga['server_username'],
-                $kga['server_password'],
-                $kga['server_conn'],
-                $kga['server_type'],
-                $kga['server_prefix'],
-                $kga['language'],
-                $kga['password_salt'],
-                $_REQUEST['defaultTimezone']);
-//		if(strlen($_REQUEST['new_status']) > 0) {
-//			$status = $_REQUEST['new_status'];
-//			if(stristr($status, ',')) {
-//				$status = explode(',', $status);
-//			} else {
-//				$status = array($status);
-//			}
-//			$database->add_status($status);
-//		}
-//		
-		// do whatever you like
-		// and return one of these:
-		echo $success ? "ok" : $kga['lang']['error'];
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  // process AdvancedOptions form
+                  $config_data['adminmail'] = $_REQUEST['adminmail'];
+                  $config_data['loginTries'] = $_REQUEST['logintries'];
+                  $config_data['loginBanTime'] = $_REQUEST['loginbantime'];
+                  $config_data['show_sensible_data'] = isset($_REQUEST['show_sensible_data']);
+                  $config_data['show_update_warn'] = isset($_REQUEST['show_update_warn']);
+                  $config_data['check_at_startup'] = isset($_REQUEST['check_at_startup']);
+                  $config_data['show_daySeperatorLines'] = isset($_REQUEST['show_daySeperatorLines']);
+                  $config_data['show_gabBreaks'] = isset($_REQUEST['show_gabBreaks']);
+                  $config_data['show_RecordAgain'] = isset($_REQUEST['show_RecordAgain']);
+                  $config_data['show_TrackingNr'] = isset($_REQUEST['show_TrackingNr']);
+                  $config_data['currency_name'] = $_REQUEST['currency_name'];
+                  $config_data['currency_sign'] = $_REQUEST['currency_sign'];
+                  $config_data['currency_first'] = isset($_REQUEST['currency_first']);
+                  $config_data['date_format_0'] = $_REQUEST['date_format_0'];
+                  $config_data['date_format_1'] = $_REQUEST['date_format_1'];
+                  $config_data['date_format_2'] = $_REQUEST['date_format_2'];
+                  $config_data['language'] = $_REQUEST['language'];
+                  if(isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
+                          $config_data['status'] = implode(',', $_REQUEST['status']);
+                  }
+                  $config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
+                  $config_data['roundMinutes'] = $_REQUEST['roundMinutes'];
+                  $config_data['roundSeconds'] = $_REQUEST['roundSeconds'];
+                  $config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];
+                  $config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
+                  $config_data['durationWithSeconds'] = isset($_REQUEST['durationWithSeconds']);
+                  $config_data['exactSums'] = isset($_REQUEST['exactSums']);
+                  $editLimit = false;
+                  if (isset($_REQUEST['editLimitEnabled'])) {
+                          $hours = (int) $_REQUEST['editLimitHours'];
+                          $days = (int) $_REQUEST['editLimitDays'];
+                          $editLimit = $hours + $days * 24;
+                          $editLimit *= 60 * 60; // convert to seconds
+                  }
+                  if ($editLimit === false || $editLimit === 0)
+                          $config_data['editLimit'] = '-';
+                  else
+                          $config_data['editLimit'] = $editLimit;
+                  
+                  if (!$database->configuration_edit($config_data))
+                    $errors[''] = $kga['lang']['error'];
+                }
+
+                if (count($errors) == 0) {
+                  write_config_file(
+                  $kga['server_database'],
+                  $kga['server_hostname'],
+                  $kga['server_username'],
+                  $kga['server_password'],
+                  $kga['server_conn'],
+                  $kga['server_type'],
+                  $kga['server_prefix'],
+                  $kga['language'],
+                  $kga['password_salt'],
+                  $_REQUEST['defaultTimezone']);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
 		break;
 
 	case "toggleDeletedUsers" :
@@ -506,21 +521,39 @@ switch ($axAction)
 		break;
 
         case "createGlobalRole":
-                if (!isset($kga['user']))
-                  break;
-
-                // create new status
                 $role_data['name'] = trim($axValue);
-                $database->global_role_create($role_data);
+
+                $errors = array();
+
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  // create new status
+                  $database->global_role_create($role_data);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 
         case "createMembershipRole":
-                if (!isset($kga['user']))
-                  break;
-
-                // create new status
                 $role_data['name'] = trim($axValue);
-                $database->membership_role_create($role_data);
+
+                $errors = array();
+
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  // create new status
+                  $database->membership_role_create($role_data);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 
         case "editGlobalRole":
@@ -538,7 +571,18 @@ switch ($axAction)
                     $value = 0;
                 }
 
-                $database->global_role_edit($id, $roleData);
+                $errors = array();
+
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  $database->global_role_edit($id, $roleData);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 
         case "editMembershipRole":
@@ -556,38 +600,47 @@ switch ($axAction)
                     $value = 0;
                 }
 
-                $database->membership_role_edit($id, $roleData);
+                $errors = array();
+
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
+                  $database->membership_role_edit($id, $roleData);
+                }
+
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 
         case "deleteGlobalRole":
-                if (!isset($kga['user']))
-                  break;
+                $errors = array();
 
-                switch ($axValue) {
-                  case 0:
-                    // Fire JavaScript confirm when a user is about to be deleted
-                    echo $kga['lang']['sure'];
-                    break;
-                  case 1:
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
                     $database->global_role_delete($id);
-                    break;
                 }
 
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 
         case "deleteMembershipRole":
-                if (!isset($kga['user']))
-                  break;
+                $errors = array();
 
-                switch ($axValue) {
-                  case 0:
-                    // Fire JavaScript confirm when a user is about to be deleted
-                    echo $kga['lang']['sure'];
-                    break;
-                  case 1:
+                if (!isset($kga['user']))
+                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if (count($errors) == 0) {
                     $database->membership_role_delete($id);
-                    break;
                 }
 
+                header('Content-Type: application/json;charset=utf-8');
+                echo json_encode(array(
+                  'errors' => $errors));
                 break;
 }

@@ -59,6 +59,7 @@
         var lang_checkStatusname   = "<?php echo $this->escape($this->kga['lang']['checkStatusname']); ?>";
         var lang_passwordsDontMatch   = "<?php echo $this->escape($this->kga['lang']['passwordsDontMatch']); ?>";
         var lang_passwordTooShort = "<?php echo $this->escape($this->kga['lang']['passwordTooShort']); ?>";
+        var lang_sure = "<?php echo $this->escape($this->kga['lang']['sure']); ?>";
 
         var currentRecording      = <?php echo $this->currentRecording?>;
 

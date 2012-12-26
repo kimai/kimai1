@@ -332,143 +332,114 @@ function adminPanel_extension_refreshSubtab(tab) {
 // delete user
 //
 function adminPanel_extension_deleteUser(id, trash) {
-    var axData = (trash ? 1 : 2);
-    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteUser", axValue: 0, id: id }, 
-        function(data) {
-            if (confirm(data)) {
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: axData, id: id },
-                    function() { 
-                      adminPanel_extension_refreshSubtab('users');
-                      adminPanel_extension_refreshSubtab('groups');
-                      hook_users_changed(); }
-                );
-            }
-        }
-    );
+  if (!confirm(lang_sure)) return;
+  
+  var axData = (trash ? 1 : 2);
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: axData, id: id },
+      function() { 
+        adminPanel_extension_refreshSubtab('users');
+        adminPanel_extension_refreshSubtab('groups');
+        hook_users_changed(); }
+  );
 }
 
 // ----------------------------------------------------------------------------------------
 // delete group
 //
 function adminPanel_extension_deleteGroup(id) {
-    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGroup", axValue: 0, id: id }, 
-        function(data) {
-            if (confirm(data)) {
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGroup", axValue: 1, id: id }, 
-                    function() { adminPanel_extension_refreshSubtab('groups'); }
-                );
-            }
-        }
-    );
+  if (!confirm(lang_sure)) return;
+  
+  $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGroup", id: id }, 
+    function() { adminPanel_extension_refreshSubtab('groups'); }
+  );
+
 }
 
 //----------------------------------------------------------------------------------------
 //delete status
 //
 function adminPanel_extension_deleteStatus(id) {
- $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteStatus", axValue: 0, id: id }, 
-     function(data) {
-         if (confirm(data)) {
-             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteStatus", axValue: 1, id: id }, 
-                 function() { adminPanel_extension_refreshSubtab('status'); }
-             );
-         }
-     }
- );
+  if (!confirm(lang_sure)) return;
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteStatus", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('status'); }
+  );
 }
 
 // ----------------------------------------------------------------------------------------
 // delete project
 //
 function adminPanel_extension_deleteProject(id) {
-    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteProject", axValue: 0, id: id }, 
-        function(data) {
-            if (confirm(data)) {
-                if (currentRecording == -1 && selected_project == id) {
-                  $('#buzzer').addClass('disabled');
-                  selected_project = false;
-                  $("#sel_project").html('');
-                }
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteProject", axValue: 1, id: id }, 
-                    function() { adminPanel_extension_refreshSubtab('projects');
-                 hook_projects_changed(); }
-                );
-            }
-        }
-    );
+  if (!confirm(lang_sure)) return;
+  
+  if (currentRecording == -1 && selected_project == id) {
+    $('#buzzer').addClass('disabled');
+    selected_project = false;
+    $("#sel_project").html('');
+  }
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteProject", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('projects');
+    hook_projects_changed(); }
+  );
 }
 
 // ----------------------------------------------------------------------------------------
 // delete customer
 //
 function adminPanel_extension_deleteCustomer(id) {
-    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteCustomer", axValue: 0, id: id }, 
-        function(data) {
-            if (confirm(data)) {
-                if (currentRecording == -1 && selected_customer == id) {
-                  $('#buzzer').addClass('disabled');
-                  selected_customer = false;
-                  $("#sel_customer").html('');
-                }
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteCustomer", axValue: 1, id: id }, 
-                    function() { adminPanel_extension_refreshSubtab('customers');
-                 hook_customers_changed(); }
-                );
-            }
-        }
-    );
+  if (!confirm(lang_sure)) return;
+  
+  if (currentRecording == -1 && selected_customer == id) {
+    $('#buzzer').addClass('disabled');
+    selected_customer = false;
+    $("#sel_customer").html('');
+  }
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteCustomer", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('customers');
+    hook_customers_changed(); }
+  );
 }
 
 // ----------------------------------------------------------------------------------------
 // delete activity
 //
 function adminPanel_extension_deleteActivity(id) {
-    $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteActivity", axValue: 0, id: id }, 
-        function(data) {
-            if (confirm(data)) {
-                if (currentRecording == -1 && selected_activity == id) {
-                  $('#buzzer').addClass('disabled');
-                  selected_activity = false;
-                  $("#selected_activity").html('');
-                }
-                
-                $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteActivity", axValue: 1, id: id }, 
-                    function() { adminPanel_extension_refreshSubtab('activities');
-                 hook_activities_changed(); }
-                );
-            }
-        }
-    );
+  if (!confirm(lang_sure)) return;
+  
+  if (currentRecording == -1 && selected_activity == id) {
+    $('#buzzer').addClass('disabled');
+    selected_activity = false;
+    $("#selected_activity").html('');
+  }
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteActivity", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('activities');
+    hook_activities_changed(); }
+  );
 }
 
 //----------------------------------------------------------------------------------------
 //delete global role
 //
 function adminPanel_extension_deleteGlobalRole(id) {
- $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGlobalRole", axValue: 0, id: id }, 
-     function(data) {
-         if (confirm(data)) {
-             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGlobalRole", axValue: 1, id: id }, 
-                 function() { adminPanel_extension_refreshSubtab('globalRole'); }
-             );
-         }
-     }
- );
+  if (!confirm(lang_sure)) return;
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGlobalRole", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('globalRole'); }
+  );
 }
 
 //----------------------------------------------------------------------------------------
 //delete membership role
 //
 function adminPanel_extension_deleteMembershipRole(id) {
- $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteMembershipRole", axValue: 0, id: id }, 
-     function(data) {
-         if (confirm(data)) {
-             $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteMembershipRole", axValue: 1, id: id }, 
-                 function() { adminPanel_extension_refreshSubtab('membershipRole'); }
-             );
-         }
-     }
- );
+  if (!confirm(lang_sure)) return;
+  
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteMembershipRole", id: id }, 
+      function() { adminPanel_extension_refreshSubtab('membershipRole'); }
+  );
 }
 
 // ----------------------------------------------------------------------------------------

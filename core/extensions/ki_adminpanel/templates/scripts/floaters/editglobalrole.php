@@ -7,12 +7,18 @@
 ?>
     <script type="text/javascript"> 
         $(document).ready(function() {
-            $('#adminPanel_extension_form_editRole').ajaxForm( { 'beforeSubmit' :function() { 
-                floaterClose();
-                return true;
+            $('#adminPanel_extension_form_editRole').ajaxForm( {
+              'beforeSubmit' :function() { 
+                clearFloaterErrorMessages();
             },
-            'success': function () {
-                adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
+            'success': function (result) {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+                
+                if (result.errors.length == 0) {
+                  floaterClose();
+                  adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
+                }
             }}); 
      $('#floater_innerwrap').tabs({ selected: 0 });
         }); 

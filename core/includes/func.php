@@ -417,6 +417,17 @@ function getRequestBool($name)
 }
 
 /**
+ * Returns the decimal value from a request value where the number is still represented
+ * in the location specific way.
+ * 
+ * @param $value the value from the request
+ * @return parsed floating point value
+ */
+function getRequestDecimal($value) {
+  return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
+}
+
+/**
  * @brief Check the permission to access an object.
  * 
  * This method is meant to check permissions for adding, editing and deleting customers,
@@ -431,8 +442,11 @@ function getRequestBool($name)
  */
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups) {
   global $database, $kga;
-    $assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
-    $assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+
+  if (!isset($kga['user'])) return false;
+
+  $assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+  $assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
 
   if (count($assignedOtherGroups) > 0) {
     $permissionName = "core-${objectTypeName}-otherGroup-${action}";
