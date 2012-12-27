@@ -459,7 +459,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
   if (count($assignedOwnGroups) > 0) {
     $permissionName = "core-${objectTypeName}-${action}";
     if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
-      Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+      Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
@@ -487,7 +487,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($addToOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -504,7 +504,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($removeFromOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
