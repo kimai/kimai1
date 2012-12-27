@@ -35,10 +35,10 @@ switch ($axAction)
                 // validate data
                 $errors = array();
                 if ($database->customer_nameToID($userData['name']) !== false)
-                  $errors['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
+                  $errors[] = $kga['lang']['errorMessages']['customerWithSameName'];
 
                 if (!checkGroupedObjectPermission('user', 'add', array(), $kga['user']['groups']))
-                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 $userId = false;
                 if (count($errors) == 0) {

@@ -172,7 +172,7 @@ function adminPanel_extension_newUser() {
     $.post(adminPanel_extension_path + "processor.php", { axAction: "createUser", axValue: newuser, id: 0 }, 
     function(data) {
         if (data.userId === false) {
-          alert(data.error);
+          alert(data.errors.join("\n"));
           return;
         }
         
