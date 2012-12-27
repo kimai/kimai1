@@ -130,9 +130,9 @@ $allowedPermissions = array_merge($allowedPermissions, array(
   'ki_timesheets-otherEntry-ownGroup-add',
   'ki_timesheets-otherEntry-ownGroup-edit',
   'ki_timesheets-otherEntry-ownGroup-delete',
-  'ki_expenses-otherEntry-ownGroup-add',
-  'ki_expenses-otherEntry-ownGroup-edit',
-  'ki_expenses-otherEntry-ownGroup-delete',
+//  'ki_expenses-otherEntry-ownGroup-add',
+//  'ki_expenses-otherEntry-ownGroup-edit',
+//  'ki_expenses-otherEntry-ownGroup-delete',
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
