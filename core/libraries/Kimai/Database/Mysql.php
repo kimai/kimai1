@@ -819,6 +819,42 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
+  * returns all the groups of the given activity
+  *
+  * @param int $activityID  ID of the activity
+  * @return array         contains the groupIDs of the groups or false on error
+  * @author sl
+  */
+  public function activity_get_groupIDs($activityID) {
+
+
+      $filter['activityID'] = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
+      $columns[]        = "groupID";
+      $table = $this->kga['server_prefix']."groups_activities";
+
+      $result = $this->conn->SelectRows($table, $filter, $columns);
+      if ($result == false) {
+          $this->logLastError('activity_get_groupIDs');
+          return false;
+      }
+
+      $groupIDs = array();
+      $counter     = 0;
+
+      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
+
+      if ($this->conn->RowCount()) {
+          foreach ($rows as $row) {
+              $groupIDs[$counter] = $row['groupID'];
+              $counter++;
+          }
+          return $groupIDs;
+      } else {
+          return false;
+      }
+  }
+
+  /**
    *
    * update the data for activity per project, which is budget, approved and effort
    * @param integer $projectID
