@@ -27,35 +27,39 @@ include_once('TinyButStrong/tinyDoc.class.php');
  * returns true if activity is in the arrays
  *
  * @param $arrays
- * @return true if $activity is in the array
+ * @param $activity
+ * @return bool true if $activity is in the array
  * @author AA
  */
 function array_activity_exists($arrays, $activity) {
-   $index = 0;
-   foreach ($arrays as $array) {
-      if ( in_array($activity,$array) ) {
-          return $index;
-      }
-      $index++;
-   }
-   return -1;
+	$index = 0;
+	foreach ($arrays as $array) {
+		if ( in_array($activity,$array) ) {
+			return $index;
+		}
+		$index++;
+	}
+	return -1;
 }
 
-function RoundValue( $value, $prec ) {
-   $precision = $prec;
+/**
+ * @param $value
+ * @param $prec
+ * @return float
+ */
+function RoundValue( $value, $precision ) {
+	// suppress division by zero error
+	if ($precision == 0.0) {
+		$precision = 1.0;
+	}
 
-   // suppress division by zero errror
-   if ($precision == 0.0) {
-      $precision = 1.0;
-   }
-
-   return floor($value / $precision + 0.5)*$precision;
+	return floor($value / $precision + 0.5)*$precision;
 }
 
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates   = "templates/";
-$user             = checkUser();
+$user            = checkUser();
 $timeframe       = get_timeframe();
 $in              = $timeframe[0];
 $out             = $timeframe[1];
@@ -67,9 +71,9 @@ $month = $kga['lang']['months'][date("n", $out)-1];
 $year  = date("Y", $out );
 
 if (count($timeArray) > 0) {
-    // customer data
-    $customer        = $database->customer_get_data($timeArray[0]['customerID']);
-    $projectObject   = $database->project_get_data($timeArray[0]['projectID']);
+	// customer data
+	$customer        = $database->customer_get_data($timeArray[0]['customerID']);
+	$projectObject   = $database->project_get_data($timeArray[0]['projectID']);
 
 	$project         = html_entity_decode($timeArray[0]['projectName']);
 	$customerName    = html_entity_decode($timeArray[0]['customerName']);
@@ -92,81 +96,103 @@ if (count($timeArray) > 0) {
 	$today           = time();
 	$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y"));
 } else {
-    echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
-    return;
+	echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
+	return;
 }
 
 // MERGE SORT
 $time_index   = 0;
 $invoiceArray = array();
-
-while ($time_index < count($timeArray)) {
-	$wage    = $timeArray[$time_index]['wage'];
-	$time    = $timeArray[$time_index]['duration']/3600;
-	$activity   = html_entity_decode($timeArray[$time_index]['activityName']);
+$timeArrayCounter = count($timeArray);
+while ($time_index < $timeArrayCounter) {
+	$wage = $timeArray[$time_index]['wage'];
+	$time = $timeArray[$time_index]['duration']/3600;
+	$formattedDuration = $timeArray[$time_index]['formattedDuration'];
+	$activity = html_entity_decode($timeArray[$time_index]['activityName']);
 	$comment = $timeArray[$time_index]['comment'];
 	$description = $timeArray[$time_index]['description'];
-	$activityDate   = date("m/d/Y", $timeArray[$time_index]['start']);
+	$activityDate = date("m/d/Y", $timeArray[$time_index]['start']);
 	$userName  = $timeArray[$time_index]['userName'];
 	$userAlias = $timeArray[$time_index]['userAlias'];
 
-   // do we have to create a short form?
-   if ( isset($_REQUEST['short']) ) {
-
-      $index = array_activity_exists($invoiceArray,$activity);
-      if ( $index >= 0 ) {
-         $totalTime = $invoiceArray[$index]['hour'];
-         $totalAmount = $invoiceArray[$index]['amount'];
-         $invoiceArray[$index] = array(
-            'desc'    => $activity,
-            'hour'    => $totalTime+$time,
-            "amount"  => $totalAmount+$wage,
-            'date'    => $activityDate,
-            'description' => $description,
-            'comment' => $comment
-         );
-	  }
-	  else {
-   	     $invoiceArray[] = array('desc'=>$activity, 'hour'=>$time, 'amount'=>$wage, 'date'=>$activityDate, 'description'=>$description, 'comment'=>$comment,  'username'=>'', 'useralias'=>'');
-	  }
-   }
-   else {
-      $invoiceArray[] = array('desc'=>$activity, 'hour'=>$time, 'amount'=>$wage, 'date'=>$activityDate, 'description'=>$description, 'comment'=>$comment, 'username'=>$userName, 'useralias'=>$userAlias);
-   }
-   $time_index++;
+	// do we have to create a short form?
+	if ( isset($_REQUEST['short']) ) {
+		$index = array_activity_exists($invoiceArray,$activity);
+		if ( $index >= 0 ) {
+			$totalTime = $invoiceArray[$index]['hour'];
+			$totalAmount = $invoiceArray[$index]['amount'];
+			$invoiceArray[$index] = array(
+				'desc'    => $activity,
+				'hour'    => $totalTime+$time,
+				'fduration' => $formattedDuration,
+				'amount'  => $totalAmount+$wage,
+				'date'    => $activityDate,
+				'description' => $description,
+				'comment' => $comment
+			);
+		}
+		else {
+			$invoiceArray[] = array(
+				'desc'=>$activity,
+				'hour'=>$time,
+				'fduration' => $formattedDuration,
+				'amount'=>$wage,
+				'date'=>$activityDate,
+				'description'=>$description,
+				'comment'=>$comment,
+				'username'=>'',
+				'useralias'=>''
+			);
+		}
+	}
+	else {
+		$invoiceArray[] = array(
+			'desc'=>$activity,
+			'hour'=>$time,
+			'fduration' => $formattedDuration,
+			'amount'=>$wage,
+			'date'=>$activityDate,
+			'description'=>$description,
+			'comment'=>$comment,
+			'username'=>$userName,
+			'useralias'=>$userAlias
+		);
+	}
+	$time_index++;
 }
 
 $round = 0;
 // do we have to round the time ?
 if (isset($_REQUEST['round'])) {
-   $round      = $_REQUEST['round'];
-   $time_index = 0;
-   $amount     = count($invoiceArray);
+	$round      = $_REQUEST['roundValue'];
+	$time_index = 0;
+	$amount     = count($invoiceArray);
 
-    while ($time_index < $amount) {
-        $rounded = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
+	while ($time_index < $amount) {
+		$roundedTime = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
 
-        // Write a logfile entry for each value that is rounded.
-        Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
+		// Write a logfile entry for each value that is rounded.
+		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $roundedTime . " with ".  $round);
 
-        $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
-        $invoiceArray[$time_index]['hour'] = $rounded;
-        $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
-        $time_index++;
-    }
+		$rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+		$invoiceArray[$time_index]['hour'] = $roundedTime;
+		$invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
+		$time_index++;
+	}
 }
-
 // calculate invoice sums
 $ttltime = 0;
+$rawTotalTime = 0;
 $total  = 0;
 while (list($id, $fd) = each($invoiceArray)) {
-    $total  += $invoiceArray[$id]['amount'];
-    $ttltime += $invoiceArray[$id]['hour'];
+	$total  += $invoiceArray[$id]['amount'];
+	$ttltime += $invoiceArray[$id]['hour'];
 }
+$fttltime = Format::formatDuration($ttltime*3600);
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
-    $vat_rate = $kga['conf']['defaultVat'];
+	$vat_rate = $kga['conf']['defaultVat'];
 }
 
 $vat   = $vat_rate*$total/100;
@@ -175,17 +201,17 @@ $doc   = new tinyDoc();
 
 // use zip extension if available
 if (class_exists('ZipArchive')) {
-    $doc->setZipMethod('ziparchive');
+	$doc->setZipMethod('ziparchive');
 }
 else {
-    $doc->setZipMethod('shell');
-    try {
-        $doc->setZipBinary('zip');
-        $doc->setUnzipBinary('unzip');
-    }
-    catch (tinyDocException $e) {
-        $doc->setZipMethod('pclzip');
-    }
+	$doc->setZipMethod('shell');
+	try {
+		$doc->setZipBinary('zip');
+		$doc->setUnzipBinary('unzip');
+	}
+	catch (tinyDocException $e) {
+		$doc->setZipMethod('pclzip');
+	}
 }
 
 $doc->setProcessDir('../../temporary');
@@ -196,7 +222,6 @@ $templateform = "templates/" . $_REQUEST['ivform_file'];
 $doc->createFrom($templateform);
 
 $doc->loadXml('content.xml');
-
 $doc->mergeXmlBlock('row', $invoiceArray);
 
 $doc->saveXml();
