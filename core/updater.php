@@ -1114,7 +1114,7 @@ if ((int)$revisionDB < 1219) {
     exec_query("ALTER TABLE `${p}usr`
   ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
     exec_query("UPDATE `${p}usr`
-  SET `timezone` = '$timezone'");
+  SET `timezone` = $timezone");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone',$timezone)");
 }
 
