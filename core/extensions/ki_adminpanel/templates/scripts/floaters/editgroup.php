@@ -4,7 +4,7 @@
               'beforeSubmit' :function() { 
                 clearFloaterErrorMessages();
               },
-              'success': function () {
+              'success': function (result) {
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 

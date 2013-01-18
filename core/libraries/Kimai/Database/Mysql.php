@@ -2669,7 +2669,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $name  = MySQL::SQLValue($name);
       $p     = $this->kga['server_prefix'];
 
-      $query = "SELECT customerID FROM ${p}customers WHERE name = $name";
+      $query = "SELECT customerID FROM ${p}customers WHERE name = $name AND trash = 0";
 
       $this->conn->Query($query);
       return $this->conn->RowCount() == 1;
@@ -3034,10 +3034,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function get_seq($user) {
       if (strncmp($user, 'customer_', 9) == 0) {
         $filter['name'] = MySQL::SQLValue(substr($user,9));
+        $filter['trash'] = 0;
         $table = $this->getCustomerTable();
       }
       else {
         $filter['name'] = MySQL::SQLValue($user);
+        $filter['trash'] = 0;
         $table = $this->getUserTable();
       }
 
@@ -3489,6 +3491,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    */
   private function name2id($table,$endColumn,$filterColumn,$value) {
       $filter [$filterColumn] = MySQL::SQLValue($value);
+      $filter ['trash'] = 0;
       $columns[] = $endColumn;
 
       $result = $this->conn->SelectRows($table, $filter, $columns);
@@ -4325,7 +4328,10 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-      $this->conn->Query($query);
+      $result = $this->conn->Query($query);
+
+      if ($result === false)
+        $this->logLastError('loginUpdateBan');
   }
 
 

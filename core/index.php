@@ -183,6 +183,9 @@ switch($_REQUEST['a'])
 
             $userData = $database->user_get_data($userId);
 
+            // global configuration must be present from now on
+            $database->get_global_config();
+
             if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) ||
                 ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
 

@@ -340,7 +340,7 @@ exec_query($query);
 
 
 // CROSS TABLES
-$query="INSERT INTO `${p}groups_users` (`groupID`,`userID`, `roleID`) VALUES ('1','$randomAdminID','1');";
+$query="INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES ('1','$randomAdminID','1');";
 exec_query($query);
 
 $query="INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
