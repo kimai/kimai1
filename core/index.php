@@ -118,7 +118,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
                 'status' => 2,
                 'active' => 1
               ));
-    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
+    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroups()));
     }
     $userData = $database->user_get_data($userId);
 
@@ -178,7 +178,7 @@ switch($_REQUEST['a'])
                           'status' => 2,
                           'active' => 1
                         ));
-              $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
+              $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroups()));
             }
 
             $userData = $database->user_get_data($userId);

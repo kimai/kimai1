@@ -27,25 +27,25 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   global $database, $kga;
 
   if (!isset($kga['user'])) {
-    $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
+    $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
 
   // check if expense is too far in the past to allow editing (or deleting)
-  if ($id && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
+  if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
     $errors[''] =  $kga['lang']['editLimitError'];
     break;
   }
 
   $groups = $database->getGroupMemberships($entry['userID']);
 
-  if ($data['userID'] == $kga['user']['userID']) {
+  if ($entry['userID'] == $kga['user']['userID']) {
     $permissionName = 'ki_expenses-ownEntry-' . $action;
     if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
-      $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
+      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+      $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
   }
@@ -58,7 +58,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
       return true;
     } else {
       Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
-      $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
+      $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
 
@@ -68,8 +68,8 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
     return true;
   } else {
-    Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
-    $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
+    Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+    $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
   
@@ -177,7 +177,7 @@ switch ($axAction) {
 
           // check if editing or deleting with the old values would be allowed            
           if (!expenseAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('messages'=>$errors));
+            echo json_encode(array('errors'=>$errors));
             break;
           }
         }
@@ -185,7 +185,7 @@ switch ($axAction) {
           // delete now because next steps don't need to be taken for deleted entries
         if (isset($_REQUEST['erase'])) {
           expense_delete($id);
-          echo json_encode(array('messages'=>$errors));
+          echo json_encode(array('errors'=>$errors));
           break;
         }
 
@@ -197,6 +197,7 @@ switch ($axAction) {
         $data['refundable']   = getRequestBool('refundable');
         $data['multiplier']   = getRequestDecimal($_REQUEST['multiplier']);
         $data['value']        = getRequestDecimal($_REQUEST['edit_value']);
+        $data['userID']       = $kga['user']['userID'];
 
         // parse new day and time
         $edit_day  = Format::expand_date_shortcut($_REQUEST['edit_day']);
@@ -205,7 +206,7 @@ switch ($axAction) {
         // validate day and time
         $new = "${edit_day}-${edit_time}";
         if (!Format::check_time_format($new)) {
-            $errors[''] = $kga['lang']['TimeDateInputError']));
+            $errors[''] = $kga['lang']['TimeDateInputError'];
             break;
         }
 
@@ -215,7 +216,7 @@ switch ($axAction) {
 
 
         if (!expenseAccessAllowed($data,$action,$errors)) {
-          echo json_encode(array('messages'=>$errors));
+          echo json_encode(array('errors'=>$errors));
           break;
         }
 
@@ -225,7 +226,7 @@ switch ($axAction) {
             expense_create($kga['user']['userID'],$data);
 
       
-        echo json_encode(array('messages'=>$errors));
+        echo json_encode(array('errors'=>$errors));
     break;
 
 }

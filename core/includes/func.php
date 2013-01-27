@@ -424,6 +424,7 @@ function getRequestBool($name)
  * @return parsed floating point value
  */
 function getRequestDecimal($value) {
+  global $kga;
   return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
 }
 

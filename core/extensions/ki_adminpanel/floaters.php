@@ -39,10 +39,16 @@ switch ($axAction) {
 
         $userDetails['rate'] = $database->get_rate($userDetails['userID'],NULL,NULL);
         
-        $view->selectedGroups = $database->getGroupMemberships($id);
-        
-        $view->groups = makeSelectBox('group',null,null,true);
-                    
+        $view->memberships = array();
+        foreach ($database->getGroupMemberships($id) as $groupId) {
+          $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
+        }
+
+        $view->groups = $database->get_groups();        
+        $view->membershipRoles = array();
+        foreach ($database->membership_roles() as $role)
+          $view->membershipRoles[$role['membershipRoleID']] = $role['name'];
+
         $view->user_details = $userDetails;
         echo $view->render("floaters/edituser.php");  
         

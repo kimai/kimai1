@@ -1733,7 +1733,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   /**
    * Set the groups in which the user is a member in.
    * @param int $userId   id of the user
-   * @param array $groups  array of the group ids to be part of
+   * @param array $groups  map from group ID to membership role ID
    * @return boolean       true on success, false on failure
    * @author sl
    */
@@ -1755,8 +1755,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       return false;
     }
 
-    foreach ($groups as $group) {
+    foreach ($groups as $group => $role) {
       $data['groupID'] = MySQL::SQLValue($group, MySQL::SQLVALUE_NUMBER);
+      $data['membershipRoleID'] = MySQL::SQLValue($role, MySQL::SQLVALUE_NUMBER);
       $result = $this->conn->InsertRow($table,$data);
       if ($result === false) {
         $this->logLastError('setGroupMemberships');

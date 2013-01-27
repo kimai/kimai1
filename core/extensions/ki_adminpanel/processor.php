@@ -43,7 +43,11 @@ switch ($axAction)
                 $userId = false;
                 if (count($errors) == 0) {
                   $userId = $database->user_create($userData);
-                  $database->setGroupMemberships($userId, $kga['user']['groups']);
+                  $groups = array();
+                  foreach ($kga['user']['groups'] as $group) {
+                    $groups[$group] = $database->user_get_membership_role($kga['user']['userID'], $group);
+                  }
+                  $database->setGroupMemberships($userId, $groups);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
@@ -396,12 +400,13 @@ switch ($axAction)
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
 
-                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['groups']))
+                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['assignedGroups']))
                   $errorMessages[''] =  $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errorMessages) == 0) {
                   $database->user_edit($id, $userData);
-                  $database->setGroupMemberships($id, $_REQUEST['groups']);
+                  $groups = array_combine($_REQUEST['assignedGroups'], $_REQUEST['membershipRoles']);
+                  $database->setGroupMemberships($id, $groups);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
