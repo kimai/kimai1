@@ -123,6 +123,17 @@ return array(
 "database"          => "Datenbank",
 "options"           => "Optionen",
 "status"            => "Status",
+"globalRole"        => "globale Rolle",
+"addGlobalRole"     => "globale Rolle hinzufügen",
+"editGlobalRole"    => "globale Rolle bearbeiten",
+"deleteGlobalRole"  => "globale Rolle löschen",
+"globalRoles"       => "globale Rollen",
+"membershipRole"    => "gruppenbezogene Rolle",
+"addMembershipRole" => "gruppenbezogene Rolle hinzufügen",
+"editMembershipRole"=> "gruppenbezogene Rolle bearbeiten",
+"deleteMembershipRole"=> "gruppenbezogene Rolle löschen",
+"membershipRoles"   => "gruppenbezogene Rollen",
+"rolename"          => "Rollenname",
 "new_status"        => "Status hinzufügen",
 "editstatus"		=> "Status bearbeiten",
 "description"       => "Beschreibung",
@@ -191,6 +202,8 @@ return array(
 "checkUsername"             => "Bitte einen Usernamen in das Feld eintragen!",
 "checkGroupname"            => "Bitte einen Gruppennamen in das Feld eintragen!",
 "checkStatusname"           => "Bitte einen Statusnamen in das Feld eintragen!",
+"checkGlobalRoleName"       =>  "Bitte einen Rollennamen in das Feld eintragen!",
+"checkMembershipRoleName"   =>  "Bitte einen Rollennamen in das Feld eintragen!",
 "clickToReload"             => "Klicken um die Seite neu zu laden",
 "sure"                      => "Sicher?",
 "clock"                     => "Uhr",
@@ -332,6 +345,7 @@ EOF
 'weekdays_short'    => array("So","Mo","Di","Mi","Do","Fr","Sa"),
 
 'errorMessages' => array(
+  'permissionDenied' => 'Keine Berechtigung',
   'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
   'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.'
 ),
@@ -452,10 +466,25 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
   'unusedBudget' => 'frei'
 ),
 
+'extensionsTitle' => 'Erweiterungen',
 'extensions' => array(
 'ki_timesheet' => 'Zeiterfassung',
 'ki_expenses' => 'Auslagen',
 'ki_invoice' => 'Rechnungen'
+),
+
+'permissions' => array(
+  'edit' => 'Bearbeiten',
+  'delete' => 'Löschen',
+  'assign' => 'Zuweisen',
+  'unassign' => 'Herausnehmen',
+  'ownEntry' => 'Eigener Eintrag',
+  'otherEntry' => 'Eintrag anderer Benutzer',
+  'ownGroup' => 'gleiche Gruppe',
+  'otherGroup' => 'andere Gruppe',
+  'showRates' => 'Stundenlohn anzeigen',
+  'editRates' => 'Stundenlohn bearbeiten',
+  'editAdvanced' => 'Erweiterte Einstellungen bearbeiten'
 )
 
 );

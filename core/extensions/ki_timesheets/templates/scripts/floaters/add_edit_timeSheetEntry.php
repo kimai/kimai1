@@ -78,6 +78,8 @@
               }
             });
 
+
+<?php if ($this->showRate): ?>
             $( "#rate" ).click(function() {
     			saveDuration();
               $( "#rate").autocomplete("search",0);
@@ -96,7 +98,8 @@
                     task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
-                    add(data);
+                    if (data.errors.length != 0) return;
+                    add(data.rates);
                   }
                 );  
               },
@@ -125,7 +128,8 @@
                     task: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
-                    add(data);
+                    if (data.errors.length != 0) return;
+                    add(data.rates);
                   }
                 );  
               },
@@ -140,8 +144,10 @@
                         .append( "<a>" + item.desc + "</a>" )
                         .appendTo( ul );
             };
+<?php endif; ?>
 
             $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( { 'beforeSubmit' :function() { 
+                clearFloaterErrorMessages();
                 if (!$('#start_day').val().match(ts_dayFormatExp) ||
                     ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
                     !$('#start_time').val().match(ts_timeFormatExp) ||
@@ -218,14 +224,13 @@
 
               return true;
             },
-              'success' : function(data) {
-                var result = jQuery.parseJSON(data);
-                if (result.result == "ok") {
+              'success' : function(result) {
+                for (var fieldName in result.errors)
+                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
                   floaterClose();
                   ts_ext_reload();
-                }
-                else {
-                  alert(result.message);
                 }
               }
             });
@@ -250,7 +255,11 @@
                     secs += (durationArray[1]*60);
                 if(durationArray.length > 2)
                     secs += parseInt(durationArray[2]);
+<?php if ($this->showRate): ?>
         		var rate = $('#rate').val();
+<?php else: ?>
+                        var rate = 0;
+<?php endif; ?>
         		var budgetCalculatedTwice = secs/3600*rate;
             $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-budgetCalculatedTwice),2);
             }
@@ -271,7 +280,11 @@
 		        if(durationArray.length > 2)
 		            secs += parseInt(durationArray[2]);
 		    }
-			var rate = $('#rate').val();
+<?php if ($this->showRate): ?>
+                        var rate = $('#rate').val();
+<?php else: ?>
+                        var rate = 0;
+<?php endif; ?>
 			previousUsed = secs/3600*rate;
         }
 
@@ -285,7 +298,11 @@
 		        if(durationArray.length > 2)
 		            secs += parseInt(durationArray[2]);
 		    }
-			var rate = $('#rate').val();
+<?php if ($this->showRate): ?>
+                        var rate = $('#rate').val();
+<?php else: ?>
+                        var rate = 0;
+<?php endif; ?>
 			var used = secs/3600*rate;
         	$('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-previousUsed+used),2);
         }
@@ -300,7 +317,11 @@
 		        if(durationArray.length > 2)
 		            secs += parseInt(durationArray[2]);
 		    }
-			var rate = $('#rate').val();
+<?php if ($this->showRate): ?>
+                        var rate = $('#rate').val();
+<?php else: ?>
+                        var rate = 0;
+<?php endif; ?>
 			var budget = $('#budget_val').val();
 			var used = secs/3600*rate;
 			var usedString = '<?php echo $this->kga['lang']['used']?>';
@@ -529,14 +550,14 @@
                          'class' => 'formfield',
                          'tabindex' => '16'), $this->billable); ?>
                    </li>
+                   <?php if ($this->showRate): ?>
                    <li>
                         <label for="rate"><?php echo $this->kga['lang']['rate']?>:</label>
                         <input id='rate' type='text' name='rate' value='<?php echo $this->escape($this->rate)?>' size='5' tabindex='10' />
-                        </select>
                         <label for="fixedRate" style="float: none; margin-left: 60px;"><?php echo $this->kga['lang']['fixedRate']?>:</label>
                         <input id='fixedRate' type='text' name='fixedRate' value='<?php echo $this->escape($this->fixedRate)?>' size='5' tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
-                        </select>
                    </li>
+                   <?php endif; ?>
                    
                    <li>
                    <table><tr><td align="right"><?php echo $this->kga['lang']['budget_activity']?>:</td><td>

@@ -53,6 +53,10 @@ switch ($axAction)
             $view->comment_active   = $expense['commentType'];
             $view->refundable       = $expense['refundable'];
 
+            // check if this entry may be edited
+            if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_expenses-ownEntry-edit'))
+              break;
+
             if (!isset($view->projects[$expense['projectID']])) {
               // add the currently assigned project to the list
               $projectData = $database->project_get_data($expense['projectID']);
@@ -66,6 +70,10 @@ switch ($axAction)
           $view->edit_day   = date("d.m.Y");
           $view->edit_time  = date("H:i:s");
           $view->multiplier = '1'.$kga['conf']['decimalSeparator'].'0';
+
+          // check if this entry may be added
+          if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_expenses-ownEntry-add'))
+            break;
         }
 
         echo $view->render("floaters/add_edit_record.php");

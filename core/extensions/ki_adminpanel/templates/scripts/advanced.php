@@ -1,6 +1,6 @@
     <script type="text/javascript">
-        function cb(data) {
-            if (data=="ok") {
+        function cb(result) {
+            if (result.errors.length == 0) {
               window.location.reload();
               return;
             }

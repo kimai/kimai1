@@ -118,7 +118,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
                 'status' => 2,
                 'active' => 1
               ));
-    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
+    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroups()));
     }
     $userData = $database->user_get_data($userId);
 
@@ -178,10 +178,13 @@ switch($_REQUEST['a'])
                           'status' => 2,
                           'active' => 1
                         ));
-              $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroupId()));
+              $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroups()));
             }
 
             $userData = $database->user_get_data($userId);
+
+            // global configuration must be present from now on
+            $database->get_global_config();
 
             if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) ||
                 ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {

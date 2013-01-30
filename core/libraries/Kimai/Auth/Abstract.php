@@ -125,12 +125,12 @@ abstract class Kimai_Auth_Abstract
     abstract public function authenticate($username, $plainPassword, &$userId);
 
     /**
-     * Return the id of a group to which users should be added, if they authenticated but are not known to Kimai.
-     * The default implementation uses the first group it can find.
+     * Return a map from group IDs to membership role IDs to which users should be added, if they authenticated but are not known to Kimai.
+     * The default implementation uses the second group and and a membership role named 'User', otherwise the first one it can find.
      *
      * @return integer id of the group to add the user to
      **/
-    public function getDefaultGroupId()
+    public function getDefaultGroups()
     {
         $database = $this->getDatabase();
         $groups   = $database->get_groups();
@@ -144,7 +144,13 @@ abstract class Kimai_Auth_Abstract
             $group = $groups[0]['groupID'];
         }
 
-        return $group;
+        $memberships = $database->get_membership_roles();
+        $membership = $memberships[0]['membershipRoleID'];
+        foreach ($memberships as $membership)
+          if ($membership['name'] == 'User')
+            $membership = $membership['membershipRoleID'];
+
+        return array($group => $membership);
     }
 
 }

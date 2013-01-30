@@ -15,7 +15,9 @@ if ($this->timeSheetEntries)
               <col class="from" />
               <col class="to" />
               <col class="time" />
+<?php if ($this->showRates): ?>
               <col class="wage" />
+<?php endif; ?>
               <col class="client" />
               <col class="project" />
               <col class="activity" />
@@ -140,6 +142,7 @@ if ($this->timeSheetEntries)
                 ?>
             </td>
 
+<?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
                 if (isset($row['wage'])) {
@@ -149,6 +152,7 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
+<?php endif; ?>
 
             <td class="customer <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['customerName']) ?>

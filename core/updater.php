@@ -1614,6 +1614,30 @@ if ((int)$revisionDB < 1373) {
     exec_query("ALTER TABLE `${p}activities` DROP `assignable`;");
 }
 
+
+if ((int)$revisionDB < 1374) {
+
+  require("installer/installPermissions.php");
+
+  // add membershipRoleID column, initialized with user role
+  exec_query("ALTER TABLE `${p}groups_users` ADD `membershipRoleID` int(10) DEFAULT $membershipUserRoleID;");
+  exec_query("ALTER TABLE `${p}groups_users` CHANGE `membershipRoleID` `membershipRoleID` int(10) NOT NULL;");
+
+  // add globalRoleID column, initialized with user role
+  exec_query("ALTER TABLE `${p}users` ADD `globalRoleID` int(10) DEFAULT $globalUserRoleID;");
+  exec_query("ALTER TABLE `${p}users` CHANGE `globalRoleID` `globalRoleID` int(10) NOT NULL;");
+  exec_query("UPDATE `${p}users` SET `globalRoleID` = (SELECT globalRoleID FROM `${p}globalRoles` WHERE name = 'Admin') WHERE `name` = 'admin';");
+
+  // set groupleader role
+  exec_query("UPDATE `${p}groups_users` SET membershipRoleID=(SELECT membershipRoleID FROM `${p}membershipRoles` WHERE name = 'Groupleader') WHERE (groupID,userID) IN (SELECT groupID, userID FROM `${p}groupleaders`)");
+  
+  // set admin role
+  exec_query("UPDATE `${p}groups_users` SET membershipRoleID=(SELECT membershipRoleID FROM `${p}membershipRoles` WHERE name = 'Admin') WHERE userID IN (SELECT userID FROM `${p}users` WHERE status=0)");
+
+  //exec_query("DROP TABLE `${p}groupleaders;");
+ 
+}
+
 // FIXME kevin - removed pdo - update autoconf file!
 /*
 if ((int)$revisionDB < 2000) {

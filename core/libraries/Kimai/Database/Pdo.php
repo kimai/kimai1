@@ -1732,9 +1732,9 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
         return false;
       }
 
-      foreach ($groups as $group) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_users (userID,groupID) VALUES (?,?)");
-        $result = $pdo_query->execute(array($userId,$group));
+      foreach ($groups as $group => $role) {
+        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groups_users (userID,groupID,membershipRoleID) VALUES (?,?,?)");
+        $result = $pdo_query->execute(array($userId,$group,$role));
 
         if (!$result) {
           $this->logLastError('setGroupMemberships');

@@ -139,6 +139,8 @@ if (isset($kga['user'])) {
 $view->lang_checkUsername   = $kga['lang']['checkUsername'];
 $view->lang_checkGroupname  = $kga['lang']['checkGroupname'];
 $view->lang_checkStatusname = $kga['lang']['checkStatusname'];
+$view->lang_checkGlobalRoleName = $kga['lang']['checkGlobalRoleName'];
+$view->lang_checkMembershipRoleName = $kga['lang']['checkMembershipRoleName'];
 
 
 $customerData = array('customerID'=>false, 'name'=>'');

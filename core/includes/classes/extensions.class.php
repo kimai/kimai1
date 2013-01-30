@@ -32,6 +32,7 @@ class Extensions {
    * PARSE EXTENSION CONFIGS (ext_configs)
    */
   public function loadConfigurations() {
+    global $database;
     $handle = opendir($this->extensionsDir);
 
     if (!$handle)
@@ -54,22 +55,9 @@ class Extensions {
       $settings = parse_ini_file($dir.'config.ini');
                        	
      	// Check if user has the correct rank to use this extension      
-     	if (isset($this->kga['user']))
-        switch ($this->kga['user']['status']) {
-          case 0:
-          if ($settings['ADMIN_ALLOWED'] != "1")
-            continue 2;
-          break;
-
-          case 1:
-            if ($settings['GROUP_LEADER_ALLOWED'] != "1")
-              continue 2;
-          break;
-        
-          case 2:
-            if ($settings['USER_ALLOWED'] != "1")
-              continue 2;
-          break;
+     	if (isset($this->kga['user'])) {
+          if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $settings['EXTENSION_KEY'] . '-access'))
+            continue;
         }
      	else if ($settings['CUSTOMER_ALLOWED'] != "1")
      	  continue;

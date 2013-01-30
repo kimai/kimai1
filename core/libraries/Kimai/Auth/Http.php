@@ -106,7 +106,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     	    'status' => 2,
     	    'active' => 1
     	    ));
-        $this->database->setGroupMemberships($userId,array($this->getDefaultGroupId()));
+        $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
     	// Set a random password, unknown to the user. Autologin must be used until user sets own password
 	$userData = array('password' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt']));

@@ -66,16 +66,16 @@ function headerHeight() {
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
 //
-function floaterShow(phpFile, axAction, axValue, id, width, height) {
+function floaterShow(phpFile, axAction, axValue, id, width, height, callback) {
     if ($('#floater').css("display") == "block") {
         $("#floater").fadeOut(fading_enabled?500:0, function() {
-            floaterLoadContent(phpFile, axAction, axValue, id, width, height);
+            floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback);
         });
     } else {
-            floaterLoadContent(phpFile, axAction, axValue, id, width, height);
+            floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback);
     }
 }    
-function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
+function floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback) {
     $("#floater").load(phpFile,
         {
             axAction: axAction,
@@ -112,6 +112,8 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height) {
               return false;
           });
           
+          if (callback != undefined)
+            callback();
           
         }
     );  
@@ -993,6 +995,9 @@ function validatePassword(password,retypePassword) {
 }
 
 function setFloaterErrorMessage(fieldName,message) {
+  if (fieldName == '')
+    fieldName = "floater_tabs";
+    
   var li = $("#floater_innerwrap #"+fieldName).parent()
   li.prepend('<div class="errorMessage">'+message+'</div>');
   li.addClass('errorField');

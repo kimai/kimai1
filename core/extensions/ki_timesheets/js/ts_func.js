@@ -285,13 +285,20 @@ function ts_ext_recordAgain(project,activity,id) {
  
     $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: 0, id: id },
         function(data) {
-                eval(data);
-                ts_ext_reload();
-                buzzer_preselect_project(project,projectName,customer,customerName,false);
-                buzzer_preselect_activity(activity,activityName,0,0,false);
-                $("#ticker_customer").html(customerName);
-                $("#ticker_project").html(projectName);
-                $("#ticker_activity").html(activityName);
+          if (data.errors.length > 0)
+            return;
+          
+          customerName = data.customerName;
+          projectName = data.projectName;
+          activityName = data.activityName;
+          currentRecording = data.currentRecording;
+          
+          ts_ext_reload();
+          buzzer_preselect_project(project,projectName,customer,customerName,false);
+          buzzer_preselect_activity(activity,activityName,0,0,false);
+          $("#ticker_customer").html(customerName);
+          $("#ticker_project").html(projectName);
+          $("#ticker_activity").html(activityName);
         }
     );
 }
@@ -314,11 +321,7 @@ function ts_ext_stopRecord(id) {
     }
     $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: id },
         function(data) {
-            if (data == 1) {
                 ts_ext_reload();
-            } else {
-                alert("~~an error occured!~~")
-            }
         }
     );
 }
@@ -363,6 +366,9 @@ function getBestRates() {
     $.getJSON(ts_ext_path + "processor.php", { axAction: "bestFittingRates", axValue: 0,
         project_id: $("#add_edit_timeSheetEntry_projectID").val(), activity_id: $("#add_edit_timeSheetEntry_activityID").val()},
         function(data){
+            if (data.errors.length > 0)
+              return;
+            
             if (data.hourlyRate == false) {
             	//TODO: why does Kimai do this? If we already set a rate
             	// we might want to keep it, not just reset it to empty..?

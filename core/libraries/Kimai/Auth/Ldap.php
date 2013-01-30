@@ -83,7 +83,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
                     'status' => 2,
                     'active' => 1
                         ));
-                $this->database->setGroupMemberships($userId,array($this->getDefaultGroupId()));
+                $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down
                 $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
