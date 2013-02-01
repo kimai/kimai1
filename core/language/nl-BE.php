@@ -87,7 +87,7 @@ return array(
 "username"          => "Gebruikersnaam",
 "password"          => "Wachtwoord",
 "newPassword"       => "Nieuw wachtwoord",
-"retypePassword"    => "typ het wachtwoord opnieuw",
+"retypePassword"    => "Bevestig wachtwoord",
 "passwordsDontMatch"=> "De ingevoerde wachtwoorden komen niet overeen.",
 "passwordTooShort"  => "Het wachtwoord bevat minder dan 5 karakters.",
 "minLength"         => "min. 5 karakters!",
