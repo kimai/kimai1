@@ -4134,12 +4134,14 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
     $result = $this->conn->SelectRows($table, $filter, $columns);
 
-    if ($result === false)
+    if ($result === false) {
+      $this->logLastError('global_role_allows');
       return false;
+    }
 
     $result = $this->conn->RowCount() > 0;
     
-    Logger::logfile("Global role $roleID gave $result for $permission.");
+    Logger::logfile("Global role $roleID gave ". ($result?'true':'false')." for $permission.");
     return $result;
   }
 
