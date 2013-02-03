@@ -33,13 +33,16 @@ function checkUser()
       $kimai_key = addslashes($_COOKIE['kimai_key']);
 
       if ($database->get_seq($kimai_user) != $kimai_key) {
-          kickUser();
+        Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
+        kickUser();
       } else {
           $user = $database->checkUserInternal($kimai_user);
           Kimai_Registry::setUser(new Kimai_User($user));
           return $user;
       }
     }
+
+    Logger::logfile("Kicking user because of missing cookie.");
     kickUser();
 }
 

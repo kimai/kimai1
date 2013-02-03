@@ -2283,12 +2283,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
 		$customerID   = $row['customerID'];
 		if ($customerID < 1) {
+                        Logger::logfile("Kicking customer $customerName because he is unknown to the system.");
 			kickUser();
 		}
 	}
 	else
 	{
-		$query = "SELECT userID, status FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
+		$query = "SELECT userID FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
 		$this->conn->Query($query);
 		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
@@ -2296,6 +2297,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 		$name = $kimai_user;
 
 		if ($userID < 1) {
+                        Logger::logfile("Kicking user $name because he is unknown to the system.");
 			kickUser();
 		}
 	}
@@ -2402,7 +2404,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     // get values from user record
     $columns[] = "userID";
     $columns[] = "name";
-    $columns[] = "status";
     $columns[] = "trash";
     $columns[] = "active";
     $columns[] = "mail";
