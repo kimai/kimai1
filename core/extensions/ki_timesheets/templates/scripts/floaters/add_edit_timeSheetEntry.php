@@ -506,6 +506,8 @@
                          'class' => 'formfield',
                          'tabindex' => '14'), $this->users); ?>
                    </li>
+                   <?php else: ?>
+                   <input type="hidden" name="userID" value="<?php echo $this->kga['user']['userID'];?>"/>
                    <?php endif; ?>
                    
                     <li>
