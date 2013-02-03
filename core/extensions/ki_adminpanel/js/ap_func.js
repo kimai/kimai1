@@ -321,8 +321,8 @@ function adminPanel_extension_refreshSubtab(tab) {
             case "customers":  	target = "#adminPanel_extension_s6"; break
             case "projects": 	target = "#adminPanel_extension_s7"; break
             case "activities": 	target = "#adminPanel_extension_s8"; break
-            case "globalRole":  target = "#adminPanel_extension_s9"; break
-            case "membershipRole": target = "#adminPanel_extension_s10"; break
+            case "globalRoles":  target = "#adminPanel_extension_s9"; break
+            case "membershipRoles": target = "#adminPanel_extension_s10"; break
         }
         $(target).html(data);
     });

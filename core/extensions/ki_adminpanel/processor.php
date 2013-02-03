@@ -236,12 +236,12 @@ switch ($axAction)
 				echo $view->render('activities.php');
 				break;
 
-                        case "globalRole":
+                        case "globalRoles":
                                 $view->globalRoles = $database->global_roles();
                                 echo $view->render('globalRoles.php');
                                 break;
 
-                        case "membershipRole":
+                        case "membershipRoles":
                                 $view->membershipRoles = $database->membership_roles();
                                 echo $view->render('membershipRoles.php');
                                 break;
