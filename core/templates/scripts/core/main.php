@@ -137,14 +137,14 @@
     $('#extensionShrink').click(lists_shrinkExtToggle);
     $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
     $('#customersShrink').click(lists_shrinkCustomerToggle);
-  <?php if (!isset($this->kga['user']) || $this->kga['user']['status'] < 2): ?>
+  <?php if (count($this->users) > 0): ?>
     $('#usersShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
     $('#usersShrink').click(lists_shrinkUserToggle);
   <?php else: ?>
     $('#usersShrink').hide();
   <?php endif; ?>
 
-  <?php if ($this->kga['conf']['user_list_hidden'] || (isset($this->kga['user']) && $this->kga['user']['status'] == 2)): ?>
+  <?php if ($this->kga['conf']['user_list_hidden']): ?>
     lists_shrinkUserToggle();
   <?php endif; ?>
     $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
@@ -358,7 +358,7 @@
 </div>
 
 <div id="customers_foot">    
-<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
+<?php if ($this->show_customer_add_button): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('customers'); $(this).blur(); return false;"></a>
@@ -368,7 +368,7 @@
 </div>
 
 <div id="projects_foot">
-<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
+<?php if ($this->show_project_add_button): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_project',0,0,650,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('projects'); $(this).blur(); return false;"></a>
@@ -378,7 +378,7 @@
 </div>
 
 <div id="activities_foot">
-<?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
+<?php if ($this->show_activity_add_button): ?>
         <a href="#" class="addLink" onClick="floaterShow('floaters.php','add_edit_activity',0,0,450,200); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onClick="lists_filter_select_all('activities'); $(this).blur(); return false;"></a>

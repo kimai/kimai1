@@ -1406,181 +1406,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
-  * Assigns a leader to 1-n groups by adding entries to the cross table
-  *
-  * @param int $userID        userID of the group leader to whom the groups will be assigned
-  * @param array $groupIDs    contains one or more groupIDs
-  * @return boolean            true on success, false on failure
-  * @author ob
-  */
-  public function assign_groupleaderToGroups($userID, $groupIDs) {
-      if (! $this->conn->TransactionBegin()) {
-        $this->logLastError('assign_groupleaderToGroups');
-        return false;
-      }
-
-      $table = $this->kga['server_prefix']."groupleaders";
-      $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-      $query = MySQL::BuildSQLDelete($table, $filter);
-
-      $d_result = $this->conn->Query($query);
-
-      if ($d_result == false) {
-          $this->logLastError('assign_groupleaderToGroups');
-          $this->conn->TransactionRollback();
-          return false;
-      }
-
-      foreach ($groupIDs as $groupID) {
-        $values['groupID']       = MySQL::SQLValue($groupID, MySQL::SQLVALUE_NUMBER);
-        $values['userID']   = MySQL::SQLValue($userID     , MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLInsert($table, $values);
-
-        $result = $this->conn->Query($query);
-
-        if ($result == false) {
-                $this->logLastError('assign_groupleaderToGroups');
-                $this->conn->TransactionRollback();
-                return false;
-        }
-      }
-
-      $this->update_leader_status();
-
-      if ($this->conn->TransactionEnd() == true) {
-          return true;
-      } else {
-          $this->logLastError('assign_groupleaderToGroups');
-          return false;
-      }
-  }
-
-  /**
-  * Assigns a group to 1-n group leaders by adding entries to the cross table
-  * (counterpart to assign_groupleaderToGroups)
-  *
-  * @param array $groupID        groupID of the group to which the group leaders will be assigned
-  * @param array $leaderIDs    contains one or more userIDs of the leaders)
-  * @return boolean            true on success, false on failure
-  * @author ob
-  */
-  public function assign_groupToGroupleaders($groupID, $leaderIDs) {
-      if (! $this->conn->TransactionBegin()) {
-        $this->logLastError('assign_groupToGroupleaders');
-        return false;
-      }
-
-      $table = $this->kga['server_prefix']."groupleaders";
-      $filter['groupID'] = MySQL::SQLValue($groupID, MySQL::SQLVALUE_NUMBER);
-      $query = MySQL::BuildSQLDelete($table, $filter);
-
-      $d_result = $this->conn->Query($query);
-
-      if ($d_result == false) {
-              $this->logLastError('assign_groupToGroupleaders');
-              $this->conn->TransactionRollback();
-              return false;
-      }
-
-      foreach ($leaderIDs as $leaderID) {
-        $values['groupID']       = MySQL::SQLValue($groupID      , MySQL::SQLVALUE_NUMBER);
-        $values['userID']   = MySQL::SQLValue($leaderID , MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLInsert($table, $values);
-
-        $result = $this->conn->Query($query);
-
-        if ($result == false) {
-                $this->logLastError('assign_groupToGroupleaders');
-                $this->conn->TransactionRollback();
-                return false;
-        }
-      }
-
-      $this->update_leader_status();
-
-      if ($this->conn->TransactionEnd() == true) {
-          return true;
-      } else {
-          $this->logLastError('assign_groupToGroupleaders');
-          return false;
-      }
-  }
-
-  /**
-  * returns all the groups of the given group leader
-  *
-  * @param array $userID  userID of the group leader
-  * @return array         contains the groupIDs of the groups or false on error
-  * @author th
-  */
-  public function groupleader_get_groups($userID) {
-      $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-      $columns[]            = "groupID";
-      $table = $this->kga['server_prefix']."groupleaders";
-
-      $result = $this->conn->SelectRows($table, $filter, $columns);
-      if ($result == false) {
-          $this->logLastError('groupleader_get_groups');
-          return false;
-      }
-
-      $groupIDs = array();
-      $counter = 0;
-
-      $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
-
-      if ($this->conn->RowCount()) {
-          foreach ($rows as $row) {
-              $groupIDs[$counter] = $row['groupID'];
-              $counter++;
-          }
-          return $groupIDs;
-      } else {
-          $this->logLastError('groupleader_get_groups');
-          return false;
-      }
-  }
-
-  /**
-  * returns all the group leaders of the given group
-  *
-  * @param array $groupID  groupID of the group
-  * @return array         contains the userIDs of the group's group leaders or false on error
-  * @author th
-  */
-  public function group_get_groupleaders($groupID) {
-      $groupID = MySQL::SQLValue($groupID, MySQL::SQLVALUE_NUMBER);
-      $p = $this->kga['server_prefix'];
-
-      $query = "SELECT userID FROM ${p}groupleaders
-      JOIN ${p}users USING(userID)
-      WHERE groupID = $groupID AND trash=0;";
-
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('group_get_groupleaders');
-          return false;
-      }
-
-      $leaderIDs = array();
-      $counter     = 0;
-
-      $rows = $this->conn->RowArray(0,MYSQL_ASSOC);
-
-      if ($this->conn->RowCount()) {
-          $this->conn->MoveFirst();
-          while (! $this->conn->EndOfSeek()) {
-              $row = $this->conn->Row();
-              $leaderIDs[$counter] = $row->userID;
-              $counter++;
-          }
-          return $leaderIDs;
-      } else {
-          return array();
-      }
-  }
-
-  /**
   * Adds a new group
   *
   * @param array $data  name and other data of the new group
@@ -1606,7 +1431,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * Returns the data of a certain group
   *
   * @param array $groupID  groupID of the group
-  * @return array         the group's data (name, leader ID, etc) as array, false on failure
+  * @return array         the group's data (name, etc) as array, false on failure
   * @author th
   */
   public function group_get_data($groupID) {
@@ -2468,7 +2293,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
 		$userID   = $row['userID'];
-		$status  = $row['status']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
 		$name = $kimai_user;
 
 		if ($userID < 1) {
@@ -3130,7 +2954,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   *
   * [userID] => 23103741
   * [name] => admin
-  * [status] => 0
   * [mail] => 0
   * [active] => 0
   *
@@ -3167,7 +2990,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           $row = $this->conn->Row();
           $arr[$i]['userID']     = $row->userID;
           $arr[$i]['name']   = $row->name;
-          $arr[$i]['status']    = $row->status;
+          $arr[$i]['globalRoleID']    = $row->globalRoleID;
           $arr[$i]['mail']   = $row->mail;
           $arr[$i]['active'] = $row->active;
           $arr[$i]['trash']  = $row->trash;
@@ -3192,7 +3015,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   *      ["userID"]  =>  string(9) "1234"
   *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
-  *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
@@ -3201,7 +3023,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   *      ["userID"]  =>  string(9) "12345"
   *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
-  *      ["leader_name"] =>  string(7) "user2"
   *  }
   *
   * @return array
@@ -3212,7 +3033,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $p = $this->kga['server_prefix'];
 
       // Lock tables for alles queries executed until the end of this public function
-      $lock  = "LOCK TABLE ${p}users READ, ${p}groups READ, ${p}groupleaders READ, ${p}groups_users READ;";
+      $lock  = "LOCK TABLE ${p}users READ, ${p}groups READ, ${p}groups_users READ;";
       $result = $this->conn->Query($lock);
       if (!$result) {
         $this->logLastError('get_groups');
@@ -3240,17 +3061,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           // append user count
           $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
 
-          // append leader array
-          $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $leaderNames = array();
-          $j = 0;
-          foreach ($userID_array as $userID) {
-              $leaderNames[$j] = $this->userIDToName($userID);
-              $j++;
-          }
-
-          $groups[$i]['leader_name'] = $leaderNames;
-
           $i++;
       }
 
@@ -3261,98 +3071,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $result = $this->conn->Query($unlock);
       if (!$result) {
         $this->logLastError('get_groups');
-        return false;
-      }
-
-      return $groups;
-  }
-
-  /**
-  * returns array of all groups of a group leader
-  *
-  * [0]=> array(6) {
-  *      ["groupID"]      =>  string(1) "1"
-  *      ["groupName"]    =>  string(5) "admin"
-  *      ["userID"]  =>  string(9) "1234"
-  *      ["trash"]   =>  string(1) "0"
-  *      ["count_users"] =>  string(1) "2"
-  *      ["leader_name"] =>  string(5) "user1"
-  * }
-  *
-  * [1]=> array(6) {
-  *      ["groupID"]      =>  string(1) "2"
-  *      ["groupName"]    =>  string(4) "Test"
-  *      ["userID"]  =>  string(9) "12345"
-  *      ["trash"]   =>  string(1) "0"
-  *      ["count_users"] =>  string(1) "1"
-  *      ["leader_name"] =>  string(7) "user2"
-  *  }
-  *
-  * @return array
-  * @author sl
-  *
-  */
-  public function get_groups_by_leader($leader_id,$trash=0) {
-      $leader_id = MySQL::SQLValue($leader_id, MySQL::SQLVALUE_NUMBER  );
-
-      $p = $this->kga['server_prefix'];
-
-      // Lock tables for alles queries executed until the end of this public function
-      $lock  = "LOCK TABLE ${p}users READ, ${p}groups READ, ${p}groupleaders READ;";
-      $result = $this->conn->Query($lock);
-      if (!$result) {
-        $this->logLastError('get_groups_by_leader');
-        return false;
-      }
-
-  //------
-
-      if (!$trash) {
-          $trashoption = "AND group.trash !=1";
-      }
-      $query = "SELECT group.*
-      FROM ${p}groups AS group
-      JOIN ${p}groupleaders USING(groupID)
-      WHERE userID = $leader_id $trashoption ORDER BY group.name";
-      $result = $this->conn->Query($query);
-      if (!$result) {
-        $this->logLastError('get_groups_by_leader');
-        return false;
-      }
-
-      // rows into array
-      $groups = array();
-      $i=0;
-
-      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-
-      foreach ($rows as $row){
-          $groups[] = $row;
-
-          // append user count
-          $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
-
-          // append leader array
-          $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $leaderNames = array();
-          $j = 0;
-          foreach ($userID_array as $userID) {
-              $leaderNames[$j] = $this->userIDToName($userID);
-              $j++;
-          }
-
-          $groups[$i]['leader_name'] = $leaderNames;
-
-          $i++;
-      }
-
-  //------
-
-      // Unlock tables
-      $unlock = "UNLOCK TABLES;";
-      $result = $this->conn->Query($unlock);
-      if (!$result) {
-        $this->logLastError('get_groups_by_leader');
         return false;
       }
 
@@ -3569,31 +3287,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function get_watchable_users($user) {
       $arr = array();
       $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
-
-      if ($user['status'] == "0") { // if is admin
+      if ($this->global_role_allows($user['globalRoleID'], 'core-user-otherGroup-view')) {
         $query = "SELECT * FROM " . $this->kga['server_prefix'] . "users WHERE trash=0 ORDER BY name";
         $result = $this->conn->Query($query);
         return $this->conn->RecordsArray(MYSQL_ASSOC);
       }
 
-      // get groups the user is a leader of
-
-      $query = "SELECT groupID FROM " . $this->kga['server_prefix'] . "groupleaders WHERE userID=$userID";
-      $success = $this->conn->Query($query);
-
-      if (!$success) {
-        $this->logLastError('get_watchable_users');
-        return array();
-      }
-
-      $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
-      $leadingGroups = array();
-      foreach ($rows as $row) {
-        $leadingGroups[] = $row['groupID'];
-      }
-
-      return $this->get_users(0,$leadingGroups);
-
+      return $this->get_users(0,$user['groups']);
   }
 
   /**
@@ -3911,31 +3611,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         }
       }
       return $arr;
-  }
-
-  /**
-  * Set field status for users to 1 if user is a group leader, otherwise to 2.
-  * Admin status will never be changed.
-  * Calling public function should start and end sql transaction.
-  *
-  * @author sl
-  */
-  public function update_leader_status() {
-      $query = "UPDATE " . $this->kga['server_prefix'] . "users SET status = 2 WHERE status = 1";
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('update_leader_status');
-          return false;
-      }
-
-      $query = "UPDATE " . $this->kga['server_prefix'] . "users AS user," . $this->kga['server_prefix'] . "groupleaders AS leader SET status = 1 WHERE status = 2 AND user.userID = leader.userID";
-      $result = $this->conn->Query($query);
-      if ($result == false) {
-          $this->logLastError('update_leader_status');
-          return false;
-      }
-
-      return true;
   }
 
   /**

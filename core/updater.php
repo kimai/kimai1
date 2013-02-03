@@ -1633,9 +1633,15 @@ if ((int)$revisionDB < 1374) {
   
   // set admin role
   exec_query("UPDATE `${p}groups_users` SET membershipRoleID=(SELECT membershipRoleID FROM `${p}membershipRoles` WHERE name = 'Admin') WHERE userID IN (SELECT userID FROM `${p}users` WHERE status=0)");
+}
 
-  //exec_query("DROP TABLE `${p}groupleaders;");
- 
+
+if ((int)$revisionDB < 1375) {
+  foreach (array('customer', 'project', 'activity', 'group', 'user') as $object)
+    exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
+
+  exec_query("DROP TABLE `${p}groupleaders;");
+
 }
 
 // FIXME kevin - removed pdo - update autoconf file!

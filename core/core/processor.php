@@ -162,6 +162,8 @@ switch ($axAction) {
         else
           $view->customers = $database->get_customers($kga['user']['groups']);
 
+        $view->show_customer_edit_button = coreObjectActionAllowed('customer', 'edit');
+
         echo $view->render("lists/customers.php");
     break;
 
@@ -173,6 +175,8 @@ switch ($axAction) {
           $view->projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
         else
           $view->projects = $database->get_projects($kga['user']['groups']);
+
+        $view->show_project_edit_button = coreObjectActionAllowed('project', 'edit');
 
         echo $view->render("lists/projects.php");
     break;
@@ -189,6 +193,8 @@ switch ($axAction) {
           $view->activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
         else
           $view->activities = $database->get_activities($kga['user']['groups']);
+
+        $view->show_activity_edit_button = coreObjectActionAllowed('activity', 'edit');
 
         echo $view->render("lists/activities.php");
     break;

@@ -65,9 +65,6 @@ switch ($axAction) {
     // =============================
         
         $groupDetails = $database->group_get_data($_REQUEST['id']);
-                
-        $selectedUsers = $database->group_get_groupleaders($_REQUEST['id']);
-        $view->selectedUsers = $selectedUsers;
                       
         $view->users = makeSelectBox('sameGroupUser',null,null,true);
         

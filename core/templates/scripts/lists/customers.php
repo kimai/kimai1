@@ -25,7 +25,7 @@ $customers = $this->filterListEntries($this->customers);
 
               <!-- option cell -->
               <td nowrap class="option">
-                <?php if (isset($this->kga['user']) && $this->kga['user']['status'] != 2): ?>
+                <?php if ($this->show_customer_edit_button): ?>
                 <a href ="#" onClick="editSubject('customer',<?php echo $customer['customerID']?>); $(this).blur(); return false;">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
                 </a>

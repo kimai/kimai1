@@ -29,7 +29,7 @@ switch ($axAction)
 	case "createUser" :
 		// create new user account
 		$userData['name'] = trim($axValue);
-		$userData['status'] = 2;
+		$userData['globalRoleID'] = $kga['user']['globalRoleID'];
 		$userData['active'] = 0;
 
                 // validate data
@@ -85,9 +85,6 @@ switch ($axAction)
 
 		// create new group
 		$newGroupID = $database->group_create($group);
-		if ($newGroupID != false) {
-			$database->assign_groupToGroupleaders($newGroupID, array($kga['user']['userID']));
-		}
 
                 header('Content-Type: application/json;charset=utf-8');
                 echo json_encode(array(
@@ -98,14 +95,17 @@ switch ($axAction)
 	case "refreshSubtab" :
 		// builds either user/group/advanced/DB subtab
 		$view->curr_user = $kga['user']['name'];
-		if ($kga['user']['status'] == 0)
-			$view->groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
+		$groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+		if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+			$view->groups = $groups;
 		else
-			$view->groups = $database->get_groups_by_leader($kga['user']['userID'], get_cookie('adminPanel_extension_show_deleted_groups', 0));
-		if ($kga['user']['status'] == 0)
-			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
+			$view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+
+		if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view'))
+			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
 		else
-			$users = $database->get_watchable_users($kga['user']);
+			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0),$kga['user']['groups']);
+
 			// get group names
 		foreach ($users as &$user) {
 			$groups = $database->getGroupMemberships($user['userID']);
@@ -155,10 +155,11 @@ switch ($axAction)
 				break;
 
 			case "customers" :
-				if ($kga['user']['status'] == 0)
+				if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view'))
 					$customers = $database->get_customers();
 				else
 					$customers = $database->get_customers($kga['user']['groups']);
+
 				foreach ($customers as $row => $data) {
 					$groupNames = array();
 					$groups = $database->customer_get_groupIDs($data['customerID']);
@@ -180,11 +181,10 @@ switch ($axAction)
 				break;
 
 			case "projects" :
-				if ($kga['user']['status'] == 0) {
+				if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view'))
 					$projects = $database->get_projects();
-                } else {
+				else
 					$projects = $database->get_projects($kga['user']['groups']);
-                }
 
                 if ($projects !== null && is_array($projects))
                 {
@@ -203,25 +203,18 @@ switch ($axAction)
 				break;
 
 			case "activities" :
-				if ($kga['user']['status'] == 0)
-					$groups = null;
-				else
+				$groups = null;
+				if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
 					$groups = $kga['user']['groups'];
-				if (! isset($_REQUEST['activity_filter'])) {
+
+				if ($_REQUEST['activity_filter'] == -1)
 					$activities = $database->get_activities($groups);
-                } else {
-					switch ($_REQUEST['activity_filter']) {
-						case - 1 :
-							$activities = $database->get_activities($groups);
-							break;
-						case - 2 :
+				else {
 						// -2 is to get unassigned activities. As -2 is never
 						// an id of a project this will give us all unassigned
 						// activities.
-						default :
-							$activities = $database->get_activities_by_project($_REQUEST['activity_filter'], $groups);
-					}
-                }
+					$activities = $database->get_activities_by_project(-2, $groups);
+				}
 
 				foreach ($activities as $row => $activity) {
 					$groupNames = array();
@@ -426,8 +419,6 @@ switch ($axAction)
 
                 if (count($errors) == 0) {
                   $database->group_edit($id, $group);
-                  $leaders = $_REQUEST['leaders'];
-                  $database->assign_groupToGroupleaders($id, $leaders);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');

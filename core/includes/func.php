@@ -515,3 +515,26 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 
   return true;
 }
+
+/**
+ * Check if an action on a core object is allowed either
+ *   - for other groups or
+ *   - for any group the current user is a member of.
+ *  
+ *  This is helpfull to check if an option to do the action should be presented to the user.
+ *  
+ * @param $objectTypeName string name of the object type being edited (e.g. Project)
+ * @param $action the action being performed (e.g. add)
+ * @return true if allowed, false otherwise
+ */
+function coreObjectActionAllowed($objectTypeName, $action) {
+  global $database, $kga;
+
+  if ($database->global_role_allows($kga['user']['userID'], "core-$objectTypeName-otherGroup-$action"))
+   return true;
+
+  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-otherGroup-$action",'any'))
+    return true;
+
+  return false;
+}

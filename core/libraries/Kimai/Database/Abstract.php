@@ -405,41 +405,6 @@ abstract class Kimai_Database_Abstract {
   public abstract function user_set_preferences(array $data,$prefix='',$userId=null);
 
   /**
-  * Assigns a leader to 1-n groups by adding entries to the cross table
-  *
-  * @param int $userID        userID of the group leader to whom the groups will be assigned
-  * @param array $groupIDs    contains one or more groupIDs
-  * @return boolean            true on success, false on failure
-  */
-  public abstract function assign_groupleaderToGroups($userID, $groupIDs);
-
-  /**
-  * Assigns a group to 1-n group leaders by adding entries to the cross table
-  * (counterpart to assign_groupleaderToGroups)
-  *
-  * @param array $groupID        groupID of the group to which the group leaders will be assigned
-  * @param array $leaderIDs    contains one or more userIDs of the leaders)
-  * @return boolean            true on success, false on failure
-  */
-  public abstract function assign_groupToGroupleaders($groupID, $leaderIDs);
-
-  /**
-  * returns all the groups of the given group leader
-  *
-  * @param array $userID  userID of the group leader
-  * @return array         contains the groupIDs of the groups or false on error
-  */
-  public abstract function groupleader_get_groups($userID);
-
-  /**
-  * returns all the group leaders of the given group
-  *
-  * @param array $groupID  groupID of the group
-  * @return array         contains the userIDs of the group's group leaders or false on error
-  */
-  public abstract function group_get_groupleaders($groupID);
-
-  /**
   * Adds a new group
   *
   * @param array $data  name and other data of the new group
@@ -451,7 +416,7 @@ abstract class Kimai_Database_Abstract {
   * Returns the data of a certain group
   *
   * @param array $groupID  groupID of the group
-  * @return array         the group's data (name, leader ID, etc) as array, false on failure
+  * @return array         the group's data (name, etc) as array, false on failure
   */
   public abstract function group_get_data($groupID);
 
@@ -764,7 +729,6 @@ abstract class Kimai_Database_Abstract {
   *      ["userID"]  =>  string(9) "1234"
   *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "2"
-  *      ["leader_name"] =>  string(5) "user1"
   * }
   *
   * [1]=> array(6) {
@@ -773,38 +737,12 @@ abstract class Kimai_Database_Abstract {
   *      ["userID"]  =>  string(9) "12345"
   *      ["trash"]   =>  string(1) "0"
   *      ["count_users"] =>  string(1) "1"
-  *      ["leader_name"] =>  string(7) "user2"
   *  }
   *
   * @return array
   *
   */
   public abstract function get_groups($trash=0);
-
-  /**
-  * returns array of all groups of a group leader
-  *
-  * [0]=> array(6) {
-  *      ["groupID"]      =>  string(1) "1"
-  *      ["name"]    =>  string(5) "admin"
-  *      ["userID"]  =>  string(9) "1234"
-  *      ["trash"]   =>  string(1) "0"
-  *      ["count_users"] =>  string(1) "2"
-  *      ["leader_name"] =>  string(5) "user1"
-  * }
-  *
-  * [1]=> array(6) {
-  *      ["groupID"]      =>  string(1) "2"
-  *      ["name"]    =>  string(4) "Test"
-  *      ["userID"]  =>  string(9) "12345"
-  *      ["trash"]   =>  string(1) "0"
-  *      ["count_users"] =>  string(1) "1"
-  *      ["leader_name"] =>  string(7) "user2"
-  *  }
-  *
-  * @return array
-  */
-  public abstract function get_groups_by_leader($leader_id,$trash=0);
 
   /**
   * Performed when the stop buzzer is hit.
@@ -929,13 +867,6 @@ abstract class Kimai_Database_Abstract {
   * @return array
   */
   public abstract function get_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
-
-  /**
-  * Set field status for users to 1 if user is a group leader, otherwise to 2.
-  * Admin status will never be changed.
-  * Calling function should start and end sql transaction.
-  */
-  public abstract function update_leader_status();
 
   /**
   * Save hourly rate to database.

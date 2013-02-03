@@ -83,12 +83,15 @@ switch ($axAction) {
      * Display the dialog to add or edit a customer.
      */
     case 'add_edit_customer':
-        if (isset($kga['customer']) || $kga['user']['status']==2) die();
+        $oldGroups = array();
+        if ($id)
+          $oldGroups = $database->customer_get_groupIDs($id);
+
+        if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
 
-            $data = $database->customer_get_data($id);
             if ($data) {
                 $view->name      = $data['name'    ];
                 $view->comment   = $data['comment' ];
@@ -132,7 +135,11 @@ switch ($axAction) {
      * Display the dialog to add or edit a project.
      */
     case 'add_edit_project':
-        if (isset($kga['customer']) || $kga['user']['status']==2) die();
+        $oldGroups = array();
+        if ($id)
+          $oldGroups = $database->project_get_groupIDs($id);
+
+        if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $oldGroups)) die();
  
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
         $view->groups = makeSelectBox("group",$kga['user']['groups']);
@@ -185,7 +192,11 @@ switch ($axAction) {
      * Display the dialog to add or edit an activity.
      */
     case 'add_edit_activity':
-        if (isset($kga['customer']) || $kga['user']['status']==2) die();
+        $oldGroups = array();
+        if ($id)
+          $oldGroups = $database->activity_get_groupIDs($id);
+
+        if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             $data = $database->activity_get_data($id);

@@ -498,7 +498,7 @@
                          'class' => 'formfield',
                          'tabindex' => '14'), $this->commentTypes); ?>
                    </li>
-                   <?php if ($this->kga['user']['status'] != 2): ?>
+                   <?php if (count($this->users) > 0): ?>
                    <li>
                        <label for="userID"><?php echo $this->kga['lang']['user']?>:</label>
                        <?php echo $this->formSelect('userID', $this->userID, array(

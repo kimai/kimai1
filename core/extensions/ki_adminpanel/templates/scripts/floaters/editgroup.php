@@ -34,15 +34,6 @@
                         <label for="name"><?php echo $this->kga['lang']['groupname']?>:</label>
                         <input class="formfield" type="text" name="name" value="<?php echo $this->escape($this->group_details['name'])?>" size=35 />
                     </li>
-
-                    <li>
-                        <label for="leaders" ><?php echo $this->kga['lang']['groupleader']?>:</label>
-                        <?php echo $this->formSelect('leaders[]', $this->selectedUsers, array(
-                          'class' => 'formfield',
-                          'multiple' => 'multiple',
-                          'size' => '5',
-                          'style' => 'width:255px'),$this->users); ?>
-                    </li>
                                                 
                 </ul>
                 <input name="id" type="hidden" value="<?php echo $this->group_details['groupID']?>" />

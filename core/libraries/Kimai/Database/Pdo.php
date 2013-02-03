@@ -1427,149 +1427,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
     }
 
     /**
-    * Assigns a leader to 1-n groups by adding entries to the cross table
-    *
-    * @param int $userID        userID of the group leader to whom the groups will be assigned
-    * @param array $groupIDs    contains one or more groupIDs
-    * @global array $this->kga         kimai-global-array
-    * @return boolean            true on success, false on failure
-    * @author ob
-    */
-    public function assign_groupleaderToGroups($userID, $groupIDs) {
-      $p = $this->kga['server_prefix'];
-
-      $this->conn->beginTransaction();
-
-      $pdo_query = $this->conn->prepare("DELETE FROM ${p}groupleaders WHERE userID=?;");
-      $d_result = $pdo_query->execute(array($userID));
-      if ($d_result == false) {
-              $this->logLastError('assign_groupleaderToGroups');
-              $this->conn->rollBack();
-              return false;
-      }
-
-      foreach ($groupIDs as $groupID) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groupleaders(groupID,userID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($groupID,$userID));
-        if ($result == false) {
-            $this->logLastError('assign_groupleaderToGroups');
-            $this->conn->rollBack();
-            return false;
-        }
-      }
-
-      $this->update_leader_status();
-
-      if ($this->conn->commit() == true) {
-          return true;
-      } else {
-              $this->logLastError('assign_groupleaderToGroups');
-          return false;
-      }
-    }
-
-    /**
-    * Assigns a group to 1-n group leaders by adding entries to the cross table
-    * (counterpart to assign_groupleaderToGroups)
-    *
-    * @param array $groupID        groupID of the group to which the group leaders will be assigned
-    * @param array $leaderIDs    contains one or more userIDs of the leaders)
-    * @global array $this->kga         kimai-global-array
-    * @return boolean            true on success, false on failure
-    * @author ob
-    */
-    public function assign_groupToGroupleaders($groupID, $leaderIDs) {
-      $p = $this->kga['server_prefix'];
-
-      $this->conn->beginTransaction();
-
-      $d_query = $this->conn->prepare("DELETE FROM ${p}groupleaders WHERE groupID=?;");
-      $d_result = $d_query->execute(array($groupID));
-      if ($d_result == false) {
-          $this->logLastError('assign_groupToGroupleaders');
-          return false;
-      }
-
-      foreach ($leaderIDs as $leaderID) {
-        $pdo_query = $this->conn->prepare("INSERT INTO ${p}groupleaders (groupID,userID) VALUES (?,?);");
-        $result = $pdo_query->execute(array($groupID,$leaderID));
-        if ($result == false) {
-            $this->logLastError('assign_groupToGroupleaders');
-            return false;
-        }
-      }
-
-      $this->update_leader_status();
-
-      if ($this->conn->commit() == true) {
-          return true;
-      } else {
-          $this->logLastError('assign_groupToGroupleaders');
-          return false;
-      }
-    }
-
-    /**
-    * returns all the groups of the given group leader
-    *
-    * @param array $userID        userID of the group leader
-    * @global array $this->kga         kimai-global-array
-    * @return array            contains the groupIDs of the groups or false on error
-    * @author ob
-    */
-    public function groupleader_get_groups($userID) {
-      $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("SELECT groupID FROM ${p}groupleaders WHERE userID = ?;");
-      $result = $pdo_query->execute(array($userID));
-      if ($result == false) {
-          $this->logLastError('groupleader_get_groups');
-          return false;
-      }
-
-      $groupIDs = array();
-      $counter = 0;
-
-      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)) {
-          $groupIDs[$counter] = $row['groupID'];
-          $counter++;
-      }
-
-      return $groupIDs;
-    }
-
-    /**
-    * returns all the group leaders of the given group
-    *
-    * @param array $groupID        groupID of the group
-    * @global array $this->kga         kimai-global-array
-    * @return array            contains the userIDs of the group's group leaders or false on error
-    * @author ob
-    */
-    public function group_get_groupleaders($groupID) {
-      $p = $this->kga['server_prefix'];
-
-      $pdo_query = $this->conn->prepare("SELECT userID FROM ${p}groupleaders
-      JOIN ${p}users USING(userID)
-      WHERE groupID = ? AND trash=0;");
-      $result = $pdo_query->execute(array($groupID));
-      if ($result == false) {
-          $this->logLastError('group_get_groupleaders');
-          return false;
-      }
-
-      $leaderIDs = array();
-      $counter = 0;
-
-      while ($leader = $pdo_query->fetch()) {
-          $leaderIDs[$counter] = $leader['userID'];
-          $counter++;
-      }
-
-      return $leaderIDs;
-    }
-
-    /**
     * Adds a new group
     *
     * @param array $data         name and other data of the new group
@@ -1598,7 +1455,7 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
     *
     * @param array $groupID        groupID of the group
     * @global array $this->kga         kimai-global-array
-    * @return array            the group's data (name, leader ID, etc) as array, false on failure
+    * @return array            the group's data (name, etc) as array, false on failure
     * @author ob
     */
     public function group_get_data($groupID) {
@@ -2455,7 +2312,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
 
         $row      = $pdo_query->fetch(PDO::FETCH_ASSOC);
         $userID   = $row['userID'];
-        $status  = $row['status']; // User Status -> 0=Admin | 1=GroupLeader | 2=User
         $name = $kimai_user;
         if ($userID < 1) {
             kickUser();
@@ -3576,7 +3432,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
     *      ["userID"]=>  string(9) "1234"
     *      ["trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "2"
-    *      ["leader_name"]=>  string(5) "user1"
     * }
     *
     * [1]=>  array(6) {
@@ -3585,7 +3440,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
     *      ["userID"]=>  string(9) "12345"
     *      ["trash"]=>  string(1) "0"
     *      ["count_users"]=>  string(1) "1"
-    *      ["leader_name"]=>  string(7) "user2"
     *  }
     *
     * @global array $this->kga kimai-global-array
@@ -3598,8 +3452,7 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
       // Lock tables
       $pdo_query_l = $this->conn->prepare("LOCK TABLE
       ${p}users READ,
-      ${p}groups READ,
-      ${p}groupleaders READ
+      ${p}groups READ
       ");
       $result_l = $pdo_query_l->execute();
 
@@ -3628,17 +3481,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
           // append user count
         $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
 
-          // append leader array
-          $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $j = 0;
-          $leaderNames = array();
-          foreach ($userID_array as $userID) {
-            $leaderNames[$j] = $this->userIDToName($userID);
-            $j++;
-          }
-
-          $groups[$i]['leader_name'] = $leaderNames;
-
           $i++;
       }
 
@@ -3650,102 +3492,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
           $this->logLastError('get_groups');
           return array();
       }
-
-      // error_log("get_groups: " . serialize($groups));
-
-      return $groups;
-    }
-
-    /**
-    * returns array of all groups
-    *
-    * [0]=>  array(6) {
-    *     ["groupID"]=>  string(1) "1"
-    *      ["groupName"]=>  string(5) "admin"
-    *      ["userID"]=>  string(9) "1234"
-    *      ["trash"]=>  string(1) "0"
-    *      ["count_users"]=>  string(1) "2"
-    *      ["leader_name"]=>  string(5) "user1"
-    * }
-    *
-    * [1]=>  array(6) {
-    *      ["groupID"]=>  string(1) "2"
-    *      ["groupName"]=>  string(4) "Test"
-    *      ["userID"]=>  string(9) "12345"
-    *      ["trash"]=>  string(1) "0"
-    *      ["count_users"]=>  string(1) "1"
-    *      ["leader_name"]=>  string(7) "user2"
-    *  }
-    *
-    * @global array $this->kga kimai-global-array
-    * @return array
-    * @author th
-    *
-    */
-    public function get_groups_by_leader($leader_id,$trash=0)
-    {
-      // Lock tables
-      $pdo_query_l = $this->conn->prepare("LOCK TABLE
-      " . $this->kga['server_prefix'] . "users READ,
-      " . $this->kga['server_prefix'] . "groups READ,
-      " . $this->kga['server_prefix'] . "groupleaders READ
-      ");
-      $result_l = $pdo_query_l->execute();
-
-      if ($result_l == false) {
-          $this->logLastError('get_groups_by_leader');
-          return array();
-      }
-
-      if (!$trash) {
-          $trashoption = "AND group.trash !=1";
-      }
-      $pdo_query = $this->conn->prepare(
-    "SELECT group.*
-      FROM " . $this->kga['server_prefix'] . "groups AS group 
-      JOIN " . $this->kga['server_prefix'] . "groupleaders USING(groupID)
-      WHERE userID = ? $trashoption ORDER BY group.name");
-
-      $result = $pdo_query->execute($leader_id);
-
-      if ($result == false) {
-          $this->logLastError('get_groups_by_leader');
-          return array();
-      }
-
-      // rows into array
-      $groups = array();
-      $i=0;
-      while ($row = $pdo_query->fetch(PDO::FETCH_ASSOC)){
-          $groups[] = $row;
-
-          // append user count
-        $groups[$i]['count_users'] = $this->group_count_users($row['groupID']);
-
-          // append leader array
-          $userID_array = $this->group_get_groupleaders($row['groupID']);
-          $j = 0;
-          $leaderNames = array();
-          foreach ($userID_array as $userID) {
-            $leaderNames[$j] = $this->userIDToName($userID);
-            $j++;
-          }
-
-          $groups[$i]['leader_name'] = $leaderNames;
-
-          $i++;
-      }
-
-      // Unlock tables
-      $pdo_query_ul = $this->conn->prepare("UNLOCK TABLES");
-      $result_ul = $pdo_query_ul->execute();
-
-      if ($result_ul == false) {
-          $this->logLastError('get_groups_by_leader');
-          return array();
-      }
-
-      // error_log("get_groups: " . serialize($groups));
 
       return $groups;
     }
@@ -3933,36 +3679,6 @@ class Kimai_Database_Pdo extends Kimai_Database_Abstract
       } else {
           return $result_array[0];
       }
-    }
-
-    /**
-    * Set field status for users to 1 if user is a group leader, otherwise to 2.
-    * Admin status will never be changed.
-    * Calling public function should start and end sql transaction.
-    *
-    * @global array $this->kga              kimai global array
-    * @global array $this->conn         PDO connection
-    * @author sl
-    */
-    public function update_leader_status()
-    {
-      $p = $this->kga['server_prefix'];
-
-      $query = $this->conn->prepare("UPDATE ${p}users SET status = 2 WHERE status = 1");
-      $result = $query->execute();
-      if ($result == false) {
-          $this->logLastError('update_leader_status');
-          return false;
-      }
-
-      $query = $this->conn->prepare("UPDATE ${p}users AS user, ${p}groupleaders AS leader SET status = 1 WHERE status = 2 AND user.userID = leader.userID");
-      $result = $query->execute();
-      if ($result == false) {
-          $this->logLastError('update_leader_status');
-          return false;
-      }
-
-      return true;
     }
 
     /**

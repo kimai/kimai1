@@ -9,7 +9,6 @@
             <th><?php echo $this->kga['lang']['group']?></th>
             <th><?php echo $this->kga['lang']['options']?></th>
             <th><?php echo $this->kga['lang']['members']?></th>
-            <th><?php echo $this->kga['lang']['groupleader']?></th>
         </tr>
     </thead>
     <tbody>
@@ -56,14 +55,6 @@
                 </td>
 
                 <td><?php echo $grouparray['count_users']?></td>
-
-                <td>
-                    <?php
-                    foreach ($grouparray['leader_name'] as $leader) {
-                      echo $this->escape($leader), ' ';
-                    }
-                    ?>
-                </td>
             </tr>
             <?php
         }

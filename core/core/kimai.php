@@ -173,62 +173,57 @@ foreach ($extensions->phpIncludeFiles() as $includeFile) {
 // = display user table =
 // =======================
 if (isset($kga['customer']))
-  $users = array();
+  $view->users = array();
 else
-  $users = $database->get_watchable_users($kga['user']);
-if (count($users)>0) {
-    $view->users = $users;
-} else {
-    $view->users = 0;
-}
+  $view->users = $database->get_watchable_users($kga['user']);
 $view->user_display = $view->render("lists/users.php");
 
 // ==========================
 // = display customer table =
 // ========================
-if (isset($kga['customer'])) {
-  $customers = array(array(
+if (isset($kga['customer']))
+  $view->customers = array(array(
       'customerID'=>$kga['customer']['customerID'],
       'name'=>$kga['customer']['name'],
       'visible'=>$kga['customer']['visible']));
-} else{
-  $customers = $database->get_customers($kga['user']['groups']);
-}
-$view->customers = $customers;
+else
+  $view->customers = $database->get_customers($kga['user']['groups']);
+
+$view->show_customer_add_button = coreObjectActionAllowed('customer', 'add');
+$view->show_customer_edit_button = coreObjectActionAllowed('customer', 'edit');
+
 $view->customer_display = $view->render("lists/customers.php");
 
 // =========================
 // = display project table =
 // =========================
 if (isset($kga['customer']))
-  $projects = $database->get_projects_by_customer($kga['customer']['customerID']);
+  $view->projects = $database->get_projects_by_customer($kga['customer']['customerID']);
 else
-  $projects = $database->get_projects($kga['user']['groups']);
-if (count($projects)>0) {
-    $view->projects = $projects;
-} else {
-    $view->projects = 0;
-}
+  $view->projects = $database->get_projects($kga['user']['groups']);
+
+$view->show_project_add_button = coreObjectActionAllowed('project', 'add');
+$view->show_project_edit_button = coreObjectActionAllowed('project', 'edit');
+
 $view->project_display = $view->render("lists/projects.php");
 
 // ========================
 // = display activity table =
 // ========================
 if (isset($kga['customer']))
-  $activities = $database->get_activities_by_customer($kga['customer']['customerID']);
+  $view->activities = $database->get_activities_by_customer($kga['customer']['customerID']);
 else if ($projectData['projectID'])
-  $activities = $database->get_activities_by_project($projectData['projectID'],$kga['user']['groups']);
-else
-  $activities = $database->get_activities($kga['user']['groups']);
-if (count($activities)>0) {
-    $view->activities = $activities;
-} else {
-    $view->activities = 0;
-}
+  $view->activities = $database->get_activities_by_project($projectData['projectID'],$kga['user']['groups']);
+else 
+  $view->activities = $database->get_activities($kga['user']['groups']);
+
+$view->show_activity_add_button = coreObjectActionAllowed('activity', 'add');
+$view->show_activity_edit_button = coreObjectActionAllowed('activity', 'edit');
+
 $view->activity_display = $view->render("lists/activities.php");
 
 if (isset($kga['user']))
-  $view->showInstallWarning = $kga['user']['status']==0 && file_exists(WEBROOT.'installer');
+  $view->showInstallWarning = file_exists(WEBROOT.'installer');
 else
   $view->showInstallWarning = false;
 

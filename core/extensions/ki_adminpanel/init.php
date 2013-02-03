@@ -42,7 +42,7 @@
     // ==========================
     // = display customer table =
     // ==========================
-    if ($kga['user']['status']==0)
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view'))
       $customers = $database->get_customers();
     else
       $customers = $database->get_customers($kga['user']['groups']);
@@ -65,7 +65,7 @@
     // =========================
     // = display project table =
     // =========================
-    if ($kga['user']['status']==0)
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view'))
       $projects = $database->get_projects();
     else
       $projects = $database->get_projects($kga['user']['groups']);
@@ -87,7 +87,7 @@
     // ========================
     // = display activity table =
     // ========================
-    if ($kga['user']['status']==0)
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
       $activities = $database->get_activities_by_project(-2);
     else
       $activities = $database->get_activities_by_project(-2,$kga['user']['groups']);
@@ -108,18 +108,18 @@
 
     $view->curr_user = $kga['user']['name'];
 
-    if ($kga['user']['status']==0)
-      $view->groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+    $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+      $view->groups = $groups;
     else
-      $view->groups = $database->get_groups_by_leader($kga['user']['userID'],
-        get_cookie('adminPanel_extension_show_deleted_groups',0));
+      $view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
 
-      $view->arr_statuses = $database->get_statuses();
+    $view->arr_statuses = $database->get_statuses();
         
-    if ($kga['user']['status']==0)
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view'))
       $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
     else
-      $users = $database->get_watchable_users($kga['user']);
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0),$kga['user']['groups']);
 
     // get group names
     foreach ($users as &$user) {
@@ -182,7 +182,11 @@
       $view->roundMinutes = '';
       $view->roundSeconds = '';
     }
-    $admin['advanced'] = $view->render("advanced.php");
+
+    $view->showAdvancedTab = $database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced');
+
+    if ($view->showAdvancedTab)
+      $admin['advanced'] = $view->render("advanced.php");
     
     if ($kga['show_sensible_data']) {
         $admin['database'] = $view->render("database.php");

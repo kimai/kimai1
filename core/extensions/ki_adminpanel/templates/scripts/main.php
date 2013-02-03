@@ -49,7 +49,6 @@
 </div>
 
 <!-- edit users -->
-<?php if ($this->kga['user']['status'] == 0): ?>
 	<div id="adminPanel_extension_sub1">
 		<div class="adminPanel_extension_panel_header">
 			<a onClick="adminPanel_extension_subtab_expand(1)">
@@ -61,7 +60,6 @@
 			<?php echo $this->admin['users']; ?>
 		</div>
 	</div>
-<?php endif; ?>
 
 <!-- edit groups -->
 
@@ -121,7 +119,7 @@
 	
 
 <!-- advanced -->
-<?php if ($this->kga['user']['status'] == 0): ?>
+<?php if ($this->showAdvancedTab): ?>
 	<div id="adminPanel_extension_sub4">
 		<div class="adminPanel_extension_panel_header">
 			<a onClick="adminPanel_extension_subtab_expand(4)">
@@ -136,7 +134,6 @@
 <?php endif; ?>
 
 <!-- DB -->
-<?php if ($this->kga['user']['status'] == 0): ?>
     <div id="adminPanel_extension_sub5">
         <div class="adminPanel_extension_panel_header">
             <a onClick="adminPanel_extension_subtab_expand(5)">
@@ -148,7 +145,5 @@
             <?php echo $this->admin['database']?>
         </div>
     </div>
-
-<?php endif; ?>
 
 </div>

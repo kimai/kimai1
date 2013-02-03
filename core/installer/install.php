@@ -86,7 +86,6 @@ $query =
   `userID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
   `alias` varchar(160),
-  `status` tinyint(1) NOT NULL default '2',
   `trash` tinyint(1) NOT NULL default '0',
   `active` tinyint(1) NOT NULL default '1',
   `mail` varchar(160) NOT NULL DEFAULT '',
@@ -140,13 +139,6 @@ $query=
   `membershipRoleID` int(10) NOT NULL,
   PRIMARY KEY (`groupID`,`userID`)
 ) AUTO_INCREMENT=1;";
-exec_query($query);
-
-// leader/group cross-table (leaders n:m groups)
-$query="CREATE TABLE `${p}groupleaders` (
-  `groupID` int(10) NOT NULL,
-  `userID` int(10) NOT NULL,
-  PRIMARY KEY (`groupID` ,`userID`));";
 exec_query($query);
 
 // group/customer cross-table (groups n:m customers)
@@ -299,7 +291,12 @@ $query =
 ) ENGINE = InnoDB ";
 exec_query($query);
 
+// The included script only sets up the initial permissions.
+// Permissions that were later added follow below.
 require("installPermissions.php");
+
+foreach (array('customer', 'project', 'activity', 'group', 'user') as $object)
+  exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
 
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
@@ -323,7 +320,7 @@ exec_query($query);
 
 // ADMIN USER
 $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
-$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`,`status`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword','0',1);";
+$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword',1);";
 exec_query($query);
 
 $query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
@@ -333,9 +330,6 @@ $query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
 ('$randomAdminID','ui.hideOverlapLines','1'),
 ('$randomAdminID','ui.showTrackingNumber','1'),
 ('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
-exec_query($query);
-
-$query="INSERT INTO `${p}groupleaders` (`groupID`,`userID`) VALUES ('1','$randomAdminID');";
 exec_query($query);
 
 

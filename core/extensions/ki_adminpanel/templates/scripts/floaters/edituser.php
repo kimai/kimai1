@@ -152,30 +152,6 @@
                         <input class="formfield" type="text" id="name" name="name" value="<?php echo $this->escape($this->user_details['name'])?>" maxlength=20 size=20 />
                     </li> 
 
-                    <li>
-                        <label for="status"><?php echo $this->kga['lang']['status']?>:</label>
-
-        <?php if ($this->user_details['status'] == 1): ?>
-                        <select id="status" name="status">
-                            <option value="0" <?php if ($this->user_details['status'] == 0): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['adminUser']?> (!)</option>
-                            <option value="1" <?php if ($this->user_details['status'] == 1): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['groupleader']?></option>
-                            <option value="2" <?php if ($this->user_details['status'] == 2): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['user']?></option>
-                        </select>
-        <?php else: ?>
-
-
-            <?php if ($this->curr_user == $this->user_details['name'] && $this->user_details['status'] == 0): ?>
-                <?php echo $this->kga['lang']['admWarn']?>
-            <?php else: ?>
-                        <select id="status" name="status">
-                            <option value="0" <?php if ($this->user_details['status'] == 0): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['adminUser']?> (!)</option>
-                            <option value="2" <?php if ($this->user_details['status'] == 2): ?> selected<?php endif; ?>> <?php echo $this->kga['lang']['user']?></option>
-                        </select>
-            <?php endif; ?>
-
-        <?php endif; ?>
-                    </li>
-
 
                     <li>
                         <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole']?>:</label>

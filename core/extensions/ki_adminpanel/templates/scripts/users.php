@@ -78,23 +78,7 @@
                     <?php } ?>
                 </td>
                 <!-- ########## /Option cells ########## -->
-
-                <!-- ########## Status cells ########## -->
                 <td>
-                    <?php if ($userarray['status'] == 0): ?>
-                        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/crown.png' alt='<?php echo $this->kga['lang']['adminUser']?>' title='<?php echo $this->kga['lang']['adminUser']?>' border="0">
-                    <?php endif; ?>
-
-                    <?php if ($userarray['status'] == 1): ?>
-                        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/leader.gif' alt='<?php echo $this->kga['lang']['groupleader']?>' title='<?php echo $this->kga['lang']['groupleader']?>' border="0">
-                    <?php endif; ?>
-
-                    <?php if ($userarray['status'] == 2): ?>
-                        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/user.gif' alt='<?php echo $this->kga['lang']['user']?>' title='<?php echo $this->kga['lang']['user']?>' border="0">
-                    <?php endif; ?>
-
-                        &nbsp;
-
                     <?php if ($userarray['active'] == 1): ?>
                         <?php if ($this->curr_user != $userarray['name']): ?>
                                 <a href="#" id="ban<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_banUser('<?php echo $userarray['userID'] ?>'); return false;">
