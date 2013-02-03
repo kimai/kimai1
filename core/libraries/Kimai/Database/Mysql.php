@@ -1194,7 +1194,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         }
       }
 
-      $numbers = array('status' ,'trash' ,'active', 'lastProject' ,'lastActivity' ,'lastRecord');
+      $numbers = array('status' ,'trash' ,'active', 'lastProject' ,'lastActivity' ,'lastRecord', 'globalRoleID');
       foreach ($numbers as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER);

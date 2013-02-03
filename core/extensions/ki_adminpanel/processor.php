@@ -386,6 +386,7 @@ switch ($axAction)
 		$userData['status'] = $_REQUEST['status'];
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
+                $userData['globalRoleID'] = $_REQUEST['globalRoleID'];
                 $userData['rate'] = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
 		// if password field is empty => password unchanged (not overwritten with "")
 		if ($_REQUEST['password'] != "") {

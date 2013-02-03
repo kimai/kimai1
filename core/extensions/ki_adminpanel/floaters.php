@@ -39,6 +39,11 @@ switch ($axAction) {
 
         $userDetails['rate'] = $database->get_rate($userDetails['userID'],NULL,NULL);
         
+        $view->globalRoles = array();
+        foreach ($database->global_roles() as $role) {
+          $view->globalRoles[$role['globalRoleID']] = $role['name'];
+        }
+        
         $view->memberships = array();
         foreach ($database->getGroupMemberships($id) as $groupId) {
           $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);

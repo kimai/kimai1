@@ -178,6 +178,13 @@
 
 
                     <li>
+                        <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole']?>:</label>
+                        <?php echo $this->formSelect('globalRoleID',$this->user_details['globalRoleID'],array(
+                          'class' => 'formfield'),$this->globalRoles);?>
+                    </li>
+
+
+                    <li>
                         <label for="password"><?php echo $this->kga['lang']['newPassword']?>:</label>
                         <input class="formfield" type="password" id="password" name="password" size="9" id="password" /> <?php echo $this->kga['lang']['minLength']?>
         <?php if ($this->user_details['password'] == ""): ?>
