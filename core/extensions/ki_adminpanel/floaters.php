@@ -113,7 +113,7 @@ switch ($axAction) {
         
         $view->id = $membershipRoleDetails['membershipRoleID'];
         $view->name = $membershipRoleDetails['name'];
-        $view->action = 'editGlobalRole';
+        $view->action = 'editMembershipRole';
         $view->reloadSubtab = 'membershipRoles';
         $view->title =  $kga['lang']['editMembershipRole'];
         $view->permissions = $membershipRoleDetails;
