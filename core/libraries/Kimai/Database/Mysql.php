@@ -1130,7 +1130,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $values ['name']   = MySQL::SQLValue($data['name']);
       $values ['userID']     = MySQL::SQLValue($data['userID']    , MySQL::SQLVALUE_NUMBER);
-      $values ['status']    = MySQL::SQLValue($data['status']   , MySQL::SQLVALUE_NUMBER);
+      $values ['globalRoleID'] = MySQL::SQLValue($data['globalRoleID']    , MySQL::SQLVALUE_NUMBER);
       $values ['active'] = MySQL::SQLValue($data['active'], MySQL::SQLVALUE_NUMBER);
 
       $table  = $this->kga['server_prefix']."users";
