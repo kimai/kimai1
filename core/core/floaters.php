@@ -92,6 +92,7 @@ switch ($axAction) {
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
 
+            $data = $database->customer_get_data($id);
             if ($data) {
                 $view->name      = $data['name'    ];
                 $view->comment   = $data['comment' ];
