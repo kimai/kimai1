@@ -459,16 +459,22 @@ switch ($axAction) {
       $validateTime = new Zend_Validate_Date(array('format' => 'HH:mm:ss'));
 
       if (!$validateDate->isValid($_REQUEST['start_day']))
-        $errors['start_day'] = $kga['lang']['TimeDateInputError'];
+          $errors['start_day'] = $kga['lang']['TimeDateInputError'];
 
-      if (!$validateTime->isValid($_REQUEST['start_time']))
-        $errors['start_time'] = $kga['lang']['TimeDateInputError'];
+      if (!$validateTime->isValid($_REQUEST['start_time'])) {
+        $_REQUEST['start_time'] = $_REQUEST['start_time'] . ':00';
+        if (!$validateTime->isValid($_REQUEST['start_time']))
+          $errors['start_time'] = $kga['lang']['TimeDateInputError'];
+      }
 
       if ( $_REQUEST['end_day'] != '' && !$validateDate->isValid($_REQUEST['end_day']) )
         $errors['end_day'] = $kga['lang']['TimeDateInputError'];
 
-      if ( $_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time']) )
-        $errors['end_time'] = $kga['lang']['TimeDateInputError'];
+      if ( $_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time']) ) {
+        $_REQUEST['end_time'] = $_REQUEST['end_time'] . ':00';
+        if (!$validateTime->isValid($_REQUEST['end_time']))
+          $errors['end_time'] = $kga['lang']['TimeDateInputError'];
+      }
 
 
       if (count($errors) > 0) {
