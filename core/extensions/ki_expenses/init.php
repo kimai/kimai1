@@ -49,17 +49,11 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 if (isset($kga['user'])) // user logged in
-  $expenses = get_expenses($in,$out,array($kga['user']['userID']),null,null,1);
+$view->expenses = get_expenses($in,$out,array($kga['user']['userID']),null,null,1);
 else // customer logged in
-  $expenses = get_expenses($in,$out,null,array($kga['customer']['customerID']),null,1);
+$view->expenses = get_expenses($in,$out,null,array($kga['customer']['customerID']),null,1);
 
-if (count($expenses)>0) {
-    $view->expenses = $expenses;
-} else {
-    $view->expenses = 0;
-}
-$view->total = "";
-
+$view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
 
 
 if (isset($kga['user'])) // user logged in

@@ -107,13 +107,8 @@ switch ($axAction) {
       if (isset($kga['customer']))
         $filterCustomers = array($kga['customer']['customerID']);
 
-      $expenses = get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
-      if (count($expenses)>0) {
-          $view->expenses = $expenses;
-      } else {
-          $view->expenses = 0;
-      }
-      $view->total = "";
+      $view->expenses= get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
+      $view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
 
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
