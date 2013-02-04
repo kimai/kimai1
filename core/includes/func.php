@@ -533,10 +533,10 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 function coreObjectActionAllowed($objectTypeName, $action) {
   global $database, $kga;
 
-  if ($database->global_role_allows($kga['user']['userID'], "core-$objectTypeName-otherGroup-$action"))
+  if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action"))
    return true;
 
-  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-otherGroup-$action",'any'))
+  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-$action",'any'))
     return true;
 
   return false;
