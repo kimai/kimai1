@@ -171,16 +171,16 @@
             <?php echo $this->formText('fixedRate', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->fixedRate)); ?>
 	</li>
 
-	<li><label for="budget"><?php echo $this->kga['lang']['budget']?>:</label>
-            <?php echo $this->formText('budget', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->budget)); ?>
+	<li><label for="project_budget"><?php echo $this->kga['lang']['budget']?>:</label>
+            <?php echo $this->formText('project_budget', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->budget)); ?>
 	</li>
 
-	<li><label for="effort"><?php echo $this->kga['lang']['effort']?>:</label>
-            <?php echo $this->formText('effort', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->effort)); ?>
+	<li><label for="project_effort"><?php echo $this->kga['lang']['effort']?>:</label>
+            <?php echo $this->formText('project_effort', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->effort)); ?>
 	</li>
 
-	<li><label for="approved"><?php echo $this->kga['lang']['approved']?>:</label>
-            <?php echo $this->formText('approved', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->approved)); ?>
+	<li><label for="project_approved"><?php echo $this->kga['lang']['approved']?>:</label>
+            <?php echo $this->formText('project_approved', str_replace('.',$this->kga['conf']['decimalSeparator'],$this->approved)); ?>
 	</li>
 </ul>
 </fieldset>

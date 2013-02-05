@@ -281,9 +281,9 @@ switch ($axAction) {
               $data['visible']      = getRequestBool('visible');
               $data['internal']     = getRequestBool('internal');
               $data['filter']       = $_REQUEST['projectFilter'];
-              $data['budget']       = getRequestDecimal($_REQUEST['budget']);
-              $data['effort']       = getRequestDecimal($_REQUEST['effort']);
-              $data['approved']     = getRequestDecimal($_REQUEST['approved']);
+              $data['budget']       = getRequestDecimal($_REQUEST['project_budget']);
+              $data['effort']       = getRequestDecimal($_REQUEST['project_effort']);
+              $data['approved']     = getRequestDecimal($_REQUEST['project_approved']);
               $data['defaultRate']  = getRequestDecimal($_REQUEST['defaultRate']);
               $data['myRate']       = getRequestDecimal($_REQUEST['myRate']);
               $data['fixedRate']    = getRequestDecimal($_REQUEST['fixedRate']);
