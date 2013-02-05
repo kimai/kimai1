@@ -207,7 +207,7 @@ switch ($axAction)
 				if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
 					$groups = $kga['user']['groups'];
 
-				if ($_REQUEST['activity_filter'] == -1)
+				if (isset($_REQUEST['activity_filter']) && $_REQUEST['activity_filter'] == -1)
 					$activities = $database->get_activities($groups);
 				else {
 						// -2 is to get unassigned activities. As -2 is never
@@ -376,7 +376,6 @@ switch ($axAction)
 
 		// process editUser form
 		$userData['name'] = trim($_REQUEST['name']);
-		$userData['status'] = $_REQUEST['status'];
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
                 $userData['globalRoleID'] = $_REQUEST['globalRoleID'];
@@ -584,7 +583,7 @@ switch ($axAction)
 
         case "editMembershipRole":
                 $id = $_REQUEST['id'];
-                $data = $_REQUEST;
+                $newData = $_REQUEST;
                 unset($newData['id']);
                 unset($newData['axAction']);
                 
