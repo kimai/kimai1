@@ -175,7 +175,6 @@ switch ($axAction) {
         $data = $database->timeSheet_get_data($id);
 
         timesheetAccessAllowed($data,'delete',$errors);
-          $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
 
         if (count($errors) == 0) {
           $database->timeEntry_delete($id);
