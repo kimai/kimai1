@@ -309,7 +309,6 @@ function ts_ext_recordAgain(project,activity,id) {
 // and starts recording that activity anew
 //
 function ts_ext_stopRecord(id) {
-    ts_ext_recordAgain=-1;
     ticktack_off();
     show_selectors();
     if (id) {

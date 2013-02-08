@@ -96,6 +96,7 @@ switch ($axAction) {
         $timeSheetEntry['end'] = 0;
         $timeSheetEntry['duration'] = 0;
 
+        $errors = array();
         timesheetAccessAllowed($timeSheetEntry,'edit',$errors);
         $response['errors'] = $errors;
 
