@@ -342,11 +342,14 @@ function quickdelete(id) {
     $('#timeSheetEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     
     $.post(ts_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
-        function(data){
-            if (data == 1) {
+        function(result){
+            if (result.errors.length == 0) {
                 ts_ext_reload();
             } else {
-                alert("~~an error occured!~~")
+              var messages = [];
+              for (var index in result.errors)
+                messages.push(result.errors[index]);
+              alert(messages.join("\n"));
             }
         }
     );
