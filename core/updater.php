@@ -1637,10 +1637,12 @@ if ((int)$revisionDB < 1374) {
 
 
 if ((int)$revisionDB < 1375) {
-  foreach (array('customer', 'project', 'activity', 'group', 'user') as $object)
-    exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
+  foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
+    exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 1;");
+    exec_query("ALTER TABLE `${p}globalRoles` CHANGE `core-$object-otherGroup-view` `core-$object-otherGroup-view` tinyint DEFAULT 0;");
+  }
 
-  exec_query("DROP TABLE `${p}groupleaders;");
+    exec_query("DROP TABLE `${p}groupleaders;");
 
 }
 
