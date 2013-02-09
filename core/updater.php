@@ -1371,6 +1371,11 @@ if ((int)$revisionDB < 1349) {
 if ((int)$revisionDB < 1368) {
     Logger::logfile("-- update to r1368");
 
+    // some users don't seem to have these columns so we add them here (if they don't exist yet).
+    exec_query("ALTER TABLE  `${p}evt` ADD `evt_budget`     decimal(10,2) DEFAULT NULL;", false);
+    exec_query("ALTER TABLE  `${p}evt` ADD `evt_effort`     decimal(10,2) DEFAULT NULL;", false);
+    exec_query("ALTER TABLE  `${p}evt` ADD `evt_approved`   decimal(10,2) DEFAULT NULL;", false);
+
     exec_query("ALTER TABLE `${p}evt` RENAME TO `${p}activities`,
     CHANGE `evt_ID`         `activityID` int(10) NOT NULL AUTO_INCREMENT,
     CHANGE `evt_name`       `name`       varchar(255) NOT NULL,
