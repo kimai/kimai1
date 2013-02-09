@@ -240,7 +240,10 @@ function adminPanel_extension_newGlobalRole() {
  }
  $.post(adminPanel_extension_path + "processor.php", { axAction: "createGlobalRole", axValue: newGlobalRole, id: 0 }, 
  function(data) {
-     adminPanel_extension_refreshSubtab('globalRole');
+     if (data.errors.length > 0)
+        alert(data.errors.join("\n"));
+     else
+        adminPanel_extension_refreshSubtab('globalRoles');
  });
 }
 
@@ -256,7 +259,10 @@ function adminPanel_extension_newMembershipRole() {
  }
  $.post(adminPanel_extension_path + "processor.php", { axAction: "createMembershipRole", axValue: newMembershipRole, id: 0 }, 
  function(data) {
-     adminPanel_extension_refreshSubtab('membershipRole');
+     if (data.errors.length > 0)
+         alert(data.errors.join("\n"));
+     else
+        adminPanel_extension_refreshSubtab('membershipRoles');
  });
 }
 
@@ -427,7 +433,7 @@ function adminPanel_extension_deleteGlobalRole(id) {
   if (!confirm(lang_sure)) return;
   
   $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteGlobalRole", id: id }, 
-      function() { adminPanel_extension_refreshSubtab('globalRole'); }
+      function() { adminPanel_extension_refreshSubtab('globalRoles'); }
   );
 }
 
@@ -438,7 +444,7 @@ function adminPanel_extension_deleteMembershipRole(id) {
   if (!confirm(lang_sure)) return;
   
   $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteMembershipRole", id: id }, 
-      function() { adminPanel_extension_refreshSubtab('membershipRole'); }
+      function() { adminPanel_extension_refreshSubtab('membershipRoles'); }
   );
 }
 

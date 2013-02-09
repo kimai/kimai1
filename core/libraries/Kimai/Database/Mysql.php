@@ -4220,6 +4220,24 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     }
   }
 
+  public function globalRole_find($filter) {
+    foreach ($filter as $key => &$value) {
+      if (is_numeric($value))
+        $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+      else
+        $value = MySQL::SQLValue($value);
+    }
+    $table = $this->kga['server_prefix']."globalRoles";
+    $result = $this->conn->SelectRows($table, $filter);
+
+    if (! $result) {
+      $this->logLastError('globalRole_find');
+      return false;
+    } else {
+      return $this->conn->RecordsArray(MYSQL_ASSOC);
+    }
+  }
+
   public function global_roles() {
       $p = $this->kga['server_prefix'];
 
@@ -4300,6 +4318,24 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       return false;
     } else {
         return $this->conn->RowArray(0,MYSQL_ASSOC);
+    }
+  }
+
+  public function membershipRole_find($filter) {
+    foreach ($filter as $key => &$value) {
+      if (is_numeric($value))
+        $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+      else
+        $value = MySQL::SQLValue($value);
+    }
+    $table = $this->kga['server_prefix']."membershipRoles";
+    $result = $this->conn->SelectRows($table, $filter);
+
+    if (! $result) {
+      $this->logLastError('membershipRole_find');
+      return false;
+    } else {
+      return $this->conn->RecordsArray(MYSQL_ASSOC);
     }
   }
 

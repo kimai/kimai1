@@ -522,7 +522,10 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                else if ($database->globalRole_find($role_data))
+                  $errors[] =  $kga['lang']['errorMessages']['sameGlobalRoleName'];
 
                 if (count($errors) == 0) {
                   // create new status
@@ -540,7 +543,10 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[] =  $kga['lang']['errorMessages']['permissionDenied'];
+
+                if ($database->membershipRole_find($role_data))
+                  $errors[] =  $kga['lang']['errorMessages']['sameMembershipRoleName'];
 
                 if (count($errors) == 0) {
                   // create new status

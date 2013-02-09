@@ -134,7 +134,7 @@ return array(
 "editMembershipRole"=> "edit membership role",
 "deleteMembershipRole"=> "delete membership role",
 "membershipRoles"   => "Membership roles",
-"rolename"          => "Rollenname",
+"rolename"          => "role name",
 "editstatus"		=> "Edit status",
 "new_status"        => "Add status",
 "description"       => "Description",
@@ -377,7 +377,9 @@ EOF
 'errorMessages' => array(
   'permissionDenied' => 'Permission denied',
   'userWithSameName' => 'A customer name can not be the same as a user name.',
-  'customerWithSameName' => 'A user name can not be the same as a customer name.'
+  'customerWithSameName' => 'A user name can not be the same as a customer name.',
+  'sameGlobalRoleName' => 'A global role with this name already exists.',
+  'sameMembershipRoleName' => 'A membership role with this name already exists.',
 ),
 
 'errors' => array (
