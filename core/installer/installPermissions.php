@@ -39,7 +39,7 @@ $globalPermissions = array();
 $membershipPermissions = array();
 
 // extension permissions
-foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet') as $extension)
+foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension)
   $globalPermissions[] = $extension. '-access';
 
 // domain object permissions
