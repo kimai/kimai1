@@ -104,7 +104,14 @@ $allowedPermissions = array(
   'ki_export-access',
   'ki_invoice-access',
   'ki_timesheet-access',
-  'ki_timesheets-showRates');
+  'ki_timesheets-showRates',
+  'ki_timesheets-ownEntry-add',
+  'ki_timesheets-ownEntry-edit',
+  'ki_timesheets-ownEntry-delete',
+  'ki_expenses-ownEntry-add',
+  'ki_expenses-ownEntry-edit',
+  'ki_expenses-ownEntry-delete',
+);
 $query = buildRoleInsertQuery('globalRoles', 'User', $allowedPermissions, $globalPermissions);
 exec_query($query);
 $globalUserRoleID = mysql_insert_id();
@@ -130,9 +137,6 @@ $allowedPermissions = array_merge($allowedPermissions, array(
   'ki_timesheets-otherEntry-ownGroup-add',
   'ki_timesheets-otherEntry-ownGroup-edit',
   'ki_timesheets-otherEntry-ownGroup-delete',
-//  'ki_expenses-otherEntry-ownGroup-add',
-//  'ki_expenses-otherEntry-ownGroup-edit',
-//  'ki_expenses-otherEntry-ownGroup-delete',
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
