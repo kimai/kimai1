@@ -296,9 +296,9 @@ exec_query($query);
 require("installPermissions.php");
 
 foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
-  exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 1;");
-  exec_query("ALTER TABLE `${p}globalRoles` CHANGE `core-$object-otherGroup-view` `core-$object-otherGroup-view` tinyint DEFAULT 0;");
+  exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
 }
+exec_query("UPDATE `${p}globalRoles` SET `core-$object-otherGroup-view` = 1 WHERE `name` = 'Admin';");
 
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
