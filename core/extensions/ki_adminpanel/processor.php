@@ -369,7 +369,7 @@ switch ($axAction)
 		// Unban a user from login
 		$sts['active'] = 1;
 		$database->user_edit($id, $sts);
-		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeuser'], $kga['lang']['activeuser'], $kga['conf']['skin']);
+		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $kga['conf']['skin']);
 		break;
 
 	case "sendEditUser" :

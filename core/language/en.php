@@ -157,7 +157,7 @@ return array(
 "mailUser"          => "Send email to this user",
 "deleteUser"        => "Delete this user",
 "bannedUser"        => "Banned user - click to reactivate",
-"activeAccount"     => "Activ user - click to ban",
+"activeAccount"     => "Active user - click to ban",
 "members"           => "Members",
 "nopasswordset"     => "No password set!",
 "nopassword"        => "No password",
