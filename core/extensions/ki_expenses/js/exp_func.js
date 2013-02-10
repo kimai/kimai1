@@ -213,11 +213,14 @@ function expense_quickdelete(id) {
     $('#expensesEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
     
     $.post(expense_extension_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
-        function(data){
-            if (data == 1) {
+        function(result){
+            if (result.errors.length == 0) {
                 expense_extension_reload();
             } else {
-                alert("~~an error occured!~~")
+                var messages = [];
+                for (var index in result.errors)
+                    messages.push(result.errors[index]);
+                alert(messages.join("\n"));
             }
         }
     );
