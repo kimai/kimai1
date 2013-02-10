@@ -98,7 +98,7 @@ switch ($axAction) {
     
         $view->commentType = $timeSheetEntry['commentType'];
         $view->statusID = $timeSheetEntry['statusID'];
-        $view->billable = $timeSheetEntry['billable'];
+        $view->billable_active = $timeSheetEntry['billable'];
 
         // budget
         $activityBudgets = $database->get_activity_budget($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);

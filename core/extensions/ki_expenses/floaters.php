@@ -50,7 +50,7 @@ switch ($axAction)
             $view->edit_value       = $expense['value'];
             $view->designation      = $expense['designation'];
             $view->selected_project = $expense['projectID'];
-            $view->comment_active   = $expense['commentType'];
+            $view->commentType      = $expense['commentType'];
             $view->refundable       = $expense['refundable'];
 
             // check if this entry may be edited

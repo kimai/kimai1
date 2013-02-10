@@ -174,9 +174,9 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     } else {
         $limit="";
     }
-    $query = "SELECT *,
-              customer.name AS customerName, project.name AS projectName, project.comment AS projectComment, user.name AS userName
-             FROM ${p}expenses
+    $query = "SELECT expenses.*,
+              customer.name AS customerName, customer.comment AS customerComment, project.name AS projectName, project.comment AS projectComment, user.name AS userName
+             FROM ${p}expenses AS expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
              Join ${p}users AS user USING(userID) "
@@ -231,10 +231,7 @@ function get_expense($id) {
     $id    = MySQL::SQLValue($id   , MySQL::SQLVALUE_NUMBER);
     $p     = $kga['server_prefix'];
   
-    $query = "SELECT * FROM ${p}expenses
-              Left Join ${p}projects USING(projectID)
-              Left Join ${p}customers USING(customerID)
-              WHERE expenseID = $id LIMIT 1;";
+    $query = "SELECT * FROM ${p}expenses WHERE expenseID = $id LIMIT 1;";
 
     $conn->Query($query);
     return $conn->RowArray(0,MYSQL_ASSOC);
