@@ -201,7 +201,7 @@ $model->setEntries($invoiceArray);
 
 $renderer = null;
 
-if (stripos($tplFilename, '.odt') !== false && is_file($baseFolder . $tplFilename)) {
+if ((stripos($tplFilename, '.odt') !== false || stripos($tplFilename, '.ods') !== false ) && is_file($baseFolder . $tplFilename)) {
 	$renderer = new Kimai_Invoice_OdtRenderer();
 }
 elseif (is_dir($baseFolder . $tplFilename) && is_file($baseFolder . $tplFilename . '/index.html')) {
