@@ -156,8 +156,15 @@ foreach ($projects as $project) {
           if (!isset($wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString]))
             $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] = 0;
 
-	      $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] += $tmpCost;
-      	  $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]+= $tmpCost;
+	      if (isset($wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString]))
+          $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] += $tmpCost;
+        else
+          $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] = $tmpCost;
+
+        if (isset($wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]))
+          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]+= $tmpCost;
+        else
+          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] = $tmpCost;
       }
       if($timeSheetEntry['wage_decimal'] - $tmpCost > 0) {
           if (!isset($wages[$projectID][0][$timeSheetEntry['userName']]))

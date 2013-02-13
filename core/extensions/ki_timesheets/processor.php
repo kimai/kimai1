@@ -141,7 +141,7 @@ switch ($axAction) {
               
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(array(
-          'errors' => $errorMessages));
+          'errors' => $errors));
     break;
 
     // =======================================
