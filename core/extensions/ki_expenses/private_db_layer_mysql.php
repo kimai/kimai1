@@ -175,7 +175,9 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
         $limit="";
     }
     $query = "SELECT expenses.*,
-              customer.name AS customerName, customer.comment AS customerComment, project.name AS projectName, project.comment AS projectComment, user.name AS userName
+              customer.name AS customerName, customer.customerID AS customerID,
+              project.name AS projectName, project.comment AS projectComment,
+              user.name AS userName
              FROM ${p}expenses AS expenses
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
@@ -191,24 +193,25 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     $conn->MoveFirst();
     while (! $conn->EndOfSeek()) {
       $row = $conn->Row();
-      $arr[$i]['expenseID']             = $row->expenseID;
-      $arr[$i]['customerID']             = $row->customerID;
+      $arr[$i]['expenseID']      = $row->expenseID;
       $arr[$i]['timestamp']      = $row->timestamp;
       $arr[$i]['multiplier']     = $row->multiplier;
       $arr[$i]['value']          = $row->value;
-      $arr[$i]['projectID']          = $row->projectID;
       $arr[$i]['designation']    = $row->designation;
-      $arr[$i]['userID']          = $row->userID;
-      $arr[$i]['projectID']             = $row->projectID;
-      $arr[$i]['customerName']           = $row->customerName;
-      $arr[$i]['customerID']          = $row->customerID;
-      $arr[$i]['projectName']           = $row->projectName;
-      $arr[$i]['projectComment']           = $row->projectComment;
       $arr[$i]['comment']        = $row->comment;
-      $arr[$i]['commentType']   = $row->commentType;
+      $arr[$i]['commentType']    = $row->commentType;
       $arr[$i]['refundable']     = $row->refundable;
-      $arr[$i]['userName']           = $row->userName;
       $arr[$i]['cleared']        = $row->cleared;
+
+      $arr[$i]['customerID']     = $row->customerID;
+      $arr[$i]['customerName']   = $row->customerName;
+
+      $arr[$i]['projectID']      = $row->projectID;
+      $arr[$i]['projectName']    = $row->projectName;
+      $arr[$i]['projectComment'] = $row->projectComment;
+
+      $arr[$i]['userID']         = $row->userID;
+      $arr[$i]['userName']       = $row->userName;
       $i++;
     }
     

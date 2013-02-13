@@ -143,10 +143,10 @@ if ($this->projectsFilter != ""): ?>
         <th><?php echo $this->kga['lang']['export_extension']['costs']?></th>
   <?php endif; ?>
   <?php if (isset($this->columns['budget'])): ?>
-        <th><?php echo $this->kga['lang']['export_extension']['budget']?></th>
+        <th><?php echo $this->kga['lang']['budget']?></th>
   <?php endif; ?>
   <?php if (isset($this->columns['approved'])): ?>
-        <th><?php echo $this->kga['lang']['export_extension']['approved']?></th>
+        <th><?php echo $this->kga['lang']['approved']?></th>
   <?php endif; ?>
       </tr>
 
@@ -173,16 +173,16 @@ if ($this->projectsFilter != ""): ?>
           <i><?php echo $this->kga['lang']['export_extension']['finalamount']?></i>
         </td>
   <?php if (isset($this->columns['dec_time'])): ?>
-        <td><?php echo $this->escape(number_format(2, $this->kga['conf']['decimalSeparator'], "", $timeSum))?></td>
+        <td><?php echo $this->escape(number_format($this->timeSum, 2, $this->kga['conf']['decimalSeparator'], ""))?></td>
   <?php endif; ?>
   <?php if (isset($this->columns['wage'])): ?>
-        <td><?php echo $this->escape(number_format(2, $this->kga['conf']['decimalSeparator'], "", $wageSum))?></td>
+        <td><?php echo $this->escape(number_format($this->wageSum, 2, $this->kga['conf']['decimalSeparator'], ""))?></td>
   <?php endif; ?>
     <?php if (isset($this->columns['wage'])): ?>
-        <td><?php echo $this->escape(number_format(2, $this->kga['conf']['decimalSeparator'], "", $budgetSum))?></td>
+        <td><?php echo $this->escape(number_format($this->budgetSum, 2, $this->kga['conf']['decimalSeparator'], ""))?></td>
   <?php endif; ?>
     <?php if (isset($this->columns['wage'])): ?>
-        <td><?php echo $this->escape(number_format(2, $this->kga['conf']['decimalSeparator'], "", $approvedSum))?></td>
+        <td><?php echo $this->escape(number_format($this->approvedSum, 2, $this->kga['conf']['decimalSeparator'], ""))?></td>
   <?php endif; ?>
       </tr>
 

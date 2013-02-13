@@ -68,15 +68,9 @@ else
   $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
 
 if (isset($kga['customer']))
-  $timeSheetEntries = export_get_data($in,$out,null,array($kga['customer']['customerID']));
+  $view->exportData = export_get_data($in,$out,null,array($kga['customer']['customerID']));
 else
-  $timeSheetEntries = export_get_data($in,$out,array($kga['user']['userID']));
-
-if (count($timeSheetEntries)>0) {
-    $view->exportData = $timeSheetEntries;
-} else {
-    $view->exportData = 0;
-}
+  $view->exportData = export_get_data($in,$out,array($kga['user']['userID']));
 
 $view->total = $total;
 

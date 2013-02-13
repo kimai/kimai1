@@ -54,8 +54,16 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 	$result_arr = array();
 	$timeSheetEntries_index = 0;
 	$expenses_index = 0;
+  $keys = array('type', 'id', 'time_in', 'time_out', 'duration', 'formattedDuration', 'decimalDuration', 'rate',
+    'wage', 'wage_decimal', 'budget', 'approved', 'statusID', 'status', 'billable', 'customerID', 'customerName', 'projectID',
+    'projectName', 'description', 'projectComment', 'activityID', 'activityName', 'comment', 'commentType',
+    'location', 'trackingNumber', 'username', 'cleared');
 	while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
 		$arr = array();
+    foreach ($keys as $key)
+      $arr[$key] = null;
+    $arr['location'] = $default_location;
+
 		if ((! $reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
 			if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 				// active recordings will be omitted
@@ -88,11 +96,10 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 					$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
 				$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
 				$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
-				if (empty($arr['location']))
-					$arr['location'] = $default_location;
 				$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
 				$arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
 				$arr['cleared'] = $timeSheetEntries[$timeSheetEntries_index]['cleared'];
+        $result_arr[] = $arr;
 			}
 			$timeSheetEntries_index++;
 		}
@@ -101,16 +108,13 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['id'] = $expenses[$expenses_index]['expenseID'];
 			$arr['time_in'] = $expenses[$expenses_index]['timestamp'];
 			$arr['time_out'] = $expenses[$expenses_index]['timestamp'];
-			$arr['duration'] = null;
-			$arr['decimalDuration'] = null;
-			$arr['rate'] = null;
 			$arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
 			$arr['customerID'] = $expenses[$expenses_index]['customerID'];
 			$arr['customerName'] = $expenses[$expenses_index]['customerName'];
 			$arr['projectID'] = $expenses[$expenses_index]['projectID'];
 			$arr['projectName'] = $expenses[$expenses_index]['projectName'];
-			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
-                        $arr['projectComment'] = $timeSheetEntries[$timeSheetEntries_index]['projectComment'];
+      $arr['description'] = $expenses[$expenses_index]['designation'];
+      $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
 			if ($limitCommentSize)
 				$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 			else
@@ -118,18 +122,20 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['activityName'] = $expenses[$expenses_index]['designation'];
 			$arr['comment'] = $expenses[$expenses_index]['comment'];
 			$arr['commentType'] = $expenses[$expenses_index]['commentType'];
-			$arr['location'] = $default_location;
-			$arr['trackingNumber'] = null;
 			$arr['username'] = $expenses[$expenses_index]['userName'];
 			$arr['cleared'] = $expenses[$expenses_index]['cleared'];
+      $result_arr[] = $arr;
 			$expenses_index++;
 		}
-		$result_arr[] = $arr;
 	}
 	while ($timeSheetEntries_index < count($timeSheetEntries)) {
 		if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 			// active recordings will be omitted
 			$arr = array();
+      foreach ($keys as $key)
+        $arr[$key] = null;
+      $arr['location'] = $default_location;
+
 			$arr['type'] = 'timeSheet';
 			$arr['id'] = $timeSheetEntries[$timeSheetEntries_index]['timeEntryID'];
 			$arr['time_in'] = $timeSheetEntries[$timeSheetEntries_index]['start'];
@@ -143,7 +149,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['budget'] = $timeSheetEntries[$timeSheetEntries_index]['budget'];
 			$arr['approved'] = $timeSheetEntries[$timeSheetEntries_index]['approved'];
 			$arr['statusID'] = $timeSheetEntries[$timeSheetEntries_index]['statusID'];
-                        $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
+      $arr['status'] = $timeSheetEntries[$timeSheetEntries_index]['status'];
 			$arr['billable'] = $timeSheetEntries[$timeSheetEntries_index]['billable'];
 			$arr['customerID'] = $timeSheetEntries[$timeSheetEntries_index]['customerID'];
 			$arr['customerName'] = $timeSheetEntries[$timeSheetEntries_index]['customerName'];
@@ -159,8 +165,6 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 				$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
 			$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
 			$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
-			if (empty($arr['location']))
-				$arr['location'] = $default_location;
 			$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
 			$arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
 			$arr['cleared'] = $timeSheetEntries[$timeSheetEntries_index]['cleared'];
@@ -170,31 +174,28 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 	}
 	while ($expenses_index < count($expenses)) {
 		$arr = array();
+    foreach ($keys as $key)
+      $arr[$key] = null;
+    $arr['location'] = $default_location;
+
 		$arr['type'] = 'expense';
-		$arr['id'] = $expenses[$expenses_index]['customerID'];
+		$arr['id'] = $expenses[$expenses_index]['expenseID'];
 		$arr['time_in'] = $expenses[$expenses_index]['timestamp'];
 		$arr['time_out'] = $expenses[$expenses_index]['timestamp'];
-		$arr['duration'] = null;
-		$arr['decimalDuration'] = null;
-		$arr['rate'] = null;
 		$arr['wage'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
 		$arr['customerID'] = $expenses[$expenses_index]['customerID'];
 		$arr['customerName'] = $expenses[$expenses_index]['customerName'];
 		$arr['projectID'] = $expenses[$expenses_index]['projectID'];
 		$arr['projectName'] = $expenses[$expenses_index]['projectName'];
-                $arr['description'] = $expenses[$expenses_index]['description'];
-                $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
+    $arr['description'] = $expenses[$expenses_index]['designation'];
+    $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
 		if ($limitCommentSize)
 			$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 		else
 			$arr['comment'] = $expenses[$expenses_index]['comment'];
-		$arr['activityName'] = $expenses[$expenses_index]['designation'];
-		$arr['comment'] = $expenses[$expenses_index]['comment'];
 		$arr['commentType'] = $expenses[$expenses_index]['commentType'];
 		$arr['username'] = $expenses[$expenses_index]['userName'];
 		$arr['cleared'] = $expenses[$expenses_index]['cleared'];
-                $arr['location'] = $default_location;
-                $arr['trackingNumber'] = null;
 		$expenses_index++;
 		$result_arr[] = $arr;
 	}

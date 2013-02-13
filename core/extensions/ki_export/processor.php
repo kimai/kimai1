@@ -214,6 +214,8 @@ switch ($axAction) {
               $expenseInfo['name']   = $kga['lang']['export_extension']['expense'].': '.$one_entry['activityName'];
               $expenseInfo['time']   = -1;
               $expenseInfo['wage'] = $one_entry['wage'];
+              $expenseInfo['budget'] = null;
+              $expenseInfo['approved'] = null;
               
               $expenseSummary[] = $expenseInfo;
             }

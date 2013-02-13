@@ -172,16 +172,16 @@ class BasePDF extends TCPDF {
             if ($row['type'] == 'timeSheet') {
               if (isset($timeSheetSummary[$row['activityID']])) {
             $timeSheetSummary[$row['activityID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration']; //Sekunden
-            $timeSheetSummary[$row['activityD']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
+            $timeSheetSummary[$row['activityID']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
           }
             else {
-              $timeSheetSummary[$row['activityID']]['name']         = html_entity_decode($row['name']);
+              $timeSheetSummary[$row['activityID']]['name']         = html_entity_decode($row['activityName']);
               $timeSheetSummary[$row['activityID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration'];
               $timeSheetSummary[$row['activityID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
         }
             }
             else {
-              $expenseInfo['name']   = $kga['lang']['export_extension']['expense'].': '.$row['name'];
+              $expenseInfo['name']   = $kga['lang']['export_extension']['expense'].': '.$row['projectName'];
               $expenseInfo['time']   = -1;
               $expenseInfo['wage'] = $row['wage'];
               $expenseSummary[] = $expenseInfo;

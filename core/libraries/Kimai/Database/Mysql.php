@@ -2238,6 +2238,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                 $arr[$i]['wage_decimal']        = $arr[$i]['duration']/3600*$row->rate;
                 $arr[$i]['wage']                = sprintf("%01.2f",$arr[$i]['wage_decimal']);
               }
+              else {
+                $arr[$i]['duration']            = null;
+                $arr[$i]['formattedDuration']   = null;
+                $arr[$i]['wage_decimal']        = null;
+                $arr[$i]['wage']                = null;
+              }
               $arr[$i]['budget']   	        = $row->budget;
               $arr[$i]['approved']          = $row->approved;
               $arr[$i]['rate']              = $row->rate;

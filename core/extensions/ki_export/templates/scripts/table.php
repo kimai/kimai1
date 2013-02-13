@@ -1,4 +1,4 @@
-<?php if ($this->exportData): ?>
+<?php if (count($this->exportData) > 0): ?>
         <div id="xptable">
         
           <table>

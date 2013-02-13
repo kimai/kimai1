@@ -100,7 +100,7 @@
         <ul>
           <li>
             <?php echo $this->kga['lang']['sublistAnnotations']?>:
-            <?php echo $this->formSelect('sublistAnnotations', $this->kga['conf']['sublistAnnotations'], null, array(
+            <?php echo $this->formSelect('sublistAnnotations', isset($this->kga['conf']['sublistAnnotations']) && $this->kga['conf']['sublistAnnotations'], null, array(
 $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs'], $this->kga['lang']['timelabel'].' & '. $this->kga['lang']['export_extension']['costs']
 )); ?>
           </li>
@@ -149,15 +149,15 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
           </li>
           <li>
             <label for="showCommentsByDefault"></label>
-            <?php echo $this->formCheckbox('showCommentsByDefault', '1',array('checked' => $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault']?>
+            <?php echo $this->formCheckbox('showCommentsByDefault', '1',array('checked' => isset($this->kga['conf']['showCommentsByDefault']) && $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault']?>
           </li>
           <li>
             <label for="showTrackingNumber"></label>
-            <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber']?>
+            <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => isset($this->kga['conf']['showTrackingNumber']) && $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber']?>
           </li>     
           <li>
             <label for="hideOverlapLines"></label>
-            <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
+            <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
           </li>     
         </ul>
       </fieldset>
