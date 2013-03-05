@@ -421,7 +421,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
 6        => "Backup from",
 7        => "was recovered.",
 8        => "create backup",
-9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
+9        => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)",
+10       => "Authentication required",
+11       => "To prevent unauthorized persons from creating, deleting or restoring backups you need to give the password salt stored in include/autoconf.php. It only consists of letters and numbers."
+),
 
 
 'export_extension' => array(

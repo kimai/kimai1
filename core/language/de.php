@@ -388,7 +388,10 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 6        => "Backup vom",
 7        => "wurde wiederhergestellt.",
 8        => "neues Backup erstellen",
-9        => "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datanträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)"),
+9        => "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datanträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)",
+10       => "Autorisierung erforderlich",
+11       => "Um nicht autorisierte Personen daran zu hindern Backups zu erstellen, zu löschen oder widerherzustellen müssen sie den Passwort Salt (\$password_salt) aus include/autoconf.php eingeben. Dieser besteht nur aus Buchstaben und Zahlen."
+),
 
 'export_extension' => array(
 	

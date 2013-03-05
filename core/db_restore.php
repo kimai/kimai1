@@ -1,5 +1,6 @@
 <?php
-/**
+
+  /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
@@ -24,6 +25,13 @@
  */ 
 
 require('includes/basics.php');
+
+if ($_REQUEST['submit'] == $kga['lang']['login'] && $_REQUEST['salt'] == $kga['password_salt']) {
+  $cookieValue = sha1($kga['password_salt']);
+  setcookie('db_restore_authCode', $cookieValue);
+  $_COOKIE['db_restore_authCode'] = $cookieValue;
+}
+$authenticated =  $_COOKIE['db_restore_authCode'] == sha1($kga['password_salt']);
 
 $version_temp  = $database->get_DBversion();
 $versionDB  = $version_temp[0];
@@ -58,7 +66,7 @@ function exec_query($query) {
     }
 }
 
-if (isset($_REQUEST['submit'])) 
+if (isset($_REQUEST['submit']) && $authenticated)
 {
   if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) 
   {
@@ -237,7 +245,7 @@ if (isset($_REQUEST['submit']))
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // restore
 
-if (isset($_REQUEST['submit'])) 
+if (isset($_REQUEST['submit']) && $authenticated)
 {
   if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
   {
@@ -297,7 +305,16 @@ if (isset($_REQUEST['submit']))
   }
 }
 
-echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
+echo '<form method="post" accept-charset="utf-8">';
+
+if (!$authenticated) {
+  echo "<h1>" . $kga['lang']['backup'][10] . "</h1>";
+  echo '<p class="caution">', $kga['lang']['backup'][11], '</p>';
+  echo '<input type="text" name="salt"/>';
+  echo '<input type="submit" name="submit" value="', $kga['lang']['login'], '"/>';
+}
+else {
+  echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
 
 $query = ("SHOW TABLES;");
                        
@@ -317,7 +334,6 @@ foreach ($result_backup as $row)
 
 $neues_array = array_unique ($arr);
 
-echo '<form method="post" accept-charset="utf-8">';
 	
 foreach($neues_array AS $date)
 {
@@ -346,11 +362,14 @@ EOD;
 <input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][3]; ?>"> <!-- delete -->
 <input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][8]; ?>"> <!-- backup -->
 </p>
+<?php
+}
+?>
 
 </form>
+  <br/>
 <a href="index.php">Login</a>
 <p class="caution"><?php echo $kga['lang']['backup'][9]; ?></p>
 </div>
-
 </body>
 </html>
