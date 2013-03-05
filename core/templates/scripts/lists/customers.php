@@ -29,11 +29,10 @@ $customers = $this->filterListEntries($this->customers);
                 <a href ="#" onClick="editSubject('customer',<?php echo $customer['customerID']?>); $(this).blur(); return false;">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
                 </a>
-                <?php else: ?>
+                <?php endif; ?>
                 <a href ="#" onClick="lists_update_filter('customer',<?php echo $customer['customerID']?>); $(this).blur(); return false;">
                   <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
                 </a>
-                <?php endif; ?>
               </td>
 
               <!-- name cell -->
