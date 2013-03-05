@@ -113,10 +113,10 @@ switch ($axAction) {
       $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
       $success = false;
 
-      if (strncmp($id,"timeSheet",3) == 0)
-        $success = export_timeSheetEntry_set_cleared(substr($id,3),$axValue==1);
-      else if (strncmp($id,"expense",3) == 0)
-        $success = export_expense_set_cleared(substr($id,3),$axValue==1);
+      if (strncmp($id,"timeSheet",9) == 0)
+        $success = export_timeSheetEntry_set_cleared(substr($id,9),$axValue==1);
+      else if (strncmp($id,"expense",7) == 0)
+        $success = export_expense_set_cleared(substr($id,7),$axValue==1);
 
       echo $success?1:0;
     break;
