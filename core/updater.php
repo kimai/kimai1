@@ -1657,6 +1657,10 @@ if ((int)$revisionDB < 1375) {
     exec_query("UPDATE `${p}globalRoles` SET `demo_ext-access` = 1 WHERE `name` = 'Admin';");
   }
 
+  if ((int)$revisionDB < 1377) {
+    exec_query("ALTER TABLE `${p}rates` ADD PRIMARY KEY(`userID`, `projectID`, `activityID`);");
+  }
+
 // FIXME kevin - removed pdo - update autoconf file!
 /*
 if ((int)$revisionDB < 2000) {
