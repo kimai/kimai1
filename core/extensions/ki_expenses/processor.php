@@ -209,8 +209,15 @@ switch ($axAction) {
         $new_time = convert_time_strings($new,$new);
         $data['timestamp'] = $new_time['in'];
 
+        if (!is_numeric($data['projectID']))
+          $errors['projectID'] = $kga['lang']['errorMessages']['noProjectSelected'];
 
-        if (!expenseAccessAllowed($data,$action,$errors)) {
+        if (!is_numeric($data['multiplier']) || $data['multiplier'] <= 0)
+          $errors['multiplier'] = $kga['lang']['errorMessages']['multiplierNegative'];
+
+        expenseAccessAllowed($data,$action,$errors);
+
+        if (count($errors) > 0) {
           echo json_encode(array('errors'=>$errors));
           break;
         }

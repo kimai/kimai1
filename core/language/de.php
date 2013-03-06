@@ -348,6 +348,8 @@ EOF
   'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.',
   'sameGlobalRoleName' => 'Eine globale Rolle mit diesem Namen existiert bereits.',
   'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
+  'noProjectSelected' => 'Kein Projekt ausgwählt.',
+  'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
 ),
 
 'errors' => array(

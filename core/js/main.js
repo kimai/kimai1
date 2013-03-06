@@ -998,7 +998,10 @@ function setFloaterErrorMessage(fieldName,message) {
   if (fieldName == '')
     fieldName = "floater_tabs";
     
-  var li = $("#floater_innerwrap #"+fieldName).parent()
+  var li = $("#floater_innerwrap #"+fieldName).closest('li');
+  if (li.length == 0) {
+      li = $("#floater_innerwrap [name='"+fieldName+"']").closest('li');
+  }
   li.prepend('<div class="errorMessage">'+message+'</div>');
   li.addClass('errorField');
 }

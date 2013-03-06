@@ -380,6 +380,8 @@ EOF
   'customerWithSameName' => 'A user name can not be the same as a customer name.',
   'sameGlobalRoleName' => 'A global role with this name already exists.',
   'sameMembershipRoleName' => 'A membership role with this name already exists.',
+  'noProjectSelected' => 'No project selected.',
+  'multiplierNegative' => 'The multiplier must be larger than 0.',
 ),
 
 'errors' => array (
