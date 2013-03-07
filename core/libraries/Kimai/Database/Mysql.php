@@ -2980,7 +2980,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         WHERE trash = $trash
         ORDER BY name ;";
       else
-        $query = "SELECT * FROM ${p}users
+        $query = "SELECT DISTINCT u.* FROM ${p}users AS u
          JOIN ${p}groups_users AS g_u USING(userID)
         WHERE g_u.groupID IN (".implode($groups,',').") AND
          trash = $trash
