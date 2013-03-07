@@ -77,16 +77,16 @@ $globalPermissions[] = 'ki_timesheets-otherEntry-otherGroup-delete';
 $globalPermissions[] = 'ki_timesheets-showRates';
 $globalPermissions[] = 'ki_timesheets-editRates';
 
-// expenses permissions (only access to ownEntry is possible at the moment)
+// expenses permissions
 $globalPermissions[] = 'ki_expenses-ownEntry-add';
-//$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-add';
-//$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-add';
+$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-add';
+$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-add';
 $globalPermissions[] = 'ki_expenses-ownEntry-edit';
-//$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-edit';
-//$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-edit';
+$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-edit';
+$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-edit';
 $globalPermissions[] = 'ki_expenses-ownEntry-delete';
-//$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-delete';
-//$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-delete';
+$membershipPermissions[] = 'ki_expenses-otherEntry-ownGroup-delete';
+$globalPermissions[] = 'ki_expenses-otherEntry-otherGroup-delete';
 
 
 $query = buildRoleTableCreateQuery('globalRoles', 'globalRoleID', $globalPermissions);
@@ -137,6 +137,9 @@ $allowedPermissions = array_merge($allowedPermissions, array(
   'ki_timesheets-otherEntry-ownGroup-add',
   'ki_timesheets-otherEntry-ownGroup-edit',
   'ki_timesheets-otherEntry-ownGroup-delete',
+  'ki_expenses-otherEntry-ownGroup-add',
+  'ki_expenses-otherEntry-ownGroup-edit',
+  'ki_expenses-otherEntry-ownGroup-delete',
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);

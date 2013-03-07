@@ -1002,6 +1002,9 @@ function setFloaterErrorMessage(fieldName,message) {
   if (li.length == 0) {
       li = $("#floater_innerwrap [name='"+fieldName+"']").closest('li');
   }
+  if (li.length == 0) {
+      li = $("#floater_innerwrap form");
+  }
   li.prepend('<div class="errorMessage">'+message+'</div>');
   li.addClass('errorField');
 }
