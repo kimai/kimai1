@@ -8,8 +8,18 @@
             $('#expense_extension_form_add_edit_record').ajaxForm( {
               'beforeSubmit' :function() { 
                 clearFloaterErrorMessages();
+
+                if ($('#expense_extension_form_add_edit_record').attr('submitting')) {
+                  return false;
+                }
+                else {
+                  $('#expense_extension_form_add_edit_record').attr('submitting', true);
+                  return true;
+                }
               },
               'success' : function(result) {
+                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
+
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 
@@ -18,6 +28,9 @@
                   floaterClose();
                   expense_extension_reload();
                 }
+              },
+              'error' : function() {
+                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
               }
             });
 

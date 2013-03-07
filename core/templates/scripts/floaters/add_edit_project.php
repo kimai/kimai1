@@ -3,8 +3,18 @@
             $('#addProject').ajaxForm({
               'beforeSubmit': function() { 
                 clearFloaterErrorMessages();
+
+                if ($('#addProject').attr('submitting')) {
+                  return false;
+                }
+                else {
+                  $('#addProject').attr('submitting', true);
+                  return true;
+                }
               },
               'success': function(result) {
+                $('#addProject').removeAttr('submitting');
+
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
 
@@ -13,6 +23,9 @@
                   hook_projects_changed();
                   hook_activities_changed();
                 }
+            },
+            'error' : function() {
+                $('#addProject').removeAttr('submitting');
             }});
 
 

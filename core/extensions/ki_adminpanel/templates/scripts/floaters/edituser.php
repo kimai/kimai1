@@ -8,8 +8,18 @@
                 	    return false;
 
                 clearFloaterErrorMessages();
+
+        if ($('#adminPanel_extension_form_editUser').attr('submitting')) {
+          return false;
+        }
+        else {
+          $('#adminPanel_extension_form_editUser').attr('submitting', true);
+          return true;
+        }
             	},
     success: function(result) {
+        $('#adminPanel_extension_form_editUser').removeAttr('submitting');
+
         for (var fieldName in result.errors)
           setFloaterErrorMessage(fieldName,result.errors[fieldName]);
         
@@ -20,7 +30,10 @@
         }
 
         return false;
-    }
+    },
+     'error': function() {
+       $('#adminPanel_extension_form_editUser').removeAttr('submitting');
+     }
 	    }; 
 
         var memberships = <?php echo json_encode($this->membershipRoles); ?>;

@@ -7,9 +7,22 @@
         if ( ($('#password').val() != "" || $('#retypePassword').val() != "")
               && !validatePassword($('#password').val(),$('#retypePassword').val()))
           return false;
+
+        if ($('#core_prefs').attr('submitting')) {
+          return false;
+        }
+        else {
+          $('#core_prefs').attr('submitting', true);
+          return true;
+        }
       },
       success: function() {
+        $('#core_prefs').removeAttr('submitting');
+
         window.location.reload();
+      },
+      'error' : function() {
+          $('#core_prefs').removeAttr('submitting');
       }
     }; 
     

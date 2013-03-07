@@ -3,8 +3,18 @@
             $('#adminPanel_extension_form_editGroup').ajaxForm( {
               'beforeSubmit' :function() { 
                 clearFloaterErrorMessages();
+
+                if ($('#adminPanel_extension_form_editGroup').attr('submitting')) {
+                  return false;
+                }
+                else {
+                  $('#adminPanel_extension_form_editGroup').attr('submitting', true);
+                  return true;
+                }
               },
               'success': function (result) {
+                $('#adminPanel_extension_form_editGroup').removeAttr('submitting');
+
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 
@@ -13,7 +23,10 @@
                   adminPanel_extension_refreshSubtab('groups');
                   adminPanel_extension_refreshSubtab('users');
                 }
-            }}); 
+            },
+            'error': function() {
+              $('#adminPanel_extension_form_editGroup').removeAttr('submitting');
+            }});
         }); 
     </script>
 

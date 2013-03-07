@@ -4,8 +4,18 @@ $(document).ready(function() {
   $('#add_edit_activity').ajaxForm({
     'beforeSubmit': function() {
       clearFloaterErrorMessages();
+
+      if ($('#add_edit_activity').attr('submitting')) {
+        return false;
+      }
+      else {
+        $('#add_edit_activity').attr('submitting', true);
+        return true;
+      }
     },
     'success': function(result) {
+      $('#add_edit_activity').removeAttr('submitting');
+
       for (var fieldName in result.errors)
         setFloaterErrorMessage(fieldName,result.errors[fieldName]);
 
@@ -13,7 +23,10 @@ $(document).ready(function() {
          floaterClose();
          hook_activities_changed();
       }
-     }});
+     },
+      'error' : function() {
+        $('#add_edit_activity').removeAttr('submitting');
+      }});
 
      $('#floater_innerwrap').tabs({ selected: 0 });
  }); 

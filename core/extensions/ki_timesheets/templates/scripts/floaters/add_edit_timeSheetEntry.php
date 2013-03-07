@@ -146,7 +146,8 @@
             };
 <?php endif; ?>
 
-            $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( { 'beforeSubmit' :function() { 
+            $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( {
+                'beforeSubmit' :function() {
                 clearFloaterErrorMessages();
                 if (!$('#start_day').val().match(ts_dayFormatExp) ||
                     ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
@@ -222,9 +223,18 @@
                     return false;
                 }
 
-              return true;
+              if ($('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting')) {
+                return false;
+              }
+              else {
+                  $('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting', true);
+                return true;
+              }
+
+
             },
               'success' : function(result) {
+                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
 
@@ -232,6 +242,10 @@
                   floaterClose();
                   ts_ext_reload();
                 }
+              },
+
+              'error' : function() {
+                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
               }
             });
             <?php if (isset($this->id)) { ?>

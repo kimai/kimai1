@@ -3,8 +3,18 @@
             $('#adminPanel_extension_form_editstatus').ajaxForm( {
               'beforeSubmit' :function() { 
                 clearFloaterErrorMessages();
+
+                if ($('#adminPanel_extension_form_editstatus').attr('submitting')) {
+                  return false;
+                }
+                else {
+                  $('#adminPanel_extension_form_editstatus').attr('submitting', true);
+                  return true;
+                }
               },
               'success': function (result) {
+                $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
+
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 
@@ -12,7 +22,10 @@
                   floaterClose();
                   adminPanel_extension_refreshSubtab('status');
                 }
-            }}); 
+            },
+            'error': function() {
+              $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
+            }});
         }); 
     </script>
 

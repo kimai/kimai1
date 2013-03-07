@@ -12,8 +12,18 @@
             $('#add_edit_customer').ajaxForm({
               'beforeSubmit': function() { 
                 clearFloaterErrorMessages();
+
+                if ($('#add_edit_customer').attr('submitting')) {
+                  return false;
+                }
+                else {
+                  $('#add_edit_customer').attr('submitting', true);
+                  return true;
+                }
               },
               'success': function(result) {
+                $('#add_edit_customer').removeAttr('submitting');
+
                 for (var fieldName in result.errors)
                   setFloaterErrorMessage(fieldName,result.errors[fieldName]);
                 
@@ -22,6 +32,9 @@
                   floaterClose();
                   hook_customers_changed();
                 }
+              },
+              'error' : function() {
+                  $('#add_edit_customer').removeAttr('submitting');
               }});
 
              $('#floater_innerwrap').tabs({ selected: 0 });
