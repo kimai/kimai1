@@ -183,6 +183,11 @@ switch ($axAction) {
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
         $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
         $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);
+
+        // budget
+        $view->budget_activity = 0;
+        $view->approved_activity = 0;
+        $view->budget_activity_used = 0;
         
         $view->cleared = false;
     }
