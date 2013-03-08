@@ -30,7 +30,7 @@ switch ($axAction)
 		// create new user account
 		$userData['name'] = trim($axValue);
 		$userData['globalRoleID'] = $kga['user']['globalRoleID'];
-		$userData['active'] = 0;
+		$userData['active'] = 1;
 
                 // validate data
                 $errors = array();
