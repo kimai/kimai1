@@ -384,6 +384,10 @@ EOF
   'multiplierNegative' => 'The multiplier must be larger than 0.',
 ),
 
+'confirmations' => array(
+  'ownGlobalRoleChange' => 'Are you sure you want to change your own global role from "%OLD%" to "%NEW%"?\nThis can lead to less permissions!'
+),
+
 'errors' => array (
   0 => array ('hdl' => "Database could not be connected!",
               'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),

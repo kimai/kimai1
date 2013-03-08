@@ -18,14 +18,14 @@
  */
 
 /**
- * Escapes a string to be used in a javascript string and also encode the string for HTML.
+ * Escapes a string to be used in a javascript string without HTML escaping the text.
  *
  * @author Severin
  */
-class Zend_View_Helper_JsEscape extends Zend_View_Helper_Abstract
+class Zend_View_Helper_PureJsEscape extends Zend_View_Helper_Abstract
 {
-    public function jsEscape($text)
+    public function pureJsEscape($text)
     {
-        return str_replace("'","\\'",$this->view->escape($text));
+        return str_replace("'","\\'",str_replace('"','\\"',$text));
     }
 } 

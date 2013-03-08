@@ -352,6 +352,10 @@ EOF
   'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
 ),
 
+'confirmations' => array(
+  'ownGlobalRoleChange' => 'Möchten Sie ihre globale Rolle von "%OLD%" zu "%NEW%" ändern? \nDas kann zu weniger Berechtigungen führen!'
+),
+
 'errors' => array(
     0 => array ('hdl' => "Datenbankverbindung verweigert!",
         'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."),

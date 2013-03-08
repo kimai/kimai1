@@ -2,7 +2,19 @@
         $(document).ready(function() {
 
 	 var options = { 
-		beforeSubmit:  function() { 
+		beforeSubmit:  function() {
+
+        var oldGlobalRoleID = <?php echo $this->user_details['globalRoleID']; ?>;
+
+        if ($('#globalRoleID').val() != oldGlobalRoleID) {
+            var message = "<?php echo $this->pureJsEscape($this->kga['lang']['confirmations']['ownGlobalRoleChange']); ?>";
+            message = message.replace(/%OLD%/, $("#globalRoleID>option[value='"+oldGlobalRoleID+"']").text());
+            message = message.replace(/%NEW%/, $("#globalRoleID>option:selected").text());
+            var accepted = confirm(message);
+
+            if (!accepted)
+              return false;
+        }
 
                 	if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
                 	    return false;
