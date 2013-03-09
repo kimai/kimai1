@@ -66,16 +66,16 @@ function headerHeight() {
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
 //
-function floaterShow(phpFile, axAction, axValue, id, width, height, callback) {
+function floaterShow(phpFile, axAction, axValue, id, width, callback) {
     if ($('#floater').css("display") == "block") {
         $("#floater").fadeOut(fading_enabled?500:0, function() {
-            floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback);
+            floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
         });
     } else {
-            floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback);
+            floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
     }
 }    
-function floaterLoadContent(phpFile, axAction, axValue, id, width, height, callback) {
+function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
     $("#floater").load(phpFile,
         {
             axAction: axAction,
@@ -85,14 +85,12 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height, callb
         function() {
           
           $('#floater').css({width: width+"px"});
-          
-          $('#floater_tabs').css({height: height+"px"});
+
+          resize_floater();
           
           x = ($(document).width()-(width+10))/2;
-          y = ($(document).height()-(height+80))/2;
-          if (y<0) y=0;
           if (x<0) x=0;
-          $("#floater").css({left:x+"px",top:y+"px"});
+          $("#floater").css({left:x+"px"});
           $("#floater").fadeIn(fading_enabled?200:0);
           
           $('#focus').focus();
@@ -117,6 +115,19 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, height, callb
           
         }
     );  
+}
+
+function resize_floater() {
+    var height = $(window).height();
+    height -= $('#floater').outerHeight() - $('#floater').height(); // floater border and padding
+    height -= $('#floater_tabs').outerHeight() - $('#floater_tabs').height(); // floaterTab border and padding
+    height -= $('#floater_handle').outerHeight(true) + $('.menuBackground').outerHeight(true) + $('#formbuttons').outerHeight(true); // other elements heights
+    $('#floater_tabs').css({'max-height': height + "px"});
+
+    var y = ($(window).height() - $('#floater').height()) / 2;
+    if (y<0) y=0;
+    $("#floater").css({top:y+"px"});
+
 }
 
 // ----------------------------------------------------------------------------------------
@@ -508,13 +519,11 @@ function ticktack_off() {
 // shows dialogue for editing an item in either customer, project or activity list
 //
 function editSubject(subject,id) {
-    var height = 180;
     var width = 450;
     if (subject == 'project') {
-      height = 250;
       width = 650;
     }
-    floaterShow('floaters.php','add_edit_'+subject,0,id,width,height); return false;
+    floaterShow('floaters.php','add_edit_'+subject,0,id,width); return false;
 }
 
 

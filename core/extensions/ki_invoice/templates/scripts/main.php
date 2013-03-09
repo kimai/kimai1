@@ -3,7 +3,7 @@
 		invoice_extension_onload();
 		$('#editVatLink').click(function () {
 			this.blur();
-			floaterShow(invoice_extension_path + "floaters.php","editVat",0,0,250,100);
+			floaterShow(invoice_extension_path + "floaters.php","editVat",0,0,250);
 		});
 	}); 
 </script>

@@ -272,14 +272,14 @@ function adminPanel_extension_newMembershipRole() {
 // by clicking on the edit button of a user the edit dialogue pops up
 //
 function adminPanel_extension_editUser(id) {
-    floaterShow(adminPanel_extension_path + "floaters.php","editUser",0,id,400,230);
+    floaterShow(adminPanel_extension_path + "floaters.php","editUser",0,id,400);
 }
 
 // ----------------------------------------------------------------------------------------
 // by clicking on the edit button of a group the edit dialogue pops up
 //
 function adminPanel_extension_editGroup(id) {
-    floaterShow(adminPanel_extension_path + "floaters.php","editGroup",0,id,450,100);
+    floaterShow(adminPanel_extension_path + "floaters.php","editGroup",0,id,450);
 }
 
 
@@ -287,14 +287,14 @@ function adminPanel_extension_editGroup(id) {
 //by clicking on the edit button of a status the edit dialogue pops up
 //
 function adminPanel_extension_editStatus(id) {
- floaterShow(adminPanel_extension_path + "floaters.php","editStatus",0,id,450,100);
+ floaterShow(adminPanel_extension_path + "floaters.php","editStatus",0,id,450);
 }
 
 //----------------------------------------------------------------------------------------
 //by clicking on the edit button of a global role the edit dialogue pops up
 //
 function adminPanel_extension_editGlobalRole(id) {
- floaterShow(adminPanel_extension_path + "floaters.php","editGlobalRole",0,id,550,200, function() {
+ floaterShow(adminPanel_extension_path + "floaters.php","editGlobalRole",0,id,550, function() {
             $('.floatingTabLayout').each(doFloatingTabLayout);
 });
 }
@@ -303,7 +303,7 @@ function adminPanel_extension_editGlobalRole(id) {
 //by clicking on the edit button of a membership role the edit dialogue pops up
 //
 function adminPanel_extension_editMembershipRole(id) {
- floaterShow(adminPanel_extension_path + "floaters.php","editMembershipRole",0,id,550,200, function() {
+ floaterShow(adminPanel_extension_path + "floaters.php","editMembershipRole",0,id,550, function() {
             $('.floatingTabLayout').each(doFloatingTabLayout);
 });
 }

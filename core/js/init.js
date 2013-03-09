@@ -72,12 +72,12 @@ $(document).ready(function() {
 
     $('#main_credits_button').click(function(){
         this.blur();
-        floaterShow("floaters.php","credits",0,0,650,400);
+        floaterShow("floaters.php","credits",0,0,650);
     });
     
     $('#main_prefs_button').click(function(){
         this.blur();
-        floaterShow("floaters.php","prefs",0,0,450,300);
+        floaterShow("floaters.php","prefs",0,0,450);
     });
 
     
@@ -101,6 +101,7 @@ $(document).ready(function() {
     $(window).bind('resize', function() {
 
 	resize_menu();
+    resize_floater();
 
        if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
        lists_resizeTimer = setTimeout(lists_resize, 500);

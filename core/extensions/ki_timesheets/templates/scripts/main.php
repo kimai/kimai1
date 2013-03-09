@@ -7,7 +7,7 @@
 <div id="timeSheet_head">
     <div class="left">
     <?php if (isset($this->kga['user'])): ?>
-        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_timeSheetEntry',selected_project+'|'+selected_activity,0,650,580); $(this).blur(); return false;"><?php echo $this->kga['lang']['add']?></a>
+        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_timeSheetEntry',selected_project+'|'+selected_activity,0,650); $(this).blur(); return false;"><?php echo $this->kga['lang']['add']?></a>
     <?php endif; ?>
     </div>
     <table>
