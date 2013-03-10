@@ -1658,7 +1658,7 @@ if ((int)$revisionDB < 1375) {
   }
 
   if ((int)$revisionDB < 1377) {
-    exec_query("ALTER TABLE `${p}rates` ADD PRIMARY KEY(`userID`, `projectID`, `activityID`);");
+    exec_query("ALTER TABLE `${p}rates` ADD UNIQUE KEY(`userID`, `projectID`, `activityID`);");
   }
 
 // FIXME kevin - removed pdo - update autoconf file!

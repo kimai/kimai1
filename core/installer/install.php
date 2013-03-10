@@ -255,7 +255,7 @@ $query=
   `projectID` int(10) DEFAULT NULL,
   `activityID` int(10) DEFAULT NULL,
   `rate` decimal(10,2) NOT NULL,
-  PRIMARY KEY(`userID`, `projectID`, `activityID`)
+  UNIQUE KEY(`userID`, `projectID`, `activityID`)
 );";
 exec_query($query);
 
