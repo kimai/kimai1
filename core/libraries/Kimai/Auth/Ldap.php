@@ -78,11 +78,11 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         if ($userId === false)  {
             // User does not exist (yet)
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
-                $userId = $this->database->user_create(array(
-                    'name' => $check_username,
-                    'status' => 2,
-                    'active' => 1
-                        ));
+		$userId   = $this->database->user_create(array(
+			'name' => $check_username,
+			'globalRoleID' => $this->getDefaultGlobalRole(),
+			'active' => 1
+		));
                 $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down

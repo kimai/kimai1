@@ -101,11 +101,11 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     if ($this->HTAUTH_USER_AUTOCREATE) { 
     
 	// AutoCreate the user and return true
-    	$userId = $this->database->user_create(array(
-	    'name' => $check_username,
-    	    'status' => 2,
-    	    'active' => 1
-    	    ));
+	$userId   = $this->database->user_create(array(
+			'name' => $check_username,
+			'globalRoleID' => $this->getDefaultGlobalRole(),
+			'active' => 1
+		));
         $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
     	// Set a random password, unknown to the user. Autologin must be used until user sets own password
