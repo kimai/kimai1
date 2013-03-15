@@ -1576,7 +1576,7 @@ class MySQL
 					if (get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
-					$return_value = "'" . str_replace("'", "''", $value) . "'";
+					$return_value = "'" . mysql_real_escape_string($value) . "'";
 				//}
 				break;
 			case "number":

@@ -1661,6 +1661,10 @@ if ((int)$revisionDB < 1375) {
     exec_query("ALTER TABLE `${p}rates` ADD UNIQUE KEY(`userID`, `projectID`, `activityID`);");
   }
 
+if ((int)$revisionDB < 1378) {
+  exec_query("UPDATE `${p}configuration` SET `value` = '0' WHERE `option` = 'show_sensible_data';");
+}
+
 // FIXME kevin - removed pdo - update autoconf file!
 /*
 if ((int)$revisionDB < 2000) {

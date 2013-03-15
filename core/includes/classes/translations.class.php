@@ -41,7 +41,10 @@ class Translations {
    * Load a translation into the kga.
    */
   public function load($name) {
-      $this->kga['lang'] =  array_replace_recursive($this->kga['lang'],include(WEBROOT.'language/'.$this->kga['language'].'.php'));
+      $languageName = basename($name); // prevents potential directory traversal
+      $languageFile = WEBROOT.'language/'.$this->kga['language'].'.php';
+      if (file_exists($languageFile))
+	$this->kga['lang'] =  array_replace_recursive($this->kga['lang'],include($languageFile));
   }
 
 }

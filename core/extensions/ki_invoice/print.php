@@ -196,6 +196,12 @@ $gtotal = $total+$vat;
 $baseFolder = dirname(__FILE__) . "/invoices/";
 $tplFilename = $_REQUEST['ivform_file'];
 
+if (strpos($tplFilename, '/') !== false) {
+  // prevent directory traversal
+  header("HTTP/1.0 400 Bad Request");
+  die;
+}
+
 $model = new Kimai_Invoice_PrintModel();
 $model->setEntries($invoiceArray);
 
