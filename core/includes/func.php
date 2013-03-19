@@ -428,7 +428,10 @@ function getRequestBool($name)
  */
 function getRequestDecimal($value) {
   global $kga;
-  return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
+  if (trim($value) == '')
+    return NULL;
+  else
+    return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
 }
 
 /**

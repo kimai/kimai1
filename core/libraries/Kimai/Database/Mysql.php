@@ -342,7 +342,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $numbers = array(
       'budget', 'customerID', 'visible', 'internal', 'filter', 'effort', 'approved');
       foreach ($numbers as $key) {
-        if (isset($data[$key]))
+        if (!isset($data[$key]))
+          continue;
+
+        if ($data[$key] == NULL)
+          $values[$key] = NULL;
+        else
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
       }
 

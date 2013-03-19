@@ -319,11 +319,11 @@ switch ($axAction) {
                     if($activityID <= 0)
                             continue;
 
-                    $data = array(
-                      'budget'   => max(0, $_REQUEST['budget'][$index]),
-                      'effort'   => max(0, $_REQUEST['effort'][$index]),
-                      'approved' => max(0, $_REQUEST['approved'][$index])
-                    );
+                    $data = array();
+                    foreach (array('budget', 'effort', 'approved') as $key) {
+                      $value = getRequestDecimal($_REQUEST[$key][$index]);
+                      $data[$key] = $value == NULL ? NULL : max(0, $value);
+                    }
 
                     $database->project_activity_edit($id, $activityID, $data);
                   }
