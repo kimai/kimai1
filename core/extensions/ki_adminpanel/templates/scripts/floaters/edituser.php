@@ -6,7 +6,7 @@
 
         var oldGlobalRoleID = <?php echo $this->user_details['globalRoleID']; ?>;
 
-        if ($('#globalRoleID').val() != oldGlobalRoleID) {
+        if ($('#globalRoleID').val() != oldGlobalRoleID && $('input[name="id"]').val() == userID) {
             var message = "<?php echo $this->pureJsEscape($this->kga['lang']['confirmations']['ownGlobalRoleChange']); ?>";
             message = message.replace(/%OLD%/, $("#globalRoleID>option[value='"+oldGlobalRoleID+"']").text());
             message = message.replace(/%NEW%/, $("#globalRoleID>option:selected").text());
