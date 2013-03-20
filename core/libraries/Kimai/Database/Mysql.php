@@ -346,7 +346,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           continue;
 
         if ($data[$key] == NULL)
-          $values[$key] = NULL;
+          $values[$key] = 'NULL';
         else
           $values[$key] = MySQL::SQLValue($data[$key] , MySQL::SQLVALUE_NUMBER );
       }
