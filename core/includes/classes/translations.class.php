@@ -42,7 +42,8 @@ class Translations {
    */
   public function load($name) {
       $languageName = basename($name); // prevents potential directory traversal
-      $languageFile = WEBROOT.'language/'.$this->kga['language'].'.php';
+      $languageFile = WEBROOT.'language/'.$languageName.'.php';
+
       if (file_exists($languageFile))
 	$this->kga['lang'] =  array_replace_recursive($this->kga['lang'],include($languageFile));
   }

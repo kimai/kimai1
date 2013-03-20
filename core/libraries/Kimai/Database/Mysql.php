@@ -2284,7 +2284,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    */
   public function checkUserInternal($kimai_user)
   {
-    $p = $this->kga['server_prefix'];
+	global $translations;
+	$p = $this->kga['server_prefix'];
 
 	if (strncmp($kimai_user, 'customer_', 9) == 0) {
 		$customerName = MySQL::SQLValue(substr($kimai_user,9));
@@ -2321,10 +2322,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 		$this->get_user_config($userID);
 	}
 
-	// override default language if user has chosen a language in the prefs
+	// override autoconf language if admin has chosen a language in the advanced tab
+	if ($this->kga['conf']['language'] != "") {
+		$translations->load($this->kga['conf']['language']);
+		$this->kga['language'] = $this->kga['conf']['language'];
+	}
+
+	// override language if user has chosen a language in the prefs
 	if ($this->kga['conf']['lang'] != "") {
+		$translations->load($this->kga['conf']['lang']);
 		$this->kga['language'] = $this->kga['conf']['lang'];
-		$this->kga['lang'] = array_replace_recursive($this->kga['lang'],include(WEBROOT.'language/'.$this->kga['language'].'.php'));
 	}
 
 	return (isset($this->kga['user'])?$this->kga['user']:null);
