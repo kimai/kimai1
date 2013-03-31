@@ -262,16 +262,3 @@ function expense_pasteNow(value) {
     
     $("#edit_time").val(time);
 }
-
-
-
-// ----------------------------------------------------------------------------------------
-// check if the input in the add_edit floater is valid and handle it appropriately
-//
-function expense_add_edit_validate() {
-    
-    if ($('#add_edit_expense_project_ID').val() == undefined)
-      $('#expenses_ext_form_add_edit_record .btn_ok').hide();
-    else
-      $('#expenses_ext_form_add_edit_record .btn_ok').show();
-}

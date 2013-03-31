@@ -200,7 +200,6 @@ function ts_ext_reload_activities(project,noUpdateRate, activity, timeSheetEntry
                     $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
                     if (noUpdateRate == undefined)
                     getBestRates();
-                    ts_add_edit_validate();
                     if(activity > 0) {
 	                    $.getJSON("../extensions/ki_timesheets/processor.php", {
 	                        axAction: "budgets",
@@ -536,17 +535,4 @@ function ts_timeToDuration() {
 function ts_comment(id) {
     $('#c'+id).toggle();
     return false;
-}
-
-
-// ----------------------------------------------------------------------------------------
-// check if the input in the add_edit floater is valid and handle it appropriately
-//
-function ts_add_edit_validate() {
-    
-    if ($('#add_edit_timeSheetEntry_projectID').val() == undefined ||
-        $('#add_edit_timeSheetEntry_activityID').val() == undefined)
-      $('#ts_ext_form_add_edit_timeSheetEntry .btn_ok').hide();
-    else
-      $('#ts_ext_form_add_edit_timeSheetEntry .btn_ok').show();
 }

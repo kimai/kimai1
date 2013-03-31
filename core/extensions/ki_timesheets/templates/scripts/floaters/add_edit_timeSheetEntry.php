@@ -434,7 +434,7 @@
                           'onChange' => "ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());"
                           ), $this->projects); ?>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value); ts_add_edit_validate();"/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value);"/>
                        </div>
                    </li>
                    
@@ -449,10 +449,10 @@
                           'class' => 'formfield',
                           'style' => 'width:400px',
                           'tabindex' => '3',
-                          'onChange' => "getBestRates();ts_add_edit_validate();"
+                          'onChange' => "getBestRates();"
                           ), $this->activities); ?>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value); ts_add_edit_validate();" />
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value);" />
                       </div>
                    </li>
 

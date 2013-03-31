@@ -476,6 +476,11 @@ switch ($axAction) {
           $errors['end_time'] = $kga['lang']['TimeDateInputError'];
       }
 
+      if (!is_numeric($data['activityID']))
+        $errors['activityID'] = $kga['lang']['errorMessages']['noActivitySelected'];
+
+      if (!is_numeric($data['projectID']))
+        $errors['projectID'] = $kga['lang']['errorMessages']['noProjectSelected'];
 
       if (count($errors) > 0) {
           echo json_encode(array('errors'=>$errors));

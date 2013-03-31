@@ -96,10 +96,10 @@
                               'size' => '5',
                               'style' => 'width:400px',
                               'tabindex' => '1',
-                              'onchange' => 'expense_add_edit_validate();'), $this->projects);
+                              ), $this->projects);
                         ?>
                         <br/>
-                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_expense_project_ID', this.value); expense_add_edit_validate();"/>
+                        <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_expense_project_ID', this.value);"/>
                        </div>
                    </li>
 
