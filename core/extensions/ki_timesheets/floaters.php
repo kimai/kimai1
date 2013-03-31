@@ -61,7 +61,7 @@ switch ($axAction) {
           $users = makeSelectBox("sameGroupUser",$kga['user']['groups']);
           if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
             $users[$kga['user']['userID']] = $kga['user']['name'];
-        } else
+        }
 
         $view->users = $users;
         
