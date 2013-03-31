@@ -24,13 +24,13 @@
 	            var step = $('#stepMinutes').val();
 	            var stepSeconds = $('#stepSeconds').val();
 	            if(isNaN(stepSeconds) || stepSeconds <= 0) {
-		            if(!isNaN(step) && step > 0 && step < 60) {
-		            $('#start_time').timePicker({step: parseInt(step)});
-		            $('#end_time').timePicker({step: parseInt(step)});
-		            } else {
-		                $('#start_time').timePicker();
-		                $('#end_time').timePicker();
-		            }
+			var configuration = {showPeriodLabels: false};
+			if(!isNaN(step) && step > 0 && step < 60) {
+		            configuration.step = parseInt(step);
+			}
+		            
+			$('#start_time').timepicker(configuration);
+		        $('#end_time').timepicker(configuration);
 	            }
             }
  
@@ -108,7 +108,7 @@
 
                 return false;
               }
-            }).data( "autocomplete" )._renderItem = function( ul, item ) {
+            }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
                 return $( "<li></li>" )
                         .data( "item.autocomplete", item )
                         .append( "<a>" + item.desc + "</a>" )
@@ -138,7 +138,7 @@
 
                 return false;
               }
-            }).data( "autocomplete" )._renderItem = function( ul, item ) {
+            }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
                 return $( "<li></li>" )
                         .data( "item.autocomplete", item )
                         .append( "<a>" + item.desc + "</a>" )
@@ -251,8 +251,8 @@
             <?php if (isset($this->id)) { ?>
             ts_ext_reload_activities(<?php echo $this->projectID?>,true);
             <?php } else { ?>
-            $("#add_edit_timeSheetEntry_projectID").selectOptions(""+selected_project+"");
-            $("#add_edit_timeSheetEntry_activityID").selectOptions(""+selected_activity+"");
+            $("#add_edit_timeSheetEntry_projectID").val(selected_project);
+            $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
             ts_ext_reload_activities(selected_project);
             <?php } ?>
 

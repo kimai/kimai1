@@ -6,7 +6,7 @@
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta name="robots" value="noindex,nofollow" />
 <title>Kimai <?php echo $this->kga['lang']['login']?></title>
-<script type="text/javascript" src="libraries/jQuery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
 <?php if ($this->kga['check_at_startup']): ?>
 <script type="text/javascript" src="js/main.js"></script>

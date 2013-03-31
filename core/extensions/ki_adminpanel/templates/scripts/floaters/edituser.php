@@ -111,10 +111,10 @@
              }
              var previousValue;
              var previousText;
-                 $('.groups').live('focus', function() {
+                 $('.groups').on('focus', function() {
                         previousValue = this.value;
                 previousText = $(this).children('[value="'+previousValue+'"]').text();
-                 }).live('change', function() {
+                 }).on('change', function() {
                         if(previousValue != '') {
                                 // the value we "deselected" has to be added to all other dropdowns to select it again
                      $('.groups').each(function(index) {

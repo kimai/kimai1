@@ -1,29 +1,73 @@
-div.time-picker {
-  position: absolute;
-  height: 191px;
-  width:4em; /* needed for IE */
-  overflow: auto;
-  background: #fff;
-  border: 1px solid #aaa;
-  z-index: 500 !important;
-  margin: 0;
-}
-div.time-picker-12hours {
-  width:6em; /* needed for IE */
+#ui-timepicker-div {
+  background-color: #333;
+  border: 1px solid #000;
+  z-index:500 !important;
+  display:none;
 }
 
-div.time-picker ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.ui-timepicker-title {
+    color: #FFF;
+    font-size: 14px;
+    text-align: center;
+    margin: 2px 0 8px 0;
+    padding-top:3px;
+    height: 22px;
 }
-div.time-picker li {
-  cursor: pointer;
-  height: 10px;
-  font: 12px/1 Helvetica, Arial, sans-serif;
-  padding: 4px 3px;
+
+.periods {
+    color: #FFF;
 }
-div.time-picker li.selected {
-  background: #0063CE;
-  color: #fff;
+
+.ui-timepicker-hours {
+	border-right: 1px solid black;
 }
+
+
+.ui-timepicker-hours td, .ui-timepicker-minutes td {
+    cursor: pointer;
+}
+
+
+.ui-timepicker-hours td, .ui-timepicker-minutes td {
+    background: url(grfx/picker_bg_norm.png) no-repeat;
+    width: 40px;
+    height: 40px;
+    color: #000;
+    text-align: center;
+}
+
+.ui-timepicker-hours a, .ui-timepicker-minutes a {
+    color: #000;
+    text-decoration:none;
+}
+
+.ui-timepicker-hours td:hover, .ui-timepicker-minutes td:hover {
+    background: url(grfx/picker_bg_hover.png) no-repeat;
+    color: #000;
+}
+
+
+/*#ui-timepicker-div td.ui-datepicker-today {
+    background: url(grfx/picker_bg_today.png) no-repeat;
+    font-weight: bold;
+}
+
+#ui-timepicker-div td.ui-datepicker-today:hover {
+    background: url(grfx/picker_bg_today_hover.png) no-repeat;
+}
+
+#ui-timepicker-div td.ui-datepicker-today a {
+    color: #fff;
+}
+
+
+#ui-timepicker-div td.ui-datepicker-current-day,
+#ui-timepicker-div td.ui-datepicker-current-day:hover
+{
+    background: url(grfx/picker_bg_selected.png) no-repeat;
+}
+
+#ui-timepicker-div td.ui-datepicker-current-day a {
+  color:#fff;
+}
+*/

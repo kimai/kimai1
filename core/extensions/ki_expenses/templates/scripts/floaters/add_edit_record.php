@@ -35,7 +35,7 @@
             });
 
             <?php if (!isset($this->id)): ?>
-            $("#add_edit_expense_project_ID").selectOptions(""+selected_project+"");
+            $("#add_edit_expense_project_ID").val(selected_project);
             <?php endif; ?>
             $('#floater_innerwrap').tabs({ selected: 0 });
         }); 

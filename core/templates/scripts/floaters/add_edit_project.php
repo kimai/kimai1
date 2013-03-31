@@ -66,9 +66,7 @@
             });
 
              $('#floater_innerwrap').tabs({ selected: 0 });
-             // uniform will mess up cloning select elements, which already are "uniformed"
-             // maybe the issue is the same? https://github.com/pixelmatrix/uniform/pull/138
-//          	 $("select, input:checkbox, input:radio, input:file").uniform();
+
              var optionsToRemove = new Array();
                  $('select.activities').each(function(index) {
 	                 if($(this).val() != '') {
@@ -82,10 +80,10 @@
              }
              var previousValue;
              var previousText;
-          	 $('.activities').live('focus', function() {
+          	 $('.activities').on('focus', function() {
            		previousValue = this.value;
                 previousText = $(this).children('[value="'+previousValue+'"]').text();
-          	 }).live('change', function() {
+          	 }).on('change', function() {
       			if(previousValue != '') {
           			// the value we "deselected" has to be added to all other dropdowns to select it again
      	             $('.activities').each(function(index) {

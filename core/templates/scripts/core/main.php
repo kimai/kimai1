@@ -19,22 +19,16 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libs -->
-    <script src="../libraries/jQuery/jquery-1.4.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery-ui-1.8.14.custom.min.js" type="text/javascript" charset="utf-8"></script>
-    <!--[if IE]><script src="../libraries/jQuery/excanvas.js" type="text/javascript"></script><![endif]-->
-    <script src="../libraries/jQuery/jquery.jqplot.js" type="text/javascript"></script>
-    <script src="../libraries/jQuery/jqplot.pieRenderer.js" type="text/javascript" ></script>
-<!--    <script src="../libraries/jQuery/jqplot.dateAxisRenderer.min.js" type="text/javascript" ></script>-->
-<!--    <script src="../libraries/jQuery/jqplot.highlighter.min.js" type="text/javascript" ></script>-->
-<!--    <script src="../libraries/jQuery/jqplot.cursor.min.js" type="text/javascript" ></script>-->
-    <script src="../libraries/jQuery/jquery.timePicker.js" type="text/javascript" ></script>
-    <script src="../libraries/jQuery/jquery.uniform.min.js" type="text/javascript" ></script>
-    <script src="../libraries/jQuery/ui.sexyselect.0.6.js" type="text/javascript" ></script>
+    <script src="../libraries/jQuery/jquery-ui-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <!--[if IE]><script src="../libraries/jQuery/excanvas.min.js" type="text/javascript"></script><![endif]-->
+    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
+    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
+    <script src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
     <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
     <!-- /Libs -->
 
