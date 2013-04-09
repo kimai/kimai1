@@ -73,9 +73,6 @@
 		<zip destfile="${target.release.zip}">
 		    <fileset dir="${target.release.dir}"/>
 		</zip>
-		<tar destfile="${target.release.bz2}" longfile="gnu" compression="bzip2">
-			<fileset dir="${target.release.dir}"/>
-		</tar>
 		<delete dir="${target.release.dir}"/>
 	</target>
 	
