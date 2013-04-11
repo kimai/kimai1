@@ -4,3 +4,4 @@
 /core/temporary/*.txt
 autoconf.php
 .settings
+.idea/
