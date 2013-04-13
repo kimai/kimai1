@@ -24,33 +24,32 @@
 /**
  * Check if a user is logged in or kick them.
  */
-function checkUser()
-{
-    $database = Kimai_Registry::getDatabase();
+function checkUser() {
+	$database = Kimai_Registry::getDatabase();
 
-    if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
-      $kimai_user = addslashes($_COOKIE['kimai_user']);
-      $kimai_key = addslashes($_COOKIE['kimai_key']);
+	if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != "0" && $_COOKIE['kimai_key'] != "0") {
+		$kimai_user = addslashes($_COOKIE['kimai_user']);
+		$kimai_key = addslashes($_COOKIE['kimai_key']);
 
-      if ($database->get_seq($kimai_user) != $kimai_key) {
-        Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
-        kickUser();
-      } else {
-          $user = $database->checkUserInternal($kimai_user);
-          Kimai_Registry::setUser(new Kimai_User($user));
-          return $user;
-      }
-    }
+		if ($database->get_seq($kimai_user) != $kimai_key) {
+			Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
+			kickUser();
+		} else {
+			$user = $database->checkUserInternal($kimai_user);
+			Kimai_Registry::setUser(new Kimai_User($user));
+			return $user;
+		}
+	}
 
-    Logger::logfile("Kicking user because of missing cookie.");
-    kickUser();
+	Logger::logfile("Kicking user because of missing cookie.");
+	kickUser();
 }
 
 /**
  * Kill the current users session by redirecting him to the logout page.
  */
 function kickUser() {
-    die("<script type='text/javascript'>window.location.href = '../index.php?a=logout';</script>");
+	die("<script type='text/javascript'>window.location.href = '../index.php?a=logout';</script>");
 }
 
 /**
@@ -60,18 +59,18 @@ function kickUser() {
  * @return array
  * @author unknown
  */
-function ls($dir){
-    $arr_subfolders = array();
-    $i=0;
-    $handle = opendir($dir);
-        while (false !== ($readdir = readdir($handle))) {
-            if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'  && is_dir("${dir}/${readdir}") ) {
-                $arr_subfolders[$i] = $readdir;
-                $i++;
-            }
-        }
-    return isset($arr_subfolders)?$arr_subfolders:false;
-    closedir($handle);
+function ls($dir) {
+	$arr_subfolders = array();
+	$i=0;
+	$handle = opendir($dir);
+	while (false !== ($readdir = readdir($handle))) {
+		if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'  && is_dir("${dir}/${readdir}") ) {
+			$arr_subfolders[$i] = $readdir;
+			$i++;
+		}
+	}
+	return isset($arr_subfolders)?$arr_subfolders:false;
+	closedir($handle);
 }
 
 /**
@@ -80,7 +79,7 @@ function ls($dir){
  * @return array of timezone names
  */
 function timezoneList() {
-  return DateTimeZone::listIdentifiers();
+	return DateTimeZone::listIdentifiers();
 }
 
 
@@ -99,94 +98,90 @@ function timezoneList() {
  */
 function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false){
 
-    global $kga, $database;
+	global $kga, $database;
 
-    $sel = array();
+	$sel = array();
 
-    switch ($subject) {
-        case 'project':
-            $projects = $database->get_projects($groups);
-            foreach ($projects as $project) {
-                if ($project['visible']) {
-                    if ($kga['conf']['flip_project_display']) {
-                        $projectName = $project['customerName'] . ": " . $project['name'];
-                        if ($kga['conf']['project_comment_flag']) {
-                            $projectName .= "(" . $project['comment'] .")" ;
-                        }
-                    } else {
-                        $projectName = $project['name'] . " (" . $project['customerName'] . ")";
-                        if ($kga['conf']['project_comment_flag']) {
-                            $projectName .=  "(" . $project['comment'] .")";
-                        }
-                    }
-                    $sel[$project['projectID']] = $projectName;
-                }
-            }
-            break;
+	switch ($subject) {
+		case 'project':
+			$projects = $database->get_projects($groups);
+			foreach ($projects as $project) {
+				if ($project['visible']) {
+					if ($kga['conf']['flip_project_display']) {
+						$projectName = $project['customerName'] . ": " . $project['name'];
+					} else {
+						$projectName = $project['name'] . " (" . $project['customerName'] . ")";
+					}
+					if ($kga['conf']['project_comment_flag']) {
+						$projectName .=  "(" . $project['comment'] .")";
+					}
+					$sel[$project['projectID']] = $projectName;
+				}
+			}
+			break;
 
-        case 'activity':
-            $activities = $database->get_activities($groups);
-            foreach ($activities as $activity) {
-                if ($activity['visible']) {
-                    $sel[$activity['activityID']] = $activity['name'];
-                }
-            }
-            break;
+		case 'activity':
+			$activities = $database->get_activities($groups);
+			foreach ($activities as $activity) {
+				if ($activity['visible']) {
+					$sel[$activity['activityID']] = $activity['name'];
+				}
+			}
+			break;
 
-        case 'customer':
-            $customers = $database->get_customers($groups);
-            $selectionFound = false;
-            if(is_array($customers)) {
-	            foreach ($customers as $customer) {
-	                if ($customer['visible']) {
-	                    $sel[$customer['customerID']] = $customer['name'];
-	                    if ($selection == $customer['customerID'])
-	                      $selectionFound = true;
-	                }
-	            }
-            }
-            if ($selection != null && !$selectionFound) {
-              $data = $database->customer_get_data($selection);
-              $sel[$data['customerID']] = $data['name'];
-            }
-            break;
+		case 'customer':
+			$customers = $database->get_customers($groups);
+			$selectionFound = false;
+			if(is_array($customers)) {
+				foreach ($customers as $customer) {
+					if ($customer['visible']) {
+						$sel[$customer['customerID']] = $customer['name'];
+						if ($selection == $customer['customerID'])
+						  $selectionFound = true;
+					}
+				}
+			}
+			if ($selection != null && !$selectionFound) {
+				$data = $database->customer_get_data($selection);
+				$sel[$data['customerID']] = $data['name'];
+			}
+			break;
 
-        case 'group':
-            $groups = $database->get_groups();
-            foreach ($groups as $group) {
-                if ($includeDeleted || !$group['trash']) {
-                    $sel[$group['groupID']] = $group['name'];
-                }
-            }
-            break;
+		case 'group':
+			$groups = $database->get_groups();
+			foreach ($groups as $group) {
+				if ($includeDeleted || !$group['trash']) {
+					$sel[$group['groupID']] = $group['name'];
+				}
+			}
+			break;
 
-        case 'sameGroupUser':
-            $users = $database->get_users(0,$database->getGroupMemberships($kga['user']['userID']));
+		case 'sameGroupUser':
+			$users = $database->get_users(0,$database->getGroupMemberships($kga['user']['userID']));
 
-            foreach ($users as $user) {
-              if ($includeDeleted || !$user['trash']) {
-                $sel[$user['userID']] = $user['name'];
-              }
-            }
-            break;
+			foreach ($users as $user) {
+				if ($includeDeleted || !$user['trash']) {
+					$sel[$user['userID']] = $user['name'];
+				}
+			}
+			break;
 
-        case 'allUser':
-            $users = $database->get_users($kga['user']);
+		case 'allUser':
+			$users = $database->get_users($kga['user']);
 
-            foreach ($users as $user) {
-              if ($includeDeleted || !$user['trash']) {
-                $sel[$user['userID']] = $user['name'];
-              }
-            }
-            break;
+			foreach ($users as $user) {
+			  if ($includeDeleted || !$user['trash']) {
+				$sel[$user['userID']] = $user['name'];
+			  }
+			}
+			break;
 
-        default:
-            // TODO leave default options empty ???
-            break;
-    }
+		default:
+			// TODO leave default options empty ???
+			break;
+	}
 
-    return $sel;
-
+	return $sel;
 }
 
 
@@ -198,13 +193,13 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
  * @author th
  */
 function random_code($length) {
-    $code = "";
-    $string="ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
-    mt_srand((double)microtime()*1000000);
-    for ($i=1; $i <= $length; $i++) {
-        $code .= substr($string, mt_rand(0,strlen($string)-1), 1);
-    }
-    return $code;
+	$code = '';
+	$string = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789';
+	mt_srand((double)microtime()*1000000);
+	for ($i=1; $i <= $length; $i++) {
+		$code .= substr($string, mt_rand(0,strlen($string)-1), 1);
+	}
+	return $code;
 }
 
 /**
@@ -215,13 +210,13 @@ function random_code($length) {
  * @author th
  */
 function random_number($length) {
-    $number = "";
-    $string="0123456789";
-    mt_srand((double)microtime()*1000000);
-    for ($i=1; $i <= $length; $i++) {
-        $number .= substr($string, mt_rand(0,strlen($string)-1), 1);
-    }
-    return $number;
+	$number = '';
+	$string = '0123456789';
+	mt_srand((double)microtime()*1000000);
+	for ($i=1; $i <= $length; $i++) {
+		$number .= substr($string, mt_rand(0,strlen($string)-1), 1);
+	}
+	return $number;
 }
 
 /**
@@ -234,47 +229,53 @@ function random_number($length) {
  * @author th
  */
 function checkDBversion($path) {
-    global $kga, $database;
+	global $kga, $database;
 
-    // check for versions before 0.7.13r96
-    $installedVersion = $database->get_DBversion();
-    $checkVersion = $installedVersion[0];
-    $checkVersion = "$checkVersion";
+	// check for versions before 0.7.13r96
+	$installedVersion = $database->get_DBversion();
+	$checkVersion = $installedVersion[0];
+	$checkVersion = "$checkVersion";
 
-    if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
-      // fresh install
-      header("Location: $path/installer");
-      exit;
-    }
+	if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
+		// fresh install
+		header("Location: $path/installer");
+		exit;
+	}
 
-    if ($checkVersion != $kga['version']) {
-        header("Location: $path/updater.php");
-        exit;
-    }
+	if ($checkVersion != $kga['version']) {
+		header("Location: $path/updater.php");
+		exit;
+	}
 
-    // the check for revision is much simpler ...
-    if ( (int)$installedVersion[1] < (int)$kga['revision']) {
-        header("Location: $path/updater.php");
-        exit;
-    }
+	// the check for revision is much simpler ...
+	if ( (int)$installedVersion[1] < (int)$kga['revision']) {
+		header("Location: $path/updater.php");
+		exit;
+	}
 }
 
-function convert_time_strings($in,$out) {
+/**
+ * @param $in
+ * @param $out
+ * @return array
+ */
+function convert_time_strings($in, $out) {
 
-    $explode_in  = explode("-",$in);
-    $explode_out = explode("-",$out);
+	$explode_in  = explode("-",$in);
+	$explode_out = explode("-",$out);
 
-    $date_in  = explode(".",$explode_in[0]);
-    $date_out = explode(".",$explode_out[0]);
+	$date_in  = explode(".",$explode_in[0]);
+	$date_out = explode(".",$explode_out[0]);
 
-    $time_in  = explode(":",$explode_in[1]);
-    $time_out = explode(":",$explode_out[1]);
+	$time_in  = explode(":",$explode_in[1]);
+	$time_out = explode(":",$explode_out[1]);
 
-    $time['in']   = mktime($time_in[0], $time_in[1], $time_in[2], $date_in[1], $date_in[0], $date_in[2]);
-    $time['out']  = mktime($time_out[0],$time_out[1],$time_out[2],$date_out[1],$date_out[0],$date_out[2]);
-    $time['diff'] = (int)$time['out']-(int)$time['in'];
+	$time = array();
+	$time['in']   = mktime($time_in[0], $time_in[1], $time_in[2], $date_in[1], $date_in[0], $date_in[2]);
+	$time['out']  = mktime($time_out[0],$time_out[1],$time_out[2],$date_out[1],$date_out[0],$date_out[2]);
+	$time['diff'] = (int)$time['out']-(int)$time['in'];
 
-    return $time;
+	return $time;
 }
 
 /**
@@ -287,24 +288,41 @@ function convert_time_strings($in,$out) {
  * @author rvock
  */
 function get_cookie($cookie_name, $default=null) {
-    return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
+	return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
 }
 
-// based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
+/**
+ * based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
+ * @param $length
+ * @return string
+ */
 function createPassword($length) {
-        $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $i = 0;
-        $password = "";
-        while ($i <= $length) {
-                $password .= $chars{mt_rand(0,strlen($chars)-1)};
-                $i++;
-        }
-        return $password;
+	$chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$i = 0;
+	$password = "";
+	while ($i <= $length) {
+		$password .= $chars{mt_rand(0,strlen($chars)-1)};
+		$i++;
+	}
+	return $password;
 }
 
+/**
+ * @param $database
+ * @param $hostname
+ * @param $username
+ * @param $password
+ * @param $db_layer
+ * @param $db_type
+ * @param $prefix
+ * @param $lang
+ * @param $salt
+ * @param $timezone
+ * @return bool
+ */
 function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone) {
-  $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
-  if (!$file) return false;
+	$file = fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
+	if (!$file) return false;
 
 $config=<<<EOD
 <?php
@@ -342,12 +360,10 @@ $config=<<<EOD
 ?>
 EOD;
 
-  fputs($file, $config);
-  fclose($file);
-  return true;
+	fputs($file, $config);
+	fclose($file);
+	return true;
 }
-
-
 
 
 /**
@@ -364,35 +380,37 @@ EOD;
  * @return array
  * @author th
  */
-
-// checked
-
 function get_timeframe() {
-    global $kga, $conn;
+	global $kga, $conn;
 
-    $timeframe = array(null,null);
-    
-    if (isset($kga['user'])) {
+	$timeframe = array(null,null);
+	
+	if (isset($kga['user'])) {
+		$timeframe[0] = $kga['user']['timeframeBegin'];
+		$timeframe[1] = $kga['user']['timeframeEnd'];
+	}
 
-        $timeframe[0] = $kga['user']['timeframeBegin'];
-        $timeframe[1] = $kga['user']['timeframeEnd'];
-
-    }
-
-    /* database has no entries? */
-    $mon = date("n"); $day = date("j"); $Y = date("Y");
-    if (!$timeframe[0]) {
-        $timeframe[0] = mktime(0,0,0,$mon,1,$Y);
-    }
-    if (!$timeframe[1]) {
-        $timeframe[1] = mktime(23,59,59,$mon,$day,$Y);
-    }
-    
-    return $timeframe;
+	/* database has no entries? */
+	$mon = date("n");
+	$day = date("j");
+	$Y = date("Y");
+	if (!$timeframe[0]) {
+		$timeframe[0] = mktime(0,0,0,$mon,1,$Y);
+	}
+	if (!$timeframe[1]) {
+		$timeframe[1] = mktime(23,59,59,$mon,$day,$Y);
+	}
+	
+	return $timeframe;
 }
 
+/**
+ * @param $haystack
+ * @param $needle
+ * @return bool
+ */
 function endsWith($haystack,$needle) {
-  return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
+	return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
 }
 
 /**
@@ -401,22 +419,21 @@ function endsWith($haystack,$needle) {
  * @param $name
  * @return int
  */
-function getRequestBool($name)
-{
-    if (isset($_REQUEST[$name])) {
-        if (strtolower($_REQUEST[$name]) == 'on') {
-            return 1;
-        }
+function getRequestBool($name) {
+	if (isset($_REQUEST[$name])) {
+		if (strtolower($_REQUEST[$name]) == 'on') {
+			return 1;
+		}
 
-        $temp = intval($_REQUEST[$name]);
-        if ($temp == 1 || $temp == 0) {
-            return $temp;
-        }
+		$temp = intval($_REQUEST[$name]);
+		if ($temp == 1 || $temp == 0) {
+			return $temp;
+		}
 
-        return 1;
-    }
+		return 1;
+	}
 
-    return 0;
+	return 0;
 }
 
 /**
@@ -427,11 +444,11 @@ function getRequestBool($name)
  * @return parsed floating point value
  */
 function getRequestDecimal($value) {
-  global $kga;
-  if (trim($value) == '')
-    return NULL;
-  else
-    return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
+	global $kga;
+	if (trim($value) == '')
+		return NULL;
+	else
+		return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
 }
 
 /**
@@ -448,78 +465,76 @@ function getRequestDecimal($value) {
  * @return true if the permission is granted, false otherwise
  */
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups) {
-  global $database, $kga;
+	global $database, $kga;
 
-  if (!isset($kga['user'])) return false;
+	if (!isset($kga['user'])) return false;
 
-  $assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
-  $assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+	$assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+	$assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
 
-  if (count($assignedOtherGroups) > 0) {
-    $permissionName = "core-${objectTypeName}-otherGroup-${action}";
-    if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
-      return false;
-    }
-  }
+	if (count($assignedOtherGroups) > 0) {
+		$permissionName = "core-${objectTypeName}-otherGroup-${action}";
+		if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+			Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+			return false;
+		}
+	}
 
-  if (count($assignedOwnGroups) > 0) {
-    $permissionName = "core-${objectTypeName}-${action}";
-    if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
-      Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
-      return false;
-    }
-  }
+	if (count($assignedOwnGroups) > 0) {
+		$permissionName = "core-${objectTypeName}-${action}";
+		if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
+			Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+			return false;
+		}
+	}
 
-  if (count($oldGroups) != array_intersect($oldGroups,$newGroups)) {
-    // group assignment has changed
+	if (count($oldGroups) != array_intersect($oldGroups,$newGroups)) {
+		// group assignment has changed
 
-      $addToGroups = array_diff($newGroups, $oldGroups);
-      $removeFromGroups = array_diff($oldGroups, $newGroups);
+		$addToGroups = array_diff($newGroups, $oldGroups);
+		$removeFromGroups = array_diff($oldGroups, $newGroups);
 
-      $addToOtherGroups = array_diff     ($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $addToOwnGroups   = array_intersect($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $removeFromOtherGroups = array_diff     ($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $removeFromOwnGroups   = array_intersect($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
+		$addToOtherGroups = array_diff     ($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
+		$addToOwnGroups   = array_intersect($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
+		$removeFromOtherGroups = array_diff     ($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
+		$removeFromOwnGroups   = array_intersect($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
 
-      $action = 'assign';
-      if (count($addToOtherGroups) > 0) {
-        $permissionName = "core-${objectTypeName}-otherGroup-${action}";
-        if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
-          return false;
-        }
-      }
+		$action = 'assign';
+		if (count($addToOtherGroups) > 0) {
+			$permissionName = "core-${objectTypeName}-otherGroup-${action}";
+			if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+				Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+				return false;
+			}
+		}
 
-      if (count($addToOwnGroups) > 0) {
-        $permissionName = "core-${objectTypeName}-${action}";
-        if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
-          return false;
-        }
-      }
+		if (count($addToOwnGroups) > 0) {
+			$permissionName = "core-${objectTypeName}-${action}";
+			if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
+				Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+				return false;
+			}
+		}
 
-      $action = 'unassign';
-      if (count($removeFromOtherGroups) > 0) {
-        $permissionName = "core-${objectTypeName}-otherGroup-${action}";
-        if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
-          return false;
-        }
-      }
+		$action = 'unassign';
+		if (count($removeFromOtherGroups) > 0) {
+			$permissionName = "core-${objectTypeName}-otherGroup-${action}";
+			if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
+				Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+				return false;
+			}
+		}
 
-      if (count($removeFromOwnGroups) > 0) {
-        $permissionName = "core-${objectTypeName}-${action}";
-        if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
-          return false;
-        }
-      }
+		if (count($removeFromOwnGroups) > 0) {
+			$permissionName = "core-${objectTypeName}-${action}";
+			if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
+				Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+				return false;
+			}
+		}
+	}
 
-    
-  }
-
-  return true;
+	return true;
 }
 
 /**
@@ -534,13 +549,13 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
  * @return true if allowed, false otherwise
  */
 function coreObjectActionAllowed($objectTypeName, $action) {
-  global $database, $kga;
+	global $database, $kga;
 
-  if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action"))
-   return true;
+	if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action"))
+		return true;
 
-  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-$action",'any'))
-    return true;
+	if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-$action",'any'))
+		return true;
 
-  return false;
+	return false;
 }
