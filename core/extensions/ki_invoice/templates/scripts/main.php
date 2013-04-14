@@ -5,6 +5,10 @@
 			this.blur();
 			floaterShow(invoice_extension_path + "floaters.php","editVat",0,0,250);
 		});
+		$('#editInvoiceNumberFormatLink').click(function () {
+			this.blur();
+			floaterShow(invoice_extension_path + "floaters.php","editInvoiceNumberFormat",0,0,250);
+		});
 	}); 
 </script>
 
@@ -31,7 +35,9 @@
 
 				<!-- Some boxes below are checked by default. Delete "checked" to set default to unchecked condition -->
 
-				<?php echo $this->kga['lang']['ext_invoice']['defaultVat']?>: <span id="defaultVat"><?php echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat']))?></span> % <a id="editVatLink" href="#">(<?php echo $this->kga['lang']['change']?>)</a><br/>
+				<?php echo $this->kga['lang']['ext_invoice']['defaultVat']?>: <span id="defaultVat"><?php echo $this->escape(str_replace('.',$this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?></span> % <a id="editVatLink" href="#">(<?php echo $this->kga['lang']['change']?>)</a><br/>
+				<?php echo $this->kga['lang']['ext_invoice']['invoiceNumberFormat']?>: <span id="defaultInvoiceNumberFormat"><?php echo $this->escape($this->kga['conf']['invoiceNumberFormat']); ?></span> <a id="editInvoiceNumberFormatLink" href="#">(<?php echo $this->kga['lang']['change']?>)</a><br/>
+
 				<input type="checkbox" name="short" checked="checked"> <?php echo $this->kga['lang']['ext_invoice']['invoiceOptionShort']?><br/>
 				<input type="checkbox" name="round" checked="checked"> <?php echo $this->kga['lang']['ext_invoice']['invoiceOptionRound']?>
 				<?php echo $this->formSelect('roundValue', null, array('id' => 'invoice_round_ID', 'class' => 'formfield'), $this->roundingOptions); ?>

@@ -89,7 +89,7 @@ if (count($timeArray) > 0) {
 	$endDate         = $out;
 	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
 	$today           = time();
-	$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y"));
+	$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 } else {
 	echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
 	return;
@@ -192,6 +192,17 @@ if (!is_numeric($vat_rate)) {
 
 $vat   = $vat_rate*$total/100;
 $gtotal = $total+$vat;
+
+// save invoice in database
+$invoiceData = array(
+	'customerID' => $timeArray[0]['customerID'],
+	'projectID' => $timeArray[0]['projectID'],
+	'vat' => $vat_rate,
+	'total' => $total,
+	'gtotal' => $gtotal
+);
+$newInvoiceID = $database->invoice_create($invoiceData);
+$invoiceNumber = strftime(str_replace('#', $newInvoiceID, $kga['conf']['invoiceNumberFormat']));
 
 $baseFolder = dirname(__FILE__) . "/invoices/";
 $tplFilename = $_REQUEST['ivform_file'];

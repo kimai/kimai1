@@ -36,7 +36,7 @@ $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 $view->kga = $kga;
 
 // get list of projects for select box
-$sel = makeSelectBox("project",$kga['user']['groups']);  
+$sel = makeSelectBox("project",$kga['user']['groups']);
 $view->projects = $sel;
 
 // Select values for Round Time option
