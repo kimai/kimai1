@@ -102,6 +102,8 @@ return array(
 "company"           => "Firma",
 
 "vat"               => "Umsatzsteuer",
+'invoiceNumberFormat' => 'Rechnungsnummerformat',
+'format' => 'Format',
 "contactPerson"     => "Ansprechpartner",
 
 "street"            => "Straße",
@@ -343,18 +345,18 @@ EOF
 'weekdays_short'    => array("So","Mo","Di","Mi","Do","Fr","Sa"),
 
 'errorMessages' => array(
-  'permissionDenied' => 'Keine Berechtigung',
-  'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
-  'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.',
-  'sameGlobalRoleName' => 'Eine globale Rolle mit diesem Namen existiert bereits.',
-  'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
-  'noActivitySelected' => 'Keine Aktivität ausgwählt.',
-  'noProjectSelected' => 'Kein Projekt ausgwählt.',
-  'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
+	'permissionDenied' => 'Keine Berechtigung',
+	'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
+	'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.',
+	'sameGlobalRoleName' => 'Eine globale Rolle mit diesem Namen existiert bereits.',
+	'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
+	'noActivitySelected' => 'Keine Aktivität ausgwählt.',
+	'noProjectSelected' => 'Kein Projekt ausgwählt.',
+	'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
 ),
 
 'confirmations' => array(
-  'ownGlobalRoleChange' => 'Möchten Sie ihre globale Rolle von "%OLD%" zu "%NEW%" ändern? \nDas kann zu weniger Berechtigungen führen!'
+	'ownGlobalRoleChange' => 'Möchten Sie ihre globale Rolle von "%OLD%" zu "%NEW%" ändern? \nDas kann zu weniger Berechtigungen führen!'
 ),
 
 'errors' => array(
@@ -364,7 +366,7 @@ EOF
         'txt' => 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
 Falls Sie Kimai nur updaten wollen klicken Sie bitte <a href="../index.php">hier</a>.<br/>
 Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabellen mit diesem Präfix, damit Kimai eine Neuinstallation vornehmen kann.')
-  ),
+	),
 
 'updater' => array (
 0        => "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!",
@@ -401,100 +403,99 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 ),
 
 'export_extension' => array(
-	
-"print_hint"      		   => "Klicken Sie auf OK um eine druckbare Tabelle anzuzeigen.",
-"dl_hint"         		   => "Klicken Sie auf OK um den Download zu starten.",
+	"print_hint"      		   => "Klicken Sie auf OK um eine druckbare Tabelle anzuzeigen.",
+	"dl_hint"         		   => "Klicken Sie auf OK um den Download zu starten.",
 
-"tab_filter"	 		   => "Filter",
-"tab_location"	 		   => "Location",
-"tab_timeformat"	 	   => "Timeformat",
+	"tab_filter"	 		   => "Filter",
+	"tab_location"	 		   => "Location",
+	"tab_timeformat"	 	   => "Timeformat",
 
-"cleared_all"	 		   => "alle",
-"cleared_cleared" 		   => "nur abgerechnete",
-"cleared_open"	 		   => "nur offene",
-"stdrd_location"  		   => "Standard-Ort",
-"timeformat"	     	   => "Zeitformat",
-"dateformat"			   => "Datumsformat",
+	"cleared_all"	 		   => "alle",
+	"cleared_cleared" 		   => "nur abgerechnete",
+	"cleared_open"	 		   => "nur offene",
+	"stdrd_location"  		   => "Standard-Ort",
+	"timeformat"	     	   => "Zeitformat",
+	"dateformat"			   => "Datumsformat",
 
-"refundable_all"	 	   => "alle",
-"refundable_refundable"    => "nur rückerstattbare",
-"refundable_not_refundable"=> "nur nicht rückerstattbare",
+	"refundable_all"	 	   => "alle",
+	"refundable_refundable"    => "nur rückerstattbare",
+	"refundable_not_refundable"=> "nur nicht rückerstattbare",
 
-"print_comment"   		   => "Kommentare ausgeben",
-"print_summary"   		   => "Zusammenfassung ausgeben",
-"create_bookmarks"		   => "Lesezeichen erstellen",
-"download_pdf"    		   => "PDF-Datei downloaden",
-"pdf_format"               => "Format",
-"export_pdf"               => "tabellarisch",
-"export_pdf2"              => "Liste",
+	"print_comment"   		   => "Kommentare ausgeben",
+	"print_summary"   		   => "Zusammenfassung ausgeben",
+	"create_bookmarks"		   => "Lesezeichen erstellen",
+	"download_pdf"    		   => "PDF-Datei downloaden",
+	"pdf_format"               => "Format",
+	"export_pdf"               => "tabellarisch",
+	"export_pdf2"              => "Liste",
 
-"column_delimiter"		   => "Trennzeichen für Spalten",
-"quote_char"      		   => "Begrenzungszeichen von Feldern",
+	"column_delimiter"		   => "Trennzeichen für Spalten",
+	"quote_char"      		   => "Begrenzungszeichen von Feldern",
 
-"exportCSV"         	   => "CSV Export",
-"exportPDF"         	   => "PDF Export",
-"exportXLS"         	   => "Excel Export",
-"print"         	       => "Drucken",
-"export_timeformat_help"   => "Zeitformat Hilfe",
+	"exportCSV"         	   => "CSV Export",
+	"exportPDF"         	   => "PDF Export",
+	"exportXLS"         	   => "Excel Export",
+	"print"         	       => "Drucken",
+	"export_timeformat_help"   => "Zeitformat Hilfe",
 
-'subtotal'              => 'Zwischensumme',
-'finalamount'           => 'Endbetrag',
-'pdf_headline'          => 'Aufstellung zu Aufwänden und Auslagen',
-'pdf_headline_only_times'   => 'Aufstellung zu Aufwänden',
-'pdf_headline_only_expenses'=> 'Aufstellung zu Auslagen',
-'costs'                 => 'Kosten',
-'expense'               => 'Auslage',
-'summary'               => 'Zusammenfassung',
-'full_list'             => 'Vollständige Auflistung',
-'page'                  => 'Seite',
-'by'                    => 'von',
-'done_by'               => 'durchgeführt von',
-'duration'              => 'Dauer',
-'customer_new_page'     => 'Kunden jeweils auf neue Seite',
-'times_and_expenses'    => 'Zeiten und Auslagen',
-'times'                 => 'Zeiten',
-'expenses'              => 'Auslagen',
-'reverse_order'         => 'Ältere Einträge zuerst',
-'time_period'           => 'Zeitraum',
-'duration_unit'         => 'Std.',
+	'subtotal'              => 'Zwischensumme',
+	'finalamount'           => 'Endbetrag',
+	'pdf_headline'          => 'Aufstellung zu Aufwänden und Auslagen',
+	'pdf_headline_only_times'   => 'Aufstellung zu Aufwänden',
+	'pdf_headline_only_expenses'=> 'Aufstellung zu Auslagen',
+	'costs'                 => 'Kosten',
+	'expense'               => 'Auslage',
+	'summary'               => 'Zusammenfassung',
+	'full_list'             => 'Vollständige Auflistung',
+	'page'                  => 'Seite',
+	'by'                    => 'von',
+	'done_by'               => 'durchgeführt von',
+	'duration'              => 'Dauer',
+	'customer_new_page'     => 'Kunden jeweils auf neue Seite',
+	'times_and_expenses'    => 'Zeiten und Auslagen',
+	'times'                 => 'Zeiten',
+	'expenses'              => 'Auslagen',
+	'reverse_order'         => 'Ältere Einträge zuerst',
+	'time_period'           => 'Zeitraum',
+	'duration_unit'         => 'Std.',
 ),
 
-
 'ext_invoice' => array(
-"invoiceTemplate"       => "Rechnungsvorlage:",
-"invoiceTitle" 			=> "Rechnung Erstellen",
-"invoiceProject" 		=> "Projekte:",
-"invoiceTimePeriod" 	=> "Zeitspanne:",
-"invoiceOptionShort" 	=> "Kurze Abrechnung",
-"invoiceOptionRound" 	=> "Zeiten Runden",
-"invoiceButton" 		=> "Erstellen",
-'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!',
-'defaultVat'            => 'Standard-Mehrwertsteuer'
+	"invoiceTemplate"       => "Rechnungsvorlage:",
+	"invoiceTitle" 			=> "Rechnung Erstellen",
+	"invoiceProject" 		=> "Projekte:",
+	"invoiceTimePeriod" 	=> "Zeitspanne:",
+	"invoiceOptionShort" 	=> "Kurze Abrechnung",
+	"invoiceOptionRound" 	=> "Zeiten Runden",
+	"invoiceButton" 		=> "Erstellen",
+	'noData'                => 'In der ausgewählten Zeitspanne sind keine Einträge!',
+	'defaultVat'            => 'Standard-Mehrwertsteuer',
+	'invoiceNumberFormat'   => 'Rechnungsnummerformat'
 ),
 
 'ext_budget' => array(
-  'unusedBudget' => 'frei'
+	'unusedBudget' => 'frei'
 ),
 
 'extensionsTitle' => 'Erweiterungen',
 'extensions' => array(
-'ki_timesheet' => 'Zeiterfassung',
-'ki_expenses' => 'Auslagen',
-'ki_invoice' => 'Rechnungen'
+	'ki_timesheet' => 'Zeiterfassung',
+	'ki_expenses' => 'Auslagen',
+	'ki_invoice' => 'Rechnungen'
 ),
 
 'permissions' => array(
-  'edit' => 'Bearbeiten',
-  'delete' => 'Löschen',
-  'assign' => 'Zuweisen',
-  'unassign' => 'Herausnehmen',
-  'ownEntry' => 'Eigener Eintrag',
-  'otherEntry' => 'Eintrag anderer Benutzer',
-  'ownGroup' => 'gleiche Gruppe',
-  'otherGroup' => 'andere Gruppe',
-  'showRates' => 'Stundenlohn anzeigen',
-  'editRates' => 'Stundenlohn bearbeiten',
-  'editAdvanced' => 'Erweiterte Einstellungen bearbeiten'
+	'edit' => 'Bearbeiten',
+	'delete' => 'Löschen',
+	'assign' => 'Zuweisen',
+	'unassign' => 'Herausnehmen',
+	'ownEntry' => 'Eigener Eintrag',
+	'otherEntry' => 'Eintrag anderer Benutzer',
+	'ownGroup' => 'gleiche Gruppe',
+	'otherGroup' => 'andere Gruppe',
+	'showRates' => 'Stundenlohn anzeigen',
+	'editRates' => 'Stundenlohn bearbeiten',
+	'editAdvanced' => 'Erweiterte Einstellungen bearbeiten'
 )
 
 );

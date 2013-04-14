@@ -103,6 +103,8 @@ return array(
 "company"           => "Company",
 
 "vat"               => "VAT",
+'invoiceNumberFormat' => 'Invoice number format',
+'format' => 'Format',
 "contactPerson"     => "Contact person",
 
 "street"            => "Street",
@@ -375,18 +377,18 @@ EOF
 'weekdays_short' => array("Sun","Mon","Tue","Wed","Thu","Fri","Sat"),
 
 'errorMessages' => array(
-  'permissionDenied' => 'Permission denied',
-  'userWithSameName' => 'A customer name can not be the same as a user name.',
-  'customerWithSameName' => 'A user name can not be the same as a customer name.',
-  'sameGlobalRoleName' => 'A global role with this name already exists.',
-  'sameMembershipRoleName' => 'A membership role with this name already exists.',
-  'noActivitySelected' => 'No activity selected.',
-  'noProjectSelected' => 'No project selected.',
-  'multiplierNegative' => 'The multiplier must be larger than 0.',
+	'permissionDenied' => 'Permission denied',
+	'userWithSameName' => 'A customer name can not be the same as a user name.',
+	'customerWithSameName' => 'A user name can not be the same as a customer name.',
+	'sameGlobalRoleName' => 'A global role with this name already exists.',
+	'sameMembershipRoleName' => 'A membership role with this name already exists.',
+	'noActivitySelected' => 'No activity selected.',
+	'noProjectSelected' => 'No project selected.',
+	'multiplierNegative' => 'The multiplier must be larger than 0.',
 ),
 
 'confirmations' => array(
-  'ownGlobalRoleChange' => 'Are you sure you want to change your own global role from "%OLD%" to "%NEW%"?\nThis can lead to less permissions!'
+	'ownGlobalRoleChange' => 'Are you sure you want to change your own global role from "%OLD%" to "%NEW%"?\nThis can lead to less permissions!'
 ),
 
 'errors' => array (
@@ -435,109 +437,108 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 
 'export_extension' => array(
-	
-"print_hint"      		   => "Click OK to open a printable table.",
-"dl_hint"         		   => "Click OK to download export-file.",
-                              
-"tab_filter"	 		   => "Filter",
-"tab_location"	 		   => "Location",
-"tab_timeformat"	 	   => "Timeformat",
-                              
-"cleared_all"	 		   => "all",
-"cleared_cleared" 		   => "only cleared",
-"cleared_open"	 		   => "only open",
-"stdrd_location"  		   => "Standard-Location",
-"timeformat"	     	   => "Timeformat",
-"dateformat"			   => "Dateformat",
 
-"refundable_all"	 	   => "all",
-"refundable_refundable"    => "only refundable",
-"refundable_not_refundable"=> "only non refundable",
-                              
-"print_comment"   		   => "print comments",
-"print_summary"   		   => "print summary",
-"create_bookmarks"		   => "create bookmarks",
-"download_pdf"    		   => "download as PDF",
-"pdf_format"               => "format",
-"export_pdf"               => "table",
-"export_pdf2"              => "list",
-                              
-"column_delimiter"		   => "delimiter for columns",
-"quote_char"      		   => "boundary character for fields",
-                              
-"exportCSV"         	   => "CSV Export",
-"exportPDF"         	   => "PDF Export",
-"exportXLS"         	   => "Excel Export",
-"print"         	       => "Print",
-"export_timeformat_help"   => "Timeformat help",
+	"print_hint"      		   => "Click OK to open a printable table.",
+	"dl_hint"         		   => "Click OK to download export-file.",
 
-'subtotal'              => 'Sub Total',
-'finalamount'           => 'Total',
-'pdf_headline'          => 'List of working time and expenses',
-'pdf_headline_only_times'   => 'List of working time',
-'pdf_headline_only_expenses'=> 'List of expenses',
-'costs'                 => 'Costs',
-'expense'               => 'Expense',
-'summary'               => 'Summary',
-'full_list'             => 'Full List',
-'page'                  => 'Page',
-'by'                    => 'by',
-'done_by'               => 'done by',
-'duration'              => 'Duration',
-'customer_new_page'     => 'new page for each customer',
+	"tab_filter"	 		   => "Filter",
+	"tab_location"	 		   => "Location",
+	"tab_timeformat"	 	   => "Timeformat",
 
-'times_and_expenses' => 'times and expenses',
-'times' => 'times',
-'expenses' => 'expenses',
+	"cleared_all"	 		   => "all",
+	"cleared_cleared" 		   => "only cleared",
+	"cleared_open"	 		   => "only open",
+	"stdrd_location"  		   => "Standard-Location",
+	"timeformat"	     	   => "Timeformat",
+	"dateformat"			   => "Dateformat",
 
-'reverse_order' => 'older entries first',
-'time_period'  => 'Time period',
+	"refundable_all"	 	   => "all",
+	"refundable_refundable"    => "only refundable",
+	"refundable_not_refundable"=> "only non refundable",
 
-'duration_unit' => 'h',
+	"print_comment"   		   => "print comments",
+	"print_summary"   		   => "print summary",
+	"create_bookmarks"		   => "create bookmarks",
+	"download_pdf"    		   => "download as PDF",
+	"pdf_format"               => "format",
+	"export_pdf"               => "table",
+	"export_pdf2"              => "list",
 
+	"column_delimiter"		   => "delimiter for columns",
+	"quote_char"      		   => "boundary character for fields",
+
+	"exportCSV"         	   => "CSV Export",
+	"exportPDF"         	   => "PDF Export",
+	"exportXLS"         	   => "Excel Export",
+	"print"         	       => "Print",
+	"export_timeformat_help"   => "Timeformat help",
+
+	'subtotal'              => 'Sub Total',
+	'finalamount'           => 'Total',
+	'pdf_headline'          => 'List of working time and expenses',
+	'pdf_headline_only_times'   => 'List of working time',
+	'pdf_headline_only_expenses'=> 'List of expenses',
+	'costs'                 => 'Costs',
+	'expense'               => 'Expense',
+	'summary'               => 'Summary',
+	'full_list'             => 'Full List',
+	'page'                  => 'Page',
+	'by'                    => 'by',
+	'done_by'               => 'done by',
+	'duration'              => 'Duration',
+	'customer_new_page'     => 'new page for each customer',
+
+	'times_and_expenses' => 'times and expenses',
+	'times' => 'times',
+	'expenses' => 'expenses',
+
+	'reverse_order' => 'older entries first',
+	'time_period'  => 'Time period',
+
+	'duration_unit' => 'h',
 ),
 
 
 
 'ext_invoice' => array(
-	
-"invoiceTemplate"           => "Invoice template:",
-"invoiceTitle" 			=> "Create invoice",
-"invoiceProject" 		=> "Projects:",
-"invoiceTimePeriod" 	=> "Time Period:",
-"invoiceOptionShort" 	=> "Short Invoice",
-"invoiceOptionRound" 	=> "Round time",
-"invoiceButton" 		=> "Create",
-'noData'                => 'There are no time entries for the selected project & time period.',
-'defaultVat'        => 'Default VAT rate'
+	"invoiceTemplate"       => "Invoice template:",
+	"invoiceTitle" 			=> "Create invoice",
+	"invoiceProject" 		=> "Projects:",
+	"invoiceTimePeriod" 	=> "Time Period:",
+	"invoiceOptionShort" 	=> "Short Invoice",
+	"invoiceOptionRound" 	=> "Round time",
+	"invoiceButton" 		=> "Create",
+	'noData'                => 'There are no time entries for the selected project & time period.',
+	'defaultVat'            => 'Default VAT rate',
+	'invoiceNumberFormat'   => 'Invoice Number format'
 ),
 
 'ext_budget' => array(
-  'unusedBudget' => 'unused'
+	'unusedBudget' => 'unused'
 ),
 
 'extensionsTitle' => 'Extensions',
 'extensions' => array(
-  'ki_timesheet' => 'Timesheet',
-  'adminPanel_extension' => 'Admin Panel',
-  'ki_expenses' => 'Expenses',
-  'ki_export' => 'Export',
-  'ki_budget' => 'Budget',
-  'ki_invoice' => 'Invoice' 
+	'ki_timesheet' => 'Timesheet',
+	'adminPanel_extension' => 'Admin Panel',
+	'ki_expenses' => 'Expenses',
+	'ki_export' => 'Export',
+	'ki_budget' => 'Budget',
+	'ki_invoice' => 'Invoice'
 ),
 
 'permissions' => array(
-  'edit' => 'edit',
-  'delete' => 'delete',
-  'assign' => 'assign',
-  'unassign' => 'unassign',
-  'ownEntry' => 'own entry',
-  'otherEntry' => 'entry of other user',
-  'ownGroup' => 'same group',
-  'otherGroup' => 'different group',
-  'showRates' => 'show rates',
-  'editRates' => 'edit rates',
-  'editAdvanced' => 'edit advanced settings'
+	'edit' => 'edit',
+	'delete' => 'delete',
+	'assign' => 'assign',
+	'unassign' => 'unassign',
+	'ownEntry' => 'own entry',
+	'otherEntry' => 'entry of other user',
+	'ownGroup' => 'same group',
+	'otherGroup' => 'different group',
+	'showRates' => 'show rates',
+	'editRates' => 'edit rates',
+	'editAdvanced' => 'edit advanced settings'
 )
 
 );

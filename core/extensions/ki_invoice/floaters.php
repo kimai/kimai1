@@ -23,14 +23,17 @@ $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
 switch ($axAction) {
+	case "editVat":
+		if (isset($kga['customer'])) {
+			die();
+		}
+		$view->kga = $kga;
 
-  case "editVat":  
-    if (isset($kga['customer'])) die();  
+		echo $view->render("floaters/editVat.php"); 
+		break;
+	case "editInvoiceNumberFormat":
+		$view->kga = $kga;
 
-    $view->kga = $kga;
-
-    echo $view->render("floaters/editVat.php"); 
-
-    break;        
-
+		echo $view->render("floaters/editInvoiceNumberFormat.php");
+		break;
 }

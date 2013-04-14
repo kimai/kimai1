@@ -31,32 +31,39 @@ require("../../includes/kspi.php");
 // ==================
 switch ($axAction) {
 
-    // =====================================
-    // = Reload the timespan and return it =
-    // =====================================
-    case 'reload_timespan':
-        
-        $timeframe = get_timeframe();
-        $view->in = $timeframe[0];
-        $view->out = $timeframe[1];
+	// =====================================
+	// = Reload the timespan and return it =
+	// =====================================
+	case 'reload_timespan':
+		
+		$timeframe = get_timeframe();
+		$view->in = $timeframe[0];
+		$view->out = $timeframe[1];
 
-        echo $view->render("timespan.php");
-    break;
+		echo $view->render("timespan.php");
+	break;
 
-    // ==========================
-    // = Change the default vat =
-    // ==========================
-    case 'editVat':
-        
-        $vat = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['vat']);
-        
-        if (!is_numeric($vat)) {
-          echo "0";
-          return;
-        }
+	// ==========================
+	// = Change the default vat =
+	// ==========================
+	case 'editVat':
+		$vat = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['vat']);
+		
+		if (!is_numeric($vat)) {
+			echo "0";
+			return;
+		}
 
-        $database->configuration_edit(array('defaultVat'=>$vat));
-        echo "1";
-    break;
+		$database->configuration_edit(array('defaultVat' => $vat));
+		echo "1";
+	break;
+
+	// ================================
+	// = Change the invoice no format =
+	// ================================
+	case 'editInvoiceNumberFormat':
+		$database->configuration_edit(array('invoiceNumberFormat' => $_REQUEST['invoiceNumberFormat']));
+		echo "1";
+		break;
 
 }
