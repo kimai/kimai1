@@ -40,7 +40,6 @@
 	-->
 	<target name="artifacts" depends="release">
 		<move todir="${workspace}/build/artifacts" file="${target.release.zip}" />
-        <move todir="${workspace}/build/artifacts" file="${target.release.bz2}" />
 	</target>
 
    <!-- 
