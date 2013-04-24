@@ -44,14 +44,14 @@ return array(
 "datum"             => "Date",
 "in"                => "Entrée",
 "out"               => "Sortie",
-"time"              => "h mn",
+"time"              => "h:mn",
 "timelabel"         => "Temps",
 "durationlabel"     => "Durée",
 "customer"          => "Client",
 "project"           => "Projet",
 "activity"          => "Tâche",
 "customers"         => "Clients",
-"projects"          => "Projet",
+"projects"          => "Projets",
 "activities"        => "Tâches",
 "admin"             => "Admin",
 "rowlimit"          => "Nombre maximum de lignes",
@@ -80,25 +80,25 @@ return array(
 "location"         => "Lieu",
 "trackingNumber"        => "N°",
 "cookiewarning"     => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
-"JSwarning"         => "JavaScript doit être activé! Cette version ne fonctionne pas sans.",
+"JSwarning"         => "JavaScript doit être activé! Cette version ne fonctionne pas sans cela.",
 "designation"       => "désignation",
 "banned"            => "Bloqué (Compte bloqué)",
 "tooManyLogins"     => "Trop de mauvaises tentatives de connexion - utilisateur bloqué.",
 "accessDenied"      => "Accès refusé !",
 "wrongPass"         => "Mauvais utilisateur et/ou mot de passe",
 "tryAgain"          => "Réessayer / mot de passe oublié?",
-"back"              => "Retour à la fenetre de connexion",
+"back"              => "Retour à la fenêtre de connexion",
 "bye"               => "Au revoir!",
 "login"             => "Connexion",
 "logout"            => "Déconnexion",
 "loggedon"          => "Connecté en tant que:",
-"username"          => "Login",
+"username"          => "Usager",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
 "minLength"         => "min. 5 caractères!",
 "update"            => "La structure de la base de données de la version Kimai installée a été mise à jour.<br />Nous recommandons de sauvegarder vos données pour éviter toute perte<br />durant la procédure de mise a jour.",
 "updateNow"         => "Mise à jour de la base de données en cours!",
-"stop"              => "Stop!",
+"stop"              => "Arrêt!",
 "start"             => "Démarre!",
 "setTimeframe"      => "Choisir plage",
 "now"               => "Maintenant",
@@ -116,7 +116,7 @@ return array(
 "telephon"          => "Téléphone",
 "fax"               => "Fax",
 "mobilephone"       => "Mobile",
-"mail"              => "E-Mail",
+"mail"              => "Courriel",
 "homepage"          => "Site",
 "users"             => "Utilisateurs",
 "name"              => "Nom",
@@ -129,9 +129,9 @@ return array(
 "database"          => "Base de données",
 "options"           => "Options",
 "status"            => "Etat",
-"adminmail"         => "adresse email de l'administrateur",
-"logintries"        => "nombre de mauvaises tentatives de connexions autorisées avant de bloquer l'utilisateur",
-"bantime"           => "durée du bloquage en secondes",
+"adminmail"         => "Adresse email de l'administrateur",
+"logintries"        => "Nombre de mauvaises tentatives de connexions autorisées avant de bloquer l'utilisateur",
+"bantime"           => "Durée du bloquage en secondes",
 "lastdbbackup"      => "Dernière sauvegarde",
 "runbackup"         => "Sauvegarde immédiate",
 "defaultGroup"        => "Défaut (0)",
@@ -190,7 +190,7 @@ return array(
 "visibility"        => "Visibilité",
 "showitem"          => "Rendre visible",
 "hideitem"          => "Rendre invisible",
-"checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champ è gauche du bouton Ajouter!",
+"checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champ à gauche du bouton Ajouter!",
 "clickToReload"     => "Cliquer ici pour relancer l'interface graphique",
 "sure"              => "Etes-vous sûr?",
 "clock"             => "Horloge",
@@ -226,10 +226,10 @@ return array(
 
 "cleared"           => "validé",
 
-"noFading"          => "Pas d'effet fading ",
+"noFading"          => "Pas d'effet fondu",
 "user_list_hidden"  => "Cacher la liste util. par défaut",
 
-'show_sensible_data' => 'Montrer les données sensibles aussi dans l\'extension Debug.',
+'show_sensible_data' => 'Montrer les données sensibles aussi dans l\'extension Débug.',
 'show_update_warn' => 'Désactiver le warning avant une mise à jour.',
 'check_at_startup' => 'Montrer un message sur la page Login si une nouvelle version est disponible.',
 'show_daySeperatorLines' => 'Tirer une ligne entre les entrées de jours différents.',
@@ -244,7 +244,7 @@ return array(
 'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
 'round_time' => 'Arrondir le temps à ',
 'round_time_minute' => ' minute(s).',
-'logged_in_as' => 'Votre login:',
+'logged_in_as' => 'Connecté comme:',
 
 'decimal_separator'  => 'Séparateur décimal',
 
@@ -270,7 +270,7 @@ return array(
 
 'hideClearedEntries' => 'cacher les données supprimées',
 
-'general' => 'General',
+'general' => 'Général',
 'address' => 'Address',
 'contact' => 'Contact',
 
@@ -304,13 +304,13 @@ return array(
         
         <br /><br />
 
-        Si vous faites des modifications, nous aprecierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" . La dernière version SVN peut être téléchargée <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">Ici</a> (Pour les test seulement!).
+        Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" . La dernière version SVN peut être téléchargée <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">Ici</a> (Pour les test seulement!).
         
         <br /><br />
         
         SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a> ou en étendant sa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">bibliothèque de langues</a>.
 
-        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\heitez pas à nous contacter sur le forum. Ou encor emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hesitez pas à nous contacter sur le forum. Ou encore emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
 
         <strong>Des remerciement aussi pour le support à:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe et HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
@@ -328,7 +328,7 @@ EOF
 
 
 'months'		 => array("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"),
-'months_short' 	 => array("Jan","Fév","Mar","Avr","Mai","Jn","Jl","Aoû","Sep","Oct","Nov","Déc"),
+'months_short' 	 => array("Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"),
 'weekdays'       => array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
 'weekdays_short' => array("Dim","Lun","Mar","Mer","Jeu","Ven","Sam"),
 
@@ -346,7 +346,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 0   => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise à jour!",
 10  => "Légende",
 20  => "La requête a été exécutée correctement.",
-30  => "La requête a causé une erreur - tr鳠certainement mineure.",
+30  => "La requête a causé une erreur - trècertainement mineure.",
 40  => "La requête a causé une erreur fatale.",
 50  => "Fichier de log de la sauvegarde:",
 60  => "La sauvegarde a échoué - Mise à jour annulée!",
@@ -358,7 +358,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 120 => "Voir ci-dessous pour les mots de passe de tous les utilisateurs.",
 130 => "Impossible d'écrire dans autoconf.php.",
 140 => "Mise a jour du fichier autoconf.php",
-'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau hotzire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
+'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau horaire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
 ),
 
 
@@ -372,7 +372,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 6        => "Sauvegarde du ",
 7        => "a été restauré.",
 8        => "Faire une sauvegarde",
-9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas sont pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)"),
+9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)"),
 
 
 'export_extension' => array(
@@ -391,7 +391,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 "timeformat"	     	   => "Format temps",
 "dateformat"			   => "Format date",
 
-"refundable_all"	 	   => "Tous",
+"refundable_all"	 	   => "Tous les frais",
 "refundable_refundable"    => "Frais remboursables seulement",
 "refundable_not_refundable"=> "Frais nonremboursables seulement",
 
@@ -456,7 +456,15 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
   'unusedBudget' => 'Inutilisé'
 ),
 
-'extensions' => array()
+'extensions' => array(
+'ki_timesheet' => 'Feuille de temps',
+'ki_expenses' => 'Dépenses',
+'ki_invoice' => 'Facturation',
+'deb_ext' => 'Débug',
+'ap_ext' => 'Préférences',
+'ki_budget' => 'Budget',
+'ki_export' => 'Exporter'
+),
 
 );
 ?>
