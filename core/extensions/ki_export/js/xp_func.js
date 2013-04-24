@@ -278,9 +278,9 @@ function export_extension_reload() {
 
             $.post(export_extension_path + "processor.php", { axAction: "reload", axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"),
                   id: 0, timeformat: $("#export_extension_timeformat").val(), dateformat: $("#export_extension_dateformat").val(), default_location: $("#export_extension_default_location").val(),
-                  filter_cleared:$('#export_extension_tab_filter_cleared').attr('value'),
-                  filter_refundable:$('#export_extension_tab_filter_refundable').attr('value'),
-                  filter_type:$('#export_extension_tab_filter_type').attr('value'),
+                  filter_cleared:$('#export_extension_tab_filter_cleared').val(),
+                  filter_refundable:$('#export_extension_tab_filter_refundable').val(),
+                  filter_type:$('#export_extension_tab_filter_type').val(),
                 first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000  },
                 function(data) { 
                     $("#xp").html(data);
