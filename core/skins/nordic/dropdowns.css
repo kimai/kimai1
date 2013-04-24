@@ -1,0 +1,51 @@
+#selector div.dropdown {
+    position:relative;
+    display:block;
+    z-index:110;
+    left:17px;
+    top:20px;
+    background-color:white;
+    padding:3px;
+    border:1px solid black;
+    display:none;
+    overflow:auto;
+    opacity:.9;
+}
+
+#selector div.dropdown {
+    width:180px;
+}
+
+
+#selector span.entry {
+    font-size:12px;
+    padding:0;
+    margin:0;
+    height:16;
+    margin-bottom:3px;
+    display:block;
+}
+
+#selector span.entry:hover {
+    color:red;
+
+}
+
+#selector img.icon {
+    vertical-align:middle;
+    padding:0;
+    margin:0;
+    height:16px;
+    width:16px;
+}
+
+
+
+
+
+#selector a,
+#selector a:visited
+{
+    color:#000;
+    text-decoration:none;
+}

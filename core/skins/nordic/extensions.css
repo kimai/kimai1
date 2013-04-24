@@ -1,0 +1,138 @@
+
+/* Overrides for ki_adminpanel extension */
+#adminPanel_extension_panel,
+#ap_ext_panel,
+#ap_ext_knd,
+#ap_ext_pct,
+#ap_ext_evt 
+{
+    background-color:#ffe !important;
+}
+
+#ap_ext_knd_head,
+#ap_ext_pct_head,
+#ap_ext_evt_head
+{
+    background:#159 !important;
+}
+
+.adminPanel_extension_panel_header a,
+.ap_ext_panel_header a {
+  background:#ddd !important;
+  border-bottom: 1px solid black !important;
+}
+
+div.active .adminPanel_extension_panel_header a,
+div.active .ap_ext_panel_header a {
+  background:#159 !important;
+  color: #fff !important;
+}
+
+div.active .adminPanel_extension_panel_header a:hover,
+div.active .ap_ext_panel_header a:hover {
+  background:#159 !important;
+}
+
+#adminPanel_extension_sub1 .btn_ok,
+#adminPanel_extension_sub2 .btn_ok,
+#adminPanel_extension_sub3 .btn_ok,
+#adminPanel_extension_sub9 .btn_ok,
+#adminPanel_extension_sub10 .btn_ok,
+#ap_ext_sub1 .btn_ok,
+#ap_ext_sub2 .btn_ok {
+    cursor: pointer;
+    border:4px outset #999;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color:#bbb;
+    font-weight:bold;
+    color:#000;
+}
+
+#adminPanel_extension_sub1 .btn_ok:hover,
+#adminPanel_extension_sub2 .btn_ok:hover,
+#ap_ext_sub1 .btn_ok:hover,
+#ap_ext_sub2 .btn_ok:hover {
+    color:#f24;
+}
+
+#adminPanel_extension_sub1 .btn_ok:active,
+#adminPanel_extension_sub2 .btn_ok:active,
+#ap_ext_sub1 .btn_ok:active,
+#ap_ext_sub2 .btn_ok:active {
+    color:#f24;
+    border:4px inset #999;
+}
+
+#adminPanel_extension_sub1 .formfield,
+#adminPanel_extension_sub2 .formfield,
+#adminPanel_extension_s3 .formfield,
+#ap_ext_sub1 .formfield,
+#ap_ext_sub2 .formfield,
+#ap_ext_s3 .formfield {
+    border:2px inset #888 !important;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#adminPanel_extension_panel table th,
+#ap_ext_panel table th {
+  background-color: #48c !important;
+}
+
+/* Overrides for ki_budget extension */
+#bgt {
+    background-color:#ffe !important;
+}
+
+.project_head {
+        background:#159 !important;
+}
+
+/* Overrides for ki_expenses extension */
+#expenses, #exp {
+    background-color:#ffe !important;
+}
+
+#expenses_head, #exp_head {
+    background:#159 !important;
+}
+
+/* Overrides for ki_export extension */
+#export_head table, #xp_head table {
+     background-color:#159 !important;
+}
+
+/* Overrides for ki_invoice extension */
+#invoice_extension_header, #iv_ext_header {
+    background: #159 !important;
+}
+
+#invoice_button .btn_ok, #iv_button .btn_ok {
+    cursor: pointer;
+    border:4px outset #5b1;
+    background-color:#4AA917;
+    font-weight:bold;
+    color:#fff;
+}
+
+#invoice_button .btn_ok:hover, #iv_button .btn_ok:hover {
+    color:#fd0;
+}
+
+#invoice_button .btn_ok:active, #iv_button .btn_ok:active {
+    color:#fd0;
+    border:4px inset #5b1;
+}
+
+/* Overrides for ki_timesheets extension */
+#zef, #timeSheet {
+    background-color:#ffe !important;
+}
+
+#zef_head, #timeSheet_head {
+    background:#159 !important;
+    color:#fff !important;
+}

@@ -1,0 +1,87 @@
+.menu {padding:4px 0 0 0; margin:0 13px; list-style:none;}
+.menu li {float:left; padding:2px 0 0 0; margin:0 3px 0 0; text-align:center;}
+
+.menuBackground {
+    background-color:#159; 
+    height:29px;
+}
+
+
+.menu li span.aa {
+    width:5px; 
+    height:20px; 
+    float:left; 
+    padding:1px 0;
+}
+
+.menu li span.bb {
+    border: 1px outset #69c;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    border-bottom: none;
+    height:20px;
+    float:left;
+    padding:1px 4px;
+}
+.menu li span.cc {
+    width:5px;
+    height:20px;
+    float:left; 
+    padding:1px 0;
+}
+
+.menu li{
+    font-size:.9em;
+    font-weight:bold;
+}
+
+.menu li.norm span.aa {
+    background-color:#159; 
+}
+
+.menu li.norm span.bb {
+    background-color:#6ae;
+}
+
+.menu li.norm span.cc {
+    background-color:#159;
+}
+
+.menu li.act,
+.menu li.ui-state-active {
+    color:#fff;
+}
+
+.menu li.act span.aa,
+.menu li.ui-state-active span.aa {
+    background-color:#159; 
+}
+
+.menu li.act span.bb,
+.menu li.ui-state-active span.bb{
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+    padding:1px 4px;
+    background-color:#fd4;
+    border: 1px outset #fe8;
+}
+
+.menu li.act span.cc,
+.menu li.ui-state-active span.cc {
+    background-color:#159;
+}
+
+.menu li.act a span.bb,
+.menu li.ui-state-active a span.bb {
+    color:#000;
+}
+
+.menu a, .menu a:visited {
+    color:#000;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.menu a:hover {
+    color:#fff;
+}

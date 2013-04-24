@@ -1,0 +1,92 @@
+html {
+    min-width:970px;
+    font-size:95%;     
+}
+
+a:active {outline: none;}
+a img {border:none;}
+
+
+body {
+    font-size:.9em;
+    font-family: Verdana,Arial,Helvetica,'Liberation Sans','DejaVu Sans','Bitstream Vera Sans',sans-serif;
+    background-color:#48c;
+    margin:0; padding:0;
+}
+
+select,
+input {
+  background-color:white;
+  color:black;
+}
+
+#loader {
+    position:absolute;
+    margin-top:30px;
+    margin-left:-110px;
+    top:50%;
+    left:50%;
+    width:220px;
+    height:19px;
+    background-image:url('grfx/ajax-loader.gif');
+    background-repeat: no-repeat;
+    z-index:200;
+}
+
+#top {
+    width:100%;
+    background-color:#fff;
+    color:#000;
+    height: 89px;
+}
+
+#logo {
+     position:absolute;
+     width:151px;
+     height:52px;
+     top:20px;
+     right:10px;
+}
+
+#menu {
+     position:absolute;
+     width:151px !important;
+     height:52px;
+     top:30px;
+     right:160px;
+     z-index:10;
+     color:black;
+     font-size:smaller;
+
+}
+
+#stopwatch {
+     position:absolute;
+     margin:0;
+     top:22px;
+     left:10px;
+     width:136px;
+     height:44px;
+     z-index:10;
+     font-family: Verdana,Arial,Helvetica,'Liberation Sans','DejaVu Sans','Bitstream Vera Sans',sans-serif;
+     font-size: 22px;
+     text-align: center;
+     padding: 8px 0 0;
+     display: none;
+     color: #51534a;
+}
+
+#button_comment {
+     position: absolute;
+     top: 30px;
+     right: 240px;
+     z-index: 1;
+     display: none;
+}
+
+#line {
+     height:4px;
+     width:314px;
+     text-align:center; 
+     display: none;
+}
