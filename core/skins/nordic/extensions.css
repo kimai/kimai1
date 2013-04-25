@@ -100,6 +100,29 @@ div.active .ap_ext_panel_header a:hover {
     background:#159 !important;
 }
 
+/* Overrides for ki_debug extension */
+#deb_ext_kga_header, #deb_ext_logfile_header {
+     background:#159 !important;
+}
+
+#deb_ext_shoutbox_field {
+    background:#48c !important;
+    border:2px solid #bbb !important;
+    -moz-border-radius: 4px !important;
+    -webkit-border-radius: 4px !important;
+    border-radius: 4px !important;
+    height:15px !important;
+    padding:1px !important;
+    color:#fff !important;
+    font-size:10px !important;
+}
+
+#deb_ext_shoutbox_field:hover,
+#deb_ext_shoutbox_field:focus {
+    background: #eee !important;
+    color:#000 !important;
+}
+
 /* Overrides for ki_export extension */
 #export_head table, #xp_head table {
      background-color:#159 !important;

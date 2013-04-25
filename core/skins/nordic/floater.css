@@ -1,5 +1,6 @@
 #floater {
-    border:2px solid #048;
+	width:35em !important;
+	border:2px solid #048;
 	position: absolute;
 	padding:5px;
 	background-color: #7bf;
