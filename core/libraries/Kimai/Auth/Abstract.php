@@ -144,7 +144,7 @@ abstract class Kimai_Auth_Abstract
             $group = $groups[0]['groupID'];
         }
 
-        $memberships = $database->get_membership_roles();
+        $memberships = $database->membership_roles();
         $membership = $memberships[0]['membershipRoleID'];
         foreach ($memberships as $membership)
           if ($membership['name'] == 'User')
@@ -162,7 +162,7 @@ abstract class Kimai_Auth_Abstract
     {
         $database = $this->getDatabase();
 
-        $roles = $database->get_global_roles();
+        $roles = $database->global_roles();
 
         $globalRoleID = $roles[0]['globalRoleID'];
         foreach ($roles as $role)
