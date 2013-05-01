@@ -113,6 +113,7 @@ $database = new Kimai_Database_Mysql($kga);
 $database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
 Kimai_Registry::setDatabase($database);
 
+global $translations;
 $translations = new Translations($kga);
 if ($kga['language'] != 'en')
   $translations->load($kga['language']);
