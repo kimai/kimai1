@@ -51,14 +51,7 @@ $conn = $database->getConnectionHandler();
 function exec_query($query) {
     global $conn, $kga, $errors, $executed_queries;
     
-    $success = false;
-   
-    if ($kga['server_conn'] == "pdo") {
-      $pdo_query = $conn->prepare($query);
-      $success = $pdo_query->execute(array());
-    } else {
-      $success = $conn->Query($query);
-    }
+    $success = $conn->Query($query);
     Logger::logfile($query);
     if (!$success) {
       Logger::logfile($errorInfo);
@@ -78,17 +71,9 @@ if (isset($_REQUEST['submit']) && $authenticated)
     $backup_stamp = time();  
     $query = ("SHOW TABLES;");
 
-    if ($kga['server_conn'] == "pdo") {
-      if (is_object($conn)) {
-        $pdo_query = $conn->prepare($query);
-        $success = $pdo_query->execute(array());
-        $tables = $pdo_query->fetchAll();
-      }
-    } else {
-      if (is_object($conn)) {
-        $success = $conn->Query($query);
-        $tables = $conn->RecordsArray();
-      }
+    if (is_object($conn)) {
+      $success = $conn->Query($query);
+      $tables = $conn->RecordsArray();
     }
     $prefix_length = strlen($p);
   
@@ -117,17 +102,9 @@ if (isset($_REQUEST['submit']) && $authenticated)
 
     $query = ("SHOW TABLES;");
       
-    if ($kga['server_conn'] == "pdo") {
-      if (is_object($conn)) {
-        $pdo_query = $conn->prepare($query);
-        $success = $pdo_query->execute(array());
-        $tables = $pdo_query->fetchAll();
-      }
-    } else {
-      if (is_object($conn)) {
-        $success = $conn->Query($query);
-        $tables = $conn->RecordsArray();
-      }
+    if (is_object($conn)) {
+      $success = $conn->Query($query);
+      $tables = $conn->RecordsArray();
     }
 
     foreach ($tables as $row)
@@ -141,34 +118,18 @@ if (isset($_REQUEST['submit']) && $authenticated)
       }
     }
 
-    if ($kga['server_conn'] == "pdo") 
+    if (is_object($conn)) 
     {
-      if (is_object($conn)) 
+      foreach($arr2 AS $row)
       {
-        $query="";
-        foreach($arr2 AS $row)
-        {
-          $query .= $row;
-        }
-        $pdo_query = $conn->prepare($query);
-        $success = $pdo_query->execute(array());
-      }
-    } 
-    else 
-    {
-      if (is_object($conn)) 
-      {
-        foreach($arr2 AS $row)
-        {
-          $success = $conn->Query($row);
-          if (!$success)
-            break;
-        }
+        $success = $conn->Query($row);
+        if (!$success)
+          break;
       }
     }
     header("location: db_restore.php");
-    }
   }
+}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -259,17 +220,10 @@ if (isset($_REQUEST['submit']) && $authenticated)
     {
       $query = ("SHOW TABLES;");
 
-      if ($kga['server_conn'] == "pdo") {
-        if (is_object($conn)) {
-          $pdo_query = $conn->prepare($query);
-          $success = $pdo_query->execute(array());
-          $tables = $pdo_query->fetchAll();
-        }
-      } else {
-        if (is_object($conn)) {
-          $success = $conn->Query($query);
-          $tables = $conn->RecordsArray();
-        }
+
+      if (is_object($conn)) {
+        $success = $conn->Query($query);
+        $tables = $conn->RecordsArray();
       }
 
       $arr = array();

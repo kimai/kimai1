@@ -192,25 +192,6 @@ function cp_proceed() {
 }
 
 // -------------------------------------------------
-
-function pdo_proceed() {
-    step_ahead();
-    db_type = $('#con_type').val();
-    
-    $('#installsteps').slideUp(500,function(){
-        
-        target = "50_enter_access_data";
-        
-        $.post("steps/"+target+".php", {lang:language, db_layer:db_layer},
-            function(data) {
-                $('#installsteps').html(data);
-                $('#installsteps').slideDown(500);
-            }
-        );
-    });
-}
-
-// -------------------------------------------------
 // Enter DB HostUserPass
 
 function host_proceed() {

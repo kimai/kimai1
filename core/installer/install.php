@@ -35,15 +35,9 @@ function exec_query($query) {
 
     $success = false;
 
-    if ($db_layer == "pdo") {
-      $pdo_query = $conn->prepare($query);
-      $success = $pdo_query->execute(array());
-      $errorInfo = serialize($pdo_query->errorInfo());
+    $success = $conn->Query($query);
+    $errorInfo = serialize($conn->Error());
 
-    } else {
-      $success = $conn->Query($query);
-      $errorInfo = serialize($conn->Error());
-    }
     Logger::logfile($query);
     if (!$success) {
       Logger::logfile($errorInfo);
@@ -54,11 +48,7 @@ function exec_query($query) {
 function quoteForSql($input) {
   global $kga, $database;
 
-  if ($kga['server_conn'] == "pdo") {
-    return $database->getConnectionHandler()->quote($input);
-  } else {
-    return "'".mysql_real_escape_string($input)."'";
-  }
+  return "'".mysql_real_escape_string($input)."'";
 }
 
 if (!isset($_REQUEST['accept'])) {
