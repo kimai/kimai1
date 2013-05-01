@@ -135,8 +135,7 @@ switch ($axAction) {
     // = Load data and return it =
     // ===========================
     case 'reload':
-    	$exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
-        $view->exportData = count($exportData)>0?$exportData:0;
+        $view->exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 
         $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,$filter_cleared));
 
