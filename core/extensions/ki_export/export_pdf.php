@@ -226,7 +226,7 @@ strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$
 
 if (isset($pdf_filter)) {
   $pdf->ln();
-  $pdf->WriteHtml('<b>' . $kga['lang']['export_extension']['filter'] . ':</b> ' . implode(' | ', $pdf_filter));
+  $pdf->WriteHtml('<b>' . $kga['lang']['export_extension']['tab_filter'] . ':</b> ' . implode(' | ', $pdf_filter));
 }
 
 if (!empty($_REQUEST['document_comment'])) {
