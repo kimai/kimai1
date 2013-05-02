@@ -222,7 +222,7 @@ abstract class Kimai_Database_Abstract {
   public abstract function activity_create($data);
 
   /**
-  * Returns the data of a certain task
+  * Returns the data of a certain activity
   *
   * @param array $activityID  activityID of the project
   * @return array         the activity's data (name, comment etc) as array, false on failure
@@ -770,11 +770,11 @@ abstract class Kimai_Database_Abstract {
   public abstract function timeEntry_edit_project($timeSheetEntryID,$projectID);
 
   /**
-  * Just edit the task for an entry. This is used for changing the task
+  * Just edit the activity for an entry. This is used for changing the activity
   * of a running entry.
   *
   * @param $timeSheetEntryID id of the timesheet entry
-  * @param $activityID id of the task to change to
+  * @param $activityID id of the activity to change to
   */
   public abstract function timeEntry_edit_activity($timeSheetEntryID,$activityID);
 

@@ -209,11 +209,11 @@
                 </td>
             </tr>
         <?php
-        $assignedTasks = array();
+        $assignedActivities = array();
         if (isset($this->selectedActivities) && is_array($this->selectedActivities))
         {
             foreach ($this->selectedActivities as $selectedActivity) {
-            $assignedTasks[] = $selectedActivity['activityID'];
+            $assignedActivities[] = $selectedActivity['activityID'];
             ?>
             <tr>
                 <td>
@@ -239,9 +239,9 @@
         }
 
         $selectArray = array(-1 => '');
-        foreach ($this->allActivities as $task) {
-          if (array_search($task['activityID'], $assignedTasks) === false)
-            $selectArray[$task['activityID']] = $task['name'];
+        foreach ($this->allActivities as $activity) {
+          if (array_search($activity['activityID'], $assignedActivities) === false)
+            $selectArray[$activity['activityID']] = $activity['name'];
         }
         ?>
         <tr class="addRow" <?php if (count($selectArray) <= 1):?> style="display:none" <?php endif; ?> >

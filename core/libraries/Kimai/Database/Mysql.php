@@ -553,7 +553,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
-  * Returns the data of a certain task
+  * Returns the data of a certain activity
   *
   * @param array $activityID  activityID of the project
   * @return array         the activity's data (name, comment etc) as array, false on failure
@@ -1859,7 +1859,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       foreach ($original_array as $key => $value) {
           if (isset($data[$key]) == true) {
-          	// buget is added to total budget for task. So if we change the budget, we need
+          	// buget is added to total budget for activity. So if we change the budget, we need
           	// to first subtract the previous entry before adding the new one
 //          	if($key == 'budget') {
 //          		$budgetChange = - $value;
@@ -3107,12 +3107,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   ## stop running recording |
       $table = $this->kga['server_prefix']."timeSheet";
 
-      $task = $this->timeSheet_get_data($id);
+      $activity = $this->timeSheet_get_data($id);
 
-      $filter['timeEntryID'] = $task['timeEntryID'];
-      $filter['end'] = 0; // only update running tasks
+      $filter['timeEntryID'] = $activity['timeEntryID'];
+      $filter['end'] = 0; // only update running activities
 
-      $rounded = Rounding::roundTimespan($task['start'],time(),$this->kga['conf']['roundPrecision']);
+      $rounded = Rounding::roundTimespan($activity['start'],time(),$this->kga['conf']['roundPrecision']);
 
       $values['start'] = $rounded['start'];
       $values['end']  = $rounded['end'];
@@ -3181,11 +3181,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
-  * Just edit the task for an entry. This is used for changing the task
+  * Just edit the activity for an entry. This is used for changing the activity
   * of a running entry.
   *
   * @param $timeEntryID id of the timesheet entry
-  * @param $activityID id of the task to change to
+  * @param $activityID id of the activity to change to
   */
   public function timeEntry_edit_activity($timeEntryID,$activityID) {
       $timeEntryID = MySQL::SQLValue($timeEntryID, MySQL::SQLVALUE_NUMBER  );

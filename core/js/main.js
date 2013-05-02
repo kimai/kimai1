@@ -331,7 +331,7 @@ function updateTimeframeWarning() {
 
 
 // ----------------------------------------------------------------------------------------
-// starts a new recording task when the start-buzzer is hidden
+// starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID,activityID,userID) {
     hour=0;min=0;sec=0;
@@ -353,7 +353,7 @@ function startRecord(projectID,activityID,userID) {
 
 
 // ----------------------------------------------------------------------------------------
-// stops the current recording task when the stop-buzzer is hidden
+// stops the current recording when the stop-buzzer is hidden
 //
 function stopRecord() {
     $("#timeSheetTable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
@@ -528,7 +528,7 @@ function editSubject(subject,id) {
 
 
 // ----------------------------------------------------------------------------------------
-// filters project and task fields in add/edit record dialog
+// filters project and activity fields in add/edit record dialog
 
 function filter_selects(id, needle) {
   // cache initialisieren

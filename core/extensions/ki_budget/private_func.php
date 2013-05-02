@@ -44,8 +44,8 @@ function calculate_expenses_sum($projectId) {
  * 
  * An visual example for two projects with the ID 2 and 5:
  * $array = {
- *   2 => array (budget left , expenses cost, task1, task2 ),
- *   5 => array (budget left , expenses cost, task1, task2 ),
+ *   2 => array (budget left , expenses cost, activity1, activity2 ),
+ *   5 => array (budget left , expenses cost, activity1, activity2 ),
  * };
  * 
  * @param array $projects IDs of all projects to include in the plot data
@@ -110,7 +110,7 @@ foreach ($projects as $project) {
     }
     $wages[$projectID][$activity['activityID']]['budget'] = $activity['budget'];
     $wages[$projectID][$activity['activityID']]['budget_total'] = $activity['budget'];
-    // this budget shall not be added, otherwise we have the project budget in all tasks
+    // this budget shall not be added, otherwise we have the project budget in all activities
     // so they would be doubled.
 //  	$wages[$projectID][$activity['evt_ID']]['budget_total'] += $project['pct_budget'];
 //  	$wages[$projectID][$activity['evt_ID']]['approved_total'] = $project['pct_approved'];

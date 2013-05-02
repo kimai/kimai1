@@ -95,7 +95,7 @@
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingRates",
                     project: $("#add_edit_timeSheetEntry_projectID").val(),
-                    task: $("#add_edit_timeSheetEntry_activityID").val()
+                    activity: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
                     if (data.errors.length != 0) return;
@@ -125,7 +125,7 @@
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingFixedRates",
                     project: $("#add_edit_timeSheetEntry_projectID").val(),
-                    task: $("#add_edit_timeSheetEntry_activityID").val()
+                    activity: $("#add_edit_timeSheetEntry_activityID").val()
                   },
                   function(data) {
                     if (data.errors.length != 0) return;

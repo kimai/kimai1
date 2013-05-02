@@ -252,7 +252,7 @@ switch ($axAction) {
           $data['errors'][] = $kga['lang']['editLimitError'];
 
         if (count($data['errors']) == 0) {
-          $rates = $database->allFittingRates($kga['user']['userID'],$_REQUEST['project'],$_REQUEST['task']);
+          $rates = $database->allFittingRates($kga['user']['userID'],$_REQUEST['project'],$_REQUEST['activity']);
 
           if ($rates !== false)
             foreach ($rates as $rate) {
@@ -290,7 +290,7 @@ switch ($axAction) {
           $data['errors'][] = $kga['lang']['editLimitError'];
 
         if (count($data['errors']) == 0) {
-          $rates = $database->allFittingFixedRates($_REQUEST['project'],$_REQUEST['task']);
+          $rates = $database->allFittingFixedRates($_REQUEST['project'],$_REQUEST['activity']);
 
           if ($rates !== false)
             foreach ($rates as $rate) {

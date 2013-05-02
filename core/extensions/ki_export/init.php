@@ -98,7 +98,7 @@ else
 Format::formatAnnotations($ann);
 $view->project_annotations = $ann;
 
-// Get the annotations for the task sub list.
+// Get the annotations for the activity sub list.
 if (isset($kga['customer']))
   $ann = export_get_activity_annotations($in,$out,null,array($kga['customer']['customerID']));
 else

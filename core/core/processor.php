@@ -182,9 +182,9 @@ switch ($axAction) {
     break;
 
     /**
-     * Return a list of tasks. Customers are only shown tasks which are
+     * Return a list of activities. Customers are only shown activities which are
      * used for them. If a project is set as filter via the project parameter
-     * only tasks for that project are shown.
+     * only activities for that project are shown.
      */
     case 'reload_activities':
         if (isset($kga['customer']))
@@ -336,7 +336,7 @@ switch ($axAction) {
             break;
             
             /**
-             * add or edit a task
+             * add or edit a activity
              */
             case "activity":
               $data['name']         = $_REQUEST['name'];
@@ -368,7 +368,7 @@ switch ($axAction) {
                   $database->activity_edit($id, $data);
                 }
 
-                // set the task group and task project mappings
+                // set the activity group and activity project mappings
                 if (isset($_REQUEST['activityGroups']))
                   $database->assign_activityToGroups($id, $_REQUEST['activityGroups']);
 

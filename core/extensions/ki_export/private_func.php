@@ -285,7 +285,7 @@ function export_get_project_annotations($start, $end, $users = null, $customers 
 }
 
 /**
- * Get annotations for the task sub list. Currently it's just the time, like
+ * Get annotations for the activity sub list. Currently it's just the time, like
  * in the timesheet extension.
  * 
  * @param int $start Time from which to take entries into account.
