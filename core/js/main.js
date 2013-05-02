@@ -1016,9 +1016,14 @@ function setFloaterErrorMessage(fieldName,message) {
   }
   li.prepend('<div class="errorMessage">'+message+'</div>');
   li.addClass('errorField');
+  
+  // indicate in tab header
+  var id = li.closest('fieldset').attr('id');
+  $("#floater_innerwrap .menu a[href='#" + id + "']").addClass("tabError");
 }
 
 function clearFloaterErrorMessages() {
   $("#floater_innerwrap .errorMessage").remove();
   $("#floater_tabs li").removeClass("errorField");
+  $("#floater_innerwrap .menu a").removeClass("tabError");
 }
