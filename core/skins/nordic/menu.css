@@ -6,6 +6,11 @@
     height:29px;
 }
 
+.menu li:not(.ui-state-active) a.tabError span.bb {
+    background-color: #AF0000 !important;
+    border: 1px outset #d77;
+    color: #fd0;
+}
 
 .menu li span.aa {
     width:5px; 
