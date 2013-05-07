@@ -63,7 +63,6 @@ abstract class Kimai_Database_Abstract {
           } else {
               $return[$key] = $data[$key];
           }
-      if ($kga['utf8']) $return[$key] = utf8_decode($return[$key]);
       }
 
       return $return;
