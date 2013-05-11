@@ -1,0 +1,33 @@
+fieldset.adminPanel_extension_advanced {
+    border:none;
+}
+
+fieldset.adminPanel_extension_advanced div {
+    border-bottom:1px dotted #666;
+    padding: 5px 0;
+}
+
+fieldset.adminPanel_extension_advanced div#formbuttons {
+    border-bottom:none;
+    padding: 5px 0;
+}
+
+#adminPanel_extension_output {
+    position:absolute;
+    top:0;
+    left:0;
+    height:27px;
+    width:100%;
+    border: 1px solid black;
+    border-bottom: 2px solid black;
+    background:green;
+    display:none;
+    padding:10px;
+    text-align:center;
+    color:white;
+    font-weight:bold;
+}
+
+.adminPanel_extension_advanced div.disabled {
+  color:#aaa;
+}

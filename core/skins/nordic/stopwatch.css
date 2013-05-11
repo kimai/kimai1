@@ -1,0 +1,67 @@
+#stopwatch {
+    position:absolute;
+    top:11px;
+    left:10px;
+    width:224px;
+    height:60px;
+    border:3px solid #888;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background-color:#f8f4f0;
+    color:#000;
+    font-size:11px;
+    overflow:hidden;
+    display:block;
+    z-index:20;
+}
+
+#stopwatch .watch {
+    position:relative;
+    top:10px;
+    width:205px;
+    height:52px;
+    color:red;
+    font-family: Verdana,Arial,Helvetica,'Liberation Sans','DejaVu Sans','Bitstream Vera Sans',sans-serif;
+    font-size:30px;
+    font-weight:600;
+    padding:0;
+    overflow:hidden;
+    line-height:13px;
+}
+
+#stopwatch_ticker {
+    position:absolute;
+    font-size:11px;
+    left:10px;
+    top:47px;
+    color:#51534A;
+    z-index:60;
+}
+
+#stopwatch_ticker ul {
+    list-style-type: none;
+}
+
+#stopwatch_ticker ul li {
+    text-align:center;
+    color:#000;
+    width:220px;
+    height:15px;
+    margin-left:-40px;
+    margin-top:-3px;
+    padding:0;
+    overflow:hidden;
+}
+
+*+html #stopwatch_ticker ul li {
+    margin-top:-3px;
+}
+
+#stopwatch_edit_comment {
+  position: absolute;
+  left: 25px;
+  top: 57px;
+  z-index: 70;
+  display:hidden;
+}

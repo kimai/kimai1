@@ -1,0 +1,177 @@
+
+.ui-datepicker {
+  width:  316px;
+  background-color: #26a;
+  border: 5px solid #7bf;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  -moz-box-shadow: 5px 10px 15px 0px #222;
+  -webkit-box-shadow: 5px 10px 15px 0px #222;
+  box-shadow: 5px 10px 15px 0px #222;
+  z-index:500 !important;
+  padding: 5px;
+  margin-left: 9em;
+/*  margin: 10px; */
+  display:none;
+}
+
+.ui-datepicker-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin: 2px 0 8px 0;
+    padding-top:3px;
+    height: 22px;
+    width: 302px;
+}
+
+.ui-datepicker-prev {
+    position: absolute;
+    border: 1px solid #000;
+    top: 0;
+    left: 6px;
+    width: 65px;
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 1px;
+}
+
+.ui-datepicker-prev {
+    float: left;
+    width: 15px;
+    height: 15px;
+}
+
+/* Opera needs the rules to be this specific otherwise it doesn't change the cursor back to pointer after you have disabled and re-enabled a link */
+.ui-datepicker-prev,
+.ui-datepicker-next {
+   cursor: pointer;
+}
+.ui-datepicker-prev .disabled,
+.ui-datepicker-next .disabled {
+   cursor: default;
+}
+
+
+.ui-datepicker-next {
+    position: absolute;
+    border: 1px solid #000;
+    top: 0px;
+    right: 5px;
+    width: 66px;
+    height: 20px;
+    margin-top: 5px;
+    margin-right: 1px;
+}
+
+.ui-datepicker-next {
+    float: right;
+    width: 15px;
+    height: 15px;
+}
+
+.ui-state-disabled {
+   cursor: default;
+   color: #000;
+   opacity: 0.5;
+   -moz-opacity: 0.5;
+   filter:alpha(opacity=50);
+}
+
+
+
+.ui-datepicker-prev {
+    background: url(grfx/picker_buttons.png) no-repeat -40px 0;
+    display: block;
+    padding-top: 5px;
+    padding-right: 25px;
+}
+
+.ui-datepicker-next {
+    background: url(grfx/picker_buttons.png) no-repeat -80px 0;
+    display: block;
+    padding-top: 5px;
+    padding-right: 25px;
+    font-size: 0;
+    line-height: 0;
+    margin-right: 3px;
+}
+
+
+
+
+.ui-datepicker-calendar td {
+    cursor: pointer;
+}
+
+.ui-datepicker-calendar th {
+    background-color: #000;
+    width: 40px;
+    height: 40px;
+    color: #fff;
+}
+
+.ui-datepicker-calendar th.ui-datepicker-week-end {
+    background-color: #a11;
+}
+
+.ui-datepicker-calendar td {
+    background-color: #ccc;
+    width: 40px;
+    height: 40px;
+    color: #000;
+    text-align: center;
+}
+
+
+.ui-datepicker-calendar td.ui-datepicker-other-month {
+    background-color: #888;
+    color: #aaa;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-other-month:hover {
+    background-color: #a90;
+    color: #fff;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-unselectable {
+   cursor: default;
+}
+
+
+.ui-datepicker-calendar a {
+    color: #000;
+    text-decoration:none;
+}
+
+.ui-datepicker-calendar td:hover {
+    background-color: #fd0;
+    color: #000;
+}
+
+
+.ui-datepicker-calendar td.ui-datepicker-today {
+    background-color: #3b3;
+    font-weight: bold;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today:hover {
+    background-color: #ec0;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-today a {
+    color: #fff;
+}
+
+
+.ui-datepicker-calendar td.ui-datepicker-current-day,
+.ui-datepicker-calendar td.ui-datepicker-current-day:hover
+{
+    background-color: #000;
+}
+
+.ui-datepicker-calendar td.ui-datepicker-current-day a {
+  color:#fff;
+}

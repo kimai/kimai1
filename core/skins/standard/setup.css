@@ -1,0 +1,95 @@
+html {
+    min-width:970px;
+    font-size:95%;     
+}
+
+a:active {outline: none;}
+a img {border:none;}
+
+
+body {
+    background:url('grfx/g3_gui_bg.png') repeat-x 0 105px;
+    font-size:.9em;
+    font-family: verdana, "MS Trebuchet", sans-serif;
+    background-color:#444;
+    margin:0; padding:0;
+}
+
+select,
+input {
+  background-color:white;
+  color:black;
+}
+
+#loader {
+    position:absolute;
+    margin-top:30px;
+    margin-left:-110px;
+    top:50%;
+    left:50%;
+    width:220px;
+    height:19px;
+    background-image:url('grfx/ajax-loader.gif');
+    background-repeat: no-repeat;
+    z-index:200;
+}
+
+#top {
+    width:100%;
+    background-color:#999;
+    background:url("grfx/g3_bg_top.png") repeat-x;
+    height: 89px;
+}
+
+#logo {
+     position:absolute;
+     width:151px;
+     height:52px;
+     top:20px;
+     left:15px;
+}
+
+#menu {
+     position:absolute;
+     width:151px;
+     height:52px;
+     top:30px;
+     left:200px;
+     z-index:10;
+     color:white;
+     font-size:smaller;
+
+}
+
+#stopwatch {
+     background:url("grfx/g3_display_watch.png") no-repeat;
+     position:absolute;
+     margin:0;
+     top:22px;
+     right:95px;
+     width:136px;
+     height:44px;
+     z-index:10;
+     font: 22px "Lucida Grande", Lucida, Verdana, sans-serif;
+     text-align: center;
+     padding: 8px 0 0;
+     display: none;
+     color: #51534a;
+}
+
+#button_comment {
+     position: absolute;
+     top: 30px;
+     right: 240px;
+     z-index: 1;
+     display: none;
+}
+
+
+#line {
+     height:4px;
+     width:314px;
+     text-align:center; 
+     display: none;
+}
+

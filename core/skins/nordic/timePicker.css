@@ -1,0 +1,56 @@
+#ui-timepicker-div {
+  width:  410px;
+  background-color: #26a;
+  border: 5px solid #7bf;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px;
+  -moz-box-shadow: 5px 10px 15px 0px #222;
+  -webkit-box-shadow: 5px 10px 15px 0px #222;
+  box-shadow: 5px 10px 15px 0px #222;
+  z-index:500 !important;
+  padding: 5px;
+  margin-left: 9em;
+  display:none;
+
+}
+
+.ui-timepicker-title {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    margin: 2px 0 8px 0;
+    padding-top:3px;
+    height: 22px;
+}
+
+.periods {
+    color: #FFF;
+}
+
+.ui-timepicker-hours {
+	border-right: 1px solid #fff;
+}
+
+.ui-timepicker-hours td, .ui-timepicker-minutes td {
+    cursor: pointer;
+}
+
+.ui-timepicker-hours td, .ui-timepicker-minutes td {
+    background-color: #ccc;
+    width: 40px;
+    height: 40px;
+    color: #000;
+    text-align: center;
+}
+
+.ui-timepicker-hours a, .ui-timepicker-minutes a {
+    color: #000;
+    text-decoration:none;
+}
+
+.ui-timepicker-hours td:hover, .ui-timepicker-minutes td:hover {
+    background-color: #fd0;
+    color: #000;
+}

@@ -1,0 +1,46 @@
+html{
+    height: 100%;
+}
+body{
+	background-color:#000;
+	color:#FFF;
+    height: 100%;
+    font: 85%/1.5 "Lucida Grande", Calibri, "Segoe Sans", Futura, "Gill Sans", "Lucida Sans", "News Gothic MT", "Bitstream Vera Sans", "Trebuchet MS", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#error_wrapper {
+    background: url('../grfx/error_bg.jpg') no-repeat;    
+    position: absolute;
+    width: 425px;
+    height: 189px;
+    left: 50%;
+    top: 50%;
+    margin: -94px 0 0 -212px;
+}
+
+
+#error_wrapper h3 {
+    margin:0;
+    margin-bottom:5px;
+}
+#error_txt {
+    position:relative;
+    display:block;
+    margin:0;
+    padding:10px;
+    overflow:auto;
+    height:167px;
+    width:296px;
+    top:2px;
+    left:109px;
+}
+
+#error_button {
+    width:300;
+    margin-top:5px;
+    text-align:right;
+    position:relative;
+    display:block;
+}

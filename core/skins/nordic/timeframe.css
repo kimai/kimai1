@@ -1,0 +1,47 @@
+#display {
+    border:3px solid #888;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background-color:#f8f4f0;
+    color:#000;
+    position:relative;
+    margin:0;
+    margin-left:-157px;
+    top:10px;
+    left:50%;
+    width:350px;
+}
+
+#display a,
+#display a:visited
+{
+    color: #51004a;
+    text-decoration:none;
+}
+
+#display a:hover
+{
+    background-color:#Ffe000;
+    color: #000;
+}
+
+#dates {    
+    font-family: Verdana,Arial,Helvetica,'Liberation Sans','DejaVu Sans','Bitstream Vera Sans',sans-serif;
+    font-size:20px;
+    font-weight:600;
+    height:30px;
+    padding-top:10px;
+    padding-bottom:0;
+    text-align:center;
+}
+
+#infos {    
+    height:30px;
+    font-weight:normal;
+    text-align:center;
+}
+
+.datewarning {
+        background:url("grfx/timespace_warn.gif") repeat-x 0 23px;
+}

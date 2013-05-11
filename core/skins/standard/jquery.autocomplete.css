@@ -1,0 +1,37 @@
+
+/*
+ * jQuery UI Autocomplete 1.8.14
+ *
+ * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Autocomplete#theming
+ */
+.ui-autocomplete { position: absolute; cursor: default; }       
+
+/* workarounds */
+* html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
+
+
+.ui-autocomplete {
+  border: 1px solid #000;
+  background-color: #333;
+  margin:0;
+  padding:0;
+  list-style:none;
+  cursor:default;
+}
+
+.ui-menu-item {
+  padding:3px;
+  background-color: #7C7C7C;
+}
+
+.ui-menu-item a {
+  display:block;
+}
+
+.ui-menu-item:hover {
+  background-color: #FFCC00;
+}

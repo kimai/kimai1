@@ -1,0 +1,165 @@
+body {
+    font-family: Arial, "MS Trebuchet", sans-serif;
+    background-color:#000;
+    color:white;
+}
+
+#wrapper {
+    width:800px;
+    background: url(grfx/header2008.jpg) no-repeat;
+    margin:auto;
+    background-color:#333;
+}
+
+.invisible {
+    display:none;
+}
+
+#installsteps {
+    display:block;
+    margin:0;
+    padding:0;
+}
+
+
+.gray {
+    color:#777;
+}
+
+#jswarn {
+    border:2px solid red;
+    background-color:#D8B272;
+    text-align:center;
+    font-weight:bold;
+    padding:10px;
+}
+h1 {
+    font-size:19px;
+    padding-top:98px;
+}
+
+#footer {
+    width:800px;
+    height:80px;
+    background: url(grfx/footer.png);
+    margin:auto;
+}
+
+#header {
+    padding:25px;
+}
+#body {
+    padding:0 25px 0 25px;
+}
+
+#lang_sel, #layer_sel {
+    padding-top:50px;
+    padding-left:210px;
+}
+.lang, .layer {
+    display:block;
+    height:90px;
+    width:150px;
+    float:left;
+}
+
+#de {
+    margin-right:20px;
+    background: url(grfx/de.jpg);
+}
+
+#en {
+    background: url(grfx/en.jpg);
+}
+
+#mysql {
+    margin-right:20px;
+    background: url(grfx/mysql.jpg);
+}
+
+#pdo {
+    background: url(grfx/pdo.jpg);
+}
+
+#pdo_disabled {
+    background: url(grfx/pdo_disabled.jpg);
+    cursor:default;
+}
+
+
+
+.gpl {
+    font-size:11px;
+    color:#555;
+    padding:5px;
+    background-color:white;
+    border:1px solid black;
+    height:250px;
+    width:740px;
+    overflow:auto;
+    
+}
+
+.ok {
+    background: url(grfx/check.gif) 0 -22px no-repeat;
+    padding-left: 20px;
+    color:#0F0;
+}
+.fail {
+    background: url(grfx/check.gif) 0 2px no-repeat;
+    padding-left: 20px;
+    color:#F00;
+}
+.arrow {
+    background: url(grfx/check.gif) 0 -40px no-repeat;
+    padding-left: 20px;
+    color:#F00;
+}
+
+.note {
+    padding-left:20px;
+}
+
+span.lab {
+    width:200px;
+    height:20px;
+}
+
+#progressbar {
+    width:300px;
+    height:15px;
+    display:block;
+    float:right;
+    margin-top:115px;
+}
+
+#progressbar span {
+    display:block;
+    width:10px;
+    height:10px;
+    border:1px solid #FFF;
+    float:left;
+    margin-right:2px;
+}
+
+.step_nope {
+    background-color:#555;
+    color:#555;
+}
+
+.step_yap {
+    background-color:#0F0;
+    color:#0F0;
+}
+
+.logindata {
+    padding:10px;
+    border:4px solid green;
+    background-color:#555;
+    margin-bottom:10px;
+}
+
+#caution {
+    font-weight:bold;
+    color:#f00;
+}

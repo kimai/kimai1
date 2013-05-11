@@ -1,0 +1,46 @@
+#selector {
+    border:3px solid #888;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    background-color:#f8f4f0;
+    overflow:hidden;
+    width:224px;
+    height:69px;
+    display:block;
+    position:absolute;
+    top:11px;
+    left:10px;
+    font-size:10px;
+    z-index:20;
+}
+
+#selector .preselection {
+    width:215px;
+    height:60px;
+    padding: 1px 9px 0;
+    overflow:hidden;
+    font-size: 10px;
+    line-height:12px;
+}
+
+#selector span.selection {
+    overflow:hidden;
+    width:190px;
+    height:12px;
+    display:block;
+    float:left;
+    padding:0 0 0 2px;
+}
+
+#selector span.none {
+    color:red;
+}
+
+#selector strong.short {
+    color:#8E8D83;
+    display:block;
+    float:left;
+    width:16px;
+    height:12px;
+}

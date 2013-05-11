@@ -1,0 +1,82 @@
+.menu {padding:2px 0 0 0; margin:0 13px; list-style:none;}
+.menu li {float:left; padding:0; margin:0 3px 0 0; text-align:center;}
+
+.menuBackground {
+    background:url("grfx/g3_tab_bar.png") repeat-x;
+    background-color:#0f0;
+    height:23px;
+}
+
+
+.menu li span.aa {
+    width:5px; 
+    height:18px; 
+    float:left; 
+    padding:3px 0 0 0;
+}
+
+.menu li span.bb {
+    height:18px;
+    float:left;
+    padding:3px 0 0 0;
+}
+.menu li span.cc {
+    width:5px;
+    height:18px;
+    float:left; 
+    padding:3px 0 0 0;
+}
+
+.menu li{
+    font-size:.9em;
+    font-weight:bold;
+}
+
+.menu li.norm span.aa {
+    background:url('grfx/g3_tab_green_left.png'); 
+}
+
+.menu li.norm span.bb {
+    background:url('grfx/g3_tab_green_middle.png');
+}
+
+.menu li.norm span.cc {
+    background:url('grfx/g3_tab_green_right.png');
+}
+
+.menu li.act,
+.menu li.ui-state-active {
+    color:#fff;
+}
+
+.menu li.act span.aa,
+.menu li.ui-state-active span.aa {
+    background:url('grfx/g3_tab_black_left.png'); 
+}
+
+.menu li.act span.bb,
+.menu li.ui-state-active span.bb{
+    background:url('grfx/g3_tab_black_middle.png');
+}
+
+.menu li.act span.cc,
+.menu li.ui-state-active span.cc {
+    background:url('grfx/g3_tab_black_right.png');
+}
+
+.menu li.act a span.bb,
+.menu li.ui-state-active a span.bb {
+    color:#fff;
+}
+
+
+.menu a, .menu a:visited {
+    color:#000;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.menu a:hover {
+    color:#fff;
+}
+

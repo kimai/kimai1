@@ -1,0 +1,45 @@
+#display {
+    background:url("grfx/g3_display.png") no-repeat;
+    color: #51534a;
+    position:relative;
+    margin:0;
+    margin-left:-157px;
+    top:10px;
+    left:50%;
+    width:314px;
+    height:69px;
+}
+
+#display a,
+#display a:visited
+{
+    color: #51534a;
+    text-decoration:none;
+}
+
+#display a:hover
+{
+    background-color:#F7E8B8;
+    color: #000;
+}
+
+#dates {    
+    font-family:arial,sans-serif;
+    font-size:24px;
+    width:314px;
+    height:30px;
+    padding-top:10px;
+    padding-bottom:0;
+    text-align:center;
+
+}
+
+#infos {    
+    width:314px;
+    height:30px;
+    text-align:center;
+}
+
+.datewarning {
+        background:url("grfx/timeframe_warn.gif") repeat-x 0 23px;
+}

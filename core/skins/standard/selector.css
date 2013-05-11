@@ -1,0 +1,44 @@
+#selector {
+    background: url("grfx/g3_buzzer_display.png") no-repeat;
+    color:#51534A;
+    overflow:hidden;
+    width:224px;
+    height:69px;
+    display:block;
+    position:absolute;
+    top:11px;
+    right:95px;
+    font-size:11px;
+    z-index:20;
+
+}
+
+#selector .preselection {
+    width:205px;
+    height:52px;
+    padding:7px 10px 0 ;
+    overflow:hidden;
+    line-height:13px;
+}
+
+#selector span.selection {
+    overflow:hidden;
+    width:190px;
+    height:13px;
+    display:block;
+    float:left;
+    padding-left:2px;
+
+}
+
+#selector span.none {
+    color:red;
+}
+
+#selector strong.short {
+    color:#BEBDB3;
+    display:block;
+    float:left;
+    width:13px;
+    height:13px;
+}

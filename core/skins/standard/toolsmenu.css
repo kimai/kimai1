@@ -1,0 +1,30 @@
+#main_tools_menu {
+    position:absolute;
+    display:none;
+    z-index:9;
+    top:30px;
+    left:257px;
+    z-index:11;
+    height:27px;
+}
+
+#main_tools_menu a {
+    color:#000;
+    font-size:11px;
+    text-decoration:none;
+}
+
+#main_tools_menu div.slider {
+    float:left;
+    padding:5px;
+    background:url("grfx/tools_slider.png") repeat-x;
+    height:16px;
+}
+#main_tools_menu div.end {
+    float:left;
+    background:url("grfx/tools_slider_end.png") no-repeat;
+    height:27px;
+    width:6px;
+}
+
+

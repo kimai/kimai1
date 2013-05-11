@@ -1,0 +1,184 @@
+html{
+    height: 100%;
+}
+body{
+	background-color:#000;
+    height: 100%;
+    font: 85%/1.5 "Lucida Grande", Calibri, "Segoe Sans", Futura, "Gill Sans", "Lucida Sans", "News Gothic MT", "Bitstream Vera Sans", "Trebuchet MS", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#login{
+    position: absolute;
+    width: 526px;
+    height: 400px;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -263px;
+}
+#login form{
+    background:url(../grfx/login_bg_g3.png) no-repeat;
+    display: block;
+    width: 448px;
+    height: 298px;
+    margin: 0 0 0 38px;
+    padding: 0;
+}
+#login fieldset {
+    border: 0 none;
+    display: block;
+    margin: 135px 0 0 130px;
+    width: 210px;
+    height: 100px;
+    padding: 0;
+    position: absolute;
+    text-align: left;
+}
+#login label{
+    display: block;
+    color: #999;
+	height:25px;
+}
+#login input{
+    border: 1px solid #ccc;
+    padding: 2px;
+    display: block;
+    width: 140px;
+    position: relative;
+    margin: 0;
+    left: 0;
+    top:-2px;
+}
+
+/* of course our best friend needs some special treatment ... */
+*+html #login input{ left: -130px; top:-5px; }
+
+#login button{
+    position: absolute;
+    width: 52px;
+    height: 91px;
+    right: 0px;
+    bottom: 0px;
+    background: url(../grfx/login_button_g3.png) no-repeat;
+    text-indent: -1000em;
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+#login select {
+    position: absolute;
+    width:100px;
+    top:100px;
+    left:0px;
+    border:1px solid silver;
+}
+#login button:hover {
+    background: url(../grfx/login_button_g3.png) no-repeat 0 -91px;
+    cursor: pointer;
+}
+#login p, #login p>a {
+    font-size:xx-small;
+    color: #555;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+#install {
+    color:#FFF;
+    position: absolute;
+    width: 526px;
+    height: 400px;
+    left: 50%;
+    top: 50%;
+    margin: -200px 0 0 -263px;
+}
+#install .installtext {
+/*    background-color:#f00;*/
+    width:350px;
+}
+#install .welcome {
+    font-size:1.3em;
+    font-weight:bold;
+    color:#15F000;
+    margin-bottom:10px;
+}
+#install .txt {
+    margin-bottom:7px;
+}
+#install form {
+    background:url(../grfx/login_bg_g3.png) no-repeat;
+    display: block;
+    width: 448px;
+    height: 298px;
+    margin: 0 0 0 38px;
+    padding: 0;
+}
+#install fieldset {       
+    border: 0 none;
+    display: block;
+    margin: 105px 0 0 15px;
+    width: 420px;
+    height: 160px;
+    padding: 0;
+    position: absolute;
+    text-align: left;
+}
+#install label{
+    display: block;
+    color: #999;
+}
+#install input{
+    border: 1px solid #ccc;
+    padding: 2px;
+    display: block;
+    width: 140px;
+    position: relative;
+    margin: 0;
+    left: 0;
+}
+#install button{
+    position: absolute;
+    width: 52px;
+    height: 91px;
+    right: 0px;
+    bottom: 0px;
+    background: url(../grfx/login_button_g3.png) no-repeat;
+    text-indent: -1000em;
+    border: 0 none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+#install button:hover {
+    background: url(../grfx/login_button_g3.png) no-repeat 0 -91px;
+    cursor: pointer;
+}
+#install p, #install p>a {
+    font-size:xx-small;
+    color: #555;
+    text-align: center;
+}
+
+
+
+
+
+
+#warning {
+    margin:5px 0 0 38px;
+    width:434px;
+    border:2px solid red;
+    padding:10px 5px 5px 5px;
+    background: url(../grfx/bg_warning.gif) repeat-x;
+}
+#warning p {
+    padding:0;
+    margin:0;
+}
