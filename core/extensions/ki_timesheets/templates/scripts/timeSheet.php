@@ -6,9 +6,9 @@ if ($this->timeSheetEntries)
 {
     ?>
         <div id="timeSheetTable">
-        
+
           <table>
-              
+
             <colgroup>
               <col class="option" />
               <col class="date" />
@@ -102,6 +102,14 @@ if ($this->timeSheetEntries)
            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
       <?php endif; ?>
 
+      <?php if ($this->kga['conf']['showQuickNote'] > 0):
+    //Edit note Button ?>
+        <a href ='#' onClick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+           title='<?php echo $this->kga['lang']['editNote']?>'><img
+           src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/editor_icon.png' width='14' height='14'
+           alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
+      <?php endif; ?>
+
       <?php if ($this->kga['conf']['quickdelete'] > 0):
     // quick erase trashcan  ?>
         <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
@@ -178,11 +186,11 @@ if ($this->timeSheetEntries)
 
                 <?php if ($row['comment']): ?>
                     <?php if ($row['commentType'] == '0'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title="<?php echo $this->escape($row['comment'])?>" border="0" /></a>
                     <?php elseif ($row['commentType'] == '1'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title="<?php echo $this->escape($row['comment'])?>" border="0" /></a>
                     <?php elseif ($row['commentType'] == '2'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title="<?php echo $this->escape($row['comment'])?>" border="0" /></a>
                     <?php endif; ?>
                 <?php endif; ?>
             </td>
@@ -223,7 +231,7 @@ else
 }
 ?>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
     ts_user_annotations = null;
     ts_customer_annotations = null;
     ts_project_annotations = null;
@@ -253,10 +261,10 @@ else
     <?php foreach ($this->activity_annotations as $id => $value): ?>
       ts_activity_annotations[<?php echo $id?>] = '<?php echo $value?>';
     <?php endforeach; endif; ?>
-    
+
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
-    
+
   <?php if ($latest_running_row_index == -1): ?>
     updateRecordStatus(false);
   <?php else: ?>

@@ -934,7 +934,7 @@ class MySQL
 	/**
 	 * Determines if a valid connection to the database exists
 	 *
-	 * @return boolean TRUE idf connectect or FALSE if not connected
+	 * @return boolean TRUE if connected or FALSE if not connected
 	 */
 	public function IsConnected() {
 		if (gettype($this->mysql_link) == "resource") {

@@ -29,20 +29,20 @@ require("../../includes/kspi.php");
 
 
 switch ($axAction) {
-    
+
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
-    case "reloadLogfile":    
+    case "reloadLogfile":
         $logdatei=WEBROOT."temporary/logfile.txt";
         $fh = fopen($logdatei, 'r');
-        
+
         $theData = "";
         $i = 0;
-        
+
         $lines = $kga['logfile_lines'];
         $filearray ="";
-        
+
         while (!feof($fh)) {
             $filearray[$i] = fgets($fh);
             $i++;
@@ -61,10 +61,10 @@ switch ($axAction) {
                 if ($line!="") $theData .= $line ."<br/>";
             }
         }
-        
+
         echo $theData;
     break;
-    
+
     /**
      * Empty the logfile.
      */
@@ -73,7 +73,8 @@ switch ($axAction) {
             $logdatei=fopen(WEBROOT."temporary/logfile.txt","w");
             fwrite($logdatei,"");
             fclose($logdatei);
-            echo $theData;
+            echo "Log file erased";
+            //echo $theData;
         } else {
             die();
         }
@@ -90,8 +91,8 @@ switch ($axAction) {
      * Return the $kga variable (Kimai Global Array). Strip out some sensitive
      * information if not configured otherwise.
      */
-    case "reloadKGA":    
-	// read kga --------------------------------------- 
+    case "reloadKGA":
+	// read kga ---------------------------------------
 		$output = $kga;
 	    // clean out some data that is way too private to be shown in the frontend ...
 

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /**
  * english
  *
@@ -53,6 +53,8 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Cancel",
 "edit"              => "Edit Entry",
+"editNote"			=> "Edit note",
+"note"				=> "Note",
 "close"             => "close",
 "construction"      => "under construction...",
 "about"             => "About",
@@ -95,10 +97,11 @@ return array(
 "updateNow"         => "Update the database now!",
 "stop"              => "Stop!",
 "start"             => "Start!",
-"setTimeframe"      => "set timeframe",   
+"setTimeframe"      => "set timeframe",
 "now"               => "now",
 "specify"           => "specify list",
 "add"               => "add",
+"addNote"			=> "Add a note",
 "running"           => "Running...",
 "company"           => "Company",
 
@@ -289,6 +292,10 @@ return array(
             Dates: DD.MM.YYYY<br />
             Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
 
+'editNoteHelp' => '<strong>Comments can be entered in the order you wish<br />
+            and can be changed later if necessary, without limit.</strong>',
+
+
 'timezone' => 'time zone',
 'defaultTimezone' => 'time zone for new users and customers',
 'editLimitPart1' => 'No entries can be added or edited which end more than',
@@ -300,10 +307,12 @@ return array(
 'showCommentsByDefault'     => 'show comments by default',
 'showTrackingNumber'        => 'show tracking number',
 'hideOverlapLines'          => 'Don\'t indicate time overlap of entries',
+'showQuickNote'	=> 'afficher bouton de note',
 
 'general' => 'General',
 'address' => 'Address',
 'contact' => 'Contact',
+'timesheet' => 'Timesheet',
 'list'=> 'List',
 'sublists' => 'Lower Lists',
 
@@ -330,26 +339,26 @@ return array(
 
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
-        
+
         <br />
-        
+
         <strong>This program is free software and published 'AS IS' without any kind of warranty</strong> under the terms of the
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+        <a href="../COPYING">GPL Version 3</a>.
+
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Official Website</a> | 
+
+        <a href='http://www.kimai.org' target='_blank'>Official Website</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge Project page</a> | 
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge Project page</a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
-        
+
         <br /><br />
 
         If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there. Latest SVN Version can be downloaded <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">here</a> (download for testing purposes only!).
-        
+
         <br /><br />
-        
+
         Please support further development of Kimai with a <a href="http://www.kimai.org/en/donate.html">donation</a> or by extending its <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">language library</a>.
 
         If you find bugs or have ideas for features, feel free to contact us through the forum. Or even better: create a <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
@@ -435,14 +444,14 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 
 'export_extension' => array(
-	
+
 "print_hint"      		   => "Click OK to open a printable table.",
 "dl_hint"         		   => "Click OK to download export-file.",
-                              
+
 "tab_filter"	 		   => "Filter",
 "tab_location"	 		   => "Location",
 "tab_timeformat"	 	   => "Timeformat",
-                              
+
 "cleared_all"	 		   => "all",
 "cleared_cleared" 		   => "only cleared",
 "cleared_open"	 		   => "only open",
@@ -453,7 +462,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "refundable_all"	 	   => "all",
 "refundable_refundable"    => "only refundable",
 "refundable_not_refundable"=> "only non refundable",
-                              
+
 "print_comment"   		   => "print comments",
 "print_summary"   		   => "print summary",
 "create_bookmarks"		   => "create bookmarks",
@@ -461,10 +470,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
 "pdf_format"               => "format",
 "export_pdf"               => "table",
 "export_pdf2"              => "list",
-                              
+
 "column_delimiter"		   => "delimiter for columns",
 "quote_char"      		   => "boundary character for fields",
-                              
+
 "exportCSV"         	   => "CSV Export",
 "exportPDF"         	   => "PDF Export",
 "exportXLS"         	   => "Excel Export",
@@ -500,7 +509,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 
 'ext_invoice' => array(
-	
+
 "invoiceTemplate"           => "Invoice template:",
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
@@ -523,7 +532,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'ki_expenses' => 'Expenses',
   'ki_export' => 'Export',
   'ki_budget' => 'Budget',
-  'ki_invoice' => 'Invoice' 
+  'ki_invoice' => 'Invoice'
 ),
 
 'permissions' => array(
@@ -538,6 +547,17 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'showRates' => 'show rates',
   'editRates' => 'edit rates',
   'editAdvanced' => 'edit advanced settings'
-)
+),
 
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Débug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
+
+"log_delete"	=> "Log file deleted",
 );

@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,7 +26,7 @@
  *
  *
  */
- 
+
 /**
  * français
  * by Willem van Gemert
@@ -62,6 +62,8 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Annuler",
 "edit"              => "Modifier Entrée",
+"editNote"			=> "Modifier la note",
+"note"				=> "Note",
 "construction"      => "en construction...",
 "about"             => "A propos de",
 "hours"             => "heures",
@@ -104,6 +106,7 @@ return array(
 "now"               => "Maintenant",
 "specify"           => "Spécifier la liste",
 "add"               => "Ajouter",
+"addNote"			=> "Ajouter une note",
 "running"           => "En cours...",
 "company"           => "Societé",
 
@@ -257,22 +260,30 @@ return array(
 'multiplier' => 'Multiplicateur',
 
 'dateAndTimeHelp' => '<strong>Les temps et dates peuvent être entrés avec la notation courte:</strong><br />
-            Dates: 5 &rarr; le 5 du mois courant &nbsp;&nbsp; 
-            1004 &rarr; le 10.04. de l\'année en cours &nbsp;&nbsp; 
+            Dates: 5 &rarr; le 5 du mois courant &nbsp;&nbsp;
+            1004 &rarr; le 10.04. de l\'année en cours &nbsp;&nbsp;
             100406 &rarr; 10.04.2006<br />
             Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
             14 &rarr; 14:00:00  &nbsp;&nbsp;
             0910 &rarr; 09:10:00  &nbsp;&nbsp;
             091020 &rarr; 09:10:20 &nbsp;&nbsp;',
 
+'editNoteHelp' => '<strong>Les commentaires peuvent être entrés dans l\'ordre qui vous convient<br />
+            et pourront être modifiés par la suite au besoin, sans limite.</strong>',
+
 'timezone' => 'fuseau horaire',
 'defaultTimezone' => 'fuseau horaire pour les nouveaux utilisateurs et clients',
 
 'hideClearedEntries' => 'cacher les données supprimées',
+'hideOverlapLines' => 'cacher les chevauchements de temps d\'entrées',
+'showQuickNote'	=> 'afficher bouton de note',
 
 'general' => 'Général',
 'address' => 'Address',
 'contact' => 'Contact',
+'sublists' => 'Sélecteur',
+'list'	=> 'Listes',
+'timesheet' => 'Feuille de temps',
 
 "filter" => "Filtre",
 
@@ -288,26 +299,26 @@ return array(
 
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow et autres...<br />
-        
+
         <br />
-        
+
         <strong>Ce logiciel est un logiciel libre et publié 'EN L'ETAT' sans aucune espèce de garantie</strong> sous les conditions de la
-        <a href="../COPYING">Version GPL 3</a>. 
-        
+        <a href="../COPYING">Version GPL 3</a>.
+
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> | 
+
+        <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Page du Projet Sourceforge </a> | 
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Page du Projet Sourceforge </a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Telechargement</a>
-        
+
         <br /><br />
 
         Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" . La dernière version SVN peut être téléchargée <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">Ici</a> (Pour les test seulement!).
-        
+
         <br /><br />
-        
+
         SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a> ou en étendant sa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">bibliothèque de langues</a>.
 
         Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hésitez pas à nous contacter sur le forum. Ou encore emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
@@ -376,7 +387,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 
 
 'export_extension' => array(
-	
+
 "print_hint"      		   => "Cliquer sur OK pour ouvrir un tableau imprimable.",
 "dl_hint"         		   => "Cliquer sur OK pour télécharger le fichier exporté.",
 
@@ -441,7 +452,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 
 
 'ext_invoice' => array(
-	
+
 "invoiceTitle" 			=> "Créer une facture",
 "invoiceProject" 		=> "Tâches:",
 "invoiceTimePeriod" 	=> "Période:",
@@ -466,5 +477,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'ki_export' => 'Exporter'
 ),
 
+"log_delete"	=> "Le fichier log a été effacé",
 );
 ?>
