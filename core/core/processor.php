@@ -80,6 +80,8 @@ switch ($axAction) {
         $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
         $preferences['showQuickNote']           = getRequestBool('showQuickNote');
+        $preferences['DefaultLocation']         = $_REQUEST['DefaultLocation'];
+        $preferences['LinktrackingNumber']      = getRequestBool('LinktrackingNumber');
 
         $database->user_set_preferences($preferences,'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));

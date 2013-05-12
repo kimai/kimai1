@@ -277,9 +277,13 @@ return array(
 'hideClearedEntries' => 'cacher les données supprimées',
 'hideOverlapLines' => 'cacher les chevauchements de temps d\'entrées',
 'showQuickNote'	=> 'afficher bouton de note',
+'DefLocation'   => 'Localisation par défaut',
+'LinktrackingNumber'  => 'Généré automatiquement le numéro de repérage',
+'showCommentsByDefault' => 'Afficher le commentaire par défaut',
+'showTrackingNumber' => 'Afficher le numéro de repérage',
 
 'general' => 'Général',
-'address' => 'Address',
+'address' => 'Adresse',
 'contact' => 'Contact',
 'sublists' => 'Sélecteur',
 'list'	=> 'Listes',
@@ -287,7 +291,7 @@ return array(
 
 "filter" => "Filtre",
 
-'internalProject' => 'Project interne',
+'internalProject' => 'Projet interne',
 
 'exactSums' => 'Utiliser les sommes exactes au lieu d\' additionner les valeurs arrondies indiquées.',
 

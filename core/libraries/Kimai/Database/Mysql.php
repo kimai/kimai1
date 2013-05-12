@@ -3152,8 +3152,18 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
       if ($rate)
         $values ['rate'] = $rate;
+      if (! $this->kga['conf']['DefaultLocation']=="")
+      	$values ['location'] = "'".$this->kga['conf']['DefaultLocation']."'";
 
       $table = $this->kga['server_prefix']."timeSheet";
+	  if ($this->kga['conf']['LinktrackingNumber']>0){
+	  	if (! $this->conn->NextAutoNumber($table)){
+	  		$this->logLastError('Cannot get the auto number');
+	  	}else{
+	  		$values ['trackingNumber'] = $this->conn->NextAutoNumber($table);
+	  	}
+	  }
+
       $result = $this->conn->InsertRow($table, $values);
 
       if (! $result) {

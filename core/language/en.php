@@ -308,6 +308,10 @@ return array(
 'showTrackingNumber'        => 'show tracking number',
 'hideOverlapLines'          => 'Don\'t indicate time overlap of entries',
 'showQuickNote'	=> 'afficher bouton de note',
+'DefLocation'   => 'Default location',
+'LinktrackingNumber'  => 'Auto generate tracking number',
+'showCommentsByDefault' => 'show comments by default',
+'showTrackingNumber' => 'show tracking number',
 
 'general' => 'General',
 'address' => 'Address',

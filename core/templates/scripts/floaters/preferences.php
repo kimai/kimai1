@@ -186,6 +186,15 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <label for="showQuickNote"></label>
             <?php echo $this->formCheckbox('showQuickNote', '1',array('checked' => isset($this->kga['conf']['showQuickNote']) && $this->kga['conf']['showQuickNote'])), $this->kga['lang']['showQuickNote']?>
           </li>
+           <li>
+            <label for="DefaultLocation"><?php echo $this->kga['lang']['DefLocation']?>:</label>
+            <?php echo $this->formText('DefaultLocation', $this->kga['conf']['DefaultLocation'], array(
+              'size' => 20)); ?>
+          </li>
+          <li>
+            <label for="LinktrackingNumber"></label>
+            <?php echo $this->formCheckbox('LinktrackingNumber', '1',array('checked' => isset($this->kga['conf']['LinktrackingNumber']) && $this->kga['conf']['LinktrackingNumber'])), $this->kga['lang']['LinktrackingNumber']?>
+          </li>
       	</ul>
       </fieldset>
 
