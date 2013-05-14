@@ -33,7 +33,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    */
   public function connect($host,$database,$username,$password,$utf8,$serverType) {
     if (isset($utf8) && $utf8)
-      $this->conn = new MySQL(true, $database, $host, $username, $password,"utf-8");
+      $this->conn = new MySQL(true, $database, $host, $username, $password,"utf8");
     else
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
