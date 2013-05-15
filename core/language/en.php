@@ -313,6 +313,7 @@ return array(
 'contact' => 'Contact',
 'list'=> 'List',
 'sublists' => 'Lower Lists',
+'timesheet' => 'Timesheet',
 
 "filter" => "Filter",
 

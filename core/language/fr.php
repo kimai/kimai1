@@ -280,6 +280,7 @@ return array(
 'general' => 'Général',
 'address' => 'Address',
 'contact' => 'Contact',
+'timesheet' => 'Feuille de temps',
 
 "filter" => "Filtre",
 
