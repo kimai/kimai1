@@ -538,6 +538,52 @@ switch ($axAction) {
 
       echo json_encode(array('errors'=>$errors));
     break;
+    
+    // ===================================
+    // = add / edit timeSheet quick note =
+    // ===================================
+    case 'add_edit_timeSheetQuickNote':
+    	header('Content-Type: application/json;charset=utf-8');
+    	$errors = array();
+    
+    	$action = 'add';
+    
+    	if ($id) {
+    		$action = 'edit';
+    		$data = $database->timeSheet_get_data($id);
+    
+    		// check if editing or deleting with the old values would be allowed
+    		if (!timesheetAccessAllowed($data,$action,$errors)) {
+    			echo json_encode(array('errors'=>$errors));
+    			break;
+    		}
+    	}
+    
+    	$data['location']       = $_REQUEST['location'];
+    	$data['trackingNumber'] = $_REQUEST['trackingNumber'];
+    	$data['comment']        = $_REQUEST['comment'];
+    	$data['commentType']    = $_REQUEST['commentType'];
+    
+    	$data['userID']         = $_REQUEST['userID'];
+    
+    	if (!timesheetAccessAllowed($data,$action,$errors)) {
+    		echo json_encode(array('errors'=>$errors));
+    		break;
+    	}
+    	if ($id) { // TIME RIGHT - NEW OR EDIT ?
+    
+    		// TIME RIGHT - EDIT ENTRY
+    		Logger::logfile("timeNote_edit: " .$id);
+    		$database->timeEntry_edit($id,$data);
+    
+    	} else {
+    
+    		// TIME RIGHT - NEW ENTRY
+    		Logger::logfile("timeNote_create");
+    		$database->timeEntry_create($data);
+    	}
+    	echo json_encode(array('errors'=>$errors));
+    	break;
 
 }
 
