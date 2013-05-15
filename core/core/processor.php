@@ -21,19 +21,19 @@
  * ==================
  * = Core Processor =
  * ==================
- * 
+ *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * actions are performed, e.g. editing preferences or returning a list
  * of customers.
  */
 
-// insert KSPI 
+// insert KSPI
 $isCoreProcessor = 1;
 $dir_templates = "templates/core/";
 require("../includes/kspi.php");
 
 switch ($axAction) {
-    
+
     /**
      * Append a new entry to the logfile.
      */
@@ -42,7 +42,7 @@ switch ($axAction) {
     break;
 
     /**
-     * Remember which project and activity the user has selected for 
+     * Remember which project and activity the user has selected for
      * the quick recording via the buzzer.
      */
     case 'saveBuzzerPreselection':
@@ -63,7 +63,7 @@ switch ($axAction) {
      */
     case 'editPrefs':
         if (isset($kga['customer'])) die();
-    
+
         $preferences['skin']                    = $_REQUEST['skin'];
         $preferences['autoselection']           = getRequestBool('autoselection');
         $preferences['quickdelete']             = $_REQUEST['quickdelete'];
@@ -79,6 +79,9 @@ switch ($axAction) {
         $preferences['showTrackingNumber']      = getRequestBool('showTrackingNumber');
         $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
+        $preferences['showQuickNote']           = getRequestBool('showQuickNote');
+        $preferences['DefaultLocation']         = $_REQUEST['DefaultLocation'];
+        $preferences['LinktrackingNumber']      = getRequestBool('LinktrackingNumber');
 
         $database->user_set_preferences($preferences,'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
@@ -88,33 +91,33 @@ switch ($axAction) {
           $database->save_rate($kga['user']['userID'],null,NULL,$rate);
         else
           $database->remove_rate($kga['user']['userID'],null,NULL);
-        
+
         // If the password field is empty don't overwrite the old password.
         if (trim($_REQUEST['password']) != "") {
             $userData['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
             $database->user_edit($kga['user']['userID'], $userData);
         }
-        
-        
+
+
     break;
-    
+
     /**
      * When the user changes the timeframe it is stored in the database so
      * it can be restored, when the user reloads the page.
      */
     case 'setTimeframe':
         if (!isset($kga['user'])) die();
-    
+
         $timeframe = explode('|',$axValue);
-         
+
         $timeframe_in  = explode('-',$timeframe[0]);
         $timeframe_in  = (int)mktime(0,0,0,$timeframe_in[0],$timeframe_in[1],$timeframe_in[2]);
         if ($timeframe_in < 950000000) $timeframe_in = $in;
-        
+
         $timeframe_out = explode('-',$timeframe[1]);
         $timeframe_out = (int)mktime(23,59,59,$timeframe_out[0],$timeframe_out[1],$timeframe_out[2]);
         if ($timeframe_out < 950000000) $timeframe_out = $out;
-        
+
         $database->save_timeframe($timeframe_in,$timeframe_out,$kga['user']['userID']);
     break;
 
@@ -124,14 +127,14 @@ switch ($axAction) {
      */
     case 'startRecord':
         if (isset($kga['customer'])) die();
-    
+
         $IDs = explode('|',$axValue);
         $newID = $database->startRecorder($IDs[0],$IDs[1],$id, $_REQUEST['startTime']);
         echo json_encode(array(
           'id' =>  $newID
         ));
     break;
-    
+
     /**
      * Stop the running recording.
      */
@@ -226,7 +229,7 @@ switch ($axAction) {
             	$data['homepage'] = $_REQUEST['homepage'];
             	$data['visible']  = getRequestBool('visible');
             	$data['filter']   = $_REQUEST['customerFilter'];
-        
+
               // If password field is empty dont overwrite the password.
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
                 $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
@@ -250,10 +253,10 @@ switch ($axAction) {
 
               if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
-              
-              
+
+
               if (count($errorMessages) == 0) {
-            	
+
                 // add or update the customer
                   if (!$id) {
                       $id = $database->customer_create($data);
@@ -264,13 +267,13 @@ switch ($axAction) {
                 // set the customer group mappings
                 $database->assign_customerToGroups($id, $_REQUEST['customerGroups']);
               }
-              
+
               header('Content-Type: application/json;charset=utf-8');
               echo json_encode(array(
                 'errors' => $errorMessages));
-              
+
             break;
-            
+
             /**
              * add or edit a project
              */
@@ -300,7 +303,7 @@ switch ($axAction) {
 
               if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $_REQUEST['projectGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
-                
+
               if (count($errorMessages) == 0) {
                   // add or update the project
                 if (!$id) {
@@ -329,12 +332,12 @@ switch ($axAction) {
                   }
                 }
               }
-              
+
               header('Content-Type: application/json;charset=utf-8');
               echo json_encode(array(
                 'errors' => $errorMessages));
             break;
-            
+
             /**
              * add or edit a activity
              */
@@ -359,7 +362,7 @@ switch ($axAction) {
 
               if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $_REQUEST['activityGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
-                
+
               if (count($errorMessages) == 0) {
                 // add or update the project
                 if (!$id) {
@@ -377,7 +380,7 @@ switch ($axAction) {
                 else
                   $database->assignActivityToProjectsForGroup($id, array(), $kga['user']['groups']);
               }
-              
+
               header('Content-Type: application/json;charset=utf-8');
               echo json_encode(array(
                 'errors' => $errorMessages));
