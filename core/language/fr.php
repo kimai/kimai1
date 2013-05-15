@@ -271,12 +271,12 @@ return array(
 'hideClearedEntries' => 'cacher les données supprimées',
 
 'general' => 'Général',
-'address' => 'Address',
+'address' => 'Adresse',
 'contact' => 'Contact',
 
 "filter" => "Filtre",
 
-'internalProject' => 'Project interne',
+'internalProject' => 'Projet interne',
 
 'exactSums' => 'Utiliser les sommes exactes au lieu d\' additionner les valeurs arrondies indiquées.',
 
@@ -310,7 +310,7 @@ return array(
         
         SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a> ou en étendant sa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">bibliothèque de langues</a>.
 
-        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hesitez pas à nous contacter sur le forum. Ou encore emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hésitez pas à nous contacter sur le forum. Ou encore emieux: créer create un <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
 
         <strong>Des remerciement aussi pour le support à:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe et HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
@@ -466,5 +466,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'ki_export' => 'Exporter'
 ),
 
+"log_delete"	=> "Le fichier log a été effacé",
 );
 ?>

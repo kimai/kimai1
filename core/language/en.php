@@ -538,6 +538,18 @@ Choose another table prefix or delete existing tables with this prefix in order 
   'showRates' => 'show rates',
   'editRates' => 'edit rates',
   'editAdvanced' => 'edit advanced settings'
-)
+),
+
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Débug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
+
+"log_delete"	=> "Log file deleted",
 
 );
