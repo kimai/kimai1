@@ -1801,5 +1801,24 @@ class MySQL
 			}
 		}
 	}
+
+	/**
+	 * find the next number for auto_increment field in a specific table
+	 *
+	 * @param string $table, The name of the table
+	 *
+	 * @return integer next auto_increment number
+	 */
+	public function NextAutoNumber($table) {
+		$this->ResetError();
+		$sql = "SHOW TABLE STATUS LIKE '".$table."'";
+		if (! $this->Query($sql)) {
+			$this->SetError("can't find auto_increment number");
+			return false;
+		} else {
+			$row = mysql_fetch_array($this->last_result);
+			return $row['Auto_increment'];
+		}
+	}
 }
 ?>

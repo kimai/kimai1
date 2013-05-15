@@ -1,4 +1,4 @@
-    <script type="text/javascript"> 
+    <script type="text/javascript">
     	var previousBudget = $('#budget').val();
         var previousUsed = 0;
         var previousApproved = 0;
@@ -28,12 +28,12 @@
 			if(!isNaN(step) && step > 0 && step < 60) {
 		            configuration.step = parseInt(step);
 			}
-		            
+
 			$('#start_time').timepicker(configuration);
 		        $('#end_time').timepicker(configuration);
 	            }
             }
- 
+
             // #rate already has an activity on click, so treat it below
             $("#eduration, #eend_time, #start_time").focus(function() {
     			saveDuration();
@@ -63,7 +63,7 @@
      			generateChart();
      			return false;
             });
- 			
+
             $('#start_day').datepicker({
               onSelect: function(dateText, instance) {
                 $('#end_day').datepicker( "option", "minDate", $('#start_day').datepicker("getDate") );
@@ -88,10 +88,10 @@
             $( "#rate" ).change(function() {
                 updateDuration();
             });
-            
+
             $( "#rate" ).autocomplete({
               width:"200px",
-              source: function(req, add){  
+              source: function(req, add){
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingRates",
                     project: $("#add_edit_timeSheetEntry_projectID").val(),
@@ -101,7 +101,7 @@
                     if (data.errors.length != 0) return;
                     add(data.rates);
                   }
-                );  
+                );
               },
               select: function( activity, ui ) {
                 $( "#rate" ).val( ui.item.value );
@@ -118,10 +118,10 @@
             $( "#fixedRate" ).click(function() {
               $( "#fixedRate").autocomplete("search",0);
             });
-            
+
             $( "#fixedRate" ).autocomplete({
               width:"200px",
-              source: function(req, add){  
+              source: function(req, add){
                 $.getJSON("../extensions/ki_timesheets/processor.php", {
                     axAction: "allFittingFixedRates",
                     project: $("#add_edit_timeSheetEntry_projectID").val(),
@@ -131,7 +131,7 @@
                     if (data.errors.length != 0) return;
                     add(data.rates);
                   }
-                );  
+                );
               },
               select: function( activity, ui ) {
                 $( "#fixedRate" ).val( ui.item.value );
@@ -171,12 +171,12 @@
 
                   inVal = parseInt(inVal);
                   outval = parseInt(outVal);
-                  
+
                   if (inVal == undefined)
                     inVal = 0;
                   if (outVal == undefined)
                     outVal = 0;
-                  
+
                   if (inVal > outVal) {
                     alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
                     return false;
@@ -191,7 +191,7 @@
                   for (var i = 1;i<=3;i++) {
                     var inVal = inTimeMatches[i];
                     var outVal = outTimeMatches[i];
-                    
+
                     if (inVal[0] == ":")
                       inVal = inVal.substr(1);
                     if (outVal[0] == ":")
@@ -199,7 +199,7 @@
 
                     inVal = parseInt(inVal);
                     outval = parseInt(outVal);
-                    
+
                     if (inVal == undefined)
                       inVal = 0;
                     if (outVal == undefined)
@@ -213,11 +213,11 @@
                       break; // if this part is smaller we don't care for the other parts
                   }
                 }
-                
+
                 var edit_in_time = $('#start_day').val()+$('#start_time').val();
                 var edit_out_time = $('#end_day').val()+$('#end_time').val();
                 var deleted = $('#erase').is(':checked');
-                
+
                 if (!deleted && edit_in_time == edit_out_time) {
                     alert("<?php echo $this->kga['lang']['timediff_warn']?>");
                     return false;
@@ -380,15 +380,15 @@
         <div class="right">
             <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
             <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
-        </div>  
+        </div>
     </div>
 
     <div id="help">
-        <div class="content">        
+        <div class="content">
             <?php echo $this->kga['lang']['dateAndTimeHelp']?>
         </div>
     </div>
-    
+
     <div class="menuBackground">
 
       <ul class="menu tabSelection">
@@ -410,7 +410,7 @@
       </ul>
     </div>
 
-    <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post"> 
+    <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post">
     <input name="id" type="hidden" value="<?php echo $this->id?>" />
     <input name="axAction" type="hidden" value="add_edit_timeSheetEntry" />
 	<input id="stepMinutes" type="hidden" value="<?php echo $this->kga['conf']['roundMinutes']?>" />
@@ -419,7 +419,7 @@
 
     <div id="floater_tabs" class="floater_content">
             <fieldset id="general">
-                
+
                 <ul>
 
                    <li>
@@ -437,7 +437,7 @@
                         <input type="input" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value);"/>
                        </div>
                    </li>
-                   
+
 
 
                    <li>
@@ -471,7 +471,7 @@
                 </li>
 
 
-              
+
                    <li>
                        <label><?php echo $this->kga['lang']['timelabel']?>:</label>
                         <input id='start_time' type='text' name='start_time' value='<?php echo $this->escape($this->start_time)?>' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();" <?php endif; ?> />
@@ -485,9 +485,9 @@
                    </li>
                </ul>
              </fieldset>
-   
+
             <fieldset id="extended">
-                
+
                 <ul>
 
                    <li>
@@ -501,10 +501,11 @@
                         <input id='trackingNumber' type='text' name='trackingNumber' value='<?php echo $this->escape($this->trackingNumber)?>' maxlength='20' size='20' tabindex='12' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
                    </li>
 				<?php endif; ?>
+				   <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment']?>:</label>
                         <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'><?php echo $this->escape($this->comment)?></textarea>
                    </li>
-                   
+
                    <li>
                        <label for="commentType"><?php echo $this->kga['lang']['commentType']?>:</label>
                        <?php echo $this->formSelect('commentType', $this->commentType, array(
@@ -523,7 +524,7 @@
                    <?php else: ?>
                    <input type="hidden" name="userID" value="<?php echo $this->kga['user']['userID'];?>"/>
                    <?php endif; ?>
-                   
+
                     <li>
                         <label for="erase"><?php echo $this->kga['lang']['erase']?>:</label>
                         <input type='checkbox' id='erase' name='erase' tabindex='15'/>
@@ -532,14 +533,14 @@
                     <li>
                         <label for="cleared"><?php echo $this->kga['lang']['cleared']?>:</label>
                         <input type='checkbox' id='cleared' name='cleared' <?php if ($this->cleared): ?> checked="checked" <?php endif; ?> tabindex='16'/>
-                           
+
                    </li>
-        
+
                 </ul>
 
-            </fieldset>            
+            </fieldset>
             <fieldset id="budget">
-                
+
                 <ul>
 
                    <li>
@@ -550,7 +551,7 @@
                         <label for="approved"><?php echo $this->kga['lang']['approved']?>:</label>
                         <input id='approved' type='text' name='approved' value='<?php echo $this->escape($this->approved)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
                    </li>
-                   
+
                    <li>
                        <label for="statusID"><?php echo $this->kga['lang']['status']?>:</label>
                        <?php echo $this->formSelect('statusID', $this->statusID, array(
@@ -558,7 +559,7 @@
                          'class' => 'formfield',
                          'tabindex' => '15'), $this->status); ?>
                    </li>
-                   
+
                    <li>
                        <label for="billable"><?php echo $this->kga['lang']['billable']?>:</label>
                        <?php echo $this->formSelect('billable', $this->billable_active, array(
@@ -574,7 +575,7 @@
                         <input id='fixedRate' type='text' name='fixedRate' value='<?php echo $this->escape($this->fixedRate)?>' size='5' tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
                    </li>
                    <?php endif; ?>
-                   
+
                    <li>
                    <table><tr><td align="right"><?php echo $this->kga['lang']['budget_activity']?>:</td><td>
                         <span id="budget_activity"><?php echo $this->budget_activity?></span></td></tr>

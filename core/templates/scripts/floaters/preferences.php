@@ -1,8 +1,8 @@
-<script type="text/javascript"> 
+<script type="text/javascript">
   $(document).ready(function() {
 
-    var options = { 
-      beforeSubmit:  function() { 
+    var options = {
+      beforeSubmit:  function() {
 
         if ( ($('#password').val() != "" || $('#retypePassword').val() != "")
               && !validatePassword($('#password').val(),$('#retypePassword').val()))
@@ -24,21 +24,21 @@
       'error' : function() {
           $('#core_prefs').removeAttr('submitting');
       }
-    }; 
-    
-    $('#core_prefs').ajaxForm(options); 
+    };
+
+    $('#core_prefs').ajaxForm(options);
     $('#floater_innerwrap').tabs({ selected: 0 });
 
-  }); 
+  });
 </script>
 
 <div id="floater_innerwrap">
-    
+
   <div id="floater_handle">
     <span id="floater_title"><?php echo $this->kga['lang']['preferences']?></span>
     <div class="right">
       <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
-    </div>       
+    </div>
   </div>
 
 
@@ -60,10 +60,15 @@
         <span class="bb"><?php echo $this->kga['lang']['list']?></span>
         <span class="cc">&nbsp;</span>
         </a></li>
+      <li class="tab norm"><a href="#preftimesheet">
+        <span class="aa">&nbsp;</span>
+        <span class="bb"><?php echo $this->kga['lang']['timesheet']?></span>
+        <span class="cc">&nbsp;</span>
+        </a></li>
     </ul>
   </div>
 
-  <form id="core_prefs" action="processor.php" method="post"> 
+  <form id="core_prefs" action="processor.php" method="post">
 
     <div id="floater_tabs" class="floater_content">
 
@@ -108,7 +113,7 @@
         </ul>
 
       </fieldset>
-        
+
       <fieldset id="prefSublists">
         <ul>
           <li>
@@ -167,19 +172,37 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
           <li>
             <label for="showTrackingNumber"></label>
             <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => isset($this->kga['conf']['showTrackingNumber']) && $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber']?>
-          </li>     
+          </li>
           <li>
             <label for="hideOverlapLines"></label>
             <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
-          </li>     
+          </li>
         </ul>
       </fieldset>
 
+      <fieldset id="preftimesheet">
+      	<ul>
+      	  <li>
+            <label for="showQuickNote"></label>
+            <?php echo $this->formCheckbox('showQuickNote', '1',array('checked' => isset($this->kga['conf']['showQuickNote']) && $this->kga['conf']['showQuickNote'])), $this->kga['lang']['showQuickNote']?>
+          </li>
+           <li>
+            <label for="DefaultLocation"><?php echo $this->kga['lang']['DefLocation']?>:</label>
+            <?php echo $this->formText('DefaultLocation', $this->kga['conf']['DefaultLocation'], array(
+              'size' => 20)); ?>
+          </li>
+          <li>
+            <label for="LinktrackingNumber"></label>
+            <?php echo $this->formCheckbox('LinktrackingNumber', '1',array('checked' => isset($this->kga['conf']['LinktrackingNumber']) && $this->kga['conf']['LinktrackingNumber'])), $this->kga['lang']['LinktrackingNumber']?>
+          </li>
+      	</ul>
+      </fieldset>
+
     </div>
-          
-    <input name="axAction" type="hidden" value="editPrefs" />   
-    <input name="id" type="hidden" value="0" />   
-                  
+
+    <input name="axAction" type="hidden" value="editPrefs" />
+    <input name="id" type="hidden" value="0" />
+
     <div id="formbuttons">
       <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
       <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
