@@ -501,6 +501,7 @@
                         <input id='trackingNumber' type='text' name='trackingNumber' value='<?php echo $this->escape($this->trackingNumber)?>' maxlength='20' size='20' tabindex='12' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
                    </li>
 				<?php endif; ?>
+				   <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment']?>:</label>
                         <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'><?php echo $this->escape($this->comment)?></textarea>
                    </li>

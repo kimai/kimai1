@@ -1895,6 +1895,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $filter ['timeEntryID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
+      
+      if (! $this->conn->TransactionBegin()) {
+      	$this->logLastError('timeEntry_edit');
+      	return false;
+      }
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
       $success = true;
