@@ -308,21 +308,21 @@ return array(
          
         <a href='http://www.kimai.org' target='_blank'>offizielle Website</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge Projektseite</a> | 
-        <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
         
         <br /><br />
 
         Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="http://forum.kimai.org" title="Kimai Forum">Forum</a> freuen.
         Außerdem finden sie dort einen speziellen "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">freundliche Hacks</a>" Bereich.
-        Die neueste SVN Version kann <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">hier</a> (nur für Testzwecke!) heruntergeladen werden.
+        Die neueste Entwickler Version kann <a href="https://github.com/kimai/kimai/archive/master.zip">hier</a> (nur für Testzwecke!) heruntergeladen werden.
         
         <br /><br />
         
-        Bitte unterstützen Sie die weiter Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a> oder durch <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">Übersetzungen</a>.
+        Bitte unterstützen Sie die weiter Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a> oder durch <a href="">Übersetzungen</a>.
 
-        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben kontaktieren Sie uns im Forum. Oder besser: Erstellen Sie ein <a href="http://sourceforge.net/tracker/?group_id=186214">Ticket</a>!<br /><br />
+        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben kontaktieren Sie uns im Forum. Oder besser: Erstellen Sie ein <a href="https://github.com/kimai/kimai/issues">Ticket</a>!<br /><br />
 
         <strong>Weiteren Dank für Ihre Unterstützung an:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,

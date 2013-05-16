@@ -289,19 +289,20 @@ return array(
          
         <a href='http://www.kimai.org' target='_blank'>Officiel hjemmeside</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Projektside på Sourceforge</a> | 
-        <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
         
         <br /><br />
 
-        Hvis du foretager ændringer, ville vi værdsætte en postering på <a href="http://forum.kimai.org" title="Kimai-forummet">forum</a>. Du vil finde en særlig sektion for "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" i forummet. Nyeste SVN-version kan downloades <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">her</a> (download kun med test for øje!).
+        Hvis du foretager ændringer, ville vi værdsætte en postering på <a href="http://forum.kimai.org" title="Kimai-forummet">forum</a>. Du vil finde en særlig sektion for "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" i forummet.
+        Nyeste version kan downloades <a href="https://github.com/kimai/kimai/archive/master.zip">her</a> (download kun med test for øje!).
         
         <br /><br />
         
-        Støt gerne den videre udvikling af Kimai med en <a href="http://www.kimai.org/en/donate.html">donation</a> eller ved at bidrage til de <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">tilgængelige sprog</a>.
+        Støt gerne den videre udvikling af Kimai med en <a href="http://www.kimai.org/en/donate.html">donation</a> eller ved at bidrage til de <a href="https://github.com/kimai/kimai/tree/master/core/language">tilgængelige sprog</a>.
 
-        Skulle du finde fejl eller have idéer til nye funktioner er du meget velkommen til at tage kontakt til os gennem forummet. Eller endnu bedre: Opret en <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+        Skulle du finde fejl eller have idéer til nye funktioner er du meget velkommen til at tage kontakt til os gennem forummet. Eller endnu bedre: Opret en <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
 
         <strong>Yderligere tak for støtten til:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
