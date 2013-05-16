@@ -73,8 +73,7 @@ switch ($axAction) {
             $logdatei=fopen(WEBROOT."temporary/logfile.txt","w");
             fwrite($logdatei,"");
             fclose($logdatei);
-            echo "Log file erased";
-            //echo $theData;
+            echo $kga['lang']['log_delete'];
         } else {
             die();
         }
@@ -92,23 +91,23 @@ switch ($axAction) {
      * information if not configured otherwise.
      */
     case "reloadKGA":    
-	// read kga --------------------------------------- 
-		$output = $kga;
-	    // clean out some data that is way too private to be shown in the frontend ...
+    // read kga --------------------------------------- 
+        $output = $kga;
+        // clean out some data that is way too private to be shown in the frontend ...
 
-	    if (!$kga['show_sensible_data']) {
-	    	$output['server_hostname'] = "xxx";
-	    	$output['server_database'] = "xxx";
-	    	$output['server_username'] = "xxx";
-	    	$output['server_password'] = "xxx";
-	    	$output['user']['secure']   = "xxx";
-	    	$output['user']['userID']   = "xxx";
-	    	$output['user']['pw']       = "xxx";
-	    }
-		echo"<pre>";
-	    print_r($output);
-		echo"</pre>";
-	// /read kga --------------------------------------
+        if (!$kga['show_sensible_data']) {
+            $output['server_hostname'] = "xxx";
+            $output['server_database'] = "xxx";
+            $output['server_username'] = "xxx";
+            $output['server_password'] = "xxx";
+            $output['user']['secure']   = "xxx";
+            $output['user']['userID']   = "xxx";
+            $output['user']['pw']       = "xxx";
+        }
+        echo"<pre>";
+        print_r($output);
+        echo"</pre>";
+    // /read kga --------------------------------------
     break;
 }
 
