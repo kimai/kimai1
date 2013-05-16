@@ -320,7 +320,7 @@ return array(
         
         <br /><br />
         
-        Bitte unterstützen Sie die weiter Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a> oder durch <a href="">Übersetzungen</a>.
+        Bitte unterstützen Sie die weiter Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a> oder durch <a href="https://github.com/kimai/kimai/tree/master/core/language">Übersetzungen</a>.
 
         Wenn Sie Fehler finden oder Verbesserungsvorschläge haben kontaktieren Sie uns im Forum. Oder besser: Erstellen Sie ein <a href="https://github.com/kimai/kimai/issues">Ticket</a>!<br /><br />
 
