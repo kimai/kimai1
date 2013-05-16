@@ -73,7 +73,8 @@ switch ($axAction) {
             $logdatei=fopen(WEBROOT."temporary/logfile.txt","w");
             fwrite($logdatei,"");
             fclose($logdatei);
-            echo $theData;
+            echo "Log file erased";
+            //echo $theData;
         } else {
             die();
         }
