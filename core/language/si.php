@@ -298,19 +298,22 @@ return array(
          
         <a href='http://www.kimai.org' target='_blank'>Uradna spletna stran</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge projektna stran</a> | 
-        <a href='https://github.com/kimai/kimai' target='_blank'>Git repozitorij</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Naloži</a>
         
         <br /><br />
 
-        Če boste naredili kaj sprememb, bi vas prosili, da nam jih pošljete na <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. Tukaj boste poseben odbor "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>". Zadnja SVN verzija je na voljo na <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">here</a> (naloži samo za testne namene!).
+        Če boste naredili kaj sprememb, bi vas prosili, da nam jih pošljete na <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. Tukaj boste poseben odbor "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>".
+        Zadnja verzija je na voljo na <a href="https://github.com/kimai/kimai/archive/master.zip">here</a> (naloži samo za testne namene!).
         
         <br /><br />
         
-        Prosimo podprite nadaljni razvoj Kimai-a z donacijo na <a href="http://www.kimai.org/en/donate.html">donation</a> ali z razširitvijo podpore jezikov <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">language library</a>.
+        Prosimo podprite nadaljni razvoj Kimai-a z donacijo na <a href="http://www.kimai.org/en/donate.html">donation</a> ali z
+        razširitvijo podpore jezikov <a href="https://github.com/kimai/kimai/tree/master/core/language">language library</a>.
 
-        Če najdete hrošče ali če imate ideje za nove funkcije programa, nas kontaktirajte na forumu. Ali še bolje: kreirajte <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+        Če najdete hrošče ali če imate ideje za nove funkcije programa, nas kontaktirajte na forumu.
+        Ali še bolje: kreirajte <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
 
         <strong>Velika zahvala za podporo tudi:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,

@@ -40,7 +40,7 @@
 	</target>
 
     <!--
-        Creates all required empty directories, which might not be available from SVN.
+        Creates all required empty directories, which might not be available from repository.
     -->
     <target name="empty-directories" depends="check-settings" if="release.initialized">
         <mkdir dir="${release.path}/compile/" />
