@@ -298,19 +298,22 @@ return array(
          
         <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Page du Projet Sourceforge </a> | 
-        <a href='https://github.com/kimai/kimai' target='_blank'>Git Repository</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Telechargement</a>
         
         <br /><br />
 
-        Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" . La dernière version SVN peut être téléchargée <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">Ici</a> (Pour les test seulement!).
+        Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" .
+        La dernière version peut être téléchargée <a href="https://github.com/kimai/kimai/archive/master.zip">Ici</a> (Pour les test seulement!).
         
         <br /><br />
         
-        SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a> ou en étendant sa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">bibliothèque de langues</a>.
+        SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a>
+        ou en étendant sa <a href="https://github.com/kimai/kimai/tree/master/core/language">bibliothèque de langues</a>.
 
-        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hésitez pas à nous contacter sur le forum. Ou encore mieux: créer un <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
+        Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hésitez pas à nous contacter sur le forum.
+        Ou encore mieux: créer un <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
 
         <strong>Des remerciement aussi pour le support à:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe et HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,

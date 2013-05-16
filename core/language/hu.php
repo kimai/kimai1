@@ -330,27 +330,26 @@ return array(
          
         <a href='http://www.kimai.org' target='_blank'>Hivatalos honlap</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Fórum</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge Project oldal</a> | 
-        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Alverzió gyûjtemény</a> |
+        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
+        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Letöltés</a>
         
         <br /><br />
 
 
-        Bármilyen változtatást eszközöl, értékelnénk, ha közzétenné a <a href="http://forum.kimai.org" title="Kimai Forum">fórumban</a>. Talál ott egy külön témát "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" néven. A legújabb SVN változatok letölthetõk <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">innen</a> (csak tesztelés céljára!).
+        Bármilyen változtatást eszközöl, értékelnénk, ha közzétenné a <a href="http://forum.kimai.org" title="Kimai Forum">fórumban</a>. Talál ott egy külön témát "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" néven.
+        A legújabb változatok letölthetõk <a href="https://github.com/kimai/kimai/archive/master.zip">innen</a> (csak tesztelés céljára!).
         
         <br /><br />
         
-        Kérem támogassa a Kimai további fejlesztését egy <a href="http://www.kimai.org/en/donate.html">adománnyal</a> vagy a <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">nyelvi gyûjtemény bõvítésével</a>.
+        Kérem támogassa a Kimai további fejlesztését egy <a href="http://www.kimai.org/en/donate.html">adománnyal</a> vagy a <a href="https://github.com/kimai/kimai/tree/master/core/language">nyelvi gyûjtemény bõvítésével</a>.
 
-
-        Ha hibát talál vagy új elképzelése van, bátran lépjen kapcsolatban velünk a fórumban. Vagy ami még jobb: nyisson új <a href="http://sourceforge.net/tracker/?group_id=186214">jegyet</a>!<br /><br />
-
+        Ha hibát talál vagy új elképzelése van, bátran lépjen kapcsolatban velünk a fórumban.
+        Vagy ami még jobb: nyisson új <a href="https://github.com/kimai/kimai/issues">jegyet</a>!<br /><br />
 
         <strong>További köszönet a támogatóinknak:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
         Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
 
         <strong>Külön hálával tartozunk</strong> minden bétatesztelõnek, akik többen vannak, mintsem felsorolhatnánk õket - tudjátok, kik vagytok! ;)<br /><br />
 
