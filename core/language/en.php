@@ -352,7 +352,7 @@ return array(
         
         Please support further development of Kimai with a <a href="http://www.kimai.org/en/donate.html">donation</a> or by extending its <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">language library</a>.
 
-        If you find bugs or have ideas for features, feel free to contact us through the forum. Or even better: create a <a href="http://sourceforge.net/tracker/?group_id=186214">ticket</a>!<br /><br />
+        If you find bugs or have ideas for features, feel free to contact us through the forum. Or even better: create a <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
 
         <strong>Further thanks for support to:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
@@ -544,7 +544,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 		'ki_timesheet' => 'Timesheet',
 		'ki_expenses' => 'Expenses',
 		'ki_invoice' => 'Invoice',
-		'deb_ext' => 'Débug',
+		'deb_ext' => 'Debugging',
 		'ap_ext' => 'Preference',
 		'ki_budget' => 'Budget',
 		'ki_export' => 'Export'
