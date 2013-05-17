@@ -553,6 +553,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 		'ki_export' => 'Export'
 ),
 
-"log_delete"	=> "Log file deleted",
+"log_delete"	=> "log cleared",
 
 );

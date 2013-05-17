@@ -447,7 +447,9 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
   'unusedBudget' => 'uanvendt'
 ),
 
-'extensions' => array()
+'extensions' => array(),
+
+"log_delete"	=> "log ryddet",
 
 );
 

@@ -517,7 +517,9 @@ EOF
   'deb_ext' => '调试数据',
   'demo_ext' => '扩展功能显示',
   'ki_invoice' => '账单格式导出' 
-)
+),
+
+"log_delete"	=> "登录清除",
 
 );
 
