@@ -502,6 +502,8 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
   'ki_export' => 'Export',
   'ki_budget' => 'Budget',
   'ki_invoice' => 'Factuur' 
-)
+),
+
+"log_delete"	=> "log gewist",
 
 );

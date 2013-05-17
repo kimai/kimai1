@@ -459,7 +459,9 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
 'ki_export' => 'Eksport',
 'ki_budget' => 'Budżet',
 'ki_invoice' => 'Rachunki'
-)
+),
+
+"log_delete"	=> "zaloguj wyczyszczone",
 
 );
 

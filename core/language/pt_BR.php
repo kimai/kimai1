@@ -394,7 +394,9 @@ Escolha outro prefixo da tabela ou excluir tabelas existentes com esse prefixo, 
 'ext_budget' => array(
   'unusedBudget' => 'Não usado'
 ),
-'extensions' => array()
+'extensions' => array(),
+
+"log_delete"	=> "log limpo",
 
 );
 
