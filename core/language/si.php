@@ -451,7 +451,6 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
 'invoiceOptionShort' 	=> 'Kratek račun',
 'invoiceOptionRound' 	=> 'Zaokrožanje časa',
 'invoiceButton' 		=> 'Ustvari',
-'invoiceForm' 			=> 'Oblika računa',
 'noData'                => 'V označenih projektih ni časovnih vnosov in časovnega obdobja.',
 'defaultVat'        => 'privzeti davek'
 ),
@@ -471,6 +470,3 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
 )
 
 );
-
-?>
-

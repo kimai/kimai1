@@ -515,11 +515,7 @@ EOF
   'ki_export' => '列表格式导出',
   'ki_budget' => '饼状图统计显示',
   'deb_ext' => '调试数据',
-  'demo_ext' => '扩展功能显示',
-  'ki_invoice' => '账单格式导出' 
+  'ki_invoice' => '账单格式导出'
 )
 
 );
-
-
-?>

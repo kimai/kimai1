@@ -36,20 +36,11 @@ return array(
 "time"              => "ó'p",
 "timelabel"         => "Idõ",
 "durationlabel"     => "Hossz",
-"knd"               => "Ügyfél",
-"pct"               => "Feladatkör",
-"evt"               => "Feladat",
-"knds"              => "Ügyfelek",
-"pcts"              => "Feladatkörök",
-"evts"              => "Feladatok",
 "admin"             => "Admin",
 "rowlimit"          => "max. sor",
 "breiteZeitspalte"  => "széles idõ oszlop",
 "breiteUhrspalte"   => "széles óra oszlop",
 "breiteDatumspalte" => "széles dátum oszlop",
-"def_pctID"         => "alapértelmezett feladatkör azonosító",
-"def_kndID"         => "alapértelmezett ügyfél azonosító",
-"def_evtID"         => "alapértelmezett feladat azonosító",
 "recommended"       => "javasolt",
 "submit"            => "OK",
 "cancel"            => "Mégsem",
@@ -61,16 +52,11 @@ return array(
 "secs"              => "másodperc",
 "skin"              => "felszín",
 "erase"             => "Bejegyzés törlése",
-"new_knd"           => "új ügyfél",
-"new_pct"           => "új feladatkör",
-"new_evt"           => "új feladat",
 "day_summary"       => "Napi összefoglaló",
 "plzChoose"         => "kérem, válasszon",
 "noEntries"         => "A megadott idõtartamhoz nem tartozik bejegyzés...",
 "recordAgain"       => "Ugyanilyen feladat rögzítése",
 "comment"           => "Megjegyzés",
-"zlocation"         => "Helyszín",
-"trackingnr"        => "Azonosítószám",
 "cookiewarning"     => "A továbblépés elõtt engedélyezze a cookie-kat.",
 "JSwarning"         => "A JavaScript-nek futnia kell.",
 "designation"       => "rendeltetés",
@@ -95,7 +81,6 @@ return array(
 "updateNow"         => "Adatbázis frissítése most!",
 "stop"              => "Állj!",
 "start"             => "Indítás!",
-"setTimespace"      => "idõtartam beállítása",   
 "now"               => "most",
 "specify"           => "lista kijelölése",
 "add"               => "új",
@@ -131,24 +116,7 @@ return array(
 "bantime"           => "bejelentkezés tiltása másodpercben",
 "lastdbbackup"      => "Utolsó biztonsági mentés",
 "runbackup"         => "Mentés most",
-"defaultgrp"        => "Alapértelmezett (0)",
-"regusr"            => "Közönséges felhasználó",
-"adminusr"          => "Admin felhasználó",
-"editusr"           => "Felhasználó szerkesztése",
-"editgrp"           => "Csoport szerkesztése",
-"delgrp"            => "Csoport törlése",
-"delpct"            => "Feladatkör törlése",
-"delknd"            => "Ügyfél törlése",
-"delevt"            => "Feladat törlése",
-"switchusr"         => "Átváltás a felhasználóra",
-"backupusr"         => "Biztonsági mentés a felhasználóról",
-"mailusr"           => "E-mail küldése a felhasználónak",
-"delusr"            => "Felhasználó törlése",
-"bannedusr"         => "Kitiltott felhasználó - kattintson ide az engedélyezéshez",
-"activeusr"         => "Aktív felhasználó - kattintson ide a kitiltáshoz",
-"changegrp"         => "Másik csoportra váltás",
 "members"           => "Tagok",
-"groupleader"       => "Csoportvezetõ",
 "nopassword"        => "Nincs beállítva jelszó!",
 "noItems"           => "Nincs bejegyzés",
 "DBname"            => "Adatbázis neve",
@@ -182,13 +150,10 @@ return array(
 "refundable"        => "Visszatéríthetõ",
 "yes"               => "igen",
 "no"                => "nem",
-"comment_type"      => "Megjegyzés típusa",
 "ctype0"            => "Megjegyzés",
 "ctype1"            => "Felhívás",
 "ctype2"            => "Figyelem!",
 "hint"              => "Tipp:",
-"usr_caution1"      => "Ha megváltoztatja ezt a felhasználónevet:",
-"usr_caution2"      => "haladéktalan újra be kell jelentkeznie az új néven!",
 "timediff_warn"     => "A ki és be mezõkben eltérõ idõknek kell szerepelnie!",
 "visibility"        => "Láthatóság",
 "showitem"          => "láthatóvá tétel",
@@ -200,22 +165,13 @@ return array(
 "clock"             => "Óra",
 "currSum"           => "Jelenlegi idõtartam összefoglalója",
 "admWarn"           => "Ön admin. A státuszát csak egy másik admin csökkentheti.",
-"flip_pct_display"  => "Feladatkör tábla rendezése ügyfelek szerint",
-"pct_comment_flag"  => "A megjegyzések mindig látszanak a feladatkörök mellett",
 "showIDs"           => "Azonosítók megjelenítése",
 "error"             => "Hiba történt!",
 "checkupdate"       => "Frissítés keresése",
 
 
-"selectR"           => "Rögzítésre kijelölve:",
-"selectKND"         => "Üf:",
-"selectPCT"         => "Fk:",
-"selectEVT"         => "F:",
 
 
-"testKND"           => "Teszt ügyfél",
-"testPCT"           => "Teszt feladatkör",
-"testEVT"           => "tesztelés",
 
 
 "budget"            => "Ráfordítás",
@@ -268,7 +224,6 @@ return array(
 
 'view_filter' => 'nézet szûrõ',
 'unassigned' => 'nincs hozzárendelés',
-'all_events' => '&lt;&lt;minden&gt;&gt;',
 
 
 'durationWithSeconds' => 'Hossz megjelenítése másodpercnyi pontossággal.',
@@ -415,79 +370,6 @@ Válasszon másik elõtagot a tábláknak, vagy törölje az ilyen elõtaggal m�
 8        => "mentés készítése",
 9        => "Ezek a biztonsági mentések valójában pillanatfelvételek! Tehát még mindig élnek ugyanazon az adatbázison belül, ahol a Kimai éles munkaadatai megtalálhatók. Az ezzel az eszközzel készített mentések nem helyettesítenek egy másik fizikai adathordozóra létrehozott valódi biztonsági mentést. A weben számos adatbázismentõ eszköz található ;)"),
 
-
-
-'xp_ext' => array(
-	
-"print_hint"      		   => "Kattintson ide egy nyomtatható tábla megnyitásához.",
-"dl_hint"         		   => "Kattintson az OK gombra az exportfájl letöltéséhez.",
-                              
-"tab_filter"	 		   => "Szûrõ",
-"tab_location"	 		   => "Hely",
-"tab_timeformat"	 	   => "Idõformátum",
-                              
-"cleared_all"	 		   => "mind",
-"cleared_cleared" 		   => "csak, ami rendezve",
-"cleared_open"	 		   => "csak, ami nyitva",
-"stdrd_location"  		   => "Szabvány hely",
-"timeformat"	     	   => "Idõformátum",
-"dateformat"			   => "Dátumformátum",
-
-
-"filter"	 		       => "Szûrõ",
-
-
-"refundable_all"	 	   => "mind",
-"refundable_refundable"    => "csak, ami visszatéríthetõ",
-"refundable_not_refundable"=> "csak, ami nem visszatéríthetõ",
-                              
-"print_comment"   		   => "megjegyzések nyomtatása",
-"print_summary"   		   => "összegzés nyomtatása",
-"create_bookmarks"		   => "könyvjelzõ létrehozása",
-"download_pdf"    		   => "letöltés PDF-ként",
-"pdf_format"               => "formátum",
-"export_pdf"               => "tábla",
-"export_pdf2"              => "lista",
-                              
-"column_delimiter"		   => "oszlopelválasztó",
-"quote_char"      		   => "mezõhatároló karakter",
-                              
-"exportCSV"         	   => "Exportálás CSV-be",
-"exportPDF"         	   => "Exportálás PDF-be",
-"exportXLS"         	   => "Exportálás Excelbe",
-"print"         	       => "Nyomtatás",
-"export_timeformat_help"   => "Idõformátum súgó",
-
-
-'subtotal'              => 'Részösszeg',
-'finalamount'           => 'Összesen',
-'pdf_headline'          => 'Munkaidõ és költség lista',
-'pdf_headline_only_times'   => 'Munkaidõ lista',
-'pdf_headline_only_expenses'=> 'Költség lista',
-'costs'                 => 'Ár',
-'expense'               => 'Költség',
-'summary'               => 'Összegzés',
-'full_list'             => 'Teljes lista',
-'page'                  => 'Oldal',
-'by'                    => 'tól',
-'done_by'               => 'készítette',
-'duration'              => 'Hossz',
-'customer_new_page'     => 'minden ügyfél új oldalon',
-
-
-'times_and_expenses' => 'idõk és költségek',
-'times' => 'idõk',
-'expenses' => 'költségek',
-
-
-'reverse_order' => 'régebbi bejegyzések elölre',
-'time_period'  => 'Idõszak',
-
-
-'duration_unit' => 'ó',
-
-
-),
 
 
 

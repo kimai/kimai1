@@ -164,7 +164,6 @@ return array(
 "showitem"          => "Maak zichtbaar",
 "hideitem"          => "Maak onzichtbaar",
 "checkUsername"     => "Je moet een gebruikersnaam invoeren in het veld links van de knop: toevoegen!",
-"allvisible"        => "Laat verborgen tijd-records zien als deze er zijn",
 "clickToReload"     => "Klik om de grafische interface te herlande",
 "sure"              => "Zeker weten?",
 "clock"             => "Klok",
