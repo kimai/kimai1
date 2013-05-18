@@ -1,0 +1,7 @@
+{
+    "name": "kimai/kimai",
+    "minimum-stability": "dev",
+    "require": {
+        "phpunit/phpunit" : "3.7.*"
+    }
+}
