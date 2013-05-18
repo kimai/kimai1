@@ -495,6 +495,18 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
   'showRates' => 'Stundenlohn anzeigen',
   'editRates' => 'Stundenlohn bearbeiten',
   'editAdvanced' => 'Erweiterte Einstellungen bearbeiten'
-)
+),
+
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Debug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
+
+"log_delete"	=> "Protokoll gelöscht",
 
 );

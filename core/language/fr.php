@@ -469,6 +469,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'ki_export' => 'Exporter'
 ),
 
-"log_delete"	=> "Le fichier log a été effacé",
+"log_delete"	=> "Le Journal de bord a été effacé",
 );
 ?>

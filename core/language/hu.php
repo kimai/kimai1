@@ -510,8 +510,17 @@ Válasszon másik elõtagot a tábláknak, vagy törölje az ilyen elõtaggal m�
 ),
 
 
-'extensions' => array()
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Debug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
 
+"log_delete"	=> "log törölve",
 
 );
 

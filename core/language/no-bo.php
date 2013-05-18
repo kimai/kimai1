@@ -355,7 +355,19 @@ return array(
 "invoiceButton" 		=> "Lag",
 'noData'                => 'There are no time entries for the selected project & time period.'
 
-)
+),
+
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Debug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
+
+"log_delete"	=> "logg ryddet",
 );
 
 

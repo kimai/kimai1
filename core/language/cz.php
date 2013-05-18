@@ -513,8 +513,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
 'ki_invoice' => 'Faktury',
 'adminPanel_extension' => 'Administrace',
 'ki_budget' => 'Rozpočet'
-)
+),
 
+"log_delete"	=> "přihlásit vymazána",
 
 );
 

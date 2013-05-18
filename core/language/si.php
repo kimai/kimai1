@@ -468,7 +468,9 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
 'ki_budget' => 'Proračun',
 'adminPanel_extension' => 'Nastavitve',
 'ki_invoice' => 'Računi'    
-)
+),
+
+"log_delete"	=> "přihlásit vymazána",
 
 );
 

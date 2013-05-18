@@ -347,7 +347,19 @@ Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo pa
 "invoiceOptionRound" 	=> "Redondear tiempo",
 "invoiceButton" 		=> "Crear",
 'noData'                => 'There are no time entries for the selected project & time period.'
-)
+),
+
+'extensions' => array(
+		'ki_timesheet' => 'Timesheet',
+		'ki_expenses' => 'Expenses',
+		'ki_invoice' => 'Invoice',
+		'deb_ext' => 'Debug',
+		'ap_ext' => 'Preference',
+		'ki_budget' => 'Budget',
+		'ki_export' => 'Export'
+),
+
+"log_delete"	=> "iniciar despejado",
 
 );
 
