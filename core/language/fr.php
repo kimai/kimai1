@@ -396,7 +396,10 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 6        => "Sauvegarde du ",
 7        => "a été restauré.",
 8        => "Faire une sauvegarde",
-9        => "Ces sauvegardes sont des snapshots! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)"),
+9        => "Ces sauvegardes sont des instantanés! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)",
+10       => "Identification requise",
+11       => "Pour empêcher les personnes non-autorisées de créer, effacer ou restaurer une sauvegarde vous devez donner le code d'injection du mote de passe inscrite dans include/autoconf.php. Il est constitué de lettre et de chiffres.",
+),
 
 
 'export_extension' => array(
@@ -462,10 +465,21 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 
 ),
 
-
+'permissions' => array(
+		'edit' => 'éditer',
+		'delete' => 'effacer',
+		'assign' => 'assigner',
+		'unassign' => 'desassigner',
+		'ownEntry' => 'entré personnel',
+		'otherEntry' => 'autre entré',
+		'ownGroup' => 'même groupe',
+		'otherGroup' => 'groupe différent',
+		'showRates' => 'voir le taux',
+		'editRates' => 'éditer le taux',
+		'editAdvanced' => 'édition avancée'
+),
 
 'ext_invoice' => array(
-
 "invoiceTemplate"       => "Format de facture:",	
 "invoiceTitle" 			=> "Créer une facture",
 "invoiceProject" 		=> "Tâches:",
@@ -491,6 +505,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'ki_export' => 'Exporter'
 ),
 
-"log_delete"	=> "Le fichier log a été effacé",
+"log_delete"	=> "Le journal a été effacé",
 );
 ?>
