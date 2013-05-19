@@ -504,7 +504,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
 
 'ext_invoice' => array(
-	
 "invoiceTemplate"           => "Invoice template:",
 "invoiceTitle" 			=> "Create invoice",
 "invoiceProject" 		=> "Projects:",
