@@ -117,9 +117,8 @@
 		</div>
 	</div>
 	
-
-<!-- advanced -->
 <?php if ($this->showAdvancedTab): ?>
+    <!-- advanced -->
 	<div id="adminPanel_extension_sub4">
 		<div class="adminPanel_extension_panel_header">
 			<a onClick="adminPanel_extension_subtab_expand(4)">
@@ -133,7 +132,8 @@
 	</div>
 <?php endif; ?>
 
-<!-- DB -->
+<?php if ($this->showDatabase): ?>
+    <!-- DB -->
     <div id="adminPanel_extension_sub5">
         <div class="adminPanel_extension_panel_header">
             <a onClick="adminPanel_extension_subtab_expand(5)">
@@ -145,5 +145,6 @@
             <?php echo $this->admin['database']?>
         </div>
     </div>
+<?php endif; ?>
 
 </div>
