@@ -29,19 +29,16 @@
  * @param $query query to execute as string
  */
 function exec_query($query) {
-    global $database, $errors, $db_layer;
+    global $database, $errors;
 
     $conn = $database->getConnectionHandler();
-
-    $success = false;
-
     $success = $conn->Query($query);
-    $errorInfo = serialize($conn->Error());
 
-    Logger::logfile($query);
+    //Logger::logfile($query);
     if (!$success) {
-      Logger::logfile($errorInfo);
-      $errors=true;
+        $errorInfo = serialize($conn->Error());
+        Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
+        $errors=true;
     }
 }
 
@@ -304,7 +301,7 @@ exec_query($query);
 $query="INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '".$kga['lang']['testActivity']."', '');";
 exec_query($query);
 
-$query="INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `vat`, `timezone`) VALUES (1, '".$kga['lang']['testCustomer']."', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
+$query="INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `vat`, `contact`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `timezone`) VALUES (1, '".$kga['lang']['testCustomer']."', '', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
 exec_query($query);
 
 $query="INSERT INTO `${p}projects` (`projectID`, `customerID`, `name`, `comment`) VALUES (1, 1, '".$kga['lang']['testProject']."', '');";
