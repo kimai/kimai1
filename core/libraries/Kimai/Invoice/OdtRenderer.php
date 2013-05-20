@@ -44,7 +44,27 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
 
         $doc->loadXml('content.xml');
 
-        $entries = $this->getModel()->getEntries();
+        // fetch variables from model to get values
+        $customer   = $this->getModel()->getCustomer();
+        $project    = $this->getModel()->getProject();
+        $entries    = $this->getModel()->getEntries();
+
+        // ugly but neccessary for tinyButString
+        // set globals variables, so they can be used in invoice templates
+        $GLOBALS['customerContact'] = $customer['contact'];
+        $GLOBALS['companyName']     = $customer['company'];
+        $GLOBALS['customerStreet']  = $customer['street'];
+        $GLOBALS['customerCity']    = $customer['city'];
+        $GLOBALS['customerZip']     = $customer['zipcode'];
+        $GLOBALS['customerPhone']   = $customer['phone'];
+        $GLOBALS['customerEmail']   = $customer['mail'];
+        $GLOBALS['customerComment'] = $customer['comment'];
+        $GLOBALS['customerFax']     = $customer['fax'];
+        $GLOBALS['customerMobile']  = $customer['mobile'];
+        $GLOBALS['customerURL']     = $customer['homepage'];
+        $GLOBALS['customerVat']     = $customer['vat'];
+        $GLOBALS['projectComment']  = $project['comment'];
+
         $doc->mergeXmlBlock('row', $entries);
 
         $doc->saveXml();

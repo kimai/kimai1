@@ -21,6 +21,13 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
     {
         $view = new Kimai_View();
         $view->setScriptPath($this->getTemplateDir().$this->getTemplateFile());
+
+        $data = $this->getModel()->toArray();
+//var_dump($data);exit;
+        foreach($data as $key => $value) {
+            $view->assign($key, $value);
+        }
+
         return $view->render($this->getTemplateFilename());
     }
 
