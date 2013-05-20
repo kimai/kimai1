@@ -4,7 +4,7 @@
  *
  * @author Kevin Papst
  */
-class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
+class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
 {
 
     /**
@@ -58,9 +58,7 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
         // add a page
         $pdf->AddPage();
 
-        $view = new Kimai_View();
-        $view->setScriptPath($this->getTemplateDir().$this->getTemplateFile());
-        $html = $view->render('index.html');
+        $html = $this->getHtml();
 
         // output the HTML content
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -70,6 +68,11 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
 
         //Close and output PDF document
         $pdf->Output('invoice.pdf', 'I');
+    }
+
+    protected function getTemplateFilename()
+    {
+        return 'index.html.pdf';
     }
 
 }

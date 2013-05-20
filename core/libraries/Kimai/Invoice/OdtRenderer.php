@@ -55,4 +55,17 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         $doc->remove();
     }
 
+    /**
+     * Returns if the file can be rendered.
+     *
+     * @return bool
+     */
+    public function canRender()
+    {
+        return (
+            (stripos($this->getTemplateFile(), '.odt') !== false || stripos($this->getTemplateFile(), '.ods') !== false) &&
+            is_file($this->getTemplateDir() . $this->getTemplateFile())
+        );
+    }
+
 }

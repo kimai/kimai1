@@ -205,20 +205,24 @@ if (strpos($tplFilename, '/') !== false) {
 $model = new Kimai_Invoice_PrintModel();
 $model->setEntries($invoiceArray);
 
-$renderer = null;
+$renderers = array(
+    'odt'   => new Kimai_Invoice_OdtRenderer(),
+    'html'  => new Kimai_Invoice_HtmlRenderer(),
+    'pdf'   => new Kimai_Invoice_HtmlToPdfRenderer()
+);
 
-if ((stripos($tplFilename, '.odt') !== false || stripos($tplFilename, '.ods') !== false ) && is_file($baseFolder . $tplFilename)) {
-	$renderer = new Kimai_Invoice_OdtRenderer();
-}
-elseif (is_dir($baseFolder . $tplFilename) && is_file($baseFolder . $tplFilename . '/index.html')) {
-	$renderer = new Kimai_Invoice_HtmlToPdfRenderer();
-}
-else {
-	throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
+/* @var $renderer Kimai_Invoice_AbstractRenderer */
+foreach($renderers as $rendererType => $renderer)
+{
+    $renderer->setTemplateDir($baseFolder);
+    $renderer->setTemplateFile($tplFilename);
+    $renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
+    if ($renderer->canRender()) {
+        $renderer->setModel($model);
+        $renderer->render();
+        return;
+    }
 }
 
-$renderer->setTemplateDir($baseFolder);
-$renderer->setTemplateFile($tplFilename);
-$renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
-$renderer->setModel($model);
-$renderer->render();
+// no renderer could be found
+throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
