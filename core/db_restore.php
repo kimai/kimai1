@@ -26,32 +26,29 @@
 
 require('includes/basics.php');
 
-if ($_REQUEST['submit'] == $kga['lang']['login'] && $_REQUEST['salt'] == $kga['password_salt']) {
-  $cookieValue = sha1($kga['password_salt']);
-  setcookie('db_restore_authCode', $cookieValue);
-  $_COOKIE['db_restore_authCode'] = $cookieValue;
+if (isset($_REQUEST['submit']) &&
+    isset($_REQUEST['salt']) &&
+    $_REQUEST['submit'] == $kga['lang']['login'] &&
+    $_REQUEST['salt'] == $kga['password_salt'])
+    {
+      $cookieValue = sha1($kga['password_salt']);
+      setcookie('db_restore_authCode', $cookieValue);
+      $_COOKIE['db_restore_authCode'] = $cookieValue;
 }
-$authenticated =  $_COOKIE['db_restore_authCode'] == sha1($kga['password_salt']);
-
-$version_temp  = $database->get_DBversion();
-$versionDB  = $version_temp[0];
-$revisionDB = $version_temp[1];
-
-$p = $kga['server_prefix'];
-
-
-$conn = $database->getConnectionHandler();
+$authenticated = (isset($_COOKIE['db_restore_authCode']) && $_COOKIE['db_restore_authCode'] == sha1($kga['password_salt']));
 
 /**
  * Execute an sql query in the database. The correct database connection
  * will be chosen and the query will be logged with the success status.
- * 
+ *
  * @param $query query to execute as string
  */
 function exec_query($query) {
     global $conn, $kga, $errors, $executed_queries;
     
     $success = $conn->Query($query);
+    $errorInfo = serialize($conn->Error());
+
     Logger::logfile($query);
     if (!$success) {
       Logger::logfile($errorInfo);
@@ -61,7 +58,13 @@ function exec_query($query) {
 
 if (isset($_REQUEST['submit']) && $authenticated)
 {
-  if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) 
+    $version_temp  = $database->get_DBversion();
+    $versionDB  = $version_temp[0];
+    $revisionDB = $version_temp[1];
+    $p = $kga['server_prefix'];
+    $conn = $database->getConnectionHandler();
+
+  if ($_REQUEST['submit'] == $kga['lang']['backup'][8])
   {
     /**
      * Create a backup.
@@ -131,8 +134,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
   }
 }
 
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
@@ -199,22 +201,23 @@ if (isset($_REQUEST['submit']) && $authenticated)
 </head>
 <body>
 
-
-<div class="warn"><?=$kga['lang']['backup'][0]?></div>
+<?php if (!empty($kga['lang']['backup'][0])) { ?>
+    <div class="warn"><?php echo $kga['lang']['backup'][0]?></div>
+<?php } ?>
 <div class="main">
 <?php
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // restore
 
-if (isset($_REQUEST['submit']) && $authenticated)
+if ($authenticated && isset($_REQUEST['submit']))
 {
   if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
   {
-    $dates = $_REQUEST['dates'];
+    $dates = intval($_REQUEST['dates']);
 
     if (count($dates)>1) 
     {
-      echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
+        echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
     }
     else
     {
@@ -261,62 +264,63 @@ if (isset($_REQUEST['submit']) && $authenticated)
 
 echo '<form method="post" accept-charset="utf-8">';
 
-if (!$authenticated) {
-  echo "<h1>" . $kga['lang']['backup'][10] . "</h1>";
-  echo '<p class="caution">', $kga['lang']['backup'][11], '</p>';
-  echo '<input type="text" name="salt"/>';
-  echo '<input type="submit" name="submit" value="', $kga['lang']['login'], '"/>';
-}
-else {
-  echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
-
-$query = ("SHOW TABLES;");
-                       
-$result_backup=$database->queryAll($query);
-
-$arr = array();
-$arr2 = array();
-
-foreach ($result_backup as $row)
+if (!$authenticated)
 {
-  if ( (substr($row[0], 0, 10) == "kimai_bak_"))
-  {
-    $time = substr($row[0], 10, 10);
-    $arr[]=$time;
-  }
+    echo "<h1>" . $kga['lang']['backup'][10] . "</h1>";
+    echo '<p class="caution">', $kga['lang']['backup'][11], '</p>';
+    echo '<input type="text" name="salt"/>';
+    echo '<input type="submit" name="submit" value="', $kga['lang']['login'], '"/>';
 }
-
-$neues_array = array_unique ($arr);
-
-	
-foreach($neues_array AS $date)
+else
 {
-  $value = @date ("d. M Y - H:i:s", $date);
+    echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
 
-  if ( @date("dMY", $date) == @date("dMY", time()) )
-  {
-    $label = $kga['lang']['heute'] . @date (" - H:i:s", $date);
-  }
-  else
-  {
-    $label = $value; 
-  }
-  echo<<<EOD
-  <p class="label_checkbox">
-  <input type="checkbox" id="$value " name="dates[]" value="$date">
-  <label for="$value">$label</label>
-  </p>
+    $query = ("SHOW TABLES;");
+
+    $result_backup=$database->queryAll($query);
+
+    $arr = array();
+    $arr2 = array();
+
+    foreach ($result_backup as $row)
+    {
+        if ( (substr($row[0], 0, 10) == "kimai_bak_"))
+        {
+            $time = substr($row[0], 10, 10);
+            $arr[]=$time;
+        }
+    }
+
+    $neues_array = array_unique ($arr);
+
+
+    foreach($neues_array AS $date)
+    {
+        $value = @date ("d. M Y - H:i:s", $date);
+
+        if ( @date("dMY", $date) == @date("dMY", time()) )
+        {
+            $label = $kga['lang']['heute'] . @date (" - H:i:s", $date);
+        }
+        else
+        {
+            $label = $value;
+        }
+        echo <<<EOD
+        <p class="label_checkbox">
+        <input type="checkbox" id="$value " name="dates[]" value="$date">
+        <label for="$value">$label</label>
+        </p>
 EOD;
-}
+    }
 
-?>
-
-<p class="submit">
-<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][2]; ?>"> <!-- restore -->
-<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][3]; ?>"> <!-- delete -->
-<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][8]; ?>"> <!-- backup -->
-</p>
-<?php
+    ?>
+    <p class="submit">
+    <input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][2]; ?>"> <!-- restore -->
+    <input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][3]; ?>"> <!-- delete -->
+    <input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][8]; ?>"> <!-- backup -->
+    </p>
+    <?php
 }
 ?>
 
