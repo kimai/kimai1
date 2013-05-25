@@ -69,15 +69,18 @@ $RUsure = $kga['lang']['updater'][0];
 </head>
 <body>
 	<div  align="center">
-	     <FORM action="" method="post">
 		     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
 		     <h1>UPDATE</h1>
 		     <?=$RUsure?>
-		     <br /><br />
-		     <INPUT type="hidden" name="a" value="1">
-		     <INPUT type="submit" value="START UPDATE">
-     
-	     </FORM>
+             <?php if (is_writable(__DIR__ . '/includes/autoconf.php')) { ?>
+                <FORM action="" method="post">
+                 <br /><br />
+    		     <INPUT type="hidden" name="a" value="1">
+	    	     <INPUT type="submit" value="START UPDATE">
+                </FORM>
+             <?php } else { ?>
+                 <h2 style="color:red">Cannot update:<br>includes/autoconf.php not writable</h2>
+             <?php } ?>
 		 <a href="db_restore.php" id="dbrecover">Database Backup Recover Utility</a>
 	</div>
 </body>
@@ -943,7 +946,8 @@ if ((int)$revisionDB < 1067) {
         $kga['server_type'],
         $kga['server_prefix'],
         $kga['language'],
-        $kga['password_salt']))
+        $kga['password_salt'],
+        'Europe/Berlin'))
       echo '<tr><td>'.$kga['lang']['updater'][140].'</td><td class="green">&nbsp;&nbsp;</td></tr>';   
     else
       die($kga['lang']['updater'][130]);
@@ -1647,7 +1651,7 @@ if ((int)$revisionDB < 1375) {
     exec_query("ALTER TABLE `${p}globalRoles` CHANGE `core-$object-otherGroup-view` `core-$object-otherGroup-view` tinyint DEFAULT 0;");
   }
 
-    exec_query("DROP TABLE `${p}groupleaders;");
+    exec_query("DROP TABLE `${p}groupleaders`;");
 
 }
 
