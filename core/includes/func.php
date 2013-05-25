@@ -57,7 +57,7 @@ function kickUser() {
  * returns array of subdirectorys - needed for skin selector
  *
  * @param string $dir Directory to list subdirectorys from
- * @return array
+ * @return array|boolean
  * @author unknown
  */
 function ls($dir){
@@ -70,8 +70,8 @@ function ls($dir){
                 $i++;
             }
         }
-    return isset($arr_subfolders)?$arr_subfolders:false;
-    closedir($handle);
+    @closedir($handle);
+    return empty($arr_subfolders) ? $arr_subfolders : false;
 }
 
 /**
@@ -302,16 +302,17 @@ function createPassword($length) {
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone) {
+function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null) {
   $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
   if (!$file) return false;
+  if (empty($timezone)) { $timezone = 'date_default_timezone_get()'; } else { $timezone = '"' . $timezone . '"'; }
 
 $config=<<<EOD
 <?php
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) 2006-2013 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -337,7 +338,7 @@ $config=<<<EOD
 \$server_prefix   = "$prefix";
 \$language        = "$lang";
 \$password_salt   = "$salt";
-\$defaultTimezone = "$timezone";
+\$defaultTimezone = $timezone;
 
 ?>
 EOD;
