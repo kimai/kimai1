@@ -62,8 +62,10 @@ switch ($axAction) {
         $skins = array();
         $langs = array();
 
-        foreach(ls("../skins") as $id => $skin) {
-            $skins[$skin] = $skin;
+        $allSkins = glob(__DIR__."/../skins/*", GLOB_ONLYDIR);
+        foreach($allSkins as $skin) {
+            $name = basename($skin);
+            $skins[$name] = $name;
         }
 
         foreach(Translations::langs() as $lang) {
