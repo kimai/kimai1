@@ -1671,6 +1671,13 @@ if ((int)$revisionDB < 1378) {
 
 if ((int)$revisionDB < 1379) {
 
+    if(!isset($defaultTimezone) && isset($kga['defaultTimezone'])) {
+        $defaultTimezone = $kga['defaultTimezone'];
+    }
+    if(!isset($defaultTimezone)) {
+        $defaultTimezone = null;
+    }
+
     $success = write_config_file(
         $kga['server_database'],
         $kga['server_hostname'],
