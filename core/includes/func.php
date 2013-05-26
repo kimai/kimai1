@@ -340,7 +340,6 @@ $config=<<<EOD
 \$password_salt   = "$salt";
 \$defaultTimezone = $timezone;
 
-?>
 EOD;
 
   fputs($file, $config);
