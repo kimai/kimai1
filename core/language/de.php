@@ -499,12 +499,13 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 
 'extensions' => array(
 		'ki_timesheet' => 'Timesheet',
-		'ki_expenses' => 'Expenses',
-		'ki_invoice' => 'Invoice',
+		'ki_expenses' => 'Ausgaben',
+		'ki_invoice' => 'Rechnungen',
 		'deb_ext' => 'Debug',
 		'ap_ext' => 'Preference',
 		'ki_budget' => 'Budget',
-		'ki_export' => 'Export'
+		'ki_export' => 'Export',
+        'adminPanel_extension' => 'Administration'
 ),
 
 "log_delete"	=> "Protokoll gelöscht",
