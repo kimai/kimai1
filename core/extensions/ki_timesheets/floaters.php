@@ -125,7 +125,7 @@ switch ($axAction) {
          $users  = makeSelectBox("allUser",$kga['user']['groups']);
         else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']),'ki_timesheets-otherEntry-ownGroup-add'))
           $users = makeSelectBox("sameGroupUser",$kga['user']['groups']);
-        if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-a'))
+        if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-add'))
           $users[$kga['user']['userID']] = $kga['user']['name'];
 
         $view->users = $users;
