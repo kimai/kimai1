@@ -867,34 +867,33 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    * @param array $data
    */
   public function project_activity_edit($projectID, $activityID, $data) {
-
       $data = $this->clean_data($data);
 
-      $filter  ['projectID']          =   MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
-      $filter  ['activityID']          =   MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
+      $filter['projectID'] = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
+      $filter['activityID'] = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."projects_activities";
 
-      if (! $this->conn->TransactionBegin()) {
-        $this->logLastError('project_activity_edit');
+      if (!$this->conn->TransactionBegin()) {
+        $this->logLastError('project_activity_edit [1]');
         return false;
       }
 
       $query = MySQL::BuildSQLUpdate($table, $data, $filter);
       if ($this->conn->Query($query)) {
-
-          if (! $this->conn->TransactionEnd()) {
-            $this->logLastError('project_activity_edit');
+          if (!$this->conn->TransactionEnd()) {
+            $this->logLastError('project_activity_edit [2]');
             return false;
           }
           return true;
-      } else {
-          $this->logLastError('project_activity_edit');
-          if (! $this->conn->TransactionRollback()) {
-            $this->logLastError('project_activity_edit');
-            return false;
-          }
-          return false;
       }
+
+      $this->logLastError('project_activity_edit [3]');
+
+      if (!$this->conn->TransactionRollback()) {
+        $this->logLastError('project_activity_edit [4]');
+        return false;
+      }
+      return false;
   }
 
   /**

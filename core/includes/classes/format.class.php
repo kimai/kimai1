@@ -72,12 +72,12 @@ class Format {
   * @param $ann array the annotation array (userid => (time, costs) )
   */
   public static function formatAnnotations(&$ann) {
-    global $database;
+    global $database, $kga;
 
-    if (isset($kga['user']))
+    $type = 2;
+    if (isset($kga['user'])) {
       $type = $database->user_get_preference('ui.sublistAnnotations');
-    else
-      $type = 2;
+    }
 
     $userIds = array_keys($ann);
 
@@ -85,27 +85,27 @@ class Format {
       $type = 0;
 
     switch ($type) {
-    case 0:
-      // just time
-      foreach ($userIds as $userId) {
-        $ann[$userId] = self::formatDuration($ann[$userId]['time']);
-      }
-      break;
-    case 1:
-      // just costs
-      foreach ($userIds as $userId) {
-        $ann[$userId] = self::formatCurrency($ann[$userId]['costs']);
-      }
-      break;
-    case 2:
-    default:
-      // both
-      foreach ($userIds as $userId) {
-        $time = self::formatDuration($ann[$userId]['time']);
-        $costs = self::formatCurrency($ann[$userId]['costs']);
-        $ann[$userId] =  "<span style=\"white-space: nowrap;\">$time |</span>  $costs";
-      }
-
+        case 0:
+            // just time
+            foreach ($userIds as $userId) {
+                $ann[$userId] = self::formatDuration($ann[$userId]['time']);
+            }
+            break;
+        case 1:
+            // just costs
+            foreach ($userIds as $userId) {
+                $ann[$userId] = self::formatCurrency($ann[$userId]['costs']);
+            }
+            break;
+        case 2:
+        default:
+            // both
+            foreach ($userIds as $userId) {
+                $time = self::formatDuration($ann[$userId]['time']);
+                $costs = self::formatCurrency($ann[$userId]['costs']);
+                $ann[$userId] =  "<span style=\"white-space: nowrap;\">$time |</span>  $costs";
+            }
+            break;
     }
   }
 
