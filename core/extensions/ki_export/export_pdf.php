@@ -294,6 +294,9 @@ foreach ($orderedExportData as $customer) {
   foreach ($project_ids as $project_id) {
     // process each project in second dimension
     $pdf->ColoredTable(array($kga['lang']['datum'],$kga['lang']['activity'],$kga['lang']['export_extension']['duration'],$kga['lang']['export_extension']['costs']),$customer[$project_id]);
+    $pdf->ln();
+    $pdf->ln();
+    $pdf->ln();
   }
 }
 
