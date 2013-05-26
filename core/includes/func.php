@@ -54,27 +54,6 @@ function kickUser() {
 }
 
 /**
- * returns array of subdirectorys - needed for skin selector
- *
- * @param string $dir Directory to list subdirectorys from
- * @return array|boolean
- * @author unknown
- */
-function ls($dir){
-    $arr_subfolders = array();
-    $i=0;
-    $handle = opendir($dir);
-        while (false !== ($readdir = readdir($handle))) {
-            if ($readdir != '.' && $readdir != '..' && substr($readdir,0,1) != '.'  && is_dir("${dir}/${readdir}") ) {
-                $arr_subfolders[$i] = $readdir;
-                $i++;
-            }
-        }
-    @closedir($handle);
-    return empty($arr_subfolders) ? $arr_subfolders : false;
-}
-
-/**
  * Get a list of available time zones. This is directly taken from PHP.
  * 
  * @return array of timezone names
