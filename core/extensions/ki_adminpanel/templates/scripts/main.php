@@ -132,7 +132,7 @@
 	</div>
 <?php endif; ?>
 
-<?php if ($this->showDatabase): ?>
+<?php if (isset($this->admin['database'])): ?>
     <!-- DB -->
     <div id="adminPanel_extension_sub5">
         <div class="adminPanel_extension_panel_header">

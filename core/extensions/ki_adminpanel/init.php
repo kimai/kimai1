@@ -186,12 +186,7 @@
     $view->showAdvancedTab = $database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced');
     if ($view->showAdvancedTab) {
       $admin['advanced'] = $view->render("advanced.php");
-    }
-
-    // @FIXME this should not be the "debug" log setting, but a role permission check
-    $view->showDatabase = $kga['show_sensible_data'];
-    if ($view->showDatabase) {
-        $admin['database'] = $view->render("database.php");
+      $admin['database'] = $view->render("database.php");
     }
 
     $view->admin = $admin;
