@@ -184,17 +184,11 @@
     }
 
     $view->showAdvancedTab = $database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced');
-
-    if ($view->showAdvancedTab)
+    if ($view->showAdvancedTab) {
       $admin['advanced'] = $view->render("advanced.php");
-    
-    if ($kga['show_sensible_data']) {
-        $admin['database'] = $view->render("database.php");
-    } else {
-        $admin['database'] = "You don't have permission to see this information ...";
+      $admin['database'] = $view->render("database.php");
     }
 
     $view->admin = $admin;
 
     echo $view->render('main.php');
-?>
