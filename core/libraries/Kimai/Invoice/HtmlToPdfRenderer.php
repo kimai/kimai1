@@ -4,7 +4,7 @@
  *
  * @author Kevin Papst
  */
-class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
+class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
 {
 
     /**
@@ -22,17 +22,18 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // set document information
-        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetCreator('Kimai Timetracking (http://www.kimai.org)');
         //$pdf->SetAuthor('Kevin Papst');
-        $pdf->SetTitle('Invoice');
-        $pdf->SetSubject('Invoice');
-        $pdf->SetKeywords('Invoice');
+
+        //$pdf->SetTitle('Invoice');
+        //$pdf->SetSubject('Invoice');
+        //$pdf->SetKeywords('Invoice');
 
         // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 061', PDF_HEADER_STRING);
+        //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 061', PDF_HEADER_STRING);
 
         // set header and footer fonts
-        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        //$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
         $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
         // set default monospaced font
@@ -58,9 +59,7 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
         // add a page
         $pdf->AddPage();
 
-        $view = new Kimai_View();
-        $view->setScriptPath($this->getTemplateDir().$this->getTemplateFile());
-        $html = $view->render('index.html');
+        $html = $this->getHtml();
 
         // output the HTML content
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -70,6 +69,11 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_AbstractRenderer
 
         //Close and output PDF document
         $pdf->Output('invoice.pdf', 'I');
+    }
+
+    protected function getTemplateFilename()
+    {
+        return 'index.html.pdf';
     }
 
 }

@@ -94,4 +94,14 @@ abstract class Kimai_Invoice_AbstractRenderer
         return $this->tempDir;
     }
 
+    /**
+     * Returns if the file can be rendered.
+     *
+     * @return bool
+     */
+    public function canRender()
+    {
+        return false;
+    }
+
 }
