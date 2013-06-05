@@ -18,7 +18,6 @@
  */
 
 include_once('../../includes/basics.php');
-
 /**
  * returns true if activity is in the arrays
  *
@@ -43,7 +42,7 @@ function array_activity_exists($arrays, $activity) {
  * @param $precision
  * @return float
  */
-function RoundValue( $value, $precision ) {
+function RoundValue($value, $precision) {
 	// suppress division by zero error
 	if ($precision == 0.0) {
 		$precision = 1.0;
@@ -61,54 +60,43 @@ $out             = $timeframe[1];
 
 $timeArray = $database->get_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
 
-$date  = time();
-$month = $kga['lang']['months'][date("n", $out)-1];
-$year  = date("Y", $out );
-
-if (count($timeArray) > 0) {
-	// customer data
-	$customer        = $database->customer_get_data($timeArray[0]['customerID']);
-	$projectObject   = $database->project_get_data($timeArray[0]['projectID']);
-
-	$project         = html_entity_decode($timeArray[0]['projectName']);
-	$customerName    = html_entity_decode($timeArray[0]['customerName']);
-	$companyName     = $customer['company'];
-	$customerStreet  = $customer['street'];
-	$customerCity    = $customer['city'];
-	$customerZip     = $customer['zipcode'];
-	$customerComment = $customer['comment'];
-	$customerPhone   = $customer['phone'];
-	$customerFax     = $customer['fax'];
-	$customerMobile  = $customer['mobile'];
-	$customerEmail   = $customer['mail'];
-	$customerContact = $customer['contact'];
-	$customerURL	 = $customer['homepage'];
-	$customerVat     = $customer['vat'];
-	$projectComment  = $projectObject['comment'];
-	$beginDate       = $in;
-	$endDate         = $out;
-	$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
-	$today           = time();
-	$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"),   date("Y"));
-} else {
-	echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
-	return;
+if (count($timeArray) == 0) {
+    echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
+    return;
 }
+
+// ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
+
+$invoiceArray    = array();
+$date            = time();
+$month           = $kga['lang']['months'][date("n", $out)-1];
+$year            = date("Y", $out);
+$customer        = $database->customer_get_data($timeArray[0]['customerID']);
+$projectObject   = $database->project_get_data($timeArray[0]['projectID']);
+$project         = html_entity_decode($timeArray[0]['projectName']);
+$customerName    = html_entity_decode($timeArray[0]['customerName']);
+$beginDate       = $in;
+$endDate         = $out;
+$invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
+$today           = time();
+$dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
+
+//var_dump($timeArray);exit;
 
 // MERGE SORT
 $time_index   = 0;
-$invoiceArray = array();
 $timeArrayCounter = count($timeArray);
 while ($time_index < $timeArrayCounter) {
-	$wage = $timeArray[$time_index]['wage'];
-	$time = $timeArray[$time_index]['duration']/3600;
-	$formattedDuration = $timeArray[$time_index]['formattedDuration'];
-	$activity = html_entity_decode($timeArray[$time_index]['activityName']);
-	$comment = $timeArray[$time_index]['comment'];
-	$description = $timeArray[$time_index]['description'];
-	$activityDate = date("m/d/Y", $timeArray[$time_index]['start']);
-	$userName  = $timeArray[$time_index]['userName'];
-	$userAlias = $timeArray[$time_index]['userAlias'];
+	$wage           = $timeArray[$time_index]['wage'];
+	$time           = $timeArray[$time_index]['duration']/3600;
+	$duration       = $timeArray[$time_index]['formattedDuration'];
+	$activity       = html_entity_decode($timeArray[$time_index]['activityName']);
+	$comment        = $timeArray[$time_index]['comment'];
+	$description    = $timeArray[$time_index]['description'];
+	$activityDate   = date("m/d/Y", $timeArray[$time_index]['start']);
+	$userName       = $timeArray[$time_index]['userName'];
+	$userAlias      = $timeArray[$time_index]['userAlias'];
+    $rate           = $timeArray[$time_index]['rate'];
 
 	// do we have to create a short form?
 	if ( isset($_REQUEST['short']) ) {
@@ -117,40 +105,43 @@ while ($time_index < $timeArrayCounter) {
 			$totalTime = $invoiceArray[$index]['hour'];
 			$totalAmount = $invoiceArray[$index]['amount'];
 			$invoiceArray[$index] = array(
-				'desc'    => $activity,
-				'hour'    => $totalTime+$time,
-				'fduration' => $formattedDuration,
-				'amount'  => $totalAmount+$wage,
-				'date'    => $activityDate,
-				'description' => $description,
-				'comment' => $comment
+				'desc'          => $activity,
+				'hour'          => $totalTime+$time,
+				'fduration'     => $duration,
+				'amount'        => $totalAmount+$wage,
+				'date'          => $activityDate,
+				'description'   => $description,
+                'rate'          => ($totalAmount+$wage) / ($totalTime+$time),
+				'comment'       => $comment
 			);
 		}
 		else {
 			$invoiceArray[] = array(
-				'desc'=>$activity,
-				'hour'=>$time,
-				'fduration' => $formattedDuration,
-				'amount'=>$wage,
-				'date'=>$activityDate,
-				'description'=>$description,
-				'comment'=>$comment,
-				'username'=>'',
-				'useralias'=>''
+				'desc'          => $activity,
+				'hour'          => $time,
+				'fduration'     => $duration,
+				'amount'        => $wage,
+				'date'          => $activityDate,
+				'description'   => $description,
+                'rate'          => $rate,
+				'comment'       => $comment,
+				'username'      => '',
+				'useralias'     => ''
 			);
 		}
 	}
 	else {
 		$invoiceArray[] = array(
-			'desc'=>$activity,
-			'hour'=>$time,
-			'fduration' => $formattedDuration,
-			'amount'=>$wage,
-			'date'=>$activityDate,
-			'description'=>$description,
-			'comment'=>$comment,
-			'username'=>$userName,
-			'useralias'=>$userAlias
+			'desc'          => $activity,
+			'hour'          => $time,
+			'fduration'     => $duration,
+			'amount'        => $wage,
+			'date'          => $activityDate,
+			'description'   => $description,
+            'rate'          => $rate,
+			'comment'       => $comment,
+			'username'      => $userName,
+			'useralias'     => $userAlias
 		);
 	}
 	$time_index++;
@@ -202,23 +193,48 @@ if (strpos($tplFilename, '/') !== false) {
   die;
 }
 
+// ---------------------------------------------------------------------------
+
 $model = new Kimai_Invoice_PrintModel();
 $model->setEntries($invoiceArray);
+$model->setAmount($total);
+$model->setVatRate($vat_rate);
+$model->setTotal($gtotal);
+$model->setVat($vat);
+$model->setCustomer($customer);
+$model->setProject($projectObject);
+$model->setInvoiceId($invoiceID);
 
-$renderer = null;
+/*
+$project         = html_entity_decode($timeArray[0]['projectName']);
+$customerName    = html_entity_decode($timeArray[0]['customerName']);
+*/
+$model->setBeginDate($beginDate);
+$model->setEndDate($endDate);
+$model->setInvoiceDate(time());
+$model->setDateFormat($kga['conf']['date_format_2']);
+$model->setCurrencySign($kga['conf']['currency_sign']);
+$model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
 
-if ((stripos($tplFilename, '.odt') !== false || stripos($tplFilename, '.ods') !== false ) && is_file($baseFolder . $tplFilename)) {
-	$renderer = new Kimai_Invoice_OdtRenderer();
-}
-elseif (is_dir($baseFolder . $tplFilename) && is_file($baseFolder . $tplFilename . '/index.html')) {
-	$renderer = new Kimai_Invoice_HtmlToPdfRenderer();
-}
-else {
-	throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
+// ---------------------------------------------------------------------------
+$renderers = array(
+    'odt'   => new Kimai_Invoice_OdtRenderer(),
+    'html'  => new Kimai_Invoice_HtmlRenderer(),
+    'pdf'   => new Kimai_Invoice_HtmlToPdfRenderer()
+);
+
+/* @var $renderer Kimai_Invoice_AbstractRenderer */
+foreach($renderers as $rendererType => $renderer)
+{
+    $renderer->setTemplateDir($baseFolder);
+    $renderer->setTemplateFile($tplFilename);
+    $renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
+    if ($renderer->canRender()) {
+        $renderer->setModel($model);
+        $renderer->render();
+        return;
+    }
 }
 
-$renderer->setTemplateDir($baseFolder);
-$renderer->setTemplateFile($tplFilename);
-$renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
-$renderer->setModel($model);
-$renderer->render();
+// no renderer could be found
+throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
