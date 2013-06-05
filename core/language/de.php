@@ -262,6 +262,7 @@ return array(
 'table_date_format'         => ' Format des Datums in den Tabellen (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Notation für strftime()</a>)',
 'round_time'                => 'Zeit runden auf ',
 'round_time_minute'         => ' Minute(n).',
+'allowRoundDown'            => 'Erlaube das Abrunden von Zeiten.',
 'logged_in_as'              => 'Angemeldet als:',
 'decimal_separator'         => 'Dezimal-Trennzeichen',
 'view_filter'               => 'Ansichtsfilter',
