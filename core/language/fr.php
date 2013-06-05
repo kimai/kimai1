@@ -492,7 +492,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 ),
 
 'ext_budget' => array(
-  'unusedBudget' => 'Inutilisé'
+  'unusedBudget' => 'Disponible'
 ),
 
 'extensions' => array(
