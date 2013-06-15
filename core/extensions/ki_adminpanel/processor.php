@@ -471,6 +471,7 @@ switch ($axAction)
                           $config_data['status'] = implode(',', $_REQUEST['status']);
                   }
                   $config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
+                  $config_data['allowRoundDown'] = isset($_REQUEST['allowRoundDown']);
                   $config_data['roundMinutes'] = $_REQUEST['roundMinutes'];
                   $config_data['roundSeconds'] = $_REQUEST['roundSeconds'];
                   $config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];

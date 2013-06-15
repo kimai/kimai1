@@ -272,6 +272,7 @@ return array(
 'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
 'round_time' => 'Round time to ',
 'round_time_minute' => ' minute(s).',
+'allowRoundDown' => 'Allow rounding entries down.',
 'logged_in_as' => 'logged in as:',
 
 'decimal_separator'  => 'Decimal separator',

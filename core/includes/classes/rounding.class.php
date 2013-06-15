@@ -17,7 +17,7 @@ class Rounding {
   *@param $steps the steps in minutes (has to divide an hour, e.g. 5 is valid while 7 is not)
   *
   */
-  public static function roundTimespan($start,$end,$steps) {
+  public static function roundTimespan($start,$end,$steps,$allowRoundDown) {
     // calculate how long a steps is (e.g. 15 second steps are 900 seconds long)
     $stepWidth=$steps*60;
 
@@ -48,9 +48,9 @@ class Rounding {
     $bestTime['totalDeviation'] = abs($start-$earlierStart)+abs($end-$earlierEnd);
 
     // check for better start and end times
-    self::roundTimespanCheckIfBetter($bestTime,$earlierStart,$laterEnd,$start,$end);
-    self::roundTimespanCheckIfBetter($bestTime,$laterStart,$earlierEnd,$start,$end);
-    self::roundTimespanCheckIfBetter($bestTime,$laterStart,$laterEnd,$start,$end);
+    self::roundTimespanCheckIfBetter($bestTime,$earlierStart,$laterEnd,$start,$end,$allowRoundDown);
+    self::roundTimespanCheckIfBetter($bestTime,$laterStart,$earlierEnd,$start,$end,$allowRoundDown);
+    self::roundTimespanCheckIfBetter($bestTime,$laterStart,$laterEnd,$start,$end,$allowRoundDown);
 
     return $bestTime;
   }
@@ -65,20 +65,29 @@ class Rounding {
   * @param $realStart the real start time
   * @param $realEnd   the real end time
   */
-  private static function roundTimespanCheckIfBetter(&$bestTime,$newStart,$newEnd,$realStart,$realEnd) {
+  private static function roundTimespanCheckIfBetter(&$bestTime,$newStart,$newEnd,$realStart,$realEnd,$allowRoundDown) {
     $realDuration = $realEnd-$realStart;
     $newDuration = $newEnd-$newStart;
-
-    if (abs($realDuration-$newDuration) > abs($realDuration - $bestTime['duration'])) {
-      // new times are definitely worse, as the timespan is furher away from the real duration
-      return;
+    
+    if ($allowRoundDown) {
+      if (abs($realDuration-$newDuration) > abs($realDuration - $bestTime['duration'])) {
+        // new times are definitely worse, as the timespan is furher away from the real duration
+        return;
+      }
+  
+      // still, this might be closer to the real time
+      if (abs($realStart-$newStart)+abs($realEnd-$newEnd) >= $bestTime['totalDeviation']) {
+        // it is not
+        return;
+      }
     }
+    else {
+      if ($newDuration < $realDuration)
+        return;
 
-    // still, this might be closer to the real time
-    if (abs($realStart-$newStart)+abs($realEnd-$newEnd) >= $bestTime['totalDeviation']) {
-      // it is not
-      return;
-    }
+      if ($newDuration > $bestTime['duration'] && $bestTime['duration'] > $realDuration)
+        return;
+}
 
     // new time is better, update array
     $bestTime['start']    = $newStart;

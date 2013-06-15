@@ -386,6 +386,7 @@ exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('editLimit
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundTimesheetEntries', '0' );");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundMinutes', '0');");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundSeconds', '0');");
+exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('allowRoundDown', '0');");
 
 if ($errors) {
 

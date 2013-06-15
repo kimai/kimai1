@@ -218,10 +218,6 @@
                 var edit_out_time = $('#end_day').val()+$('#end_time').val();
                 var deleted = $('#erase').is(':checked');
                 
-                if (!deleted && edit_in_time == edit_out_time) {
-                    alert("<?php echo $this->kga['lang']['timediff_warn']?>");
-                    return false;
-                }
 
               if ($('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting')) {
                 return false;
