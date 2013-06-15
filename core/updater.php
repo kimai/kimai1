@@ -1699,6 +1699,11 @@ if ((int)$revisionDB < 1379) {
     printLine($level,'Updated autoconf.php to use MYSQL configuration in <i>autoconf.php</i>.');
 }
 
+if ((int)$revisionDB < 1380) {
+    Logger::logfile("-- update to r1380");
+    exec_query("INSERT INTO `${p}configuration` VALUES('allowRoundDown', '1');");
+}
+
 
 // ============================
 // = update DB version number =
