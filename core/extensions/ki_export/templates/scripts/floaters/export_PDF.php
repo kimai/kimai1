@@ -2,18 +2,18 @@
         
         $(document).ready(function() {
             $('#help').hide();
-            $('#floater input#timeformat').attr('value',$('#export_extension_timeformat').attr('value'));
-            $('#floater input#dateformat').attr('value',$('#export_extension_dateformat').attr('value'));
-            $('#floater input#default_location').attr('value',$('#export_extension_default_location').attr('value'));
-            $('#floater input#axValue').attr('value',filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"));
-            $('#floater input#filter_cleared').attr('value',$('#export_extension_tab_filter_cleared').attr('value'));
-            $('#floater input#filter_refundable').attr('value',$('#export_extension_tab_filter_refundable').attr('value'));
-            $('#floater input#filter_type').attr('value',$('#export_extension_tab_filter_type').attr('value'));
-            $('#floater input#axColumns').attr('value',export_enabled_columns());
+            $('#floater input#timeformat').prop('value',$('#export_extension_timeformat').prop('value'));
+            $('#floater input#dateformat').prop('value',$('#export_extension_dateformat').prop('value'));
+            $('#floater input#default_location').prop('value',$('#export_extension_default_location').prop('value'));
+            $('#floater input#axValue').prop('value',filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"));
+            $('#floater input#filter_cleared').prop('value',$('#export_extension_tab_filter_cleared').prop('value'));
+            $('#floater input#filter_refundable').prop('value',$('#export_extension_tab_filter_refundable').prop('value'));
+            $('#floater input#filter_type').prop('value',$('#export_extension_tab_filter_type').prop('value'));
+            $('#floater input#axColumns').prop('value',export_enabled_columns());
             $('.floater_content fieldset label').css('width','200px');
             
-            $('#floater input#first_day').attr('value',new Date($('#pick_in').val()).getTime()/1000);
-            $('#floater input#last_day').attr('value',new Date($('#pick_out').val()).getTime()/1000);
+            $('#floater input#first_day').prop('value',new Date($('#pick_in').val()).getTime()/1000);
+            $('#floater input#last_day').prop('value',new Date($('#pick_out').val()).getTime()/1000);
         }); 
         
     </script>
