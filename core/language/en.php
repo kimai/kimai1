@@ -53,6 +53,8 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Cancel",
 "edit"              => "Edit Entry",
+"editNote"			=> "Edit note",
+"note"				=> "Note",
 "close"             => "close",
 "construction"      => "under construction...",
 "about"             => "About",
@@ -99,6 +101,7 @@ return array(
 "now"               => "now",
 "specify"           => "specify list",
 "add"               => "add",
+"addNote"			=> "Add a note",
 "running"           => "Running...",
 "company"           => "Company",
 
@@ -289,7 +292,10 @@ return array(
 'dateAndTimeHelp' => '<strong>Times and dates have to be entered in the following form:</strong><br />
             Dates: DD.MM.YYYY<br />
             Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
-
+            
+'editNoteHelp' => '<strong>Comments can be entered in the order you wish<br />
+            and can be changed later if necessary, without limit.</strong>',
+            
 'timezone' => 'time zone',
 'defaultTimezone' => 'time zone for new users and customers',
 'editLimitPart1' => 'No entries can be added or edited which end more than',
@@ -301,12 +307,14 @@ return array(
 'showCommentsByDefault'     => 'show comments by default',
 'showTrackingNumber'        => 'show tracking number',
 'hideOverlapLines'          => 'Don\'t indicate time overlap of entries',
+'showQuickNote'				=> 'show quick note button',
 
 'general' => 'General',
 'address' => 'Address',
 'contact' => 'Contact',
 'list'=> 'List',
 'sublists' => 'Lower Lists',
+'timesheet' => 'Timesheet',
 
 "filter" => "Filter",
 

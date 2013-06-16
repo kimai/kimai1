@@ -360,6 +360,13 @@ function editRecord(id) {
     floaterShow(ts_ext_path + "floaters.php","add_edit_timeSheetEntry",0,id,650);
 }
 
+//----------------------------------------------------------------------------------------
+//edit a timesheet quick note
+//
+function editQuickNote(id) {
+  floaterShow(ts_ext_path + "floaters.php","add_edit_timeSheetQuickNote",0,id,650);
+}
+
 // ----------------------------------------------------------------------------------------
 // refresh the rate with a new value, if this is a new entry
 //

@@ -101,6 +101,14 @@ if ($this->timeSheetEntries)
            src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13'
            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
       <?php endif; ?>
+      
+      <?php if ($this->kga['conf']['showQuickNote'] > 0):
+    //Edit quick-note Button ?>
+        <a href ='#' onClick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+           title='<?php echo $this->kga['lang']['editNote']?>'><img
+           src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/editor_icon.png' width='14' height='14'
+           alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
+      <?php endif; ?>
 
       <?php if ($this->kga['conf']['quickdelete'] > 0):
     // quick erase trashcan  ?>

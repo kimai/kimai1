@@ -204,6 +204,66 @@ switch ($axAction) {
 
     echo $view->render("floaters/add_edit_timeSheetEntry.php"); 
 
-    break;        
+    break;
+
+    case "add_edit_timeSheetQuickNote":
+    	if (isset($kga['customer'])) die();
+    	// ================================================
+    	// = display edit dialog for timesheet quick note =
+    	// ================================================
+    	$selected = explode('|',$axValue);
+    
+    	$view->projects = makeSelectBox("project",$kga['user']['groups']);
+    	$view->activities = makeSelectBox("activity",$kga['user']['groups']);
+    
+    	if ($id) {
+    		$timeSheetEntry = $database->timeSheet_get_data($id);
+    		$view->id = $id;
+    		$view->location = $timeSheetEntry['location'];
+    
+    		// check if this entry may be edited
+    		if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
+    			if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
+    				break;
+    		}
+    		else if ($database->is_watchable_user($kga['user'], $timeSheetEntry['userID'])) {
+    			if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']),'ki_timesheets-otherEntry-ownGroup-edit'))
+    				break;
+    		}
+    		else if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-edit'))
+    			break;
+    
+    		// set list of users to what the user may do
+    		$users = array();
+    		if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-edit'))
+    			$users  = makeSelectBox("allUser",$kga['user']['groups']);
+    		else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']),'ki_timesheets-otherEntry-ownGroup-edit')) {
+    			$users = makeSelectBox("sameGroupUser",$kga['user']['groups']);
+    			if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
+    				$users[$kga['user']['userID']] = $kga['user']['name'];
+    		}
+    
+    		$view->users = $users;
+    
+    		$view->trackingNumber = $timeSheetEntry['trackingNumber'];
+    		$view->description = $timeSheetEntry['description'];
+    		$view->comment = $timeSheetEntry['comment'];
+    
+    		$view->commentType = $timeSheetEntry['commentType'];
+    		$view->cleared = $timeSheetEntry['cleared']!=0;
+    
+    		$view->userID = $timeSheetEntry['userID'];
+    
+    		$view->projectID = $timeSheetEntry['projectID'];
+    		$view->activityID = $timeSheetEntry['activityID'];
+    
+    		$view->commentType = $timeSheetEntry['commentType'];
+    		$view->statusID = $timeSheetEntry['statusID'];
+    		$view->billable_active = $timeSheetEntry['billable'];
+    		$view->commentTypes = $commentTypes;
+    	}
+    	echo $view->render("floaters/add_edit_timeSheetQuickNote.php");
+    
+    	break;
 
 }
