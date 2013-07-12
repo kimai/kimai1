@@ -28,14 +28,14 @@ function logfile(entry) {
 //
 function pageWidth() {
     pw = window.innerWidth != null ? window.innerWidth: document.documentElement && document.documentElement.clientWidth ? document.documentElement.clientWidth:document.body != null? document.body.clientWidth:null;
-    // the dimensions plugin seems not to return very accurate results when the window is resized SMALLER ... 
+    // the dimensions plugin seems not to return very accurate results when the window is resized SMALLER ...
     // often the right margin becomes to thick then
     // return $(window).width();
-    
+
     minwidth = $('html').css("min-width");
     minwidth = minwidth.replace(/px/,"");
 
-    if (minwidth > 0) { 
+    if (minwidth > 0) {
         if (pw < minwidth) {
             return minwidth;
         } else {
@@ -74,7 +74,7 @@ function floaterShow(phpFile, axAction, axValue, id, width, callback) {
     } else {
             floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
     }
-}    
+}
 function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
     $("#floater").load(phpFile,
         {
@@ -83,20 +83,20 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             id: id
         },
         function() {
-          
+
           $('#floater').css({width: width+"px"});
 
           resize_floater();
-          
+
           x = ($(document).width()-(width+10))/2;
           if (x<0) x=0;
           $("#floater").css({left:x+"px"});
           $("#floater").fadeIn(fading_enabled?200:0);
-          
-          $('#focus').focus();
+
+          $('#description').focus();
           $('.extended').hide();
           $('#floater_content').css("height",$('#floater_dimensions').outerHeight()+5);
- 
+
           // toggle class of the proberbly existing extended options button
           $(".options").toggle(function(){
               el = $(this);
@@ -109,12 +109,12 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
               el.removeClass("up");
               return false;
           });
-          
+
           if (callback != undefined)
             callback();
-          
+
         }
-    );  
+    );
 }
 
 function resize_floater() {
@@ -145,29 +145,29 @@ function floaterClose() {
 // change extension by tab
 //
 function changeTab(target,path) {
-    
+
     kill_reg_timeouts();
 
-  
+
   if ($("#loader").is(':hidden')) {
     // if previous extension was loaded save visibility of lists
     lists_visibility[$('#fliptabs li.act').attr('id')] = $('body>.lists').is(':visible');
   }
-    
+
 	$('#fliptabs li').removeClass('act');
 	$('#fliptabs li').addClass('norm');
-	
+
 	tab='#exttab_'+target;
 	$(tab).removeClass('norm');
 	$(tab).addClass('act');
-	
+
 	$('.ext').css('display','none');
-	
+
 	div='#extdiv_'+target;
 	$(div).css('display','block');
 
     // we don't want to load the tab content every time the tab is changed ...
-    is_extension_loaded = $(div).html();    
+    is_extension_loaded = $(div).html();
 	if (!is_extension_loaded) {
 	    $("#loader").show();
       lists_visible(false);
@@ -214,7 +214,7 @@ function checkupdate(path){
 
 // ----------------------------------------------------------------------------------------
 // runs the normal watch
-// 
+//
 var ZeitString, DatumsString = "";
 function n_uhr() {
         n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
@@ -223,35 +223,35 @@ function n_uhr() {
         Stunden = Jetzt.getHours();
         Minuten = Jetzt.getMinutes();
         Sekunden = Jetzt.getSeconds();
-        
+
         if (currentDay != Jetzt.getDate()) {
           // it's the next day
           $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
           currentDay = Jetzt.getDate();
-          
+
           // If the difference to the datepicker end date is less than one and a half day.
           // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
           if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
             setTimeframe(undefined,Jetzt);
           }
         }
-        
+
         var ZeitString = "";
-        
+
         if (Stunden < 10) {
             ZeitString += "0" + Stunden;
         }
         else {
             ZeitString += Stunden;
         }
-        
+
         if (Sekunden%2==0) {
           ZeitString += n_seperator;
         }
         else {
           ZeitString += ":";
         }
-        
+
         if (Minuten < 10) {
           ZeitString += "0" + Minuten;
         } else {
@@ -267,9 +267,9 @@ function n_uhr() {
 // after that it reloads all tables
 //
 function setTimeframe(fromDate,toDate) {
-    
+
     timeframe = '';
-    
+
     if (fromDate != undefined) {
       setTimeframeStart(fromDate);
       timeframe += strftime('%m-%d-%Y',fromDate);
@@ -277,9 +277,9 @@ function setTimeframe(fromDate,toDate) {
     else {
       timeframe += "0-0-0";
     }
-    
+
     timeframe += "|";
-    
+
     if (toDate != undefined) {
       setTimeframeEnd(toDate);
       timeframe += strftime('%m-%d-%Y',toDate);
@@ -287,13 +287,13 @@ function setTimeframe(fromDate,toDate) {
     else {
       timeframe += "0-0-0";
     }
-    
-    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 }, 
+
+    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 },
         function(response) {
             hook_timeframe_changed();
         }
     );
-    
+
     updateTimeframeWarning();
 }
 
@@ -310,20 +310,20 @@ function setTimeframeEnd(toDate) {
 }
 
 function updateTimeframeWarning() {
-    
+
     today = new Date();
     today.setMilliseconds(0);
     today.setSeconds(0);
     today.setMinutes(0);
     today.setHours(0);
-      
+
     if (new Date($('#pick_out').val()) < today) {
       $('#ts_out').addClass('datewarning')
     }
     else {
       $('#ts_out').removeClass('datewarning')
     }
-  
+
 }
 
 
@@ -375,9 +375,9 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
     show_selectors();
     return;
   }
-  
+
   startsec = record_startTime;
-  
+
   if (selected_project != projectID)
     buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
@@ -426,10 +426,10 @@ function buzzer_preselect_project(projectID,projectName,customerID,customerName,
   $("#selected_customer").html(customerName);
   $("#selected_project").html(projectName);
   $("#selected_customer").removeClass("none");
-  
+
   lists_reload('activity', function() {
     buzzer_preselect_update_ui('projects', projectID, updateRecording);
-  }); 
+  });
 }
 
 function buzzer_preselect_activity(activityID,activityName,updateRecording) {
@@ -440,25 +440,25 @@ function buzzer_preselect_activity(activityID,activityName,updateRecording) {
 }
 
 function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
-  
+
   if (updateRecording == undefined) {
     updateRecording = true;
   }
-    
+
   $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
   $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
   $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID).blur();
-  
+
   if (selected_project && selected_activity && $('#activities>table>tbody>tr>td>a.preselect>img[src$="preselect_on.png"]').length > 0) {
     $('#buzzer').removeClass('disabled');
   }
   else
     return;
-    
+
   $("#ticker_customer").html($("#selected_customer").html());
   $("#ticker_project").html($("#selected_project").html());
   $("#ticker_activity").html($("#selected_activity").html());
-  
+
   if (currentRecording > -1 && updateRecording) {
     $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running", id: currentRecording, project:selected_project, activity:selected_activity},
       function(data) {
@@ -480,7 +480,7 @@ function ticktac() {
     hour  = Math.floor(sek / 3600);
     min   = Math.floor((sek-hour*3600) / 60);
     sec   = Math.floor(sek-hour*3600-min*60);
-    
+
     if (sec==60) { sec=0; min++; }
     if (min > 59) { min = 0; hour++; }
     if (sec==0) $("#s").html("00");
@@ -541,10 +541,10 @@ function filter_selects(id, needle) {
       })
     })
   }
-  
+
   var selectedValue = $('#'+id).val();
   $('#'+id).removeOption(/./);
-  
+
   var i, cs = window['__cacheselect_'+id];
   for(i=0; i<cs.length; ++i) {
     if(cs[i].text.toLowerCase().indexOf(needle.toLowerCase()) !== -1) $('#'+id).addOption(cs[i].value, cs[i].text);
@@ -671,7 +671,7 @@ function lists_set_tableWrapperWidths() {
 }
 
 function lists_set_left() {
-    
+
     // push project/activity subtables in place LEFT
 
     leftmargin=0;
@@ -685,7 +685,7 @@ function lists_set_left() {
 
     $("#customers, #customers_head, #customers_foot").css("left",leftmargin+rightmargin+10);
     $('#usersShrink').css("left",userShrinkPos);
-    
+
     customerShrinkPos=userShrinkPos;
 
     if (customerShrinkMode==0) {
@@ -695,10 +695,10 @@ function lists_set_left() {
     }
 
     $("#projects, #projects_head, #projects_foot").css("left",leftmargin+rightmargin+10);
-    
+
     $("#activities, #activities_head, #activities_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
     $('#customersShrink').css("left",customerShrinkPos);
-    
+
 }
 
 function lists_set_heightTop() {
@@ -713,7 +713,7 @@ function lists_set_heightTop() {
         var subs = pageHeight()-headerHeight()-90+25;
         $("#users,#customers,#projects,#activities").css("top",subs);
         // push faked table heads of subtables in place
-        var subs = pageHeight()-headerHeight()-90;    
+        var subs = pageHeight()-headerHeight()-90;
         $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
         $('#extensionShrink').css("top",subs-10);
         $('#usersShrink').css("top",subs);
@@ -729,13 +729,13 @@ function lists_set_heightTop() {
         $('#customersShrink').css("top",headerHeight()+105);
         $('#usersShrink').css("top",headerHeight()+105);
     }
-    
+
     lists_set_TableWidths();
 }
 
 function lists_set_TableWidths() {
     lists_get_dimensions();
-    // set table widths   
+    // set table widths
     ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
     $("#users table").css("width",userColumnWidth-scr);
     ($("#customers").innerHeight()-$("#customers table").outerHeight()>0)?scr=0:scr=scroller_width; // same goes for subtables ....
@@ -777,9 +777,9 @@ function lists_reload(subject, callback) {
                 }
             );
     break;
-        case "project": 
+        case "project":
             $.post("processor.php", { axAction: "reload_projects", axValue: 0, id: 0 },
-                function(data) { 
+                function(data) {
                     $("#projects").html(data);
                     ($("#projects").innerHeight()-$("#projects table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#projects table").css("width",projectColumnWidth-scr);
@@ -791,9 +791,9 @@ function lists_reload(subject, callback) {
                 }
             );
     break;
-        case "activity": 
+        case "activity":
             $.post("processor.php", { axAction: "reload_activities", axValue: 0, id: 0, project:selected_project },
-                function(data) { 
+                function(data) {
                     $("#activities").html(data);
                     ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#activities table").css("width",activityColumnWidth-scr);
@@ -816,7 +816,7 @@ function lists_reload(subject, callback) {
 
 // ----------------------------------------------------------------------------------------
 //  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
-// 
+//
 function lists_live_filter(div_list, needle) {
   $('#'+div_list+' tr ').filter(function(index) {
     return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) === -1);
@@ -829,16 +829,16 @@ function lists_live_filter(div_list, needle) {
 
 function lists_customer_prefilter(customer,type) {
     if (type=="highlight") {
-        
+
         $(".customer").removeClass("filterProjectForPreselection");
         $(".project").removeClass("filterProjectForPreselection");
         $("#projects .customer"+customer).addClass("filterProjectForPreselection");
         $("#projects .project").removeClass("TableRowInvisible");
 
-        
+
     } else {
-        
-        $(".customer").removeClass("filterProjectForPreselection");      
+
+        $(".customer").removeClass("filterProjectForPreselection");
         $(".project").removeClass("filterProjectForPreselection");
         $("#customers .customer"+customer).addClass("filterProjectForPreselection");
         $("#projects .project").removeClass("highlightProjectForPreselection");
@@ -849,7 +849,7 @@ function lists_customer_prefilter(customer,type) {
         else {
           $("#projects .project").removeClass("TableRowInvisible");
         }
-        
+
     }
 }
 
@@ -918,7 +918,7 @@ function lists_filter_select_all(subjectPlural) {
 function lists_filter_deselect_all(subjectPlural) {
   $('#'+subjectPlural+' tr').each(function(index) {
     if (! $(this).hasClass('fhighlighted') ) return;
-                            
+
     var subjectSingular = $(this).attr('id').substring(4);
     lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
   });
@@ -935,7 +935,7 @@ function lists_filter_select_invert(subjectPlural) {
 
 function lists_toggle_filter(subject,id) {
     var rowElement = $('#row_'+subject+'[data-id="'+id+'"]');
-    
+
     if (rowElement.hasClass('fhighlighted')) {
         rowElement.removeClass('fhighlighted');
         switch (subject) {
@@ -1006,7 +1006,7 @@ function validatePassword(password,retypePassword) {
 function setFloaterErrorMessage(fieldName,message) {
   if (fieldName == '')
     fieldName = "floater_tabs";
-    
+
   var li = $("#floater_innerwrap #"+fieldName).closest('li');
   if (li.length == 0) {
       li = $("#floater_innerwrap [name='"+fieldName+"']").closest('li');
@@ -1016,7 +1016,7 @@ function setFloaterErrorMessage(fieldName,message) {
   }
   li.prepend('<div class="errorMessage">'+message+'</div>');
   li.addClass('errorField');
-  
+
   // indicate in tab header
   var id = li.closest('fieldset').attr('id');
   $("#floater_innerwrap .menu a[href='#" + id + "']").addClass("tabError");
