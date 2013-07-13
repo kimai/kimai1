@@ -1,7 +1,7 @@
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         $(document).ready(function() {
             export_extension_onload();
-        }); 
+        });
     </script>
 
 
@@ -43,7 +43,7 @@
                 <td class="wage"><a class="wage <?php if (isset($this->disabled_columns['wage'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('wage');"><?php echo $this->kga['lang']['total']?></a></td>
                 <td class="budget <?php if (isset($this->disabled_columns['budget'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('budget');"><?php echo $this->kga['lang']['budget']?></a></td>
                 <td class="approved <?php if (isset($this->disabled_columns['approved'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('approved');"><?php echo $this->kga['lang']['approved']?></a></td>
-                <td class="status <?php if (isset($this->disabled_columns['status'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('status);"><?php echo $this->kga['lang']['status']?></a></td>
+                <td class="status <?php if (isset($this->disabled_columns['status'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('status');"><?php echo $this->kga['lang']['status']?></a></td>
                 <td class="billable <?php if (isset($this->disabled_columns['billable'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('billable');"><?php echo $this->kga['lang']['billable']?></a></td>
                 <td class="customer <?php if (isset($this->disabled_columns['customer'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('customer');"><?php echo $this->kga['lang']['customer']?></a></td>
                 <td class="project <?php if (isset($this->disabled_columns['project'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('project');"><?php echo $this->kga['lang']['project']?></a></td>
@@ -55,7 +55,7 @@
 	                <a class="location <?php if (isset($this->disabled_columns['location'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('location');"><?php echo $this->kga['lang']['location']?></a>,
 	                <a class="trackingNumber <?php if (isset($this->disabled_columns['trackingNumber'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('trackingNumber');"><?php echo $this->kga['lang']['trackingNumber']?></a>
 				</td>
-				
+
                 <td class="user <?php if (isset($this->disabled_columns['user'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('user');"><?php echo $this->kga['lang']['username']?></a></td>
             </tr>
         </tbody>
