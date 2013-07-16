@@ -32,10 +32,7 @@
         </antcall>
 		<move todir="${target.release.dir}/extensions/#ext_debug/">
 			<fileset dir="${target.release.dir}/extensions/ext_debug/"/>
-		</move>		
-		<move todir="${target.release.dir}/extensions/#ki_demoextension/">
-			<fileset dir="${target.release.dir}/extensions/ki_demoextension/"/>
-		</move>		
+		</move>
         <antcall target="create-archives" />
 	</target>
 
