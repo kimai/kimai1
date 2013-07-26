@@ -24,6 +24,8 @@
  
 require('includes/basics.php');
 
+if (!is_writable(WEBROOT."includes/autoconf.php")) die("Please fix write permission for file : ".WEBROOT."includes/autoconf.php");
+if (!is_writable(WEBROOT."temporary/logfile.txt")) die("Please fix write permission for file : ".WEBROOT."temporary/logfile.txt");
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
