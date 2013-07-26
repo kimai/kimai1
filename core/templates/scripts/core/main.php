@@ -58,6 +58,8 @@
 
         var currentRecording      = <?php echo $this->currentRecording?>;
 
+        var openAfterRecorded      = <?php echo json_encode($this->openAfterRecorded) ?>;
+
         <?php if ($this->kga['conf']['quickdelete'] == 2): ?>
         var confirmText           = "<?php echo $this->escape($this->kga['lang']['sure']) ?>";
         <?php else: ?>
