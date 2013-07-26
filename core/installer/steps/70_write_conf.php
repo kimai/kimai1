@@ -3,8 +3,8 @@ echo '<script type="text/javascript" charset="utf-8">current=70;</script>';
 
 $database = $_REQUEST['database'];
 $prefix = $_REQUEST['prefix'];
-if ( strlen($database) > 64 || !preg_match('/^[a-zA-Z0-9_-]+$/',$database) ||
-     strlen($prefix)   > 64 || !preg_match('/^[a-zA-Z0-9_-]+$/',$prefix) ) {
+if ( strlen($database) > 64 || !preg_match('/^[a-zA-Z0-9_-]+$/', $database) ||
+     strlen($prefix)   > 64 || !preg_match('/^[a-zA-Z0-9_-]*$/', $prefix) ) {
 echo '<script type="text/javascript" charset="utf-8">step_back();</script>';
 }
 

@@ -139,7 +139,7 @@ else {
   }
 
     // Table prefix
-    if ( $prefix != 'kimai' && !preg_match('/^[a-zA-Z0-9_]+$/',$prefix) ) {
+    if ( $prefix != 'kimai' && strlen($prefix) > 0 && !preg_match('/^[a-zA-Z0-9_]+$/',$prefix) ) {
       $errors = true;
       $prefixErrorMessage = ($lang=="de")?"Nur Buchstaben, Zahlen und Unterstriche.":"Only letters, numbers and underscores.";
     }
