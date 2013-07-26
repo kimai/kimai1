@@ -154,35 +154,11 @@ else
 ?>
 
 <script type="text/javascript"> 
-    expense_user_annotations = null;
-    expense_customer_annotations = null;
-    expense_project_annotations = null;
-    expense_activity_annotations = null;
+    expense_user_annotations = <?php echo json_encode($this->user_annotations); ?>;
+    expense_customer_annotations = <?php echo json_encode($this->customer_annotations) ?>;
+    expense_project_annotations = <?php echo json_encode($this->project_annotations) ?>;
+    expense_activity_annotations = <?php echo json_encode($this->activity_annotations) ?>;
     expenses_total = '<?php echo $this->total?>';
-
-    <?php if ($this->user_annotations): ?>
-    expense_user_annotations = new Array();
-    <?php foreach ($this->user_annotations as $id => $value): ?>
-      expense_user_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->customer_annotations): ?>
-    expense_customer_annotations = new Array();
-    <?php foreach ($this->customer_annotations as $id => $value): ?>
-      expense_customer_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->project_annotations): ?>
-    expense_project_annotations = new Array();
-    <?php foreach ($this->project_annotations as $id => $value): ?>
-      expense_project_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->activity_annotations): ?>
-    expense_activity_annotations = new Array();
-    <?php foreach ($this->activity_annotations as $id => $value): ?>
-      expense_activity_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
     
     lists_update_annotations(parseInt($('#gui div.ki_expenses').attr('id').substring(7)),expense_user_annotations,expense_customer_annotations,expense_project_annotations,expense_activity_annotations);
     $('#display_total').html(expenses_total);
