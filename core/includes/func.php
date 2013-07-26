@@ -282,6 +282,12 @@ function createPassword($length) {
 }
 
 function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null) {
+  $database = addcslashes($database, '"$');
+  $hostname = addcslashes($hostname, '"$');
+  $username = addcslashes($username, '"$');
+  $password = addcslashes($password, '"$');
+  $timezone = addcslashes($timezone, '"$');
+
   $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
   if (!$file) return false;
   if (empty($timezone)) { $timezone = 'date_default_timezone_get()'; } else { $timezone = '"' . $timezone . '"'; }
