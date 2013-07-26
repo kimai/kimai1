@@ -512,10 +512,15 @@
                    <?php if (count($this->users) > 0): ?>
                    <li>
                        <label for="userID"><?php echo $this->kga['lang']['user']?>:</label>
-                       <?php echo $this->formSelect('userID', $this->userID, array(
-                         'id' => 'userID',
-                         'class' => 'formfield',
-                         'tabindex' => '14'), $this->users); ?>
+                       <?php echo $this->formSelect(
+                         isset($this->id) ? 'userID' : 'userID[]',
+                         $this->userID,
+                         array(
+                           'id' => 'userID',
+                           'class' => 'formfield',
+                           'multiple' => isset($this->id) ? '' : 'multiple',
+                           'tabindex' => '14'),
+                         $this->users); ?>
                    </li>
                    <?php else: ?>
                    <input type="hidden" name="userID" value="<?php echo $this->kga['user']['userID'];?>"/>

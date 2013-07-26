@@ -42,6 +42,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       Logger::logfile($scope.': '.$this->conn->Error());
   }
 
+  public function transaction_begin() {
+    return $this->conn->TransactionBegin();
+  }
+
+  public function transaction_end() {
+    return $this->conn->TransactionEnd();
+  }
+
+  public function transaction_rollback() {
+    return $this->conn->TransactionRollback();
+  }
 
   /**
   * Add a new customer to the database.
