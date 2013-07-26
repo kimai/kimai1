@@ -187,6 +187,7 @@ return array(
 "refundable"        => "Rückerstattbar",
 "yes"                       => "ja",
 "no"                        => "nein",
+"default"           => "Vorauswahl",
 "commentType"               => "Kommentar-Art",
 "ctype0"                    => "Kommentar",
 "ctype1"                    => "Notiz",

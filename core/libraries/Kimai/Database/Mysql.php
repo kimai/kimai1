@@ -3147,6 +3147,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @return id of the new entry or false on failure
   */
   public function startRecorder($projectID,$activityID,$user,$startTime) {
+      global $kga;
+
       $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER  );
       $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER  );
       $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
@@ -3157,7 +3159,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $values ['activityID'] = $activityID;
       $values ['start']    = $startTime;
       $values ['userID'] = $user;
-      $values ['statusID'] = 1;
+      $values ['statusID'] = $kga['conf']['defaultStatusID'];
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
       if ($rate)
         $values ['rate'] = $rate;

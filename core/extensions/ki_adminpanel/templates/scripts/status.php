@@ -7,6 +7,7 @@
     <thead>
         <tr class='headerrow'>
             <th><?php echo $this->kga['lang']['status']?></th>
+            <th><?php echo $this->kga['lang']['default']?></th>
             <th><?php echo $this->kga['lang']['options']?></th>
         </tr>
     </thead>
@@ -31,6 +32,10 @@
 
                 <td>
                     <?php echo $this->escape($statusarray['status'])?>
+                </td>
+
+                <td>
+                    <?php echo $statusarray['statusID'] == $this->kga['conf']['defaultStatusID'] ? $this->kga['lang']['default'] : '' ?>
                 </td>
 
                 <td>

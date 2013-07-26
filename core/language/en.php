@@ -191,6 +191,7 @@ return array(
 "refundable"        => "Refundable",
 "yes"               => "yes",
 "no"                => "no",
+"default"           => "default",
 "commentType"      => "Comment type",
 "ctype0"            => "Comment",
 "ctype1"            => "Notice",
