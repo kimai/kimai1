@@ -145,11 +145,11 @@ switch ($axAction) {
     case ("write_config"):
     include("../includes/func.php");
      // special characters " and $ are escaped
-    $database    = addcslashes($_REQUEST['database'],'"$');
-    $hostname    = addcslashes($_REQUEST['hostname'],'"$');
-    $username    = addcslashes($_REQUEST['username'],'"$');
-    $password    = addcslashes($_REQUEST['password'],'"$');
-    $timezone    = addcslashes($_REQUEST['timezone'],'"$');
+    $database    = $_REQUEST['database'];
+    $hostname    = $_REQUEST['hostname'];
+    $username    = $_REQUEST['username'];
+    $password    = $_REQUEST['password'];
+    $timezone    = $_REQUEST['timezone'];
     $db_layer    = $_REQUEST['db_layer'];
     $db_type     = $_REQUEST['db_type'];
     $prefix      = addcslashes($_REQUEST['prefix'],'"$');
