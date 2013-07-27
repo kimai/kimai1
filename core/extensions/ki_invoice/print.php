@@ -18,6 +18,7 @@
  */
 
 include_once('../../includes/basics.php');
+
 /**
  * returns true if activity is in the arrays
  *
@@ -58,98 +59,30 @@ $timeframe       = get_timeframe();
 $in              = $timeframe[0];
 $out             = $timeframe[1];
 
-$timeArray = $database->get_timeSheet($in, $out, null, null, array($_REQUEST['projectID']), null,false,false,$_REQUEST['filter_cleared']);
+require_once('private_func.php');
 
-if (count($timeArray) == 0) {
+$invoiceArray = invoice_get_data($in, $out, array($_REQUEST['projectID']), $_REQUEST['filter_cleared'], isset($_REQUEST['short']));
+
+if (count($invoiceArray) == 0) {
     echo '<script language="javascript">alert("'.$kga['lang']['ext_invoice']['noData'].'")</script>';
     return;
 }
 
 // ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
 
-$invoiceArray    = array();
 $date            = time();
 $month           = $kga['lang']['months'][date("n", $out)-1];
 $year            = date("Y", $out);
-$customer        = $database->customer_get_data($timeArray[0]['customerID']);
-$projectObject   = $database->project_get_data($timeArray[0]['projectID']);
-$project         = html_entity_decode($timeArray[0]['projectName']);
-$customerName    = html_entity_decode($timeArray[0]['customerName']);
+$projectObject   = $database->project_get_data($_REQUEST['projectID']);
+$customer        = $database->customer_get_data($projectObject['customerID']);
+$project         = html_entity_decode($projectObject['name']);
+$customerName    = html_entity_decode($customer['name']);
 $beginDate       = $in;
 $endDate         = $out;
 $invoiceID       = $customerName. "-" . date("y", $in). "-" . date("m", $in);
 $today           = time();
 $dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 
-//var_dump($timeArray);exit;
-
-// MERGE SORT
-$time_index   = 0;
-$timeArrayCounter = count($timeArray);
-while ($time_index < $timeArrayCounter) {
-	$wage           = $timeArray[$time_index]['wage'];
-	$time           = $timeArray[$time_index]['duration']/3600;
-	$duration       = $timeArray[$time_index]['formattedDuration'];
-	$activity       = html_entity_decode($timeArray[$time_index]['activityName']);
-	$comment        = $timeArray[$time_index]['comment'];
-    $trackingnr     = $timeArray[$time_index]['trackingNumber'];
-	$description    = $timeArray[$time_index]['description'];
-	$activityDate   = date("m/d/Y", $timeArray[$time_index]['start']);
-	$userName       = $timeArray[$time_index]['userName'];
-	$userAlias      = $timeArray[$time_index]['userAlias'];
-    $rate           = $timeArray[$time_index]['rate'];
-
-	// do we have to create a short form?
-	if ( isset($_REQUEST['short']) ) {
-		$index = array_activity_exists($invoiceArray,$activity);
-		if ( $index >= 0 ) {
-			$totalTime = $invoiceArray[$index]['hour'];
-			$totalAmount = $invoiceArray[$index]['amount'];
-			$invoiceArray[$index] = array(
-				'desc'          => $activity,
-				'hour'          => $totalTime+$time,
-				'fduration'     => $duration,
-				'amount'        => $totalAmount+$wage,
-				'date'          => $activityDate,
-				'description'   => $description,
-                'rate'          => ($totalAmount+$wage) / ($totalTime+$time),
-                'trackingNr'    => $trackingnr,
-				'comment'       => $comment
-			);
-		}
-		else {
-			$invoiceArray[] = array(
-				'desc'          => $activity,
-				'hour'          => $time,
-				'fduration'     => $duration,
-				'amount'        => $wage,
-				'date'          => $activityDate,
-				'description'   => $description,
-                'rate'          => $rate,
-                'trackingNr'    => $trackingnr,
-				'comment'       => $comment,
-				'username'      => '',
-				'useralias'     => ''
-			);
-		}
-	}
-	else {
-		$invoiceArray[] = array(
-			'desc'          => $activity,
-			'hour'          => $time,
-			'fduration'     => $duration,
-			'amount'        => $wage,
-			'date'          => $activityDate,
-			'description'   => $description,
-            'rate'          => $rate,
-            'trackingNr'    => $trackingnr,
-			'comment'       => $comment,
-			'username'      => $userName,
-			'useralias'     => $userAlias
-		);
-	}
-	$time_index++;
-}
 
 $round = 0;
 // do we have to round the time ?
