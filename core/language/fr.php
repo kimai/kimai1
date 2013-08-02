@@ -493,6 +493,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 ),
 
 'permissions' => array(
+		'view' => 'vue',
 		'edit' => 'éditer',
 		'delete' => 'effacer',
 		'assign' => 'assigner',
@@ -525,12 +526,16 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'extensionsTitle' => 'Titre de modules',
 'extensions' => array(
 'ki_timesheet' => 'Feuille de temps',
+'ki_timesheets' => 'Feuilles de temps',
 'ki_expenses' => 'Dépenses',
 'ki_invoice' => 'Facturation',
 'deb_ext' => 'Débugage',
 'ap_ext' => 'Préférences',
 'ki_budget' => 'Budget',
-'ki_export' => 'Exporter'
+'ki_export' => 'Exporter',
+'adminPanel_extension' => 'Administration',
+'core' => 'noyau',
+'demo_ext' => 'Démo',
 ),
 
 "log_delete"	=> "Le journal a été effacé",
