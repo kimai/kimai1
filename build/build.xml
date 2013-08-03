@@ -40,8 +40,7 @@
         Creates all required empty directories, which might not be available from repository.
     -->
     <target name="empty-directories" depends="check-settings" if="release.initialized">
-        <mkdir dir="${release.path}/compile/" />
-    </target>	
+    </target>
 
 	<!--
 		This task creates a KIMAI file release.
