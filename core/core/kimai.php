@@ -245,6 +245,16 @@ $view->hook_filter = $extensions->filterHooks();
 $view->hook_resize = $extensions->resizeHooks();
 $view->timeoutlist = $extensions->timeoutList();
 
+$basePath = $view->getScriptPath('core');
+$skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
+// allow skin specific template
+if(file_exists($skinTpl)) {
+    echo $view->render('/core/' . $kga['conf']['skin'] . '.php');
+    return;
+}
+
+// render default template
 echo $view->render('core/main.php');
+
 
 ?>
