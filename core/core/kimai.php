@@ -229,6 +229,46 @@ else
 
 
 
+// =========================
+// = BUILD MAIN NAVIGATION =
+// =========================
+
+$title = "Timesheet";
+if (isset($kga['lang']['extensions']['ki_timesheet'])) {
+    $title = $kga['lang']['extensions']['ki_timesheet'];
+}
+
+$entries = array(
+    array(
+        'title'     => $title,
+        'onclick'   => "changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();",
+        'class'     => 'act',
+        'id'        => 'exttab_0'
+    )
+);
+
+for($i = 0; $i < count($view->extensions); $i++)
+{
+    $extension = $view->extensions[$i];
+
+    if (!$extension['name'] OR $extension['key'] == "ki_timesheet") {
+        continue;
+    }
+
+    $title = $view->escape($extension['name']);
+    if (isset($kga['lang']['extensions'][$extension['key']])) {
+        $title = $kga['lang']['extensions'][$extension['key']];
+    }
+
+    $entries[] = array(
+        'title'     => $title,
+        'onclick'   => "changeTab(". ($i+1) . ", '".$extension['initFile']."'); ".$extension['tabChangeTrigger'].";",
+        'class'     => 'norm',
+        'id'        => 'exttab_'. ($i+1)
+    );
+}
+$view->main_navigation = $entries;
+
 // ========================
 // = BUILD HOOK FUNCTIONS =
 // ========================
@@ -247,11 +287,14 @@ $view->timeoutlist = $extensions->timeoutList();
 
 $basePath = $view->getScriptPath('core');
 $skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
+
 // allow skin specific template
 if(file_exists($skinTpl)) {
     echo $view->render('/core/' . $kga['conf']['skin'] . '.php');
     return;
 }
+// allow skin view helper
+$view->addHelperPath(WEBROOT . '/templates/helpers/', 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
 
 // render default template
 echo $view->render('core/main.php');
