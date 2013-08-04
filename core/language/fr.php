@@ -31,6 +31,8 @@
  * français
  * by Willem van Gemert
  * et diaoul 02/11/10 encodé en ANSI AS UTF-8 rev 394
+ * Updated by: Claude Gélinas 
+ * Process date: 2013-08-01 09:44:37
  */
 return array(
 "countryCode"       => "fr-FR",
@@ -46,6 +48,8 @@ return array(
 "out"               => "Sortie",
 "time"              => "h:mn",
 "timelabel"         => "Temps",
+'starttime' 		=> 'Temps de départ',
+'DateTimeNotInFuture' => 'La date et l\'heure ne peuvent être dans le futur.',
 "durationlabel"     => "Durée",
 "customer"          => "Client",
 "project"           => "Projet",
@@ -62,6 +66,7 @@ return array(
 "submit"            => "OK",
 "cancel"            => "Annuler",
 "edit"              => "Modifier Entrée",
+'close' 			=> 'Fermer',
 "construction"      => "en construction...",
 "about"             => "A propos de",
 "hours"             => "heures",
@@ -95,6 +100,9 @@ return array(
 "username"          => "Usager",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
+'retypePassword' 	=> 'réentrer le mot de passe',
+'passwordsDontMatch' => 'Les mots de passe ne correspondent pas.',
+'passwordTooShort' 	=> 'Le mot de passe doit avoir au moins 5 caractères.',
 "minLength"         => "min. 5 caractères!",
 "update"            => "La structure de la base de données de la version Kimai installée a été mise à jour.<br />Nous recommandons de sauvegarder vos données pour éviter toute perte<br />durant la procédure de mise a jour.",
 "updateNow"         => "Mise à jour de la base de données en cours!",
@@ -132,6 +140,7 @@ return array(
 "editstatus"		=> "Editer le statut",
 "new_status"        => "Ajouter un statut",
 "delete_status"     => "Efacer un statut",
+'description' 		=> 'Description',
 "globalRole"        => "permission globale",
 "addGlobalRole"     => "ajouter une permission globale",
 "editGlobalRole"    => "éditer une permission globale",
@@ -148,11 +157,11 @@ return array(
 "bantime"           => "Durée du bloquage en secondes",
 "lastdbbackup"      => "Dernière sauvegarde",
 "runbackup"         => "Sauvegarde immédiate",
-"defaultGroup"        => "Défaut (0)",
+"defaultGroup"      => "Défaut (0)",
 "user"              => "Utilisateur standard",
 "editUser"          => "Editer l'utilisateur",
-"editGroup"           => "Editer le groupe",
-"delete_group"            => "Supprimer groupe",
+"editGroup"         => "Editer le groupe",
+"delete_group"      => "Supprimer groupe",
 "delete_project"    => "Supprimer projet",
 "delete_customer"   => "Supprimer client",
 "delete_activity"   => "Supprimer tâche",
@@ -164,6 +173,7 @@ return array(
 "activeAccount"     => "Utilisateur actif - cliquer pour désactiver",
 "members"           => "Membres",
 "nopasswordset"     => "Aucun mot de passe enregistré",
+'nopassword' 		=> 'Pas de mot de passe',
 "noItems"           => "Pas d'entrées",
 "DBname"            => "Nom de la base de données",
 "autoselection"     => "Sélection automatique",
@@ -205,6 +215,10 @@ return array(
 "showitem"          => "Rendre visible",
 "hideitem"          => "Rendre invisible",
 "checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champ à gauche du bouton Ajouter!",
+'checkGroupname' 	=> 'Vous devez entrer un nom de groupe à la gauche du bouton ajouter!',
+'checkStatusname' 	=> 'Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!',
+'checkGlobalRoleName' => 'Vous devez entrer un nom d\'activité dans le champs à la gauche du bouton ajouter!',
+'checkMembershipRoleName' => 'Vous devez entrer un nom d\'activité dans le champs à la gauche du bouton ajouter!',
 "clickToReload"     => "Cliquer ici pour relancer l'interface graphique",
 "sure"              => "Etes-vous sûr?",
 "clock"             => "Horloge",
@@ -227,6 +241,7 @@ return array(
 "time_billable"     => "Facturation horaire",
 "billable"          => "Facturation",
 "budget"            => "Budget",
+'effort' 			=> 'Effort',
 "budget_available" 	        => "Budget disponible",
 "budget_activity" 		    => "Budget de la tâche",
 "budget_activity_used"      => "Budget utilisé",
@@ -238,18 +253,21 @@ return array(
 "approved"          => "Approuvé",
 "my_rate"           => "Mon taux",
 "fixedRate"         => "Taux fixe",
+'used' 				=> 'Utilisé',
 "wage"              => "Coût",
-
+"roundTimesheetEntries" => "Arrondir la nouvelle entrée à",
+"minutes" 			=> "Minutes",
+"seconds" 			=> "Segondes",
+"and" 				=> "et",
 "customerlogin"     => "Login client",
 
 "expense"           => "Dép.",
 "designation"       => "Désignation",
 
 "cleared"           => "validé",
-
+"atLeastOneGroup" 	=> "Au moins un groupe doit être sélectionné.",
 "noFading"          => "Pas d'effet fondu",
 "user_list_hidden"  => "Cacher la liste util. par défaut",
-"checkStatusname"    => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
 'show_sensible_data' => 'Montrer les données sensibles aussi dans l\'extension Débugage.',
 'show_update_warn' => 'Désactiver l\'alerte avant une mise à jour.',
 'check_at_startup' => 'Montrer un message sur la page de conection si une nouvelle version est disponible.',
@@ -265,6 +283,7 @@ return array(
 'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
 'round_time' => 'Arrondir le temps à ',
 'round_time_minute' => ' minute(s).',
+'allowRoundDown' 	=> 'Permettre d\'arrondir vers le bas.',
 'logged_in_as' => 'Connecté comme:',
 
 'decimal_separator'  => 'Séparateur décimal',
@@ -272,7 +291,7 @@ return array(
 'view_filter' => 'Voir le filtre',
 'unassigned' => 'Aucun',
 'all_activities' => '&lt;&lt;Tous&gt;&gt;',
-
+'all' 			 => 'tous',
 'durationWithSeconds' => 'Montrer la durée à la seconde près.',
 
 'multiplier' => 'Multiplicateur',
@@ -288,14 +307,20 @@ return array(
 
 'timezone' => 'fuseau horaire',
 'defaultTimezone' => 'fuseau horaire pour les nouveaux utilisateurs et clients',
-
+'editLimitPart1'  => 'Aucune entrée ne peut être ajoutée ou éditée se terminant après le',
+'editLimitPart2'  => 'jour(s) et',
+'editLimitPart3'  => 'heure(s) dans le passé.',
+'editLimitError'  => 'La date de fin est plus loin dans le passé qu\il n\'est permit d\'être.',
 'hideClearedEntries' => 'cacher les données supprimées',
-
+'showCommentsByDefault' => 'afficher le commentaire par défaut',
+'showTrackingNumber' => 'afficher le numéro de suivit',
+'hideOverlapLines' => 'Ne pas afficher les chevauchement des temps d\'entrée',
 'general' => 'Général',
 'address' => 'Adresse',
 'contact' => 'Contact',
-
-"filter" => "Filtre",
+'list' 	  => 'Liste',
+'sublists' => 'sous-listes',
+"filter"  => "Filtre",
 
 'internalProject' => 'Projet interne',
 
@@ -306,7 +331,9 @@ return array(
 'installerWarningText' => 'Vous devez supprimer le dossier d\'installation (INSTALL) afin que personne ne puisse ré-installer KIMAI.',
 
 'change' => 'change',
-
+'sublistAnnotations' => 'anotation de sous-liste',
+'TimeDateInputError' => 'Le temps ou la date entrée ne sont pas valides.',
+'StartTimeBeforeEndTime' => 'Le temps de départ doit être antérieur au temps de fin.',
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow et autres...<br />
         
@@ -466,6 +493,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 ),
 
 'permissions' => array(
+		'view' => 'vue',
 		'edit' => 'éditer',
 		'delete' => 'effacer',
 		'assign' => 'assigner',
@@ -495,14 +523,19 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
   'unusedBudget' => 'Disponible'
 ),
 
+'extensionsTitle' => 'Titre de modules',
 'extensions' => array(
 'ki_timesheet' => 'Feuille de temps',
+'ki_timesheets' => 'Feuilles de temps',
 'ki_expenses' => 'Dépenses',
 'ki_invoice' => 'Facturation',
 'deb_ext' => 'Débugage',
 'ap_ext' => 'Préférences',
 'ki_budget' => 'Budget',
-'ki_export' => 'Exporter'
+'ki_export' => 'Exporter',
+'adminPanel_extension' => 'Administration',
+'core' => 'noyau',
+'demo_ext' => 'Démo',
 ),
 
 "log_delete"	=> "Le journal a été effacé",
