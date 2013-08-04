@@ -24,8 +24,17 @@
  
 require('includes/basics.php');
 
-if (!is_writable(WEBROOT."includes/autoconf.php")) die("Please fix write permission for file : ".WEBROOT."includes/autoconf.php");
-if (!is_writable(WEBROOT."temporary/logfile.txt")) die("Please fix write permission for file : ".WEBROOT."temporary/logfile.txt");
+if (!file_exists(WEBROOT."includes/autoconf.php")) {
+    die("Updater needs  an existing kimai configuration. Missing file: includes/autoconf.php");
+} else if (!is_writable(WEBROOT."includes/autoconf.php")) {
+    die("Please fix write permission for file : ".WEBROOT."includes/autoconf.php");
+}
+
+if (!file_exists(WEBROOT."temporary/logfile.txt") && !is_writable(WEBROOT."temporary/")) {
+    die("Please fix write permission for directory: ".WEBROOT."temporary/");
+} else if (file_exists(WEBROOT."temporary/logfile.txt") && !is_writable(WEBROOT."temporary/logfile.txt")) {
+    die("Please fix write permission for file : ".WEBROOT."temporary/logfile.txt");
+}
 
 if (!$kga['revision']) die("Database update failed. (Revision not defined!)");
 
