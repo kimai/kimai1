@@ -14,10 +14,8 @@
     left:10px;
 }
 
-
-
-#timeSheet { 
-    top:150px;
+#timeSheet {
+    top: 30px;
     z-index:2;
 }
 
@@ -34,7 +32,7 @@
     font-weight:bold;
 }
 
-#timeSheet_head { top:125px; }
+#timeSheet_head { top:5px; }
 
 #timeSheet_head table { border:none; }
 

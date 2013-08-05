@@ -31,7 +31,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
         'ki_demoextension'      => 'icon-wrench',
         'ki_adminpanel'         => 'icon-cogs',
         'adminPanel_extension'  => 'icon-cogs',
-        'ki_budget'             => 'icon-bar-chart',
+        'ki_budget'             => 'icon-signal',
         'ki_expenses'           => 'icon-money', // icon-credit-card
         'ki_export'             => 'icon-download-alt',
         'ki_invoice'            => 'icon-file-text',
