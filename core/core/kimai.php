@@ -239,6 +239,7 @@ if (isset($kga['lang']['extensions']['ki_timesheet'])) {
 
 $entries = array(
     array(
+        'key'       => 'ki_timesheet',
         'title'     => $title,
         'onclick'   => "changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();",
         'class'     => 'act',
@@ -260,6 +261,7 @@ for($i = 0; $i < count($view->extensions); $i++)
     }
 
     $entries[] = array(
+        'key'       => $extension['key'],
         'title'     => $title,
         'onclick'   => "changeTab(". ($i+1) . ", '".$extension['initFile']."'); ".$extension['tabChangeTrigger'].";",
         'class'     => 'norm',
