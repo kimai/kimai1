@@ -269,39 +269,7 @@
     </div>
 
     <div id="fliptabs" class="menuBackground">
-        <ul class="menu">
-            
-           	<li class="tab act" id="exttab_0">
-           	    <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();">
-           	        <span class="aa">&nbsp;</span>
-           	        <span class="bb">
-                    <?php if (isset($this->kga['lang']['extensions']['ki_timesheet']))
-                      echo $this->kga['lang']['extensions']['ki_timesheet'];
-                    else
-                      echo "Timesheet";
-                    ?></span>
-           	        <span class="cc">&nbsp;</span>
-           	    </a>
-           	</li>
-           	        
-<?php for($i = 0; $i < count($this->extensions); $i++): 
-  $extension = $this->extensions[$i];
-  if (!$extension['name'] OR $extension['key'] == "ki_timesheet") continue; ?>
-            <li class="tab norm" id="exttab_<?php echo $i+1;?>">
-                <a href="javascript:void(0);" onclick="changeTab(<?php echo $i+1?>, '<?php echo $extension['initFile']?>'); <?php echo $extension['tabChangeTrigger']?>;">
-                    <span class="aa">&nbsp;</span>
-                    <span class="bb">
-                    <?php if (isset($this->kga['lang']['extensions'][$extension['key']]))
-                      echo $this->kga['lang']['extensions'][$extension['key']];
-                    else
-                      echo $this->escape($extension['name']);
-                    ?></span>
-                    <span class="cc">&nbsp;</span>
-                </a>
-            </li>
-<?php endfor; ?>
-
-        </ul>
+        <?php echo $this->menu($this->main_navigation); ?>
     </div>
     
     <div id="gui">
