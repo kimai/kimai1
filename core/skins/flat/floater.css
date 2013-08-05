@@ -1,0 +1,185 @@
+#floater {
+    border:1px solid #fff;
+	position: absolute;
+	padding:5px;
+	background: url("grfx/floaterborder.png");
+	z-index: 500;
+	display:none;
+}
+
+.floater_content {
+    color: #FFFFFF;
+  font-size:11px;
+}
+
+.floater_content a, 
+.floater_content a:visited {
+  color:#fff;
+}
+
+#floater_innerwrap {
+    background-color:#444;
+    border: 1px solid #222;
+}
+
+#floater_tabs {
+	padding:10px;
+	overflow: auto;
+}
+
+
+/* forms */
+#floater_innerwrap form {
+  clear:both; /* because of tab selection */
+  margin:5px;
+}
+
+#floater_innerwrap fieldset {
+    border:none;
+}
+
+#floater_innerwrap .multiFields {
+    margin-left:115px;
+}
+
+#floater_innerwrap fieldset label {
+    margin-right:5px;
+    width:110px;
+    float:left;
+    text-align:right;
+}
+#floater_innerwrap fieldset ul {
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+#floater_innerwrap fieldset li {
+    border-bottom:1px dotted #666;
+    padding: 5px 0;
+}
+#floater_innerwrap select,
+#floater_innerwrap input,
+#floater_innerwrap textarea
+{
+    background-color:#fff;
+    border:3px double #bbb;
+}
+
+#floater_innerwrap select[disabled],
+#floater_innerwrap input[disabled],
+#floater_innerwrap textarea[disabled]
+{
+  background-color:#ddd;
+  color:#ddd;
+  border:3px double #999;
+}
+
+
+/* BUTTONS */
+
+#formbuttons {
+    margin-top:10px;
+}
+
+#formbuttons .btn_ok {
+    cursor: pointer;
+    background-color:#4AA917;
+    font-weight:bold;
+    color:#fff;
+}
+
+#formbuttons .btn_norm {
+    cursor: pointer;
+    background-color:#B72917;
+    font-weight:bold;
+    color:#fff;
+}
+
+
+#floater div#help {
+    cursor: pointer;
+    font-size:10px;
+    background-color:#666;
+    border-bottom:1px solid #777;
+}
+
+#floater div#help div.content {
+    padding:10px;
+    color:#fff; 
+}
+
+/* Floater Handle */
+
+
+#floater_handle {
+    background: url("grfx/g3_table_header.png");
+    border-bottom:1px solid #555;
+    padding:2px;
+    padding-left:10px;
+    font-weight:bold;
+    line-height:18px;
+    color: #FFFFFF;
+    height:20px;
+}
+
+#floater_handle:hover {
+    cursor: move;
+}
+
+#floater_handle div.right { 
+    position:absolute;
+    overflow:hidden;
+    width:80px;
+    height:16px;
+    top:9px;
+    right:10px;
+}
+
+#floater_handle div.right a {
+    cursor: pointer;
+    margin-left:2px;
+    float:right;
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    text-indent:-500px;
+}
+
+#floater_handle div.right a.close { 
+    background: url('grfx/close.png') no-repeat;
+}
+
+#floater_handle div.right a.options.down { 
+    background: url('grfx/options2.png') no-repeat 0 0;
+}
+
+#floater_handle div.right a.options.up { 
+    background: url('grfx/options2.png') no-repeat 0 -16px;
+}
+
+#floater_handle div.right a.help { 
+    background: url('grfx/help.png') no-repeat 0 0;
+}
+
+
+.ui-tabs .ui-tabs-hide {
+  display:none;
+}
+
+.activitiesTable input {
+  width: 100px
+}
+
+
+#floater_innerwrap .errorMessage {
+  color:white;
+  text-align:center;
+  padding-bottom:5px;
+  font-weight: bold;
+}
+
+#floater_innerwrap .errorField {
+  background-color:#af0000;
+  border:1px dotted white;
+}

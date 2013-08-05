@@ -1,0 +1,54 @@
+#stopwatch {
+    position:absolute;
+    font-size:11px;
+    right:95px;
+    top:11px;
+    background: url("grfx/g3_buzzer_display.png") no-repeat;
+    color:#51534A;
+    overflow:hidden;
+    width:224px;
+    height:69px;
+    display:block;
+    z-index:20;
+
+}
+
+#stopwatch .watch {
+    position:relative;
+    color:red;
+    top:11px;
+    font-family:arial, sans-serif;
+    font-size:35px;
+    width:205px;
+    height:52px;
+    padding:0;
+    overflow:hidden;
+    line-height:13px;
+}
+
+#stopwatch_ticker {
+    position:absolute;
+    font-size:11px;
+    right:97px;
+    top:46px;
+    color:#51534A;
+    z-index:60;
+}
+
+#stopwatch_ticker ul {
+    list-style-type: none;
+}
+
+#stopwatch_ticker ul li {
+    text-align:center;
+    width:220px;
+    height:15px;
+    margin-left:-40px;
+    margin-top:-3px;
+    padding:0;
+    overflow:hidden;
+}
+
+*+html #stopwatch_ticker ul li {
+    margin-top:-3px;
+}
