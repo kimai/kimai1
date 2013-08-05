@@ -12,7 +12,8 @@
 
 .menu li span {
     height:18px;
-    padding:3px 0 0 0;
+    padding:4px 0 0 0;
+    display: block;
 }
 
 .menu li{

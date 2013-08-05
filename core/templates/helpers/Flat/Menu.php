@@ -27,6 +27,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
 {
     private $iconMap = array(
         'ext_debug'             => 'icon-medkit',
+        'deb_ext'               => 'icon-medkit',
         'ki_demoextension'      => 'icon-wrench',
         'ki_adminpanel'         => 'icon-cogs',
         'adminPanel_extension'  => 'icon-cogs',
@@ -35,7 +36,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
         'ki_export'             => 'icon-download-alt',
         'ki_invoice'            => 'icon-file-text',
         'ki_timesheets'         => 'icon-time',
-        'ki_timesheet'          => 'icon-time,'
+        'ki_timesheet'          => 'icon-time',
     );
 
     private $unknownIcon = 'icon-question';
