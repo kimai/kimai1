@@ -56,7 +56,6 @@ $out = $timeframe[1];
 // ============================================
 include('Config.php');
 
-
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
@@ -293,11 +292,12 @@ if(file_exists($skinTpl)) {
     echo $view->render('/core/' . $kga['conf']['skin'] . '.php');
     return;
 }
-// allow skin view helper
-$view->addHelperPath(WEBROOT . '/templates/helpers/', 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
+
+// allow skin specific view helper
+$helperPath = WEBROOT . '/templates/helpers/' . ucfirst($kga['conf']['skin']) . '/';
+if(file_exists($helperPath) && is_dir($helperPath)) {
+    $view->addHelperPath($helperPath, 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
+}
 
 // render default template
 echo $view->render('core/main.php');
-
-
-?>
