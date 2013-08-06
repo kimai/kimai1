@@ -108,3 +108,11 @@ input {
 
 /* REMOVE ME */
 div.lists { position: relative; }
+
+/* overwrite setup.css.php from ki_timesheets */
+
+#timeSheet {
+    top: 30px !important;
+}
+
+#timeSheet_head { top:5px !important; }
