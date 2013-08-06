@@ -226,8 +226,6 @@ if (isset($kga['user']))
 else
   $view->showInstallWarning = false;
 
-
-
 // =========================
 // = BUILD MAIN NAVIGATION =
 // =========================
@@ -270,11 +268,57 @@ for($i = 0; $i < count($view->extensions); $i++)
 }
 $view->main_navigation = $entries;
 
+// ======================
+// = BUILD LIST ENTRIES =
+// ======================
+
+$listEntries = array(
+    array(
+        'id'            => 'users',
+        'title'         => $kga['lang']['users'],
+        'filter'        => 'filt_user',
+        'content'       => $view->user_display,
+        'showAddButon'  => false,
+        'floaterFile'   => null,
+        'floatAction'   => null,
+        'floaterWidth'  => 0
+    ),
+    array(
+        'id'            => 'customers',
+        'title'         => $kga['lang']['customers'],
+        'filter'        => 'filter_customer',
+        'content'       => $view->customer_display,
+        'showAddButon'  => $view->show_customer_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_customer',
+        'floaterWidth'  => 450
+    ),
+    array(
+        'id'            => 'projects',
+        'title'         => $kga['lang']['projects'],
+        'filter'        => 'filter_project',
+        'content'       => $view->project_display,
+        'showAddButon'  => $view->show_project_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_project',
+        'floaterWidth'  => 650
+    ),
+    array(
+        'id'            => 'activities',
+        'title'         => $kga['lang']['activities'],
+        'filter'        => 'filter_project',
+        'content'       => $view->activity_display,
+        'showAddButon'  => $view->show_activity_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_activity',
+        'floaterWidth'  => 450
+    ),
+);
+$view->list_entries = $listEntries;
+
 // ========================
 // = BUILD HOOK FUNCTIONS =
 // ========================
-
-
 $view->hook_timeframe_changed = $extensions->timeframeChangedHooks();
 $view->hook_buzzer_record = $extensions->buzzerRecordHooks();
 $view->hook_buzzer_stopped = $extensions->buzzerStopHooks();

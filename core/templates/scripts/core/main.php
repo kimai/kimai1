@@ -14,7 +14,7 @@
         <?php echo $this->partial('partials/extensions.php', $this); ?>
     </div>
     <div class="lists" style="display:none">
-        <?php echo $this->partial('partials/lists.php', $this); ?>
+        <?php echo $this->partial('partials/lists.php', array('list_entries' => $this->list_entries)); ?>
         <div id="extensionShrink">&nbsp;</div>
         <div id="usersShrink">&nbsp;</div>
         <div id="customersShrink">&nbsp;</div>
