@@ -330,6 +330,12 @@ $view->hook_filter = $extensions->filterHooks();
 $view->hook_resize = $extensions->resizeHooks();
 $view->timeoutlist = $extensions->timeoutList();
 
+// allow skin specific view helper
+$helperPath = WEBROOT . '/templates/helpers/' . ucfirst($kga['conf']['skin']) . '/';
+if(file_exists($helperPath) && is_dir($helperPath)) {
+    $view->addHelperPath($helperPath, 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
+}
+
 $basePath = $view->getScriptPath('core');
 $skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
 
@@ -337,12 +343,6 @@ $skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
 if(file_exists($skinTpl)) {
     echo $view->render('/core/' . $kga['conf']['skin'] . '.php');
     return;
-}
-
-// allow skin specific view helper
-$helperPath = WEBROOT . '/templates/helpers/' . ucfirst($kga['conf']['skin']) . '/';
-if(file_exists($helperPath) && is_dir($helperPath)) {
-    $view->addHelperPath($helperPath, 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
 }
 
 // render default template
