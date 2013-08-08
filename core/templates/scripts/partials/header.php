@@ -59,16 +59,7 @@
     </div>
 
     <?php if (isset($this->kga['user'])): ?>
-    <div id="selector">
-        <div class="preselection">
-
-            <strong><?php echo $this->kga['lang']['selectedForRecording']?></strong><br />
-
-            <strong class="short"><?php echo $this->kga['lang']['selectedCustomerLabel']?></strong><span class="selection" id="selected_customer"><?php echo $this->escape($this->customerData['name'])?></span><br/>
-            <strong class="short"><?php echo $this->kga['lang']['selectedProjectLabel']?></strong><span class="selection" id="selected_project"><?php echo $this->escape($this->projectData['name'])?></span><br/>
-            <strong class="short"><?php echo $this->kga['lang']['selectedActivityLabel']?></strong><span class="selection" id="selected_activity"><?php echo $this->escape($this->activityData['name'])?></span><br/>
-        </div>
-    </div>
+    <?php echo $this->selectionBox(); ?>
 
     <div id="stopwatch">
         <span class="watch"><span id="h">00</span>:<span id="m">00</span>:<span id="s">00</span></span>
