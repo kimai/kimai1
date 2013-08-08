@@ -105,6 +105,8 @@ input {
     left: 120px;
 }
 
+#logo { display: none; }
+
 
 /* REMOVE ME */
 div.lists { position: relative; }
