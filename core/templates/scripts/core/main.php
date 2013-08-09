@@ -30,6 +30,7 @@
     <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
     <script src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
     <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
+	<script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
     <!-- /Libs -->
 
     <!-- Default JavaScripts -->
