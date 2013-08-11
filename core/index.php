@@ -230,11 +230,6 @@ switch($_REQUEST['a'])
     // ============================================
     default:
 
-        // ===========================
-        // = Send HEADER information =
-        // ===========================
-        echo $view->render('login/header.php');
-
         // ======================================
         // = Selectbox for additional databases =
         // ======================================

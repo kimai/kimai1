@@ -77,6 +77,7 @@ $query =
   `active` tinyint(1) NOT NULL default '1',
   `mail` varchar(160) NOT NULL DEFAULT '',
   `password` varchar(254) NULL DEFAULT NULL,
+  'passwordResetHash' char(32) NULL DEFAULT NULL,
   `ban` int(1) NOT NULL default '0',
   `banTime` int(10) NOT NULL default '0',
   `secure` varchar(60) NOT NULL default '0',

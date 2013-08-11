@@ -1806,6 +1806,11 @@ if ((int) $revisionDB < 1383) {
     Logger::logfile("-- update to r1383");
     exec_query("INSERT INTO `${p}configuration` VALUES('defaultStatusID', '1');");
 }
+if ((int) $revisionDB < 1384) {
+    Logger::logfile("-- update to r1384");
+    exec_query("ALTER TABLE ${p}users ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
+    exec_query("ALTER TABLE ${p}customers ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
+}
 
 
 // ============================

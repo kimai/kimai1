@@ -8,7 +8,7 @@ body{
     margin: 0;
     padding: 0;
 }
-#login{
+#content {
     position: absolute;
     width: 526px;
     height: 400px;
@@ -16,68 +16,105 @@ body{
     top: 50%;
     margin: -200px 0 0 -263px;
 }
-#login form{
+#box {
     background:url(../grfx/login_bg_g3.png) no-repeat;
     display: block;
     width: 448px;
     height: 298px;
     margin: 0 0 0 38px;
+  margin: auto;
+  position: relative;
+  color: #999;
+}
+
+#box > div {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  padding-top: 120px;
+  display: none;
+}
+
+#box fieldset {
+  border: 0 none;
     padding: 0;
 }
 #login fieldset {
-    border: 0 none;
     display: block;
-    margin: 135px 0 0 130px;
     width: 210px;
     height: 100px;
-    padding: 0;
-    position: absolute;
     text-align: left;
+    margin: auto;
+    position: relative;
 }
-#login label{
+#forgotPassword fieldset {
     display: block;
-    color: #999;
+    margin-top: 5px;
+}
+
+#box label{
+  color: #999;
 	height:25px;
 }
-#login input{
+#login label {
+  display: block;
+}
+#forgotPassword label {
+  margin-right: 5px;
+}
+
+#box input{
     border: 1px solid #ccc;
     padding: 2px;
-    display: block;
     width: 140px;
     position: relative;
     margin: 0;
-    left: 0;
+}
+#login input {
+    display: block;
     top:-2px;
 }
 
-/* of course our best friend needs some special treatment ... */
-*+html #login input{ left: -130px; top:-5px; }
+#box a {
+    margin-top: 10px;
+    display: block;
+    color: #999;
+}
 
-#login button{
+#box .instructions {
+  color: #999;
+  margin-top: 10px;
+  width: 140px;
+}
+
+#loginButton {
     position: absolute;
     width: 52px;
     height: 91px;
     right: 0px;
     bottom: 0px;
     background: url(../grfx/login_button_g3.png) no-repeat;
-    text-indent: -1000em;
     border: 0 none;
     cursor: pointer;
     padding: 0;
     margin: 0;
 }
-#login select {
+#box select {
     position: absolute;
     width:100px;
     top:100px;
     left:0px;
     border:1px solid silver;
 }
-#login button:hover {
+#loginButton:hover {
     background: url(../grfx/login_button_g3.png) no-repeat 0 -91px;
     cursor: pointer;
 }
-#login p, #login p>a {
+#forgotPassword button {
+  display: inline-block;
+}
+#content > p, #content > p>a {
     font-size:xx-small;
     color: #555;
     text-align: center;

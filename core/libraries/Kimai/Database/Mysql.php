@@ -134,7 +134,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $strings = array(
         'name'    ,'comment','password' ,'company','vat',
         'contact' ,'street' ,'zipcode'  ,'city'   ,'phone',
-        'fax'     ,'mobile' ,'mail'     ,'homepage', 'timezone');
+        'fax'     ,'mobile' ,'mail'     ,'homepage', 'timezone',
+        'passwordResetHash');
       foreach ($strings as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key]);
@@ -1200,7 +1201,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function user_edit($userID, $data)
   {
       $data = $this->clean_data($data);
-      $strings = array('name', 'mail', 'alias', 'password', 'apikey');
+      $strings = array('name', 'mail', 'alias', 'password', 'apikey', 'passwordResetHash');
       $values = array();
 
       foreach ($strings as $key) {
