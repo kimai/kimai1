@@ -2,7 +2,7 @@
     border:1px solid #fff;
 	position: absolute;
 	padding:5px;
-	background: url("grfx/floaterborder.png");
+	background: url("../grfx/floaterborder.png");
 	z-index: 500;
 	display:none;
 }
@@ -112,7 +112,7 @@
 
 
 #floater_handle {
-    background: url("grfx/g3_table_header.png");
+    background: url("../grfx/g3_table_header.png");
     border-bottom:1px solid #555;
     padding:2px;
     padding-left:10px;
@@ -147,19 +147,19 @@
 }
 
 #floater_handle div.right a.close { 
-    background: url('grfx/close.png') no-repeat;
+    background: url('../grfx/close.png') no-repeat;
 }
 
 #floater_handle div.right a.options.down { 
-    background: url('grfx/options2.png') no-repeat 0 0;
+    background: url('../grfx/options2.png') no-repeat 0 0;
 }
 
 #floater_handle div.right a.options.up { 
-    background: url('grfx/options2.png') no-repeat 0 -16px;
+    background: url('../grfx/options2.png') no-repeat 0 -16px;
 }
 
 #floater_handle div.right a.help { 
-    background: url('grfx/help.png') no-repeat 0 0;
+    background: url('../grfx/help.png') no-repeat 0 0;
 }
 
 

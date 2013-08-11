@@ -1,14 +1,20 @@
-@import "setup.css";
-@import "menu.css";
-@import "buzzer.css";
-@import "timeframe.css";
-@import "dropdowns.css";
-@import "selector.css";
-@import "stopwatch.css";
-@import "floater.css";
-@import "toolsmenu.css";
-@import "lists.css";
-@import "jquery.autocomplete.css";
-@import "datepicker.css";
-@import "timePicker.css";
-@import "font-awesome.css";
+@import "css/bootstrap.min.css";
+@import "css/setup.css";
+/* MENU TABS */
+@import "../standard/menu.css";
+/* START AND STOP BUTTON */
+@import "../standard/buzzer.css";
+/* YELLOW BOX WITH DATE SELECTOR, CURRENT DATE AND TIME AND TOTAL HOURS */
+@import "../standard/timeframe.css";
+/* FLOATING DIALOGS */
+@import "../standard/floater.css";
+/* AUTOCOMPLETE IN LIST INPUT */
+@import "../standard/jquery.autocomplete.css";
+/* DATE PICKER */
+@import "../standard/datepicker.css";
+/* TIME PICKER */
+@import "../standard/timePicker.css";
+/* ICON FONT */
+@import "css/font-awesome.css";
+/* OVERWRITE STUFF FROM DEFAULT INCLUDES */
+@import "css/setup_post.css";

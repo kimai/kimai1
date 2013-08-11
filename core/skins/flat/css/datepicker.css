@@ -71,14 +71,14 @@
 
 
 .ui-datepicker-prev {
-    background: url(grfx/picker_buttons.png) no-repeat -40px 0;
+    background: url(../grfx/picker_buttons.png) no-repeat -40px 0;
     display: block;
     padding-top: 5px;
     padding-right: 25px;
 }
 
 .ui-datepicker-next {
-    background: url(grfx/picker_buttons.png) no-repeat -80px 0;
+    background: url(../grfx/picker_buttons.png) no-repeat -80px 0;
     display: block;
     padding-top: 5px;
     padding-right: 25px;
@@ -95,7 +95,7 @@
 }
 
 .ui-datepicker-calendar th {
-    background: url(grfx/picker_bg_weekdays.png) no-repeat;
+    background: url(../grfx/picker_bg_weekdays.png) no-repeat;
     width: 40px;
     height: 40px;
    color: #fff;
@@ -103,11 +103,11 @@
 }
 
 .ui-datepicker-calendar th.ui-datepicker-week-end {
-    background: url(grfx/picker_bg_weekend.png) no-repeat;
+    background: url(../grfx/picker_bg_weekend.png) no-repeat;
 }
 
 .ui-datepicker-calendar td {
-    background: url(grfx/picker_bg_norm.png) no-repeat;
+    background: url(../grfx/picker_bg_norm.png) no-repeat;
     width: 40px;
     height: 40px;
     color: #000;
@@ -116,12 +116,12 @@
 
 
 .ui-datepicker-calendar td.ui-datepicker-other-month {
-    background: url(grfx/picker_bg_otherMonth.png) no-repeat;
+    background: url(../grfx/picker_bg_otherMonth.png) no-repeat;
     color: #aaa;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-other-month:hover {
-    background: url(grfx/picker_bg_otherMonth.png) no-repeat;
+    background: url(../grfx/picker_bg_otherMonth.png) no-repeat;
     color: #888;
 }
 
@@ -136,18 +136,18 @@
 }
 
 .ui-datepicker-calendar td:hover {
-    background: url(grfx/picker_bg_hover.png) no-repeat;
+    background: url(../grfx/picker_bg_hover.png) no-repeat;
     color: #000;
 }
 
 
 .ui-datepicker-calendar td.ui-datepicker-today {
-    background: url(grfx/picker_bg_today.png) no-repeat;
+    background: url(../grfx/picker_bg_today.png) no-repeat;
     font-weight: bold;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-today:hover {
-    background: url(grfx/picker_bg_today_hover.png) no-repeat;
+    background: url(../grfx/picker_bg_today_hover.png) no-repeat;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-today a {
@@ -158,7 +158,7 @@
 .ui-datepicker-calendar td.ui-datepicker-current-day,
 .ui-datepicker-calendar td.ui-datepicker-current-day:hover
 {
-    background: url(grfx/picker_bg_selected.png) no-repeat;
+    background: url(../grfx/picker_bg_selected.png) no-repeat;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-current-day a {

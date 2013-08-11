@@ -1,0 +1,59 @@
+#loader {
+    position:absolute;
+    margin-top:30px;
+    margin-left:-110px;
+    top:50%;
+    left:50%;
+    width:220px;
+    height:19px;
+    background-image:url('../grfx/ajax-loader.gif');
+    background-repeat: no-repeat;
+    z-index:200;
+}
+
+/* FLAT SKIN STARTS HERE */
+
+.container{ width:100%; max-width:100%; padding: 0 10px;}
+
+.panel-content-full a {text-decoration: none;margin-left: 3px; }
+.panel-footer a {margin-right: 3px; text-decoration: none;}
+
+
+.livefilterfield {
+    float:right;
+    margin:0;
+    padding:1px;
+    margin-left:10px;
+    margin-right:8px;
+    font-size:10px;
+    height: 18px;
+}
+
+div.lists tr.even td,
+div.lists tr.odd td
+{
+    border-bottom: none;
+    border-left: none;
+    padding: 3px 4px 4px 5px;
+}
+
+div.lists tr.hover td {
+    background: #FFC !important;
+}
+
+div.lists tr.even td {
+    background: #FFF;
+}
+
+div.lists tr.odd td {
+    background: #EEE;
+}
+
+.fhighlighted td {
+    background: #89C0F3 !important;
+}
+
+.panel-content-full {
+    margin: -15px;
+}
+

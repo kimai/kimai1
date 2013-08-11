@@ -1,5 +1,5 @@
 #display {
-    background:url("grfx/g3_display.png") no-repeat;
+    background:url("../grfx/g3_display.png") no-repeat;
     color: #51534a;
     position:relative;
     margin:0;
@@ -41,5 +41,5 @@
 }
 
 .datewarning {
-    background:url("grfx/timeframe_warn.gif") repeat-x 0 23px;
+    background:url("../grfx/timeframe_warn.gif") repeat-x 0 23px;
 }

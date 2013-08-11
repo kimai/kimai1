@@ -1,0 +1,9 @@
+
+#buzzer {
+    top: 50px;
+    right: 20px;
+    float: right;
+}
+
+#dates { height: 37px; }
+#dates A { font-size: 20px; }

@@ -29,7 +29,7 @@
 
 
 .ui-timepicker-hours td, .ui-timepicker-minutes td {
-    background: url(grfx/picker_bg_norm.png) no-repeat;
+    background: url(../grfx/picker_bg_norm.png) no-repeat;
     width: 40px;
     height: 40px;
     color: #000;
@@ -42,7 +42,7 @@
 }
 
 .ui-timepicker-hours td:hover, .ui-timepicker-minutes td:hover {
-    background: url(grfx/picker_bg_hover.png) no-repeat;
+    background: url(../grfx/picker_bg_hover.png) no-repeat;
     color: #000;
 }
 
