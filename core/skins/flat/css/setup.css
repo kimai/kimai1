@@ -57,3 +57,4 @@ div.lists tr.odd td {
     margin: -15px;
 }
 
+#fliptabs li.act , #fliptabs li.act i, #fliptabs li.act a { font-weight: bold; color: #000; }
