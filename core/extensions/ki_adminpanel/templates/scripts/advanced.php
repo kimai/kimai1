@@ -16,11 +16,11 @@
               var input = $(this);
               if (input.is (':checked')) {
                 input.parent().removeClass("disabled");
-                input.siblings().attr("disabled","");
+                input.siblings().prop("disabled", false);
               }
               else {
                 input.parent().addClass("disabled");
-                input.siblings().attr("disabled","disabled");
+                input.siblings().prop("disabled", true);
               }
             });
 
