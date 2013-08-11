@@ -26,8 +26,8 @@ $dir_ext = $settings['EXTENSION_DIR'];
 
 $user = checkUser();
 
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view = new Kimai_View();
+$view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 // track which activities we want to see, so we can exclude them when we create the plot
 
 $view->kga = $kga;

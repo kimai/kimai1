@@ -38,9 +38,8 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
+$view = new Kimai_View();
+$view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
 $view->kga = $kga;
 

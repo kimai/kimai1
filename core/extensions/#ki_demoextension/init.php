@@ -33,8 +33,8 @@ $dir_ext = $settings['EXTENSION_DIR'];
   $in = $timeframe[0];
   $out = $timeframe[1];
 
-  $view = new Zend_View();
-  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+  $view = new Kimai_View();
+  $view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
   echo $view->render('index.php');
 ?>

@@ -30,8 +30,8 @@ $dir_ext = $settings['EXTENSION_DIR'];
 
 $user = checkUser();
 
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view = new Kimai_View();
+$view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
 $view->kga = $kga;
 
