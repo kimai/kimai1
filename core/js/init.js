@@ -100,7 +100,6 @@ $(document).ready(function() {
     var lists_resizeTimer = null;
     $(window).bind('resize', function() {
 
-	resize_menu();
     resize_floater();
 
        if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
