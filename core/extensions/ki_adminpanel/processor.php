@@ -278,7 +278,7 @@ switch ($axAction)
 	case "deleteGroup" :
                 $errors = array();
 
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core_deleteGroup'))
+                if (!checkGroupedObjectPermission('group', 'delete', array($id), array($id)))
                   $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		if (count($errors) == 0) {
@@ -413,8 +413,8 @@ switch ($axAction)
 
                 $errors = array();
 
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-edit'))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                if (!checkGroupedObjectPermission('group', 'edit', array($id), array($id)))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                   $database->group_edit($id, $group);
