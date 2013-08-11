@@ -1,7 +1,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="robots" value="noindex,nofollow" />
 
-<title><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai</title>
+<title><?php echo $this->username(); ?> - Kimai</title>
 <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
 <!-- Default Stylesheets -->
@@ -41,9 +41,7 @@
 <?php endforeach; ?>
 <!-- /Extension JavaScripts -->
 
-
 <script type="text/javascript">
-
     var skin ="<?php echo $this->escape($this->kga['conf']['skin']); ?>";
 
     var lang_checkUsername    = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
@@ -123,22 +121,7 @@
     function hook_filter(){<?php echo $this->hook_filter?> }
     function hook_resize(){<?php echo $this->hook_resize?> }
     function kill_reg_timeouts(){<?php echo $this->timeoutlist?> }
-
     function kimai_onload() {
-        $('#extensionShrink').hover(lists_extensionShrinkShow,lists_extensionShrinkHide);
-        $('#extensionShrink').click(lists_shrinkExtToggle);
-        $('#customersShrink').hover(lists_customerShrinkShow,lists_customerShrinkHide);
-        $('#customersShrink').click(lists_shrinkCustomerToggle);
-        <?php if (count($this->users) > 0): ?>
-        $('#usersShrink').hover(lists_userShrinkShow,lists_userShrinkHide);
-        $('#usersShrink').click(lists_shrinkUserToggle);
-        <?php else: ?>
-        $('#usersShrink').hide();
-        <?php endif; ?>
-
-        <?php if ($this->kga['conf']['user_list_hidden'] || count($this->users) <= 1): ?>
-        lists_shrinkUserToggle();
-        <?php endif; ?>
         $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
         $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
 
@@ -152,22 +135,10 @@
 
         $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +strftime(timeframeDateFormat,new Date()));
 
-        // give browser time to render page. afterwards make sure lists are resized correctly
-        setTimeout(lists_resize,500);
-        clearTimeout(lists_resize);
-
-
         if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
             $('#buzzer').addClass('disabled');
         }
 
-        resize_menu();
-
-        <?php if ($this->showInstallWarning): ?>
-        floaterShow("floaters.php","securityWarning","installer",0,450);
-        <?php endif; ?>
+        skin_onload();
     }
-
 </script>
-
-<link href="../favicon.ico" rel="shortcut icon" />

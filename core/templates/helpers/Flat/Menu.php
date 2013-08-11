@@ -43,8 +43,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
 
     public function __toString()
     {
-        $html = '
-                <ul class="menu">';
+        $html = '';
 
         foreach($this->getEntries() as $entry)
         {
@@ -54,15 +53,13 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
             }
 
             $html .= '
-                        <li class="tab '.$entry['class'].'" id="'.$entry['id'].'">
+                        <li id="'.$entry['id'].'">
                             <a href="javascript:void(0);" onclick="' . $entry['onclick'] . '">
-                                <i class="'.$icon.' icon-3x"></i>
+                                <i class="'.$icon.'"></i>
                                 <span>' . $entry['title'] . '</span>
                             </a>
                         </li>';
         }
-
-        $html .= '</ul>';
 
         return $html;
     }
