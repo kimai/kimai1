@@ -41,22 +41,20 @@ if (!$isCoreProcessor) {
   $dir_ext = $settings['EXTENSION_DIR'];
 }
 
-// =============================
-// = Zend_View (configuration) =
-// =============================
-$view = new Zend_View();
-if ($isCoreProcessor) {
-  $view->setBasePath(WEBROOT . '/templates');
-} else {
-  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-}
-$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
-
-
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
 $user = checkUser();
+
+// =============================
+// = Zend_View (configuration) =
+// =============================
+$view = new Kimai_View();
+if (!$isCoreProcessor) {
+    $view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+}
+
+//$view->enableSkinSupport($kga['conf']['skin']);
 
 $view->kga = $kga;
 

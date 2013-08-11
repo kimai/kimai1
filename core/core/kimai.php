@@ -21,8 +21,6 @@
 // = Smarty (initialize class) =
 // ============================= 
 include('../includes/basics.php');
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -55,6 +53,9 @@ $out = $timeframe[1];
 // = load the config =
 // ============================================
 include('Config.php');
+
+$view = new Kimai_View();
+$view->enableSkinSupport($kga['conf']['skin']);
 
 // ===============================================
 // = get time for the probably running stopwatch =
@@ -329,12 +330,6 @@ $view->hook_activities_changed = $extensions->activitiesChangedHooks();
 $view->hook_filter = $extensions->filterHooks();
 $view->hook_resize = $extensions->resizeHooks();
 $view->timeoutlist = $extensions->timeoutList();
-
-// allow skin specific view helper
-$helperPath = WEBROOT . '/templates/helpers/' . ucfirst($kga['conf']['skin']) . '/';
-if(file_exists($helperPath) && is_dir($helperPath)) {
-    $view->addHelperPath($helperPath, 'Zend_View_Helper_'.ucfirst($kga['conf']['skin']).'_');
-}
 
 $basePath = $view->getScriptPath('core');
 $skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
