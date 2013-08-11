@@ -49,6 +49,6 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
     public function getStart($options = array())
     {
         $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['stop'];
-        return '<i title="'.$title.'" style="color:green" class="icon-play-sign"></i>';
+        return '<i title="'.$title.'" style="color:green" class="icon-play-circle"></i>';
     }
 }
