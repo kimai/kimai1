@@ -32,15 +32,13 @@
             <tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 
                 <td class="option">
-                    <a href ="#" onClick="editSubject('customer',<?php echo $row['customerID']?>); $(this).blur(); return false;"><img
-                            src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>'
-                            title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+                    <a href ="#" onClick="editSubject('customer',<?php echo $row['customerID']?>); $(this).blur(); return false;">
+                        <?php echo $this->icons('edit'); ?></a>
 
                     &nbsp;
 
-                    <a href="#" id="delete_customer<?php echo $row['customerID']?>" onClick="adminPanel_extension_deleteCustomer(<?php echo $row['customerID']?>)"><img
-                            src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_customer']?>"
-                            width="13" height="13" alt="<?php echo $this->kga['lang']['delete_customer']?>" border="0"></a>
+                    <a href="#" id="delete_customer<?php echo $row['customerID']?>" onClick="adminPanel_extension_deleteCustomer(<?php echo $row['customerID']?>)">
+                        <?php echo $this->icons('delete', array('title' => $this->kga['lang']['delete_customer'])); ?></a>
                 </td>
 
                 <td class="clients">

@@ -16,7 +16,7 @@
 
     <thead>
         <tr class='headerrow'>
-            <th><?php echo $this->kga['lang']['options']?></th>
+            <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
             <th><?php echo $this->kga['lang']['activities']?></th>
             <th><?php echo $this->kga['lang']['groups']?></th>
         </tr>
@@ -41,27 +41,22 @@
             ?>
 
             <tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
-
                 <td class="option">
                     <a href ="#" onClick="editSubject('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
-                        <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
-
+                        <?php echo $this->icons('edit'); ?></a>
                     &nbsp;
-
                     <a href="#" id="delete_activity<?php echo $activity['activityID']?>" onClick="adminPanel_extension_deleteActivity(<?php echo $activity['activityID']?>)">
-                      <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_activity']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_activity']?>" border="0"></a>
+                        <?php echo $this->icons('delete', array('title' => $this->kga['lang']['delete_activity'])); ?>
+                    </a>
                 </td>
-
                 <td class="activities">
                     <?php if ($activity['visible'] != 1): ?><span style="color:#bbb"> <?php endif; ?>
                     <?php echo $this->escape($activity['name']); ?>
                     <?php if ($activity['visible'] != 1): ?></span><?php endif; ?>
                 </td>
-
                 <td>
                     <?php echo $this->escape($activity['groups']); ?>
                 </td>
-
             </tr>
             <?php
         }
