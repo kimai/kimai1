@@ -8,12 +8,16 @@
 	}); 
 </script>
 
-<div id="invoice_extension_header">
-	<strong><?php echo $this->kga['lang']['ext_invoice']['invoiceTitle']?></strong> 
-</div>
+<?php
+    echo $this->extensionScreen(
+        array(
+            'title' => $this->kga['lang']['ext_invoice']['invoiceTitle'],
+            'id'    => 'invoice_extension_header',
+            'level' => array('invoice_extension_wrap', 'invoice_extension')
+        )
+    )->getHeader();
+?>
 
-<div id="invoice_extension_wrap">
-	<div id ="invoice_extension">
 		<form id="invoice_extension_form" method="post" action="../extensions/ki_invoice/print.php" target="_blank">
 			<div id="invoice_extension_advanced">
 				<div>
@@ -48,5 +52,5 @@
 				</div>
 			</div>
 		</form>
-	</div>
-</div>
+
+<?php echo $this->extensionScreen()->getFooter(); ?>
