@@ -38,6 +38,8 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
                 return $this->getEdit($opts);
             case 'filter':
                 return $this->getFilter($opts);
+            case 'delete':
+                return $this->getDelete($opts);
             case 'stop':
                 return $this->getStop($opts);
             case 'start':
@@ -92,9 +94,20 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
     {
         $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['recordAgain'];
         return '<img src="../skins/'.
-        $this->view->escape($this->view->kga['conf']['skin']).
-        '/grfx/button_recordthis.gif" width="13" height="13" alt="'.
-        $this->view->kga['lang']['recordAgain'].'" title="'. $title . '" border="0" />';
+            $this->view->escape($this->view->kga['conf']['skin']).
+            '/grfx/button_recordthis.gif" width="13" height="13" alt="'.
+            $this->view->kga['lang']['recordAgain'].'" title="'. $title . '" border="0" />';
+    }
+
+
+    public function getDelete($options = array())
+    {
+        // there is no global delete translation
+        $title = isset($options['title']) ? $options['title'] : '';
+        return '<img src="../skins/'.
+            $this->view->escape($this->view->kga['conf']['skin']).
+            '/grfx/button_trashcan.png" width="13" height="13" alt="'.
+            $this->view->kga['lang']['recordAgain'].'" title="'. $title . '" border="0" />';
     }
 
 }

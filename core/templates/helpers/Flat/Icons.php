@@ -51,4 +51,10 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
         $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['stop'];
         return '<i title="'.$title.'" style="color:green" class="icon-play-circle"></i>';
     }
+
+    public function getDelete($options = array())
+    {
+        $title = isset($options['title']) ? $options['title'] : ''; // there is no global delete translation
+        return '<i title="'.$title.'" class="icon-trash"></i>';
+    }
 }
