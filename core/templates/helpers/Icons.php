@@ -25,89 +25,109 @@
  */
 class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
 {
+    protected $iconSize = null;
+    const ICON_LARGE = 'large';
+
+    public function setIconSize($size)
+    {
+        $this->iconSize = $size;
+    }
+
+    protected function getIconSize()
+    {
+        return $this->iconSize;
+    }
+
     public function icons($key = null, $options = array())
     {
         if ($key === null) {
             return $this;
         }
 
-        $opts = $this->getOptions($options);
-
         switch ($key) {
             case 'edit':
-                return $this->getEdit($opts);
+                return $this->getEdit($options);
             case 'filter':
-                return $this->getFilter($opts);
+                return $this->getFilter($options);
+            case 'mail':
+            case 'email':
+                return $this->getEmail($options);
             case 'delete':
-                return $this->getDelete($opts);
+                return $this->getDelete($options);
+            case 'bannedUser':
+            case 'locked':
+                return $this->getLocked($options);
+            case 'activeAccount':
+            case 'unlocked':
+                return $this->getUnlocked($options);
+            case 'warning':
+                return $this->getWarning($options);
             case 'stop':
-                return $this->getStop($opts);
+                return $this->getStop($options);
             case 'start':
             case 'recordAgain':
-                return $this->getStart($opts);
+                return $this->getStart($options);
             default:
                 return $this;
         }
 
     }
 
-    protected function getOptions($options)
-    {
-        $opts = array();
-        if (isset($options['title'])) {
-            $opts['title'] = $options['title'];
-        }
-        if (isset($options['alt'])) {
-            $opts['alt'] = $options['alt'];
-        }
-        return $opts;
-    }
-
     public function getEdit($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['edit'];
-        return '<img src="../skins/'.
-            $this->view->escape($this->view->kga['conf']['skin']).
-            '/grfx/edit2.gif" width="13" height="13" alt="'.
-            $this->view->kga['lang']['edit'].'" title="'. $title . '" border="0" />';
+        return $this->renderIcon('edit2.gif', $options, $this->view->kga['lang']['edit']);
     }
 
     public function getFilter($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['filter'];
-        return '<img src="../skins/'.
-            $this->view->escape($this->view->kga['conf']['skin']).
-            '/grfx/filter.png" width="13" height="13" alt="'.
-            $this->view->kga['lang']['filter'].'" title="'. $title . '" border="0" />';
+        return $this->renderIcon('filter.png', $options, $this->view->kga['lang']['filter']);
     }
 
     public function getStop($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['stop'];
-        return '<img src="../skins/'.
-            $this->view->escape($this->view->kga['conf']['skin']).
-            '/grfx/button_stopthis.gif" width="13" height="13" alt="'.
-            $this->view->kga['lang']['stop'].'" title="'. $title . '" border="0" />';
+        return $this->renderIcon('button_stopthis.gif', $options, $this->view->kga['lang']['stop']);
     }
 
     public function getStart($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['recordAgain'];
-        return '<img src="../skins/'.
-            $this->view->escape($this->view->kga['conf']['skin']).
-            '/grfx/button_recordthis.gif" width="13" height="13" alt="'.
-            $this->view->kga['lang']['recordAgain'].'" title="'. $title . '" border="0" />';
+        return $this->renderIcon('button_recordthis.gif', $options, $this->view->kga['lang']['recordAgain']);
     }
 
 
     public function getDelete($options = array())
     {
-        // there is no global delete translation
-        $title = isset($options['title']) ? $options['title'] : '';
-        return '<img src="../skins/'.
-            $this->view->escape($this->view->kga['conf']['skin']).
-            '/grfx/button_trashcan.png" width="13" height="13" alt="'.
-            $this->view->kga['lang']['recordAgain'].'" title="'. $title . '" border="0" />';
+        // there is no global "delete" translation
+        return $this->renderIcon('button_trashcan.png', $options, '');
     }
 
+    public function getEmail($options = array())
+    {
+        return $this->renderIcon('button_mail.gif', $options, $this->view->kga['lang']['mailUser']);
+    }
+
+    public function getLocked($options = array())
+    {
+        return $this->renderIcon('lock.png', $options, $this->view->kga['lang']['bannedUser']);
+    }
+
+    public function getUnlocked($options = array())
+    {
+        return $this->renderIcon('jipp.gif', $options, $this->view->kga['lang']['activeAccount']);
+    }
+
+    public function getWarning($options = array())
+    {
+        // there is no global "warning" translation
+        return $this->renderIcon('caution_mini.png', $options, '');
+    }
+
+    protected function renderIcon($icon, $options, $title, $style = '')
+    {
+        $title = isset($options['title']) ? $options['title'] : $title;
+        if (isset($options['disabled'])) {
+            $icon = str_replace('.', '_.', $icon);
+        }
+        return '<img src="../skins/'. $this->view->escape($this->view->kga['conf']['skin']) .
+            '/grfx/'.$icon.'" width="13" height="13" alt="'. $title . '" title="'. $title . '" border="0" />';
+    }
 }

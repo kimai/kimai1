@@ -28,33 +28,70 @@ require_once __DIR__ . '/../Icons.php';
 class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
 {
 
+    protected function renderIcon($icon, $options, $title, $style = '')
+    {
+        $title = isset($options['title']) ? $options['title'] : $title;
+
+        $class = $icon;
+        switch ($this->getIconSize()) {
+            case self::ICON_LARGE:
+                $class .= ' icon-large';
+                break;
+        }
+        if (isset($options['disabled'])) {
+            $class .= ' disabledIcon';
+        }
+
+        if($style !== '') {
+            $style = 'style="'.$style.'" ';
+        }
+        return '<i title="'.$title.'" '.$style.'class="'.$class.'"></i>';
+    }
+
     public function getEdit($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['edit'];
-        return '<i title="'.$title.'" class="icon-pencil"></i>';
+        return $this->renderIcon('icon-pencil', $options, $this->view->kga['lang']['edit']);
     }
 
     public function getFilter($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['filter'];
-        return '<i title="'.$title.'" class="icon-filter"></i>';
+        return $this->renderIcon('icon-filter', $options, $this->view->kga['lang']['filter']);
     }
 
     public function getStop($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['stop'];
-        return '<i title="'.$title.'" style="color:red" class="icon-stop"></i>';
+        return $this->renderIcon('icon-stop', $options, $this->view->kga['lang']['stop'], 'color:red');
     }
 
     public function getStart($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : $this->view->kga['lang']['stop'];
-        return '<i title="'.$title.'" style="color:green" class="icon-play-circle"></i>';
+        return $this->renderIcon('icon-play-circle', $options, $this->view->kga['lang']['stop'], 'color:green');
     }
 
     public function getDelete($options = array())
     {
-        $title = isset($options['title']) ? $options['title'] : ''; // there is no global delete translation
-        return '<i title="'.$title.'" class="icon-trash"></i>';
+        // there is no global "delete" translation
+        return $this->renderIcon('icon-trash', $options, '');
+    }
+
+    public function getEmail($options = array())
+    {
+        return $this->renderIcon('icon-envelope', $options, $this->view->kga['lang']['mailUser']);
+    }
+
+    public function getLocked($options = array())
+    {
+        return $this->renderIcon('icon-lock', $options, $this->view->kga['lang']['bannedUser']);
+    }
+
+    public function getWarning($options = array())
+    {
+        // there is no global "warning" translation
+        return $this->renderIcon('icon-warning-sign', $options, '');
+    }
+
+    public function getUnlocked($options = array())
+    {
+        return $this->renderIcon('icon-unlock', $options, $this->view->kga['lang']['activeAccount']);
     }
 }
