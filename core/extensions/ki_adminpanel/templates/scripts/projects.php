@@ -1,4 +1,6 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_project',0,0,650); $(this).blur(); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/add.png" width="22" height="16" alt="<?php echo $this->kga['lang']['new_project']?>"></a> <?php echo $this->kga['lang']['new_project']?>
+<a onClick="floaterShow('floaters.php','add_edit_project',0,0,650); $(this).blur(); return false;"
+   href="#" ><?php echo $this->icons('add', array('title' => $this->kga['lang']['new_project'])); ?></a>
+<?php echo $this->kga['lang']['new_project']?>
 <br/><br/>
 
 <table>

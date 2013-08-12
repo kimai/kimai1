@@ -1,4 +1,6 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_customer',0,0,450); $(this).blur(); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/add.png" width="22" height="16" alt="<?php echo $this->kga['lang']['new_customer']?>"></a> <?php echo $this->kga['lang']['new_customer']?>
+<a onClick="floaterShow('floaters.php','add_edit_customer',0,0,450); $(this).blur(); return false;"
+   href="#" ><?php echo $this->icons('add', array('title' => $this->kga['lang']['new_customer'])); ?></a>
+<?php echo $this->kga['lang']['new_customer']?>
 <br/><br/>
 
 <table>

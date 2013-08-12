@@ -23,13 +23,16 @@ require_once __DIR__ . '/../Icons.php';
  * Returns the HTML for an icon.
  * Made as ViewHelper for easier customization of skins.
  *
+ * For all available icons, see http://fortawesome.github.io/Font-Awesome/icons/
+ *
  * @author Kevin Papst
  */
 class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
 {
 
-    protected function renderIcon($icon, $options, $title, $style = '')
+    protected function renderIcon($iconId, $options, $title, $style = '')
     {
+        $icon = $this->mapIconId($iconId);
         $title = isset($options['title']) ? $options['title'] : $title;
 
         $class = $icon;
@@ -48,50 +51,34 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
         return '<i title="'.$title.'" '.$style.'class="'.$class.'"></i>';
     }
 
-    public function getEdit($options = array())
+
+    protected function mapIconId($identifier)
     {
-        return $this->renderIcon('icon-pencil', $options, $this->view->kga['lang']['edit']);
+        switch($identifier)
+        {
+            case 'add':
+                return 'icon-plus-sign-alt';
+            case 'edit':
+                return 'icon-pencil';
+            case 'filter':
+                return 'icon-filter';
+            case 'email':
+                return 'icon-envelope';
+            case 'delete':
+                return 'icon-trash';
+            case 'locked':
+                return 'icon-lock';
+            case 'unlocked':
+                return 'icon-unlock';
+            case 'warning':
+                return 'icon-warning-sign';
+            case 'stop':
+                return 'icon-stop';
+            case 'start':
+                return 'icon-play-circle';
+        }
+
+        throw new Exception('Could not find Icon ID');
     }
 
-    public function getFilter($options = array())
-    {
-        return $this->renderIcon('icon-filter', $options, $this->view->kga['lang']['filter']);
-    }
-
-    public function getStop($options = array())
-    {
-        return $this->renderIcon('icon-stop', $options, $this->view->kga['lang']['stop'], 'color:red');
-    }
-
-    public function getStart($options = array())
-    {
-        return $this->renderIcon('icon-play-circle', $options, $this->view->kga['lang']['stop'], 'color:green');
-    }
-
-    public function getDelete($options = array())
-    {
-        // there is no global "delete" translation
-        return $this->renderIcon('icon-trash', $options, '');
-    }
-
-    public function getEmail($options = array())
-    {
-        return $this->renderIcon('icon-envelope', $options, $this->view->kga['lang']['mailUser']);
-    }
-
-    public function getLocked($options = array())
-    {
-        return $this->renderIcon('icon-lock', $options, $this->view->kga['lang']['bannedUser']);
-    }
-
-    public function getWarning($options = array())
-    {
-        // there is no global "warning" translation
-        return $this->renderIcon('icon-warning-sign', $options, '');
-    }
-
-    public function getUnlocked($options = array())
-    {
-        return $this->renderIcon('icon-unlock', $options, $this->view->kga['lang']['activeAccount']);
-    }
 }

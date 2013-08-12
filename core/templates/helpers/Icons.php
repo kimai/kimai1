@@ -45,6 +45,8 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
         }
 
         switch ($key) {
+            case 'add':
+                return $this->getAdd($options);
             case 'edit':
                 return $this->getEdit($options);
             case 'filter':
@@ -73,61 +75,106 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
 
     }
 
+    protected function renderIcon($iconId, $options, $title, $style = '')
+    {
+        $icon = $this->mapIconId($iconId);
+
+        $default = array(
+            'title'  => $title,
+            'width'  => '13',
+            'height' => '13'
+        );
+        $options = array_merge($default, $options);
+
+        if (isset($options['disabled'])) {
+            $icon = str_replace('.', '_.', $icon);
+        }
+
+        return '<img src="../skins/'. $this->view->escape($this->view->kga['conf']['skin']) .
+        '/grfx/'.$icon.'" width="'.$options['width'].'" height="'.$options['height'].'" alt="'. $options['title'] . '" title="'. $options['title'] . '" border="0" />';
+    }
+
+    protected function mapIconId($identifier)
+    {
+        switch($identifier)
+        {
+            case 'add':
+                return 'add.png';
+            case 'edit':
+                return 'edit2.gif';
+            case 'filter':
+                return 'filter.png';
+            case 'email':
+                return 'button_mail.gif';
+            case 'delete':
+                return 'button_trashcan.png';
+            case 'locked':
+                return 'lock.png';
+            case 'unlocked':
+                return 'jipp.gif';
+            case 'warning':
+                return 'caution_mini.png';
+            case 'stop':
+                return 'button_stopthis.gif';
+            case 'start':
+                return 'button_recordthis.gif';
+        }
+
+        throw new Exception('Could not find Icon ID');
+    }
+
+    public function getAdd($options = array())
+    {
+        $options['width'] = '22';
+        $options['height'] = '16';
+
+        return $this->renderIcon('add', $options, $this->view->kga['lang']['new_activity']);
+    }
+
     public function getEdit($options = array())
     {
-        return $this->renderIcon('edit2.gif', $options, $this->view->kga['lang']['edit']);
+        return $this->renderIcon('edit', $options, $this->view->kga['lang']['edit']);
     }
 
     public function getFilter($options = array())
     {
-        return $this->renderIcon('filter.png', $options, $this->view->kga['lang']['filter']);
+        return $this->renderIcon('filter', $options, $this->view->kga['lang']['filter']);
     }
 
     public function getStop($options = array())
     {
-        return $this->renderIcon('button_stopthis.gif', $options, $this->view->kga['lang']['stop']);
+        return $this->renderIcon('stop', $options, $this->view->kga['lang']['stop']);
     }
 
     public function getStart($options = array())
     {
-        return $this->renderIcon('button_recordthis.gif', $options, $this->view->kga['lang']['recordAgain']);
+        return $this->renderIcon('start', $options, $this->view->kga['lang']['recordAgain']);
     }
-
 
     public function getDelete($options = array())
     {
         // there is no global "delete" translation
-        return $this->renderIcon('button_trashcan.png', $options, '');
+        return $this->renderIcon('delete', $options, '');
     }
 
     public function getEmail($options = array())
     {
-        return $this->renderIcon('button_mail.gif', $options, $this->view->kga['lang']['mailUser']);
+        return $this->renderIcon('email', $options, $this->view->kga['lang']['mailUser']);
     }
 
     public function getLocked($options = array())
     {
-        return $this->renderIcon('lock.png', $options, $this->view->kga['lang']['bannedUser']);
+        return $this->renderIcon('locked', $options, $this->view->kga['lang']['bannedUser']);
     }
 
     public function getUnlocked($options = array())
     {
-        return $this->renderIcon('jipp.gif', $options, $this->view->kga['lang']['activeAccount']);
+        return $this->renderIcon('unlocked', $options, $this->view->kga['lang']['activeAccount']);
     }
 
     public function getWarning($options = array())
     {
         // there is no global "warning" translation
-        return $this->renderIcon('caution_mini.png', $options, '');
-    }
-
-    protected function renderIcon($icon, $options, $title, $style = '')
-    {
-        $title = isset($options['title']) ? $options['title'] : $title;
-        if (isset($options['disabled'])) {
-            $icon = str_replace('.', '_.', $icon);
-        }
-        return '<img src="../skins/'. $this->view->escape($this->view->kga['conf']['skin']) .
-            '/grfx/'.$icon.'" width="13" height="13" alt="'. $title . '" title="'. $title . '" border="0" />';
+        return $this->renderIcon('warning', $options, '');
     }
 }

@@ -1,4 +1,6 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_activity',0,0,500); $(this).blur(); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/add.png" width="22" height="16" alt="<?php echo $this->kga['lang']['new_activity']?>"></a> <?php echo $this->kga['lang']['new_activity']?>
+<a onClick="floaterShow('floaters.php','add_edit_activity',0,0,500); $(this).blur(); return false;"
+   href="#" ><?php echo $this->icons('add', array('title' => $this->kga['lang']['new_activity'])); ?></a>
+<?php echo $this->kga['lang']['new_activity']?>
 
 &nbsp;&nbsp;&nbsp;<?php echo $this->kga['lang']['view_filter']?>:
 <select size="1" id="activity_project_filter" onchange="adminPanel_extension_refreshSubtab('activities');">
