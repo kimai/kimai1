@@ -31,6 +31,12 @@
                     <?php echo $this->menu($this->main_navigation); ?>
                 </ul>
                 <ul class="nav navbar-nav pull-right">
+                    <li>
+                        <?php echo $this->partial('partials/datepicker.php', $this); ?>
+                    </li>
+                    <li>
+                        <?php echo $this->partial('partials/buzzer.php', $this); ?>
+                    </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <span><?php echo $this->username(); ?></span><b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -49,6 +55,7 @@
     <div class="container">
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">×</button>
+            <i class="icon-warning-sign icon-large"></i>
             <strong><?php echo $this->kga['lang']['securityWarning']?>:</strong><br/>
             <b><?php echo $this->kga['lang']['installerWarningHeadline']?></b> <br/>
             <?php echo $this->kga['lang']['installerWarningText']?>
@@ -58,25 +65,11 @@
     <?php endif; ?>
 
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="panel panel-default" id="headings">
-                    <div class="panel-heading">Date Picker</div>
-                    <?php echo $this->partial('partials/datepicker.php', $this); ?>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default" id="content-formatting">
-                    <div class="panel-heading">Buzzer</div>
-                    <?php echo $this->partial('partials/buzzer.php', $this); ?>
-                </div>
-            </div>
-        </div>
 
         <div class="row">
-            <?php
-            echo $this->partial('partials/extensions.php', $this);
-            ?>
+            <div class="col-lg-12">
+            <?php echo $this->partial('partials/extensions.php', $this); ?>
+            </div>
         </div>
 
         <div class="row lists">
