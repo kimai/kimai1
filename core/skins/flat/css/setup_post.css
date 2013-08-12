@@ -25,3 +25,18 @@
     background: none !important;
     border: none !important;
 }
+
+#adminPanel_extension_panel table tr.odd {background-color: #fcfdfe;}
+#adminPanel_extension_panel table tr {border-color: #e0e4e8 !important;}
+#adminPanel_extension_panel table tr td {padding: 6px 0 6px 15px;}
+#adminPanel_extension_panel table { border-color: #e0e4e8 !important; margin-bottom: 5px;}
+#adminPanel_extension_panel tr.headerrow th {
+    /*
+    font-weight: normal;
+    */
+              background: #fafbfc;
+              border-right: 1px solid #e0e4e8;
+              border-bottom: 1px solid #e0e4e8;
+    padding: 6px 15px;
+    color: #656565;
+}
