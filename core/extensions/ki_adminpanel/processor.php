@@ -24,6 +24,9 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require ("../../includes/kspi.php");
 
+// set large icon size
+$view->icons()->setIconSize(Zend_View_Helper_Icons::ICON_LARGE);
+
 switch ($axAction)
 {
 	case "createUser" :
@@ -364,14 +367,14 @@ switch ($axAction)
 		// Ban a user from login
 		$sts['active'] = 0;
 		$database->user_edit($id, $sts);
-		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['banneduser'], $kga['lang']['banneduser'], $kga['conf']['skin']);
+        echo $view->icons('locked');
 		break;
 
 	case "unbanUser" :
 		// Unban a user from login
 		$sts['active'] = 1;
 		$database->user_edit($id, $sts);
-		echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $kga['conf']['skin']);
+        echo $view->icons('unlocked');
 		break;
 
 	case "sendEditUser" :
