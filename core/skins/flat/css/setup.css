@@ -60,3 +60,7 @@ div.lists tr.odd td {
 #fliptabs li.act , #fliptabs li.act i, #fliptabs li.act a { font-weight: bold; color: #000; }
 
 .accordion-heading {background-color: #eee;}
+
+
+a i[class^="icon-"],
+a i[class*=" icon-"]{text-decoration:none !important;}
