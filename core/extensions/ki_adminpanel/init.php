@@ -34,6 +34,7 @@
     $out = $timeframe[1];
 
     $view = new Kimai_View();
+    $view->icons()->setIconSize(Zend_View_Helper_Icons::ICON_LARGE);
     $view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 
     $view->kga = $kga;
