@@ -3,7 +3,7 @@
 /* MENU TABS */
 @import "../standard/menu.css";
 /* START AND STOP BUTTON */
-@import "../standard/buzzer.css";
+@import "css/buzzer.css";
 /* YELLOW BOX WITH DATE SELECTOR, CURRENT DATE AND TIME AND TOTAL HOURS */
 @import "../standard/timeframe.css";
 /* FLOATING DIALOGS */

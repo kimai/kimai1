@@ -1,9 +1,27 @@
 
-#buzzer {
-    top: 50px;
-    right: 20px;
-    float: right;
-}
+#deb_ext_kga pre,
+#deb_ext_logfile {font-size:10px !important;}
+/* FIXME - design needs to be solved */
 
-#dates { height: 37px; }
-#dates A { font-size: 20px; }
+#dates { padding-top: 4px; line-height: 20px; height: 26px; }
+#dates A { font-size: 18px; }
+#stopwatch_ticker {display:none !important; }
+#stopwatch {display:none !important; }
+#selector {display:none !important; }
+#display{
+    position: relative;
+    top: 0px;
+    left: inherit;
+    height: 40px;
+    background: none;
+}
+/* JS tries to resize it, so we need !important here */
+#adminPanel_extension_panel {
+    left: 0px !important;
+    top: 0px !important;
+    position: inherit !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: none !important;
+    border: none !important;
+}

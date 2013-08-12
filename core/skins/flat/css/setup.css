@@ -58,3 +58,5 @@ div.lists tr.odd td {
 }
 
 #fliptabs li.act , #fliptabs li.act i, #fliptabs li.act a { font-weight: bold; color: #000; }
+
+.accordion-heading {background-color: #eee;}
