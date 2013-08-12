@@ -6,8 +6,8 @@
 <table>
     <thead>
         <tr class='headerrow'>
+            <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
             <th><?php echo $this->kga['lang']['status']?></th>
-            <th><?php echo $this->kga['lang']['options']?></th>
         </tr>
     </thead>
     <tbody>
@@ -30,10 +30,6 @@
             <tr class='<?php echo $this->cycle(array("odd","even"))->next()?>'>
 
                 <td>
-                    <?php echo $this->escape($statusarray['status'])?>
-                </td>
-
-                <td>
                     <a href="#" onClick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID']?>'); $(this).blur(); return false;"><img
                             src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editstatus']?>"
                             width="13" height="13" alt="<?php echo $this->kga['lang']['editstatus']?>" border="0"></a>
@@ -49,6 +45,11 @@
                 <?php endif; ?>
 
                 </td>
+
+                <td>
+                    <?php echo $this->escape($statusarray['status'])?>
+                </td>
+
             </tr>
             <?php
         }

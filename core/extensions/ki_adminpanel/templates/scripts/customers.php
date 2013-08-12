@@ -5,7 +5,7 @@
 
     <thead>
       <tr class='headerrow'>
-          <th><?php echo $this->kga['lang']['options']?></th>
+          <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
           <th><?php echo $this->kga['lang']['customers']?></th>
           <th><?php echo $this->kga['lang']['contactPerson']?></th>
           <th><?php echo $this->kga['lang']['groups']?></th>

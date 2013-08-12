@@ -6,7 +6,7 @@
 <table>
     <thead>
         <tr class='headerrow'>
-            <th><?php echo $this->kga['lang']['options']?></th>
+            <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
             <th><?php echo $this->kga['lang']['membershipRole']?></th>
             <th><?php echo $this->kga['lang']['users']?></th>
         </tr>
