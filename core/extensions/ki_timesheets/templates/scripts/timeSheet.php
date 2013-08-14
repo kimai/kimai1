@@ -4,32 +4,38 @@ $latest_running_row_index = -1;
 
 if ($this->timeSheetEntries)
 {
-    ?>
-        <div id="timeSheetTable">
+    // --------------------- prepare timesheet table header ---------------------
+    $colgroup = array(
+        'option' => '&nbsp;',
+        'date' => $this->kga['lang']['datum'],
+        'from' => $this->kga['lang']['in'],
+        'to' => $this->kga['lang']['out'],
+        'time' => $this->kga['lang']['time']
+    );
 
-          <table>
+    if ($this->showRates) {
+        $colgroup['wage'] = $this->kga['lang']['wage'];
+    }
 
-            <colgroup>
-              <col class="option" />
-              <col class="date" />
-              <col class="from" />
-              <col class="to" />
-              <col class="time" />
-<?php if ($this->showRates): ?>
-              <col class="wage" />
-<?php endif; ?>
-              <col class="client" />
-              <col class="project" />
-              <col class="activity" />
-            <?php if ($this->showTrackingNumber) { ?>
-              <col class="trackingnumber" />
-            <?php } ?>
-              <col class="username" />
-            </colgroup>
+    $colgroup['customer'] = $this->kga['lang']['customer'];
+    $colgroup['project'] = $this->kga['lang']['project'];
+    $colgroup['activity'] = $this->kga['lang']['activity'];
 
-            <tbody>
+    if ($this->showTrackingNumber) {
+        $colgroup['trackingnumber'] = $this->kga['lang']['trackingNumber'];
+    }
+    $colgroup['username'] = $this->kga['lang']['username'];
 
-    <?php
+    // attention - same config is in timeSheet.php as well !!!!
+    $dataTable = array(
+        'header_id'     => 'timeSheet_head',
+        'colgroup'      => $colgroup,
+        'data_id'       => 'timeSheet'
+    );
+
+    echo $this->dataTable($dataTable)->renderDataHeader();
+
+    // --------------------- start calculating all timesheet entry rows ---------------------
     $day_buffer     = 0; // last day entry
     $time_buffer    = 0; // last time entry
     $end_buffer     = 0; // last time entry
@@ -138,7 +144,7 @@ if ($this->timeSheetEntries)
                 ?>
             </td>
 
-<?php if ($this->showRates): ?>
+            <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
                 if (isset($row['wage'])) {
@@ -148,7 +154,7 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
-<?php endif; ?>
+            <?php endif; ?>
 
             <td class="customer <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['customerName']) ?>
@@ -205,13 +211,10 @@ if ($this->timeSheetEntries)
                 $day_buffer = strftime("%d",$row['start']);
                 $time_buffer = $row['start'];
                 $end_buffer = $row['end'];
-            }
-    ?>
+    }
 
-                </tbody>
-            </table>
-        </div>
-    <?php
+    echo $this->dataTable()->renderDataFooter();
+
 }
 else
 {

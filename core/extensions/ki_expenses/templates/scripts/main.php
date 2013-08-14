@@ -3,39 +3,32 @@
             expense_extension_onload();
         }); 
     </script>
+<?php
+$addRecord = '';
+if (isset($this->kga['user'])) {
+    $addRecord = '<a href="#" onClick="floaterShow(\'../extensions/ki_expenses/floaters.php\',\'add_edit_record\',0,0,600); $(this).blur(); return false;">'.$this->kga['lang']['add'].'</a>';
+}
 
-<div id="expenses_head">
-    <div class="left">
-    <?php if (isset($this->kga['user'])): ?>
-        <a href="#" onClick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600); $(this).blur(); return false;"><?php echo $this->kga['lang']['add']?></a>
-    <?php endif; ?>
-    </div>
-    <table>
-        <colgroup>
-          <col class="options" />
-          <col class="date" />
-          <col class="time" />
-          <col class="value" />
-          <col class="refundable" />
-          <col class="customer" />
-          <col class="project" />
-          <col class="designation" />
-              <col class="username" />
-        </colgroup>
-        <tbody>
-            <tr>
-                <td class="option">&nbsp;</td>
-                <td class="date"><?php echo $this->kga['lang']['datum']?></td>
-                <td class="time"><?php echo $this->kga['lang']['timelabel']?></td>
-                <td class="value"><?php echo $this->kga['lang']['expense']?></td>
-                <td class="refundable"><?php echo $this->kga['lang']['refundable']?></td>
-                <td class="customer"><?php echo $this->kga['lang']['customer']?></td>
-                <td class="project"><?php echo $this->kga['lang']['project']?></td>
-                <td class="designation"><?php echo $this->kga['lang']['designation']?></td>
-                <td class="username"><?php echo $this->kga['lang']['username']?></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+// attention - same config is in expenses.php as well !!!!
+$dataTable = array(
+    'header_id'     => 'expenses_head',
+    'header_button' => $addRecord,
+    'colgroup'      => array(
+        'option' => '&nbsp;',
+        'date' => $this->kga['lang']['datum'],
+        'time' => $this->kga['lang']['timelabel'],
+        'value' => $this->kga['lang']['expense'],
+        'refundable' => $this->kga['lang']['refundable'],
+        'customer' => $this->kga['lang']['customer'],
+        'project' => $this->kga['lang']['project'],
+        'designation' => $this->kga['lang']['designation'],
+        'username' => $this->kga['lang']['username']
+    ),
+    'data_id'       => 'expenses'
+);
 
-<div id="expenses"><?php echo $this->expenses_display?> </div>
+echo $this->dataTable($dataTable)->renderHeader();
+echo $this->expenses_display;
+echo $this->dataTable()->renderFooter();
+
+?>

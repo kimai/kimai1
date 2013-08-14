@@ -1,26 +1,25 @@
 <?php
 if ($this->expenses)
 {
-    ?>
-    <div id="exptable">
+    // attention - same config is in main.php as well !!!!
+    $dataTable = array(
+        'header_id'     => 'expenses_head',
+        'colgroup'      => array(
+            'options' => '&nbsp;',
+            'date' => $this->kga['lang']['datum'],
+            'time' => $this->kga['lang']['timelabel'],
+            'value' => $this->kga['lang']['expense'],
+            'refundable' => $this->kga['lang']['refundable'],
+            'customer' => $this->kga['lang']['customer'],
+            'project' => $this->kga['lang']['project'],
+            'designation' => $this->kga['lang']['designation'],
+            'username' => $this->kga['lang']['username']
+        ),
+        'data_id'       => 'expenses'
+    );
 
-    <table>
+    echo $this->dataTable($dataTable)->renderDataHeader();
 
-        <colgroup>
-        <col class="option" />
-        <col class="date" />
-        <col class="time" />
-        <col class="value" />
-        <col class="refundable" />
-        <col class="client" />
-        <col class="project" />
-        <col class="designation" />
-        <col class="username" />
-        </colgroup>
-
-    <tbody>
-
-    <?php
     $day_buffer = 0;
     $timestamp_buffer = 0;
 
@@ -139,13 +138,9 @@ if ($this->expenses)
         $day_buffer = $cur_day_buffer;
         $timestamp_buffer = $cur_timestamp_buffer;
     }
-    ?>
-                
-    </tbody>
-    </table>
-    </div>
 
-    <?php
+    echo $this->dataTable()->renderDataFooter();
+
 }
 else
 {

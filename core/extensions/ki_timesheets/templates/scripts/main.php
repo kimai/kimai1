@@ -4,50 +4,44 @@
         }); 
     </script>
 
-<div id="timeSheet_head">
-    <div class="left">
-    <?php if (isset($this->kga['user'])): ?>
-        <a href="#" onClick="floaterShow('../extensions/ki_timesheets/floaters.php','add_edit_timeSheetEntry',selected_project+'|'+selected_activity,0,650); $(this).blur(); return false;"><?php echo $this->kga['lang']['add']?></a>
-    <?php endif; ?>
-    </div>
-    <table>
-        <colgroup>
-          <col class="options" />
-          <col class="date" />
-          <col class="from" />
-          <col class="to" />
-          <col class="time" />
-<?php if ($this->showRates): ?>
-          <col class="wage" />
-<?php endif; ?>
-          <col class="customer" />
-          <col class="project" />
-          <col class="activity" />
-        <?php if ($this->showTrackingNumber) { ?>
-          <col class="trackingnumber" />
-        <?php } ?>
-          <col class="username" />
-        </colgroup>
-        <tbody>
-            <tr>
-                <td class="option">&nbsp;</td>
-                <td class="date"><?php echo $this->kga['lang']['datum']?></td>
-                <td class="from"><?php echo $this->kga['lang']['in']?></td>
-                <td class="to"><?php echo $this->kga['lang']['out']?></td>
-                <td class="time"><?php echo $this->kga['lang']['time']?></td>
-<?php if ($this->showRates): ?>
-                <td class="wage"><?php echo $this->kga['lang']['wage']?></td>
-<?php endif; ?>
-                <td class="customer"><?php echo $this->kga['lang']['customer']?></td>
-                <td class="project"><?php echo $this->kga['lang']['project']?></td>
-                <td class="activity"><?php echo $this->kga['lang']['activity']?></td>
-            <?php if ($this->showTrackingNumber) { ?>
-                <td class="trackingnumber"><?php echo $this->kga['lang']['trackingNumber']?></td>
-            <?php } ?>
-                <td class="username"><?php echo $this->kga['lang']['username']?></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<?php
 
-<div id="timeSheet"><?php echo $this->timeSheet_display?> </div>
+$addRecord = '';
+if (isset($this->kga['user'])) {
+    $addRecord = '<a href="#" onClick="floaterShow(\'../extensions/ki_timesheets/floaters.php\',\'add_edit_timeSheetEntry\',selected_project+\'|\'+selected_activity,0,650); $(this).blur(); return false;">'.$this->kga['lang']['add'].'</a>';
+}
+
+$colgroup = array(
+    'option' => '&nbsp;',
+    'date' => $this->kga['lang']['datum'],
+    'from' => $this->kga['lang']['in'],
+    'to' => $this->kga['lang']['out'],
+    'time' => $this->kga['lang']['time']
+);
+
+if ($this->showRates) {
+    $colgroup['wage'] = $this->kga['lang']['wage'];
+}
+
+$colgroup['customer'] = $this->kga['lang']['customer'];
+$colgroup['project'] = $this->kga['lang']['project'];
+$colgroup['activity'] = $this->kga['lang']['activity'];
+
+if ($this->showTrackingNumber) {
+    $colgroup['trackingnumber'] = $this->kga['lang']['trackingNumber'];
+}
+$colgroup['username'] = $this->kga['lang']['username'];
+
+// attention - same config is in timeSheet.php as well !!!!
+$dataTable = array(
+    'header_id'     => 'timeSheet_head',
+    'header_button' => $addRecord,
+    'colgroup'      => $colgroup,
+    'data_id'       => 'timeSheet'
+);
+
+echo $this->dataTable($dataTable)->renderHeader();
+echo $this->timeSheet_display;
+echo $this->dataTable()->renderFooter();
+
+?>

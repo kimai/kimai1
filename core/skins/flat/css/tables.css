@@ -1,8 +1,10 @@
-table.dataTable,
-#expenses {
+#timeSheet,
+#expenses,
+table.dataTable {
     border: 1px solid #ddd !important;
 }
 
+#timeSheet,
 #expenses,
 table.dataTable thead th {
     background-image: none !important;
