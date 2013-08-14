@@ -77,7 +77,40 @@ div#export_head div.right {
     position: inherit !important;
 }
 
-#budgetArea { height: 100% !important; }
+#budgetArea {
+    height: 100% !important;
+    margin: 0px !important;
+    background: none !important;
+    border: none !important;
+}
+
+.project_head {
+    background-image: none !important;
+    background-color: #f5f5f5 !important;
+    height: 35px;
+    color: #333 !important;
+}
+.budget_project {
+    margin: 5px 10px 5px 0px !important;
+    background-color: #fff !important;
+    border-color: #DDDDDD !important;
+    border-radius: 3px;
+    height: 260px !important;
+    padding: 0px !important;
+}
+.budget_project div.project_head {
+    font-weight: normal !important;
+}
+
+.budget_project span {
+    font-size: 13px;
+    margin-left: 5px;
+}
+table.jqplot-table-legend {
+    position: absolute !important;
+    left: 130px !important;
+    border: none !important;
+}
 
 #deb_ext_kga_header,
 #deb_ext_logfile_header,
@@ -105,3 +138,6 @@ div#export_head div.right {
     padding: 0px !important;
 }
 
+#deb_ext_shoutbox_field { height: 16px !important; }
+
+#timeSheetTable table { width: 100% !important; }
