@@ -72,6 +72,6 @@ class Zend_View_Helper_ExtensionScreen extends Zend_View_Helper_Abstract
             $html .= '</div>';
         }
 
-        return '';
+        return $html;
     }
 } 

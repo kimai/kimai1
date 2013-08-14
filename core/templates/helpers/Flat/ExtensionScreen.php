@@ -33,6 +33,7 @@ class Zend_View_Helper_Flat_ExtensionScreen extends Zend_View_Helper_ExtensionSc
         $options = $this->getOptions();
         $title = isset($options['title']) ? $options['title'] : '';
         $id    = isset($options['id']) ? $options['id'] : '';
+        $level  = isset($options['level']) ? $options['level'] : array();
 
         $html = '
         <div class="panel panel-default">';
@@ -42,15 +43,30 @@ class Zend_View_Helper_Flat_ExtensionScreen extends Zend_View_Helper_ExtensionSc
 
         $html .= '<div class="row">';
 
+        if (!empty($level)) {
+            $html .= '<div id="'.$level[count($level)-1].'">';
+        }
+
         return $html;
     }
 
 
     public function getFooter()
     {
-        return '
+        $options = $this->getOptions();
+        $level  = isset($options['level']) ? $options['level'] : array();
+
+        $html = '';
+
+        if (!empty($level)) {
+            $html .= '</div>';
+        }
+
+        $html .= '
         </div>
       </div>
         ';
+
+        return $html;
     }
 }
