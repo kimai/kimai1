@@ -1,6 +1,14 @@
 
+#deb_ext_kga,
 #deb_ext_kga pre,
-#deb_ext_logfile {font-size:10px !important;}
+#deb_ext_logfile {
+    font-size:10px !important;
+    color: blue !important;
+    padding: 0 10px !important;
+    background-color: #fff !important;
+    border: none !important;
+}
+
 /* FIXME - design needs to be solved */
 
 #dates { padding-top: 4px; line-height: 20px; height: 26px; }
@@ -91,7 +99,7 @@ div#export_head div.right {
     color: #333 !important;
 }
 .budget_project {
-    margin: 5px 10px 5px 0px !important;
+    margin: 0px 10px 0px 0px !important;
     background-color: #fff !important;
     border-color: #DDDDDD !important;
     border-radius: 3px;
@@ -141,3 +149,4 @@ table.jqplot-table-legend {
 #deb_ext_shoutbox_field { height: 16px !important; }
 
 #timeSheetTable table { width: 100% !important; }
+

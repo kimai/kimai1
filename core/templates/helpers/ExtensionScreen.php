@@ -44,13 +44,15 @@ class Zend_View_Helper_ExtensionScreen extends Zend_View_Helper_Abstract
     public function getHeader()
     {
         $options = $this->getOptions();
+        $pre    = isset($options['pre_title']) ? $options['pre_title'] : '';
+        $post   = isset($options['post_title']) ? $options['post_title'] : '';
         $title  = isset($options['title']) ? $options['title'] : '';
         $id     = isset($options['id']) ? $options['id'] : '';
         $level  = isset($options['level']) ? $options['level'] : array();
 
         $html = '
             <div id="'.$id.'">
-                <strong>'.$title.'</strong>
+                '.$pre.' <strong>'.$title.'</strong> '.$post.'
             </div>
         ';
 

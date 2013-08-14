@@ -31,6 +31,8 @@ class Zend_View_Helper_Flat_ExtensionScreen extends Zend_View_Helper_ExtensionSc
     public function getHeader()
     {
         $options = $this->getOptions();
+        $pre    = isset($options['pre_title']) ? $options['pre_title'] : '';
+        $post   = isset($options['post_title']) ? $options['post_title'] : '';
         $title = isset($options['title']) ? $options['title'] : '';
         $id    = isset($options['id']) ? $options['id'] : '';
         $level  = isset($options['level']) ? $options['level'] : array();
@@ -38,13 +40,13 @@ class Zend_View_Helper_Flat_ExtensionScreen extends Zend_View_Helper_ExtensionSc
         $html = '
         <div class="panel panel-default">';
         if ($title != '') {
-            $html .= '<div class="panel-heading">'.$title.'</div>';
+            $html .= '<div class="panel-heading">'.$pre.' <strong>'.$title.'</strong> '.$post.'</div>';
         }
 
         $html .= '<div class="row">';
 
         if (!empty($level)) {
-            $html .= '<div id="'.$level[count($level)-1].'">';
+//            $html .= '<div id="'.$level[count($level)-1].'">';
         }
 
         return $html;
@@ -59,7 +61,7 @@ class Zend_View_Helper_Flat_ExtensionScreen extends Zend_View_Helper_ExtensionSc
         $html = '';
 
         if (!empty($level)) {
-            $html .= '</div>';
+//            $html .= '</div>';
         }
 
         $html .= '
