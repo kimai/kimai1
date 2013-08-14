@@ -66,6 +66,9 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
                 return $this->getWarning($options);
             case 'stop':
                 return $this->getStop($options);
+            case 'refresh':
+            case 'reload':
+                return $this->getReload($options);
             case 'start':
             case 'recordAgain':
                 return $this->getStart($options);
@@ -90,8 +93,12 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
             $icon = str_replace('.', '_.', $icon);
         }
 
-        return '<img src="../skins/'. $this->view->escape($this->view->kga['conf']['skin']) .
-        '/grfx/'.$icon.'" width="'.$options['width'].'" height="'.$options['height'].'" alt="'. $options['title'] . '" title="'. $options['title'] . '" border="0" />';
+        // most icons will be in side the skin directory
+        if (strpos($icon, '../') === false) {
+            $icon = '../skins/'. $this->view->escape($this->view->kga['conf']['skin']) . '/grfx/' . $icon;
+        }
+
+        return '<img src="'.$icon.'" width="'.$options['width'].'" height="'.$options['height'].'" alt="'. $options['title'] . '" title="'. $options['title'] . '" border="0" />';
     }
 
     protected function mapIconId($identifier)
@@ -118,6 +125,8 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
                 return 'button_stopthis.gif';
             case 'start':
                 return 'button_recordthis.gif';
+            case 'reload':
+                return '../extensions/ext_debug/grfx/action_refresh.png';
         }
 
         throw new Exception('Could not find Icon ID');
@@ -170,6 +179,11 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
     public function getUnlocked($options = array())
     {
         return $this->renderIcon('unlocked', $options, $this->view->kga['lang']['activeAccount']);
+    }
+
+    public function getReload($options = array())
+    {
+        return $this->renderIcon('reload', $options, '');
     }
 
     public function getWarning($options = array())

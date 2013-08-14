@@ -76,6 +76,8 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
                 return 'icon-stop';
             case 'start':
                 return 'icon-play-circle';
+            case 'reload':
+                return 'icon-refresh';
         }
 
         throw new Exception('Could not find Icon ID');
