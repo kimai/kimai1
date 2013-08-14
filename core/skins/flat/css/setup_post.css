@@ -40,3 +40,68 @@
     padding: 6px 15px;
     color: #656565;
 }
+
+#expenses,
+#timeSheet,
+#xp{
+    top: 0 !important;
+    left: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+#expenses_head,
+#timeSheet_head,
+#export_head {
+    position: inherit !important;
+    top: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0px !important;
+}
+
+#export_panel {
+    height: 70px !important;
+}
+
+div#expenses_head div.left,
+div#timeSheet_head div.left {
+    float: left;
+    margin-top: 2px !important;
+    position: inherit !important;
+}
+
+div#export_head div.right {
+    float: right;
+    margin-top: 2px !important;
+    position: inherit !important;
+}
+
+#budgetArea { height: 100% !important; }
+
+#deb_ext_kga_header,
+#deb_ext_logfile_header,
+#deb_ext_kga_wrap,
+#deb_ext_logfile_wrap
+{
+    position: inherit !important;
+    width: 100% !important;
+    left: 0px !important;
+    top: 0px !important;
+}
+
+#deb_ext_kga_header,
+#deb_ext_logfile_header
+{
+    height: 31px !important;
+}
+
+#deb_ext_kga_wrap {
+    margin-bottom: 10px !important;
+}
+
+#deb_ext_logfile_wrap
+{
+    padding: 0px !important;
+}
+
