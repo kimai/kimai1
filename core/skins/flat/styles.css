@@ -16,5 +16,7 @@
 @import "../standard/timePicker.css";
 /* ICON FONT */
 @import "css/font-awesome.css";
+/* DATA TABLES */
+@import "css/tables.css";
 /* OVERWRITE STUFF FROM DEFAULT INCLUDES */
 @import "css/setup_post.css";
