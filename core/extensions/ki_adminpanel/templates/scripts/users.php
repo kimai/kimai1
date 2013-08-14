@@ -13,7 +13,7 @@
 <table>
 
     <thead>
-      <tr>
+      <tr class='headerrow'>
           <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
           <th><?php echo $this->kga['lang']['username']?></th>
           <th><?php echo $this->kga['lang']['status']?></th>
