@@ -2051,7 +2051,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                   ORDER BY $sort;";
       } else {
         $query = "SELECT DISTINCT project.*, customer.name AS customerName
-                  FROM ${p}proejcts AS project
+                  FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
                   WHERE ${p}groups_projects.groupID  IN (".implode($groups,',').")
