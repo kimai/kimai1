@@ -189,8 +189,8 @@ if (isset($kga['customer']))
 else
   $view->customers = $database->get_customers($kga['user']['groups']);
 
-$view->show_customer_add_button = coreObjectActionAllowed('customer', 'add');
-$view->show_customer_edit_button = coreObjectActionAllowed('customer', 'edit');
+$view->show_customer_add_button = isset($kga['user']) && coreObjectActionAllowed('customer', 'add');
+$view->show_customer_edit_button = isset($kga['user']) && coreObjectActionAllowed('customer', 'edit');
 
 $view->customer_display = $view->render("lists/customers.php");
 
@@ -202,8 +202,8 @@ if (isset($kga['customer']))
 else
   $view->projects = $database->get_projects($kga['user']['groups']);
 
-$view->show_project_add_button = coreObjectActionAllowed('project', 'add');
-$view->show_project_edit_button = coreObjectActionAllowed('project', 'edit');
+$view->show_project_add_button = isset($kga['user']) && coreObjectActionAllowed('project', 'add');
+$view->show_project_edit_button = isset($kga['user']) && coreObjectActionAllowed('project', 'edit');
 
 $view->project_display = $view->render("lists/projects.php");
 
@@ -217,8 +217,8 @@ else if ($projectData['projectID'])
 else 
   $view->activities = $database->get_activities($kga['user']['groups']);
 
-$view->show_activity_add_button = coreObjectActionAllowed('activity', 'add');
-$view->show_activity_edit_button = coreObjectActionAllowed('activity', 'edit');
+$view->show_activity_add_button = isset($kga['user']) && coreObjectActionAllowed('activity', 'add');
+$view->show_activity_edit_button = isset($kga['user']) && coreObjectActionAllowed('activity', 'edit');
 
 $view->activity_display = $view->render("lists/activities.php");
 

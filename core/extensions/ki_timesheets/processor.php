@@ -394,7 +394,7 @@ switch ($axAction) {
             $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
         }
 
-        $view->showRates = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
+        $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
 
         echo $view->render("timeSheet.php");
     break;

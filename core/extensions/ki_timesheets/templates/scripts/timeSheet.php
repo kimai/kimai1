@@ -75,7 +75,7 @@ if ($this->timeSheetEntries)
 
         <td nowrap class="option <?php echo $tdClass; ?>">
 
-        <?php if ($this->kga['user']): // only users can see options ?>
+        <?php if (isset($this->kga['user'])): // only users can see options ?>
 
             <?php if ($row['end']): // Stop oder Record Button? ?>
 
