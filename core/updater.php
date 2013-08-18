@@ -1745,6 +1745,9 @@ if ((int)$revisionDB < 1381) {
     exec_query("ALTER TABLE `${p}users`               ADD PRIMARY KEY(`userID`);", false);
     exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`name`);", false);
     exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`apiKey`);", false);
+
+    exec_query("UPDATE `${p}preferences` SET `option` = 'ui.project_comment_flag' WHERE `option` = 'ui.pct_comment_flag';");
+
 }
 
 
