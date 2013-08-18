@@ -5,6 +5,22 @@
 			this.blur();
 			floaterShow(invoice_extension_path + "floaters.php","editVat",0,0,250);
 		});
+    $('#invoice_customerID').change(function() {
+      $.ajax({
+        url: invoice_extension_path + 'processor.php',
+        data: {
+          'axAction': 'projects',
+          'customerID': $(this).val()
+        }
+      }).done(function(data) {
+        $('#invoice_projectID').empty();
+        for(var projectID in data)
+          $('#invoice_projectID').append($('<option>', {
+            value: projectID,
+            text: data[projectID]
+          }));
+      });
+    });
 	}); 
 </script>
 
@@ -17,8 +33,12 @@
 		<form id="invoice_extension_form" method="post" action="../extensions/ki_invoice/print.php" target="_blank">
 			<div id="invoice_extension_advanced">
 				<div>
-					<?php echo $this->kga['lang']['ext_invoice']['invoiceProject'] ?>
-					<?php echo $this->formSelect('projectID', $this->preselected_project, array('id' => 'invoice_projectID', 'class'=>'formfield'), $this->projects); ?>
+					<?php echo $this->kga['lang']['customer'] ?>:
+					<?php echo $this->formSelect('customerID', $this->preselected_customer, array('id' => 'invoice_customerID', 'class'=>'formfield'), $this->customers); ?>
+				</div>
+				<div>
+					<?php echo $this->kga['lang']['project'] ?>:
+					<?php echo $this->formSelect('projectID[]', $this->preselected_project, array('id' => 'invoice_projectID', 'class'=>'formfield', 'multiple' => 'multiple'), $this->projects); ?>
 				</div>
 				<div id="invoice_timespan">
 					<?php echo $this->timespan_display ?>
