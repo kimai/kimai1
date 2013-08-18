@@ -173,9 +173,9 @@ foreach ($extensions->phpIncludeFiles() as $includeFile) {
 // = display user table =
 // =======================
 if (isset($kga['customer']))
-  $view->users = array();
+  $view->users = $database->get_customer_watchable_users($kga['customer']);
 else
-  $view->users = $database->get_watchable_users($kga['user']);
+  $view->users = $database->get_user_watchable_users($kga['user']);
 $view->user_display = $view->render("lists/users.php");
 
 // ==========================

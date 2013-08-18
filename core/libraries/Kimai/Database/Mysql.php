@@ -3307,7 +3307,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @return array
   * @author sl
   */
-  public function get_watchable_users($user) {
+  public function get_user_watchable_users($user) {
       $arr = array();
       $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
       if ($this->global_role_allows($user['globalRoleID'], 'core-user-otherGroup-view')) {
@@ -3317,6 +3317,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       }
 
       return $this->get_users(0,$user['groups']);
+  }
+
+  public function get_customer_watchable_users($customer) {
+      $arr = array();
+      $customerID = MySQL::SQLValue($customer['customerID'], MySQL::SQLVALUE_NUMBER);
+      $p = $this->kga['server_prefix'];
+      $query = "SELECT * FROM ${p}users WHERE trash=0 AND `userID` IN (SELECT DISTINCT `userID` FROM `${p}timeSheet` WHERE `projectID` IN (SELECT `projectID` FROM `${p}projects` WHERE `customerID` = $customerID)) ORDER BY name";
+      $result = $this->conn->Query($query);
+      return $this->conn->RecordsArray(MYSQL_ASSOC);
   }
 
   /**

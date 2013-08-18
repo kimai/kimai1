@@ -142,13 +142,13 @@ switch ($axAction) {
     /**
      * Return a list of users. Customers are not shown any users. The
      * type of the current user decides which users are shown to him.
-     * See get_watchable_users.
+     * See get_user_watchable_users.
      */
     case 'reload_users':
         if (isset($kga['customer']))
             $view->users = array();
         else
-            $view->users = $database->get_watchable_users($kga['user']);
+            $view->users = $database->get_user_watchable_users($kga['user']);
 
         echo $view->render("lists/users.php");
     break;
