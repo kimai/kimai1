@@ -250,7 +250,8 @@ $query=
 "CREATE TABLE `${p}fixedRates` (
   `projectID` int(10) DEFAULT NULL,
   `activityID` int(10) DEFAULT NULL,
-  `rate` decimal(10,2) NOT NULL
+  `rate` decimal(10,2) NOT NULL,
+  UNIQUE KEY(`projectID`, `activityID`)
 );";
 exec_query($query);
 

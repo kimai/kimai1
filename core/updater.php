@@ -1715,6 +1715,38 @@ if ((int)$revisionDB < 1380) {
     exec_query("INSERT INTO `${p}configuration` VALUES('allowRoundDown', '1');");
 }
 
+if ((int)$revisionDB < 1381) {
+    Logger::logfile("-- update to r1381");
+    // make sure all keys are defined correctly
+    exec_query("ALTER TABLE `${p}activities`          ADD PRIMARY KEY(`activityID`);", false);
+    exec_query("ALTER TABLE `${p}configuration`       ADD PRIMARY KEY(`option`);", false);
+    exec_query("ALTER TABLE `${p}customers`           ADD PRIMARY KEY(`customerID`);", false);
+    exec_query("ALTER TABLE `${p}expenses`            ADD PRIMARY KEY(`expenseID`);", false);
+    exec_query("ALTER TABLE `${p}expenses`            ADD INDEX      (`userID`);", false);
+    exec_query("ALTER TABLE `${p}expenses`            ADD INDEX      (`projectID`);", false);
+    exec_query("ALTER TABLE `${p}fixedRates`          ADD UNIQUE  KEY(`projectID`, `activityID`);", false);
+    exec_query("ALTER TABLE `${p}globalRoles`         ADD PRIMARY KEY(`globalRoleID`);", false);
+    exec_query("ALTER TABLE `${p}groups`              ADD PRIMARY KEY(`groupID`);", false);
+    exec_query("ALTER TABLE `${p}groups_activities`   ADD UNIQUE  KEY(`groupID`, `activityID`);", false);
+    exec_query("ALTER TABLE `${p}groups_customers`    ADD UNIQUE  KEY(`groupID`, `customersID`);", false);
+    exec_query("ALTER TABLE `${p}groups_projects`     ADD UNIQUE  KEY(`groupID`, `projectsID`);", false);
+    exec_query("ALTER TABLE `${p}groups_users`        ADD UNIQUE  KEY(`groupID`, `userID`);", false);
+    exec_query("ALTER TABLE `${p}membershipRoles`     ADD PRIMARY KEY(`membershipRoleID`);", false);
+    exec_query("ALTER TABLE `${p}preferences`         ADD PRIMARY KEY(`userID`, `option`);", false);
+    exec_query("ALTER TABLE `${p}projects`            ADD PRIMARY KEY(`projectID`);", false);
+    exec_query("ALTER TABLE `${p}projects`            ADD INDEX      (`customerID`);", false);
+    exec_query("ALTER TABLE `${p}projects_activities` ADD UNIQUE  KEY(`projectID`, `activityID`);", false);
+    exec_query("ALTER TABLE `${p}rates`               ADD UNIQUE  KEY(`userID`, `projectID`, `activityID`);", false);
+    exec_query("ALTER TABLE `${p}statuses`            ADD PRIMARY KEY(`statusID`);", false);
+    exec_query("ALTER TABLE `${p}timeSheet`           ADD PRIMARY KEY(`timeEntryID`);", false);
+    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`userID`);", false);
+    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`projectID`);", false);
+    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`activityID`);", false);
+    exec_query("ALTER TABLE `${p}users`               ADD PRIMARY KEY(`userID`);", false);
+    exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`name`);", false);
+    exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`apiKey`);", false);
+}
+
 
 // ============================
 // = update DB version number =
