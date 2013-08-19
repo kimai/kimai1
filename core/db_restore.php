@@ -213,14 +213,14 @@ if ($authenticated && isset($_REQUEST['submit']))
 {
   if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
   {
-    $dates = intval($_REQUEST['dates']);
 
-    if (count($dates)>1) 
+    if (count($_REQUEST['dates'])>1) 
     {
         echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
     }
     else
     {
+      $restoreDate = intval($_REQUEST['dates'][0]);
       $query = ("SHOW TABLES;");
 
 
@@ -236,7 +236,7 @@ if ($authenticated && isset($_REQUEST['submit']))
       {
         if ( (substr($row[0], 0, 10) == "kimai_bak_"))
         {
-          if ( in_array(substr($row[0], 10, 10),$dates) )
+          if (substr($row[0], 10, 10) == $restoreDate)
           {
             $table = $row[0];
             $arr[]=$table;
@@ -256,7 +256,7 @@ if ($authenticated && isset($_REQUEST['submit']))
         $i++;
       }
 
-      $date = @date ("d. M Y, H:i:s", $dates[0]);
+      $date = @date ("d. M Y, H:i:s", $restoreDate);
       echo "<h1 class='message'>" .$kga['lang']['backup'][6]. " ".$date."<br>" . $kga['lang']['backup'][7] ."</h1>";
     }
   }
