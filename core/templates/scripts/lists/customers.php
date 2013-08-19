@@ -36,7 +36,7 @@ $customers = $this->filterListEntries($this->customers);
               </td>
 
               <!-- name cell -->
-              <td width="100%" class="clients" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="lists_customer_prefilter(<?php echo $customer['customerID']?>,'highlight'); $(this).blur(); return false;">
+              <td width="100%" class="clients" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onClick="lists_customer_highlight(<?php echo $customer['customerID']?>); $(this).blur(); return false;">
                   <?php if ($customer['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
                   <?php if ($this->kga['conf']['showIDs'] == 1): ?><span class="ids"><?php echo $customer['customerID']?></span> <?php endif; echo $this->escape($customer['name'])?>
                   <?php if ($customer['visible'] != 1): ?></span><?php endif; ?>
