@@ -1499,6 +1499,9 @@ if ((int)$revisionDB < 1368) {
     CHANGE `pct_internal` `internal`   tinyint(1) NOT NULL DEFAULT '0'
     ;");
 
+    // fix ER_WARN_DATA_TRUNCATED for evt_budget
+    exec_query("UPDATE `${p}pct_evt` SET `evt_budget` = 0.00 WHERE `evt_budget` IS NULL");
+
     exec_query("ALTER TABLE `${p}pct_evt` RENAME TO `${p}projects_activities`,
     CHANGE `pct_ID` `projectID`  int(10) NOT NULL,
     CHANGE `evt_ID` `activityID` int(10) NOT NULL,
