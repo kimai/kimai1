@@ -97,15 +97,6 @@ $(document).ready(function() {
         show_selectors();
     }
 
-    var lists_resizeTimer = null;
-    $(window).bind('resize', function() {
-
-    resize_floater();
-
-       if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
-       lists_resizeTimer = setTimeout(lists_resize, 500);
-    });
-    
     // Implement missing method for browsers like IE.
     // thanks to http://stellapower.net/content/javascript-support-and-arrayindexof-ie
     if (!Array.indexOf) {

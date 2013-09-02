@@ -31,30 +31,34 @@ class Zend_View_Helper_Flat_DataTable extends Zend_View_Helper_DataTable
     {
         $head_id = $this->getConfig('header_id');
         $head_btn = $this->getConfig('header_button');
+        $btn_class = $this->getConfig('header_button_class', 'left');
 
         $html = '';
 
         if ($head_btn !== null) {
-            $html .= '<div class="left">' . $head_btn . '</div>';
+            $html .= '<div class="'.$btn_class.'">' . $head_btn . '</div>';
         }
 
-        $html .= '<table class="dataTable table table-striped table-bordered table-condensed"><colgroup>';
+        $dataHeaderId = $this->getConfig('table_id', 'exptable');
+
+        $html .= '<table id="'.$dataHeaderId.'" class="dataTable table table-striped table-bordered table-condensed"><colgroup>';
 
         foreach($this->getConfig('colgroup') as $colName => $colHead) {
             $html .= '<col class="'.$colName.'" />';
         }
 
         $html .= '</colgroup><thead><tr>';
-
-        foreach($this->getConfig('colgroup') as $colName => $colHead) {
-            $html .= '<th class="'.$colName.'">'.$colHead.'</th>';
-        }
-
+        $html .= $this->renderColumnHeader($this->getConfig('colgroup'));
         $id = $this->getConfig('data_id');
         $html .= '</tr></thead><tbody id="'.$id.'">';
 
 
         return $html;
+    }
+
+    protected function renderOneHeader($class, $content)
+    {
+        return '<th class="'.$class.'">'.$content.'</th>';
     }
 
     public function renderDataHeader()

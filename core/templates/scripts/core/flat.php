@@ -5,13 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php echo $this->partial('partials/html_head.php', $this); ?>
-    <script type="text/javascript">
-        // defined in kimai_onload();
-        function skin_onload() { }
-        // defined in init.js and main.js
-        function lists_resize() { }
-
-    </script>
+    <script src="../skins/flat/js/skin.js" type="text/javascript" charset="utf-8"></script>
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -78,7 +72,7 @@
     </div>
 
     <?php echo $this->loader(); ?>
-    <?php echo $this->floater(); ?>
+    <?php echo $this->floater()->floaterBody(); ?>
 
 </body>
 </html>

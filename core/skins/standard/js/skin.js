@@ -188,3 +188,85 @@ function lists_set_TableWidths() {
     ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
     $("#activities table").css("width",activityColumnWidth-scr);
 }
+
+
+
+// ----------------------------------------------------------------------------------------
+// shows floating dialog windows based on processor data
+function floaterShow(phpFile, axAction, axValue, id, width, callback)
+{
+    if ($('#floater').css("display") == "block") {
+        $("#floater").fadeOut(fading_enabled?500:0, function() {
+            floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
+        });
+    } else {
+        floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
+    }
+}
+
+// load floater content
+function floaterLoadContent(phpFile, axAction, axValue, id, width, callback)
+{
+    $("#floater").load(phpFile,
+        {
+            axAction: axAction,
+            axValue: axValue,
+            id: id
+        },
+        function() {
+
+            $('#floater').css({width: width+"px"});
+
+            resize_floater();
+
+            x = ($(document).width()-(width+10))/2;
+            if (x<0) x=0;
+            $("#floater").css({left:x+"px"});
+            $("#floater").fadeIn(fading_enabled?200:0);
+
+            $('#focus').focus();
+            $('.extended').hide();
+            $('#floater_content').css("height",$('#floater_dimensions').outerHeight()+5);
+
+            // toggle class of the proberbly existing extended options button
+            $(".options").toggle(function(){
+                el = $(this);
+                el.addClass("up");
+                el.removeClass("down");
+                return false;
+            },function(){
+                el = $(this);
+                el.addClass("down");
+                el.removeClass("up");
+                return false;
+            });
+
+            if (callback != undefined)
+                callback();
+
+        }
+    );
+}
+
+// resize floater based on window size
+function resize_floater()
+{
+    var height = $(window).height();
+    height -= $('#floater').outerHeight() - $('#floater').height(); // floater border and padding
+    height -= $('#floater_tabs').outerHeight() - $('#floater_tabs').height(); // floaterTab border and padding
+    height -= $('#floater_handle').outerHeight(true) + $('.menuBackground').outerHeight(true) + $('#formbuttons').outerHeight(true); // other elements heights
+    $('#floater_tabs').css({'max-height': height + "px"});
+
+    var y = ($(window).height() - $('#floater').height()) / 2;
+    if (y<0) y=0;
+    $("#floater").css({top:y+"px"});
+
+}
+
+// hides dialog again
+function floaterClose()
+{
+    //$('#floater').draggable('destroy');
+    $("#floater").fadeOut(fading_enabled?500:0);
+}
+// ----------------------------------------------------------------------------------------

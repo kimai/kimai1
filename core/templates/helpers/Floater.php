@@ -24,8 +24,49 @@
  */
 class Zend_View_Helper_Floater extends Zend_View_Helper_Abstract
 {
+    /**
+     * @var string
+     */
+    protected $title = '';
+
+    /**
+     * @param $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function floater()
+    {
+        return $this;
+    }
+
+    // ---------------------- SKIN SPECIFIC ----------------------
+
+    /**
+     * Returns the main structure of the floater.
+     *
+     * @return string
+     */
+    public function floaterBody()
     {
         return '<div id="floater">floater</div>';
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $html = '';
+
+        return $html;
+    }
+
 } 

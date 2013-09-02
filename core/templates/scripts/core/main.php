@@ -20,13 +20,18 @@
             lists_shrinkUserToggle();
             <?php endif; ?>
 
-            /* 1 */
+            var lists_resizeTimer = null;
+            $(window).bind('resize', function() {
+                resize_floater();
+                if (lists_resizeTimer) {
+                    clearTimeout(lists_resizeTimer);
+                }
+                lists_resizeTimer = setTimeout(lists_resize, 500);
+            });
 
             // give browser time to render page. afterwards make sure lists are resized correctly
             setTimeout(lists_resize,500);
             clearTimeout(lists_resize);
-
-            /* 2 */
 
             resize_menu();
 
@@ -56,6 +61,6 @@
         <div id="customersShrink">&nbsp;</div>
     </div>
     <?php echo $this->loader(); ?>
-    <?php echo $this->floater(); ?>
+    <?php echo $this->floater()->floaterBody(); ?>
 </body>
 </html>

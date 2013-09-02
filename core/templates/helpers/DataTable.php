@@ -52,11 +52,12 @@ class Zend_View_Helper_DataTable extends Zend_View_Helper_Abstract
     {
         $head_id = $this->getConfig('header_id');
         $head_btn = $this->getConfig('header_button');
+        $btn_class = $this->getConfig('header_button_class', 'left');
 
         $html = '<div id="'.$head_id.'">';
 
         if ($head_btn !== null) {
-            $html .= '<div class="left">' . $head_btn . '</div>';
+            $html .= '<div class="'.$btn_class.'">' . $head_btn . '</div>';
         }
 
         $html .= '<table><colgroup>';
@@ -66,11 +67,7 @@ class Zend_View_Helper_DataTable extends Zend_View_Helper_Abstract
         }
 
         $html .= '</colgroup><tbody><tr>';
-
-        foreach($this->getConfig('colgroup') as $colName => $colHead) {
-            $html .= '<td class="'.$colName.'">'.$colHead.'</td>';
-        }
-
+        $html .= $this->renderColumnHeader($this->getConfig('colgroup'));
         $html .= '</tr></tbody></table></div>';
 
         $id = $this->getConfig('data_id');
@@ -79,10 +76,39 @@ class Zend_View_Helper_DataTable extends Zend_View_Helper_Abstract
         return $html;
     }
 
+    protected function renderColumnHeader($colgroup)
+    {
+        $html = '';
+        foreach($colgroup as $colName => $colHead) {
+            if (is_array($colHead)) {
+                $class = $colName;
+                if (isset($colHead['class'])) {
+                    $class .= ' ' . $colHead['class'];
+                }
+                if (isset($colHead['title'])) {
+                    $title = $colHead['title'];
+                } else {
+                    $title = $this->view->translate($colName);
+                }
+                $html .= $this->renderOneHeader($class, $title);
+            } else {
+                $html .= $this->renderOneHeader($colName, $colHead);
+            }
+        }
+        return $html;
+    }
+
+    protected function renderOneHeader($class, $content)
+    {
+        return '<td class="'.$class.'">'.$content.'</td>';
+    }
+
     public function renderDataHeader()
     {
+        $dataHeaderId = $this->getConfig('table_id', 'exptable');
+
         return '
-            <div id="exptable">
+            <div id="'.$dataHeaderId.'">
 
             <table>
 
