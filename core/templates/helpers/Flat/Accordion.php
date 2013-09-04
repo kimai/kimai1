@@ -50,7 +50,7 @@ class Zend_View_Helper_Flat_Accordion extends Zend_View_Helper_Accordion
                      </a>
                 </div>
                 <div id="collapse'.$id.'" class="accordion-body collapse" style="height: 0px;">
-                    <div class="accordion-inner text-small">
+                    <div id="adminPanel_extension_s'.$id.'" class="accordion-inner text-small">
                     '.$content.'
                     </div>
                 </div>
