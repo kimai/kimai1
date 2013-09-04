@@ -11,7 +11,7 @@ function lists_resize()
 // show a floater based on the current skin
 function floaterShow(phpFile, axAction, axValue, id, width, callback)
 {
-    $("#kimai_modal .modal-body").load(phpFile,
+    $("#kimai_modal .modal-content").load(phpFile,
         {
             axAction: axAction,
             axValue: axValue,

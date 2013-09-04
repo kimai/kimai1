@@ -29,6 +29,82 @@ require_once __DIR__ . '/../Floater.php';
  */
 class Zend_View_Helper_Flat_Floater extends Zend_View_Helper_Floater
 {
+    /**
+     * Return the HTML for starting a floater page.
+     *
+     * @return string
+     */
+    public function floaterBegin()
+    {
+        $html = '';
+
+        if (!empty($this->formAction)) {
+            $html .= '<form action="'.$this->formAction.'" id="'.$this->formId.'" method="'.$this->formMethod.'">';
+        }
+
+        $html .= '<div class="modal-header">';
+
+        if ($this->showButtonClose) {
+            $html .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
+        }
+
+        $html .= '<h4 class="modal-title">'.$this->title.'</h4>';
+        $html .= '</div>';
+
+        $html .= '<div class="modal-body">';
+
+        if(!empty($this->tabs)) {
+            $html .= '<ul class="nav nav-tabs">';
+            foreach($this->tabs as $id => $title)
+            {
+                $html .= '<li';
+                if(!empty($this->activeTab) && $this->activeTab == $id) {
+                    $html .= ' class="active"';
+                }
+                $html .= '><a href="#'.$id.'" data-toggle="tab">'.$title.'</a></li>';
+            }
+            $html .= '</ul>';
+            $html .= '<div class="tab-content">';
+        }
+
+        return $html;
+    }
+
+    /**
+     * Return the HTML for ending a floater page.
+     *
+     * @return string
+     */
+    public function floaterEnd()
+    {
+        $html = '';
+
+        if(!empty($this->tabs)) {
+            $html .= '</div>'; // .tab-content
+        }
+
+        $html .= '</div>'; // .modal-body
+
+        // form buttons
+        if($this->showButtonCancel || $this->showButtonSave)
+        {
+            $html .= '<div class="modal-footer">';
+            if($this->showButtonCancel) {
+                $html .= '<button type="button" class="btn btn-default" data-dismiss="modal">'.$this->view->translate('cancel').'</button> ';
+            }
+
+            if($this->showButtonSave) {
+                $html .= '<button type="submit" class="btn btn-primary">'.$this->view->translate('submit').'</button> ';
+            }
+            $html .= '</div>';
+        }
+
+        if (!empty($this->formAction)) {
+            $html .= '</form>';
+        }
+
+        return $html;
+    }
 
     /**
      * Returns the main structure of the floater.
@@ -41,31 +117,26 @@ class Zend_View_Helper_Flat_Floater extends Zend_View_Helper_Floater
             <div class="modal fade" id="kimai_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Modal title</h4>
-                        </div>
-                        <div class="modal-body">
                             ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
                     </div>
                 </div>
             </div>
         ';
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function tabContentBegin($id)
     {
-        $html = '';
-
+        $html = '<div id="'.$id.'" class="tab-pane';
+        if(!empty($this->activeTab) && $this->activeTab == $id) {
+            $html .= ' active';
+        }
+        $html .= '">';
         return $html;
+
     }
 
+    public function tabContentEnd()
+    {
+        return '</div>';
+    }
 }
