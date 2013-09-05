@@ -88,9 +88,9 @@ class Zend_View_Helper_Hierarchy extends Zend_View_Helper_Abstract
         if ($level > 0) {
             if ($originalLevel == 1) {
                 $id = $parentKeys[$originalLevel - 1];
-                echo "<fieldset id=\"${id}\" class=\"hierarchyLevel${level}\">";
+                echo $this->renderLevelBegin($level, $id);
             } else {
-                echo "<fieldset class=\"hierarchyLevel${level}\">";
+                echo $this->renderLevelBegin($level, null);
             }
 
             $names = array();
@@ -105,7 +105,10 @@ class Zend_View_Helper_Hierarchy extends Zend_View_Helper_Abstract
                 $names[] = $name;
             }
 
-            echo "<legend> " . implode(', ', $names) . " </legend>";
+            $titles = implode(', ', $names);
+            if (trim($titles) !== '') {
+                echo $this->renderLevelTitle($titles);
+            }
         }
 
         foreach ($keyHierarchy as $key => $subKeys) {
@@ -126,12 +129,7 @@ class Zend_View_Helper_Hierarchy extends Zend_View_Helper_Abstract
                 $name = $kga['lang'][$name];
             }
 
-            $checkedAttribute = '';
-            if ($subKeys == 1) {
-                $checkedAttribute = 'checked = "checked"';
-            }
-
-            echo '<span class="permission"><input type="checkbox" value="1" name="' . $permissionKey . '" ' . $checkedAttribute . ' />' . $name . '</span>';
+            echo $this->renderPermissionSelect($name, $permissionKey, ($subKeys == 1));
         }
 
         foreach ($keyHierarchy as $key => $subKeys) {
@@ -144,10 +142,9 @@ class Zend_View_Helper_Hierarchy extends Zend_View_Helper_Abstract
         }
 
         if ($level > 0) {
-            echo "</fieldset>";
+            echo $this->renderLevelEnd();
         }
     }
-
 
     /**
      * @brief Decide if a hierarchy step can be jumped.
@@ -174,5 +171,32 @@ class Zend_View_Helper_Hierarchy extends Zend_View_Helper_Abstract
         }
 
         return true;
+    }
+
+    // ==================== COULD BE OVERWRITTEN BY SKINS ====================
+
+    protected function renderPermissionSelect($title, $key, $activated)
+    {
+        $checked = ($activated) ? ' checked="checked"' : '';
+        return '<span class="permission"><input type="checkbox" value="1" name="'.$key.'"'.$checked.' />'.$title.'</span>';
+    }
+
+    protected function renderLevelTitle($title)
+    {
+        return "<legend> " . $title . " </legend>";
+    }
+
+    protected function renderLevelEnd()
+    {
+        return "</fieldset>";
+    }
+
+    protected function renderLevelBegin($level, $id = null)
+    {
+        if ($id === null) {
+            return '<fieldset class="hierarchyLevel'.$level.'">';
+        }
+
+        return '<fieldset id="'.$id.'" class="hierarchyLevel'.$level.'">';
     }
 } 
