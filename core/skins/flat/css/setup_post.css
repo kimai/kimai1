@@ -38,15 +38,14 @@
 #adminPanel_extension_panel table tr {border-color: #e0e4e8 !important;}
 #adminPanel_extension_panel table tr td {padding: 6px 0 6px 15px;}
 #adminPanel_extension_panel table { border-color: #e0e4e8 !important; margin-bottom: 5px;}
-#adminPanel_extension_panel tr.headerrow th {
-    /*
-    font-weight: normal;
-    */
-              background: #fafbfc;
-              border-right: 1px solid #e0e4e8;
-              border-bottom: 1px solid #e0e4e8;
-    padding: 6px 15px;
-    color: #656565;
+#exptable thead tr th,
+#adminPanel_extension_panel thead tr th {
+    font-weight: bold !important;
+    background: #fafbfc !important;
+    border-right: 1px solid #e0e4e8 !important;
+    border-bottom: 1px solid #e0e4e8 !important;
+    padding: 6px 15px !important;
+    color: #656565 !important;
 }
 
 #expenses,
@@ -157,3 +156,5 @@ div.modal-body ul label { min-width: 150px; }
 div.modal-body .tab-pane legend { font-weight: bold; margin-bottom: 10px; font-size: 16px; border-bottom: none; }
 .permission { color: #000; margin-left: 5px; }
 .permission input[type="checkbox"] { margin-right: 5px; }
+
+#adminPanel_extension_panel table { font-size: 13px !important; }

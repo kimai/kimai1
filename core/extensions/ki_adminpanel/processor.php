@@ -24,9 +24,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require ("../../includes/kspi.php");
 
-// set large icon size
-$view->icons()->setIconSize(Zend_View_Helper_Icons::ICON_LARGE);
-
 switch ($axAction)
 {
 	case "createUser" :
