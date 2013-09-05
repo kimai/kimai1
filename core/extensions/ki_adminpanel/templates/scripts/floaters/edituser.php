@@ -224,8 +224,7 @@ echo $this->floater()
             </td>
             <td>
                 <a class="deleteButton">
-                    <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/close.png"
-                         width="22" height="16"/>
+                    <?php echo $this->icons('delete'); ?>
                 </a>
             </td>
         </tr>
