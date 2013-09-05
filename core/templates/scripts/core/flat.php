@@ -19,7 +19,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">KIMAI</a>
+            <a class="navbar-brand" href="http://www.kimai.org/" title="Kimai - Open Source time-tracking" target="_blank">KIMAI</a>
             <div class="nav-collapse collapse">
                 <ul class="nav navbar-nav" id="fliptabs">
                     <?php echo $this->menu($this->main_navigation); ?>
