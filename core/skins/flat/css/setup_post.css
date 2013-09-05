@@ -151,5 +151,9 @@ table.jqplot-table-legend {
 #timeSheetTable table { width: 100% !important; }
 
 div.tab-pane { padding-top: 15px; }
-div.modal-body ul { list-style-type: none; padding-left: 10px; }
+div.modal-dialog { width: 700px; }
+div.modal-body ul { list-style-type: none; padding-left: 10px; margin: 0px; }
 div.modal-body ul label { min-width: 150px; }
+div.modal-body .tab-pane legend { font-weight: bold; margin-bottom: 10px; font-size: 16px; border-bottom: none; }
+.permission { color: #000; margin-left: 5px; }
+.permission input[type="checkbox"] { margin-right: 5px; }

@@ -132,7 +132,6 @@ class Zend_View_Helper_Flat_Floater extends Zend_View_Helper_Floater
         }
         $html .= '">';
         return $html;
-
     }
 
     public function tabContentEnd()
