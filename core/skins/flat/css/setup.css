@@ -65,4 +65,4 @@ a i[class*=" icon-"]{text-decoration:none !important;}
 
 i.disabledIcon{opacity: 0.5;}
 
-th.admin_options, th.admin_options { width: 150px; }
+th.admin_options, td.admin_options { width: 100px; }
