@@ -64,6 +64,7 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
                 return 'icon-filter';
             case 'email':
                 return 'icon-envelope';
+            case 'quickdelete':
             case 'delete':
                 return 'icon-trash';
             case 'locked':
