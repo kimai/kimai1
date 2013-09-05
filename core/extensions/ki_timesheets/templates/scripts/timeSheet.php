@@ -109,7 +109,7 @@ if ($this->timeSheetEntries)
       <?php if ($this->kga['conf']['quickdelete'] > 0):
     // quick erase trashcan  ?>
         <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;">
-            <?php echo $this->icons('delete', array('title' => $this->kga['lang']['quickdelete'])); ?></a>
+            <?php echo $this->icons('quickdelete'); ?></a>
       <?php endif; ?>
 
     <?php endif; ?>
