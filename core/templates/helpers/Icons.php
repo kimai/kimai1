@@ -54,6 +54,7 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
             case 'mail':
             case 'email':
                 return $this->getEmail($options);
+            case 'quickdelete':
             case 'delete':
                 return $this->getDelete($options);
             case 'bannedUser':
@@ -113,6 +114,7 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
                 return 'filter.png';
             case 'email':
                 return 'button_mail.gif';
+            case 'quickdelete':
             case 'delete':
                 return 'button_trashcan.png';
             case 'locked':
@@ -162,8 +164,8 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
 
     public function getDelete($options = array())
     {
-        // there is no global "delete" translation
-        return $this->renderIcon('delete', $options, '');
+        // there is no global "delete" translation, so we use the quickdelete
+        return $this->renderIcon('delete', $options, $this->view->kga['lang']['quickdelete']);
     }
 
     public function getEmail($options = array())
