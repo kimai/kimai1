@@ -43,10 +43,15 @@ switch ($axAction) {
 
         // check if this entry may be edited
         if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
+          // the user's own entry
           if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
             break;
         }
-        else if ($database->is_watchable_user($kga['user'], $timeSheetEntry['userID'])) {
+        else if (count(array_intersect(
+            $database->getGroupMemberships($kga['user']),
+            $database->getGroupMemberships($timeSheetEntry['userID'])
+          )) != 0) {
+          // same group as the entry's user
           if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']),'ki_timesheets-otherEntry-ownGroup-edit'))
             break;
         }
