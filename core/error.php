@@ -38,28 +38,22 @@ Zend_Loader_Autoloader::getInstance();
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'templates');
 
-if (!file_exists('includes/autoconf.php')) {
-       $headline = "Fatal Error!";
-       $message = "No config-file found or it doesn't contain any data. Make sure your autoconf.php contains access-data for the database.<br/><br/>Die Konfigurations-Datei konnte nicht gefunden werden oder ist leer.";
+if (!isset($_REQUEST['err'])) {
+    $_REQUEST['err'] = '';
 }
-else {
-  if (!isset($_REQUEST['err'])) {
-      $_REQUEST['err'] = '';
-  }
 
-  switch ($_REQUEST['err']) {
+switch ($_REQUEST['err']) {
 
-    // TODO - can we make sure $kga exists?
-    case 'db':
-        $headline = $kga['lang']['errors'][0]['hdl'];
-        $message  = $kga['lang']['errors'][0]['txt'];
-    break;
-      
-    default:
-        $headline = "Unknown Error";
-        $message = "No error information was specified.";
-    break;
-  }
+  // TODO - can we make sure $kga exists?
+  case 'db':
+      $headline = $kga['lang']['errors'][0]['hdl'];
+      $message  = $kga['lang']['errors'][0]['txt'];
+  break;
+    
+  default:
+      $headline = "Unknown Error";
+      $message = "No error information was specified.";
+  break;
 }
 
 $view->assign('headline', $headline);
