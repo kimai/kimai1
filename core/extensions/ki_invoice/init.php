@@ -41,10 +41,10 @@ $view->projects = $sel;
 
 // Select values for Round Time option
 $roundingOptions = array(
-  1 => '0.1h',
-  2.5 =>'0.25h',
-  5 => '0.5h',
-  10 => '1.0h'
+  '1' => '0.1h',
+  '2.5' =>'0.25h',
+  '5' => '0.5h',
+  '10' => '1.0h'
 );
 $view->roundingOptions = $roundingOptions;
 
