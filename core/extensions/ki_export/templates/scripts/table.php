@@ -177,7 +177,7 @@ $isExpense = $row['type']=="expense"; ?>
                         <a href ="#" class="preselect_lnk" 
                             onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
                             return false;">
-                        <?php $this->escape($row['activityName']);
+                        <?php echo $this->escape($row['activityName']);
                         else: ?>
                             &ndash;
                         <?php endif; ?>
