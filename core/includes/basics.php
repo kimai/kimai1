@@ -44,17 +44,9 @@ $autoloader->registerNamespace('Kimai');
 
 require(WEBROOT.'includes/5.3.functions.php');
 
-if (!file_exists(WEBROOT.'includes/autoconf.php')) {
-    if (preg_match('|core/[^?]*\.php|',$_SERVER['PHP_SELF'])>0) {
-        header('location:../error.php');
-    } else {
-        header('location:error.php');
-    }
-    exit;
-}
-
-require(WEBROOT.'includes/autoconf.php');
-if (!isset($server_hostname)) {
+if (file_exists(WEBROOT.'includes/autoconf.php'))
+  require(WEBROOT.'includes/autoconf.php');
+else {
   header('location:installer/index.php');
   exit;
 }
