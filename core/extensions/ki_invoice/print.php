@@ -160,7 +160,9 @@ if (isset($_REQUEST['round'])) {
 		// Write a logfile entry for each value that is rounded.
 		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
 
-		$rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+    if ($invoiceArray[$time_index]['hour'] != 0)
+      $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+
 		$invoiceArray[$time_index]['hour'] = $rounded;
 		$invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
 		$time_index++;
