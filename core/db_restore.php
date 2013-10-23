@@ -251,7 +251,9 @@ if ($authenticated && isset($_REQUEST['submit']))
         $query = "DROP TABLE ". $arr2[$i];
         exec_query($query,1);
 
-        $query = "CREATE TABLE " . $newTable . " SELECT * FROM " . $arr[$i];
+        $query = "CREATE TABLE " . $newTable . " LIKE " . $arr[$i];
+        exec_query($query,1);
+        $query = "INSERT INTO " . $newTable . " SELECT * FROM " . $arr[$i];
         exec_query($query,1);
         $i++;
       }
