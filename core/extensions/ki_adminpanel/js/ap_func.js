@@ -356,7 +356,14 @@ function adminPanel_extension_deleteGroup(id) {
   if (!confirm(lang_sure)) return;
   
   $.post(adminPanel_extension_path + "processor.php", { axAction: "deleteGroup", id: id }, 
-    function() { adminPanel_extension_refreshSubtab('groups'); }
+    function(result) {
+     var error = result['errors'][""];
+    
+     if (error)
+       alert(error);
+     else
+       adminPanel_extension_refreshSubtab('groups');
+    }
   );
 
 }
