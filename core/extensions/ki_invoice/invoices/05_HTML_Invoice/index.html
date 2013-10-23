@@ -90,6 +90,7 @@ $invoiceDate    = $this->invoiceDate;
 				<thead>
 					<tr>
 						<th><span>Bezeichnung</span></th>
+                        <th><span>Auftragsnummer</span></th>
 						<th><span>Einzelpreis</span></th>
 						<th><span>Anzahl</span></th>
 						<th><span>Gesamtpreis</span></th>
@@ -99,6 +100,7 @@ $invoiceDate    = $this->invoiceDate;
                 <?php foreach($entries as $row) { ?>
 					<tr>
 						<td><span><?php echo $row['desc']; ?></span></td>
+                        <td><span><?php echo $row['trackingNr']; ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['rate'],2 ); ?></span></td>
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>

@@ -92,6 +92,7 @@ while ($time_index < $timeArrayCounter) {
 	$duration       = $timeArray[$time_index]['formattedDuration'];
 	$activity       = html_entity_decode($timeArray[$time_index]['activityName']);
 	$comment        = $timeArray[$time_index]['comment'];
+    $trackingnr     = $timeArray[$time_index]['trackingNumber'];
 	$description    = $timeArray[$time_index]['description'];
 	$activityDate   = date("m/d/Y", $timeArray[$time_index]['start']);
 	$userName       = $timeArray[$time_index]['userName'];
@@ -112,6 +113,7 @@ while ($time_index < $timeArrayCounter) {
 				'date'          => $activityDate,
 				'description'   => $description,
                 'rate'          => ($totalAmount+$wage) / ($totalTime+$time),
+                'trackingNr'    => $trackingnr,
 				'comment'       => $comment
 			);
 		}
@@ -124,6 +126,7 @@ while ($time_index < $timeArrayCounter) {
 				'date'          => $activityDate,
 				'description'   => $description,
                 'rate'          => $rate,
+                'trackingNr'    => $trackingnr,
 				'comment'       => $comment,
 				'username'      => '',
 				'useralias'     => ''
@@ -139,6 +142,7 @@ while ($time_index < $timeArrayCounter) {
 			'date'          => $activityDate,
 			'description'   => $description,
             'rate'          => $rate,
+            'trackingNr'    => $trackingnr,
 			'comment'       => $comment,
 			'username'      => $userName,
 			'useralias'     => $userAlias
@@ -160,7 +164,13 @@ if (isset($_REQUEST['round'])) {
 		// Write a logfile entry for each value that is rounded.
 		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
 
-		$rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+        if ($invoiceArray[$time_index]['hour'] == 0) {
+            // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
+            $rate = 0;
+        } else {
+		    $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+        }
+
 		$invoiceArray[$time_index]['hour'] = $rounded;
 		$invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
 		$time_index++;
