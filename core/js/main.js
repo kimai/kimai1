@@ -826,31 +826,24 @@ function lists_live_filter(div_list, needle) {
   }).css('display','');
 }
 
+function lists_customer_highlight(customer) {
+  $(".customer").removeClass("filterProjectForPreselection");
+  $(".project").removeClass("filterProjectForPreselection");
+  $("#projects .customer"+customer).addClass("filterProjectForPreselection");
+  $("#projects .project").removeClass("TableRowInvisible");
+}
 
-function lists_customer_prefilter(customer,type) {
-    if (type=="highlight") {
-        
-        $(".customer").removeClass("filterProjectForPreselection");
-        $(".project").removeClass("filterProjectForPreselection");
-        $("#projects .customer"+customer).addClass("filterProjectForPreselection");
-        $("#projects .project").removeClass("TableRowInvisible");
+function lists_customer_prefilter(customer, filter, singleFilter) {
+  if (singleFilter && filter)
+      $("#projects .project").addClass("TableRowInvisible");
 
-        
-    } else {
-        
-        $(".customer").removeClass("filterProjectForPreselection");      
-        $(".project").removeClass("filterProjectForPreselection");
-        $("#customers .customer"+customer).addClass("filterProjectForPreselection");
-        $("#projects .project").removeClass("highlightProjectForPreselection");
-        if (customer > 0) {
-          $("#projects .project").addClass("TableRowInvisible");
-          $("#projects .customer"+customer).removeClass("TableRowInvisible");
-        }
-        else {
-          $("#projects .project").removeClass("TableRowInvisible");
-        }
-        
-    }
+  if (filter)
+    $("#projects .customer"+customer).removeClass("TableRowInvisible");
+  else
+    $("#projects .customer"+customer).addClass("TableRowInvisible");
+
+  if (singleFilter && !filter)
+      $("#projects .project").removeClass("TableRowInvisible");
 }
 
 
@@ -944,7 +937,8 @@ function lists_toggle_filter(subject,id) {
         break;
         case 'customer':
           filterCustomers.splice(filterCustomers.indexOf(id),1);
-          lists_customer_prefilter(0,'filter');
+          var singleFilter = $('.fhighlighted',rowElement.parent()).length == 0;
+          lists_customer_prefilter(id, false, singleFilter);
         break;
         case 'project':
           filterProjects.splice(filterProjects.indexOf(id),1);
@@ -963,7 +957,8 @@ function lists_toggle_filter(subject,id) {
         break;
         case 'customer':
           filterCustomers.push(id);
-          lists_customer_prefilter(id,'filter');
+          var singleFilter = $('.fhighlighted',rowElement.parent()).length == 1;
+          lists_customer_prefilter(id, true, singleFilter);
         break;
         case 'project':
           filterProjects.push(id);
