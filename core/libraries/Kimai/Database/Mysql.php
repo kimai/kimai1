@@ -1799,46 +1799,47 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       return $this->conn->Query($query);
   }
 
- /**
-  * create time sheet entry
-  *
-  * @param integer $id    ID of record
-  * @param integer $data  array with record data
-  * @author th
-  */
-  public function timeEntry_create($data) {
-      $data = $this->clean_data($data);
+	/**
+	 * create time sheet entry
+	 *
+	 * @param integer $id    ID of record
+	 * @param integer $data  array with record data
+	 * @author th
+	 */
+	public function timeEntry_create($data) {
+		$data = $this->clean_data($data);
 
-      $values ['location']     =   MySQL::SQLValue( $data ['location'] );
-      $values ['comment']      =   MySQL::SQLValue( $data ['comment'] );
-      $values ['description']      =   MySQL::SQLValue( $data ['description'] );
-      if ($data ['trackingNumber'] == '')
-        $values ['trackingNumber'] = 'NULL';
-      else
-        $values ['trackingNumber'] =   MySQL::SQLValue( $data ['trackingNumber'] );
-      $values ['userID']        =   MySQL::SQLValue( $data ['userID']       , MySQL::SQLVALUE_NUMBER );
-      $values ['projectID']        =   MySQL::SQLValue( $data ['projectID']       , MySQL::SQLVALUE_NUMBER );
-      $values ['activityID']        =   MySQL::SQLValue( $data ['activityID']       , MySQL::SQLVALUE_NUMBER );
-      $values ['commentType'] =   MySQL::SQLValue( $data ['commentType'] , MySQL::SQLVALUE_NUMBER );
-      $values ['start']           =   MySQL::SQLValue( $data ['start']           , MySQL::SQLVALUE_NUMBER );
-      $values ['end']          =   MySQL::SQLValue( $data ['end']          , MySQL::SQLVALUE_NUMBER );
-      $values ['duration']         =   MySQL::SQLValue( $data ['duration']         , MySQL::SQLVALUE_NUMBER );
-      $values ['rate']         =   MySQL::SQLValue( $data ['rate']         , MySQL::SQLVALUE_NUMBER );
-      $values ['cleared']      =   MySQL::SQLValue( $data ['cleared']?1:0  , MySQL::SQLVALUE_NUMBER );
-      $values ['budget']   	   =   MySQL::SQLValue($data ['budget']   	   , MySQL::SQLVALUE_NUMBER );
-      $values ['approved'] 	   =   MySQL::SQLValue($data ['approved']      , MySQL::SQLVALUE_NUMBER );
-      $values ['statusID']   	   =   MySQL::SQLValue($data ['statusID']   	   , MySQL::SQLVALUE_NUMBER );
-      $values ['billable'] 	   =   MySQL::SQLValue($data ['billable'] 	   , MySQL::SQLVALUE_NUMBER );
+		if (isset($data['comment'])) { $values ['comment']           = MySQL::SQLValue( $data ['comment'] ); }
+		if (isset($data['isDesignWork'])) { $values ['isDesignWork'] = MySQL::SQLValue( $data ['isDesignWork'] ); }
+		if (isset($data['description'])) { $values ['description']   = MySQL::SQLValue( $data ['description'] ); }
+		if (isset($data['trackingNumber'])) {
+			if ($data ['trackingNumber'] == '') { $values ['trackingNumber'] = 'NULL'; } else {
+				$values ['trackingNumber'] = MySQL::SQLValue( $data ['trackingNumber'] );
+			}
+		}
+		if (isset($data['userID'])) { $values ['userID']           = MySQL::SQLValue( $data ['userID']      , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['projectID'])) { $values ['projectID']     = MySQL::SQLValue( $data ['projectID']   , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['activityID'])) { $values ['activityID']   = MySQL::SQLValue( $data ['activityID']  , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['commentType'])) { $values ['commentType'] = MySQL::SQLValue( $data ['commentType'] , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['start'])) { $values ['start']             = MySQL::SQLValue( $data ['start']       , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['end'])) { $values ['end']                 = MySQL::SQLValue( $data ['end']         , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['duration'])) { $values ['duration']       = MySQL::SQLValue( $data ['duration']    , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['rate'])) { $values ['rate']               = MySQL::SQLValue( $data ['rate']        , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['cleared'])) { $values ['cleared']         = MySQL::SQLValue( $data ['cleared']?1:0 , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['budget'])) { $values ['budget']           = MySQL::SQLValue($data ['budget']       , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['approved'])) { $values ['approved']       = MySQL::SQLValue($data ['approved']     , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['statusID'])) { $values ['statusID']       = MySQL::SQLValue($data ['statusID']     , MySQL::SQLVALUE_NUMBER ); }
+		if (isset($data['billable'])) { $values ['billable']       = MySQL::SQLValue($data ['billable']     , MySQL::SQLVALUE_NUMBER ); }
 
-      $table = $this->getTimeSheetTable();
-      $success =  $this->conn->InsertRow($table, $values);
-      if ($success)
-        return  $this->conn->GetLastInsertID();
-      else {
-        $this->logLastError('timeEntry_create');
-        return false;
-      }
-  }
+		$table = $this->getTimeSheetTable();
+		$success =  $this->conn->InsertRow($table, $values);
+		if ($success)
+			return  $this->conn->GetLastInsertID();
+		else {
+			$this->logLastError('timeEntry_create');
+			return false;
+		}
+	}
 
 
   /**
