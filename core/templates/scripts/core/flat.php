@@ -12,6 +12,9 @@
     <script src="../skins/flat/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body onload="kimai_onload();">
+
+<div id="wrap">
+
     <div class="navbar navbar-static-top">
         <div class="container-fluid">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">

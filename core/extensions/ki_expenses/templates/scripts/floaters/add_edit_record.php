@@ -53,6 +53,7 @@ $this->floater()
 
 echo $this->floater()->floaterBegin();
 
+// FIXME support help
 /*
   <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
      <div id="help">
