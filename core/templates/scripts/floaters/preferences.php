@@ -32,42 +32,22 @@
   }); 
 </script>
 
-<div id="floater_innerwrap">
-    
-  <div id="floater_handle">
-    <span id="floater_title"><?php echo $this->kga['lang']['preferences']?></span>
-    <div class="right">
-      <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
-    </div>       
-  </div>
+<?php
+    $this->floater()
+        ->setTitle($this->translate('preferences'))
+        ->setFormAction('processor.php')
+        ->setFormId('core_prefs')
+        ->addTab('prefGeneral', $this->translate('general'))
+        ->addTab('prefSublists', $this->translate('sublists'))
+        ->addTab('prefList', $this->translate('list'));
 
+    echo $this->floater()->floaterBegin();
+?>
 
-  <div class="menuBackground">
+    <input name="axAction" type="hidden" value="editPrefs" />
+    <input name="id" type="hidden" value="0" />
 
-    <ul class="menu tabSelection">
-      <li class="tab norm"><a href="#prefGeneral">
-        <span class="aa">&nbsp;</span>
-        <span class="bb"><?php echo $this->kga['lang']['general']?></span>
-        <span class="cc">&nbsp;</span>
-        </a></li>
-      <li class="tab norm"><a href="#prefSublists">
-        <span class="aa">&nbsp;</span>
-        <span class="bb"><?php echo $this->kga['lang']['sublists']?></span>
-        <span class="cc">&nbsp;</span>
-        </a></li>
-      <li class="tab norm"><a href="#prefList">
-        <span class="aa">&nbsp;</span>
-        <span class="bb"><?php echo $this->kga['lang']['list']?></span>
-        <span class="cc">&nbsp;</span>
-        </a></li>
-    </ul>
-  </div>
-
-  <form id="core_prefs" action="processor.php" method="post"> 
-
-    <div id="floater_tabs" class="floater_content">
-
-      <fieldset id ="prefGeneral">
+    <?php echo $this->floater()->tabContentBegin('prefGeneral'); ?>
         <ul>
           <li>
             <label for="skin"><?php echo $this->kga['lang']['skin']?>:</label>
@@ -106,10 +86,9 @@
                 echo $this->kga['lang']['autoselection']?>
           </li>
         </ul>
+    <?php echo $this->floater()->tabContentEnd(); ?>
 
-      </fieldset>
-        
-      <fieldset id="prefSublists">
+    <?php echo $this->floater()->tabContentBegin('prefSublists'); ?>
         <ul>
           <li>
             <?php echo $this->kga['lang']['sublistAnnotations']?>:
@@ -117,7 +96,6 @@
 $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs'], $this->kga['lang']['timelabel'].' & '. $this->kga['lang']['export_extension']['costs']
 )); ?>
           </li>
-
           <li>
             <label for="flip_project_display"></label>
             <?php echo $this->formCheckbox('flip_project_display', '1',array('checked' => $this->kga['conf']['flip_project_display'])),
@@ -144,9 +122,9 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
                 $this->kga['lang']['user_list_hidden']?>
           </li>
         </ul>
-      </fieldset>
+    <?php echo $this->floater()->tabContentEnd(); ?>
 
-      <fieldset id="prefList">
+    <?php echo $this->floater()->tabContentBegin('prefList'); ?>
         <ul>
           <li>
             <label for="rowlimit"><?php echo $this->kga['lang']['rowlimit']?>:</label>
@@ -173,18 +151,6 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
           </li>     
         </ul>
-      </fieldset>
+    <?php echo $this->floater()->tabContentEnd(); ?>
 
-    </div>
-          
-    <input name="axAction" type="hidden" value="editPrefs" />   
-    <input name="id" type="hidden" value="0" />   
-                  
-    <div id="formbuttons">
-      <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
-      <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
-    </div>
-
-  </form>
-
-</div>
+<?php echo $this->floater()->floaterEnd(); ?>
