@@ -10,7 +10,7 @@ if ($_REQUEST['lang']=="en") {
 <h2>System Requirements</h2>
     The following conditions must be met:<br/>
 
-<div class="sp_phpversion fail">at least PHP Major version 5.2</div>
+<div class="sp_phpversion fail">at least PHP Major version 5.3</div>
 <?php if ($checkMagicQuotes) { ?>
 <div class="sp_magicquotes">Magic Quotes must be disabled.</div>
 <div class="note gray">The PHP settings magic_quotes_gpc and magic_quotes_runtime must be set to off.</div>
@@ -35,7 +35,7 @@ else {
 <h2>Systemanforderungen</h2>
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
 
-<div class="sp_phpversion fail">mindestens PHP Hauptversion 5.2</div>
+<div class="sp_phpversion fail">mindestens PHP Hauptversion 5.3</div>
 <?php if ($checkMagicQuotes) { ?>
 <div class="sp_magicquotes">Magic Quotes müssen deaktiviert sein.</div>
 <div class="note gray">Die PHP Einstellungen magic_quotes_gpc und magic_quotes_runtime müssen auf off gestellt sein.</div>

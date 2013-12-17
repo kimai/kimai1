@@ -43,8 +43,51 @@ $versionDB  = $version_temp[0];
 $revisionDB = $version_temp[1];
 error_log(serialize($version_temp));
 unset($version_temp);
+
+$min_php_version = '5.3';
  
-if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
+if (version_compare(PHP_VERSION, $min_php_version) < 0) {
+?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="robots" value="noindex,nofollow" />
+	<title>Kimai Update</title>
+	<style type="text/css" media="screen">
+	   body {
+	       background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+	       font-family: sans-serif;
+           color:#333;
+       }
+       div {
+           background-image: url('skins/standard/grfx/floaterborder.png');
+           position: absolute;
+           top: 50%;
+           left: 50%;
+           width:500px;
+           height:250px;
+           margin-left:-250px;
+           margin-top:-125px;
+           border:6px solid white;
+           padding:10px;
+       }
+	
+	   #dbrecover {
+	   }
+	
+	</style>
+</head>
+<body>
+	<div  align="center">
+		     <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br />
+		     <h1>newer PHP version required</h1>
+         You are using PHP version <?php echo phpversion(); ?> but Kimai requires at least <b>PHP version <?php echo $min_php_version ?></b>.
+         Please update your PHP installation, the updater can not continue otherwise.
+	</div>
+</body>
+</html>
+<?php
+} else if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) { 
 
 $RUsure = $kga['lang']['updater'][0];
 
