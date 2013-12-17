@@ -42,8 +42,6 @@ require_once 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('Kimai');
 
-require(WEBROOT.'includes/5.3.functions.php');
-
 if (file_exists(WEBROOT.'includes/autoconf.php'))
   require(WEBROOT.'includes/autoconf.php');
 else {
