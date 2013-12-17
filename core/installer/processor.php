@@ -120,12 +120,17 @@ switch ($axAction) {
             $javascript .= "$('span.ch_logfile').addClass('fail');";
         }
 
-        $filename = "%%" . getpass();
-
-        if (!$fp = @fopen("../temporary/".$filename ."_testfile.txt", "w")) {
+        $filename = "../temporary/%%" . getpass() . "_testfile.txt";
+        $fp = @fopen($filename, "w");
+        if (!$fp) {
             $errors++;
             $javascript .= "$('span.ch_temporary').addClass('fail');";
         }
+        else {
+          fclose($fp);
+          unlink($filename);
+        }
+
 
         if ($errors) {
             $javascript .= "$('span.ch_correctit').fadeIn(500);";
