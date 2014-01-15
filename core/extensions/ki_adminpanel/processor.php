@@ -108,6 +108,8 @@ switch ($axAction)
 
 			// get group names
 		foreach ($users as &$user) {
+      $user['groups'] = array();
+
 			$groups = $database->getGroupMemberships($user['userID']);
 			if(is_array($groups)) {
 			foreach ($groups as $group) {
@@ -393,12 +395,16 @@ switch ($axAction)
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $errorMessages['name'] = $kga['lang']['errorMessages']['customerWithSameName'];
 
-                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $_REQUEST['assignedGroups']))
+                $assignedGroups = isset($_REQUEST['assignedGroups']) ? $_REQUEST['assignedGroups'] : array();
+                $membershipRoles = isset($_REQUEST['membershipRoles']) ? $_REQUEST['membershipRoles'] : array();
+
+
+                if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $assignedGroups))
                   $errorMessages[''] =  $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errorMessages) == 0) {
                   $database->user_edit($id, $userData);
-                  $groups = array_combine($_REQUEST['assignedGroups'], $_REQUEST['membershipRoles']);
+                  $groups = array_combine($assignedGroups, $membershipRoles);
                   $database->setGroupMemberships($id, $groups);
                 }
 

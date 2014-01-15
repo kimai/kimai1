@@ -123,6 +123,7 @@
 
     // get group names
     foreach ($users as &$user) {
+      $user['groups'] = array();
       $groups = $database->getGroupMemberships($user['userID']);
       if(is_array($groups)) {
 	      foreach ($groups as $group) {
