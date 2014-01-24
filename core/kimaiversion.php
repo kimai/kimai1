@@ -23,6 +23,8 @@ if (is_array($_REQUEST['lang'])) die();
 if ($_REQUEST['revision']=="") die();
 if ($_REQUEST['lang']=="") die();
 if (strlen($_REQUEST['lang'])>2) die();
+// test git commit
+
 
 $revision = (int)strip_tags($_REQUEST['revision']);
 $lang     = $_REQUEST['lang'];
