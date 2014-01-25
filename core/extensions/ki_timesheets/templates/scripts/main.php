@@ -23,6 +23,7 @@
           <col class="customer" />
           <col class="project" />
           <col class="activity" />
+          <col class="description" width=450px />
         <?php if ($this->showTrackingNumber) { ?>
           <col class="trackingnumber" />
         <?php } ?>
@@ -41,6 +42,7 @@
                 <td class="customer"><?php echo $this->kga['lang']['customer']?></td>
                 <td class="project"><?php echo $this->kga['lang']['project']?></td>
                 <td class="activity"><?php echo $this->kga['lang']['activity']?></td>
+                <td class="description" ><?php echo $this->kga['lang']['description']?></td>
             <?php if ($this->showTrackingNumber) { ?>
                 <td class="trackingnumber"><?php echo $this->kga['lang']['trackingNumber']?></td>
             <?php } ?>
