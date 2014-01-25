@@ -22,6 +22,7 @@ if ($this->timeSheetEntries)
               <col class="project" />
               <col class="activity" />
             <?php if ($this->showTrackingNumber) { ?>
+              <col class="description" />
               <col class="trackingnumber" />
             <?php } ?>
               <col class="username" />
@@ -188,6 +189,14 @@ if ($this->timeSheetEntries)
             </td>
 
             <?php if ($this->showTrackingNumber) { ?>
+
+            <td class="description <?php echo $tdClass; ?>" >
+              <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
+                <?php if ($row['description']): ?>
+                <a href="#" onClick="$(this).blur();  return false;" ><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+              <?php endif; ?>
+            </td>
+
             <td class="trackingnumber <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['trackingNumber']) ?>
             </td>

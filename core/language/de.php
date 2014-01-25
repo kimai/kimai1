@@ -279,7 +279,7 @@ return array(
 'editLimitError'            => 'Das Enddatum liegt weiter in der Vergangenheit, als es erlaubt wurde.',
 'hideClearedEntries'        => 'abgerechnete Einträge verstecken',
 'showCommentsByDefault'     => 'Kommentare standardmäßig anzeigen',
-'showTrackingNumber'        => 'Auftragsnummer anzeigen',
+'showTrackingNumber'        => 'Auftragsnummer und Beschreibung in Zeiterfassung anzeigen',
 'hideOverlapLines'          => 'Zeitüberschneidungen nicht markieren',
 'general'                   => 'Allgemein',
 'address'                   => 'Adresse',
