@@ -203,7 +203,11 @@ if ($this->timeSheetEntries)
             <?php } ?>
 
             <td class="username <?php echo $tdClass; ?>">
+              <?php if ($row['userAlias']): ?>
+                <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
+              <?php else: ?>
                 <?php echo $this->escape($row['userName']) ?>
+              <?php endif; ?>
             </td>
 
         </tr>
