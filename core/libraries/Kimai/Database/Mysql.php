@@ -3310,13 +3310,30 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function get_watchable_users($user) {
       $arr = array();
       $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
+      $p = $this->kga['server_prefix'];
+
       if ($this->global_role_allows($user['globalRoleID'], 'core-user-otherGroup-view')) {
-        $query = "SELECT * FROM " . $this->kga['server_prefix'] . "users WHERE trash=0 ORDER BY name";
+        // If user may see other groups we need to filter out groups he's part of but has no permission to see users in.
+        $forbidden_groups = array_filter($user['groups'], function($groupID) use ($userID) {
+          $roleID = $this->user_get_membership_role($userID, $groupID);
+          return !$this->membership_role_allows($roleID, 'core-user-view');
+        });
+
+        $group_filter = "";
+        if (count($forbidden_groups) > 0)
+          $group_filter = " AND count(SELECT * FROM ${p}groups_users AS p WHERE u.`userID` = p.`userID` AND `groupID` NOT IN (" . implode(', ', $forbidden_groups) .")) > 0";
+
+        $query = "SELECT * FROM ${p}users AS u WHERE trash=0 $group_filter ORDER BY name";
         $result = $this->conn->Query($query);
         return $this->conn->RecordsArray(MYSQL_ASSOC);
       }
 
-      return $this->get_users(0,$user['groups']);
+      $allowed_groups = array_filter($user['groups'], function($groupID) use($userID) {
+        $roleID = $this->user_get_membership_role($userID, $groupID);
+        return $this->membership_role_allows($roleID, 'core-user-view');
+      });
+
+      return $this->get_users(0,$allowed_groups);
   }
 
   /**
