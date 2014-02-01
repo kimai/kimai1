@@ -1796,6 +1796,13 @@ if ((int)$revisionDB < 1381) {
 
 }
 
+if ((int) $revisionDB < 1382) {
+    Logger::logfile("-- update to r1382");
+    exec_query("ALTER TABLE `${p}membershipRoles` ADD `core-user-view` tinyint DEFAULT 0 AFTER `core-user-unassign`;", false);
+    exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Admin';");
+    exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Groupleader';");
+}
+
 
 // ============================
 // = update DB version number =
