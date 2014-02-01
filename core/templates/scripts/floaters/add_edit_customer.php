@@ -4,9 +4,9 @@
             $('.disableInput').click(function(){
               var input = $(this);
               if (input.is (':checked'))
-                input.siblings().attr("disabled","disabled");
+                input.siblings().prop("disabled","disabled");
               else
-                input.siblings().attr("disabled","");
+                input.siblings().prop("disabled","");
             });
 
             $('#add_edit_customer').ajaxForm({
