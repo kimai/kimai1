@@ -9,7 +9,7 @@
 class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
 
     /** Your LDAP-Server */
-    private $LADP_SERVER = 'ldap://localhost';
+    private $LDAP_SERVER = 'ldap://localhost';
     /** Case-insensitivity of some Servers may confuse the case-sensitive-accounting system. */
     private $LDAP_FORCE_USERNAME_LOWERCASE = true;
     /** Preprends to username */
@@ -52,9 +52,9 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         }
 
         // Connect to LDAP
-        $connect_result = ldap_connect($this->LADP_SERVER);
+        $connect_result = ldap_connect($this->LDAP_SERVER);
         if (!$connect_result) {
-            echo "Cannot connect to ", $this->LADP_SERVER;
+            echo "Cannot connect to ", $this->LDAP_SERVER;
             $userId = false;
             return false;
         }
