@@ -11,7 +11,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
     /** Your LDAP-Server */
     private $LDAP_SERVER = 'ldap://localhost';
     /** Case-insensitivity of some Servers may confuse the case-sensitive-accounting system. */
-    private $LDAP_FORCE_USERNAME_LOWERCASE = false;
+    private $LDAP_FORCE_USERNAME_LOWERCASE = true;
     /** Requires users to log in with sAMAccountName instead of the usual distinguishedName */
     private $LDAP_BIND_TO_SAMACCOUNTNAME = true;
     
