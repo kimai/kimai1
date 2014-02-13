@@ -84,6 +84,12 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
             $sr = ldap_search($connect_result, $this->LDAP_BASE_DN, "(sAMAccountName=$check_username)");
             $info = ldap_get_entries($connect_result, $sr);
             
+            //return false when no matching entries have been found
+            if ($info['count'] == 0) {
+                $userId = false;
+                return false;
+            }
+            
             //Use only the first result. Maybe enforce only one result later?
             $check_username = $info[0]['distinguishedname'][0];
             $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
