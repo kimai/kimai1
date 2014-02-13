@@ -119,6 +119,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
 		$userId   = $this->database->user_create(array(
 			'name' => $check_username,
+                    'alias' => $this->LDAP_BIND_TO_SAMACCOUNTNAME ? $info[0]['displayName'][0] : null,
 			'globalRoleID' => $this->getDefaultGlobalRole(),
 			'active' => 1
 		));
