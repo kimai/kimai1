@@ -100,7 +100,7 @@ return array(
 "city"              => "City",
 "telephon"          => "Phone",
 "fax"               => "Fax",
-"mobilephone"       => "Chellphone",
+"mobilephone"       => "Cellulare",
 "mail"              => "E-Mail",
 "homepage"          => "Internet",
 "users"             => "Users",
