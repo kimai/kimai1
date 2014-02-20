@@ -12,15 +12,6 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
     private $LDAP_SERVER = 'ldap://localhost';
     /** Case-insensitivity of some Servers may confuse the case-sensitive-accounting system. */
     private $LDAP_FORCE_USERNAME_LOWERCASE = true;
-    /** Requires users to log in with sAMAccountName instead of the usual distinguishedName */
-    private $LDAP_BIND_TO_SAMACCOUNTNAME = true;
-    
-    /** Generic server username and password required when binding to sAMAccountName */
-    private $LDAP_SERVER_USERNAME = 'CN=generic,OU=Service Accounts,OU=Users,OU=Admin,DC=example,DC=com';
-    private $LDAP_SERVER_PASSWORD = '';
-    /** Base DN for search scope when binding to sAMAccountName */
-    private $LDAP_BASE_DN = 'OU=Users,OU=My Office,DC=example,DC=com';
-    
     /** Preprends to username */
     private $LDAP_USERNAME_PREFIX = 'cn=';
     /** Appends to username */
@@ -70,37 +61,8 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
 
         ldap_set_option($connect_result, LDAP_OPT_PROTOCOL_VERSION, 3);
 
-        if ($this->LDAP_BIND_TO_SAMACCOUNTNAME) {
-            //Bind to LDAP with generic login details
-            $bind_result = ldap_bind($connect_result, $this->LDAP_SERVER_USERNAME, $this->LDAP_SERVER_PASSWORD);
-
-            if (!$bind_result) {
-                // Nope!
-                $userId = false;
-                return false;
-            }
-            $sAMAccountName = $check_username;
-            //Search for sAMAccountName with given username
-            $sr = ldap_search($connect_result, $this->LDAP_BASE_DN, "(sAMAccountName=$check_username)");
-            $info = ldap_get_entries($connect_result, $sr);
-            
-            //return false when no matching entries have been found
-            if ($info['count'] == 0) {
-                $userId = false;
-                return false;
-            }
-            
-            //Use only the first result. Maybe enforce only one result later?
-            $check_username = $info[0]['distinguishedname'][0];
-            $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
-            
-            ldap_unbind($connect_result);
-            $connect_result = ldap_connect($this->LDAP_SERVER);
-        }
-
-        // Try to bind. Binding means user and pwd are valid. Prefix and Postfix only necessary when binding directly to DN
-        $full_dn = $this->LDAP_BIND_TO_SAMACCOUNTNAME ? $check_username : $this->LDAP_USERNAME_PREFIX . $check_username . $this->LDAP_USERNAME_POSTFIX;
-        $bind_result = ldap_bind($connect_result, $full_dn, $password);
+        // Try to bind. Binding means user and pwd are valid.
+        $bind_result = ldap_bind($connect_result, $this->LDAP_USERNAME_PREFIX . $check_username . $this->LDAP_USERNAME_POSTFIX, $password);
 
         if (!$bind_result) {
             // Nope!
@@ -110,7 +72,6 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         ldap_unbind($connect_result);
 
         // User is authenticated. Does it exist in Kimai yet?
-        $check_username = $this->LDAP_BIND_TO_SAMACCOUNTNAME ? $sAMAccountName : $check_username; //set back to account name
         $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
 
         $userId = $this->database->user_name2id($check_username);
@@ -119,7 +80,6 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
 		$userId   = $this->database->user_create(array(
 			'name' => $check_username,
-                    'alias' => $this->LDAP_BIND_TO_SAMACCOUNTNAME ? $info[0]['displayName'][0] : null,
 			'globalRoleID' => $this->getDefaultGlobalRole(),
 			'active' => 1
 		));
