@@ -9,14 +9,20 @@
 class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
 
     /** Your LDAP-Server */
-    private $LADP_SERVER = 'ldap://localhost';
+    private $LDAP_SERVER = 'ldap://localhost';
     /** Case-insensitivity of some Servers may confuse the case-sensitive-accounting system. */
     private $LDAP_FORCE_USERNAME_LOWERCASE = true;
+    /** When retrieving user info, search for username on sAMAccountName attribute? For ActiveDirectory servers */
+    private $LDAP_SEARCH_BY_SMACCOUNTNAME = true;
+    /** Base DN to search on when trying to collect more user info, e.g. display name, email address */
+    private $LDAP_BASE_DN = 'OU=Users,OU=Regions,DC=example,DC=com';
+    /** Make sure user belongs to this group */
+    private $LDAP_ENFORCE_GROUP = 'CN=Kimai Groups,OU=Groups,OU=Regions,DC=example,DC=com';
     /** Preprends to username */
     private $LDAP_USERNAME_PREFIX = 'cn=';
     /** Appends to username */
     private $LDAP_USERNAME_POSTFIX = ',dc=example,dc=com';
-    /** Accounts that sould be locally verified */
+    /** Accounts that should be locally verified */
     private $LDAP_LOCAL_ACCOUNTS = array('admin');
     /** Automatically create a user in kimai if the login is successful. */
     private $LDAP_USER_AUTOCREATE = true;
@@ -52,9 +58,9 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         }
 
         // Connect to LDAP
-        $connect_result = ldap_connect($this->LADP_SERVER);
+        $connect_result = ldap_connect($this->LDAP_SERVER);
         if (!$connect_result) {
-            echo "Cannot connect to ", $this->LADP_SERVER;
+            echo "Cannot connect to ", $this->LDAP_SERVER;
             $userId = false;
             return false;
         }
@@ -62,6 +68,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         ldap_set_option($connect_result, LDAP_OPT_PROTOCOL_VERSION, 3);
 
         // Try to bind. Binding means user and pwd are valid.
+        error_reporting(E_ERROR); 
         $bind_result = ldap_bind($connect_result, $this->LDAP_USERNAME_PREFIX . $check_username . $this->LDAP_USERNAME_POSTFIX, $password);
 
         if (!$bind_result) {
@@ -69,20 +76,26 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
             $userId = false;
             return false;
         }
-        ldap_unbind($connect_result);
 
         // User is authenticated. Does it exist in Kimai yet?
         $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
+        if (strpos($check_username, '\\')) $check_username = substr($check_username, strpos($check_username, '\\') + 1);
+
+        $info = $this->get_ldap_user_info($connect_result, $check_username);
 
         $userId = $this->database->user_name2id($check_username);
+        ldap_unbind($connect_result);
         if ($userId === false)  {
             // User does not exist (yet)
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
-		$userId   = $this->database->user_create(array(
-			'name' => $check_username,
-			'globalRoleID' => $this->getDefaultGlobalRole(),
-			'active' => 1
-		));
+                Logger::logfile("Creating new user $check_username, " . $info[0]['displayname'][0] . ',' . $info[0]['mail'][0]);
+                $userId   = $this->database->user_create(array(
+                    'name' => $check_username,
+                    'alias' => $info[0]['displayname'][0],
+                    'mail' => $info[0]['mail'][0],
+                    'globalRoleID' => $this->getDefaultGlobalRole(),
+                    'active' => 1
+                ));
                 $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down
@@ -95,6 +108,21 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         }
 
         return true;
+    }
+    
+    protected function get_ldap_user_info($connect_result, $username) {
+        if ($this->LDAP_SEARCH_BY_SMACCOUNTNAME)
+            $attribute = 'sAMAccountName';
+        else
+            $attribute = 'distinguishedName';
+        $query = "($attribute=" . $this->LDAP_USERNAME_PREFIX . $username . $this->LDAP_USERNAME_POSTFIX . ")";
+        if ($this->LDAP_ENFORCE_GROUP != '') $query .= "(memberOf=".$this->LDAP_ENFORCE_GROUP.")";
+        //$query .= "(displayname=Francois*)";
+        //echo "(&$query)";die;
+        $sr = ldap_search($connect_result, $this->LDAP_BASE_DN, "(&$query)");
+        $info = ldap_get_entries($connect_result, $sr);
+        //var_dump($info); die;
+        return $info;
     }
 
 }
