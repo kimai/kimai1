@@ -16,7 +16,7 @@
             $('#usersShrink').hide();
             <?php endif; ?>
 
-            <?php if ($this->kga['conf']['user_list_hidden']): ?>
+            <?php if ($this->kga['conf']['user_list_hidden'] || count($this->users) <= 1): ?>
             lists_shrinkUserToggle();
             <?php endif; ?>
 
