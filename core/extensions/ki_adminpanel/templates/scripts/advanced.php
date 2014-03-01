@@ -95,15 +95,15 @@
             </div>
 
             <div>
-               <input type="text" name="date_format_2" size="8" value="<?php echo $this->escape($this->kga['date_format'][2]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_date_format']?>
+               <input type="text" name="date_format_2" size="15" value="<?php echo $this->escape($this->kga['date_format'][2]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_date_format']?>
             </div>
 
             <div>
-               <input type="text" name="date_format_0" size="8" value="<?php echo $this->escape($this->kga['date_format'][0]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_currentDate_format']?>
+               <input type="text" name="date_format_0" size="15" value="<?php echo $this->escape($this->kga['date_format'][0]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_currentDate_format']?>
             </div>
 
             <div>
-               <input type="text" name="date_format_1" size="8" value="<?php echo $this->escape($this->kga['date_format'][1]) ?>" class="formfield"> <?php echo $this->kga['lang']['table_date_format']?>
+               <input type="text" name="date_format_1" size="15" value="<?php echo $this->escape($this->kga['date_format'][1]) ?>" class="formfield"> <?php echo $this->kga['lang']['table_date_format']?>
             </div>
 
             <div>
