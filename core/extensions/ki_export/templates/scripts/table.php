@@ -257,35 +257,11 @@ endforeach;
 <?php endif; ?>
 
 <script type="text/javascript"> 
-    ts_user_annotations = null;
-    ts_customer_annotations = null;
-    ts_project_annotations = null;
-    ts_activity_annotations = null;
+    ts_user_annotations = <?php echo json_encode($this->user_annotations); ?>;
+    ts_customer_annotations = <?php echo json_encode($this->customer_annotations) ?>;
+    ts_project_annotations = <?php echo json_encode($this->project_annotations) ?>;
+    ts_activity_annotations = <?php echo json_encode($this->activity_annotations) ?>;
     ts_total = '<?php echo $this->total?>';
-
-    <?php if ($this->user_annotations): ?>
-    ts_user_annotations = new Array();
-    <?php foreach ($this->user_annotations as $id => $value): ?>
-      ts_user_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->customer_annotations): ?>
-    ts_customer_annotations = new Array();
-    <?php foreach ($this->customer_annotations as $id => $value): ?>
-      ts_customer_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->project_annotations): ?>
-    ts_project_annotations = new Array();
-    <?php foreach ($this->project_annotations as $id => $value): ?>
-      ts_project_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
-
-    <?php if ($this->activity_annotations): ?>
-    ts_activity_annotations = new Array();
-    <?php foreach ($this->activity_annotations as $id => $value): ?>
-      ts_activity_annotations[<?php echo $id?>] = '<?php echo $value?>';
-    <?php endforeach; endif; ?>
     
     lists_update_annotations(parseInt($('#gui div.ki_export').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);

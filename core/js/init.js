@@ -42,10 +42,10 @@ var filterActivities = new Array();
 
 var lists_visibility = new Array();
 
-var lists_user_annotations = new Array();
-var lists_customer_annotations = new Array();
-var lists_project_annotations = new Array();
-var lists_activity_annotations = new Array();
+var lists_user_annotations = {};
+var lists_customer_annotations = {};
+var lists_project_annotations = {};
+var lists_activity_annotations = {};
 
 $(document).ready(function() {
   
