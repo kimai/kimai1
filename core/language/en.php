@@ -164,6 +164,7 @@ return array(
 "noItems"           => "no Entries",
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",
+"openAfterRecorded" => "Open entry after the recording was stopped",
 "quickdelete"       => "Option to delete entries from within tables",
 "quickdeleteHide"   => "No",
 "quickdeleteShow"   => "Yes, without confirmation dialog",

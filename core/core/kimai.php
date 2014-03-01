@@ -136,6 +136,8 @@ if (isset($kga['user'])) {
     $view->currentRecording = $currentRecordings[0];
 }
 
+$view->openAfterRecorded = isset($kga['conf']['openAfterRecorded']) && $kga['conf']['openAfterRecorded'];
+
 $view->lang_checkUsername   = $kga['lang']['checkUsername'];
 $view->lang_checkGroupname  = $kga['lang']['checkGroupname'];
 $view->lang_checkStatusname = $kga['lang']['checkStatusname'];
