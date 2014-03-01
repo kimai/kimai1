@@ -57,7 +57,7 @@ foreach (array('add', 'edit', 'delete') as $action)
 $globalPermissions[] = 'core-group-add';
 $globalPermissions[] = 'core-group-otherGroup-edit';
 $globalPermissions[] = 'core-group-otherGroup-delete';
-$membershipPermissions[] = 'core-user-view’;
+$membershipPermissions[] = 'core-user-view';
 $membershipPermissions[] = 'core-group-edit';
 $membershipPermissions[] = 'core-group-delete';
 
