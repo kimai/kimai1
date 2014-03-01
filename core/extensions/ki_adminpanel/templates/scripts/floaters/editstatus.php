@@ -43,8 +43,12 @@
             <fieldset>
                 <ul>
                     <li>
-                        <label for="groupName"><?php echo $this->kga['lang']['status']?>:</label>
+                        <label for="status"><?php echo $this->kga['lang']['status']?>:</label>
                         <input class="formfield" type="text" name="status" value="<?php echo $this->escape($this->status_details['status'])?>" size=35 />
+                    </li>
+                    <li>
+                        <label for="default"><?php echo $this->kga['lang']['default']?>:</label>
+                        <input class="formfield" type="checkbox" name="default" value="1" <?php if($this->status_details['statusID'] == $this->kga['conf']['defaultStatusID']) echo 'checked="checked"'?>/>
                     </li>
                                                 
                 </ul>

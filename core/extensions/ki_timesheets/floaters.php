@@ -124,6 +124,8 @@ switch ($axAction) {
         // create new record
         //$view->id = 0;
 
+        $view->statusID = $kga['conf']['defaultStatusID'];
+
 
         $users = array();
         if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-add'))
