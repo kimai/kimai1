@@ -151,6 +151,12 @@ while ($time_index < $timeArrayCounter) {
 	$time_index++;
 }
 
+// Sort alphabetically by activity.
+usort($invoiceArray, function($a, $b)
+{
+    return strcmp($a['desc'], $b['desc']);
+});
+
 $round = 0;
 // do we have to round the time ?
 if (isset($_REQUEST['round'])) {
