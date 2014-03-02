@@ -92,20 +92,22 @@ if (isset($_REQUEST['round'])) {
 	$amount     = count($invoiceArray);
 
 	while ($time_index < $amount) {
-		$rounded = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
-
-		// Write a logfile entry for each value that is rounded.
-		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
-
-        if ($invoiceArray[$time_index]['hour'] == 0) {
-            // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
-            $rate = 0;
-        } else {
-		    $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
-        }
-
-		$invoiceArray[$time_index]['hour'] = $rounded;
-		$invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
+    if ($invoiceArray[$time_index]['type'] == 'timeSheet') {
+  		$rounded = RoundValue( $invoiceArray[$time_index]['hour'], $round/10);
+  
+  		// Write a logfile entry for each value that is rounded.
+  		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
+  
+          if ($invoiceArray[$time_index]['hour'] == 0) {
+              // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
+              $rate = 0;
+          } else {
+  		    $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+          }
+  
+  		$invoiceArray[$time_index]['hour'] = $rounded;
+      $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
+    }
 		$time_index++;
 	}
 }

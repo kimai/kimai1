@@ -111,7 +111,8 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 		else {
 			$arr['type'] = 'expense';
       $arr['desc'] = $expenses[$expenses_index]['designation'];
-      $arr['hour'] = $expenses[$expenses_index]['multiplier'];
+      $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
+      $arr['value'] = $expenses[$expenses_index]['value'];
       $arr['fDuration'] = $expenses[$expenses_index]['multiplier'];
 			$arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
 			$arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
@@ -161,7 +162,8 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
 		$arr['type'] = 'expense';
     $arr['desc'] = $expenses[$expenses_index]['designation'];
-    $arr['hour'] = $expenses[$expenses_index]['multiplier'];
+    $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
+    $arr['value'] = $expenses[$expenses_index]['value'];
     $arr['fDuration'] = $expenses[$expenses_index]['multiplier'];
 		$arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
 		$arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
