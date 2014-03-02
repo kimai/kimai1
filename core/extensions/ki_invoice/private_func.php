@@ -36,6 +36,7 @@ function invoice_add_to_array(&$array, $row, $short_form) {
 			$totalTime = $array[$index]['hour'];
 			$totalAmount = $array[$index]['amount'];
 			$array[$index] = array(
+        'type'         => 'timeSheet',
         'desc'         => $row['desc'],
 				'hour'	       => $totalTime + $row['hour'],
 				'fduration'	   => $row['fduration'],
