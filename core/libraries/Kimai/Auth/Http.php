@@ -109,7 +109,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
         $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
     	// Set a random password, unknown to the user. Autologin must be used until user sets own password
-	$userData = array('password' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt']));
+	$userData = array('password' => $this->encode_password(md5(uniqid(rand(), true))));
 	$this->database->user_edit($userId, $userData);
 	return true;
 	}
@@ -117,26 +117,4 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     return false;
   }
 
-  public function authenticate($username,$password,&$userId) {
-      global $kga;
-
-      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-
-      $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
-      if (mysql_num_rows($result) != 1) {
-        $userId = false;
-        return false;
-      }
-
-      $row    = mysql_fetch_assoc($result);
-      $pass    = $row['password'];        
-      $ban     = $row['ban'];
-      $banTime = $row['banTime'];   
-      $userId  = $row['userID'];
-      
-      return $pass==$passCrypt && $username!="";
-  }
 }
-
-// There should be NO trailing whitespaces.
-?>

@@ -122,7 +122,47 @@ abstract class Kimai_Auth_Abstract
      * @param int $userId is set to the id of the user in Kimai. If none exists it will be <code>false</code>
      * @return boolean either <code>true</code> if the credentials were correct, or <code>false</code> otherwise
      **/
-    abstract public function authenticate($username, $plainPassword, &$userId);
+    public function authenticate($username, $plainPassword, &$userId)
+    {
+        $database = $this->getDatabase();
+
+        $id = $database->user_name2id($username);
+
+        // The $username !== "" check was here in a previous version. When
+        // user_name2id() works in a sound way, it should not be needed.
+        // However, after all this is a security related function so better
+        // leave the check here, it will not cost us much.
+        if ($id !== false && $username !== "") {
+            $userData = $database->user_get_data($id);
+            $userId   = $userData['userID'];
+            $hash     = $userData['password'];
+        } else {
+            // We don't know a user with this name. Let's use some dummy values
+            // so that there is no timing difference between a valid user name
+            // and an invalid one.
+            //
+            // crypt("dummypw", "$5$rounds=5000$c30424ddd28d4de5") ==>
+            // $5$rounds=5000$c30424ddd28d4de5$Em1h8dk2KH8.X1eUAQDW2875Wq/SYxolTenLbWZeeOB
+
+            // TODO is there a better way to execute verify_password() and ensure "false" as return?
+            // TODO this also needs upadate if we want to update the used password encoding :(
+            $userId        = false;
+            $hash          = '$5$rounds=5000$c30424ddd28d4de5$Em1h8dk2KH8.X1eUAQDW2875Wq/SYxolTenLbWZeeOB';
+            $plainPassword = "I am the wrong password!";
+        }
+
+        $authenticated = $this->verify_password($plainPassword, $hash);
+
+        if ($authenticated && $this->password_needs_reencoding($hash)) {
+            // the user provided the correct password, but the format of the
+            // hash stored in the DB is outdated.
+            $data = array();
+            $data['password'] = $this->encode_password($plainPassword);
+            $database->user_edit($id, $data);
+        }
+
+        return $authenticated;
+    }
 
     /**
      * Return a map from group IDs to membership role IDs to which users should be added, if they authenticated but are not known to Kimai.
@@ -170,6 +210,57 @@ abstract class Kimai_Auth_Abstract
             $globalRoleID = $role['globalRoleID'];
 
         return $globalRoleID;
+    }
+
+    /**
+     * Encode a provided password as we need it to store in the DB.
+     *
+     * @param $password the password string to encode
+     * @return the encoded password string
+     */
+    protected function encode_password($password)
+    {
+        // use crypt with SHA-256 and 5000 rounds. As the actual salt we take the
+        // first 16 chars from a MD5 string.
+        $salt = '$5$rounds=5000$' . substr(md5(microtime()), 0, 16);
+        $pepper = $this->kga['password_salt'];
+        return crypt($pepper . $password, $salt);
+    }
+
+    /**
+     * Check whether the provided password matches the given hash.
+     *
+     * @param $password the password string provided by the user
+     * @param $hash the hash valued retrieved from storage
+     * @return boolean either <code>true</code> if the password could be verified or <code>false</code> otherwise
+     */
+    protected function verify_password($password, $hash)
+    {
+        $pepper = $this->kga['password_salt'];
+
+        if (strlen($hash) == 32) {
+            // old hash format
+            return md5($pepper . $password . $pepper) === $hash;
+        } else {
+            // the new hash format, let crypt() handle everything
+            return crypt($pepper . $password, $hash) === $hash;
+        }
+    }
+
+    /**
+     * Check whether the hash should be renewed.
+     * If this function returns <code>true</code> then the user's password
+     * should be re-encoded and the hash should be replaced by the new one in
+     * the storage.
+     *
+     * @param $hash the hash that should be checked
+     * @return boolean either <code>true</code> if the hash should be re-encoded or <code>false</code> otherwise
+     */
+    protected function password_needs_reencoding($hash)
+    {
+        // The old storage format was a string returned by md5(),
+        // thus return true if the length is 32 nibbles == 128 bit.
+        return strlen($hash) == 32;
     }
 
 }

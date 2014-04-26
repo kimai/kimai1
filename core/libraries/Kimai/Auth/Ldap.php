@@ -86,7 +86,8 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
                 $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down
-                $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
+                // TODO #355 check wehther we need random 'password' here at all
+                $usr_data = array('password' => $this->encode_password(md5(uniqid(rand(), true))));
                 $this->database->user_edit($userId, $usr_data);
             } else {
                 $userId = false;
@@ -98,6 +99,3 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
     }
 
 }
-
-// There should be NO trailing whitespaces.
-?>

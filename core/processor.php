@@ -119,7 +119,7 @@ switch($_REQUEST['a'])
         }
 
         $data = array();
-        $data['password'] = md5($kga['password_salt'].$password.$kga['password_salt']);
+        $data['password'] = encode_password($password);
         $data['passwordResetHash'] = null;
         $database->customer_edit($id, $data);
         echo json_encode(array(

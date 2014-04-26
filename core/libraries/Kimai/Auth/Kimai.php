@@ -19,31 +19,6 @@
 
 class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
 {
-    /**
-     * @param $username
-     * @param $password
-     * @param $userId
-     * @return bool
-     */
-    public function authenticate($username, $password, &$userId)
-    {
-        $kga      = $this->getKga();
-        $database = $this->getDatabase();
-
-        $id = $database->user_name2id($username);
-
-        if ($id === false) {
-            $userId = false;
-            return false;
-        }
-
-        $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
-        $userData  = $database->user_get_data($id);
-        $pass      = $userData['password'];
-        $userId    = $userData['userID'];
-
-        return $pass==$passCrypt && $username!="";
-    }
 
     public function forgotPassword($name)
     {
@@ -84,7 +59,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
       }
 
       $data = array();
-      $data['password'] = md5($kga['password_salt'].$password.$kga['password_salt']);
+      $data['password'] = $this->encode_password($password);
       $data['passwordResetHash'] = null;
       $database->user_edit($id, $data);
 

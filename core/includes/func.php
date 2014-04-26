@@ -529,3 +529,17 @@ function coreObjectActionAllowed($objectTypeName, $action) {
 
   return false;
 }
+
+/**
+ * Encode a provided password as we need it to store in the DB.
+ *
+ * @param $password the password string to encode
+ * @return the encoded password string
+ */
+function encode_password($password) {
+  // use crypt with SHA-256 and 5000 rounds. As the actual salt we take the
+  // first 16 chars from a MD5 string.
+  $salt = '$5$rounds=5000$' . substr(md5(microtime()), 0, 16);
+  $pepper = $kga['password_salt'];
+  return crypt($pepper . $password, $salt);
+}

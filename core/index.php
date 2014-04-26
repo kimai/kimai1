@@ -147,7 +147,7 @@ switch($_REQUEST['a'])
 
         if ($is_customer) {
           // perform login of customer
-          $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+          $passCrypt = encode_password($password);
           $id = $database->customer_nameToID($name);
           $data = $database->customer_get_data($id);
 
