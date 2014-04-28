@@ -110,27 +110,20 @@ switch ($axAction) {
      * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
     case "checkRights":
-        if (!$fp = @fopen("../includes/autoconf.php", "w")) {
+        if ((file_exists("../includes/autoconf.php") && !is_writeable("../includes/autoconf.php")) || !is_writeable("../includes/")) {
             $errors++;
             $javascript .= "$('span.ch_autoconf').addClass('fail');";
         }
 
-        if (!$fp = @fopen("../temporary/logfile.txt", "w")) {
+        if ((file_exists("../temporary/logfile.txt") && !is_writeable("../temporary/logfile.txt")) || !is_writeable("../temporary/")) {
             $errors++;
             $javascript .= "$('span.ch_logfile').addClass('fail');";
         }
 
-        $filename = "../temporary/%%" . getpass() . "_testfile.txt";
-        $fp = @fopen($filename, "w");
-        if (!$fp) {
+        if (!is_writeable("../temporary/")) {
             $errors++;
             $javascript .= "$('span.ch_temporary').addClass('fail');";
         }
-        else {
-          fclose($fp);
-          unlink($filename);
-        }
-
 
         if ($errors) {
             $javascript .= "$('span.ch_correctit').fadeIn(500);";
@@ -192,5 +185,3 @@ switch ($axAction) {
     break;
 
 }
-
-?>
