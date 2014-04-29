@@ -23,8 +23,11 @@
  */
 abstract class Kimai_Database_Abstract {
 
-  protected $kga;
-  protected $conn;
+    protected $kga;
+    /**
+     * @var MySQL
+     */
+    protected $conn;
 
   /**
    * Instantiate a new database layer..
