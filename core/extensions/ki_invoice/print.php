@@ -165,6 +165,7 @@ $model->setEndDate($endDate);
 $model->setInvoiceDate(time());
 $model->setDateFormat($kga['conf']['date_format_2']);
 $model->setCurrencySign($kga['conf']['currency_sign']);
+$model->setCurrencyName($kga['conf']['currency_name']);
 $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
 
 // ---------------------------------------------------------------------------
@@ -188,4 +189,4 @@ foreach($renderers as $rendererType => $renderer)
 }
 
 // no renderer could be found
-throw new Exception('Does not exist: ' . $baseFolder . $tplFilename);
+die('Template does not exist or is incompatible: ' . $baseFolder . $tplFilename);
