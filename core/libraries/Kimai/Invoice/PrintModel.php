@@ -81,6 +81,10 @@ class Kimai_Invoice_PrintModel
      * @var string
      */
     private $currencySign = '$';
+    /**
+     * @var string
+     */
+    private $currencyName = 'EUR';
 
     /**
      * Returns all interval values as array.
@@ -103,8 +107,25 @@ class Kimai_Invoice_PrintModel
             'invoiceDate'   => $this->getInvoiceDate(),
             'dateFormat'    => $this->getDateFormat(),
             'dueDate'       => $this->getDueDate(),
-            'currencySign'  => $this->getCurrencySign()
+            'currencySign'  => $this->getCurrencySign(),
+            'currencyName'  => $this->getCurrencyName()
         );
+    }
+
+    /**
+     * @param string $currencyName
+     */
+    public function setCurrencyName($currencyName)
+    {
+        $this->currencyName = $currencyName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyName()
+    {
+        return $this->currencyName;
     }
 
     /**
