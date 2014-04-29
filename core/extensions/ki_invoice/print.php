@@ -146,6 +146,10 @@ if (strpos($tplFilename, '/') !== false) {
 
 // ---------------------------------------------------------------------------
 
+// totally unneccessary
+unset($customer['password']);
+unset($customer['passwordResetHash']);
+
 $model = new Kimai_Invoice_PrintModel();
 $model->setEntries($invoiceArray);
 $model->setAmount($total);
