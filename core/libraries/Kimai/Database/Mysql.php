@@ -38,6 +38,10 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
 
+  public function isConnected() {
+      return $this->conn->IsConnected();
+  }
+
   private function logLastError($scope) {
       Logger::logfile($scope.': '.$this->conn->Error());
   }
