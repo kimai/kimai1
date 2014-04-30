@@ -55,7 +55,7 @@ class Kimai_Update_Version
 
     public function isBeta()
     {
-        return (strtolower($this->vars['state']) != 'stable');
+        return (strtolower($this->vars['status']) != 'stable');
     }
 
     public function isStable()
@@ -71,7 +71,7 @@ class Kimai_Update_Version
      */
     protected function validate(array $versionInfo)
     {
-        $required = array("time", "version", "state", "revision");
+        $required = array("time", "version", "status", "revision");
         foreach($required as $k) {
             if (!isset($versionInfo[$k])) {
                 return false;
