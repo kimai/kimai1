@@ -516,6 +516,12 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'demo_ext' => 'Demo'
     ),
 
+    'updatecheck' => array(
+        'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest you to update.</b>",
+        'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
+        'current' => "You are running the latest version :)"
+    ),
+
     "log_delete" => "log cleared",
 
 );
