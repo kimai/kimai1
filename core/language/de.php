@@ -516,6 +516,12 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'demo_ext' => 'Demo'
     ),
 
+    'updatecheck' => array(
+        'release' => "<b>Es gibt ein offizielles Updates, das neue Funktionen und Fehlerkorrekturen enthält. Es wird empfohlen zu aktualisieren.</b>",
+        'beta' => "<i>Es gibt eine neue Beta Version. Sie können es zum Testen von der Download Seite laden, aber bitte nicht produktiv einsetzen.</i>",
+        'current' => "Ihre Version ist auf dem neusten Stand :)"
+    ),
+
     "log_delete" => "Protokoll gelöscht",
 
 );
