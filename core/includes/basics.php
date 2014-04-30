@@ -103,6 +103,7 @@ if (isset($_REQUEST['database'])) {
 
 $database = new Kimai_Database_Mysql($kga);
 $database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
+if (!$database->isConnected()) { die('Kimai could not connect to database. Check your autoconf.php.'); }
 Kimai_Registry::setDatabase($database);
 
 global $translations;
