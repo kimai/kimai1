@@ -55,11 +55,18 @@ $view->roundingOptions = $roundingOptions;
 
 // Get Invoice Template FileNames
 
-$invoice_template_files = Array(); 
+$invoice_template_files = array();
 $handle = opendir('invoices/');
+$i = 1;
 while (false!== ($file = readdir($handle))) { 
     if (stripos($file, '.') !== 0) {
-        $invoice_template_files[$file] = $file;
+        $name = '[' . str_pad($i,2,"0",STR_PAD_LEFT) . '] ';
+        if (preg_match('/[0-9]{2}_.\w+/', $file) === 1) {
+            $invoice_template_files[$file] = $name . substr(str_replace('_', ' ', $file), 3);
+        } else {
+            $invoice_template_files[$file] = $name . str_replace('_', ' ', $file);
+        }
+        $i++;
     }
 }
 closedir($handle);
