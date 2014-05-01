@@ -26,17 +26,17 @@ require_once __DIR__ . '/../Menu.php';
 class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
 {
     private $iconMap = array(
-        'ext_debug'             => 'icon-medkit',
-        'deb_ext'               => 'icon-medkit',
-        'ki_demoextension'      => 'icon-wrench',
-        'ki_adminpanel'         => 'icon-cogs',
-        'adminPanel_extension'  => 'icon-cogs',
-        'ki_budget'             => 'icon-signal',
-        'ki_expenses'           => 'icon-money', // icon-credit-card
-        'ki_export'             => 'icon-download-alt',
-        'ki_invoice'            => 'icon-file-text',
-        'ki_timesheets'         => 'icon-time',
-        'ki_timesheet'          => 'icon-time',
+        'ext_debug'             => 'medkit',
+        'deb_ext'               => 'medkit',
+        'ki_demoextension'      => 'wrench',
+        'ki_adminpanel'         => 'cogs',
+        'adminPanel_extension'  => 'cogs',
+        'ki_budget'             => 'bar-chart-o',
+        'ki_expenses'           => 'money', // icon-credit-card
+        'ki_export'             => 'download',
+        'ki_invoice'            => 'file-text',
+        'ki_timesheets'         => 'clock-o',
+        'ki_timesheet'          => 'clock-o',
     );
 
     private $unknownIcon = 'icon-question';
@@ -55,7 +55,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
             $html .= '
                         <li id="'.$entry['id'].'">
                             <a href="javascript:void(0);" onclick="' . $entry['onclick'] . '">
-                                <i class="'.$icon.'"></i>
+                                <i class="fa fa-'.$icon.'"></i>
                                 <span>' . $entry['title'] . '</span>
                             </a>
                         </li>';

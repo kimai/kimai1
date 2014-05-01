@@ -38,7 +38,7 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
         $class = $icon;
         switch ($this->getIconSize()) {
             case self::ICON_LARGE:
-                $class .= ' icon-large';
+                $class .= ' fa-large';
                 break;
         }
         if (isset($options['disabled'])) {
@@ -48,7 +48,7 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
         if($style !== '') {
             $style = 'style="'.$style.'" ';
         }
-        return '<i title="'.$title.'" '.$style.'class="'.$class.'"></i>';
+        return '<i title="'.$title.'" '.$style.'class="fa '.$class.'"></i>';
     }
 
 
@@ -57,28 +57,28 @@ class Zend_View_Helper_Flat_Icons extends Zend_View_Helper_Icons
         switch($identifier)
         {
             case 'add':
-                return 'icon-plus-sign-alt';
+                return 'fa-plus-square-o';
             case 'edit':
-                return 'icon-pencil';
+                return 'fa-pencil';
             case 'filter':
-                return 'icon-filter';
+                return 'fa-filter';
             case 'email':
-                return 'icon-envelope';
+                return 'fa-envelope';
             case 'quickdelete':
             case 'delete':
-                return 'icon-trash';
+                return 'fa-trash-o';
             case 'locked':
-                return 'icon-lock';
+                return 'fa-lock';
             case 'unlocked':
-                return 'icon-unlock';
+                return 'fa-unlock';
             case 'warning':
-                return 'icon-warning-sign';
+                return 'fa-warning';
             case 'stop':
-                return 'icon-stop';
+                return 'fa-stop';
             case 'start':
-                return 'icon-play-circle';
+                return 'fa-play-circle';
             case 'reload':
-                return 'icon-refresh';
+                return 'fa-refresh';
         }
 
         throw new Exception('Could not find Icon ID');

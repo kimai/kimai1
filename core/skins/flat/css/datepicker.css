@@ -1,18 +1,18 @@
 
 .ui-datepicker {
-  width:  298px;
-  background-color: #333;
-  border: 1px solid #000;
-  z-index:500 !important;
-  display:none;
+    width: 298px;
+    background-color: #fff;
+    border: 2px solid #999;
+    z-index: 500 !important;
+    display: none;
 }
 
 .ui-datepicker-title {
-    color: #FFF;
+    color: #000;
     font-size: 14px;
     text-align: center;
     margin: 2px 0 8px 0;
-    padding-top:3px;
+    padding-top: 4px;
     height: 22px;
     width: 302px;
 }
@@ -36,13 +36,13 @@
 /* Opera needs the rules to be this specific otherwise it doesn't change the cursor back to pointer after you have disabled and re-enabled a link */
 .ui-datepicker-prev,
 .ui-datepicker-next {
-   cursor: pointer;
-}
-.ui-datepicker-prev .disabled,
-.ui-datepicker-next .disabled {
-   cursor: default;
+    cursor: pointer;
 }
 
+.ui-datepicker-prev .disabled,
+.ui-datepicker-next .disabled {
+    cursor: default;
+}
 
 .ui-datepicker-next {
     position: absolute;
@@ -61,14 +61,12 @@
 }
 
 .ui-state-disabled {
-   cursor: default;
-   color: #aaa;
-   opacity: 0.3;
-   -moz-opacity: 0.3;
-   filter:alpha(opacity=30);
+    cursor: default;
+    color: #aaa;
+    opacity: 0.3;
+    -moz-opacity: 0.3;
+    filter: alpha(opacity=30);
 }
-
-
 
 .ui-datepicker-prev {
     background: url(../grfx/picker_buttons.png) no-repeat -40px 0;
@@ -82,85 +80,88 @@
     display: block;
     padding-top: 5px;
     padding-right: 25px;
-    font-size: 0;
-    line-height: 0;
-    margin-right: 3px;
 }
-
-
-
 
 .ui-datepicker-calendar td {
     cursor: pointer;
 }
 
 .ui-datepicker-calendar th {
-    background: url(../grfx/picker_bg_weekdays.png) no-repeat;
     width: 40px;
     height: 40px;
-   color: #fff;
-   font-weight: bold;
+    font-weight: bold;
+    background-color: #eee;
+    color: #000;
+    border: 1px solid #ccc;
 }
 
 .ui-datepicker-calendar th.ui-datepicker-week-end {
-    background: url(../grfx/picker_bg_weekend.png) no-repeat;
+    background-color: #999;
 }
 
 .ui-datepicker-calendar td {
-    background: url(../grfx/picker_bg_norm.png) no-repeat;
     width: 40px;
     height: 40px;
     color: #000;
     text-align: center;
+    border: 1px solid #ccc;
 }
 
-
 .ui-datepicker-calendar td.ui-datepicker-other-month {
-    background: url(../grfx/picker_bg_otherMonth.png) no-repeat;
-    color: #aaa;
+    background-color: #666;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-other-month:hover {
-    background: url(../grfx/picker_bg_otherMonth.png) no-repeat;
-    color: #888;
+    background-color: #999;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-unselectable {
-   cursor: default;
+    cursor: default;
 }
-
+.ui-datepicker-calendar td.ui-datepicker-unselectable:hover {
+    cursor: default;
+}
 
 .ui-datepicker-calendar a {
     color: #000;
-    text-decoration:none;
+    text-decoration: none;
 }
 
 .ui-datepicker-calendar td:hover {
-    background: url(../grfx/picker_bg_hover.png) no-repeat;
+    background-color: #ddd;
     color: #000;
 }
 
-
 .ui-datepicker-calendar td.ui-datepicker-today {
-    background: url(../grfx/picker_bg_today.png) no-repeat;
+    background-color: #428bca;
     font-weight: bold;
-}
-
-.ui-datepicker-calendar td.ui-datepicker-today:hover {
-    background: url(../grfx/picker_bg_today_hover.png) no-repeat;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-today a {
     color: #fff;
 }
 
-
 .ui-datepicker-calendar td.ui-datepicker-current-day,
-.ui-datepicker-calendar td.ui-datepicker-current-day:hover
-{
-    background: url(../grfx/picker_bg_selected.png) no-repeat;
+.ui-datepicker-calendar td.ui-datepicker-current-day:hover {
+    background-color: #428bca;
 }
 
 .ui-datepicker-calendar td.ui-datepicker-current-day a {
-  color:#fff;
+    color: #fff;
+}
+
+/* SKIN FLAT ADJUSTMENTS */
+.ui-datepicker-next,
+.ui-datepicker-prev {
+    height: 20px;
+    width: 40px;
+}
+
+table.ui-datepicker-calendar {
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+table.ui-datepicker-calendar th {
+    text-align: center;
 }

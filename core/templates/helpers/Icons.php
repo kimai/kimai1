@@ -183,6 +183,24 @@ class Zend_View_Helper_Icons extends Zend_View_Helper_Abstract
         return $this->renderIcon('unlocked', $options, $this->view->kga['lang']['activeAccount']);
     }
 
+    // FIXME flat
+    public function getSublistFilterAll($options = array())
+    {
+        return $this->renderIcon('filter', $options, '');
+    }
+
+    // FIXME flat
+    public function getSublistFilterNone($options = array())
+    {
+        return $this->renderIcon('filter', $options, '');
+    }
+
+    // FIXME flat
+    public function getSublistFilterInvert($options = array())
+    {
+        return $this->renderIcon('filter', $options, '');
+    }
+
     public function getReload($options = array())
     {
         return $this->renderIcon('reload', $options, '');

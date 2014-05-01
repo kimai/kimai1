@@ -68,7 +68,7 @@
                 <!-- ########## USER NAME ########## -->
                 <td>
                     <?php if ($this->curr_user == $userarray['name']): ?>
-                        <strong style="color:#00E600"><?php echo $this->escape($userarray['name'])?></strong>
+                        <span class="admin"><?php echo $this->escape($userarray['name'])?></span>
                     <?php else: ?>
                         <?php if ($userarray['trash']):?><span style="color:#999"><?php endif; ?>
                             <?php echo $this->escape($userarray['name']);?>

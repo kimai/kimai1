@@ -45,11 +45,11 @@ class Zend_View_Helper_RenderSelectLists extends Zend_View_Helper_Abstract
         ?>
         <div id="<?php echo $listEntry['id']; ?>_foot" class="panel-footer">
             <?php if ($listEntry['showAddButon']): ?>
-                <a href="#" class="addLink" onClick="floaterShow('<?php echo $listEntry['floaterFile']; ?>','<?php echo $listEntry['floatAction']; ?>',0,0,<?php echo $listEntry['floaterWidth']; ?>); $(this).blur(); return false;"><i class="icon-plus-sign-alt"></i></a>
+                <a href="#" class="addLink" onClick="floaterShow('<?php echo $listEntry['floaterFile']; ?>','<?php echo $listEntry['floatAction']; ?>',0,0,<?php echo $listEntry['floaterWidth']; ?>); $(this).blur(); return false;"><i class="fa fa-plus-square-o"></i></a>
             <?php endif; ?>
-            <a href="#" class="selectAllLink" onClick="lists_filter_select_all('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="icon-check"></i></a>
-            <a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="icon-check-empty"></i></a>
-            <a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="icon-check-sign"></i></a>
+            <a href="#" class="selectAllLink" onClick="lists_filter_select_all('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="fa fa-check"></i></a>
+            <a href="#" class="deselectAllLink" onClick="lists_filter_deselect_all('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="fa fa-check-square"></i></a>
+            <a href="#" class="selectInvertLink" onClick="lists_filter_select_invert('<?php echo $listEntry['id']; ?>'); $(this).blur(); return false;"><i class="fa fa-check-square-o"></i></a>
             <div style="clear:both"></div>
         </div>
         <?php

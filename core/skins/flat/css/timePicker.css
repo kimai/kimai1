@@ -22,11 +22,9 @@
 	border-right: 1px solid black;
 }
 
-
 .ui-timepicker-hours td, .ui-timepicker-minutes td {
     cursor: pointer;
 }
-
 
 .ui-timepicker-hours td, .ui-timepicker-minutes td {
     background: url(../grfx/picker_bg_norm.png) no-repeat;
@@ -45,29 +43,3 @@
     background: url(../grfx/picker_bg_hover.png) no-repeat;
     color: #000;
 }
-
-
-/*#ui-timepicker-div td.ui-datepicker-today {
-    background: url(grfx/picker_bg_today.png) no-repeat;
-    font-weight: bold;
-}
-
-#ui-timepicker-div td.ui-datepicker-today:hover {
-    background: url(grfx/picker_bg_today_hover.png) no-repeat;
-}
-
-#ui-timepicker-div td.ui-datepicker-today a {
-    color: #fff;
-}
-
-
-#ui-timepicker-div td.ui-datepicker-current-day,
-#ui-timepicker-div td.ui-datepicker-current-day:hover
-{
-    background: url(grfx/picker_bg_selected.png) no-repeat;
-}
-
-#ui-timepicker-div td.ui-datepicker-current-day a {
-  color:#fff;
-}
-*/
