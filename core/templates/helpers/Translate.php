@@ -27,8 +27,16 @@ class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
     public function translate($key, $subpackage = null)
     {
         if ($subpackage !== null) {
-            return $this->view->kga['lang'][$subpackage][$key];
+            if (isset($this->view->kga['lang'][$subpackage][$key])) {
+                return $this->view->kga['lang'][$subpackage][$key];
+            }
+            return $subpackage.'.'.$key;
         }
-        return $this->view->kga['lang'][$key];
+
+        if (isset($this->view->kga['lang'][$key])) {
+            return $this->view->kga['lang'][$key];
+        }
+
+        return $key;
     }
 } 

@@ -8,7 +8,7 @@
         <tr class='headerrow'>
             <th><?php echo $this->kga['lang']['status']?></th>
             <th><?php echo $this->kga['lang']['default']?></th>
-            <th><?php echo $this->kga['lang']['options']?></th>
+            <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
         </tr>
     </thead>
     <tbody>
@@ -39,19 +39,15 @@
                 </td>
 
                 <td>
-                    <a href="#" onClick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID']?>'); $(this).blur(); return false;"><img
-                            src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editstatus']?>"
-                            width="13" height="13" alt="<?php echo $this->kga['lang']['editstatus']?>" border="0"></a>
-
+                    <a href="#" onClick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID']?>'); $(this).blur(); return false;">
+                        <?php echo $this->icons('edit', array('title' => $this->kga['lang']['editstatus'])); ?></a>
                     &nbsp;
-
-                <?php if ($statusarray['timeSheetEntryCount'] == 0): ?>
-                    <a href="#" onClick="adminPanel_extension_deleteStatus(<?php echo $statusarray['statusID']?>)"><img
-                            src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_status']?>"
-                            width="13" height="13" alt="<?php echo $this->kga['lang']['delete_status']?>" border="0"></a>
-                <?php else: ?>
-                     <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan_.png" title="<?php echo $this->kga['lang']['delete_status']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_status']?>" border="0">
-                <?php endif; ?>
+                    <?php if ($statusarray['timeSheetEntryCount'] == 0): ?>
+                        <a href="#" onClick="adminPanel_extension_deleteStatus(<?php echo $statusarray['statusID']?>)">
+                            <?php echo $this->icons('delete', array('title' => $this->kga['lang']['delete_status'])); ?></a>
+                    <?php else: ?>
+                        <?php echo $this->icons('delete', array('title' => $this->kga['lang']['delete_status'], 'disabled' => true)); ?>
+                    <?php endif; ?>
 
                 </td>
             </tr>

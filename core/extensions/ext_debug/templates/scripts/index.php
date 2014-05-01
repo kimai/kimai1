@@ -4,35 +4,46 @@
     }); 
 </script>
 
-<div id="deb_ext_kga_header">
-	<a href="#" title="Clear" onclick="deb_ext_reloadKGA();return false;"><img src="../extensions/ext_debug/grfx/action_refresh.png"  alt="Reload KGA"></a>
-     <strong>KIMAI GLOBAL ARRAY ($kga)</strong> 
-</div>
 
-<div id="deb_ext_kga_wrap">
-    <div id ="deb_ext_kga">
-        <pre>
-<?php echo $this->kga_display; ?>
-        </pre>
-    </div>
-</div>
+<?php
 
-<div id="deb_ext_logfile_header">
-    <div id="deb_ext_buttons">
-<?php if ($this->kga['delete_logfile']): ?>
-        <a href="#" title="Clear" onclick="deb_ext_clearLogfile();return false;"><img src="../skins/<?php echo $this->kga['conf']['skin'] ?>/grfx/button_trashcan.png" width="13" height="13" alt="Clear"></a>
-<?php endif; ?>
-    </div>
-    <strong>DEBUG LOGFILE</strong> <?php echo $this->limitText ?>
-    
-    <form id="deb_ext_shoutbox" action="../extensions/ext_debug/processor.php" method="post" <?php if ($this->kga['delete_logfile']):?> style="margin-right:20px" <?php endif; ?>> 
+$postTitle = '';
+$preTitle = '';
+if ($this->kga['delete_logfile']) {
+    $preTitle = '<a href="#" title="Clear" onclick="deb_ext_clearLogfile();return false;">'.$this->icons('delete').'</a>';
+}
+$postTitle .= '
+    <form id="deb_ext_shoutbox" action="../extensions/ext_debug/processor.php" method="post">
         <input type="text" id="deb_ext_shoutbox_field" name="axValue" value="shoutbox"/>
         <input name="id" type="hidden" value="0" />
         <input name="axAction" type="hidden" value="shoutbox" />
-    </form>
+    </form>';
 
-</div>
+echo $this->extensionScreen(
+    array(
+        'pre_title' => $preTitle,
+        'post_title' => $postTitle,
+        'title' => 'DEBUG LOGFILE ' . $this->limitText,
+        'id'    => 'deb_ext_logfile_header',
+        'level' => array('deb_ext_logfile_wrap')
+    )
+)->getHeader();
+?>
+<div id="deb_ext_logfile"></div>
 
-<div id ="deb_ext_logfile_wrap">
-    <div id ="deb_ext_logfile"></div>
-</div>
+<?php echo $this->extensionScreen()->getFooter(); ?>
+
+
+
+<?php
+echo $this->extensionScreen(
+    array(
+        'pre_title' => '<a href="#" title="Clear" onclick="deb_ext_reloadKGA();return false;">'. $this->icons('reload') . '</a>',
+        'title' => 'KIMAI GLOBAL ARRAY ($kga)',
+        'id'    => 'deb_ext_kga_header',
+        'level' => array('deb_ext_kga_wrap')
+    )
+)->getHeader();
+?>
+<div id="deb_ext_kga"><pre><?php echo $this->kga_display; ?></pre></div>
+<?php echo $this->extensionScreen()->getFooter(); ?>

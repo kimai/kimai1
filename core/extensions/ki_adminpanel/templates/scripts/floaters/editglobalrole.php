@@ -1,110 +1,88 @@
-<?php
-
-  $extensions = array();
-  $keyHierarchy = array();
-
-  $this->getHelper('ParseHierarchy')->parseHierarchy($this->permissions, $extensions, $keyHierarchy);
-?>
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            $('#adminPanel_extension_form_editRole').ajaxForm( {
-              'beforeSubmit' :function() { 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#adminPanel_extension_form_editRole').ajaxForm({
+            'beforeSubmit': function () {
                 clearFloaterErrorMessages();
 
                 if ($('#adminPanel_extension_form_editRole').attr('submitting')) {
-                  return false;
+                    return false;
                 }
                 else {
-                  $('#adminPanel_extension_form_editRole').attr('submitting', true);
-                  return true;
+                    $('#adminPanel_extension_form_editRole').attr('submitting', true);
+                    return true;
                 }
             },
             'success': function (result) {
                 $('#adminPanel_extension_form_editRole').removeAttr('submitting');
                 for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-                
+                    setFloaterErrorMessage(fieldName, result.errors[fieldName]);
+
                 if (result.errors.length == 0) {
-                  floaterClose();
-                  adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
+                    floaterClose();
+                    adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
                 }
             },
-            'error': function() {
+            'error': function () {
                 $('#adminPanel_extension_form_editRole').removeAttr('submitting');
             }});
-     $('#floater_innerwrap').tabs({ selected: 0 });
-        }); 
-    </script>
+        $('#floater_innerwrap').tabs({ selected: 0 });
+    });
+</script>
+<?php
 
-<div id="floater_innerwrap">
-    
-    <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->title?></span>
-        <div class="right">
-            <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
-        </div>       
-    </div>
-    
-    <div class="menuBackground">
+$extensions = array();
+$keyHierarchy = array();
+$this->hierarchy()->parse($this->permissions, $extensions, $keyHierarchy);
 
-      <ul class="menu tabSelection">
+$this->floater()
+    ->setTitle($this->title)
+    ->setFormAction('../extensions/ki_adminpanel/processor.php')
+    ->setFormId('adminPanel_extension_form_editRole')
+    ->addTab('general', $this->translate('general'));
 
-          <li class="tab norm"><a href="#general">
-                      <span class="aa">&nbsp;</span>
-                      <span class="bb"><?php echo $this->kga['lang']['general']?></span>
-                      <span class="cc">&nbsp;</span>
-                      </a></li>
-          <?php
-            foreach ($keyHierarchy as $key => $subKeys):
-              if (count($subKeys) == 1 && array_key_exists('access',$subKeys)) continue;
+foreach ($keyHierarchy as $key => $subKeys)
+{
+    if (count($subKeys) == 1 && array_key_exists('access', $subKeys)) continue;
 
-              $name = $key;
-              if (isset($this->kga['lang']['extensions'][$name]))
-                $name = $this->kga['lang']['extensions'][$name];
-          ?>
-          <li class="tab norm"><a href="#<?php echo $key?>">
-                      <span class="aa">&nbsp;</span>
-                      <span class="bb"><?php echo $name?></span>
-                      <span class="cc">&nbsp;</span>
-                      </a></li>
+    $name = $key;
+    if (isset($this->kga['lang']['extensions'][$name])) {
+        $name = $this->kga['lang']['extensions'][$name];
+    }
+    $this->floater()->addTab($key, $name);
+}
 
-          <?php endforeach; ?>
-      </ul>
-    </div>
+echo $this->floater()->floaterBegin();
 
-    <form id="adminPanel_extension_form_editRole" action="../extensions/ki_adminpanel/processor.php" method="post"> 
-      <input name="id" type="hidden" value="<?php echo $this->id?>" />
-      <input name="axAction" type="hidden" value="<?php echo $this->action;?>" />
+?>
 
-      <div id="floater_tabs" class="floater_content">
-            <fieldset id="general">
-              <ul>
-                <li>
-                  <label for="name"><?php echo $this->kga['lang']['rolename']?>:</label>
-                  <input class="formfield" type="text" name="name" value="<?php echo $this->escape($this->name)?>"/>
-                </li>                    
-              </ul>
+<input name="id" type="hidden" value="<?php echo $this->id ?>"/>
+<input name="axAction" type="hidden" value="<?php echo $this->action; ?>"/>
 
-              <fieldset class="floatingTabLayout">
-                <?php if (count($extensions) > 0): ?>
-                <legend><?php echo $this->kga['lang']['extensionsTitle'];?></legend>
-                <?php 
-                  endif;
-                  foreach ($extensions as $key => $value):
-                    $name = $key;
-                    if (isset($this->kga['lang']['extensions'][$name]))
-                      $name = $this->kga['lang']['extensions'][$name];
+<?php echo $this->floater()->tabContentBegin('general'); ?>
+        <ul>
+            <li>
+                <label for="name"><?php echo $this->kga['lang']['rolename'] ?>:</label>
+                <input class="formfield" type="text" name="name"
+                       value="<?php echo $this->escape($this->name) ?>"/>
+            </li>
+        </ul>
+
+        <fieldset class="floatingTabLayout">
+            <?php if (count($extensions) > 0): ?>
+                <legend><?php echo $this->kga['lang']['extensionsTitle']; ?></legend>
+            <?php
+            endif;
+            foreach ($extensions as $key => $value):
+                $name = $key;
+                if (isset($this->kga['lang']['extensions'][$name]))
+                    $name = $this->kga['lang']['extensions'][$name];
                 ?>
-                <span class="permission"><input type="checkbox" value="1" name="<?php echo $key?>-access" <?php if ($value == 1):?> checked="checked" <?php endif; ?> /><?php echo $name?></span>
-                <?php endforeach; ?>
-              </fieldset>
-            </fieldset>
+                <span class="permission"><input type="checkbox" value="1"
+                                                name="<?php echo $key ?>-access" <?php if ($value == 1): ?> checked="checked" <?php endif; ?> /><?php echo $name ?></span>
+            <?php endforeach; ?>
+        </fieldset>
+    <?php echo $this->floater()->tabContentEnd(); ?>
 
-            <?php $this->echoHierarchy($this->kga, $keyHierarchy); ?>
-      </div>
-      <div id="formbuttons">
-        <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
-        <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
-      </div>
-    </form>
-</div>
+    <?php $this->hierarchy()->render($this->kga, $keyHierarchy); ?>
+
+<?php echo $this->floater()->floaterEnd(); ?>

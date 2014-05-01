@@ -1,0 +1,21 @@
+
+.ui-tabs .ui-tabs-hide {
+  display:none;
+}
+
+div.modal-dialog { width: 700px; }
+div.modal-body ul { list-style-type: none; padding-left: 10px; margin: 0px; }
+div.modal-body ul label { min-width: 150px; float: left; }
+div.modal-body .tab-pane legend { font-weight: bold; margin-bottom: 10px; font-size: 16px; border-bottom: none; }
+
+.activitiesTable input {
+  width: 100px;
+}
+
+.modal-content input[type="checkbox"],
+.modal-content input[type="radio"] {
+    margin-right: 5px;
+}
+
+.modal-content .tab-pane ul .multiFields { margin-left: 150px; }
+.modal-content .tab-pane ul li { padding: 5px 0; }

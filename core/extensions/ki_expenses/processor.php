@@ -34,7 +34,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   // check if expense is too far in the past to allow editing (or deleting)
   if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
     $errors[''] =  $kga['lang']['editLimitError'];
-    break;
+    return false;
   }
 
   $groups = $database->getGroupMemberships($entry['userID']);
@@ -185,7 +185,7 @@ switch ($axAction) {
         }
 
         // get new data
-        $data['projectID']    = $_REQUEST['projectID'];
+        $data['projectID']    = isset($_REQUEST['projectID']) ? $_REQUEST['projectID'] : null;
         $data['designation']  = $_REQUEST['designation'];
         $data['comment']      = $_REQUEST['comment'];
         $data['commentType']  = $_REQUEST['commentType'];
@@ -209,7 +209,7 @@ switch ($axAction) {
         $new_time = convert_time_strings($new,$new);
         $data['timestamp'] = $new_time['in'];
 
-        if (!is_numeric($data['projectID']))
+        if (is_null($data['projectID']) || !is_numeric($data['projectID']))
           $errors['projectID'] = $kga['lang']['errorMessages']['noProjectSelected'];
 
         if (!is_numeric($data['multiplier']) || $data['multiplier'] <= 0)

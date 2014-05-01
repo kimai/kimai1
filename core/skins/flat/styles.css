@@ -1,0 +1,20 @@
+@import "css/bootstrap.min.css";
+@import "css/setup.css";
+/* START AND STOP BUTTON */
+@import "css/buzzer.css";
+/* YELLOW BOX WITH DATE SELECTOR, CURRENT DATE AND TIME AND TOTAL HOURS */
+@import "css/timeframe.css";
+/* FLOATING DIALOGS */
+@import "css/floater.css";
+/* AUTOCOMPLETE IN LIST INPUT */
+@import "../standard/jquery.autocomplete.css";
+/* DATE PICKER */
+@import "css/datepicker.css";
+/* TIME PICKER */
+@import "css/timePicker.css";
+/* ICON FONT */
+@import "css/font-awesome.css";
+/* DATA TABLES */
+@import "css/tables.css";
+/* OVERWRITE STUFF FROM DEFAULT INCLUDES */
+@import "css/setup_post.css";

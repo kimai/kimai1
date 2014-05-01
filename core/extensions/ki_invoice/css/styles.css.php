@@ -34,11 +34,6 @@
    padding:10px;
  }
 
-#invoice_timespan {
-   padding: 20px 0px;
-}
-
-
 #invoice_button {
    padding: 20px 0px;
 }
@@ -48,3 +43,7 @@
 float:left;	
 margin-right:10px;
 }
+
+select#invoice_projectID,
+select#invoice_customerID { min-width: 100px; }
+#invoice_extension_advanced table td { min-width: 300px; }
