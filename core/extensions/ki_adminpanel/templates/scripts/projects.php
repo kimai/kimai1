@@ -1,11 +1,13 @@
-<a href="#" onClick="floaterShow('floaters.php','add_edit_project',0,0,650); $(this).blur(); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/add.png" width="22" height="16" alt="<?php echo $this->kga['lang']['new_project']?>"></a> <?php echo $this->kga['lang']['new_project']?>
+<a onClick="floaterShow('floaters.php','add_edit_project',0,0,650); $(this).blur(); return false;"
+   href="#" ><?php echo $this->icons('add', array('title' => $this->kga['lang']['new_project'])); ?></a>
+<?php echo $this->kga['lang']['new_project']?>
 <br/><br/>
 
 <table>
 
 <thead>
   <tr class="headerrow">
-      <th><?php echo $this->kga['lang']['options']?></th>
+      <th class="admin_options"><?php echo $this->kga['lang']['options']?></th>
       <th><?php echo $this->kga['lang']['projects']?></th>
       <th><?php echo $this->kga['lang']['groups']?></th>
   </tr>
@@ -31,13 +33,11 @@
             <tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 
                 <td class="option">
-                    <a href ="#" onClick="editSubject('project',<?php echo $row['projectID']?>); $(this).blur(); return false;"><img
-                            src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13'
-                            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+                    <a href ="#" onClick="editSubject('project',<?php echo $row['projectID']?>); $(this).blur(); return false;">
+                        <?php echo $this->icons('edit'); ?></a>
                     &nbsp;
-                    <a href="#" id="delete_project<?php echo $row['projectID']?>" onClick="adminPanel_extension_deleteProject(<?php echo $row['projectID']?>)"><img
-                            src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_project']?>"
-                            width="13" height="13" alt="<?php echo $this->kga['lang']['delete_project']?>" border="0"></a>
+                    <a href="#" id="delete_project<?php echo $row['projectID']?>" onClick="adminPanel_extension_deleteProject(<?php echo $row['projectID']?>)">
+                        <?php echo $this->icons('delete', array('title' => $this->kga['lang']['delete_project'])); ?></a>
                 </td>
 
                 <td class="projects">

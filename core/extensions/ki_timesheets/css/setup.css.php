@@ -14,9 +14,7 @@
     left:10px;
 }
 
-
-
-#timeSheet { 
+#timeSheet {
     top:150px;
     z-index:2;
 }

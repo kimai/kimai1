@@ -4,32 +4,38 @@ $latest_running_row_index = -1;
 
 if ($this->timeSheetEntries)
 {
-    ?>
-        <div id="timeSheetTable">
-        
-          <table>
-              
-            <colgroup>
-              <col class="option" />
-              <col class="date" />
-              <col class="from" />
-              <col class="to" />
-              <col class="time" />
-<?php if ($this->showRates): ?>
-              <col class="wage" />
-<?php endif; ?>
-              <col class="client" />
-              <col class="project" />
-              <col class="activity" />
-            <?php if ($this->showTrackingNumber) { ?>
-              <col class="trackingnumber" />
-            <?php } ?>
-              <col class="username" />
-            </colgroup>
+    // --------------------- prepare timesheet table header ---------------------
+    $colgroup = array(
+        'option' => '&nbsp;',
+        'date' => $this->kga['lang']['datum'],
+        'from' => $this->kga['lang']['in'],
+        'to' => $this->kga['lang']['out'],
+        'time' => $this->kga['lang']['time']
+    );
 
-            <tbody>
+    if ($this->showRates) {
+        $colgroup['wage'] = $this->kga['lang']['wage'];
+    }
 
-    <?php
+    $colgroup['customer'] = $this->kga['lang']['customer'];
+    $colgroup['project'] = $this->kga['lang']['project'];
+    $colgroup['activity'] = $this->kga['lang']['activity'];
+
+    if ($this->showTrackingNumber) {
+        $colgroup['trackingnumber'] = $this->kga['lang']['trackingNumber'];
+    }
+    $colgroup['username'] = $this->kga['lang']['username'];
+
+    // attention - same config is in timeSheet.php as well !!!!
+    $dataTable = array(
+        'header_id'     => 'timeSheet_head',
+        'colgroup'      => $colgroup,
+        'data_id'       => 'timeSheet'
+    );
+
+    echo $this->dataTable($dataTable)->renderDataHeader();
+
+    // --------------------- start calculating all timesheet entry rows ---------------------
     $day_buffer     = 0; // last day entry
     $time_buffer    = 0; // last time entry
     $end_buffer     = 0; // last time entry
@@ -81,15 +87,14 @@ if ($this->timeSheetEntries)
 
             <?php if ($this->kga['show_RecordAgain']): ?>
               <a onClick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
-                 href ="#" class="recordAgain"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_recordthis.gif'
-                 width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
+                 href ="#" class="recordAgain">
+                  <?php echo $this->icons('recordAgain', array('title' => $this->kga['lang']['recordAgain'] . ' (ID:'.$row['timeEntryID'].')')); ?></a>
             <?php endif; ?>
 
         <?php else: ?>
 
-            <a href ='#' class='stop' onClick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
-                    src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_stopthis.gif' width='13'
-                    height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
+            <a href ='#' class='stop' onClick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;">
+                <?php echo $this->icons('stop', array('title' => $this->kga['lang']['stop'] . ' (ID:'.$row['timeEntryID'].')')); ?></a>
 
         <?php endif; ?>
 
@@ -97,17 +102,14 @@ if ($this->timeSheetEntries)
       <?php if ($this->kga['conf']['editLimit'] == "-" || time()-$row['end'] <= $this->kga['conf']['editLimit']):
     //Edit Record Button ?>
         <a href ='#' onClick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-           title='<?php echo $this->kga['lang']['edit']?>'><img
-           src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13'
-           alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+           title='<?php echo $this->kga['lang']['edit']?>'>
+            <?php echo $this->icons('edit'); ?></a>
       <?php endif; ?>
 
       <?php if ($this->kga['conf']['quickdelete'] > 0):
     // quick erase trashcan  ?>
-        <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
-            src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13'
-            height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
-            border=0 /></a>
+        <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;">
+            <?php echo $this->icons('quickdelete'); ?></a>
       <?php endif; ?>
 
     <?php endif; ?>
@@ -142,7 +144,7 @@ if ($this->timeSheetEntries)
                 ?>
             </td>
 
-<?php if ($this->showRates): ?>
+            <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
                 if (isset($row['wage'])) {
@@ -152,7 +154,7 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
-<?php endif; ?>
+            <?php endif; ?>
 
             <td class="customer <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['customerName']) ?>
@@ -209,13 +211,10 @@ if ($this->timeSheetEntries)
                 $day_buffer = strftime("%d",$row['start']);
                 $time_buffer = $row['start'];
                 $end_buffer = $row['end'];
-            }
-    ?>
+    }
 
-                </tbody>
-            </table>
-        </div>
-    <?php
+    echo $this->dataTable()->renderDataFooter();
+
 }
 else
 {

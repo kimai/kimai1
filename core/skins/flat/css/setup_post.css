@@ -1,0 +1,156 @@
+
+#deb_ext_kga,
+#deb_ext_kga pre,
+#deb_ext_logfile {
+    font-size:10px !important;
+    color: blue !important;
+    padding: 0 10px !important;
+    background-color: #fff !important;
+    border: none !important;
+}
+
+/* FIXME - design needs to be solved */
+
+#dates { padding-top: 4px; line-height: 20px; height: 26px; }
+#dates A { font-size: 18px; }
+#stopwatch_ticker {display:none !important; }
+#stopwatch {display:none !important; }
+#selector {display:none !important; }
+#display{
+    position: relative;
+    top: 0px;
+    left: inherit;
+    height: 40px;
+    background: none;
+}
+/* JS tries to resize it, so we need !important here */
+#adminPanel_extension_panel {
+    left: 0px !important;
+    top: 0px !important;
+    position: inherit !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: none !important;
+    border: none !important;
+}
+
+#adminPanel_extension_panel table tr.odd {background-color: #fcfdfe;}
+#adminPanel_extension_panel table tr {border-color: #e0e4e8 !important;}
+#adminPanel_extension_panel table tr td {padding: 6px 0 6px 15px;}
+#adminPanel_extension_panel table { border-color: #e0e4e8 !important; margin-bottom: 5px;}
+#exptable thead tr th,
+#adminPanel_extension_panel thead tr th {
+    font-weight: bold !important;
+    background: #fafbfc !important;
+    border-right: 1px solid #e0e4e8 !important;
+    border-bottom: 1px solid #e0e4e8 !important;
+    padding: 6px 15px !important;
+    color: #656565 !important;
+}
+
+#expenses,
+#timeSheet,
+#xp{
+    top: 0 !important;
+    left: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+}
+
+#expenses_head,
+#timeSheet_head,
+#export_head {
+    position: inherit !important;
+    top: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    left: 0px !important;
+}
+
+#export_panel {
+    height: 70px !important;
+}
+
+div#expenses_head div.left,
+div#timeSheet_head div.left {
+    float: left;
+    margin-top: 2px !important;
+    position: inherit !important;
+}
+
+div#export_head div.right {
+    float: right;
+    margin-top: 2px !important;
+    position: inherit !important;
+}
+
+#budgetArea {
+    height: 100% !important;
+    margin: 0px !important;
+    background: none !important;
+    border: none !important;
+}
+
+.project_head {
+    background-image: none !important;
+    background-color: #f5f5f5 !important;
+    height: 35px;
+    color: #333 !important;
+}
+.budget_project {
+    margin: 0px 10px 0px 0px !important;
+    background-color: #fff !important;
+    border-color: #DDDDDD !important;
+    border-radius: 3px;
+    height: 260px !important;
+    padding: 0px !important;
+}
+.budget_project div.project_head {
+    font-weight: normal !important;
+}
+
+.budget_project span {
+    font-size: 13px;
+    margin-left: 5px;
+}
+table.jqplot-table-legend {
+    position: absolute !important;
+    left: 130px !important;
+    border: none !important;
+}
+
+#deb_ext_kga_header,
+#deb_ext_logfile_header,
+#deb_ext_kga_wrap,
+#deb_ext_logfile_wrap
+{
+    position: inherit !important;
+    width: 100% !important;
+    left: 0px !important;
+    top: 0px !important;
+}
+
+#deb_ext_kga_header,
+#deb_ext_logfile_header
+{
+    height: 31px !important;
+}
+
+#deb_ext_kga_wrap {
+    margin-bottom: 10px !important;
+}
+
+#deb_ext_logfile_wrap
+{
+    padding: 0px !important;
+}
+
+#deb_ext_shoutbox_field { height: 16px !important; }
+
+#timeSheetTable table { width: 100% !important; }
+
+div.tab-pane { padding-top: 15px; }
+.permission { color: #000; margin-left: 5px; }
+.permission input[type="checkbox"] { margin-right: 5px; }
+
+#adminPanel_extension_panel table { font-size: 13px !important; }

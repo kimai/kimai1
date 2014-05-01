@@ -21,8 +21,6 @@
 // = Smarty (initialize class) =
 // ============================= 
 include('../includes/basics.php');
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -56,6 +54,8 @@ $out = $timeframe[1];
 // ============================================
 include('Config.php');
 
+$view = new Kimai_View();
+$view->enableSkinSupport($kga['conf']['skin']);
 
 // ===============================================
 // = get time for the probably running stopwatch =
@@ -229,13 +229,99 @@ if (isset($kga['user']))
 else
   $view->showInstallWarning = false;
 
+// =========================
+// = BUILD MAIN NAVIGATION =
+// =========================
 
+$title = "Timesheet";
+if (isset($kga['lang']['extensions']['ki_timesheet'])) {
+    $title = $kga['lang']['extensions']['ki_timesheet'];
+}
+
+$entries = array(
+    array(
+        'key'       => 'ki_timesheet',
+        'title'     => $title,
+        'onclick'   => "changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();",
+        'class'     => 'act',
+        'id'        => 'exttab_0'
+    )
+);
+
+for($i = 0; $i < count($view->extensions); $i++)
+{
+    $extension = $view->extensions[$i];
+
+    if (!$extension['name'] OR $extension['key'] == "ki_timesheet") {
+        continue;
+    }
+
+    $title = $view->escape($extension['name']);
+    if (isset($kga['lang']['extensions'][$extension['key']])) {
+        $title = $kga['lang']['extensions'][$extension['key']];
+    }
+
+    $entries[] = array(
+        'key'       => $extension['key'],
+        'title'     => $title,
+        'onclick'   => "changeTab(". ($i+1) . ", '".$extension['initFile']."'); ".$extension['tabChangeTrigger'].";",
+        'class'     => 'norm',
+        'id'        => 'exttab_'. ($i+1)
+    );
+}
+$view->main_navigation = $entries;
+
+// ======================
+// = BUILD LIST ENTRIES =
+// ======================
+
+$listEntries = array(
+    array(
+        'id'            => 'users',
+        'title'         => $kga['lang']['users'],
+        'filter'        => 'filt_user',
+        'content'       => $view->user_display,
+        'showAddButon'  => false,
+        'floaterFile'   => null,
+        'floatAction'   => null,
+        'floaterWidth'  => 0
+    ),
+    array(
+        'id'            => 'customers',
+        'title'         => $kga['lang']['customers'],
+        'filter'        => 'filter_customer',
+        'content'       => $view->customer_display,
+        'showAddButon'  => $view->show_customer_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_customer',
+        'floaterWidth'  => 450
+    ),
+    array(
+        'id'            => 'projects',
+        'title'         => $kga['lang']['projects'],
+        'filter'        => 'filter_project',
+        'content'       => $view->project_display,
+        'showAddButon'  => $view->show_project_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_project',
+        'floaterWidth'  => 650
+    ),
+    array(
+        'id'            => 'activities',
+        'title'         => $kga['lang']['activities'],
+        'filter'        => 'filter_project',
+        'content'       => $view->activity_display,
+        'showAddButon'  => $view->show_activity_add_button,
+        'floaterFile'   => 'floaters.php',
+        'floatAction'   => 'add_edit_activity',
+        'floaterWidth'  => 450
+    ),
+);
+$view->list_entries = $listEntries;
 
 // ========================
 // = BUILD HOOK FUNCTIONS =
 // ========================
-
-
 $view->hook_timeframe_changed = $extensions->timeframeChangedHooks();
 $view->hook_buzzer_record = $extensions->buzzerRecordHooks();
 $view->hook_buzzer_stopped = $extensions->buzzerStopHooks();
@@ -247,6 +333,14 @@ $view->hook_filter = $extensions->filterHooks();
 $view->hook_resize = $extensions->resizeHooks();
 $view->timeoutlist = $extensions->timeoutList();
 
-echo $view->render('core/main.php');
+$basePath = $view->getScriptPath('core');
+$skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';
 
-?>
+// allow skin specific template
+if(file_exists($skinTpl)) {
+    echo $view->render('/core/' . $kga['conf']['skin'] . '.php');
+    return;
+}
+
+// render default template
+echo $view->render('core/main.php');

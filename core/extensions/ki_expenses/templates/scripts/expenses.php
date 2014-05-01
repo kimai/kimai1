@@ -1,26 +1,25 @@
 <?php
 if ($this->expenses)
 {
-    ?>
-    <div id="exptable">
+    // attention - same config is in main.php as well !!!!
+    $dataTable = array(
+        'header_id'     => 'expenses_head',
+        'colgroup'      => array(
+            'options' => '&nbsp;',
+            'date' => $this->kga['lang']['datum'],
+            'time' => $this->kga['lang']['timelabel'],
+            'value' => $this->kga['lang']['expense'],
+            'refundable' => $this->kga['lang']['refundable'],
+            'customer' => $this->kga['lang']['customer'],
+            'project' => $this->kga['lang']['project'],
+            'designation' => $this->kga['lang']['designation'],
+            'username' => $this->kga['lang']['username']
+        ),
+        'data_id'       => 'expenses'
+    );
 
-    <table>
+    echo $this->dataTable($dataTable)->renderDataHeader();
 
-        <colgroup>
-        <col class="option" />
-        <col class="date" />
-        <col class="time" />
-        <col class="value" />
-        <col class="refundable" />
-        <col class="client" />
-        <col class="project" />
-        <col class="designation" />
-        <col class="username" />
-        </colgroup>
-
-    <tbody>
-
-    <?php
     $day_buffer = 0;
     $timestamp_buffer = 0;
 
@@ -39,12 +38,11 @@ if ($this->expenses)
 
             <?php if (isset($this->kga['user']) &&  ($this->kga['conf']['editLimit'] == "-" || time()-$row['timestamp'] <= $this->kga['conf']['editLimit'])): ?>
                 <a href ='#' onClick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
-                <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+                    <?php echo $this->icons('edit') ?></a>
 
                 <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
                     <a href ='#' class='quickdelete' onClick="expense_quickdelete(<?php echo $row['expenseID']?>); return false;">
-                    <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
-                    </a>
+                        <?php echo $this->icons('quickdelete') ?></a>
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -139,13 +137,9 @@ if ($this->expenses)
         $day_buffer = $cur_day_buffer;
         $timestamp_buffer = $cur_timestamp_buffer;
     }
-    ?>
-                
-    </tbody>
-    </table>
-    </div>
 
-    <?php
+    echo $this->dataTable()->renderDataFooter();
+
 }
 else
 {
