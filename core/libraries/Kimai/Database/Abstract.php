@@ -23,8 +23,11 @@
  */
 abstract class Kimai_Database_Abstract {
 
-  protected $kga;
-  protected $conn;
+    protected $kga;
+    /**
+     * @var MySQL
+     */
+    protected $conn;
 
   /**
    * Instantiate a new database layer..
@@ -816,7 +819,15 @@ abstract class Kimai_Database_Abstract {
   * @param integer $user the user information array
   * @return array
   */
-  public abstract function get_watchable_users($user);
+  public abstract function get_user_watchable_users($user);
+
+  /**
+  * returns list of users the given customer can watch
+  *
+  * @param integer $customer the customer information array
+  * @return array
+  */
+  public abstract function get_customer_watchable_users($customer);
 
   /**
   * returns assoc. array where the index is the ID of a user and the value the time

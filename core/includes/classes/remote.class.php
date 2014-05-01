@@ -322,7 +322,7 @@ class Kimai_Remote_Api
 			return $this->getAuthErrorResult();
         }
 
-		$users = $this->getBackend()->get_watchable_users($this->getUser());
+		$users = $this->getBackend()->get_user_watchable_users($this->getUser());
 
         if (count($users) > 0) {
 			$results = array();

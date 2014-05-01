@@ -25,6 +25,9 @@
 class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
 {
 
+    const FILE_PHTML = 'index.phtml';
+    const FILE_HTML = 'index.html';
+
     /**
      * Render the invoice.
      *
@@ -43,11 +46,17 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
         $view = new Kimai_View();
         $view->setScriptPath($this->getTemplateDir().$this->getTemplateFile());
 
-        $data = $this->getModel()->toArray();
+        // DO NOT RELY ON THESE VARIABLES - they are only here for compatibility with the ODT layer
+        $view->assign('CustomerODT', $this->prepareCustomerArray($this->getModel()->getCustomer()));
+        $view->assign('project', implode(', ', array_map(function($project) { return $project['name']; }, $this->getModel()->getProjects())));
 
+        $data = $this->getModel()->toArray();
         foreach($data as $key => $value) {
             $view->assign($key, $value);
         }
+
+        // can be used to reference styles and images
+        $view->assign('invoiceUrl', 'invoices/'.$this->getTemplateFile().'/');
 
         return $view->render($this->getTemplateFilename());
     }
@@ -57,7 +66,10 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
      */
     protected function getTemplateFilename()
     {
-        return 'index.html';
+        if (is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_PHTML)) {
+            return self::FILE_PHTML;
+        }
+        return self::FILE_HTML;
     }
 
     /**
@@ -67,9 +79,13 @@ class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
      */
     public function canRender()
     {
+        if (!is_dir($this->getTemplateDir() . $this->getTemplateFile())) {
+            return false;
+        }
+
         return (
-            is_dir($this->getTemplateDir() . $this->getTemplateFile()) &&
-            is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . $this->getTemplateFilename())
+            is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_HTML) ||
+            is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_PHTML)
         );
     }
 

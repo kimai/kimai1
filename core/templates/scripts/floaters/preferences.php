@@ -85,6 +85,12 @@
             <?php echo $this->formCheckbox('autoselection', '1',array('checked' => $this->kga['conf']['autoselection']));
                 echo $this->kga['lang']['autoselection']?>
           </li>
+
+          <li>
+            <label for="openAfterRecorded"></label>
+            <?php echo $this->formCheckbox('openAfterRecorded', '1',array('checked' => isset($this->kga['conf']['openAfterRecorded']) && $this->kga['conf']['openAfterRecorded']));
+                echo $this->kga['lang']['openAfterRecorded']?>
+          </li>
         </ul>
     <?php echo $this->floater()->tabContentEnd(); ?>
 

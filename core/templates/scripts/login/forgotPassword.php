@@ -12,6 +12,7 @@
 <script type="text/javascript" src="js/main.js"></script>
 <?php endif; ?>
 <script type='text/javascript'>
+var requestData = <?php echo json_encode($this->requestData); ?>;
     $(function(){
         //$("#JSwarning").remove();
         $.cookie('KimaiCookietest', 'jes');
@@ -25,35 +26,26 @@
         $("#forgotPasswordLink").click(function(event) {
           event.preventDefault();
           $("#login").fadeOut();
-          $("#forgotPasswordUsername").val("");
           $("#forgotPassword").fadeIn();
           return false;
         });
 
-        $("#resetPassword").click(function() {
+        $("#loginButton").click(function() {
+          requestData['password'] = $("#password").val();
           event.preventDefault();
-          $("#forgotPasswordUsername").blur();
           $.ajax({
             type: "POST",
-            url: "processor.php?a=forgotPassword",
-            data: {
-              name:  $("#forgotPasswordUsername").val()
-            },
+            url: "processor.php?a=resetPassword",
+            data: requestData,
             dataType: "json",
             success: function(data) {
-              $("#forgotPassword").fadeOut();
-              $("#forgotPasswordConfirmation p").html(data.message);
-              $("#forgotPasswordConfirmation").fadeIn();
+              $("#login").fadeOut();
+              $("#message p").html(data.message);
+              if (data.showLoginLink)
+                $("#message a").show();
+              $("#message").fadeIn();
             }
           });
-          return false;
-        });
-
-        $(".returnToLogin").click(function(event) {
-          event.preventDefault();
-          $("#login").fadeIn();
-          $("#forgotPassword").fadeOut();
-          $("#forgotPasswordConfirmation").fadeOut();
           return false;
         });
 
@@ -78,42 +70,27 @@
 
     <div id="box">
 
-      <div id="login" style="display:block">
+    <div id="login" <?php if ($this->keyCorrect): ?>style="display:block" <?php endif; ?>>
         <form action='index.php?a=checklogin' name='form1' method='post'>
             <fieldset>
                 <label for="kimaiusername">
-                    <?php echo $this->kga['lang']['username']?>:
+                    <?php echo $this->kga['lang']['newPassword']?>:
                 </label>
-                <input type='text' name="name" id="kimaiusername" />
+                <input type='password' name="password" id="password" />
                 <label for="kimaipassword">
-                    <?php echo $this->kga['lang']['password']?>:
+                    <?php echo $this->kga['lang']['retypePassword']?>:
                 </label>
-                <input type='password' name="password" id="kimaipassword" />
+                <input type='password' name="password2" id="password2" />
                 <?php echo $this->selectbox ?>
                 <button id="loginButton" type='submit'></button>
-                <a id="forgotPasswordLink" href=""><?php echo $this->kga['lang']['forgotPassword'] ?></a>
             </fieldset>
         </form>
       </div>
-
-      <div id="forgotPassword">
-<?php echo $this->kga['lang']['passwordReset']['instructions']; ?>
-        <form>
-            <fieldset>
-                <label for="kimaiusername">
-                    <?php echo $this->kga['lang']['username']?>:
-                </label>
-                <input type='text' name="name" id="forgotPasswordUsername" />
-                <button id="resetPassword" type='submit'>reset password</button>
-            </fieldset>
-        </form>
-        <a class="returnToLogin" href=""><?php echo $this->kga['lang']['passwordReset']['returnToLogin'] ?></a>
-      </div>
-
-      <div id="forgotPasswordConfirmation">
+      <div id="message" <?php if (!$this->keyCorrect): ?>style="display:block" <?php endif; ?>>
         <p>
+          <?php echo $this->kga['lang']['passwordReset']['invalidKey']; ?>
         </p>
-        <a class="returnToLogin" href=""><?php echo $this->kga['lang']['passwordReset']['returnToLogin'] ?></a>
+        <a style="display:none" href="index.php"><?php echo $this->kga['lang']['passwordReset']['returnToLogin'] ?></a>
       </div>
 
             

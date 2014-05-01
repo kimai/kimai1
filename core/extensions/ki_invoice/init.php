@@ -36,8 +36,13 @@ $view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 $view->kga = $kga;
 
 // get list of projects for select box
-$sel = makeSelectBox("project",$kga['user']['groups']);  
-$view->projects = $sel;
+$view->customers = makeSelectBox("customer",$kga['user']['groups']); 
+
+$projects = $database->get_projects_by_customer(array_keys($view->customers)[0], $kga['user']['groups']);
+$view->projects = array();
+foreach ($projects as $project) {
+  $view->projects[$project['projectID']] = $project['name'];
+}
 
 // Select values for Round Time option
 $roundingOptions = array(

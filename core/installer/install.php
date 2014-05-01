@@ -77,6 +77,7 @@ $query =
   `active` tinyint(1) NOT NULL default '1',
   `mail` varchar(160) NOT NULL DEFAULT '',
   `password` varchar(254) NULL DEFAULT NULL,
+  `passwordResetHash` char(32) NULL DEFAULT NULL,
   `ban` int(1) NOT NULL default '0',
   `banTime` int(10) NOT NULL default '0',
   `secure` varchar(60) NOT NULL default '0',
@@ -164,6 +165,7 @@ $query=
   `customerID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `password` varchar(255),
+  `passwordResetHash` char(32) NULL DEFAULT NULL,
   `secure` varchar(60) NOT NULL default '0',
   `comment` TEXT NOT NULL,
   `visible` TINYINT(1) NOT NULL DEFAULT '1',
@@ -388,6 +390,7 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundTi
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundMinutes', '0');");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundSeconds', '0');");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('allowRoundDown', '0');");
+exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('defaultStatusID', '1');");
 
 if ($errors) {
 

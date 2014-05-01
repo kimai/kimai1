@@ -64,24 +64,24 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
 
         // fetch variables from model to get values
         $customer   = $this->getModel()->getCustomer();
-        $project    = $this->getModel()->getProject();
+        $projects   = $this->getModel()->getProjects();
         $entries    = $this->getModel()->getEntries();
 
-        // ugly but neccessary for tinyButString
+        // assign all available variables (which are not arrays as they do not work in tinyButStrong)
+        foreach($this->getModel()->toArray() as $k => $v) {
+            if (is_array($v)) continue;
+            $GLOBALS[$k] = $v;
+        }
+
+        // ugly but neccessary for tinyButStrong
         // set globals variables, so they can be used in invoice templates
-        $GLOBALS['customerContact'] = $customer['contact'];
-        $GLOBALS['companyName']     = $customer['company'];
-        $GLOBALS['customerStreet']  = $customer['street'];
-        $GLOBALS['customerCity']    = $customer['city'];
-        $GLOBALS['customerZip']     = $customer['zipcode'];
-        $GLOBALS['customerPhone']   = $customer['phone'];
-        $GLOBALS['customerEmail']   = $customer['mail'];
-        $GLOBALS['customerComment'] = $customer['comment'];
-        $GLOBALS['customerFax']     = $customer['fax'];
-        $GLOBALS['customerMobile']  = $customer['mobile'];
-        $GLOBALS['customerURL']     = $customer['homepage'];
-        $GLOBALS['customerVat']     = $customer['vat'];
-        $GLOBALS['projectComment']  = $project['comment'];
+        $allCustomer = $this->prepareCustomerArray($customer);
+        foreach($allCustomer as $k => $v) {
+            $GLOBALS[$k] = $v;
+        }
+
+        $GLOBALS['projects'] = $projects;
+        $GLOBALS['project'] = implode(', ', array_map(function($project) { return $project['name']; }, $projects));
 
         $doc->mergeXmlBlock('row', $entries);
 

@@ -284,6 +284,8 @@ function stopRecord() {
         function(){
               ts_ext_reload();
               document.title = default_title;
+              if (openAfterRecorded)
+                editRecord(currentRecording);
         }
     );
 }

@@ -442,6 +442,7 @@ switch ($axAction)
 
                 if (count($errors) == 0) {
                   $database->status_edit($id, $status_data);
+                  $database->configuration_edit(array('defaultStatusID' => $id));
                 }
 
                 header('Content-Type: application/json;charset=utf-8');

@@ -121,5 +121,25 @@ abstract class Kimai_Invoice_AbstractRenderer
     {
         return false;
     }
+    
+    protected function prepareCustomerArray($customer)
+    {
+        $new = array(
+            'customerContact' => $customer['contact'],
+            'companyName' => $customer['company'],
+            'customerStreet' => $customer['street'],
+            'customerCity' => $customer['city'],
+            'customerZip' => $customer['zipcode'],
+            'customerPhone' => $customer['phone'],
+            'customerEmail' => $customer['mail'],
+            'customerComment' => $customer['comment'],
+            'customerFax' => $customer['fax'],
+            'customerMobile' => $customer['mobile'],
+            'customerURL' => $customer['homepage'],
+            'customerVat' => $customer['vat']
+        );
+
+        return $new;
+    }
 
 }

@@ -52,7 +52,7 @@ class Kimai_Invoice_PrintModel
     /**
      * @var array
      */
-    private $project = null;
+    private $projects = array();
     /**
      * @var string
      */
@@ -81,6 +81,10 @@ class Kimai_Invoice_PrintModel
      * @var string
      */
     private $currencySign = '$';
+    /**
+     * @var string
+     */
+    private $currencyName = 'EUR';
 
     /**
      * Returns all interval values as array.
@@ -90,21 +94,38 @@ class Kimai_Invoice_PrintModel
     public function toArray()
     {
         return array(
-            'entries'       => $this->getEntries(),
+            'entries'       => $this->getEntries(),     // array
             'amount'        => $this->getAmount(),
-            'customer'      => $this->getCustomer(),
+            'customer'      => $this->getCustomer(),    // array
             'vat'           => $this->getVat(),
             'vatRate'       => $this->getVatRate(),
             'total'         => $this->getTotal(),
-            'project'       => $this->getProject(),
+            'projects'      => $this->getProjects(),    // array
             'invoiceId'     => $this->getInvoiceId(),
             'beginDate'     => $this->getBeginDate(),
             'endDate'       => $this->getEndDate(),
             'invoiceDate'   => $this->getInvoiceDate(),
             'dateFormat'    => $this->getDateFormat(),
             'dueDate'       => $this->getDueDate(),
-            'currencySign'  => $this->getCurrencySign()
+            'currencySign'  => $this->getCurrencySign(),
+            'currencyName'  => $this->getCurrencyName()
         );
+    }
+
+    /**
+     * @param string $currencyName
+     */
+    public function setCurrencyName($currencyName)
+    {
+        $this->currencyName = $currencyName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyName()
+    {
+        return $this->currencyName;
     }
 
     /**
@@ -316,19 +337,19 @@ class Kimai_Invoice_PrintModel
     }
 
     /**
-     * @param array $project
+     * @param array $projects
      */
-    public function setProject($project)
+    public function setProjects($projects)
     {
-        $this->project = $project;
+        $this->projects = $projects;
     }
 
     /**
      * @return array
      */
-    public function getProject()
+    public function getProjects()
     {
-        return $this->project;
+        return $this->projects;
     }
 
 

@@ -28,7 +28,7 @@ $amount         = $this->amount;
 $vat            = $this->vat;
 $vatRate        = $this->vatRate;
 $total          = $this->total;
-$project        = $this->project;
+$projects       = $this->projects;
 $customer       = $this->customer;
 $invoiceId      = $this->invoiceId;
 $currency       = $this->currencySign;
@@ -97,7 +97,9 @@ $invoiceDate    = $this->invoiceDate;
 					</tr>
 				</thead>
 				<tbody>
-                <?php foreach($entries as $row) { ?>
+                <?php foreach($entries as $row) {
+                if ($row['type'] == 'timeSheet') {
+                ?>
 					<tr>
 						<td><span><?php echo $row['desc']; ?></span></td>
                         <td><span><?php echo $row['trackingNr']; ?></span></td>
@@ -105,7 +107,16 @@ $invoiceDate    = $this->invoiceDate;
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
 					</tr>
-                <?php } ?>
+                <?php } else { ?>
+					<tr>
+						<td><span><?php echo $row['desc']; ?></span></td>
+                        <td><span><?php echo $row['trackingNr']; ?></span></td>
+						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['value'],2 ); ?></span></td>
+						<td><span><?php echo number_format($row['multiplier'], 2); ?></span></td>
+						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
+					</tr>
+                <?php }
+                } ?>
 				</tbody>
 			</table>
 			<table class="balance">

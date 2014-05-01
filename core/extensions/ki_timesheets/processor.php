@@ -394,7 +394,7 @@ switch ($axAction) {
             $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
         }
 
-        $view->showRates = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
+        $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
 
         echo $view->render("timeSheet.php");
     break;
@@ -517,13 +517,12 @@ switch ($axAction) {
         $data['duration'] = $data['end'] - $data['start'];
       }
 
-
-      if (!timesheetAccessAllowed($data,$action,$errors)) {
-        echo json_encode(array('errors'=>$errors));
-        break;
-      }
-
       if ($id) { // TIME RIGHT - NEW OR EDIT ?
+
+          if (!timesheetAccessAllowed($data,$action,$errors)) {
+            echo json_encode(array('errors'=>$errors));
+            break;
+          }
 
           // TIME RIGHT - EDIT ENTRY
           Logger::logfile("timeEntry_edit: " .$id);
@@ -531,9 +530,24 @@ switch ($axAction) {
 
       } else {
 
-          // TIME RIGHT - NEW ENTRY
+        // TIME RIGHT - NEW ENTRY
+
+        $database->transaction_begin();
+
+        foreach ($_REQUEST['userID'] as $userID) {
+          $data['userID'] = $userID;
+
+          if (!timesheetAccessAllowed($data,$action,$errors)) {
+            echo json_encode(array('errors'=>$errors));
+            $database->transaction_rollback();
+            break 2;
+          }
+
           Logger::logfile("timeEntry_create");
           $database->timeEntry_create($data);
+        }
+
+        $database->transaction_end();
       }
 
       echo json_encode(array('errors'=>$errors));

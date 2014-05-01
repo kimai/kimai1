@@ -21,10 +21,18 @@
  * Query the Kimai project server for information about a new version.
  * The response will simply be passed through.
  */
-error_reporting(0);
+error_reporting(-1);
 require('../includes/basics.php');
 
-// check the latest stable version of Kimai on the web
-$request = join( '', file('http://versioncheck.kimai.de?revision='.$kga['revision']."&lang=".$kga['language']));
-echo strip_tags($request, '<span><a>');
-?>
+header('Content-Type: text/html; charset=utf-8');
+
+$check = new Kimai_Update_Check();
+$result = $check->checkForUpdate($kga['version'], $kga['revision']);
+
+if ($result == Kimai_Update_Check::RELEASE) {
+    echo $kga['lang']['updatecheck']['release'];
+} else if ($result == Kimai_Update_Check::BETA) {
+    echo $kga['lang']['updatecheck']['beta'];
+} else if ($result == Kimai_Update_Check::CURRENT) {
+    echo $kga['lang']['updatecheck']['current'];
+}

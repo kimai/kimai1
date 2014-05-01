@@ -6,10 +6,7 @@ function lists_resize() {
 
 function resize_menu() {
     $('#menu').css('width',
-        $('#display').position()['left']
-            -$('#menu').position()['left']
-            -20
-            +parseInt($('#display').css('margin-left')));
+        $('#display').position()['left']-$('#menu').position()['left']-20+parseInt($('#display').css('margin-left')));
 }
 
 function lists_extensionShrinkShow() {
@@ -83,14 +80,16 @@ function lists_get_dimensions() {
     }
 
     subtableCount=4;
+
     if (customerShrinkMode) {
         subtableCount--;
     }
+
     if (userShrinkMode) {
         subtableCount--;
     }
-    subtableWidth = (pageWidth()-10)/subtableCount-7;
 
+    subtableWidth = (pageWidth()-10)/subtableCount-7;
     userColumnWidth = subtableWidth-5;
     customerColumnWidth = subtableWidth-5; // subtract the space between the panels
     projectColumnWidth = subtableWidth-6;
@@ -114,9 +113,7 @@ function lists_set_tableWrapperWidths() {
 }
 
 function lists_set_left() {
-
     // push project/activity subtables in place LEFT
-
     leftmargin=0;
     rightmargin=0;
     userShrinkPos=0;
@@ -138,10 +135,8 @@ function lists_set_left() {
     }
 
     $("#projects, #projects_head, #projects_foot").css("left",leftmargin+rightmargin+10);
-
     $("#activities, #activities_head, #activities_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
     $('#customersShrink').css("left",customerShrinkPos);
-
 }
 
 function lists_set_heightTop() {
@@ -188,8 +183,6 @@ function lists_set_TableWidths() {
     ($("#activities").innerHeight()-$("#activities table").outerHeight()>0)?scr=0:scr=scroller_width;
     $("#activities table").css("width",activityColumnWidth-scr);
 }
-
-
 
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
@@ -269,4 +262,3 @@ function floaterClose()
     //$('#floater').draggable('destroy');
     $("#floater").fadeOut(fading_enabled?500:0);
 }
-// ----------------------------------------------------------------------------------------

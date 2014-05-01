@@ -38,10 +38,25 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $this->conn = new MySQL(true, $database, $host, $username, $password);
   }
 
+  public function isConnected() {
+      return $this->conn->IsConnected();
+  }
+
   private function logLastError($scope) {
       Logger::logfile($scope.': '.$this->conn->Error());
   }
 
+  public function transaction_begin() {
+    return $this->conn->TransactionBegin();
+  }
+
+  public function transaction_end() {
+    return $this->conn->TransactionEnd();
+  }
+
+  public function transaction_rollback() {
+    return $this->conn->TransactionRollback();
+  }
 
   /**
   * Add a new customer to the database.
@@ -123,7 +138,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $strings = array(
         'name'    ,'comment','password' ,'company','vat',
         'contact' ,'street' ,'zipcode'  ,'city'   ,'phone',
-        'fax'     ,'mobile' ,'mail'     ,'homepage', 'timezone');
+        'fax'     ,'mobile' ,'mail'     ,'homepage', 'timezone',
+        'passwordResetHash');
       foreach ($strings as $key) {
         if (isset($data[$key]))
           $values[$key] = MySQL::SQLValue($data[$key]);
@@ -1189,7 +1205,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function user_edit($userID, $data)
   {
       $data = $this->clean_data($data);
-      $strings = array('name', 'mail', 'alias', 'password', 'apikey');
+      $strings = array('name', 'mail', 'alias', 'password', 'apikey', 'passwordResetHash');
       $values = array();
 
       foreach ($strings as $key) {
@@ -3136,6 +3152,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @return id of the new entry or false on failure
   */
   public function startRecorder($projectID,$activityID,$user,$startTime) {
+      global $kga;
+
       $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER  );
       $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER  );
       $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
@@ -3146,7 +3164,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $values ['activityID'] = $activityID;
       $values ['start']    = $startTime;
       $values ['userID'] = $user;
-      $values ['statusID'] = 1;
+      $values ['statusID'] = $kga['conf']['defaultStatusID'];
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
       if ($rate)
         $values ['rate'] = $rate;
@@ -3307,16 +3325,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @return array
   * @author sl
   */
-  public function get_watchable_users($user) {
-      $arr = array();
+  public function get_user_watchable_users($user) {
       $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
       $p = $this->kga['server_prefix'];
+      $that = $this;
 
       if ($this->global_role_allows($user['globalRoleID'], 'core-user-otherGroup-view')) {
         // If user may see other groups we need to filter out groups he's part of but has no permission to see users in.
-        $forbidden_groups = array_filter($user['groups'], function($groupID) use ($userID) {
-          $roleID = $this->user_get_membership_role($userID, $groupID);
-          return !$this->membership_role_allows($roleID, 'core-user-view');
+        $forbidden_groups = array_filter($user['groups'], function($groupID) use ($userID, $that) {
+          $roleID = $that->user_get_membership_role($userID, $groupID);
+          return !$that->membership_role_allows($roleID, 'core-user-view');
         });
 
         $group_filter = "";
@@ -3328,12 +3346,20 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         return $this->conn->RecordsArray(MYSQL_ASSOC);
       }
 
-      $allowed_groups = array_filter($user['groups'], function($groupID) use($userID) {
-        $roleID = $this->user_get_membership_role($userID, $groupID);
-        return $this->membership_role_allows($roleID, 'core-user-view');
+      $allowed_groups = array_filter($user['groups'], function($groupID) use($userID, $that) {
+        $roleID = $that->user_get_membership_role($userID, $groupID);
+        return $that->membership_role_allows($roleID, 'core-user-view');
       });
 
       return $this->get_users(0,$allowed_groups);
+  }
+
+  public function get_customer_watchable_users($customer) {
+      $customerID = MySQL::SQLValue($customer['customerID'], MySQL::SQLVALUE_NUMBER);
+      $p = $this->kga['server_prefix'];
+      $query = "SELECT * FROM ${p}users WHERE trash=0 AND `userID` IN (SELECT DISTINCT `userID` FROM `${p}timeSheet` WHERE `projectID` IN (SELECT `projectID` FROM `${p}projects` WHERE `customerID` = $customerID)) ORDER BY name";
+      $result = $this->conn->Query($query);
+      return $this->conn->RecordsArray(MYSQL_ASSOC);
   }
 
   /**
@@ -3346,7 +3372,6 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @author sl
   */
   public function is_watchable_user($user, $userID) {
-      $arr = array();
       $userID = MySQL::SQLValue($user['userID'], MySQL::SQLVALUE_NUMBER);
 
       $watchableUsers = $this->get_watchable_users($user);
@@ -4022,8 +4047,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function customer_loginSetKey($customerId,$keymai) {
     $p = $this->kga['server_prefix'];
 
-    $query = "UPDATE ${p}customers SET secure='$keymai' WHERE customerID='".
-      mysql_real_escape_string($customerId)."';";
+    $query = "UPDATE ${p}customers SET secure='$keymai' WHERE customerID='".mysql_real_escape_string($customerId)."';";
     $this->conn->Query($query);
   }
 
