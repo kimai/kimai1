@@ -63,4 +63,22 @@ class Kimai_Registry extends Zend_Registry
     {
         return self::get('Kimai_User');
     }
+
+    /**
+     * Sets the translations.
+     *
+     * @param Translations $translations
+     */
+    public static function setTranslations(Translations $translations)
+    {
+        self::set('Kimai_Translations', $translations);
+    }
+
+    /**
+     * @return Translations
+     */
+    public static function getTranslations()
+    {
+        return self::get('Kimai_Translations');
+    }
 }

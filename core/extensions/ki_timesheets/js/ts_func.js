@@ -23,6 +23,7 @@
 /**
  * Called when the extension loaded. Do some initial stuff.
  */
+
 function ts_ext_onload() {
     ts_ext_applyHoverIntent();
     ts_ext_resize();
@@ -141,13 +142,14 @@ function timesheet_extension_tab_changed() {
     timesheet_activities_changed_hook_flag = 0;
 }
 
-function timesheet_extension_timeframe_changed() {
+$.subscribe('timeframe', function(_, timeframe) {
     if ($('.ki_timesheet').css('display') == "block") {
         ts_ext_reload();
     } else {
         timesheet_timeframe_changed_hook_flag++;
     }
-}
+});
+
 function timesheet_extension_customers_changed() {
     if ($('.ki_timesheet').css('display') == "block") {
         ts_ext_reload();

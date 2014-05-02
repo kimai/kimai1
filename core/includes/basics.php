@@ -56,9 +56,7 @@ require(WEBROOT.'includes/classes/format.class.php');
 require(WEBROOT.'includes/classes/logger.class.php');
 require(WEBROOT.'includes/classes/translations.class.php');
 require(WEBROOT.'includes/classes/rounding.class.php');
-require(WEBROOT.'includes/classes/extensions.class.php');
 require(WEBROOT.'includes/func.php');
-
 
 // ==================================================================================
 // = check for additional database(s) and set $kga['server_database'] accordingly   =
@@ -108,9 +106,10 @@ Kimai_Registry::setDatabase($database);
 
 global $translations;
 $translations = new Translations($kga);
-if ($kga['language'] != 'en')
+if ($kga['language'] != 'en') {
   $translations->load($kga['language']);
-
+}
+Kimai_Registry::setTranslations($translations);
 
 $vars = $database->configuration_get_data();
 if (!empty($vars)) {

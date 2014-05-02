@@ -10,9 +10,14 @@
 <!-- /Default Stylesheets -->
 
 <!-- Extension Stylesheets -->
-<?php foreach ($this->css_extension_files as $object): ?>
-    <link rel="stylesheet" href="<?php echo $this->escape($object)?>" type="text/css" media="screen" title="no title" charset="utf-8" />
-<?php endforeach; ?>
+<?php
+    foreach ($this->extensions as $extension) {
+        foreach ($extension->getStylesheets() as $css) {
+            ?><link rel="stylesheet" href="../extensions/<?php echo $this->escape($extension->getDirectory())?>/<?php echo $this->escape($css)?>" type="text/css" media="screen" title="no title" charset="utf-8" /><?php
+            echo "\n";
+        }
+    }
+?>
 <!-- /Extension Stylesheets -->
 
 <!-- Libs -->
@@ -28,6 +33,7 @@
 <script src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
 <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
 <script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../libraries/jQuery/pubsub.js" type="text/javascript" charset="utf-8"></script>
 <!-- /Libs -->
 
 <!-- Default JavaScripts -->
@@ -36,9 +42,14 @@
 <!-- /Default JavaScripts -->
 
 <!-- Extension JavaScripts -->
-<?php foreach ($this->js_extension_files as $object): ?>
-    <script src="<?php echo $this->escape($object);?>" type="text/javascript" charset="utf-8"></script>
-<?php endforeach; ?>
+<?php
+    foreach ($this->extensions as $extension) {
+        foreach ($extension->getJavascripts() as $js) {
+            ?><script src="../extensions/<?php echo $this->escape($extension->getDirectory())?>/<?php echo $this->escape($js)?>" type="text/javascript" charset="utf-8"></script><?php
+            echo "\n";
+        }
+    }
+?>
 <!-- /Extension JavaScripts -->
 
 <script type="text/javascript">
@@ -64,7 +75,6 @@
     <?php else: ?>
     var userID                = null;
     <?php endif; ?>
-
 
     <?php if ($this->kga['conf']['noFading']): ?>
     fading_enabled = false;
@@ -109,18 +119,27 @@
         firstDay:1 //TODO should also be depending on user setting
     });
 
+    // internal function, do NOT rely on it in your in code
+    function tabIdToExtensionId(tabId)
+    {
+        var tabs = [];
+        <?php foreach($this->main_navigation as $entry) { ?>
+        tabs[<?php echo $entry['tabId']; ?>] = "<?php echo $entry['key']; ?>";
+        <?php } ?>
+        return tabs[tabId];
+    }
 
     // HOOKS
-    function hook_timeframe_changed() { <?php echo $this->hook_timeframe_changed?> }
-    function hook_buzzer_record(){ <?php echo $this->hook_buzzer_record?> }
-    function hook_buzzer_stopped(){ <?php echo $this->hook_buzzer_stopped?> }
-    function hook_users_changed(){lists_reload("user");<?php echo $this->hook_users_changed?> }
-    function hook_customers_changed(){lists_reload("customer");lists_reload("project");<?php echo $this->hook_customers_changed?> }
-    function hook_projects_changed(){lists_reload("project");<?php echo $this->hook_projects_changed?> }
-    function hook_activities_changed(){lists_reload("activity");<?php echo $this->hook_activities_changed?> }
-    function hook_filter(){<?php echo $this->hook_filter?> }
-    function hook_resize(){<?php echo $this->hook_resize?> }
-    function kill_reg_timeouts(){<?php echo $this->timeoutlist?> }
+    function hook_timeframe_changed(timeframe) { $.publish('timeframe', [timeframe]); }
+    function hook_buzzer_record(){ $.publish('buzzer-record'); }
+    function hook_buzzer_stopped(){ $.publish('buzzer-stopped'); }
+    function hook_users_changed(){ lists_reload("user"); $.publish('users'); }
+    function hook_customers_changed(){ lists_reload("customer"); lists_reload("project"); $.publish('customers'); }
+    function hook_projects_changed(){ lists_reload("project"); $.publish('projects'); }
+    function hook_activities_changed(){ lists_reload("activity"); $.publish('activities'); }
+    function hook_filter(){ $.publish('filter'); }
+    function hook_resize(){ $.publish('resize'); }
+    function kill_reg_timeouts(){ $.publish('timeouts'); }
     function kimai_onload() {
         $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
         $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
@@ -139,6 +158,7 @@
             $('#buzzer').addClass('disabled');
         }
 
+        $.publish('onload');
         skin_onload();
     }
 </script>

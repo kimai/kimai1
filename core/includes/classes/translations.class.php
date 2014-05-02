@@ -69,4 +69,14 @@ class Translations
         }
     }
 
+    public function translate($key, $package = null, $default)
+    {
+        if ($package === null && isset($this->kga['lang'][$key])) {
+            return $this->kga['lang'][$key];
+        } else if (isset($this->kga['lang'][$package][$key])) {
+            return $this->kga['lang'][$package][$key];
+        }
+        return $default;
+    }
+
 }

@@ -68,11 +68,10 @@ function changeTab(target,path) {
     
     kill_reg_timeouts();
 
-  
-  if ($("#loader").is(':hidden')) {
-    // if previous extension was loaded save visibility of lists
-    lists_visibility[$('#fliptabs li.act').attr('id')] = $('.lists').is(':visible');
-  }
+    if ($("#loader").is(':hidden')) {
+        // if previous extension was loaded save visibility of lists
+        lists_visibility[$('#fliptabs li.act').attr('id')] = $('.lists').is(':visible');
+    }
     
 	$('#fliptabs li').removeClass('act');
 	$('#fliptabs li').addClass('norm');
@@ -99,10 +98,13 @@ function changeTab(target,path) {
       lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
       lists_write_annotations();
 	}
-        if (userID) {
+
+    if (userID) {
 	  $.cookie('ki_active_tab_target_'+userID, target);
 	  $.cookie('ki_active_tab_path_'+userID, path);
 	}
+
+    $.publish('tabs', [target, tabIdToExtensionId(target)]);
 }
 
 function kill_timeout(to) {
@@ -210,7 +212,7 @@ function setTimeframe(fromDate,toDate) {
     
     $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 }, 
         function(response) {
-            hook_timeframe_changed();
+            hook_timeframe_changed(timeframe);
         }
     );
     

@@ -1,7 +1,4 @@
-<!--     IMPORTANT NOTE:
-       Javascript or jQuery stuff that should run when your extension *has finished loading*  
-       should sit in an special onload function like this:
--->
+<?php /* Javascript that should run after your extension *has finished loading* must be in an "special" onload function */ ?>
 <script type="text/javascript">
     $(document).ready(function() {
         demo_ext_onload();
@@ -15,7 +12,6 @@
 </div>
 
 <div id="demo_timeframe">
-    When you change the timeframe it will be entered here ====> <span class="timeframe_target">__________</span> via jQuery. (only timeframe_in for the sake of this demonstration...) 
+    When you change the timeframe it will be entered here ====> <span class="timeframe_target">__________</span> via jQuery.
+    (just the value that was changed for the sake of this demonstration...)
 </div>
-
-

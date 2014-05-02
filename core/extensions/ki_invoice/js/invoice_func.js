@@ -42,10 +42,10 @@ function invoice_extension_tab_changed() {
     invoice_extension_resize();
 }
 
-function invoice_extension_timeframe_changed() {
+$.subscribe('timeframe', function(_, timeframe) {
     $.post(invoice_extension_path + "processor.php", { axAction: "reload_timespan" },
         function (data) {
             $("#invoice_timespan").html(data);
         }
     );
-}
+});
