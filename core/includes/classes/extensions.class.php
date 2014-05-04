@@ -55,7 +55,6 @@ class Extensions {
       $settings = parse_ini_file($dir.'config.ini');
                        	
      	// Check if user has the correct rank to use this extension
-        // FIXME extensions [2]
      	if (isset($this->kga['user'])) {
           if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $settings['EXTENSION_KEY'] . '-access'))
             continue;

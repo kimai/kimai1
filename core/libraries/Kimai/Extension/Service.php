@@ -21,10 +21,12 @@
 class Kimai_Extension_Service
 {
     protected $extensions = array();
+    protected $kga = null;
     protected $directory = null;
 
-    public function __construct($directory)
+    public function __construct($kga, $directory)
     {
+        $this->kga = $kga;
         $this->directory = $directory;
     }
 
@@ -84,19 +86,38 @@ class Kimai_Extension_Service
             $dirNames = $this->findExtensionsDirs($this->directory);
             foreach($dirNames as $name) {
                 try {
-                    $this->extensions[] = $this->loadExtension($this->directory, $name);
+                    $temp = $this->loadExtension($this->directory, $name);
+                    if (!$this->checkAccess($temp)) {
+                        continue;
+                    }
+                    $this->extensions[] = $temp;
                 } catch (Exception $ex) {
                     // FIXME add logger
                 }
-
-                usort($this->extensions, function($a, $b) {
-                    if ($a->getPosition() < $b->getPosition()) return -1;
-                    if ($a->getPosition() == $b->getPosition()) return 0;
-                    return 1;
-                });
             }
+
+            usort($this->extensions, function($a, $b) {
+                if ($a->getPosition() < $b->getPosition()) return -1;
+                if ($a->getPosition() == $b->getPosition()) return 0;
+                return 1;
+            });
         }
         return $this->extensions;
+    }
+
+    protected function checkAccess(Kimai_Extension_Extension $extension)
+    {
+        if (!isset($this->kga['user']) && !$extension->isCustomerAllowed()) {
+            return false;
+        }
+
+        $database = Kimai_Registry::getDatabase();
+        $permission = $extension->getPermission();
+        if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $permission)) {
+            return false;
+        }
+
+        return true;
     }
 
 } 

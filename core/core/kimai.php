@@ -39,7 +39,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extService = new Kimai_Extension_Service(WEBROOT.'/extensions/');
+$extService = new Kimai_Extension_Service($kga, WEBROOT.'/extensions/');
 $extensions = $extService->getAll();
 
 // ============================================
@@ -239,7 +239,6 @@ foreach($extensions as $extension)
     $entries[] = array(
         'key'       => $extension->getId(),
         'title'     => $view->escape($extension->getName()),
-        // FIXME extensions [2] add parameter for id
         'onclick'   => "changeTab(". ($i) . ", '".$extension->getInitFile()."');",
         'class'     => ($i == 0 ? 'act' : 'norm'),
         'tabId'     => $i,

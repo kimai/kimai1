@@ -66,8 +66,6 @@ function headerHeight() {
 //
 function changeTab(target,path) {
     
-    kill_reg_timeouts();
-
     if ($("#loader").is(':hidden')) {
         // if previous extension was loaded save visibility of lists
         lists_visibility[$('#fliptabs li.act').attr('id')] = $('.lists').is(':visible');
@@ -104,7 +102,7 @@ function changeTab(target,path) {
 	  $.cookie('ki_active_tab_path_'+userID, path);
 	}
 
-    $.publish('tabs', [target, tabIdToExtensionId(target)]);
+    $.publish('tabs', [tabIdToExtensionId(target), target]);
 }
 
 function kill_timeout(to) {
@@ -113,13 +111,31 @@ function kill_timeout(to) {
     eval(evalstring);
 }
 
-
 function showTools() {
   $('#main_tools_menu').fadeIn(fading_enabled?200:0);
 }
 
 function hideTools() {
   $('#main_tools_menu').fadeOut(fading_enabled?200:0);
+}
+
+function generic_extension_resize(extId, extHeaderId, extWrap) {
+    scroller_width = 17;
+    if (navigator.platform.substr(0, 3) == 'Mac') {
+        scroller_width = 16;
+    }
+
+    pagew = pageWidth() - 15;
+
+    $('#'+extHeaderId).css("width", pagew - 27);
+    $('#'+extHeaderId).css("top", headerHeight());
+    $('#'+extHeaderId).css("left", 10);
+
+    $('#'+extWrap).css("top", headerHeight() + 30);
+    $('#'+extWrap).css("left", 10);
+    $('#'+extWrap).css("width", pagew - 7);
+
+    $('#'+extId).css("height", pageHeight() - headerHeight() - 64);
 }
 
 

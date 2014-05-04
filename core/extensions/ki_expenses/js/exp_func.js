@@ -16,9 +16,43 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Javascript functions for the timesheet extension are defined here.
- */
+// ======================== Expenses init ========================
+
+// set path of extension
+var expense_extension_path = "../extensions/ki_expenses/";
+var expenses_total = '';
+
+var scroller_width;
+var drittel;
+var expenses_width;
+var expenses_height;
+
+var expense_timeframe_changed_hook_flag = 0;
+var expense_customers_changed_hook_flag = 0;
+var expense_projects_changed_hook_flag = 0;
+var expense_activities_changed_hook_flag = 0;
+
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'ki_expenses') {
+        expense_extension_resize();
+    }
+});
+
+$.subscribe('filter', function (_) {
+    expense_extension_reload();
+});
+
+$.subscribe('timeframe', function(_, timeframe) {
+    expense_extension_timeframe_changed();
+});
+
+$.subscribe('tabs', function (_, extensionId, tabId) {
+    if (extensionId == 'ki_expenses') {
+        expense_extension_triggerchange();
+    }
+});
+
+// ======================== Expenses functions ========================
 
 /**
  * Called when the extension loaded. Do some initial stuff.
@@ -176,25 +210,25 @@ function expense_extension_triggerCHE() {
 
 // ----------------------------------------------------------------------------------------
 // reloads timesheet, customer, project and activity tables
-//
+
 function expense_extension_reload() {
-            $.post(expense_extension_path + "processor.php", { axAction: "reload_exp", axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"), id: 0,
-                first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000 },
-                function(data) { 
-                    $("#expenses").html(data);
-                
-                    // set expenses table width
-                    ($("#expenses").innerHeight()-$("#expenses table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of exp table depending on scrollbar or not
-                    $("#expenses table").css("width",expenses_width-scr);
-                    // stretch refundable column in faked expenses table head
-                    $("#expenses_head > table > tbody > tr > td.refundable").css("width", $("div#expenses > div > table > tbody > tr > td.refundable").width());
-                    // stretch customer column in faked expenses table head
-                    $("#expenses_head > table > tbody > tr > td.customer").css("width", $("div#expenses > div > table > tbody > tr > td.customer").width());
-                    // stretch project column in faked expenses table head
-                    $("#expenses_head > table > tbody > tr > td.project").css("width", $("div#expenses > div > table > tbody > tr > td.project").width());
-                    expense_extension_applyHoverIntent();
-                }
-            );
+    $.post(expense_extension_path + "processor.php", { axAction: "reload_exp", axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"), id: 0,
+        first_day: new Date($('#pick_in').val()).getTime()/1000, last_day: new Date($('#pick_out').val()).getTime()/1000 },
+        function(data) {
+            $("#expenses").html(data);
+
+            // set expenses table width
+            ($("#expenses").innerHeight()-$("#expenses table").outerHeight() > 0 ) ? scr=0 : scr=scroller_width; // width of exp table depending on scrollbar or not
+            $("#expenses table").css("width",expenses_width-scr);
+            // stretch refundable column in faked expenses table head
+            $("#expenses_head > table > tbody > tr > td.refundable").css("width", $("div#expenses > div > table > tbody > tr > td.refundable").width());
+            // stretch customer column in faked expenses table head
+            $("#expenses_head > table > tbody > tr > td.customer").css("width", $("div#expenses > div > table > tbody > tr > td.customer").width());
+            // stretch project column in faked expenses table head
+            $("#expenses_head > table > tbody > tr > td.project").css("width", $("div#expenses > div > table > tbody > tr > td.project").width());
+            expense_extension_applyHoverIntent();
+        }
+    );
 }
 
 
@@ -237,7 +271,7 @@ function expense_editRecord(id) {
 // shows comment line for expense entry
 //
 function comment(id) {
-    $('#expenses_c'+id).toggle();
+    $('#expense_c'+id).toggle();
     return false;
 }
 // ----------------------------------------------------------------------------------------

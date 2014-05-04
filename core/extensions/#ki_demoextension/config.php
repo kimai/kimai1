@@ -15,11 +15,10 @@ return array(
     'position'      => 80,
     // stylesheets to include when kimai page is loading
     'stylesheets'   => array(
-        'css/demo.css.php'
+        'css/demo.css'
     ),
     // javascripts file to include when kimai page is loading
     'javascripts'   => array(
-        'js/init.js',
         'js/func.js'
     )
 );

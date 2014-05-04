@@ -1,7 +1,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,20 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+// =====================
+// budget extension init
+// =====================
+
+// set path of extension
+var budget_extension_path = "../extensions/ki_budget/";
+var budget_w;
+var budget_h;
+var chartColors;
+
+$(document).ready(function(){
+    $.jqplot.config.enablePlugins = true;
+});
+
 // ==========================
 // Budget extension functions
 // ==========================
@@ -25,7 +39,7 @@ function budget_extension_onload() {
     $("#loader").hide();
     lists_visible(true);
     try {
-    budget_extension_reload();
+        budget_extension_reload();
     } catch(e) {
     	alert(e);
     }
@@ -62,14 +76,44 @@ function budget_extension_get_dimensions() {
     budget_h = pageHeight()-198-headerHeight()-28;
 }
 
-//function budget_extension_get_dimensions() {
-//    budget_h = pageHeight()-224;//-headerHeight()-28;
-//}
-
 function budget_extension_resize() {
     budget_extension_set_heightTop();
 }
 
+function recalculateWindow() {
+    // adjust length of the elements if the legend is longer than the space allows
+    $('.project_overview').each(function() {
+        try {
+            var element = $(this).parent();
+            var numberOfElements = element.nextUntil('br').andSelf().length;
+            var numberOnLine = Math.floor(($(document).width()-45)/225);
+            var height = Math.ceil(numberOfElements / numberOnLine) * 270;
+            var br = element.nextAll('br').eq(0);
+            br.css('line-height', height+'px');
+            var addHeight = $(this).next().find('.jqplot-table-legend').height()-150;
+
+            if($(this).next().find('.jqplot-table-legend').height() > 150) {
+                var br = element.nextAll('br').eq(0);
+                br.css('line-height', parseInt(br.css('line-height'))+addHeight+'px');
+                element.nextUntil('br').andSelf().slice(0,numberOnLine).each( function() {
+                    // only add the height if it's not added already before (like if
+                    // we make the windows smaller and then bigger again, we need to
+                    // add the height so some of the charts)
+                    if($(this).height() < 250+addHeight) {
+                        $(this).height(($(this).height()+addHeight));
+                    }
+                });
+                // in case we make the window bigger and some "long" elements are on a new page
+                // and need the "normal" length
+                element.nextUntil('br').andSelf().slice(numberOnLine).each( function() {
+                    $(this).height(250);
+                });
+            }
+        } catch(err) {
+            alert(err);
+        }
+    });
+}
 
 function budget_extension_plot(plotdata) {
 	var target;
@@ -84,61 +128,59 @@ function budget_extension_plot(plotdata) {
             if ($('#'+target).length == 0) {
             	continue;
             }
-        var actualData = new Array();
-        // turn the object into an array, since the jqplot wants an array, eventhough it's considered bad practice
-        for( var index in plotdata[projectId][activityId]) {
-        	if(index == 'exceeded') {
-        		// here we could add some more highlighting, for example setting the background to a color
-//        		background = 'red';
-        		$('#'+target).parent().children('.budget').css('color', 'red');
-        	} else if(index == 'approved_exceeded') {
-        		// here we could add some more highlighting, for example setting the background to a color
-//        		if(background != 'red') {
-//        		background = 'yellow';
-        		$('#'+target).parent().children('.approved').css('color', 'red');
-//        		}
-        	} else if(index == 'approved' || index == 'budget_total' || index == 'billable_total' || index == 'approved_total' || index == 'total') {
-        		// do nothing, that just means we have not used up the approved budget or is a number
-        		// we use to display
-        		// but we don't want it in the chart anyways
-        	} else if (index == 'name') {
-                 // ignore
-                } else {
-        		if(background == false) {
-        		background = $('#'+target).css("background-color");
-        		}
-        	actualData.push(new Array(index, plotdata[projectId][activityId][index]));
-        	}
-        }
-        try {
-            $.jqplot(target,  [actualData], {              
-              seriesDefaults:{renderer:$.jqplot.PieRenderer,
-                  rendererOptions: {padding:10,
-                      showDataLabels: true,
-//                      // By default, data labels show the percentage of the donut/pie.
-//                      // You can show the data 'value' or data 'label' instead.
-                      dataLabels: 'value'
-                  }
-              },
-                  // Show the legend and put it outside the grid, but inside the
-                  // plot container, shrinking the grid to accomodate the legend.
-                  // A value of "outside" would not shrink the grid and allow
-                  // the legend to overflow the container.
-                  legend: {
-                      show: true,
-                      placement: 'outsideGrid'
+            var actualData = new Array();
+            // turn the object into an array, since the jqplot wants an array, eventhough it's considered bad practice
+            for( var index in plotdata[projectId][activityId]) {
+                if(index == 'exceeded') {
+                    // here we could add some more highlighting, for example setting the background to a color
+            		// background = 'red';
+                    $('#'+target).parent().children('.budget').css('color', 'red');
+                } else if(index == 'approved_exceeded') {
+                    // here we could add some more highlighting, for example setting the background to a color
+                    // if(background != 'red') {
+            		// background = 'yellow';
+                    $('#'+target).parent().children('.approved').css('color', 'red');
+            		// }
+                } else if(index == 'approved' || index == 'budget_total' || index == 'billable_total' || index == 'approved_total' || index == 'total') {
+                    // do nothing, that just means we have not used up the approved budget or is a number
+                    // we use to display
+                    // but we don't want it in the chart anyways
+                } else if (index == 'name') {
+                     // ignore
+                    } else {
+                    if(background == false) {
+                    background = $('#'+target).css("background-color");
+                    }
+                actualData.push(new Array(index, plotdata[projectId][activityId][index]));
+                }
+            }
+            try {
+                $.jqplot(target,  [actualData], {
+                  seriesDefaults:{renderer:$.jqplot.PieRenderer,
+                      rendererOptions: {padding:10,
+                          showDataLabels: true,
+                          // By default, data labels show the percentage of the donut/pie.
+                          // You can show the data 'value' or data 'label' instead.
+                          dataLabels: 'value'
+                      }
                   },
-              seriesColors:chartColors,
-              grid:{background: background, borderWidth:0, shadow:false}
-          });
+                      // Show the legend and put it outside the grid, but inside the
+                      // plot container, shrinking the grid to accomodate the legend.
+                      // A value of "outside" would not shrink the grid and allow
+                      // the legend to overflow the container.
+                      legend: {
+                          show: true,
+                          placement: 'outsideGrid'
+                      },
+                  seriesColors:chartColors,
+                  grid:{background: background, borderWidth:0, shadow:false}
+              });
+            }
+            catch (err) {
+                // probably no data, so remove the chart
+                $('#'+target).remove();
+            }
         }
-        catch (err) {
-        	// probably no data, so remove the chart
-        	$('#'+target).remove();
-//        	alert(err.toSource());
-        	
-        }
-    }
 	}
 }
 
@@ -149,7 +191,7 @@ function budget_extension_reload() {
 	$.ajax({
 		dataType: "html",
 		url: budget_extension_path+'processor.php',
-    type: 'POST',
+        type: 'POST',
 		data: {
 			axAction: "reload",
 			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"),
@@ -158,9 +200,22 @@ function budget_extension_reload() {
 		},
 		success: function( data ) {
             $('#budgetArea').html(data);
-			},
+        },
 		error: function(error) {
 				alert(error);
-			}
+		}
 	});
 }
+
+// ----------------------------------------------------------------------------------------
+
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'ki_budget') {
+        budget_extension_resize();
+        recalculateWindow();
+    }
+});
+
+$.subscribe('filter', function (_) {
+    budget_extension_reload();
+});

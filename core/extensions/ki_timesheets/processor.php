@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,8 @@
 // = TS PROCESSOR =
 // ================
 
-// insert KSPI
-$isCoreProcessor = 0;
-$dir_templates = "templates/";
 require("../../includes/kspi.php");
+$view->addBasePath(dirname(__FILE__).'/templates/');
 
 function timesheetAccessAllowed($entry, $action, &$errors) {
   global $database, $kga;
@@ -34,12 +32,10 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
     return false;
   }
 
-
   if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit']) {
     $errors[''] = $kga['lang']['editLimitError'];
     return;
   }
-
 
   $groups = $database->getGroupMemberships($entry['userID']);
 
@@ -65,7 +61,6 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
-
   }
 
   $permissionName = 'ki_timesheets-otherEntry-otherGroup-' . $action;
@@ -109,7 +104,6 @@ switch ($axAction) {
           $userData['lastProject'] = $timeSheetEntry['projectID'];
           $userData['lastActivity'] = $timeSheetEntry['activityID'];
           $database->user_edit($kga['user']['userID'], $userData);
-
 
           $project = $database->project_get_data($timeSheetEntry['projectID']);
           $customer = $database->customer_get_data($project['customerID']);
@@ -182,8 +176,7 @@ switch ($axAction) {
         }
               
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-          'errors' => $errors));
+        echo json_encode(array('errors' => $errors));
     break;
 
     // ==================================================
@@ -452,7 +445,6 @@ switch ($axAction) {
       $data['approved']       = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
       $data['userID']         = $_REQUEST['userID'];
 
-
       // check if the posted time values are possible
 
       $validateDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy'));
@@ -554,5 +546,3 @@ switch ($axAction) {
     break;
 
 }
-
-?>

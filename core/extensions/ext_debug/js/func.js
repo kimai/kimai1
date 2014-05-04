@@ -1,7 +1,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +16,28 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-function deb_ext_onload() {
-    
+// set path of extension
+var deb_ext_path = "../extensions/ext_debug/";
+var deb_ext_refreshTimer = null;
+
+// resize the extension when requested
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'deb_ext') {
+        deb_ext_resize();
+    }
+});
+
+$.subscribe('tabs', function (_, extensionId, tabId) {
+    if (extensionId == 'deb_ext') {
+        deb_ext_ui_init();
+    } else {
+        clearTimeout(deb_ext_refreshTimer);
+        deb_ext_refreshTimer = null;
+    }
+});
+
+function deb_ext_onload()
+{
     // thx to joern zaefferer! ;) - www.bassistance.de -
     $("#deb_ext_shoutbox_field").focus(function() {
     	if( this.value == this.defaultValue ) {
@@ -32,16 +52,23 @@ function deb_ext_onload() {
     $('#deb_ext_shoutbox').ajaxForm(function() { 
         $('#deb_ext_shoutbox_field').val('');
     });
-    
-    deb_ext_reloadLogfileLoop();
 
-    deb_ext_resize();
-    $("#loader").hide(); 
-    
+    deb_ext_ui_init();
+
+    $("#loader").hide();
 }
 
-function deb_ext_resize() {
+function deb_ext_ui_init()
+{
+    if (deb_ext_refreshTimer == null) {
+        deb_ext_reloadLogfileLoop();
+    }
 
+    deb_ext_resize();
+}
+
+function deb_ext_resize()
+{
 	scroller_width = 17;
 	if (navigator.platform.substr(0,3)=='Mac') {
 	    scroller_width = 16;
@@ -67,15 +94,10 @@ function deb_ext_resize() {
     $("#deb_ext_logfile_wrap").css("left", halb+5);
     $("#deb_ext_logfile_wrap").css("width", halb+5);
     $("#deb_ext_logfile").css("height", pageHeight()-headerHeight()-64);
-
-}
-
-function debug_extension_tab_changed() {
-    deb_ext_reloadLogfileLoop();
 }
 
 function deb_ext_reloadLogfileLoop() {
-    deb_ext_refreshTimer = setTimeout(deb_ext_reloadLogfileLoop, 2000);
+    deb_ext_refreshTimer = setTimeout(deb_ext_reloadLogfileLoop, 1000);
     deb_ext_reloadLogfileOnce();
 }
 
@@ -95,10 +117,6 @@ function deb_ext_reloadKGA() {
     });
 }
 
-function deb_ext_clearTimeout() {
-    clearTimeout(deb_ext_refreshTimer);
-}
-
 function deb_ext_clearLogfile() {
     $('a').blur();
     $.post(deb_ext_path + "processor.php", { axAction: "clearLogfile", axValue: 0, id: 0 }, 
@@ -106,4 +124,3 @@ function deb_ext_clearLogfile() {
         $("#deb_ext_logfile").html(data);
     });
 }
-

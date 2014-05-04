@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,21 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // ==================================
 // = implementing standard includes =
 // ==================================
 include('../../includes/basics.php');
-
-$dir_templates = "templates/";
-$datasrc = "config.ini";
-$settings = parse_ini_file($datasrc);
-$dir_ext = $settings['EXTENSION_DIR'];
-
-$user = checkUser();
+checkUser();
 
 $view = new Kimai_View();
-$view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addBasePath(dirname(__FILE__).'/templates/');
 
 $view->kga = $kga;
 

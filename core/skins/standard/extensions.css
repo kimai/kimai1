@@ -1,0 +1,25 @@
+
+.kimai_extension_wrap {
+    border:1px solid #000;
+    border-top:none;
+    position:absolute;
+    overflow:hidden;
+    margin:0;
+}
+
+.kimai_extension_body {
+    padding:10px;
+    background-color: #eee;
+    color:#000;
+    overflow:auto;
+}
+
+.kimai_extension_header {
+    background-image: url('grfx/g3_table_header.png');
+    border:1px solid #000;
+    color:#fff;
+    padding:5px 10px;
+    height:20px;
+    overflow:hidden;
+    position:absolute;
+}

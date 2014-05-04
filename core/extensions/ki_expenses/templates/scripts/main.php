@@ -1,8 +1,8 @@
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            expense_extension_onload();
-        }); 
-    </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        expense_extension_onload();
+    });
+</script>
 <?php
 $addRecord = '';
 if (isset($this->kga['user'])) {

@@ -10,9 +10,6 @@ return array(
         'css/styles.css'
     ),
     'javascripts'   => array(
-        'js/budget_func.js',
-        'js/budget_init.js'
+        'js/budget_func.js'
     )
-    // FIXME extensions [2]
-    // LIST_FILTER_TRIGGER      = "budget_extension_reload();"
 );

@@ -110,6 +110,10 @@ $(document).ready(function() {
       }
     }
 
+    $(window).bind('resize', function() {
+        hook_resize();
+    });
+
 });
 
 

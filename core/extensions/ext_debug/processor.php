@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,7 @@
 // = DEBUG PROCESSOR =
 // ===================
 
-// insert KSPI
-$isCoreProcessor = 0;
-$dir_templates = "templates/";
 require("../../includes/kspi.php");
-
-
 
 switch ($axAction) {
     
@@ -91,10 +86,8 @@ switch ($axAction) {
      * information if not configured otherwise.
      */
     case "reloadKGA":    
-    // read kga --------------------------------------- 
         $output = $kga;
         // clean out some data that is way too private to be shown in the frontend ...
-
         if (!$kga['show_sensible_data']) {
             $output['server_hostname'] = "xxx";
             $output['server_database'] = "xxx";
@@ -107,8 +100,5 @@ switch ($axAction) {
         echo"<pre>";
         print_r($output);
         echo"</pre>";
-    // /read kga --------------------------------------
     break;
 }
-
-?>

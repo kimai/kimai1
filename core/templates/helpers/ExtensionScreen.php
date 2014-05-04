@@ -49,15 +49,24 @@ class Zend_View_Helper_ExtensionScreen extends Zend_View_Helper_Abstract
         $title  = isset($options['title']) ? $options['title'] : '';
         $id     = isset($options['id']) ? $options['id'] : '';
         $level  = isset($options['level']) ? $options['level'] : array();
+        $styles = isset($options['styles']) ? $options['styles'] : array();
 
         $html = '
-            <div id="'.$id.'">
+            <div id="'.$id.'" class="kimai_extension_header">
                 '.$pre.' <strong>'.$title.'</strong> '.$post.'
             </div>
         ';
 
+        $i = 0;
         foreach($level as $lvl) {
-            $html .= '<div id="'.$lvl.'">';
+            if ($styles && $i == 0) {
+                $html .= '<div id="'.$lvl.'" class="kimai_extension_wrap">';
+            } else if ($styles && $i == 1) {
+                $html .= '<div id="'.$lvl.'" class="kimai_extension_body">';
+            } else {
+                $html .= '<div id="'.$lvl.'">';
+            }
+            $i++;
         }
 
         return $html;

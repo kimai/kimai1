@@ -77,3 +77,9 @@
 .key_end {
   clear:both;
 }
+
+table.jqplot-table-legend {
+    width: 68px;
+    min-width: 70px;
+    max-width: 70px;
+}

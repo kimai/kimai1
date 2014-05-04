@@ -43,7 +43,7 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
 
     public function __toString()
     {
-        $html = '';
+        $html = '<ul class="nav navbar-nav" id="fliptabs">';
 
         foreach($this->getEntries() as $entry)
         {
@@ -53,13 +53,15 @@ class Zend_View_Helper_Flat_Menu extends Zend_View_Helper_Menu
             }
 
             $html .= '
-                        <li id="'.$entry['id'].'">
+                        <li id="'.$entry['id'].'" data-id="'.$entry['key'].'">
                             <a href="javascript:void(0);" onclick="' . $entry['onclick'] . '">
                                 <i class="fa fa-'.$icon.'"></i>
                                 <span>' . $entry['title'] . '</span>
                             </a>
                         </li>';
         }
+
+        $html .= '</ul>';
 
         return $html;
     }

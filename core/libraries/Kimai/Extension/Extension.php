@@ -83,4 +83,7 @@ class Kimai_Extension_Extension
         return $this->getDefault('customer', false);
     }
 
+    public function getPermission() {
+        return $this->getDefault('permission', null);
+    }
 }

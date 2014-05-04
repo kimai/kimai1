@@ -54,7 +54,7 @@
 
 <script type="text/javascript">
     var skin ="<?php echo $this->escape($this->kga['conf']['skin']); ?>";
-
+    var resizeTimer           = null;
     var lang_checkUsername    = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
     var lang_checkGroupname   = "<?php echo $this->escape($this->kga['lang']['checkGroupname']); ?>";
     var lang_checkStatusname  = "<?php echo $this->escape($this->kga['lang']['checkStatusname']); ?>";
@@ -120,13 +120,12 @@
     });
 
     // internal function, do NOT rely on it in your in code
-    function tabIdToExtensionId(tabId)
-    {
-        var tabs = [];
-        <?php foreach($this->main_navigation as $entry) { ?>
-        tabs[<?php echo $entry['tabId']; ?>] = "<?php echo $entry['key']; ?>";
-        <?php } ?>
-        return tabs[tabId];
+    function tabIdToExtensionId(tabId) {
+        return $('#exttab_'+tabId).data('id');
+    }
+
+    function getActiveTabId() {
+        return $('#fliptabs li.act').data('id');
     }
 
     // HOOKS
@@ -138,8 +137,11 @@
     function hook_projects_changed(){ lists_reload("project"); $.publish('projects'); }
     function hook_activities_changed(){ lists_reload("activity"); $.publish('activities'); }
     function hook_filter(){ $.publish('filter'); }
-    function hook_resize(){ $.publish('resize'); }
-    function kill_reg_timeouts(){ $.publish('timeouts'); }
+    function hook_resize(){
+        // using timeout prevents the resizing being triggered to often
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function(){ $.publish('resize', [getActiveTabId()]); }, 100);
+    }
     function kimai_onload() {
         $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
         $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');

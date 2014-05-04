@@ -16,12 +16,28 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+/****************************************************************************************************
+ *
+ *      IMPORTANT NOTE:
+ *
+ *      If you like a function to run when your extension is loaded into the extension-frame
+ *      you CAN'T use the methods you'd normally use when the dom is ready build! So something like:
+ *
+ *      $(document).ready(function(){
+ *        [do something stupid...]
+ *      });
+ *
+ *      ... won't work here!
+ *
+ *     This is because the dom is already finished loading BEFORE the extensions are hooked in.
+ *     When you want JavaScript or jQuery to do something when your extension is loaded into its
+ *     place in the *existing* DOM, you have to put a function-call *into* the content you load.
+ *     You can also use the jQuery ready-function there!
+ *
+ ****************************************************************************************************/
+
 var background  = new Array("#000000","#FFFF00","#76EE00","#CD3333","#B23AEE","#CDBE70");
 var text        = new Array("#FFFFFF","#000000","#000000","#FFFFFF","#FFFFFF","#000000");
-
-// FIXME extensions - search for these configs
-// TAB_CHANGE_TRIGGER, TIMEFRAME_CHANGE_TRIGGER, BUZZER_RECORD_TRIGGER, REG_TIMEOUTS
-// BUZZER_STOP_TRIGGER, CHANGE_CUSTOMER_TRIGGER, CHANGE_PROJECT_TRIGGER, CHANGE_ACTIVITY_TRIGGER
 
 // gets called when any tab was clicked, regardless if the tab is already active or not
 $.subscribe('tabs', createDemoLogger('tab'));
@@ -53,23 +69,33 @@ $.subscribe('onload', createDemoLogger('onload'));
 // Some demo implementations of the actions
 // ============================================================================================================
 
+// tab was changed
 $.subscribe('tabs', function (_, extensionId, tabId) {
     // this will be logged no matter which tab was activated ...
-    $("#testdiv").append(" This has been put here on change to tab ["+tabId+" / "+extensionId+"] .");
+    $("#testdiv").append(" This has been put here on change to tab ["+tabId+": "+extensionId+"] .");
     // ... but in most cases you want to check for the extensionId and only run code if its your own
     if (extensionId == 'demo_ext') {
+        demo_ext_resize();
         var target = Math.round(Math.random()*background.length);
         $("#testdiv").css("color",text[target]);
         $("#testdiv").css("background-color",background[target]);
     }
 });
 
+// display changed timeframe
 $.subscribe('timeframe', function (_, a) {
     var timespan = a.split("|");
     if (timespan[0] == '0-0-0') {
         $('#demo_timeframe > span.timeframe_target').html(timespan[1]);
     } else {
         $('#demo_timeframe > span.timeframe_target').html(timespan[0]);
+    }
+});
+
+// resize the extension when requested
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'demo_ext') {
+        demo_ext_resize();
     }
 });
 
@@ -80,6 +106,11 @@ function createDemoLogger(name) {
     };
 }
 
+function demo_ext_resize() {
+    generic_extension_resize('demo_extension', 'demo_extension_header', 'demo_extension_wrap');
+}
+
 function demo_ext_onload() {
+    demo_ext_resize();
     $("#loader").hide();
 }

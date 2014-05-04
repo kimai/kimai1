@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,10 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
-$isCoreProcessor = 0;
-$dir_templates = "templates/";
 require("../../includes/kspi.php");
+$view->addBasePath(dirname(__FILE__).'/templates/');
 
-include('private_db_layer_'.$kga['server_conn'].'.php');
+include('private_db_layer_mysql.php');
 
 switch ($axAction)
 {
