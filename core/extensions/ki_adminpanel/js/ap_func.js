@@ -1,7 +1,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +16,48 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
- // ===========
- // ADMIN PANEL
- // ===========
+// ================================= ADMIN PANEL INITIALIZATION =================================
+
+// set path of extension
+var adminPanel_extension_path = "../extensions/ki_adminpanel/";
+
+var adminPanel_customers_changed_hook_flag = 0;
+var adminPanel_projects_changed_hook_flag = 0;
+var adminPanel_activities_changed_hook_flag = 0;
+var adminPanel_users_changed_hook_flag = 0;
+
+$(document).ready(function(){
+    var adminPanel_extension_resizeTimer = null;
+
+    $(window).bind('resize', function() {
+        if (adminPanel_extension_resizeTimer) clearTimeout(adminPanel_extension_resizeTimer);
+        adminPanel_extension_resizeTimer = setTimeout(adminPanel_extension_resize, 500);
+    });
+});
+
+$.subscribe('tabs', function (_, extensionId, tabId) {
+    if (extensionId == 'adminPanel_extension') {
+        adminPanel_extension_tab_changed();
+    }
+});
+
+$.subscribe('users', function (_) {
+    adminPanel_extension_users_changed();
+});
+
+$.subscribe('customers', function (_) {
+    adminPanel_extension_customers_changed();
+});
+
+$.subscribe('projects', function (_) {
+    adminPanel_extension_projects_changed();
+});
+
+$.subscribe('activities', function (_) {
+    adminPanel_extension_activities_changed();
+});
+
+// ================================= ADMIN PANEL FUNCTIONS =================================
 
 function adminPanel_extension_onload() {
     adminPanel_extension_resize();  
@@ -27,7 +66,6 @@ function adminPanel_extension_onload() {
 }
 
 function adminPanel_extension_resize() {
-
 	scroller_width = 14;
 	if (navigator.platform.substr(0,3)=='Mac') {
 	    scroller_width = 16;
@@ -61,10 +99,10 @@ function adminPanel_extension_subtab_expand(id) {
 	$("#adminPanel_extension_sub4").removeClass("active");
 	$("#adminPanel_extension_sub5").removeClass("active");
 	$("#adminPanel_extension_sub6").removeClass("active");
-        $("#adminPanel_extension_sub7").removeClass("active");
-        $("#adminPanel_extension_sub8").removeClass("active");
-        $("#adminPanel_extension_sub9").removeClass("active");
-        $("#adminPanel_extension_sub10").removeClass("active");
+    $("#adminPanel_extension_sub7").removeClass("active");
+    $("#adminPanel_extension_sub8").removeClass("active");
+    $("#adminPanel_extension_sub9").removeClass("active");
+    $("#adminPanel_extension_sub10").removeClass("active");
 	$(".adminPanel_extension_subtab").css("display", "none");	
 	
 	sub_id="#adminPanel_extension_sub" +id;
@@ -89,11 +127,9 @@ function adminPanel_extension_subtab_autoexpand() {
     }
 }
 
-
-
-// ------------------------------------------------------
-
-
+/**
+ * triggered when administration is shown
+ */
 function adminPanel_extension_tab_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('customers');
@@ -109,10 +145,10 @@ function adminPanel_extension_tab_changed() {
         adminPanel_extension_projects_changed();
     }
     if (adminPanel_activities_changed_hook_flag) {
-        dminPanel_extension_activities_changed();
+        adminPanel_extension_activities_changed();
     }
     if (adminPanel_users_changed_hook_flag) {
-        dminPanel_extension_users_changed();
+        adminPanel_extension_users_changed();
     }
     
     adminPanel_customers_changed_hook_flag = 0;
@@ -138,7 +174,7 @@ function adminPanel_extension_projects_changed() {
     }
 }
 
-function dminPanel_extension_activities_changed() {
+function adminPanel_extension_activities_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('activities');
     } else {
@@ -146,7 +182,7 @@ function dminPanel_extension_activities_changed() {
     }
 }
 
-function dminPanel_extension_users_changed() {
+function adminPanel_extension_users_changed() {
     if ($('.adminPanel_extension').css('display') == "block") {
         adminPanel_extension_refreshSubtab('users');
     } else {
@@ -154,15 +190,10 @@ function dminPanel_extension_users_changed() {
     }
 }
 
-// ------------------------------------------------------
-
-
-
-
-// ----------------------------------------------------------------------------------------
-// graps the value of the newUser input field 
-// and ajaxes it to the createUser function of the processor
-//
+/**
+ * Grabs the value of the newUser input field
+ * and ajaxes it to the createUser function of the processor
+ */
 function adminPanel_extension_newUser() {
     newuser = $("#newuser").val();
     if (newuser == "") {
@@ -195,11 +226,9 @@ function adminPanel_extension_hideDeletedUsers() {
     });
 }
 
-
-// ----------------------------------------------------------------------------------------
-// graps the value of the newGroup input field 
-// and ajaxes it to the createGroup function of the processor
-//
+/**
+ * Grabs the value of the newGroup input field and ajaxes it to the createGroup function of the processor
+ */
 function adminPanel_extension_newGroup() {
     newgroup = $("#newgroup").val();
     if (newgroup == "") {
@@ -212,10 +241,9 @@ function adminPanel_extension_newGroup() {
     });
 }
 
-//----------------------------------------------------------------------------------------
-//graps the value of the newGroup input field 
-//and ajaxes it to the createGroup function of the processor
-//
+/**
+ * Grabs the value of the newGroup input field and ajaxes it to the createGroup function of the processor
+ */
 function adminPanel_extension_newStatus() {
  newstatus = $("#newstatus").val();
  if (newstatus == "") {
@@ -228,10 +256,10 @@ function adminPanel_extension_newStatus() {
  });
 }
 
-//----------------------------------------------------------------------------------------
-//graps the value of the newGlobalRole input field 
-//and ajaxes it to the createGlobalRole function of the processor
-//
+/**
+ * Grabs the value of the newGlobalRole input field
+ * and ajaxes it to the createGlobalRole function of the processor
+ */
 function adminPanel_extension_newGlobalRole() {
  newGlobalRole = $("#newGlobalRole").val();
  if (newGlobalRole == "") {

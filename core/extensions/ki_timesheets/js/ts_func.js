@@ -1,7 +1,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,72 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+// ========================
+// TIMESHEET INITIALIZATION
+// ========================
+
+// set path of extension
+var ts_ext_path = "../extensions/ki_timesheets/";
+var ts_total = '';
+
+var scroller_width;
+var drittel;
+var timeSheet_width;
+var timeSheet_height;
+
+var timesheet_timeframe_changed_hook_flag = 0;
+var timesheet_customers_changed_hook_flag = 0;
+var timesheet_projects_changed_hook_flag = 0;
+var timesheet_activities_changed_hook_flag = 0;
+
+var ts_dayFormatExp = new RegExp("^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})$");
+var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2})?(:[0-9]{1,2})?$");
+
+$(document).ready(function(){
+    var ts_resizeTimer = null;
+    $(window).bind('resize', function() {
+        if (ts_resizeTimer) clearTimeout(ts_resizeTimer);
+        ts_resizeTimer = setTimeout(ts_ext_resize, 500);
+    });
+});
+
+$.subscribe('tabs', function (_, extensionId, tabId) {
+    if (extensionId == 'ki_timesheet') {
+        timesheet_extension_tab_changed();
+    }
+});
+
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'ki_timesheet') {
+        ts_ext_resize();
+    }
+});
+
+$.subscribe('filter', function (_) {
+    ts_ext_reload();
+});
+
+$.subscribe('customers', function (_) {
+    timesheet_extension_customers_changed();
+});
+
+$.subscribe('projects', function (_) {
+    timesheet_extension_projects_changed();
+});
+
+$.subscribe('activities', function (_) {
+    timesheet_extension_activities_changed();
+});
+
+
 /**
  * Javascript functions used in the timesheet extension.
  */
 
+
 /**
  * Called when the extension loaded. Do some initial stuff.
  */
-
 function ts_ext_onload() {
     ts_ext_applyHoverIntent();
     ts_ext_resize();
@@ -289,7 +347,7 @@ function ts_ext_recordAgain(project,activity,id) {
         function(data) {
           if (data.errors.length > 0)
             return;
-          
+
           customerName = data.customerName;
           projectName = data.projectName;
           activityName = data.activityName;
