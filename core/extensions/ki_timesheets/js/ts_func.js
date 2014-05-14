@@ -287,7 +287,8 @@ function ts_ext_recordAgain(project,activity,id) {
         function(data) {
           if (data.errors.length > 0)
             return;
-          
+
+          customer = data.customer;
           customerName = data.customerName;
           projectName = data.projectName;
           activityName = data.activityName;
