@@ -35,7 +35,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
   }
 
 
-  if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit']) {
+  if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit'] && $entry['end']!= 0) {
     $errors[''] = $kga['lang']['editLimitError'];
     return;
   }
