@@ -1153,6 +1153,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $values ['globalRoleID'] = MySQL::SQLValue($data['globalRoleID']    , MySQL::SQLVALUE_NUMBER);
       $values ['active'] = MySQL::SQLValue($data['active'], MySQL::SQLVALUE_NUMBER);
 
+      // 'mail' and 'password' are just set when actually provided because of compatibility reasons
+      if (array_key_exists('mail', $data)) {
+          $values['mail'] = MySQL::SQLValue($data['mail']);
+      }
+
+      if (array_key_exists('password', $data)) {
+          $values['password'] = MySQL::SQLValue($data['password']);
+      }
+
       $table  = $this->kga['server_prefix']."users";
       $result = $this->conn->InsertRow($table, $values);
 
