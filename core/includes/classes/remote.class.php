@@ -362,7 +362,7 @@ class Kimai_Remote_Api
         if (count($customers) > 0) {
 			$results = array();
 			foreach ($customers as $row) {
-				$results[] = array('customerID' => $row['customerID'], 'name' => $row['name']);
+				$results[] = array('customerID' => $row['customerID'], 'name' => $row['name'],  'visible' => $row['visible']);
 			}
 			return $this->getSuccessResult($results);
         }
