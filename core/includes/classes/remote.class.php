@@ -394,6 +394,38 @@ class Kimai_Remote_Api
 		}
 
         if (count($projects) > 0) {
+
+            $tempProjects = array();
+            foreach($projects as $project) {
+                $tasks = array();
+
+                // @FIXME
+                if (isset($kga['customer'])) {
+                    $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
+                } else if ($project['projectID'] !== null) {
+                    $tasks = $this->getBackend()->get_activities_by_project($project['projectID'], $user['groups']);
+                    $tempTasks = array();
+                    foreach ($tasks as $task)
+                    {
+                        $tempTasks[] = array(
+                            'activityID'       => $task['activityID'],
+                            'name'     => $task['name'],
+                            'visible'  => $task['visible'],
+                            'budget'   => $task['budget'],
+                            'approved' => $task['approved'],
+                            'effort'   => $task['effort']
+                        );
+                    }
+                    $tasks = $tempTasks;
+                } else {
+                    $tasks = $this->getBackend()->get_activities($user['groups']);
+                }
+
+                $project['tasks'] = $tasks;
+                $tempProjects[] = $project;
+            }
+            $projects = $tempProjects;
+
 			return $this->getSuccessResult($projects);
         }
 
