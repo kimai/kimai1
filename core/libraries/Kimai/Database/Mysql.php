@@ -3173,7 +3173,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $values ['activityID'] = $activityID;
       $values ['start']    = $startTime;
       $values ['userID'] = $user;
-      $values ['statusID'] = $kga['conf']['defaultStatusID'];
+      $values ['statusID'] = $this->kga['conf']['defaultStatusID'];
       $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
       if ($rate)
         $values ['rate'] = $rate;
