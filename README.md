@@ -24,5 +24,5 @@ We would love to get input from all developer out there:
 5. Create an [Pull Request][2] with a link to your branch
 6. Now enjoy the sunshine while we review your changes
 
-[1]: https://github.com/kimai/kimai/pulls
-[2]: https://github.com/kimai
+[1]: https://github.com/kimai
+[2]: https://github.com/kimai/kimai/pulls
