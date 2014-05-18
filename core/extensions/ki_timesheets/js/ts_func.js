@@ -1,7 +1,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team
+ * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -340,6 +340,7 @@ function ts_ext_recordAgain(project,activity,id) {
           if (data.errors.length > 0)
             return;
 
+          customer = data.customer;
           customerName = data.customerName;
           projectName = data.projectName;
           activityName = data.activityName;

@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team
+ * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
     return false;
   }
 
-  if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit']) {
+  if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit'] && $entry['end']!= 0) {
     $errors[''] = $kga['lang']['editLimitError'];
     return;
   }

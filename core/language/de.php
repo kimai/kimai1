@@ -48,7 +48,7 @@ return array(
     "breiteZeitspalte" => "Breite Zeitspalte",
     "breiteUhrspalte" => "Breite Uhrspalte",
     "breiteDatumspalte" => "Breite Datumspalte",
-    "recommended" => "Empfohl4en",
+    "recommended" => "Empfohlen",
     "submit" => "OK",
     "cancel" => "Abbrechen",
     "edit" => "Eintrag bearbeiten",
