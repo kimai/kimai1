@@ -70,11 +70,11 @@ $.subscribe('onload', createDemoLogger('onload'));
 // ============================================================================================================
 
 // tab was changed
-$.subscribe('tabs', function (_, extensionId, tabId) {
+$.subscribe('tabs', function (_, activeTab, tabId) {
     // this will be logged no matter which tab was activated ...
-    $("#testdiv").append(" This has been put here on change to tab ["+tabId+": "+extensionId+"] .");
+    $("#testdiv").append(" This has been put here on change to tab ["+tabId+": "+activeTab+"] .");
     // ... but in most cases you want to check for the extensionId and only run code if its your own
-    if (extensionId == 'demo_ext') {
+    if (activeTab == 'demo_ext') {
         demo_ext_resize();
         var target = Math.round(Math.random()*background.length);
         $("#testdiv").css("color",text[target]);
@@ -83,8 +83,8 @@ $.subscribe('tabs', function (_, extensionId, tabId) {
 });
 
 // display changed timeframe
-$.subscribe('timeframe', function (_, a) {
-    var timespan = a.split("|");
+$.subscribe('timeframe', function (_, timeframe) {
+    var timespan = timeframe.split("|");
     if (timespan[0] == '0-0-0') {
         $('#demo_timeframe > span.timeframe_target').html(timespan[1]);
     } else {

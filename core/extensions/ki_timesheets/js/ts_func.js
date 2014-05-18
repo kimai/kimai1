@@ -37,16 +37,8 @@ var timesheet_activities_changed_hook_flag = 0;
 var ts_dayFormatExp = new RegExp("^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})$");
 var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2})?(:[0-9]{1,2})?$");
 
-$(document).ready(function(){
-    var ts_resizeTimer = null;
-    $(window).bind('resize', function() {
-        if (ts_resizeTimer) clearTimeout(ts_resizeTimer);
-        ts_resizeTimer = setTimeout(ts_ext_resize, 500);
-    });
-});
-
-$.subscribe('tabs', function (_, extensionId, tabId) {
-    if (extensionId == 'ki_timesheet') {
+$.subscribe('tabs', function (_, activeTab, tabId) {
+    if (activeTab == 'ki_timesheet') {
         timesheet_extension_tab_changed();
     }
 });

@@ -27,8 +27,8 @@ $.subscribe('resize', function (_, activeTab) {
     }
 });
 
-$.subscribe('tabs', function (_, extensionId, tabId) {
-    if (extensionId == 'deb_ext') {
+$.subscribe('tabs', function (_, activeTab, tabId) {
+    if (activeTab == 'deb_ext') {
         deb_ext_ui_init();
     } else {
         clearTimeout(deb_ext_refreshTimer);

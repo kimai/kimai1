@@ -46,8 +46,8 @@ $.subscribe('timeframe', function(_, timeframe) {
     expense_extension_timeframe_changed();
 });
 
-$.subscribe('tabs', function (_, extensionId, tabId) {
-    if (extensionId == 'ki_expenses') {
+$.subscribe('tabs', function (_, activeTab, tabId) {
+    if (activeTab == 'ki_expenses') {
         expense_extension_triggerchange();
     }
 });

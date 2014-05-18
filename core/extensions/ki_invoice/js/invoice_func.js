@@ -56,8 +56,8 @@
             }
         });
 
-        $.subscribe('tabs', function (_, extensionId, tabId) {
-            if (extensionId == 'ki_invoice') {
+        $.subscribe('tabs', function (_, activeTab, tabId) {
+            if (activeTab == 'ki_invoice') {
                 invoice_extension_resize();
             }
         });

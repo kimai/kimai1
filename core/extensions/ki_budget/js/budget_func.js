@@ -30,6 +30,19 @@ $(document).ready(function(){
     $.jqplot.config.enablePlugins = true;
 });
 
+
+$.subscribe('resize', function (_, activeTab) {
+    if (activeTab == 'ki_budget') {
+        budget_extension_resize();
+        recalculateWindow();
+    }
+});
+
+$.subscribe('filter', function (_) {
+    budget_extension_reload();
+});
+
+
 // ==========================
 // Budget extension functions
 // ==========================
@@ -206,16 +219,3 @@ function budget_extension_reload() {
 		}
 	});
 }
-
-// ----------------------------------------------------------------------------------------
-
-$.subscribe('resize', function (_, activeTab) {
-    if (activeTab == 'ki_budget') {
-        budget_extension_resize();
-        recalculateWindow();
-    }
-});
-
-$.subscribe('filter', function (_) {
-    budget_extension_reload();
-});
