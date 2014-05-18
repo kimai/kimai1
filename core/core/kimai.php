@@ -39,8 +39,8 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extensions = new Extensions($kga, WEBROOT.'/extensions/');
-$extensions->loadConfigurations();
+$extService = new Kimai_Extension_Service($kga, WEBROOT.'/extensions/');
+$extensions = $extService->getAll();
 
 // ============================================
 // = initialize currently displayed timeframe =
@@ -108,8 +108,6 @@ $kga['lang']['months'][0],$kga['lang']['months'][1],$kga['lang']['months'][2],$k
 
 $view->months_short_array = sprintf("['%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s']", $kga['lang']['months_short'][0],$kga['lang']['months_short'][1],$kga['lang']['months_short'][2],$kga['lang']['months_short'][3],$kga['lang']['months_short'][4],$kga['lang']['months_short'][5],$kga['lang']['months_short'][6],$kga['lang']['months_short'][7],$kga['lang']['months_short'][8],$kga['lang']['months_short'][9],$kga['lang']['months_short'][10],$kga['lang']['months_short'][11]);
 
-
-
 // ==============================
 // = assign smarty placeholders =
 // ==============================
@@ -124,9 +122,7 @@ $view->timeframe_out = $out;
 
 $view->kga = $kga;
                        
-$view->extensions = $extensions->extensionsTabData();
-$view->css_extension_files = $extensions->cssExtensionFiles();
-$view->js_extension_files = $extensions->jsExtensionFiles();
+$view->extensions = $extensions;
 
 $view->currentRecording = -1;
 
@@ -164,11 +160,9 @@ $view->customerData = $customerData;
 $view->projectData  = $projectData;
 $view->activityData = $activityData;
 
-// =========================================
-// = INCLUDE EXTENSION PHP FILE            =
-// =========================================
-foreach ($extensions->phpIncludeFiles() as $includeFile) {
-  require_once($includeFile);
+/* @var $extension Kimai_Extension_Extension */
+foreach ($extensions as $extension) {
+    $extension->setup();
 }
 
 // =======================
@@ -183,13 +177,17 @@ $view->user_display = $view->render("lists/users.php");
 // ==========================
 // = display customer table =
 // ========================
-if (isset($kga['customer']))
-  $view->customers = array(array(
-      'customerID'=>$kga['customer']['customerID'],
-      'name'=>$kga['customer']['name'],
-      'visible'=>$kga['customer']['visible']));
-else
+if (isset($kga['customer'])) {
+  $view->customers = array(
+      array(
+          'customerID'=>$kga['customer']['customerID'],
+          'name'=>$kga['customer']['name'],
+          'visible'=>$kga['customer']['visible']
+      )
+  );
+} else {
   $view->customers = $database->get_customers($kga['user']['groups']);
+}
 
 $view->show_customer_add_button = isset($kga['user']) && coreObjectActionAllowed('customer', 'add');
 $view->show_customer_edit_button = isset($kga['user']) && coreObjectActionAllowed('customer', 'edit');
@@ -233,40 +231,18 @@ else
 // = BUILD MAIN NAVIGATION =
 // =========================
 
-$title = "Timesheet";
-if (isset($kga['lang']['extensions']['ki_timesheet'])) {
-    $title = $kga['lang']['extensions']['ki_timesheet'];
-}
+$entries = array();
 
-$entries = array(
-    array(
-        'key'       => 'ki_timesheet',
-        'title'     => $title,
-        'onclick'   => "changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();",
-        'class'     => 'act',
-        'id'        => 'exttab_0'
-    )
-);
-
-for($i = 0; $i < count($view->extensions); $i++)
+$i = 0;
+foreach($extensions as $extension)
 {
-    $extension = $view->extensions[$i];
-
-    if (!$extension['name'] OR $extension['key'] == "ki_timesheet") {
-        continue;
-    }
-
-    $title = $view->escape($extension['name']);
-    if (isset($kga['lang']['extensions'][$extension['key']])) {
-        $title = $kga['lang']['extensions'][$extension['key']];
-    }
-
     $entries[] = array(
-        'key'       => $extension['key'],
-        'title'     => $title,
-        'onclick'   => "changeTab(". ($i+1) . ", '".$extension['initFile']."'); ".$extension['tabChangeTrigger'].";",
-        'class'     => 'norm',
-        'id'        => 'exttab_'. ($i+1)
+        'key'       => $extension->getId(),
+        'title'     => $view->escape($extension->getName()),
+        'onclick'   => "changeTab(". ($i) . ", '".$extension->getInitFile()."');",
+        'class'     => ($i == 0 ? 'act' : 'norm'),
+        'tabId'     => $i,
+        'id'        => 'exttab_'. ($i++)
     );
 }
 $view->main_navigation = $entries;
@@ -318,20 +294,6 @@ $listEntries = array(
     ),
 );
 $view->list_entries = $listEntries;
-
-// ========================
-// = BUILD HOOK FUNCTIONS =
-// ========================
-$view->hook_timeframe_changed = $extensions->timeframeChangedHooks();
-$view->hook_buzzer_record = $extensions->buzzerRecordHooks();
-$view->hook_buzzer_stopped = $extensions->buzzerStopHooks();
-$view->hook_users_changed = $extensions->usersChangedHooks();
-$view->hook_customers_changed = $extensions->customersChangedHooks();
-$view->hook_projects_changed = $extensions->projectsChangedHooks();
-$view->hook_activities_changed = $extensions->activitiesChangedHooks();
-$view->hook_filter = $extensions->filterHooks();
-$view->hook_resize = $extensions->resizeHooks();
-$view->timeoutlist = $extensions->timeoutList();
 
 $basePath = $view->getScriptPath('core');
 $skinTpl = $basePath . '/' . $kga['conf']['skin'] . '.php';

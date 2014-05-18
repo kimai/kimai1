@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +27,12 @@
  */
 
 // insert KSPI
-$isCoreProcessor = 1;
-$dir_templates = "templates/scripts/"; // folder of the template files
 require("../includes/kspi.php");
-
 
 switch ($axAction) {
 
     /**
-     * Display the credits floater. The copyright will automatically be
-     * set from 2006 to the current year.
+     * Display the credits floater.
      */
     case 'credits':
         $view->devtimespan = '2006-'.date('y');

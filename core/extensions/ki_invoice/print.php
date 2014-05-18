@@ -52,8 +52,6 @@ function RoundValue($value, $precision) {
 	return floor($value / $precision + 0.5)*$precision;
 }
 
-// insert KSPI
-$isCoreProcessor = 0;
 $user            = checkUser();
 $timeframe       = get_timeframe();
 $in              = $timeframe[0];
@@ -104,15 +102,15 @@ if (isset($_REQUEST['round'])) {
   		// Write a logfile entry for each value that is rounded.
   		Logger::logfile("Round ".  $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with ".  $round);
   
-          if ($invoiceArray[$time_index]['hour'] == 0) {
-              // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
-              $rate = 0;
-          } else {
-  		    $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
-          }
+        if ($invoiceArray[$time_index]['hour'] == 0) {
+            // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
+            $rate = 0;
+        } else {
+            $rate = RoundValue($invoiceArray[$time_index]['amount']/$invoiceArray[$time_index]['hour'],0.05);
+        }
   
   		$invoiceArray[$time_index]['hour'] = $rounded;
-      $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
+        $invoiceArray[$time_index]['amount'] = $invoiceArray[$time_index]['hour']*$rate;
     }
 		$time_index++;
 	}

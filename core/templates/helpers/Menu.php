@@ -50,12 +50,12 @@ class Zend_View_Helper_Menu extends Zend_View_Helper_Abstract
     public function __toString()
     {
         $html = '
-                <ul class="menu">';
+                <ul class="menu" id="fliptabs">';
 
         foreach($this->getEntries() as $entry)
         {
             $html .= '
-                        <li class="tab '.$entry['class'].'" id="'.$entry['id'].'">
+                        <li class="tab '.$entry['class'].'" id="'.$entry['id'].'" data-id="'.$entry['key'].'">
                             <a href="javascript:void(0);" onclick="' . $entry['onclick'] . '">
                                 <span class="aa">&nbsp;</span>
                                 <span class="bb">

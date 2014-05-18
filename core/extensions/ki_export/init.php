@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,9 @@
 // = implementing standard includes =
 // ==================================
 include('../../includes/basics.php');
+checkUser();
 
 require("private_func.php");
-
-$user = checkUser();
-
-$dir_templates = "templates/";
-$datasrc = "config.ini";
-$settings = parse_ini_file($datasrc);
-$dir_ext = $settings['EXTENSION_DIR'];
 
 // ============================================
 // = initialize currently displayed timeframe =
@@ -39,7 +33,7 @@ $in = $timeframe[0];
 $out = $timeframe[1];
 
 $view = new Kimai_View();
-$view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->addBasePath(dirname(__FILE__).'/templates/');
 
 $view->kga = $kga;
 
@@ -55,7 +49,6 @@ $view->timeformat = $timeformat;
 $view->dateformat = $dateformat;
 
 echo $view->render('panel.php');
-
 
 $view->timeformat = preg_replace('/([A-Za-z])/','%$1',$timeformat);
 $view->dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
@@ -112,5 +105,3 @@ if (isset($kga['user']))
 $view->table_display = $view->render("table.php");
 
 echo $view->render('main.php');
-
-?>

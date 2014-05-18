@@ -1,44 +1,19 @@
 <script type="text/javascript"> 
 	$(document).ready(function() {
-		invoice_extension_onload();
-
-        $('#editVatLink').click(function () {
-			this.blur();
-			floaterShow(invoice_extension_path + "floaters.php","editVat",0,0,250);
-		});
-
-        $('#invoice_customerID').change(function() {
-          $.ajax({
-            url: invoice_extension_path + 'processor.php',
-            data: {
-              'axAction': 'projects',
-              'customerID': $(this).val()
-            }
-          }).done(function(data) {
-            $('#invoice_projectID').empty();
-            for(var projectID in data)
-              $('#invoice_projectID').append($('<option>', {
-                value: projectID,
-                text: data[projectID]
-              }));
-          });
+        $('#invoice_extension').invoice({
+            noProject: "<?php echo $this->translate('noProject', 'ext_invoice'); ?>",
+            path: '../extensions/ki_invoice/'
         });
-
-        $('#invoice_extension_form').on('submit', function() {
-            if($('#invoice_projectID').val() == null) {
-                alert('<?php echo $this->translate('noProject', 'ext_invoice'); ?>');
-                return false;
-            }
-        })
 	});
 </script>
 
 <?php
     echo $this->extensionScreen(
         array(
-            'title' => $this->translate('invoiceTitle', 'ext_invoice'),
-            'id'    => 'invoice_extension_header',
-            'level' => array('invoice_extension_wrap', 'invoice_extension')
+            'title'     => $this->translate('invoiceTitle', 'ext_invoice'),
+            'id'        => 'invoice_extension_header',
+            'level'     => array('invoice_extension_wrap', 'invoice_extension'),
+            'styles'    => true
         )
     )->getHeader();
 ?>

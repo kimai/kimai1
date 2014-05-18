@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +17,10 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Export Processor.
- */
-
-// insert KSPI
-$isCoreProcessor = 0;
-$dir_templates = "templates/";
 require("../../includes/kspi.php");
+$view->addBasePath(dirname(__FILE__).'/templates/');
 
 require("private_func.php");
-
 
 // ============================
 // = parse general parameters =
@@ -91,16 +84,11 @@ if ($axAction == 'export_csv'  ||
     $filterCustomers = array($kga['customer']['customerID']);
 }
 
-
-
-
-
 // ==================
 // = handle request =
 // ==================
 switch ($axAction) {   
     
-
     // ======================
     // = set status cleared =
     // ======================
@@ -121,7 +109,6 @@ switch ($axAction) {
       echo $success?1:0;
     break;
     
-
     // =========================
     // = save selected columns =
     // =========================
@@ -162,7 +149,6 @@ switch ($axAction) {
         echo $view->render("table.php");
     break;
 
-
     /**
      * Exort as html file.
      */
@@ -172,8 +158,7 @@ switch ($axAction) {
           'print_summary' => isset($_REQUEST['print_summary'])?1:0,
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.print.');
-          
-       
+
         $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $timeSum = 0;
         $wageSum = 0;
@@ -226,7 +211,6 @@ switch ($axAction) {
         else
           $view->summary = 0;
 
-
         // Create filter descirption, Same is in PDF export
         $customers = array();
         foreach ($filterCustomers as $customerID) {
@@ -256,7 +240,6 @@ switch ($axAction) {
         echo $view->render("formats/html.php");
     break;
 
-
     /**
      * Exort as excel file.
      */
@@ -283,7 +266,6 @@ switch ($axAction) {
         header("Content-Type: application/vnd.ms-excel");
         echo $view->render("formats/excel.php");
     break;
-
 
     /**
      * Exort as csv file.
@@ -395,8 +377,6 @@ switch ($axAction) {
         }     
     break;
 
-
-
     /**
      * Export as tabular PDF document.
      */
@@ -434,8 +414,6 @@ switch ($axAction) {
 
       require('export_pdf.php');
     break;
-
-
 
     /**
      * Export as a PDF document in a list format.
@@ -476,5 +454,3 @@ switch ($axAction) {
       break;
 
 }
-
-?>

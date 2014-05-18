@@ -1,12 +1,10 @@
-<div id="extdiv_0" class="ext ki_timesheet"></div>
 <?php
-for ($i = 0; $i < count($this->extensions); $i++)
+$i = 0;
+foreach($this->extensions as $extension)
 {
-    if ($this->extensions[$i] != "ki_timesheet")
-    {
-        ?>
-        <div id="extdiv_<?php echo $i+1; ?>" class="ext <?php echo $this->extensions[$i]['key']?>" style="display:none;"></div>
+    $display = ($i==0) ? '' : 'display:none;';
+    ?>
+    <div id="extdiv_<?php echo $i++; ?>" class="ext <?php echo $extension->getId()?>" style="<?php echo $display; ?>"></div>
     <?php
-    }
 }
 ?>

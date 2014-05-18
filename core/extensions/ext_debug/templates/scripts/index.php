@@ -4,7 +4,6 @@
     }); 
 </script>
 
-
 <?php
 
 $postTitle = '';
@@ -32,8 +31,6 @@ echo $this->extensionScreen(
 <div id="deb_ext_logfile"></div>
 
 <?php echo $this->extensionScreen()->getFooter(); ?>
-
-
 
 <?php
 echo $this->extensionScreen(

@@ -34,13 +34,6 @@
 // bootstrap kimai
 require("basics.php");
 
-// check if we are in an extension
-if (!$isCoreProcessor) {
-  $datasrc = "config.ini";
-  $settings = parse_ini_file($datasrc);
-  $dir_ext = $settings['EXTENSION_DIR'];
-}
-
 // ============================================================================================
 // = assigning language and config variables / they are needed in all following smarty output =
 // ============================================================================================
@@ -50,9 +43,6 @@ $user = checkUser();
 // = Zend_View (configuration) =
 // =============================
 $view = new Kimai_View();
-if (!$isCoreProcessor) {
-    $view->addBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-}
 
 //$view->enableSkinSupport($kga['conf']['skin']);
 

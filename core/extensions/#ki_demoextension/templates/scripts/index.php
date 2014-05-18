@@ -1,12 +1,19 @@
-<!--     IMPORTANT NOTE:
-       Javascript or jQuery stuff that should run when your extension *has finished loading*  
-       should sit in an special onload function like this:
--->
 <script type="text/javascript">
     $(document).ready(function() {
         demo_ext_onload();
     });
 </script>
+
+<?php
+echo $this->extensionScreen(
+    array(
+        'title'     => 'Demo',
+        'id'        => 'demo_extension_header',
+        'level'     => array('demo_extension_wrap', 'demo_extension'),
+        'styles'    => true
+    )
+)->getHeader();
+?>
 
 <h1>My Extension</h1>
 
@@ -15,7 +22,8 @@
 </div>
 
 <div id="demo_timeframe">
-    When you change the timeframe it will be entered here ====> <span class="timeframe_target">__________</span> via jQuery. (only timeframe_in for the sake of this demonstration...) 
+    When you change the timeframe it will be entered here ====> <span class="timeframe_target">__________</span> via jQuery.
+    (just the value that was changed for the sake of this demonstration...)
 </div>
 
-
+<?php echo $this->extensionScreen()->getFooter(); ?>
