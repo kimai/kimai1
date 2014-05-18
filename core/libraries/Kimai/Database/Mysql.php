@@ -3151,28 +3151,28 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @author th, sl
   * @return id of the new entry or false on failure
   */
-  public function startRecorder($projectID,$activityID,$user,$startTime) {
-      global $kga;
+  public function startRecorder($projectID,$activityID,$user,$startTime)
+  {
+      $projectID  = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
+      $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
+      $user       = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+      $startTime  = MySQL::SQLValue($startTime, MySQL::SQLVALUE_NUMBER);
 
-      $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER  );
-      $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER  );
-      $user   = MySQL::SQLValue($user  , MySQL::SQLVALUE_NUMBER  );
-      $startTime = MySQL::SQLValue($startTime  , MySQL::SQLVALUE_NUMBER  );
-
-
-      $values ['projectID'] = $projectID;
+      $values ['projectID']  = $projectID;
       $values ['activityID'] = $activityID;
-      $values ['start']    = $startTime;
-      $values ['userID'] = $user;
-      $values ['statusID'] = $kga['conf']['defaultStatusID'];
-      $rate = $this->get_best_fitting_rate($user,$projectID,$activityID);
-      if ($rate)
+      $values ['start']      = $startTime;
+      $values ['userID']     = $user;
+      $values ['statusID']   = $this->kga['conf']['defaultStatusID'];
+
+      $rate = $this->get_best_fitting_rate($user, $projectID, $activityID);
+      if ($rate) {
         $values ['rate'] = $rate;
+      }
 
       $table = $this->kga['server_prefix']."timeSheet";
       $result = $this->conn->InsertRow($table, $values);
 
-      if (! $result) {
+      if (!$result) {
         $this->logLastError('startRecorder');
         return false;
       }
