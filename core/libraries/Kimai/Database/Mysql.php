@@ -1810,7 +1810,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 		$data = $this->clean_data($data);
 
 		if (isset($data['comment'])) { $values ['comment']           = MySQL::SQLValue( $data ['comment'] ); }
-		if (isset($data['isDesignWork'])) { $values ['isDesignWork'] = MySQL::SQLValue( $data ['isDesignWork'] ); }
+		if (isset($data['location'])) { $values ['location']         = MySQL::SQLValue( $data ['location'] ); }
 		if (isset($data['description'])) { $values ['description']   = MySQL::SQLValue( $data ['description'] ); }
 		if (isset($data['trackingNumber'])) {
 			if ($data ['trackingNumber'] == '') { $values ['trackingNumber'] = 'NULL'; } else {
