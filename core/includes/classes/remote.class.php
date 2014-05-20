@@ -377,7 +377,7 @@ class Kimai_Remote_Api
      * @see 'reload_projects'
      * @return array|boolean
      */
-	public function getProjects($apiKey)
+	public function getProjects($apiKey, $includeTasks = false)
 	{
         if (!$this->init($apiKey, 'getProjects', true)) {
 			return $this->getAuthErrorResult();
@@ -394,37 +394,14 @@ class Kimai_Remote_Api
 		}
 
         if (count($projects) > 0) {
-
-            $tempProjects = array();
-            foreach($projects as $project) {
-                $tasks = array();
-
-                // @FIXME
-                if (isset($kga['customer'])) {
-                    $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
-                } else if ($project['projectID'] !== null) {
-                    $tasks = $this->getBackend()->get_activities_by_project($project['projectID'], $user['groups']);
-                    $tempTasks = array();
-                    foreach ($tasks as $task)
-                    {
-                        $tempTasks[] = array(
-                            'activityID'       => $task['activityID'],
-                            'name'     => $task['name'],
-                            'visible'  => $task['visible'],
-                            'budget'   => $task['budget'],
-                            'approved' => $task['approved'],
-                            'effort'   => $task['effort']
-                        );
-                    }
-                    $tasks = $tempTasks;
-                } else {
-                    $tasks = $this->getBackend()->get_activities($user['groups']);
+            if ($includeTasks) {
+                $tempProjects = array();
+                foreach($projects as $project) {
+                    $project['tasks'] = $this->getTasksByProjectId($project['projectID'], $user);
+                    $tempProjects[] = $project;
                 }
-
-                $project['tasks'] = $tasks;
-                $tempProjects[] = $project;
+                $projects = $tempProjects;
             }
-            $projects = $tempProjects;
 
 			return $this->getSuccessResult($projects);
         }
@@ -457,24 +434,7 @@ class Kimai_Remote_Api
         if (isset($kga['customer'])) {
           $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
 		} else if ($projectId !== null) {
-          $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
-		  /**
-		   * we need to copy the array with new keys (remove the customerID key)
-		   * if we do not do this, soap server will break our response scheme
-		   */
-		  $tempTasks = array();
-		  foreach ($tasks as $task)
-		  {
-			$tempTasks[] = array(
-				'activityID'       => $task['activityID'],
-				'name'     => $task['name'],
-				'visible'  => $task['visible'],
-				'budget'   => $task['budget'],
-				'approved' => $task['approved'],
-				'effort'   => $task['effort']
-			);
-		  }
-		  $tasks = $tempTasks;
+          $tasks = $this->getTasksByProjectId($projectId, $user);
         } else {
           $tasks = $this->getBackend()->get_activities($user['groups']);
 		}
@@ -485,6 +445,38 @@ class Kimai_Remote_Api
 
         return $this->getErrorResult();
 	}
+
+    /**
+     * Returns an array of tasks for the given projectId.
+     *
+     * @param string $projectId
+     * @param array $user
+     * @return array
+     */
+    private function getTasksByProjectId($projectId, $user)
+    {
+        $tasks = array();
+        $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
+        /**
+         * we need to copy the array with new keys (remove the customerID key)
+         * if we do not do this, soap server will break our response scheme
+         */
+        $tempTasks = array();
+        foreach ($tasks as $task)
+        {
+            $tempTasks[] = array(
+                'activityID'       => $task['activityID'],
+                'name'     => $task['name'],
+                'visible'  => $task['visible'],
+                'budget'   => $task['budget'],
+                'approved' => $task['approved'],
+                'effort'   => $task['effort']
+            );
+        }
+        $tasks = $tempTasks;
+
+        return $tasks;
+    }
 
 	/**
 	 * Returns an array with values of the currently active recording.
