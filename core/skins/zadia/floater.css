@@ -18,7 +18,7 @@
 }
 
 #floater_innerwrap {
-    background-color:#444;
+    background-color:#594F4F;
     border: 1px solid #222;
 }
 
@@ -118,7 +118,7 @@
 
 
 #floater_handle {
-    background: url("grfx/g3_table_header.png");
+    background: #473F3F;
     border-bottom:1px solid #555;
     padding:2px;
     padding-left:10px;
