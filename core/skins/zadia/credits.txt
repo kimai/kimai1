@@ -1,0 +1,16 @@
+=== About ===
+
+The theme has been restyled by zetxek (Adrián Moreno) for Zadia Software (www.zadiasoftware.com), based on kimai's default theme.
+
+=== Graphic Credits ===
+
+This theme uses some copyleft icons by great people around the net. Kudos to them for those great job!
+
+Vectorgraphit.com icons
+http://www.vectorgraphit.com/
+
+Small n Flat icons by Paomedia
+https://github.com/paomedia/small-n-flat
+
+"I demand a pancake" colour palette by alpen
+http://www.colourlovers.com/palette/443995/i_demand_a_pancake
