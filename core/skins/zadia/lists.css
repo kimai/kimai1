@@ -176,7 +176,7 @@ a.selectInvertLink
 
 .livefilterfield {
     float:right;
-    background-image:url("grfx/filter_bg.jpg");
+    background: rgb(202, 202, 202);
     border:1px solid #555;
     height:12px;
     margin:0;
