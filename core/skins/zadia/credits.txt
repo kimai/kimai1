@@ -1,16 +1,20 @@
-=== About ===
+About
+=========
 
-The theme has been restyled by zetxek (Adrián Moreno) for Zadia Software (www.zadiasoftware.com), based on kimai's default theme.
+The theme has been restyled by [zetxek](http://twitter.com/zetxek) (Adrián Moreno) for [Zadia Software](http://www.zadiasoftware.com), based on kimai's default theme.
 
-=== Graphic Credits ===
 
-This theme uses some copyleft icons by great people around the net. Kudos to them for those great job!
+Graphic Credits
+----
 
-Vectorgraphit.com icons
-http://www.vectorgraphit.com/
+Dillinger uses a number of open source projects to work properly:
 
-Small n Flat icons by Paomedia
-https://github.com/paomedia/small-n-flat
+* [VectorGraphit] - awesome web-based text editor
+* [Paomedia] - Small n Flat icons
+* [Colourlovers] - "I demand pancake" colour palette by alden
 
-"I demand a pancake" colour palette by alpen
-http://www.colourlovers.com/palette/443995/i_demand_a_pancake
+
+[VectorGraphit]:http://www.vectorgraphit.com/
+[Paomedia]:https://github.com/paomedia/small-n-flat
+[ColourLovers]:http://www.colourlovers.com/palette/443995/i_demand_a_pancake
+
