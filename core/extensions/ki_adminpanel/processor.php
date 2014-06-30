@@ -209,13 +209,20 @@ switch ($axAction)
 				if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
 					$groups = $kga['user']['groups'];
 
-				if (isset($_REQUEST['activity_filter']) && $_REQUEST['activity_filter'] == -1)
-					$activities = $database->get_activities($groups);
-				else {
+				$activity_filter = isset($_REQUEST['activity_filter']) ? intval($_REQUEST['activity_filter']) : -2;
+				
+				switch ($activity_filter) {
+					case -2:
 						// -2 is to get unassigned activities. As -2 is never
 						// an id of a project this will give us all unassigned
 						// activities.
-					$activities = $database->get_activities_by_project(-2, $groups);
+						$activities = $database->get_activities_by_project(-2, $groups);
+						break;
+					case -1:
+						$activities = $database->get_activities($groups);
+						break;
+					default:
+						$activities = $database->get_activities_by_project($activity_filter, $groups);
 				}
 
 				foreach ($activities as $row => $activity) {
