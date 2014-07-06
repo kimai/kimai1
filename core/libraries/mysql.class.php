@@ -13,7 +13,7 @@
  *   Douglas Gintz
  *   Emre Erkan
  */
-class MySQL
+class MySQLNew
 {
 	// SET THESE VALUES TO MATCH YOUR DATA CONNECTION
 	private $db_host    = "localhost";  // server name
