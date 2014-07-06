@@ -1499,7 +1499,7 @@ class PostgreSQL
 					$this->error_desc = @pg_errormessage($this->pg_link);
 				} 
 			}
-			if ($errorNumber == 0) {
+			if ($errorNumber <> 0) {
 				$this->error_number = $errorNumber;
 			} else {
 				$this->error_number = -990;
