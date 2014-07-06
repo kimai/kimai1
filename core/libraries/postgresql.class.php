@@ -681,7 +681,7 @@ class PostgreSQL
 				$columns = false;
 			} else {
 				for ($column = 0; $column < $columnCount; $column++) {
-					$columns[] = mysql_field_name($this->last_result, $column);
+					$columns[] = pg_field_name($this->last_result, $column);
 				}
 			}
 		} else {
