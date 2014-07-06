@@ -1,23 +1,37 @@
 <?php
 /**
- * Ultimate MySQL Wrapper Class
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) 2006-2009 Kimai-Development-Team
  *
- * @version 2.5
- * @author Jeff L. Williams
- * @link http://www.phpclasses.org/ultimatemysql
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
  *
- * Contributions from
- *   Frank P. Walentynowicz
- *   Larry Wakeman
- *   Nicola Abbiuso
- *   Douglas Gintz
- *   Emre Erkan
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 class MySQL
 {
         private $database   = null;
-        private $mysql      = false;
-        private $pg         = false;
+        private static $mysql      = false;
+        private static $pg         = false;
+        
+        const SQLVALUE_BIT      = "bit";
+	const SQLVALUE_BOOLEAN  = "boolean";
+	const SQLVALUE_DATE     = "date";
+	const SQLVALUE_DATETIME = "datetime";
+	const SQLVALUE_NUMBER   = "number";
+	const SQLVALUE_T_F      = "t-f";
+	const SQLVALUE_TEXT     = "text";
+	const SQLVALUE_TIME     = "time";
+	const SQLVALUE_Y_N      = "y-n";
+        
 	/**
 	 * Constructor: Opens the connection to the database
 	 *
@@ -31,9 +45,14 @@ class MySQL
 	public function __construct($connect = true, $database = null, $server = null,
 								$username = null, $password = null, $charset = null,
                                                                 $schema = null) {
-
-		if($mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
-                else if($pg) $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);
+                global $kga;
+                if($kga['server_type'] == 'mysql') MYSQL::$mysql =TRUE;
+                else if ($kga['server_type'] == 'pgsql') MYSQL::$pg = TRUE;
+            
+		if(MySQL::$mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
+                else if(MySQL::$pg) {
+                    $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);                    
+                }
 	}
 
 	/**
@@ -84,8 +103,8 @@ class MySQL
 	 * @return string Returns the SQL DELETE statement
 	 */
 	static public function BuildSQLDelete($tableName, $whereArray = null) {
-		if($mysql) return MySQLNew::BuildSQLDelete ($tableName, $whereArray);
-                else if ($pgsql) return PostgreSQL::BuildSQLDelete ($tableName, $whereArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLDelete ($tableName, $whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLDelete ($tableName, $whereArray);
 	}
 
 	/**
@@ -99,8 +118,8 @@ class MySQL
 	 * @return string Returns a SQL INSERT statement
 	 */
 	static public function BuildSQLInsert($tableName, $valuesArray) {
-		if($mysql) return MySQLNew::BuildSQLInsert ($tableName, $valuesArray);
-                else if ($pgsql) return PostgreSQL::BuildSQLInsert ($tableName, $valuesArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLInsert ($tableName, $valuesArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLInsert ($tableName, $valuesArray);
 	}
 
 	/**
@@ -120,8 +139,8 @@ class MySQL
 	 */
 	static public function BuildSQLSelect($tableName, $whereArray = null, $columns = null,
 										  $sortColumns = null, $sortAscending = true, $limit = null) {
-		if($mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
-                else if ($pgsql) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
 	}
 
 	/**
@@ -140,8 +159,8 @@ class MySQL
 	 * @return string Returns a SQL UPDATE statement
 	 */
 	static public function BuildSQLUpdate($tableName, $valuesArray, $whereArray = null) {
-		if($mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
-                else if ($pgsql) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLUpdate ($tableName, $valuesArray, $whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLUpdate ($tableName, $valuesArray, $whereArray);
 	}
 
 	/**
@@ -156,8 +175,8 @@ class MySQL
 	 * @return string Returns a string containing the SQL WHERE clause
 	 */
 	static public function BuildSQLWhereClause($whereArray) {
-		if($mysql) return MySQLNew::BuildSQLWhereClause($whereArray);
-                else if ($pgsql) return PostgreSQL::BuildSQLWhereClause($whereArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLWhereClause($whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLWhereClause($whereArray);
 	}
 
 	/**
@@ -219,8 +238,8 @@ class MySQL
 	 * @return boolean Returns TRUE or FALSE
 	 */
 	static public function GetBooleanValue($value) {
-		if($mysql) return MySQLNew::GetBooleanValue($value);
-                else if ($pgsql) return PostgreSQL::GetBooleanValue($value);
+		if(MySQL::$mysql) return MySQLNew::GetBooleanValue($value);
+                else if (MySQL::$pg) return PostgreSQL::GetBooleanValue($value);
 	}
 
 	/**
@@ -451,8 +470,8 @@ class MySQL
 	public function Open($database = null, $server = null, $username = null,
 						 $password = null, $charset = null, $pcon = false,
                                                  $schema = null) {
-                if($mysql) return $this->database->Open($database, $server, $username, $password, $charset, $pcon);
-		else if($pg) return $this->database->Open($database, $server, $username, $password, $charset, $pcon, $schema);
+                if(MySQL::$mysql) return $this->database->Open($database, $server, $username, $password, $charset, $pcon);
+		else if(MySQL::$pg) return $this->database->Open($database, $server, $username, $password, $charset, $pcon, $schema);
 	}
 
 	/**
@@ -477,9 +496,9 @@ class MySQL
 	 * @return array A multi-dimensional array containing all the data
 	 *               returned from the query or FALSE on all errors
 	 */
-	public function QueryArray($sql, $resultType = "default") {
-		if($resultType == "default") return $this->database->QueryArray($sql);
-                else if($resultType != "default") return $this->database->QueryArray($sql,$resultType);
+	public function QueryArray($sql, $resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->QueryArray($sql,$resultType);
 	}
 
 	/**
@@ -502,9 +521,9 @@ class MySQL
 	 * @return array An array containing the first row or FALSE if no row
 	 *               is returned from the query
 	 */
-	public function QuerySingleRowArray($sql, $resultType = "default") {
-		if($resultType == "default") return $this->database->QuerySingleRowArray($sql);
-                else if($resultType != "default") return $this->database->QuerySingleRowArray($sql,$resultType);
+	public function QuerySingleRowArray($sql, $resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->QuerySingleRowArray($sql,$resultType);
 	}
 
 	/**
@@ -549,9 +568,9 @@ class MySQL
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return Records in array form
 	 */
-	public function RecordsArray($resultType = "default") {
-		if($resultType == "default") return $this->database->RecordsArray();
-                else if($resultType != "default") return $this->database->RecordsArray($resultType);
+	public function RecordsArray($resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->RecordsArray($resultType);
 	}
 
 	/**
@@ -584,9 +603,10 @@ class MySQL
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return array Array that corresponds to fetched row or FALSE if no rows
 	 */
-	public function RowArray($optional_row_number = null, $resultType = "default") {
-		if($resultType == "default") return $this->database->RowArray($optional_row_number);
-                else if($resultType != "default") return $this->database->RowArray($optional_row_number,$resultType);
+	public function RowArray($optional_row_number = null, $resultType = MYSQL_BOTH) {
+            if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+            return $this->database->RowArray($optional_row_number,$resultType);
+                
 	}
 
 	/**
@@ -647,8 +667,9 @@ class MySQL
 	public function SelectRows($tableName, $whereArray = null, $columns = null,
 							   $sortColumns = null, $sortAscending = true,
 							   $limit = null) {
-		return $this->database->SelectRows($tableName, $whereArray, 
+            $return = $this->database->SelectRows($tableName, $whereArray, 
                                                            $columns, $sortColumns, $sortAscending,$limit);
+		return $return;
 	}
 
 	/**
@@ -674,8 +695,8 @@ class MySQL
 	 * @return string SQL formatted value of the specified data type
 	 */
 	static public function SQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT) {
-		if($mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
-                else if ($pgsql) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype);
 	}
 
 	/**
@@ -685,8 +706,8 @@ class MySQL
 	 * @return string SQL formatted value
 	 */
 	static public function SQLFix($value) {
-		if($mysql) return MySQLNew::SQLFix($value);
-                else if ($pgsql) return PostgreSQL::SQLFix($value);
+		if(MySQL::$mysql) return MySQLNew::SQLFix($value);
+                else if (MySQL::$pg) return PostgreSQL::SQLFix($value);
 	}
 
 	/**
@@ -696,8 +717,8 @@ class MySQL
 	 * @return string
 	 */
 	static public function SQLUnfix($value) {
-		if($mysql) return MySQLNew::SQLUnfix($value);
-                else if ($pgsql) return PostgreSQL::SQLUnfix($value);
+		if(MySQL::$mysql) return MySQLNew::SQLUnfix($value);
+                else if (MySQL::$pg) return PostgreSQL::SQLUnfix($value);
 	}
 
 	/**
@@ -712,8 +733,8 @@ class MySQL
 	 * @return string
 	 */
 	static public function SQLValue($value, $datatype = self::SQLVALUE_TEXT) {
-		if($mysql) return MySQLNew::SQLValue($value, $datatype = self::SQLVALUE_TEXT);
-                else if ($pgsql) return PostgreSQL::SQLValue($value, $datatype = self::SQLVALUE_TEXT);
+		if(MySQL::$mysql) return MySQLNew::SQLValue($value, $datatype );
+                else if (MySQL::$pg) return PostgreSQL::SQLValue($value, $datatype);
 	}
 
 	/**
@@ -798,5 +819,21 @@ class MySQL
 	public function UpdateRows($tableName, $valuesArray, $whereArray = null) {
 		return $this->database->UpdateRows($tableName, $valuesArray, $whereArray);
 	}
+        
+        public function GetLastId($table){
+                if(MySQL::$mysql) return mysql_insert_id ();
+                else if (MySQL::$pg) return $this->database->PGLastId ($table);
+        }
+        
+        /**
+         * Convert String ResultType infos in Integer
+         * @param string $resultType MYSQL_ASSOC, MYSQL_BOTH, MYSQL_NUM
+         * @return int
+         */
+        public function convertResultType($resultType){
+            if ($resultType == 'MYSQL_ASSOC')       return 1;
+            else if($resultType == 'MYSQL_NUM')     return 2;
+            else if($resultType == 'MYSQL_BOTH')    return 3;
+        }
 }
 ?>
