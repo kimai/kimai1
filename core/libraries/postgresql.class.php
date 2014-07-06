@@ -70,10 +70,12 @@ class PostgreSQL
 		if ($password !== null) $this->db_pass    = $password;
 		if ($charset  !== null) $this->db_charset = $charset;
                 if ($schema   !== null) $this->db_schema  = $schema;
-
+                
 		if (strlen($this->db_host) > 0 &&
 			strlen($this->db_user) > 0) {
-			if ($connect) $this->Open();
+			if ($connect) {
+                            $this->Open();
+                        }
 		}
 	}
 
@@ -143,7 +145,7 @@ class PostgreSQL
 	 */
 	static private function BuildSQLColumns($columns, $addQuotes = true, $showAlias = true) {
 		if ($addQuotes) {
-			$quote = "`";
+			$quote = "\"";
 		} else {
 			$quote = "";
 		}
@@ -184,7 +186,7 @@ class PostgreSQL
 	 * @return string Returns the SQL DELETE statement
 	 */
 	static public function BuildSQLDelete($tableName, $whereArray = null) {
-		$sql = "DELETE FROM `" . $tableName . "`";
+		$sql = "DELETE FROM \"" . $tableName . "\"";
 		if (! is_null($whereArray)) {
 			$sql .= self::BuildSQLWhereClause($whereArray);
 		}
@@ -204,8 +206,8 @@ class PostgreSQL
 	static public function BuildSQLInsert($tableName, $valuesArray) {
 		$columns = self::BuildSQLColumns(array_keys($valuesArray));
 		$values  = self::BuildSQLColumns($valuesArray, false, false);
-		$sql = "INSERT INTO `" . $tableName .
-			   "` (" . $columns . ") VALUES (" . $values . ")";
+		$sql = "INSERT INTO \"" . $tableName .
+			   "\" (" . $columns . ") VALUES (" . $values . ")";
 		return $sql;
 	}
 
@@ -231,7 +233,7 @@ class PostgreSQL
 		} else {
 			$sql = "*";
 		}
-		$sql = "SELECT " . $sql . " FROM `" . $tableName . "`";
+		$sql = "SELECT " . $sql . " FROM \"" . $tableName . "\"";
 		if (is_array($whereArray)) {
 			$sql .= self::BuildSQLWhereClause($whereArray);
 		}
@@ -265,12 +267,12 @@ class PostgreSQL
 		$sql = "";
 		foreach ($valuesArray as $key => $value) {
 			if (strlen($sql) == 0) {
-				$sql = "`" . $key . "` = " . $value;
+				$sql = "\"" . $key . "\" = " . $value;
 			} else {
-				$sql .= ", `" . $key . "` = " . $value;
+				$sql .= ", \"" . $key . "\" = " . $value;
 			}
 		}
-		$sql = "UPDATE `" . $tableName . "` SET " . $sql;
+		$sql = "UPDATE \"" . $tableName . "\" SET " . $sql;
 		if (is_array($whereArray)) {
 			$sql .= self::BuildSQLWhereClause($whereArray);
 		}
@@ -293,13 +295,13 @@ class PostgreSQL
 		foreach ($whereArray as $key => $value) {
 			if (strlen($where) == 0) {
 				if (is_string($key)) {
-					$where = " WHERE `" . $key . "` = " . $value;
+					$where = " WHERE \"" . $key . "\" = " . $value;
 				} else {
 					$where = " WHERE " . $value;
 				}
 			} else {
 				if (is_string($key)) {
-					$where .= " AND `" . $key . "` = " . $value;
+					$where .= " AND \"" . $key . "\" = " . $value;
 				} else {
 					$where .= " AND " . $value;
 				}
@@ -1059,35 +1061,17 @@ class PostgreSQL
 		// Open persistent or normal connection
 		if ($pcon) {
 			$this->pg_link = @pg_pconnect(
-				$this->db_host, $this->db_user, $this->db_pass);
+                                "host=".$this->db_host." port=5432 user=".$this->db_user." password=".$this->db_pass." dbname=".$this->db_dbname);
 		} else {
-			$this->pg_link = @pg_connect (
-				$this->db_host, $this->db_user, $this->db_pass);
+			$this->pg_link = pg_connect (
+				"host=".$this->db_host." port=5432 user=".$this->db_user." password=".$this->db_pass." dbname=".$this->db_dbname);
 		}
 		// Connect to mysql server failed?
 		if (! $this->IsConnected()) {
 			$this->SetError();
 			return false;
 		} else {
-			// Select a database (if specified)
-			if (strlen($this->db_dbname) > 0) {
-				if (strlen($this->db_charset) == 0) {
-					if (! $this->SelectDatabase($this->db_dbname)) {
-						return false;
-					} else {
-						return true;
-					}
-				} else {
-					if (! $this->SelectDatabase(
-						$this->db_dbname, $this->db_charset)) {
-						return false;
-					} else {
-						return true;
-					}
-				}
-			} else {
-				return true;
-			}
+                        return true;			
 		}
 	}
 
@@ -1105,8 +1089,9 @@ class PostgreSQL
 		$this->last_sql = $sql;
 		$this->last_result = @pg_query($sql, $this->pg_link);
 		if(! $this->last_result) {
+                    var_dump($this->last_result);
 			$this->active_row = -1;
-			$this->SetError();
+			$this->SetError();                        
 			return false;
 		} else {
       if (strpos(strtolower($sql),"insert")===0) {
@@ -1511,19 +1496,13 @@ class PostgreSQL
 				$this->error_desc = $errorMessage;
 			} else {
 				if ($this->IsConnected()) {
-					$this->error_desc = pg_error($this->pg_link);
-				} else {
-					$this->error_desc = pg_error();
-				}
+					$this->error_desc = @pg_errormessage($this->pg_link);
+				} 
 			}
-			if ($errorNumber <> 0) {
+			if ($errorNumber == 0) {
 				$this->error_number = $errorNumber;
 			} else {
-				if ($this->IsConnected()) {
-					$this->error_number = @pg_errno($this->pg_link);
-				} else {
-					$this->error_number = @pg_errno();
-				}
+				$this->error_number = -990;
 			}
 		} catch(Exception $e) {
 			$this->error_desc = $e->getMessage();
@@ -1789,7 +1768,7 @@ class PostgreSQL
 			$this->SetError("No connection");
 			return false;
 		} else {
-			$sql = "TRUNCATE TABLE `" . $tableName . "`";
+			$sql = "TRUNCATE TABLE \"" . $tableName . "\"";
 			if (! $this->Query($sql)) {
 				return false;
 			} else {
@@ -1843,7 +1822,7 @@ class PostgreSQL
                       pa.attname
                     FROM pg_index pi, pg_class pc, pg_attribute pa, pg_namespace pn
                     WHERE
-                      pc.oid = ".$table."::regclass AND
+                      pc.oid = \"".$table."\"::regclass AND
                       indrelid = pc.oid AND
                       pa.attrelid = pc.oid AND
                       pa.attnum = any(pi.indkey) AND
