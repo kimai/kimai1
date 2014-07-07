@@ -17,7 +17,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+include(WEBROOT.'libraries/mysqlw.class.php');
 include(WEBROOT.'libraries/mysql.class.php');
+include(WEBROOT.'libraries/postgresql.class.php');
 
 /**
  * Provides the database layer for MySQL.
@@ -1692,7 +1694,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function configuration_get_data() {
       $table = $this->kga['server_prefix']."configuration";
       $result = $this->conn->SelectRows($table);
-
+      
       $config_data = array();
 
       $this->conn->MoveFirst();

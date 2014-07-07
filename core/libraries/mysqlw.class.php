@@ -31,9 +31,12 @@ class MySQL
 	public function __construct($connect = true, $database = null, $server = null,
 								$username = null, $password = null, $charset = null,
                                                                 $schema = null) {
-
+            $pg = true;
+                
 		if($mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
-                else if($pg) $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);
+                else if($pg) {
+                    $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);                    
+                }
 	}
 
 	/**
@@ -647,8 +650,10 @@ class MySQL
 	public function SelectRows($tableName, $whereArray = null, $columns = null,
 							   $sortColumns = null, $sortAscending = true,
 							   $limit = null) {
-		return $this->database->SelectRows($tableName, $whereArray, 
+            
+            $return = $this->database->SelectRows($tableName, $whereArray, 
                                                            $columns, $sortColumns, $sortAscending,$limit);
+		return $return;
 	}
 
 	/**
@@ -798,5 +803,10 @@ class MySQL
 	public function UpdateRows($tableName, $valuesArray, $whereArray = null) {
 		return $this->database->UpdateRows($tableName, $valuesArray, $whereArray);
 	}
+        
+        public function GetLastId($table){
+                if($mysql) return mysql_insert_id ();
+                else if ($pgsql) return $this->database->PGLastId ($table);
+        }
 }
 ?>

@@ -1087,7 +1087,7 @@ class PostgreSQL
 	public function Query($sql) {
 		$this->ResetError();
 		$this->last_sql = $sql;
-		$this->last_result = @pg_query($sql, $this->pg_link);
+		$this->last_result = @pg_query($this->pg_link, $sql);
 		if(! $this->last_result) {
                     var_dump($this->last_result);
 			$this->active_row = -1;
@@ -1096,8 +1096,9 @@ class PostgreSQL
 		} else {
       if (strpos(strtolower($sql),"insert")===0) {
                                 //finde table "insert into table ..." table name should be on place 2
-                                $expSql = explode(" ",strtolower($sql));
-				$this->last_insert_id = PGLastId($expSql[2]);
+                                $expSql = explode(" ",$sql);
+                                $expSql = str_replace('"', '', $expSql[2]); //remove " from table name
+				$this->last_insert_id = $this->PGLastId($expSql);
 				if ($this->last_insert_id === false) {
 					$this->SetError();
 					return false;
@@ -1817,12 +1818,12 @@ class PostgreSQL
         public function PGLastId($table){
                 $records = pg_query(
                     "	
-                    SELECT currval(pg_get_serial_sequence('".$this->db_schema.".".$table."',
+                    SELECT currval(pg_get_serial_sequence('\"".$this->db_schema."\".\"".$table."\"',
                     (SELECT              
                       pa.attname
                     FROM pg_index pi, pg_class pc, pg_attribute pa, pg_namespace pn
                     WHERE
-                      pc.oid = \"".$table."\"::regclass AND
+                      pc.oid = '\"".$table."\"'::regclass AND
                       indrelid = pc.oid AND
                       pa.attrelid = pc.oid AND
                       pa.attnum = any(pi.indkey) AND
