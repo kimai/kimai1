@@ -1089,7 +1089,6 @@ class PostgreSQL
 		$this->last_sql = $sql;
 		$this->last_result = @pg_query($this->pg_link, $sql);
 		if(! $this->last_result) {
-                    var_dump($this->last_result);
 			$this->active_row = -1;
 			$this->SetError();                        
 			return false;

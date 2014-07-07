@@ -33,7 +33,6 @@ function exec_query($query) {
 
     $conn = $database->getConnectionHandler();
     $success = $conn->Query($query);
-    var_dump($success);
 
     //Logger::logfile($query);
     if (!$success) {
@@ -48,7 +47,6 @@ function get_last_id($table) {
 
     $conn = $database->getConnectionHandler();
     $return = $conn->GetLastId($table);
-    var_dump($return);
     return $return;
 }
 
