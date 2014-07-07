@@ -3,19 +3,19 @@
 function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
   global $p;
   $query = 
-  "CREATE TABLE `${p}${tableName}` (
-  `${idColumnName}` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR( 255 ) NOT NULL,";
+  "CREATE TABLE \"${p}${tableName}\" (
+  \"${idColumnName}\" serial NOT NULL  PRIMARY KEY,
+  \"name\" VARCHAR( 255 ) NOT NULL,";
 
   $permissionColumns = array();
   $permissionColumnDefinitions = array();
   foreach ($permissions as $permission) {
-    $permissionColumns[] = '`'.$permission.'`';
-    $permissionColumnDefinitions[] = '`'.$permission.'` TINYINT DEFAULT 0';
+    $permissionColumns[] = '"'.$permission.'"';
+    $permissionColumnDefinitions[] = '"'.$permission.'" smallint DEFAULT 0';
   }
   $query .= implode(', ', $permissionColumnDefinitions);
 
-  $query .= ") ENGINE = InnoDB ";
+  $query .= ")  ";
 
   return $query;
 }
@@ -23,12 +23,12 @@ function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
 function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions) {
   global $p;
   foreach  ($allowedPermissions as &$permission)
-    $permission = '`'.$permission.'`';
+    $permission = '"'.$permission.'"';
 
   if (count($allowedPermissions) == 0)
-    $query="INSERT INTO `${p}${tableName}` (`name`)  VALUES ('". $roleName . "');";
+    $query="INSERT INTO \"${p}${tableName}\" (\"name\")  VALUES ('". $roleName . "');";
   else
-    $query="INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('". $roleName . "', ".
+    $query="INSERT INTO \"${p}${tableName}\" (\"name\", " . implode(', ', $allowedPermissions) . ")  VALUES ('". $roleName . "', ".
     implode(', ', array_fill(0,count($allowedPermissions),'1')) . ");";
   return $query;
 }
@@ -96,8 +96,8 @@ exec_query($query);
 // global admin role
 $query = buildRoleInsertQuery('globalRoles', 'Admin', $globalPermissions, $globalPermissions);
 exec_query($query);
-$globalAdminRoleID = mysql_insert_id();
 
+$globalAdminRoleID = get_last_id(${p}.'globalRoles');//mysql_insert_id();
 // global user role
 $allowedPermissions = array(
   'ki_budget-access',
@@ -115,7 +115,7 @@ $allowedPermissions = array(
 );
 $query = buildRoleInsertQuery('globalRoles', 'User', $allowedPermissions, $globalPermissions);
 exec_query($query);
-$globalUserRoleID = mysql_insert_id();
+$globalUserRoleID = get_last_id(${p}.'globalRoles');
 
 
 
@@ -125,13 +125,13 @@ exec_query($query);
 // membership admin role
 $query = buildRoleInsertQuery('membershipRoles', 'Admin', $membershipPermissions, $membershipPermissions);
 exec_query($query);
-$membershipAdminRoleID = mysql_insert_id();
+$membershipAdminRoleID = get_last_id(${p}.'membershipRoles');
 
 // membership user role
 $allowedPermissions = array();
 $query = buildRoleInsertQuery('membershipRoles', 'User', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipUserRoleID = mysql_insert_id();
+$membershipUserRoleID = get_last_id(${p}.'membershipRoles');
 
 // membership groupleader role
 $allowedPermissions = array_merge($allowedPermissions, array(
@@ -144,6 +144,6 @@ $allowedPermissions = array_merge($allowedPermissions, array(
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipGroupleaderRoleID = mysql_insert_id();
+$membershipGroupleaderRoleID = get_last_id(${p}.'membershipRoles');
 
 ?>
