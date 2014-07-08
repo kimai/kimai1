@@ -962,7 +962,7 @@ class PostgreSQL
 	 * @return boolean TRUE idf connectect or FALSE if not connected
 	 */
 	public function IsConnected() {
-		if (gettype($this->pg_link) == "resource") {
+		if (isset($this->pg_link) && gettype($this->pg_link) == "resource") {
 			return true;
 		} else {
 			return false;
@@ -1232,7 +1232,7 @@ class PostgreSQL
 				return false;
 			} else {
 				//while($member = mysql_fetch_object($this->last_result)){
-				while ($member = pg_fetch_array($this->last_result, $resultType)){
+				while ($member = pg_fetch_array($this->last_result,0, $resultType)){
 					$members[] = $member;
 				}
 				pg_result_seek($this->last_result, 0);
@@ -1253,7 +1253,7 @@ class PostgreSQL
 	 */
 	public function Release() {
 		$this->ResetError();
-		if (! $this->last_result) {
+		if (isset($this->last_result) && ! $this->last_result ) {
 			$success = true;
 		} else {
 			$success = @pg_free_result($this->last_result);
@@ -1338,7 +1338,7 @@ class PostgreSQL
 				$this->Seek($optional_row_number);
 			}
 		}
-		$row = pg_fetch_array($this->last_result, $resultType);
+		$row = pg_fetch_array($this->last_result,$this->active_row, $resultType);
 		if (! $row) {
 			$this->SetError();
 			return false;
@@ -1458,13 +1458,17 @@ class PostgreSQL
 	public function SelectRows($tableName, $whereArray = null, $columns = null,
 							   $sortColumns = null, $sortAscending = true,
 							   $limit = null) {
+            echo "start selectRows <br />";
 		$this->ResetError();
 		if (! $this->IsConnected()) {
+                        echo "is not connected";
 			$this->SetError("No connection");
 			return false;
 		} else {
+                        echo "build sql";
 			$sql = self::BuildSQLSelect($tableName, $whereArray,
 					$columns, $sortColumns, $sortAscending, $limit);
+                        echo $sql;
 			// Execute the SELECT
 			if (! $this->Query($sql)) {
 				return $this->last_result;
@@ -1583,7 +1587,7 @@ class PostgreSQL
 					if (get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
-					$return_value = "'" . mysql_real_escape_string($value) . "'";
+					$return_value = "'" . mysql_escape_string($value) . "'";
 				//}
 				break;
 			case "number":
