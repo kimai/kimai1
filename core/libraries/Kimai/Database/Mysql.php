@@ -1791,8 +1791,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 		$activityTable = $this->getActivityTable();
 		$customerTable = $this->getCustomerTable();
 		
-      	$select = "SELECT \"$table\".*, \"$projectTable\".name AS \"projectName\", \"$customerTable\".name AS \"customerName\", \"$activityTable\".name AS \"activityName\", \"$customerTable\".customerID AS \"customerID\"
-      				FROM $table
+      	$select = "SELECT \"$table\".*, \"$projectTable\".name AS \"projectName\", \"$customerTable\".name AS \"customerName\", \"$activityTable\".name AS \"activityName\", \"$customerTable\".\"customerID\" AS \"customerID\"
+      				FROM \"$table\"
                 	JOIN \"$projectTable\" USING(\"projectID\")
                 	JOIN \"$customerTable\" USING(\"customerID\")
                 	JOIN \"$activityTable\" USING(\"activityID\")";
