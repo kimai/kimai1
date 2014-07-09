@@ -8,6 +8,7 @@
  * 
  * @link http://www.phpclasses.org/ultimatemysql
  * @author AlbertLast
+ * @todo Limit solutionen needed (limit mysql style limit 100, 200/ pgsql limit 100 offset 200)
  */
 class PostgreSQL 
 {
@@ -1087,6 +1088,10 @@ class PostgreSQL
 	public function Query($sql) {
 		$this->ResetError();
 		$this->last_sql = $sql;
+                If(strpos(strtolower($sql),"lock")===0 || strpos(strtolower($sql),"unlock")===0){ // I dont see any reason to support this
+                    $this->last_result = 1;
+                    return true;
+                }
 		$this->last_result = @pg_query($this->pg_link, $sql);
 		if(! $this->last_result) {
 			$this->active_row = -1;
