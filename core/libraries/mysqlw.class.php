@@ -42,10 +42,10 @@ class MySQL
 	public function __construct($connect = true, $database = null, $server = null,
 								$username = null, $password = null, $charset = null,
                                                                 $schema = null) {
-                $this->mysql = false;
-                $this->pg = true;
-		if($this->mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
-                else if($this->pg) {
+                MySQL::$mysql = false;
+                MySQL::$pg = true;
+		if(MySQL::$mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
+                else if(MySQL::$pg) {
                     $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);                    
                 }
 	}
@@ -98,8 +98,8 @@ class MySQL
 	 * @return string Returns the SQL DELETE statement
 	 */
 	static public function BuildSQLDelete($tableName, $whereArray = null) {
-		if($this->mysql) return MySQLNew::BuildSQLDelete ($tableName, $whereArray);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLDelete ($tableName, $whereArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLDelete ($tableName, $whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLDelete ($tableName, $whereArray);
 	}
 
 	/**
@@ -113,8 +113,8 @@ class MySQL
 	 * @return string Returns a SQL INSERT statement
 	 */
 	static public function BuildSQLInsert($tableName, $valuesArray) {
-		if($this->mysql) return MySQLNew::BuildSQLInsert ($tableName, $valuesArray);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLInsert ($tableName, $valuesArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLInsert ($tableName, $valuesArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLInsert ($tableName, $valuesArray);
 	}
 
 	/**
@@ -134,8 +134,8 @@ class MySQL
 	 */
 	static public function BuildSQLSelect($tableName, $whereArray = null, $columns = null,
 										  $sortColumns = null, $sortAscending = true, $limit = null) {
-		if($this->mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
 	}
 
 	/**
@@ -154,8 +154,8 @@ class MySQL
 	 * @return string Returns a SQL UPDATE statement
 	 */
 	static public function BuildSQLUpdate($tableName, $valuesArray, $whereArray = null) {
-		if($this->mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
 	}
 
 	/**
@@ -170,8 +170,8 @@ class MySQL
 	 * @return string Returns a string containing the SQL WHERE clause
 	 */
 	static public function BuildSQLWhereClause($whereArray) {
-		if($this->mysql) return MySQLNew::BuildSQLWhereClause($whereArray);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLWhereClause($whereArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLWhereClause($whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLWhereClause($whereArray);
 	}
 
 	/**
@@ -233,8 +233,8 @@ class MySQL
 	 * @return boolean Returns TRUE or FALSE
 	 */
 	static public function GetBooleanValue($value) {
-		if($this->mysql) return MySQLNew::GetBooleanValue($value);
-                else if ($this->pgsql) return PostgreSQL::GetBooleanValue($value);
+		if(MySQL::$mysql) return MySQLNew::GetBooleanValue($value);
+                else if (MySQL::$pg) return PostgreSQL::GetBooleanValue($value);
 	}
 
 	/**
@@ -465,8 +465,8 @@ class MySQL
 	public function Open($database = null, $server = null, $username = null,
 						 $password = null, $charset = null, $pcon = false,
                                                  $schema = null) {
-                if($this->mysql) return $this->database->Open($database, $server, $username, $password, $charset, $pcon);
-		else if($this->pg) return $this->database->Open($database, $server, $username, $password, $charset, $pcon, $schema);
+                if(MySQL::$mysql) return $this->database->Open($database, $server, $username, $password, $charset, $pcon);
+		else if(MySQL::$pg) return $this->database->Open($database, $server, $username, $password, $charset, $pcon, $schema);
 	}
 
 	/**
@@ -661,7 +661,6 @@ class MySQL
 	public function SelectRows($tableName, $whereArray = null, $columns = null,
 							   $sortColumns = null, $sortAscending = true,
 							   $limit = null) {
-            echo "select row in wrapper";
             $return = $this->database->SelectRows($tableName, $whereArray, 
                                                            $columns, $sortColumns, $sortAscending,$limit);
 		return $return;
@@ -690,8 +689,8 @@ class MySQL
 	 * @return string SQL formatted value of the specified data type
 	 */
 	static public function SQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT) {
-		if($this->mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
-                else if ($this->pgsql) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
 	}
 
 	/**
@@ -701,8 +700,8 @@ class MySQL
 	 * @return string SQL formatted value
 	 */
 	static public function SQLFix($value) {
-		if($this->mysql) return MySQLNew::SQLFix($value);
-                else if ($this->pgsql) return PostgreSQL::SQLFix($value);
+		if(MySQL::$mysql) return MySQLNew::SQLFix($value);
+                else if (MySQL::$pg) return PostgreSQL::SQLFix($value);
 	}
 
 	/**
@@ -712,8 +711,8 @@ class MySQL
 	 * @return string
 	 */
 	static public function SQLUnfix($value) {
-		if($this->mysql) return MySQLNew::SQLUnfix($value);
-                else if ($this->pgsql) return PostgreSQL::SQLUnfix($value);
+		if(MySQL::$mysql) return MySQLNew::SQLUnfix($value);
+                else if (MySQL::$pg) return PostgreSQL::SQLUnfix($value);
 	}
 
 	/**
@@ -816,8 +815,8 @@ class MySQL
 	}
         
         public function GetLastId($table){
-                if($this->mysql) return mysql_insert_id ();
-                else if ($this->pgsql) return $this->database->PGLastId ($table);
+                if(MySQL::$mysql) return mysql_insert_id ();
+                else if (MySQL::$pg) return $this->database->PGLastId ($table);
         }
 }
 ?>
