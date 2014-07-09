@@ -1756,7 +1756,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $p = $this->kga['server_prefix'];
       $userID = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-      $result = $this->conn->Query("SELECT \"timeEntryID\" FROM \"${p}timeSheet\" WHERE \"userID\" = $userID AND start > 0 AND end = 0");
+      $result = $this->conn->Query("SELECT \"timeEntryID\" FROM \"${p}timeSheet\" WHERE \"userID\" = $userID AND \"start\" > 0 AND \"end\"= 0");
 
       if ($result === false) {
           $this->logLastError('get_current_recordings');
@@ -2190,9 +2190,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses[] = "project.internal = 0";
 
       if ($start)
-        $whereClauses[]="(end > $start || end = 0)";
+        $whereClauses[]="(\"end\" > $start || \"end\"= 0)";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
       if ($filterCleared > -1)
         $whereClauses[] = "cleared = $filterCleared";
       
@@ -2572,13 +2572,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users,$customers,$projects,$activities);
 
       if ($start)
-        $whereClauses[]="end > $start";
+        $whereClauses[]="\"end\" > $start";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
       if ($filterCleared > -1)
         $whereClauses[] = "cleared = $filterCleared";
 
-      $query = "SELECT start,end,duration FROM \"${p}timeSheet\"
+      $query = "SELECT \"start\",\"end\",duration FROM \"${p}timeSheet\"
               Join \"${p}projects\" USING(\"projectID\")
               Join \"${p}customers\" USING(\"customerID\")
               Join \"${p}users\" USING(\"userID\")
@@ -2827,7 +2827,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $user  = MySQL::SQLValue($this->kga['user']['userID'] , MySQL::SQLVALUE_NUMBER);
     $p     = $this->kga['server_prefix'];
 
-      $this->conn->Query("SELECT \"timeEntryID\", start FROM \"${p}timeSheet\" WHERE \"userID\" = $user AND end = 0;");
+      $this->conn->Query("SELECT \"timeEntryID\", start FROM \"${p}timeSheet\" WHERE \"userID\" = $user AND \"end\"= 0;");
 
       if ($this->conn->RowCount() == 0) {
           $current_timer['all']  = 0;
@@ -3415,17 +3415,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses[] = "${p}users.trash=0";
 
       if ($start)
-        $whereClauses[]="end > $start";
+        $whereClauses[]="\"end\" > $start";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
 
-      $query = "SELECT start,end, \"userID\", (end - start) / 3600 * rate AS costs
+      $query = "SELECT \"start\",\"end\", \"userID\", (\"end\" - \"start\") / 3600 * rate AS costs
               FROM \"${p}timeSheet\"
               Join \"${p}projects\" USING(\"projectID\")
               Join \"${p}customers\" USING(\"customerID\")
               Join \"${p}users\" USING(\"userID\")
               Join \"${p}activities\" USING(\"activityID\") "
-              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY start DESC;";
+              .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses). " ORDER BY \"start\" DESC;";
       $result = $this->conn->Query($query);
 
       if (! $result) {
@@ -3491,12 +3491,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses[] = "${p}customers.trash=0";
 
       if ($start)
-        $whereClauses[]="end > $start";
+        $whereClauses[]="\"end\" > $start";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
 
 
-      $query = "SELECT start,end, \"customerID\", (end - start) / 3600 * rate AS costs
+      $query = "SELECT \"start\",\"end\", \"customerID\", (\"end\" - \"start\") / 3600 * rate AS costs
               FROM \"${p}timeSheet\"
               Left Join \"${p}projects\" USING(\"projectID\")
               Left Join \"${p}customers\" USING(\"customerID\") ".
@@ -3565,11 +3565,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses[] = "${p}projects.trash=0";
 
       if ($start)
-        $whereClauses[]="end > $start";
+        $whereClauses[]="\"end\" > $start";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
 
-      $query = "SELECT start, end ,\"projectID\", (end - start) / 3600 * rate AS costs
+      $query = "SELECT start, \"end\",\"projectID\", (\"end\" - start) / 3600 * rate AS costs
           FROM \"${p}timeSheet\"
           Left Join \"${p}projects\" USING(\"projectID\")
           Left Join \"${p}customers\" USING(\"customerID\") ".
@@ -3637,11 +3637,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $whereClauses[] = "${p}activities.trash = 0";
 
       if ($start)
-        $whereClauses[]="end > $start";
+        $whereClauses[]="\"end\" > $start";
       if ($end)
-        $whereClauses[]="start < $end";
+        $whereClauses[]="\"start\" < $end";
 
-      $query = "SELECT start, end, \"activityID\", (end - start) / 3600 * rate AS costs
+      $query = "SELECT \"start\", \"end\", \"activityID\", (\"end\" - \"start\") / 3600 * rate AS costs
           FROM \"${p}timeSheet\"
           Left Join \"${p}activities\" USING(\"activityID\")
           Left Join \"${p}projects\" USING(\"projectID\")
