@@ -689,8 +689,8 @@ class MySQL
 	 * @return string SQL formatted value of the specified data type
 	 */
 	static public function SQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT) {
-		if(MySQL::$mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
-                else if (MySQL::$pg) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype = self::SQLVALUE_TEXT);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLBooleanValue($value, $trueValue, $falseValue, $datatype);
 	}
 
 	/**
@@ -727,8 +727,8 @@ class MySQL
 	 * @return string
 	 */
 	static public function SQLValue($value, $datatype = self::SQLVALUE_TEXT) {
-		if(MySQL::$mysql) return MySQLNew::SQLValue($value, $datatype = self::SQLVALUE_TEXT);
-                else if (MySQL::$pg) return PostgreSQL::SQLValue($value, $datatype = self::SQLVALUE_TEXT);
+		if(MySQL::$mysql) return MySQLNew::SQLValue($value, $datatype );
+                else if (MySQL::$pg) return PostgreSQL::SQLValue($value, $datatype);
 	}
 
 	/**
