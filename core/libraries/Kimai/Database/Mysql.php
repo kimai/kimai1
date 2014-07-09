@@ -4044,8 +4044,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function user_loginSetKey($userId,$keymai) {
     $p = $this->kga['server_prefix'];
 
-    $query = "UPDATE \"${p}users\" SET secure='$keymai',ban=0,banTime=0 WHERE \"userID\"='".
-      MYSQL::SQLValue($userId,MYSQL::SQLVALUE_NUMBER)."';";
+    $query = "UPDATE \"${p}users\" SET secure='$keymai',ban=0,banTime=0 WHERE \"userID\"=".
+      MYSQL::SQLValue($userId,MYSQL::SQLVALUE_NUMBER).";";
     $this->conn->Query($query);
   }
 
@@ -4058,7 +4058,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function customer_loginSetKey($customerId,$keymai) {
     $p = $this->kga['server_prefix'];
 
-    $query = "UPDATE \"${p}customers\" SET secure='$keymai' WHERE \"customerID\"='".MYSQL::SQLValue($customerId,MYSQL::SQLVALUE_NUMBER)."';";
+    $query = "UPDATE \"${p}customers\" SET secure='$keymai' WHERE \"customerID\"=".MYSQL::SQLValue($customerId,MYSQL::SQLVALUE_NUMBER).";";
     $this->conn->Query($query);
   }
 
