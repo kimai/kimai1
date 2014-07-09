@@ -2190,7 +2190,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses[] = "project.internal = 0";
 
       if ($start)
-        $whereClauses[]="(\"end\" > $start || \"end\"= 0)";
+        $whereClauses[]="(\"end\" > $start or \"end\"= 0)";
       if ($end)
         $whereClauses[]="\"start\" < $end";
       if ($filterCleared > -1)
@@ -2216,7 +2216,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       
       
       $select = "SELECT \"timeSheet\".*, status.status, customer.name AS \"customerName\", customer.\"customerID\" as \"customerID\", activity.name AS \"activityName\",
-                        project.name AS \"projectName\", project.comment AS \"projectComment\", user.name AS \"userName\", user.alias AS \"userAlias\" ";
+                        project.name AS \"projectName\", project.comment AS \"projectComment\", \"user\".name AS \"userName\", \"user\".alias AS \"userAlias\" ";
       
       if($countOnly) {
       	$select = "SELECT COUNT(*) AS total";
@@ -2227,7 +2227,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                 FROM \"${p}timeSheet\" AS \"timeSheet\"
                 Join \"${p}projects\" AS project USING (\"projectID\")
                 Join \"${p}customers\" AS customer USING (\"customerID\")
-                Join \"${p}users\" AS user USING(\"userID\")
+                Join \"${p}users\" AS \"user\" USING(\"userID\")
                 Join \"${p}statuses\" AS status USING(\"statusID\")
                 Join \"${p}activities\" AS activity USING(\"activityID\") "
                 .(count($whereClauses)>0?" WHERE ":" ").implode(" AND ",$whereClauses).
