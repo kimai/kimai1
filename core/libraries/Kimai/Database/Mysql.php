@@ -2544,7 +2544,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $name  = MySQL::SQLValue($name);
       $p     = $this->kga['server_prefix'];
 
-      $query = "SELECT customerID FROM ${p}customers WHERE name = $name AND trash = 0";
+      $query = MySQL::BuildSQLSelect($p."customers", array("name" => $name, "trash" => 0), "customerID");
 
       $this->conn->Query($query);
       return $this->conn->RowCount() == 1;
