@@ -1458,17 +1458,13 @@ class PostgreSQL
 	public function SelectRows($tableName, $whereArray = null, $columns = null,
 							   $sortColumns = null, $sortAscending = true,
 							   $limit = null) {
-            echo "start selectRows <br />";
 		$this->ResetError();
 		if (! $this->IsConnected()) {
-                        echo "is not connected";
 			$this->SetError("No connection");
 			return false;
 		} else {
-                        echo "build sql";
 			$sql = self::BuildSQLSelect($tableName, $whereArray,
 					$columns, $sortColumns, $sortAscending, $limit);
-                        echo $sql;
 			// Execute the SELECT
 			if (! $this->Query($sql)) {
 				return $this->last_result;
