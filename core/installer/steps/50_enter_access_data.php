@@ -4,10 +4,14 @@ echo '<script type="text/javascript" charset="utf-8">current=50;</script>';
 $hostname = isset($_REQUEST['hostname'])?$_REQUEST['hostname']:"localhost";
 $username = isset($_REQUEST['username'])?$_REQUEST['username']:"";
 $password = isset($_REQUEST['password'])?$_REQUEST['password']:"";
+$db_type = isset($_REQUEST['db_type'])?$_REQUEST['db_type']:"";
 
 //build Database selection
-if (extension_loaded("mysql")) $databaseOptions= '<option value="mysql">MySQL</option>';
-if (extension_loaded("pgsql")) $databaseOptions.= '<option value="pgsql">PostgreSQL</option>';
+if($db_type == 'mysql') $mysqlSel = 'selected';
+if($db_type == 'pgsql') $pgsqlSel = 'selected';
+
+if (extension_loaded("mysql")) $databaseOptions= '<option value="mysql" '.$mysqlSel.'>MySQL</option>';
+if (extension_loaded("pgsql")) $databaseOptions.= '<option value="pgsql" '.$pgsqlSel.'>PostgreSQL</option>';
 
 
 if ($hostname=="") $hostname="localhost";
