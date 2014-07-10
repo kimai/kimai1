@@ -201,6 +201,7 @@ function host_proceed() {
     hostname = $('#host').val();
     username = $('#user').val();
     password = $('#pass').val();
+    db_type  = $('select[name=db_type]').val()
     
     if (username == "") {
         
