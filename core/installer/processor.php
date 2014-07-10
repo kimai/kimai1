@@ -76,8 +76,16 @@ switch ($axAction) {
        }
 
        if (!extension_loaded('mysql')) {
-           $errors++;
            $javascript .= "$('div.sp_mysql').addClass('fail');";
+       }
+       
+       if (!extension_loaded('pgsql')) {
+           $javascript .= "$('div.sp_pgsql').addClass('fail');";
+       }
+       
+       //one should be there
+       if (!extension_loaded('mysql') && !extension_loaded('pgsql')){
+           $errors++;
        }
 
         // magic quotes was removed in 5.4.0 - so we only check it in lower versions

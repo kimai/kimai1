@@ -16,6 +16,7 @@ if ($_REQUEST['lang']=="en") {
 <div class="note gray">The PHP settings magic_quotes_gpc and magic_quotes_runtime must be set to off.</div>
 <?php } ?>
 <div class="sp_mysql">The <b>MySQL</b> extension for PHP has to be loaded.</div>
+<div class="sp_pgsql">The <b>PostgreSQL</b> extension for PHP has to be loaded.</div>
 
 <br/><br/>
 For PDF export the following requirement must be met:<br/>
@@ -41,7 +42,7 @@ else {
 <div class="note gray">Die PHP Einstellungen magic_quotes_gpc und magic_quotes_runtime müssen auf off gestellt sein.</div>
 <?php } ?>
 <div class="sp_mysql">Die <b>MySQL</b> Erweiterung f&uuml;r PHP muss aktiviert sein.</div>
-
+<div class="sp_pgsql">Die <b>PostgreSQL</b> Erweiterung f&uuml;r PHP muss aktiviert sein.</div>
 <br/><br/>
 Damit der PDF Export zuverl&auml;ssig funktioniert m&uuml;ssen folgende Punkte erf&uuml;llt sein:<br/>
 <div class="sp_memory">Das Skript muss mind. 20MB an Speicher nutzen k&ouml;nnen.</div>

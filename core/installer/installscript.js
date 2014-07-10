@@ -114,11 +114,13 @@ function resetRequirementsIndicators() {
     $('div.sp_phpversion').removeClass("fail");
     $('div.sp_magicquotes').removeClass("fail");
     $('div.sp_mysql').removeClass("fail");
+    $('div.sp_pgsql').removeClass("fail");
     $('div.sp_memory').removeClass("fail");
     
     $('div.sp_phpversion').addClass("ok");
     $('div.sp_magicquotes').addClass("ok");
     $('div.sp_mysql').addClass("ok");
+    $('div.sp_pgsql').addClass("ok");
     $('div.sp_memory').addClass("ok");
 }
 
@@ -199,6 +201,7 @@ function host_proceed() {
     hostname = $('#host').val();
     username = $('#user').val();
     password = $('#pass').val();
+    db_type  = $('select[name=db_type]').val()
     
     if (username == "") {
         

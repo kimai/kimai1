@@ -10,13 +10,15 @@ $create_database  = isset($_REQUEST['create_database'])? $_REQUEST['create_datab
 $server_type      = isset($_REQUEST['db_type'])?         $_REQUEST['db_type']         :null;
 $prefix           = isset($_REQUEST['prefix'])?          $_REQUEST['prefix']          :"kimai_";
 
-$con = pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password);
-
+if($server_type == 'mysql'){
+    $con = @mysql_connect($hostname,$username,$password);
+} else if($server_type == 'pgsql'){
+    $con = @pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password);
+}
 // we could not connect to the database, show error and leave the script
 if (!$con) {
     if ($lang=="de") {
-        echo "Datenbank hat Zugriff verweigert. Gehen Sie bitte zurück.6<br />
-		host=".$hostname." port=5432 user=".$username." password=".$password." <br /><button onClick=\"step_back(); return false;\">Zurück</button>";
+        echo "Datenbank hat Zugriff verweigert. Gehen Sie bitte zurück.<br /><button onClick=\"step_back(); return false;\">Zurück</button>";
     } else {
         echo "The database refused access. Please go back.<br /><button onClick=\"step_back(); return false;\">Back</button>";
     }
@@ -31,18 +33,19 @@ ob_start();
 // get permissions
 $showDatabasesAllowed = false;
 $createDatabaseAllowed = false;
-/*$result = pg_query("SHOW GRANTS;"); -- pg without
-while ($row = pg_fetch_row($result)) {
-    if (strpos($row[0],'SHOW DATABASES') !== false)
-        $showDatabasesAllowed = true;
-    else if (strpos($row[0],'CREATE,') !== false)
-        $createDatabaseAllowed = true;
-    else if (strpos($row[0],'ALL PRIVILEGES') !== false) {
-        $showDatabasesAllowed = true;
-        $createDatabaseAllowed = true;
+if ($server_type =='mysql'){
+    $result = pg_query("SHOW GRANTS;");
+    while ($row = pg_fetch_row($result)) {
+        if (strpos($row[0],'SHOW DATABASES') !== false)
+            $showDatabasesAllowed = true;
+        else if (strpos($row[0],'CREATE,') !== false)
+            $createDatabaseAllowed = true;
+        else if (strpos($row[0],'ALL PRIVILEGES') !== false) {
+            $showDatabasesAllowed = true;
+            $createDatabaseAllowed = true;
+        }
     }
-}*/
-
+}
 if (!$showDatabasesAllowed) {
     if ($lang=="de")
         echo "Kein Berechtigung um Datenbanken aufzulisten. Name der zu verwendenden Datenbank:<br/>";
@@ -50,9 +53,13 @@ if (!$showDatabasesAllowed) {
         echo "No permission to list databases. Name of the database to use:<br/>";
 
     echo '<input type="text" id="db_names" value="'.$database.'"/>';
-    pg_close();
-    $con = pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password." dbname=".$database);
-    if ( ($database !== '' && $create_database === '') && !pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password." dbname=".$database)) {
+    if($server_type == 'mysql'){
+        $dbcon = !mysql_select_db($database);
+    } else if($server_type =='pgsql'){
+        pg_close();
+        $dbcon = $con = pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password." dbname=".$database);
+    }
+    if ( ($database !== '' && $create_database === '') && !$dbcon) {
         $errors = true;
         if ($lang=="de")
             echo '<strong id="db_select_label" class="arrow">Diese Datenbank konnte nicht geöffnet werden.</strong>';
@@ -69,9 +76,9 @@ if (!$showDatabasesAllowed) {
 else {
 
     // read existing databases
-    $result = pg_query("SHOW DATABASES");
+    $result = mysql_query("SHOW DATABASES");
     $db_connection = array();
-    while ( $row = pg_fetch_row($result) ) {
+    while ( $row = mysql_fetch_row($result) ) {
         if (($row[0] != "information_schema")&&($row[0] != "mysql")) {
             $db_connection[] = $row[0];
         }
@@ -113,7 +120,7 @@ if ($createDatabaseAllowed) {
             $databaseErrorMessage = ($lang=="de")?"Nur Buchstaben, Zahlen und Unterstriche.":"Only letters, numbers and underscores.";
         else if ( strlen($create_database) > 64 )
             $databaseErrorMessage = ($lang=="de")?"Maximal 64 Zeichen.":"At most 64 characters.";
-        else if ( pg_select_db($create_database) )
+        else if ( mysql_select_db($create_database) )
             $databaseErrorMessage = ($lang=="de")?"Datenbank existiert bereits.":"Database already exists.";
     }
 
@@ -174,4 +181,9 @@ if ( ($database === '' && $create_database === '') || $errors || !isset($_REQUES
 else
     echo '<script type="text/javascript" charset="utf-8">db_proceed();</script>';
 
-pg_close($con);
+if($server_type == 'mysql'){
+    mysql_close($con);
+} else if($server_type == 'pgsql'){
+    pg_close($con);
+}
+
