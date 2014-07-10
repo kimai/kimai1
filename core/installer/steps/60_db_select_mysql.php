@@ -120,7 +120,7 @@ if ($createDatabaseAllowed) {
             $databaseErrorMessage = ($lang=="de")?"Nur Buchstaben, Zahlen und Unterstriche.":"Only letters, numbers and underscores.";
         else if ( strlen($create_database) > 64 )
             $databaseErrorMessage = ($lang=="de")?"Maximal 64 Zeichen.":"At most 64 characters.";
-        else if ( pg_select_db($create_database) )
+        else if ( mysql_select_db($create_database) )
             $databaseErrorMessage = ($lang=="de")?"Datenbank existiert bereits.":"Database already exists.";
     }
 
