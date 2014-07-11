@@ -2,7 +2,7 @@ Kimai Time Tracking
 ===================
 
 This is the repository of Kimai, a open source time tracking software
-that runs on (almost) every webserver with PHP and MySQL.
+that runs on (almost) every webserver with PHP and MySQL/PostgreSQL.
 
 You can get more information about this Time Tracking Software:
 
