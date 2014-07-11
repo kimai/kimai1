@@ -36,7 +36,7 @@ function exec_query($query) {
 
     //Logger::logfile($query);
     if (!$success) {
-        $errorInfo = serialize($conn->Error());
+        $errorInfo = $aiFieldize($conn->Error());
         Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
         $errors=true;
     }
@@ -56,24 +56,36 @@ function quoteForSql($input) {
   return "'".mysql_real_escape_string($input)."'";
 }
 
-function setAI($table,$val){
-    $val = $val -1;
-    if ($val < 1) return;
-    exec_query(
-            "SELECT setval(pg_get_serial_sequence('\"".$table."\"',
-                    (SELECT              
-                      pa.attname
-                    FROM pg_index pi, pg_class pc, pg_attribute pa
-                    WHERE
-                      pc.oid = '\"".$table."\"'::regclass AND
-                      indrelid = pc.oid AND
-                      pa.attrelid = pc.oid AND
-                      pa.attnum = any(pi.indkey) AND
-                      indisprimary
-                      limit 1)::text
+function getAIField(){
+    if($server_type == 'mysql'){
+        return "integer AUTO_INCREMENT";
+    } else if($server_type == 'pgsql'){
+        return "$aiField";
+    }
+}
 
-                    ), ".$val.");"
+function setAI($table,$val){
+    if ($server_type == 'mysql'){
+        exec_query("ALTER TABLE \"$table\" AUTO_INCREMENT = $val;");
+    } else if($server_type == 'pgsql'){
+        $val = $val -1;
+        if ($val < 1) return;
+        exec_query(
+                "SELECT setval(pg_get_$aiField_sequence('\"".$table."\"',
+                        (SELECT              
+                          pa.attname
+                        FROM pg_index pi, pg_class pc, pg_attribute pa
+                        WHERE
+                          pc.oid = '\"".$table."\"'::regclass AND
+                          indrelid = pc.oid AND
+                          pa.attrelid = pc.oid AND
+                          pa.attnum = any(pi.indkey) AND
+                          indisprimary
+                          limit 1)::text
+
+                        ), ".$val.");"
             );
+    }
 }
 
 if (!isset($_REQUEST['accept'])) {
@@ -95,10 +107,12 @@ Logger::logfile("-- begin install ----------------------------------");
 $errors=false;
 
 $p = $kga['server_prefix'];
+$aiField = getAIField();
+
 
 $query =
 "CREATE TABLE ${p}users (
-  \"userID\" serial NOT NULL  PRIMARY KEY,
+  \"userID\" $aiField NOT NULL PRIMARY KEY,
   \"name\" varchar(160) NOT NULL,
   \"alias\" varchar(160),
   \"trash\" smallint NOT NULL default '0',
@@ -115,9 +129,10 @@ $query =
   \"timeframeBegin\" varchar(60) NOT NULL default '0',
   \"timeframeEnd\" varchar(60) NOT NULL default '0',
   \"apikey\" varchar(30) NULL DEFAULT NULL,
-  \"globalRoleID\" int NOT NULL);"
-. "create unique index \"${p}users_name_idx\" on \"${p}users\"(\"name\");"
-. "create unique index \"${p}users_apikey_idx\" on \"${p}users\"(\"apikey\");";
+  \"globalRoleID\" int NOT NULL,
+  unique (\"name\"),
+  unique (\"apikey\")
+  );";
 
 exec_query($query);
 
@@ -131,7 +146,7 @@ exec_query($query);
 
 $query=
 "CREATE TABLE \"${p}activities\" (
-  \"activityID\" serial NOT NULL PRIMARY KEY,
+  \"activityID\" $aiField NOT NULL PRIMARY KEY,
   \"name\" varchar(255) NOT NULL,
   \"comment\" TEXT NOT NULL,
   \"visible\" smallint NOT NULL DEFAULT '1',
@@ -143,7 +158,7 @@ setAI(${p}.'activities',1);
 
 $query=
 "CREATE TABLE \"${p}groups\" (
-  \"groupID\" serial NOT NULL PRIMARY KEY,
+  \"groupID\" $aiField NOT NULL PRIMARY KEY,
   \"name\" varchar(160) NOT NULL,
   \"trash\" smallint NOT NULL DEFAULT '0'
 ) ;";
@@ -193,7 +208,7 @@ exec_query($query);
 
 $query=
 "CREATE TABLE \"${p}customers\" (
-  \"customerID\" serial NOT NULL PRIMARY KEY,
+  \"customerID\" $aiField NOT NULL PRIMARY KEY,
   \"name\" varchar(255) NOT NULL,
   \"password\" varchar(255),
   \"passwordResetHash\" char(32) NULL DEFAULT NULL,
@@ -220,7 +235,7 @@ setAI(${p}.'customers',1);
 
 $query=
 "CREATE TABLE \"${p}projects\" (
-  \"projectID\" serial NOT NULL PRIMARY KEY,
+  \"projectID\" $aiField NOT NULL PRIMARY KEY,
   \"customerID\" integer NOT NULL,
   \"name\" varchar(255) NOT NULL,
   \"comment\" TEXT NOT NULL,
@@ -237,7 +252,7 @@ setAI(${p}.'projects',1);
 
 $query=
 "CREATE TABLE \"${p}timeSheet\" (
-  \"timeEntryID\" serial NOT NULL PRIMARY KEY,
+  \"timeEntryID\" $aiField NOT NULL PRIMARY KEY,
   \"start\" integer NOT NULL default '0',
   \"end\" integer NOT NULL default '0',
   \"duration\" integer NOT NULL default '0',
@@ -291,7 +306,7 @@ exec_query($query);
 
 $query=
 "CREATE TABLE \"${p}expenses\" (
-  \"expenseID\" serial NOT NULL PRIMARY KEY,
+  \"expenseID\" $aiField NOT NULL PRIMARY KEY,
   \"timestamp\" integer NOT NULL DEFAULT '0',
   \"userID\" integer NOT NULL,
   \"projectID\" integer NOT NULL,
@@ -304,14 +319,13 @@ $query=
   \"value\" decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ;"
 . "create index \"${p}expenses_userID_idx\" on \"${p}expenses\"(\"userID\");"
-. "create index \"${p}expenses_projectID_idx\" on \"${p}expenses\"(\"projectID\");"
-. "COMMENT ON COLUMN \"${p}expenses\".\"refundable\" is 'expense refundable to employee (0 = no, 1 = yes)';";
+. "create index \"${p}expenses_projectID_idx\" on \"${p}expenses\"(\"projectID\");";
 exec_query($query);
 setAI(${p}.'expenses',1);
 
 $query = 
 "CREATE TABLE \"${p}statuses\" (
-\"statusID\" serial NOT NULL PRIMARY KEY,
+\"statusID\" $aiField NOT NULL PRIMARY KEY,
 \"status\" VARCHAR( 200 ) NOT NULL
 ) ";
 exec_query($query);
