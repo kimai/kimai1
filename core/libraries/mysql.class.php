@@ -22,6 +22,7 @@ class MySQLNew
 	private $db_dbname  = "";           // database name
 	private $db_charset = "";           // optional character set (i.e. utf8)
 	private $db_pcon    = false;        // use persistent connection?
+        private $ansi       = true;         // run in ANSI Mode
 
 	// constants for SQLValue function
 	const SQLVALUE_BIT      = "bit";
@@ -1044,6 +1045,8 @@ class MySQLNew
 			$this->SetError();
 			return false;
 		} else {
+                        // ANSI Mode? -Strict SQL Syntax Check , less magic --> better
+                        if ($this->ansi) $this->Query ("set session sql_mode = 'ansi';");
 			// Select a database (if specified)
 			if (strlen($this->db_dbname) > 0) {
 				if (strlen($this->db_charset) == 0) {
