@@ -36,7 +36,7 @@ function exec_query($query) {
 
     //Logger::logfile($query);
     if (!$success) {
-        $errorInfo = $aiFieldize($conn->Error());
+        $errorInfo = serialize($conn->Error());
         Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
         $errors=true;
     }
