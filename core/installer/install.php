@@ -53,7 +53,7 @@ function get_last_id($table) {
 function quoteForSql($input) {
   global $kga, $database;
 
-  return "'".mysql_real_escape_string($input)."'";
+  return MySQL::SQLValue($input,Mysql::SQLVALUE_TEXT);
 }
 
 function getAIField(){
