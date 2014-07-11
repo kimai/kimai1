@@ -64,6 +64,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
    **/
   public function performAutoLogin(&$userId) {
     $userId = false;
+    $conn = $this->database->getConnectionHandler(); 
 
     // No autologin if not allowed or if no remote user authorized by web server
     if (!$this->HTAUTH_ALLOW_AUTOLOGIN) return false;
@@ -88,12 +89,13 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     // User is authenticated by web server. Does the user exist in Kimai yet?
     global $kga;
     $check_username = $this->HTAUTH_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
-    $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';", $kga['server_prefix'], mysql_real_escape_string($check_username)));
-    if (mysql_num_rows($result) == 1) {
+    $dbvalue = MySQL::SQLValue($check_username, MySQL::SQLVALUE_TEXT);
+    $result = $conn->QueryArray(sprintf("SELECT * FROM %susers WHERE name =%s;", $kga['server_prefix'], $dbvalue),MYSQLI_ASSOC);
+    if ($conn->RowCount() == 1) {
 
 	// User found in Kimai DB: get info and return true
-    	$row = mysql_fetch_assoc($result);
-        $userId = $row['userID'];
+    	//$row = mysql_fetch_assoc($result);
+        $userId = $result['userID'];
         return true;
 	}
 
@@ -119,16 +121,19 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
 
   public function authenticate($username,$password,&$userId) {
       global $kga;
+      $conn = $this->database->getConnectionHandler(); 
 
       $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+      $dbvalue = MySQL::SQLValue($username, MySQL::SQLVALUE_TEXT);
 
-      $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
-      if (mysql_num_rows($result) != 1) {
+      $result = $conn->QueryArray(sprintf("SELECT * FROM %susers WHERE name =%s;",$kga['server_prefix'],$dbvalue),MYSQLI_ASSOC);
+      if ($conn->RowCount() != 1) {
         $userId = false;
         return false;
       }
 
-      $row    = mysql_fetch_assoc($result);
+      //$row    = mysql_fetch_assoc($result);
+      $row     = $result;
       $pass    = $row['password'];        
       $ban     = $row['ban'];
       $banTime = $row['banTime'];   
