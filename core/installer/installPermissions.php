@@ -97,7 +97,7 @@ exec_query($query);
 $query = buildRoleInsertQuery('globalRoles', 'Admin', $globalPermissions, $globalPermissions);
 exec_query($query);
 
-$globalAdminRoleID = get_last_id(${p}.'globalRoles');//mysql_insert_id();
+$globalAdminRoleID = get_last_id($p.'globalRoles');//mysql_insert_id();
 // global user role
 $allowedPermissions = array(
   'ki_budget-access',
@@ -115,7 +115,7 @@ $allowedPermissions = array(
 );
 $query = buildRoleInsertQuery('globalRoles', 'User', $allowedPermissions, $globalPermissions);
 exec_query($query);
-$globalUserRoleID = get_last_id(${p}.'globalRoles');
+$globalUserRoleID = get_last_id($p.'globalRoles');
 
 
 
@@ -125,13 +125,13 @@ exec_query($query);
 // membership admin role
 $query = buildRoleInsertQuery('membershipRoles', 'Admin', $membershipPermissions, $membershipPermissions);
 exec_query($query);
-$membershipAdminRoleID = get_last_id(${p}.'membershipRoles');
+$membershipAdminRoleID = get_last_id($p.'membershipRoles');
 
 // membership user role
 $allowedPermissions = array();
 $query = buildRoleInsertQuery('membershipRoles', 'User', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipUserRoleID = get_last_id(${p}.'membershipRoles');
+$membershipUserRoleID = get_last_id($p.'membershipRoles');
 
 // membership groupleader role
 $allowedPermissions = array_merge($allowedPermissions, array(
@@ -144,6 +144,6 @@ $allowedPermissions = array_merge($allowedPermissions, array(
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipGroupleaderRoleID = get_last_id(${p}.'membershipRoles');
+$membershipGroupleaderRoleID = get_last_id($p.'membershipRoles');
 
 ?>
