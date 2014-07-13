@@ -1594,7 +1594,7 @@ class PostgreSQL
 					if (get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
-					$return_value = "'" . pg_escape_string($pg_link,$value) . "'"; //mysql_real_escape_string = pg_escape_string
+					$return_value = "'" . pg_escape_string($value) . "'"; //mysql_real_escape_string = pg_escape_string
 				//}
 				break;
 			case "number":

@@ -57,21 +57,23 @@ function quoteForSql($input) {
 }
 
 function getAIField(){
-    if($server_type == 'mysql'){
+    global $kga;
+    if($kga['server_type'] == 'mysql'){
         return "integer AUTO_INCREMENT";
-    } else if($server_type == 'pgsql'){
-        return "$aiField";
+    } else if($kga['server_type'] == 'pgsql'){
+        return "serial";
     }
 }
 
 function setAI($table,$val){
-    if ($server_type == 'mysql'){
+    global $kga;
+    if ($kga['server_type'] == 'mysql'){
         exec_query("ALTER TABLE \"$table\" AUTO_INCREMENT = $val;");
-    } else if($server_type == 'pgsql'){
+    } else if($kga['server_type'] == 'pgsql'){
         $val = $val -1;
         if ($val < 1) return;
         exec_query(
-                "SELECT setval(pg_get_$aiField_sequence('\"".$table."\"',
+                "SELECT setval(pg_get_serial_sequence('\"".$table."\"',
                         (SELECT              
                           pa.attname
                         FROM pg_index pi, pg_class pc, pg_attribute pa
@@ -154,7 +156,7 @@ $query=
   \"trash\" smallint NOT NULL DEFAULT '0'
 );";
 exec_query($query);
-setAI(${p}.'activities',1);
+setAI($p.'activities',1);
 
 $query=
 "CREATE TABLE \"${p}groups\" (
@@ -163,7 +165,7 @@ $query=
   \"trash\" smallint NOT NULL DEFAULT '0'
 ) ;";
 exec_query($query);
-setAI(${p}.'groups',1);
+setAI($p.'groups',1);
 
 $query=
 "CREATE TABLE \"${p}groups_users\" (
@@ -173,7 +175,7 @@ $query=
   PRIMARY KEY (\"groupID\",\"userID\")
 ) ;";
 exec_query($query);
-setAI(${p}.'groups_users',1);
+setAI($p.'groups_users',1);
 
 // group/customer cross-table (groups n:m customers)
 $query="CREATE TABLE \"${p}groups_customers\" (
@@ -231,7 +233,7 @@ $query=
   \"trash\" smallint NOT NULL DEFAULT '0'
 ) ;";
 exec_query($query);
-setAI(${p}.'customers',1);
+setAI($p.'customers',1);
 
 $query=
 "CREATE TABLE \"${p}projects\" (
@@ -248,7 +250,7 @@ $query=
   \"internal\" smallint NOT NULL DEFAULT 0);"
 . "create index \"${p}projects_customerID_idx\" on \"${p}projects\"(\"customerID\");";
 exec_query($query);
-setAI(${p}.'projects',1);
+setAI($p.'projects',1);
 
 $query=
 "CREATE TABLE \"${p}timeSheet\" (
@@ -275,7 +277,7 @@ $query=
 . "create index \"${p}timeSheet_projectID_idx\" on \"${p}timeSheet\"(\"projectID\");"
 . "create index \"${p}timeSheet_activityID_idx\" on \"${p}timeSheet\"(\"activityID\");";
 exec_query($query);
-setAI(${p}.'timeSheet',1);
+setAI($p.'timeSheet',1);
 
 $query=
 "CREATE TABLE \"${p}configuration\" (
@@ -321,7 +323,7 @@ $query=
 . "create index \"${p}expenses_userID_idx\" on \"${p}expenses\"(\"userID\");"
 . "create index \"${p}expenses_projectID_idx\" on \"${p}expenses\"(\"projectID\");";
 exec_query($query);
-setAI(${p}.'expenses',1);
+setAI($p.'expenses',1);
 
 $query = 
 "CREATE TABLE \"${p}statuses\" (
@@ -329,7 +331,7 @@ $query =
 \"status\" VARCHAR( 200 ) NOT NULL
 ) ";
 exec_query($query);
-setAI(${p}.'statuses',1);
+setAI($p.'statuses',1);
 
 // The included script only sets up the initial permissions.
 // Permissions that were later added follow below.
@@ -362,7 +364,7 @@ exec_query($query);
 
 // ADMIN USER
 $adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
-setAI(${p}.'users', $randomAdminID + 2); //why random id in a ai field?
+setAI($p.'users', $randomAdminID + 2); //why random id in a ai field?
 $query="INSERT INTO \"${p}users\" (\"userID\",\"name\",\"mail\",\"password\", \"globalRoleID\" ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword',1);";
 exec_query($query);
 
