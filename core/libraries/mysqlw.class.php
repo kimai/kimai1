@@ -494,9 +494,9 @@ class MySQL
 	 * @return array A multi-dimensional array containing all the data
 	 *               returned from the query or FALSE on all errors
 	 */
-	public function QueryArray($sql, $resultType = "default") {
-		if($resultType == "default") return $this->database->QueryArray($sql);
-                else if($resultType != "default") return $this->database->QueryArray($sql,$resultType);
+	public function QueryArray($sql, $resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->QueryArray($sql,$resultType);
 	}
 
 	/**
@@ -519,9 +519,9 @@ class MySQL
 	 * @return array An array containing the first row or FALSE if no row
 	 *               is returned from the query
 	 */
-	public function QuerySingleRowArray($sql, $resultType = "default") {
-		if($resultType == "default") return $this->database->QuerySingleRowArray($sql);
-                else if($resultType != "default") return $this->database->QuerySingleRowArray($sql,$resultType);
+	public function QuerySingleRowArray($sql, $resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->QuerySingleRowArray($sql,$resultType);
 	}
 
 	/**
@@ -566,9 +566,9 @@ class MySQL
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return Records in array form
 	 */
-	public function RecordsArray($resultType = "default") {
-		if($resultType == "default") return $this->database->RecordsArray();
-                else if($resultType != "default") return $this->database->RecordsArray($resultType);
+	public function RecordsArray($resultType = MYSQL_BOTH) {
+                if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+		return $this->database->RecordsArray($resultType);
 	}
 
 	/**
@@ -601,9 +601,10 @@ class MySQL
 	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
 	 * @return array Array that corresponds to fetched row or FALSE if no rows
 	 */
-	public function RowArray($optional_row_number = null, $resultType = "default") {
-		if($resultType == "default") return $this->database->RowArray($optional_row_number);
-                else if($resultType != "default") return $this->database->RowArray($optional_row_number,$resultType);
+	public function RowArray($optional_row_number = null, $resultType = MYSQL_BOTH) {
+            if(is_string($resultType))$resultType = $this->convertResultType($resultType); // happen when the mysql extension is off
+            return $this->database->RowArray($optional_row_number,$resultType);
+                
 	}
 
 	/**
@@ -820,6 +821,17 @@ class MySQL
         public function GetLastId($table){
                 if(MySQL::$mysql) return mysql_insert_id ();
                 else if (MySQL::$pg) return $this->database->PGLastId ($table);
+        }
+        
+        /**
+         * Convert String ResultType infos in Integer
+         * @param string $resultType MYSQL_ASSOC, MYSQL_BOTH, MYSQL_NUM
+         * @return int
+         */
+        public function convertResultType($resultType){
+            if ($resultType == 'MYSQL_ASSOC')       return 1;
+            else if($resultType == 'MYSQL_NUM')     return 2;
+            else if($resultType == 'MYSQL_BOTH')    return 3;
         }
 }
 ?>
