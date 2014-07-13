@@ -4,7 +4,7 @@ function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
   global $p;
   $query = 
   "CREATE TABLE \"${p}${tableName}\" (
-  \"${idColumnName}\" serial NOT NULL  PRIMARY KEY,
+  \"${idColumnName}\" ".getAIField()." NOT NULL  PRIMARY KEY,
   \"name\" VARCHAR( 255 ) NOT NULL,";
 
   $permissionColumns = array();
