@@ -20,7 +20,7 @@ class MySQL
 {
         private $database   = null;
         private static $mysql      = false;
-        private static $pg         = true;
+        private static $pg         = false;
         
         const SQLVALUE_BIT      = "bit";
 	const SQLVALUE_BOOLEAN  = "boolean";
@@ -45,8 +45,10 @@ class MySQL
 	public function __construct($connect = true, $database = null, $server = null,
 								$username = null, $password = null, $charset = null,
                                                                 $schema = null) {
-                MySQL::$mysql = false;
-                MySQL::$pg = true;
+                global $kga;
+                if($kga['server_type'] == 'mysql') MYSQL::$mysql =TRUE;
+                else if ($kga['server_type'] == 'pgsql') MYSQL::$pg = TRUE;
+            
 		if(MySQL::$mysql) $this->database = new MySQLNew($connect , $database, $server, $username, $password , $charset);
                 else if(MySQL::$pg) {
                     $this->database = new PostgreSQL($connect , $database, $server, $username, $password , $charset, $schema);                    
@@ -157,8 +159,8 @@ class MySQL
 	 * @return string Returns a SQL UPDATE statement
 	 */
 	static public function BuildSQLUpdate($tableName, $valuesArray, $whereArray = null) {
-		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
-                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray, $columns, $sortColumns, $sortAscending, $limit);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray);
 	}
 
 	/**
