@@ -1243,7 +1243,7 @@ class PostgreSQL
 				return false;
 			} else {
 				//while($member = mysql_fetch_object($this->last_result)){
-				while ($member = pg_fetch_array($this->last_result,0, $resultType)){
+				while ($member = pg_fetch_array($this->last_result,NULL, $resultType)){
 					$members[] = $member;
 				}
 				pg_result_seek($this->last_result, 0);
