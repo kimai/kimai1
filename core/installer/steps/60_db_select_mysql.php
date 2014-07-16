@@ -34,8 +34,8 @@ ob_start();
 $showDatabasesAllowed = false;
 $createDatabaseAllowed = false;
 if ($server_type =='mysql'){
-    $result = pg_query("SHOW GRANTS;");
-    while ($row = pg_fetch_row($result)) {
+    $result = mysql_query("SHOW GRANTS;");
+    while ($row = mysql_fetch_row($result)) {
         if (strpos($row[0],'SHOW DATABASES') !== false)
             $showDatabasesAllowed = true;
         else if (strpos($row[0],'CREATE,') !== false)
