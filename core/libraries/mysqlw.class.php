@@ -159,8 +159,8 @@ class MySQL
 	 * @return string Returns a SQL UPDATE statement
 	 */
 	static public function BuildSQLUpdate($tableName, $valuesArray, $whereArray = null) {
-		if(MySQL::$mysql) return MySQLNew::BuildSQLSelect ($tableName, $whereArray);
-                else if (MySQL::$pg) return PostgreSQL::BuildSQLSelect ($tableName, $whereArray);
+		if(MySQL::$mysql) return MySQLNew::BuildSQLUpdate ($tableName, $valuesArray, $whereArray);
+                else if (MySQL::$pg) return PostgreSQL::BuildSQLUpdate ($tableName, $valuesArray, $whereArray);
 	}
 
 	/**
