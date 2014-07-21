@@ -1705,7 +1705,7 @@ class PostgreSQL
 			return false;
 		} else {
 			if (! $this->in_transaction) {
-				if (! pg_query("START TRANSACTION", $this->pg_link)) {
+				if (! pg_query($this->pg_link, "START TRANSACTION")) {
 					$this->SetError();
 					return false;
 				} else {
@@ -1731,7 +1731,7 @@ class PostgreSQL
 			return false;
 		} else {
 			if ($this->in_transaction) {
-				if (! pg_query("COMMIT", $this->pg_link)) {
+				if (! pg_query($this->pg_link, "COMMIT")) {
 					// $this->TransactionRollback();
 					$this->SetError();
 					return false;
@@ -1757,7 +1757,7 @@ class PostgreSQL
 			$this->SetError("No connection");
 			return false;
 		} else {
-			if(! pg_query("ROLLBACK", $this->pg_link)) {
+			if(! pg_query($this->pg_link, "ROLLBACK")) {
 				$this->SetError("Could not rollback transaction");
 				return false;
 			} else {
