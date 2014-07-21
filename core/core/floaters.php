@@ -89,7 +89,7 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->customer_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('customer', $id?'edit':'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
@@ -142,7 +142,7 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->project_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('project', $id?'edit':'add', $oldGroups, $oldGroups)) die();
  
         $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
         $view->groups = makeSelectBox("group",$kga['user']['groups']);
@@ -199,7 +199,7 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->activity_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('activity', $id?'edit':'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             $data = $database->activity_get_data($id);
