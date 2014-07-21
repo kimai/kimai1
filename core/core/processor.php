@@ -249,7 +249,7 @@ switch ($axAction) {
               if (count($_REQUEST['customerGroups']) == 0)
                 $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
+              if (!checkGroupedObjectPermission('customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
               
               
