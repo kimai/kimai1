@@ -1,17 +1,17 @@
-# LDAP-Authentication
+# Advanced LDAP-Authentication
 
 ## Usage
 
-To use LDAP-Authentication in kimai you will have to do one of the following:
+To use the advanced LDAP-Authentication in kimai you will have to do one of the following:
 
- * create a new class "Kimai_Auth_Yourname" (where "yourname has to be lowercase ecept for the first character) that extends Kiami_Auth_Ldap and overwrite the properties of Kimai_Auth_Ldap with your data or
- * Simply configure the stuff in the Kimai_Auth_Ldap class by overwriting the defaults for the properties
+ * create a new class "Kimai_Auth_Yourname" (where "yourname has to be lowercase ecept for the first character) that extends Kiami_Auth_Ldapadvanced and overwrite the properties of Kimai_Auth_Ldapadvanced with your data or
+ * Simply configure the stuff in the Kimai_Auth_Ldapadvanced class by overwriting the defaults for the properties
 
 Then you will have to add the following line to your ```includes/autofonf.php```-file:
 
     $authenticator = 'yourname';
 
-*yourname* is the last part of the classname, this time completely in lowercase. If you overwrote the properties from Kimai_Auth_Ldap it is simply ```ldap```
+*yourname* is the last part of the classname, this time completely in lowercase. If you overwrote the properties from Kimai_Auth_Ldapadvanced it is simply ```ldapadvanced```
 
 ## Configuration-parameters
 
