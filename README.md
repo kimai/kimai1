@@ -23,7 +23,7 @@ We would love to get input from all developer out there:
 4. Push to the branch (`git push origin my_kimai`)
 5. Create an [Pull Request][2] with a link to your branch
 
-Here are a few rules to follow in order to ease code reviews, and discussions before maintainers accept and merge your work_
+Here are a few rules to follow in order to ease code reviews, and discussions before maintainers accept and merge your work:
 
 * You SHOULD write documentation.
 * Please, write commit messages that make sense, and rebase your branch before submitting your Pull Request.
