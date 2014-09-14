@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 echo '<script type="text/javascript" charset="utf-8">current=60;</script>';
 
 $hostname         = isset($_REQUEST['hostname'])?        $_REQUEST['hostname']        :'localhost';
@@ -10,8 +10,11 @@ $create_database  = isset($_REQUEST['create_database'])? $_REQUEST['create_datab
 $server_type      = isset($_REQUEST['db_type'])?         $_REQUEST['db_type']         :null;
 $prefix           = isset($_REQUEST['prefix'])?          $_REQUEST['prefix']          :"kimai_";
 
-$con = @mysql_connect($hostname,$username,$password);
-
+if($server_type == 'mysql'){
+    $con = @mysql_connect($hostname,$username,$password);
+} else if($server_type == 'pgsql'){
+    $con = @pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password);
+}
 // we could not connect to the database, show error and leave the script
 if (!$con) {
     if ($lang=="de") {
@@ -30,18 +33,19 @@ ob_start();
 // get permissions
 $showDatabasesAllowed = false;
 $createDatabaseAllowed = false;
-$result = mysql_query("SHOW GRANTS;");
-while ($row = mysql_fetch_row($result)) {
-    if (strpos($row[0],'SHOW DATABASES') !== false)
-        $showDatabasesAllowed = true;
-    else if (strpos($row[0],'CREATE,') !== false)
-        $createDatabaseAllowed = true;
-    else if (strpos($row[0],'ALL PRIVILEGES') !== false) {
-        $showDatabasesAllowed = true;
-        $createDatabaseAllowed = true;
+if ($server_type =='mysql'){
+    $result = mysql_query("SHOW GRANTS;");
+    while ($row = mysql_fetch_row($result)) {
+        if (strpos($row[0],'SHOW DATABASES') !== false)
+            $showDatabasesAllowed = true;
+        else if (strpos($row[0],'CREATE,') !== false)
+            $createDatabaseAllowed = true;
+        else if (strpos($row[0],'ALL PRIVILEGES') !== false) {
+            $showDatabasesAllowed = true;
+            $createDatabaseAllowed = true;
+        }
     }
 }
-
 if (!$showDatabasesAllowed) {
     if ($lang=="de")
         echo "Kein Berechtigung um Datenbanken aufzulisten. Name der zu verwendenden Datenbank:<br/>";
@@ -49,14 +53,20 @@ if (!$showDatabasesAllowed) {
         echo "No permission to list databases. Name of the database to use:<br/>";
 
     echo '<input type="text" id="db_names" value="'.$database.'"/>';
-
-    if ( ($database !== '' && $create_database === '') && !mysql_select_db($database)) {
+    if($server_type == 'mysql'){
+        $dbcon = !mysql_select_db($database);
+    } else if($server_type =='pgsql'){
+        pg_close();
+        $dbcon = $con = pg_connect("host=".$hostname." port=5432 user=".$username." password=".$password." dbname=".$database);
+    }
+    if ( ($database !== '' && $create_database === '') && !$dbcon) {
         $errors = true;
         if ($lang=="de")
             echo '<strong id="db_select_label" class="arrow">Diese Datenbank konnte nicht geöffnet werden.</strong>';
         else
             echo '<strong id="db_select_label" class="arrow">Unable to open that database.</strong>';
     }
+    
     else
         echo '<strong id="db_select_label"></strong>';
 
@@ -171,4 +181,9 @@ if ( ($database === '' && $create_database === '') || $errors || !isset($_REQUES
 else
     echo '<script type="text/javascript" charset="utf-8">db_proceed();</script>';
 
-mysql_close($con);
+if($server_type == 'mysql'){
+    mysql_close($con);
+} else if($server_type == 'pgsql'){
+    pg_close($con);
+}
+

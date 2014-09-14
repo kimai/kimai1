@@ -249,7 +249,7 @@ switch ($axAction) {
               if (count($_REQUEST['customerGroups']) == 0)
                 $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
+              if (!checkGroupedObjectPermission('customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
               
               
@@ -299,7 +299,7 @@ switch ($axAction) {
               if (count($_REQUEST['projectGroups']) == 0)
                 $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $_REQUEST['projectGroups']))
+              if (!checkGroupedObjectPermission('project', $id?'edit':'add', $oldGroups, $_REQUEST['projectGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 
               if (count($errorMessages) == 0) {
@@ -364,7 +364,7 @@ switch ($axAction) {
               if (count($_REQUEST['activityGroups']) == 0)
                 $errorMessages['activityGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $_REQUEST['activityGroups']))
+              if (!checkGroupedObjectPermission('activity', $id?'edit':'add', $oldGroups, $_REQUEST['activityGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 
               if (count($errorMessages) == 0) {

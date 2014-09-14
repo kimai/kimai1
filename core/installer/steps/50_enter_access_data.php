@@ -4,6 +4,15 @@ echo '<script type="text/javascript" charset="utf-8">current=50;</script>';
 $hostname = isset($_REQUEST['hostname'])?$_REQUEST['hostname']:"localhost";
 $username = isset($_REQUEST['username'])?$_REQUEST['username']:"";
 $password = isset($_REQUEST['password'])?$_REQUEST['password']:"";
+$db_type = isset($_REQUEST['db_type'])?$_REQUEST['db_type']:"";
+
+//build Database selection
+if($db_type == 'mysql') $mysqlSel = 'selected';
+if($db_type == 'pgsql') $pgsqlSel = 'selected';
+
+if (extension_loaded("mysql")) $databaseOptions= '<option value="mysql" '.$mysqlSel.'>MySQL</option>';
+if (extension_loaded("pgsql")) $databaseOptions.= '<option value="pgsql" '.$pgsqlSel.'>PostgreSQL</option>';
+
 
 if ($hostname=="") $hostname="localhost";
 
@@ -16,6 +25,9 @@ $echo=<<<EOD
     
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
+            <td>DBEngine:<br/><select name="db_type">
+                    $databaseOptions
+                </select> </td>
             <td>Host:<br/><input id="host" type="text" value="$hostname"/>   </td>
             <td>User:<br/><input id="user" type="text" value="$username"/>   </td>
             <td>Password:<br/><input id="pass" type="password" value="$password"/></td>
@@ -35,6 +47,9 @@ $echo=<<<EOD
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
+            <td>DBEngine:<br/><select name="db_type">
+                    $databaseOptions
+                </select> </td>
             <td>Host:<br/><input id="host" type="text" value="$hostname"/>    </td>
             <td>Benutzer:<br/><input id="user" type="text" value="$username"/></td>
             <td>Passwort:<br/><input id="pass" type="password" value="$password"/> </td>
