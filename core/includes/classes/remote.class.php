@@ -149,7 +149,7 @@ class Kimai_Remote_Api
      *
      * @param string $username
      * @param string $password
-     * @return string
+     * @return array
      */
     public function authenticate($username, $password)
     {
