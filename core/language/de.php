@@ -175,6 +175,7 @@ return array(
     "DBname" => "Name der Datenbank",
     "autoselection" => "Inhalt von Zeit- und Datumsfelder beim Bearbeiten markieren",
     "openAfterRecorded" => "Eintrag automatisch öffnen, wenn die Erfassung gestoppt wird",
+	"durationAffectEndTime" => "Änderung der Dauer beeinflusst die Endzeit",
     "quickdelete" => "Einträge können direkt aus der Tabelle gelöscht werden",
     "quickdeleteHide" => "Nein",
     "quickdeleteShow" => "Ja, ohne Bestätigungsdialog",

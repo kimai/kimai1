@@ -175,6 +175,7 @@ return array(
     "DBname" => "Name of database",
     "autoselection" => "Autoselection",
     "openAfterRecorded" => "Open entry after the recording was stopped",
+	"durationAffectBeginTime" => "Changing duration affects end time",
     "quickdelete" => "Option to delete entries from within tables",
     "quickdeleteHide" => "No",
     "quickdeleteShow" => "Yes, without confirmation dialog",

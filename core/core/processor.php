@@ -67,6 +67,7 @@ switch ($axAction) {
         $preferences['skin']                    = $_REQUEST['skin'];
         $preferences['autoselection']           = getRequestBool('autoselection');
         $preferences['openAfterRecorded']       = getRequestBool('openAfterRecorded');
+		$preferences['durationAffectEndTime'] = getRequestBool('durationAffectEndTime');
         $preferences['quickdelete']             = $_REQUEST['quickdelete'];
         $preferences['rowlimit']                = $_REQUEST['rowlimit'];
         $preferences['lang']                    = $_REQUEST['lang'];

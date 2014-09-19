@@ -463,39 +463,76 @@ function ts_getEndDate() {
 }
 
 // ----------------------------------------------------------------------------------------
-// Change the end time field, based on the duration, while editing a timesheet record
+// Change the begin time or end time field, based on the duration, while editing a timesheet record
 //
-function ts_durationToTime() {
-    end = ts_getEndDate();
-    durationArray=$("#duration").val().split(/:|\./);
-    if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
-        secs = durationArray[0]*3600;
-        if(durationArray.length > 1)
-            secs += (durationArray[1]*60);
-        if(durationArray.length > 2)
-            secs += parseInt(durationArray[2]);
-        begin = new Date();
-        begin.setTime(end.getTime()-(secs*1000));
+function ts_durationToTime(durationAffectEndTime) {
+	if(durationAffectEndTime) {
+		    begin = ts_getStartDate();
+			
+			durationArray=$("#duration").val().split(/:|\./);
+			if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
+				secs = durationArray[0]*3600;
+				if(durationArray.length > 1)
+					secs += (durationArray[1]*60);
+				if(durationArray.length > 2)
+					secs += parseInt(durationArray[2]);
+				
+				end = new Date();
+				end.setTime(begin.getTime() + (secs*1000));
+				
+				
+				var H = end.getHours();
+				var i = end.getMinutes();
+				var s = end.getSeconds();
+
+				if (H<10) H = "0"+H;
+				if (i<10) i = "0"+i;
+				if (s<10) s = "0"+s;
+
+				$("#end_time").val(H + ":" + i + ":" + s);
+
+				var d = end.getDate();
+				var m = end.getMonth() + 1;
+				var y = end.getFullYear();
+				if (d<10) d = "0"+d;
+				if (m<10) m = "0"+m;
+
+				$("#end_day").val(d + "." + m + "." + y);
+				
+			}
+			
+	} else {
+		end = ts_getEndDate();
+		durationArray=$("#duration").val().split(/:|\./);
+		if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
+			secs = durationArray[0]*3600;
+			if(durationArray.length > 1)
+				secs += (durationArray[1]*60);
+			if(durationArray.length > 2)
+				secs += parseInt(durationArray[2]);
+			begin = new Date();
+			begin.setTime(end.getTime()-(secs*1000));
 
 
-        var H = begin.getHours();
-        var i = begin.getMinutes();
-        var s = begin.getSeconds();
+			var H = begin.getHours();
+			var i = begin.getMinutes();
+			var s = begin.getSeconds();
 
-        if (H<10) H = "0"+H;
-        if (i<10) i = "0"+i;
-        if (s<10) s = "0"+s;
+			if (H<10) H = "0"+H;
+			if (i<10) i = "0"+i;
+			if (s<10) s = "0"+s;
 
-        $("#start_time").val(H + ":" + i + ":" + s);
+			$("#start_time").val(H + ":" + i + ":" + s);
 
-        var d = begin.getDate();
-        var m = begin.getMonth() + 1;
-        var y = begin.getFullYear();
-        if (d<10) d = "0"+d;
-        if (m<10) m = "0"+m;
+			var d = begin.getDate();
+			var m = begin.getMonth() + 1;
+			var y = begin.getFullYear();
+			if (d<10) d = "0"+d;
+			if (m<10) m = "0"+m;
 
-        $("#start_day").val(d + "." + m + "." + y);
-    }
+			$("#start_day").val(d + "." + m + "." + y);
+		}
+	}
 }
 
 // ----------------------------------------------------------------------------------------

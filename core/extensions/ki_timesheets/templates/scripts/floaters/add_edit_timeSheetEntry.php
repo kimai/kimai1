@@ -477,7 +477,11 @@
                    </li>
                    <li>
                        <label for="duration"><?php echo $this->kga['lang']['durationlabel']?>:</label>
-                        <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+					    <?php if ($this->kga['conf']['durationAffectEndTime']): ?>
+							<input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime(true);" maxlength='8'  size='8'  tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+						<?php else: ?>
+							<input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime(false);" maxlength='8'  size='8'  tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+						<?php endif; ?>
                    </li>
                </ul>
              </fieldset>
