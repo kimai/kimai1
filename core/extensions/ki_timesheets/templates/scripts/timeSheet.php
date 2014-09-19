@@ -174,7 +174,7 @@ if ($this->timeSheetEntries)
                     onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                     return false;">
                     <?php echo $this->escape($row['activityName'])?>
-					<?php if ($this->kga['conf']['activity_comment_flag'] == 1 && $row['activityComment']): ?>
+                    <?php if ($this->kga['conf']['activity_comment_flag'] == 1 && $row['activityComment']): ?>
                         <span class="lighter">(<?php echo $this->escape($row['activityComment'])?>)</span>
                     <?php endif; ?>
                 </a>

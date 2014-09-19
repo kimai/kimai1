@@ -467,39 +467,38 @@ function ts_getEndDate() {
 //
 function ts_durationToTime(durationAffectEndTime) {
 	if(durationAffectEndTime) {
-		    begin = ts_getStartDate();
+		begin = ts_getStartDate();
+		
+		durationArray=$("#duration").val().split(/:|\./);
+		if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
+			secs = durationArray[0]*3600;
+			if(durationArray.length > 1)
+				secs += (durationArray[1]*60);
+			if(durationArray.length > 2)
+				secs += parseInt(durationArray[2]);
 			
-			durationArray=$("#duration").val().split(/:|\./);
-			if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
-				secs = durationArray[0]*3600;
-				if(durationArray.length > 1)
-					secs += (durationArray[1]*60);
-				if(durationArray.length > 2)
-					secs += parseInt(durationArray[2]);
-				
-				end = new Date();
-				end.setTime(begin.getTime() + (secs*1000));
-				
-				
-				var H = end.getHours();
-				var i = end.getMinutes();
-				var s = end.getSeconds();
+			end = new Date();
+			end.setTime(begin.getTime() + (secs*1000));
+			
+			
+			var H = end.getHours();
+			var i = end.getMinutes();
+			var s = end.getSeconds();
 
-				if (H<10) H = "0"+H;
-				if (i<10) i = "0"+i;
-				if (s<10) s = "0"+s;
+			if (H<10) H = "0"+H;
+			if (i<10) i = "0"+i;
+			if (s<10) s = "0"+s;
 
-				$("#end_time").val(H + ":" + i + ":" + s);
+			$("#end_time").val(H + ":" + i + ":" + s);
 
-				var d = end.getDate();
-				var m = end.getMonth() + 1;
-				var y = end.getFullYear();
-				if (d<10) d = "0"+d;
-				if (m<10) m = "0"+m;
+			var d = end.getDate();
+			var m = end.getMonth() + 1;
+			var y = end.getFullYear();
+			if (d<10) d = "0"+d;
+			if (m<10) m = "0"+m;
 
-				$("#end_day").val(d + "." + m + "." + y);
-				
-			}
+			$("#end_day").val(d + "." + m + "." + y);
+		}
 			
 	} else {
 		end = ts_getEndDate();
