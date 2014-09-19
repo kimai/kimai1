@@ -323,8 +323,13 @@ switch ($axAction) {
           if (!$activity['visible'])
             continue;
           if ($kga['conf']['activity_comment_flag'] == 1) {
-                echo '<option value="'.$activity['activityID'].'">'.
-                $activity['name'].' ('.$activity['comment'].')</option>\n';
+                if($activity['comment']) {
+                    echo '<option value="'.$activity['activityID'].'">'.
+                    $activity['name'].' - '.$activity['comment'].'</option>\n';
+                } else {
+                    echo '<option value="'.$activity['activityID'].'">'.
+                    $activity['name'].'</option>\n';
+                }
           } else {
                 echo '<option value="'.$activity['activityID'].'">'.
                 $activity['name'].'</option>\n';

@@ -52,7 +52,7 @@ $projects = $this->filterListEntries($this->projects);
                         <?php echo $this->escape($project['name'])?>
                         <span class="lighter">
                         <?php if ($project['comment']): ?>
-                          (<?php echo $this->escape($this->truncate($project['comment'],30,'...')) ?>)
+                          <?php echo $this->escape($this->truncate($project['comment'],30,'...')) ?>
                         <?php else: ?>
                           <span class="lighter">(<?php echo $this->escape($project['customerName'])?>)</span>
                         <?php endif; ?>

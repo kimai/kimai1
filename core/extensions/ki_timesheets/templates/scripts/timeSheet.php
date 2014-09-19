@@ -164,7 +164,7 @@ if ($this->timeSheetEntries)
                     return false;">
                     <?php echo $this->escape($row['projectName'])?>
                     <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
-                        <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
+                        <span class="lighter"> <?php echo $this->escape($row['projectComment'])?></span>
                     <?php endif; ?>
                 </a>
             </td>
@@ -175,7 +175,7 @@ if ($this->timeSheetEntries)
                     return false;">
                     <?php echo $this->escape($row['activityName'])?>
                     <?php if ($this->kga['conf']['activity_comment_flag'] == 1 && $row['activityComment']): ?>
-                        <span class="lighter">(<?php echo $this->escape($row['activityComment'])?>)</span>
+                        <span class="lighter"> <?php echo $this->escape($row['activityComment'])?></span>
                     <?php endif; ?>
                 </a>
 

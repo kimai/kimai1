@@ -93,10 +93,11 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
                             $projectName .= "(" . $project['comment'] .")" ;
                         }
                     } else {
-                        $projectName = $project['name'] . " (" . $project['customerName'] . ")";
+                        $projectName = $project['name'];
                         if ($kga['conf']['project_comment_flag']) {
-                            $projectName .=  "(" . $project['comment'] .")";
+                            $projectName .=  " - " . $project['comment'];
                         }
+                        $projectName .= " (" . $project['customerName'] . ")";
                     }
                     $sel[$project['projectID']] = $projectName;
                 }
@@ -109,7 +110,8 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
                 if ($activity['visible']) {
                     $activityName = $activity['name'];
                     if ($kga['conf']['activity_comment_flag']) {
-                            $activityName .= "(" . $activity['comment'] .")" ;
+                        if($activity['comment'])
+                            $activityName .= " - " . $activity['comment'];
                     }
                     $sel[$activity['activityID']] = $activityName;
                 }
