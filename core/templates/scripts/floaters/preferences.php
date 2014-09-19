@@ -134,6 +134,11 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <?php echo $this->formCheckbox('project_comment_flag', '1',array('checked' => $this->kga['conf']['project_comment_flag'])),
                 $this->kga['lang']['project_comment_flag']?>
           </li>
+		  <li>
+            <label for="activity_comment_flag"></label>
+            <?php echo $this->formCheckbox('activity_comment_flag', '1',array('checked' => $this->kga['conf']['activity_comment_flag'])),
+                $this->kga['lang']['activity_comment_flag']?>
+          </li>
           <li>
             <label for="showIDs"></label>
             <?php echo $this->formCheckbox('showIDs', '1',array('checked' => $this->kga['conf']['showIDs'])),

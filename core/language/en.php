@@ -222,6 +222,7 @@ return array(
     "admWarn" => "You are Admin. Status can only be set lower by another admin.",
     "flip_project_display" => "Order project table by customers",
     "project_comment_flag" => "Always show comments beside projects",
+	"activity_comment_flag" => "Always show comments beside activities",
     "showIDs" => "Show IDs",
     "error" => "An error occured!",
     "checkupdate" => "Look for update",

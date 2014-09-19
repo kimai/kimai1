@@ -222,6 +222,7 @@ return array(
     "admWarn" => "Sie sind Admin. Ihr Status kann nur von einem anderen Admin herabgesetzt werden.",
     "flip_project_display" => "Im Projektfenster nach Kunden sortieren",
     "project_comment_flag" => "Projekte mit Kommentar anzeigen",
+	"activity_comment_flag" => "Tätigkeiten mit Kommentar anzeigen",
     "showIDs" => "IDs anzeigen",
     "error" => "Ein Fehler ist aufgetreten!",
     "checkupdate" => "Nach Update suchen",

@@ -2392,6 +2392,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     $this->kga['conf']['quickdelete'] = 0;
     $this->kga['conf']['flip_project_display'] = 0;
     $this->kga['conf']['project_comment_flag'] = 0;
+	$this->kga['conf']['activity_comment_flag'] = 0;
     $this->kga['conf']['showIDs'] = 0;
     $this->kga['conf']['noFading'] = 0;
     $this->kga['conf']['lang'] = '';
@@ -2664,12 +2665,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT activityID, name, visible
+          $query = "SELECT activityID, name, visible, comment
               FROM ${p}activities
               WHERE trash=0
               ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT DISTINCT activityID, name, visible
+          $query = "SELECT DISTINCT activityID, name, visible, comment
               FROM ${p}activities
               JOIN ${p}groups_activities AS g_a USING(activityID)
               WHERE g_a.groupID IN (".implode($groups,',').")
@@ -2692,6 +2693,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$i]['activityID']       = $row->activityID;
               $arr[$i]['name']     = $row->name;
               $arr[$i]['visible']  = $row->visible;
+			  $arr[$i]['comment']  = $row->comment;
               $i++;
           }
           return $arr;
@@ -2754,6 +2756,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$row->activityID]['budget']   = $row->budget;
               $arr[$row->activityID]['approved'] = $row->approved;
               $arr[$row->activityID]['effort']   = $row->effort;
+			  $arr[$row->activityID]['comment']   = $row->comment;
           }
           return $arr;
       } else {

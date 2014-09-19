@@ -107,7 +107,11 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
             $activities = $database->get_activities($groups);
             foreach ($activities as $activity) {
                 if ($activity['visible']) {
-                    $sel[$activity['activityID']] = $activity['name'];
+				    $activityName = $activity['name'];
+					if ($kga['conf']['activity_comment_flag']) {
+                            $activityName .= "(" . $activity['comment'] .")" ;
+                    }
+                    $sel[$activity['activityID']] = $activityName;
                 }
             }
             break;
