@@ -370,7 +370,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
+function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, projectComment, activityID, activityName, activityComment) {
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
@@ -381,7 +381,10 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
   startsec = record_startTime;
   
   if (selected_project != projectID)
-    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
+    buzzer_preselect_project(projectID, projectName, projectComment, customerID, customerName, false);
+  
+  if (selected_activity != activityID)
+    buzzer_preselect_activity(activityID, activityName, activityComment, false);
 }
 
 function show_stopwatch() {
@@ -421,12 +424,21 @@ function buzzer() {
     }
 }
 
-function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
+function buzzer_preselect_project(projectID,projectName,projectComment,customerID,customerName,updateRecording) {
   selected_customer = customerID;
   selected_project = projectID;
   $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
   $("#selected_customer").html(customerName);
-  $("#selected_project").html(projectName);
+  if (projectComment != '') {
+    var str_project;
+    str_project = projectName + ':' + projectComment;
+    if (str_project.length > 30)
+        str_project = str_project.substring(0, 30) + '...';
+        
+    $("#selected_project").html(str_project);
+  } else {
+    $("#selected_project").html(projectName);
+  }
   $("#selected_customer").removeClass("none");
   
   lists_reload('activity', function() {
@@ -434,10 +446,20 @@ function buzzer_preselect_project(projectID,projectName,customerID,customerName,
   }); 
 }
 
-function buzzer_preselect_activity(activityID,activityName,updateRecording) {
+function buzzer_preselect_activity(activityID,activityName,activityComment,updateRecording) {
     selected_activity = activityID;
     $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
-    $("#selected_activity").html(activityName);
+    
+    if (activityComment != '') {
+	  var str_activity;
+      str_activity = activityName + ':' + activityComment;
+      if (str_activity.length > 30)
+        str_activity = str_activity.substring(0, 30) + '...';
+	
+      $("#selected_activity").html(str_activity);
+    } else {
+      $("#selected_activity").html(activityName);
+    }
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
 

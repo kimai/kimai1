@@ -111,6 +111,10 @@
             <?php echo $this->formCheckbox('openAfterRecorded', '1',array('checked' => isset($this->kga['conf']['openAfterRecorded']) && $this->kga['conf']['openAfterRecorded']));
                 echo $this->kga['lang']['openAfterRecorded']?>
           </li>
+            <label for="durationAffectEndTime"></label>
+            <?php echo $this->formCheckbox('durationAffectEndTime', '1',array('checked' => isset($this->kga['conf']['durationAffectEndTime']) && $this->kga['conf']['durationAffectEndTime']));
+                echo $this->kga['lang']['durationAffectEndTime']?>
+          </li>
         </ul>
 
       </fieldset>
@@ -133,6 +137,11 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <label for="project_comment_flag"></label>
             <?php echo $this->formCheckbox('project_comment_flag', '1',array('checked' => $this->kga['conf']['project_comment_flag'])),
                 $this->kga['lang']['project_comment_flag']?>
+          </li>
+          <li>
+            <label for="activity_comment_flag"></label>
+            <?php echo $this->formCheckbox('activity_comment_flag', '1',array('checked' => $this->kga['conf']['activity_comment_flag'])),
+                $this->kga['lang']['activity_comment_flag']?>
           </li>
           <li>
             <label for="showIDs"></label>

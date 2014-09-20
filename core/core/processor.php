@@ -67,11 +67,13 @@ switch ($axAction) {
         $preferences['skin']                    = $_REQUEST['skin'];
         $preferences['autoselection']           = getRequestBool('autoselection');
         $preferences['openAfterRecorded']       = getRequestBool('openAfterRecorded');
+        $preferences['durationAffectEndTime'] = getRequestBool('durationAffectEndTime');
         $preferences['quickdelete']             = $_REQUEST['quickdelete'];
         $preferences['rowlimit']                = $_REQUEST['rowlimit'];
         $preferences['lang']                    = $_REQUEST['lang'];
         $preferences['flip_project_display']    = getRequestBool('flip_project_display');
         $preferences['project_comment_flag']    = getRequestBool('project_comment_flag');
+        $preferences['activity_comment_flag']    = getRequestBool('activity_comment_flag');
         $preferences['showIDs']                 = getRequestBool('showIDs');
         $preferences['noFading']                = getRequestBool('noFading');
         $preferences['user_list_hidden']        = getRequestBool('user_list_hidden');

@@ -2213,7 +2213,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       }
       
       
-      $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, customer.customerID as customerID, activity.name AS activityName,
+      $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, customer.customerID as customerID, activity.name AS activityName, activity.comment AS activityComment,
                         project.name AS projectName, project.comment AS projectComment, user.name AS userName, user.alias AS userAlias ";
       
       if($countOnly) {
@@ -2290,6 +2290,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$i]['activityName']      = $row->activityName;
               $arr[$i]['projectName']       = $row->projectName;
               $arr[$i]['projectComment']    = $row->projectComment;
+              $arr[$i]['activityComment']   = $row->activityComment;
               $arr[$i]['location']          = $row->location;
               $arr[$i]['trackingNumber']    = $row->trackingNumber;
               $arr[$i]['statusID']          = $row->statusID;
@@ -2392,6 +2393,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     $this->kga['conf']['quickdelete'] = 0;
     $this->kga['conf']['flip_project_display'] = 0;
     $this->kga['conf']['project_comment_flag'] = 0;
+    $this->kga['conf']['activity_comment_flag'] = 0;
     $this->kga['conf']['showIDs'] = 0;
     $this->kga['conf']['noFading'] = 0;
     $this->kga['conf']['lang'] = '';
@@ -2664,12 +2666,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   $p = $this->kga['server_prefix'];
 
       if ($groups === null) {
-          $query = "SELECT activityID, name, visible
+          $query = "SELECT activityID, name, visible, comment
               FROM ${p}activities
               WHERE trash=0
               ORDER BY visible DESC, name;";
       } else {
-          $query = "SELECT DISTINCT activityID, name, visible
+          $query = "SELECT DISTINCT activityID, name, visible, comment
               FROM ${p}activities
               JOIN ${p}groups_activities AS g_a USING(activityID)
               WHERE g_a.groupID IN (".implode($groups,',').")
@@ -2692,6 +2694,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$i]['activityID']       = $row->activityID;
               $arr[$i]['name']     = $row->name;
               $arr[$i]['visible']  = $row->visible;
+              $arr[$i]['comment']  = $row->comment;
               $i++;
           }
           return $arr;
@@ -2754,6 +2757,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$row->activityID]['budget']   = $row->budget;
               $arr[$row->activityID]['approved'] = $row->approved;
               $arr[$row->activityID]['effort']   = $row->effort;
+              $arr[$row->activityID]['comment']   = $row->comment;
           }
           return $arr;
       } else {
@@ -2773,7 +2777,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $customer_ID = MySQL::SQLValue($customer_ID , MySQL::SQLVALUE_NUMBER);
 
-      $query = "SELECT DISTINCT activityID, name, visible
+      $query = "SELECT DISTINCT activityID, name, visible, comment
           FROM ${p}activities
           WHERE activityID IN
               (SELECT activityID FROM ${p}timeSheet
@@ -2796,6 +2800,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
               $arr[$i]['activityID']       = $row->activityID;
               $arr[$i]['name']     = $row->name;
               $arr[$i]['visible']  = $row->visible;
+              $arr[$i]['comment']  = $row->comment;
               $i++;
           }
           return $arr;

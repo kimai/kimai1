@@ -250,8 +250,20 @@
               <strong><?php echo $this->kga['lang']['selectedForRecording']?></strong><br />
 
               <strong class="short"><?php echo $this->kga['lang']['selectedCustomerLabel']?></strong><span class="selection" id="selected_customer"><?php echo $this->escape($this->customerData['name'])?></span><br/>
-              <strong class="short"><?php echo $this->kga['lang']['selectedProjectLabel']?></strong><span class="selection" id="selected_project"><?php echo $this->escape($this->projectData['name'])?></span><br/>    
-              <strong class="short"><?php echo $this->kga['lang']['selectedActivityLabel']?></strong><span class="selection" id="selected_activity"><?php echo $this->escape($this->activityData['name'])?></span><br/>    
+              <strong class="short"><?php echo $this->kga['lang']['selectedProjectLabel']?></strong><span class="selection" id="selected_project">
+              <?php if ($this->kga['conf']['project_comment_flag'] == 1 AND $this->projectData['comment'] != NULL): ?>
+                <?php echo $this->escape($this->truncate($this->projectData['name'].':'.$this->projectData['comment'], 30, '...'))?>
+              <?php else: ?>
+                <?php echo $this->escape($this->truncate($this->projectData['name'], 30, '...'))?>
+              <?php endif; ?>
+              </span><br/>    
+              <strong class="short"><?php echo $this->kga['lang']['selectedActivityLabel']?></strong><span class="selection" id="selected_activity">
+              <?php if ($this->kga['conf']['activity_comment_flag'] == 1 AND $this->activityData['comment'] != NULL): ?>
+                <?php echo $this->escape($this->truncate($this->activityData['name'].':'.$this->activityData['comment'], 30, '...'))?>
+              <?php else: ?>
+                <?php echo $this->escape($this->truncate($this->activityData['name'], 30, '...'))?>
+              <?php endif; ?>
+              </span><br/>    
           </div>
         </div> 
    
