@@ -370,7 +370,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, projectComment, activityID, activityName) {
+function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, projectComment, activityID, activityName, activityComment) {
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
@@ -382,6 +382,9 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
   
   if (selected_project != projectID)
     buzzer_preselect_project(projectID, projectName, projectComment, customerID, customerName, false);
+  
+  if (selected_activity != activityID)
+    buzzer_preselect_activity(activityID, activityName, activityComment, false);
 }
 
 function show_stopwatch() {

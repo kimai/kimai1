@@ -243,7 +243,7 @@ else
     updateRecordStatus(<?php echo $this->timeSheetEntries[$latest_running_row_index]['timeEntryID']?>,<?php echo $this->timeSheetEntries[$latest_running_row_index]['start']?>,
                              <?php echo $this->timeSheetEntries[$latest_running_row_index]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['customerName'])?>',
                              <?php echo $this->timeSheetEntries[$latest_running_row_index]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['projectName'])?>','<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['projectComment'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityName'])?>');
+                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityName'])?>','<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityComment'])?>');
   <?php endif; ?>
 
     function timesheet_hide_column(name) {
