@@ -430,7 +430,12 @@ function buzzer_preselect_project(projectID,projectName,projectComment,customerI
   $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
   $("#selected_customer").html(customerName);
   if (projectComment != '') {
-    $("#selected_project").html(projectName + ':' + projectComment);
+    var str_project;
+    str_project = projectName + ':' + projectComment;
+    if (str_project.length > 30)
+        str_project = str_project.substring(0, 30) + '...';
+        
+    $("#selected_project").html(str_project);
   } else {
     $("#selected_project").html(projectName);
   }
@@ -446,7 +451,12 @@ function buzzer_preselect_activity(activityID,activityName,activityComment,updat
     $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
     
     if (activityComment != '') {
-      $("#selected_activity").html(activityName + ':' + activityComment);
+	  var str_activity;
+      str_activity = activityName + ':' + activityComment;
+      if (str_activity.length > 30)
+        str_activity = str_activity.substring(0, 30) + '...';
+	
+      $("#selected_activity").html(str_activity);
     } else {
       $("#selected_activity").html(activityName);
     }
