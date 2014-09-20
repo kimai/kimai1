@@ -291,12 +291,14 @@ function ts_ext_recordAgain(project,activity,id) {
           customer = data.customer;
           customerName = data.customerName;
           projectName = data.projectName;
+          projectComment = data.projectComment;
           activityName = data.activityName;
+          activityComment = data.activityComment;
           currentRecording = data.currentRecording;
           
           ts_ext_reload();
-          buzzer_preselect_project(project,projectName,customer,customerName,false);
-          buzzer_preselect_activity(activity,activityName,0,0,false);
+          buzzer_preselect_project(project,projectName,projectComment,customer,customerName,false);
+          buzzer_preselect_activity(activity,activityName,activityComment,0,0,false);
           $("#ticker_customer").html(customerName);
           $("#ticker_project").html(projectName);
           $("#ticker_activity").html(activityName);

@@ -370,7 +370,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
+function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, projectComment, activityID, activityName) {
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
@@ -381,7 +381,7 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
   startsec = record_startTime;
   
   if (selected_project != projectID)
-    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
+    buzzer_preselect_project(projectID, projectName, projectComment, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -421,12 +421,16 @@ function buzzer() {
     }
 }
 
-function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
+function buzzer_preselect_project(projectID,projectName,projectComment,customerID,customerName,updateRecording) {
   selected_customer = customerID;
   selected_project = projectID;
   $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
   $("#selected_customer").html(customerName);
-  $("#selected_project").html(projectName);
+  if (projectComment != '') {
+    $("#selected_project").html(projectName + ':' + projectComment);
+  } else {
+    $("#selected_project").html(projectName);
+  }
   $("#selected_customer").removeClass("none");
   
   lists_reload('activity', function() {
@@ -434,10 +438,15 @@ function buzzer_preselect_project(projectID,projectName,customerID,customerName,
   }); 
 }
 
-function buzzer_preselect_activity(activityID,activityName,updateRecording) {
+function buzzer_preselect_activity(activityID,activityName,activityComment,updateRecording) {
     selected_activity = activityID;
     $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
-    $("#selected_activity").html(activityName);
+    
+    if (activityComment != '') {
+      $("#selected_activity").html(activityName + ':' + activityComment);
+    } else {
+      $("#selected_activity").html(activityName);
+    }
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
 

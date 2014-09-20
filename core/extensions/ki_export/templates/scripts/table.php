@@ -156,7 +156,7 @@ $isExpense = $row['type']=="expense"; ?>
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $row['customerID']?>,'<?php echo $this->jsEscape($row['customerName'])?>'); 
+                            onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>','<?php echo $this->jsEscape($row['projectComment'])?>',<?php echo $row['customerID']?>,'<?php echo $this->jsEscape($row['customerName'])?>'); 
                             return false;">
                             <?php echo $this->escape($row['projectName'])?>
                             <?php if ($this->kga['conf']['project_comment_flag'] == 1): ?>
@@ -175,7 +175,7 @@ $isExpense = $row['type']=="expense"; ?>
                     ">
                         <?php if (!$isExpense): ?>
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
+                            onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>','<?php echo $this->jsEscape($row['activityComment'])?>',0,0); 
                             return false;">
                         <?php echo $this->escape($row['activityName']);
                         <?php if ($this->kga['conf']['activity_comment_flag'] == 1): ?>

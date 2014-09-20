@@ -94,7 +94,7 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
                         }
                     } else {
                         $projectName = $project['name'];
-                        if ($kga['conf']['project_comment_flag']) {
+                        if ($kga['conf']['project_comment_flag'] AND $project['comment'] != NULL) {
                             $projectName .=  " - " . $project['comment'];
                         }
                         $projectName .= " (" . $project['customerName'] . ")";
