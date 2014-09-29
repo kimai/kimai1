@@ -313,7 +313,7 @@ exec_query($query);
 
 // ADMIN USER
 $adminPassword =  encode_password('changeme');
-$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@yourwebspace.de','$adminPassword',1);";
+$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@example.com','$adminPassword',1);";
 exec_query($query);
 
 $query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
@@ -348,10 +348,10 @@ exec_query($query);
 $query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('login', '1');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('kimail', 'kimai@yourwebspace.com');";
+$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('kimail', 'kimai@example.com');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@yourwebspace.com');";
+$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@example.com');";
 exec_query($query);
 
 $query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginTries', '3');";

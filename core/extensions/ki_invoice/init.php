@@ -38,7 +38,8 @@ $view->kga = $kga;
 // get list of projects for select box
 $view->customers = makeSelectBox("customer",$kga['user']['groups']); 
 
-$projects = $database->get_projects_by_customer(array_keys($view->customers)[0], $kga['user']['groups']);
+$tmpCustomers = array_keys($view->customers);
+$projects = $database->get_projects_by_customer($tmpCustomers[0], $kga['user']['groups']);
 $view->projects = array();
 foreach ($projects as $project) {
   $view->projects[$project['projectID']] = $project['name'];
