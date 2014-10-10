@@ -139,7 +139,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-  <meta name="robots" value="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow" />
 	<title>Kimai Backup Restore Utility</title>
 	<style type="text/css" media="screen">
 		body {

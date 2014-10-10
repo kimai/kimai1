@@ -37,7 +37,7 @@ $(document).ready(function() {
     <div id="floater_handle">
         <span id="floater_title"><?php if (isset($id)) echo $this->kga['lang']['edit'], ': ', $this->kga['lang']['activity']; else echo $this->kga['lang']['new_activity'];?></span>
         <div class="right">
-            <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
+            <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
         </div>       
     </div>
     
@@ -155,7 +155,7 @@ $(document).ready(function() {
         </div>
 
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
+            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
             <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>'/>
         </div>
     </form>

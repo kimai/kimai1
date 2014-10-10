@@ -37,7 +37,7 @@
   <div id="floater_handle">
     <span id="floater_title"><?php echo $this->kga['lang']['preferences']?></span>
     <div class="right">
-      <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
+      <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
     </div>       
   </div>
 
@@ -75,12 +75,12 @@
           </li>
 
           <li>
-            <label for="pw"><?php echo $this->kga['lang']['newPassword']?>:</label>
+            <label for="password"><?php echo $this->kga['lang']['newPassword']?>:</label>
             <input type="password" name="password" size="15" id="password" /> <?php echo $this->kga['lang']['minLength']?>
           </li>
 
           <li>
-            <label for="pw"><?php echo $this->kga['lang']['retypePassword']?>:</label>
+            <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword']?>:</label>
             <input type="password" name="retypePassword" size="15" id="retypePassword" />
           </li>
 
@@ -187,7 +187,7 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
     <input name="id" type="hidden" value="0" />   
                   
     <div id="formbuttons">
-      <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
+      <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
       <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
     </div>
 

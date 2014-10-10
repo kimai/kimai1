@@ -51,7 +51,7 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0) {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="robots" value="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow" />
 	<title>Kimai Update</title>
 	<style type="text/css" media="screen">
 	   body {
@@ -95,7 +95,7 @@ $RUsure = $kga['lang']['updater'][0];
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="robots" value="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow" />
 	<title>Kimai Update</title>
 	<style type="text/css" media="screen">
 	   body {
@@ -147,7 +147,7 @@ $RUsure = $kga['lang']['updater'][0];
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <meta name="robots" value="noindex,nofollow" />
+  <meta name="robots" content="noindex,nofollow" />
   <title>Kimai Update</title>
   <style type="text/css" media="screen">
      body {
