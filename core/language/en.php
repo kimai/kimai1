@@ -297,6 +297,8 @@ return array(
     'showCommentsByDefault' => 'show comments by default',
     'showTrackingNumber' => 'show tracking number',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
+    'LinktrackingNumber' => 'Auto generate tracking number',
+    'showCommentsByDefault' => 'show comments by default',
     'general' => 'General',
     'address' => 'Address',
     'contact' => 'Contact',
@@ -315,28 +317,28 @@ return array(
     'user' => 'User',
     'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
-        
+
         <br />
-        
+
         <strong>This program is free software and published 'AS IS' without any kind of warranty</strong> under the terms of the
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+        <a href="../COPYING">GPL Version 3</a>.
+
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Official Website</a> | 
+
+        <a href='http://www.kimai.org' target='_blank'>Official Website</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
         <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
-        
+
         <br /><br />
 
         If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>.
         You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there.
         Latest Developer Version can be downloaded <a href="https://github.com/kimai/kimai/archive/master.zip">here</a> (download for testing purposes only!).
-        
+
         <br /><br />
-        
+
         Please support further development of Kimai with a <a href="http://www.kimai.org/en/donate.html">donation</a> or
         by extending its <a href="https://github.com/kimai/kimai/tree/master/core/language">language library</a>.
 
