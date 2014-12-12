@@ -26,43 +26,42 @@ switch ($axAction) {
 
     case "PDF":
       $defaults = array('print_comments'=>1, 'print_summary'=>1, 'create_bookmarks'=>1, 'download_pdf'=>1,
-           'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf');
+           'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf', 'time_type'=>1);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
       $view->prefs = array_merge($defaults,$prefs);
-      
-      echo $view->render("floaters/export_PDF.php"); 
+
+      echo $view->render("floaters/export_PDF.php");
     break;
 
-    case "XLS":  
+    case "XLS":
       $defaults = array('reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
       $view->prefs = array_merge($defaults,$prefs);
 
-      echo $view->render("floaters/export_XLS.php"); 
+      echo $view->render("floaters/export_XLS.php");
     break;
 
-    case "CSV":  
+    case "CSV":
       $defaults = array('column_delimiter'=>',','quote_char'=>'"','reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
       $view->prefs = array_merge($defaults,$prefs);
 
-      echo $view->render("floaters/export_CSV.php"); 
+      echo $view->render("floaters/export_CSV.php");
     break;
 
-    case "print":  
+    case "print":
       $defaults = array('print_summary'=>1,'reverse_order'=>0);
       $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
       $view->prefs = array_merge($defaults,$prefs);
 
-      echo $view->render("floaters/print.php"); 
+      echo $view->render("floaters/print.php");
     break;
 
-    case "help_timeformat":  
-      echo $view->render("floaters/help_timeformat.php"); 
+    case "help_timeformat":
+      echo $view->render("floaters/help_timeformat.php");
     break;
 
 }
 
 ?>
 
-    
