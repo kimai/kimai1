@@ -56,11 +56,11 @@ if ($axAction == 'export_csv'  ||
   $default_location = strip_tags($_REQUEST['default_location']);
 
   $reverse_order = isset($_REQUEST['reverse_order']);
-  
+
   $filter_cleared     = $_REQUEST['filter_cleared'];
   $filter_refundable  = $_REQUEST['filter_refundable'];
   $filter_type        = $_REQUEST['filter_type'];
-  
+
   $filters = explode('|',$axValue);
 
   if ($filters[0] == "")
@@ -86,7 +86,7 @@ if ($axAction == 'export_csv'  ||
   // if no userfilter is set, set it to current user
   if (isset($kga['user']) && count($filterUsers) == 0)
     array_push($filterUsers,$kga['user']['userID']);
-    
+
   if (isset($kga['customer']))
     $filterCustomers = array($kga['customer']['customerID']);
 }
@@ -98,8 +98,8 @@ if ($axAction == 'export_csv'  ||
 // ==================
 // = handle request =
 // ==================
-switch ($axAction) {   
-    
+switch ($axAction) {
+
 
     // ======================
     // = set status cleared =
@@ -120,7 +120,7 @@ switch ($axAction) {
 
       echo $success?1:0;
     break;
-    
+
 
     // =========================
     // = save selected columns =
@@ -142,7 +142,7 @@ switch ($axAction) {
         $ann = export_get_user_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $view->user_annotations = $ann;
-        
+
         $ann = export_get_customer_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
         Format::formatAnnotations($ann);
         $view->customer_annotations = $ann;
@@ -166,14 +166,14 @@ switch ($axAction) {
     /**
      * Exort as html file.
      */
-    case 'export_html':   
+    case 'export_html':
 
         $database->user_set_preferences(array(
           'print_summary' => isset($_REQUEST['print_summary'])?1:0,
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.print.');
-          
-       
+
+
         $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $timeSum = 0;
         $wageSum = 0;
@@ -185,7 +185,7 @@ switch ($axAction) {
           $budgetSum += $data['budget'];
           $approvedSum += $data['approved'];
         }
-        
+
         $view->timespan = strftime($kga['date_format']['2'],$in).' - '.strftime($kga['date_format']['2'],$out) ;
 
         if (isset($_REQUEST['print_summary'])) {
@@ -205,7 +205,7 @@ switch ($axAction) {
                 $timeSheetSummary[$one_entry['activityID']]['name']         = html_entity_decode($one_entry['activityName']);
                 $timeSheetSummary[$one_entry['activityID']]['time']         = $one_entry['decimalDuration'];
                 $timeSheetSummary[$one_entry['activityID']]['wage']         = $one_entry['wage'];
-                $timeSheetSummary[$one_entry['activityID']]['budget'] 	  = $one_entry['budget']; 
+                $timeSheetSummary[$one_entry['activityID']]['budget'] 	  = $one_entry['budget'];
                 $timeSheetSummary[$one_entry['activityID']]['approved']	  = $one_entry['approved'];
               }
             }
@@ -215,11 +215,11 @@ switch ($axAction) {
               $expenseInfo['wage'] = $one_entry['wage'];
               $expenseInfo['budget'] = null;
               $expenseInfo['approved'] = null;
-              
+
               $expenseSummary[] = $expenseInfo;
             }
           }
-          
+
           $summary = array_merge($timeSheetSummary,$expenseSummary);
           $view->summary = $summary;
         }
@@ -265,8 +265,8 @@ switch ($axAction) {
         $database->user_set_preferences(array(
           'decimal_separator' => $_REQUEST['decimal_separator'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
-          'ki_export.xls.');      
-       
+          'ki_export.xls.');
+
         $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         for ($i=0;$i<count($exportData);$i++) {
           $exportData[$i]['decimalDuration'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['decimalDuration']);
@@ -294,8 +294,8 @@ switch ($axAction) {
           'column_delimiter' => $_REQUEST['column_delimiter'],
           'quote_char' => $_REQUEST['quote_char'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
-          'ki_export.csv.');      
-       
+          'ki_export.csv.');
+
         $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
@@ -304,46 +304,46 @@ switch ($axAction) {
         header("Content-Type: text/csv ");
 
         $row = array();
-        
+
         // output of headers
         if (isset($columns['date']))
           $row[] = csv_prepare_field($kga['lang']['datum'],$column_delimiter,$quote_char);
         if (isset($columns['from']))
-          $row[] = csv_prepare_field($kga['lang']['in'],$column_delimiter,$quote_char);            
+          $row[] = csv_prepare_field($kga['lang']['in'],$column_delimiter,$quote_char);
         if (isset($columns['to']))
-          $row[] = csv_prepare_field($kga['lang']['out'],$column_delimiter,$quote_char);           
+          $row[] = csv_prepare_field($kga['lang']['out'],$column_delimiter,$quote_char);
         if (isset($columns['time']))
-          $row[] = csv_prepare_field($kga['lang']['time'],$column_delimiter,$quote_char);          
+          $row[] = csv_prepare_field($kga['lang']['time'],$column_delimiter,$quote_char);
         if (isset($columns['dec_time']))
-          $row[] = csv_prepare_field($kga['lang']['timelabel'],$column_delimiter,$quote_char);     
+          $row[] = csv_prepare_field($kga['lang']['timelabel'],$column_delimiter,$quote_char);
         if (isset($columns['rate']))
-          $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);          
+          $row[] = csv_prepare_field($kga['lang']['rate'],$column_delimiter,$quote_char);
         if (isset($columns['wage']))
-          $row[] = csv_prepare_field($kga['currency_name'],$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['currency_name'],$column_delimiter,$quote_char);
         if (isset($columns['budget']))
-          $row[] = csv_prepare_field($kga['lang']['budget'],$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['lang']['budget'],$column_delimiter,$quote_char);
         if (isset($columns['approved']))
-          $row[] = csv_prepare_field($kga['lang']['approved'],$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['lang']['approved'],$column_delimiter,$quote_char);
         if (isset($columns['status']))
-          $row[] = csv_prepare_field($kga['lang']['status'],$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['lang']['status'],$column_delimiter,$quote_char);
         if (isset($columns['billable']))
-          $row[] = csv_prepare_field($kga['lang']['billable'],$column_delimiter,$quote_char);                      
+          $row[] = csv_prepare_field($kga['lang']['billable'],$column_delimiter,$quote_char);
         if (isset($columns['customer']))
-          $row[] = csv_prepare_field($kga['lang']['customer'],$column_delimiter,$quote_char);           
+          $row[] = csv_prepare_field($kga['lang']['customer'],$column_delimiter,$quote_char);
         if (isset($columns['project']))
-          $row[] = csv_prepare_field($kga['lang']['project'],$column_delimiter,$quote_char);           
+          $row[] = csv_prepare_field($kga['lang']['project'],$column_delimiter,$quote_char);
         if (isset($columns['activity']))
-          $row[] = csv_prepare_field($kga['lang']['activity'],$column_delimiter,$quote_char);           
+          $row[] = csv_prepare_field($kga['lang']['activity'],$column_delimiter,$quote_char);
         if (isset($columns['comment']))
-          $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
+          $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);
         if (isset($columns['location']))
-          $row[] = csv_prepare_field($kga['lang']['location'],$column_delimiter,$quote_char);      
+          $row[] = csv_prepare_field($kga['lang']['location'],$column_delimiter,$quote_char);
         if (isset($columns['trackingNumber']))
-          $row[] = csv_prepare_field($kga['lang']['trackingNumber'],$column_delimiter,$quote_char);    
+          $row[] = csv_prepare_field($kga['lang']['trackingNumber'],$column_delimiter,$quote_char);
         if (isset($columns['user']))
-          $row[] = csv_prepare_field($kga['lang']['username'],$column_delimiter,$quote_char);          
+          $row[] = csv_prepare_field($kga['lang']['username'],$column_delimiter,$quote_char);
         if (isset($columns['cleared']))
-          $row[] = csv_prepare_field($kga['lang']['cleared'],$column_delimiter,$quote_char);  
+          $row[] = csv_prepare_field($kga['lang']['cleared'],$column_delimiter,$quote_char);
 
         echo implode($column_delimiter,$row);
         echo "\n";
@@ -354,45 +354,45 @@ switch ($axAction) {
           if (isset($columns['date']))
             $row[] = csv_prepare_field(strftime($dateformat,$data['time_in']),$column_delimiter,$quote_char);
           if (isset($columns['from']))
-            $row[] = csv_prepare_field(strftime($timeformat,$data['time_in']),$column_delimiter,$quote_char);            
+            $row[] = csv_prepare_field(strftime($timeformat,$data['time_in']),$column_delimiter,$quote_char);
           if (isset($columns['to']))
-            $row[] = csv_prepare_field(strftime($timeformat,$data['time_out']),$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field(strftime($timeformat,$data['time_out']),$column_delimiter,$quote_char);
           if (isset($columns['time']))
-            $row[] = csv_prepare_field($data['formattedDuration'],$column_delimiter,$quote_char);          
+            $row[] = csv_prepare_field($data['formattedDuration'],$column_delimiter,$quote_char);
           if (isset($columns['dec_time']))
-            $row[] = csv_prepare_field($data['decimalDuration'],$column_delimiter,$quote_char);     
+            $row[] = csv_prepare_field($data['decimalDuration'],$column_delimiter,$quote_char);
           if (isset($columns['rate']))
-            $row[] = csv_prepare_field($data['rate'],$column_delimiter,$quote_char);          
+            $row[] = csv_prepare_field($data['rate'],$column_delimiter,$quote_char);
           if (isset($columns['wage']))
-            $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);                 
+            $row[] = csv_prepare_field($data['wage'],$column_delimiter,$quote_char);
           if (isset($columns['budget']))
-            $row[] = csv_prepare_field($data['budget'],$column_delimiter,$quote_char);                  
+            $row[] = csv_prepare_field($data['budget'],$column_delimiter,$quote_char);
           if (isset($columns['approved']))
-            $row[] = csv_prepare_field($data['approved'],$column_delimiter,$quote_char);                  
+            $row[] = csv_prepare_field($data['approved'],$column_delimiter,$quote_char);
           if (isset($columns['status']))
-            $row[] = csv_prepare_field($data['status'],$column_delimiter,$quote_char);                  
+            $row[] = csv_prepare_field($data['status'],$column_delimiter,$quote_char);
           if (isset($columns['billable']))
-            $row[] = csv_prepare_field($data['billable'],$column_delimiter,$quote_char).'%';                       
+            $row[] = csv_prepare_field($data['billable'],$column_delimiter,$quote_char).'%';
           if (isset($columns['customer']))
-            $row[] = csv_prepare_field($data['customerName'],$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['customerName'],$column_delimiter,$quote_char);
           if (isset($columns['project']))
-            $row[] = csv_prepare_field($data['projectName'],$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['projectName'],$column_delimiter,$quote_char);
           if (isset($columns['activity']))
-            $row[] = csv_prepare_field($data['activityName'],$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['activityName'],$column_delimiter,$quote_char);
           if (isset($columns['comment']))
-            $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
+            $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);
           if (isset($columns['location']))
-            $row[] = csv_prepare_field($data['location'],$column_delimiter,$quote_char);      
+            $row[] = csv_prepare_field($data['location'],$column_delimiter,$quote_char);
           if (isset($columns['trackingNumber']))
-            $row[] = csv_prepare_field($data['trackingNumber'],$column_delimiter,$quote_char);    
+            $row[] = csv_prepare_field($data['trackingNumber'],$column_delimiter,$quote_char);
           if (isset($columns['user']))
-            $row[] = csv_prepare_field($data['username'],$column_delimiter,$quote_char);          
+            $row[] = csv_prepare_field($data['username'],$column_delimiter,$quote_char);
           if (isset($columns['cleared']))
-            $row[] = csv_prepare_field($data['cleared'],$column_delimiter,$quote_char);  
+            $row[] = csv_prepare_field($data['cleared'],$column_delimiter,$quote_char);
 
         echo implode($column_delimiter,$row);
         echo "\n";
-        }     
+        }
     break;
 
 
@@ -405,12 +405,13 @@ switch ($axAction) {
         $database->user_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
-          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
+          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0,
           'download_pdf'=>isset($_REQUEST['download_pdf'])?1:0,
-          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0, 
+          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0,
           'reverse_order'=>isset($_REQUEST['reverse_order'])?1:0,
+          'time_type'=>isset($_REQUEST['time_type'])?1:0,
           'pdf_format'=>'export_pdf'),
-          'ki_export.pdf.');    
+          'ki_export.pdf.');
 
       $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 
@@ -445,13 +446,13 @@ switch ($axAction) {
         $database->user_set_preferences(array(
           'print_comments'=>isset($_REQUEST['print_comments'])?1:0,
           'print_summary'=>isset($_REQUEST['print_summary'])?1:0,
-          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0, 
+          'create_bookmarks'=>isset($_REQUEST['create_bookmarks'])?1:0,
           'download_pdf'=>isset($_REQUEST['download_pdf'])?1:0,
-          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0, 
+          'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0,
           'reverse_order'=>isset($_REQUEST['reverse_order'])?1:0,
           'pdf_format'=>'export_pdf2'),
-          'ki_export.pdf.');    
-       
+          'ki_export.pdf.');
+
       $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 
       // sort data into new array, where first dimension is customer and second dimension is project

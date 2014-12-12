@@ -1,7 +1,7 @@
 <?php
 
 
-class BasePDF extends TCPDF { 
+class BasePDF extends TCPDF {
 
   public $print_time;
   public $date_format;
@@ -14,7 +14,7 @@ class BasePDF extends TCPDF {
    */
   public function date($number) {
       return strftime($this->date_format,$number);
-  } 
+  }
 
   /**
    * Format a unix timestamp as a time string.
@@ -35,7 +35,7 @@ class BasePDF extends TCPDF {
    */
   public function dateformat($number) {
       return strftime($this->date_format,$number);
-  } 
+  }
 
   /**
    * Format the duration.
@@ -48,7 +48,37 @@ class BasePDF extends TCPDF {
       return "-------";
     else
       return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['export_extension']['duration_unit'];
-  } 
+  }
+
+ /**
+  * Appen the time unit.
+  * @param string $time
+  * @return string $time + time_unit
+  */
+ public function time_unit($time) {
+   global $kga;
+      return $time." ".$kga['lang']['export_extension']['duration_unit'];
+      }
+
+ /**
+  * Add two standard time.
+  * @param string $time, time to add the the duration time (usually in standard hours:minutes)
+  * @param string $timesum, total duration in standard time
+  * @return string added timesum+time in standard time
+  */
+ public function SumStdTime($time1,$timesum) {
+   $times = array($time1,$timesum);
+   $seconds = 0;
+   foreach ($times as $time){
+      list($hour,$minute) = explode (':', $time);
+      $seconds += $hour*3600;
+      $seconds += $minute*60;
+   }
+   $hours = floor($seconds/3600);
+   $seconds -= $hours*3600;
+   $minutes = floor($seconds/60);
+   return sprintf('% 2d:%02d', $hours, $minutes);
+ }
 
   /**
    * Format a number as a money value.
@@ -67,18 +97,18 @@ class BasePDF extends TCPDF {
    */
   public function printHeader($w,$header) {
 
-    // Colors, line width and bold font 
-    $this->SetFillColor(240, 240, 240); 
-    $this->SetTextColor(0); 
-    $this->SetDrawColor(0,0,0); 
-    $this->SetLineWidth(0.3); 
-    $this->SetFont('', 'B'); 
+    // Colors, line width and bold font
+    $this->SetFillColor(240, 240, 240);
+    $this->SetTextColor(0);
+    $this->SetDrawColor(0,0,0);
+    $this->SetLineWidth(0.3);
+    $this->SetFont('', 'B');
 
     for($i = 0; $i < count($header); $i++) {
       if ($w[$i] <= 0) continue;
-      $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1); 
+      $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 1);
     }
-    $this->Ln(); 
+    $this->Ln();
   }
 
   /**
@@ -100,58 +130,58 @@ class BasePDF extends TCPDF {
       $w[1] = 30;
       $w[0] -= 30;
     }
-        
-    // Header 
+
+    // Header
     $this->printHeader($w,$header);
 
-    // Color and font restoration 
-    $this->SetFillColor(224, 235, 255); 
-    $this->SetTextColor(0); 
-    $this->SetFont(''); 
-    // Data 
-    $fill = 0; 
+    // Color and font restoration
+    $this->SetFillColor(224, 235, 255);
+    $this->SetTextColor(0);
+    $this->SetFont('');
+    // Data
+    $fill = 0;
     $sum = 0;
     $sum_time = 0;
-    foreach($summarizedData as $row) { 
+    foreach($summarizedData as $row) {
       // check if page break is nessessary
       if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
-        $this->Cell(array_sum($w), 0, '', 'T'); 
-        $this->Ln();  
-        $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false); 
+        $this->Cell(array_sum($w), 0, '', 'T');
+        $this->Ln();
+        $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false);
         if (isset($this->columns['dec_time']))
           $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
         if (isset($this->columns['wage']))
-          $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-        $this->Ln();  
+          $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true);
+        $this->Ln();
         $this->AddPage();
         $this->printHeader($w,$header);
 
-        // Color and font restoration 
-        $this->SetFillColor(224, 235, 255); 
-        $this->SetTextColor(0); 
-        $this->SetFont(''); 
+        // Color and font restoration
+        $this->SetFillColor(224, 235, 255);
+        $this->SetTextColor(0);
+        $this->SetFont('');
       }
-      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
+      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);
       if (isset($this->columns['dec_time']))
-        $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+        $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill);
       if (isset($this->columns['wage']))
-        $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
-      $this->Ln(); 
-      $fill=!$fill; 
+        $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill);
+      $this->Ln();
+      $fill=!$fill;
       $sum+=$row['wage'];
-      $sum_time += $row['time']==-1?0:$row['time']; 
-        
+      $sum_time += $row['time']==-1?0:$row['time'];
+
     }
-    $this->Cell(array_sum($w), 0, '', 'T'); 
+    $this->Cell(array_sum($w), 0, '', 'T');
     $this->Ln();
 
-    $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false); 
-    $this->SetFont('', 'B'); 
+    $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false);
+    $this->SetFont('', 'B');
     if (isset($this->columns['dec_time']))
       $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
     if (isset($this->columns['wage']))
-      $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
-    $this->SetFont(''); 
+      $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true);
+    $this->SetFont('');
   }
 
   /**
@@ -167,7 +197,7 @@ class BasePDF extends TCPDF {
         $project_ids = array_keys($customer);
         foreach ($project_ids as $project_id) {
           foreach ($customer[$project_id] as $row) {
-          
+
             // summary aggregation
             if ($row['type'] == 'timeSheet') {
               if (isset($timeSheetSummary[$row['activityID']])) {
@@ -189,7 +219,7 @@ class BasePDF extends TCPDF {
           }
         }
       }
-      
+
       return array_merge($timeSheetSummary,$expenseSummary);
   }
 

@@ -1,7 +1,7 @@
 <?php
-	header('Content-type: text/css');
-	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
-	$schraff3 = "../../../skins/standard/grfx/schraff3.png";
+  header('Content-type: text/css');
+  $table_header = "../../../skins/standard/grfx/g3_table_header.png";
+  $schraff3 = "../../../skins/standard/grfx/schraff3.png";
 ?>
 
 div.ki_export table {
@@ -19,6 +19,11 @@ div.ki_export table a.preselect_lnk {
 div.ki_export table a:hover {
     color: #0F9E00;
     border-bottom:none;
+}
+
+div.ki_export table a.disabled {
+   text-decoration:line-through;
+   color: #FFC7BB;
 }
 
 div.ki_export table thead {
@@ -41,9 +46,9 @@ div.ki_export tr.odd td
     padding: 3px 4px 4px 5px;
 }
 #export_head td {
-	overflow:hidden;
-	padding: 3px 4px 4px 6px;
-	}
+  overflow:hidden;
+  padding: 3px 4px 4px 6px;
+  }
 
 div.ki_export tr.hover td {
     background: #FFC !important;
@@ -138,7 +143,7 @@ div.ki_export>div#xp>div#xptable>table>tbody>tr>td.cleared {
 }
 
 #export_head table {
-	width:100%;
+  width:100%;
 }
 
 #export_head td.option,
@@ -251,19 +256,19 @@ div.ki_export table tr.even td.disabled {
 
 div.ki_export table td.user
 {
-	width:50px;
-	text-align:left;
+  width:50px;
+  text-align:left;
 }
 
 #export_head td.user
 {
-	width:100px;
+  width:100px;
 }
 
 
 div.ki_export table td.cleared
 {
-	width:20px;
+  width:20px;
 }
 
 div.ki_export table td.cleared a
@@ -289,7 +294,7 @@ background:url('../grfx/cleared.png') no-repeat;
 
 
 div#export_head div.right
-{ 
+{
     position:absolute;
     overflow:hidden;
     width:32px;
@@ -299,7 +304,7 @@ div#export_head div.right
 }
 
 div#export_head div.right a
-{ 
+{
     background-image: url('../grfx/invert.png');
     overflow:hidden;
     display:block;
