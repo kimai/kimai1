@@ -25,7 +25,7 @@ require('../../core/Config.php');
 
 switch ($axAction) {
 
-    case "add_edit_timeSheetEntry":  
+    case "add_edit_timeSheetEntry":
         if (isset($kga['customer'])) die();
     // ==============================================
     // = display edit dialog for timesheet record   =
@@ -69,19 +69,19 @@ switch ($axAction) {
         }
 
         $view->users = $users;
-        
+
         $view->trackingNumber = $timeSheetEntry['trackingNumber'];
         $view->description = $timeSheetEntry['description'];
         $view->comment = $timeSheetEntry['comment'];
-        
+
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
         $view->rate = $timeSheetEntry['rate'];
         $view->fixedRate = $timeSheetEntry['fixedRate'];
-        
+
         $view->cleared = $timeSheetEntry['cleared']!=0;
 
         $view->userID = $timeSheetEntry['userID'];
-    
+
         $view->start_day = date("d.m.Y",$timeSheetEntry['start']);
         $view->start_time = date("H:i:s",$timeSheetEntry['start']);
 
@@ -96,11 +96,11 @@ switch ($axAction) {
 
         $view->approved = $timeSheetEntry['approved'];
         $view->budget = $timeSheetEntry['budget'];
-        
+
         // preselected
         $view->projectID = $timeSheetEntry['projectID'];
         $view->activityID = $timeSheetEntry['activityID'];
-    
+
         $view->commentType = $timeSheetEntry['commentType'];
         $view->statusID = $timeSheetEntry['statusID'];
         $view->billable_active = $timeSheetEntry['billable'];
@@ -136,7 +136,7 @@ switch ($axAction) {
           $users[$kga['user']['userID']] = $kga['user']['name'];
 
         $view->users = $users;
-        
+
         $view->start_day = date("d.m.Y");
         $view->end_day = date("d.m.Y");
 
@@ -187,6 +187,7 @@ switch ($axAction) {
           $view->end_time = date("H:i:s");
         }
 
+        $view->location = $kga['conf']['DefaultLocation'];
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
         $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
         $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);
@@ -195,22 +196,22 @@ switch ($axAction) {
         $view->budget_activity = 0;
         $view->approved_activity = 0;
         $view->budget_activity_used = 0;
-        
+
         $view->cleared = false;
     }
 
     $view->status = $kga['conf']['status'];
-    
+
     $billableValues = Config::getConfig('billable');
     $billableText = array();
     foreach($billableValues as $billableValue) {
-    	$billableText[] = $billableValue.'%';
+      $billableText[] = $billableValue.'%';
     }
     $view->billable = array_combine($billableValues, $billableText);
     $view->commentTypes = $commentTypes;
 
-    echo $view->render("floaters/add_edit_timeSheetEntry.php"); 
+    echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
-    break;        
+    break;
 
 }

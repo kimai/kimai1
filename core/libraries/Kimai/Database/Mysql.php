@@ -1177,7 +1177,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           $this->remove_rate($data['userID'], NULL, NULL);
         }
       }
-    
+
       return $data['userID'];
   }
 
@@ -1783,19 +1783,19 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $p = $this->kga['server_prefix'];
 
       $timeEntryID = MySQL::SQLValue($timeEntryID, MySQL::SQLVALUE_NUMBER);
-	
-		$table = $this->getTimeSheetTable();
-		$projectTable = $this->getProjectTable();
-		$activityTable = $this->getActivityTable();
-		$customerTable = $this->getCustomerTable();
-		
-      	$select = "SELECT $table.*, $projectTable.name AS projectName, $customerTable.name AS customerName, $activityTable.name AS activityName, $customerTable.customerID AS customerID
-      				FROM $table
-                	JOIN $projectTable USING(projectID)
-                	JOIN $customerTable USING(customerID)
-                	JOIN $activityTable USING(activityID)";
-		
-		
+
+    $table = $this->getTimeSheetTable();
+    $projectTable = $this->getProjectTable();
+    $activityTable = $this->getActivityTable();
+    $customerTable = $this->getCustomerTable();
+
+        $select = "SELECT $table.*, $projectTable.name AS projectName, $customerTable.name AS customerName, $activityTable.name AS activityName, $customerTable.customerID AS customerID
+              FROM $table
+                  JOIN $projectTable USING(projectID)
+                  JOIN $customerTable USING(customerID)
+                  JOIN $activityTable USING(activityID)";
+
+
       if ($timeEntryID) {
           $result = $this->conn->Query("$select WHERE timeEntryID = " . $timeEntryID);
       } else {
@@ -1883,8 +1883,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       foreach ($original_array as $key => $value) {
           if (isset($data[$key]) == true) {
-          	// buget is added to total budget for activity. So if we change the budget, we need
-          	// to first subtract the previous entry before adding the new one
+            // buget is added to total budget for activity. So if we change the budget, we need
+            // to first subtract the previous entry before adding the new one
 //          	if($key == 'budget') {
 //          		$budgetChange = - $value;
 //          	} else if($key == 'approved') {
@@ -1919,10 +1919,10 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $filter ['timeEntryID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
       $table = $this->kga['server_prefix']."timeSheet";
-      
+
       if (! $this->conn->TransactionBegin()) {
-      	$this->logLastError('timeEntry_edit');
-      	return false;
+        $this->logLastError('timeEntry_edit');
+        return false;
       }
       $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
@@ -2166,7 +2166,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   * @param integer $start start of timeframe in unix seconds
   * @param integer $end end of timeframe in unix seconds
   * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
-  * @param 
+  * @param
   * @return array
   * @author th
   */
@@ -2174,12 +2174,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       if (!is_numeric($filterCleared)) {
         $filterCleared = $this->kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
       }
-      
+
       $start    = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
       $end   = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
       $filterCleared   = MySQL::SQLValue($filterCleared , MySQL::SQLVALUE_NUMBER);
       $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_BOOLEAN);
-      
+
       $p     = $this->kga['server_prefix'];
 
       $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
@@ -2193,34 +2193,34 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses[]="start < $end";
       if ($filterCleared > -1)
         $whereClauses[] = "cleared = $filterCleared";
-      
+
       if ($limit) {
-		if(!empty($limitRows))
-		{
-			$startRows = (int)$startRows;
-      	  	$limit = "LIMIT $startRows, $limitRows";
-		} 
-		else 
-		{
-			if (isset($this->kga['conf']['rowlimit'])) {
-				$limit = "LIMIT " .$this->kga['conf']['rowlimit'];
-			} else {
-				$limit="LIMIT 100";
-			}
-		}
+    if(!empty($limitRows))
+    {
+      $startRows = (int)$startRows;
+            $limit = "LIMIT $startRows, $limitRows";
+    }
+    else
+    {
+      if (isset($this->kga['conf']['rowlimit'])) {
+        $limit = "LIMIT " .$this->kga['conf']['rowlimit'];
+      } else {
+        $limit="LIMIT 100";
+      }
+    }
       } else {
           $limit="";
       }
-      
-      
+
+
       $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, customer.customerID as customerID, activity.name AS activityName,
                         project.name AS projectName, project.comment AS projectComment, user.name AS userName, user.alias AS userAlias ";
-      
+
       if($countOnly) {
-      	$select = "SELECT COUNT(*) AS total";
-      	$limit = "";
+        $select = "SELECT COUNT(*) AS total";
+        $limit = "";
       }
-                       
+
       $query = "$select
                 FROM ${p}timeSheet AS timeSheet
                 Join ${p}projects AS project USING (projectID)
@@ -2238,9 +2238,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       if($countOnly)
       {
-      	$this->conn->MoveFirst();
-      	$row = $this->conn->Row();
-      	return $row->total;
+        $this->conn->MoveFirst();
+        $row = $this->conn->Row();
+        return $row->total;
       }
 
       $i=0;
@@ -2313,57 +2313,57 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    */
   public function checkUserInternal($kimai_user)
   {
-	global $translations;
-	$p = $this->kga['server_prefix'];
+  global $translations;
+  $p = $this->kga['server_prefix'];
 
-	if (strncmp($kimai_user, 'customer_', 9) == 0) {
-		$customerName = MySQL::SQLValue(substr($kimai_user,9));
-		$query = "SELECT customerID FROM ${p}customers WHERE name = $customerName AND NOT trash = '1';";
-		$this->conn->Query($query);
-		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
+  if (strncmp($kimai_user, 'customer_', 9) == 0) {
+    $customerName = MySQL::SQLValue(substr($kimai_user,9));
+    $query = "SELECT customerID FROM ${p}customers WHERE name = $customerName AND NOT trash = '1';";
+    $this->conn->Query($query);
+    $row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
-		$customerID   = $row['customerID'];
-		if ($customerID < 1) {
+    $customerID   = $row['customerID'];
+    if ($customerID < 1) {
                         Logger::logfile("Kicking customer $customerName because he is unknown to the system.");
-			kickUser();
-		}
-	}
-	else
-	{
-		$query = "SELECT userID FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
-		$this->conn->Query($query);
-		$row = $this->conn->RowArray(0,MYSQL_ASSOC);
+      kickUser();
+    }
+  }
+  else
+  {
+    $query = "SELECT userID FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
+    $this->conn->Query($query);
+    $row = $this->conn->RowArray(0,MYSQL_ASSOC);
 
-		$userID   = $row['userID'];
-		$name = $kimai_user;
+    $userID   = $row['userID'];
+    $name = $kimai_user;
 
-		if ($userID < 1) {
+    if ($userID < 1) {
                         Logger::logfile("Kicking user $name because he is unknown to the system.");
-			kickUser();
-		}
-	}
+      kickUser();
+    }
+  }
 
-	// load configuration and language
-	$this->get_global_config();
-	if (strncmp($kimai_user, 'customer_', 4) == 0) {
-		$this->get_customer_config($customerID);
-	} else {
-		$this->get_user_config($userID);
-	}
+  // load configuration and language
+  $this->get_global_config();
+  if (strncmp($kimai_user, 'customer_', 4) == 0) {
+    $this->get_customer_config($customerID);
+  } else {
+    $this->get_user_config($userID);
+  }
 
-	// override autoconf language if admin has chosen a language in the advanced tab
-	if ($this->kga['conf']['language'] != "") {
-		$translations->load($this->kga['conf']['language']);
-		$this->kga['language'] = $this->kga['conf']['language'];
-	}
+  // override autoconf language if admin has chosen a language in the advanced tab
+  if ($this->kga['conf']['language'] != "") {
+    $translations->load($this->kga['conf']['language']);
+    $this->kga['language'] = $this->kga['conf']['language'];
+  }
 
-	// override language if user has chosen a language in the prefs
-	if ($this->kga['conf']['lang'] != "") {
-		$translations->load($this->kga['conf']['lang']);
-		$this->kga['language'] = $this->kga['conf']['lang'];
-	}
+  // override language if user has chosen a language in the prefs
+  if ($this->kga['conf']['lang'] != "") {
+    $translations->load($this->kga['conf']['lang']);
+    $this->kga['language'] = $this->kga['conf']['lang'];
+  }
 
-	return (isset($this->kga['user'])?$this->kga['user']:null);
+  return (isset($this->kga['user'])?$this->kga['user']:null);
   }
 
   /**
@@ -2944,11 +2944,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       foreach($rows as $row) {
-      	$res[] = $row['status'];
+        $res[] = $row['status'];
       }
       return $res;
   }
-      
+
   /**
    * returns array of all status with the status id as key
    *
@@ -2985,16 +2985,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    * add a new status
    * @param Array $statusArray
    */
-	public function status_create($status) {
-      	$values['status'] = MySQL::SQLValue(trim($status['status']));
-		
-      	$table = $this->kga['server_prefix']."statuses";
-      	$result = $this->conn->InsertRow($table, $values);
-      	if (! $result) {
-        	$this->logLastError('add_status');
-        	return false;
-      	}
-		return true;
+  public function status_create($status) {
+        $values['status'] = MySQL::SQLValue(trim($status['status']));
+
+        $table = $this->kga['server_prefix']."statuses";
+        $result = $this->conn->InsertRow($table, $values);
+        if (! $result) {
+          $this->logLastError('add_status');
+          return false;
+        }
+    return true;
   }
 
   /**
@@ -3177,7 +3177,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       if ($rate) {
         $values ['rate'] = $rate;
       }
-
+      if (! $this->kga['conf']['DefaultLocation']=="")
+         $values ['location'] = "'".$this->kga['conf']['DefaultLocation']."'";
       $table = $this->kga['server_prefix']."timeSheet";
       $result = $this->conn->InsertRow($table, $values);
 
@@ -3901,14 +3902,14 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    * @param integer $activityID
    */
   public function get_budget_used($projectID,$activityID) {
-  	$timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
-  	$budgetUsed = 0;
-  	if(is_array($timeSheet)) {
-	  	foreach($timeSheet as $timeSheetEntry) {
-	  		$budgetUsed+= $timeSheetEntry['wage_decimal'];
-	  	}
-  	}
-  	return $budgetUsed;
+    $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
+    $budgetUsed = 0;
+    if(is_array($timeSheet)) {
+      foreach($timeSheet as $timeSheetEntry) {
+        $budgetUsed+= $timeSheetEntry['wage_decimal'];
+      }
+    }
+    return $budgetUsed;
   }
 
     /**
@@ -4092,39 +4093,39 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function queryAll($query) {
     return $this->conn->QueryArray($query);
   }
-  
+
   /**
    * checks if given $projectId exists in the db
-   * 
+   *
    * @param int $projectId
    * @return bool
    */
   public function isValidProjectId($projectId)
   {
-  	
-  	$table = $this->getProjectTable();
-	$filter = array('projectID' => $projectId, 'trash' => 0);
-	return $this->rowExists($table, $filter);
+
+    $table = $this->getProjectTable();
+  $filter = array('projectID' => $projectId, 'trash' => 0);
+  return $this->rowExists($table, $filter);
   }
-  
+
   /**
    * checks if given $activityId exists in the db
-   * 
+   *
    * @param int $activityId
    * @return bool
    */
   public function isValidActivityId($activityId)
   {
-  	
-  	$table = $this->getActivityTable();
-	$filter = array('activityID' => $activityId, 'trash' => 0);
-	return $this->rowExists($table, $filter);
+
+    $table = $this->getActivityTable();
+  $filter = array('activityID' => $activityId, 'trash' => 0);
+  return $this->rowExists($table, $filter);
   }
 
 
   /**
    * Check if a user is allowed to access an object for a given action.
-   * 
+   *
    * @param integer the ID of the user
    * @param array list of group IDs of the object to check
    * @param string name of the permission to check for
@@ -4151,7 +4152,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
   /**
    * Returns the membership roleID the user has in the given group.
-   * 
+   *
    * @param integer the ID of the user
    * @param integer the ID of the group
    * @return integer|bool membership roleID or false if user is not in the group
@@ -4173,7 +4174,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
   /**
    * Check if a membership role gives permission for a specific action.
-   * 
+   *
    * @param integer the ID of the membership role
    * @param string name of the action / permission
    * @return bool true if permissions is granted, false otherwise
@@ -4194,7 +4195,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
   /**
    * Check if a global role gives permission for a specific action.
-   * 
+   *
    * @param integer the ID of the global role
    * @param string name of the action / permission
    * @return bool true if permissions is granted, false otherwise
@@ -4213,21 +4214,21 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     }
 
     $result = $this->conn->RowCount() > 0;
-    
+
     Logger::logfile("Global role $roleID gave ". ($result?'true':'false')." for $permission.");
     return $result;
   }
 
   public function global_role_create($data) {
     $values = array();
-    
+
     foreach ($data as $key => $value) {
       if ($key == 'name')
         $values[$key] = MySQL::SQLValue($value);
       else
         $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
     }
-    
+
     $table = $this->kga['server_prefix']."globalRoles";
     $result = $this->conn->InsertRow($table, $values);
 
@@ -4242,7 +4243,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function global_role_edit($globalRoleID, $data) {
 
     $values = array();
-    
+
     foreach ($data as $key => $value) {
       if ($key == 'name')
         $values[$key] = MySQL::SQLValue($value);
@@ -4250,7 +4251,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
     }
 
-    $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);    
+    $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
     $table = $this->kga['server_prefix']."globalRoles";
 
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -4261,7 +4262,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $this->logLastError('global_role_edit');
         return false;
     }
-    
+
     return true;
   }
 
@@ -4275,7 +4276,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $this->logLastError('global_role_delete');
         return false;
     }
-    
+
     return true;
   }
 
@@ -4328,14 +4329,14 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
   public function membership_role_create($data) {
     $values = array();
-    
+
     foreach ($data as $key => $value) {
       if ($key == 'name')
         $values[$key] = MySQL::SQLValue($value);
       else
         $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
     }
-    
+
     $table = $this->kga['server_prefix']."membershipRoles";
     $result = $this->conn->InsertRow($table, $values);
 
@@ -4350,7 +4351,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   public function membership_role_edit($membershipRoleID, $data) {
 
     $values = array();
-    
+
     foreach ($data as $key => $value) {
       if ($key == 'name')
         $values[$key] = MySQL::SQLValue($value);
@@ -4358,7 +4359,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
     }
 
-    $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);    
+    $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
     $table = $this->kga['server_prefix']."membershipRoles";
 
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -4376,7 +4377,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $this->logLastError('membership_role_delete');
         return false;
     }
-    
+
     return true;
   }
 
@@ -4426,8 +4427,8 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       $rows = $this->conn->RecordsArray(MYSQL_ASSOC);
       return $rows;
   }
-  
-  
+
+
  /**
    * checks if a given db row based on the $idColumn & $id exists
    * @param string $table
@@ -4436,17 +4437,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
    */
   protected function rowExists($table, Array $filter)
   {
-	$select = $this->conn->SelectRows($table, $filter);
-	
-	if(!$select) {
-		$this->logLastError('rowExists');
-		return false;
-	}
-	else 
-	{
-		$rowExits = (bool)$this->conn->RowArray(0, MYSQL_ASSOC);
-		return $rowExits;
-	}
+  $select = $this->conn->SelectRows($table, $filter);
+
+  if(!$select) {
+    $this->logLastError('rowExists');
+    return false;
   }
-  
+  else
+  {
+    $rowExits = (bool)$this->conn->RowArray(0, MYSQL_ASSOC);
+    return $rowExits;
+  }
+  }
+
 }
