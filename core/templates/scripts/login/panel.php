@@ -4,7 +4,7 @@
 <head>
 <link rel="SHORTCUT ICON" href="favicon.ico">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta name="robots" value="noindex,nofollow" />
+<meta name="robots" content="noindex,nofollow" />
 <title>Kimai <?php echo $this->kga['lang']['login']?></title>
 <script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
@@ -20,7 +20,7 @@
             $("#cookiewarning").remove();
             $.cookie('KimaiCookietest', '', {expires: -1});
         }
-        if (!$("#warning p").size()) $("#warning").remove();
+        if (!$("#warning").find("p").size()) $("#warning").remove();
 
         $("#forgotPasswordLink").click(function(event) {
           event.preventDefault();
@@ -42,7 +42,7 @@
             dataType: "json",
             success: function(data) {
               $("#forgotPassword").fadeOut();
-              $("#forgotPasswordConfirmation p").html(data.message);
+              $("#forgotPasswordConfirmation").find("p").html(data.message);
               $("#forgotPasswordConfirmation").fadeIn();
             }
           });
@@ -98,9 +98,9 @@
 
       <div id="forgotPassword">
 <?php echo $this->kga['lang']['passwordReset']['instructions']; ?>
-        <form>
+        <form action="">
             <fieldset>
-                <label for="kimaiusername">
+                <label for="forgotPasswordUsername">
                     <?php echo $this->kga['lang']['username']?>:
                 </label>
                 <input type='text' name="name" id="forgotPasswordUsername" />
@@ -111,11 +111,9 @@
       </div>
 
       <div id="forgotPasswordConfirmation">
-        <p>
-        </p>
+        <p></p>
         <a class="returnToLogin" href=""><?php echo $this->kga['lang']['passwordReset']['returnToLogin'] ?></a>
       </div>
-
             
             <div id="warning">
                 <p id="JSwarning"><strong style="color:red"><?php $this->kga['lang']['JSwarning']?></strong></p>

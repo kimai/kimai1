@@ -4,7 +4,7 @@
 <head>
 <link rel="SHORTCUT ICON" href="favicon.ico">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta name="robots" value="noindex,nofollow" />
+<meta name="robots" content="noindex,nofollow" />
 <title>Kimai <?php echo $this->kga['lang']['login']?></title>
 <script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
@@ -21,7 +21,7 @@ var requestData = <?php echo json_encode($this->requestData); ?>;
             $("#cookiewarning").remove();
             $.cookie('KimaiCookietest', '', {expires: -1});
         }
-        if (!$("#warning p").size()) $("#warning").remove();
+        if (!$("#warning").find("p").size()) $("#warning").remove();
 
         $("#forgotPasswordLink").click(function(event) {
           event.preventDefault();
@@ -40,9 +40,9 @@ var requestData = <?php echo json_encode($this->requestData); ?>;
             dataType: "json",
             success: function(data) {
               $("#login").fadeOut();
-              $("#message p").html(data.message);
+              $("#message").find("p").html(data.message);
               if (data.showLoginLink)
-                $("#message a").show();
+                $("#message").find("a").show();
               $("#message").fadeIn();
             }
           });
@@ -52,8 +52,6 @@ var requestData = <?php echo json_encode($this->requestData); ?>;
         $("#kimaiusername").focus();
     });
 </script>
-
-
 <?php if ($this->kga['check_at_startup']): ?>
 <script type='text/javascript'>
     $(function(){
@@ -73,11 +71,11 @@ var requestData = <?php echo json_encode($this->requestData); ?>;
     <div id="login" <?php if ($this->keyCorrect): ?>style="display:block" <?php endif; ?>>
         <form action='index.php?a=checklogin' name='form1' method='post'>
             <fieldset>
-                <label for="kimaiusername">
+                <label for="password">
                     <?php echo $this->kga['lang']['newPassword']?>:
                 </label>
                 <input type='password' name="password" id="password" />
-                <label for="kimaipassword">
+                <label for="password2">
                     <?php echo $this->kga['lang']['retypePassword']?>:
                 </label>
                 <input type='password' name="password2" id="password2" />
@@ -92,14 +90,11 @@ var requestData = <?php echo json_encode($this->requestData); ?>;
         </p>
         <a style="display:none" href="index.php"><?php echo $this->kga['lang']['passwordReset']['returnToLogin'] ?></a>
       </div>
-
-            
             <div id="warning">
                 <p id="JSwarning"><strong style="color:red"><?php $this->kga['lang']['JSwarning']?></strong></p>
                 <p id="cookiewarning"><strong style="color:red"><?php $this->kga['lang']['cookiewarning']?></strong></p>
             </div>
         </div>
-
             <?php echo $this->partial('misc/copyrightnotes.php', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
 </div>
 </body>

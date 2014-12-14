@@ -24,21 +24,21 @@ $activities = $this->filterListEntries($this->activities);
 
                 <td nowrap class="option">
                     <?php if ($this->show_activity_edit_button): ?>
-                    <a href ="#" onClick="editSubject('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
+                    <a href="#" onclick="editSubject('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
                       <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?> (ID:<?php echo $activity['activityID']?>)' border='0' />
                     </a>
                     <?php endif; ?>
 
-                    <a href ="#" onClick="lists_update_filter('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
+                    <a href="#" onclick="lists_update_filter('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
                       <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
                     </a>
 
-                    <a href ="#" class="preselect" onClick="buzzer_preselect_activity(<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>'); return false;" id="ps<?php echo $activity['activityID']?>">
+                    <a href="#" class="preselect" onclick="buzzer_preselect_activity(<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>'); return false;" id="ps<?php echo $activity['activityID']?>">
                       <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/preselect_off.png' width='13' height='13' alt='<?php echo $this->kga['lang']['select']?>' title='<?php echo $this->kga['lang']['select']?> (ID:<?php echo $activity['activityID']?>)' border='0' />
                     </a>
                 </td>
 
-                <td width="100%" class="activities" onClick="buzzer_preselect_activity(<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>'); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
+                <td width="100%" class="activities" onclick="buzzer_preselect_activity(<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>'); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
                     <?php if ($activity['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
                     <?php if ($this->kga['conf']['showIDs'] == 1): ?><span class="ids"><?php echo $activity['activityID']?></span> <?php endif; echo $this->escape($activity['name']) ?>
                     <?php if ($activity['visible'] != 1): ?></span><?php endif; ?>
