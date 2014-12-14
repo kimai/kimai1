@@ -1,18 +1,18 @@
 <?php
 /**
- * This file is part of 
+ * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
- * 
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
- * 
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,11 +26,12 @@
  *
  *
  */
- 
+
 /**
  * français
  * by Willem van Gemert
  * et diaoul 02/11/10 encodé en ANSI AS UTF-8 rev 394
+ * updated by Claude Gelinas 10-12-2014
  */
 return array(
 "countryCode"       => "fr-FR",
@@ -46,6 +47,8 @@ return array(
 "out"               => "Sortie",
 "time"              => "h:mn",
 "timelabel"         => "Temps",
+"starttime"         => "démarrage",
+"DateTimeNotInFuture" => "Le jour et l'heure ne peuvent être dans le futur.",
 "durationlabel"     => "Durée",
 "customer"          => "Client",
 "project"           => "Projet",
@@ -61,6 +64,7 @@ return array(
 "recommended"       => "recommendé",
 "submit"            => "OK",
 "cancel"            => "Annuler",
+"close"             => "Fermer",
 "edit"              => "Modifier Entrée",
 "construction"      => "en construction...",
 "about"             => "A propos de",
@@ -77,8 +81,8 @@ return array(
 "noEntries"         => "Pas d'entrées enregistrées pour le moment...",
 "recordAgain"       => "Enregistrer cette tâche de nouveau",
 "comment"           => "Commentaire",
-"location"         => "Lieu",
-"trackingNumber"        => "N°",
+"location"          => "Lieu",
+"trackingNumber"    => "N°",
 "cookiewarning"     => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
 "JSwarning"         => "JavaScript doit être activé! Cette version ne fonctionne pas sans cela.",
 "designation"       => "désignation",
@@ -95,6 +99,22 @@ return array(
 "username"          => "Usager",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
+"retypePassword"    => "réécrire le mot de passe",
+"passwordsDontMatch" => "les mots de passe entrés ne concordent pas.",
+"passwordTooShort"  => "le mot de passe est de moins de 5 caractères.",
+"forgotPassword"    => "Mot de passe oublié",
+
+"passwordReset"     => array(
+"notSupported"      => "Le plugin présent ne supporte pas la réinitialisation du mot de passe.",
+"instructions"      => "Entrer votre nom d'usager et un courriel contenant un lien sera envoyé à l'adresse courriel associée. Il n'y aura pas d'avertissement si votre nom d'usager est incorecte alors asurez-vous de l'inscrire correctement!",
+"mailSubject"       => "Kimai - réinitialisation du mot de passe",
+"mailMessage"       => "Ceci est un message courriel automatique pour réinitialiser votre mot de passe à Kimai. Svp, ouvrir l'adresse suivante dans votre navigateur: %{URL}",
+"mailConfirmation"  => "Un courriel a été envoyé à l'adresse courriel associée. Svp, suivre les instructions fournies dans ce courriel. Si aucune adresse courriel n'est associée à ce nom d'usager vous ne recevrez aucun courriel et devrez contacter votre administrateur.",
+"returnToLogin"     => "retour à la page de connection",
+"invalidKey"        => "Le code de sécurité ne concorde pas avec la clé transmise par courriel. Assurez-vous que le lien complet est ouvert par votre navigateur.",
+"success"           => "Votre mot de passe a été changé.",
+),
+
 "minLength"         => "min. 5 caractères!",
 "update"            => "La structure de la base de données de la version Kimai installée a été mise à jour.<br />Nous recommandons de sauvegarder vos données pour éviter toute perte<br />durant la procédure de mise a jour.",
 "updateNow"         => "Mise à jour de la base de données en cours!",
@@ -128,6 +148,7 @@ return array(
 "advanced"          => "Avancé",
 "database"          => "Base de données",
 "options"           => "Options",
+"description"       => "Description",
 "status"            => "Statut",
 "editstatus"		=> "Editer le statut",
 "new_status"        => "Ajouter un statut",
@@ -164,9 +185,11 @@ return array(
 "activeAccount"     => "Utilisateur actif - cliquer pour désactiver",
 "members"           => "Membres",
 "nopasswordset"     => "Aucun mot de passe enregistré",
+"nopassword"        => "Aucun mot de passe",
 "noItems"           => "Pas d'entrées",
 "DBname"            => "Nom de la base de données",
 "autoselection"     => "Sélection automatique",
+"openAfterRecorded" => "Ouvrir l'entrée lorsque l'enregistrement se termine",
 "quickdelete"       => "Suppression rapide des données dans les tables",
 "quickdeleteHide"   => "Non",
 "quickdeleteShow"   => "Oui, sans dialogue de confirmation",
@@ -193,6 +216,7 @@ return array(
 "refundable"        => "Remboursable",
 "yes"               => "oui",
 "no"                => "non",
+"default"           => "défaut",
 "commentType"      => "Type de commentaire",
 "ctype0"            => "Commentaire",
 "ctype1"            => "Note",
@@ -205,6 +229,10 @@ return array(
 "showitem"          => "Rendre visible",
 "hideitem"          => "Rendre invisible",
 "checkUsername"     => "Vous devez saisir un nom d'utilisateur dans le champ à gauche du bouton Ajouter!",
+"checkGroupname"    => "Vous devez entrer un nom de groupe dans le champ à gauche du bouton ajouter-un-groupe!",
+"checkGlobalRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
+"checkMembershipRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
+"checkStatusname"   => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
 "clickToReload"     => "Cliquer ici pour relancer l'interface graphique",
 "sure"              => "Etes-vous sûr?",
 "clock"             => "Horloge",
@@ -226,6 +254,8 @@ return array(
 "testActivity"      => "Tâche-test",
 "time_billable"     => "Facturation horaire",
 "billable"          => "Facturation",
+"effort"            => "Effort",
+"used"              => "Utilisé",
 "budget"            => "Budget",
 "budget_available" 	        => "Budget disponible",
 "budget_activity" 		    => "Budget de la tâche",
@@ -239,6 +269,10 @@ return array(
 "my_rate"           => "Mon taux",
 "fixedRate"         => "Taux fixe",
 "wage"              => "Coût",
+"roundTimesheetEntries" => "Arrondir la nouvelle entrée à",
+"minutes"           => "Minutes",
+"seconds"           => "Seconds",
+"and"               => "et",
 
 "customerlogin"     => "Login client",
 
@@ -246,7 +280,7 @@ return array(
 "designation"       => "Désignation",
 
 "cleared"           => "validé",
-
+"atLeastOneGroup" => "Au moins un groupe doit être sélectionné.",
 "noFading"          => "Pas d'effet fondu",
 "user_list_hidden"  => "Cacher la liste util. par défaut",
 "checkStatusname"    => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
@@ -265,6 +299,7 @@ return array(
 'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
 'round_time' => 'Arrondir le temps à ',
 'round_time_minute' => ' minute(s).',
+"allowRoundDown"     => "Permettre d'arrondir l'entrée à la baisse.",
 'logged_in_as' => 'Connecté comme:',
 
 'decimal_separator'  => 'Séparateur décimal',
@@ -272,14 +307,14 @@ return array(
 'view_filter' => 'Voir le filtre',
 'unassigned' => 'Aucun',
 'all_activities' => '&lt;&lt;Tous&gt;&gt;',
-
+'all'                 => 'tous',
 'durationWithSeconds' => 'Montrer la durée à la seconde près.',
 
 'multiplier' => 'Multiplicateur',
 
 'dateAndTimeHelp' => '<strong>Les temps et dates peuvent être entrés avec la notation courte:</strong><br />
-            Dates: 5 &rarr; le 5 du mois courant &nbsp;&nbsp; 
-            1004 &rarr; le 10.04. de l\'année en cours &nbsp;&nbsp; 
+            Dates: 5 &rarr; le 5 du mois courant &nbsp;&nbsp;
+            1004 &rarr; le 10.04. de l\'année en cours &nbsp;&nbsp;
             100406 &rarr; 10.04.2006<br />
             Times: 7 &rarr; 07:00:00  &nbsp;&nbsp;
             14 &rarr; 14:00:00  &nbsp;&nbsp;
@@ -287,13 +322,21 @@ return array(
             091020 &rarr; 09:10:20 &nbsp;&nbsp;',
 
 'timezone' => 'fuseau horaire',
-'defaultTimezone' => 'fuseau horaire pour les nouveaux utilisateurs et clients',
-
+'defaultTimezone'   => 'fuseau horaire pour les nouveaux utilisateurs et clients',
+'editLimitPart1'    => 'Aucune entrée ne peut être ajoutée ou éditée qui se termine plus tard que',
+'editLimitPart2'    => 'jour(s) et',
+'editLimitPart3'    => 'heure(s) dans le passé.',
+"editLimitError"    => "La date de fin est plus loin dans le passé qu'il est permit.",
 'hideClearedEntries' => 'cacher les données supprimées',
+'showCommentsByDefault' => 'montrer le commentaire par défaut',
+'showTrackingNumber' => 'montrer le numéro de suivit',
+"hideOverlapLines" => "Ne pas indiquer le chevauchement de temps d'entrée",
 
 'general' => 'Général',
 'address' => 'Adresse',
 'contact' => 'Contact',
+'list'    => 'Liste',
+'sublists' => 'listes inférieurs',
 
 "filter" => "Filtre",
 
@@ -306,30 +349,33 @@ return array(
 'installerWarningText' => 'Vous devez supprimer le dossier d\'installation (INSTALL) afin que personne ne puisse ré-installer KIMAI.',
 
 'change' => 'change',
+'sublistAnnotations' => 'annotations sous-liste',
+'TimeDateInputError' => 'Le temps ou la date entrée ne sont pas valides.',
+'StartTimeBeforeEndTime' => 'Le temps de départ doit être antérieure au temps de fin.',
 
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow et autres...<br />
-        
+
         <br />
-        
+
         <strong>Ce logiciel est un logiciel libre et publié 'EN L'ETAT' sans aucune espèce de garantie</strong> sous les conditions de la
-        <a href="../COPYING">Version GPL 3</a>. 
-        
+        <a href="../COPYING">Version GPL 3</a>.
+
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> | 
+
+        <a href='http://www.kimai.org' target='_blank'>Site Officiel</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
         <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Telechargement</a>
-        
+
         <br /><br />
 
         Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="http://forum.kimai.org" title="Forum Kimai">forum</a>. Vous y trouverez une rubrique spéciale "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" .
         La dernière version peut être téléchargée <a href="https://github.com/kimai/kimai/archive/master.zip">Ici</a> (Pour les test seulement!).
-        
+
         <br /><br />
-        
+
         SVP supportez les futurs développements de Kimai avec une <a href="http://www.kimai.org/en/donate.html">donation</a>
         ou en étendant sa <a href="https://github.com/kimai/kimai/tree/master/core/language">bibliothèque de langues</a>.
 
@@ -356,12 +402,26 @@ EOF
 'weekdays'       => array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"),
 'weekdays_short' => array("Dim","Lun","Mar","Mer","Jeu","Ven","Sam"),
 
+'errorMessages' => array(
+'permissionDenied' => 'Permission refusée',
+"userWithSameName" => "Le nom d'un client ne peut être le même que le nom d'un usager.",
+"customerWithSameName" => "Le nom d'un usager ne peut être le même que le nom d'un client.",
+'sameGlobalRoleName' => 'Un rôle global avec ce nom existe déjà.',
+"sameMembershipRoleName" => "Un rôle d'adhésion avec ce nom existe déjà.",
+'noActivitySelected' => 'Aucune activité sélectionnée.',
+'noProjectSelected' => 'Aucun projet sélectionné.',
+'multiplierNegative' => 'Le multiplicateur doit être plus grand que 0.',
+),
+
+'confirmations' => array(
+'ownGlobalRoleChange' => 'Etes vous certain de vouloir changer votre propre rôle globale de "%OLD%" à "%NEW%"?\n Ceci pourrait conduire à des permissions miondres!',
+),
 'errors' => array (
   0 => array ('hdl' => "Impossible de se connecter à la base de données!",
-			  'txt' => "Vérifier que la base de données fonctionne, possède un connecteur PDO actif et que les entrées dans le fichier 'conf.php' du répertoire 'includes' sont correctes."),
+        'txt' => "Vérifier que la base de données fonctionne, possède un connecteur PDO actif et que les entrées dans le fichier 'conf.php' du répertoire 'includes' sont correctes."),
 
   1 => array ('hdl' => "Erreur durant l'installation!",
-			  'txt' => 'Kimai ne peut créer les tables neccessaires car des tables avec ce nom de préfixe existent déjà.<br/>
+        'txt' => 'Kimai ne peut créer les tables neccessaires car des tables avec ce nom de préfixe existent déjà.<br/>
 Pour mettre à jour l\'installation existante, merci de cliquer <a href="../index.php">Ici</a>.<br/>
 Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce préfixe pour permettre à Kimai une installation correcte.')
    ),
@@ -403,7 +463,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 
 
 'export_extension' => array(
-	
+
 "print_hint"      		   => "Cliquer sur OK pour ouvrir un tableau imprimable.",
 "dl_hint"         		   => "Cliquer sur OK pour télécharger le fichier exporté.",
 
@@ -466,21 +526,22 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 ),
 
 'permissions' => array(
-		'edit' => 'éditer',
-		'delete' => 'effacer',
-		'assign' => 'assigner',
-		'unassign' => 'desassigner',
-		'ownEntry' => 'entré personnel',
-		'otherEntry' => 'autre entré',
-		'ownGroup' => 'même groupe',
-		'otherGroup' => 'groupe différent',
-		'showRates' => 'voir le taux',
-		'editRates' => 'éditer le taux',
-		'editAdvanced' => 'édition avancée'
+    'view' => 'Vue',
+    'edit' => 'éditer',
+    'delete' => 'effacer',
+    'assign' => 'assigner',
+    'unassign' => 'desassigner',
+    'ownEntry' => 'entré personnel',
+    'otherEntry' => 'autre entré',
+    'ownGroup' => 'même groupe',
+    'otherGroup' => 'groupe différent',
+    'showRates' => 'voir le taux',
+    'editRates' => 'éditer le taux',
+    'editAdvanced' => 'édition avancée'
 ),
 
 'ext_invoice' => array(
-"invoiceTemplate"       => "Format de facture:",	
+"invoiceTemplate"       => "Format de facture:",
 "invoiceTitle" 			=> "Créer une facture",
 "invoiceProject" 		=> "Tâches:",
 "invoiceTimePeriod" 	=> "Période:",
@@ -488,6 +549,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 "invoiceOptionRound" 	=> "Durée arrondie",
 "invoiceButton" 		=> "Créer",
 'noData'                => 'Il n\' y a pas de données de temps pour le projet et la période choisis.',
+"noProject"             => "Aucun projet n'a été sélectionné.",
 'defaultVat'        => 'TVA par défaut'
 ),
 
@@ -495,15 +557,28 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
   'unusedBudget' => 'Disponible'
 ),
 
+"extensionsTitle" => "Titre d'extension",
+
 'extensions' => array(
+"adminPanel_extension" => "Panneau d'administration",
 'ki_timesheet' => 'Feuille de temps',
+'ki_timesheets' => 'Feuille de temps',
 'ki_expenses' => 'Dépenses',
 'ki_invoice' => 'Facturation',
 'deb_ext' => 'Débugage',
 'ap_ext' => 'Préférences',
 'ki_budget' => 'Budget',
-'ki_export' => 'Exporter'
+'ki_export' => 'Exporter',
+'core' => 'noyau',
+'demo_ext' => 'Extension de démonstration',
 ),
+
+'updatecheck' => array(
+'release' => '<b>Une mise à jour officielle est disponible, avec de nouvelles fonctionnalités et corrections de bugs. Nous vous suggérons fortement de mettre à niveau.</b>',
+"beta" => "<i>Nouvelle version Beta disponible. Vous pouvez la récupérer sur la page de téléchargement pour la tester, mais ne l'utilisez pas en environnement de production.</i>",
+'current' => 'Vous utilisez la dernière version :)',
+),
+
 
 "log_delete"	=> "Le journal a été effacé",
 
