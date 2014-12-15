@@ -205,7 +205,7 @@
 
                     <li>
                         <label for="rate"><?php echo $this->kga['lang']['rate']?>:</label>
-                        <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(number_format($this->user_details['rate'], 2, $this->kga['conf']['decimalSeparator'],""))?>" />
+                        <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->user_details['rate']));?>" />
                     </li>
 
 
