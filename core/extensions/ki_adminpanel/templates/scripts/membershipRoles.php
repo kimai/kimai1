@@ -30,11 +30,7 @@
             ?>
             <tr class='<?php echo $this->cycle(array("odd","even"))->next()?>'>
 
-                <td>
-                    <?php echo $this->escape($membershipRole['name']); ?>
-                </td>
-
-                <td>
+                <td class="option">
                     <a href="#" onClick="adminPanel_extension_editMembershipRole('<?php echo $membershipRole['membershipRoleID']?>'); $(this).blur(); return false;">
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editMembershipRole']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editMembershipRole']?>" border="0"></a>
 
@@ -48,6 +44,10 @@
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan_.png" title="<?php echo $this->kga['lang']['deleteMembershipRole']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['deleteMembershipRole']?>" border="0">
                     <?php endif; ?>
 
+                </td>
+
+                <td>
+                    <?php echo $this->escape($membershipRole['name']); ?>
                 </td>
 
                 <td><?php echo $membershipRole['count_users']?></td>

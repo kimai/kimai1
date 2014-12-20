@@ -56,7 +56,7 @@
 			    <?php echo $this->kga['lang']['users']?>
 			</a>
 		</div>
-		<div id="adminPanel_extension_s1" class="adminPanel_extension_subtab adminPanel_extension_4cols">
+		<div id="adminPanel_extension_s1" class="adminPanel_extension_subtab">
 			<?php echo $this->admin['users']; ?>
 		</div>
 	</div>
@@ -70,7 +70,7 @@
 			    <?php echo $this->kga['lang']['groups']?>
 			</a>
 		</div>
-		<div id="adminPanel_extension_s2" class="adminPanel_extension_subtab adminPanel_extension_4cols">
+		<div id="adminPanel_extension_s2" class="adminPanel_extension_subtab">
 			<?php echo $this->admin['groups']?>
 		</div>
 	</div>
@@ -112,7 +112,7 @@
 			    <?php echo $this->kga['lang']['status']?>
 			</a>
 		</div>
-		<div id="adminPanel_extension_s3" class="adminPanel_extension_subtab adminPanel_extension_4cols">
+		<div id="adminPanel_extension_s3" class="adminPanel_extension_subtab">
 			<?php echo $this->admin['status'] ?>
 		</div>
 	</div>
@@ -126,7 +126,7 @@
 			    <?php echo $this->kga['lang']['advanced']?>
 			</a>
 		</div>
-		<div id="adminPanel_extension_s4" class="adminPanel_extension_subtab adminPanel_extension_4cols">
+		<div id="adminPanel_extension_s4" class="adminPanel_extension_subtab">
 			<?php echo $this->admin['advanced']?>
 		</div>
 	</div>
@@ -141,7 +141,7 @@
                 <?php echo $this->kga['lang']['database']?>
             </a>
         </div>
-        <div id="adminPanel_extension_s5" class="adminPanel_extension_subtab adminPanel_extension_4cols">
+        <div id="adminPanel_extension_s5" class="adminPanel_extension_subtab">
             <?php echo $this->admin['database']?>
         </div>
     </div>

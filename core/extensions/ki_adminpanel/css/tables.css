@@ -19,5 +19,4 @@
   border-bottom: 1px solid #b8b8b8;
 }
 #adminPanel_extension_panel table tr.even { background-color: #ffffff; }
-#adminPanel_extension_panel div.adminPanel_extension_subject td.option { width: 30px; }
-#adminPanel_extension_panel div.adminPanel_extension_4cols td { width: 25%; }
+#adminPanel_extension_panel td.option { width: 80px; }

@@ -6,8 +6,8 @@
 <table>
     <thead>
         <tr class='headerrow'>
-            <th><?php echo $this->kga['lang']['group']?></th>
             <th><?php echo $this->kga['lang']['options']?></th>
+            <th><?php echo $this->kga['lang']['group']?></th>
             <th><?php echo $this->kga['lang']['members']?></th>
         </tr>
     </thead>
@@ -30,15 +30,7 @@
             ?>
             <tr class='<?php echo $this->cycle(array("odd","even"))->next()?>'>
 
-                <td>
-                    <?php if ($grouparray['groupID'] == 1): ?>
-                        <span style="color:red"><?php echo $this->escape($grouparray['name']); ?></span>
-                    <?php else: ?>
-                        <?php echo $this->escape($grouparray['name']); ?>
-                    <?php endif; ?>
-                </td>
-
-                <td>
+                <td class="option">
                     <a href="#" onClick="adminPanel_extension_editGroup('<?php echo $grouparray['groupID']?>'); $(this).blur(); return false;">
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editGroup']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editGroup']?>" border="0"></a>
 
@@ -52,6 +44,14 @@
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan_.png" title="<?php echo $this->kga['lang']['delete_group']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_group']?>" border="0">
                     <?php endif; ?>
 
+                </td>
+
+                <td>
+                    <?php if ($grouparray['groupID'] == 1): ?>
+                        <span style="color:red"><?php echo $this->escape($grouparray['name']); ?></span>
+                    <?php else: ?>
+                        <?php echo $this->escape($grouparray['name']); ?>
+                    <?php endif; ?>
                 </td>
 
                 <td><?php echo $grouparray['count_users']?></td>

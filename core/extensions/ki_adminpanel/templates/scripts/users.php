@@ -14,8 +14,8 @@
 
     <thead>
       <tr>
-          <th><?php echo $this->kga['lang']['username']?></th>
           <th><?php echo $this->kga['lang']['options']?></th>
+          <th><?php echo $this->kga['lang']['username']?></th>
           <th><?php echo $this->kga['lang']['status']?></th>
           <th><?php echo $this->kga['lang']['group']?></th>
       </tr>
@@ -27,7 +27,7 @@
     {
         ?>
         <tr>
-            <td nowrap colspan='3'>
+            <td nowrap colspan='4'>
                 <?php echo $this->error(); ?>
             </td>
         </tr>
@@ -40,20 +40,8 @@
             ?>
             <tr class='<?php echo $this->cycle(array("odd","even"))->next()?>'>
 
-                <!-- ########## USER NAME ########## -->
-                <td>
-                    <?php if ($this->curr_user == $userarray['name']): ?>
-                        <strong style="color:#00E600"><?php echo $this->escape($userarray['name'])?></strong>
-                    <?php else: ?>
-                        <?php if ($userarray['trash']):?><span style="color:#999"><?php endif; ?>
-                            <?php echo $this->escape($userarray['name']);?>
-                        <?php if ($userarray['trash']):?></span><?php endif; ?>
-                    <?php endif; ?>
-                </td>
-                <!-- ########## /USER NAME ########## -->
-
                 <!-- ########## Option cells ########## -->
-                <td>
+                <td class="option">
                     <a href="#" onClick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editUser']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editUser']?>" border="0"></a>
 
@@ -78,6 +66,19 @@
                     <?php } ?>
                 </td>
                 <!-- ########## /Option cells ########## -->
+
+                <!-- ########## USER NAME ########## -->
+                <td>
+                    <?php if ($this->curr_user == $userarray['name']): ?>
+                        <strong style="color:#00E600"><?php echo $this->escape($userarray['name'])?></strong>
+                    <?php else: ?>
+                        <?php if ($userarray['trash']):?><span style="color:#999"><?php endif; ?>
+                            <?php echo $this->escape($userarray['name']);?>
+                        <?php if ($userarray['trash']):?></span><?php endif; ?>
+                    <?php endif; ?>
+                </td>
+                <!-- ########## /USER NAME ########## -->
+
                 <td>
                     <?php if ($userarray['active'] == 1): ?>
                         <?php if ($this->curr_user != $userarray['name']): ?>
