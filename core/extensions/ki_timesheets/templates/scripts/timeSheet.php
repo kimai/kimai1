@@ -1,7 +1,5 @@
 <?php
 
-$latest_running_row_index = -1;
-
 if ($this->timeSheetEntries)
 {
     ?>
@@ -69,7 +67,6 @@ if ($this->timeSheetEntries)
         <?php if ($row['end']): ?>
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
         <?php else: ?>
-            <?php if ($latest_running_row_index == -1) { $latest_running_row_index = $rowIndex; } ?>
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
         <?php endif; ?>
 
@@ -233,14 +230,14 @@ else
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
     
-  <?php if ($latest_running_row_index == -1): ?>
+  <?php if ($this->latest_running_entry == null): ?>
     updateRecordStatus(false);
   <?php else: ?>
 
-    updateRecordStatus(<?php echo $this->timeSheetEntries[$latest_running_row_index]['timeEntryID']?>,<?php echo $this->timeSheetEntries[$latest_running_row_index]['start']?>,
-                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['customerID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['customerName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['projectID']?> ,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['projectName'])?>',
-                             <?php echo $this->timeSheetEntries[$latest_running_row_index]['activityID']?>,'<?php echo $this->jsEscape($this->timeSheetEntries[$latest_running_row_index]['activityName'])?>');
+    updateRecordStatus(<?php echo $this->latest_running_entry['timeEntryID']?>,<?php echo $this->latest_running_entry['start']?>,
+                             <?php echo $this->latest_running_entry['customerID']?>,'<?php echo $this->jsEscape($this->latest_running_entry['customerName'])?>',
+                             <?php echo $this->latest_running_entry['projectID']?> ,'<?php echo $this->jsEscape($this->latest_running_entry['projectName'])?>',
+                             <?php echo $this->latest_running_entry['activityID']?>,'<?php echo $this->jsEscape($this->latest_running_entry['activityName'])?>');
   <?php endif; ?>
 
     function timesheet_hide_column(name) {

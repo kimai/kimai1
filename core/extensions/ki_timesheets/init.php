@@ -57,10 +57,14 @@ else
 $view->total = $total;
 
 // Get the array of timesheet entries.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $timeSheetEntries = $database->get_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
-else
+  $view->latest_running_entry = null;
+} else {
   $timeSheetEntries = $database->get_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
+  $view->latest_running_entry = $database->get_latest_running_entry();
+}
+
 if (count($timeSheetEntries)>0) {
     $view->timeSheetEntries = $timeSheetEntries;
 } else {

@@ -1773,6 +1773,37 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
   }
 
   /**
+   * Return the latest running entry with all information required for the buzzer.
+   *
+   * @return array with all data
+   * @author sl
+   */
+  public function get_latest_running_entry() {
+
+    $p = $this->kga['server_prefix'];
+
+		$table = $this->getTimeSheetTable();
+		$projectTable = $this->getProjectTable();
+		$activityTable = $this->getActivityTable();
+		$customerTable = $this->getCustomerTable();
+		
+    $select = "SELECT $table.*, $projectTable.name AS projectName, $customerTable.name AS customerName, $activityTable.name AS activityName, $customerTable.customerID AS customerID
+          FROM $table
+              JOIN $projectTable USING(projectID)
+              JOIN $customerTable USING(customerID)
+              JOIN $activityTable USING(activityID)";
+
+    $result = $this->conn->Query("$select WHERE end = 0 AND userID = ".$this->kga['user']['userID']." ORDER BY timeEntryID DESC LIMIT 1");
+
+    if (! $result) {
+      return null;
+    }
+    else {
+      return $this->conn->RowArray(0,MYSQL_ASSOC);
+    }
+  }
+
+  /**
   * Returns the data of a certain time record
   *
   * @param array $timeEntryID  timeEntryID of the record
