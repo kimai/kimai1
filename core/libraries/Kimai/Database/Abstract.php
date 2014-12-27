@@ -486,6 +486,14 @@ abstract class Kimai_Database_Abstract {
   public abstract function get_current_recordings($userID);
 
   /**
+   * Return the latest running entry with all information required for the buzzer.
+   *
+   * @return array with all data
+   * @author sl
+   */
+  public abstract function get_latest_running_entry();
+
+  /**
   * Returns the data of a certain time record
   *
   * @param array $timeSheetEntryID  timeSheetEntryID of the record

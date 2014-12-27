@@ -365,6 +365,7 @@ switch ($axAction) {
         } else {
             $view->timeSheetEntries = 0;
         }
+        $view->latest_running_entry = $database->get_latest_running_entry();
         $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities));
 
         $ann = $database->get_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
