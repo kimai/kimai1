@@ -90,15 +90,17 @@ switch ($axAction) {
       else
         $filterUsers = explode(':',$filters[0]);
 
-      if ($filters[1] == "")
-        $filterCustomers = array();
-      else
-        $filterCustomers = explode(':',$filters[1]);
+      $filterCustomers = array_map(function($customer) {
+        return $customer['customerID'];
+      }, $database->get_customers($kga['user']['groups']));
+      if ($filters[1] != "")
+        $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
 
-      if ($filters[2] == "")
-        $filterProjects = array();
-      else
-        $filterProjects = explode(':',$filters[2]);
+      $filterProjects = array_map(function($project) {
+        return $project['projectID'];
+      }, $database->get_projects($kga['user']['groups']));
+      if ($filters[2] != "")
+        $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
 
       // if no userfilter is set, set it to current user
       if (isset($kga['user']) && count($filterUsers) == 0)
