@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
-$all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'customer', 'project', 'activity', 'comment', 'location', 'trackingNumber', 'user', 'cleared');
+$all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'customer', 'project', 'activity', 'comment', 'location', 'trackingNumber', 'user', 'cleared', 'description');
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php')) {
