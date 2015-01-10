@@ -54,13 +54,11 @@ $(document).ready(function() {
                       <span class="bb"><?php echo $this->kga['lang']['projects']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php if (count($this->groups) > 1): ?>
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['groups']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php endif; ?>
           <li class="tab norm"><a href="#commenttab">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['comment']?></span>
@@ -118,7 +116,6 @@ $(document).ready(function() {
             </fieldset>
 
 
-    <?php if (count($this->groups) > 1) { ?>
             <fieldset id="groups">
                 <ul>
                     <li>
@@ -132,11 +129,6 @@ $(document).ready(function() {
                     </li>
                 </ul>
             </fieldset>
-    <?php
-        } else {
-            echo $this->formHidden('activityGroups[]', $this->selectedGroups[0], array('id' => 'activityGroups'));
-        }
-    ?>
 
             <fieldset id="projectstab">
                 <ul>
