@@ -48,7 +48,7 @@ switch ($axAction) {
             break;
         }
         else if (count(array_intersect(
-            $database->getGroupMemberships($kga['user']),
+            $database->getGroupMemberships($kga['user']['userID']),
             $database->getGroupMemberships($timeSheetEntry['userID'])
           )) != 0) {
           // same group as the entry's user
