@@ -78,12 +78,10 @@ function export_toggle_header($header) {
     $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header,$all_column_headers);
+    $table  = $kga['server_prefix']."preferences";
+    $userID = MySQL::SQLValue($kga['user']['userID'],MySQL::SQLVALUE_NUMBER);
 
-    $table                 = $kga['server_prefix']."preferences";
-    $values['value']       = "`value`^POWER(2,$header_number)";
-    $filter['userID']      = MySQL::SQLValue($kga['user']['userID'],MySQL::SQLVALUE_NUMBER);
-    $filter['option']         = MySQL::SQLValue('export_disabled_columns');
-    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+    $query = "INSERT INTO $table (`userID`, `option`, `value`) VALUES($userID, 'export_disabled_columns', POWER(2,$header_number)) ON DUPLICATE KEY UPDATE `value`=`value`^POWER(2,$header_number)";
 
     if ($conn->Query($query))
       return true;
