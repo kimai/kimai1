@@ -126,11 +126,9 @@
 		class="bb"><?php echo $this->kga['lang']['budget']?></span> <span class="cc">&nbsp;</span> </a></li>
 	<li class="tab norm"><a href="#activitiestab"> <span class="aa">&nbsp;</span> <span
 		class="bb"><?php echo $this->kga['lang']['activities']?></span> <span class="cc">&nbsp;</span> </a></li>
-	<?php if (count($this->groups) > 1): ?>
 	<li class="tab norm"><a href="#groups"> <span class="aa">&nbsp;</span>
 	<span class="bb"><?php echo $this->kga['lang']['groups']?></span> <span class="cc">&nbsp;</span>
 	</a></li>
-	<?php endif; ?>
 	<li class="tab norm"><a href="#comment"> <span class="aa">&nbsp;</span>
 	<span class="bb"><?php echo $this->kga['lang']['comment']?></span> <span class="cc">&nbsp;</span>
 	</a></li>
@@ -251,7 +249,6 @@
     </table>
 </fieldset>
 
-<?php if (count($this->groups) > 1): ?>
 <fieldset id="groups">
     <ul>
         <li>
@@ -264,9 +261,6 @@
         </li>
     </ul>
 </fieldset>
-<?php else: 
- echo $this->formHidden('projectGroups[]', $this->selectedGroups[0], array('id' => 'projectGroups'));
-endif; ?>
 
 <fieldset id="comment">
 <ul>

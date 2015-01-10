@@ -49,7 +49,12 @@ switch ($axAction) {
           $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
 
-        $view->groups = $database->get_groups();        
+        $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+        if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+          $view->groups = $groups;
+        else
+          $view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+
         $view->membershipRoles = array();
         foreach ($database->membership_roles() as $role)
           $view->membershipRoles[$role['membershipRoleID']] = $role['name'];

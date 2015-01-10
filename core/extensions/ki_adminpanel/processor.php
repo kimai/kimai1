@@ -96,7 +96,8 @@ switch ($axAction)
 		// builds either user/group/advanced/DB subtab
 		$view->curr_user = $kga['user']['name'];
 		$groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
-		if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+    $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
+		if ($viewOtherGroupsAllowed)
 			$view->groups = $groups;
 		else
 			$view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
@@ -113,6 +114,8 @@ switch ($axAction)
 			$groups = $database->getGroupMemberships($user['userID']);
 			if(is_array($groups)) {
 			foreach ($groups as $group) {
+        if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false)
+          continue;
 				$groupData = $database->group_get_data($group);
 				$user['groups'][] = $groupData['name'];
 			}

@@ -68,13 +68,11 @@
                       <span class="bb"><?php echo $this->kga['lang']['contact']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php if (count($this->groups) > 1): ?>
           <li class="tab norm"><a href="#groups">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['groups']?></span>
                       <span class="cc">&nbsp;</span>
                       </a></li>
-<?php endif; ?>
           <li class="tab norm"><a href="#commenttab">
                       <span class="aa">&nbsp;</span>
                       <span class="bb"><?php echo $this->kga['lang']['comment']?></span>
@@ -136,7 +134,6 @@
                     </ul>
                 </fieldset>
 
-    <?php if (count($this->groups) > 1): ?>
                 <fieldset id="groups">
                     <ul>
                         <li>
@@ -150,9 +147,6 @@
                         </li>
                     </ul>
                 </fieldset>
-    <?php else:
-     echo $this->formHidden('customerGroups[]', $this->selectedGroups[0], null ,array('id' => 'customerGroups'));
-    endif; ?>
 
                 <fieldset id="address">
                     <ul>

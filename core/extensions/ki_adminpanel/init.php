@@ -39,6 +39,8 @@
 
     $view->kga = $kga;
 
+    $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
+
     // ==========================
     // = display customer table =
     // ==========================
@@ -52,6 +54,8 @@
       $groups = $database->customer_get_groupIDs($data['customerID']);
       if ($groups !== false) {
         foreach ($groups as $groupID) {
+          if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+            continue;
           $data = $database->group_get_data($groupID);
           $groupNames[] = $data['name'];
         }
@@ -75,6 +79,8 @@
         foreach ($projects as $row=>$project) {
             $groupNames = array();
             foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+                if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+                  continue;
                 $data = $database->group_get_data($groupID);
                 $groupNames[] = $data['name'];
             }
@@ -95,6 +101,8 @@
     foreach ($activities as $row=>$activity) {
       $groupNames = array();
       foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
+        if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+          continue;
         $data = $database->group_get_data($groupID);
          $groupNames[] = $data['name'];
       }
@@ -127,6 +135,8 @@
       $groups = $database->getGroupMemberships($user['userID']);
       if(is_array($groups)) {
 	      foreach ($groups as $group) {
+          if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false)
+            continue;
 	        $groupData = $database->group_get_data($group);
 	        $user['groups'][] = $groupData['name'];
 	      }
