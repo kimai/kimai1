@@ -132,6 +132,9 @@ function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false
 
         case 'group':
             $groups = $database->get_groups();
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+              $groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+
             foreach ($groups as $group) {
                 if ($includeDeleted || !$group['trash']) {
                     $sel[$group['groupID']] = $group['name'];
