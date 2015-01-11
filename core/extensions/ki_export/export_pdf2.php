@@ -95,7 +95,8 @@ class MYPDF extends BasePDF {
     $this->moneySum = 0;
     $this->timeSum = 0;
     foreach($data as $row) {
-      if ($row['type'] == "exp") {
+      error_log($row['type']);
+      if ($row['type'] == "expense") {
         $this->printExpenseRow($widths,$row);
         $this->moneySum+=$row['wage'];
       }
