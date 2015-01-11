@@ -67,7 +67,7 @@ return array(
 "close"             => "Fermer",
 "edit"              => "Modifier Entrée",
 "construction"      => "en construction...",
-"about"             => "A propos de",
+"about"             => "A propos de Kimai",
 "hours"             => "heures",
 "mins"              => "minutes",
 "secs"              => "secondes",

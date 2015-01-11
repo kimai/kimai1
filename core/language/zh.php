@@ -81,7 +81,7 @@ return array(
 "edit"              => "编辑条目",
 "close"             => "关闭",
 "construction"      => "正在构建中...",
-"about"             => "关于",
+"about"             => "关于 Kimai",
 "hours"             => "小时",
 "mins"              => "分钟",
 "secs"              => "秒",

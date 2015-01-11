@@ -54,7 +54,7 @@ return array(
 "cancel"            => "Avbryt",
 "edit"              => "Redigera Post",
 "construction"      => "under konstruktion...",
-"about"             => "Om",
+"about"             => "Om Kimai",
 "hours"             => "timmar",
 "mins"              => "minuter",
 "secs"              => "sekunder",

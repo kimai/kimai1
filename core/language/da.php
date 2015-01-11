@@ -52,7 +52,7 @@ return array(
 "cancel"            => "Fortryd",
 "edit"              => "Rediger postering",
 "construction"      => "under opbygning...",
-"about"             => "Om",
+"about"             => "Om Kimai",
 "hours"             => "timer",
 "mins"              => "minutter",
 "secs"              => "sekunder",

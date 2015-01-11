@@ -54,7 +54,7 @@ return array(
 "cancel"            => "Prekliči",
 "edit"              => "Popravi vnos",
 "construction"      => "v izdelavi...",
-"about"             => "o",
+"about"             => "o Kimai",
 "hours"             => "ure",
 "mins"              => "minute",
 "secs"              => "sekunde",

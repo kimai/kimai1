@@ -55,7 +55,7 @@ return array(
 "edit"              => "Bewerk invoer",
 "close"             => "sluit",
 "construction"      => "in opbouw...",
-"about"             => "Over",
+"about"             => "Over Kimai",
 "hours"             => "uren",
 "mins"              => "minuten",
 "secs"              => "seconden",

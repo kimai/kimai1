@@ -54,7 +54,7 @@ return array(
     "edit"              => "Kirje muutmine",
     "close"             => "Sulgemine",
     "construction"      => "Tegemisel...",
-    "about"             => "",
+    "about"             => "Kimai",
     "hours"             => "tundi",
     "mins"              => "minutit",
     "secs"              => "sekundit",

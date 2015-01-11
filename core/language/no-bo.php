@@ -63,7 +63,7 @@ return array(
 "cancel"            => "Avbryt",
 "edit"              => "Rediger oppføring",
 "construction"      => "under oppføring...",
-"about"             => "Om",
+"about"             => "Om Kimai",
 "hours"             => "timer",
 "mins"              => "minutter",
 "secs"              => "sekunder",

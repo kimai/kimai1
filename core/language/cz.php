@@ -52,7 +52,7 @@ return array(
 "cancel"            => "Cancel",
 "edit"              => "Edit",
 "construction"      => "v přípravě...",
-"about"             => "O",
+"about"             => "O Kimai",
 "hours"             => "hodin",
 "mins"              => "minut",
 "secs"              => "sekund",

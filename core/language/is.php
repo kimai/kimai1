@@ -54,7 +54,7 @@ return array(
 "cancel"            => "Hætta",
 "edit"              => "Breyta",
 "construction"      => "í smíðum / viðhald...",
-"about"             => "Upplýsingar",
+"about"             => "Upplýsingar Kimai",
 "hours"             => "tímar",
 "mins"              => "mínútur",
 "secs"              => "sekúndur",

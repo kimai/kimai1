@@ -56,7 +56,7 @@ return array(
 "cancel"            => "Cancelar",
 "edit"              => "Editar entrada",
 "construction"      => "em construção...",
-"about"             => "Acerca de",
+"about"             => "Acerca de Kimai",
 "hours"             => "horas",
 "mins"              => "minutos",
 "secs"              => "segundos",

@@ -1,6 +1,6 @@
 <div id="floater_innerwrap">
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['about']?> Kimai</span>
+        <span id="floater_title"><?php echo $this->kga['lang']['about']?></span>
         <div class="right">
             <a href="#" class="close" onclick="floaterClose(); return false;"><?php echo $this->kga['lang']['close']?></a>
         </div>       
