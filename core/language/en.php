@@ -54,7 +54,7 @@ return array(
     "edit" => "Edit Entry",
     "close" => "close",
     "construction" => "under construction...",
-    "about" => "About",
+    "about" => "About Kimai",
     "hours" => "hours",
     "mins" => "minutes",
     "secs" => "seconds",
@@ -232,7 +232,7 @@ return array(
     "testCustomer" => "Test-Customer",
     "testProject" => "Test-Project",
     "testActivity" => "testing",
-    "time_billable" => "Billable",
+    "time_billable" => "Billable Time",
     "billable" => "Billable",
     "budget" => "Budget",
     "effort" => "Effort",
@@ -281,10 +281,10 @@ return array(
     'view_filter' => 'view filter',
     'unassigned' => 'unassigned',
     'all_activities' => '&lt;&lt;all&gt;&gt;',
-    'all' => 'alle',
+    'all' => 'all',
     'durationWithSeconds' => 'Show duration exact to the second.',
     'multiplier' => 'Multiplier',
-    'timezone' => 'time zone',
+    'timezone' => 'Time Zone',
     'dateAndTimeHelp' => '<strong>Times and dates have to be entered in the following form:</strong><br />
             Dates: DD.MM.YYYY<br />
             Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
@@ -415,7 +415,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         8 => "create backup",
         9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)",
         10 => "Authentication required",
-        11 => "To prevent unauthorized persons from creating, deleting or restoring backups you need to give the password salt stored in include/autoconf.php. It only consists of letters and numbers."
+        11 => "To prevent unauthorized persons from creating, deleting or restoring backups, you need to give the password salt stored in include/autoconf.php. It only consists of letters and numbers."
     ),
 
     'export_extension' => array(
@@ -423,13 +423,13 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "dl_hint" => "Click OK to download export-file.",
         "tab_filter" => "Filter",
         "tab_location" => "Location",
-        "tab_timeformat" => "Timeformat",
+        "tab_timeformat" => "Time Format",
         "cleared_all" => "all",
         "cleared_cleared" => "only cleared",
         "cleared_open" => "only open",
-        "stdrd_location" => "Standard-Location",
-        "timeformat" => "Timeformat",
-        "dateformat" => "Dateformat",
+        "stdrd_location" => "Standard Location",
+        "timeformat" => "Time Format",
+        "dateformat" => "Date Format",
         "refundable_all" => "all",
         "refundable_refundable" => "only refundable",
         "refundable_not_refundable" => "only non refundable",
@@ -446,7 +446,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
         "print" => "Print",
-        "export_timeformat_help" => "Timeformat help",
+         "export_timeformat_help" => "Time Format Help"
         'subtotal' => 'Sub Total',
         'finalamount' => 'Total',
         'pdf_headline' => 'List of working time and expenses',
@@ -517,7 +517,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
     ),
 
     'updatecheck' => array(
-        'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest you to update.</b>",
+        'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest that you update.</b>",
         'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
         'current' => "You are running the latest version :)"
     ),
@@ -525,3 +525,5 @@ Choose another table prefix or delete existing tables with this prefix in order 
     "log_delete" => "log cleared",
 
 );
+
+?>
