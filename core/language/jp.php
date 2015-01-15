@@ -145,7 +145,7 @@ return array(
 "editMembershipRole" => "会員ロール（役割）を編集する",  
 "deleteMembershipRole" => "会員ロール（役割）を削除する",  
 "membershipRoles" => "会員ロール（役割）",  
-"rolename" => "ロール（役割）名,  
+"rolename" => "ロール（役割）名",  
 "editstatus" => "ステータスを編集する",  
 "new_status" => "ステータスを追加する",  
 "description" => "説明",  
