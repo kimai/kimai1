@@ -356,9 +356,9 @@ function startRecord(projectID,activityID,userID) {
 // stops the current recording when the stop-buzzer is hidden
 //
 function stopRecord() {
-    $("#timeSheetTable>table>tbody>tr>td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
-    $("#timeSheetTable>table>tbody>tr:first-child>td").css( "background-color", "#F00" );
-    $("#timeSheetTable>table>tbody>tr:first-child>td").css( "color", "#FFF" );
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "background-color", "#F00" );
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
     show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(){
@@ -412,8 +412,8 @@ function buzzer() {
 
 
   if (currentRecording > -1) {
-      currentRecording=0;
       stopRecord();
+      currentRecording=0;
     } else {
         setTimeframe(undefined,new Date());
         startRecord(selected_project,selected_activity,userID);
