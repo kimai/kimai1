@@ -75,7 +75,7 @@ if (count($invoiceArray) == 0) {
 
 // ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
 
-$date            = time();
+$date            = date("m-d-Y");
 $month           = $kga['lang']['months'][date("n", $out)-1];
 $year            = date("Y", $out);
 $projectObjects  = array();
@@ -86,7 +86,7 @@ $customerName    = html_entity_decode($customer['name']);
 $beginDate       = $in;
 $endDate         = $out;
 $invoiceID       = $customer['name']. "-" . date("y", $in). "-" . date("m", $in);
-$today           = time();
+$today           = date("F j, Y");
 $dueDate         = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 
 
