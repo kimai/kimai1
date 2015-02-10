@@ -324,15 +324,13 @@ switch ($axAction) {
                     foreach (array('budget', 'effort', 'approved') as $key) {
                         $value = getRequestDecimal($_REQUEST[$key][$index]);
                         if ($value !== null) {
-                            $value = max(0, $value);
+                            $data[$key] = max(0, $value);
                         }
-                        $data[$key] = $value;
+                        else
+                          $data[$key] = "null";
                     }
 
-                    // empty values cause sql problems. if we need to update always, use 0 as value
-                    if (!empty($data['effort']) && !empty($data['approved'])) {
-                        $database->project_activity_edit($id, $activityID, $data);
-                    }
+                    $database->project_activity_edit($id, $activityID, $data);
                   }
                 }
               }
