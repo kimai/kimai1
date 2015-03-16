@@ -127,7 +127,12 @@ switch ($axAction) {
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $view->selectedGroups = $kga['user']['groups'];
+            $view->selectedGroups = array();
+            foreach ($kga['user']['groups'] as $group) {
+               $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
+               if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
+                 $view->selectedGroups[] = $group;
+            }
             $view->id = 0;
         }
 
@@ -182,7 +187,12 @@ switch ($axAction) {
         
         // Set defaults for a new project.
         if (!$id) {
-            $view->selectedGroups = $kga['user']['groups'];
+            $view->selectedGroups = array();
+            foreach ($kga['user']['groups'] as $group) {
+               $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
+               if ($database->membership_role_allows($membershipRoleID,'core-project-add'))
+                 $view->selectedGroups[] = $group;
+            }
 
             $view->selectedCustomer = null;
             $view->id = 0;
@@ -226,7 +236,12 @@ switch ($axAction) {
 
         // Set defaults for a new project.
         if (!$id) {
-            $view->selectedGroups = $kga['user']['groups'];
+            $view->selectedGroups = array();
+            foreach ($kga['user']['groups'] as $group) {
+               $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
+               if ($database->membership_role_allows($membershipRoleID,'core-activity-add'))
+                 $view->selectedGroups[] = $group;
+            }
             $view->id = 0;
         }
 

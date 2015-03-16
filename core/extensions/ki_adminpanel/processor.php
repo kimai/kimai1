@@ -32,22 +32,25 @@ switch ($axAction)
 		$userData['globalRoleID'] = $kga['user']['globalRoleID'];
 		$userData['active'] = 1;
 
+    $groupsWithAddPermission = array();
+    foreach ($kga['user']['groups'] as $group) {
+       $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
+       if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
+        $groupsWithAddPermission[$group] = $membershipRoleID;
+    }
+
                 // validate data
                 $errors = array();
                 if ($database->customer_nameToID($userData['name']) !== false)
                   $errors[] = $kga['lang']['errorMessages']['customerWithSameName'];
 
-                if (!checkGroupedObjectPermission('user', 'add', array(), $kga['user']['groups']))
+                if (count($groupsWithAddPermission) == 0)
                   $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 $userId = false;
                 if (count($errors) == 0) {
                   $userId = $database->user_create($userData);
-                  $groups = array();
-                  foreach ($kga['user']['groups'] as $group) {
-                    $groups[$group] = $database->user_get_membership_role($kga['user']['userID'], $group);
-                  }
-                  $database->setGroupMemberships($userId, $groups);
+                  $database->setGroupMemberships($userId, $groupsWithAddPermission);
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
@@ -160,6 +163,7 @@ switch ($axAction)
 				break;
 
 			case "customers" :
+        $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
 				if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view'))
 					$customers = $database->get_customers();
 				else
@@ -170,6 +174,8 @@ switch ($axAction)
 					$groups = $database->customer_get_groupIDs($data['customerID']);
 					if ($groups !== false) {
 						foreach ($groups as $groupID) {
+              if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+                continue;
 							$data = $database->group_get_data($groupID);
 							$groupNames[] = $data['name'];
 						}
@@ -186,6 +192,7 @@ switch ($axAction)
 				break;
 
 			case "projects" :
+        $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
 				if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view'))
 					$projects = $database->get_projects();
 				else
@@ -196,6 +203,8 @@ switch ($axAction)
                     foreach ($projects as $row => $project) {
                         $groupNames = array();
                         foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
+                            if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+                              continue;
                             $data = $database->group_get_data($groupID);
                             $groupNames[] = $data['name'];
                         }
@@ -208,6 +217,7 @@ switch ($axAction)
 				break;
 
 			case "activities" :
+        $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
 				$groups = null;
 				if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
 					$groups = $kga['user']['groups'];
@@ -231,6 +241,8 @@ switch ($axAction)
 				foreach ($activities as $row => $activity) {
 					$groupNames = array();
 					foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
+            if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+              continue;
 						$data = $database->group_get_data($groupID);
 						$groupNames[] = $data['name'];
 					}
