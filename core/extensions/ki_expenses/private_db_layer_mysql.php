@@ -145,7 +145,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
 
     if (isset($kga['customer']))
-      $whereClauses[] = "${p}projects.internal = 0";
+      $whereClauses[] = "project.internal = 0";
 
     if ($start)
       $whereClauses[]="timestamp >= $start";
