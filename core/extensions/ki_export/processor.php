@@ -68,30 +68,40 @@ if ($axAction == 'export_csv'  ||
   else
     $filterUsers = explode(':',$filters[0]);
 
-  $filterCustomers = array_map(function($customer) {
-    return $customer['customerID'];
-  }, $database->get_customers($kga['user']['groups']));
+  if (isset($kga['customer'])) {
+    $filterCustomers = $kga['customer']['customerID'];
+    $filterProjects = array_map(function($project) {
+      return $project['projectID'];
+    }, $database->get_projects_by_customer($kga['customer']['customerID']));
+    $filterActivities = array_map(function($activity) {
+      return $activity['activityID'];
+    }, $database->get_activities_by_customer($kga['customer']['customerID']));
+  }
+  else {
+    $filterCustomers = array_map(function($customer) {
+      return $customer['customerID'];
+    }, $database->get_customers($kga['user']['groups']));
+    $filterProjects = array_map(function($project) {
+      return $project['projectID'];
+    }, $database->get_projects($kga['user']['groups']));
+    $filterActivities = array_map(function($activity) {
+      return $activity['activityID'];
+    }, $database->get_activities($kga['user']['groups']));
+
+    // if no userfilter is set, set it to current user
+    if (isset($kga['user']) && count($filterUsers) == 0)
+      array_push($filterUsers,$kga['user']['userID']);
+  }
+
   if ($filters[1] != "")
     $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
 
-  $filterProjects = array_map(function($project) {
-    return $project['projectID'];
-  }, $database->get_projects($kga['user']['groups']));
   if ($filters[2] != "")
     $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
 
-  $filterActivities = array_map(function($activity) {
-    return $activity['activityID'];
-  }, $database->get_activities($kga['user']['groups']));
   if ($filters[3] != "")
     $filterActivities = array_intersect($filterActivities, explode(':',$filters[3]));
 
-  // if no userfilter is set, set it to current user
-  if (isset($kga['user']) && count($filterUsers) == 0)
-    array_push($filterUsers,$kga['user']['userID']);
-    
-  if (isset($kga['customer']))
-    $filterCustomers = array($kga['customer']['customerID']);
 }
 
 
