@@ -9,7 +9,7 @@ echo<<<EOD
 
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Directory)</span></span><br/>
     <span class="ch_logfile"><strong>/temporary/logfile.txt</strong> <span class="gray">(File)</span></span><br/>
-    <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(File)</span></span><br/><br/>
+    <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(File)</span> and <strong>/includes</strong> <span class="gray">(Directory)</span></span><br/><br/>
     <button onClick="step_back(); return false;" class="">Back</button>
     <button class="cp-button" onClick='check_permissions();'>Check permissions now</button>
     <button onClick="cp_proceed(); return false;" class="invisible proceed">Proceed</button>
@@ -24,7 +24,7 @@ echo<<<EOD
 
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Verzeichnis)</span></span><br/>
     <span class="ch_logfile"><strong>/temporary/logfile.txt</strong> <span class="gray">(Datei)</span></span><br/>
-    <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(Datei)</span></span><br/><br/>
+    <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(Datei)</span> und <strong>/includes</strong> <span class="gray">(Verzeichnis)</span></span><br/><br/>
     <button onClick="step_back(); return false;" class="">Zurück</button>
     <button class="cp-button" onClick='check_permissions();'>Schreibrechte prüfen</button>
     <button onClick="cp_proceed(); return false;" class="invisible proceed">Fortfahren</button>
