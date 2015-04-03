@@ -63,7 +63,10 @@ switch ($axAction) {
     // = Change the default vat =
     // ==========================
     case 'projects':
-      $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
+      if (isset($kga['customer']))
+        $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'], $kga['customer']['groups']);
+      else
+        $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
       $js_projects = array();
       foreach ($db_projects as $project) {
         $js_projects[$project['projectID']] = $project['name'];
