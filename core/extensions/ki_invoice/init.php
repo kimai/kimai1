@@ -36,7 +36,10 @@ $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 $view->kga = $kga;
 
 // get list of projects for select box
-$view->customers = makeSelectBox("customer",$kga['user']['groups']); 
+if (isset($kga['customer']))
+  $view->customers = array($kga['customer']['customerID'] => $kga['customer']['name']);
+else
+  $view->customers = makeSelectBox("customer",$kga['user']['groups']);
 
 $tmpCustomers = array_keys($view->customers);
 $projects = $database->get_projects_by_customer($tmpCustomers[0], $kga['user']['groups']);
