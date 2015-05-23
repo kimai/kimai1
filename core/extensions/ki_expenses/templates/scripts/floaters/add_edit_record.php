@@ -131,7 +131,7 @@
 
                    <li>
                        <label for="designation"><?php echo $this->kga['lang']['designation']?>:</label>
-                        <input id='designation' type='text' name='designation' value='<?php echo $this->escape($this->designation)?>' maxlength='20'  size='20'  tabindex='11' <?php if ($this->kga['conf']['autoselection']):?> onClick="this.select();" <?php endif; ?> />
+                        <input id='designation' type='text' name='designation' value='<?php echo $this->escape($this->designation)?>' maxlength='50' size='50' tabindex='11' <?php if ($this->kga['conf']['autoselection']):?> onClick="this.select();" <?php endif; ?> />
                    </li>
 
                    
