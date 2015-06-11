@@ -10,15 +10,6 @@ You can get more information about this time-tracking software:
 * at our [forum](http://forum.kimai.org)
 * in the [documentation](http://www.kimai.org/documentation/)
 
-Documentation
--------------
-
-We don't have much documentation, but what we have can be found here:
-
-* in our [english online help](http://www.kimai.org/en/documentation/)
-* in der [deutschen Online Hilfe](http://www.kimai.org/dokumentation/)
-* in our [manual repository](https://github.com/kimai/manuals) - currently only german
-
 Contributing
 ------------
 
