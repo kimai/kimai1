@@ -4,13 +4,20 @@ Kimai Time Tracking
 This is the repository of Kimai, a open source time tracking software
 that runs on (almost) every webserver with PHP and MySQL.
 
-You can get more information about this Time Tracking Software:
+You can get more information about this time-tracking software:
 
-* at our [official website](http://www.kimai.org)
-* at our [Kimai forum](http://forum.kimai.org)
+* at our [website](http://www.kimai.org)
+* at our [forum](http://forum.kimai.org)
+* in the [documentation](http://www.kimai.org/documentation/)
 
-We don't have much documentation, but what we have can be found at:
-* [http://www.kimai.org/documentation/](http://www.kimai.org/documentation/)
+Documentation
+-------------
+
+We don't have much documentation, but what we have can be found here:
+
+* in our [english online help](http://www.kimai.org/en/documentation/)
+* in der [deutschen Online Hilfe](http://www.kimai.org/dokumentation/)
+* in our [manual repository](https://github.com/kimai/manuals) - currently only german
 
 Contributing
 ------------

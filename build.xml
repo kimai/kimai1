@@ -1,0 +1,113 @@
+<project name="Kimai" default="help">
+
+    <description>
+        Build File for the Kimai - Time Tracking Software.
+
+        Copyright (C) Kimai Team.
+        See http://www.kimai.org/ for further informations.
+
+        Distributed under the terms of the GNU General Public License.
+    </description>
+
+    <property name="release.version" value="0.9.3.beta"/>
+    <property name="release.directory" location="/tmp/kimai/build/release/"/>
+
+    <!-- Name and location of the release files -->
+    <property name="install.zip.filename" value="kimai_install_${release.version}.zip"/>
+    <property name="release.zip.filename" value="kimai_${release.version}.zip"/>
+    <property name="target.release.dir"  	location="${release.directory}/temp/"/>
+    <property name="target.extensions.dir" location="${extensions.directory}/"/>
+    <property name="target.install.file" location="${release.directory}/${install.zip.filename}"/>
+    <property name="target.release.zip" location="${release.directory}/${release.zip.filename}"/>
+
+    <!-- These files will be excluded from every task. Add files like Eclipse .project or CVS files here. -->
+    <patternset id="always.exclude.files" description="Files to be excluded from copy tasks">
+        <exclude name=".settings"/>
+        <exclude name=".project"/>
+        <exclude name=".svn"/>
+        <exclude name=".git"/>
+        <exclude name=".gitignore"/>
+        <exclude name="Entries"/>
+        <exclude name="Repository"/>
+        <exclude name="Root"/>
+    </patternset>
+
+    <!-- These files will be excluded from release task. Only add project specific files here. -->
+    <patternset id="release.exclude.files" description="Files to be excluded from release tasks">
+        <exclude name="test_umysql_layer"/>
+        <exclude name="updater_old.php"/>
+        <!-- exclude name="kimaiversion.php"/ -->
+        <exclude name="todo.txt"/>
+        <exclude name="README.md"/>
+    </patternset>
+
+    <target name="help" description="Show help">
+        <echo>
+            ==============================================================
+            KIMAI - Time Tracking Software, copyright (C) www.kimai.org
+            Distributed under the terms of the GNU General Public License.
+            ==============================================================
+
+            Run "ant release" to create a KIMAI release archive for distribution
+        </echo>
+    </target>
+
+    <!--
+        Creates a Kimai ZIP release.
+        This is more or less a copy of the "core" folder.
+        After checking dependencies and creating the file release, a ZIP archive will be created.
+    -->
+    <target name="release" description="Creates a Kimai release ZIP archive.">
+        <delete dir="${target.release.dir}"/>
+        <antcall target="copy-core">
+            <param name="release.path" value="${target.release.dir}"/>
+        </antcall>
+        <move todir="${target.release.dir}/extensions/#ext_debug/">
+            <fileset dir="${target.release.dir}/extensions/ext_debug/"/>
+        </move>
+        <antcall target="create-archives"/>
+        <echo>Created the release at: ${target.release.zip}</echo>
+    </target>
+
+    <!--
+        This task creates a KIMAI file release.
+
+        ATTENTION: All existing resources will be overwritten!
+    -->
+    <target name="copy-core" depends="check-settings" if="release.initialized">
+        <mkdir dir="${release.path}"/>
+        <copy todir="${release.path}" includeemptydirs="true" overwrite="true">
+            <fileset dir="core">
+                <patternset refid="always.exclude.files"/>
+                <patternset refid="release.exclude.files"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- 
+		This task creates the KIMAI release like mentioned in the Task "copy-core"
+		and creates a ZIP File from all these resources.
+		
+		Make sure that the release directory is cleaned up before, otherwise you might
+		have data within your release ZIP, which is NOT part of KIMAI!
+    -->
+    <target name="create-archives">
+        <mkdir dir="${target.release.dir}"/>
+        <zip destfile="${target.release.zip}">
+            <fileset dir="${target.release.dir}"/>
+        </zip>
+        <delete dir="${target.release.dir}"/>
+    </target>
+
+    <!--
+        Checks whether all required variables for releasing files are set.
+    -->
+    <target name="check-settings">
+        <condition property="release.initialized">
+            <and>
+                <isset property="release.path"/>
+            </and>
+        </condition>
+    </target>
+
+</project>
