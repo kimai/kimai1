@@ -9,13 +9,13 @@
         Distributed under the terms of the GNU General Public License.
     </description>
 
-    <property name="release.version" value="0.9.3.beta"/>
-    <property name="release.directory" location="/tmp/kimai/build/release/"/>
+    <property name="release.version" value="0.9.3"/>
+    <property name="release.directory" location="/tmp/kimai/"/>
 
     <!-- Name and location of the release files -->
     <property name="install.zip.filename" value="kimai_install_${release.version}.zip"/>
     <property name="release.zip.filename" value="kimai_${release.version}.zip"/>
-    <property name="target.release.dir"  	location="${release.directory}/temp/"/>
+    <property name="target.release.dir"  	location="${release.directory}/v.${release.version}/"/>
     <property name="target.extensions.dir" location="${extensions.directory}/"/>
     <property name="target.install.file" location="${release.directory}/${install.zip.filename}"/>
     <property name="target.release.zip" location="${release.directory}/${release.zip.filename}"/>
