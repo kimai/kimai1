@@ -34,7 +34,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   // check if expense is too far in the past to allow editing (or deleting)
   if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
     $errors[''] =  $kga['lang']['editLimitError'];
-    break;
+        //    break;
   }
 
   $groups = $database->getGroupMemberships($entry['userID']);

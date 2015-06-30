@@ -38,20 +38,23 @@ if ($filters[0] == "") {
 $filterCustomers = array_map(function($customer) {
   return $customer['customerID'];
 }, $database->get_customers($kga['user']['groups']));
-if ($filters[1] != "")
+if (isset($filters[1]) && $filters[1] != "") {
   $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
+}
 
 $filterProjects = array_map(function($project) {
   return $project['projectID'];
 }, $database->get_projects($kga['user']['groups']));
-if ($filters[2] != "")
+if (isset($filters[2]) && $filters[2] != "") {
   $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
+}
 
 $filterActivities = array_map(function($activity) {
   return $activity['activityID'];
 }, $database->get_activities($kga['user']['groups']));
-if ($filters[3] != "")
+if (isset($filters[3]) && $filters[3] != "") {
   $filterActivities = array_intersect($filterActivities, explode(':',$filters[3]));
+}
 
 // if no userfilter is set, set it to current user
 if (isset($kga['user']) && count($filterUsers) == 0) {

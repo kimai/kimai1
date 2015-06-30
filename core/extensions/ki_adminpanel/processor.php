@@ -37,6 +37,7 @@ switch ($axAction)
        $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
        if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
         $groupsWithAddPermission[$group] = $membershipRoleID;
+                break;
     }
 
                 // validate data
