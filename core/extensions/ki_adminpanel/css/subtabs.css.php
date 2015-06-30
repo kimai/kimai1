@@ -14,14 +14,17 @@
   text-align: left;
   color: #333333;
   font-size: 11px;
+  font-weight: bold;
   display: block;
   padding: 3px;
   height: 19px;
+  cursor: pointer;
 }
 div.active .adminPanel_extension_panel_header a {
   background-image: url('<?php echo $table_header; ?>');
   color: #ffffff !important;
   font-weight: bold;
+  cursor: default;
 }
 div.active .adminPanel_extension_panel_header a:hover {
   background-image: url('<?php echo $table_header; ?>');

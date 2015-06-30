@@ -143,7 +143,7 @@
                                 'id' => 'customerGroups',
                                 'multiple' => 'multiple',
                                 'size' => 3,
-                                'style' => 'width:255px'), $this->groups); ?>
+                                'style' => 'width:255px;height:100px;'), $this->groups); ?>
                         </li>
                     </ul>
                 </fieldset>
