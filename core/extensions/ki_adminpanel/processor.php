@@ -35,10 +35,8 @@ switch ($axAction)
     $groupsWithAddPermission = array();
     foreach ($kga['user']['groups'] as $group) {
        $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
-        if ($database->membership_role_allows($membershipRoleID, 'core-user-add')) {
-            $groupsWithAddPermission[$group] = $membershipRoleID;
-            break;
-        }
+       if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
+        $groupsWithAddPermission[$group] = $membershipRoleID;
     }
 
                 // validate data
