@@ -1081,7 +1081,8 @@ class MySQL
 		$this->last_result = @mysql_query($sql, $this->mysql_link);
 		if(! $this->last_result) {
 			$this->active_row = -1;
-			$this->SetError();
+            $this->SetError(mysql_error($this->mysql_link));
+
 			return false;
 		} else {
       if (strpos(strtolower($sql),"insert")===0) {
@@ -1214,8 +1215,10 @@ class MySQL
 	 */
 	public function RecordsArray($resultType = MYSQL_BOTH) {
 		$this->ResetError();
-		if ($this->last_result) {
-			if (! @mysql_data_seek($this->last_result, 0)) {
+        if (mysql_num_rows($this->last_result) >= 1) {
+
+            $result = mysql_data_seek($this->last_result, 0);
+            if ($result !== true) {
 				$this->SetError();
 				return false;
 			} else {

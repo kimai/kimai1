@@ -83,15 +83,18 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             id: id
         },
         function() {
-          
-          $('#floater').css({width: width+"px"});
+            var floater = $('#floater'),
+                el, x;
+
+            if (floater[0].innerHTML != '') {
+                floater.css({width: width + "px"});
 
           resize_floater();
           
           x = ($(document).width()-(width+10))/2;
           if (x<0) x=0;
-          $("#floater").css({left:x+"px"});
-          $("#floater").fadeIn(fading_enabled?200:0);
+                floater.css({left: x + "px"});
+                floater.fadeIn(fading_enabled ? 200 : 0);
           
           $('#focus').focus();
           $('.extended').hide();
@@ -114,7 +117,8 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             callback();
           
         }
-    );  
+        }
+    );
 }
 
 function resize_floater() {
@@ -186,7 +190,7 @@ function changeTab(target,path) {
 }
 
 function kill_timeout(to) {
-    evalstring = "try {if (" + to + ") clearTimeout(" + to + ")}catch(e){}";
+    var evalstring = "try {if (" + to + ") clearTimeout(" + to + ")}catch(e){}";
     // alert(evalstring);
     eval(evalstring);
 }
@@ -413,7 +417,7 @@ function buzzer() {
 
   if (currentRecording > -1) {
       stopRecord();
-      currentRecording=0;
+        currentRecording = -1;
     } else {
         setTimeframe(undefined,new Date());
         startRecord(selected_project,selected_activity,userID);

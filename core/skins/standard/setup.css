@@ -62,7 +62,6 @@ input {
 }
 
 #stopwatch {
-     background:url("grfx/g3_display_watch.png") no-repeat;
      position:absolute;
      margin:0;
      top:22px;

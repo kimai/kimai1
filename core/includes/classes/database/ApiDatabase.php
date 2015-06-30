@@ -217,13 +217,19 @@ class ApiDatabase {
   	if (!is_array($customers)) $customers = array();
   	if (!is_array($projects)) $projects = array();
   
-  	for ($i = 0;$i<count($users);$i++)
-  		$users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-  		for ($i = 0;$i<count($customers);$i++)
-  			$customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-  			for ($i = 0;$i<count($projects);$i++)
-  			$projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+        foreach ($users as $i => $user) {
+            $users[$i] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+        }
   
+        foreach ($customers as $i => $customer) {
+            $customers[$i] = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+        }
+
+        foreach ($projects as $i => $project) {
+            $projects[$i] = MySQL::SQLValue($project, MySQL::SQLVALUE_NUMBER);
+        }
+
+
   			$whereClauses = array();
   
   			if (count($users) > 0) {

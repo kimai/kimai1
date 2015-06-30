@@ -1283,14 +1283,43 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
           $table = $this->kga['server_prefix']."users";
 
           $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
           return $this->conn->Query($query);
       }
+
+        $query  = "DELETE FROM " . $this->kga['server_prefix'] . "groups_users WHERE userID = " . $userID;
+        $result = $this->conn->Query($query);
+
+        if ($result === false) {
+            $this->logLastError('groups_user_delete');
+
+            return false;
+        }
+
+        $query  = "DELETE FROM " . $this->kga['server_prefix'] . "preferences WHERE userID = " . $userID;
+        $result = $this->conn->Query($query);
+
+        if ($result === false) {
+            $this->logLastError('preferences_delete');
+
+            return false;
+        }
+
+        $query  = "DELETE FROM " . $this->kga['server_prefix'] . "rates WHERE userID = " . $userID;
+        $result = $this->conn->Query($query);
+
+        if ($result === false) {
+            $this->logLastError('rates_delete');
+
+            return false;
+        }
 
       $query = "DELETE FROM " . $this->kga['server_prefix'] . "users WHERE userID = ".$userID;
       $result = $this->conn->Query($query);
 
       if ($result === false) {
           $this->logLastError('user_delete');
+
           return false;
       }
 
@@ -2160,14 +2189,22 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
       if (!is_array($projects)) $projects = array();
       if (!is_array($activities)) $activities = array();
 
-      for ($i = 0;$i<count($users);$i++)
-        $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-      for ($i = 0;$i<count($customers);$i++)
-        $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-      for ($i = 0;$i<count($projects);$i++)
-        $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-      for ($i = 0;$i<count($activities);$i++)
-        $activities[$i] = MySQL::SQLValue($activities[$i], MySQL::SQLVALUE_NUMBER);
+
+        foreach ($users as $i => $user) {
+            $users[$i] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+        }
+
+        foreach ($customers as $i => $customer) {
+            $customers[$i] = MySQL::SQLValue($customer, MySQL::SQLVALUE_NUMBER);
+        }
+
+        foreach ($projects as $i => $project) {
+            $projects[$i] = MySQL::SQLValue($project, MySQL::SQLVALUE_NUMBER);
+        }
+
+        foreach ($activities as $i => $activity) {
+            $activities[$i] = MySQL::SQLValue($activity, MySQL::SQLVALUE_NUMBER);
+        }
 
       $whereClauses = array();
 
@@ -2376,11 +2413,21 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
 	// load configuration and language
 	$this->get_global_config();
-	if (strncmp($kimai_user, 'customer_', 4) == 0) {
+        if (strncmp($kimai_user, 'customer_', 9) == 0) {
 		$this->get_customer_config($customerID);
 	} else {
 		$this->get_user_config($userID);
 	}
+
+        // skin fallback
+        $skin = 'standard';
+        if (isset($this->kga['conf']['skin'])
+            && file_exists($GLOBALS['_SERVER']['DOCUMENT_ROOT'] . "/skins/" . $this->kga['conf']['skin'])
+        ) {
+            $skin = $this->kga['conf']['skin'];
+        }
+        $this->kga['conf']['skin'] = $skin;
+
 
 	// override autoconf language if admin has chosen a language in the advanced tab
 	if ($this->kga['conf']['language'] != "") {
