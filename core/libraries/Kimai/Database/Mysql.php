@@ -2376,7 +2376,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
 	// load configuration and language
 	$this->get_global_config();
-	if (strncmp($kimai_user, 'customer_', 4) == 0) {
+	if (strncmp($kimai_user, 'customer_', 9) == 0) {
 		$this->get_customer_config($customerID);
 	} else {
 		$this->get_user_config($userID);
