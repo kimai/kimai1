@@ -63,7 +63,7 @@
     </ul>
   </div>
 
-  <form id="core_prefs" action="processor.php" method="post"> 
+  <form id="core_prefs" action="processor.php" method="post">
 
     <div id="floater_tabs" class="floater_content">
 
@@ -76,12 +76,12 @@
 
           <li>
             <label for="password"><?php echo $this->kga['lang']['newPassword']?>:</label>
-            <input type="password" name="password" size="15" id="password" /> <?php echo $this->kga['lang']['minLength']?>
+            <input type="password" name="password" size="15" id="password" autocomplete="off" /> <?php echo $this->kga['lang']['minLength']?>
           </li>
 
           <li>
             <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword']?>:</label>
-            <input type="password" name="retypePassword" size="15" id="retypePassword" />
+            <input type="password" name="retypePassword" size="15" id="retypePassword" autocomplete="off" />
           </li>
 
           <li>
@@ -171,12 +171,37 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
             <?php echo $this->formCheckbox('showCommentsByDefault', '1',array('checked' => isset($this->kga['conf']['showCommentsByDefault']) && $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault']?>
           </li>
           <li>
-            <label for="showTrackingNumber"></label>
-            <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => isset($this->kga['conf']['showTrackingNumber']) && $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber']?>
-          </li>     
+            <?php echo $this->kga['lang']['displayColumns']?>:
+            <table><td><td>
+            <?php
+            $options = array(
+                'option' => $this->kga['lang']['options'],
+                'date' => $this->kga['lang']['datum'],
+                'from' => $this->kga['lang']['in'],
+                'to' => $this->kga['lang']['out'],
+                'wage' => $this->kga['lang']['wage'],
+                'time' => $this->kga['lang']['time'],
+                'customer' => $this->kga['lang']['customer'],
+                'project' => $this->kga['lang']['project'],
+                'activity' => $this->kga['lang']['activity'],
+                'trackingnumber' => $this->kga['lang']['trackingNumber'],
+                'username' => $this->kga['lang']['username']
+            );
+            if(isset($this->kga['conf']['hiddenColumns'])) {
+               $hiddenColumns = json_decode($this->kga['conf']['hiddenColumns'], true);
+            }
+            if(!is_array($hiddenColumns)) {
+               $hiddenColumns = array();
+            }
+
+            $settings = array_diff(array_keys($options), $hiddenColumns);
+            echo $this->formMultiCheckbox('displayColumns', $settings, array('label_style' => 'width: auto; text-align: left;'), $options, "\n");
+            ?>
+            </td></tr></table>
+          </li>
           <li>
             <label for="hideOverlapLines"></label>
-            <?php echo $this->formCheckbox('hideOverlapLines', '1',array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
+            <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines']?>
           </li>     
         </ul>
       </fieldset>

@@ -12,39 +12,35 @@
     </div>
     <table>
         <colgroup>
-          <col class="options" />
-          <col class="date" />
-          <col class="from" />
-          <col class="to" />
-          <col class="time" />
-<?php if ($this->showRates): ?>
-          <col class="wage" />
-<?php endif; ?>
-          <col class="customer" />
-          <col class="project" />
-          <col class="activity" />
-        <?php if ($this->showTrackingNumber) { ?>
-          <col class="trackingnumber" />
-        <?php } ?>
-          <col class="username" />
+<?php
+if($this->visibleColumn['option']) echo "            <col class=\"option\" />\n";
+if($this->visibleColumn['date']) echo "            <col class=\"date\" />\n";
+if($this->visibleColumn['from']) echo "            <col class=\"from\" />\n";
+if($this->visibleColumn['to']) echo "            <col class=\"to\" />\n";
+if($this->visibleColumn['time']) echo "            <col class=\"time\" />\n";
+if($this->visibleColumn['wage']) echo "            <col class=\"wage\" />\n";
+if($this->visibleColumn['customer']) echo "            <col class=\"customer\" />\n";
+if($this->visibleColumn['project']) echo "            <col class=\"project\" />\n";
+if($this->visibleColumn['activity']) echo "            <col class=\"activity\" />\n";
+if($this->visibleColumn['trackingnumber']) echo "            <col class=\"trackingnumber\" />\n";
+if($this->visibleColumn['username']) echo "            <col class=\"username\" />\n";
+?>
         </colgroup>
         <tbody>
             <tr>
-                <td class="option">&nbsp;</td>
-                <td class="date"><?php echo $this->kga['lang']['datum']?></td>
-                <td class="from"><?php echo $this->kga['lang']['in']?></td>
-                <td class="to"><?php echo $this->kga['lang']['out']?></td>
-                <td class="time"><?php echo $this->kga['lang']['time']?></td>
-<?php if ($this->showRates): ?>
-                <td class="wage"><?php echo $this->kga['lang']['wage']?></td>
-<?php endif; ?>
-                <td class="customer"><?php echo $this->kga['lang']['customer']?></td>
-                <td class="project"><?php echo $this->kga['lang']['project']?></td>
-                <td class="activity"><?php echo $this->kga['lang']['activity']?></td>
-            <?php if ($this->showTrackingNumber) { ?>
-                <td class="trackingnumber"><?php echo $this->kga['lang']['trackingNumber']?></td>
-            <?php } ?>
-                <td class="username"><?php echo $this->kga['lang']['username']?></td>
+<?php
+if($this->visibleColumn['option']) echo "                <td class=\"option\">&nbsp;</td>\n";
+if($this->visibleColumn['date']) echo "                <td class=\"date\">" . $this->kga['lang']['datum'] . "</td>\n";
+if($this->visibleColumn['from']) echo "                <td class=\"from\">" . $this->kga['lang']['in'] . "</td>\n";
+if($this->visibleColumn['to']) echo "                <td class=\"to\">" . $this->kga['lang']['out'] . "</td>\n";
+if($this->visibleColumn['time']) echo "                <td class=\"time\">" . $this->kga['lang']['time'] . "</td>\n";
+if($this->visibleColumn['wage']) echo "                <td class=\"wage\">" . $this->kga['lang']['wage'] . "</td>\n";
+if($this->visibleColumn['customer']) echo "                <td class=\"customer\">" . $this->kga['lang']['customer'] . "</td>\n";
+if($this->visibleColumn['project']) echo "                <td class=\"project\">" . $this->kga['lang']['project'] . "</td>\n";
+if($this->visibleColumn['activity']) echo "                <td class=\"activity\">" . $this->kga['lang']['activity'] . "</td>\n";
+if($this->visibleColumn['trackingnumber']) echo "                <td class=\"trackingnumber\">" . $this->kga['lang']['trackingNumber'] . "</td>\n";
+if($this->visibleColumn['username']) echo "                <td class=\"username\">" . $this->kga['lang']['username'] . "</td>\n";
+?>
             </tr>
         </tbody>
     </table>

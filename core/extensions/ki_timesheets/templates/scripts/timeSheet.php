@@ -8,21 +8,19 @@ if ($this->timeSheetEntries)
           <table>
               
             <colgroup>
-              <col class="option" />
-              <col class="date" />
-              <col class="from" />
-              <col class="to" />
-              <col class="time" />
-<?php if ($this->showRates): ?>
-              <col class="wage" />
-<?php endif; ?>
-              <col class="client" />
-              <col class="project" />
-              <col class="activity" />
-            <?php if ($this->showTrackingNumber) { ?>
-              <col class="trackingnumber" />
-            <?php } ?>
-              <col class="username" />
+<?php
+if($this->visibleColumn['option']) echo "                <col class=\"option\" />\n";
+if($this->visibleColumn['date']) echo "                <col class=\"date\" />\n";
+if($this->visibleColumn['from']) echo "                <col class=\"from\" />\n";
+if($this->visibleColumn['to']) echo "                <col class=\"to\" />\n";
+if($this->visibleColumn['time']) echo "                <col class=\"time\" />\n";
+if($this->visibleColumn['wage']) echo "                <col class=\"wage\" />\n";
+if($this->visibleColumn['customer']) echo "                <col class=\"customer\" />\n";
+if($this->visibleColumn['project']) echo "                <col class=\"project\" />\n";
+if($this->visibleColumn['activity']) echo "                <col class=\"activity\" />\n";
+if($this->visibleColumn['trackingnumber']) echo "                <col class=\"trackingnumber\" />\n";
+if($this->visibleColumn['username']) echo "                <col class=\"username\" />\n";
+?>
             </colgroup>
 
             <tbody>
@@ -70,6 +68,7 @@ if ($this->timeSheetEntries)
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
         <?php endif; ?>
 
+<?php if ($this->visibleColumn['option']): ?>
         <td nowrap class="option <?php echo $tdClass; ?>">
 
         <?php if (isset($this->kga['user'])): // only users can see options ?>
@@ -110,15 +109,21 @@ if ($this->timeSheetEntries)
     <?php endif; ?>
 
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['date']): ?>
             <td class="date <?php echo $tdClass; ?>">
                 <?php echo $this->escape(strftime($this->kga['date_format'][1],$row['start']));?>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['from']): ?>
             <td class="from <?php echo $tdClass; ?>">
                 <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['to']): ?>
             <td class="to <?php echo $tdClass; ?>">
             <?php
                 if ($row['end']) {
@@ -128,7 +133,9 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['time']): ?>
             <td class="time <?php echo $tdClass; ?>">
                 <?php
                 if (isset($row['duration'])) {
@@ -138,8 +145,9 @@ if ($this->timeSheetEntries)
                 }
                 ?>
             </td>
+<?php endif; ?>
 
-<?php if ($this->showRates): ?>
+<?php if ($this->visibleColumn['wage']): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
                 if (isset($row['wage'])) {
@@ -151,10 +159,13 @@ if ($this->timeSheetEntries)
             </td>
 <?php endif; ?>
 
+<?php if ($this->visibleColumn['customer']): ?>
             <td class="customer <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['customerName']) ?>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['project']): ?>
             <td class="project <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
                     onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
@@ -165,7 +176,9 @@ if ($this->timeSheetEntries)
                     <?php endif; ?>
                 </a>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['activity']): ?>
             <td class="activity <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
                     onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
@@ -183,16 +196,22 @@ if ($this->timeSheetEntries)
                     <?php endif; ?>
                 <?php endif; ?>
             </td>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['trackingnumber']): ?>
             <?php if ($this->showTrackingNumber) { ?>
             <td class="trackingnumber <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['trackingNumber']) ?>
             </td>
             <?php } ?>
+<?php endif; ?>
 
+<?php if ($this->visibleColumn['username']): ?>
             <td class="username <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['userName']) ?>
             </td>
+<?php endif; ?>
+
 
         </tr>
 

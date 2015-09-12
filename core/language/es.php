@@ -147,6 +147,7 @@ return array(
 "DBname"            => "Nombre de la base de datos",
 "autoselection"     => "Autoselección",
 "quickdelete"       => "Eliminación rápida",
+"displayColumns"    => 'Columnas visibles',
 "tools"             => "Herramientas",
 "print"             => "Imprimir",
 "save"              => "Guardar",

@@ -82,7 +82,19 @@ switch ($axAction) {
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 
         $database->user_set_preferences($preferences,'ui.');
-        $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
+
+        $settings = parse_ini_file(WEBROOT . 'extensions/ki_timesheets/config.ini');
+        $allColumns = json_decode($settings['DISPLAY_COLUMNS'], true);
+        if(!$allColumns) {
+            // some configuration problem!? => show all columns!
+            $hiddenColumns = array();
+        }
+        else {
+            $hiddenColumns = array_diff($allColumns, $_REQUEST['displayColumns']);
+        }
+        $database->user_set_preferences(array("hiddenColumns" => json_encode($hiddenColumns)), 'ui.');
+
+        $database->user_set_preferences(array('timezone' => $_REQUEST['timezone']));
 
         $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
         if (is_numeric($rate))

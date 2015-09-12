@@ -150,6 +150,7 @@ return array(
 "quickdeleteShow"   => "Tak, bez potwierdzenia",
 "quickdeleteShowConfirm" => "Tak, z potwierdzeniem",
 "tools"             => "Narzędzia",
+"displayColumns"    => 'Widoczne kolumny',
 "print"             => "Drukuj",
 "save"              => "Zapisz",
 "export"            => "Eksport",

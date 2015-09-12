@@ -138,6 +138,7 @@ return array(
 "DBname"            => "Name of database",
 "autoselection"     => "Autoselection",
 "quickdelete"       => "Quick-Delete",
+"displayColumns"    => 'Colonne visibili',
 "tools"             => "Tools",
 "print"             => "Print",
 "save"              => "Save",

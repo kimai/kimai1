@@ -38,7 +38,7 @@ $out = $timeframe[1];
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
+$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
 $view->kga = $kga;
 
@@ -48,24 +48,48 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+// all available columns and get the columns to hide
+$allColumns = json_decode($settings['DISPLAY_COLUMNS'], true);
+$hiddenColumns = array();
+if (isset($kga['conf']['hiddenColumns'])) {
+    $hiddenColumns = json_decode($kga['conf']['hiddenColumns'], 1);
+}
+
+// for backward compatibility
+if(isset($kga['user']) && !$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates')) {
+    $hiddenColumns[] = "wage";
+}
+if(isset($kga['user']) && $database->user_get_preference('ui.showTrackingNumber') == 0) {
+    $hiddenColumns[] = "trackingnumber";
+}
+// end backward compatibility
+
+// for the view to know which coloumns should be displayed
+$view->visibleColumn = array();
+foreach ($allColumns as $columnName) {
+    if (!in_array($columnName, $hiddenColumns)) {
+        $view->visibleColumn[$columnName] = true;
+    }
+}
+
 
 // Get the total time displayed in the table.
 if (isset($kga['customer']))
-  $total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
+    $total = Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']), null));
 else
-  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
+    $total = Format::formatDuration($database->get_duration($in, $out, array($kga['user']['userID']), null, null));
 $view->total = $total;
 
 // Get the array of timesheet entries.
 if (isset($kga['customer'])) {
-  $timeSheetEntries = $database->get_timeSheet($in,$out,null,array($kga['customer']['customerID']),null,1);
-  $view->latest_running_entry = null;
+    $timeSheetEntries = $database->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), null, 1);
+    $view->latest_running_entry = null;
 } else {
-  $timeSheetEntries = $database->get_timeSheet($in,$out,array($kga['user']['userID']),null,null,1);
-  $view->latest_running_entry = $database->get_latest_running_entry();
+    $timeSheetEntries = $database->get_timeSheet($in, $out, array($kga['user']['userID']), null, null, 1);
+    $view->latest_running_entry = $database->get_latest_running_entry();
 }
 
-if (count($timeSheetEntries)>0) {
+if (count($timeSheetEntries) > 0) {
     $view->timeSheetEntries = $timeSheetEntries;
 } else {
     $view->timeSheetEntries = 0;
@@ -73,47 +97,43 @@ if (count($timeSheetEntries)>0) {
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_time_users($in,$out,null,array($kga['customer']['customerID']));
+    $ann = $database->get_time_users($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = $database->get_time_users($in,$out,array($kga['user']['userID']));
+    $ann = $database->get_time_users($in, $out, array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_time_customers($in,$out,null,array($kga['customer']['customerID']));
+    $ann = $database->get_time_customers($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = $database->get_time_customers($in,$out,array($kga['user']['userID']));
+    $ann = $database->get_time_customers($in, $out, array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_time_projects($in,$out,null,array($kga['customer']['customerID']));
+    $ann = $database->get_time_projects($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = $database->get_time_projects($in,$out,array($kga['user']['userID']));
+    $ann = $database->get_time_projects($in, $out, array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $view->project_annotations = $ann;
 
 // Get the annotations for the activity sub list.
 if (isset($kga['customer']))
-  $ann = $database->get_time_activities($in,$out,null,array($kga['customer']['customerID']));
+    $ann = $database->get_time_activities($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = $database->get_time_activities($in,$out,array($kga['user']['userID']));
+    $ann = $database->get_time_activities($in, $out, array($kga['user']['userID']));
 Format::formatAnnotations($ann);
 $view->activity_annotations = $ann;
 
 $view->hideComments = true;
 $view->showOverlapLines = false;
-$view->showTrackingNumber = false;
 
 if (isset($kga['user'])) {
     $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-    $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
-    $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
+    $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines') != 1;
 }
-
-$view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
 
 $view->timeSheet_display = $view->render("timeSheet.php");
 
@@ -121,20 +141,20 @@ $view->buzzerAction = "startRecord()";
 
 // select for projects
 if (isset($kga['customer'])) {
-  $view->projects = array();
+    $view->projects = array();
 }
 else {
-  $sel = makeSelectBox("project",$kga['user']['groups']);
-  $view->projects = $sel;
+    $sel = makeSelectBox("project", $kga['user']['groups']);
+    $view->projects = $sel;
 }
 
 // select for activities
 if (isset($kga['customer'])) {
-  $view->activities = array();
+    $view->activities = array();
 }
 else {
-  $sel = makeSelectBox("activity",$kga['user']['groups']);
-  $view->activities = $sel;
+    $sel = makeSelectBox("activity", $kga['user']['groups']);
+    $view->activities = $sel;
 }
 
 echo $view->render('main.php');

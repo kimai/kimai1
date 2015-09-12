@@ -179,6 +179,7 @@ return array(
     "quickdeleteHide" => "No",
     "quickdeleteShow" => "Yes, without confirmation dialog",
     "quickdeleteShowConfirm" => "Yes, with confirmation dialog",
+    "displayColumns" => "Visible columns",
     "tools" => "Tools",
     "print" => "Print",
     "save" => "Save",

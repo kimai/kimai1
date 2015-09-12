@@ -179,6 +179,7 @@ return array(
     "quickdeleteHide" => "Nein",
     "quickdeleteShow" => "Ja, ohne Bestätigungsdialog",
     "quickdeleteShowConfirm" => "Ja, mit Bestätigungsdialog",
+    "displayColumns" => "Sichtbare Spalten",
     "tools" => "Werkzeuge",
     "print" => "Drucken",
     "save" => "Sichern",
