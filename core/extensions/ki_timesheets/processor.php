@@ -401,6 +401,30 @@ switch ($axAction) {
 
         $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
 
+        // all available columns and get the columns to hide
+        $allColumns = json_decode($settings['DISPLAY_COLUMNS'], true);
+        $hiddenColumns = array();
+        if (isset($kga['conf']['hiddenColumns'])) {
+            $hiddenColumns = json_decode($kga['conf']['hiddenColumns'], 1);
+        }
+
+        // for backward compatibility
+        if(isset($kga['user']) && !$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates')) {
+            $hiddenColumns[] = "wage";
+        }
+        if(isset($kga['user']) && $database->user_get_preference('ui.showTrackingNumber') == 0) {
+            $hiddenColumns[] = "trackingnumber";
+        }
+        // end backward compatibility
+
+        // for the view to know which coloumns should be displayed
+        $view->visibleColumn = array();
+        foreach ($allColumns as $columnName) {
+            if (!in_array($columnName, $hiddenColumns)) {
+                $view->visibleColumn[$columnName] = true;
+            }
+        }
+
         echo $view->render("timeSheet.php");
     break;
 
