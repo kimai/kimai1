@@ -141,7 +141,7 @@
           <fieldset id="extended">
             <ul>
           <li>
-                        <label for="erase"><?php echo $this->kga['lang']['refundable_long']?>:</label>
+                        <label for="refundable"><?php echo $this->kga['lang']['refundable_long']?>:</label>
                         <input type='checkbox' id='refundable' name='refundable' <?php if ($this->refundable):?> checked="checked" <?php endif; ?> tabindex='12'/>
                    </li>
 
