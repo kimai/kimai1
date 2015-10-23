@@ -21,13 +21,11 @@
 
 // insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require("../../includes/kspi.php");
+$dir_templates   = "templates/";
+require( "../../includes/kspi.php" );
 
 switch ($axAction) {
     case 'test':
         echo $kga['user']['timeframeBegin'];
-    break;
+        break;
 }
-
-?>
