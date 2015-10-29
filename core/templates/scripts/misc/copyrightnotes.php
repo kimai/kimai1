@@ -13,3 +13,4 @@
         <a href="http://php.net/" target="_blank">PHP</a> |  
         <a href="http://mysql.com/" target="_blank">MySQL</a>
 </p>
+<p id="checkupdate"></p>
