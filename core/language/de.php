@@ -286,8 +286,8 @@ return array(
     'multiplier' => 'Multiplikator',
     'timezone' => 'Zeitzone',
     'dateAndTimeHelp' => '<strong>Zeiten und Datumseinträge müssen im folgenden Format passieren:</strong><br />
-            Datum:  DD.MM.YYYY<br />
-            Zeiten: HH:MM:SS oder HH:MM oder nur HH. Ausgelassene Stellen werden auf 0 gesetzt.',
+        Datum:  DD.MM.YYYY<br />
+        Zeiten: HH:MM:SS oder HH:MM oder nur HH. Ausgelassene Stellen werden auf 0 gesetzt.',
     'defaultTimezone' => 'Zeitzone für neue Benutzer und Kunden',
     'editLimitPart1' => 'Es können keine Einträge hinzugefügt oder bearbeitet werden, die',
     'editLimitPart2' => 'Tag(e) und',
@@ -517,9 +517,9 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
     ),
 
     'updatecheck' => array(
-        'release' => "<b>Es gibt ein offizielles Updates, das neue Funktionen und Fehlerkorrekturen enthält. Es wird empfohlen zu aktualisieren.</b>",
+        'release' => "<b>Es gibt ein offizielles Update, das neue Funktionen und Fehlerkorrekturen enthält. Es wird empfohlen zu aktualisieren.</b>",
         'beta' => "<i>Es gibt eine neue Beta Version. Sie können es zum Testen von der Download Seite laden, aber bitte nicht produktiv einsetzen.</i>",
-        'current' => "Ihre Version ist auf dem neusten Stand :)"
+        'current' => "Ihre Version ist auf dem neusten Stand"
     ),
 
     "log_delete" => "Protokoll gelöscht",
