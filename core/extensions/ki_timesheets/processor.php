@@ -436,27 +436,27 @@ switch ($axAction) {
           break;
       }
 
-      $data['projectID']      = $_REQUEST['projectID'];
-      $data['activityID']     = $_REQUEST['activityID'];
-      $data['location']       = $_REQUEST['location'];
-      $data['trackingNumber'] = $_REQUEST['trackingNumber'];
-      $data['description']    = $_REQUEST['description'];
-      $data['comment']        = $_REQUEST['comment'];
-      $data['commentType']    = $_REQUEST['commentType'];
-      if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates')) {
-        $data['rate']         = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
-        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
-      } else if (!$id) {
-        $data['rate']         = $database->get_best_fitting_rate($kga['user']['userID'],$data['projectID'],$data['activityID']);
-        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
-      }
-      $data['cleared']        = isset($_REQUEST['cleared']);
-      $data['statusID']       = $_REQUEST['statusID'];
-      $data['billable']       = $_REQUEST['billable'];
-      $data['budget']         = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
-      $data['approved']       = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
-      $data['userID']         = $_REQUEST['userID'];
+      if (isset($_REQUEST['projectID']))      { $data['projectID']      = $_REQUEST['projectID']; }
+      if (isset($_REQUEST['activityID']))     { $data['activityID']     = $_REQUEST['activityID']; }
+      if (isset($_REQUEST['location']))       { $data['location']       = $_REQUEST['location']; }
+      if (isset($_REQUEST['trackingNumber'])) { $data['trackingNumber'] = $_REQUEST['trackingNumber']; }
+      if (isset($_REQUEST['description']))    { $data['description']    = $_REQUEST['description']; }
+      if (isset($_REQUEST['comment']))        { $data['comment']        = $_REQUEST['comment']; }
+      if (isset($_REQUEST['commentType']))    { $data['commentType']    = $_REQUEST['commentType']; }
+      if (isset($_REQUEST['statusID']))       { $data['statusID']       = $_REQUEST['statusID']; }
+      if (isset($_REQUEST['billable']))       { $data['billable']       = $_REQUEST['billable']; }
+      if (isset($_REQUEST['budget']))         { $data['budget']         = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']); }
+      if (isset($_REQUEST['approved']))       { $data['approved']       = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']); }
+      if (isset($_REQUEST['userID']))         { $data['userID']         = $_REQUEST['userID']; }
+      $data['cleared']                                                  = isset($_REQUEST['cleared']);
 
+      if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates')) {
+          if (isset($_REQUEST['rate']))       { $data['rate']           = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']); }
+          if (isset($_REQUEST['fixedRate']))  { $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']); }
+      } else if (!$id) {
+          if (isset($_REQUEST['rate']))       { $data['rate']           = $database->get_best_fitting_rate($kga['user']['userID'],$data['projectID'],$data['activityID']); }
+          if (isset($_REQUEST['fixedRate']))  { $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']); }
+      }
 
       // check if the posted time values are possible
 

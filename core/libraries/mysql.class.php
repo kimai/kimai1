@@ -1573,6 +1573,15 @@ class MySQL
 				//if (strlen($value) == 0) {
 				//	$return_value = "NULL";
 				//} else {
+
+						//TODO: Find out why we need is_array here. Why is an array submitted in the first place?
+					if (is_array($value)) {
+							Logger::logfile("MySQL::SQLValue value appeared to be an array:\n" . print_r($value, true) . "\nSetting it empty to avoid warnings.");
+							// Set empty so mysql_real_escape_string doesn't produce a warning
+							// Otherwise it would produce the warning and $return_value would be "''"
+						$value = '';
+					}
+
 					if (get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
