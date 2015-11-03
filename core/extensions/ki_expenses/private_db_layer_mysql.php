@@ -238,7 +238,7 @@ function get_expense($id) {
     $query = "SELECT * FROM ${p}expenses WHERE expenseID = $id LIMIT 1;";
 
     $conn->Query($query);
-    return $conn->RowArray(0,MYSQL_ASSOC);
+    return $conn->RowArray(0, MYSQLI_ASSOC);
 }
 
 
@@ -268,7 +268,7 @@ function expense_get($expenseID) {
     if (! $result) {
       return false;
     } else {
-        return $conn->RowArray(0,MYSQL_ASSOC);
+        return $conn->RowArray(0, MYSQLI_ASSOC);
     }
 }
 
@@ -353,7 +353,7 @@ function expenses_by_user($start,$end,$users = null,$customers = null,$projects 
 
     $result = $conn->Query($query);
     if (! $result) return array();
-    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) return array();
    
 
@@ -399,7 +399,7 @@ function expenses_by_customer($start,$end,$users = null,$customers = null,$proje
 
     $result = $conn->Query($query);
     if (! $result) return array();
-    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) return array();
 
     $arr = array();
@@ -442,7 +442,7 @@ function expenses_by_project($start,$end,$users = null,$customers = null,$projec
 
     $result = $conn->Query($query);
     if (! $result) return array();
-    $rows = $conn->RecordsArray(MYSQL_ASSOC);
+    $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) return array();
 
     $arr = array();
@@ -451,6 +451,3 @@ function expenses_by_project($start,$end,$users = null,$customers = null,$projec
     }
     return $arr;
 }
-
-
-?>

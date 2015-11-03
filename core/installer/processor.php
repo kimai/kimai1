@@ -75,7 +75,7 @@ switch ($axAction) {
            $javascript .= "$('div.sp_phpversion').addClass('fail');";
        }
 
-       if (!extension_loaded('mysql')) {
+       if (!extension_loaded('mysqli')) {
            $errors++;
            $javascript .= "$('div.sp_mysql').addClass('fail');";
        }

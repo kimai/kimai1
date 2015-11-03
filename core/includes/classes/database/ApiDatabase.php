@@ -69,7 +69,7 @@ class ApiDatabase {
 	              WHERE $table.expenseID = $id LIMIT 1;";
 	
 	    $this->conn->Query($query);
-	    return $this->conn->RowArray(0, MYSQL_ASSOC);
+	    return $this->conn->RowArray(0, MYSQLI_ASSOC);
 	}
 	
 	/**
@@ -96,7 +96,7 @@ class ApiDatabase {
 	    if (! $result) {
 	      return false;
 	    } else {
-	        return $conn->RowArray(0,MYSQL_ASSOC);
+	        return $conn->RowArray(0, MYSQLI_ASSOC);
 	    }
 	}
 	

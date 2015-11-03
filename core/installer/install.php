@@ -26,7 +26,7 @@
  * Execute an sql query in the database. The correct database connection
  * will be chosen and the query will be logged with the success status.
  *
- * @param $query query to execute as string
+ * @param string $query string query to execute
  */
 function exec_query($query) {
     global $database, $errors;
@@ -43,9 +43,7 @@ function exec_query($query) {
 }
 
 function quoteForSql($input) {
-  global $kga, $database;
-
-  return "'".mysql_real_escape_string($input)."'";
+    return "'".mysql_real_escape_string($input)."'";
 }
 
 if (!isset($_REQUEST['accept'])) {
@@ -64,7 +62,7 @@ $randomAdminID = random_number(9);
 Logger::logfile("-- begin install ----------------------------------");
 
 // if any of the queries fails, this will be true
-$errors=false;
+$errors = false;
 
 $p = $kga['server_prefix'];
 
@@ -394,20 +392,20 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('default
 
 if ($errors) {
 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(WEBROOT . '/libraries/'),
+    set_include_path(
+        implode(
+            PATH_SEPARATOR,
+            array(
+                realpath(WEBROOT . '/libraries/'),
+            )
         )
-    )
-);
-
-require_once 'Zend/Loader/Autoloader.php';
-Zend_Loader_Autoloader::getInstance();
-
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+    );
+    
+    require_once 'Zend/Loader/Autoloader.php';
+    Zend_Loader_Autoloader::getInstance();
+    
+    $view = new Zend_View();
+    $view->setBasePath(WEBROOT . '/templates');
 
     $view->headline = $kga['lang']['errors'][1]['hdl'];
     $view->message = $kga['lang']['errors'][1]['txt'];
@@ -417,4 +415,3 @@ $view->setBasePath(WEBROOT . '/templates');
     Logger::logfile("-- installation finished without error ------------");
     header("Location: ../index.php");
 }
-?>

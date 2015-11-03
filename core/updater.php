@@ -433,7 +433,7 @@ function quoteForSql($input) {
   if ($kga['server_conn'] == "pdo") {
     return $database->getConnectionHandler()->quote($input);
   } else {
-    return "'".mysql_real_escape_string($input)."'";
+    return "'".$database->getConnectionHandler()->SQLFix($input)."'";
   }
 }
 
@@ -620,7 +620,7 @@ EOD;
                 $executed_queries++;
 
                 $arr = array();  
-                $rows = $conn->RecordsArray(MYSQL_ASSOC);
+                $rows = $conn->RecordsArray(MYSQLI_ASSOC);
             	foreach($rows as $row) {
             	        echo "<tr>";
                     $query=<<<EOD
@@ -725,7 +725,7 @@ EOD;
                 $executed_queries++;
 
                 $arr = array();  
-                $rows = $conn->RecordsArray(MYSQL_ASSOC);
+                $rows = $conn->RecordsArray(MYSQLI_ASSOC);
             	foreach($rows as $row) {
             	        echo "<tr>";
                     $query="INSERT INTO ${p}grp_knd (`grp_ID`, `knd_ID`) VALUES (".$row[knd_grpID].", ".$row[knd_ID].")";
@@ -797,7 +797,7 @@ EOD;
                 $executed_queries++;
 
                 $arr = array();  
-                $rows = $conn->RecordsArray(MYSQL_ASSOC);
+                $rows = $conn->RecordsArray(MYSQLI_ASSOC);
             	foreach($rows as $row) {
             	        echo "<tr>";
                     $query="INSERT INTO ${p}grp_pct (`grp_ID`, `pct_ID`) VALUES (".$row[pct_grpID].", ".$row[pct_ID].")";
@@ -869,7 +869,7 @@ EOD;
                 $executed_queries++;
 
                 $arr = array();  
-                $rows = $conn->RecordsArray(MYSQL_ASSOC);
+                $rows = $conn->RecordsArray(MYSQLI_ASSOC);
             	foreach($rows as $row) {
             	        echo "<tr>";
                     $query="INSERT INTO ${p}grp_evt (`grp_ID`, `evt_ID`) VALUES (".$row[evt_grpID].", ".$row[evt_ID].")";

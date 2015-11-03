@@ -17,14 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * set cleared state for timeSheet entry
  *
  * @param integer $id -> ID of record
  * @param boolean $cleared -> true if record is cleared, otherwise false
- * @global array  $kga kimai-global-array
+ * @global array $kga kimai-global-array
  * @author sl
+ * @return bool
  */
 function export_timeSheetEntry_set_cleared($id,$cleared) {
     global $kga, $database;
@@ -36,45 +36,46 @@ function export_timeSheetEntry_set_cleared($id,$cleared) {
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
-      return true;
+        return true;
     else
-      return false;
-} 
+        return false;
+}
 
 /**
  * set cleared state for exp entry
  *
  * @param integer $id -> ID of record
  * @param boolean $cleared -> true if record is cleared, otherwise false
- * @global array  $kga kimai-global-array
+ * @global array $kga kimai-global-array
  * @author sl
+ * @return bool
  */
 function export_expense_set_cleared($id,$cleared) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
-    $table                 = $kga['server_prefix']."expenses";
+    $table = $kga['server_prefix']."expenses";
     $values['cleared'] = $cleared?1:0;
-    $filter['expenseID']      = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
+    $filter['expenseID'] = MySQL::SQLValue($id,MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     if ($conn->Query($query))
-      return true;
+        return true;
     else
-      return false;
-} 
-
+        return false;
+}
 
 /**
  * save deselection of columns
  *
- * @param string  $header -> header name
- * @global array  $kga kimai-global-array
- * @global array  $all_column_headers array containing all columns
+ * @param string $header -> header name
+ * @global array $kga kimai-global-array
+ * @global array $all_column_headers array containing all columns
  * @author sl
+ * @return bool
  */
 function export_toggle_header($header) {
-    global $kga, $database,$all_column_headers;    
+    global $kga, $database,$all_column_headers;
     $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header,$all_column_headers);
@@ -84,18 +85,19 @@ function export_toggle_header($header) {
     $query = "INSERT INTO $table (`userID`, `option`, `value`) VALUES($userID, 'export_disabled_columns', POWER(2,$header_number)) ON DUPLICATE KEY UPDATE `value`=`value`^POWER(2,$header_number)";
 
     if ($conn->Query($query))
-      return true;
-    else 
-      return false;
-} 
+        return true;
+    else
+        return false;
+}
 
 /**
  * get list of deselected columns
  *
  * @param integer $userID -> header name
- * @global array  $kga kimai-global-array
- * @global array  $all_column_headers array containing all columns
+ * @global array $kga kimai-global-array
+ * @global array $all_column_headers array containing all columns
  * @author sl
+ * @return array|int
  */
 function export_get_disabled_headers($userID) {
     global $kga, $database,$all_column_headers;
@@ -109,18 +111,17 @@ function export_get_disabled_headers($userID) {
 
     if (!$conn->SelectRows($table, $filter)) return 0;
 
-    $result_array = $conn->RowArray(0,MYSQL_ASSOC);
+    $result_array = $conn->RowArray(0,MYSQLI_ASSOC);
     $code = $result_array['value'];
 
     $i = 0;
     while ($code>0) {
-       if ($code%2==1) // bit set?
-        $disabled_headers[$all_column_headers[$i]] = true;
+        if ($code%2==1) // bit set?
+            $disabled_headers[$all_column_headers[$i]] = true;
 
-       // next bit and array element
-       $code = $code/2;
-       $i++;
+        // next bit and array element
+        $code = $code/2;
+        $i++;
     }
     return $disabled_headers;
 }
-?>

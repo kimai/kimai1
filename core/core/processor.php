@@ -228,7 +228,7 @@ switch ($axAction) {
             	$data['visible']  = getRequestBool('visible');
             	$data['filter']   = $_REQUEST['customerFilter'];
         
-              // If password field is empty dont overwrite the password.
+              // If password field is empty don't overwrite the password.
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
                 $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
               }
@@ -249,12 +249,12 @@ switch ($axAction) {
               if (count($_REQUEST['customerGroups']) == 0)
                 $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups']))
+              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups'])) {
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
+              }
               
               
               if (count($errorMessages) == 0) {
-            	
                 // add or update the customer
                   if (!$id) {
                       $id = $database->customer_create($data);

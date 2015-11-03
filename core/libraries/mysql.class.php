@@ -2,7 +2,7 @@
 /**
  * Ultimate MySQL Wrapper Class
  *
- * @version 2.5
+ * @version 3.0
  * @author Jeff L. Williams
  * @link http://www.phpclasses.org/ultimatemysql
  *
@@ -12,16 +12,19 @@
  *   Nicola Abbiuso
  *   Douglas Gintz
  *   Emre Erkan
+ *   Vincent van Daal
+ *   Michael Ansaldi
+ *   Ryan Tse
  */
 class MySQL
 {
 	// SET THESE VALUES TO MATCH YOUR DATA CONNECTION
-	private $db_host    = "localhost";  // server name
-	private $db_user    = "";       // user name
-	private $db_pass    = "";           // password
-	private $db_dbname  = "";           // database name
-	private $db_charset = "";           // optional character set (i.e. utf8)
-	private $db_pcon    = false;        // use persistent connection?
+	private $db_host    = "localhost"; // server name
+	private $db_user    = "";          // user name
+	private $db_pass    = "";          // password
+	private $db_dbname  = "";          // database name
+	private $db_charset = "";          // optional character set (i.e. utf8)
+	private $db_pcon    = false;      // use persistent connection?
 
 	// constants for SQLValue function
 	const SQLVALUE_BIT      = "bit";
@@ -35,6 +38,7 @@ class MySQL
 	const SQLVALUE_Y_N      = "y-n";
 
 	// class-internal variables - do not change
+	public  $mysql_link      = 0;       // mysql link resource
 	private $active_row     = -1;       // current row
 	private $error_desc     = "";       // last mysql error string
 	private $error_number   = 0;        // last mysql error number
@@ -42,7 +46,6 @@ class MySQL
 	private $last_insert_id;            // last id of record inserted
 	private $last_result;               // last mysql query result
 	private $last_sql       = "";       // last mysql query
-	private $mysql_link     = 0;        // mysql link resource
 	private $time_diff      = 0;        // holds the difference in time
 	private $time_start     = 0;        // start time for the timer
 
@@ -76,6 +79,7 @@ class MySQL
 			strlen($this->db_user) > 0) {
 			if ($connect) $this->Open();
 		}
+
 	}
 
 	/**
@@ -293,13 +297,17 @@ class MySQL
 		$where = "";
 		foreach ($whereArray as $key => $value) {
 			if (strlen($where) == 0) {
-				if (is_string($key)) {
+				if (is_null($value)) {
+					$where = " WHERE `" . $key . "` IS NULL";
+				} else if (is_string($key)) {
 					$where = " WHERE `" . $key . "` = " . $value;
 				} else {
 					$where = " WHERE " . $value;
 				}
 			} else {
-				if (is_string($key)) {
+				if (is_null($value)) {
+					$where = " AND `" . $key . "` IS NULL";
+				} else if (is_string($key)) {
 					$where .= " AND `" . $key . "` = " . $value;
 				} else {
 					$where .= " AND " . $value;
@@ -319,7 +327,7 @@ class MySQL
 		$this->active_row = -1;
 		$success = $this->Release();
 		if ($success) {
-			$success = @mysql_close($this->mysql_link);
+			$success = @mysqli_close($this->mysql_link);
 			if (! $success) {
 				$this->SetError();
 			} else {
@@ -463,7 +471,7 @@ class MySQL
 	 */
 	public function GetColumnComments($table) {
 		$this->ResetError();
-		$records = mysql_query("SHOW FULL COLUMNS FROM " . $table);
+		$records = mysqli_query($this->mysql_link, "SHOW FULL COLUMNS FROM " . $table);
 		if (! $records) {
 			$this->SetError();
 			return false;
@@ -475,7 +483,7 @@ class MySQL
 			} else {
 				$index = 0;
 				// Fetchs the array to be returned (column 8 is field comment):
-				while ($array_data = mysql_fetch_array($records)) {
+				while ($array_data = mysqli_fetch_array($records)) {
 					$columns[$index] = $array_data[8];
 					$columns[$columnNames[$index++]] = $array_data[8];
 				}
@@ -494,16 +502,16 @@ class MySQL
 	public function GetColumnCount($table = "") {
 		$this->ResetError();
 		if (empty($table)) {
-			$result = mysql_num_fields($this->last_result);
+			$result = mysqli_field_count($this->mysql_link);
 			if (! $result) $this->SetError();
 		} else {
-			$records = mysql_query("SELECT * FROM " . $table . " LIMIT 1");
+			$records = mysqli_query($this->mysql_link, "SELECT * FROM " . $table . " LIMIT 1");
 			if (! $records) {
 				$this->SetError();
 				$result = false;
 			} else {
-				$result = mysql_num_fields($records);
-				$success = @mysql_free_result($records);
+				$result = mysqli_field_count($this->mysql_link);
+				$success = @mysqli_free_result($records);
 				if (! $success) {
 					$this->SetError();
 					$result = false;
@@ -527,18 +535,21 @@ class MySQL
 		if (empty($table)) {
 			if ($this->RowCount() > 0) {
 				if (is_numeric($column)) {
-					return mysql_field_type($this->last_result, $column);
+					$field = mysqli_fetch_field_direct($this->last_result, $column);
+					return $field->type;
 				} else {
-					return mysql_field_type($this->last_result, $this->GetColumnID($column));
+					$field = mysqli_fetch_field_direct($this->last_result, $this->GetColumnID($column));
+					return $field->type;
 				}
 			} else {
 				return false;
 			}
 		} else {
 			if (is_numeric($column)) $column = $this->GetColumnName($column, $table);
-			$result = mysql_query("SELECT " . $column . " FROM " . $table . " LIMIT 1");
-			if (mysql_num_fields($result) > 0) {
-				return mysql_field_type($result, 0);
+			$result = mysqli_query($this->mysql_link, "SELECT " . $column . " FROM " . $table . " LIMIT 1");
+			if (mysqli_field_count($this->mysql_link) > 0) {
+				$field = mysqli_fetch_field_direct($result, 0);
+				return $field->type;
 			} else {
 				$this->SetError("The specified column or table does not exist, or no data was returned", -1);
 				return false;
@@ -597,26 +608,26 @@ class MySQL
 			if (! $columnID) {
 				return false;
 			} else {
-				$result = mysql_field_len($this->last_result, $columnID);
-				if (! $result) {
+				$field = mysqli_fetch_field_direct($this->last_result, $columnID);
+				if (! $field) {
 					$this->SetError();
 					return false;
 				} else {
-					return $result;
+					return $field->length;
 				}
 			}
 		} else {
-			$records = mysql_query("SELECT " . $column . " FROM " . $table . " LIMIT 1");
+			$records = mysqli_query($this->mysql_link, "SELECT " . $column . " FROM " . $table . " LIMIT 1");
 			if (! $records) {
 				$this->SetError();
 				return false;
 			}
-			$result = mysql_field_len($records, 0);
-			if (! $result) {
+			$field = mysqli_fetch_field_direct($records, 0);
+			if (! $field) {
 				$this->SetError();
 				return false;
 			} else {
-				return $result;
+				return $field->length;
 			}
 		}
 	}
@@ -632,22 +643,33 @@ class MySQL
 	 */
 	public function GetColumnName($columnID, $table = "") {
 		$this->ResetError();
+		$result = false;
 		if (empty($table)) {
 			if ($this->RowCount() > 0) {
-				$result = mysql_field_name($this->last_result, $columnID);
-				if (! $result) $this->SetError();
+				$field = mysqli_fetch_field_direct($this->last_result, $columnID);
+				if (! $field) {
+					$result = false;
+					$this->SetError();
+				} else {
+					$result = $field->name;
+				}
 			} else {
 				$result = false;
 			}
 		} else {
-			$records = mysql_query("SELECT * FROM " . $table . " LIMIT 1");
+			$records = mysqli_query($this->mysql_link, "SELECT * FROM " . $table . " LIMIT 1");
 			if (! $records) {
 				$this->SetError();
 				$result = false;
 			} else {
-				if (mysql_num_fields($records) > 0) {
-					$result = mysql_field_name($records, $columnID);
-					if (! $result) $this->SetError();
+				if (mysqli_field_count($this->mysql_link) > 0) {
+					$field = mysqli_fetch_field_direct($records, $columnID);
+					if (! $field) {
+						$result = false;
+						$this->SetError();
+					} else {
+						$result = $field->name;
+					}
 				} else {
 					$result = false;
 				}
@@ -666,22 +688,23 @@ class MySQL
 	public function GetColumnNames($table = "") {
 		$this->ResetError();
 		if (empty($table)) {
-			$columnCount = mysql_num_fields($this->last_result);
+			$columnCount = mysqli_field_count($this->mysql_link);
 			if (! $columnCount) {
 				$this->SetError();
 				$columns = false;
 			} else {
 				for ($column = 0; $column < $columnCount; $column++) {
-					$columns[] = mysql_field_name($this->last_result, $column);
+					$field = mysqli_fetch_field_direct($this->last_result, $column);
+					$columns[] = $field->name;
 				}
 			}
 		} else {
-			$result = mysql_query("SHOW COLUMNS FROM " . $table);
+			$result = mysqli_query($this->mysql_link, "SHOW COLUMNS FROM " . $table);
 			if (! $result) {
 				$this->SetError();
 				$columns = false;
 			} else {
-				while ($array_data = mysql_fetch_array($result)) {
+				while ($array_data = mysqli_fetch_array($result)) {
 					$columns[] = $array_data[0];
 				}
 			}
@@ -725,7 +748,7 @@ class MySQL
 				$html .= "<table style=\"$tb\" cellpadding=\"2\" cellspacing=\"2\">\n";
 				$this->MoveFirst();
 				$header = false;
-				while ($member = mysql_fetch_object($this->last_result)) {
+				while ($member = mysqli_fetch_object($this->last_result)) {
 					if (!$header) {
 						$html .= "\t<tr>\n";
 						foreach ($member as $key => $value) {
@@ -760,12 +783,13 @@ class MySQL
 	public function GetJSON() {
 		if ($this->last_result) {
 			if ($this->RowCount() > 0) {
-				for ($i = 0, $il = mysql_num_fields($this->last_result); $i < $il; $i++) {
-					$types[$i] = mysql_field_type($this->last_result, $i);
+				for ($i = 0, $il = mysqli_field_count($this->mysql_link); $i < $il; $i++) {
+					$field = mysqli_fetch_field_direct($this->last_result, $i);
+					$types[$i] = $field->type;
 				}
 				$json = '[';
 				$this->MoveFirst();
-				while ($member = mysql_fetch_object($this->last_result)) {
+				while ($member = mysqli_fetch_object($this->last_result)) {
 					$json .= json_encode($member) . ",";
 				}
 				$json .= ']';
@@ -808,12 +832,12 @@ class MySQL
 	public function GetTables() {
 		$this->ResetError();
 		// Query to get the tables in the current database:
-		$records = mysql_query("SHOW TABLES");
+		$records = mysqli_query($this->mysql_link, "SHOW TABLES");
 		if (! $records) {
 			$this->SetError();
 			return FALSE;
 		} else {
-			while ($array_data = mysql_fetch_array($records)) {
+			while ($array_data = mysqli_fetch_array($records)) {
 				$tables[] = $array_data[0];
 			}
 
@@ -850,7 +874,7 @@ class MySQL
 
 			// process one row at a time
 			$rowCount = 0;
-			while ($row = mysql_fetch_assoc($this->last_result)) {
+			while ($row = mysqli_fetch_assoc($this->last_result)) {
 
 				// Keep the row count
 				$rowCount = $rowCount + 1;
@@ -937,7 +961,7 @@ class MySQL
 	 * @return boolean TRUE idf connectect or FALSE if not connected
 	 */
 	public function IsConnected() {
-		if (gettype($this->mysql_link) == "resource") {
+		if (is_object($this->mysql_link)) {
 			return true;
 		} else {
 			return false;
@@ -1033,10 +1057,10 @@ class MySQL
 
 		// Open persistent or normal connection
 		if ($pcon) {
-			$this->mysql_link = @mysql_pconnect(
-				$this->db_host, $this->db_user, $this->db_pass);
+			$this->mysql_link = @mysqli_pconnect(
+				'p:' . $this->db_host, $this->db_user, $this->db_pass);
 		} else {
-			$this->mysql_link = @mysql_connect (
+			$this->mysql_link = @mysqli_connect (
 				$this->db_host, $this->db_user, $this->db_pass);
 		}
 		// Connect to mysql server failed?
@@ -1078,14 +1102,14 @@ class MySQL
 	public function Query($sql) {
 		$this->ResetError();
 		$this->last_sql = $sql;
-		$this->last_result = @mysql_query($sql, $this->mysql_link);
+		$this->last_result = @mysqli_query($this->mysql_link, $sql);
 		if(! $this->last_result) {
 			$this->active_row = -1;
 			$this->SetError();
 			return false;
 		} else {
-      if (strpos(strtolower($sql),"insert")===0) {
-				$this->last_insert_id = mysql_insert_id();
+			if (strpos(strtolower($sql), "insert") === 0) {
+				$this->last_insert_id = mysqli_insert_id($this->mysql_link);
 				if ($this->last_insert_id === false) {
 					$this->SetError();
 					return false;
@@ -1094,8 +1118,8 @@ class MySQL
 					$this->active_row = -1;
 					return $this->last_result;
 				}
-      } else if(strpos(strtolower($sql),"select")===0) {
-				$numrows = mysql_num_rows($this->last_result);
+			} else if(strpos(strtolower($sql), "select") === 0) {
+				$numrows = mysqli_field_count($this->mysql_link);
 				if ($numrows > 0) {
 					$this->active_row = 0;
 				} else {
@@ -1114,11 +1138,11 @@ class MySQL
 	 *
 	 * @param string $sql The query string should not end with a semicolon
 	 * @param integer $resultType (Optional) The type of array
-	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
+	 *                Values can be: MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
 	 * @return array A multi-dimensional array containing all the data
 	 *               returned from the query or FALSE on all errors
 	 */
-	public function QueryArray($sql, $resultType = MYSQL_BOTH) {
+	public function QueryArray($sql, $resultType = MYSQLI_BOTH) {
 		$this->Query($sql);
 		if (! $this->Error()) {
 			return $this->RecordsArray($resultType);
@@ -1148,11 +1172,11 @@ class MySQL
 	 *
 	 * @param string $sql The query string should not end with a semicolon
 	 * @param integer $resultType (Optional) The type of array
-	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
+	 *                Values can be: MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
 	 * @return array An array containing the first row or FALSE if no row
 	 *               is returned from the query
 	 */
-	public function QuerySingleRowArray($sql, $resultType = MYSQL_BOTH) {
+	public function QuerySingleRowArray($sql, $resultType = MYSQLI_BOTH) {
 		$this->Query($sql);
 		if ($this->RowCount() > 0) {
 			return $this->RowArray(null, $resultType);
@@ -1171,7 +1195,7 @@ class MySQL
 	public function QuerySingleValue($sql) {
 		$this->Query($sql);
 		if ($this->RowCount() > 0 && $this->GetColumnCount() > 0) {
-			$row = $this->RowArray(null, MYSQL_NUM);
+			$row = $this->RowArray(null, MYSQLI_NUM);
 			return $row[0];
 		} else {
 			return false;
@@ -1209,21 +1233,21 @@ class MySQL
 	 * or FALSE on error
 	 *
 	 * @param integer $resultType (Optional) The type of array
-	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
-	 * @return Records in array form
+	 *                Values can be: MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
+	 * @return array Records in array form
 	 */
-	public function RecordsArray($resultType = MYSQL_BOTH) {
+	public function RecordsArray($resultType = MYSQLI_BOTH) {
 		$this->ResetError();
 		if ($this->last_result) {
-			if (! @mysql_data_seek($this->last_result, 0)) {
+			if (! mysqli_data_seek($this->last_result, 0)) {
 				$this->SetError();
 				return false;
 			} else {
-				//while($member = mysql_fetch_object($this->last_result)){
-				while ($member = mysql_fetch_array($this->last_result, $resultType)){
+				//while($member = mysqli_fetch_object($this->last_result)){
+				while ($member = mysqli_fetch_array($this->last_result, $resultType)){
 					$members[] = $member;
 				}
-				mysql_data_seek($this->last_result, 0);
+				mysqli_data_seek($this->last_result, 0);
 				$this->active_row = 0;
 				return $members;
 			}
@@ -1244,7 +1268,7 @@ class MySQL
 		if (! $this->last_result) {
 			$success = true;
 		} else {
-			$success = @mysql_free_result($this->last_result);
+			$success = @mysqli_free_result($this->last_result);
 			if (! $success) $this->SetError();
 		}
 		return $success;
@@ -1287,7 +1311,7 @@ class MySQL
 				$this->Seek($optional_row_number);
 			}
 		}
-		$row = mysql_fetch_object($this->last_result);
+		$row = mysqli_fetch_object($this->last_result);
 		if (! $row) {
 			$this->SetError();
 			return false;
@@ -1302,10 +1326,10 @@ class MySQL
 	 *
 	 * @param integer $optional_row_number (Optional) Use to specify a row
 	 * @param integer $resultType (Optional) The type of array
-	 *                Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH
+	 *                Values can be: MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH
 	 * @return array Array that corresponds to fetched row or FALSE if no rows
 	 */
-	public function RowArray($optional_row_number = null, $resultType = MYSQL_BOTH) {
+	public function RowArray($optional_row_number = null, $resultType = MYSQLI_BOTH) {
 		$this->ResetError();
 		if (! $this->last_result) {
 			$this->SetError("No query results exist", -1);
@@ -1326,7 +1350,7 @@ class MySQL
 				$this->Seek($optional_row_number);
 			}
 		}
-		$row = mysql_fetch_array($this->last_result, $resultType);
+		$row = mysqli_fetch_array($this->last_result, $resultType);
 		if (! $row) {
 			$this->SetError();
 			return false;
@@ -1349,7 +1373,7 @@ class MySQL
 			$this->SetError("No query results exist", -1);
 			return false;
 		} else {
-			$result = @mysql_num_rows($this->last_result);
+			$result = @mysqli_affected_rows($this->mysql_link);
 			if (! $result) {
 				$this->SetError();
 				return false;
@@ -1376,18 +1400,18 @@ class MySQL
 			return false;
 		} else {
 			$this->active_row = $row_number;
-			$result = mysql_data_seek($this->last_result, $row_number);
+			$result = mysqli_data_seek($this->last_result, $row_number);
 			if (! $result) {
 				$this->SetError();
 				return false;
 			} else {
-				$record = mysql_fetch_row($this->last_result);
+				$record = mysqli_fetch_row($this->last_result);
 				if (! $record) {
 					$this->SetError();
 					return false;
 				} else {
 					// Go back to the record after grabbing it
-					mysql_data_seek($this->last_result, $row_number);
+					mysqli_data_seek($this->last_result, $row_number);
 					return $record;
 				}
 			}
@@ -1414,12 +1438,12 @@ class MySQL
 		$return_value = true;
 		if (! $charset) $charset = $this->db_charset;
 		$this->ResetError();
-		if (! (mysql_select_db($database))) {
+		if (! (mysqli_select_db($this->mysql_link, $database))) {
 			$this->SetError();
 			$return_value = false;
 		} else {
 			if ((strlen($charset) > 0)) {
-				if (! (mysql_query("SET CHARACTER SET '{$charset}'", $this->mysql_link))) {
+				if (! (mysqli_query($this->mysql_link, "SET CHARACTER SET '{$charset}'"))) {
 					$this->SetError();
 					$return_value = false;
 				}
@@ -1453,7 +1477,7 @@ class MySQL
 		} else {
 			$sql = self::BuildSQLSelect($tableName, $whereArray,
 					$columns, $sortColumns, $sortAscending, $limit);
-			// Execute the SELECT
+			// Execute the UPDATE
 			if (! $this->Query($sql)) {
 				return $this->last_result;
 			} else {
@@ -1484,18 +1508,18 @@ class MySQL
 				$this->error_desc = $errorMessage;
 			} else {
 				if ($this->IsConnected()) {
-					$this->error_desc = mysql_error($this->mysql_link);
+					$this->error_desc = mysqli_error($this->mysql_link);
 				} else {
-					$this->error_desc = mysql_error();
+					$this->error_desc = mysqli_connect_error();
 				}
 			}
 			if ($errorNumber <> 0) {
 				$this->error_number = $errorNumber;
 			} else {
 				if ($this->IsConnected()) {
-					$this->error_number = @mysql_errno($this->mysql_link);
+					$this->error_number = @mysqli_errno($this->mysql_link);
 				} else {
-					$this->error_number = @mysql_errno();
+					$this->error_number = @mysqli_connect_errno();
 				}
 			}
 		} catch(Exception $e) {
@@ -1503,7 +1527,9 @@ class MySQL
 			$this->error_number = -999;
 		}
 		if ($this->ThrowExceptions) {
-			throw new Exception($this->error_desc);
+			if (isset($this->error_desc) && $this->error_desc != NULL) {
+				throw new Exception($this->error_desc . ' (' . __LINE__ . ')');
+			}
 		}
 	}
 
@@ -1529,23 +1555,15 @@ class MySQL
 	}
 
 	/**
-	 * [STATIC] Returns string suitable for SQL
+	 * Returns string suitable for SQL
+	 * NOTE: This is no longer a static call because of a conflict with mysqli_real_escape_string.
+	 *       Also, please note that the SQLUnfix function was removed for compatibility.
 	 *
 	 * @param string $value
 	 * @return string SQL formatted value
 	 */
-	static public function SQLFix($value) {
-		return @addslashes($value);
-	}
-
-	/**
-	 * [STATIC] Returns MySQL string as normal string
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	static public function SQLUnfix($value) {
-		return @stripslashes($value);
+	public function SQLFix($value) {
+		return @mysqli_real_escape_string($this->mysql_link, $value);
 	}
 
 	/**
@@ -1567,31 +1585,24 @@ class MySQL
 			case "string":
 			case "varchar":
 			case "char":
-        // wolfgang@sybermon.com disabled because of kimai db structure
-        // I had to disable the following as kimai db structure
-        // does not allow NULL values
-				//if (strlen($value) == 0) {
-				//	$return_value = "NULL";
-				//} else {
+				if (strlen($value) == 0) {
+					$return_value = "NULL";
+				} else {
 					if (get_magic_quotes_gpc()) {
 						$value = stripslashes($value);
 					}
-					$return_value = "'" . mysql_real_escape_string($value) . "'";
-				//}
+					$return_value = "'" . str_replace("'", "''", $value) . "'";
+				}
 				break;
 			case "number":
 			case "integer":
 			case "int":
 			case "double":
 			case "float":
-        // wolfgang@sybermon.com disabled because of kimai db structure
-        // I had to disable the following as kimai db structure
-        // does not allow NULL values
 				if (is_numeric($value)) {
 					$return_value = $value;
 				} else {
-					//$return_value = "NULL";
-          $return_value = 0;
+					$return_value = "NULL";
 				}
 				break;
 			case "boolean":  //boolean to use this with a bit field
@@ -1687,7 +1698,7 @@ class MySQL
 			return false;
 		} else {
 			if (! $this->in_transaction) {
-				if (! mysql_query("START TRANSACTION", $this->mysql_link)) {
+				if (! mysqli_query($this->mysql_link, "START TRANSACTION")) {
 					$this->SetError();
 					return false;
 				} else {
@@ -1713,7 +1724,7 @@ class MySQL
 			return false;
 		} else {
 			if ($this->in_transaction) {
-				if (! mysql_query("COMMIT", $this->mysql_link)) {
+				if (! mysqli_query($this->mysql_link, "COMMIT")) {
 					// $this->TransactionRollback();
 					$this->SetError();
 					return false;
@@ -1739,7 +1750,7 @@ class MySQL
 			$this->SetError("No connection");
 			return false;
 		} else {
-			if(! mysql_query("ROLLBACK", $this->mysql_link)) {
+			if(! mysqli_query($this->mysql_link, "ROLLBACK")) {
 				$this->SetError("Could not rollback transaction");
 				return false;
 			} else {
