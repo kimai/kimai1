@@ -96,7 +96,9 @@ exec_query($query);
 // global admin role
 $query = buildRoleInsertQuery('globalRoles', 'Admin', $globalPermissions, $globalPermissions);
 exec_query($query);
-$globalAdminRoleID = mysql_insert_id();
+
+$connection = $database->getConnectionHandler();
+$globalAdminRoleID = $connection->GetLastInsertID();
 
 // global user role
 $allowedPermissions = array(
@@ -115,7 +117,7 @@ $allowedPermissions = array(
 );
 $query = buildRoleInsertQuery('globalRoles', 'User', $allowedPermissions, $globalPermissions);
 exec_query($query);
-$globalUserRoleID = mysql_insert_id();
+$globalUserRoleID = $connection->GetLastInsertID();
 
 
 
@@ -125,13 +127,13 @@ exec_query($query);
 // membership admin role
 $query = buildRoleInsertQuery('membershipRoles', 'Admin', $membershipPermissions, $membershipPermissions);
 exec_query($query);
-$membershipAdminRoleID = mysql_insert_id();
+$membershipAdminRoleID = $connection->GetLastInsertID();
 
 // membership user role
 $allowedPermissions = array();
 $query = buildRoleInsertQuery('membershipRoles', 'User', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipUserRoleID = mysql_insert_id();
+$membershipUserRoleID = $connection->GetLastInsertID();
 
 // membership groupleader role
 $allowedPermissions = array_merge($allowedPermissions, array(
@@ -144,6 +146,4 @@ $allowedPermissions = array_merge($allowedPermissions, array(
 ));
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
-$membershipGroupleaderRoleID = mysql_insert_id();
-
-?>
+$membershipGroupleaderRoleID = $connection->GetLastInsertID();

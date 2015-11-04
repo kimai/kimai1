@@ -21,6 +21,23 @@
  * Handle all AJAX calls from the installer.
  */
 
+defined('WEBROOT') ||
+define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+
+defined('APPLICATION_PATH') ||
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(APPLICATION_PATH . '/libraries/'),
+        )
+    )
+);
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+$autoloader->registerNamespace('Kimai');
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val) {
@@ -162,7 +179,7 @@ switch ($axAction) {
      * Create the database.
      */
     case ("make_database");
-        $database     = $_REQUEST['database'];
+        $databaseName = $_REQUEST['database'];
         $hostname     = $_REQUEST['hostname'];
         $username     = $_REQUEST['username'];
         $password     = $_REQUEST['password'];
@@ -172,11 +189,14 @@ switch ($axAction) {
         $db_error = false;
         $result = false;
 
-        $con = mysql_connect($hostname,$username,$password);
-        $query = "CREATE DATABASE `" . $database . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
-        $result = mysql_query($query);
+        $database = new Kimai_Database_Mysql($result);
+        $database->connect($hostname, null, $username, $password, true, $server_type);
+        $conn = $database->getConnectionHandler();
+        
+        $query = "CREATE DATABASE `" . $databaseName . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
+        $result = $conn->Query($query);
 
-        if ($result != false) {
+        if ($result !== false) {
             echo "1"; // <-- hat geklappt
         } else {
             echo "0"; // <-- schief gegangen

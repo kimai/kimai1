@@ -38,12 +38,15 @@ function exec_query($query) {
     if (!$success) {
         $errorInfo = serialize($conn->Error());
         Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
-        $errors=true;
+        $errors = true;
     }
 }
 
 function quoteForSql($input) {
-    return "'".mysql_real_escape_string($input)."'";
+    global $database;
+
+    $conn = $database->getConnectionHandler();
+    return "'".$conn->SQLFix($input)."'";
 }
 
 if (!isset($_REQUEST['accept'])) {
