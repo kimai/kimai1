@@ -146,55 +146,52 @@ switch ($axAction) {
         	$view->start_time = "00:00:00";
         	$view->end_time = "00:00:00";
         } else {
-        	
-        
-        if($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
-          $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
-          $minutes = date('i');
-          if($kga['conf']['roundMinutes'] < 60) {
-            if($kga['conf']['roundMinutes'] <= 0) {
-                    $minutes = 0;
-            } else {
-              while($minutes % $kga['conf']['roundMinutes'] != 0) {
-                if($minutes >= 60) {
-                  $minutes = 0;
-                } else {
-                  $minutes++;
-                }
-              }
-            }
-          }
-          $seconds = date('s');
-          if($kga['conf']['roundSeconds'] < 60) {
-            if($kga['conf']['roundSeconds'] <= 0) {
-                    $seconds = 0;
-            } else {
-              while($seconds % $kga['conf']['roundSeconds'] != 0) {
-                if($seconds >= 60) {
-                  $seconds = 0;
-                } else {
-                  $seconds++;
-                }
-              }
-            }
-          }
-          $end = mktime(date("H"), $minutes, $seconds);
-          $day = date("d");
-          $dayEntry = date("d", $timeSheetData['end']);
-
-         
-          if($day == $dayEntry) {
-                  $view->start_time = date("H:i:s", $timeSheetData['end']);
-          } else {
-                  $view->start_time = date("H:i:s");
-          }
-          
-          $view->end_time = date("H:i:s", $end);
-        } else {
-          $view->start_time = date("H:i:s");
-          $view->end_time = date("H:i:s");
-        }
-
+	        if($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
+	          $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
+	          $minutes = date('i');
+	          if($kga['conf']['roundMinutes'] < 60) {
+	            if($kga['conf']['roundMinutes'] <= 0) {
+	                    $minutes = 0;
+	            } else {
+	              while($minutes % $kga['conf']['roundMinutes'] != 0) {
+	                if($minutes >= 60) {
+	                  $minutes = 0;
+	                } else {
+	                  $minutes++;
+	                }
+	              }
+	            }
+	          }
+	          $seconds = date('s');
+	          if($kga['conf']['roundSeconds'] < 60) {
+	            if($kga['conf']['roundSeconds'] <= 0) {
+	                    $seconds = 0;
+	            } else {
+	              while($seconds % $kga['conf']['roundSeconds'] != 0) {
+	                if($seconds >= 60) {
+	                  $seconds = 0;
+	                } else {
+	                  $seconds++;
+	                }
+	              }
+	            }
+	          }
+	          $end = mktime(date("H"), $minutes, $seconds);
+	          $day = date("d");
+	          $dayEntry = date("d", $timeSheetData['end']);
+	
+	         
+	          if($day == $dayEntry) {
+	                  $view->start_time = date("H:i:s", $timeSheetData['end']);
+	          } else {
+	                  $view->start_time = date("H:i:s");
+	          }
+	          
+	          $view->end_time = date("H:i:s", $end);
+	        } else {
+	          $view->start_time = date("H:i:s");
+	          $view->end_time = date("H:i:s");
+	        }
     	}
     	
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
