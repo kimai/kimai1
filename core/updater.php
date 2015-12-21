@@ -1812,6 +1812,11 @@ if ((int) $revisionDB < 1384) {
     exec_query("ALTER TABLE ${p}customers ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
 }
 
+if ((int) $revisionDB < 1385) {	
+	Logger::logfile("-- update to r1385");
+	exec_query("INSERT INTO ${p}configuration (`option`,`value`) VALUES('record_durationOnly','0')");
+}
+
 
 // ============================
 // = update DB version number =

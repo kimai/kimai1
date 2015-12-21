@@ -245,6 +245,7 @@ return array(
 'show_daySeperatorLines' => 'Nakresli čáru mezi položka z různých dní.',
 'show_gabBreaks' => 'Nakrasli čáru mezi položkami které přímo nenavazují.',
 'show_RecordAgain' => 'Zobraz tlačítko &quot;Zaznamenej znovu&quot;přek každým záznamem eventu.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'umožni měnit Tracking-Nr.',
 'currency_name' => 'Název měny.',
 'currency_sign' => 'Označení použité měny.',

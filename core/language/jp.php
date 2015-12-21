@@ -267,6 +267,7 @@ return array(
 	'show_daySeperatorLines' => '違う日の間に区別線を表示する',
 	'show_gabBreaks' => '完璧に連続していない登録されてるデータに線を表示する',
 	'show_RecordAgain' => '全エントリーの前に　&#12300;再登録&#12301;　ボタンを表示する',
+	'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 	'show_TrackingNr' => '追跡番号を編集可能です',
 	'currency_name' => '通貨名',
 	'currency_sign' => '通貨文字',

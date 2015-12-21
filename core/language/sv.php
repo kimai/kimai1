@@ -215,6 +215,7 @@ return array(
 'show_daySeperatorLines' => 'Rita en linje mellan poster i olika dagar.',
 'show_gabBreaks' 	=> 'Rita en linje mellan två registeruppgifter som inte är helt kontinuerliga.',
 'show_RecordAgain' 	=> 'Visar &quot;Record Again&quot; knappalternativ före varje post.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' 	=> 'Tillåter att fältet Tracking-Nr redigeras.',
 'currency_name' 	=> 'Namn på valuta.',
 'currency_sign' 	=> 'Symbol för valuta.',

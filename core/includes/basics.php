@@ -123,6 +123,7 @@ if (!empty($vars)) {
   $kga['show_gabBreaks']         = $vars['show_gabBreaks'];
   $kga['show_RecordAgain']       = $vars['show_RecordAgain'];
   $kga['show_TrackingNr']        = $vars['show_TrackingNr'];
+  $kga['record_durationOnly']    = $vars['record_durationOnly'];
   $kga['date_format'][0]         = $vars['date_format_0'];
   $kga['date_format'][1]         = $vars['date_format_1'];
   $kga['date_format'][2]         = $vars['date_format_2'];

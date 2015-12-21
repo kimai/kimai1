@@ -159,6 +159,12 @@
               <input type="text" name="roundMinutes" size="3" class="formfield" value="<?php echo $this->roundMinutes?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['minutes']?> <?php echo $this->kga['lang']['and']?>
               <input type="text" name="roundSeconds" size="3" class="formfield" value="<?php echo $this->roundSeconds?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['seconds']?>
             </div>
+            
+            <div>
+               <input type="checkbox" name="record_durationOnly" <?php if ($this->kga['record_durationOnly']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['record_durationOnly']?>
+            </div>
+            
+            
             <input name="axAction" type="hidden" value="sendEditAdvanced" />
         
             <div id="formbuttons">

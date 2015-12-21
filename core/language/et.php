@@ -274,6 +274,7 @@ return array(
     'show_daySeperatorLines' => 'Eri päevade kirjete vahel kuvatakse joon.',
     'show_gabBreaks' => 'Kahe kirje vahel, mis ei kajasta vahetut ajalist järgnevust, kuvatakse joon.',
     'show_RecordAgain' => 'Iga kirje ees kuvatakse taassalvestamise nupp.',
+	'record_durationOnly' => 'Record only duration of task, no beginning or end time',
     'show_TrackingNr' => 'Kontrollnumbrite muutmine on lubatud.',
     'currency_name' => 'Kasutatava rahaühiku nimetus',
     'currency_sign' => 'Kasutatava rahaühiku sümbol',

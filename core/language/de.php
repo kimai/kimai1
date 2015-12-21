@@ -266,6 +266,7 @@ return array(
     'show_daySeperatorLines' => 'Trennlinie zwischen Tagen in den Tabellen anzeigen.',
     'show_gabBreaks' => 'Linie zwischen zwei Einträgen zeichnen, wenn dort eine zeitliche Lücke ist.',
     'show_RecordAgain' => 'Den &quot;Erneut Aufnehmen&quot;-Button vor jedem Eintrag anzeigen.',
+	'record_durationOnly' => 'Nur Dauer der Tätigkeit aufzeichnen, keine Start- Endzeitpunkte',
     'show_TrackingNr' => 'Das Feld Auftragsnummer ist bearbeitbar.',
     'currency_name' => 'Name der zu verwendenden Währung.',
     'currency_sign' => 'Symbol der zu verwendenden Währung.',

@@ -224,6 +224,7 @@ return array(
 'show_daySeperatorLines' => 'Vis en linie mellem posteringer på forskellige dage.',
 'show_gabBreaks' => 'Vis en linie mellem to posteringer, der ikke er i umiddelbar forlængelse af hinanden.',
 'show_RecordAgain' => 'Vis &quot;Registrer igen&quot; foran alle posteringer.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Tillader at redigere feltet Trackingnummer.',
 'currency_name' => 'Navn på valutaen, der anvendes.',
 'currency_sign' => 'Tegn for valutaen, der anvendes.',

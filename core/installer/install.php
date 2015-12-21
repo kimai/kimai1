@@ -392,6 +392,8 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundMi
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('roundSeconds', '0');");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('allowRoundDown', '0');");
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('defaultStatusID', '1');");
+exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('record_durationOnly', '0');");
+
 
 if ($errors) {
 

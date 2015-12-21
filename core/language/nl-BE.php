@@ -252,6 +252,7 @@ return array(
 'show_daySeperatorLines' => 'Trek een lijn tussen entries van verschillende dagen.',
 'show_gabBreaks' => 'Trek een lijn tussen twee records die niet perfect op elkaar aansluiten.',
 'show_RecordAgain' => 'Toon de &quot;Registreer opnieuw&quot; knop voor elke entry.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Tracking nummer is bewerkbaar',
 'currency_name' => 'Valuta naam',
 'currency_sign' => 'Valuta symbool',

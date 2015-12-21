@@ -226,6 +226,7 @@ return array(
 'show_daySeperatorLines' => 'Kreśl linię pomiędzy wpisami z różnych dni.',
 'show_gabBreaks' => 'Kreśl linie pomiedzy dwoma rekordami które nie mają idealnej ciągłości.',
 'show_RecordAgain' => 'Pokaż przycisk &quot;Wprowadź ponownien&quot; na początku każdego wpisu.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Zezwól na edycję pola Nr kontrolny.',
 'currency_name' => 'Nazwa używanej waluty.',
 'currency_sign' => 'Znak używanej waluty.',

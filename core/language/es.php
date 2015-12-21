@@ -220,6 +220,7 @@ return array(
 'show_daySeperatorLines' => 'Dibujar una línea entre entradas de días distintos.',
 'show_gabBreaks' => 'Dibujar una línea entre dos registros cuando no sean contiguos.',
 'show_RecordAgain' => 'Mostrar el botón de "Grabar de nuevo" para cada entrada.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Permitir editar el campo de localizador.',
 'currency_name' => 'Nombre de moneda.',
 'currency_sign' => 'Símbolo de moneda.',

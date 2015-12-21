@@ -210,6 +210,7 @@ return array(
 'show_daySeperatorLines'    => 'Trek een lijn tussen gegevens van verschillende dagen.',
 'show_gabBreaks'            => 'Trek een lijn tussen twee record wanneer deze niet naadloos op elkaar aansluiten.',
 'show_RecordAgain'          => 'Toon de &quot;Nogmaals Opnemen&quot; knoop voor elke invoer.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr'           => 'Sta toe dat het veld Tracking-Nr. bewerkt wordt.',
 'currency_name'             => 'Naam van de te gebruiken munteenheid.',
 'currency_sign'             => 'Symbool van te gebruiken munteenheid.',

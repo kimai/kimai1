@@ -217,6 +217,7 @@ return array(
 'show_gabBreaks' => 'Desenhar uma linha entre dois registros que não são perfeitamente contínua.',
 'show_RecordAgain' => 'Mostrar o botão "gravar novamente" &quot;Record Again&quot;  na frente de cada entrada.',
 'show_TrackingNr' => 'Permite editar o campo Rastreamento Nr-.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'currency_name' => 'Nome da moeda.',
 'currency_sign' => 'Registo da moeda corrente.',
 'currency_first' => 'Mostrar nome da moeda na frente do valor (por exemplo, R$ 100,00)',

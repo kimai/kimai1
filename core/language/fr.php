@@ -290,6 +290,7 @@ return array(
 'show_daySeperatorLines' => 'Tirer une ligne entre les entrées de jours différents.',
 'show_gabBreaks' => 'Tirer une ligne entre deux enregistrements qui ne sont pas parfaitement jointifs.',
 'show_RecordAgain' => 'Montrer le bouton &quot;Réenregistrer&quot; en face de chaque saisie.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Autoriser l\' édition du champ N°-Suivi.',
 'currency_name' => 'Nom de la monnaie à utiliser.',
 'currency_sign' => 'Symbole de la monnaie à utiliser.',

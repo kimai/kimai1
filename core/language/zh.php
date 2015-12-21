@@ -276,6 +276,7 @@ return array(
 'show_daySeperatorLines' => '每日数据之间绘画一条分割线.',
 'show_gabBreaks' => '在两条不完整的数据记录间绘画一条分割线.',
 'show_RecordAgain' => '粗体显示重复数据.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => '允许编辑跟踪数据.',
 'currency_name' => '使用的货币名字.',
 'currency_sign' => '使用的货币字符.',

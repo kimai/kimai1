@@ -234,6 +234,7 @@ return array(
 'show_daySeperatorLines' => 'Piirrä viiva kirjausten välille päivien mukaan',
 'show_gabBreaks' => 'Piirrä viiva kahden tietueen välille jotka eivät ole jatkuvia',
 'show_RecordAgain' => 'Näytä &quot;Tallenna uudelleen&quot; -painike jokaisen kirjausmerkinnän edellä.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Salli seurantanumero -kentän muokkaus.',
 'currency_name' => 'Käytettävän valuutan nimi.',
 'currency_sign' => 'Käytettävän valuutan symboli.',

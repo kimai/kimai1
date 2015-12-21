@@ -247,6 +247,7 @@ return array(
 'show_daySeperatorLines' => 'Aðskylja daga með línu.',
 'show_gabBreaks' => 'Draga línu á milli atriða sem eru ekki í beinu framhaldi.',
 'show_RecordAgain' => 'Sýna &quot;Skrá eins&quot; val fyrir framan hverja línu.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Leyfa breytingar á númeri skráningar.',
 'currency_name' => 'Nafn á penningamynt.',
 'currency_sign' => 'Örnefni penningarmyntar.',

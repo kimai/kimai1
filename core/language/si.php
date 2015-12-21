@@ -232,6 +232,7 @@ return array(
 'show_daySeperatorLines' => 'Nariši črto med vnosi različnih dni.',
 'show_gabBreaks' => 'Nariši črto med dvema zapisoma, ki nista neprekinjena.',
 'show_RecordAgain' => 'Pokaži &quot;Record Again&quot; gumb pred vsakim vnosom.',
+'record_durationOnly' => 'Record only duration of task, no beginning or end time',
 'show_TrackingNr' => 'Dovoljuje urejanje polj sledilne številke (Tracking-Nr).',
 'currency_name' => 'Ime valute v uporabi.',
 'currency_sign' => 'Izklopi valuto v uporabi.',

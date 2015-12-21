@@ -266,6 +266,7 @@ return array(
     'show_daySeperatorLines' => 'Draw a line between entries of different days.',
     'show_gabBreaks' => 'Draw a line between two records that are not perfectly continuous.',
     'show_RecordAgain' => 'Show the &quot;Record Again&quot; button in front of every entry.',
+	'record_durationOnly' => 'Record only duration of task, no beginning or end time',
     'show_TrackingNr' => 'Tracking Number is editable',
     'currency_name' => 'Currency Name',
     'currency_sign' => 'Currency Symbol',
