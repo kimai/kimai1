@@ -5,8 +5,10 @@
               
             <colgroup>
               <col class="date" />
-              <col class="from" />
-              <col class="to" />
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
+	          <col class="from" />
+    	      <col class="to" />
+<?php } ?>
               <col class="time" />
               <col class="dec_time" />
               <col class="rate" />
@@ -46,7 +48,7 @@ $isExpense = $row['type']=="expense"; ?>
                     ">
                         <?php echo $this->escape(strftime($this->dateformat,$row['time_in'])) ?>
                     </td>
-
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
                     <td class="from
                                             <?php if (strftime("%d",$row['time_in']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day ";
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap ";
@@ -60,7 +62,7 @@ $isExpense = $row['type']=="expense"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap ";
                                                   if (isset($this->disabled_columns['to'])) echo "disabled"; ?>
                     ">
-                    
+<?php } ?>                    
                         <?php if ($row['time_out']) echo $this->escape(strftime($this->timeformat,$row['time_out']));
                               else echo "&ndash;&ndash;:&ndash;&ndash;" ?>
                     </td>

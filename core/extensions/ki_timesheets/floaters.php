@@ -142,6 +142,12 @@ switch ($axAction) {
 
         $view->userID = $kga['user']['userID'];
 
+        if ($kga['conf']['record_durationOnly'] == "1") {
+        	$view->start_time = "00:00:00";
+        	$view->end_time = "00:00:00";
+        } else {
+        	
+        
         if($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
           $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
           $minutes = date('i');
@@ -176,17 +182,21 @@ switch ($axAction) {
           $day = date("d");
           $dayEntry = date("d", $timeSheetData['end']);
 
+         
           if($day == $dayEntry) {
                   $view->start_time = date("H:i:s", $timeSheetData['end']);
           } else {
                   $view->start_time = date("H:i:s");
           }
+          
           $view->end_time = date("H:i:s", $end);
         } else {
           $view->start_time = date("H:i:s");
           $view->end_time = date("H:i:s");
         }
 
+    	}
+    	
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
         $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
         $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);

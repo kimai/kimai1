@@ -10,8 +10,10 @@ if ($this->timeSheetEntries)
             <colgroup>
               <col class="option" />
               <col class="date" />
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
               <col class="from" />
               <col class="to" />
+<?php } ?>
               <col class="time" />
 <?php if ($this->showRates): ?>
               <col class="wage" />
@@ -115,6 +117,7 @@ if ($this->timeSheetEntries)
                 <?php echo $this->escape(strftime($this->kga['date_format'][1],$row['start']));?>
             </td>
 
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
             <td class="from <?php echo $tdClass; ?>">
                 <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
             </td>
@@ -128,6 +131,7 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
+<?php } ?>
 
             <td class="time <?php echo $tdClass; ?>">
                 <?php

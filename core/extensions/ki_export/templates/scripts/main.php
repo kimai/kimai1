@@ -13,8 +13,10 @@
     <table>
         <colgroup>
           <col class="date" />
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
           <col class="from" />
           <col class="to" />
+<?php } ?>
           <col class="time" />
           <col class="dec_time" />
           <col class="rate" />
@@ -35,8 +37,10 @@
         <tbody>
             <tr>
                 <td class="date <?php if (isset($this->disabled_columns['date'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('date');"><?php echo $this->kga['lang']['datum']?></a></td>
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
                 <td class="from <?php if (isset($this->disabled_columns['from'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('from');"><?php echo $this->kga['lang']['in']?></a></td>
                 <td class="to <?php if (isset($this->disabled_columns['to'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('to');"><?php echo $this->kga['lang']['out']?></a></td>
+<?php } ?>
                 <td class="time <?php if (isset($this->disabled_columns['time'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('time');"><?php echo $this->kga['lang']['time']?></a></td>
                 <td class="dec_time <?php if (isset($this->disabled_columns['dec_time'])):?> disabled <?php endif; ?>"><a onClick="export_toggle_column('dec_time');"><?php echo $this->kga['lang']['timelabel']?></a></td>
                 <td class="rate"><a class="rate <?php if (isset($this->disabled_columns['rate'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('rate');"><?php echo $this->kga['lang']['rate_short']?></a></td>

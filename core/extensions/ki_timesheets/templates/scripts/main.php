@@ -14,8 +14,10 @@
         <colgroup>
           <col class="options" />
           <col class="date" />
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
           <col class="from" />
           <col class="to" />
+<?php } ?>
           <col class="time" />
 <?php if ($this->showRates): ?>
           <col class="wage" />
@@ -32,8 +34,10 @@
             <tr>
                 <td class="option">&nbsp;</td>
                 <td class="date"><?php echo $this->kga['lang']['datum']?></td>
+<?php if ($this->kga['conf']['record_durationOnly'] != '1') { ?>
                 <td class="from"><?php echo $this->kga['lang']['in']?></td>
                 <td class="to"><?php echo $this->kga['lang']['out']?></td>
+<?php } ?>
                 <td class="time"><?php echo $this->kga['lang']['time']?></td>
 <?php if ($this->showRates): ?>
                 <td class="wage"><?php echo $this->kga['lang']['wage']?></td>
