@@ -20,20 +20,24 @@
             	$('#budget_activity_approved').text(parseFloat($('#budget_activity_approved').text())-previousApproved+parseFloat($(this).val()));
      			return false;
             });
+
+			var timePickerConfiguration = { showPeriodLabels: false };
+
             if($('#roundTimesheetEntries').val().length > 0) {
 	            var step = $('#stepMinutes').val();
 	            var stepSeconds = $('#stepSeconds').val();
-	            if(isNaN(stepSeconds) || stepSeconds <= 0) {
-			var configuration = {showPeriodLabels: false};
-			if(!isNaN(step) && step > 0 && step < 60) {
-		            configuration.step = parseInt(step);
-			}
-		            
-			$('#start_time').timepicker(configuration);
-		        $('#end_time').timepicker(configuration);
-	            }
-            }
- 
+
+		        if(isNaN(stepSeconds) || stepSeconds <= 0) {
+					if(!isNaN(step) && step > 0 && step < 60) {
+						timePickerConfiguration.step = parseInt(step);
+					}
+	            } 
+	        }	          
+            
+			$('#start_time').timepicker(timePickerConfiguration);
+		    $('#end_time').timepicker(timePickerConfiguration);
+		    $('#duration').timepicker(timePickerConfiguration);
+
             // #rate already has an activity on click, so treat it below
             $("#eduration, #eend_time, #start_time").focus(function() {
     			saveDuration();
