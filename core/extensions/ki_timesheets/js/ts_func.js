@@ -466,35 +466,36 @@ function ts_getEndDate() {
 // Change the end time field, based on the duration, while editing a timesheet record
 //
 function ts_durationToTime() {
-    end = ts_getEndDate();
+    start = ts_getStartDate();
     durationArray=$("#duration").val().split(/:|\./);
-    if(end!=null && durationArray.length > 0 && durationArray.length < 4) {
+    if(start!=null && durationArray.length > 0 && durationArray.length < 4) {
         secs = durationArray[0]*3600;
         if(durationArray.length > 1)
             secs += (durationArray[1]*60);
         if(durationArray.length > 2)
             secs += parseInt(durationArray[2]);
-        begin = new Date();
-        begin.setTime(end.getTime()-(secs*1000));
+       
+        end = new Date();
+        end.setTime(start.getTime() + (secs*1000));
 
 
-        var H = begin.getHours();
-        var i = begin.getMinutes();
-        var s = begin.getSeconds();
+        var H = end.getHours();
+        var i = end.getMinutes();
+        var s = end.getSeconds();
 
         if (H<10) H = "0"+H;
         if (i<10) i = "0"+i;
         if (s<10) s = "0"+s;
 
-        $("#start_time").val(H + ":" + i + ":" + s);
+        $("#end_time").val(H + ":" + i + ":" + s);
 
-        var d = begin.getDate();
-        var m = begin.getMonth() + 1;
-        var y = begin.getFullYear();
+        var d = end.getDate();
+        var m = end.getMonth() + 1;
+        var y = end.getFullYear();
         if (d<10) d = "0"+d;
         if (m<10) m = "0"+m;
 
-        $("#start_day").val(d + "." + m + "." + y);
+        $("#end_day").val(d + "." + m + "." + y);
     }
 }
 
