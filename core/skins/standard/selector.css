@@ -2,7 +2,7 @@
     background: url("grfx/g3_buzzer_display.png") no-repeat;
     color:#51534A;
     overflow:hidden;
-    width:224px;
+    width:254px;
     height:69px;
     display:block;
     position:absolute;
@@ -14,16 +14,16 @@
 }
 
 #selector .preselection {
-    width:205px;
-    height:52px;
-    padding:7px 10px 0 ;
+    width:225px;
+    height:62px;
+    padding:5px 10px 0 ;
     overflow:hidden;
     line-height:13px;
 }
 
 #selector span.selection {
     overflow:hidden;
-    width:190px;
+    width:210px;
     height:13px;
     display:block;
     float:left;
