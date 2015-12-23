@@ -312,7 +312,6 @@ return array(
     'sublistAnnotations' => 'Anmerkungen bei den Listen',
     'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
     'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
-    'user' => 'Benutzer',
     'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow und andere...<br />
         

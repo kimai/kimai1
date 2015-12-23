@@ -312,7 +312,6 @@ return array(
     'sublistAnnotations' => 'sublist annotations',
     'TimeDateInputError' => 'The time or date you entered is not valid.',
     'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
-    'user' => 'User',
     'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
         

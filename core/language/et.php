@@ -337,9 +337,6 @@ return array(
 
     'StartTimeBeforeEndTime' => 'Algusaeg peab olema enne lõpuaega.',
 
-    'user' => 'Kasutaja',
-
-
     'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow ja teised...<br />
         

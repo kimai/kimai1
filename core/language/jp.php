@@ -313,7 +313,6 @@ Times: 「時時:分分:秒秒」 or 「時時:分分」 or 「時時」　だ�
 	'sublistAnnotations' => 'サブリストの注釈',
 	'TimeDateInputError' => '入力した時間か日付は無効です',
 	'StartTimeBeforeEndTime' => '開始時刻は終了時間の前に入力しなければならない',
-	'user' => 'ユーザー',
 	'credits' => <<<EOF
 		Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
 

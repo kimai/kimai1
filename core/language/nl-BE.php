@@ -314,9 +314,6 @@ return array(
 
 'StartTimeBeforeEndTime' => 'De starttijd moet voor de eindtijd liggen.',
 
-'user' => 'Gebruiker',
-
-
 'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
         
