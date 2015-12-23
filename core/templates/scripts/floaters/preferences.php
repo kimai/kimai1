@@ -60,6 +60,11 @@
         <span class="bb"><?php echo $this->kga['lang']['list']?></span>
         <span class="cc">&nbsp;</span>
         </a></li>
+      <li class="tab norm"><a href="#preftimesheet">
+              <span class="aa">&nbsp;</span>
+              <span class="bb"><?php echo $this->kga['lang']['timesheet']?></span>
+              <span class="cc">&nbsp;</span>
+          </a></li>
     </ul>
   </div>
 
@@ -180,6 +185,14 @@ $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs']
           </li>     
         </ul>
       </fieldset>
+        <fieldset id="preftimesheet">
+            <ul>
+                <li>
+                    <label for="showQuickNote"></label>
+                    <?php echo $this->formCheckbox('showQuickNote', '1',array('checked' => isset($this->kga['conf']['showQuickNote']) && $this->kga['conf']['showQuickNote'])), $this->kga['lang']['showQuickNote']?>
+                </li>
+            </ul>
+        </fieldset>
 
     </div>
           
