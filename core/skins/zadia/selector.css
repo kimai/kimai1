@@ -12,7 +12,6 @@
     right:95px;
     font-size:11px;
     z-index:20;
-
 }
 
 #selector .preselection {
@@ -30,7 +29,6 @@
     display:block;
     float:left;
     padding-left:2px;
-
 }
 
 #selector span.none {
