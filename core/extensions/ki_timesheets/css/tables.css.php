@@ -115,6 +115,12 @@ div.ki_timesheet>div#timeSheet>div#timeSheetTable>table>tbody>tr>td.username {
     width:40px;
 }
 
+#timeSheet_head td.description,
+#timeSheet td.description
+{
+    width:450px;
+}
+
 #timeSheet_head td.from,
 #timeSheet_head td.to,
 #timeSheet td.from,

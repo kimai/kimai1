@@ -295,7 +295,7 @@ return array(
     'editLimitError' => 'Das Enddatum liegt weiter in der Vergangenheit, als es erlaubt wurde.',
     'hideClearedEntries' => 'abgerechnete Einträge verstecken',
     'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
-    'showTrackingNumber' => 'Auftragsnummer anzeigen',
+    'showTrackingNumber' => 'Auftragsnummer und Beschreibung in Zeiterfassung anzeigen',
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
     'general' => 'Allgemein',
     'address' => 'Adresse',
@@ -353,7 +353,7 @@ return array(
 
         Version 0.8 entstand mit freundlicher Unterstützung des RRZE (Regionales Rechenzentrum Erlangen).
 EOF
-,
+    ,
 
     'months' => array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"),
     'months_short' => array("Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"),
@@ -377,9 +377,9 @@ EOF
 
     'errors' => array(
         0 => array('hdl' => "Datenbankverbindung verweigert!",
-            'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."),
+                   'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."),
         1 => array('hdl' => "Fehler bei der Installation!",
-            'txt' => 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
+                   'txt' => 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
 Falls Sie Kimai nur updaten wollen klicken Sie bitte <a href="../index.php">hier</a>.<br/>
 Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabellen mit diesem Präfix, damit Kimai eine Neuinstallation vornehmen kann.')
     ),

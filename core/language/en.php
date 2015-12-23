@@ -295,7 +295,7 @@ return array(
     'editLimitError' => 'The end date is further in the past than it was allowed to be.',
     'hideClearedEntries' => 'hide cleared entries',
     'showCommentsByDefault' => 'show comments by default',
-    'showTrackingNumber' => 'show tracking number',
+    'showTrackingNumber' => 'show tracking number and description details in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
     'general' => 'General',
     'address' => 'Address',
@@ -353,7 +353,7 @@ return array(
 
         Version 0.8 was emerged with the kind support of RRZE (Regionales Rechenzentrum Erlangen).
 EOF
-,
+    ,
 
     'months' => array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
@@ -377,9 +377,9 @@ EOF
 
     'errors' => array(
         0 => array('hdl' => "Database could not be connected!",
-            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
+                   'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
         1 => array('hdl' => "Error during installation!",
-            'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+                   'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
 Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
     ),
