@@ -1,0 +1,22 @@
+About
+=========
+
+The theme has been restyled by [zetxek](http://twitter.com/zetxek) (Adrián Moreno) for [Zadia Software](http://www.zadiasoftware.com), based on kimai's default theme.
+
+
+Graphic Credits
+----
+
+Dillinger uses a number of open source projects to work properly:
+
+* [VectorGraphit] - awesome web-based text editor
+* [Paomedia] - Small n Flat icons
+* [PixelBuddha] - Ballicons 2 Free
+* [Colourlovers] - "I demand pancake" colour palette by alden
+
+
+[VectorGraphit]:http://www.vectorgraphit.com/
+[Paomedia]:https://github.com/paomedia/small-n-flat
+[PixelBuddha]:http://pixelbuddha.net/
+[ColourLovers]:http://www.colourlovers.com/palette/443995/i_demand_a_pancake
+
