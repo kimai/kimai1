@@ -24,8 +24,8 @@ For PDF export the following requirement must be met:<br/>
 
 <br/><br/>
 
-<button class="sp-button" onClick='check_system_requirements();'>Check requirements now</button>
-<button onClick="system_requirements_proceed(); return false;" class="invisible proceed">Proceed</button>
+<button class="sp-button" onclick='check_system_requirements();'>Check requirements now</button>
+<button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Proceed</button>
 
 <?php
 }
@@ -49,8 +49,8 @@ Damit der PDF Export zuverl&auml;ssig funktioniert m&uuml;ssen folgende Punkte e
 
 <br/><br/>
 
-<button class="sp-button" onClick='check_system_requirements();'>Anforderungen jetzt pr&uuml;fen</button>
-<button onClick="system_requirements_proceed(); return false;" class="invisible proceed">Fortfahren</button>
+<button class="sp-button" onclick='check_system_requirements();'>Anforderungen jetzt pr&uuml;fen</button>
+<button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Fortfahren</button>
 
 <?php
 }

@@ -10,7 +10,7 @@
 
     <div id="adminPanel_extension_sub6">
         <div class="adminPanel_extension_panel_header">
-            <a onClick="adminPanel_extension_subtab_expand(6)">
+            <a onclick="adminPanel_extension_subtab_expand(6)">
                 <span class="adminPanel_extension_accordeon_triangle"></span>
                 <?php echo $this->kga['lang']['customers']?>
             </a>
@@ -24,7 +24,7 @@
 
     <div id="adminPanel_extension_sub7">
         <div class="adminPanel_extension_panel_header">
-            <a onClick="adminPanel_extension_subtab_expand(7)">
+            <a onclick="adminPanel_extension_subtab_expand(7)">
                 <span class="adminPanel_extension_accordeon_triangle"></span>
                 <?php echo $this->kga['lang']['projects']?>
             </a>
@@ -38,7 +38,7 @@
 
 <div id="adminPanel_extension_sub8">
     <div class="adminPanel_extension_panel_header">
-        <a onClick="adminPanel_extension_subtab_expand(8)">
+        <a onclick="adminPanel_extension_subtab_expand(8)">
             <span class="adminPanel_extension_accordeon_triangle"></span>
             <?php echo $this->kga['lang']['activities']?>
         </a>
@@ -51,7 +51,7 @@
 <!-- edit users -->
 	<div id="adminPanel_extension_sub1">
 		<div class="adminPanel_extension_panel_header">
-			<a onClick="adminPanel_extension_subtab_expand(1)">
+			<a onclick="adminPanel_extension_subtab_expand(1)">
 			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    <?php echo $this->kga['lang']['users']?>
 			</a>
@@ -65,7 +65,7 @@
 
 	<div id="adminPanel_extension_sub2">
 		<div class="adminPanel_extension_panel_header">
-			<a onClick="adminPanel_extension_subtab_expand(2)">
+			<a onclick="adminPanel_extension_subtab_expand(2)">
 			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    <?php echo $this->kga['lang']['groups']?>
 			</a>
@@ -79,7 +79,7 @@
 
         <div id="adminPanel_extension_sub9">
                 <div class="adminPanel_extension_panel_header">
-                        <a onClick="adminPanel_extension_subtab_expand(9)">
+                        <a onclick="adminPanel_extension_subtab_expand(9)">
                             <span class="adminPanel_extension_accordeon_triangle"></span>
                             <?php echo $this->kga['lang']['globalRoles']?>
                         </a>
@@ -93,7 +93,7 @@
 
         <div id="adminPanel_extension_sub10">
                 <div class="adminPanel_extension_panel_header">
-                        <a onClick="adminPanel_extension_subtab_expand(10)">
+                        <a onclick="adminPanel_extension_subtab_expand(10)">
                             <span class="adminPanel_extension_accordeon_triangle"></span>
                             <?php echo $this->kga['lang']['membershipRoles']?>
                         </a>
@@ -107,7 +107,7 @@
 
 	<div id="adminPanel_extension_sub3">
 		<div class="adminPanel_extension_panel_header">
-			<a onClick="adminPanel_extension_subtab_expand(3)">
+			<a onclick="adminPanel_extension_subtab_expand(3)">
 			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    <?php echo $this->kga['lang']['status']?>
 			</a>
@@ -121,7 +121,7 @@
     <!-- advanced -->
 	<div id="adminPanel_extension_sub4">
 		<div class="adminPanel_extension_panel_header">
-			<a onClick="adminPanel_extension_subtab_expand(4)">
+			<a onclick="adminPanel_extension_subtab_expand(4)">
 			    <span class="adminPanel_extension_accordeon_triangle"></span>
 			    <?php echo $this->kga['lang']['advanced']?>
 			</a>
@@ -136,7 +136,7 @@
     <!-- DB -->
     <div id="adminPanel_extension_sub5">
         <div class="adminPanel_extension_panel_header">
-            <a onClick="adminPanel_extension_subtab_expand(5)">
+            <a onclick="adminPanel_extension_subtab_expand(5)">
                 <span class="adminPanel_extension_accordeon_triangle"></span>
                 <?php echo $this->kga['lang']['database']?>
             </a>

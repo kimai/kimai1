@@ -374,8 +374,8 @@
     <div id="floater_handle">
         <span id="floater_title"><?php if (isset($this->id)) echo $this->kga['lang']['edit']; else echo $this->kga['lang']['add']; ?></span>
         <div class="right">
-            <a href="#" class="close" onClick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
-            <a href="#" class="help" onClick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
+            <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
+            <a href="#" class="help" onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
         </div>  
     </div>
 
@@ -461,23 +461,23 @@
 
                 <li>
                      <label><?php echo $this->kga['lang']['day']?>:</label>
-                     <input id='start_day' type='text' name='start_day' value='<?php echo $this->escape($this->start_day)?>' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();" <?php endif; ?> />
+                     <input id='start_day' type='text' name='start_day' value='<?php echo $this->escape($this->start_day)?>' maxlength='10' size='10' tabindex='6' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
                      -
-                     <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day)?>' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();" <?php endif; ?> />
+                     <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day)?>' maxlength='10' size='10' tabindex='7' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
                 </li>
 
 
               
                    <li>
                        <label><?php echo $this->kga['lang']['timelabel']?>:</label>
-                        <input id='start_time' type='text' name='start_time' value='<?php echo $this->escape($this->start_time)?>' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();" <?php endif; ?> />
+                        <input id='start_time' type='text' name='start_time' value='<?php echo $this->escape($this->start_time)?>' maxlength='8'  size='8'  tabindex='8' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
                         -
-                        <input id='end_time' type='text' name='end_time' value='<?php echo $this->escape($this->end_time)?>' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();" <?php endif; ?> />
-                        <a id="currentTime" href="#" onClick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;"><?php echo $this->kga['lang']['now']?></a>
+                        <input id='end_time' type='text' name='end_time' value='<?php echo $this->escape($this->end_time)?>' maxlength='8'  size='8'  tabindex='9' onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
+                        <a id="currentTime" href="#" onclick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;"><?php echo $this->kga['lang']['now']?></a>
                    </li>
                    <li>
                        <label for="duration"><?php echo $this->kga['lang']['durationlabel']?>:</label>
-                        <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8'  size='8'  tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
                </ul>
              </fieldset>
@@ -488,13 +488,13 @@
 
                    <li>
                         <label for="location"><?php echo $this->kga['lang']['location']?>:</label>
-                        <input id='location' type='text' name='location' value='<?php echo $this->escape($this->location)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='location' type='text' name='location' value='<?php echo $this->escape($this->location)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
 
 				<?php if ($this->kga['show_TrackingNr']): ?>
                    <li>
                         <label for="trackingNumber"><?php echo $this->kga['lang']['trackingNumber']?>:</label>
-                        <input id='trackingNumber' type='text' name='trackingNumber' value='<?php echo $this->escape($this->trackingNumber)?>' maxlength='20' size='20' tabindex='12' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='trackingNumber' type='text' name='trackingNumber' value='<?php echo $this->escape($this->trackingNumber)?>' maxlength='20' size='20' tabindex='12' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
 				<?php endif; ?>
 				   <li>
@@ -546,11 +546,11 @@
 
                    <li>
                         <label for="budget"><?php echo $this->kga['lang']['budget']?>:</label>
-                        <input id='budget_val' type='text' name='budget' value='<?php echo $this->escape($this->budget)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='budget_val' type='text' name='budget' value='<?php echo $this->escape($this->budget)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
                    <li>
                         <label for="approved"><?php echo $this->kga['lang']['approved']?>:</label>
-                        <input id='approved' type='text' name='approved' value='<?php echo $this->escape($this->approved)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='approved' type='text' name='approved' value='<?php echo $this->escape($this->approved)?>' maxlength='50' size='20' tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
                    
                    <li>
@@ -573,7 +573,7 @@
                         <label for="rate"><?php echo $this->kga['lang']['rate']?>:</label>
                         <input id='rate' type='text' name='rate' value='<?php echo $this->escape($this->rate)?>' size='5' tabindex='10' />
                         <label for="fixedRate" style="float: none; margin-left: 60px;"><?php echo $this->kga['lang']['fixedRate']?>:</label>
-                        <input id='fixedRate' type='text' name='fixedRate' value='<?php echo $this->escape($this->fixedRate)?>' size='5' tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onClick="this.select();"<?php endif; ?> />
+                        <input id='fixedRate' type='text' name='fixedRate' value='<?php echo $this->escape($this->fixedRate)?>' size='5' tabindex='10' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                    </li>
                    <?php endif; ?>
                    
@@ -599,7 +599,7 @@
         </div>
 
                 <div id="formbuttons">
-                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onClick='floaterClose(); return false;' />
+                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
                     <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
                 </div>
 

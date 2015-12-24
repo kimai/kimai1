@@ -156,7 +156,7 @@ $isExpense = $row['type']=="expense"; ?>
                     ">
                         
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $row['customerID']?>,'<?php echo $this->jsEscape($row['customerName'])?>'); 
+                            onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $row['customerID']?>,'<?php echo $this->jsEscape($row['customerName'])?>'); 
                             return false;">
                             <?php echo $this->escape($row['projectName'])?>
                             <?php if ($this->kga['conf']['project_comment_flag'] == 1): ?>
@@ -175,7 +175,7 @@ $isExpense = $row['type']=="expense"; ?>
                     ">
                         <?php if (!$isExpense): ?>
                         <a href ="#" class="preselect_lnk" 
-                            onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
+                            onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0); 
                             return false;">
                         <?php echo $this->escape($row['activityName']);
                         else: ?>
@@ -235,7 +235,7 @@ $isExpense = $row['type']=="expense"; ?>
                                                   elseif ($row['time_out'] != $time_in_buffer       && $this->kga['show_gabBreaks'])         echo "break_gap ";
                                                   if (isset($this->disabled_columns['cleared'])) echo "disabled"; ?>
                     ">
-                      <a class ="<?php echo ($row['cleared']) ? "is_cleared" : "isnt_cleared"?>" href ="#" onClick="export_toggle_cleared('<?php echo $row['type'], $row['id']?>'); return false;"></a>
+                      <a class ="<?php echo ($row['cleared']) ? "is_cleared" : "isnt_cleared"?>" href ="#" onclick="export_toggle_cleared('<?php echo $row['type'], $row['id']?>'); return false;"></a>
           </td>
           
 

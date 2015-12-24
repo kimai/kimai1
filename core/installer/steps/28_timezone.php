@@ -31,8 +31,8 @@ foreach (timezoneList() as $name) {
 
 <br/><br/>
 
-<button onClick="step_back(); return false;">Back</button>
-<button onClick="timezone_proceed(); return false;" class="proceed">Proceed</button>
+<button onclick="step_back(); return false;">Back</button>
+<button onclick="timezone_proceed(); return false;" class="proceed">Proceed</button>
 
 
 <?php
@@ -65,8 +65,8 @@ foreach (timezoneList() as $name) {
 
 <br/><br/>
 
-<button onClick="step_back(); return false;">Zurück</button>
-<button onClick="timezone_proceed(); return false;" class="proceed">Fortfahren</button>
+<button onclick="step_back(); return false;">Zurück</button>
+<button onclick="timezone_proceed(); return false;" class="proceed">Fortfahren</button>
 
 
 <?php

@@ -31,14 +31,14 @@
             <tr class='<?php echo $this->cycle(array("odd","even"))->next()?>'>
 
                 <td class="option">
-                    <a href="#" onClick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID']?>'); $(this).blur(); return false;"><img
+                    <a href="#" onclick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID']?>'); $(this).blur(); return false;"><img
                             src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editstatus']?>"
                             width="13" height="13" alt="<?php echo $this->kga['lang']['editstatus']?>" border="0"></a>
 
                     &nbsp;
 
                 <?php if ($statusarray['timeSheetEntryCount'] == 0): ?>
-                    <a href="#" onClick="adminPanel_extension_deleteStatus(<?php echo $statusarray['statusID']?>)"><img
+                    <a href="#" onclick="adminPanel_extension_deleteStatus(<?php echo $statusarray['statusID']?>)"><img
                             src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_status']?>"
                             width="13" height="13" alt="<?php echo $this->kga['lang']['delete_status']?>" border="0"></a>
                 <?php else: ?>

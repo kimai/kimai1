@@ -42,7 +42,7 @@
 
                 <!-- ########## Option cells ########## -->
                 <td class="option">
-                    <a href="#" onClick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
+                    <a href="#" onclick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editUser']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editUser']?>" border="0"></a>
 
                     &nbsp;
@@ -58,7 +58,7 @@
                     &nbsp;
 
                    <?php if ($this->curr_user != $userarray['name']) { ?>
-                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, <?php echo ($userarray['trash'] ? "false" : "true"); ?>)"><img
+                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, <?php echo ($userarray['trash'] ? "false" : "true"); ?>)"><img
                                 src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['deleteUser']?>"
                                 width="13" height="13" alt="<?php echo $this->kga['lang']['deleteUser']?>" border="0"></a>
                     <?php } else { ?>
@@ -82,7 +82,7 @@
                 <td>
                     <?php if ($userarray['active'] == 1): ?>
                         <?php if ($this->curr_user != $userarray['name']): ?>
-                                <a href="#" id="ban<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_banUser('<?php echo $userarray['userID'] ?>'); return false;">
+                                <a href="#" id="ban<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_banUser('<?php echo $userarray['userID'] ?>'); return false;">
                                     <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/jipp.gif' alt='<?php echo $this->kga['lang']['activeAccount']?>' title='<?php echo $this->kga['lang']['activeAccount']?>' border="0" width="16" height="16" /></a>
                         <?php else: ?>
                                 <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/jipp_.gif' alt='<?php echo $this->kga['lang']['activeAccount']?>' title='<?php echo $this->kga['lang']['activeAccount']?>' border="0" width="16" height="16" />
@@ -90,14 +90,14 @@
                     <?php endif; ?>
 
                     <?php if ($userarray['active'] == 0): ?>
-                        <a href="#" id="ban<?php echo $userarray['userID'] ?>" onClick="adminPanel_extension_unbanUser('<?php echo $userarray['userID'] ?>'); return false;">
+                        <a href="#" id="ban<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_unbanUser('<?php echo $userarray['userID'] ?>'); return false;">
                             <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/lock.png' alt='<?php echo $this->kga['lang']['bannedUser']?>' title='<?php echo $this->kga['lang']['bannedUser']?>' border="0" width="16" height="16" /></a>
                     <?php endif; ?>
 
                         &nbsp;
 
                     <?php if ($userarray['passwordSet'] == "no"): ?>
-                        <a href="#" onClick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
+                        <a href="#" onclick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
                             <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/caution_mini.png" width="16" height="16" title='<?php echo $this->kga['lang']['nopasswordset']?>' border="0"></a>
                     <?php endif; ?>
 
