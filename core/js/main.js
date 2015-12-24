@@ -137,7 +137,8 @@ function resize_floater() {
 //
 function floaterClose() {
     //$('#floater').draggable('destroy');
-    $("#floater").fadeOut(fading_enabled?500:0);
+    $("#floater").fadeOut(fading_enabled ? 500 : 0);
+    return false;
 }
 
 
