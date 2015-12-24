@@ -21,7 +21,6 @@
 // = Runs when the DOM of the Kimai GUI is loaded => MAIN init script! =
 // =====================================================================
 
-
 var userColumnWidth;
 var customerColumnWidth;
 var projectColumnWidth;
@@ -32,95 +31,94 @@ var currentDay = (new Date()).getDate();
 var fading_enabled = true;
 
 var extensionShrinkMode = 0; // 0 = show, 1 = hide
-var customerShrinkMode = 0; 
-var userShrinkMode = 0; 
+var customerShrinkMode = 0;
+var userShrinkMode = 0;
 
-var filterUsers = new Array();
-var filterCustomers = new Array();
-var filterProjects = new Array();
-var filterActivities = new Array();
+var filterUsers = [];
+var filterCustomers = [];
+var filterProjects = [];
+var filterActivities = [];
 
-var lists_visibility = new Array();
+var lists_visibility = [];
 
 var lists_user_annotations = {};
 var lists_customer_annotations = {};
 var lists_project_annotations = {};
 var lists_activity_annotations = {};
 
-$(document).ready(function() {
-  
-    var preselected_customer = 0;
+$(document).ready(function () {
 
-    if (userID) {
-      // automatic tab-change on reload
-      ki_active_tab_target  = $.cookie('ki_active_tab_target_'+userID);
-      ki_active_tab_path    = $.cookie('ki_active_tab_path_'+userID);
-    }
-    else {
-      ki_active_tab_target  = null;
-      ki_active_tab_path    = null;
-    }
-    if (ki_active_tab_target && ki_active_tab_path ) {
-      changeTab(ki_active_tab_target,ki_active_tab_path);
-    } else {
-      changeTab(0,'ki_timesheets/init.php');
-    }
-    
-    $("#main_tools_button").hoverIntent({
-        sensitivity: 7, interval: 300, over: showTools, timeout: 6000, out: hideTools
-    });
+	var preselected_customer = 0;
 
-    $('#main_credits_button').click(function(){
-        this.blur();
-        floaterShow("floaters.php","credits",0,0,650);
-    });
-    
-    $('#main_prefs_button').click(function(){
-        this.blur();
-        floaterShow("floaters.php","prefs",0,0,450);
-    });
+	if (userID) {
+		// automatic tab-change on reload
+		ki_active_tab_target = $.cookie('ki_active_tab_target_' + userID);
+		ki_active_tab_path = $.cookie('ki_active_tab_path_' + userID);
+	}
+	else {
+		ki_active_tab_target = null;
+		ki_active_tab_path = null;
+	}
+	if (ki_active_tab_target && ki_active_tab_path) {
+		changeTab(ki_active_tab_target, ki_active_tab_path);
+	} else {
+		changeTab(0, 'ki_timesheets/init.php');
+	}
 
-    
-    $('#buzzer').click(function(){
-      buzzer();
-    });
+	$('#main_tools_button').hoverIntent({
+		sensitivity: 7, interval: 300, over: showTools, timeout: 6000, out: hideTools
+	});
 
-    if (currentRecording > -1 || (selected_customer && selected_project && selected_activity)) {
-      $('#buzzer').removeClass('disabled');
-    }
- 
-    n_uhr();
-    
-    if (currentRecording > -1) {
-        show_stopwatch();
-    } else {
-        show_selectors();
-    }
+	$('#main_credits_button').click(function () {
+		this.blur();
+		floaterShow('floaters.php', 'credits', 0, 0, 650);
+		return false;
+	});
 
-    var lists_resizeTimer = null;
-    $(window).bind('resize', function() {
+	$('#main_prefs_button').click(function () {
+		this.blur();
+		floaterShow('floaters.php', 'prefs', 0, 0, 450);
+		return false;
+	});
 
-	resize_menu();
-    resize_floater();
 
-       if (lists_resizeTimer) clearTimeout(lists_resizeTimer);
-       lists_resizeTimer = setTimeout(lists_resize, 500);
-    });
-    
-    // Implement missing method for browsers like IE.
-    // thanks to http://stellapower.net/content/javascript-support-and-arrayindexof-ie
-    if (!Array.indexOf) {
-      Array.prototype.indexOf = function (obj, start) {
-        for (var i = (start || 0); i < this.length; i++) {
-          if (this[i] == obj) {
-            return i;
-          }
+	$('#buzzer').click(function () {
+		buzzer();
+	});
+
+	if (currentRecording > -1 || (selected_customer && selected_project && selected_activity)) {
+		$('#buzzer').removeClass('disabled');
+	}
+
+	n_uhr();
+
+	if (currentRecording > -1) {
+		show_stopwatch();
+	} else {
+		show_selectors();
+	}
+
+	var lists_resizeTimer = null;
+	$(window).bind('resize', function () {
+		resize_menu();
+		resize_floater();
+
+        if (lists_resizeTimer) {
+            clearTimeout(lists_resizeTimer);
         }
-        return -1;
-      }
-    }
+        lists_resizeTimer = setTimeout(lists_resize, 500);
+	});
 
+	// Implement missing method for browsers like IE.
+	// thanks to http://stellapower.net/content/javascript-support-and-arrayindexof-ie
+	if (!Array.indexOf) {
+		Array.prototype.indexOf = function (obj, start) {
+			for (var i = (start || 0); i < this.length; i++) {
+				if (this[i] == obj) {
+					return i;
+				}
+			}
+			return -1;
+		}
+	}
 });
-
-
-

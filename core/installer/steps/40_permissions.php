@@ -10,9 +10,9 @@ echo<<<EOD
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Directory)</span></span><br/>
     <span class="ch_logfile"><strong>/temporary/logfile.txt</strong> <span class="gray">(File)</span></span><br/>
     <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(File)</span></span><br/><br/>
-    <button onClick="step_back(); return false;" class="">Back</button>
-    <button class="cp-button" onClick='check_permissions();'>Check permissions now</button>
-    <button onClick="cp_proceed(); return false;" class="invisible proceed">Proceed</button>
+    <button onclick="step_back(); return false;" class="">Back</button>
+    <button class="cp-button" onclick='check_permissions();'>Check permissions now</button>
+    <button onclick="cp_proceed(); return false;" class="invisible proceed">Proceed</button>
     <span class="ch_correctit invisible arrow">Please correct the write-permissions and press the button again!</span><br/>
 EOD;
 
@@ -25,9 +25,9 @@ echo<<<EOD
     <span class="ch_temporary"><strong>/temporary</strong> <span class="gray">(Verzeichnis)</span></span><br/>
     <span class="ch_logfile"><strong>/temporary/logfile.txt</strong> <span class="gray">(Datei)</span></span><br/>
     <span class="ch_autoconf"><strong>/includes/autoconf.php</strong> <span class="gray">(Datei)</span></span><br/><br/>
-    <button onClick="step_back(); return false;" class="">Zurück</button>
-    <button class="cp-button" onClick='check_permissions();'>Schreibrechte prüfen</button>
-    <button onClick="cp_proceed(); return false;" class="invisible proceed">Fortfahren</button>
+    <button onclick="step_back(); return false;" class="">Zurück</button>
+    <button class="cp-button" onclick='check_permissions();'>Schreibrechte prüfen</button>
+    <button onclick="cp_proceed(); return false;" class="invisible proceed">Fortfahren</button>
     <span class="ch_correctit invisible arrow">Korrigieren Sie die Schreibrechte und klicken Sie den Button erneut!</span><br/>
 EOD;
 

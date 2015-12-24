@@ -66,6 +66,8 @@ return array(
 "cancel"            => "Annuler",
 "close"             => "Fermer",
 "edit"              => "Modifier Entrée",
+    "editNote"	        => "Modifier la note",
+    "note"	            => "Note",
 "construction"      => "en construction...",
 "about"             => "A propos de Kimai",
 "hours"             => "heures",
@@ -124,6 +126,7 @@ return array(
 "now"               => "Maintenant",
 "specify"           => "Spécifier la liste",
 "add"               => "Ajouter",
+    "addNote"	        => "Ajouter une note",
 "running"           => "En cours...",
 "company"           => "Societé",
 
@@ -320,7 +323,8 @@ return array(
             14 &rarr; 14:00:00  &nbsp;&nbsp;
             0910 &rarr; 09:10:00  &nbsp;&nbsp;
             091020 &rarr; 09:10:20 &nbsp;&nbsp;',
-
+    'editNoteHelp' => '<strong>Les commentaires peuvent être entrés dans l\'ordre qui vous convient<br />
+et pourront être modifiés par la suite au besoin, sans limite.</strong>',
 'timezone' => 'fuseau horaire',
 'defaultTimezone'   => 'fuseau horaire pour les nouveaux utilisateurs et clients',
 'editLimitPart1'    => 'Aucune entrée ne peut être ajoutée ou éditée qui se termine plus tard que',
@@ -328,6 +332,7 @@ return array(
 'editLimitPart3'    => 'heure(s) dans le passé.',
 "editLimitError"    => "La date de fin est plus loin dans le passé qu'il est permit.",
 'hideClearedEntries' => 'cacher les données supprimées',
+    'showQuickNote'	=> 'afficher bouton de note',
 'showCommentsByDefault' => 'montrer le commentaire par défaut',
 'showTrackingNumber' => 'montrer le numéro de suivit',
 "hideOverlapLines" => "Ne pas indiquer le chevauchement de temps d'entrée",
@@ -335,6 +340,7 @@ return array(
 'general' => 'Général',
 'address' => 'Adresse',
 'contact' => 'Contact',
+    'timesheet' => 'Feuille de temps',
 'list'    => 'Liste',
 'sublists' => 'listes inférieurs',
 

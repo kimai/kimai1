@@ -205,7 +205,7 @@ function expense_quickdelete(id) {
 		if (check == false) return;
 	}
 
-	$('#expensesEntry'+id+'>td>a').removeAttr('onClick');
+	$('#expensesEntry'+id+'>td>a').removeAttr('onclick');
 	$('#expensesEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/standard/grfx/loading13.gif");
 
 	$.post(expense_extension_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
