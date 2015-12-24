@@ -276,24 +276,16 @@ switch ($axAction) {
     case 'export_xls':
 
         $database->user_set_preferences(array(
-          'decimal_separator' => $_REQUEST['decimal_separator'],
           'reverse_order' => isset($_REQUEST['reverse_order'])?1:0),
           'ki_export.xls.');      
        
         $exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
-        for ($i=0;$i<count($exportData);$i++) {
-          $exportData[$i]['decimalDuration'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['decimalDuration']);
-          $exportData[$i]['rate'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['rate']);
-          $exportData[$i]['wage'] = str_replace(".",$_REQUEST['decimal_separator'],$exportData[$i]['wage']);
-        }
         $view->exportData = count($exportData)>0?$exportData:0;
 
         $view->columns = $columns;
         $view->custom_timeformat = $timeformat;
         $view->custom_dateformat = $dateformat;
 
-        header("Content-Disposition:attachment;filename=export.xls");
-        header("Content-Type: application/vnd.ms-excel");
         echo $view->render("formats/excel.php");
     break;
 
@@ -347,6 +339,8 @@ switch ($axAction) {
           $row[] = csv_prepare_field($kga['lang']['project'],$column_delimiter,$quote_char);           
         if (isset($columns['activity']))
           $row[] = csv_prepare_field($kga['lang']['activity'],$column_delimiter,$quote_char);           
+        if (isset($columns['description']))
+        	$row[] = csv_prepare_field($kga['lang']['description'],$column_delimiter,$quote_char);
         if (isset($columns['comment']))
           $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
         if (isset($columns['location']))
@@ -392,6 +386,8 @@ switch ($axAction) {
             $row[] = csv_prepare_field($data['projectName'],$column_delimiter,$quote_char);           
           if (isset($columns['activity']))
             $row[] = csv_prepare_field($data['activityName'],$column_delimiter,$quote_char);           
+          if (isset($columns['description']))
+          	$row[] = csv_prepare_field($data['description'],$column_delimiter,$quote_char);
           if (isset($columns['comment']))
             $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
           if (isset($columns['location']))

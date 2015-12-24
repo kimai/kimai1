@@ -24,10 +24,6 @@
             <fieldset>
                 <ul>
                     <li>
-                        <label for="decimal_separator"><?php echo $this->kga['lang']['decimal_separator'] ?>:</label>
-                        <input type="text" value="<?php echo $this->escape($this->kga['conf']['decimalSeparator']) ?>" name="decimal_separator" id="decimal_separator" size="1"/>
-                    </li>
-                    <li>
                         <label for="reverse_order"><?php echo $this->kga['lang']['export_extension']['reverse_order'] ?>:</label>
                         <input type="checkbox" value="true" name="reverse_order" id="reverse_order" <?php if ($this->prefs['reverse_order']): ?> checked="checked" <?php endif; ?>/>
                     </li>
