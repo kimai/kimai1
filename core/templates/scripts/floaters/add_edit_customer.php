@@ -167,44 +167,41 @@
         
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-
-        $('.disableInput').click(function(){
+    $(document).ready(function () {
+        $('#floater_innerwrap').tabs({selected: 0});
+        $('.disableInput').click(function () {
             var input = $(this);
-            if (input.is (':checked'))
-                input.siblings().prop("disabled","disabled");
-            else
-                input.siblings().prop("disabled","");
+            if (input.is(':checked')) {
+                input.siblings().prop("disabled", "disabled");
+            } else {
+                input.siblings().prop("disabled", "");
+            }
         });
-
-        $('#add_edit_customer').ajaxForm({
-            'beforeSubmit': function() {
+        var $add_edit_customer = $('#add_edit_customer');
+        $add_edit_customer.ajaxForm({
+            'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-
-                if ($('#add_edit_customer').attr('submitting')) {
+                if ($add_edit_customer.attr('submitting')) {
                     return false;
                 }
                 else {
-                    $('#add_edit_customer').attr('submitting', true);
+                    $add_edit_customer.attr('submitting', true);
                     return true;
                 }
             },
-            'success': function(result) {
-                $('#add_edit_customer').removeAttr('submitting');
-
-                for (var fieldName in result.errors)
-                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-
-
+            'success': function (result) {
+                $add_edit_customer.removeAttr('submitting');
+                for (var fieldName in result.errors) {
+                    setFloaterErrorMessage(fieldName, result.errors[fieldName]);
+                }
                 if (result.errors.length == 0) {
                     floaterClose();
                     hook_customers_changed();
                 }
             },
-            'error' : function() {
-                $('#add_edit_customer').removeAttr('submitting');
-            }});
-
-        $('#floater_innerwrap').tabs({ selected: 0 });
+            'error': function () {
+                $add_edit_customer.removeAttr('submitting');
+            }
+        });
     });
 </script>

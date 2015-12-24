@@ -28,33 +28,33 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#adminPanel_extension_form_editGroup').ajaxForm( {
-            'beforeSubmit' :function() {
+    $(document).ready(function () {
+        var $adminPanel_extension_form_editGroup = $('#adminPanel_extension_form_editGroup');
+        $adminPanel_extension_form_editGroup.ajaxForm({
+            'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-
-                if ($('#adminPanel_extension_form_editGroup').attr('submitting')) {
+                if ($adminPanel_extension_form_editGroup.attr('submitting')) {
                     return false;
                 }
                 else {
-                    $('#adminPanel_extension_form_editGroup').attr('submitting', true);
+                    $adminPanel_extension_form_editGroup.attr('submitting', true);
                     return true;
                 }
             },
             'success': function (result) {
-                $('#adminPanel_extension_form_editGroup').removeAttr('submitting');
-
-                for (var fieldName in result.errors)
-                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-
+                $adminPanel_extension_form_editGroup.removeAttr('submitting');
+                for (var fieldName in result.errors) {
+                    setFloaterErrorMessage(fieldName, result.errors[fieldName]);
+                }
                 if (result.errors.length == 0) {
                     floaterClose();
                     adminPanel_extension_refreshSubtab('groups');
                     adminPanel_extension_refreshSubtab('users');
                 }
             },
-            'error': function() {
-                $('#adminPanel_extension_form_editGroup').removeAttr('submitting');
-            }});
+            'error': function () {
+                $adminPanel_extension_form_editGroup.removeAttr('submitting');
+            }
+        });
     });
 </script>

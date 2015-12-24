@@ -75,19 +75,18 @@
     $(document).ready(function () {
         $('#help').hide();
         $('#floater_innerwrap').tabs({ selected: 0 });
-
-        $('#ts_ext_form_add_edit_timeSheetQuickNote').ajaxForm({
+        var $ts_ext_form_add_edit_timeSheetQuickNote = $('#ts_ext_form_add_edit_timeSheetQuickNote');
+        $ts_ext_form_add_edit_timeSheetQuickNote.ajaxForm({
             'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-
-                if ($('#ts_ext_form_add_edit_timeSheetQuickNote').attr('submitting')) {
+                if ($ts_ext_form_add_edit_timeSheetQuickNote.attr('submitting')) {
                     return false;
                 } else {
-                    $('#ts_ext_form_add_edit_timeSheetQuickNote').attr('submitting', true);
+                    $ts_ext_form_add_edit_timeSheetQuickNote.attr('submitting', true);
                     return true;
                 }
             }, 'success': function (result) {
-                $('#ts_ext_form_add_edit_timeSheetQuickNote').removeAttr('submitting');
+                $ts_ext_form_add_edit_timeSheetQuickNote.removeAttr('submitting');
                 for (var fieldName in result.errors) {
                     setFloaterErrorMessage(fieldName, result.errors[fieldName]);
                 }
@@ -97,7 +96,7 @@
                 }
             },
             'error': function () {
-                $('#ts_ext_form_add_edit_timeSheetQuickNote').removeAttr('submitting');
+                $ts_ext_form_add_edit_timeSheetQuickNote.removeAttr('submitting');
             }
         });
     });

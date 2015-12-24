@@ -144,28 +144,29 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#floater_innerwrap').tabs({selected: 0});
+        var $core_prefs = $('#core_prefs');
         var options = {
             beforeSubmit: function () {
                 if (($('#password').val() != '' || $('#retypePassword').val() != '')
                     && !validatePassword($('#password').val(), $('#retypePassword').val())) {
                     return false;
                 }
-                if ($('#core_prefs').attr('submitting')) {
+                if ($core_prefs.attr('submitting')) {
                     return false;
                 }
                 else {
-                    $('#core_prefs').attr('submitting', true);
+                    $core_prefs.attr('submitting', true);
                     return true;
                 }
             },
             success: function () {
-                $('#core_prefs').removeAttr('submitting');
+                $core_prefs.removeAttr('submitting');
                 window.location.reload();
             },
             'error': function () {
-                $('#core_prefs').removeAttr('submitting');
+                $core_prefs.removeAttr('submitting');
             }
         };
-        $('#core_prefs').ajaxForm(options);
+        $core_prefs.ajaxForm(options);
     });
 </script>
