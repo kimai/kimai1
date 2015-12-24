@@ -346,7 +346,9 @@ switch ($axAction) {
         if (isset($columns['project']))
           $row[] = csv_prepare_field($kga['lang']['project'],$column_delimiter,$quote_char);           
         if (isset($columns['activity']))
-          $row[] = csv_prepare_field($kga['lang']['activity'],$column_delimiter,$quote_char);           
+          $row[] = csv_prepare_field($kga['lang']['activity'],$column_delimiter,$quote_char);  
+        if (isset($columns['description']))
+        	$row[] = csv_prepare_field($kga['lang']['description'],$column_delimiter,$quote_char);
         if (isset($columns['comment']))
           $row[] = csv_prepare_field($kga['lang']['comment'],$column_delimiter,$quote_char);       
         if (isset($columns['location']))
@@ -391,7 +393,9 @@ switch ($axAction) {
           if (isset($columns['project']))
             $row[] = csv_prepare_field($data['projectName'],$column_delimiter,$quote_char);           
           if (isset($columns['activity']))
-            $row[] = csv_prepare_field($data['activityName'],$column_delimiter,$quote_char);           
+            $row[] = csv_prepare_field($data['activityName'],$column_delimiter,$quote_char);
+          if (isset($columns['description']))
+          	$row[] = csv_prepare_field($data['description'],$column_delimiter,$quote_char);
           if (isset($columns['comment']))
             $row[] = csv_prepare_field($data['comment'],$column_delimiter,$quote_char);       
           if (isset($columns['location']))
