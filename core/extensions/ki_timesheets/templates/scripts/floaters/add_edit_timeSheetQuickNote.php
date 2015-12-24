@@ -8,14 +8,11 @@
             } ?></span>
         <div class="right">
             <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
-            <a href="#" class="help"
-               onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help'] ?></a>
+            <a href="#" class="help" onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help'] ?></a>
         </div>
     </div>
     <div id="help">
-        <div class="content">
-            <?php echo $this->kga['lang']['editNoteHelp'] ?>
-        </div>
+        <div class="content"><?php echo $this->kga['lang']['editNoteHelp'] ?></div>
     </div>
     <div class="menuBackground">
         <ul class="menu tabSelection">

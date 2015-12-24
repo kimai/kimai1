@@ -136,7 +136,7 @@
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();'/>
+            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
             <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
         </div>
     </form>

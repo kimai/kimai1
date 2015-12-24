@@ -1,134 +1,113 @@
 <div id="floater_innerwrap">
-    
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['editUser']?></span>
+        <span id="floater_title"><?php echo $this->kga['lang']['editUser'] ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close']?></a>
-        </div>       
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
+        </div>
     </div>
-    
     <div class="menuBackground">
-
-      <ul class="menu tabSelection">
-          <li class="tab norm"><a href="#general">
-                      <span class="aa">&nbsp;</span>
-                      <span class="bb"><?php echo $this->kga['lang']['general']?></span>
-                      <span class="cc">&nbsp;</span>
-                      </a></li>
-          <li class="tab norm"><a href="#groupstab">
-                      <span class="aa">&nbsp;</span>
-                      <span class="bb"><?php echo $this->kga['lang']['groups']?></span>
-                      <span class="cc">&nbsp;</span>
-                      </a></li>
-      </ul>
+        <ul class="menu tabSelection">
+            <li class="tab norm"><a href="#general">
+                    <span class="aa">&nbsp;</span>
+                    <span class="bb"><?php echo $this->kga['lang']['general'] ?></span>
+                    <span class="cc">&nbsp;</span>
+                </a></li>
+            <li class="tab norm"><a href="#groupstab">
+                    <span class="aa">&nbsp;</span>
+                    <span class="bb"><?php echo $this->kga['lang']['groups'] ?></span>
+                    <span class="cc">&nbsp;</span>
+                </a></li>
+        </ul>
     </div>
-
     <div class="floater_content">
-
         <form id="adminPanel_extension_form_editUser" action="../extensions/ki_adminpanel/processor.php" method="post">
-            <input type="hidden" name="id" value="<?php echo $this->user_details['userID']?>" />
-            <input type="hidden" name="axAction" value="sendEditUser" />
+            <input type="hidden" name="id" value="<?php echo $this->user_details['userID'] ?>"/>
+            <input type="hidden" name="axAction" value="sendEditUser"/>
             <fieldset id="general">
-                
                 <ul>
-                    
                     <li>
-                        <label for="name"><?php echo $this->kga['lang']['username']?>:</label>
-                        <input class="formfield" type="text" id="name" name="name" value="<?php echo $this->escape($this->user_details['name'])?>" maxlength=20 size=20 />
-                    </li> 
-
-
-                    <li>
-                        <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole']?>:</label>
-                        <?php echo $this->formSelect('globalRoleID',$this->user_details['globalRoleID'],array(
-                          'class' => 'formfield'),$this->globalRoles);?>
+                        <label for="name"><?php echo $this->kga['lang']['username'] ?>:</label>
+                        <input class="formfield" type="text" id="name" name="name" value="<?php echo $this->escape($this->user_details['name']) ?>" maxlength=20 size=20/>
                     </li>
-
-
                     <li>
-                        <label for="password"><?php echo $this->kga['lang']['newPassword']?>:</label>
-                        <input class="formfield" type="password" id="password" name="password" size="9" id="password" /> <?php echo $this->kga['lang']['minLength']?>
-        <?php if ($this->user_details['password'] == ""): ?>
-        
-                        <br/>
-                        <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/caution_mini.png" alt="Caution" valign="middle" />
-                        <strong style="color:red"><?php echo $this->kga['lang']['nopasswordset']?></strong>
-        <?php endif; ?>
+                        <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole'] ?>:</label>
+                        <?php echo $this->formSelect('globalRoleID', $this->user_details['globalRoleID'], array(
+                            'class' => 'formfield'), $this->globalRoles); ?>
                     </li>
-
-
                     <li>
-                        <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword']?>:</label>
-                        <input class="formfield" type="password" id="retypePassword" name="retypePassword" id="retypePassword" size="9" />
+                        <label for="password"><?php echo $this->kga['lang']['newPassword'] ?>:</label>
+                        <input class="formfield" type="password" name="password" size="9" id="password"/> <?php echo $this->kga['lang']['minLength'] ?>
+                        <?php if ($this->user_details['password'] == ""): ?>
+                            <br/>
+                            <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/caution_mini.png" alt="Caution" valign="middle"/>
+                            <strong style="color:red"><?php echo $this->kga['lang']['nopasswordset'] ?></strong>
+                        <?php endif; ?>
                     </li>
-
-
                     <li>
-                        <label for="rate"><?php echo $this->kga['lang']['rate']?>:</label>
-                        <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->user_details['rate']));?>" />
+                        <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword'] ?>:</label>
+                        <input class="formfield" type="password" name="retypePassword" id="retypePassword" size="9"/>
                     </li>
-
-
                     <li>
-                        <label for="mail"><?php echo $this->kga['lang']['mail']?>:</label>
-                        <input class="formfield" type="text" id="mail" name="mail" value="<?php echo $this->escape($this->user_details['mail'])?>" />
+                        <label for="rate"><?php echo $this->kga['lang']['rate'] ?>:</label>
+                        <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->user_details['rate'])); ?>"/>
                     </li>
-
                     <li>
-                        <label for="alias"><?php echo $this->kga['lang']['alias']?>:</label>
-                        <input class="formfield" type="text" id="alias" name="alias" value="<?php echo $this->escape($this->user_details['alias'])?>" />
+                        <label for="mail"><?php echo $this->kga['lang']['mail'] ?>:</label>
+                        <input class="formfield" type="text" id="mail" name="mail" value="<?php echo $this->escape($this->user_details['mail']) ?>"/>
                     </li>
-
-                                </ul>
+                    <li>
+                        <label for="alias"><?php echo $this->kga['lang']['alias'] ?>:</label>
+                        <input class="formfield" type="text" id="alias" name="alias" value="<?php echo $this->escape($this->user_details['alias']) ?>"/>
+                    </li>
+                </ul>
             </fieldset>
             <fieldset id="groupstab">
+                <table class="groupsTable">
+                    <tr>
+                        <td><label><?php echo $this->kga['lang']['groups'] ?>:</label></td>
+                        <td><label><?php echo $this->kga['lang']['membershipRole'] ?>:</label></td>
+                    </tr>
+                    <?php
 
-              <table class="groupsTable">
-            <tr>
-                <td><label><?php echo $this->kga['lang']['groups']?>:</label></td>
-                <td><label><?php echo $this->kga['lang']['membershipRole']?>:</label></td>
-            </tr>
-        <?php
+                    $selectArray = array(-1 => '');
+                    $assignedGroups = array();
+                    foreach ($this->groups as $group) {
+                        if (array_key_exists($group['groupID'], $this->memberships)) {
+                            $group['membershipRoleID'] = $this->memberships[$group['groupID']];
+                            $assignedGroups[] = $group;
+                        } else {
+                            $selectArray[$group['groupID']] = $group['name'];
+                        }
+                    }
 
-        $selectArray = array(-1 => '');
-        $assignedGroups = array();
-        foreach ($this->groups as $group) {
-          if (array_key_exists($group['groupID'], $this->memberships)) {
-            $group['membershipRoleID'] = $this->memberships[$group['groupID']];
-            $assignedGroups[] = $group;
-          } else {
-            $selectArray[$group['groupID']] = $group['name'];
-          }
-        }
-
-        foreach ($assignedGroups as $assignedGroup) {
-        ?>
-        <tr>
-            <td>
-                <?php echo $this->escape($assignedGroup['name']), $this->formHidden('assignedGroups[]', $assignedGroup['groupID']); ?>
-            </td>
-            <td>
-                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], array('size'=>1,'multiple'=>false), $this->membershipRoles);?>
-            </td>
-            <td>
-              <a class="deleteButton">
-                <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/close.png" width="22" height="16" />
-              </a>
-            </td>
-        </tr>
-        <?php
-        }
-        ?>
-        <tr class="addRow" <?php if (count($selectArray) <= 1):?> style="display:none" <?php endif; ?> >
-          <td> <?php
-           echo $this->formSelect('newGroup',null,null,$selectArray); ?> </td>
-        </tr>
-    </table>
-  </fieldset>
-                <div id="formbuttons">
-                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
-                    <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
-                </div>
+                    foreach ($assignedGroups as $assignedGroup) {
+                        ?>
+                        <tr>
+                            <td>
+                                <?php echo $this->escape($assignedGroup['name']), $this->formHidden('assignedGroups[]', $assignedGroup['groupID']); ?>
+                            </td>
+                            <td>
+                                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], array('size' => 1, 'multiple' => false), $this->membershipRoles); ?>
+                            </td>
+                            <td>
+                                <a class="deleteButton">
+                                    <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/close.png" width="22" height="16"/>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                    <tr class="addRow" <?php if (count($selectArray) <= 1): ?> style="display:none" <?php endif; ?> >
+                        <td> <?php
+                            echo $this->formSelect('newGroup', null, null, $selectArray); ?> </td>
+                    </tr>
+                </table>
+            </fieldset>
+            <div id="formbuttons">
+                <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
+                <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+            </div>
         </form>
     </div>
 </div>

@@ -281,7 +281,7 @@ function ts_ext_recordAgain(project,activity,id) {
     offset = now;
     startsec = 0;
     show_stopwatch();
-    $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
+    $('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
 
     $.post(ts_ext_path + "processor.php", { axAction: "record", axValue: 0, id: id },
         function(data) {
@@ -316,7 +316,7 @@ function ts_ext_stopRecord(id) {
         $('#timeSheetEntry'+id+'>td').css( "background-color", "#F00" );
         $('#timeSheetEntry'+id+'>td>a.stop>img').attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
         $('#timeSheetEntry'+id+'>td>a').blur();
-        $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
+        $('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
         $('#timeSheetEntry'+id+'>td').css( "color", "#FFF" );
     }
     $.post(ts_ext_path + "processor.php", { axAction: "stop", axValue: 0, id: id },
@@ -338,7 +338,7 @@ function quickdelete(id) {
       if (check == false) return;
     }
 
-    $('#timeSheetEntry'+id+'>td>a').removeAttr('onClick');
+    $('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
     $('#timeSheetEntry'+id+'>td>a.quickdelete>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
 
     $.post(ts_ext_path + "processor.php", { axAction: "quickdelete", axValue: 0, id: id },
