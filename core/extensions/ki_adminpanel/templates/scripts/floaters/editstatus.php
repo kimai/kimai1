@@ -1,34 +1,3 @@
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            $('#adminPanel_extension_form_editstatus').ajaxForm( {
-              'beforeSubmit' :function() { 
-                clearFloaterErrorMessages();
-
-                if ($('#adminPanel_extension_form_editstatus').attr('submitting')) {
-                  return false;
-                }
-                else {
-                  $('#adminPanel_extension_form_editstatus').attr('submitting', true);
-                  return true;
-                }
-              },
-              'success': function (result) {
-                $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
-
-                for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-                
-                if (result.errors.length == 0) {
-                  floaterClose();
-                  adminPanel_extension_refreshSubtab('status');
-                }
-            },
-            'error': function() {
-              $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
-            }});
-        }); 
-    </script>
-
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
@@ -62,3 +31,33 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#adminPanel_extension_form_editstatus').ajaxForm( {
+            'beforeSubmit' :function() {
+                clearFloaterErrorMessages();
+
+                if ($('#adminPanel_extension_form_editstatus').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#adminPanel_extension_form_editstatus').attr('submitting', true);
+                    return true;
+                }
+            },
+            'success': function (result) {
+                $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
+
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
+                    floaterClose();
+                    adminPanel_extension_refreshSubtab('status');
+                }
+            },
+            'error': function() {
+                $('#adminPanel_extension_form_editstatus').removeAttr('submitting');
+            }});
+    });
+</script>

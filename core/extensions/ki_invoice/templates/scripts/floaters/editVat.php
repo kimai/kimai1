@@ -1,28 +1,3 @@
-    <script type="text/javascript"> 
-       
-        $(document).ready(function() {
-
-            $('#invoice_extension_editVat').ajaxForm(function() { 
-                floaterClose();
-            });
-
-            // prepare Options Object 
-            var options = { 
-                success:    function(response) { 
-                    if (response == 1) {
-                      $('#defaultVat').html($('#vat').val());
-                    }
-                    floaterClose();
-                } 
-            }; 
-            
-            // pass options to ajaxForm 
-            $('#invoice_extension_editVat').ajaxForm(options);
-
-        });
-        
-    </script>
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
@@ -52,3 +27,19 @@
 	</form>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#invoice_extension_editVat').ajaxForm(function() {
+            floaterClose();
+        });
+        var options = {
+            success:    function(response) {
+                if (response == 1) {
+                    $('#defaultVat').html($('#vat').val());
+                }
+                floaterClose();
+            }
+        };
+        $('#invoice_extension_editVat').ajaxForm(options);
+    });
+</script>

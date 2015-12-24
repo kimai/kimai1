@@ -1,48 +1,3 @@
-    <script type="text/javascript"> 
-        
-        $(document).ready(function() {
-            $('#help').hide();
-
-            $('#edit_day').datepicker();
-
-            $('#expense_extension_form_add_edit_record').ajaxForm( {
-              'beforeSubmit' :function() { 
-                clearFloaterErrorMessages();
-
-                if ($('#expense_extension_form_add_edit_record').attr('submitting')) {
-                  return false;
-                }
-                else {
-                  $('#expense_extension_form_add_edit_record').attr('submitting', true);
-                  return true;
-                }
-              },
-              'success' : function(result) {
-                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
-
-                for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-                
-                
-                if (result.errors.length == 0) {
-                  floaterClose();
-                  expense_extension_reload();
-                }
-              },
-              'error' : function() {
-                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
-              }
-            });
-
-            <?php if (!isset($this->id)): ?>
-            $("#add_edit_expense_project_ID").val(selected_project);
-            <?php endif; ?>
-            $('#floater_innerwrap').tabs({ selected: 0 });
-        }); 
-        
-    </script>
-
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
@@ -176,3 +131,46 @@
 
         </form>
 </div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#help').hide();
+
+        $('#edit_day').datepicker();
+
+        $('#expense_extension_form_add_edit_record').ajaxForm( {
+            'beforeSubmit' :function() {
+                clearFloaterErrorMessages();
+
+                if ($('#expense_extension_form_add_edit_record').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#expense_extension_form_add_edit_record').attr('submitting', true);
+                    return true;
+                }
+            },
+            'success' : function(result) {
+                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
+
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+
+                if (result.errors.length == 0) {
+                    floaterClose();
+                    expense_extension_reload();
+                }
+            },
+            'error' : function() {
+                $('#expense_extension_form_add_edit_record').removeAttr('submitting');
+            }
+        });
+
+        <?php if (!isset($this->id)): ?>
+        $("#add_edit_expense_project_ID").val(selected_project);
+        <?php endif; ?>
+        $('#floater_innerwrap').tabs({ selected: 0 });
+    });
+
+</script>

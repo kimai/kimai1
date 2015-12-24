@@ -66,8 +66,7 @@
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>'
-                   onclick='floaterClose(); return false;'/>
+            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
             <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
         </div>
     </form>
@@ -92,7 +91,6 @@
                 for (var fieldName in result.errors) {
                     setFloaterErrorMessage(fieldName, result.errors[fieldName]);
                 }
-
                 if (result.errors.length == 0) {
                     floaterClose();
                     ts_ext_reload();

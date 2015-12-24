@@ -1,374 +1,3 @@
-    <script type="text/javascript"> 
-    	var previousBudget = $('#budget').val();
-        var previousUsed = 0;
-        var previousApproved = 0;
-        $(document).ready(function() {
-            $('#help').hide();
-
-            // only save the value, the update will happen automatically because we trigger a changed
-            // activity on "edit_out_time"
-			$('#currentTime, #end_day, #start_day').click(function() {
-    			saveDuration();
-			});
-
-            $("#approved").focus(function () {
-            	previousApproved = this.value;
-            }).change(function() {
-                if(isNaN($(this).val()) || $(this).val() == '') {
-					$(this).val(0);
-                }
-            	$('#budget_activity_approved').text(parseFloat($('#budget_activity_approved').text())-previousApproved+parseFloat($(this).val()));
-     			return false;
-            });
-            if($('#roundTimesheetEntries').val().length > 0) {
-	            var step = $('#stepMinutes').val();
-	            var stepSeconds = $('#stepSeconds').val();
-	            if(isNaN(stepSeconds) || stepSeconds <= 0) {
-			var configuration = {showPeriodLabels: false};
-			if(!isNaN(step) && step > 0 && step < 60) {
-		            configuration.step = parseInt(step);
-			}
-		            
-			$('#start_time').timepicker(configuration);
-		        $('#end_time').timepicker(configuration);
-	            }
-            }
- 
-            // #rate already has an activity on click, so treat it below
-            $("#eduration, #eend_time, #start_time").focus(function() {
-    			saveDuration();
-            }).change(function() {
-            	updateDuration();
-    			generateChart();
-     			return false;
-            });
-
-            $('#add_edit_timeSheetEntry_activityID').change(function() {
-                $.getJSON("../extensions/ki_timesheets/processor.php", {
-                    axAction: "budgets",
-                    project_id: $("#add_edit_timeSheetEntry_projectID").val(),
-                    activity_id: $("#add_edit_timeSheetEntry_activityID").val(),
-                    timeSheetEntryID: $('input[name="id"]').val()
-                  },
-                  function(data) {
-                	  ts_ext_updateBudget(data);
-                  }
-                 );
-            });
-
-            $("#budget").focus(function () {
-            	previousBudget = this.value;
-            }).change(function() {
-            	$('#activityBudget').text(parseFloat($('#activityBudget').text())-previousBudget+$(this).val());
-     			generateChart();
-     			return false;
-            });
- 			
-            $('#start_day').datepicker({
-              onSelect: function(dateText, instance) {
-                $('#end_day').datepicker( "option", "minDate", $('#start_day').datepicker("getDate") );
-                ts_timeToDuration();
-              }
-            });
-
-            $('#end_day').datepicker({
-              onSelect: function(dateText, instance) {
-                $('#start_day').datepicker( "option", "maxDate", $('#end_day').datepicker("getDate") );
-                ts_timeToDuration();
-              }
-            });
-
-
-<?php if ($this->showRate): ?>
-            $( "#rate" ).click(function() {
-    			saveDuration();
-              $( "#rate").autocomplete("search",0);
-            });
-
-            $( "#rate" ).change(function() {
-                updateDuration();
-            });
-            
-            $( "#rate" ).autocomplete({
-              width:"200px",
-              source: function(req, add){  
-                $.getJSON("../extensions/ki_timesheets/processor.php", {
-                    axAction: "allFittingRates",
-                    project: $("#add_edit_timeSheetEntry_projectID").val(),
-                    activity: $("#add_edit_timeSheetEntry_activityID").val()
-                  },
-                  function(data) {
-                    if (data.errors.length != 0) return;
-                    add(data.rates);
-                  }
-                );  
-              },
-              select: function( activity, ui ) {
-                $( "#rate" ).val( ui.item.value );
-
-                return false;
-              }
-            }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-                return $( "<li></li>" )
-                        .data( "item.autocomplete", item )
-                        .append( "<a>" + item.desc + "</a>" )
-                        .appendTo( ul );
-            };
-
-            $( "#fixedRate" ).click(function() {
-              $( "#fixedRate").autocomplete("search",0);
-            });
-            
-            $( "#fixedRate" ).autocomplete({
-              width:"200px",
-              source: function(req, add){  
-                $.getJSON("../extensions/ki_timesheets/processor.php", {
-                    axAction: "allFittingFixedRates",
-                    project: $("#add_edit_timeSheetEntry_projectID").val(),
-                    activity: $("#add_edit_timeSheetEntry_activityID").val()
-                  },
-                  function(data) {
-                    if (data.errors.length != 0) return;
-                    add(data.rates);
-                  }
-                );  
-              },
-              select: function( activity, ui ) {
-                $( "#fixedRate" ).val( ui.item.value );
-
-                return false;
-              }
-            }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-                return $( "<li></li>" )
-                        .data( "item.autocomplete", item )
-                        .append( "<a>" + item.desc + "</a>" )
-                        .appendTo( ul );
-            };
-<?php endif; ?>
-
-            $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( {
-                'beforeSubmit' :function() {
-                clearFloaterErrorMessages();
-                if (!$('#start_day').val().match(ts_dayFormatExp) ||
-                    ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
-                    !$('#start_time').val().match(ts_timeFormatExp) ||
-                    ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
-                  alert("<?php echo $this->kga['lang']['TimeDateInputError']?>");
-                  return false;
-                }
-
-                var endTimeSet = $('#end_day').val() != '' || $('#end_time').val() != '';
-
-                if (!endTimeSet)
-                  return true; // no need to validate timerange if end time is not set
-
-                // test if start day is before end day
-                var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
-                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
-                for (var i = 3;i>=1;i--) {
-                  var inVal = inDayMatches[i];
-                  var outVal = outDayMatches[i];
-
-                  inVal = parseInt(inVal);
-                  outval = parseInt(outVal);
-                  
-                  if (inVal == undefined)
-                    inVal = 0;
-                  if (outVal == undefined)
-                    outVal = 0;
-                  
-                  if (inVal > outVal) {
-                    alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
-                    return false;
-                  }
-                  else if (inVal < outVal)
-                    break; // if this part is smaller we don't care for the other parts
-                }
-                if (inDayMatches[0] == outDayMatches[0]) {
-                  // test if start time is before end time if it's the same day
-                  var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
-                  var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
-                  for (var i = 1;i<=3;i++) {
-                    var inVal = inTimeMatches[i];
-                    var outVal = outTimeMatches[i];
-                    
-                    if (inVal[0] == ":")
-                      inVal = inVal.substr(1);
-                    if (outVal[0] == ":")
-                      outVal = outVal.substr(1);
-
-                    inVal = parseInt(inVal);
-                    outval = parseInt(outVal);
-                    
-                    if (inVal == undefined)
-                      inVal = 0;
-                    if (outVal == undefined)
-                      outVal = 0;
-
-                    if (inVal > outVal) {
-                      alert("<?php echo $this->kga['lang']['StartTimeBeforeEndTime']?>");
-                      return false;
-                    }
-                    else if (inVal < outVal)
-                      break; // if this part is smaller we don't care for the other parts
-                  }
-                }
-                
-                var edit_in_time = $('#start_day').val()+$('#start_time').val();
-                var edit_out_time = $('#end_day').val()+$('#end_time').val();
-                var deleted = $('#erase').is(':checked');
-                
-
-              if ($('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting')) {
-                return false;
-              }
-              else {
-                  $('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting', true);
-                return true;
-              }
-
-
-            },
-              'success' : function(result) {
-                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
-                for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-
-                if (result.errors.length == 0) {
-                  floaterClose();
-                  ts_ext_reload();
-                }
-              },
-
-              'error' : function() {
-                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
-              }
-            });
-            <?php if (isset($this->id)) { ?>
-            ts_ext_reload_activities(<?php echo $this->projectID?>,true);
-            <?php } else { ?>
-            $("#add_edit_timeSheetEntry_projectID").val(selected_project);
-            $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
-            ts_ext_reload_activities(selected_project);
-            <?php } ?>
-
-            $('#floater_innerwrap').tabs({ selected: 0 });
-            ts_timeToDuration();
-            // ts_timeToDuration will set the value of duration. The first time, the value
-            // will be set and the duration is added to the budgetUsed eventhough it shouldn't
-            // so maually subtract the value again
-            var durationArray= new Array();
-            durationArray = $("#duration").val().split(/:|\./);
-            if(durationArray.length > 0 && durationArray.length < 4) {
-                secs = durationArray[0]*3600;
-                if(durationArray.length > 1)
-                    secs += (durationArray[1]*60);
-                if(durationArray.length > 2)
-                    secs += parseInt(durationArray[2]);
-<?php if ($this->showRate): ?>
-        		var rate = $('#rate').val();
-<?php else: ?>
-                        var rate = 0;
-<?php endif; ?>
-        		var budgetCalculatedTwice = secs/3600*rate;
-            $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-budgetCalculatedTwice),2);
-            }
-            <?php if (isset($this->id)) { ?>
-            //TODO: chart will not be generated..WHY??
-            //generateChart();
-            <?php } ?>
-        });
-        // document ready
-
-        function saveDuration() {
-			var durationArray=$("#duration").val().split(/:|\./);
-			var secs = 0;
-		    if(durationArray.length > 0 && durationArray.length < 4) {
-		        secs = durationArray[0]*3600;
-		        if(durationArray.length > 1)
-		            secs += (durationArray[1]*60);
-		        if(durationArray.length > 2)
-		            secs += parseInt(durationArray[2]);
-		    }
-<?php if ($this->showRate): ?>
-                        var rate = $('#rate').val();
-<?php else: ?>
-                        var rate = 0;
-<?php endif; ?>
-			previousUsed = secs/3600*rate;
-        }
-
-        function updateDuration() {
-        	var durationArray=$("#duration").val().split(/:|\./);
-			var secs = 0;
-		    if(durationArray.length > 0 && durationArray.length < 4) {
-		        secs = durationArray[0]*3600;
-		        if(durationArray.length > 1)
-		            secs += (durationArray[1]*60);
-		        if(durationArray.length > 2)
-		            secs += parseInt(durationArray[2]);
-		    }
-<?php if ($this->showRate): ?>
-                        var rate = $('#rate').val();
-<?php else: ?>
-                        var rate = 0;
-<?php endif; ?>
-			var used = secs/3600*rate;
-        	$('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-previousUsed+used),2);
-        }
-        function generateChart()
-        {
-            var durationArray = $("#duration").val().split(/:|\./);
-			var secs = 0;
-		    if(durationArray.length > 0 && durationArray.length < 4) {
-		        secs = durationArray[0]*3600;
-		        if(durationArray.length > 1)
-		            secs += (durationArray[1]*60);
-		        if(durationArray.length > 2)
-		            secs += parseInt(durationArray[2]);
-		    }
-<?php if ($this->showRate): ?>
-                        var rate = $('#rate').val();
-<?php else: ?>
-                        var rate = 0;
-<?php endif; ?>
-			var budget = $('#budget_val').val();
-			var used = secs/3600*rate;
-			var usedString = '<?php echo $this->kga['lang']['used']?>';
-			var budgetString = '<?php echo $this->kga['lang']['budget_available']?>';
-			var chartdata = [[usedString, used], [budgetString, budget - used]];
-
-            try {
-                $.jqplot('chart',  [chartdata], {
-                    seriesDefaults:{
-                        renderer:$.jqplot.PieRenderer,
-                        rendererOptions: {
-                            showDataLabels: true,
-    //                        // By default, data labels show the percentage of the donut/pie.
-    //                        // You can show the data 'value' or data 'label' instead.
-                            dataLabels: 'value'
-                        }
-                    },
-                        // Show the legend and put it outside the grid, but inside the
-                        // plot container, shrinking the grid to accomodate the legend.
-                        // A value of "outside" would not shrink the grid and allow
-                        // the legend to overflow the container.
-                        legend: {
-                            show: true,
-                            placement: 'insideGrid'
-                        },
-                    grid:{background: 'white', borderWidth:0, shadow:false}
-                });
-            }
-            catch (err) {
-                // probably no data, so remove the chart
-                $('#chart').remove();
-            }
-
-        }
-    </script>
-
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
@@ -607,3 +236,367 @@
         </form>
 
 </div>
+<script type="text/javascript">
+    var previousBudget = $('#budget').val();
+    var previousUsed = 0;
+    var previousApproved = 0;
+    $(document).ready(function() {
+        $('#help').hide();
+
+        // only save the value, the update will happen automatically because we trigger a changed
+        // activity on "edit_out_time"
+        $('#currentTime, #end_day, #start_day').click(function() {
+            saveDuration();
+        });
+
+        $("#approved").focus(function () {
+            previousApproved = this.value;
+        }).change(function() {
+            if(isNaN($(this).val()) || $(this).val() == '') {
+                $(this).val(0);
+            }
+            $('#budget_activity_approved').text(parseFloat($('#budget_activity_approved').text())-previousApproved+parseFloat($(this).val()));
+            return false;
+        });
+        if($('#roundTimesheetEntries').val().length > 0) {
+            var step = $('#stepMinutes').val();
+            var stepSeconds = $('#stepSeconds').val();
+            if(isNaN(stepSeconds) || stepSeconds <= 0) {
+                var configuration = {showPeriodLabels: false};
+                if(!isNaN(step) && step > 0 && step < 60) {
+                    configuration.step = parseInt(step);
+                }
+
+                $('#start_time').timepicker(configuration);
+                $('#end_time').timepicker(configuration);
+            }
+        }
+
+        // #rate already has an activity on click, so treat it below
+        $("#eduration, #eend_time, #start_time").focus(function() {
+            saveDuration();
+        }).change(function() {
+            updateDuration();
+            generateChart();
+            return false;
+        });
+
+        $('#add_edit_timeSheetEntry_activityID').change(function() {
+            $.getJSON("../extensions/ki_timesheets/processor.php", {
+                    axAction: "budgets",
+                    project_id: $("#add_edit_timeSheetEntry_projectID").val(),
+                    activity_id: $("#add_edit_timeSheetEntry_activityID").val(),
+                    timeSheetEntryID: $('input[name="id"]').val()
+                },
+                function(data) {
+                    ts_ext_updateBudget(data);
+                }
+            );
+        });
+
+        $("#budget").focus(function () {
+            previousBudget = this.value;
+        }).change(function() {
+            $('#activityBudget').text(parseFloat($('#activityBudget').text())-previousBudget+$(this).val());
+            generateChart();
+            return false;
+        });
+
+        $('#start_day').datepicker({
+            onSelect: function(dateText, instance) {
+                $('#end_day').datepicker( "option", "minDate", $('#start_day').datepicker("getDate") );
+                ts_timeToDuration();
+            }
+        });
+
+        $('#end_day').datepicker({
+            onSelect: function(dateText, instance) {
+                $('#start_day').datepicker( "option", "maxDate", $('#end_day').datepicker("getDate") );
+                ts_timeToDuration();
+            }
+        });
+        
+        <?php if ($this->showRate): ?>
+        $( "#rate" ).click(function() {
+            saveDuration();
+            $( "#rate").autocomplete("search",0);
+        });
+
+        $( "#rate" ).change(function() {
+            updateDuration();
+        });
+
+        $( "#rate" ).autocomplete({
+            width:"200px",
+            source: function(req, add){
+                $.getJSON("../extensions/ki_timesheets/processor.php", {
+                        axAction: "allFittingRates",
+                        project: $("#add_edit_timeSheetEntry_projectID").val(),
+                        activity: $("#add_edit_timeSheetEntry_activityID").val()
+                    },
+                    function(data) {
+                        if (data.errors.length != 0) return;
+                        add(data.rates);
+                    }
+                );
+            },
+            select: function( activity, ui ) {
+                $( "#rate" ).val( ui.item.value );
+
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.desc + "</a>" )
+                .appendTo( ul );
+        };
+
+        $( "#fixedRate" ).click(function() {
+            $( "#fixedRate").autocomplete("search",0);
+        });
+
+        $( "#fixedRate" ).autocomplete({
+            width:"200px",
+            source: function(req, add){
+                $.getJSON("../extensions/ki_timesheets/processor.php", {
+                        axAction: "allFittingFixedRates",
+                        project: $("#add_edit_timeSheetEntry_projectID").val(),
+                        activity: $("#add_edit_timeSheetEntry_activityID").val()
+                    },
+                    function(data) {
+                        if (data.errors.length != 0) return;
+                        add(data.rates);
+                    }
+                );
+            },
+            select: function( activity, ui ) {
+                $( "#fixedRate" ).val( ui.item.value );
+
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.desc + "</a>" )
+                .appendTo( ul );
+        };
+        <?php endif; ?>
+
+        $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm( {
+            'beforeSubmit' :function() {
+                clearFloaterErrorMessages();
+                if (!$('#start_day').val().match(ts_dayFormatExp) ||
+                    ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') ||
+                    !$('#start_time').val().match(ts_timeFormatExp) ||
+                    ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
+                    alert("<?php echo $this->kga['lang']['TimeDateInputError']?>");
+                    return false;
+                }
+
+                var endTimeSet = $('#end_day').val() != '' || $('#end_time').val() != '';
+
+                if (!endTimeSet)
+                    return true; // no need to validate timerange if end time is not set
+
+                // test if start day is before end day
+                var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
+                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
+                for (var i = 3;i>=1;i--) {
+                    var inVal = inDayMatches[i];
+                    var outVal = outDayMatches[i];
+
+                    inVal = parseInt(inVal);
+                    outval = parseInt(outVal);
+
+                    if (inVal == undefined)
+                        inVal = 0;
+                    if (outVal == undefined)
+                        outVal = 0;
+
+                    if (inVal > outVal) {
+                        alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
+                        return false;
+                    }
+                    else if (inVal < outVal)
+                        break; // if this part is smaller we don't care for the other parts
+                }
+                if (inDayMatches[0] == outDayMatches[0]) {
+                    // test if start time is before end time if it's the same day
+                    var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
+                    var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
+                    for (var i = 1;i<=3;i++) {
+                        var inVal = inTimeMatches[i];
+                        var outVal = outTimeMatches[i];
+
+                        if (inVal[0] == ":")
+                            inVal = inVal.substr(1);
+                        if (outVal[0] == ":")
+                            outVal = outVal.substr(1);
+
+                        inVal = parseInt(inVal);
+                        outval = parseInt(outVal);
+
+                        if (inVal == undefined)
+                            inVal = 0;
+                        if (outVal == undefined)
+                            outVal = 0;
+
+                        if (inVal > outVal) {
+                            alert("<?php echo $this->kga['lang']['StartTimeBeforeEndTime']?>");
+                            return false;
+                        }
+                        else if (inVal < outVal)
+                            break; // if this part is smaller we don't care for the other parts
+                    }
+                }
+
+                var edit_in_time = $('#start_day').val()+$('#start_time').val();
+                var edit_out_time = $('#end_day').val()+$('#end_time').val();
+                var deleted = $('#erase').is(':checked');
+                
+                if ($('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#ts_ext_form_add_edit_timeSheetEntry').attr('submitting', true);
+                    return true;
+                }
+            },
+            'success' : function(result) {
+                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
+                    floaterClose();
+                    ts_ext_reload();
+                }
+            },
+
+            'error' : function() {
+                $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
+            }
+        });
+        <?php if (isset($this->id)) { ?>
+        ts_ext_reload_activities(<?php echo $this->projectID?>,true);
+        <?php } else { ?>
+        $("#add_edit_timeSheetEntry_projectID").val(selected_project);
+        $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
+        ts_ext_reload_activities(selected_project);
+        <?php } ?>
+
+        $('#floater_innerwrap').tabs({ selected: 0 });
+        ts_timeToDuration();
+        // ts_timeToDuration will set the value of duration. The first time, the value
+        // will be set and the duration is added to the budgetUsed eventhough it shouldn't
+        // so maually subtract the value again
+        var durationArray= new Array();
+        durationArray = $("#duration").val().split(/:|\./);
+        if(durationArray.length > 0 && durationArray.length < 4) {
+            secs = durationArray[0]*3600;
+            if(durationArray.length > 1)
+                secs += (durationArray[1]*60);
+            if(durationArray.length > 2)
+                secs += parseInt(durationArray[2]);
+            <?php if ($this->showRate): ?>
+            var rate = $('#rate').val();
+            <?php else: ?>
+            var rate = 0;
+            <?php endif; ?>
+            var budgetCalculatedTwice = secs/3600*rate;
+            $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-budgetCalculatedTwice),2);
+        }
+        <?php if (isset($this->id)) { ?>
+        //TODO: chart will not be generated..WHY??
+        //generateChart();
+        <?php } ?>
+    });
+    // document ready
+
+    function saveDuration() {
+        var durationArray=$("#duration").val().split(/:|\./);
+        var secs = 0;
+        if(durationArray.length > 0 && durationArray.length < 4) {
+            secs = durationArray[0]*3600;
+            if(durationArray.length > 1)
+                secs += (durationArray[1]*60);
+            if(durationArray.length > 2)
+                secs += parseInt(durationArray[2]);
+        }
+        <?php if ($this->showRate): ?>
+        var rate = $('#rate').val();
+        <?php else: ?>
+        var rate = 0;
+        <?php endif; ?>
+        previousUsed = secs/3600*rate;
+    }
+
+    function updateDuration() {
+        var durationArray=$("#duration").val().split(/:|\./);
+        var secs = 0;
+        if(durationArray.length > 0 && durationArray.length < 4) {
+            secs = durationArray[0]*3600;
+            if(durationArray.length > 1)
+                secs += (durationArray[1]*60);
+            if(durationArray.length > 2)
+                secs += parseInt(durationArray[2]);
+        }
+        <?php if ($this->showRate): ?>
+        var rate = $('#rate').val();
+        <?php else: ?>
+        var rate = 0;
+        <?php endif; ?>
+        var used = secs/3600*rate;
+        $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text())-previousUsed+used),2);
+    }
+    function generateChart() {
+        var durationArray = $("#duration").val().split(/:|\./);
+        var secs = 0;
+        if(durationArray.length > 0 && durationArray.length < 4) {
+            secs = durationArray[0]*3600;
+            if(durationArray.length > 1)
+                secs += (durationArray[1]*60);
+            if(durationArray.length > 2)
+                secs += parseInt(durationArray[2]);
+        }
+        <?php if ($this->showRate): ?>
+        var rate = $('#rate').val();
+        <?php else: ?>
+        var rate = 0;
+        <?php endif; ?>
+        var budget = $('#budget_val').val();
+        var used = secs/3600*rate;
+        var usedString = '<?php echo $this->kga['lang']['used']?>';
+        var budgetString = '<?php echo $this->kga['lang']['budget_available']?>';
+        var chartdata = [[usedString, used], [budgetString, budget - used]];
+
+        try {
+            $.jqplot('chart',  [chartdata], {
+                seriesDefaults:{
+                    renderer:$.jqplot.PieRenderer,
+                    rendererOptions: {
+                        showDataLabels: true,
+                        //                        // By default, data labels show the percentage of the donut/pie.
+                        //                        // You can show the data 'value' or data 'label' instead.
+                        dataLabels: 'value'
+                    }
+                },
+                // Show the legend and put it outside the grid, but inside the
+                // plot container, shrinking the grid to accomodate the legend.
+                // A value of "outside" would not shrink the grid and allow
+                // the legend to overflow the container.
+                legend: {
+                    show: true,
+                    placement: 'insideGrid'
+                },
+                grid:{background: 'white', borderWidth:0, shadow:false}
+            });
+        }
+        catch (err) {
+            // probably no data, so remove the chart
+            $('#chart').remove();
+        }
+
+    }
+</script>

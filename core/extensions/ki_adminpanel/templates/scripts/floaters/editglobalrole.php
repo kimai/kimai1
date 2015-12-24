@@ -5,37 +5,6 @@
 
   $this->getHelper('ParseHierarchy')->parseHierarchy($this->permissions, $extensions, $keyHierarchy);
 ?>
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-            $('#adminPanel_extension_form_editRole').ajaxForm( {
-              'beforeSubmit' :function() { 
-                clearFloaterErrorMessages();
-
-                if ($('#adminPanel_extension_form_editRole').attr('submitting')) {
-                  return false;
-                }
-                else {
-                  $('#adminPanel_extension_form_editRole').attr('submitting', true);
-                  return true;
-                }
-            },
-            'success': function (result) {
-                $('#adminPanel_extension_form_editRole').removeAttr('submitting');
-                for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-                
-                if (result.errors.length == 0) {
-                  floaterClose();
-                  adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
-                }
-            },
-            'error': function() {
-                $('#adminPanel_extension_form_editRole').removeAttr('submitting');
-            }});
-     $('#floater_innerwrap').tabs({ selected: 0 });
-        }); 
-    </script>
-
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
@@ -108,3 +77,33 @@
       </div>
     </form>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#adminPanel_extension_form_editRole').ajaxForm( {
+            'beforeSubmit' :function() {
+                clearFloaterErrorMessages();
+
+                if ($('#adminPanel_extension_form_editRole').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#adminPanel_extension_form_editRole').attr('submitting', true);
+                    return true;
+                }
+            },
+            'success': function (result) {
+                $('#adminPanel_extension_form_editRole').removeAttr('submitting');
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
+                    floaterClose();
+                    adminPanel_extension_refreshSubtab('<?php echo $this->jsEscape($this->reloadSubtab); ?>');
+                }
+            },
+            'error': function() {
+                $('#adminPanel_extension_form_editRole').removeAttr('submitting');
+            }});
+        $('#floater_innerwrap').tabs({ selected: 0 });
+    });
+</script>

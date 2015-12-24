@@ -1,145 +1,3 @@
-    <script type="text/javascript"> 
-        $(document).ready(function() {
-
-	 var options = { 
-		beforeSubmit:  function() {
-
-        var oldGlobalRoleID = <?php echo $this->user_details['globalRoleID']; ?>;
-
-        if ($('#globalRoleID').val() != oldGlobalRoleID && $('input[name="id"]').val() == userID) {
-            var message = "<?php echo $this->pureJsEscape($this->kga['lang']['confirmations']['ownGlobalRoleChange']); ?>";
-            message = message.replace(/%OLD%/, $("#globalRoleID>option[value='"+oldGlobalRoleID+"']").text());
-            message = message.replace(/%NEW%/, $("#globalRoleID>option:selected").text());
-            var accepted = confirm(message);
-
-            if (!accepted)
-              return false;
-        }
-
-                	if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
-                	    return false;
-
-                clearFloaterErrorMessages();
-
-        if ($('#adminPanel_extension_form_editUser').attr('submitting')) {
-          return false;
-        }
-        else {
-          $('#adminPanel_extension_form_editUser').attr('submitting', true);
-          return true;
-        }
-            	},
-    success: function(result) {
-        $('#adminPanel_extension_form_editUser').removeAttr('submitting');
-
-        for (var fieldName in result.errors)
-          setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-        
-        if (result.errors.length == 0) {
-          hook_users_changed();
-          adminPanel_extension_refreshSubtab('groups');
-          floaterClose();
-        }
-
-        return false;
-    },
-     'error': function() {
-       $('#adminPanel_extension_form_editUser').removeAttr('submitting');
-     }
-	    }; 
-
-        var memberships = <?php echo json_encode($this->membershipRoles); ?>;
-	 
-	    $('#adminPanel_extension_form_editUser').ajaxForm(options); 
-
-
-            function deleteButtonClicked() {
-              var row = $(this).parent().parent()[0];
-              var id = $('#groupsTable', row).val();
-              var text = $('td', row).first().text().trim();
-              $('#newGroup').append('<option label = "' + text + '" value = "' + id + '">' + text + '</option>');
-              $(row).remove();
-              
-              if ($('#newGroup option').length > 1)
-                $('#groupstab .addRow').show();
-            }
-            
-            $('#groupstab .deleteButton').click(deleteButtonClicked);
-
-            $('#newGroup').change(function() {
-              if ($(this).val() == -1) return;
-
-              var membershipRoleSelect = '<select name="membershipRoles[]">';
-              $.each(memberships, function(key, value){
-                  membershipRoleSelect += '<option value="' + key + '">' + value + '</option>';
-              });
-              membershipRoleSelect += '</select>';
-
-              var row = $('<tr>' + 
-                '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedGroups[]" value="' + $(this).val() + '"/></td>' +
-                '<td>' + membershipRoleSelect + '</td>' +
-                '<td> <a class="deleteButton">' + 
-                '<img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" />' +
-                '</a> </td>' +
-                '</tr>');
-              $('#groupstab .groupsTable tr.addRow').before(row);
-              $('.deleteButton', row).click(deleteButtonClicked);
-              
-              $('option:selected', this).remove();
-
-              $(this).val(-1);
-              
-              if ($('option', this).length <= 1)
-                $('#groupstab .addRow').hide();
-            });
-
-            $('#floater_innerwrap').tabs({ selected: 0 });
-
-             // uniform will mess up cloning select elements, which already are "uniformed"
-             // maybe the issue is the same? https://github.com/pixelmatrix/uniform/pull/138
-//               $("select, input:checkbox, input:radio, input:file").uniform();
-             var optionsToRemove = new Array();
-                 $('select.groups').each(function(index) {
-                         if($(this).val() != '') {
-                                 $(this).children('[value=""]').remove();
-                                                 optionsToRemove.push($(this).val());
-                         }
-             });
-             var len = 0;
-             for(var i=0, len=optionsToRemove.length; i<len; i++) {
-                 $('.groups option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
-             }
-             var previousValue;
-             var previousText;
-                 $('.groups').on('focus', function() {
-                        previousValue = this.value;
-                previousText = $(this).children('[value="'+previousValue+'"]').text();
-                 }).on('change', function() {
-                        if(previousValue != '') {
-                                // the value we "deselected" has to be added to all other dropdowns to select it again
-                     $('.groups').each(function(index) {
-                             if($(this).children('[value="'+previousValue+'"]').length == 0) {
-                                $(this).append('<option label="'+previousText+'" value="'+previousValue+'">'+previousText+'</option>');
-                             }
-                   });
-                                } 
-                                // add a new one if the value is in the last field, the value is not empty and there are more options to choose from
-                if($(this).val() != '' && $(this).closest('tr').next().length <= 0 && $(this).children().length > 2) {
-                                var label = $(this).val();
-                        $(this).children('[value=""]').remove();
-                        var tr = $(this).closest('tr');
-                                        var newSelect = tr.clone();
-                                        newSelect.find('select').prepend('<option value=""></option>');
-                                        newSelect.find('select').val('');
-                                        newSelect.find('option[value="'+label+'"]').remove();
-                                        tr.after(newSelect);
-                    }
-                                return true;
-                 });
-
-        }); 
-    </script>
-
 <div id="floater_innerwrap">
     
     <div id="floater_handle">
@@ -276,3 +134,144 @@
         </form>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var options = {
+            beforeSubmit:  function() {
+
+                var oldGlobalRoleID = <?php echo $this->user_details['globalRoleID']; ?>;
+
+                if ($('#globalRoleID').val() != oldGlobalRoleID && $('input[name="id"]').val() == userID) {
+                    var message = "<?php echo $this->pureJsEscape($this->kga['lang']['confirmations']['ownGlobalRoleChange']); ?>";
+                    message = message.replace(/%OLD%/, $("#globalRoleID>option[value='"+oldGlobalRoleID+"']").text());
+                    message = message.replace(/%NEW%/, $("#globalRoleID>option:selected").text());
+                    var accepted = confirm(message);
+
+                    if (!accepted)
+                        return false;
+                }
+
+                if ($('#password').val() != '' && !validatePassword($('#password').val(),$('#retypePassword').val()))
+                    return false;
+
+                clearFloaterErrorMessages();
+
+                if ($('#adminPanel_extension_form_editUser').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#adminPanel_extension_form_editUser').attr('submitting', true);
+                    return true;
+                }
+            },
+            success: function(result) {
+                $('#adminPanel_extension_form_editUser').removeAttr('submitting');
+
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
+                    hook_users_changed();
+                    adminPanel_extension_refreshSubtab('groups');
+                    floaterClose();
+                }
+
+                return false;
+            },
+            'error': function() {
+                $('#adminPanel_extension_form_editUser').removeAttr('submitting');
+            }
+        };
+
+        var memberships = <?php echo json_encode($this->membershipRoles); ?>;
+
+        $('#adminPanel_extension_form_editUser').ajaxForm(options);
+
+
+        function deleteButtonClicked() {
+            var row = $(this).parent().parent()[0];
+            var id = $('#groupsTable', row).val();
+            var text = $('td', row).first().text().trim();
+            $('#newGroup').append('<option label = "' + text + '" value = "' + id + '">' + text + '</option>');
+            $(row).remove();
+
+            if ($('#newGroup option').length > 1)
+                $('#groupstab .addRow').show();
+        }
+
+        $('#groupstab .deleteButton').click(deleteButtonClicked);
+
+        $('#newGroup').change(function() {
+            if ($(this).val() == -1) return;
+
+            var membershipRoleSelect = '<select name="membershipRoles[]">';
+            $.each(memberships, function(key, value){
+                membershipRoleSelect += '<option value="' + key + '">' + value + '</option>';
+            });
+            membershipRoleSelect += '</select>';
+
+            var row = $('<tr>' +
+                '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedGroups[]" value="' + $(this).val() + '"/></td>' +
+                '<td>' + membershipRoleSelect + '</td>' +
+                '<td> <a class="deleteButton">' +
+                '<img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" />' +
+                '</a> </td>' +
+                '</tr>');
+            $('#groupstab .groupsTable tr.addRow').before(row);
+            $('.deleteButton', row).click(deleteButtonClicked);
+
+            $('option:selected', this).remove();
+
+            $(this).val(-1);
+
+            if ($('option', this).length <= 1)
+                $('#groupstab .addRow').hide();
+        });
+
+        $('#floater_innerwrap').tabs({ selected: 0 });
+
+        // uniform will mess up cloning select elements, which already are "uniformed"
+        // maybe the issue is the same? https://github.com/pixelmatrix/uniform/pull/138
+//               $("select, input:checkbox, input:radio, input:file").uniform();
+        var optionsToRemove = new Array();
+        $('select.groups').each(function(index) {
+            if($(this).val() != '') {
+                $(this).children('[value=""]').remove();
+                optionsToRemove.push($(this).val());
+            }
+        });
+        var len = 0;
+        for(var i=0, len=optionsToRemove.length; i<len; i++) {
+            $('.groups option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
+        }
+        var previousValue;
+        var previousText;
+        $('.groups').on('focus', function() {
+            previousValue = this.value;
+            previousText = $(this).children('[value="'+previousValue+'"]').text();
+        }).on('change', function() {
+            if(previousValue != '') {
+                // the value we "deselected" has to be added to all other dropdowns to select it again
+                $('.groups').each(function(index) {
+                    if($(this).children('[value="'+previousValue+'"]').length == 0) {
+                        $(this).append('<option label="'+previousText+'" value="'+previousValue+'">'+previousText+'</option>');
+                    }
+                });
+            }
+            // add a new one if the value is in the last field, the value is not empty and there are more options to choose from
+            if($(this).val() != '' && $(this).closest('tr').next().length <= 0 && $(this).children().length > 2) {
+                var label = $(this).val();
+                $(this).children('[value=""]').remove();
+                var tr = $(this).closest('tr');
+                var newSelect = tr.clone();
+                newSelect.find('select').prepend('<option value=""></option>');
+                newSelect.find('select').val('');
+                newSelect.find('option[value="'+label+'"]').remove();
+                tr.after(newSelect);
+            }
+            return true;
+        });
+
+    });
+</script>

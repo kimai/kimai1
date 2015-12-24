@@ -1,24 +1,3 @@
-    <script type="text/javascript"> 
-        
-        $(document).ready(function() {
-            $('#help').hide();
-            $('#floater input#timeformat').prop('value',$('#export_extension_timeformat').prop('value'));
-            $('#floater input#dateformat').prop('value',$('#export_extension_dateformat').prop('value'));
-            $('#floater input#default_location').prop('value',$('#export_extension_default_location').prop('value'));
-            $('#floater input#axValue').prop('value',filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"));
-            $('#floater input#filter_cleared').prop('value',$('#export_extension_tab_filter_cleared').prop('value'));
-            $('#floater input#filter_refundable').prop('value',$('#export_extension_tab_filter_refundable').prop('value'));
-            $('#floater input#filter_type').prop('value',$('#export_extension_tab_filter_type').prop('value'));
-            $('#floater input#axColumns').prop('value',export_enabled_columns());
-            $('.floater_content fieldset label').css('width','200px');
-            
-            $('#floater input#first_day').prop('value',new Date($('#pick_in').val()).getTime()/1000);
-            $('#floater input#last_day').prop('value',new Date($('#pick_out').val()).getTime()/1000);
-        }); 
-        
-    </script>
-
-
 <div id="floater_innerwrap">
 
     <div id="floater_handle">
@@ -112,3 +91,20 @@
 
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#help').hide();
+        $('#floater input#timeformat').prop('value',$('#export_extension_timeformat').prop('value'));
+        $('#floater input#dateformat').prop('value',$('#export_extension_dateformat').prop('value'));
+        $('#floater input#default_location').prop('value',$('#export_extension_default_location').prop('value'));
+        $('#floater input#axValue').prop('value',filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":")+'|'+filterActivities.join(":"));
+        $('#floater input#filter_cleared').prop('value',$('#export_extension_tab_filter_cleared').prop('value'));
+        $('#floater input#filter_refundable').prop('value',$('#export_extension_tab_filter_refundable').prop('value'));
+        $('#floater input#filter_type').prop('value',$('#export_extension_tab_filter_type').prop('value'));
+        $('#floater input#axColumns').prop('value',export_enabled_columns());
+        $('.floater_content fieldset label').css('width','200px');
+
+        $('#floater input#first_day').prop('value',new Date($('#pick_in').val()).getTime()/1000);
+        $('#floater input#last_day').prop('value',new Date($('#pick_out').val()).getTime()/1000);
+    });
+</script>
