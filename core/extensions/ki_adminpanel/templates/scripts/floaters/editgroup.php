@@ -8,7 +8,9 @@
     </div>
 
     <div class="floater_content">
-        <form id="adminPanel_extension_form_editGroup" action="../extensions/ki_adminpanel/processor.php" method="post"> 
+        <form id="adminPanel_extension_form_editGroup" action="../extensions/ki_adminpanel/processor.php" method="post">
+            <input type="hidden" name="id" value="<?php echo $this->group_details['groupID']?>" />
+            <input type="hidden" name="axAction" value="sendEditGroup" />
             <fieldset>
                 <ul>
                     <li>
@@ -17,8 +19,6 @@
                     </li>
                                                 
                 </ul>
-                <input name="id" type="hidden" value="<?php echo $this->group_details['groupID']?>" />
-                <input name="axAction" type="hidden" value="sendEditGroup" />
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
                     <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />

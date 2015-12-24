@@ -36,11 +36,11 @@
     </div>
 
     <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post"> 
-    <input name="id" type="hidden" value="<?php echo $this->id?>" />
-    <input name="axAction" type="hidden" value="add_edit_timeSheetEntry" />
-	<input id="stepMinutes" type="hidden" value="<?php echo $this->kga['conf']['roundMinutes']?>" />
-	<input id="stepSeconds" type="hidden" value="<?php echo $this->kga['conf']['roundSeconds']?>" />
-	<input id="roundTimesheetEntries" type="hidden" value="<?php echo $this->kga['conf']['roundTimesheetEntries']?>" />
+    <input type="hidden" name="id" value="<?php echo $this->id?>" />
+    <input type="hidden" name="axAction" value="add_edit_timeSheetEntry" />
+	<input type="hidden" id="stepMinutes" value="<?php echo $this->kga['conf']['roundMinutes']?>" />
+	<input type="hidden" id="stepSeconds" value="<?php echo $this->kga['conf']['roundSeconds']?>" />
+	<input type="hidden" id="roundTimesheetEntries" value="<?php echo $this->kga['conf']['roundTimesheetEntries']?>" />
 
     <div id="floater_tabs" class="floater_content">
             <fieldset id="general">

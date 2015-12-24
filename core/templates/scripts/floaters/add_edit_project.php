@@ -1,113 +1,3 @@
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#addProject').ajaxForm({
-              'beforeSubmit': function() { 
-                clearFloaterErrorMessages();
-
-                if ($('#addProject').attr('submitting')) {
-                  return false;
-                }
-                else {
-                  $('#addProject').attr('submitting', true);
-                  return true;
-                }
-              },
-              'success': function(result) {
-                $('#addProject').removeAttr('submitting');
-
-                for (var fieldName in result.errors)
-                  setFloaterErrorMessage(fieldName,result.errors[fieldName]);
-
-                if (result.errors.length == 0) {
-                  floaterClose();
-                  hook_projects_changed();
-                  hook_activities_changed();
-                }
-            },
-            'error' : function() {
-                $('#addProject').removeAttr('submitting');
-            }});
-
-
-            function deleteButtonClicked() {
-              var row = $(this).parent().parent()[0];
-              var id = $('#assignedActivities', row).val();
-              var text = $('td', row).text().trim();
-              $('#newActivity').append('<option label = "' + text + '" value = "' + id + '">' + text + '</option>');
-              $(row).remove();
-              
-              if ($('#newActivity option').length > 1)
-                $('#activitiestab .addRow').show();
-            }
-            
-            $('#activitiestab .deleteButton').click(deleteButtonClicked);
-
-            $('#newActivity').change(function() {
-              if ($(this).val() == -1) return;
-
-              var row = $('<tr>' + 
-                '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedActivities[]" value="' + $(this).val() + '"/></td>' +
-                '<td><input type="text" name="budget[]"/></td>' +
-                '<td><input type="text" name="effort[]"/></td>' +
-                '<td><input type="text" name="approved[]"/></td>' +
-                '<td> <a class="deleteButton">' + 
-                '<img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" />' +
-                '</a> </td>' +
-                '</tr>');
-              $('#activitiestab .activitiesTable tr.addRow').before(row);
-              $('.deleteButton', row).click(deleteButtonClicked);
-              
-              $('option:selected', this).remove();
-
-              $(this).val(-1);
-              
-              if ($('option', this).length <= 1)
-                $('#activitiestab .addRow').hide();
-            });
-
-             $('#floater_innerwrap').tabs({ selected: 0 });
-
-             var optionsToRemove = new Array();
-                 $('select.activities').each(function(index) {
-	                 if($(this).val() != '') {
-	                	 $(this).children('[value=""]').remove();
-		   				 optionsToRemove.push($(this).val());
-	                 }
-             });
-             var len = 0;
-             for(var i=0, len=optionsToRemove.length; i<len; i++) {
-            	 $('.activities option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
-             }
-             var previousValue;
-             var previousText;
-          	 $('.activities').on('focus', function() {
-           		previousValue = this.value;
-                previousText = $(this).children('[value="'+previousValue+'"]').text();
-          	 }).on('change', function() {
-      			if(previousValue != '') {
-          			// the value we "deselected" has to be added to all other dropdowns to select it again
-     	             $('.activities').each(function(index) {
-         	             if($(this).children('[value="'+previousValue+'"]').length == 0) {
-      	            		$(this).append('<option label="'+previousText+'" value="'+previousValue+'">'+previousText+'</option>');
-         	             }
-                   });
-				} 
-				// add a new one if the value is in the last field, the value is not empty and there are more options to choose from
-                if($(this).val() != '' && $(this).closest('tr').next().length <= 0 && $(this).children().length > 2) {
-          			var label = $(this).val();
-                  	$(this).children('[value=""]').remove();
-	               	var tr = $(this).closest('tr');
-	 				var newSelect = tr.clone();
-	 				newSelect.find('select').prepend('<option value=""></option>');
-	 				newSelect.find('select').val('');
-	 				newSelect.find('option[value="'+label+'"]').remove();
-	 				tr.after(newSelect);
-                    }
- 				return true;
-          	 });
-        }); 
-    </script>
-
 <div id="floater_innerwrap">
 
 <div id="floater_handle"><span id="floater_title">
@@ -281,3 +171,112 @@
 	class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' /></div>
 </form>
 </div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#addProject').ajaxForm({
+            'beforeSubmit': function() {
+                clearFloaterErrorMessages();
+
+                if ($('#addProject').attr('submitting')) {
+                    return false;
+                }
+                else {
+                    $('#addProject').attr('submitting', true);
+                    return true;
+                }
+            },
+            'success': function(result) {
+                $('#addProject').removeAttr('submitting');
+
+                for (var fieldName in result.errors)
+                    setFloaterErrorMessage(fieldName,result.errors[fieldName]);
+
+                if (result.errors.length == 0) {
+                    floaterClose();
+                    hook_projects_changed();
+                    hook_activities_changed();
+                }
+            },
+            'error' : function() {
+                $('#addProject').removeAttr('submitting');
+            }});
+
+
+        function deleteButtonClicked() {
+            var row = $(this).parent().parent()[0];
+            var id = $('#assignedActivities', row).val();
+            var text = $('td', row).text().trim();
+            $('#newActivity').append('<option label = "' + text + '" value = "' + id + '">' + text + '</option>');
+            $(row).remove();
+
+            if ($('#newActivity option').length > 1)
+                $('#activitiestab .addRow').show();
+        }
+
+        $('#activitiestab .deleteButton').click(deleteButtonClicked);
+
+        $('#newActivity').change(function() {
+            if ($(this).val() == -1) return;
+
+            var row = $('<tr>' +
+                '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedActivities[]" value="' + $(this).val() + '"/></td>' +
+                '<td><input type="text" name="budget[]"/></td>' +
+                '<td><input type="text" name="effort[]"/></td>' +
+                '<td><input type="text" name="approved[]"/></td>' +
+                '<td> <a class="deleteButton">' +
+                '<img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" />' +
+                '</a> </td>' +
+                '</tr>');
+            $('#activitiestab .activitiesTable tr.addRow').before(row);
+            $('.deleteButton', row).click(deleteButtonClicked);
+
+            $('option:selected', this).remove();
+
+            $(this).val(-1);
+
+            if ($('option', this).length <= 1)
+                $('#activitiestab .addRow').hide();
+        });
+
+        $('#floater_innerwrap').tabs({ selected: 0 });
+
+        var optionsToRemove = new Array();
+        $('select.activities').each(function(index) {
+            if($(this).val() != '') {
+                $(this).children('[value=""]').remove();
+                optionsToRemove.push($(this).val());
+            }
+        });
+        var len = 0;
+        for(var i=0, len=optionsToRemove.length; i<len; i++) {
+            $('.activities option[value="'+optionsToRemove[i]+'"]').not(':selected').remove();
+        }
+        var previousValue;
+        var previousText;
+        $('.activities').on('focus', function() {
+            previousValue = this.value;
+            previousText = $(this).children('[value="'+previousValue+'"]').text();
+        }).on('change', function() {
+            if(previousValue != '') {
+                // the value we "deselected" has to be added to all other dropdowns to select it again
+                $('.activities').each(function(index) {
+                    if($(this).children('[value="'+previousValue+'"]').length == 0) {
+                        $(this).append('<option label="'+previousText+'" value="'+previousValue+'">'+previousText+'</option>');
+                    }
+                });
+            }
+            // add a new one if the value is in the last field, the value is not empty and there are more options to choose from
+            if($(this).val() != '' && $(this).closest('tr').next().length <= 0 && $(this).children().length > 2) {
+                var label = $(this).val();
+                $(this).children('[value=""]').remove();
+                var tr = $(this).closest('tr');
+                var newSelect = tr.clone();
+                newSelect.find('select').prepend('<option value=""></option>');
+                newSelect.find('select').val('');
+                newSelect.find('option[value="'+label+'"]').remove();
+                tr.after(newSelect);
+            }
+            return true;
+        });
+    });
+</script>

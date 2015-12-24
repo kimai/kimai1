@@ -27,8 +27,8 @@
         </ul>
     </div>
     <form id="ts_ext_form_add_edit_timeSheetQuickNote" action="../extensions/ki_timesheets/processor.php" method="post">
-        <input name="id" type="hidden" value="<?php echo $this->id; ?>"/>
-        <input name="axAction" type="hidden" value="add_edit_timeSheetQuickNote"/>
+        <input type="hidden" name="id" value="<?php echo $this->id; ?>"/>
+        <input type="hidden" name="axAction" value="add_edit_timeSheetQuickNote"/>
         <input type="hidden" name="userID" value="<?php echo $this->kga['user']['userID']; ?>"/>
         <input type="hidden" name="projectID" value="<?php $this->escape($this->projectID); ?>"/>
         <input type="hidden" name="activityID" value="<?php $this->escape($this->activityID); ?>"/>

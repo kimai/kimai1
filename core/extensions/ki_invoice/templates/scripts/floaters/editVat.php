@@ -11,8 +11,8 @@
 
         
         <form id="invoice_extension_editVat" action="../extensions/ki_invoice/processor.php" method="post">
-        <input name="id" type="hidden" value="0" />
-        <input name="axAction" type="hidden" value="editVat" />
+        <input type="hidden" name="id" value="0" />
+        <input type="hidden" name="axAction" value="editVat" />
             <fieldset>   
 
                 

@@ -35,12 +35,10 @@
 
     <form id="add_edit_activity" action="processor.php" method="post">
 
-        <input name="activityFilter"   type="hidden" value="0" />
-
-        <input name="axAction" type="hidden" value="add_edit_CustomerProjectActivity" />
-        <input name="axValue" type="hidden" value="activity" />
-        <input name="id" type="hidden" value="<?php echo $this->id; ?>" />
-
+        <input type="hidden" name="activityFilter" value="0" />
+        <input type="hidden" name="axAction" value="add_edit_CustomerProjectActivity" />
+        <input type="hidden" name="axValue" value="activity" />
+        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
 
         <div id="floater_tabs" class="floater_content">
             <fieldset id="general">

@@ -42,8 +42,8 @@
     </div>
 
     <form id="adminPanel_extension_form_editRole" action="../extensions/ki_adminpanel/processor.php" method="post"> 
-      <input name="id" type="hidden" value="<?php echo $this->id?>" />
-      <input name="axAction" type="hidden" value="<?php echo $this->action;?>" />
+      <input type="hidden" name="id" value="<?php echo $this->id?>" />
+      <input type="hidden" name="axAction" value="<?php echo $this->action;?>" />
 
       <div id="floater_tabs" class="floater_content">
             <fieldset id="general">

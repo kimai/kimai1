@@ -31,8 +31,8 @@
     </div>
 
     <form id="expense_extension_form_add_edit_record" action="../extensions/ki_expenses/processor.php" method="post"> 
-                <input name="id" type="hidden" value="<?php echo $this->id?>" />
-                <input name="axAction" type="hidden" value="add_edit_record" />
+                <input type="hidden" name="id" value="<?php echo $this->id?>" />
+                <input type="hidden" name="axAction" value="add_edit_record" />
 
 
     <div id="floater_tabs" class="floater_content">

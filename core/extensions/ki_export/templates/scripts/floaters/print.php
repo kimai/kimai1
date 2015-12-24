@@ -16,7 +16,18 @@
     <div class="floater_content">
 
         
-        <form id="export_extension_form_print" action="../extensions/ki_export/processor.php" method="post" target="_blank"> 
+        <form id="export_extension_form_print" action="../extensions/ki_export/processor.php" method="post" target="_blank">
+            <input type="hidden" name="axAction" value="export_html" />
+            <input type="hidden" name="axValue" id="axValue" value="" />
+            <input type="hidden" name="first_day" id="first_day" value="" />
+            <input type="hidden" name="last_day" id="last_day" value="" />
+            <input type="hidden" name="axColumns"  id="axColumns" value=""/>
+            <input type="hidden" name="timeformat" id="timeformat" value=""/>
+            <input type="hidden" name="dateformat" id="dateformat" value=""/>
+            <input type="hidden" name="default_location" id="default_location" value=""/>
+            <input type="hidden" name="filter_cleared" id="filter_cleared" value=""/>
+            <input type="hidden" name="filter_refundable" id="filter_refundable" value=""/>
+            <input type="hidden" name="filter_type" id="filter_type" value=""/>
             <fieldset>                  
 
 		        <ul>
@@ -34,18 +45,6 @@
                        <input type="checkbox" value="true" name="reverse_order" id="reverse_order" <?php if ($this->prefs['reverse_order']): ?> checked="checked" <?php endif; ?>/>
                    </li>
 				</ul>
-
-                <input name="axAction" type="hidden" value="export_html" />
-                <input name="axValue" id="axValue" type="hidden" value="" />
-                <input name="first_day" id="first_day" type="hidden" value="" />
-                <input name="last_day" id="last_day" type="hidden" value="" />
-                <input name="axColumns"  id="axColumns" type="hidden" value=""/>
-                <input name="timeformat" id="timeformat" type="hidden" value=""/>
-                <input name="dateformat" id="dateformat" type="hidden" value=""/>
-                <input name="default_location" id="default_location" type="hidden" value=""/>
-                <input name="filter_cleared" id="filter_cleared" type="hidden" value=""/>
-                <input name="filter_refundable" id="filter_refundable" type="hidden" value=""/>
-                <input name="filter_type" id="filter_type" type="hidden" value=""/>
 
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />

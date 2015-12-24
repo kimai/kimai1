@@ -39,10 +39,10 @@
     </div>
     
     <form id="add_edit_customer" action="processor.php" method="post"> 
-        <input name="customerFilter"   type="hidden" value="0" />
-        <input name="axAction"     type="hidden" value="add_edit_CustomerProjectActivity" />
-        <input name="axValue"      type="hidden" value="customer" />
-        <input name="id"           type="hidden" value="<?php echo $this->id?>" />
+        <input type="hidden" name="customerFilter" value="0"/>
+        <input type="hidden" name="axAction" value="add_edit_CustomerProjectActivity" />
+        <input type="hidden" name="axValue" value="customer" />
+        <input type="hidden" name="id" value="<?php echo $this->id?>" />
 
         <div id="floater_tabs" class="floater_content">
 

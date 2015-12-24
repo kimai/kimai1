@@ -25,8 +25,8 @@
         </ul>
     </div>
     <form id="core_prefs" action="processor.php" method="post">
-        <input name="axAction" type="hidden" value="editPrefs"/>
-        <input name="id" type="hidden" value="0"/>
+        <input type="hidden" name="axAction" value="editPrefs"/>
+        <input type="hidden" name="id" value="0"/>
         <div id="floater_tabs" class="floater_content">
             <fieldset id="prefGeneral">
                 <ul>

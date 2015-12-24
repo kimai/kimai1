@@ -25,7 +25,9 @@
 
     <div class="floater_content">
 
-        <form id="adminPanel_extension_form_editUser" action="../extensions/ki_adminpanel/processor.php" method="post"> 
+        <form id="adminPanel_extension_form_editUser" action="../extensions/ki_adminpanel/processor.php" method="post">
+            <input type="hidden" name="id" value="<?php echo $this->user_details['userID']?>" />
+            <input type="hidden" name="axAction" value="sendEditUser" />
             <fieldset id="general">
                 
                 <ul>
@@ -123,10 +125,6 @@
         </tr>
     </table>
   </fieldset>
-
-                <input name="id" type="hidden" value="<?php echo $this->user_details['userID']?>" />
-                <input name="axAction" type="hidden" value="sendEditUser" />
-
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel']?>' onclick='floaterClose(); return false;' />
                     <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit']?>' />
