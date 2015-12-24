@@ -2,7 +2,7 @@
     <div id="floater_handle">
         <span id="floater_title"><?php echo $this->kga['lang']['preferences'] ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close'] ?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
         </div>
     </div>
     <div class="menuBackground">

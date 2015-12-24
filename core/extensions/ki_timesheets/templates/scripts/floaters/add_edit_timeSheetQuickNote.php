@@ -7,7 +7,7 @@
                 echo $this->kga['lang']['addNote'];
             } ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close'] ?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
             <a href="#" class="help"
                onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help'] ?></a>
         </div>

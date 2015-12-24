@@ -48,7 +48,7 @@
     <div id="floater_handle">
         <span id="floater_title"><?php echo !isset($this->id) ? $this->kga['lang']['add'] : $this->kga['lang']['edit']?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();"><?php echo $this->kga['lang']['close']?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close']?></a>
             <a href="#" class="help" onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help']?></a>
         </div>  
     </div>
