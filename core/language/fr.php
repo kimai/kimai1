@@ -101,7 +101,7 @@ return array(
 "username"          => "Usager",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
-"retypePassword"    => "réécrire le mot de passe",
+"retypePassword"    => "Confirmer le mot de passe",
 "passwordsDontMatch" => "les mots de passe entrés ne concordent pas.",
 "passwordTooShort"  => "le mot de passe est de moins de 5 caractères.",
 "forgotPassword"    => "Mot de passe oublié",
