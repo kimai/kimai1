@@ -568,7 +568,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'extensions' => array(
 "adminPanel_extension" => "Panneau d'administration",
 'ki_timesheet' => 'Feuille de temps',
-'ki_timesheets' => 'Feuille de temps',
+'ki_timesheets' => 'Feuilles de temps',
 'ki_expenses' => 'Dépenses',
 'ki_invoice' => 'Facturation',
 'deb_ext' => 'Débugage',
