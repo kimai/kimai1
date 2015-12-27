@@ -101,7 +101,7 @@ return array(
 "username"          => "Usager",
 "password"          => "Mot de passe",
 "newPassword"       => "Nouveau mot de passe",
-"retypePassword"    => "réécrire le mot de passe",
+"retypePassword"    => "Confirmer le mot de passe",
 "passwordsDontMatch" => "les mots de passe entrés ne concordent pas.",
 "passwordTooShort"  => "le mot de passe est de moins de 5 caractères.",
 "forgotPassword"    => "Mot de passe oublié",
@@ -568,7 +568,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
 'extensions' => array(
 "adminPanel_extension" => "Panneau d'administration",
 'ki_timesheet' => 'Feuille de temps',
-'ki_timesheets' => 'Feuille de temps',
+'ki_timesheets' => 'Feuilles de temps',
 'ki_expenses' => 'Dépenses',
 'ki_invoice' => 'Facturation',
 'deb_ext' => 'Débugage',
