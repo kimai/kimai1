@@ -469,9 +469,11 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
     ),
 
     'ext_invoice' => array(
-        "invoiceTemplate" => "Rechnungsvorlage:",
         "invoiceTitle" => "Rechnung Erstellen",
-        "invoiceTimePeriod" => "Zeitspanne:",
+        "invoiceCustomer" => "Kunde",
+        "invoiceProject" => "Projekter",
+        "invoiceTimePeriod" => "Zeitspanne",
+        "invoiceTemplate" => "Rechnungsvorlage",
         "invoiceOptionShort" => "Kurze Abrechnung",
         "invoiceOptionRound" => "Zeiten Runden",
         "invoiceButton" => "Erstellen",

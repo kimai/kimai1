@@ -472,9 +472,9 @@ Kimaiをクリーンインストールができるために、別の接頭辞を
 	),
 
 	'ext_invoice' => array(
-		"invoiceTemplate" => "請求書テンプレート：",
 		"invoiceTitle" => "請求書作成",
-		"invoiceTimePeriod" => "期間:",
+		"invoiceTimePeriod" => "期間",
+		"invoiceTemplate" => "請求書テンプレート",
 		"invoiceOptionShort" => "小請求書",
 		"invoiceOptionRound" => "概時間",
 		"invoiceButton" => "作成",

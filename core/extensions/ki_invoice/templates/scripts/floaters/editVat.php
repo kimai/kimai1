@@ -7,11 +7,10 @@
     </div>
     <div class="floater_content">
         <form id="invoice_extension_editVat" action="../extensions/ki_invoice/processor.php" method="post">
-            <input type="hidden" name="id" value="0"/>
             <input type="hidden" name="axAction" value="editVat"/>
             <fieldset>
                 <label for="vat"><?php echo $this->kga['lang']['vat'] ?></label>
-                <input size="4" name="vat" id="vat" type="text" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>"/>
+                <input type="number" name="vat" id="vat" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>" style="width: 50px;"/>
                 %
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
@@ -23,17 +22,13 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var $invoice_extension_editVat = $('#invoice_extension_editVat');
-        $invoice_extension_editVat.ajaxForm(function () {
-            floaterClose();
-        });
-        var options = {
+        $invoice_extension_editVat.ajaxForm({
             success: function (response) {
                 if (response == 1) {
                     $('#defaultVat').html($('#vat').val());
                 }
                 floaterClose();
             }
-        };
-        $invoice_extension_editVat.ajaxForm(options);
+        });
     });
 </script>

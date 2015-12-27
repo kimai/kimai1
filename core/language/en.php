@@ -473,16 +473,17 @@ Choose another table prefix or delete existing tables with this prefix in order 
     ),
 
     'ext_invoice' => array(
-        "invoiceTemplate" => "Invoice template:",
-        "invoiceTitle" => "Create invoice",
-        "invoiceProject" => "Projects:",
-        "invoiceTimePeriod" => "Time Period:",
-        "invoiceOptionShort" => "Short Invoice",
-        "invoiceOptionRound" => "Round time",
-        "invoiceButton" => "Create",
+        'invoiceTitle' => 'Create invoice',
+        'invoiceCustomer' => 'Customer',
+        'invoiceProject' => 'Projects',
+        'invoiceTimePeriod' => 'Time Period',
+        'invoiceTemplate' => 'Invoice template',
+        'defaultVat' => 'Default VAT rate',
+        'invoiceOptionShort' => 'Short Invoice',
+        'invoiceOptionRound' => 'Round time',
+        'invoiceButton' => 'Create',
         'noData' => 'There are no time entries for the selected project & time period.',
         'noProject' => 'No project was selected.',
-        'defaultVat' => 'Default VAT rate'
     ),
 
     'ext_budget' => array(

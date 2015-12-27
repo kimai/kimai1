@@ -469,12 +469,12 @@ Choose another table prefix or delete existing tables with this prefix in order 
     ),
 
     'ext_invoice' => array(
-        "invoiceTemplate" => "Шаблон:",
-        "invoiceTitle" => "Создать счет на оплату",
-        "invoiceTimePeriod" => "Период:",
-        "invoiceOptionShort" => "Краткий счет",
-        "invoiceOptionRound" => "Округлять время",
-        "invoiceButton" => "Выписать",
+        'invoiceTitle' => 'Создать счет на оплату',
+        'invoiceTimePeriod' => 'Период',
+        'invoiceTemplate' => 'Шаблон',
+        'invoiceOptionShort' => 'Краткий счет',
+        'invoiceOptionRound' => 'Округлять время',
+        'invoiceButton' => 'Выписать',
         'noData' => 'Нет записей за текущий перион.',
         'noProject' => 'Проект не выбран.',
         'defaultVat' => 'Размер налога'
