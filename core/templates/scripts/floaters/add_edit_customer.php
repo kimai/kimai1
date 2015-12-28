@@ -49,8 +49,8 @@
             <fieldset id="general">
                 <ul>
                     <li>
-                        <label for="name"><?php echo $this->kga['lang']['customer'] ?>:</label>
-                        <?php echo $this->formText('name', $this->name); ?>
+                        <label for="name"><?php echo $this->kga['lang']['customer'] ?>*:</label>
+                        <?php echo $this->formText('name', $this->name, array('required' => 'required')); ?>
                     </li>
                     <li>
                         <label for="vat"><?php echo $this->kga['lang']['vat'] ?>:</label>

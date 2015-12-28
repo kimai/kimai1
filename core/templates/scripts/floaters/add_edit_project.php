@@ -46,8 +46,8 @@
         <div id="floater_tabs" class="floater_content">
             <fieldset id="general">
                 <ul>
-                    <li><label for="name"><?php echo $this->kga['lang']['project'] ?>:</label>
-                        <?php echo $this->formText('name', $this->name); ?> </li>
+                    <li><label for="name"><?php echo $this->kga['lang']['project'] ?>*:</label>
+                        <?php echo $this->formText('name', $this->name, array('required' => 'required')); ?> </li>
                     <li><label for="customerID"><?php echo $this->kga['lang']['customer'] ?>:</label>
                         <?php echo $this->formSelect('customerID', $this->selectedCustomer, array('class' => 'formfield'), $this->customers); ?>
                     </li>
