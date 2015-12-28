@@ -1,12 +1,4 @@
 <?php
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * @author heiglandreas
- */
 
 // TODO: check include path
 ini_set ( 'date.timezone', 'Europe/Berlin' );
@@ -16,8 +8,8 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 }
 
 ini_set('include_path', ini_get('include_path')
-                        . PATH_SEPARATOR . __DIR__ . '/library'
-                        . PATH_SEPARATOR . __DIR__ . '/../core/libraries'
+    . PATH_SEPARATOR . __DIR__ . '/library'
+    . PATH_SEPARATOR . __DIR__ . '/../core/libraries'
 );
 
 class UnitTestHelper
