@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./test/bootstrap.php">
+<phpunit bootstrap="./tests/bootstrap.php">
     <testsuite name="Kimai Application-Test Suite">
-        <directory>./test/library</directory>
+        <directory>./tests/library</directory>
     </testsuite>
     <groups>
         <exclude>
