@@ -299,7 +299,7 @@ return array(
     'showCommentsByDefault' => 'show comments by default',
     'showTrackingNumber' => 'show tracking number and description details in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
-    'DefLocation' => 'Default location',
+    'defaultLocation' => 'Default location',
     'showQuickNote'	=> 'show quick note button',
     'general' => 'General',
     'address' => 'Address',

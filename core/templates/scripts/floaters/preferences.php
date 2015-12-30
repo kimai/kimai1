@@ -129,8 +129,8 @@
                         <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines'] ?>
                     </li>
                     <li>
-                        <label for="DefaultLocation"><?php echo $this->kga['lang']['DefLocation']?>:</label>
-                        <?php echo $this->formText('DefaultLocation', $this->kga['conf']['DefaultLocation'], array('size' => 20)); ?>
+                        <label for="defaultLocation"><?php echo $this->kga['lang']['defaultLocation']?>:</label>
+                        <?php echo $this->formText('defaultLocation', $this->kga['conf']['defaultLocation'], array('size' => 20)); ?>
                     </li>
                     <li>
                         <label for="showQuickNote"></label>
