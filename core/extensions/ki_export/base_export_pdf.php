@@ -48,7 +48,37 @@ class BasePDF extends TCPDF {
       return "-------";
     else
       return str_replace(".",$kga['conf']['decimalSeparator'],sprintf("%01.2f",$number))." ".$kga['lang']['export_extension']['duration_unit'];
-  } 
+  }
+  
+  /**
+   * Appen the time unit.
+   * @param string $time
+   * @return string $time + time_unit
+   */
+  public function time_unit($time) {
+    global $kga;
+    return $time." ".$kga['lang']['export_extension']['duration_unit'];
+  }
+      
+  /**
+   * Add two standard time.
+   * @param string $time, time to add the the duration time (usually in standard hours:minutes)
+   * @param string $timesum, total duration in standard time
+   * @return string added timesum+time in standard time
+   */
+  public function SumStdTime($time1,$timesum) {
+    $times = array($time1,$timesum);
+    $seconds = 0;
+    foreach ($times as $time){
+       list($hour,$minute) = explode (':', $time);
+       $seconds += $hour*3600;
+       $seconds += $minute*60;
+    }
+    $hours = floor($seconds/3600);
+    $seconds -= $hours*3600;
+    $minutes = floor($seconds/60);
+    return sprintf('% 2d:%02d', $hours, $minutes);
+  }
 
   /**
    * Format a number as a money value.

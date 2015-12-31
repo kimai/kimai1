@@ -32,10 +32,8 @@
                 <a onclick="export_toggle_column('from');"><?php echo $this->kga['lang']['in'] ?></a></td>
             <td class="to <?php if (isset($this->disabled_columns['to'])): ?> disabled <?php endif; ?>">
                 <a onclick="export_toggle_column('to');"><?php echo $this->kga['lang']['out'] ?></a></td>
-            <td class="time <?php if (isset($this->disabled_columns['time'])): ?> disabled <?php endif; ?>">
-                <a onclick="export_toggle_column('time');"><?php echo $this->kga['lang']['time'] ?></a></td>
-            <td class="dec_time <?php if (isset($this->disabled_columns['dec_time'])): ?> disabled <?php endif; ?>">
-                <a onclick="export_toggle_column('dec_time');"><?php echo $this->kga['lang']['timelabel'] ?></a></td>
+            <td class="time"><a class="time <?php if (isset($this->disabled_columns['time'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('time');"><?php echo $this->kga['lang']['time']?></a></td>
+            <td class="dec_time"><a class="dec_time <?php if (isset($this->disabled_columns['dec_time'])):?> disabled <?php endif; ?>" onClick="export_toggle_column('dec_time');"><?php echo $this->kga['lang']['timelabel']?></a></td>
             <td class="rate">
                 <a class="rate <?php if (isset($this->disabled_columns['rate'])): ?> disabled <?php endif; ?>" onclick="export_toggle_column('rate');"><?php echo $this->kga['lang']['rate_short'] ?></a>
             </td>

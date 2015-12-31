@@ -48,6 +48,13 @@
                         <input type="checkbox" value="true" name="reverse_order" id="reverse_order" <?php if ($this->prefs['reverse_order']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
+                        <label for="time_type"><?php echo $this->kga['lang']['export_extension']['time_type']?>:</label>
+                        <select name="time_type" id="time_type">
+                            <option value="dec_time" <?php if ($this->prefs['time_type'] == 'dec_time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['dec_time'] ?></option>
+                            <option value="time" <?php if ($this->prefs['time_type'] == 'time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['time'] ?></option>
+                        </select>    
+                    </li>
+                    <li>
                         <label for="document_comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
                         <textarea name="document_comment" id="document_comment"></textarea>
                     </li>
