@@ -294,7 +294,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 		$pageSetup = $this->sheet->getPageSetup();
 		
 		// when printing, show header on every page:
-		$pageSetup->setRowsToRepeatAtTop(self::EXCEL_HEADER_OFFSET); 
+		$pageSetup->setRowsToRepeatAtTopByStartAndEnd(1, self::EXCEL_HEADER_OFFSET); 
 		
 		// increase chances that page can be printed out without seperating a row's data over more than one page:
 		$pageSetup->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
