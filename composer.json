@@ -9,7 +9,7 @@
     "time": "2013-08-03",
     "version": "0.9.3-beta1",
     "config": {
-        "vendor-dir": "core/libraries",
+        "vendor-dir": "core/libraries/composer",
         "bin-dir": "bin"
     },
     "authors": [
@@ -36,22 +36,5 @@
     },
     "include-path": [
         "core/libraries"
-    ],
-    "repositories": [{
-	    "type": "package",
-	    "package": {
-	        "name": "PHPOffice/PHPExcel",
-	        "version": "1.8.0",
-	        "source": {
-	            "url": "https://github.com/PHPOffice/PHPExcel.git",
-	            "type": "git",
-	            "reference": "1.8.0"
-	        },
-	        "autoload": {
-	            "psr-0": {
-	                "PHPExcel": "Classes/"
-	            }
-	        }
-	    }
-	}]
+    ]
 }

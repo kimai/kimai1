@@ -18,7 +18,7 @@
  */
 
 // autoload composer packages:
-require 'autoload.php';
+require 'composer/autoload.php';
 
 /**
  * Helper class to export time sheets as Excel file
