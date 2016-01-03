@@ -111,7 +111,12 @@ class MYPDF extends BasePDF {
         $this->SetFont(''); 
       }
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
-      $this->Cell($w[1], 6, $row['customerName'] . ' - ' . $row['activityName'], 'LR', 0, 'L', $fill);    
+      if (isset($this->columns['trackingNumber'])){
+         $trackingnumber = " (#".$row['trackingNumber'].") - ";
+      } else {
+         $trackingnumber = "";
+      }
+      $this->Cell($w[1], 6, $trackingnumber.$row['customerName'] . ' - ' . $row['activityName'], 'LR', 0, 'L', $fill);    
       
       if (isset($this->columns['dec_time']))
         $this->Cell($w[2], 6, $this->timespan(isset($row['decimalDuration'])?$row['decimalDuration']:0), 'LR', 0, 'R', $fill); 
