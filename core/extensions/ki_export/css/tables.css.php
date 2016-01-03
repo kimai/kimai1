@@ -23,6 +23,11 @@ div.ki_export table a:hover {
 	border-bottom:none;
 }
 
+div.ki_export table a.disabled {
+    text-decoration:line-through;
+    color: #FFC7BB;
+}
+
 div.ki_export table thead {
 	height:25px;
 	text-align:left;
