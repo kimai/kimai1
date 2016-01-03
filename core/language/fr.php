@@ -45,7 +45,7 @@ return array(
     "datum" => "Date",
     "in" => "Entrée",
     "out" => "Sortie",
-    "time" => "h:mn",
+    "time" => "h:m",
     "timelabel" => "Temps",
     "starttime" => "démarrage",
     "DateTimeNotInFuture" => "Le jour et l'heure ne peuvent être dans le futur.",

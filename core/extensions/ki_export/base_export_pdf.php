@@ -61,8 +61,8 @@ class BasePDF extends TCPDF {
   }
       
   /**
-   * Add two standard time.
-   * @param string $time, time to add the the duration time (usually in standard hours:minutes)
+   * Add to standard time.
+   * @param string $time1, time to add to the duration time (usually in standard hours:minutes)
    * @param string $timesum, total duration in standard time
    * @return string added timesum+time in standard time
    */
@@ -126,7 +126,7 @@ class BasePDF extends TCPDF {
       $w[2] = 30;
       $w[0] -= 30;
     }
-    if (isset($this->columns['dec_time'])) {
+    if (isset($this->columns['dec_time']) || isset($this->columns['time'])) {
       $w[1] = 30;
       $w[0] -= 30;
     }
@@ -142,14 +142,20 @@ class BasePDF extends TCPDF {
     $fill = 0; 
     $sum = 0;
     $sum_time = 0;
+    $sum_std_time = "0:00";
     foreach($summarizedData as $row) { 
       // check if page break is nessessary
       if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20) < 0) {
         $this->Cell(array_sum($w), 0, '', 'T'); 
         $this->Ln();  
         $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false); 
-        if (isset($this->columns['dec_time']))
-          $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
+        if ($_REQUEST['time_type']=="dec_time"){
+           if (isset($this->columns['dec_time']))
+              $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
+        } else{
+            if (isset($this->columns['time']))
+                $this->Cell($w[1], 6, $this->time_unit($row['std_time']), 'R', 0, 'R', true);
+        }
         if (isset($this->columns['wage']))
           $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
         $this->Ln();  
@@ -161,24 +167,35 @@ class BasePDF extends TCPDF {
         $this->SetTextColor(0); 
         $this->SetFont(''); 
       }
-      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);    
-      if (isset($this->columns['dec_time']))
-        $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+      $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);
+      if ($_REQUEST['time_type']=="dec_time"){
+         if (isset($this->columns['dec_time']))
+            $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill); 
+      } else {   
+         if (isset($this->columns['time']))
+            $this->Cell($w[1], 6, gmdate('H:i',$row['std_time']), 'LR', 0, 'R', $fill);
+      }   
       if (isset($this->columns['wage']))
         $this->Cell($w[2], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
       $this->Ln(); 
       $fill=!$fill; 
       $sum+=$row['wage'];
       $sum_time += $row['time']==-1?0:$row['time']; 
+      $sum_std_time += $row['std_time'];
         
     }
     $this->Cell(array_sum($w), 0, '', 'T'); 
     $this->Ln();
 
     $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false); 
-    $this->SetFont('', 'B'); 
-    if (isset($this->columns['dec_time']))
-      $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
+    $this->SetFont('', 'B');
+    if ($_REQUEST['time_type']=="dec_time"){
+       if (isset($this->columns['dec_time']))
+          $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
+    } else {   
+       if (isset($this->columns['time']))
+          $this->Cell($w[1], 6, gmdate('H:i',$sum_std_time), '', 0, 'R', true);
+    }   
     if (isset($this->columns['wage']))
       $this->Cell($w[2], 6, $this->money($sum), 'L', 0, 'R', true); 
     $this->SetFont(''); 
@@ -202,17 +219,20 @@ class BasePDF extends TCPDF {
             if ($row['type'] == 'timeSheet') {
               if (isset($timeSheetSummary[$row['activityID']])) {
             $timeSheetSummary[$row['activityID']]['time']   += ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration']; //Sekunden
+            $timeSheetSummary[$row['activityID']]['std_time'] += $row['duration'];
             $timeSheetSummary[$row['activityID']]['wage']   += ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage']; //Euro
           }
             else {
               $timeSheetSummary[$row['activityID']]['name']         = html_entity_decode($row['activityName']);
               $timeSheetSummary[$row['activityID']]['time']         = ($kga['conf']['exactSums'] == 1)?$row['duration']/3600:$row['decimalDuration'];
+              $timeSheetSummary[$row['activityID']]['std_time']     = $row['duration'];
               $timeSheetSummary[$row['activityID']]['wage']         = ($kga['conf']['exactSums'] == 1)?$row['wage_decimal']:$row['wage'];
         }
             }
             else {
               $expenseInfo['name']   = $kga['lang']['export_extension']['expense'].': '.$row['projectName'];
               $expenseInfo['time']   = -1;
+              $expenseInfo['std_time']   = -1;
               $expenseInfo['wage'] = $row['wage'];
               $expenseSummary[] = $expenseInfo;
             }

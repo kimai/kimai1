@@ -26,7 +26,7 @@ switch ($axAction) {
 
     case "PDF":
       $defaults = array('print_comments'=>1, 'print_summary'=>1, 'create_bookmarks'=>1, 'download_pdf'=>1,
-           'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf', 'time_type'=>1);
+           'customer_new_page'=>0, 'reverse_order'=>0, 'pdf_format'=>'export_pdf', 'time_type'=>'dec_time');
       $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
       $view->prefs = array_merge($defaults,$prefs);
       

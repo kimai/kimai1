@@ -32,7 +32,7 @@ return array(
     "datum" => "Date",
     "in" => "In",
     "out" => "Out",
-    "time" => "h'm",
+    "time" => "h:m",
     "timelabel" => "Time",
     "starttime" => "start time",
     "DateTimeNotInFuture" => "The day and time must not be in the future.",
