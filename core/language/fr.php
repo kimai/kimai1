@@ -45,7 +45,7 @@ return array(
     "datum" => "Date",
     "in" => "Entrée",
     "out" => "Sortie",
-    "time" => "h:mn",
+    "time" => "h:m",
     "timelabel" => "Temps",
     "starttime" => "démarrage",
     "DateTimeNotInFuture" => "Le jour et l'heure ne peuvent être dans le futur.",
@@ -525,7 +525,10 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'reverse_order' => 'Entrées anciennes en premier',
         'time_period' => 'Période de temps',
 
-        'duration_unit' => 'h',
+        'duration_unit' => 'hr',
+        'time_type' => 'Format du temps',
+        'dec_time' => 'Temps decimal',
+        'time' => 'Temps standard',
     ),
 
     'permissions' => array(

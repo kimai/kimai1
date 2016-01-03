@@ -71,10 +71,10 @@ class MYPDF extends BasePDF {
       $w[3] = 30;
       $w[1] -= 30; 
     }
-    if (isset($this->columns['dec_time'])) {
-      $w[2] = 30;
-      $w[1] -= 30; 
-    }
+   if (isset($_REQUEST['time_type'])){
+        $w[2] = 30;
+        $w[1] -= 30;
+   }
 
     // Header 
     $this->printHeader($w,$header);
@@ -86,20 +86,32 @@ class MYPDF extends BasePDF {
     // Data 
     $fill = 0; 
     $moneySum = 0;
-    $timeSum = 0;
+    if ($_REQUEST['time_type']=="dec_time") {
+       $timeSum = 0;
+    } else {
+       $timeSum = "0:00";
+    }
+    
     foreach($data as $row) {
 
       $show_comment = !empty($row['comment']) && isset($_REQUEST['print_comments']);
       // check if page break is nessessary
       if ($this->getPageHeight()-$this->pagedim[$this->page]['bm']-($this->getY()+20+($show_comment?6:0)) < 0) {
         $this->Cell(array_sum($w), 0, '', 'T');
-        if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) { 
-          $this->Ln();  
-          $this->Cell($w[0]+$w[1], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false); 
-          if (isset($this->columns['dec_time']))
-            $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
-          if (isset($this->columns['wage']))
-            $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
+        if (isset($this->columns['wage']) || isset($this->columns['dec_time']) || isset($this->columns['time'])) {
+           $this->Ln();
+           $this->Cell($w[0]+$w[1], 6, $kga['lang']['export_extension']['subtotal'].':', '', 0, 'R', false);
+           if ($_REQUEST['time_type']=="dec_time"){
+              if (isset($this->columns['dec_time'])){
+                 $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true);
+              }
+           } else {
+              if (isset($this->columns['time'])){
+                 $this->Cell($w[2], 6, $this->time_unit($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true);
+              }
+           }
+           if (isset($this->columns['wage']))
+              $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
         }
         $this->Ln();  
         $this->AddPage();
@@ -113,8 +125,16 @@ class MYPDF extends BasePDF {
       $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill); 
       $this->Cell($w[1], 6, $row['customerName'] . ' - ' . $row['activityName'], 'LR', 0, 'L', $fill);    
       
-      if (isset($this->columns['dec_time']))
-        $this->Cell($w[2], 6, $this->timespan(isset($row['decimalDuration'])?$row['decimalDuration']:0), 'LR', 0, 'R', $fill); 
+      if ($_REQUEST['time_type']=="dec_time") {
+          if (isset($this->columns['dec_time'])){
+             $this->Cell($w[2], 6, $this->timespan(isset($row['decimalDuration'])?$row['decimalDuration']:0), 'LR', 0, 'R', $fill);
+          }
+      } else {
+          if (isset($this->columns['time'])){ 
+             $this->Cell($w[2], 6, $this->time_unit(isset($row['formattedDuration'])?$row['formattedDuration']:0), 'LR', 0, 'R', $fill);
+          }
+      }
+      
       if (isset($this->columns['wage']))
         $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
       $this->Ln(); 
@@ -139,9 +159,16 @@ class MYPDF extends BasePDF {
            $this->SetFont('', 'I', $comment_font_size); 
            //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
            $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
-           $this->SetFont('', '', $current_font_size); 
-            if (isset($this->columns['dec_time']))
-              $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill); 
+           $this->SetFont('', '', $current_font_size);
+           if ($_REQUEST['time_type']=="dec_time") {
+               if (isset($this->columns['dec_time'])){
+                  $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+               }
+           } else {
+               if (isset($this->columns['time'])){
+                  $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+               }
+           }   
             if (isset($this->columns['wage']))
               $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
            $this->Ln();
@@ -150,7 +177,11 @@ class MYPDF extends BasePDF {
      }
      $fill=!$fill; 
       $moneySum+=$row['wage'];
-      $timeSum += $row['decimalDuration']==-1?0:$row['decimalDuration']; 
+      if ($_REQUEST['time_type']=="dec_time") {
+         $timeSum += $row['decimalDuration']==-1?0:$row['decimalDuration'];
+      } else {
+         $timeSum = $this->SumStdTime($row['formattedDuration']==-1?0:$row['formattedDuration'],$timeSum);
+      }
         
     } 
     $this->Cell(array_sum($w), 0, '', 'T'); 
@@ -159,8 +190,15 @@ class MYPDF extends BasePDF {
     if (isset($this->columns['wage']) || isset($this->columns['dec_time'])) {
       $this->Cell($w[0]+$w[1], 6, $kga['lang']['export_extension']['finalamount'].':', '', 0, 'R', false); 
       $this->SetFont('', 'B'); 
-      if (isset($this->columns['dec_time']))
-        $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true); 
+      if ($_REQUEST['time_type']=="dec_time") {
+        if (isset($this->columns['dec_time'])) {
+           $this->Cell($w[2], 6, $this->timespan($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true);
+        }
+      } else {
+        if (isset($this->columns['time'])){
+           $this->Cell($w[2], 6, $this->time_unit($timeSum), isset($this->columns['wage'])?'R':'', 0, 'R', true);
+        }
+      } 
       if (isset($this->columns['wage']))
         $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
     }

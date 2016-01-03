@@ -426,6 +426,7 @@ switch ($axAction) {
           'download_pdf'=>isset($_REQUEST['download_pdf'])?1:0,
           'customer_new_page'=>isset($_REQUEST['customer_new_page'])?1:0, 
           'reverse_order'=>isset($_REQUEST['reverse_order'])?1:0,
+          'time_type'=>'dec_time',
           'pdf_format'=>'export_pdf'),
           'ki_export.pdf.');    
 

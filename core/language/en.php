@@ -32,7 +32,7 @@ return array(
     "datum" => "Date",
     "in" => "In",
     "out" => "Out",
-    "time" => "h'm",
+    "time" => "h:m",
     "timelabel" => "Time",
     "starttime" => "start time",
     "DateTimeNotInFuture" => "The day and time must not be in the future.",
@@ -471,6 +471,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'reverse_order' => 'older entries first',
         'time_period' => 'Time period',
         'duration_unit' => 'h',
+        'time_type' => 'Time format',
+        'dec_time' => 'Decimal time',
+        'time' => 'Standard time',
     ),
 
     'ext_invoice' => array(
