@@ -21,11 +21,6 @@ div.ki_export table a:hover {
     border-bottom:none;
 }
 
-div.ki_export table a.disabled {
-    text-decoration:line-through;
-    color: #FFC7BB;
-}
-
 div.ki_export table thead {
     height:25px;
     text-align:left;
@@ -253,6 +248,10 @@ div.ki_export table tr.even td.disabled {
   background-color:#FFE1DB !important;
 }
 
+div.ki_export table a.disabled{
+    text-decoration:line-through;
+    color: #FFC7BB;
+}
 
 div.ki_export table td.user
 {
