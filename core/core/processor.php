@@ -140,6 +140,9 @@ switch ($axAction) {
      */
     case 'stopRecord':
         $database->stopRecorder($id);
+        echo json_encode(array(
+          'id' =>  $id
+        ));
     break;
 
     /**

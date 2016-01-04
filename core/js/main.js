@@ -362,11 +362,12 @@ function stopRecord() {
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
     show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
-        function(){
+        function(response){
               ts_ext_reload();
               document.title = default_title;
               if (openAfterRecorded)
-                editRecord(currentRecording);
+                var data = jQuery.parseJSON(response);
+                editRecord(data['id']);
         }
     );
 }
