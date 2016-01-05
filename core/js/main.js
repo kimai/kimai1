@@ -365,9 +365,10 @@ function stopRecord() {
         function(response){
               ts_ext_reload();
               document.title = default_title;
-              if (openAfterRecorded)
+              if (openAfterRecorded) {
                 var data = jQuery.parseJSON(response);
                 editRecord(data['id']);
+              }
         }
     );
 }
