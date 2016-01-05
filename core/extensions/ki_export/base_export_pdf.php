@@ -82,11 +82,13 @@ class BasePDF extends TCPDF {
   
   /**
    * calculate time in hh:mm from duration lenght in second
+   * rounded to minutes
    * @param lenght in second $duration
    * @return string time in format hh:mm
    */
   public function timeLength($duration)
   {
+      $s=$duration % 60;
       $m=(($duration-$s) / 60) % 60;
       $h=floor($duration / 3600);
       return $h.":".substr("0".$m,-2);
