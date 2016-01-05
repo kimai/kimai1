@@ -31,8 +31,8 @@ echo<<<EOD
         <strong>Password:</strong> changeme<br/>
         Don't forget to change the password immediately!
     </div>
-    <button onClick="step_back(); return false;">Back</button>
-    <button onClick="install(); return false;" class="proceed">Install</button>
+    <button onclick="step_back(); return false;">Back</button>
+    <button onclick="install(); return false;" class="proceed">Install</button>
 EOD;
 
 } else {
@@ -58,8 +58,8 @@ echo<<<EOD
         <strong>Passwort:</strong> changeme<br/>
         anmelden. Vergessen Sie nicht das Admin-Passwort anschließend sofort zu ändern!
     </div>
-    <button onClick="step_back(); return false;">Zurück</button>
-    <button onClick="install(); return false;" class="proceed">Installieren</button>
+    <button onclick="step_back(); return false;">Zurück</button>
+    <button onclick="install(); return false;" class="proceed">Installieren</button>
 EOD;
 
 }

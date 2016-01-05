@@ -314,7 +314,6 @@ Times: 「時時:分分:秒秒」 or 「時時:分分」 or 「時時」　だ�
 	'sublistAnnotations' => 'サブリストの注釈',
 	'TimeDateInputError' => '入力した時間か日付は無効です',
 	'StartTimeBeforeEndTime' => '開始時刻は終了時間の前に入力しなければならない',
-	'user' => 'ユーザー',
 	'credits' => <<<EOF
 		Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
 
@@ -474,9 +473,9 @@ Kimaiをクリーンインストールができるために、別の接頭辞を
 	),
 
 	'ext_invoice' => array(
-		"invoiceTemplate" => "請求書テンプレート：",
 		"invoiceTitle" => "請求書作成",
-		"invoiceTimePeriod" => "期間:",
+		"invoiceTimePeriod" => "期間",
+		"invoiceTemplate" => "請求書テンプレート",
 		"invoiceOptionShort" => "小請求書",
 		"invoiceOptionRound" => "概時間",
 		"invoiceButton" => "作成",

@@ -3230,6 +3230,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $values['rate'] = $rate;
         }
 
+        if (! $this->kga['conf']['defaultLocation'] == '') {
+            $values['location'] = "'" . $this->kga['conf']['defaultLocation'] . "'";
+        }
         $table = $this->kga['server_prefix']."timeSheet";
         $result = $this->conn->InsertRow($table, $values);
 

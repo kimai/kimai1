@@ -16,6 +16,6 @@
 
 <br />
 
-<input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['runbackup']?>' onClick='backupAll(); return false;' />
+<input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['runbackup']?>' onclick='backupAll(); return false;' />
 
 */ ?>

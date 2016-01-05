@@ -1,0 +1,296 @@
+.lists > #users, .lists > #customers, .lists > #activities, .lists > #projects {
+    height:175px;
+    border-top:none;
+    z-index:1;
+    border:1px solid black;
+    margin:0;
+    padding:0;
+    background-color:#eee;
+    position:absolute;
+    overflow:auto;
+    left:10px;
+}
+#timeSheet_head {
+  padding-left: 0 !important;
+}
+
+#users_head, #customers_head, #projects_head, #activities_head,
+#timeSheet_head {
+    background: #473F3F !important;
+    border:1px solid black;
+    border-bottom:none;
+    position:absolute;
+    height:25px;
+    text-align:left;
+    color:#FFF;
+    left:10px;
+    font-size:11px;
+    font-weight:bold;
+    padding:3px 0 0 5px;
+}
+
+#users_foot, #customers_foot, #projects_foot, #activities_foot {
+    background: #473F3F;
+    border:1px solid black;
+    border-top:none;
+    position:absolute;
+    height:20px;
+    text-align:left;
+    color:#FFF;
+    left:10px;
+    font-size:11px;
+    font-weight:bold;
+    padding:3px 0 0 5px;
+}
+
+#customersShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/customerShrink_left.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:10px;
+    height:100px;
+    left:10px;
+    z-index:31;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+#usersShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/customerShrink_left.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:10px;
+    height:100px;
+    left:10px;
+    z-index:31;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+#extensionShrink {
+    cursor: pointer;
+    background-color:transparent;
+    background-image:url('grfx/timeSheetShrink_up.png');
+    background-position:center;
+    background-repeat:no-repeat;
+    position:absolute;
+    font-size:1px;
+    line-height:1px;
+    width:500px;
+    height:10px;
+    left:10px;
+    z-index:30;
+    opacity: 0.8;
+    -moz-opacity: 0.8;
+    filter:alpha(opacity=80);
+}
+
+div#users>table>tbody>tr>td.annotation,
+div#customers>table>tbody>tr>td.annotation,
+div#projects>table>tbody>tr>td.annotation,
+div#activities>table>tbody>tr>td.annotation {
+    border-right: none;
+}
+
+div#users td.option img,
+div#customers td.option img,
+div#projects td.option img,
+div#activities td.option img
+{
+    margin-top:2px;
+}
+
+div#users td.annotation,
+div#customers td.annotation,
+div#projects td.annotation,
+div#activities td.annotation
+{
+    width:60px;
+    text-align: right;
+}
+
+div#users td,
+div#customers td,
+div#projects td,
+div#activities td
+{
+    border-right:none;
+}
+
+
+a.addLink
+{
+    background-image: url('grfx/add.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+}
+
+a.selectAllLink
+{
+    background-image: url('grfx/select_all.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+}
+
+a.deselectAllLink
+{
+    background-image: url('grfx/deselect_all.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+}
+
+a.selectInvertLink
+{
+    background-image: url('grfx/invert_select.png');
+    overflow:hidden;
+    display:block;
+    width:22px;
+    height:16px;
+    float:left;
+    margin-right:5px;
+}
+
+.livefilterfield {
+    float:right;
+    background: rgb(202, 202, 202);
+    border:1px solid #555;
+    height:12px;
+    margin:0;
+    padding:1px;
+    margin-left:10px;
+    margin-right:8px;
+    color:#fff;
+    font-size:9px;
+}
+
+
+
+
+.livefilterfield:focus {
+    background: #fff;
+    color:#333;
+}
+
+
+.highlightProjectForPreselection td
+ {
+    background: #C5E6C3 !important;
+    cursor:pointer !important;
+    font-weight:bold;
+}
+
+.filterProjectForPreselection td
+ {
+    background: #64BE5E !important;
+}
+
+.ids {
+    width:25px;
+    color:#C4C4C4;
+    display:block;
+    float:left;
+}
+
+.filterProjectForPreselection td .ids {
+    color:#4D9247 !important;
+}
+
+
+.TableRowInvisible {
+    display:none;
+}
+
+.lighter {
+    color:#777;
+}
+
+/* below two definitions still used? */
+.error {
+    padding: 5px;
+    color: #f00;
+    font-weight: bold;
+}
+
+.floater_content .error {
+    font-size: 13px;
+}
+
+div.lists table {
+    border-collapse: collapse;
+    font-size: 11px;
+    color: #363636;
+    border-bottom:1px solid #888;
+}
+
+div.lists table a {
+  text-decoration: none;
+}
+div.lists table a.preselect_lnk {
+    color: #363636;
+    text-decoration:none;
+    border-bottom:1px dotted #bbb;
+}
+
+div.lists table a:hover {
+    color: #0F9E00;
+    border-bottom:none;
+}
+
+div.lists table thead {
+    height:25px;
+    text-align:left;
+    color:#FFF;
+}
+
+div.lists table thead th {
+    background-image: url('grfx/g3_table_header.png');
+}
+
+div.lists tr.even td,
+div.lists tr.odd td
+{
+    border-bottom: none;
+    border-left: none;
+    border-right: 1px dotted #CCC;
+    padding: 3px 4px 4px 5px;
+}
+
+div.lists tr.hover td {
+    background: #FFC !important;
+}
+
+div.lists tr.even td {
+    background: #FFF;
+}
+
+div.lists tr.odd td {
+    background: #EEE;
+}
+
+.fhighlighted td {
+   background: #89C0F3 !important;
+}

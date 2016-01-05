@@ -10,13 +10,12 @@
     right:95px;
     font-size:11px;
     z-index:20;
-
 }
 
 #selector .preselection {
     width:205px;
     height:52px;
-    padding:7px 10px 0 ;
+    padding:7px 10px 0;
     overflow:hidden;
     line-height:13px;
 }
@@ -28,7 +27,6 @@
     display:block;
     float:left;
     padding-left:2px;
-
 }
 
 #selector span.none {

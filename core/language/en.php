@@ -32,7 +32,7 @@ return array(
     "datum" => "Date",
     "in" => "In",
     "out" => "Out",
-    "time" => "h'm",
+    "time" => "h:m",
     "timelabel" => "Time",
     "starttime" => "start time",
     "DateTimeNotInFuture" => "The day and time must not be in the future.",
@@ -52,6 +52,8 @@ return array(
     "submit" => "OK",
     "cancel" => "Cancel",
     "edit" => "Edit Entry",
+  "editNote"	=> "Edit note",
+  "note"	=> "Note",
     "close" => "close",
     "construction" => "under construction...",
     "about" => "About Kimai",
@@ -109,6 +111,7 @@ return array(
     "now" => "now",
     "specify" => "specify list",
     "add" => "add",
+  "addNote"	=> "Add a note",
     "running" => "Running...",
     "company" => "Company",
 
@@ -286,9 +289,8 @@ return array(
     'durationWithSeconds' => 'Show duration exact to the second.',
     'multiplier' => 'Multiplier',
     'timezone' => 'Time Zone',
-    'dateAndTimeHelp' => '<strong>Times and dates have to be entered in the following form:</strong><br />
-            Dates: DD.MM.YYYY<br />
-            Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
+    'dateAndTimeHelp' => '<strong>Times and dates have to be entered in the following form:</strong><br />Dates: DD.MM.YYYY<br />Times: HH:MM:SS or HH:MM or just HH. Ommitted parts will be set to 0.',
+    'editNoteHelp' => '<strong>Comments can be entered in the order you wish<br />and can be changed later if necessary, without limit.</strong>',
     'defaultTimezone' => 'time zone for new users and customers',
     'editLimitPart1' => 'No entries can be added or edited which end more than',
     'editLimitPart2' => 'day(s) and',
@@ -296,13 +298,16 @@ return array(
     'editLimitError' => 'The end date is further in the past than it was allowed to be.',
     'hideClearedEntries' => 'hide cleared entries',
     'showCommentsByDefault' => 'show comments by default',
-    'showTrackingNumber' => 'show tracking number',
+    'showTrackingNumber' => 'show tracking number and description details in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
+    'defaultLocation' => 'Default location',
+    'showQuickNote'	=> 'show quick note button',
     'general' => 'General',
     'address' => 'Address',
     'contact' => 'Contact',
     'list' => 'List',
     'sublists' => 'Lower Lists',
+    'timesheet' => 'Timesheet',
     "filter" => "Filter",
     'internalProject' => 'internal project',
     'exactSums' => 'Use exact sums instead of adding the displayed rounded values.',
@@ -313,31 +318,30 @@ return array(
     'sublistAnnotations' => 'sublist annotations',
     'TimeDateInputError' => 'The time or date you entered is not valid.',
     'StartTimeBeforeEndTime' => 'The start time must be before the end time.',
-    'user' => 'User',
     'credits' => <<<EOF
         Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
-        
+
         <br />
-        
+
         <strong>This program is free software and published 'AS IS' without any kind of warranty</strong> under the terms of the
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+        <a href="../COPYING">GPL Version 3</a>.
+
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Official Website</a> | 
+
+        <a href='http://www.kimai.org' target='_blank'>Official Website</a> |
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
         <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
-        
+
         <br /><br />
 
         If you do any alternations we would appreciate a posting on the <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>.
         You'll find a special board "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>" there.
         Latest Developer Version can be downloaded <a href="https://github.com/kimai/kimai/archive/master.zip">here</a> (download for testing purposes only!).
-        
+
         <br /><br />
-        
+
         Please support further development of Kimai with a <a href="http://www.kimai.org/en/donate.html">donation</a> or
         by extending its <a href="https://github.com/kimai/kimai/tree/master/core/language">language library</a>.
 
@@ -354,7 +358,7 @@ return array(
 
         Version 0.8 was emerged with the kind support of RRZE (Regionales Rechenzentrum Erlangen).
 EOF
-,
+    ,
 
     'months' => array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
@@ -378,9 +382,9 @@ EOF
 
     'errors' => array(
         0 => array('hdl' => "Database could not be connected!",
-            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
+                   'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
         1 => array('hdl' => "Error during installation!",
-            'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+                   'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
 Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
     ),
@@ -468,18 +472,23 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'reverse_order' => 'older entries first',
         'time_period' => 'Time period',
         'duration_unit' => 'h',
+        'time_type' => 'Time format',
+        'dec_time' => 'Decimal time',
+        'time' => 'Standard time',
     ),
 
     'ext_invoice' => array(
-        "invoiceTemplate" => "Invoice template:",
-        "invoiceTitle" => "Create invoice",
-        "invoiceTimePeriod" => "Time Period:",
-        "invoiceOptionShort" => "Short Invoice",
-        "invoiceOptionRound" => "Round time",
-        "invoiceButton" => "Create",
+        'invoiceTitle' => 'Create invoice',
+        'invoiceCustomer' => 'Customer',
+        'invoiceProject' => 'Projects',
+        'invoiceTimePeriod' => 'Time Period',
+        'invoiceTemplate' => 'Invoice template',
+        'defaultVat' => 'Default VAT rate',
+        'invoiceOptionShort' => 'Short Invoice',
+        'invoiceOptionRound' => 'Round time',
+        'invoiceButton' => 'Create',
         'noData' => 'There are no time entries for the selected project & time period.',
         'noProject' => 'No project was selected.',
-        'defaultVat' => 'Default VAT rate'
     ),
 
     'ext_budget' => array(

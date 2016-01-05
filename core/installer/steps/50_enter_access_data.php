@@ -22,8 +22,8 @@ $echo=<<<EOD
         </tr>
     </table>
     <span id='caution'></span><br />
-    <button onClick="step_back(); return false;">Back</button>
-    <button onClick="host_proceed(); return false;" class="proceed">Proceed</button>
+    <button onclick="step_back(); return false;">Back</button>
+    <button onclick="host_proceed(); return false;" class="proceed">Proceed</button>
 EOD;
 
 } else {
@@ -41,8 +41,8 @@ $echo=<<<EOD
         </tr>
     </table>
     <span id='caution'></span><br /><br />
-    <button onClick="step_back(); return false;">Zurück</button>
-    <button onClick="host_proceed(); return false;" class="proceed">Fortfahren</button>
+    <button onclick="step_back(); return false;">Zurück</button>
+    <button onclick="host_proceed(); return false;" class="proceed">Fortfahren</button>
 EOD;
 
 }

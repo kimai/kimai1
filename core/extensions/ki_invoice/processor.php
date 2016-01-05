@@ -35,43 +35,38 @@ switch ($axAction) {
     // = Reload the timespan and return it =
     // =====================================
     case 'reload_timespan':
-        
         $timeframe = get_timeframe();
-        $view->in = $timeframe[0];
-        $view->out = $timeframe[1];
-
+        $view->assign('timeframe', $timeframe);
         echo $view->render("timespan.php");
-    break;
+        break;
 
     // ==========================
     // = Change the default vat =
     // ==========================
     case 'editVat':
-        
-        $vat = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['vat']);
-        
+        $vat = str_replace($kga['conf']['decimalSeparator'], '.', $_POST['vat']);
         if (!is_numeric($vat)) {
-          echo "0";
-          return;
+            echo "0";
+            return;
         }
-
-        $database->configuration_edit(array('defaultVat'=>$vat));
+        $database->configuration_edit(array('defaultVat' => $vat));
         echo "1";
-    break;
+        break;
 
     // ==========================
     // = Change the default vat =
     // ==========================
     case 'projects':
-      if (isset($kga['customer']))
-        $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'], $kga['customer']['groups']);
-      else
-        $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
-      $js_projects = array();
-      foreach ($db_projects as $project) {
-        $js_projects[$project['projectID']] = $project['name'];
-      }
-      header("Content-Type: application/json");
-      echo json_encode($js_projects);
-    break;
+        if (isset($kga['customer'])) {
+            $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'], $kga['customer']['groups']);
+        } else {
+            $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
+        }
+        $js_projects = array();
+        foreach ($db_projects as $project) {
+            $js_projects[$project['projectID']] = $project['name'];
+        }
+        header("Content-Type: application/json");
+        echo json_encode($js_projects);
+        break;
 }

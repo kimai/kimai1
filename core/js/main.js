@@ -137,7 +137,8 @@ function resize_floater() {
 //
 function floaterClose() {
     //$('#floater').draggable('destroy');
-    $("#floater").fadeOut(fading_enabled?500:0);
+    $("#floater").fadeOut(fading_enabled ? 500 : 0);
+    return false;
 }
 
 
@@ -520,12 +521,13 @@ function ticktack_off() {
 // ----------------------------------------------------------------------------------------
 // shows dialogue for editing an item in either customer, project or activity list
 //
-function editSubject(subject,id) {
-    var width = 450;
+function editSubject(subject, id) {
+    var width = 490;
     if (subject == 'project') {
-      width = 650;
+        width = 800;
     }
-    floaterShow('floaters.php','add_edit_'+subject,0,id,width); return false;
+    floaterShow('floaters.php', 'add_edit_' + subject, 0, id, width);
+    return false;
 }
 
 
