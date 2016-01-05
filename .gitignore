@@ -6,3 +6,4 @@ autoconf.php
 .settings
 .idea/
 .DS_Store
+/bin/
