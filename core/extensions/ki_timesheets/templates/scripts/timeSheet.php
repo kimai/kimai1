@@ -22,6 +22,7 @@ if ($this->timeSheetEntries)
               <col class="project" />
               <col class="activity" />
             <?php if ($this->showTrackingNumber) { ?>
+              <col class="description" />
               <col class="trackingnumber" />
             <?php } ?>
               <col class="username" />
@@ -79,14 +80,14 @@ if ($this->timeSheetEntries)
             <?php if ($row['end']): // Stop oder Record Button? ?>
 
             <?php if ($this->kga['show_RecordAgain']): ?>
-              <a onClick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
+              <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
                  href ="#" class="recordAgain"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_recordthis.gif'
                  width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
             <?php endif; ?>
 
         <?php else: ?>
 
-            <a href ='#' class='stop' onClick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
+            <a href ='#' class='stop' onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
                     src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_stopthis.gif' width='13'
                     height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
 
@@ -95,15 +96,23 @@ if ($this->timeSheetEntries)
 
       <?php if ($this->kga['conf']['editLimit'] == "-" || time()-$row['end'] <= $this->kga['conf']['editLimit']):
     //Edit Record Button ?>
-        <a href ='#' onClick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+        <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
            title='<?php echo $this->kga['lang']['edit']?>'><img
            src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13'
            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
       <?php endif; ?>
 
+        <?php if ($this->kga['conf']['showQuickNote'] > 0):
+            //Edit quick-note Button ?>
+            <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+               title='<?php echo $this->kga['lang']['editNote']?>'><img 
+                    src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/editor_icon.png' width='14' height='14'
+                    alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
+        <?php endif; ?>
+
       <?php if ($this->kga['conf']['quickdelete'] > 0):
     // quick erase trashcan  ?>
-        <a href ='#' class='quickdelete' onClick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
+        <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
             src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13'
             height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
             border=0 /></a>
@@ -161,7 +170,7 @@ if ($this->timeSheetEntries)
 
             <td class="project <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                    onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                     return false;">
                     <?php echo $this->escape($row['projectName'])?>
                     <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
@@ -172,30 +181,40 @@ if ($this->timeSheetEntries)
 
             <td class="activity <?php echo $tdClass; ?>">
                 <a href ="#" class="preselect_lnk"
-                    onClick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
+                    onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                     return false;">
                     <?php echo $this->escape($row['activityName'])?>
                 </a>
 
                 <?php if ($row['comment']): ?>
                     <?php if ($row['commentType'] == '0'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
                     <?php elseif ($row['commentType'] == '1'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
                     <?php elseif ($row['commentType'] == '2'): ?>
-                                        <a href="#" onClick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
                     <?php endif; ?>
                 <?php endif; ?>
             </td>
 
             <?php if ($this->showTrackingNumber) { ?>
+            <td class="description <?php echo $tdClass; ?>" >
+              <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
+                <?php if ($row['description']): ?>
+                <a href="#" onclick="$(this).blur();  return false;" ><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+              <?php endif; ?>
+            </td>
             <td class="trackingnumber <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['trackingNumber']) ?>
             </td>
             <?php } ?>
 
             <td class="username <?php echo $tdClass; ?>">
+              <?php if ($row['userAlias']): ?>
+                <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
+              <?php else: ?>
                 <?php echo $this->escape($row['userName']) ?>
+              <?php endif; ?>
             </td>
 
         </tr>

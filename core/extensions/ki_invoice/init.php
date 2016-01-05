@@ -32,49 +32,46 @@ $user = checkUser();
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // get list of projects for select box
-if (isset($kga['customer']))
-  $view->customers = array($kga['customer']['customerID'] => $kga['customer']['name']);
-else
-  $view->customers = makeSelectBox("customer",$kga['user']['groups']);
+if (isset($kga['customer'])) {
+    $view->assign('customers', array($kga['customer']['customerID'] => $kga['customer']['name']));
+} else {
+    $view->assign('customers', makeSelectBox("customer", $kga['user']['groups']));
+}
 
 $tmpCustomers = array_keys($view->customers);
 $projects = $database->get_projects_by_customer($tmpCustomers[0], $kga['user']['groups']);
-$view->projects = array();
+
+$tmpProjects = array();
 foreach ($projects as $project) {
-  $view->projects[$project['projectID']] = $project['name'];
+    $tmpProjects[$project['projectID']] = $project['name'];
 }
+$view->assign('projects', $tmpProjects);
 
 // Select values for Round Time option
 $roundingOptions = array(
-  '1' => '0.1h',
-  '2.5' =>'0.25h',
-  '5' => '0.5h',
-  '10' => '1.0h'
+    '1' => '0.1h',
+    '2.5' => '0.25h',
+    '5' => '0.5h',
+    '10' => '1.0h'
 );
-$view->roundingOptions = $roundingOptions;
+$view->assign('roundingOptions', $roundingOptions);
 
 // Get Invoice Template FileNames
-
-$invoice_template_files = Array(); 
+$invoice_template_files = array();
 $handle = opendir('invoices/');
-while (false!== ($file = readdir($handle))) { 
+while (false !== ($file = readdir($handle))) {
     if (stripos($file, '.') !== 0) {
         $invoice_template_files[$file] = $file;
     }
 }
 closedir($handle);
 asort($invoice_template_files);
-$view->sel_form_files = $invoice_template_files;
+$view->assign('sel_form_files', $invoice_template_files);
 
 // Retrieve start & stop times
 $timeframe = get_timeframe();
-$view->in = $timeframe[0];
-$view->out = $timeframe[1];
-
-$view->timespan_display = $view->render("timespan.php");
-
+$view->assign('timeframe', $timeframe);
 echo $view->render('main.php');

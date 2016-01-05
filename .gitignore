@@ -1,7 +1,7 @@
 /.project
 *.*~
 
-/core/temporary/*.txt
+core/temporary/*.txt
 autoconf.php
 .settings
 .idea/
