@@ -22,7 +22,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-
 function expenseAccessAllowed($entry, $action, &$errors) {
   global $database, $kga;
 
@@ -33,7 +32,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
 
   // check if expense is too far in the past to allow editing (or deleting)
   if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
-    $errors[''] =  $kga['lang']['editLimitError'];
+    $errors[''] = $kga['lang']['editLimitError'];
     return false;
   }
 
@@ -51,7 +50,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   }
 
   $assignedOwnGroups = array_intersect($groups, $database->getGroupMemberships($kga['user']['userID']));
-  
+
   if (count($assignedOwnGroups) > 0) {
     $permissionName = 'ki_expenses-otherEntry-ownGroup-' . $action;
     if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
@@ -61,7 +60,6 @@ function expenseAccessAllowed($entry, $action, &$errors) {
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
-
   }
 
   $permissionName = 'ki_expenses-otherEntry-otherGroup-' . $action;
@@ -72,7 +70,6 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
-  
 }
 
 
@@ -105,13 +102,12 @@ switch ($axAction) {
       // if no userfilter is set, set it to current user
       if (isset($kga['user']) && count($filterUsers) == 0)
         array_push($filterUsers,$kga['user']['userID']);
-        
+
       if (isset($kga['customer']))
         $filterCustomers = array($kga['customer']['customerID']);
 
       $view->expenses= get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
       $view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
-
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
@@ -141,7 +137,7 @@ switch ($axAction) {
     // =======================================
     case 'quickdelete':
       $errors = array();
-      
+
       $data = expense_get($id);
 
       expenseAccessAllowed($data,'delete',$errors);
@@ -172,7 +168,7 @@ switch ($axAction) {
         if ($id) {
           $data = expense_get($id);
 
-          // check if editing or deleting with the old values would be allowed            
+          // check if editing or deleting with the old values would be allowed
           if (!expenseAccessAllowed($data, $action, $errors)) {
             echo json_encode(array('errors'=>$errors));
             break;
@@ -229,7 +225,6 @@ switch ($axAction) {
         else
             expense_create($kga['user']['userID'],$data);
 
-      
         echo json_encode(array('errors'=>$errors));
     break;
 
