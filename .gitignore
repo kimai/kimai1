@@ -1,6 +1,6 @@
 /.project
 *.*~
-
+.tern-project
 core/temporary/*.txt
 autoconf.php
 .settings
