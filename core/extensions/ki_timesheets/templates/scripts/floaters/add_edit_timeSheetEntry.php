@@ -87,6 +87,11 @@
                         <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day) ?>' maxlength='10' size='10' tabindex='7'
                                onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
                     </li>
+<?php if ($this->kga['record_durationOnly'] == 1) {?>
+					<!-- fields are set by "duration" field -->
+					<input id="start_time" name="start_time" type="hidden" value='<?php echo $this->escape($this->start_time) ?>'> 
+					<input id="end_time" name="end_time" type="hidden" value='<?php echo $this->escape($this->start_time) ?>'> 
+<?php } else { ?>
                     <li>
                         <label for="start_time"><?php echo $this->kga['lang']['timelabel'] ?>:</label>
                         <input id='start_time' type='text' name='start_time'
@@ -97,6 +102,7 @@
                                onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
                         <a id="currentTime" href="#" onclick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;"><?php echo $this->kga['lang']['now'] ?></a>
                     </li>
+<?php } ?>
                     <li>
                         <label for="duration"><?php echo $this->kga['lang']['durationlabel'] ?>:</label>
                         <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8' size='8'
