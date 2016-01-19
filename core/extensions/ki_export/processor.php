@@ -45,6 +45,12 @@ if ($axAction == 'export_csv'  ||
     $columns = array();
     foreach ($axColumns as $column)
       $columns[$column] = true;
+    
+    if ($kga['conf']['record_durationOnly'] == '1') {
+		// remove start- and end time from export-column-list
+    	unset($columns['from']);
+      	unset($columns['to']);
+    }
   }
 
   $timeformat = strip_tags($_REQUEST['timeformat']);
