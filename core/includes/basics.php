@@ -38,7 +38,8 @@ set_include_path(
     )
 );
 
-ini_set('display_errors', '0');
+//ini_set('display_errors', '0');
+error_log(WEBROOT);
 
 require_once 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
