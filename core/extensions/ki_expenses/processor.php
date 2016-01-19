@@ -22,7 +22,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-
 function expenseAccessAllowed($entry, $action, &$errors) {
   global $database, $kga;
 
@@ -33,8 +32,8 @@ function expenseAccessAllowed($entry, $action, &$errors) {
 
   // check if expense is too far in the past to allow editing (or deleting)
   if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
-    $errors[''] =  $kga['lang']['editLimitError'];
-    break;
+    $errors[''] = $kga['lang']['editLimitError'];
+    return false;
   }
 
   $groups = $database->getGroupMemberships($entry['userID']);
@@ -61,7 +60,6 @@ function expenseAccessAllowed($entry, $action, &$errors) {
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
-
   }
 
   $permissionName = 'ki_expenses-otherEntry-otherGroup-' . $action;
@@ -72,7 +70,6 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
-  
 }
 
 
@@ -111,7 +108,6 @@ switch ($axAction) {
 
       $view->expenses= get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
       $view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
-
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
       $ann = Format::formatCurrency($ann);
@@ -229,7 +225,6 @@ switch ($axAction) {
         else
             expense_create($kga['user']['userID'],$data);
 
-      
         echo json_encode(array('errors'=>$errors));
     break;
 
