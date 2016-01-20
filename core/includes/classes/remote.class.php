@@ -676,6 +676,9 @@ class Kimai_Remote_Api
 		if(isset($record['rate'])) {
 			$data['rate'] = (double)$record['rate'];
 		}
+		else {
+			$data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'],$data['activityID']);
+		}
 		if(isset($record['fixedRate'])) {
 			$data['fixedRate'] = (double)$record['fixedRate'];
 		}
