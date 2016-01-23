@@ -19,4 +19,4 @@ before_script:
   - ./.travis.install.sh
 
 script:
-  - ./bin/phpunit --configuration=phpunit.xml.travis
+  - ./bin/phpunit --configuration=phpunit.travis.xml
