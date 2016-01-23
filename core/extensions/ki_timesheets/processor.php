@@ -284,30 +284,38 @@ switch ($axAction) {
     case 'allFittingFixedRates':
         $data = array('errors' => array());
 
-        if (!isset($kga['user']))
+        if (!isset($kga['user'])) {
           $data['errors'][] = $kga['lang']['editLimitError'];
+        }
 
-        if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'))
+        if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates')) {
           $data['errors'][] = $kga['lang']['editLimitError'];
+        }
 
         if (count($data['errors']) == 0) {
           $rates = $database->allFittingFixedRates($_REQUEST['project'],$_REQUEST['activity']);
 
-          if ($rates !== false)
-            foreach ($rates as $rate) {
-              $line = Format::formatCurrency($rate['rate']);
+          if ($rates !== false) {
+              foreach ($rates as $rate) {
+                  $line = Format::formatCurrency($rate['rate']);
 
-              $setFor = array(); // contains the list of "types" for which this rate was set
-              if ($rate['projectID'] != null)
-                $setFor[] =  $kga['lang']['project'];
-              if ($rate['activityID'] != null)
-                $setFor[] =  $kga['lang']['activity'];
+                  $setFor = array(); // contains the list of "types" for which this rate was set
+                  if ($rate['projectID'] != null) {
+                      $setFor[] = $kga['lang']['project'];
+                  }
 
-              if (count($setFor) != 0)
-                $line .= ' ('.implode($setFor,', ').')';
+                  if ($rate['activityID'] != null) {
+                      $setFor[] = $kga['lang']['activity'];
+                  }
 
-              $data['rates'][] = array('value'=>$rate['rate'], 'desc'=>$line);
-            }
+                  if (count($setFor) != 0) {
+                      $line .= ' ('.implode($setFor,', ').')';
+                  }
+
+                  $data['rates'][] = array('value'=>$rate['rate'], 'desc'=>$line);
+              }
+          }
+            
         }
 
         header('Content-Type: application/json;charset=utf-8');
