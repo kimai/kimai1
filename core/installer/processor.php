@@ -82,12 +82,13 @@ switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5
-     *  - MySQL extension available
+     *  - PHP major version >= 5.4
+     *  - MySQLi extension available
+     *  - iconv extension available
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
     case "checkRequirements":
-       if (version_compare(PHP_VERSION, '5.3') < 0) {
+       if (version_compare(PHP_VERSION, '5.4') < 0) {
            $errors++;
            $javascript .= "$('div.sp_phpversion').addClass('fail');";
        }
@@ -101,14 +102,6 @@ switch ($axAction) {
             $errors++;
             $javascript .= "$('div.sp_iconv').addClass('fail');";
         }
-
-        // magic quotes was removed in 5.4.0 - so we only check it in lower versions
-        if (version_compare(PHP_VERSION, '5.4.0') < 0) {
-            if (get_magic_quotes_gpc() == 1 || get_magic_quotes_runtime() == 1) {
-                $errors++;
-                $javascript .= "$('div.sp_magicquotes').addClass('fail');";
-            }
-       }
 
        if (return_bytes(ini_get('memory_limit')) < 20000000) {
            $javascript .= "$('div.sp_memory').addClass('fail');";
