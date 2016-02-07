@@ -97,6 +97,11 @@ switch ($axAction) {
            $javascript .= "$('div.sp_mysql').addClass('fail');";
        }
 
+        if (!extension_loaded('iconv')) {
+            $errors++;
+            $javascript .= "$('div.sp_iconv').addClass('fail');";
+        }
+
         // magic quotes was removed in 5.4.0 - so we only check it in lower versions
         if (version_compare(PHP_VERSION, '5.4.0') < 0) {
             if (get_magic_quotes_gpc() == 1 || get_magic_quotes_runtime() == 1) {
