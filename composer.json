@@ -1,13 +1,11 @@
 {
     "name": "kimai/kimai",
     "type": "project",
-    "description": "Open Source Time Tracking",
+    "description": "Time Tracking with PHP",
     "keywords": ["timetracking", "projectmanagement"],
     "homepage": "https://github.com/kimai/kimai",
     "license": "GPL-3.0",
-    "minimum-stability": "dev",
-    "time": "2013-08-03",
-    "version": "0.9.3-beta1",
+    "version": "0.9.3",
     "authors": [
         {
             "name": "Severin Leonhardt",
@@ -19,7 +17,7 @@
         }
     ],
     "require": {
-        "php" : ">=5.3.0"
+        "php" : ">=5.4.0"
     },
     "require-dev" : {
         "phpunit/phpunit" : "3.7.*"
