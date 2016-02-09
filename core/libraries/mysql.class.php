@@ -1119,7 +1119,7 @@ class MySQL
 					return $this->last_result;
 				}
 			} else if(strpos(strtolower($sql), "select") === 0) {
-				$numrows = mysqli_field_count($this->mysql_link);
+				$numrows = @mysqli_affected_rows($this->mysql_link);
 				if ($numrows > 0) {
 					$this->active_row = 0;
 				} else {
@@ -1373,7 +1373,7 @@ class MySQL
 			$this->SetError("No query results exist", -1);
 			return false;
 		} else {
-			$result = @mysqli_affected_rows($this->mysql_link);
+			$result = $this->last_result->num_rows;
 			if (! $result) {
 				$this->SetError();
 				return false;

@@ -3885,8 +3885,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return false;
         }
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+        	// no error, but no best fitting rate, return default value
+        	Logger::logfile("get_best_fitting_rate - using default rate 0.00");
+        	return 0.00;
+        }
 
         $data = $this->conn->rowArray(0,MYSQLI_ASSOC);
         return $data['rate'];

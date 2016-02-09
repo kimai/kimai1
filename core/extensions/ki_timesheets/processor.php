@@ -549,7 +549,13 @@ switch ($axAction) {
           }
 
           Logger::logfile("timeEntry_create");
-          $database->timeEntry_create($data);
+          $createdId = $database->timeEntry_create($data);
+          if (!$createdId) {
+          	Logger::logfile("timeEntry_create error");
+          	$errors[''] = $kga['lang']['error'];
+          	echo json_encode(array('errors'=>$errors));
+          	break 2;
+          }
         }
 
         $database->transaction_end();
