@@ -108,17 +108,15 @@ function check_system_requirements() {
     );
 }
 
-
-
 function resetRequirementsIndicators() {
     $('div.sp_phpversion').removeClass("fail");
-    $('div.sp_magicquotes').removeClass("fail");
     $('div.sp_mysql').removeClass("fail");
+    $('div.sp_iconv').removeClass("fail");
     $('div.sp_memory').removeClass("fail");
     
     $('div.sp_phpversion').addClass("ok");
-    $('div.sp_magicquotes').addClass("ok");
     $('div.sp_mysql').addClass("ok");
+    $('div.sp_iconv').addClass("ok");
     $('div.sp_memory').addClass("ok");
 }
 

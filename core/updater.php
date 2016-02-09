@@ -50,7 +50,7 @@ $revisionDB = $version_temp[1];
 error_log(serialize($version_temp));
 unset($version_temp);
 
-$min_php_version = '5.3';
+$min_php_version = '5.4';
 
 if (version_compare(PHP_VERSION, $min_php_version) < 0) {
     ?>

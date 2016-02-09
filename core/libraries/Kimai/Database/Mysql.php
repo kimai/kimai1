@@ -1952,6 +1952,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values['end'] = MySQL::SQLValue($new_array['end'], MySQL::SQLVALUE_NUMBER);
         $values['duration'] = MySQL::SQLValue($new_array['duration'], MySQL::SQLVALUE_NUMBER);
         $values['rate'] = MySQL::SQLValue($new_array['rate'], MySQL::SQLVALUE_NUMBER);
+        $values['fixedRate'] = MySQL::SQLValue($new_array['fixedRate'], MySQL::SQLVALUE_NUMBER);
         $values['cleared'] = MySQL::SQLValue($new_array['cleared']?1:0, MySQL::SQLVALUE_NUMBER);
         $values['budget'] = MySQL::SQLValue($new_array['budget'], MySQL::SQLVALUE_NUMBER);
         $values['approved'] = MySQL::SQLValue($new_array['approved'], MySQL::SQLVALUE_NUMBER);
