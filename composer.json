@@ -2,7 +2,7 @@
     "name": "kimai/kimai",
     "type": "project",
     "description": "Time Tracking with PHP",
-    "keywords": ["timetracking", "projectmanagement"],
+    "keywords": ["timetracking", "projectmanagement", "invoicing"],
     "homepage": "https://github.com/kimai/kimai",
     "license": "GPL-3.0",
     "version": "0.9.3",
@@ -24,10 +24,10 @@
     },
     "autoload": {
         "classmap" : [
-            "core/libraries"
+            "libraries"
         ]
     },
     "include-path": [
-        "core/libraries"
+        "libraries"
     ]
 }
