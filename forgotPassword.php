@@ -37,17 +37,13 @@ if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
 }
 
 
-// =====================
-// = standard includes =
-// =====================
+// standard includes
 require('includes/basics.php');
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
-// =========================
-// = authentication method =
-// =========================
+// authentication method
 $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
@@ -56,42 +52,31 @@ $authPlugin = new $authClass($database, $kga);
 
 $view->kga = $kga;
 
-// ===================================
-// = current database setup correct? =
-// ===================================
+// current database setup correct?
 checkDBversion(".");
 
-// =================================================================
-// = processing login and displaying either login screen or errors =
-// =================================================================
-//
+// processing login and displaying either login screen or errors
 $name = htmlspecialchars(trim($name));
 $is_customer = $database->is_customer_name($name);
 if ($is_customer) {
   $id = $database->customer_nameToID($name);
   $customer = $database->customer_get_data($id);
-  $keyCorrect = $key == $customer['passwordResetHash'];
+  $keyCorrect = $key === $customer['passwordResetHash'];
 }
 else {
   $id = $database->user_name2id($name);
   $user = $database->user_get_data($id);
-  $keyCorrect = $key == $user['passwordResetHash'];
+  $keyCorrect = $key === $user['passwordResetHash'];
 }
 
 switch($_REQUEST['a'])
 {
-
     case "request":
-
         Logger::logfile("password reset: " . $name. ($is_customer?" as customer":" as user"));
     break;
 
-    // ============================
-    // = Show password reset page =
-    // ============================
+    // Show password reset page
     default:
-
-
       $view->devtimespan = '2006-'.date('y');
       $view->keyCorrect = $keyCorrect;
       $view->requestData = array(
