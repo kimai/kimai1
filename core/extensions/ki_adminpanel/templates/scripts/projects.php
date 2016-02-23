@@ -38,7 +38,7 @@
 				<?php if ($this->kga['conf']['flip_project_display']): ?>
 				<td class="customer">
 					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<span class="lighter">(<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>)</span>
+					<span class="lighter"><?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?></span>
 					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
 				</td>
 				<td class="projects">
@@ -54,7 +54,7 @@
 				</td>
 				<td class="customer">
 					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<span class="lighter">(<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>)</span>
+					<span class="lighter"><?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?></span>
 					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
 				</td>
 				<?php endif; ?>
