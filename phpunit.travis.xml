@@ -11,9 +11,9 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">./core/libraries/Kimai</directory>
+            <directory suffix=".php">./libraries/Kimai</directory>
             <exclude>
-                <directory>./core/libraries/Zend</directory>
+                <directory>./libraries/Zend</directory>
             </exclude>
         </whitelist>
     </filter>

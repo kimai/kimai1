@@ -24,20 +24,14 @@
 	<patternset id="always.exclude.files" description="Files to be excluded from copy tasks">
 		<exclude name=".settings"/>
 		<exclude name=".project"/>
-		<exclude name=".svn"/>
 		<exclude name=".git"/>
 		<exclude name=".gitignore"/>
-		<exclude name="Entries"/>
-		<exclude name="Repository"/>
-		<exclude name="Root"/>
 	</patternset>
 
 	<!-- These files will be excluded from release task. Only add project specific files here. -->
 	<patternset id="release.exclude.files" description="Files to be excluded from release tasks">
-		<exclude name="test_umysql_layer"/>
-		<exclude name="updater_old.php"/>
+		<exclude name="test_umysql_layer.php"/>
 		<!-- exclude name="kimaiversion.php"/ -->
-		<exclude name="todo.txt"/>
 		<exclude name="README.md"/>
 	</patternset>
 
@@ -93,7 +87,7 @@
 	<target name="copy-core" depends="check-settings" if="release.initialized">
 		<mkdir dir="${release.path}"/>
 		<copy todir="${release.path}" includeemptydirs="true" overwrite="true">
-			<fileset dir="core">
+			<fileset dir=".">
 				<patternset refid="always.exclude.files"/>
 				<patternset refid="release.exclude.files"/>
 			</fileset>
