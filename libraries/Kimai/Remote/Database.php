@@ -25,7 +25,7 @@
  * @author Kevin Papst
  * @author Alexander Bauer
  */
-class ApiDatabase {
+class Kimai_Remote_Database {
 	private $kga = null;
 	private $tablePrefix = null;
 	private $dbLayer = null;

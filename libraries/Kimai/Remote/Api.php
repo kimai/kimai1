@@ -45,13 +45,11 @@ class Kimai_Remote_Api
 
 	public function __construct()
 	{
-		// Bootstrap Kimai the old fashioned way ;-)
-		require(dirname(__FILE__) . "/../basics.php");
-		require(dirname(__FILE__) . "/database/ApiDatabase.php");
+		global $kga, $database;
 
 		// and remember the most important stuff
 		$this->kga     = $kga;
-		$this->backend = new ApiDatabase($kga, $database);
+		$this->backend = new Kimai_Remote_Database($kga, $database);
 		$this->oldDatabase = $database;
 	}
 
