@@ -75,7 +75,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false){
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false){
 
     global $kga, $database;
 
@@ -283,16 +283,32 @@ function createPassword($length) {
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null) {
-  $database = addcslashes($database, '"$');
-  $hostname = addcslashes($hostname, '"$');
-  $username = addcslashes($username, '"$');
-  $password = addcslashes($password, '"$');
-  $timezone = addcslashes($timezone, '"$');
+function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null)
+{
+    global $kga;
+    $database = addcslashes($database, '"$');
+    $hostname = addcslashes($hostname, '"$');
+    $username = addcslashes($username, '"$');
+    $password = addcslashes($password, '"$');
 
-  $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
-  if (!$file) return false;
-  if (empty($timezone)) { $timezone = 'date_default_timezone_get()'; } else { $timezone = '"' . $timezone . '"'; }
+    $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
+    if (!$file) {
+        return false;
+    }
+
+    // fallback if timezone was not provided
+    if (!empty($timezone)) {
+        $timezone = addcslashes($timezone, '"$');
+        $timezone = '"' . $timezone . '"';
+    } else if (isset($kga['defaultTimezone'])) {
+        $timezone = '"' . $kga['defaultTimezone'] . '"';
+    } else {
+        $timezone = 'date_default_timezone_get()';
+    }
+
+    // fetch skin from global config with "standard" fallback
+    $skin = !empty($kga['skin']) ? $kga['skin'] : 'standard';
+    $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : 'array(0,50,100)';
 
 $config=<<<EOD
 <?php
@@ -326,8 +342,8 @@ $config=<<<EOD
 \$language        = "$lang";
 \$password_salt   = "$salt";
 \$defaultTimezone = $timezone;
-\$skin            = 'standard';
-\$billable        = array(0,50,100);
+\$skin            = "$skin";
+\$billable        = $billable;
 
 EOD;
 
@@ -351,7 +367,7 @@ EOD;
  * @author th
  */
 function get_timeframe() {
-    global $kga, $conn;
+    global $kga;
 
     $timeframe = array(null,null);
     
@@ -410,11 +426,11 @@ function getRequestBool($name)
  * @return parsed floating point value
  */
 function getRequestDecimal($value) {
-  global $kga;
-  if (trim($value) == '')
+    global $kga;
+    if (trim($value) != '') {
+        return (double) str_replace($kga['conf']['decimalSeparator'], '.', $value);
+    }
     return NULL;
-  else
-    return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
 }
 
 /**
