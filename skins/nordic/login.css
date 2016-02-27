@@ -20,7 +20,7 @@ body {
 }
 
 #box {
-	background: url(../grfx/login_bg_g3.png) no-repeat;
+	background: url(grfx/login_bg_g3.png) no-repeat;
 	display: block;
 	width: 448px;
 	height: 298px;
@@ -100,7 +100,7 @@ body {
 	height: 91px;
 	right: 0;
 	bottom: 0;
-	background: url(../grfx/login_button_g3.png) no-repeat;
+	background: url(grfx/login_button_g3.png) no-repeat;
 	border: 0 none;
 	cursor: pointer;
 	padding: 0;
@@ -116,7 +116,7 @@ body {
 }
 
 #loginButton:hover {
-	background: url(../grfx/login_button_g3.png) no-repeat 0 -91px;
+	background: url(grfx/login_button_g3.png) no-repeat 0 -91px;
 	cursor: pointer;
 }
 
@@ -168,7 +168,7 @@ body {
 }
 
 #install form {
-	background: url(../grfx/login_bg_g3.png) no-repeat;
+	background: url(grfx/login_bg_g3.png) no-repeat;
 	display: block;
 	width: 448px;
 	height: 298px;
@@ -208,7 +208,7 @@ body {
 	height: 91px;
 	right: 0;
 	bottom: 0;
-	background: url(../grfx/login_button_g3.png) no-repeat;
+	background: url(grfx/login_button_g3.png) no-repeat;
 	text-indent: -1000em;
 	border: 0 none;
 	cursor: pointer;
@@ -217,7 +217,7 @@ body {
 }
 
 #install button:hover {
-	background: url(../grfx/login_button_g3.png) no-repeat 0 -91px;
+	background: url(grfx/login_button_g3.png) no-repeat 0 -91px;
 	cursor: pointer;
 }
 
@@ -233,7 +233,7 @@ body {
 	width: 434px;
 	border: 2px solid red;
 	padding: 10px 5px 5px 5px;
-	background: url(../grfx/bg_warning.gif) repeat-x;
+	background: url(grfx/bg_warning.gif) repeat-x;
 }
 
 #warning p {
