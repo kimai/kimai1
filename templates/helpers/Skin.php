@@ -44,12 +44,14 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
      */
     protected function getSkinName()
     {
+        $skin = 'standard';
+
         if (isset($this->view->kga['conf']['skin'])) {
-            return $this->view->escape($this->view->kga['conf']['skin']);
+            $skin = $this->view->kga['conf']['skin'];
+        } else if (isset($this->view->kga['skin'])) {
+            $skin = $this->view->kga['skin'];
         }
-        if (isset($this->view->kga['skin'])) {
-            return $this->view->escape($this->view->kga['skin']);
-        }
-        return 'standard';
+
+        return $this->view->escape($skin);
     }
 } 
