@@ -43,7 +43,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+      Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -56,7 +56,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
+      Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -66,7 +66,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
     return true;
   } else {
-    Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+    Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
     $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }

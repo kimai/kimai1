@@ -260,7 +260,7 @@ class Format {
           if ((int)$minutes>=60) $ok=0;
           if ((int)$seconds>=60) $ok=0;
 
-          Logger::logfile("timecheck: ".$ok);
+          Kimai_Logger::logfile("timecheck: ".$ok);
 
           $day   = substr($timestring,0,2);
           $month = substr($timestring,3,2);
@@ -268,7 +268,7 @@ class Format {
 
           if (!checkdate( (int)$month, (int)$day, (int)$year) ) $ok=0;
 
-          Logger::logfile("time/datecheck: ".$ok);
+          Kimai_Logger::logfile("time/datecheck: ".$ok);
 
           if ($ok) {
               return true;
@@ -280,5 +280,3 @@ class Format {
 
 
 }
-
-?>

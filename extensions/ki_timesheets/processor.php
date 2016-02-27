@@ -48,7 +48,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
     if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
+      Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -61,7 +61,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
     if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
+      Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -72,7 +72,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
   if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
     return true;
   } else {
-    Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
+    Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
     $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
@@ -538,7 +538,7 @@ switch ($axAction) {
           }
 
           // TIME RIGHT - EDIT ENTRY
-          Logger::logfile("timeEntry_edit: " .$id);
+          Kimai_Logger::logfile("timeEntry_edit: " .$id);
           $database->timeEntry_edit($id,$data);
 
       } else {
@@ -556,7 +556,7 @@ switch ($axAction) {
             break 2;
           }
 
-          Logger::logfile("timeEntry_create");
+          Kimai_Logger::logfile("timeEntry_create");
           $database->timeEntry_create($data);
         }
 
@@ -598,11 +598,11 @@ switch ($axAction) {
         }
         if ($id) { // TIME RIGHT - NEW OR EDIT ?
             // TIME RIGHT - EDIT ENTRY
-            Logger::logfile("timeNote_edit: " . $id);
+            Kimai_Logger::logfile("timeNote_edit: " . $id);
             $database->timeEntry_edit($id, $data);
         } else {
             // TIME RIGHT - NEW ENTRY
-            Logger::logfile("timeNote_create");
+            Kimai_Logger::logfile("timeNote_create");
             $database->timeEntry_create($data);
         }
         echo json_encode(array('errors' => $errors));

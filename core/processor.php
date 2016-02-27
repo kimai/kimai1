@@ -38,7 +38,7 @@ switch ($axAction) {
      * Append a new entry to the logfile.
      */
     case 'logfile':
-        Logger::logfile("JavaScript: " . $axValue);
+        Kimai_Logger::logfile("JavaScript: " . $axValue);
     break;
 
     /**

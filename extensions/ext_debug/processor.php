@@ -83,7 +83,7 @@ switch ($axAction) {
      * Write some message to the logfile.
      */
     case "shoutbox":
-        Logger::logfile("text: " .$axValue);
+        Kimai_Logger::logfile("text: " .$axValue);
     break;
 
     /**

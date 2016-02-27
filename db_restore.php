@@ -49,9 +49,9 @@ function exec_query($query) {
 	$success = $conn->Query($query);
 	$errorInfo = serialize($conn->Error());
 
-	Logger::logfile($query);
+	Kimai_Logger::logfile($query);
 	if (!$success) {
-		Logger::logfile($errorInfo);
+		Kimai_Logger::logfile($errorInfo);
 		$errors = true;
 	}
 }
@@ -69,7 +69,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 		/**
 		 * Create a backup.
 		 */
-		Logger::logfile("-- begin backup -----------------------------------");
+		Kimai_Logger::logfile("-- begin backup -----------------------------------");
 		$backup_stamp = time();  
 		$query = ("SHOW TABLES;");
 
@@ -91,7 +91,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 				if ($errors) die($kga['lang']['updater'][60]);
 			}
 		}
-		Logger::logfile("-- backup finished -----------------------------------");
+		Kimai_Logger::logfile("-- backup finished -----------------------------------");
 		header("location: db_restore.php");
 	}
 

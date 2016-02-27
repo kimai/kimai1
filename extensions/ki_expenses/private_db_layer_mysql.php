@@ -62,7 +62,7 @@ function expense_create($userID,$data) {
     $result = $conn->InsertRow($table, $values);
 
     if (!$result) {
-        Logger::logfile('expense_create: '.$conn->Error());
+        Kimai_Logger::logfile('expense_create: '.$conn->Error());
         return false;
     }
 

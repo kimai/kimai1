@@ -33,7 +33,7 @@ function checkUser()
       $kimai_key = addslashes($_COOKIE['kimai_key']);
 
       if ($database->get_seq($kimai_user) != $kimai_key) {
-        Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
+        Kimai_Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
         kickUser();
       } else {
           $user = $database->checkUserInternal($kimai_user);
@@ -42,7 +42,7 @@ function checkUser()
       }
     }
 
-    Logger::logfile("Kicking user because of missing cookie.");
+    Kimai_Logger::logfile("Kicking user because of missing cookie.");
     kickUser();
 }
 
@@ -457,7 +457,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
   if (count($assignedOtherGroups) > 0) {
     $permissionName = "core-${objectTypeName}-otherGroup-${action}";
     if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+      Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
@@ -465,7 +465,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
   if (count($assignedOwnGroups) > 0) {
     $permissionName = "core-${objectTypeName}-${action}";
     if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
-      Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+      Kimai_Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
@@ -485,7 +485,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($addToOtherGroups) > 0) {
         $permissionName = "core-${objectTypeName}-otherGroup-${action}";
         if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -493,7 +493,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($addToOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -502,7 +502,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($removeFromOtherGroups) > 0) {
         $permissionName = "core-${objectTypeName}-otherGroup-${action}";
         if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -510,7 +510,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($removeFromOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }

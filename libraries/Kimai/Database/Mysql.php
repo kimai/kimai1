@@ -53,7 +53,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     }
 
     private function logLastError($scope) {
-        Logger::logfile($scope.': '.$this->conn->Error());
+        Kimai_Logger::logfile($scope.': '.$this->conn->Error());
     }
 
     /**
@@ -2375,7 +2375,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
             $customerID = $row['customerID'];
             if ($customerID < 1) {
-                Logger::logfile("Kicking customer $customerName because he is unknown to the system.");
+                Kimai_Logger::logfile("Kicking customer $customerName because he is unknown to the system.");
                 kickUser();
             }
         }
@@ -2389,7 +2389,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $name = $kimai_user;
 
             if ($userID < 1) {
-                Logger::logfile("Kicking user $name because he is unknown to the system.");
+                Kimai_Logger::logfile("Kicking user $name because he is unknown to the system.");
                 kickUser();
             }
         }
@@ -4332,7 +4332,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $result = $this->conn->RowCount() > 0;
 
-        Logger::logfile("Global role $roleID gave ". ($result?'true':'false')." for $permission.");
+        Kimai_Logger::logfile("Global role $roleID gave ". ($result?'true':'false')." for $permission.");
         return $result;
     }
 

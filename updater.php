@@ -399,7 +399,7 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
         $success = $conn->Query($query);
     }
 
-    Logger::logfile($query);
+    Kimai_Logger::logfile($query);
 
     if ($kga['server_conn'] == "pdo") {
         $err = $pdo_query->errorInfo();
@@ -425,7 +425,7 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
     printLine($level, ($displayQuery == null ? $query : $displayQuery), $err);
 
     if (!$success) {
-        Logger::logfile("An error has occured in query: $query");
+        Kimai_Logger::logfile("An error has occured in query: $query");
 
         if ($kga['server_conn'] == "pdo") {
             $err = $pdo_query->errorInfo();
@@ -434,7 +434,7 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
             $err = $conn->Error();
         }
 
-        Logger::logfile("Error text: $err");
+        Kimai_Logger::logfile("Error text: $err");
     }
 
 }
@@ -479,7 +479,7 @@ $versionDB_e = explode(".", $versionDB);
 $errors = 0;
 $executed_queries = 0;
 
-Logger::logfile("-- begin update -----------------------------------");
+Kimai_Logger::logfile("-- begin update -----------------------------------");
 
 $p = $kga['server_prefix'];
 
@@ -487,7 +487,7 @@ if ((int)$revisionDB < $kga['revision']) {
     /**
      * Perform an backup (or snapshot) of the current tables.
      */
-    Logger::logfile("-- begin backup -----------------------------------");
+    Kimai_Logger::logfile("-- begin backup -----------------------------------");
 
     $backup_stamp = time();    // as an individual backup label the timestamp should be enough for now...
     // by using this type of label we can also exactly identify when it was done
@@ -496,7 +496,7 @@ if ((int)$revisionDB < $kga['revision']) {
     $query = ("SHOW TABLES;");
 
     $result_backup = $database->queryAll($query);
-    Logger::logfile($query, $result_backup);
+    Kimai_Logger::logfile($query, $result_backup);
     $prefix_length = strlen($p);
 
     echo "</table>";
@@ -519,7 +519,7 @@ if ((int)$revisionDB < $kga['revision']) {
         }
     }
 
-    Logger::logfile("-- backup finished -----------------------------------");
+    Kimai_Logger::logfile("-- backup finished -----------------------------------");
 
     echo "</table><br /><br />";
     echo "<strong>" . $kga['lang']['updater'][70] . "</strong></br>";
@@ -530,7 +530,7 @@ if ((int)$revisionDB < $kga['revision']) {
 
 
 if (((int)$versionDB_e[1] == 7 && (int)$versionDB_e[2] < 12)) {
-    Logger::logfile("-- update to 0.7.12");
+    Kimai_Logger::logfile("-- update to 0.7.12");
     exec_query("ALTER TABLE `${p}evt` ADD `evt_visible` TINYINT NOT NULL DEFAULT '1'", 1);
     exec_query("ALTER TABLE `${p}knd` ADD `knd_visible` TINYINT NOT NULL DEFAULT '1'", 1);
     exec_query("ALTER TABLE `${p}pct` ADD `pct_visible` TINYINT NOT NULL DEFAULT '1'", 1);
@@ -541,7 +541,7 @@ if (((int)$versionDB_e[1] == 7 && (int)$versionDB_e[2] < 12)) {
 }
 
 if ((int)$revisionDB < 96) {
-    Logger::logfile("-- update to 0.7.13r96");
+    Kimai_Logger::logfile("-- update to 0.7.13r96");
     exec_query("ALTER TABLE `${p}conf` ADD `allvisible` TINYINT(1) NOT NULL DEFAULT '1'", 1);
     // a proper installed database throws errors from here. don't worry - no problem. We ignore those ...
     exec_query("ALTER TABLE `${p}evt` CHANGE `visible` `evt_visible` TINYINT(1) NOT NULL DEFAULT '1'", 0);
@@ -553,13 +553,13 @@ if ((int)$revisionDB < 96) {
 }
 
 if ((int)$revisionDB < 141) {
-    Logger::logfile("-- update to 0.7.13r141");
+    Kimai_Logger::logfile("-- update to 0.7.13r141");
     $query = "ALTER TABLE `${p}conf` ADD `flip_pct_display` tinyint(1) NOT NULL DEFAULT '0'";
     exec_query($query, 1);
 }
 
 if ((int)$revisionDB < 221) {
-    Logger::logfile("-- update to 0.8");
+    Kimai_Logger::logfile("-- update to 0.8");
     // drop views
     exec_query("DROP VIEW IF EXISTS ${p}get_arr_grp, ${p}get_usr_count_in_grp", 0);
     // Set news group name length
@@ -929,7 +929,7 @@ EOD;
 
 
 if ((int)$revisionDB < 733) {
-    Logger::logfile("-- update to 0.8.0a");
+    Kimai_Logger::logfile("-- update to 0.8.0a");
 
     exec_query("ALTER TABLE `${p}evt` CHANGE `evt_visible` `evt_visible` TINYINT(1) NOT NULL DEFAULT '1';", 0);
     exec_query("ALTER TABLE `${p}knd` CHANGE `knd_visible` `knd_visible` TINYINT(1) NOT NULL DEFAULT '1';", 0);
@@ -957,28 +957,28 @@ if ((int)$revisionDB < 733) {
 }
 
 if ((int)$revisionDB < 809) {
-    Logger::logfile("-- update to r810");
+    Kimai_Logger::logfile("-- update to r810");
     exec_query("ALTER TABLE `${p}usr` ADD `pct_comment_flag` TINYINT(1) NOT NULL DEFAULT '0'", 1);
 }
 
 if ((int)$revisionDB < 817) {
-    Logger::logfile("-- update to r817");
+    Kimai_Logger::logfile("-- update to r817");
     exec_query("ALTER TABLE `${p}usr` ADD `showIDs` TINYINT(1) NOT NULL DEFAULT '0'", 1);
 }
 
 if ((int)$revisionDB < 837) {
-    Logger::logfile("-- update to r837");
+    Kimai_Logger::logfile("-- update to r837");
     exec_query("ALTER TABLE `${p}usr` ADD `usr_alias` VARCHAR(10)", 0);
     exec_query("ALTER TABLE `${p}zef` ADD `zef_location` varchar(50)", 1);
 }
 
 if ((int)$revisionDB < 848) {
-    Logger::logfile("-- update to r848");
+    Kimai_Logger::logfile("-- update to r848");
     exec_query("ALTER TABLE `${p}zef` ADD `zef_trackingnr` int(20)", 1);
 }
 
 if ((int)$revisionDB < 898) {
-    Logger::logfile("-- update to r898");
+    Kimai_Logger::logfile("-- update to r898");
     exec_query("CREATE TABLE `${p}rates` (
 `user_id` int(10) DEFAULT NULL,
 `project_id` int(10) DEFAULT NULL,
@@ -989,13 +989,13 @@ if ((int)$revisionDB < 898) {
 }
 
 if ((int)$revisionDB < 922) {
-    Logger::logfile("-- update to r922");
+    Kimai_Logger::logfile("-- update to r922");
     exec_query("ALTER TABLE `${p}knd` ADD `knd_password` VARCHAR(255);", 1);
     exec_query("ALTER TABLE `${p}knd` ADD `knd_secure` varchar(60) NOT NULL default '0';", 1);
 }
 
 if ((int)$revisionDB < 935) {
-    Logger::logfile("-- update to r935");
+    Kimai_Logger::logfile("-- update to r935");
     exec_query("CREATE TABLE `${p}exp` (
 `exp_ID` int(10) NOT NULL AUTO_INCREMENT,
 `exp_timestamp` int(10) NOT NULL DEFAULT '0',
@@ -1011,7 +1011,7 @@ PRIMARY KEY (`exp_ID`)
 }
 
 if ((int)$revisionDB < 1067) {
-    Logger::logfile("-- update to r1067");
+    Kimai_Logger::logfile("-- update to r1067");
 
     /*
      *  Write new config file with password salt
@@ -1057,12 +1057,12 @@ if ((int)$revisionDB < 1067) {
 }
 
 if ((int)$revisionDB < 1068) {
-    Logger::logfile("-- update to r1068");
+    Kimai_Logger::logfile("-- update to r1068");
     exec_query("ALTER TABLE `${p}usr` CHANGE `autoselection` `autoselection` TINYINT( 1 ) NOT NULL default '0';");
 }
 
 if ((int)$revisionDB < 1077) {
-    Logger::logfile("-- update to r1076");
+    Kimai_Logger::logfile("-- update to r1076");
     exec_query("ALTER TABLE `${p}usr` CHANGE `usr_mail` `usr_mail` varchar(160) DEFAULT ''");
     exec_query("ALTER TABLE `${p}usr` CHANGE `pw` `pw` varchar(254) NULL DEFAULT NULL");
     exec_query("ALTER TABLE `${p}usr` CHANGE `lang` `lang` varchar(6) DEFAULT ''");
@@ -1070,27 +1070,27 @@ if ((int)$revisionDB < 1077) {
 }
 
 if ((int)$revisionDB < 1086) {
-    Logger::logfile("-- update to r1086");
+    Kimai_Logger::logfile("-- update to r1086");
     exec_query("ALTER TABLE `${p}pct` ADD `pct_budget` DECIMAL(10,2) NOT NULL DEFAULT 0.00");
 }
 
 if ((int)$revisionDB < 1088) {
-    Logger::logfile("-- update to r1088");
+    Kimai_Logger::logfile("-- update to r1088");
     exec_query("ALTER TABLE `${p}usr` ADD `noFading` TINYINT(1) NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1089) {
-    Logger::logfile("-- update to r1089");
+    Kimai_Logger::logfile("-- update to r1089");
     exec_query("ALTER TABLE `${p}usr` ADD `export_disabled_columns` INT NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1103) {
-    Logger::logfile("-- update to r1103");
+    Kimai_Logger::logfile("-- update to r1103");
     exec_query("ALTER TABLE ${p}usr DROP `allvisible`");
 }
 
 if ((int)$revisionDB < 1112) {
-    Logger::logfile("-- update to r1112");
+    Kimai_Logger::logfile("-- update to r1112");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_name','Euro')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_sign','€')");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_sensible_data','1')");
@@ -1114,7 +1114,7 @@ if ((int)$revisionDB < 1115) {
 }
 
 if ((int)$revisionDB < 1126) {
-    Logger::logfile("-- update to r1126");
+    Kimai_Logger::logfile("-- update to r1126");
     exec_query("ALTER TABLE `${p}grp_evt` ADD UNIQUE (`grp_ID` ,`evt_ID`);");
     exec_query("ALTER TABLE `${p}grp_knd` ADD UNIQUE (`grp_ID` ,`knd_ID`);");
     exec_query("ALTER TABLE `${p}grp_pct` ADD UNIQUE (`grp_ID` ,`pct_ID`);");
@@ -1122,7 +1122,7 @@ if ((int)$revisionDB < 1126) {
 }
 
 if ((int)$revisionDB < 1132) {
-    Logger::logfile("-- update to r1132");
+    Kimai_Logger::logfile("-- update to r1132");
     if ($kga['server_conn'] == "mysql") {
         exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
         exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
@@ -1130,22 +1130,22 @@ if ((int)$revisionDB < 1132) {
 }
 
 if ((int)$revisionDB < 1139) {
-    Logger::logfile("-- update to r1139");
+    Kimai_Logger::logfile("-- update to r1139");
     exec_query("ALTER TABLE `${p}usr` ADD `user_list_hidden` INT NOT NULL DEFAULT '0'");
 }
 
 if ((int)$revisionDB < 1142) {
-    Logger::logfile("-- update to r1142");
+    Kimai_Logger::logfile("-- update to r1142");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('roundPrecision','0')");
 }
 
 if ((int)$revisionDB < 1145) {
-    Logger::logfile("-- update to r1145");
+    Kimai_Logger::logfile("-- update to r1145");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_first','0')");
 }
 
 if ((int)$revisionDB < 1176) {
-    Logger::logfile("-- update to r1176");
+    Kimai_Logger::logfile("-- update to r1176");
     exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_usrID` ) ");
     exec_query("ALTER TABLE `${p}exp` ADD INDEX ( `exp_pctID` ) ");
     exec_query("ALTER TABLE `${p}pct` ADD INDEX ( `pct_kndID` ) ");
@@ -1155,54 +1155,54 @@ if ((int)$revisionDB < 1176) {
 }
 
 if ((int)$revisionDB < 1183) {
-    Logger::logfile("-- update to r1183");
+    Kimai_Logger::logfile("-- update to r1183");
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_trackingnr` `zef_trackingnr` varchar(30) DEFAULT ''");
 }
 
 if ((int)$revisionDB < 1184) {
-    Logger::logfile("-- update to r1184");
+    Kimai_Logger::logfile("-- update to r1184");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('decimalSeparator',',')");
 }
 
 if ((int)$revisionDB < 1185) {
-    Logger::logfile("-- update to r1185");
+    Kimai_Logger::logfile("-- update to r1185");
     exec_query("CREATE TABLE ${p}pct_evt (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;");
 }
 
 if ((int)$revisionDB < 1206) {
-    Logger::logfile("-- update to r1206");
+    Kimai_Logger::logfile("-- update to r1206");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('durationWithSeconds','0')");
 }
 
 if ((int)$revisionDB < 1207) {
-    Logger::logfile("-- update to r1207");
+    Kimai_Logger::logfile("-- update to r1207");
     exec_query("ALTER TABLE `${p}exp` ADD `exp_multiplier` INT NOT NULL DEFAULT '1'");
 
 }
 
 if ((int)$revisionDB < 1213) {
-    Logger::logfile("-- update to r1213");
+    Kimai_Logger::logfile("-- update to r1213");
     exec_query("ALTER TABLE ${p}knd DROP `knd_logo`");
     exec_query("ALTER TABLE ${p}pct DROP `pct_logo`");
     exec_query("ALTER TABLE ${p}evt DROP `evt_logo`");
 }
 
 if ((int)$revisionDB < 1216) {
-    Logger::logfile("-- update to r1216");
+    Kimai_Logger::logfile("-- update to r1216");
     exec_query("ALTER TABLE `${p}exp`
 ADD `exp_refundable` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'expense refundable to employee (0 = no, 1 = yes)' AFTER `exp_comment_type`;");
 }
 
 if ((int)$revisionDB < 1219) {
     $timezone = quoteForSql($_REQUEST['timezone']);
-    Logger::logfile("-- update to r1219");
+    Kimai_Logger::logfile("-- update to r1219");
     exec_query("ALTER TABLE `${p}usr` ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
     exec_query("UPDATE `${p}usr` SET `timezone` = $timezone");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone',$timezone)");
 }
 
 if ((int)$revisionDB < 1225) {
-    Logger::logfile("-- update to r1225");
+    Kimai_Logger::logfile("-- update to r1225");
     exec_query("CREATE TABLE `${p}preferences` (
 `userID` int(10) NOT NULL,
 `var` varchar(255) NOT NULL,
@@ -1227,53 +1227,53 @@ PRIMARY KEY (`userID`,`var`)
 }
 
 if ((int)$revisionDB < 1227) {
-    Logger::logfile("-- update to r1227");
+    Kimai_Logger::logfile("-- update to r1227");
     exec_query("ALTER TABLE `${p}knd` ADD `knd_vat` VARCHAR( 255 ) NOT NULL");
     exec_query("ALTER TABLE `${p}knd` ADD `knd_contact` VARCHAR( 255 ) NOT NULL");
 }
 
 if ((int)$revisionDB < 1229) {
-    Logger::logfile("-- update to r1229");
+    Kimai_Logger::logfile("-- update to r1229");
     exec_query("ALTER TABLE `${p}usr` CHANGE `banTime` `banTime` int(10) NOT NULL DEFAULT 0");
 }
 
 if ((int)$revisionDB < 1236) {
-    Logger::logfile("-- update to r1236");
+    Kimai_Logger::logfile("-- update to r1236");
     exec_query("ALTER TABLE `${p}pct` ADD `pct_internal` TINYINT( 1 ) NOT NULL DEFAULT 0");
 }
 
 if ((int)$revisionDB < 1240) {
-    Logger::logfile("-- update to r1240");
+    Kimai_Logger::logfile("-- update to r1240");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('exactSums','0')");
 }
 
 if ((int)$revisionDB < 1256) {
-    Logger::logfile("-- update to r1256");
+    Kimai_Logger::logfile("-- update to r1256");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultVat','0')");
 }
 
 if ((int)$revisionDB < 1257) {
-    Logger::logfile("-- update to r1257");
+    Kimai_Logger::logfile("-- update to r1257");
     exec_query("UPDATE ${p}preferences SET var = CONCAT('ui.',var) WHERE var 
 IN ('skin', 'rowlimit', 'lang', 'autoselection', 'quickdelete', 'flip_pct_display',
 'pct_comment_flag', 'showIDs', 'noFading', 'user_list_hidden', 'hideClearedEntries')");
 }
 
 if ((int)$revisionDB < 1284) {
-    Logger::logfile("-- update to r1284");
+    Kimai_Logger::logfile("-- update to r1284");
     exec_query("ALTER TABLE `${p}exp` CHANGE `exp_multiplier`
 `exp_multiplier` decimal(10,2) NOT NULL DEFAULT '1.00'");
 }
 
 if ((int)$revisionDB < 1291) {
-    Logger::logfile("-- update to r1291");
+    Kimai_Logger::logfile("-- update to r1291");
     $salt = $kga['password_salt'];
     $query = "UPDATE `${p}usr` SET pw=MD5(CONCAT('${salt}',pw,'${salt}')) WHERE pw REGEXP '^[0-9a-f]{32}$' = 0 AND pw != ''";
     exec_query($query, false, str_replace($salt, 'salt was stripped', $query));
 }
 
 if ((int)$revisionDB < 1305) {
-    Logger::logfile("-- update to r1305");
+    Kimai_Logger::logfile("-- update to r1305");
 
     // update knd_name
     $result = $database->queryAll("SELECT knd_ID,knd_name FROM ${p}knd");
@@ -1352,12 +1352,12 @@ if ((int)$revisionDB < 1305) {
 }
 
 if ((int)$revisionDB < 1326) {
-    Logger::logfile("-- update to r1326");
+    Kimai_Logger::logfile("-- update to r1326");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
 }
 
 if ((int)$revisionDB < 1327) {
-    Logger::logfile("-- update to r1327");
+    Kimai_Logger::logfile("-- update to r1327");
     $result = $database->queryAll("SELECT value FROM ${p}var WHERE var = 'defaultTimezone'");
     $timezone = quoteForSql($result[0][0]);
     exec_query("ALTER TABLE ${p}knd ADD COLUMN `knd_timezone` varchar(255) NOT NULL DEFAULT $timezone");
@@ -1365,12 +1365,12 @@ if ((int)$revisionDB < 1327) {
 }
 
 if ((int)$revisionDB < 1328) {
-    Logger::logfile("-- update to r1328");
+    Kimai_Logger::logfile("-- update to r1328");
     exec_query("DELETE FROM ${p}var WHERE var='login' LIMIT 1;");
 }
 
 if ((int)$revisionDB < 1331) {
-    Logger::logfile("-- update to r1331");
+    Kimai_Logger::logfile("-- update to r1331");
     exec_query("ALTER TABLE ${p}evt ADD COLUMN `evt_assignable` TINYINT(1) NOT NULL DEFAULT '0';");
     $result = $database->queryAll("SELECT DISTINCT evt_ID FROM ${p}pct_evt");
     foreach ($result as $row) {
@@ -1379,7 +1379,7 @@ if ((int)$revisionDB < 1331) {
 }
 
 if ((int)$revisionDB < 1332) {
-    Logger::logfile("-- update to r1332");
+    Kimai_Logger::logfile("-- update to r1332");
     $query =
         "CREATE TABLE `${p}fixed_rates` (
 `project_id` int(10) DEFAULT NULL,
@@ -1391,7 +1391,7 @@ if ((int)$revisionDB < 1332) {
 }
 
 if ((int)$revisionDB < 1333) {
-    Logger::logfile("-- update to r1333");
+    Kimai_Logger::logfile("-- update to r1333");
     $query =
         "CREATE TABLE `${p}grp_usr` (
 `grp_ID` int(10) NOT NULL,
@@ -1409,7 +1409,7 @@ PRIMARY KEY (`grp_ID`,`usr_ID`)
 }
 
 if ((int)$revisionDB < 1347) {
-    Logger::logfile("-- update to r1347");
+    Kimai_Logger::logfile("-- update to r1347");
     exec_query("ALTER TABLE `${p}pct_evt` ADD `evt_budget` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_effort` DECIMAL( 10, 2 ) NULL ,
 ADD `evt_approved` DECIMAL( 10, 2 ) NULL ;");
@@ -1444,13 +1444,13 @@ ADD `zef_approved` DECIMAL( 10, 2 ) NULL AFTER `zef_budget` ;");
 }
 
 if ((int)$revisionDB < 1349) {
-    Logger::logfile("-- update to r1350");
+    Kimai_Logger::logfile("-- update to r1350");
     exec_query("ALTER TABLE `${p}usr` ADD `apikey` VARCHAR( 30 ) NULL AFTER `timespace_out`");
     exec_query("ALTER TABLE `${p}usr` ADD UNIQUE (`apikey`)");
 }
 
 if ((int)$revisionDB < 1368) {
-    Logger::logfile("-- update to r1368");
+    Kimai_Logger::logfile("-- update to r1368");
 
     // some users don't seem to have these columns so we add them here (if they don't exist yet).
     exec_query("ALTER TABLE  `${p}evt` ADD `evt_budget`     decimal(10,2) DEFAULT NULL;", false);
@@ -1773,12 +1773,12 @@ if ((int)$revisionDB < 1379) {
 }
 
 if ((int)$revisionDB < 1380) {
-    Logger::logfile("-- update to r1380");
+    Kimai_Logger::logfile("-- update to r1380");
     exec_query("INSERT INTO `${p}configuration` VALUES('allowRoundDown', '1');");
 }
 
 if ((int)$revisionDB < 1381) {
-    Logger::logfile("-- update to r1381");
+    Kimai_Logger::logfile("-- update to r1381");
     // make sure all keys are defined correctly
     exec_query("ALTER TABLE `${p}activities`          ADD PRIMARY KEY(`activityID`);", false);
     exec_query("ALTER TABLE `${p}configuration`       ADD PRIMARY KEY(`option`);", false);
@@ -1811,22 +1811,22 @@ if ((int)$revisionDB < 1381) {
     exec_query("UPDATE `${p}preferences` SET `option` = 'ui.project_comment_flag' WHERE `option` = 'ui.pct_comment_flag';");
 }
 if ((int)$revisionDB < 1382) {
-    Logger::logfile("-- update to r1382");
+    Kimai_Logger::logfile("-- update to r1382");
     exec_query("ALTER TABLE `${p}membershipRoles` ADD `core-user-view` tinyint DEFAULT 0 AFTER `core-user-unassign`;", false);
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Admin';");
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Groupleader';");
 }
 if ((int)$revisionDB < 1383) {
-    Logger::logfile("-- update to r1383");
+    Kimai_Logger::logfile("-- update to r1383");
     exec_query("INSERT INTO `${p}configuration` VALUES('defaultStatusID', '1');");
 }
 if ((int)$revisionDB < 1384) {
-    Logger::logfile("-- update to r1384");
+    Kimai_Logger::logfile("-- update to r1384");
     exec_query("ALTER TABLE ${p}users ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
     exec_query("ALTER TABLE ${p}customers ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
 }
 if ((int)$revisionDB < 1385) {
-    Logger::logfile("-- update to r1385");
+    Kimai_Logger::logfile("-- update to r1385");
     exec_query("ALTER TABLE ${p}customers CHANGE `comment` `comment` TEXT NULL;");
     exec_query("ALTER TABLE ${p}customers CHANGE `company` `company` VARCHAR(255) NULL;");
     exec_query("ALTER TABLE ${p}customers CHANGE `vat` `vat` VARCHAR(255) NULL;");
@@ -1858,7 +1858,7 @@ if ((int)$revisionDB < $kga['revision'] && !$errors) {
     exec_query($query, 0);
 }
 
-Logger::logfile("-- update finished --------------------------------");
+Kimai_Logger::logfile("-- update finished --------------------------------");
 
 if ((int)$revisionDB == $kga['revision']) {
     echo '<script type="text/javascript">window.location.href = "index.php";</script>';
