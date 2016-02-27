@@ -11,7 +11,7 @@ body{
 }
 
 #error_wrapper {
-    background: url('../grfx/error_bg.jpg') no-repeat;    
+    background: url('grfx/error_bg.jpg') no-repeat;
     position: absolute;
     width: 425px;
     height: 189px;
