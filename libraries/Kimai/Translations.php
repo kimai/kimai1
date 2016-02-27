@@ -21,7 +21,7 @@
  * All things related to translations.
  * It's currently just listing available languages and loading them into the $kga.
  */
-class Translations
+class Kimai_Translations
 {
 
     private $kga;

@@ -52,8 +52,6 @@ else {
 }
 
 require(WEBROOT.'includes/vars.php');
-require(WEBROOT.'includes/classes/format.class.php');
-require(WEBROOT.'includes/classes/translations.class.php');
 require(WEBROOT.'includes/func.php');
 
 // ==================================================================================
@@ -103,7 +101,7 @@ if (!$database->isConnected()) { die('Kimai could not connect to database. Check
 Kimai_Registry::setDatabase($database);
 
 global $translations;
-$translations = new Translations($kga);
+$translations = new Kimai_Translations($kga);
 if ($kga['language'] != 'en')
   $translations->load($kga['language']);
 
