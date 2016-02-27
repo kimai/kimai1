@@ -21,7 +21,6 @@
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
-require('../../core/Config.php');
 
 switch ($axAction) {
 
@@ -202,7 +201,7 @@ switch ($axAction) {
 
     $view->status = $kga['conf']['status'];
 
-    $billableValues = Config::getConfig('billable');
+    $billableValues = $kga['billable'];
     $billableText = array();
     foreach($billableValues as $billableValue) {
       $billableText[] = $billableValue.'%';
