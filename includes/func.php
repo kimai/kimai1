@@ -62,7 +62,6 @@ function timezoneList() {
   return DateTimeZone::listIdentifiers();
 }
 
-
 /**
  * Returns array for smarty's html_options funtion.
  *
@@ -300,7 +299,7 @@ $config=<<<EOD
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2013 Kimai-Development-Team
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -327,6 +326,8 @@ $config=<<<EOD
 \$language        = "$lang";
 \$password_salt   = "$salt";
 \$defaultTimezone = $timezone;
+\$skin            = 'standard';
+\$billable        = array(0,50,100);
 
 EOD;
 
@@ -334,9 +335,6 @@ EOD;
   fclose($file);
   return true;
 }
-
-
-
 
 /**
  * get in and out unix seconds of specific user
@@ -352,9 +350,6 @@ EOD;
  * @return array
  * @author th
  */
-
-// checked
-
 function get_timeframe() {
     global $kga, $conn;
 
