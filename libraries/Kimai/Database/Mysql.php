@@ -1869,41 +1869,41 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * create time sheet entry
      *
      * @param array $data array with record data
-     * @author th
      * @return bool|int
      */
-    public function timeEntry_create($data) {
+    public function timeEntry_create($data)
+    {
         $data = $this->clean_data($data);
 
-        $values['location'] = MySQL::SQLValue( $data['location']);
-        $values['comment'] = MySQL::SQLValue( $data['comment']);
-        $values['description'] = MySQL::SQLValue( $data['description']);
-        if ($data['trackingNumber'] == '')
+        $values['location']     = MySQL::SQLValue($data['location']);
+        $values['comment']      = MySQL::SQLValue($data['comment']);
+        $values['description']  = MySQL::SQLValue($data['description']);
+        if ($data['trackingNumber'] == '') {
             $values['trackingNumber'] = 'NULL';
-        else
-            $values['trackingNumber'] = MySQL::SQLValue( $data['trackingNumber']);
-        $values['userID'] = MySQL::SQLValue( $data['userID'], MySQL::SQLVALUE_NUMBER);
-        $values['projectID'] = MySQL::SQLValue( $data['projectID'], MySQL::SQLVALUE_NUMBER);
-        $values['activityID'] = MySQL::SQLValue( $data['activityID'], MySQL::SQLVALUE_NUMBER);
-        $values['commentType'] = MySQL::SQLValue( $data['commentType'], MySQL::SQLVALUE_NUMBER);
-        $values['start'] = MySQL::SQLValue( $data['start'], MySQL::SQLVALUE_NUMBER);
-        $values['end'] = MySQL::SQLValue( $data['end'], MySQL::SQLVALUE_NUMBER);
-        $values['duration'] = MySQL::SQLValue( $data['duration'], MySQL::SQLVALUE_NUMBER);
-        $values['rate'] = MySQL::SQLValue( $data['rate'], MySQL::SQLVALUE_NUMBER);
-        $values['cleared'] = MySQL::SQLValue( $data['cleared']?1:0, MySQL::SQLVALUE_NUMBER);
-        $values['budget'] = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
-        $values['approved'] = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
-        $values['statusID'] = MySQL::SQLValue($data['statusID'] , MySQL::SQLVALUE_NUMBER);
-        $values['billable'] = MySQL::SQLValue($data['billable'] , MySQL::SQLVALUE_NUMBER);
+        } else {
+            $values['trackingNumber'] = MySQL::SQLValue($data['trackingNumber']);
+        }
+        $values['userID']       = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
+        $values['projectID']    = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
+        $values['activityID']   = MySQL::SQLValue($data['activityID'], MySQL::SQLVALUE_NUMBER);
+        $values['commentType']  = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
+        $values['start']        = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
+        $values['end']          = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
+        $values['duration']     = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
+        $values['rate']         = MySQL::SQLValue($data['rate'], MySQL::SQLVALUE_NUMBER);
+        $values['cleared']      = MySQL::SQLValue($data['cleared']?1:0, MySQL::SQLVALUE_NUMBER);
+        $values['budget']       = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
+        $values['approved']     = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
+        $values['statusID']     = MySQL::SQLValue($data['statusID'] , MySQL::SQLVALUE_NUMBER);
+        $values['billable']     = MySQL::SQLValue($data['billable'] , MySQL::SQLVALUE_NUMBER);
 
         $table = $this->getTimeSheetTable();
         $success = $this->conn->InsertRow($table, $values);
-        if ($success)
-            return  $this->conn->GetLastInsertID();
-        else {
+        if (!$success) {
             $this->logLastError('timeEntry_create');
             return false;
         }
+        return $this->conn->GetLastInsertID();
     }
 
     /**
@@ -1924,7 +1924,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         foreach ($original_array as $key => $value) {
             if (isset($data[$key]) == true) {
-                // buget is added to total budget for activity. So if we change the budget, we need
+                // budget is added to total budget for activity. So if we change the budget, we need
                 // to first subtract the previous entry before adding the new one
 //          	if($key == 'budget') {
 //          		$budgetChange = - $value;
@@ -2402,19 +2402,28 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $this->get_user_config($userID);
         }
 
-        // override autoconf language if admin has chosen a language in the advanced tab
-        if ($this->kga['conf']['language'] != "") {
-            $translations->load($this->kga['conf']['language']);
-            $this->kga['language'] = $this->kga['conf']['language'];
+        // skin fallback
+        $skin = isset($this->kga['skin']) ? $this->kga['skin'] : 'standard';
+        if (isset($this->kga['conf']['skin']) && is_dir(WEBROOT . "/skins/" . $this->kga['conf']['skin'])) {
+            $skin = $this->kga['conf']['skin'];
+        }
+        $this->kga['conf']['skin'] = $skin;
+
+        // importance of language override order from high to low: user, admin, autoconf
+        $language = $this->kga['language'];
+        if (!empty($this->kga['conf']['lang'])) {
+            $language = $this->kga['conf']['lang'];
+        } else if (!empty($this->kga['conf']['language'])) {
+            $language = $this->kga['conf']['language'];
+        }
+        $translations->load($language);
+        $this->kga['language'] = $language;
+
+        if (isset($this->kga['user'])) {
+            return $this->kga['user'];
         }
 
-        // override language if user has chosen a language in the prefs
-        if ($this->kga['conf']['lang'] != "") {
-            $translations->load($this->kga['conf']['lang']);
-            $this->kga['language'] = $this->kga['conf']['lang'];
-        }
-
-        return (isset($this->kga['user'])?$this->kga['user']:null);
+        return null;
     }
 
     /**
