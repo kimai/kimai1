@@ -3200,12 +3200,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $filter['timeEntryID'] = $activity['timeEntryID'];
         $filter['end'] = 0; // only update running activities
 
-        $rounded = Rounding::roundTimespan($activity['start'],time(),$this->kga['conf']['roundPrecision'], $this->kga['conf']['allowRoundDown']);
+        $rounded = Kimai_Rounding::roundTimespan(
+            $activity['start'],
+            time(),
+            $this->kga['conf']['roundPrecision'],
+            $this->kga['conf']['allowRoundDown']
+        );
 
         $values['start'] = $rounded['start'];
         $values['end'] = $rounded['end'];
         $values['duration'] = $values['end']-$values['start'];
-
 
         $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 

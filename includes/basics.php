@@ -54,9 +54,7 @@ else {
 require(WEBROOT.'includes/vars.php');
 require(WEBROOT.'includes/classes/format.class.php');
 require(WEBROOT.'includes/classes/translations.class.php');
-require(WEBROOT.'includes/classes/rounding.class.php');
 require(WEBROOT.'includes/func.php');
-
 
 // ==================================================================================
 // = check for additional database(s) and set $kga['server_database'] accordingly   =
