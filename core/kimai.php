@@ -41,7 +41,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extensions = new Extensions($kga, WEBROOT.'/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT.'/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
