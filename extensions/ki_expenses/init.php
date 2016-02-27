@@ -53,14 +53,14 @@ $view->expenses = get_expenses($in,$out,array($kga['user']['userID']),null,null,
 else // customer logged in
 $view->expenses = get_expenses($in,$out,null,array($kga['customer']['customerID']),null,1);
 
-$view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
+$view->total = Kimai_Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
 
 
 if (isset($kga['user'])) // user logged in
   $ann = expenses_by_user($in,$out,array($kga['user']['userID']));
 else // customer logged in
   $ann = expenses_by_user($in,$out,null,array($kga['customer']['customerID']));
-$ann = Format::formatCurrency($ann);
+$ann = Kimai_Format::formatCurrency($ann);
 $view->user_annotations = $ann;
 
 // TODO: function for loops or convert it in template with new function
@@ -68,14 +68,14 @@ if (isset($kga['user'])) // user logged in
   $ann = expenses_by_customer($in,$out,array($kga['user']['userID']));
 else // customer logged in
   $ann = expenses_by_customer($in,$out,null,array($kga['customer']['customerID']));
-$ann = Format::formatCurrency($ann);
+$ann = Kimai_Format::formatCurrency($ann);
 $view->customer_annotations = $ann;
 
 if (isset($kga['user'])) // user logged in
   $ann = expenses_by_project($in,$out,array($kga['user']['userID']));
 else // customer logged in
   $ann = expenses_by_project($in,$out,null,array($kga['customer']['customerID']));
-$ann = Format::formatCurrency($ann);
+$ann = Kimai_Format::formatCurrency($ann);
 $view->project_annotations = $ann;
 
 if (isset($kga['user']))

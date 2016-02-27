@@ -107,7 +107,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
                 $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
                 $arr['trackingNr'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
                 if ($limitCommentSize) {
-                    $arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+                    $arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
                 } else {
                     $arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
                 }
@@ -125,7 +125,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
             $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
             $arr['rate'] = $expenses[$expenses_index]['value'];
             if ($limitCommentSize) {
-                $arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+                $arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
             } else {
                 $arr['comment'] = $expenses[$expenses_index]['comment'];
             }
@@ -158,7 +158,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
             $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
             $arr['trackingNr'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
             if ($limitCommentSize) {
-                $arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+                $arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
             } else {
                 $arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
             }
@@ -185,7 +185,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
         $arr['rate'] = $expenses[$expenses_index]['value'];
         if ($limitCommentSize) {
-            $arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+            $arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
         } else {
             $arr['comment'] = $expenses[$expenses_index]['comment'];
         }

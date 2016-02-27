@@ -82,9 +82,9 @@ $view->dp_start = $dp_start;
 $view->dp_today = $dp_today;
 
 if (isset($kga['customer']))
-  $view->total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID'])));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID'])));
 else
-  $view->total = Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID']));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID']));
 
 // ===========================
 // = DatePicker localization =

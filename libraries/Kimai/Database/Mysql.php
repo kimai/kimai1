@@ -2319,7 +2319,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row->end != 0) {
                 // only calculate time after recording is complete
                 $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
-                $arr[$i]['formattedDuration'] = Format::formatDuration($arr[$i]['duration']);
+                $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration']/3600*$row->rate;
                 $arr[$i]['wage'] = sprintf("%01.2f",$arr[$i]['wage_decimal']);
             }
@@ -2898,7 +2898,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
             $start = (int)$row['start'];
 
-            $aktuelleMessung = Format::hourminsec(time()-$start);
+            $aktuelleMessung = Kimai_Format::hourminsec(time()-$start);
             $current_timer['all'] = $start;
             $current_timer['hour'] = $aktuelleMessung['h'];
             $current_timer['min'] = $aktuelleMessung['i'];

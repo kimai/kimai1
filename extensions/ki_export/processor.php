@@ -150,22 +150,22 @@ switch ($axAction) {
     case 'reload':
         $view->exportData = export_get_data($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,false,$reverse_order,$default_location,$filter_cleared,$filter_type,false,$filter_refundable);
 
-        $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,$filter_cleared));
+        $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,$filter_cleared));
 
         $ann = export_get_user_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->user_annotations = $ann;
         
         $ann = export_get_customer_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->customer_annotations = $ann;
 
         $ann = export_get_project_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->project_annotations = $ann;
 
         $ann = export_get_activity_annotations($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->activity_annotations = $ann;
 
         $view->timeformat = $timeformat;

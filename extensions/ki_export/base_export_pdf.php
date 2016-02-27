@@ -86,7 +86,7 @@ class BasePDF extends TCPDF {
    * @return string formatted string
    */
   public function money($number) {
-    return Format::formatCurrency($number,false);
+    return Kimai_Format::formatCurrency($number,false);
   }
 
 

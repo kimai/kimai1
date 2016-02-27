@@ -91,7 +91,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 				$arr['activityID'] = $timeSheetEntries[$timeSheetEntries_index]['activityID'];
 				$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
 				if ($limitCommentSize)
-					$arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+					$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
 				else
 					$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
 				$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
@@ -116,7 +116,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
       $arr['description'] = $expenses[$expenses_index]['designation'];
       $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
 			if ($limitCommentSize)
-				$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+				$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 			else
 				$arr['comment'] = $expenses[$expenses_index]['comment'];
 			$arr['activityName'] = $expenses[$expenses_index]['designation'];
@@ -160,7 +160,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
 			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
 			if ($limitCommentSize)
-				$arr['comment'] = Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+				$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
 			else
 				$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
 			$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
@@ -190,7 +190,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     $arr['description'] = $expenses[$expenses_index]['designation'];
     $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
 		if ($limitCommentSize)
-			$arr['comment'] = Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+			$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
 		else
 			$arr['comment'] = $expenses[$expenses_index]['comment'];
 		$arr['commentType'] = $expenses[$expenses_index]['commentType'];

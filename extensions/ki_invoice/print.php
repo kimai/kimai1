@@ -128,7 +128,7 @@ while (list($id, $fd) = each($invoiceArray)) {
     $total += $invoiceArray[$id]['amount'];
     $ttltime += $invoiceArray[$id]['hour'];
 }
-$fttltime = Format::formatDuration($ttltime * 3600);
+$fttltime = Kimai_Format::formatDuration($ttltime * 3600);
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {

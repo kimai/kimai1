@@ -162,7 +162,7 @@ class MYPDF extends BasePDF {
                foreach ($comment_lines as $comment_line) {
                  $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill); 
            $this->SetFont('', 'I', $comment_font_size); 
-           //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
+           //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Kimai_Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
            $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
            $this->SetFont('', '', $current_font_size);
            if ($_REQUEST['time_type']=="dec_time") {

@@ -257,7 +257,7 @@ switch ($axAction) {
 
           if ($rates !== false)
             foreach ($rates as $rate) {
-              $line = Format::formatCurrency($rate['rate']);
+              $line = Kimai_Format::formatCurrency($rate['rate']);
 
               $setFor = array(); // contains the list of "types" for which this rate was set
               if ($rate['userID'] != null)
@@ -297,7 +297,7 @@ switch ($axAction) {
 
           if ($rates !== false) {
               foreach ($rates as $rate) {
-                  $line = Format::formatCurrency($rate['rate']);
+                  $line = Kimai_Format::formatCurrency($rate['rate']);
 
                   $setFor = array(); // contains the list of "types" for which this rate was set
                   if ($rate['projectID'] != null) {
@@ -378,22 +378,22 @@ switch ($axAction) {
             $view->timeSheetEntries = 0;
         }
         $view->latest_running_entry = $database->get_latest_running_entry();
-        $view->total = Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities));
+        $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities));
 
         $ann = $database->get_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->user_annotations = $ann;
 
         $ann = $database->get_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->customer_annotations = $ann;
 
         $ann = $database->get_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->project_annotations = $ann;
 
         $ann = $database->get_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
-        Format::formatAnnotations($ann);
+        Kimai_Format::formatAnnotations($ann);
         $view->activity_annotations = $ann;
 
         $view->hideComments = true;
