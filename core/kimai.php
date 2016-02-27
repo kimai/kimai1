@@ -51,12 +51,6 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-// ============================================
-// = load the config =
-// ============================================
-include('Config.php');
-
-
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
