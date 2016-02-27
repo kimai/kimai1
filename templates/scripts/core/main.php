@@ -8,8 +8,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 
     <!-- Default Stylesheets -->
-    <link rel="stylesheet" href="../skins/<?php echo $this->escape($this->kga['conf']['skin']); ?>/styles.css" type="text/css" media="screen" title="no title" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="../skins/<?php echo $this->escape($this->kga['conf']['skin']); ?>/jquery.jqplot.css" />
+    <link rel="stylesheet" href="<?php echo $this->skin('styles.css'); ?>" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="<?php echo $this->skin('jquery.jqplot.css'); ?>" type="text/css" />
     <!-- /Default Stylesheets -->
     
     <!-- Extension Stylesheets -->
