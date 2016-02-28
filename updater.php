@@ -439,6 +439,10 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
 
 }
 
+/**
+ * @param string $level
+ * @param string $text
+ */
 function printLine($level, $text, $errorInfo = '')
 {
     echo "<tr>";

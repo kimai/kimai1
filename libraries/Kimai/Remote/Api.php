@@ -56,7 +56,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns the database object to access Kimais system.
 	 *
-	 * @return Kimai_Database_Abstract
+	 * @return Kimai_Remote_Database
 	 */
 	private function getBackend()
 	{
@@ -88,6 +88,7 @@ class Kimai_Remote_Api
 	 * If so, sets all internal values to their needed state and returns true.
 	 *
 	 * @param string $apiKey
+	 * @param string $permission
 	 * @return boolean
 	 */
 	private function init($apiKey, $permission = null, $allowCustomer = false)
@@ -215,7 +216,6 @@ class Kimai_Remote_Api
    * Returns the array for success responses.
    * 
    * @param array $items
-   * @param int $total = 0
    * @return array
    */
   protected function getDebugResult(Array $items, Array $debugItems) {
@@ -537,8 +537,8 @@ class Kimai_Remote_Api
 	/**
 	 * Returns a list of recorded times.
      * @param string $apiKey
-	 * @param string $from a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
 	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
 	 * @param int $start limit start
 	 * @param int $limit count rows to select
@@ -747,8 +747,8 @@ class Kimai_Remote_Api
 	/**
 	 * Returns a list of expenses.
      * @param string $apiKey
-	 * @param string $from a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param string $to a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
+	 * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
 	 * @param int $refundable -1 all, 0 only refundable
 	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
 	 * @param int $start limit start

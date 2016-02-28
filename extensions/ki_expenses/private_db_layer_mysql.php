@@ -20,7 +20,6 @@
 /**
  * delete expense entry 
  *
- * @param integer $userID 
  * @param integer $id -> ID of record
  * @global array  $kga kimai-global-array
  * @author th
@@ -37,7 +36,6 @@ function expense_delete($id) {
 /**
  * create exp entry 
  *
- * @param integer $id    ID of record
  * @param integer $data  array with record data
  * @global array  $kga    kimai-global-array
  * @author sl
@@ -127,6 +125,11 @@ function expenses_widthhereClausesFromFilters($users, $customers , $projects ) {
  */
 
 // TODO: Test it!
+/**
+ * @param integer $start
+ * @param integer $end
+ * @param integer $filterCleared
+ */
 function get_expenses($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
@@ -246,7 +249,7 @@ function get_expense($id) {
 /**
  * Returns the data of a certain expense record
  *
- * @param array $expenseID        expenseID of the record
+ * @param integer $expenseID        expenseID of the record
  * @global array $kga          kimai-global-array
  * @return array               the record's data as array, false on failure
  * @author ob
