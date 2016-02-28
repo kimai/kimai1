@@ -23,26 +23,12 @@
  * here.
  */
 
-defined('WEBROOT') ||
-    define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-
-defined('APPLICATION_PATH') ||
-    define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
-
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
 ini_set('display_errors', '0');
 
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('Kimai');
+require_once APPLICATION_PATH . '/libraries/autoload.php';
 
 if (file_exists(WEBROOT.'includes/autoconf.php'))
   require(WEBROOT.'includes/autoconf.php');

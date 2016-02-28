@@ -17,23 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 if (!defined('WEBROOT')) {
     define('WEBROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 }
 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(WEBROOT . 'libraries/'),
-            get_include_path()
-        )
-    )
-);
-
-require_once 'Zend/Loader/Autoloader.php';
-Zend_Loader_Autoloader::getInstance();
+require_once WEBROOT . '/libraries/autoload.php';
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'templates');

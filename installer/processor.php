@@ -21,23 +21,10 @@
  * Handle all AJAX calls from the installer.
  */
 
-defined('WEBROOT') ||
-define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-defined('APPLICATION_PATH') ||
-define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
-
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('Kimai');
+require_once WEBROOT . '/libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val) {

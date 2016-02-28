@@ -394,19 +394,6 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('allowRo
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('defaultStatusID', '1');");
 
 if ($errors) {
-
-    set_include_path(
-        implode(
-            PATH_SEPARATOR,
-            array(
-                realpath(WEBROOT . '/libraries/'),
-            )
-        )
-    );
-    
-    require_once 'Zend/Loader/Autoloader.php';
-    Zend_Loader_Autoloader::getInstance();
-    
     $view = new Zend_View();
     $view->setBasePath(WEBROOT . '/templates');
 

@@ -7,24 +7,29 @@
     "license": "GPL-3.0",
     "version": "0.9.3",
     "authors": [
-        {
-            "name": "Severin Leonhardt",
-            "homepage": "https://github.com/ServiusHack"
-        },
-        {
-            "name": "Kevin Papst",
-            "homepage": "https://github.com/kevinpapst"
-        }
+        { "name": "Severin Leonhardt", "homepage": "https://github.com/ServiusHack" },
+        { "name": "Kevin Papst", "homepage": "https://github.com/kevinpapst" }
     ],
+    "config": {
+        "vendor-dir": "libraries"
+    },
     "require": {
-        "php" : ">=5.4.0"
+        "php" : ">=5.4.0",
+        "zendframework/zendframework1": "^1.12"
     },
     "require-dev" : {
         "phpunit/phpunit" : "3.7.*"
     },
     "autoload": {
         "classmap" : [
-            "libraries"
+            "libraries/TinyButStrong"
+        ],
+        "psr-0": {
+            "Kimai_": "library/"
+        },
+        "files": [
+            "libraries/mysql.class.php",
+            "libraries/tcpdf/tcpdf.php"
         ]
     },
     "include-path": [
