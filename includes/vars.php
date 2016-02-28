@@ -24,7 +24,7 @@
 
 $kga = array();
 
-require(dirname(__FILE__).'/version.php');
+require(dirname(__FILE__) . '/version.php');
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -34,13 +34,13 @@ require(dirname(__FILE__).'/version.php');
                                         // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
                                         // DON'T BLAME US - YOU HAVE BEEN WARNED!
 
-$kga['logfile_lines']      = 100;       // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
-$kga['delete_logfile']     = 1;         // can the logfile be cleaned via debug_ext?
+$kga['logfile_lines']      = 100; // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
+$kga['delete_logfile']     = 1; // can the logfile be cleaned via debug_ext?
 
-$kga['utf8']               = 0;         // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case,
+$kga['utf8']               = 0; // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case,
                                         // depends on server settings
 
-$kga['calender_start']     = "0";       // here you can set a custom start day for the date-picker.
+$kga['calender_start']     = "0"; // here you can set a custom start day for the date-picker.
                                         // if this is not set the day of the users first day in the system will be taken
                                         // Format: ... = "DD/MM/YYYY";
 
@@ -55,11 +55,11 @@ $kga['server_password'] = $server_password;
 $kga['server_type']     = "";
 $kga['server_conn']     = $server_conn;
 $kga['defaultTimezone'] = $defaultTimezone;
-$kga['language']        = isset($language)                          ? $language             : 'en';
-$kga['password_salt']   = isset($password_salt)                     ? $password_salt        : '';
-$kga['authenticator']   = isset($authenticator)                     ? trim($authenticator)  : 'kimai';
-$kga['billable']        = isset($billable) && is_array($billable)   ? $billable             : array(0,50,100);
-$kga['skin']            = isset($skin)                              ? $skin                 : 'standard';
+$kga['language']        = isset($language) ? $language : 'en';
+$kga['password_salt']   = isset($password_salt) ? $password_salt : '';
+$kga['authenticator']   = isset($authenticator) ? trim($authenticator) : 'kimai';
+$kga['billable']        = isset($billable) && is_array($billable) ? $billable : array(0, 50, 100);
+$kga['skin']            = isset($skin) ? $skin : 'standard';
 
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
@@ -69,7 +69,7 @@ $cleanup = array(
 
 date_default_timezone_set($defaultTimezone);
 
-foreach($cleanup as $varName) {
+foreach ($cleanup as $varName) {
     if (isset($$varName)) {
         unset($$varName);
     }

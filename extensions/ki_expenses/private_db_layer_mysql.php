@@ -130,30 +130,30 @@ function expenses_widthhereClausesFromFilters($users, $customers, $projects) {
  * @param integer $end
  * @param integer $filterCleared
  */
-function get_expenses($start, $end, $users = null, $customers = null, $projects = null,$limit=false, $reverse_order=false, $filter_refundable = -1, $filterCleared = null) {
+function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $limit = false, $reverse_order = false, $filter_refundable = -1, $filterCleared = null) {
     global $kga, $database;
     $conn = $database->getConnectionHandler();
-    $p     = $kga['server_prefix'];
+    $p = $kga['server_prefix'];
 
     if (!is_numeric($filterCleared)) {
-      $filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+      $filterCleared = $kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
     }
     
-    $start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
-    $end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
-    $limit = MySQL::SQLValue($limit , MySQL::SQLVALUE_NUMBER);
+    $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
+    $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
+    $limit = MySQL::SQLValue($limit, MySQL::SQLVALUE_NUMBER);
 
     $p     = $kga['server_prefix'];
 
-    $whereClauses = expenses_widthhereClausesFromFilters($users,$customers,$projects);
+    $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
 
     if (isset($kga['customer']))
       $whereClauses[] = "project.internal = 0";
 
     if ($start)
-      $whereClauses[]="timestamp >= $start";
+      $whereClauses[] = "timestamp >= $start";
     if ($end)
-      $whereClauses[]="timestamp <= $end";
+      $whereClauses[] = "timestamp <= $end";
     if ($filterCleared > -1)
       $whereClauses[] = "cleared = $filterCleared";
 
