@@ -36,20 +36,12 @@ if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = $_POST['password'];
 }
 
-if (!isset($_POST['database']) || is_array($_POST['database'])) {
-    $database = ""; 
-} else { 
-    $database = $_POST['database'];
-    setcookie ("kimai_db",$database);
-}
-
-
 ob_start();
 
 // =====================
 // = standard includes =
 // =====================
-require('includes/basics.php');
+require_once 'includes/basics.php';
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
@@ -112,13 +104,14 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
 // ======================================
 if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId))
 {
-    if ($userId === false) {
-    $userId   = $database->user_create(array(
-                'name' => $name,
-                'globalRoleID' => $kga['user']['globalRoleID'],
-                'active' => 1
-              ));
-    $database->setGroupMemberships($userId,array($authPlugin->getDefaultGroups()));
+    if ($userId === false)
+    {
+        $userId   = $database->user_create(array(
+                    'name' => $name,
+                    'globalRoleID' => $kga['user']['globalRoleID'],
+                    'active' => 1
+                  ));
+        $database->setGroupMemberships($userId, array($authPlugin->getDefaultGroups()));
     }
     $userData = $database->user_get_data($userId);
 
@@ -170,9 +163,11 @@ switch($_REQUEST['a'])
         else
         {
           // perform login of user
-          if ($authPlugin->authenticate($name,$password,$userId)) {
+          if ($authPlugin->authenticate($name,$password,$userId))
+          {
 
-            if ($userId === false) {
+            if ($userId === false)
+            {
               $userId   = $database->user_create(array(
                           'name' => $name,
                           'globalRoleID' => $authPlugin->getDefaultGlobalRole(),
@@ -187,11 +182,10 @@ switch($_REQUEST['a'])
             $database->get_global_config();
 
             if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) ||
-                ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
+                ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime']))
+            {
 
-              // logintries not used up OR
-              // bantime is over
-              // => grant access
+              // login tries not used up OR bantime is over => grant access
 
               $keymai=random_code(30);
               setcookie ("kimai_key",$keymai);
@@ -211,7 +205,8 @@ switch($_REQUEST['a'])
               echo $view->render('misc/error.php');
             }
           }
-          else {
+          else
+          {
             // wrong username/password => deny
             setcookie ("kimai_key","0"); setcookie ("kimai_user","0");
             if ($userId !== false)
@@ -225,42 +220,14 @@ switch($_REQUEST['a'])
         }
     break;
 
-    // ============================================
-    // = Show login panel depending on (demo)mode =
-    // ============================================
+    // ====================
+    // = Show login panel =
+    // ====================
     default:
 
-        // ======================================
-        // = Selectbox for additional databases =
-        // ======================================
-        if (isset($_COOKIE['kimai_db']) && $_COOKIE['kimai_db'] == true) {
-            $db_num = $_COOKIE['kimai_db'];
-        } else {
-            $db_num = 0;
-        }
-        $selectbox = "";
-        if (isset($server_ext_database[0]) && $server_ext_database[0] == true) {
-            $selectbox .= "\n<select name='database'>";
-            $selectbox .= "\n<option value='0'";
-            if ($db_num == 0) {
-                $selectbox .= " selected='selected'";
-            }
-            $selectbox .= sprintf(">%s</option>",$server_verbose);
-            $loops = count($server_ext_database);
-            for ($ext=0; $ext<$loops; $ext++) {
-                $selectbox .= "\n<option value='" .($ext+1). "'";
-                if ($db_num == $ext+1) {
-                    $selectbox .= " selected='selected'";
-                }
-                $selectbox .= ">".$server_ext_verbose[$ext]."</option>";
-            }
-            $selectbox .= "\n</select>";
-        }
-        $view->selectbox = $selectbox;
-
         $view->devtimespan = '2006-'.date('y');
-
         echo $view->render('login/panel.php');
+
     break;
 }
 
