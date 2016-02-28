@@ -78,7 +78,6 @@
                     <?php echo $this->kga['lang']['retypePassword']?>:
                 </label>
                 <input type='password' name="password2" id="password2" />
-                <?php echo $this->selectbox ?>
                 <button id="loginButton" type='submit'></button>
             </fieldset>
         </form>
