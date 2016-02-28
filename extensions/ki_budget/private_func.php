@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
+include('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php');
 
 
 /**
@@ -25,7 +25,7 @@ include('../ki_expenses/private_db_layer_'.$kga['server_conn'].'.php');
  */
 function calculate_expenses_sum($projectId) {
   $expenseSum = 0;
-  $expenses = get_expenses(0,time(),null,null,array($projectId));
+  $expenses = get_expenses(0, time(), null, null, array($projectId));
 
   foreach ($expenses as $expense) {
     $expenseSum += $expense['value'];
@@ -53,7 +53,7 @@ function calculate_expenses_sum($projectId) {
  * @return array containing arrays for every project which hold the size of the pie chart elements
  * 
  */
-function budget_plot_data($projects,$projectsFilter, $activitiesFilter,&$expensesOccured, &$kga) {
+function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expensesOccured, &$kga) {
 global $database;
 
 $wages = array();
@@ -66,8 +66,8 @@ $timebillableLangString = $kga['lang']['time_billable'];
   * sum up expenses
   */
 foreach ($projects as $project) {
-  if(is_array($projectsFilter) && !empty($projectsFilter)) {
-  	if(!in_array($project['projectID'], $projectsFilter)) {
+  if (is_array($projectsFilter) && !empty($projectsFilter)) {
+  	if (!in_array($project['projectID'], $projectsFilter)) {
   		continue;
   	}
   }
@@ -75,16 +75,16 @@ foreach ($projects as $project) {
   $projectID = $project['projectID'];
   // in "activity 0" we will track the available budget, while in the project array directly,
   // we will track the total budget for the project
-  $wages[$projectID][0]['budget']   = $project['budget'];
-  $wages[$projectID][0]['approved']   = $project['approved'];
-  $wages[$projectID]['budget']   = $project['budget'];
-  $wages[$projectID]['approved']   = $project['approved'];
-  $wages[$projectID]['billable_total']   = 0;
-  $wages[$projectID]['total']   = 0;
+  $wages[$projectID][0]['budget'] = $project['budget'];
+  $wages[$projectID][0]['approved'] = $project['approved'];
+  $wages[$projectID]['budget'] = $project['budget'];
+  $wages[$projectID]['approved'] = $project['approved'];
+  $wages[$projectID]['billable_total'] = 0;
+  $wages[$projectID]['total'] = 0;
   $wages[$projectID][$timebillableLangString] = 0;
 
   $expenses = calculate_expenses_sum($project['projectID']);
-  if($expenses > 0) {
+  if ($expenses > 0) {
    $wages[$projectID][0]['expenses'] = $expenses;
   }
 
@@ -98,14 +98,14 @@ foreach ($projects as $project) {
   }
   
   $projectActivities = $database->get_activities_by_project($projectID);
-  foreach($projectActivities as $activity) {
-  if(is_array($activitiesFilter) && !empty($activitiesFilter)) {
-  	if(!in_array($activity['activityID'], $activitiesFilter)) {
+  foreach ($projectActivities as $activity) {
+  if (is_array($activitiesFilter) && !empty($activitiesFilter)) {
+  	if (!in_array($activity['activityID'], $activitiesFilter)) {
   		continue;
   	}
   }
     $wages[$projectID][$activity['activityID']] = array('name' => $activity['name'], 'budget' => 0, 'budget_total' => 0, 'approved' => 0, 'approved_total' => 0, 'total' => 0);
-    if(!isset( $activity['budget'] ) || $activity['budget'] <= 0) {
+    if (!isset($activity['budget']) || $activity['budget'] <= 0) {
     	continue;
     }
     $wages[$projectID][$activity['activityID']]['budget'] = $activity['budget'];
@@ -130,12 +130,12 @@ foreach ($projects as $project) {
  */
 foreach ($projects as $project) {
   $projectId = $project['projectID'];
-  $timeSheetEntries = $database->get_timeSheet(0,time(),null,null,array($projectId));
+  $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, array($projectId));
   foreach ($timeSheetEntries as $timeSheetEntry) {
     $projectID = $projectId;
     if (isset($wages[$projectID][$timeSheetEntry['activityID']]) && is_array($wages[$projectID][$timeSheetEntry['activityID']])) {
       $tmpCost = $timeSheetEntry['wage_decimal'] * $timeSheetEntry['billable'] / 100;
-      if($timeSheetEntry['wage_decimal'] - $tmpCost <= 0 && $tmpCost <= 0) {
+      if ($timeSheetEntry['wage_decimal'] - $tmpCost <= 0 && $tmpCost <= 0) {
       	continue;
       } else {
       }
@@ -146,27 +146,27 @@ foreach ($projects as $project) {
       $wages[$projectID][$timeSheetEntry['activityID']]['approved']     += $timeSheetEntry['approved'];
       $wages[$projectID][$timeSheetEntry['activityID']]['approved_total'] += $timeSheetEntry['approved'];
       $wages[$projectID][$timeSheetEntry['activityID']]['approved']     -= $tmpCost;
-      $wages[$projectID][$timeSheetEntry['activityID']]['total']+= $timeSheetEntry['wage_decimal'];
+      $wages[$projectID][$timeSheetEntry['activityID']]['total'] += $timeSheetEntry['wage_decimal'];
       // decrease budget by "already used up" amount also for the total budget for the project
       $wages[$projectID][0]['budget']       -= $timeSheetEntry['wage_decimal'];
-      $wages[$projectID][0]['approved']       -= $tmpCost;
+      $wages[$projectID][0]['approved'] -= $tmpCost;
       $wages[$projectID][0]['budget']       += $timeSheetEntry['budget'];
       $wages[$projectID][0]['approved']     += $timeSheetEntry['approved'];
-      if($tmpCost > 0) {
-          if (!isset($wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString]))
-            $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] = 0;
+      if ($tmpCost > 0) {
+          if (!isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString]))
+            $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = 0;
 
-	      if (isset($wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString]))
-          $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] += $tmpCost;
+	      if (isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString]))
+          $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] += $tmpCost;
         else
-          $wages[$projectID][0][$timeSheetEntry['userName'].' '.$billableLangString] = $tmpCost;
+          $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = $tmpCost;
 
         if (isset($wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]))
-          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]+= $tmpCost;
+          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] += $tmpCost;
         else
           $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] = $tmpCost;
       }
-      if($timeSheetEntry['wage_decimal'] - $tmpCost > 0) {
+      if ($timeSheetEntry['wage_decimal'] - $tmpCost > 0) {
           if (!isset($wages[$projectID][0][$timeSheetEntry['userName']]))
             $wages[$projectID][0][$timeSheetEntry['userName']] = 0;
 
@@ -180,8 +180,8 @@ foreach ($projects as $project) {
     // add to the total budget
       $wages[$projectID]['budget']       += $timeSheetEntry['budget'];
       $wages[$projectID]['approved']     += $timeSheetEntry['approved'];
-      $wages[$projectID]['billable_total']+= $tmpCost;
-      $wages[$projectID]['total']     += $timeSheetEntry['wage_decimal'];
+      $wages[$projectID]['billable_total'] += $tmpCost;
+      $wages[$projectID]['total'] += $timeSheetEntry['wage_decimal'];
       $wages[$projectID][$timebillableLangString] += $tmpCost;
       // mark entries which are over budget
       if ($wages[$projectID][$timeSheetEntry['activityID']]['budget'] < 0) {
@@ -195,15 +195,15 @@ foreach ($projects as $project) {
     }
   }
 
-  if(!isset($wages[$projectId]))
+  if (!isset($wages[$projectId]))
     continue;
 
   //cleanup: don't show charts without any data
-  foreach($wages[$projectId] as $activityId => $entry) {
-    if($activityId == 0) {
+  foreach ($wages[$projectId] as $activityId => $entry) {
+    if ($activityId == 0) {
       continue;
     }
-    if(!isset($entry['total']) || is_null($entry['total'])) {
+    if (!isset($entry['total']) || is_null($entry['total'])) {
       unset($wages[$projectId][$activityId]);
     }
   }

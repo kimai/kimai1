@@ -30,10 +30,10 @@
 // Bootstrap Kimai the old fashioned way
 require(dirname(__FILE__) . "/../includes/basics.php");
 
-ini_set('soap.wsdl_cache_enabled', 0);                              // @TODO
-ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/temporary/');     // @TODO
-ini_set('soap.wsdl_cache', WSDL_CACHE_NONE);                        // WSDL_CACHE_DISK
-ini_set('soap.wsdl_cache_ttl', 0);                                  // cache lifetime
+ini_set('soap.wsdl_cache_enabled', 0); // @TODO
+ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/temporary/'); // @TODO
+ini_set('soap.wsdl_cache', WSDL_CACHE_NONE); // WSDL_CACHE_DISK
+ini_set('soap.wsdl_cache_ttl', 0); // cache lifetime
 
 // @TODO check what works better, with or without?
 //$soapOpts = array('soap_version' => SOAP_1_2, 'encoding' => 'UTF-8'/*, 'uri' => $wsdlUrl*/);
@@ -47,7 +47,7 @@ if (isset($_GET['wsdl']) || isset($_GET['WSDL']))
 }
 else
 {
-	$wsdlUrl =  'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?wsdl';
+	$wsdlUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?wsdl';
 	$server = new Kimai_Remote_Api();
 
 	$soap = new Zend_Soap_Server($wsdlUrl, $soapOpts);

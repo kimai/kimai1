@@ -36,7 +36,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         include_once('TinyButStrong/tinyButStrong.class.php');
         include_once('TinyButStrong/tinyDoc.class.php');
 
-        $doc   = new tinyDoc();
+        $doc = new tinyDoc();
 
         // use zip extension if available
         if (class_exists('ZipArchive')) {
@@ -68,7 +68,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         $entries    = $this->getModel()->getEntries();
 
         // assign all available variables (which are not arrays as they do not work in tinyButStrong)
-        foreach($this->getModel()->toArray() as $k => $v) {
+        foreach ($this->getModel()->toArray() as $k => $v) {
             if (is_array($v)) continue;
             $GLOBALS[$k] = $v;
         }
@@ -76,7 +76,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         // ugly but neccessary for tinyButStrong
         // set globals variables, so they can be used in invoice templates
         $allCustomer = $this->prepareCustomerArray($customer);
-        foreach($allCustomer as $k => $v) {
+        foreach ($allCustomer as $k => $v) {
             $GLOBALS[$k] = $v;
         }
 

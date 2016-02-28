@@ -34,14 +34,14 @@ switch ($axAction) {
      * Return the logfile in reverse order, so the last entries are shown first.
      */
     case "reloadLogfile":    
-        $logdatei=WEBROOT."temporary/logfile.txt";
+        $logdatei = WEBROOT . "temporary/logfile.txt";
         $fh = fopen($logdatei, 'r');
         
         $theData = "";
         $i = 0;
         
         $lines = $kga['logfile_lines'];
-        $filearray ="";
+        $filearray = "";
         
         while (!feof($fh)) {
             $filearray[$i] = fgets($fh);
@@ -50,15 +50,15 @@ switch ($axAction) {
 
         fclose($fh);
 
-        if ($kga['logfile_lines'] !="@") {
+        if ($kga['logfile_lines'] != "@") {
             $start = count($filearray);
-            $goal = $start-$lines;
-            for ($line=$start-1; ($line>$goal && $line>0); $line--) {
-                if ($filearray[$line]!="") $theData .= $filearray[$line] ."<br/>";
+            $goal = $start - $lines;
+            for ($line = $start - 1; ($line > $goal && $line > 0); $line--) {
+                if ($filearray[$line] != "") $theData .= $filearray[$line] . "<br/>";
             }
         } else {
             foreach ($filearray as $line) {
-                if ($line!="") $theData .= $line ."<br/>";
+                if ($line != "") $theData .= $line . "<br/>";
             }
         }
         
@@ -70,8 +70,8 @@ switch ($axAction) {
      */
     case "clearLogfile":
         if ($kga['delete_logfile']) {
-            $logdatei=fopen(WEBROOT."temporary/logfile.txt","w");
-            fwrite($logdatei,"");
+            $logdatei = fopen(WEBROOT . "temporary/logfile.txt", "w");
+            fwrite($logdatei, "");
             fclose($logdatei);
             echo $kga['lang']['log_delete'];
         } else {
@@ -83,7 +83,7 @@ switch ($axAction) {
      * Write some message to the logfile.
      */
     case "shoutbox":
-        Kimai_Logger::logfile("text: " .$axValue);
+        Kimai_Logger::logfile("text: " . $axValue);
     break;
 
     /**

@@ -26,7 +26,7 @@ require("../../includes/kspi.php");
 $datasrc = "config.ini";
 $settings = parse_ini_file($datasrc);
 $dir_ext = $settings['EXTENSION_DIR'];
-$view->addHelperPath(WEBROOT . 'extensions/' . $dir_ext . '/templates/helpers','Zend_View_Helper');
+$view->addHelperPath(WEBROOT . 'extensions/' . $dir_ext . '/templates/helpers', 'Zend_View_Helper');
 
 switch ($axAction) {
 
@@ -37,7 +37,7 @@ switch ($axAction) {
 
         $userDetails = $database->user_get_data($id);
 
-        $userDetails['rate'] = $database->get_rate($userDetails['userID'],NULL,NULL);
+        $userDetails['rate'] = $database->get_rate($userDetails['userID'], NULL, NULL);
         
         $view->globalRoles = array();
         foreach ($database->global_roles() as $role) {
@@ -49,7 +49,7 @@ switch ($axAction) {
           $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
 
-        $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+        $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
         if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
           $view->groups = $groups;
         else
@@ -71,7 +71,7 @@ switch ($axAction) {
         
         $groupDetails = $database->group_get_data($_REQUEST['id']);
                       
-        $view->users = makeSelectBox('sameGroupUser',null,null,true);
+        $view->users = makeSelectBox('sameGroupUser', null, null, true);
         
         $view->group_details = $groupDetails;
         echo $view->render("floaters/editgroup.php"); 
@@ -101,7 +101,7 @@ switch ($axAction) {
         $view->name = $globalRoleDetails['name'];
         $view->action = 'editGlobalRole';
         $view->reloadSubtab = 'globalRoles';
-        $view->title =  $kga['lang']['editGlobalRole'];
+        $view->title = $kga['lang']['editGlobalRole'];
         $view->permissions = $globalRoleDetails;
         unset($view->permissions['globalRoleID']);
         unset($view->permissions['name']);
@@ -120,7 +120,7 @@ switch ($axAction) {
         $view->name = $membershipRoleDetails['name'];
         $view->action = 'editMembershipRole';
         $view->reloadSubtab = 'membershipRoles';
-        $view->title =  $kga['lang']['editMembershipRole'];
+        $view->title = $kga['lang']['editMembershipRole'];
         $view->permissions = $membershipRoleDetails;
         unset($view->permissions['membershipRoleID']);
         unset($view->permissions['name']);

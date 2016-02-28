@@ -38,7 +38,7 @@ class Zend_View_Helper_ParseHierarchy extends Zend_View_Helper_Abstract
 
     foreach ($permissions as $key => $value) {
 
-      $keyParts = explode("-",$key);
+      $keyParts = explode("-", $key);
 
       if (count($keyParts) == 2 && $keyParts[1] == 'access') {
         $extensions [$keyParts[0]] = $value;
@@ -47,7 +47,7 @@ class Zend_View_Helper_ParseHierarchy extends Zend_View_Helper_Abstract
       $currentHierarchyLevel = &$keyHierarchy;
 
       foreach ($keyParts as $keyPart) {
-        if (!array_key_exists($keyPart,$currentHierarchyLevel))
+        if (!array_key_exists($keyPart, $currentHierarchyLevel))
           $currentHierarchyLevel[$keyPart] = array();
         $currentHierarchyLevel = &$currentHierarchyLevel[$keyPart];
       }

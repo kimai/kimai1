@@ -31,7 +31,7 @@ class Zend_View_Helper_TimeZoneSelect extends Zend_View_Helper_FormSelect
         if ($options === null) {
             $options = array();
             $timezones = timezoneList();
-            foreach($timezones as $zoneName) {
+            foreach ($timezones as $zoneName) {
                 $options[$zoneName] = $zoneName;
             }
         }

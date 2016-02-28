@@ -27,35 +27,35 @@ $dir_templates = "templates/";
 require("../../includes/kspi.php");
 require ("private_func.php");
 
-$filters = explode('|',$axValue);
+$filters = explode('|', $axValue);
 
 if ($filters[0] == "") {
 	$filterUsers = array();
 } else {
-	$filterUsers = explode(':',$filters[0]);
+	$filterUsers = explode(':', $filters[0]);
 }
 
 $filterCustomers = array_map(function($customer) {
   return $customer['customerID'];
 }, $database->get_customers($kga['user']['groups']));
 if ($filters[1] != "")
-  $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
+  $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
 
 $filterProjects = array_map(function($project) {
   return $project['projectID'];
 }, $database->get_projects($kga['user']['groups']));
 if ($filters[2] != "")
-  $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
+  $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
 
 $filterActivities = array_map(function($activity) {
   return $activity['activityID'];
 }, $database->get_activities($kga['user']['groups']));
 if ($filters[3] != "")
-  $filterActivities = array_intersect($filterActivities, explode(':',$filters[3]));
+  $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
 
 // if no userfilter is set, set it to current user
 if (isset($kga['user']) && count($filterUsers) == 0) {
-	array_push($filterUsers,$kga['user']['userID']);
+	array_push($filterUsers, $kga['user']['userID']);
 }
 
 if (isset($kga['customer'])) {
@@ -103,7 +103,7 @@ switch ($axAction)
 			}
 			$activities = $database->get_activities($kga['user']['groups']);
 		}
-		if(is_array($projects) && count($projects) > 0) {
+		if (is_array($projects) && count($projects) > 0) {
 			foreach ($projects as $index => $project) {
 				if ($projectsFilter === false) {
 					$projectsSelected[] = $project['projectID'];
