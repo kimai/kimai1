@@ -21,14 +21,9 @@
  * The Kimai Global Array ($kga) is initialized here. It is used throught
  * all functions, processors, etc.
  */
-
 $kga = array();
 
-require(dirname(__FILE__).'/version.php');
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+require dirname(__FILE__).'/version.php';
 
 //$kga['show_sensible_data'] = 1;       // turn this on to display sensible data in the debug/developer extension
                                         // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
@@ -44,8 +39,6 @@ $kga['calender_start']     = "0";       // here you can set a custom start day f
                                         // if this is not set the day of the users first day in the system will be taken
                                         // Format: ... = "DD/MM/YYYY";
 
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------
 // write vars from autoconf.php into kga
 $kga['server_prefix']   = $server_prefix;
 $kga['server_hostname'] = $server_hostname;
@@ -55,11 +48,11 @@ $kga['server_password'] = $server_password;
 $kga['server_type']     = "";
 $kga['server_conn']     = $server_conn;
 $kga['defaultTimezone'] = $defaultTimezone;
-$kga['language']        = isset($language)                          ? $language             : 'en';
 $kga['password_salt']   = isset($password_salt)                     ? $password_salt        : '';
-$kga['authenticator']   = isset($authenticator)                     ? trim($authenticator)  : 'kimai';
-$kga['billable']        = isset($billable) && is_array($billable)   ? $billable             : array(0,50,100);
-$kga['skin']            = isset($skin)                              ? $skin                 : 'standard';
+$kga['language']        = isset($language)                          ? $language             : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
+$kga['authenticator']   = isset($authenticator)                     ? trim($authenticator)  : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
+$kga['billable']        = isset($billable) && is_array($billable)   ? $billable             : Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE);
+$kga['skin']            = isset($skin)                              ? $skin                 : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
 
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',

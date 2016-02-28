@@ -17,8 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-include(WEBROOT.'libraries/mysql.class.php');
-
 /**
  * Provides the database layer for MySQL.
  *
@@ -2406,7 +2404,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         }
 
         // skin fallback
-        $skin = isset($this->kga['skin']) ? $this->kga['skin'] : 'standard';
+        $skin = isset($this->kga['skin']) ? $this->kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
         if (isset($this->kga['conf']['skin']) && is_dir(WEBROOT . "/skins/" . $this->kga['conf']['skin'])) {
             $skin = $this->kga['conf']['skin'];
         }
@@ -2447,7 +2445,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         }
 
         $this->kga['conf']['rowlimit'] = 100;
-        $this->kga['conf']['skin'] = 'standard';
+        $this->kga['conf']['skin'] = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
         $this->kga['conf']['autoselection'] = 1;
         $this->kga['conf']['quickdelete'] = 0;
         $this->kga['conf']['flip_project_display'] = 0;
