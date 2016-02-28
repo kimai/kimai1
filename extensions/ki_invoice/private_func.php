@@ -26,6 +26,9 @@ if (file_exists('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php
 
 
 $activityIndexMap = array(); // when creating the short form contains index of each activity in the array
+/**
+ * @param boolean $short_form
+ */
 function invoice_add_to_array(&$array, $row, $short_form)
 {
     global $activityIndexMap;

@@ -353,8 +353,8 @@ abstract class Kimai_Database_Abstract {
     /**
      * Returns the data of a certain user
      *
-     * @param array $userID  id of the user
-     * @return array         the user's data (username, email-address, status etc) as array, false on failure
+     * @param integer $userID  id of the user
+     * @return string         the user's data (username, email-address, status etc) as array, false on failure
      */
     public abstract function user_get_data($userID);
 

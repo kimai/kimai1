@@ -114,7 +114,7 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
    * on the same level.
    * 
    * @param array $keyHierarchy the hierarchy of keys, see parseHierarchy
-   * @return true if this level can be jumped, false otherwise
+   * @return boolean if this level can be jumped, false otherwise
    */
   private function isJumpable($keyHierarchy) {
     if (count($keyHierarchy) != 1)

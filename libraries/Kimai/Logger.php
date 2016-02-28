@@ -43,8 +43,6 @@ class Kimai_Logger
      * Simple static method to log lines to the logfile.
      *
      * @param string $value message
-     * @param string $path relative path to temporary directory
-     * @param boolean $success
      * @author sl
      */
     public static function logfile($value)

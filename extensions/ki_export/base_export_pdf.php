@@ -93,7 +93,7 @@ class BasePDF extends TCPDF {
   /**
    * Print a header of the summarization table.
    * @param array $w widths of the columns
-   * @param array $headers name of the column headers
+   * @param array $header name of the column headers
    */
   public function printHeader($w,$header) {
 
