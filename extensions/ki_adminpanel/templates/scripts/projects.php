@@ -6,9 +6,9 @@
 		<th><?php echo $this->kga['lang']['options']?></th>
 		<?php if ($this->kga['conf']['flip_project_display']): ?>
 		<th><?php echo $this->kga['lang']['customer']?></th>
-		<th><?php echo $this->kga['lang']['projects']?></th>
+		<th><?php echo $this->kga['lang']['project']?></th>
 		<?php else: ?>
-		<th><?php echo $this->kga['lang']['projects']?></th>
+		<th><?php echo $this->kga['lang']['project']?></th>
 		<th><?php echo $this->kga['lang']['customer']?></th>
 		<?php endif; ?>
 		<th><?php echo $this->kga['lang']['groups']?></th>
