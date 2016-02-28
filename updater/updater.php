@@ -24,24 +24,21 @@
 
 require('includes/basics.php');
 
+// check all requirements/file permissions before starting an upgrade process
 if (!file_exists(WEBROOT . "includes/autoconf.php")) {
     die("Updater needs an existing kimai configuration. Missing file: includes/autoconf.php");
-} else {
-    if (!is_writable(WEBROOT . "includes/autoconf.php")) {
-        die("Please fix write permission for file : " . WEBROOT . "includes/autoconf.php");
-    }
 }
-
+if (!is_writable(WEBROOT . "includes/autoconf.php")) {
+    die("Please fix write permission for file : " . WEBROOT . "includes/autoconf.php");
+}
 if (!file_exists(WEBROOT . "temporary/logfile.txt") && !is_writable(WEBROOT . "temporary/")) {
     die("Please fix write permission for directory: " . WEBROOT . "temporary/");
-} else {
-    if (file_exists(WEBROOT . "temporary/logfile.txt") && !is_writable(WEBROOT . "temporary/logfile.txt")) {
-        die("Please fix write permission for file : " . WEBROOT . "temporary/logfile.txt");
-    }
 }
-
+if (file_exists(WEBROOT . "temporary/logfile.txt") && !is_writable(WEBROOT . "temporary/logfile.txt")) {
+    die("Please fix write permission for file : " . WEBROOT . "temporary/logfile.txt");
+}
 if (!$kga['revision']) {
-    die("Database update failed. (Revision not defined!)");
+    die("Database update cannot be executed: Revision not defined!");
 }
 
 $version_temp = $database->get_DBversion();
@@ -50,7 +47,7 @@ $revisionDB = $version_temp[1];
 error_log(serialize($version_temp));
 unset($version_temp);
 
-$min_php_version = '5.4';
+$min_php_version = '5.7';
 
 if (version_compare(PHP_VERSION, $min_php_version) < 0) {
     ?>
@@ -61,7 +58,7 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0) {
         <title>Kimai Update</title>
         <style type="text/css" media="screen">
             body {
-                background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+                background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
                 font-family: sans-serif;
                 color: #333;
             }
@@ -104,13 +101,13 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0) {
             <title>Kimai Update</title>
             <style type="text/css" media="screen">
                 body {
-                    background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+                    background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
                     font-family: sans-serif;
                     color: #333;
                 }
 
                 div {
-                    background-image: url('skins/standard/grfx/floaterborder.png');
+                    background-image: url('../skins/standard/grfx/floaterborder.png');
                     position: absolute;
                     top: 50%;
                     left: 50%;
@@ -155,13 +152,13 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0) {
                 <title>Kimai Update</title>
                 <style type="text/css" media="screen">
                     body {
-                        background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+                        background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
                         font-family: sans-serif;
                         color: #333;
                     }
 
                     div {
-                        background-image: url('skins/standard/grfx/floaterborder.png');
+                        background-image: url('../skins/standard/grfx/floaterborder.png');
                         position: absolute;
                         top: 50%;
                         left: 50%;
@@ -318,7 +315,7 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0) {
                         position: absolute;
                         top: 10px;
                         right: 10px;
-                        background-image: url('grfx/logo.png');
+                        background-image: url('updater/logo.png');
                     }
 
                     #restore {
