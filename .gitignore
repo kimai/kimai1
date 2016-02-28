@@ -8,3 +8,4 @@ autoconf.php
 .DS_Store
 libraries/phpunit/
 libraries/symfony/
+libraries/bin

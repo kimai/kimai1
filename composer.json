@@ -22,7 +22,8 @@
     },
     "autoload": {
         "classmap" : [
-            "libraries/TinyButStrong"
+            "libraries/TinyButStrong",
+            "libraries/Kimai"
         ],
         "psr-0": {
             "Kimai_": "library/"
