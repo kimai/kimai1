@@ -7,5 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'cbf76343bf04ec29aff28d9dbe386ba0' => $vendorDir . '/mysql.class.php',
-    '70026274883bb9c484dfe381e720e805' => $vendorDir . '/tcpdf/tcpdf.php',
 );
