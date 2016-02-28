@@ -49,14 +49,14 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
 
     if ($level > 0) {
       if ($originalLevel == 1) {
-        $id = $parentKeys[$originalLevel-1];
+        $id = $parentKeys[$originalLevel - 1];
         echo "<fieldset id=\"${id}\" class=\"hierarchyLevel${level}\">";
       }
       else
         echo "<fieldset class=\"hierarchyLevel${level}\">";
 
       $names = array();
-      for ($i = max(0,$originalLevel-1); $i < count($parentKeys); $i++) {
+      for ($i = max(0, $originalLevel - 1); $i < count($parentKeys); $i++) {
         if (array_search($i, $noLegendOnLevel) !== false) continue;
 
         $name = $parentKeys[$i];
@@ -97,7 +97,7 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
       $newParentKeys = $parentKeys;
       $newParentKeys[] = $key;
 
-      $this->echoHierarchy($kga, $subKeys, $newParentKeys, $level+1);
+      $this->echoHierarchy($kga, $subKeys, $newParentKeys, $level + 1);
     }
 
     if ($level > 0)

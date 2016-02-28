@@ -26,22 +26,22 @@
 class Kimai_Auth_Http extends Kimai_Auth_Abstract {
 
     // Set true to allow web server authorized automatic logins
-    private $HTAUTH_ALLOW_AUTOLOGIN=true;
+    private $HTAUTH_ALLOW_AUTOLOGIN = true;
 
     // Set true to force username to lower case before searching Kimai database
-    private $HTAUTH_FORCE_USERNAME_LOWERCASE=false;
+    private $HTAUTH_FORCE_USERNAME_LOWERCASE = false;
 
     // Set true to create Kimai user for web server authorized users not in database
-    private $HTAUTH_USER_AUTOCREATE=false;
+    private $HTAUTH_USER_AUTOCREATE = false;
 
     // Check for PHP_AUTH_USER server variable
-    private $HTAUTH_PHP_AUTH_USER=false;
+    private $HTAUTH_PHP_AUTH_USER = false;
 
     // Check for REMOTE_USER server variable
-    private $HTAUTH_REMOTE_USER=true;
+    private $HTAUTH_REMOTE_USER = true;
 
     // Check for REDIRECT_REMOTE_USER server variable
-    private $HTAUTH_REDIRECT_REMOTE_USER=false;
+    private $HTAUTH_REDIRECT_REMOTE_USER = false;
 
   /**
    * Decides whether this authentication method should be used to authenticate
@@ -67,20 +67,20 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
 
     // No autologin if not allowed or if no remote user authorized by web server
     if (!$this->HTAUTH_ALLOW_AUTOLOGIN) return false;
-    $check_username="";
+    $check_username = "";
     if ($this->HTAUTH_REMOTE_USER) {
 	if (isset($_SERVER['REMOTE_USER'])) {
-	    $check_username=$_SERVER['REMOTE_USER'];
+	    $check_username = $_SERVER['REMOTE_USER'];
 	    }
 	}
     if ($check_username == "" && $this->HTAUTH_REDIRECT_REMOTE_USER) {
 	if (isset($_SERVER["REDIRECT_REMOTE_USER"])) {
-	    $check_username=$_SERVER["REDIRECT_REMOTE_USER"];
+	    $check_username = $_SERVER["REDIRECT_REMOTE_USER"];
 	    }
 	}
     if ($check_username == "" && $this->HTAUTH_PHP_AUTH_USER) {
 	if (isset($_SERVER["PHP_AUTH_USER"])) {
-	    $check_username=$_SERVER["PHP_AUTH_USER"];
+	    $check_username = $_SERVER["PHP_AUTH_USER"];
 	    }
 	}
     if ($check_username == "" || $check_username == false) return false;
@@ -101,12 +101,12 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     if ($this->HTAUTH_USER_AUTOCREATE) { 
     
 	// AutoCreate the user and return true
-	$userId   = $this->database->user_create(array(
+	$userId = $this->database->user_create(array(
 			'name' => $check_username,
 			'globalRoleID' => $this->getDefaultGlobalRole(),
 			'active' => 1
 		));
-        $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
+        $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
 
     	// Set a random password, unknown to the user. Autologin must be used until user sets own password
 	$userData = array('password' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt']));
@@ -117,24 +117,24 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     return false;
   }
 
-  public function authenticate($username,$password,&$userId) {
+  public function authenticate($username, $password, &$userId) {
       global $kga;
 
-      $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+      $passCrypt = md5($kga['password_salt'] . $password . $kga['password_salt']);
 
-      $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';",$kga['server_prefix'],mysql_real_escape_string($username)));
+      $result = mysql_query(sprintf("SELECT * FROM %susers WHERE name ='%s';", $kga['server_prefix'], mysql_real_escape_string($username)));
       if (mysql_num_rows($result) != 1) {
         $userId = false;
         return false;
       }
 
-      $row    = mysql_fetch_assoc($result);
+      $row = mysql_fetch_assoc($result);
       $pass    = $row['password'];        
       $ban     = $row['ban'];
       $banTime = $row['banTime'];   
       $userId  = $row['userID'];
       
-      return $pass==$passCrypt && $username!="";
+      return $pass == $passCrypt && $username != "";
   }
 }
 

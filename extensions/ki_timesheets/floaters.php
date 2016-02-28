@@ -29,10 +29,10 @@ switch ($axAction) {
     // ==============================================
     // = display edit dialog for timesheet record   =
     // ==============================================
-    $selected = explode('|',$axValue);
+    $selected = explode('|', $axValue);
 
-    $view->projects = makeSelectBox("project",$kga['user']['groups']);
-    $view->activities = makeSelectBox("activity",$kga['user']['groups']);
+    $view->projects = makeSelectBox("project", $kga['user']['groups']);
+    $view->activities = makeSelectBox("activity", $kga['user']['groups']);
 
     // edit record
     if ($id) {
@@ -43,7 +43,7 @@ switch ($axAction) {
         // check if this entry may be edited
         if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
           // the user's own entry
-          if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
+          if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-edit'))
             break;
         }
         else if (count(array_intersect(
@@ -51,19 +51,19 @@ switch ($axAction) {
             $database->getGroupMemberships($timeSheetEntry['userID'])
           )) != 0) {
           // same group as the entry's user
-          if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']),'ki_timesheets-otherEntry-ownGroup-edit'))
+          if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']), 'ki_timesheets-otherEntry-ownGroup-edit'))
             break;
         }
-        else if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-edit'))
+        else if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit'))
           break;
 
         // set list of users to what the user may do
         $users = array();
-        if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-edit'))
-         $users  = makeSelectBox("allUser",$kga['user']['groups']);
-        else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']),'ki_timesheets-otherEntry-ownGroup-edit')) {
-          $users = makeSelectBox("sameGroupUser",$kga['user']['groups']);
-          if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-edit'))
+        if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit'))
+         $users  = makeSelectBox("allUser", $kga['user']['groups']);
+        else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {
+          $users = makeSelectBox("sameGroupUser", $kga['user']['groups']);
+          if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-edit'))
             $users[$kga['user']['userID']] = $kga['user']['name'];
         }
 
@@ -73,24 +73,24 @@ switch ($axAction) {
         $view->description = $timeSheetEntry['description'];
         $view->comment = $timeSheetEntry['comment'];
 
-        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
+        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates');
         $view->rate = $timeSheetEntry['rate'];
         $view->fixedRate = $timeSheetEntry['fixedRate'];
 
-        $view->cleared = $timeSheetEntry['cleared']!=0;
+        $view->cleared = $timeSheetEntry['cleared'] != 0;
 
         $view->userID = $timeSheetEntry['userID'];
 
-        $view->start_day = date("d.m.Y",$timeSheetEntry['start']);
-        $view->start_time = date("H:i:s",$timeSheetEntry['start']);
+        $view->start_day = date("d.m.Y", $timeSheetEntry['start']);
+        $view->start_time = date("H:i:s", $timeSheetEntry['start']);
 
         if ($timeSheetEntry['end'] == 0) {
           $view->end_day = '';
           $view->end_time = '';
         }
         else {
-          $view->end_day = date("d.m.Y",$timeSheetEntry['end']);
-          $view->end_time = date("H:i:s",$timeSheetEntry['end']);
+          $view->end_day = date("d.m.Y", $timeSheetEntry['end']);
+          $view->end_time = date("H:i:s", $timeSheetEntry['end']);
         }
 
         $view->approved = $timeSheetEntry['approved'];
@@ -127,11 +127,11 @@ switch ($axAction) {
 
 
         $users = array();
-        if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-otherEntry-otherGroup-add'))
-         $users  = makeSelectBox("allUser",$kga['user']['groups']);
-        else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']),'ki_timesheets-otherEntry-ownGroup-add'))
-          $users = makeSelectBox("sameGroupUser",$kga['user']['groups']);
-        if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-ownEntry-add'))
+        if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-add'))
+         $users  = makeSelectBox("allUser", $kga['user']['groups']);
+        else if ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-add'))
+          $users = makeSelectBox("sameGroupUser", $kga['user']['groups']);
+        if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-add'))
           $users[$kga['user']['userID']] = $kga['user']['name'];
 
         $view->users = $users;
@@ -141,15 +141,15 @@ switch ($axAction) {
 
         $view->userID = $kga['user']['userID'];
 
-        if($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
+        if ($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
           $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
           $minutes = date('i');
-          if($kga['conf']['roundMinutes'] < 60) {
-            if($kga['conf']['roundMinutes'] <= 0) {
+          if ($kga['conf']['roundMinutes'] < 60) {
+            if ($kga['conf']['roundMinutes'] <= 0) {
                     $minutes = 0;
             } else {
-              while($minutes % $kga['conf']['roundMinutes'] != 0) {
-                if($minutes >= 60) {
+              while ($minutes % $kga['conf']['roundMinutes'] != 0) {
+                if ($minutes >= 60) {
                   $minutes = 0;
                 } else {
                   $minutes++;
@@ -158,12 +158,12 @@ switch ($axAction) {
             }
           }
           $seconds = date('s');
-          if($kga['conf']['roundSeconds'] < 60) {
-            if($kga['conf']['roundSeconds'] <= 0) {
+          if ($kga['conf']['roundSeconds'] < 60) {
+            if ($kga['conf']['roundSeconds'] <= 0) {
                     $seconds = 0;
             } else {
-              while($seconds % $kga['conf']['roundSeconds'] != 0) {
-                if($seconds >= 60) {
+              while ($seconds % $kga['conf']['roundSeconds'] != 0) {
+                if ($seconds >= 60) {
                   $seconds = 0;
                 } else {
                   $seconds++;
@@ -175,7 +175,7 @@ switch ($axAction) {
           $day = date("d");
           $dayEntry = date("d", $timeSheetData['end']);
 
-          if($day == $dayEntry) {
+          if ($day == $dayEntry) {
                   $view->start_time = date("H:i:s", $timeSheetData['end']);
           } else {
                   $view->start_time = date("H:i:s");
@@ -187,9 +187,9 @@ switch ($axAction) {
         }
 
         $view->location = $kga['conf']['defaultLocation'];
-        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates');
-        $view->rate = $database->get_best_fitting_rate($kga['user']['userID'],$selected[0],$selected[1]);
-        $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0],$selected[1]);
+        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates');
+        $view->rate = $database->get_best_fitting_rate($kga['user']['userID'], $selected[0], $selected[1]);
+        $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0], $selected[1]);
 
         // budget
         $view->budget_activity = 0;
@@ -203,8 +203,8 @@ switch ($axAction) {
 
     $billableValues = $kga['billable'];
     $billableText = array();
-    foreach($billableValues as $billableValue) {
-      $billableText[] = $billableValue.'%';
+    foreach ($billableValues as $billableValue) {
+      $billableText[] = $billableValue . '%';
     }
     $view->billable = array_combine($billableValues, $billableText);
     $view->commentTypes = $commentTypes;
@@ -219,10 +219,10 @@ switch ($axAction) {
         // ================================================
         // = display edit dialog for timesheet quick note =
         // ================================================
-        $selected = explode('|',$axValue);
+        $selected = explode('|', $axValue);
 
-        $view->projects = makeSelectBox("project",$kga['user']['groups']);
-        $view->activities = makeSelectBox("activity",$kga['user']['groups']);
+        $view->projects = makeSelectBox("project", $kga['user']['groups']);
+        $view->activities = makeSelectBox("activity", $kga['user']['groups']);
 
         if ($id) {
             $timeSheetEntry = $database->timeSheet_get_data($id);
@@ -231,14 +231,14 @@ switch ($axAction) {
 
             // check if this entry may be edited
             if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
-                if ( ! $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-edit')) {
+                if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-edit')) {
                     break;
                 }
             } elseif ($database->is_watchable_user($kga['user'], $timeSheetEntry['userID'])) {
-                if ( ! $database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {
+                if (!$database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($timeSheetEntry['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {
                     break;
                 }
-            } elseif ( ! $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
+            } elseif (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
                 break;
             }
 

@@ -51,13 +51,13 @@ $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
     }
 	
     $view->kga = $kga;
-    $view->kga_display = print_r($output,true);
+    $view->kga_display = print_r($output, true);
 // /read kga -------------------------------------- 
 
-    if ($kga['logfile_lines'] =="@") {
+    if ($kga['logfile_lines'] == "@") {
         $view->limitText = "(unlimited lines)";
     } else {
-        $view->limitText = "(limited to " .$kga['logfile_lines'] ." lines)";
+        $view->limitText = "(limited to " . $kga['logfile_lines'] . " lines)";
     }
    
 	echo $view->render('index.php');

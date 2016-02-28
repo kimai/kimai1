@@ -22,7 +22,7 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-include('private_db_layer_'.$kga['server_conn'].'.php');
+include('private_db_layer_' . $kga['server_conn'] . '.php');
 
 switch ($axAction)
 {
@@ -33,8 +33,8 @@ switch ($axAction)
         }
 
         $view->commentTypes = $commentTypes;
-        $view->projects     = makeSelectBox("project",$kga['user']['groups']); // select for projects
-        $view->activities   = makeSelectBox("activity",$kga['user']['groups']); // select for activities
+        $view->projects     = makeSelectBox("project", $kga['user']['groups']); // select for projects
+        $view->activities   = makeSelectBox("activity", $kga['user']['groups']); // select for activities
 
         // ==============================================
         // = display edit dialog for timesheet record   =
@@ -44,8 +44,8 @@ switch ($axAction)
             $expense                = get_expense($id);
             $view->id               = $id;
             $view->comment          = $expense['comment'];
-            $view->edit_day         = date("d.m.Y",$expense['timestamp']);
-            $view->edit_time        = date("H:i:s",$expense['timestamp']);
+            $view->edit_day         = date("d.m.Y", $expense['timestamp']);
+            $view->edit_time        = date("H:i:s", $expense['timestamp']);
             $view->multiplier       = $expense['multiplier'];
             $view->edit_value       = $expense['value'];
             $view->designation      = $expense['designation'];
@@ -54,7 +54,7 @@ switch ($axAction)
             $view->refundable       = $expense['refundable'];
 
             // check if this entry may be edited
-            if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_expenses-ownEntry-edit'))
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit'))
               break;
 
             if (!isset($view->projects[$expense['projectID']])) {
@@ -69,10 +69,10 @@ switch ($axAction)
           $view->id         = 0;
           $view->edit_day   = date("d.m.Y");
           $view->edit_time  = date("H:i:s");
-          $view->multiplier = '1'.$kga['conf']['decimalSeparator'].'0';
+          $view->multiplier = '1' . $kga['conf']['decimalSeparator'] . '0';
 
           // check if this entry may be added
-          if (!$database->global_role_allows($kga['user']['globalRoleID'],'ki_expenses-ownEntry-add'))
+          if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add'))
             break;
         }
 

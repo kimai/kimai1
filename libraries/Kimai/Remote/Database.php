@@ -57,7 +57,7 @@ class Kimai_Remote_Database {
 	 * @author sl
 	 */
 	public function get_expense($id) {
-	    $id    = MySQL::SQLValue($id   , MySQL::SQLVALUE_NUMBER);
+	    $id    = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
 		
 	    $table = $this->getExpenseTable();
 		$projectTable = $this->getProjectTable();
@@ -90,10 +90,10 @@ class Kimai_Remote_Database {
 	    if ($expId) {
 	        $result = $conn->Query("SELECT * FROM $table WHERE expenseID = " . $expId);
 	    } else {
-	        $result = $conn->Query("SELECT * FROM $table WHERE userID = ".$kga['user']['userID']." ORDER BY expenseID DESC LIMIT 1");
+	        $result = $conn->Query("SELECT * FROM $table WHERE userID = " . $kga['user']['userID'] . " ORDER BY expenseID DESC LIMIT 1");
 	    }
 	    
-	    if (! $result) {
+	    if (!$result) {
 	      return false;
 	    } else {
 	        return $conn->RowArray(0, MYSQLI_ASSOC);
@@ -108,18 +108,18 @@ class Kimai_Remote_Database {
 	 * @author th
 	 * @author Alexander Bauer
 	 */
-	public function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $reverse_order=false, $filter_refundable = -1, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
+	public function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $reverse_order = false, $filter_refundable = -1, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false) {
 	  	$conn = $this->conn;
 	  	$kga = $this->kga;
 	  
 	  	if (!is_numeric($filterCleared)) {
-	  		$filterCleared = $kga['conf']['hideClearedEntries']-1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+	  		$filterCleared = $kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
 	  	}
   
-	  	$start  = MySQL::SQLValue($start    , MySQL::SQLVALUE_NUMBER);
-	  	$end = MySQL::SQLValue($end   , MySQL::SQLVALUE_NUMBER);
+	  	$start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
+	  	$end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 	  
-	  	$p     = $kga['server_prefix'];
+	  	$p = $kga['server_prefix'];
   
 	  	$whereClauses = $this->expenses_widthhereClausesFromFilters($users, $customers, $projects);
 	  
@@ -127,10 +127,10 @@ class Kimai_Remote_Database {
 	  		$whereClauses[] = "${p}projects.internal = 0";
 	
 	  	if (!empty($start)) {
-	  		$whereClauses[]="timestamp >= $start";
+	  		$whereClauses[] = "timestamp >= $start";
 		}
 	  	if (!empty($end)) {
-	  		$whereClauses[]="timestamp <= $end";
+	  		$whereClauses[] = "timestamp <= $end";
 		}
 	  	if ($filterCleared > -1) {
 	  		$whereClauses[] = "cleared = $filterCleared";
@@ -148,21 +148,21 @@ class Kimai_Remote_Database {
 	  			// return all expenses - refundable and non refundable
 	  	}
   	
-	  	if(!empty($limitRows)) {
+	  	if (!empty($limitRows)) {
 	  		$startRows = (int)$startRows;
 			$limit = "LIMIT $startRows, $limitRows";
 	  	} else {
-	  		$limit="";
+	  		$limit = "";
 	  	}
   	
   		$select = "SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID, projectID,
   					customerName, customerID, projectName, comment, refundable,
   					commentType, userName, cleared";
 				
-  		$where = empty($whereClauses) ? '' : "WHERE ".implode(" AND ",$whereClauses);
+  		$where = empty($whereClauses) ? '' : "WHERE " . implode(" AND ", $whereClauses);
   		$orderDirection = $reverse_order ? 'ASC' : 'DESC';
   	
-	  	if($countOnly) {
+	  	if ($countOnly) {
 	  		$select = "SELECT COUNT(*) AS total";
 	  		$limit = "";
 	  	}
@@ -178,18 +178,18 @@ class Kimai_Remote_Database {
   		$conn->Query($query);
   	
 	  	// return only the number of rows, ignoring LIMIT
-	  	if($countOnly) {
+	  	if ($countOnly) {
 	  		$this->conn->MoveFirst();
 	  		$row = $this->conn->Row();
 	  		return $row->total;
 	  	}
   	
   	
-	  	$i=0;
+	  	$i = 0;
 	  	$arr = array();
 	  	$conn->MoveFirst();
 		// toArray();
-	  	while (! $conn->EndOfSeek()) {
+	  	while (!$conn->EndOfSeek()) {
 	  		$row = $conn->Row();
 			$arr[$i] = (array)$row;
 	  		$i++;
@@ -211,31 +211,31 @@ class Kimai_Remote_Database {
    * @param Array list of IDs of activities to include
    * @return Array list of where clauses to include in the query
    */
-  public function expenses_widthhereClausesFromFilters($users, $customers, $projects ) {
+  public function expenses_widthhereClausesFromFilters($users, $customers, $projects) {
   
   	if (!is_array($users)) $users = array();
   	if (!is_array($customers)) $customers = array();
   	if (!is_array($projects)) $projects = array();
   
-  	for ($i = 0;$i<count($users);$i++)
+  	for ($i = 0; $i < count($users); $i++)
   		$users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-  		for ($i = 0;$i<count($customers);$i++)
+  		for ($i = 0; $i < count($customers); $i++)
   			$customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-  			for ($i = 0;$i<count($projects);$i++)
+  			for ($i = 0; $i < count($projects); $i++)
   			$projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
   
   			$whereClauses = array();
   
   			if (count($users) > 0) {
-  			$whereClauses[] = "userID in (".implode(',',$users).")";
+  			$whereClauses[] = "userID in (" . implode(',', $users) . ")";
   		}
   
   		if (count($customers) > 0) {
-  		$whereClauses[] = "customerID in (".implode(',',$customers).")";
+  		$whereClauses[] = "customerID in (" . implode(',', $customers) . ")";
   		}
   
   				if (count($projects) > 0) {
-  		$whereClauses[] = "projectID in (".implode(',',$projects).")";
+  		$whereClauses[] = "projectID in (" . implode(',', $projects) . ")";
   		}
   
   		return $whereClauses;
@@ -255,35 +255,35 @@ class Kimai_Remote_Database {
 	    $data = $this->dbLayer->clean_data($data);
 	    
 		
-		if(isset($data ['timestamp'])) {
-	    	$values ['timestamp']    =   MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['timestamp'])) {
+	    	$values ['timestamp'] = MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['userID'])) {
-	    	$values ['userID']        =   MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['userID'])) {
+	    	$values ['userID'] = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['projectID'])) {
-	    	$values ['projectID']        =   MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['projectID'])) {
+	    	$values ['projectID'] = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['designation'])) {
-	    	$values ['designation']  =   MySQL::SQLValue($data['designation']);
+		if (isset($data ['designation'])) {
+	    	$values ['designation']  = MySQL::SQLValue($data['designation']);
 		}
-		if(isset($data ['comment'])) {
-	    	$values ['comment']      =   MySQL::SQLValue($data['comment']);
+		if (isset($data ['comment'])) {
+	    	$values ['comment']      = MySQL::SQLValue($data['comment']);
 		}
-		if(isset($data ['commentType'])) {
-	    	$values ['commentType'] =   MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['commentType'])) {
+	    	$values ['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['refundable'])) {
-	    	$values ['refundable']   =   MySQL::SQLValue($data['refundable'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['refundable'])) {
+	    	$values ['refundable'] = MySQL::SQLValue($data['refundable'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['cleared'])) {
-	    	$values ['cleared']   =   MySQL::SQLValue($data['cleared'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['cleared'])) {
+	    	$values ['cleared'] = MySQL::SQLValue($data['cleared'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['multiplier'])) {
-	    	$values ['multiplier']   =   MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['multiplier'])) {
+	    	$values ['multiplier']   = MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER);
 		}
-		if(isset($data ['value'])) {
-	    	$values ['value']        =   MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER );
+		if (isset($data ['value'])) {
+	    	$values ['value']        = MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER);
 		}
 		
 	    $table = $this->getExpenseTable();
@@ -313,17 +313,17 @@ class Kimai_Remote_Database {
 	        }
 	    }
 	
-	    $values ['projectID']        = MySQL::SQLValue($new_array ['projectID']       , MySQL::SQLVALUE_NUMBER );
-	    $values ['designation']  = MySQL::SQLValue($new_array ['designation']                          );
-	    $values ['comment']      = MySQL::SQLValue($new_array ['comment']                              );
-	    $values ['commentType'] = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER );
-	    $values ['timestamp']    = MySQL::SQLValue($new_array ['timestamp']   , MySQL::SQLVALUE_NUMBER );
-	    $values ['multiplier']   = MySQL::SQLValue($new_array ['multiplier']  , MySQL::SQLVALUE_NUMBER );
-	    $values ['value']        = MySQL::SQLValue($new_array ['value']       , MySQL::SQLVALUE_NUMBER );
-	    $values ['refundable']   = MySQL::SQLValue($new_array ['refundable']  , MySQL::SQLVALUE_NUMBER );
-		$values ['cleared']   	 = MySQL::SQLValue($new_array ['cleared']  , MySQL::SQLVALUE_NUMBER );
+	    $values ['projectID'] = MySQL::SQLValue($new_array ['projectID'], MySQL::SQLVALUE_NUMBER);
+	    $values ['designation']  = MySQL::SQLValue($new_array ['designation']);
+	    $values ['comment']      = MySQL::SQLValue($new_array ['comment']);
+	    $values ['commentType'] = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER);
+	    $values ['timestamp']    = MySQL::SQLValue($new_array ['timestamp'], MySQL::SQLVALUE_NUMBER);
+	    $values ['multiplier']   = MySQL::SQLValue($new_array ['multiplier'], MySQL::SQLVALUE_NUMBER);
+	    $values ['value']        = MySQL::SQLValue($new_array ['value'], MySQL::SQLVALUE_NUMBER);
+	    $values ['refundable']   = MySQL::SQLValue($new_array ['refundable'], MySQL::SQLVALUE_NUMBER);
+		$values ['cleared'] = MySQL::SQLValue($new_array ['cleared'], MySQL::SQLVALUE_NUMBER);
 	                                   
-	    $filter ['expenseID']           = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+	    $filter ['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
 	    $table = $this->getExpenseTable();
 	    $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 	
