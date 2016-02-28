@@ -207,8 +207,7 @@ function random_number($length) {
 }
 
 /**
- * checks if the database structure needs to be updated for new Kimai version.
- * if yes the function redirects to /admin/updater.php
+ * Checks if the database structure needs to be updated for new Kimai version and redirects accordingly.
  *
  * @param string $path path to admin dir relative to the document that calls this function (usually "." or "..")
  * @global array $kga kimai-global-array
@@ -230,13 +229,13 @@ function checkDBversion($path) {
     }
 
     if ($checkVersion != $kga['version']) {
-        header("Location: $path/updater.php");
+        header("Location: $path/updater/updater.php");
         exit;
     }
 
     // the check for revision is much simpler ...
     if ( (int)$installedVersion[1] < (int)$kga['revision']) {
-        header("Location: $path/updater.php");
+        header("Location: $path/updater/updater.php");
         exit;
     }
 }
