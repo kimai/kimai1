@@ -49,7 +49,6 @@ function calculate_expenses_sum($projectId) {
  * };
  * 
  * @param array $projects IDs of all projects to include in the plot data
- * @param array $usedActivities array of all used activities (each as an array of its data)
  * @return array containing arrays for every project which hold the size of the pie chart elements
  * 
  */

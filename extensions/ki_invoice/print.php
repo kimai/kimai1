@@ -24,7 +24,7 @@ include_once('../../includes/basics.php');
  *
  * @param $arrays
  * @param $activity
- * @return bool true if $activity is in the array
+ * @return integer true if $activity is in the array
  * @author AA
  */
 function array_activity_exists($arrays, $activity)

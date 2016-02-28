@@ -75,7 +75,7 @@ class Kimai_Remote_Database {
 	/**
 	 * Returns the data of a certain expense record
 	 *
-	 * @param array $expenseID expenseID of the record
+	 * @param integer $expId
 	 * @return array the record's data as array, false on failure
 	 * @author ob
 	 */
@@ -103,7 +103,10 @@ class Kimai_Remote_Database {
 	/**
 	 * returns expenses for specific user as multidimensional array
 	 * @TODO: needs comments
-	 * @param integer $user ID of user in table users
+	 * @param integer $users ID of user in table users
+	 * @param integer $start
+	 * @param integer $end
+	 * @param integer $filterCleared
 	 * @return array
 	 * @author th
 	 * @author Alexander Bauer
@@ -245,7 +248,6 @@ class Kimai_Remote_Database {
 	/**
 	 * create exp entry 
 	 *
-	 * @param integer $userId
 	 * @param Array $data
 	 * @author sl
 	 * @author Alexander Bauer
@@ -334,7 +336,6 @@ class Kimai_Remote_Database {
   	/**
 	 * delete exp entry 
 	 *
-	 * @param integer $userID 
 	 * @param integer $id -> ID of record
 	 * @global array  $kga kimai-global-array
 	 * @author th

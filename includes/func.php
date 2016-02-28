@@ -175,7 +175,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
  * returns a random code with given length
  *
  * @global integer $length length of the code
- * @return array
+ * @return string
  * @author th
  */
 function random_code($length) {
@@ -192,7 +192,8 @@ function random_code($length) {
  * returns a random number with X digits
  *
  * @global integer $length digit count of number
- * @return array
+ * @param integer $length
+ * @return string
  * @author th
  */
 function random_number($length) {
@@ -360,7 +361,6 @@ EOD;
  * [1] -> out
  * </pre>
  *
- * @param string $user ID of user
  * @global array $kga kimai-global-array
  * @return array
  * @author th
@@ -389,6 +389,10 @@ function get_timeframe() {
     return $timeframe;
 }
 
+/**
+ * @param string $haystack
+ * @param string $needle
+ */
 function endsWith($haystack,$needle) {
   return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
 }
@@ -422,7 +426,7 @@ function getRequestBool($name)
  * in the location specific way.
  * 
  * @param $value the value from the request
- * @return parsed floating point value
+ * @return double|null floating point value
  */
 function getRequestDecimal($value) {
     global $kga;
@@ -443,7 +447,7 @@ function getRequestDecimal($value) {
  * @param $action the action being performed (e.g. add)
  * @param $oldGroups the old groups of the object (empty array for new objects)
  * @param $newGroups the new groups of the object (same as oldGroups if nothing should be changed in group assignment)
- * @return true if the permission is granted, false otherwise
+ * @return boolean if the permission is granted, false otherwise
  */
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups) {
   global $database, $kga;
@@ -529,7 +533,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
  *  
  * @param $objectTypeName string name of the object type being edited (e.g. Project)
  * @param $action the action being performed (e.g. add)
- * @return true if allowed, false otherwise
+ * @return boolean if allowed, false otherwise
  */
 function coreObjectActionAllowed($objectTypeName, $action) {
   global $database, $kga;

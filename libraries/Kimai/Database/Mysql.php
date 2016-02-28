@@ -52,6 +52,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         return $this->conn->IsConnected();
     }
 
+    /**
+     * @param string $scope
+     */
     private function logLastError($scope) {
         Kimai_Logger::logfile($scope.': '.$this->conn->Error());
     }
@@ -1194,7 +1197,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     /**
      * Returns the data of a certain user
      *
-     * @param array $userID  ID of the user
+     * @param string $userID  ID of the user
      * @return array         the user's data (username, email-address, status etc) as array, false on failure
      * @author th
      */
@@ -1598,7 +1601,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * Set the groups in which the user is a member in.
      * @param int $userId   id of the user
      * @param array $groups  map from group ID to membership role ID
-     * @return boolean       true on success, false on failure
+     * @return false|null       true on success, false on failure
      * @author sl
      */
     public function setGroupMemberships($userId,array $groups = null) {
@@ -2591,7 +2594,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * checks if a customer with this name exists
      *
      * @param string $name
-     * @return integer
+     * @return boolean
      * @author sl
      */
     public function is_customer_name($name) {
@@ -3308,7 +3311,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * return ID of specific user named 'XXX'
      *
      * @param integer $name name of user in table users
-     * @return int id of the customer
+     * @return boolean id of the customer
      */
     public function customer_nameToID($name) {
         return $this->name2id($this->kga['server_prefix']."customers", 'customerID', 'name',$name);
@@ -3318,7 +3321,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * return ID of specific user named 'XXX'
      *
      * @param integer $name name of user in table users
-     * @return string
+     * @return boolean
      * @author th
      */
     public function user_name2id($name) {
@@ -3329,10 +3332,10 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * Query a table for an id by giving the name of an entry.
      *
      * @author sl
-     * @param $table
-     * @param $endColumn
-     * @param $filterColumn
-     * @param $value
+     * @param string $table
+     * @param string $endColumn
+     * @param string $filterColumn
+     * @param integer $value
      * @return bool
      */
     private function name2id($table,$endColumn,$filterColumn,$value) {
@@ -3458,7 +3461,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * @see get_watchable_users
      * @param integer $user user to check for
      * @param integer $userID user to check if watchable
-     * @return true if watchable, false otherwiese
+     * @return boolean if watchable, false otherwiese
      * @author sl
      */
     public function is_watchable_user($user, $userID) {
