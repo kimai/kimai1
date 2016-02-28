@@ -38,7 +38,7 @@ switch ($axAction) {
      * Append a new entry to the logfile.
      */
     case 'logfile':
-        Logger::logfile("JavaScript: " . $axValue);
+        Kimai_Logger::logfile("JavaScript: " . $axValue);
     break;
 
     /**
@@ -81,7 +81,7 @@ switch ($axAction) {
         $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 		$preferences['showQuickNote']           = getRequestBool('showQuickNote');
-		$preferences['defaultLocation']         = $_REQUEST['defaultLocation'];
+		$preferences['defaultLocation']         = isset($_REQUEST['defaultLocation'])?$_REQUEST['defaultLocation']:'';
 
         $database->user_set_preferences($preferences,'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));

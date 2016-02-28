@@ -143,7 +143,7 @@ switch($_REQUEST['a'])
 
         $is_customer = $database->is_customer_name($name);
 
-        Logger::logfile("login: " . $name. ($is_customer?" as customer":" as user"));
+        Kimai_Logger::logfile("login: " . $name. ($is_customer?" as customer":" as user"));
 
         if ($is_customer) {
           // perform login of customer

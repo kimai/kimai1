@@ -72,7 +72,7 @@ else {
 switch($_REQUEST['a'])
 {
     case "request":
-        Logger::logfile("password reset: " . $name. ($is_customer?" as customer":" as user"));
+        Kimai_Logger::logfile("password reset: " . $name. ($is_customer?" as customer":" as user"));
     break;
 
     // Show password reset page

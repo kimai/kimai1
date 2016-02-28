@@ -41,7 +41,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extensions = new Extensions($kga, WEBROOT.'/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT.'/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
@@ -50,12 +50,6 @@ $extensions->loadConfigurations();
 $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
-
-// ============================================
-// = load the config =
-// ============================================
-include('Config.php');
-
 
 // ===============================================
 // = get time for the probably running stopwatch =
@@ -88,9 +82,9 @@ $view->dp_start = $dp_start;
 $view->dp_today = $dp_today;
 
 if (isset($kga['customer']))
-  $view->total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID'])));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID'])));
 else
-  $view->total = Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID']));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID']));
 
 // ===========================
 // = DatePicker localization =

@@ -63,9 +63,9 @@ $view->dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
 
 // Get the total amount of time shown in the table.
 if (isset($kga['customer']))
-  $total = Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
+  $total = Kimai_Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
 else
-  $total = Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
+  $total = Kimai_Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
 
 if (isset($kga['customer']))
   $view->exportData = export_get_data($in,$out,null,array($kga['customer']['customerID']));
@@ -79,7 +79,7 @@ if (isset($kga['customer']))
   $ann = export_get_user_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
   $ann = export_get_user_annotations($in,$out,array($kga['user']['userID']));
-Format::formatAnnotations($ann);
+Kimai_Format::formatAnnotations($ann);
 $view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
@@ -87,7 +87,7 @@ if (isset($kga['customer']))
   $ann = export_get_customer_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
   $ann = export_get_customer_annotations($in,$out,array($kga['user']['userID']));
-Format::formatAnnotations($ann);
+Kimai_Format::formatAnnotations($ann);
 $view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
@@ -95,7 +95,7 @@ if (isset($kga['customer']))
   $ann = export_get_project_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
   $ann = export_get_project_annotations($in,$out,array($kga['user']['userID']));
-Format::formatAnnotations($ann);
+Kimai_Format::formatAnnotations($ann);
 $view->project_annotations = $ann;
 
 // Get the annotations for the activity sub list.
@@ -103,7 +103,7 @@ if (isset($kga['customer']))
   $ann = export_get_activity_annotations($in,$out,null,array($kga['customer']['customerID']));
 else
   $ann = export_get_activity_annotations($in,$out,array($kga['user']['userID']));
-Format::formatAnnotations($ann);
+Kimai_Format::formatAnnotations($ann);
 $view->activity_annotations = $ann;
 
 // Get the columns the user had disabled last time.

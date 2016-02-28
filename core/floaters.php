@@ -68,7 +68,7 @@ switch ($axAction) {
             $skins[$name] = $name;
         }
 
-        foreach(Translations::langs() as $lang) {
+        foreach(Kimai_Translations::langs() as $lang) {
             $langs[$lang] = $lang;
         }
 

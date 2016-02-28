@@ -23,26 +23,12 @@
  * here.
  */
 
-defined('WEBROOT') ||
-    define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
-
-defined('APPLICATION_PATH') ||
-    define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
-
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
 ini_set('display_errors', '0');
 
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('Kimai');
+require_once APPLICATION_PATH . '/libraries/autoload.php';
 
 if (file_exists(WEBROOT.'includes/autoconf.php'))
   require(WEBROOT.'includes/autoconf.php');
@@ -52,13 +38,7 @@ else {
 }
 
 require(WEBROOT.'includes/vars.php');
-require(WEBROOT.'includes/classes/format.class.php');
-require(WEBROOT.'includes/classes/logger.class.php');
-require(WEBROOT.'includes/classes/translations.class.php');
-require(WEBROOT.'includes/classes/rounding.class.php');
-require(WEBROOT.'includes/classes/extensions.class.php');
 require(WEBROOT.'includes/func.php');
-
 
 // ==================================================================================
 // = check for additional database(s) and set $kga['server_database'] accordingly   =
@@ -107,7 +87,7 @@ if (!$database->isConnected()) { die('Kimai could not connect to database. Check
 Kimai_Registry::setDatabase($database);
 
 global $translations;
-$translations = new Translations($kga);
+$translations = new Kimai_Translations($kga);
 if ($kga['language'] != 'en')
   $translations->load($kga['language']);
 

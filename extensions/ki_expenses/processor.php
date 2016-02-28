@@ -43,7 +43,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+      Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -56,7 +56,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
     if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
       return true;
     } else {
-      Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
+      Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
       $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
       return false;
     }
@@ -66,7 +66,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
     return true;
   } else {
-    Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
+    Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access expense");
     $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
     return false;
   }
@@ -107,19 +107,19 @@ switch ($axAction) {
         $filterCustomers = array($kga['customer']['customerID']);
 
       $view->expenses= get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
-      $view->total = Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
+      $view->total = Kimai_Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
 
       $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
-      $ann = Format::formatCurrency($ann);
+      $ann = Kimai_Format::formatCurrency($ann);
       $view->user_annotations = $ann;
 
       // TODO: function for loops or convert it in template with new function
       $ann = expenses_by_customer($in,$out,$filterUsers,$filterCustomers,$filterProjects);
-      $ann = Format::formatCurrency($ann);
+      $ann = Kimai_Format::formatCurrency($ann);
       $view->customer_annotations = $ann;
 
       $ann = expenses_by_project($in,$out,$filterUsers,$filterCustomers,$filterProjects);
-      $ann = Format::formatCurrency($ann);
+      $ann = Kimai_Format::formatCurrency($ann);
       $view->project_annotations = $ann;
 
       $view->activity_annotations = array();
@@ -193,12 +193,12 @@ switch ($axAction) {
         $data['userID']       = $kga['user']['userID'];
 
         // parse new day and time
-        $edit_day  = Format::expand_date_shortcut($_REQUEST['edit_day']);
-        $edit_time = Format::expand_time_shortcut($_REQUEST['edit_time']);
+        $edit_day  = Kimai_Format::expand_date_shortcut($_REQUEST['edit_day']);
+        $edit_time = Kimai_Format::expand_time_shortcut($_REQUEST['edit_time']);
 
         // validate day and time
         $new = "${edit_day}-${edit_time}";
-        if (!Format::check_time_format($new)) {
+        if (!Kimai_Format::check_time_format($new)) {
             $errors[''] = $kga['lang']['TimeDateInputError'];
             break;
         }

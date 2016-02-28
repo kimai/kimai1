@@ -160,7 +160,7 @@
 
     $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups',0);
     $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users',0);
-    $view->languages = Translations::langs();
+    $view->languages = Kimai_Translations::langs();
 
     $view->timezones = timezoneList();
     $status = $database->get_statuses();

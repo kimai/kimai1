@@ -33,7 +33,7 @@ function checkUser()
       $kimai_key = addslashes($_COOKIE['kimai_key']);
 
       if ($database->get_seq($kimai_user) != $kimai_key) {
-        Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
+        Kimai_Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
         kickUser();
       } else {
           $user = $database->checkUserInternal($kimai_user);
@@ -42,7 +42,7 @@ function checkUser()
       }
     }
 
-    Logger::logfile("Kicking user because of missing cookie.");
+    Kimai_Logger::logfile("Kicking user because of missing cookie.");
     kickUser();
 }
 
@@ -62,7 +62,6 @@ function timezoneList() {
   return DateTimeZone::listIdentifiers();
 }
 
-
 /**
  * Returns array for smarty's html_options funtion.
  *
@@ -76,7 +75,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject,$groups,$selection=null, $includeDeleted = false){
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false){
 
     global $kga, $database;
 
@@ -284,23 +283,39 @@ function createPassword($length) {
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null) {
-  $database = addcslashes($database, '"$');
-  $hostname = addcslashes($hostname, '"$');
-  $username = addcslashes($username, '"$');
-  $password = addcslashes($password, '"$');
-  $timezone = addcslashes($timezone, '"$');
+function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null)
+{
+    global $kga;
+    $database = addcslashes($database, '"$');
+    $hostname = addcslashes($hostname, '"$');
+    $username = addcslashes($username, '"$');
+    $password = addcslashes($password, '"$');
 
-  $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
-  if (!$file) return false;
-  if (empty($timezone)) { $timezone = 'date_default_timezone_get()'; } else { $timezone = '"' . $timezone . '"'; }
+    $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
+    if (!$file) {
+        return false;
+    }
+
+    // fallback if timezone was not provided
+    if (!empty($timezone)) {
+        $timezone = addcslashes($timezone, '"$');
+        $timezone = '"' . $timezone . '"';
+    } else if (isset($kga['defaultTimezone'])) {
+        $timezone = '"' . $kga['defaultTimezone'] . '"';
+    } else {
+        $timezone = 'date_default_timezone_get()';
+    }
+
+    // fetch skin from global config with "standard" fallback
+    $skin = !empty($kga['skin']) ? $kga['skin'] : 'standard';
+    $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : 'array(0,50,100)';
 
 $config=<<<EOD
 <?php
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2013 Kimai-Development-Team
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -327,6 +342,8 @@ $config=<<<EOD
 \$language        = "$lang";
 \$password_salt   = "$salt";
 \$defaultTimezone = $timezone;
+\$skin            = "$skin";
+\$billable        = $billable;
 
 EOD;
 
@@ -334,9 +351,6 @@ EOD;
   fclose($file);
   return true;
 }
-
-
-
 
 /**
  * get in and out unix seconds of specific user
@@ -352,11 +366,8 @@ EOD;
  * @return array
  * @author th
  */
-
-// checked
-
 function get_timeframe() {
-    global $kga, $conn;
+    global $kga;
 
     $timeframe = array(null,null);
     
@@ -415,11 +426,11 @@ function getRequestBool($name)
  * @return parsed floating point value
  */
 function getRequestDecimal($value) {
-  global $kga;
-  if (trim($value) == '')
+    global $kga;
+    if (trim($value) != '') {
+        return (double) str_replace($kga['conf']['decimalSeparator'], '.', $value);
+    }
     return NULL;
-  else
-    return (double) str_replace($kga['conf']['decimalSeparator'],'.',$value);
 }
 
 /**
@@ -446,7 +457,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
   if (count($assignedOtherGroups) > 0) {
     $permissionName = "core-${objectTypeName}-otherGroup-${action}";
     if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-      Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+      Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
@@ -454,7 +465,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
   if (count($assignedOwnGroups) > 0) {
     $permissionName = "core-${objectTypeName}-${action}";
     if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
-      Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+      Kimai_Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
@@ -474,7 +485,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($addToOtherGroups) > 0) {
         $permissionName = "core-${objectTypeName}-otherGroup-${action}";
         if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -482,7 +493,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($addToOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -491,7 +502,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($removeFromOtherGroups) > 0) {
         $permissionName = "core-${objectTypeName}-otherGroup-${action}";
         if (!$database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
-          Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }
@@ -499,7 +510,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
       if (count($removeFromOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
         if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
-          Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
+          Kimai_Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
       }

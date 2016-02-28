@@ -105,7 +105,7 @@ if (isset($_REQUEST['round'])) {
             $rounded = RoundValue($invoiceArray[$time_index]['hour'], $round / 10);
 
             // Write a logfile entry for each value that is rounded.
-            Logger::logfile("Round " . $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with " . $round);
+            Kimai_Logger::logfile("Round " . $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with " . $round);
 
             if ($invoiceArray[$time_index]['hour'] == 0) {
                 // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
@@ -128,7 +128,7 @@ while (list($id, $fd) = each($invoiceArray)) {
     $total += $invoiceArray[$id]['amount'];
     $ttltime += $invoiceArray[$id]['hour'];
 }
-$fttltime = Format::formatDuration($ttltime * 3600);
+$fttltime = Kimai_Format::formatDuration($ttltime * 3600);
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {

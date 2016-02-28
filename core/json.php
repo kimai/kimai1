@@ -27,36 +27,9 @@
  * @author Kevin Papst <kpapst@gmx.net>
  */
 
-/**
- * ==================================================================
- * Bootstrap Zend
- * ==================================================================
- *
- * - Ensure library/ is on include_path
- * - Register Autoloader
- */
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
+// Bootstrap Kimai the old fashioned way
+require(dirname(__FILE__) . "/../includes/basics.php");
 
-set_include_path(
-    implode(
-        PATH_SEPARATOR,
-        array(
-            realpath(APPLICATION_PATH . '/libraries/'),
-        )
-    )
-);
-
-require_once 'Zend/Loader/Autoloader.php';
-$autoloader = Zend_Loader_Autoloader::getInstance();
-
-/**
- * ==================================================================
- * Prepare environment and execute JSON calls
- * ==================================================================
- */
-
-require(APPLICATION_PATH.'/includes/classes/remote.class.php');
 header('Access-Control-Allow-Origin: *');
 
 $server = new Zend_Json_Server();

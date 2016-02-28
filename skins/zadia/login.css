@@ -1,0 +1,242 @@
+html {
+	height: 100%;
+}
+
+body {
+	background-color: #000;
+	height: 100%;
+	font: 85%/1.5 "Lucida Grande", Calibri, "Segoe Sans", Futura, "Gill Sans", "Lucida Sans", "News Gothic MT", "Bitstream Vera Sans", "Trebuchet MS", sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+#content {
+	position: absolute;
+	width: 526px;
+	height: 400px;
+	left: 50%;
+	top: 50%;
+	margin: -200px 0 0 -263px;
+}
+
+#box {
+	background: url(grfx/login_bg_g3.png) no-repeat;
+	display: block;
+	width: 448px;
+	height: 298px;
+	margin: auto;
+	position: relative;
+	color: #999;
+}
+
+#box > div {
+	position: absolute;
+	left: 0;
+	right: 0;
+	padding: 120px 10px 10px;
+	display: none;
+}
+
+#box fieldset {
+	border: 0 none;
+	padding: 0;
+}
+
+#login fieldset {
+	display: block;
+	width: 210px;
+	height: 100px;
+	text-align: left;
+	margin: auto;
+	position: relative;
+}
+
+#forgotPassword fieldset {
+	display: block;
+	margin-top: 5px;
+}
+
+#box label {
+	color: #999;
+	height: 25px;
+}
+
+#login label {
+	display: block;
+}
+
+#forgotPassword label {
+	margin-right: 5px;
+}
+
+#box input {
+	border: 1px solid #ccc;
+	padding: 2px;
+	width: 140px;
+	position: relative;
+	margin: 0;
+}
+
+#login input {
+	display: block;
+	top: -2px;
+}
+
+#box a {
+	margin-top: 10px;
+	display: block;
+	color: #999;
+}
+
+#box .instructions {
+	color: #999;
+	margin-top: 10px;
+	width: 140px;
+}
+
+#loginButton {
+	position: absolute;
+	width: 52px;
+	height: 91px;
+	right: 0;
+	bottom: 0;
+	background: url(grfx/login_button_g3.png) no-repeat;
+	border: 0 none;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+}
+
+#box select {
+	position: absolute;
+	width: 100px;
+	top: 100px;
+	left: 0;
+	border: 1px solid silver;
+}
+
+#loginButton:hover {
+	background: url(grfx/login_button_g3.png) no-repeat 0 -91px;
+	cursor: pointer;
+}
+
+#forgotPassword button {
+	display: inline-block;
+}
+
+#content > p,
+#content > p > a {
+	font-size: x-small;
+	color: #555;
+	text-align: center;
+}
+
+#content #checkupdate > b {
+	color: #00BF00;
+	font-size: small;
+}
+
+#content #checkupdate > i {
+	color: #00BF00;
+	font-size: x-small;
+}
+
+#install {
+	color: #FFF;
+	position: absolute;
+	width: 526px;
+	height: 400px;
+	left: 50%;
+	top: 50%;
+	margin: -200px 0 0 -263px;
+}
+
+#install .installtext {
+	/* background-color:#f00;*/
+	width: 350px;
+}
+
+#install .welcome {
+	font-size: 1.3em;
+	font-weight: bold;
+	color: #15F000;
+	margin-bottom: 10px;
+}
+
+#install .txt {
+	margin-bottom: 7px;
+}
+
+#install form {
+	background: url(grfx/login_bg_g3.png) no-repeat;
+	display: block;
+	width: 448px;
+	height: 298px;
+	margin: 0 0 0 38px;
+	padding: 0;
+}
+
+#install fieldset {
+	border: 0 none;
+	display: block;
+	margin: 105px 0 0 15px;
+	width: 420px;
+	height: 160px;
+	padding: 0;
+	position: absolute;
+	text-align: left;
+}
+
+#install label {
+	display: block;
+	color: #999;
+}
+
+#install input {
+	border: 1px solid #ccc;
+	padding: 2px;
+	display: block;
+	width: 140px;
+	position: relative;
+	margin: 0;
+	left: 0;
+}
+
+#install button {
+	position: absolute;
+	width: 52px;
+	height: 91px;
+	right: 0;
+	bottom: 0;
+	background: url(grfx/login_button_g3.png) no-repeat;
+	text-indent: -1000em;
+	border: 0 none;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+}
+
+#install button:hover {
+	background: url(grfx/login_button_g3.png) no-repeat 0 -91px;
+	cursor: pointer;
+}
+
+#install p,
+#install p > a {
+	font-size: x-small;
+	color: #555;
+	text-align: center;
+}
+
+#warning {
+	margin: 5px 0 0 38px;
+	width: 434px;
+	border: 2px solid red;
+	padding: 10px 5px 5px 5px;
+	background: url(grfx/bg_warning.gif) repeat-x;
+}
+
+#warning p {
+	padding: 0;
+	margin: 0;
+}

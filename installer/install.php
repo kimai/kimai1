@@ -34,10 +34,10 @@ function exec_query($query) {
     $conn = $database->getConnectionHandler();
     $success = $conn->Query($query);
 
-    //Logger::logfile($query);
+    //Kimai_Logger::logfile($query);
     if (!$success) {
         $errorInfo = serialize($conn->Error());
-        Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
+        Kimai_Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
         $errors = true;
     }
 }
@@ -62,7 +62,7 @@ date_default_timezone_set($_REQUEST['timezone']);
 
 $randomAdminID = random_number(9);
 
-Logger::logfile("-- begin install ----------------------------------");
+Kimai_Logger::logfile("-- begin install ----------------------------------");
 
 // if any of the queries fails, this will be true
 $errors = false;
@@ -394,27 +394,14 @@ exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('allowRo
 exec_query("INSERT INTO `${p}configuration` (`option` ,`value`) VALUES ('defaultStatusID', '1');");
 
 if ($errors) {
-
-    set_include_path(
-        implode(
-            PATH_SEPARATOR,
-            array(
-                realpath(WEBROOT . '/libraries/'),
-            )
-        )
-    );
-    
-    require_once 'Zend/Loader/Autoloader.php';
-    Zend_Loader_Autoloader::getInstance();
-    
     $view = new Zend_View();
     $view->setBasePath(WEBROOT . '/templates');
 
     $view->headline = $kga['lang']['errors'][1]['hdl'];
     $view->message = $kga['lang']['errors'][1]['txt'];
     echo $view->render('misc/error.php');
-    Logger::logfile("-- showing install error --------------------------");
+    Kimai_Logger::logfile("-- showing install error --------------------------");
 } else {
-    Logger::logfile("-- installation finished without error ------------");
+    Kimai_Logger::logfile("-- installation finished without error ------------");
     header("Location: ../index.php");
 }
