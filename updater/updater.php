@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,44 @@
  */
 
 /**
- * This script performs updates of the database from any version
- * to the current version.
+ * This script performs updates of the database from any version to the current version.
  */
 
-require('includes/basics.php');
+require_once 'functions.php';
+
+define('KIMAI_UPDATER_RUNNING', true);
+$min_php_version = '5.4';
 
 // check all requirements/file permissions before starting an upgrade process
-if (!file_exists(WEBROOT . "includes/autoconf.php")) {
-    die("Updater needs an existing kimai configuration. Missing file: includes/autoconf.php");
+if (!file_exists('../includes/autoconf.php')) {
+    exitUpdater('File missing', 'Updater needs an existing kimai configuration!', 'Missing file: <b>includes/autoconf.php</b>');
 }
-if (!is_writable(WEBROOT . "includes/autoconf.php")) {
-    die("Please fix write permission for file : " . WEBROOT . "includes/autoconf.php");
+if (!is_writable('../includes/autoconf.php')) {
+    exitUpdater('Broken permissions', 'Please give write permission for file:', '<b>includes/autoconf.php</b>');
 }
-if (!file_exists(WEBROOT . "temporary/logfile.txt") && !is_writable(WEBROOT . "temporary/")) {
-    die("Please fix write permission for directory: " . WEBROOT . "temporary/");
+if (!file_exists('../temporary/logfile.txt') && !is_writable('../temporary/')) {
+    exitUpdater('Broken permissions', 'Please give write permission for directory:', '<b>temporary/</b>');
 }
-if (file_exists(WEBROOT . "temporary/logfile.txt") && !is_writable(WEBROOT . "temporary/logfile.txt")) {
-    die("Please fix write permission for file : " . WEBROOT . "temporary/logfile.txt");
+if (file_exists('../temporary/logfile.txt') && !is_writable('../temporary/logfile.txt')) {
+    exitUpdater('Broken permissions', 'Please give write permission for file:', '<b>temporary/logfile.txt</b>');
 }
+if (version_compare(PHP_VERSION, $min_php_version) < 0)
+{
+    exitUpdater(
+        'PHP version outdated',
+        'You are using <b>PHP '.phpversion().'</b> but Kimai requires at least <b>PHP '.$min_php_version.'</b>',
+        'Please update your PHP installation, <br>we cannot continue the update otherwise.'
+    );
+}
+
+// ================================================================================
+// All requirements are met to start the update, so lets do it :-)
+// ================================================================================
+
+require_once '../includes/basics.php';
+
 if (!$kga['revision']) {
-    die("Database update cannot be executed: Revision not defined!");
+    exitUpdater('DB updated failed', 'Database update cannot be executed:', '<b>Revision not defined</b>');
 }
 
 $version_temp = $database->get_DBversion();
@@ -47,428 +64,51 @@ $revisionDB = $version_temp[1];
 error_log(serialize($version_temp));
 unset($version_temp);
 
-$min_php_version = '5.7';
-
-if (version_compare(PHP_VERSION, $min_php_version) < 0) {
-    ?>
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <meta name="robots" content="noindex,nofollow"/>
-        <title>Kimai Update</title>
-        <style type="text/css" media="screen">
-            body {
-                background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
-                font-family: sans-serif;
-                color: #333;
-            }
-
-            div {
-                background-image: url('skins/standard/grfx/floaterborder.png');
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 500px;
-                height: 250px;
-                margin-left: -250px;
-                margin-top: -125px;
-                border: 6px solid white;
-                padding: 10px;
-            }
-
-            #dbrecover {
-            }
-        </style>
-    </head>
-    <body>
-    <div align="center">
-        <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br/>
-        <h1>newer PHP version required</h1>
-        You are using PHP version <?php echo phpversion(); ?> but Kimai requires at least <b>PHP
-            version <?php echo $min_php_version ?></b>.
-        Please update your PHP installation, the updater can not continue otherwise.
-    </div>
-    </body>
-    </html>
-    <?php
-} else {
-    if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) {
-        ?>
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-            <meta name="robots" content="noindex,nofollow"/>
-            <title>Kimai Update</title>
-            <style type="text/css" media="screen">
-                body {
-                    background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
-                    font-family: sans-serif;
-                    color: #333;
-                }
-
-                div {
-                    background-image: url('../skins/standard/grfx/floaterborder.png');
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 500px;
-                    height: 250px;
-                    margin-left: -250px;
-                    margin-top: -125px;
-                    border: 6px solid white;
-                    padding: 10px;
-                }
-
-                #dbrecover {
-                }
-            </style>
-        </head>
-        <body>
-        <div align="center">
-            <img src="grfx/caution.png" width="70" height="63" alt="Caution"><br/>
-            <h1>UPDATE</h1>
-            <?php echo $kga['lang']['updater'][0]; ?>
-            <?php if (is_writable(__DIR__ . '/includes/autoconf.php')) { ?>
-                <form action="" method="post">
-                    <br/><br/>
-                    <input type="hidden" name="a" value="1">
-                    <input type="submit" value="START UPDATE">
-                </form>
-            <?php } else { ?>
-                <h2 style="color:red">Cannot update:<br>includes/autoconf.php not writable</h2>
-            <?php } ?>
-            <a href="db_restore.php" id="dbrecover">Database Backup Recover Utility</a>
-        </div>
-        </body>
-        </html>
-        <?php
-    } else {
-        if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone'])) {
-            ?>
-            <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-                <meta name="robots" content="noindex,nofollow"/>
-                <title>Kimai Update</title>
-                <style type="text/css" media="screen">
-                    body {
-                        background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
-                        font-family: sans-serif;
-                        color: #333;
-                    }
-
-                    div {
-                        background-image: url('../skins/standard/grfx/floaterborder.png');
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        width: 500px;
-                        height: 250px;
-                        margin-left: -250px;
-                        margin-top: -125px;
-                        border: 6px solid white;
-                        padding: 10px;
-                    }
-
-                    #dbrecover {
-                    }
-                </style>
-            </head>
-            <body>
-            <div align="center">
-                <form action="" method="post">
-                    <h1> <?= $kga['lang']['timezone'] ?></h1>
-                    <?= $kga['lang']['updater']['timezone'] ?>
-                    <br/><br/>
-                    <select name="timezone">
-                        <?php
-                        $serverZone = @date_default_timezone_get();
-
-                        foreach (timezoneList() as $name) {
-                            if ($name == $serverZone) {
-                                echo "<option selected=\"selected\">$name</option>";
-                            } else {
-                                echo "<option>$name</option>";
-                            }
-                        }
-                        ?>
-                    </select>
-                    <br/><br/>
-                    <input type="hidden" name="a" value="1">
-                    <input type="submit" value="START UPDATE">
-                </form>
-            </div>
-            </body>
-            </html>
-            <?php
-        } else {
-            ?>
-            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-            <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-            <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-                <title>Kimai Update <?php echo $kga['version'] . "." . $kga['revision']; ?></title>
-                <style type="text/css" media="screen">
-                    html {
-                        font-family: sans-serif;
-                        font-size: 80%;
-                    }
-
-                    .red {
-                        background-color: #f00;
-                        color: #fff;
-                        font-weight: bold;
-                    }
-
-                    .green {
-                        background-color: #0f0;
-                    }
-
-                    .orange {
-                        background-color: #1FA100;
-                    }
-
-                    .machtnix {
-                        color: #1FA100;
-                    }
-
-                    .error_info {
-                        color: #888;
-                    }
-
-                    .abst {
-                        padding: 10px;
-                        margin-bottom: 10px;
-                        font-weight: bold;
-                    }
-
-                    table {
-                        padding: 2px;
-                    }
-
-                    td {
-                        border-top: 1px solid #eee;
-                        border-bottom: 1px dotted black;
-                        padding: 5px 0;
-                    }
-
-                    .success {
-                        border: 4px solid #0f0;
-                        padding: 10px;
-                        width: 300px;
-                        margin-bottom: 10px;
-                    }
-
-                    .fail {
-                        border: 4px solid #f00;
-                        padding: 10px;
-                        width: 300px;
-                        margin-bottom: 10px;
-                    }
-
-                    .red, .green, .orange {
-                        width: 30px;
-                        text-align: center;
-                    }
-
-                    #queries {
-                        background-color: #0f0;
-                        color: white;
-                        font-weight: bold;
-                        padding: 10px;
-                        margin-bottom: 20px;
-                    }
-
-                    #important_message {
-                        background-color: red;
-                        color: white;
-                        font-weight: bold;
-                        padding: 10px;
-                        margin-bottom: 20px;
-                        display: none;
-                    }
-
-                    .important_block_head {
-                        background-color: red;
-                        color: white;
-                        font-weight: bold;
-                        padding: 10px;
-                    }
-
-                    a {
-                        color: #0f0;
-                        text-decoration: none;
-                        padding: 5px;
-                        border: 1px dotted gray;
-                    }
-
-                    a:hover {
-                        color: white;
-                        background-color: #0f0;
-                        border: 1px solid black;
-                    }
-
-                    #logo {
-                        width: 135px;
-                        height: 52px;
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        background-image: url('updater/logo.png');
-                    }
-
-                    #restore {
-                        display: block;
-                        margin-bottom: 15px;
-                        width: 100px;
-                    }
-                </style>
-                <script src="libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
-            </head>
-            <body>
-            <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>
-            <div id="logo">&nbsp;</div>
-            <div id="link">&nbsp;</div>
-            <a href="db_restore.php" id="restore" title="db_restore">Database Utility</a>
-            <div id="queries"></div>
-            <div id="important_message"></div>
-            <table>
-                <tr>
-                    <td colspan='2'>
-                        <strong><?php echo $kga['lang']['updater'][10]; ?></strong>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo $kga['lang']['updater'][20]; ?>
-                    </td>
-                    <td class='green'>
-                        &nbsp;&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo $kga['lang']['updater'][30]; ?>
-                    </td>
-                    <td class='orange'>
-                        &nbsp;&nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo $kga['lang']['updater'][40]; ?>
-                    </td>
-                    <td class='red'>
-                        !
-                    </td>
-                </tr>
-            </table>
-            <br/>
-            <br/>
-            <table cellspacing='0' cellpadding='2'>
-<?php
-
-/**
- * Execute an sql query in the database. The correct database connection
- * will be chosen and the query will be logged with the success status.
- *
- * As third parameter an alternative query can be passed, which should be
- * displayed instead of the executed query. This prevents leakage of
- * confidential information like password salts. The logfile will still
- * contain the executed query.
- *
- * @param $query query to execute as string
- * @param $errorProcessing true if it's an error when the query fails.
- */
-function exec_query($query, $errorProcessing = true, $displayQuery = null)
+// ================================================================================
+// Display starting screen before executing the Update finally
+// ================================================================================
+if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
 {
-    global $database, $kga, $errors, $executed_queries;
+    exitUpdater(
+        'UPDATE',
+        $kga['lang']['updater'][0] .'
+            <form action="" method="post">
+            <input type="hidden" name="a" value="1"><br><input type="submit" value="START UPDATE">
+            </form>
+        ',
+        '<a href="db_restore.php" id="dbrecover">Database Backup Recover Utility</a>'
+    );
+}
 
-    $conn = $database->getConnectionHandler();
+// ================================================================================
+// timezone was introduced, give the user an option to select the default one
+// ================================================================================
+if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
+{
+    $timeZonesOptions = '';
+    $serverZone = @date_default_timezone_get();
 
-    $executed_queries++;
-
-    if ($kga['server_conn'] == "pdo") {
-        $pdo_query = $conn->prepare($query);
-        $success = $pdo_query->execute(array());
-    } else {
-        $success = $conn->Query($query);
-    }
-
-    Kimai_Logger::logfile($query);
-
-    if ($kga['server_conn'] == "pdo") {
-        $err = $pdo_query->errorInfo();
-        $err = serialize($err);
-    } else {
-        $err = $conn->Error();
-    }
-
-    $query = htmlspecialchars($query);
-    $displayQuery = htmlspecialchars($displayQuery);
-
-    if ($success) {
-        $level = 'green';
-    } else {
-        if ($errorProcessing) {
-            $level = 'red';
-            $errors++;
+    foreach (timezoneList() as $name) {
+        if ($name == $serverZone) {
+            $timeZonesOptions .= "<option selected=\"selected\">$name</option>";
         } else {
-            $level = 'orange'; // something went wrong but it's not an error
+            $timeZonesOptions .= "<option>$name</option>";
         }
     }
 
-    printLine($level, ($displayQuery == null ? $query : $displayQuery), $err);
+    $selectTimezone = '<form action="" method="post"><select name="timezone">' . $timeZonesOptions .  '</select>' .
+        '<br><br><input type="hidden" name="a" value="1"><input type="submit" value="START UPDATE"></form>';
 
-    if (!$success) {
-        Kimai_Logger::logfile("An error has occured in query: $query");
-
-        if ($kga['server_conn'] == "pdo") {
-            $err = $pdo_query->errorInfo();
-            $err = serialize($err);
-        } else {
-            $err = $conn->Error();
-        }
-
-        Kimai_Logger::logfile("Error text: $err");
-    }
-
+    exitUpdater(
+        $kga['lang']['timezone'],
+        $kga['lang']['updater']['timezone'],
+        $selectTimezone
+    );
 }
 
-function printLine($level, $text, $errorInfo = '')
-{
-    echo "<tr>";
-    echo "<td>" . $text . "<br/>";
-    echo "<span class='error_info'>" . $errorInfo . "</span>";
-    echo "</td>";
-
-    switch ($level) {
-        case 'green':
-            echo "<td class='green'>&nbsp;&nbsp;</td>";
-            break;
-        case 'red':
-            echo "<td class='red'>!</td>";
-            break;
-        case 'orange':
-            echo "<td class='orange'>&nbsp;&nbsp;</td>";
-            break;
-    }
-
-    echo "</tr>";
-}
-
-function quoteForSql($input)
-{
-    global $kga, $database;
-
-    if ($kga['server_conn'] == "pdo") {
-        return $database->getConnectionHandler()->quote($input);
-    } else {
-        return "'" . $database->getConnectionHandler()->SQLFix($input) . "'";
-    }
-}
-
+// ================================================================================
+require_once 'update_header.php';
+// ================================================================================
 
 $version_e = explode(".", $kga['version']);
 $versionDB_e = explode(".", $versionDB);
@@ -479,6 +119,10 @@ $executed_queries = 0;
 Kimai_Logger::logfile("-- begin update -----------------------------------");
 
 $p = $kga['server_prefix'];
+
+// ================================================================================
+// CREATE DATABASE BACKUP
+// ================================================================================
 
 if ((int)$revisionDB < $kga['revision']) {
     /**
@@ -522,9 +166,6 @@ if ((int)$revisionDB < $kga['revision']) {
     echo "<strong>" . $kga['lang']['updater'][70] . "</strong></br>";
     echo "<table style='width:100%'>";
 }
-//////// ---------------------------------------------------------------------------------------------------
-//////// ---------------------------------------------------------------------------------------------------
-
 
 if (((int)$versionDB_e[1] == 7 && (int)$versionDB_e[2] < 12)) {
     Kimai_Logger::logfile("-- update to 0.7.12");
@@ -921,9 +562,6 @@ EOD;
     exec_query("ALTER TABLE ${p}evt DROP `evt_grpID`");
 
 }
-
-//////// ---------------------------------------------------------------------------------------------------
-
 
 if ((int)$revisionDB < 733) {
     Kimai_Logger::logfile("-- update to 0.8.0a");
@@ -1671,7 +1309,6 @@ if ((int)$revisionDB < 1370) {
     }
 }
 
-
 if ((int)$revisionDB < 1371) {
     // The mentioned columns were accidentially removed by the update script. But there was no release since then.
     // Therefore this updater was fixed to to the right thing now: Keep the column and rename it correctly.
@@ -1807,21 +1444,25 @@ if ((int)$revisionDB < 1381) {
 
     exec_query("UPDATE `${p}preferences` SET `option` = 'ui.project_comment_flag' WHERE `option` = 'ui.pct_comment_flag';");
 }
+
 if ((int)$revisionDB < 1382) {
     Kimai_Logger::logfile("-- update to r1382");
     exec_query("ALTER TABLE `${p}membershipRoles` ADD `core-user-view` tinyint DEFAULT 0 AFTER `core-user-unassign`;", false);
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Admin';");
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Groupleader';");
 }
+
 if ((int)$revisionDB < 1383) {
     Kimai_Logger::logfile("-- update to r1383");
     exec_query("INSERT INTO `${p}configuration` VALUES('defaultStatusID', '1');");
 }
+
 if ((int)$revisionDB < 1384) {
     Kimai_Logger::logfile("-- update to r1384");
     exec_query("ALTER TABLE ${p}users ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
     exec_query("ALTER TABLE ${p}customers ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
 }
+
 if ((int)$revisionDB < 1385) {
     Kimai_Logger::logfile("-- update to r1385");
     exec_query("ALTER TABLE ${p}customers CHANGE `comment` `comment` TEXT NULL;");
@@ -1843,11 +1484,11 @@ if ((int)$revisionDB < 1385) {
     exec_query("ALTER TABLE ${p}activities CHANGE `comment` `comment` TEXT NULL;");
 }
 
-
-// ============================
-// = update DB version number =
-// ============================
-if ((int)$revisionDB < $kga['revision'] && !$errors) {
+// ================================================================================
+// FINALIZATION: update DB version number
+// ================================================================================
+if ((int)$revisionDB < $kga['revision'] && !$errors)
+{
     $query = sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
     exec_query($query, 0);
 
@@ -1857,65 +1498,6 @@ if ((int)$revisionDB < $kga['revision'] && !$errors) {
 
 Kimai_Logger::logfile("-- update finished --------------------------------");
 
-if ((int)$revisionDB == $kga['revision']) {
-    echo '<script type="text/javascript">window.location.href = "index.php";</script>';
-} else {
-    $l2 = $kga['lang']['login'];
-    $l3 = $kga['lang']['updater'][90];
-
-    if (!$errors) {
-        $l1 = $kga['lang']['updater'][80];
-
-        echo <<<EOD
-<script type="text/javascript">
-$("#link").append("<p><strong>$l1</strong></p>");
-$("#link").append("<h1><a href='index.php'>$l2</a></h1>");
-$("#link").addClass("success");
-$("#queries").append("$executed_queries $l3</p>");
-</script>
-EOD;
-    } else {
-        $l1 = $kga['lang']['updater'][100];
-
-        echo <<<EOD
-<script type="text/javascript">
-$("#link").append("<p><strong>$l1</strong></p>");
-$("#link").append("<h1><a href='index.php'>$l2</a></h1>");
-$("#link").addClass("fail");
-$("#queries").append("$executed_queries $l3");
-</script>
-EOD;
-    }
-}
-?>
-            </table>
-            <?php
-            if (isset($new_passwords)) {
-                ?>
-                <br/><br/>
-                <script type="text/javascript">
-                    $("#important_message").append("<?php echo $kga['lang']['updater'][120];?> <br/>");
-                    $("#important_message").show();
-                </script>
-                <div class="important_block_head"> <?php echo $kga['lang']['updater'][110]; ?>:</div>
-                <table style="width:100%">
-                    <tr>
-                        <td><i> <?php echo $kga['lang']['username']; ?> </i></td>
-                        <td><i> <?php echo $kga['lang']['password']; ?> </i></td>
-                    </tr>
-                    <?php
-                    foreach ($new_passwords as $username => $password) {
-                        echo "<tr><td>$username</td><td>$password</td></tr>";
-                    }
-                    ?>
-                </table><br/>
-                <?php
-            }
-            ?>
-            <?php echo "$executed_queries " . $kga['lang']['updater'][90]; ?>
-            <h1><a href='index.php'><?php echo $kga['lang']['login']; ?></a></h1>
-            </body>
-            </html>
-        <?php }
-    }
-} // end of "do you have a backup blah" condition 
+// ================================================================================
+require_once 'update_footer.php';
+// ================================================================================
