@@ -41,7 +41,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extensions = new Kimai_Extensions($kga, WEBROOT.'/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
@@ -67,40 +67,40 @@ else
 // =======================================
 // = Display date and time in the header =
 // =======================================
-$wd       = $kga['lang']['weekdays_short'][date("w",time())];
+$wd       = $kga['lang']['weekdays_short'][date("w", time())];
 
 $dp_start = 0;
-if ($kga['calender_start']!="")
+if ($kga['calender_start'] != "")
     $dp_start = $kga['calender_start'];
 else if (isset($kga['user']))
-    $dp_start = date("d/m/Y",$database->getjointime($kga['user']['userID']));    
+    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));    
     
 
-$dp_today = date("d/m/Y",time());
+$dp_today = date("d/m/Y", time());
 
 $view->dp_start = $dp_start;
 $view->dp_today = $dp_today;
 
 if (isset($kga['customer']))
-  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID'])));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID'])));
 else
-  $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$kga['user']['userID']));
+  $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $kga['user']['userID']));
 
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker ="";
+$localized_DatePicker = "";
 
 $view->weekdays_array = sprintf("['%s','%s','%s','%s','%s','%s','%s']\n" 
-,$kga['lang']['weekdays'][0],$kga['lang']['weekdays'][1],$kga['lang']['weekdays'][2],$kga['lang']['weekdays'][3],$kga['lang']['weekdays'][4],$kga['lang']['weekdays'][5],$kga['lang']['weekdays'][6]);
+,$kga['lang']['weekdays'][0], $kga['lang']['weekdays'][1], $kga['lang']['weekdays'][2], $kga['lang']['weekdays'][3], $kga['lang']['weekdays'][4], $kga['lang']['weekdays'][5], $kga['lang']['weekdays'][6]);
 
 $view->weekdays_short_array = sprintf("['%s','%s','%s','%s','%s','%s','%s']\n" 
-,$kga['lang']['weekdays_short'][0],$kga['lang']['weekdays_short'][1],$kga['lang']['weekdays_short'][2],$kga['lang']['weekdays_short'][3],$kga['lang']['weekdays_short'][4],$kga['lang']['weekdays_short'][5],$kga['lang']['weekdays_short'][6]);
+,$kga['lang']['weekdays_short'][0], $kga['lang']['weekdays_short'][1], $kga['lang']['weekdays_short'][2], $kga['lang']['weekdays_short'][3], $kga['lang']['weekdays_short'][4], $kga['lang']['weekdays_short'][5], $kga['lang']['weekdays_short'][6]);
 
 $view->months_array = sprintf("['%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s']\n",
-$kga['lang']['months'][0],$kga['lang']['months'][1],$kga['lang']['months'][2],$kga['lang']['months'][3],$kga['lang']['months'][4],$kga['lang']['months'][5],$kga['lang']['months'][6],$kga['lang']['months'][7],$kga['lang']['months'][8],$kga['lang']['months'][9],$kga['lang']['months'][10],$kga['lang']['months'][11]);
+$kga['lang']['months'][0], $kga['lang']['months'][1], $kga['lang']['months'][2], $kga['lang']['months'][3], $kga['lang']['months'][4], $kga['lang']['months'][5], $kga['lang']['months'][6], $kga['lang']['months'][7], $kga['lang']['months'][8], $kga['lang']['months'][9], $kga['lang']['months'][10], $kga['lang']['months'][11]);
 
-$view->months_short_array = sprintf("['%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s']", $kga['lang']['months_short'][0],$kga['lang']['months_short'][1],$kga['lang']['months_short'][2],$kga['lang']['months_short'][3],$kga['lang']['months_short'][4],$kga['lang']['months_short'][5],$kga['lang']['months_short'][6],$kga['lang']['months_short'][7],$kga['lang']['months_short'][8],$kga['lang']['months_short'][9],$kga['lang']['months_short'][10],$kga['lang']['months_short'][11]);
+$view->months_short_array = sprintf("['%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s']", $kga['lang']['months_short'][0], $kga['lang']['months_short'][1], $kga['lang']['months_short'][2], $kga['lang']['months_short'][3], $kga['lang']['months_short'][4], $kga['lang']['months_short'][5], $kga['lang']['months_short'][6], $kga['lang']['months_short'][7], $kga['lang']['months_short'][8], $kga['lang']['months_short'][9], $kga['lang']['months_short'][10], $kga['lang']['months_short'][11]);
 
 
 
@@ -110,7 +110,7 @@ $view->months_short_array = sprintf("['%s','%s','%s','%s','%s','%s','%s','%s','%
 $view->current_timer_hour  = $current_timer['hour'];
 $view->current_timer_min   = $current_timer['min'];
 $view->current_timer_sec   = $current_timer['sec'];
-$view->current_timer_start = $current_timer['all']?$current_timer['all']:time();
+$view->current_timer_start = $current_timer['all'] ? $current_timer['all'] : time();
 $view->current_time        = time();
 
 $view->timeframe_in = $in;
@@ -140,7 +140,7 @@ $view->lang_checkMembershipRoleName = $kga['lang']['checkMembershipRoleName'];
 
 
 $customerData = array('customerID'=>false, 'name'=>'');
-$projectData  = array('projectID'=>false,  'name'=>'');
+$projectData  = array('projectID'=>false, 'name'=>'');
 $activityData = array('activityID'=>false, 'name'=>'');
 
 if (!isset($kga['customer'])) {
@@ -209,7 +209,7 @@ $view->project_display = $view->render("lists/projects.php");
 if (isset($kga['customer']))
   $view->activities = $database->get_activities_by_customer($kga['customer']['customerID']);
 else if ($projectData['projectID'])
-  $view->activities = $database->get_activities_by_project($projectData['projectID'],$kga['user']['groups']);
+  $view->activities = $database->get_activities_by_project($projectData['projectID'], $kga['user']['groups']);
 else 
   $view->activities = $database->get_activities($kga['user']['groups']);
 
@@ -219,7 +219,7 @@ $view->show_activity_edit_button = isset($kga['user']) && coreObjectActionAllowe
 $view->activity_display = $view->render("lists/activities.php");
 
 if (isset($kga['user']))
-  $view->showInstallWarning = file_exists(WEBROOT.'installer');
+  $view->showInstallWarning = file_exists(WEBROOT . 'installer');
 else
   $view->showInstallWarning = false;
 

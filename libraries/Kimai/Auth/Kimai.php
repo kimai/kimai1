@@ -37,12 +37,12 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             return false;
         }
 
-        $passCrypt = md5($kga['password_salt'].$password.$kga['password_salt']);
+        $passCrypt = md5($kga['password_salt'] . $password . $kga['password_salt']);
         $userData  = $database->user_get_data($id);
         $pass      = $userData['password'];
         $userId    = $userData['userID'];
 
-        return $pass==$passCrypt && $username!="";
+        return $pass == $passCrypt && $username != "";
     }
 
     public function forgotPassword($name)
@@ -58,7 +58,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
       $database->user_edit($id, array('passwordResetHash' => $passwordResetHash));
 
       $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-      $url = ($ssl? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name). '&key=' . $passwordResetHash;
+      $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
 
       $message = $kga['lang']['passwordReset']['mailMessage'];
       $message = str_replace('%{URL}', $url, $message);
@@ -84,7 +84,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
       }
 
       $data = array();
-      $data['password'] = md5($kga['password_salt'].$password.$kga['password_salt']);
+      $data['password'] = md5($kga['password_salt'] . $password . $kga['password_salt']);
       $data['passwordResetHash'] = null;
       $database->user_edit($id, $data);
 

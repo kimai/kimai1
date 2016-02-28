@@ -36,7 +36,7 @@ class Zend_View_Helper_FilterListEntries extends Zend_View_Helper_Abstract
         }
 
         $listEntries = array();
-        foreach($entries as $row) {
+        foreach ($entries as $row) {
             if ($filterHidden && isset($row['visible']) && !$row['visible']) {
                 continue;
             }

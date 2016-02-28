@@ -35,7 +35,7 @@
 
     $view = new Zend_View();
     $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-    $view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
+    $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
     $view->kga = $kga;
 
@@ -59,7 +59,7 @@
           $data = $database->group_get_data($groupID);
           $groupNames[] = $data['name'];
         }
-        $customers[$row]['groups'] = implode(", ",$groupNames);
+        $customers[$row]['groups'] = implode(", ", $groupNames);
       }
     }
 
@@ -84,7 +84,7 @@
                 $data = $database->group_get_data($groupID);
                 $groupNames[] = $data['name'];
             }
-            $projects[$row]['groups'] = implode(", ",$groupNames);
+            $projects[$row]['groups'] = implode(", ", $groupNames);
         }
         $view->projects = $projects;
     }
@@ -96,7 +96,7 @@
     if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
       $activities = $database->get_activities_by_project(-2);
     else
-      $activities = $database->get_activities_by_project(-2,$kga['user']['groups']);
+      $activities = $database->get_activities_by_project(-2, $kga['user']['groups']);
 
     foreach ($activities as $row=>$activity) {
       $groupNames = array();
@@ -106,7 +106,7 @@
         $data = $database->group_get_data($groupID);
          $groupNames[] = $data['name'];
       }
-      $activities[$row]['groups'] = implode(", ",$groupNames);
+      $activities[$row]['groups'] = implode(", ", $groupNames);
     }
 
     $view->activities = $activities;
@@ -116,7 +116,7 @@
 
     $view->curr_user = $kga['user']['name'];
 
-    $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+    $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
     if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
       $view->groups = $groups;
     else
@@ -125,15 +125,15 @@
     $view->arr_statuses = $database->get_statuses();
         
     if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view'))
-      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
     else
-      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0),$kga['user']['groups']);
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0), $kga['user']['groups']);
 
     // get group names
     foreach ($users as &$user) {
       $user['groups'] = array();
       $groups = $database->getGroupMemberships($user['userID']);
-      if(is_array($groups)) {
+      if (is_array($groups)) {
 	      foreach ($groups as $group) {
           if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false)
             continue;
@@ -158,8 +158,8 @@
     $view->membershipRoles_display = $view->render("membershipRoles.php");
 
 
-    $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups',0);
-    $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users',0);
+    $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
+    $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
     $view->languages = Kimai_Translations::langs();
 
     $view->timezones = timezoneList();
@@ -174,9 +174,9 @@
 
     if ($kga['conf']['editLimit'] != '-') {
       $view->editLimitEnabled = true;
-      $editLimit = $kga['conf']['editLimit']/(60*60); // convert to hours
-      $view->editLimitDays = (int) ($editLimit/24) ;
-      $view->editLimitHours = (int) ($editLimit%24) ;
+      $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
+      $view->editLimitDays = (int)($editLimit / 24);
+      $view->editLimitHours = (int)($editLimit % 24);
     }
     else {
       $view->editLimitEnabled = false;

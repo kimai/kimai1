@@ -138,9 +138,9 @@ class Kimai_Format
     public static function addEllipsis($string, $length, $end = '…')
     {
         if (strlen($string) > $length) {
-            $length -= strlen($end);  // $length =  $length - strlen($end);
+            $length -= strlen($end); // $length =  $length - strlen($end);
             $string = substr($string, 0, $length);
-            $string .= $end;  //  $string =  $string . $end;
+            $string .= $end; //  $string =  $string . $end;
         }
         return $string;
     }

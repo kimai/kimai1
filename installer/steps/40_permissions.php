@@ -1,7 +1,7 @@
 <?php 
 echo '<script type="text/javascript" charset="utf-8">current=40;</script>';
 
-if ($_REQUEST['lang']=="en") {
+if ($_REQUEST['lang'] == "en") {
     echo<<<EOD
     <h2>Write-permissions</h2>
     PHP must have permissions to write to the following files/folders:<br/><br/>

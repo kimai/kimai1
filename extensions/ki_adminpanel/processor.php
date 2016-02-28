@@ -35,7 +35,7 @@ switch ($axAction)
     $groupsWithAddPermission = array();
     foreach ($kga['user']['groups'] as $group) {
        $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
-       if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
+       if ($database->membership_role_allows($membershipRoleID, 'core-user-add'))
         $groupsWithAddPermission[$group] = $membershipRoleID;
     }
 
@@ -65,7 +65,7 @@ switch ($axAction)
                 // validate data
                 $errors = array();
 
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-add'))
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'core-status-add'))
                   $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		// create new status
@@ -83,7 +83,7 @@ switch ($axAction)
                 // validate data
                 $errors = array();
 
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-group-add'))
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-add'))
                   $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		// create new group
@@ -98,7 +98,7 @@ switch ($axAction)
 	case "refreshSubtab" :
 		// builds either user/group/advanced/DB subtab
 		$view->curr_user = $kga['user']['name'];
-		$groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups',0));
+		$groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
     $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
 		if ($viewOtherGroupsAllowed)
 			$view->groups = $groups;
@@ -106,16 +106,16 @@ switch ($axAction)
 			$view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
 
 		if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view'))
-			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0));
+			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
 		else
-			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users',0),$kga['user']['groups']);
+			$users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0), $kga['user']['groups']);
 
 			// get group names
 		foreach ($users as &$user) {
       $user['groups'] = array();
 
 			$groups = $database->getGroupMemberships($user['userID']);
-			if(is_array($groups)) {
+			if (is_array($groups)) {
 			foreach ($groups as $group) {
         if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false)
           continue;
@@ -147,8 +147,8 @@ switch ($axAction)
 				if ($kga['conf']['editLimit'] != '-') {
 					$view->editLimitEnabled = true;
 					$editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
-					$view->editLimitDays = (int) ($editLimit / 24);
-					$view->editLimitHours = (int) ($editLimit % 24);
+					$view->editLimitDays = (int)($editLimit / 24);
+					$view->editLimitHours = (int)($editLimit % 24);
 				}
 				else {
 					$view->editLimitEnabled = false;
@@ -317,7 +317,7 @@ switch ($axAction)
 
 	case "deleteStatus" :
                 $errors = array();
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-delete'))
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'core-status-delete'))
                   $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
 		if (count($errors) == 0) {
@@ -403,7 +403,7 @@ switch ($axAction)
 		$userData['mail'] = $_REQUEST['mail'];
 		$userData['alias'] = $_REQUEST['alias'];
                 $userData['globalRoleID'] = $_REQUEST['globalRoleID'];
-                $userData['rate'] = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+                $userData['rate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
 		// if password field is empty => password unchanged (not overwritten with "")
 		if ($_REQUEST['password'] != "") {
 			$userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
@@ -422,7 +422,7 @@ switch ($axAction)
 
 
                 if (!checkGroupedObjectPermission('user', 'edit', $oldGroups, $assignedGroups))
-                  $errorMessages[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errorMessages) == 0) {
                   $database->user_edit($id, $userData);
@@ -459,8 +459,8 @@ switch ($axAction)
 
                 $errors = array();
 
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'core-status-edit'))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'core-status-edit'))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                   $database->status_edit($id, $status_data);
@@ -474,8 +474,8 @@ switch ($axAction)
 
 	case "sendEditAdvanced" :
                 $errors = array();
-                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'],'adminPanel_extension-editAdvanced'))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced'))
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                   // process AdvancedOptions form
@@ -496,7 +496,7 @@ switch ($axAction)
                   $config_data['date_format_1'] = $_REQUEST['date_format_1'];
                   $config_data['date_format_2'] = $_REQUEST['date_format_2'];
                   $config_data['language'] = $_REQUEST['language'];
-                  if(isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
+                  if (isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
                           $config_data['status'] = implode(',', $_REQUEST['status']);
                   }
                   $config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
@@ -509,8 +509,8 @@ switch ($axAction)
                   $config_data['exactSums'] = isset($_REQUEST['exactSums']);
                   $editLimit = false;
                   if (isset($_REQUEST['editLimitEnabled'])) {
-                          $hours = (int) $_REQUEST['editLimitHours'];
-                          $days = (int) $_REQUEST['editLimitDays'];
+                          $hours = (int)$_REQUEST['editLimitHours'];
+                          $days = (int)$_REQUEST['editLimitDays'];
                           $editLimit = $hours + $days * 24;
                           $editLimit *= 60 * 60; // convert to seconds
                   }
@@ -552,10 +552,10 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 else if ($database->globalRole_find($role_data))
-                  $errors[] =  $kga['lang']['errorMessages']['sameGlobalRoleName'];
+                  $errors[] = $kga['lang']['errorMessages']['sameGlobalRoleName'];
 
                 if (count($errors) == 0) {
                   // create new status
@@ -573,10 +573,10 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if ($database->membershipRole_find($role_data))
-                  $errors[] =  $kga['lang']['errorMessages']['sameMembershipRoleName'];
+                  $errors[] = $kga['lang']['errorMessages']['sameMembershipRoleName'];
 
                 if (count($errors) == 0) {
                   // create new status
@@ -606,7 +606,7 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                   $database->global_role_edit($id, $roleData);
@@ -635,7 +635,7 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                   $database->membership_role_edit($id, $roleData);
@@ -650,7 +650,7 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                     $database->global_role_delete($id);
@@ -665,7 +665,7 @@ switch ($axAction)
                 $errors = array();
 
                 if (!isset($kga['user']))
-                  $errors[''] =  $kga['lang']['errorMessages']['permissionDenied'];
+                  $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
 
                 if (count($errors) == 0) {
                     $database->membership_role_delete($id);

@@ -18,7 +18,7 @@
  */
 
 // Include Basics
-include( '../../includes/basics.php' );
+include('../../includes/basics.php');
 
 $dir_templates = "templates/";
 $datasrc       = "config.ini";

@@ -30,15 +30,15 @@ ini_set('display_errors', '0');
 
 require_once APPLICATION_PATH . '/libraries/autoload.php';
 
-if (file_exists(WEBROOT.'includes/autoconf.php'))
-  require(WEBROOT.'includes/autoconf.php');
+if (file_exists(WEBROOT . 'includes/autoconf.php'))
+  require(WEBROOT . 'includes/autoconf.php');
 else {
   header('location:installer/index.php');
   exit;
 }
 
-require(WEBROOT.'includes/vars.php');
-require(WEBROOT.'includes/func.php');
+require(WEBROOT . 'includes/vars.php');
+require(WEBROOT . 'includes/func.php');
 
 // ==================================================================================
 // = check for additional database(s) and set $kga['server_database'] accordingly   =
@@ -46,7 +46,7 @@ require(WEBROOT.'includes/func.php');
 // = $server_ext_database array (for more info see /includes/vars.php)              =
 // ==================================================================================
 if (isset($_REQUEST['database'])) {
-    if ($_REQUEST['database']==true) {
+    if ($_REQUEST['database'] == true) {
 
         $dbnr = $_REQUEST['database'] - 1;
 
@@ -82,7 +82,7 @@ if (isset($_REQUEST['database'])) {
 }
 
 $database = new Kimai_Database_Mysql($kga);
-$database->connect($kga['server_hostname'],$kga['server_database'],$kga['server_username'],$kga['server_password'],$kga['utf8'],$kga['server_type'] );
+$database->connect($kga['server_hostname'], $kga['server_database'], $kga['server_username'], $kga['server_password'], $kga['utf8'], $kga['server_type']);
 if (!$database->isConnected()) { die('Kimai could not connect to database. Check your autoconf.php.'); }
 Kimai_Registry::setDatabase($database);
 
