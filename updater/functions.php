@@ -52,22 +52,11 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
     $conn = $database->getConnectionHandler();
 
     $executed_queries++;
-
-    if ($kga['server_conn'] == "pdo") {
-        $pdo_query = $conn->prepare($query);
-        $success = $pdo_query->execute(array());
-    } else {
-        $success = $conn->Query($query);
-    }
+    $success = $conn->Query($query);
 
     Kimai_Logger::logfile($query);
 
-    if ($kga['server_conn'] == "pdo") {
-        $err = $pdo_query->errorInfo();
-        $err = serialize($err);
-    } else {
-        $err = $conn->Error();
-    }
+    $err = $conn->Error();
 
     $query = htmlspecialchars($query);
     $displayQuery = htmlspecialchars($displayQuery);
@@ -86,20 +75,15 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
     printLine($level, ($displayQuery == null ? $query : $displayQuery), $err);
 
     if (!$success) {
-        Kimai_Logger::logfile("An error has occured in query: $query");
-
-        if ($kga['server_conn'] == "pdo") {
-            $err = $pdo_query->errorInfo();
-            $err = serialize($err);
-        } else {
-            $err = $conn->Error();
-        }
-
-        Kimai_Logger::logfile("Error text: $err");
+        Kimai_Logger::logfile("An error has occured in query [$query]: " . $conn->Error());
     }
-
 }
 
+/**
+ * @param $level
+ * @param $text
+ * @param string $errorInfo
+ */
 function printLine($level, $text, $errorInfo = '')
 {
     echo "<tr>";
@@ -122,13 +106,12 @@ function printLine($level, $text, $errorInfo = '')
     echo "</tr>";
 }
 
+/**
+ * @param $input
+ * @return string
+ */
 function quoteForSql($input)
 {
-    global $kga, $database;
-
-    if ($kga['server_conn'] == "pdo") {
-        return $database->getConnectionHandler()->quote($input);
-    } else {
-        return "'" . $database->getConnectionHandler()->SQLFix($input) . "'";
-    }
+    global $database;
+    return "'" . $database->getConnectionHandler()->SQLFix($input) . "'";
 }
