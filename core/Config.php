@@ -1,6 +1,14 @@
 <?php
 class Config {
+
+	/**
+	 * @var Config
+	 */
 	private static $instance;
+
+	/**
+	 * @var array
+	 */
 	private static $config = array();
 
 	/**
@@ -9,11 +17,12 @@ class Config {
 	 * @return void
 	 */
 	private function __construct() {
-		// current dir might be in an extension or in core..
-                if (file_exists('../../config/config.ini'))
-                  $path = '../../config/config.ini';
-                else
-                  $path = '../config/config.ini';
+		// current dir might be in an extension or in core.
+		if (file_exists('../../config/config.ini')) {
+			$path = '../../config/config.ini';
+		} else {
+			$path = '../config/config.ini';
+		}
 		self::$config = parse_ini_file($path);
 	}
 
