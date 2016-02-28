@@ -110,9 +110,6 @@ if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
 require_once 'update_header.php';
 // ================================================================================
 
-$version_e = explode(".", $kga['version']);
-$versionDB_e = explode(".", $versionDB);
-
 $errors = 0;
 $executed_queries = 0;
 
@@ -165,17 +162,6 @@ if ((int)$revisionDB < $kga['revision']) {
     echo "</table><br /><br />";
     echo "<strong>" . $kga['lang']['updater'][70] . "</strong></br>";
     echo "<table style='width:100%'>";
-}
-
-if (((int)$versionDB_e[1] == 7 && (int)$versionDB_e[2] < 12)) {
-    Kimai_Logger::logfile("-- update to 0.7.12");
-    exec_query("ALTER TABLE `${p}evt` ADD `evt_visible` TINYINT NOT NULL DEFAULT '1'", 1);
-    exec_query("ALTER TABLE `${p}knd` ADD `knd_visible` TINYINT NOT NULL DEFAULT '1'", 1);
-    exec_query("ALTER TABLE `${p}pct` ADD `pct_visible` TINYINT NOT NULL DEFAULT '1'", 1);
-    exec_query("ALTER TABLE `${p}evt` ADD `evt_filter` TINYINT NOT NULL DEFAULT '0'", 1);
-    exec_query("ALTER TABLE `${p}knd` ADD `knd_filter` TINYINT NOT NULL DEFAULT '0'", 1);
-    exec_query("ALTER TABLE `${p}pct` ADD `pct_filter` TINYINT NOT NULL DEFAULT '0'", 1);
-    exec_query("INSERT INTO ${p}var (`var`, `value`) VALUES ('revision','0')", 1);
 }
 
 if ((int)$revisionDB < 96) {
