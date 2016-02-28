@@ -40,7 +40,7 @@ $out = $timeframe[1];
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
+$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
 $view->kga = $kga;
 
@@ -58,51 +58,51 @@ $view->dateformat = $dateformat;
 echo $view->render('panel.php');
 
 
-$view->timeformat = preg_replace('/([A-Za-z])/','%$1',$timeformat);
-$view->dateformat = preg_replace('/([A-Za-z])/','%$1',$dateformat);
+$view->timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
+$view->dateformat = preg_replace('/([A-Za-z])/', '%$1', $dateformat);
 
 // Get the total amount of time shown in the table.
 if (isset($kga['customer']))
-  $total = Kimai_Format::formatDuration($database->get_duration($in,$out,null,array($kga['customer']['customerID']),null));
+  $total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']), null));
 else
-  $total = Kimai_Format::formatDuration($database->get_duration($in,$out,array($kga['user']['userID']),null,null));
+  $total = Kimai_Format::formatDuration($database->get_duration($in, $out, array($kga['user']['userID']), null, null));
 
 if (isset($kga['customer']))
-  $view->exportData = export_get_data($in,$out,null,array($kga['customer']['customerID']));
+  $view->exportData = export_get_data($in, $out, null, array($kga['customer']['customerID']));
 else
-  $view->exportData = export_get_data($in,$out,array($kga['user']['userID']));
+  $view->exportData = export_get_data($in, $out, array($kga['user']['userID']));
 
 $view->total = $total;
 
 // Get the annotations for the user sub list.
 if (isset($kga['customer']))
-  $ann = export_get_user_annotations($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_user_annotations($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = export_get_user_annotations($in,$out,array($kga['user']['userID']));
+  $ann = export_get_user_annotations($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
 $view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
-  $ann = export_get_customer_annotations($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_customer_annotations($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = export_get_customer_annotations($in,$out,array($kga['user']['userID']));
+  $ann = export_get_customer_annotations($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
 $view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
-  $ann = export_get_project_annotations($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_project_annotations($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = export_get_project_annotations($in,$out,array($kga['user']['userID']));
+  $ann = export_get_project_annotations($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
 $view->project_annotations = $ann;
 
 // Get the annotations for the activity sub list.
 if (isset($kga['customer']))
-  $ann = export_get_activity_annotations($in,$out,null,array($kga['customer']['customerID']));
+  $ann = export_get_activity_annotations($in, $out, null, array($kga['customer']['customerID']));
 else
-  $ann = export_get_activity_annotations($in,$out,array($kga['user']['userID']));
+  $ann = export_get_activity_annotations($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
 $view->activity_annotations = $ann;
 

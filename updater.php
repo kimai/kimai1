@@ -493,7 +493,7 @@ if ((int)$revisionDB < $kga['revision']) {
      */
     Kimai_Logger::logfile("-- begin backup -----------------------------------");
 
-    $backup_stamp = time();    // as an individual backup label the timestamp should be enough for now...
+    $backup_stamp = time(); // as an individual backup label the timestamp should be enough for now...
     // by using this type of label we can also exactly identify when it was done
     // may be shown by a recovering script in human-readable format
 
@@ -1901,7 +1901,7 @@ EOD;
                 ?>
                 <br/><br/>
                 <script type="text/javascript">
-                    $("#important_message").append("<?php echo $kga['lang']['updater'][120];?> <br/>");
+                    $("#important_message").append("<?php echo $kga['lang']['updater'][120]; ?> <br/>");
                     $("#important_message").show();
                 </script>
                 <div class="important_block_head"> <?php echo $kga['lang']['updater'][110]; ?>:</div>

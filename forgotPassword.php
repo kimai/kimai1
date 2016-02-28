@@ -31,7 +31,7 @@ if (!isset($_REQUEST['name']) || is_array($_REQUEST['name'])) {
 }
 
 if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
-    $key = "nokey";  // will never match since hash values are either NULL or 32 characters
+    $key = "nokey"; // will never match since hash values are either NULL or 32 characters
 } else { 
     $key = $_REQUEST['key'];
 }
@@ -69,15 +69,15 @@ else {
   $keyCorrect = $key === $user['passwordResetHash'];
 }
 
-switch($_REQUEST['a'])
+switch ($_REQUEST['a'])
 {
     case "request":
-        Kimai_Logger::logfile("password reset: " . $name. ($is_customer?" as customer":" as user"));
+        Kimai_Logger::logfile("password reset: " . $name . ($is_customer ? " as customer" : " as user"));
     break;
 
     // Show password reset page
     default:
-      $view->devtimespan = '2006-'.date('y');
+      $view->devtimespan = '2006-' . date('y');
       $view->keyCorrect = $keyCorrect;
       $view->requestData = array(
         'key' => $key,

@@ -232,7 +232,7 @@ class Kimai_Remote_Api
 	 * @return array
 	 */
 	protected function getSuccessResult(Array $items, $total = 0) {
-		if(empty($total)) {
+		if (empty($total)) {
 			$total = count($items);
 		}
 		
@@ -255,7 +255,7 @@ class Kimai_Remote_Api
         }
 		
 		// check for valid params
-		if(!$this->getBackend()->isValidProjectId($projectId) || 
+		if (!$this->getBackend()->isValidProjectId($projectId) || 
 			!$this->getBackend()->isValidActivityId($activityId))
 		{
 			return $this->getErrorResult("Invalid project or task");
@@ -271,7 +271,7 @@ class Kimai_Remote_Api
         */
 
         $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, time());
-		if($result) {
+		if ($result) {
 			return $this->getSuccessResult(array());
 		} else {
 			return $this->getErrorResult("Unable to start, invalid params?");
@@ -293,7 +293,7 @@ class Kimai_Remote_Api
         }
 
         $result = $this->getBackend()->stopRecorder($entryId);
-		if($result) {
+		if ($result) {
 			return $this->getSuccessResult(array());
 		} else {
 			return $this->getErrorResult("Unable to stop, not recording?");
@@ -360,7 +360,7 @@ class Kimai_Remote_Api
         if (count($customers) > 0) {
 			$results = array();
 			foreach ($customers as $row) {
-				$results[] = array('customerID' => $row['customerID'], 'name' => $row['name'],  'visible' => $row['visible']);
+				$results[] = array('customerID' => $row['customerID'], 'name' => $row['name'], 'visible' => $row['visible']);
 			}
 			return $this->getSuccessResult($results);
         }
@@ -394,7 +394,7 @@ class Kimai_Remote_Api
         if (count($projects) > 0) {
             if ($includeTasks) {
                 $tempProjects = array();
-                foreach($projects as $project) {
+                foreach ($projects as $project) {
                     $project['tasks'] = $this->getTasksByProjectId($project['projectID'], $user);
                     $tempProjects[] = $project;
                 }
@@ -504,7 +504,7 @@ class Kimai_Remote_Api
         // do not expose all values, but only the public visible ones
         $keys    = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration');
         $current = array();
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
 			if (array_key_exists($key, $result)) {
 				$current[$key] = $result[$key];
 			}
@@ -513,7 +513,7 @@ class Kimai_Remote_Api
 		 * add current server time
 		 * this is needed to synchronize time on any extern api calls
 		 */
-		$current['servertime'] =  time();
+		$current['servertime'] = time();
 		/**
 		 * add customerId & Name
 		 */
@@ -584,7 +584,7 @@ class Kimai_Remote_Api
 		
 		$id = (int)$id;
 		// valid id?
-		if(empty($id)) {
+		if (empty($id)) {
 			return $this->getErrorResult('Invalid ID');
 		}
 		
@@ -592,7 +592,7 @@ class Kimai_Remote_Api
 		$timeSheetEntry = $backend->timeSheet_get_data($id);
 		
 		// valid entry?
-		if(!empty($timeSheetEntry)) {
+		if (!empty($timeSheetEntry)) {
 			return $this->getSuccessResult(array($timeSheetEntry));
 		}
 		
@@ -612,7 +612,7 @@ class Kimai_Remote_Api
         }
 		
 		// valid $record?
-		if(empty($record)) {
+		if (empty($record)) {
 			return $this->getErrorResult('Invalid record');
 		}
 		
@@ -622,12 +622,12 @@ class Kimai_Remote_Api
 		
 		// check for project
 		$record['projectId'] = (int)$record['projectId'];
-		if(empty($record['projectId'])) {
+		if (empty($record['projectId'])) {
 			return $this->getErrorResult('Invalid projectId.');
 		}
 		//check for task
 		$record['taskId'] = (int)$record['taskId'];
-		if(empty($record['taskId'])) {
+		if (empty($record['taskId'])) {
 			return $this->getErrorResult('Invalid taskId.');
 		}
 		
@@ -636,7 +636,7 @@ class Kimai_Remote_Api
 		$out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 		
 		// make sure the timestamp is not negative
-		if($in <= 0 || $out <= 0 || $out-$in <= 0) {
+		if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
 			return $this->getErrorResult('Invalid from/to, make sure there is at least a second difference.');
 		}
 		
@@ -649,57 +649,57 @@ class Kimai_Remote_Api
 		$data['activityID'] = $record['taskId'];
 		$data['start'] = $in;
 		$data['end'] = $out;
-		$data['duration'] = $out-$in;
+		$data['duration'] = $out - $in;
 		
 		
 		/**
 		 * optional
 		 */
-		if(isset($record['location'])) {
+		if (isset($record['location'])) {
 			$data['location'] = $record['location'];
 		}
 		
-		if(isset($record['trackingNumber'])) {
-			$data['trackingNumber']     = $record['trackingNumber'];
+		if (isset($record['trackingNumber'])) {
+			$data['trackingNumber'] = $record['trackingNumber'];
 		}
-		if(isset($record['description'])) {
+		if (isset($record['description'])) {
 			$data['description']    = $record['description'];
 		}
-		if(isset($record['comment'])) {
+		if (isset($record['comment'])) {
 			$data['comment']        = $record['comment'];
 		}
-		if(isset($record['commentType'])) {
-			$data['commentType']   = (int)$record['commentType'];
+		if (isset($record['commentType'])) {
+			$data['commentType'] = (int)$record['commentType'];
 		}
-		if(isset($record['rate'])) {
+		if (isset($record['rate'])) {
 			$data['rate'] = (double)$record['rate'];
 		}
 		else {
-			$data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'],$data['activityID']);
+			$data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'], $data['activityID']);
 		}
-		if(isset($record['fixedRate'])) {
+		if (isset($record['fixedRate'])) {
 			$data['fixedRate'] = (double)$record['fixedRate'];
 		}
-		if(isset($record['flagCleared'])) {
+		if (isset($record['flagCleared'])) {
 			$data['cleared'] = (int)$record['flagCleared'];
 		}
-		if(isset($record['statusId'])) {
+		if (isset($record['statusId'])) {
 			$data['statusID'] = (int)$record['statusId'];
 		}
-		if(isset($record['flagBillable'])) {
+		if (isset($record['flagBillable'])) {
 			$data['billable'] = (int)$record['flagBillable'];
 		}
-		if(isset($record['budget'])) {
+		if (isset($record['budget'])) {
 			$data['budget'] = (double)$record['budget'];
 		}
-		if(isset($record['approved'])) {
+		if (isset($record['approved'])) {
 			$data['approved'] = (double)$record['approved'];
 		}
 		
 		
-		if($doUpdate) {
+		if ($doUpdate) {
 			$id = isset($record['id']) ? (int)$record['id'] : 0;
-			if(!empty($id)) {
+			if (!empty($id)) {
 				$backend->timeEntry_edit($id, $data);
 				return $this->getSuccessResult(array());
 			} else {
@@ -707,7 +707,7 @@ class Kimai_Remote_Api
 			}
 		} else {
 			$id = $backend->timeEntry_create($data);
-			if(!empty($id)) {
+			if (!empty($id)) {
 				return $this->getSuccessResult(array(array('id' => $id)));
 			} else {
 				return $this->getErrorResult('Failed to add entry.');
@@ -731,14 +731,14 @@ class Kimai_Remote_Api
 		$id = (int)$id;
 		$result = $this->getErrorResult('Invalid ID');
 		// valid id?
-		if(empty($id)) {
+		if (empty($id)) {
 			return $result;
 		}
 		
 		$backend = $this->getBackend();
 		$kga = $this->getKimaiEnv();
 		
-		if($backend->timeEntry_delete($id)) {
+		if ($backend->timeEntry_delete($id)) {
 			$result = $this->getSuccessResult(array());
 		}
 		return $result;	
@@ -794,7 +794,7 @@ class Kimai_Remote_Api
 		
 		$id = (int)$id;
 		// valid id?
-		if(empty($id)) {
+		if (empty($id)) {
 			return $this->getErrorResult('Invalid ID');
 		}
 		
@@ -802,7 +802,7 @@ class Kimai_Remote_Api
 		$expense = $backend->get_expense($id);
 		
 		// valid entry?
-		if(!empty($expense)) {
+		if (!empty($expense)) {
 			return $this->getSuccessResult(array($expense));
 		}
 		
@@ -821,7 +821,7 @@ class Kimai_Remote_Api
         }
 		
 		// valid $record?
-		if(empty($record)) {
+		if (empty($record)) {
 			return $this->getErrorResult('Invalid record');
 		}
 		
@@ -831,7 +831,7 @@ class Kimai_Remote_Api
 		
 		// check for project
 		$record['projectId'] = (int)$record['projectId'];
-		if(empty($record['projectId'])) {
+		if (empty($record['projectId'])) {
 			return $this->getErrorResult('Invalid projectId.');
 		}
 		
@@ -839,7 +839,7 @@ class Kimai_Remote_Api
 		$timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 		
 		// make sure the timestamp is not negative
-		if($timestamp <= 0 ) {
+		if ($timestamp <= 0) {
 			return $this->getErrorResult('Invalid date, make sure there is a valid date property.');
 		}
 		
@@ -855,32 +855,32 @@ class Kimai_Remote_Api
 		/**
 		 * optional
 		 */
-		if(isset($record['designation'])) {
+		if (isset($record['designation'])) {
 	    	$data['designation'] = $record['designation'];
 		}
-		if(isset($record['comment'])) {
+		if (isset($record['comment'])) {
 	    	$data['comment'] = $record['comment'];
 		}
-		if(isset($record['commentType'])) {
+		if (isset($record['commentType'])) {
 	    	$data['commentType'] = (int)$record['commentType'];
 		}
-		if(isset($record['refundable'])) {
+		if (isset($record['refundable'])) {
 	    	$data['refundable'] = (int)$record['refundable'];
 		}
-		if(isset($record['cleared'])) {
+		if (isset($record['cleared'])) {
 	    	$data['cleared'] = (int)$record['cleared'];
 		}
-		if(isset($record['multiplier'])) {
+		if (isset($record['multiplier'])) {
 	    	$data['multiplier'] = (double)$record['multiplier'];
 		}
-		if(isset($record['value'])) {
+		if (isset($record['value'])) {
 	    	$data['value'] = (double)$record['value'];
 		}
 		
 		
-		if($doUpdate) {
+		if ($doUpdate) {
 			$id = isset($record['id']) ? (int)$record['id'] : 0;
-			if(!empty($id)) {
+			if (!empty($id)) {
 				$backend->expense_edit($id, $data);
 				return $this->getSuccessResult(array());
 			} else {
@@ -888,7 +888,7 @@ class Kimai_Remote_Api
 			}
 		} else {
 			$id = $backend->expense_create($data);
-			if(!empty($id)) {
+			if (!empty($id)) {
 				return $this->getSuccessResult(array(array('id' => $id)));
 			} else {
 				return $this->getErrorResult('Failed to add entry.');
@@ -912,14 +912,14 @@ class Kimai_Remote_Api
 		$id = (int)$id;
 		$result = $this->getErrorResult('Invalid ID');
 		// valid id?
-		if(empty($id)) {
+		if (empty($id)) {
 			return $result;
 		}
 		
 		$backend = $this->getBackend();
 		$kga = $this->getKimaiEnv();
 		
-		if($backend->expense_delete($id)) {
+		if ($backend->expense_delete($id)) {
 			$result = $this->getSuccessResult(array());
 		}
 		return $result;	

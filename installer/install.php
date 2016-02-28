@@ -37,7 +37,7 @@ function exec_query($query) {
     //Kimai_Logger::logfile($query);
     if (!$success) {
         $errorInfo = serialize($conn->Error());
-        Kimai_Logger::logfile('[ERROR] in ['.$query.'] => ' . $errorInfo);
+        Kimai_Logger::logfile('[ERROR] in [' . $query . '] => ' . $errorInfo);
         $errors = true;
     }
 }
@@ -46,7 +46,7 @@ function quoteForSql($input) {
     global $database;
 
     $conn = $database->getConnectionHandler();
-    return "'".$conn->SQLFix($input)."'";
+    return "'" . $conn->SQLFix($input) . "'";
 }
 
 if (!isset($_REQUEST['accept'])) {
@@ -102,7 +102,7 @@ $query = "CREATE TABLE `${p}preferences` (
 );";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}activities` (
   `activityID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
@@ -113,7 +113,7 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}groups` (
   `groupID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
@@ -121,7 +121,7 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}groups_users` (
   `groupID` int(10) NOT NULL,
   `userID` int(10) NOT NULL,
@@ -131,28 +131,28 @@ $query=
 exec_query($query);
 
 // group/customer cross-table (groups n:m customers)
-$query="CREATE TABLE `${p}groups_customers` (
+$query = "CREATE TABLE `${p}groups_customers` (
   `groupID` INT NOT NULL,
   `customerID` INT NOT NULL,
   UNIQUE (`groupID` ,`customerID`));";
 exec_query($query);
 
 // group/project cross-table (groups n:m projects)
-$query="CREATE TABLE `${p}groups_projects` (
+$query = "CREATE TABLE `${p}groups_projects` (
   `groupID` INT NOT NULL,
   `projectID` INT NOT NULL,
   UNIQUE (`groupID` ,`projectID`));";
 exec_query($query);
 
 // group/event cross-table (groups n:m events)
-$query="CREATE TABLE `${p}groups_activities` (
+$query = "CREATE TABLE `${p}groups_activities` (
   `groupID` INT NOT NULL,
   `activityID` INT NOT NULL,
   UNIQUE (`groupID` ,`activityID`)) ;";
 exec_query($query);
 
 // project/event cross-table (projects n:m events)
-$query="CREATE TABLE `${p}projects_activities` (
+$query = "CREATE TABLE `${p}projects_activities` (
   `projectID` INT NOT NULL,
   `activityID` INT NOT NULL,
   `budget` DECIMAL( 10, 2 ) NULL DEFAULT '0.00',
@@ -161,7 +161,7 @@ $query="CREATE TABLE `${p}projects_activities` (
   UNIQUE (`projectID` ,`activityID`)) ;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}customers` (
   `customerID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
@@ -187,7 +187,7 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}projects` (
   `projectID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `customerID` int(3) NOT NULL,
@@ -204,7 +204,7 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}timeSheet` (
   `timeEntryID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `start` int(10) NOT NULL default '0',
@@ -231,7 +231,7 @@ $query=
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}configuration` (
   `option` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
@@ -239,7 +239,7 @@ $query=
 );";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}rates` (
   `userID` int(10) DEFAULT NULL,
   `projectID` int(10) DEFAULT NULL,
@@ -249,7 +249,7 @@ $query=
 );";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}fixedRates` (
   `projectID` int(10) DEFAULT NULL,
   `activityID` int(10) DEFAULT NULL,
@@ -258,7 +258,7 @@ $query=
 );";
 exec_query($query);
 
-$query=
+$query =
 "CREATE TABLE `${p}expenses` (
   `expenseID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `timestamp` int(10) NOT NULL DEFAULT '0',
@@ -295,76 +295,76 @@ foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
 
 // GROUPS
-$defaultGroup=$kga['lang']['defaultGroup'];
-$query="INSERT INTO `${p}groups` (`name`) VALUES ('admin');";
+$defaultGroup = $kga['lang']['defaultGroup'];
+$query = "INSERT INTO `${p}groups` (`name`) VALUES ('admin');";
 exec_query($query);
 
 
 
 // MISC
-$query="INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '".$kga['lang']['testActivity']."', '');";
+$query = "INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '" . $kga['lang']['testActivity'] . "', '');";
 exec_query($query);
 
-$query="INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `vat`, `contact`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `timezone`) VALUES (1, '".$kga['lang']['testCustomer']."', '', '', '', '', '', '', '', '', '', '', '','',".quoteForSql($_REQUEST['timezone']).");";
+$query = "INSERT INTO `${p}customers` (`customerID`, `name`, `comment`, `company`, `vat`, `contact`, `street`, `zipcode`, `city`, `phone`, `fax`, `mobile`, `mail`, `homepage`, `timezone`) VALUES (1, '" . $kga['lang']['testCustomer'] . "', '', '', '', '', '', '', '', '', '', '', '',''," . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 
-$query="INSERT INTO `${p}projects` (`projectID`, `customerID`, `name`, `comment`) VALUES (1, 1, '".$kga['lang']['testProject']."', '');";
+$query = "INSERT INTO `${p}projects` (`projectID`, `customerID`, `name`, `comment`) VALUES (1, 1, '" . $kga['lang']['testProject'] . "', '');";
 exec_query($query);
 
 
 // ADMIN USER
-$adminPassword =  md5($kga['password_salt'].'changeme'.$kga['password_salt']);
-$query="INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@example.com','$adminPassword',1);";
+$adminPassword = md5($kga['password_salt'] . 'changeme' . $kga['password_salt']);
+$query = "INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@example.com','$adminPassword',1);";
 exec_query($query);
 
-$query="INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
+$query = "INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
 ('$randomAdminID','ui.rowlimit','100'),
 ('$randomAdminID','ui.skin','standard'),
 ('$randomAdminID','ui.showCommentsByDefault','0'),
 ('$randomAdminID','ui.hideOverlapLines','1'),
 ('$randomAdminID','ui.showTrackingNumber','1'),
-('$randomAdminID','timezone',".quoteForSql($_REQUEST['timezone']).");";
+('$randomAdminID','timezone'," . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 
 
 // CROSS TABLES
-$query="INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES ('1','$randomAdminID','1');";
+$query = "INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES ('1','$randomAdminID','1');";
 exec_query($query);
 
-$query="INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
+$query = "INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
 exec_query($query);
 
-$query="INSERT INTO `${p}groups_customers` (`groupID`, `customerID`) VALUES (1, 1);";
+$query = "INSERT INTO `${p}groups_customers` (`groupID`, `customerID`) VALUES (1, 1);";
 exec_query($query);
 
-$query="INSERT INTO `${p}groups_projects` (`groupID`, `projectID`) VALUES (1, 1);";
+$query = "INSERT INTO `${p}groups_projects` (`groupID`, `projectID`) VALUES (1, 1);";
 exec_query($query);
 
 
 
 // VARS
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('version', '" . $kga['version'] . "');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('version', '" . $kga['version'] . "');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('login', '1');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('login', '1');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('kimail', 'kimai@example.com');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('kimail', 'kimai@example.com');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@example.com');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@example.com');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginTries', '3');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginTries', '3');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginBanTime', '900');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginBanTime', '900');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('lastdbbackup', '0');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('lastdbbackup', '0');";
 exec_query($query);
 
-$query="INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
+$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
 exec_query($query);
 
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('currency_name','Euro')");

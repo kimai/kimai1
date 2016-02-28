@@ -50,7 +50,7 @@ if ($isCoreProcessor) {
 } else {
   $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
-$view->addHelperPath(WEBROOT.'/templates/helpers','Zend_View_Helper');
+$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
 
 // ============================================================================================
@@ -60,12 +60,12 @@ $user = checkUser();
 
 $view->kga = $kga;
 
-$commentTypes   = array($kga['lang']['ctype0'],$kga['lang']['ctype1'],$kga['lang']['ctype2']);
+$commentTypes = array($kga['lang']['ctype0'], $kga['lang']['ctype1'], $kga['lang']['ctype2']);
 
 // ==================
 // = security check =
 // ==================
-if ( isset($_REQUEST['axAction']) && !is_array($_REQUEST['axAction']) && $_REQUEST['axAction']!="") {
+if (isset($_REQUEST['axAction']) && !is_array($_REQUEST['axAction']) && $_REQUEST['axAction'] != "") {
   $axAction = strip_tags($_REQUEST['axAction']);
 } else {
   $axAction = '';
@@ -85,10 +85,10 @@ $out = $timeframe[1];
 if (isset($_REQUEST['first_day']))
   $in  = (int)$_REQUEST['first_day'];
 if (isset($_REQUEST['last_day']))
-  $out = mktime(23,59,59,date("n",$_REQUEST['last_day']),date("j",$_REQUEST['last_day']),date("Y",$_REQUEST['last_day']));
+  $out = mktime(23, 59, 59, date("n", $_REQUEST['last_day']), date("j", $_REQUEST['last_day']), date("Y", $_REQUEST['last_day']));
 
 if ($axAction != "reloadLogfile") {
-    Kimai_Logger::logfile("KSPI axAction (".(array_key_exists('customer',$kga)?$kga['customer']['name']:$kga['user']['name'])."): " . $axAction);
+    Kimai_Logger::logfile("KSPI axAction (" . (array_key_exists('customer', $kga) ? $kga['customer']['name'] : $kga['user']['name']) . "): " . $axAction);
 }
 
 // prevent IE from caching the response

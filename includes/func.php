@@ -75,7 +75,7 @@ function timezoneList() {
  * @return array
  * @author th, sl, kp
  */
-function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false){
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false) {
 
     global $kga, $database;
 
@@ -89,12 +89,12 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
                     if ($kga['conf']['flip_project_display']) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
                         if ($kga['conf']['project_comment_flag']) {
-                            $projectName .= "(" . $project['comment'] .")" ;
+                            $projectName .= "(" . $project['comment'] . ")";
                         }
                     } else {
                         $projectName = $project['name'] . " (" . $project['customerName'] . ")";
                         if ($kga['conf']['project_comment_flag']) {
-                            $projectName .=  "(" . $project['comment'] .")";
+                            $projectName .= "(" . $project['comment'] . ")";
                         }
                     }
                     $sel[$project['projectID']] = $projectName;
@@ -114,7 +114,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
         case 'customer':
             $customers = $database->get_customers($groups);
             $selectionFound = false;
-            if(is_array($customers)) {
+            if (is_array($customers)) {
 	            foreach ($customers as $customer) {
 	                if ($customer['visible']) {
 	                    $sel[$customer['customerID']] = $customer['name'];
@@ -142,7 +142,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             break;
 
         case 'sameGroupUser':
-            $users = $database->get_users(0,$database->getGroupMemberships($kga['user']['userID']));
+            $users = $database->get_users(0, $database->getGroupMemberships($kga['user']['userID']));
 
             foreach ($users as $user) {
               if ($includeDeleted || !$user['trash']) {
@@ -180,10 +180,10 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
  */
 function random_code($length) {
     $code = "";
-    $string="ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
-    mt_srand((double)microtime()*1000000);
-    for ($i=1; $i <= $length; $i++) {
-        $code .= substr($string, mt_rand(0,strlen($string)-1), 1);
+    $string = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
+    mt_srand((double)microtime() * 1000000);
+    for ($i = 1; $i <= $length; $i++) {
+        $code .= substr($string, mt_rand(0, strlen($string) - 1), 1);
     }
     return $code;
 }
@@ -198,10 +198,10 @@ function random_code($length) {
  */
 function random_number($length) {
     $number = "";
-    $string="0123456789";
-    mt_srand((double)microtime()*1000000);
-    for ($i=1; $i <= $length; $i++) {
-        $number .= substr($string, mt_rand(0,strlen($string)-1), 1);
+    $string = "0123456789";
+    mt_srand((double)microtime() * 1000000);
+    for ($i = 1; $i <= $length; $i++) {
+        $number .= substr($string, mt_rand(0, strlen($string) - 1), 1);
     }
     return $number;
 }
@@ -235,26 +235,26 @@ function checkDBversion($path) {
     }
 
     // the check for revision is much simpler ...
-    if ( (int)$installedVersion[1] < (int)$kga['revision']) {
+    if ((int)$installedVersion[1] < (int)$kga['revision']) {
         header("Location: $path/updater.php");
         exit;
     }
 }
 
-function convert_time_strings($in,$out) {
+function convert_time_strings($in, $out) {
 
-    $explode_in  = explode("-",$in);
-    $explode_out = explode("-",$out);
+    $explode_in  = explode("-", $in);
+    $explode_out = explode("-", $out);
 
-    $date_in  = explode(".",$explode_in[0]);
-    $date_out = explode(".",$explode_out[0]);
+    $date_in  = explode(".", $explode_in[0]);
+    $date_out = explode(".", $explode_out[0]);
 
-    $time_in  = explode(":",$explode_in[1]);
-    $time_out = explode(":",$explode_out[1]);
+    $time_in  = explode(":", $explode_in[1]);
+    $time_out = explode(":", $explode_out[1]);
 
     $time['in']   = mktime($time_in[0], $time_in[1], $time_in[2], $date_in[1], $date_in[0], $date_in[2]);
-    $time['out']  = mktime($time_out[0],$time_out[1],$time_out[2],$date_out[1],$date_out[0],$date_out[2]);
-    $time['diff'] = (int)$time['out']-(int)$time['in'];
+    $time['out']  = mktime($time_out[0], $time_out[1], $time_out[2], $date_out[1], $date_out[0], $date_out[2]);
+    $time['diff'] = (int)$time['out'] - (int)$time['in'];
 
     return $time;
 }
@@ -268,7 +268,7 @@ function convert_time_strings($in,$out) {
  *
  * @author rvock
  */
-function get_cookie($cookie_name, $default=null) {
+function get_cookie($cookie_name, $default = null) {
     return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
 }
 
@@ -278,13 +278,13 @@ function createPassword($length) {
         $i = 0;
         $password = "";
         while ($i <= $length) {
-                $password .= $chars{mt_rand(0,strlen($chars)-1)};
+                $password .= $chars{mt_rand(0, strlen($chars) - 1)};
                 $i++;
         }
         return $password;
 }
 
-function write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone = null)
+function write_config_file($database, $hostname, $username, $password, $db_layer, $db_type, $prefix, $lang, $salt, $timezone = null)
 {
     global $kga;
     $database = addcslashes($database, '"$');
@@ -292,7 +292,7 @@ function write_config_file($database,$hostname,$username,$password,$db_layer,$db
     $username = addcslashes($username, '"$');
     $password = addcslashes($password, '"$');
 
-    $file=fopen(realpath(dirname(__FILE__)).'/autoconf.php','w');
+    $file = fopen(realpath(dirname(__FILE__)) . '/autoconf.php', 'w');
     if (!$file) {
         return false;
     }
@@ -311,7 +311,7 @@ function write_config_file($database,$hostname,$username,$password,$db_layer,$db
     $skin = !empty($kga['skin']) ? $kga['skin'] : 'standard';
     $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : 'array(0,50,100)';
 
-$config=<<<EOD
+$config = <<<EOD
 <?php
 /**
  * This file is part of
@@ -369,7 +369,7 @@ EOD;
 function get_timeframe() {
     global $kga;
 
-    $timeframe = array(null,null);
+    $timeframe = array(null, null);
     
     if (isset($kga['user'])) {
 
@@ -432,7 +432,7 @@ function getRequestBool($name)
 function getRequestDecimal($value) {
     global $kga;
     if (trim($value) != '') {
-        return (double) str_replace($kga['conf']['decimalSeparator'], '.', $value);
+        return (double)str_replace($kga['conf']['decimalSeparator'], '.', $value);
     }
     return NULL;
 }
@@ -455,8 +455,8 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 
   if (!isset($kga['user'])) return false;
 
-  $assignedOwnGroups   = array_intersect($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
-  $assignedOtherGroups = array_diff     ($oldGroups,$database->getGroupMemberships($kga['user']['userID']));
+  $assignedOwnGroups   = array_intersect($oldGroups, $database->getGroupMemberships($kga['user']['userID']));
+  $assignedOtherGroups = array_diff($oldGroups, $database->getGroupMemberships($kga['user']['userID']));
 
   if (count($assignedOtherGroups) > 0) {
     $permissionName = "core-${objectTypeName}-otherGroup-${action}";
@@ -468,22 +468,22 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 
   if (count($assignedOwnGroups) > 0) {
     $permissionName = "core-${objectTypeName}-${action}";
-    if (!$database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
+    if (!$database->checkMembershipPermission($kga['user']['userID'], $assignedOwnGroups, $permissionName)) {
       Kimai_Logger::logfile("missing membership permission $permissionName of current own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
       return false;
     }
   }
 
-  if (count($oldGroups) != array_intersect($oldGroups,$newGroups)) {
+  if (count($oldGroups) != array_intersect($oldGroups, $newGroups)) {
     // group assignment has changed
 
       $addToGroups = array_diff($newGroups, $oldGroups);
       $removeFromGroups = array_diff($oldGroups, $newGroups);
 
-      $addToOtherGroups = array_diff     ($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $addToOwnGroups   = array_intersect($addToGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $removeFromOtherGroups = array_diff     ($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
-      $removeFromOwnGroups   = array_intersect($removeFromGroups,$database->getGroupMemberships($kga['user']['userID']));
+      $addToOtherGroups = array_diff($addToGroups, $database->getGroupMemberships($kga['user']['userID']));
+      $addToOwnGroups   = array_intersect($addToGroups, $database->getGroupMemberships($kga['user']['userID']));
+      $removeFromOtherGroups = array_diff($removeFromGroups, $database->getGroupMemberships($kga['user']['userID']));
+      $removeFromOwnGroups   = array_intersect($removeFromGroups, $database->getGroupMemberships($kga['user']['userID']));
 
       $action = 'assign';
       if (count($addToOtherGroups) > 0) {
@@ -496,7 +496,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 
       if (count($addToOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
-        if (!$database->checkMembershipPermission($kga['user']['userID'],$addToOwnGroups, $permissionName)) {
+        if (!$database->checkMembershipPermission($kga['user']['userID'], $addToOwnGroups, $permissionName)) {
           Kimai_Logger::logfile("missing membership permission $permissionName of new own group(s) " . implode(", ", $addToOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
@@ -513,7 +513,7 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 
       if (count($removeFromOwnGroups) > 0) {
         $permissionName = "core-${objectTypeName}-${action}";
-        if (!$database->checkMembershipPermission($kga['user']['userID'],$removeFromOwnGroups, $permissionName)) {
+        if (!$database->checkMembershipPermission($kga['user']['userID'], $removeFromOwnGroups, $permissionName)) {
           Kimai_Logger::logfile("missing membership permission $permissionName of old own group(s) " . implode(", ", $removeFromOwnGroups) . " for user " . $kga['user']['name'] . " to access $objectTypeName");
           return false;
         }
@@ -542,7 +542,7 @@ function coreObjectActionAllowed($objectTypeName, $action) {
   if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action"))
    return true;
 
-  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'],"core-$objectTypeName-$action",'any'))
+  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'], "core-$objectTypeName-$action", 'any'))
     return true;
 
   return false;
