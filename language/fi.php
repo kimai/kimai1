@@ -284,46 +284,18 @@ return array(
 
     'StartTimeBeforeEndTime' => 'Aloitusajankohdan on oltava ennen päättymisajankohtaa.',
 
-
-    'credits' => <<<EOF
-        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow ja muut...<br />
-        
-        <br />
-        
-        <strong>Tämä ohjelma on avoin sovellus ja julkaistu "SELLAISENAAN" ilman mitään varoituksia </strong> ja lisenssillä
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+    'credits' => <<<'EOD'
+	    Mikäli haluat tehdä mitään muutoksia, toivoisimme että lähettäisit viestisi (englanniksi) projektin <a href="%1$s">keskusteluun</a>.
+	    Viimeisin GIT-versio tuotteesta haettavissa <a href="%2$s">täältä</a> (testaa ensin!).
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Virallinen kotisivu</a> | 
-        <a href='http://forum.kimai.org/' target='_blank'>Keskustelualue</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge projektisivu</a> | 
-        <a href='http://sourceforge.net/projects/kimai/develop' target='_blank'>Subversion projektisivu</a> |
-        <a href='http://www.kimai.org/en/download.html' target='_blank'>Lataa</a>
-        
-        <br /><br />
-
-	Mikäli haluat tehdä mitään muutoksia, toivoisimme että lähettäisit viestisi (englanniksi) projektin <a href="http://forum.kimai.org" title="Kimai Forum">keskusteluun</a>. Löydät tuolta myös erityiskeskustelun nimeltä "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>". Viimeisin SVN -versio tuotteesta haettavissa <a href="http://kimai.svn.sourceforge.net/viewvc/kimai.tar.gz?view=tar">täältä</a> (testaa ensin!).
-        
-        <br /><br />
-        
-        Tue kehitystyötämme lähettämällä <a href="http://www.kimai.org/en/donate.html">lahjoitus</a> tai laajentamalla <a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">kielikirjastoa</a>.
-
-	Mikäli löydät virheitä tai sinulla on uusia ideoita, laita toki viestiä keskusteluun. Ehkä vielä paremmin: luo tästä uusi <a href="http://sourceforge.net/tracker/?group_id=186214">tiketti</a>!<br /><br />
-
-        <strong>Kiitokset tuesta:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-        <strong>Erityiskiitokset</strong> lukuisille beta-testaajille! :)
-
-	Laskutuslisäosa käyttää PclZip -kirjastoa ja tämä löytyy <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
-
-        Versio 0.8 koottu RRZE (Regionales Rechenzentrum Erlangen) tuella.<br /><br />
-        <br />
-EOF
+        Tue kehitystyötämme lähettämällä <a href="%3$s">lahjoitus</a> tai laajentamalla <a href="%5$s">kielikirjastoa</a>.
+	    Mikäli löydät virheitä tai sinulla on uusia ideoita, laita toki viestiä keskusteluun.
+	    Ehkä vielä paremmin: luo tästä uusi <a href="%4$s">tiketti</a>.
+EOD
 ,
-
+    'credits_license' => 'Tämä ohjelma on avoin sovellus ja julkaistu "SELLAISENAAN" ilman mitään varoituksia ja lisenssillä %1$s.',
+    'credits_thanks' => 'Kiitokset tuesta:',
+    'credits_libs' => 'Our thanks also go to the projects:',
 
     'months' => array("tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"),
     'months_short' => array("tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"),

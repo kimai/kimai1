@@ -313,47 +313,19 @@ Times: 「時時:分分:秒秒」 or 「時時:分分」 or 「時時」　だ�
 	'sublistAnnotations' => 'サブリストの注釈',
 	'TimeDateInputError' => '入力した時間か日付は無効です',
 	'StartTimeBeforeEndTime' => '開始時刻は終了時間の前に入力しなければならない',
-	'credits' => <<<EOF
-		Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
 
-		<br />
-
-		<strong>This program is free software and published 'AS IS' without any kind of warranty</strong> under the terms of the
-		<a href="../COPYING">GPL Version 3</a>.
-
-		<br /><br />
-
-		<a href='http://www.kimai.org' target='_blank'>公式サイト</a> |
-		<a href='http://forum.kimai.org/' target='_blank'>フォーラム</a> |
-		<a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a>
-		<a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge プロジェクトページ</a> |
-		<a href='http://www.kimai.org/en/download.html' target='_blank'>ダウンロード</a>
-
-		<br /><br />
-
-		何かの交代をする場合<a href="http://forum.kimai.org" title="Kimai Forum">Kimaiのフォーラム</a>にポストしてください。
-		そこで特別ボード"<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>"があります。
-		最新デベロッパーバージョンは<a href="https://github.com/kimai/kimai/archive/master.zip">こちら</a>からダウンロードできます。（テストリングのみのためにダウンロードしてください！）
-
-		<br /><br />
-
-		Kimaiをサポートするために<a href="http://www.kimai.org/en/donate.html">寄付</a>をしてくれるか、
-		<a href="http://kimai.svn.sourceforge.net/viewvc/kimai/kimai/core/language/">言語ライブラリ</a>を拡張してください
-
-		バグ（不具合）が見つかるかフィーチャを考える場合フォーラムにご連絡ください
-		もしくは：<a href="https://github.com/kimai/kimai/issues">チケット</a>を作成してください！<br /><br />
-
-		<strong>Further thanks for support to:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-		Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-		Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-		<strong>Special thanks</strong> to all beta testers, which are way to many to mention them all - you know who you are! ;)<br /><br />
-
-		The invoice extension uses the PclZip Library, which can be found at <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
-
-		Version 0.8 was emerged with the kind support of RRZE (Regionales Rechenzentrum Erlangen).
-EOF
+	'credits' => <<<'EOD'
+        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
+        The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
+        <br /><br />
+        Please support further development of Kimai with a <a href="%3$s">donation</a> or
+        by extending its <a href="%5$s">translations</a>.
+        If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
+EOD
 ,
+	'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
+	'credits_thanks' => 'Further thanks for support to:',
+	'credits_libs' => 'Our thanks also go to the projects:',
 
 	'months' => array("1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"),
 	'months_short' => array("1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"),
