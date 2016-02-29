@@ -29,8 +29,8 @@ require_once WEBROOT . '/libraries/autoload.php';
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val) {
     $val = trim($val);
-    $last = strtolower($val[strlen($val)-1]);
-    switch($last) {
+    $last = strtolower($val[strlen($val) - 1]);
+    switch ($last) {
         // The 'G' modifier is available since PHP 5.1.0
         case 'g':
             $val *= 1024;
@@ -47,13 +47,13 @@ function return_bytes($val) {
 // stolen somewhere ... please forgive me - i don't know who wrote this .... O-o
 function getpass() {
     $newpass = "";
-    $laenge=10;
-    $string="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    $laenge = 10;
+    $string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    mt_srand((double)microtime()*1000000);
+    mt_srand((double)microtime() * 1000000);
 
-    for ($i=1; $i <= $laenge; $i++) {
-        $newpass .= substr($string, mt_rand(0,strlen($string)-1), 1);
+    for ($i = 1; $i <= $laenge; $i++) {
+        $newpass .= substr($string, mt_rand(0, strlen($string) - 1), 1);
     }
 
     return $newpass;
@@ -61,8 +61,8 @@ function getpass() {
 
 $axAction = strip_tags($_REQUEST['axAction']);
 
-$javascript="";
-$errors=0;
+$javascript = "";
+$errors = 0;
 
 switch ($axAction) {
 
@@ -103,7 +103,7 @@ switch ($axAction) {
             $javascript .= "$('#installsteps button.proceed').show();";
         }
 
-        $javascript .= "resetRequirementsIndicators();".$javascript;
+        $javascript .= "resetRequirementsIndicators();" . $javascript;
         echo $javascript;
 
       break;
@@ -152,11 +152,11 @@ switch ($axAction) {
     $timezone    = $_REQUEST['timezone'];
     $db_layer    = $_REQUEST['db_layer'];
     $db_type     = $_REQUEST['db_type'];
-    $prefix      = addcslashes($_REQUEST['prefix'],'"$');
+    $prefix      = addcslashes($_REQUEST['prefix'], '"$');
     $lang        = $_REQUEST['lang'];
     $salt        = createPassword(20);
 
-    write_config_file($database,$hostname,$username,$password,$db_layer,$db_type,$prefix,$lang,$salt,$timezone);
+    write_config_file($database, $hostname, $username, $password, $db_layer, $db_type, $prefix, $lang, $salt, $timezone);
 
     break;
     

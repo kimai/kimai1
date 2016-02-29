@@ -2,10 +2,10 @@
   header('Content-type: text/css');
 
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
-	$add =          "../../../skins/standard/grfx/add.png";
-	$schraff0 =     "../../../skins/standard/grfx/schraff0.gif";
-	$schraff1 =     "../../../skins/standard/grfx/schraff1.gif";
-	$schraff2 =     "../../../skins/standard/grfx/schraff2.gif";
+	$add = "../../../skins/standard/grfx/add.png";
+	$schraff0 = "../../../skins/standard/grfx/schraff0.gif";
+	$schraff1 = "../../../skins/standard/grfx/schraff1.gif";
+	$schraff2 = "../../../skins/standard/grfx/schraff2.gif";
 ?>
 
 div.ki_timesheet table {

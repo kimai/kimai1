@@ -30,6 +30,6 @@ class Zend_View_Helper_Error extends Zend_View_Helper_Abstract
         if ($message === null) {
             $message = $this->view->translate('noItems');
         }
-        return '<div class="error">'.$message.'</div>';
+        return '<div class="error">' . $message . '</div>';
     }
 } 

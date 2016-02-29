@@ -48,13 +48,13 @@ switch ($axAction) {
     case 'saveBuzzerPreselection':
       if (!isset($kga['user'])) return;
 
-      $data= array();
+      $data = array();
       if (isset($_REQUEST['project']))
         $data['lastProject'] = $_REQUEST['project'];
       if (isset($_REQUEST['activity']))
-        $data['lastActivity']   = $_REQUEST['activity'];
+        $data['lastActivity'] = $_REQUEST['activity'];
 
-      $database->user_edit($kga['user']['userID'],$data);
+      $database->user_edit($kga['user']['userID'], $data);
     break;
 
 
@@ -81,20 +81,20 @@ switch ($axAction) {
         $preferences['sublistAnnotations']      = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines']        = getRequestBool('hideOverlapLines');
 		$preferences['showQuickNote']           = getRequestBool('showQuickNote');
-		$preferences['defaultLocation']         = isset($_REQUEST['defaultLocation'])?$_REQUEST['defaultLocation']:'';
+		$preferences['defaultLocation']         = isset($_REQUEST['defaultLocation']) ? $_REQUEST['defaultLocation'] : '';
 
-        $database->user_set_preferences($preferences,'ui.');
+        $database->user_set_preferences($preferences, 'ui.');
         $database->user_set_preferences(array('timezone'=>$_REQUEST['timezone']));
 
-        $rate = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
+        $rate = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
         if (is_numeric($rate))
-          $database->save_rate($kga['user']['userID'],null,NULL,$rate);
+          $database->save_rate($kga['user']['userID'], null, NULL, $rate);
         else
-          $database->remove_rate($kga['user']['userID'],null,NULL);
+          $database->remove_rate($kga['user']['userID'], null, NULL);
         
         // If the password field is empty don't overwrite the old password.
         if (trim($_REQUEST['password']) != "") {
-            $userData['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
+            $userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
             $database->user_edit($kga['user']['userID'], $userData);
         }
         
@@ -108,17 +108,17 @@ switch ($axAction) {
     case 'setTimeframe':
         if (!isset($kga['user'])) die();
     
-        $timeframe = explode('|',$axValue);
+        $timeframe = explode('|', $axValue);
          
-        $timeframe_in  = explode('-',$timeframe[0]);
-        $timeframe_in  = (int)mktime(0,0,0,$timeframe_in[0],$timeframe_in[1],$timeframe_in[2]);
+        $timeframe_in  = explode('-', $timeframe[0]);
+        $timeframe_in  = (int)mktime(0, 0, 0, $timeframe_in[0], $timeframe_in[1], $timeframe_in[2]);
         if ($timeframe_in < 950000000) $timeframe_in = $in;
         
-        $timeframe_out = explode('-',$timeframe[1]);
-        $timeframe_out = (int)mktime(23,59,59,$timeframe_out[0],$timeframe_out[1],$timeframe_out[2]);
+        $timeframe_out = explode('-', $timeframe[1]);
+        $timeframe_out = (int)mktime(23, 59, 59, $timeframe_out[0], $timeframe_out[1], $timeframe_out[2]);
         if ($timeframe_out < 950000000) $timeframe_out = $out;
         
-        $database->save_timeframe($timeframe_in,$timeframe_out,$kga['user']['userID']);
+        $database->save_timeframe($timeframe_in, $timeframe_out, $kga['user']['userID']);
     break;
 
     /**
@@ -128,8 +128,8 @@ switch ($axAction) {
     case 'startRecord':
         if (isset($kga['customer'])) die();
     
-        $IDs = explode('|',$axValue);
-        $newID = $database->startRecorder($IDs[0],$IDs[1],$id, $_REQUEST['startTime']);
+        $IDs = explode('|', $axValue);
+        $newID = $database->startRecorder($IDs[0], $IDs[1], $id, $_REQUEST['startTime']);
         echo json_encode(array(
           'id' =>  $newID
         ));
@@ -196,7 +196,7 @@ switch ($axAction) {
         if (isset($kga['customer']))
           $view->activities = $database->get_activities_by_customer($kga['customer']['customerID']);
         else if (isset($_REQUEST['project']))
-          $view->activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
+          $view->activities = $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']);
         else
           $view->activities = $database->get_activities($kga['user']['groups']);
 
@@ -211,7 +211,7 @@ switch ($axAction) {
      * used at least by the admin panel and the timesheet extension.
      */
     case 'add_edit_CustomerProjectActivity':
-        switch($axValue) {
+        switch ($axValue) {
             /**
              * add or edit a customer
              */
@@ -235,7 +235,7 @@ switch ($axAction) {
         
               // If password field is empty don't overwrite the password.
               if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
-                $data['password'] = md5($kga['password_salt'].$_REQUEST['password'].$kga['password_salt']);
+                $data['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
               }
               if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                 $data['password'] = '';
@@ -254,7 +254,7 @@ switch ($axAction) {
               if (count($_REQUEST['customerGroups']) == 0)
                 $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $_REQUEST['customerGroups'])) {
+              if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['customerGroups'])) {
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
               }
               
@@ -304,7 +304,7 @@ switch ($axAction) {
               if (count($_REQUEST['projectGroups']) == 0)
                 $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $_REQUEST['projectGroups']))
+              if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['projectGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 
               if (count($errorMessages) == 0) {
@@ -321,8 +321,8 @@ switch ($axAction) {
                 if (isset($_REQUEST['assignedActivities'])) {
                   $database->assignProjectToActivitiesForGroup($id, array_values($_REQUEST['assignedActivities']), $kga['user']['groups']);
 
-                  foreach($_REQUEST['assignedActivities'] as $index => $activityID) {
-                    if($activityID <= 0)
+                  foreach ($_REQUEST['assignedActivities'] as $index => $activityID) {
+                    if ($activityID <= 0)
                         continue;
 
                     $data = array();
@@ -367,7 +367,7 @@ switch ($axAction) {
               if (count($_REQUEST['activityGroups']) == 0)
                 $errorMessages['activityGroups'] = $kga['lang']['atLeastOneGroup'];
 
-              if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $_REQUEST['activityGroups']))
+              if (!checkGroupedObjectPermission('Activity', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['activityGroups']))
                 $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 
               if (count($errorMessages) == 0) {

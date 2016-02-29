@@ -24,7 +24,7 @@
 
 $kga = array();
 
-require dirname(__FILE__).'/version.php';
+require dirname(__FILE__) . '/version.php';
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -55,11 +55,11 @@ $kga['server_password'] = $server_password;
 $kga['server_type']     = "";
 $kga['server_conn']     = $server_conn;
 $kga['defaultTimezone'] = $defaultTimezone;
-$kga['language']        = isset($language)                          ? $language             : 'en';
-$kga['password_salt']   = isset($password_salt)                     ? $password_salt        : '';
-$kga['authenticator']   = isset($authenticator)                     ? trim($authenticator)  : 'kimai';
-$kga['billable']        = isset($billable) && is_array($billable)   ? $billable             : array(0,50,100);
-$kga['skin']            = isset($skin)                              ? $skin                 : 'standard';
+$kga['language']        = isset($language) ? $language : 'en';
+$kga['password_salt']   = isset($password_salt) ? $password_salt : '';
+$kga['authenticator']   = isset($authenticator) ? trim($authenticator) : 'kimai';
+$kga['billable']        = isset($billable) && is_array($billable) ? $billable : array(0, 50, 100);
+$kga['skin']            = isset($skin) ? $skin : 'standard';
 
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
@@ -69,7 +69,7 @@ $cleanup = array(
 
 date_default_timezone_set($defaultTimezone);
 
-foreach($cleanup as $varName) {
+foreach ($cleanup as $varName) {
     if (isset($$varName)) {
         unset($$varName);
     }

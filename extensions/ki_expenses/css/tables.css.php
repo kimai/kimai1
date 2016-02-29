@@ -1,7 +1,7 @@
 <?php
 	header('Content-type: text/css');
 	$table_header = "../../../skins/standard/grfx/g3_table_header.png";
-	$add =          "../../../skins/standard/grfx/add.png";
+	$add = "../../../skins/standard/grfx/add.png";
 ?>
 
 div.ki_expenses table {

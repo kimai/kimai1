@@ -64,7 +64,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
       $arr[$key] = null;
     $arr['location'] = $default_location;
 
-		if ((! $reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
+		if ((!$reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
 			if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 				// active recordings will be omitted
 				$arr['type'] = 'timeSheet';
@@ -211,7 +211,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
  */
 function merge_annotations(&$timeSheetEntries, &$expenses) {
 	foreach ($expenses as $id => $costs) {
-		if (! isset($timeSheetEntries[$id]))
+		if (!isset($timeSheetEntries[$id]))
 			$timeSheetEntries[$id]['costs'] = $costs;
 		else
 			$timeSheetEntries[$id]['costs'] += $costs;

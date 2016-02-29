@@ -10,8 +10,8 @@ function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
   $permissionColumns = array();
   $permissionColumnDefinitions = array();
   foreach ($permissions as $permission) {
-    $permissionColumns[] = '`'.$permission.'`';
-    $permissionColumnDefinitions[] = '`'.$permission.'` TINYINT DEFAULT 0';
+    $permissionColumns[] = '`' . $permission . '`';
+    $permissionColumnDefinitions[] = '`' . $permission . '` TINYINT DEFAULT 0';
   }
   $query .= implode(', ', $permissionColumnDefinitions);
 
@@ -22,14 +22,14 @@ function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
 
 function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions) {
   global $p;
-  foreach  ($allowedPermissions as &$permission)
-    $permission = '`'.$permission.'`';
+  foreach ($allowedPermissions as &$permission)
+    $permission = '`' . $permission . '`';
 
   if (count($allowedPermissions) == 0)
-    $query="INSERT INTO `${p}${tableName}` (`name`)  VALUES ('". $roleName . "');";
+    $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
   else
-    $query="INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('". $roleName . "', ".
-    implode(', ', array_fill(0,count($allowedPermissions),'1')) . ");";
+    $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
+    implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
   return $query;
 }
 
@@ -40,13 +40,13 @@ $membershipPermissions = array();
 
 // extension permissions
 foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension)
-  $globalPermissions[] = $extension. '-access';
+  $globalPermissions[] = $extension . '-access';
 
 // domain object permissions
 foreach (array('customer', 'project', 'activity', 'user') as $object)
   foreach (array('add', 'edit', 'delete', 'assign', 'unassign') as $action) {
     $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
-    $membershipPermissions[] = 'core-' .  $object . '-' . $action;
+    $membershipPermissions[] = 'core-' . $object . '-' . $action;
   }
 
 // status permissions

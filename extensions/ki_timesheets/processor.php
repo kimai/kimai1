@@ -35,7 +35,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
   }
 
 
-  if ($kga['conf']['editLimit'] != "-" && time()-$entry['end'] > $kga['conf']['editLimit'] && $entry['end']!= 0) {
+  if ($kga['conf']['editLimit'] != "-" && time() - $entry['end'] > $kga['conf']['editLimit'] && $entry['end'] != 0) {
     $errors[''] = $kga['lang']['editLimitError'];
     return;
   }
@@ -58,7 +58,7 @@ function timesheetAccessAllowed($entry, $action, &$errors) {
 
   if (count($assignedOwnGroups) > 0) {
     $permissionName = 'ki_timesheets-otherEntry-ownGroup-' . $action;
-    if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
+    if ($database->checkMembershipPermission($kga['user']['userID'], $assignedOwnGroups, $permissionName)) {
       return true;
     } else {
       Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
@@ -98,7 +98,7 @@ switch ($axAction) {
         $timeSheetEntry['cleared'] = 0;
 
         $errors = array();
-        timesheetAccessAllowed($timeSheetEntry,'edit',$errors);
+        timesheetAccessAllowed($timeSheetEntry, 'edit', $errors);
         $response['errors'] = $errors;
 
         if (count($errors) == 0) {
@@ -135,7 +135,7 @@ switch ($axAction) {
 
         $data = $database->timeSheet_get_data($id);
 
-        timesheetAccessAllowed($data,'edit',$errors);
+        timesheetAccessAllowed($data, 'edit', $errors);
 
         if (count($errors) == 0)
           $database->stopRecorder($id);
@@ -153,7 +153,7 @@ switch ($axAction) {
 
         $data = $database->timeSheet_get_data($id);
 
-        timesheetAccessAllowed($data,'edit',$errors);
+        timesheetAccessAllowed($data, 'edit', $errors);
 
         if (count($errors) == 0) {
           if (isset($_REQUEST['project']))
@@ -176,7 +176,7 @@ switch ($axAction) {
 
         $data = $database->timeSheet_get_data($id);
 
-        timesheetAccessAllowed($data,'delete',$errors);
+        timesheetAccessAllowed($data, 'delete', $errors);
 
         if (count($errors) == 0) {
           $database->timeEntry_delete($id);
@@ -200,8 +200,8 @@ switch ($axAction) {
           $data['errors'][] = $kga['lang']['editLimitError'];
 
         if (count($data['errors']) == 0) {
-          $data['hourlyRate'] = $database->get_best_fitting_rate($kga['user']['userID'],$_REQUEST['project_id'],$_REQUEST['activity_id']);
-          $data['fixedRate']  = $database->get_best_fitting_fixed_rate($_REQUEST['project_id'],$_REQUEST['activity_id']);
+          $data['hourlyRate'] = $database->get_best_fitting_rate($kga['user']['userID'], $_REQUEST['project_id'], $_REQUEST['activity_id']);
+          $data['fixedRate']  = $database->get_best_fitting_fixed_rate($_REQUEST['project_id'], $_REQUEST['activity_id']);
         }
 
         header('Content-Type: application/json;charset=utf-8');
@@ -226,13 +226,13 @@ switch ($axAction) {
           // we subtract the used data in case the activity is the same as in the db, otherwise
           // it would get counted twice. For all aother cases, just set the values to 0
           // so we don't subtract too much
-          if($timeSheetEntry['activityID'] != $_REQUEST['activity_id'] || $timeSheetEntry['projectID'] != $_REQUEST['project_id']) {
+          if ($timeSheetEntry['activityID'] != $_REQUEST['activity_id'] || $timeSheetEntry['projectID'] != $_REQUEST['project_id']) {
                   $timeSheetEntry['budget'] = 0;
                   $timeSheetEntry['approved'] = 0;
                   $timeSheetEntry['rate'] = 0;
           }
-          $data['activityBudgets'] = $database->get_activity_budget($_REQUEST['project_id'],$_REQUEST['activity_id']);
-          $data['activityUsed']    = $database->get_budget_used($_REQUEST['project_id'],$_REQUEST['activity_id']);
+          $data['activityBudgets'] = $database->get_activity_budget($_REQUEST['project_id'], $_REQUEST['activity_id']);
+          $data['activityUsed']    = $database->get_budget_used($_REQUEST['project_id'], $_REQUEST['activity_id']);
           $data['timeSheetEntry']  = $timeSheetEntry;
         }
 
@@ -253,7 +253,7 @@ switch ($axAction) {
           $data['errors'][] = $kga['lang']['editLimitError'];
 
         if (count($data['errors']) == 0) {
-          $rates = $database->allFittingRates($kga['user']['userID'],$_REQUEST['project'],$_REQUEST['activity']);
+          $rates = $database->allFittingRates($kga['user']['userID'], $_REQUEST['project'], $_REQUEST['activity']);
 
           if ($rates !== false)
             foreach ($rates as $rate) {
@@ -263,12 +263,12 @@ switch ($axAction) {
               if ($rate['userID'] != null)
                 $setFor[] = $kga['lang']['username'];
               if ($rate['projectID'] != null)
-                $setFor[] =  $kga['lang']['project'];
+                $setFor[] = $kga['lang']['project'];
               if ($rate['activityID'] != null)
-                $setFor[] =  $kga['lang']['activity'];
+                $setFor[] = $kga['lang']['activity'];
 
               if (count($setFor) != 0)
-                $line .= ' ('.implode($setFor,', ').')';
+                $line .= ' (' . implode($setFor, ', ') . ')';
 
               $data['rates'][] = array('value'=>$rate['rate'], 'desc'=>$line);
             }
@@ -293,7 +293,7 @@ switch ($axAction) {
         }
 
         if (count($data['errors']) == 0) {
-          $rates = $database->allFittingFixedRates($_REQUEST['project'],$_REQUEST['activity']);
+          $rates = $database->allFittingFixedRates($_REQUEST['project'], $_REQUEST['activity']);
 
           if ($rates !== false) {
               foreach ($rates as $rate) {
@@ -309,7 +309,7 @@ switch ($axAction) {
                   }
 
                   if (count($setFor) != 0) {
-                      $line .= ' ('.implode($setFor,', ').')';
+                      $line .= ' (' . implode($setFor, ', ') . ')';
                   }
 
                   $data['rates'][] = array('value'=>$rate['rate'], 'desc'=>$line);
@@ -327,12 +327,12 @@ switch ($axAction) {
     // ==================================================
     case 'reload_activities_options':
         if (isset($kga['customer'])) die();
-        $activities = $database->get_activities_by_project($_REQUEST['project'],$kga['user']['groups']);
+        $activities = $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']);
         foreach ($activities as $activity) {
           if (!$activity['visible'])
             continue;
-          echo '<option value="'.$activity['activityID'].'">'.
-          $activity['name'].'</option>\n';
+          echo '<option value="' . $activity['activityID'] . '">' .
+          $activity['name'] . '</option>\n';
         }
     break;
 
@@ -340,59 +340,59 @@ switch ($axAction) {
     // = Load timesheet data from DB and return it =
     // =============================================
     case 'reload_timeSheet':
-        $filters = explode('|',$axValue);
+        $filters = explode('|', $axValue);
         if ($filters[0] == "")
           $filterUsers = array();
         else
-          $filterUsers = explode(':',$filters[0]);
+          $filterUsers = explode(':', $filters[0]);
 
         $filterCustomers = array_map(function($customer) {
           return $customer['customerID'];
         }, $database->get_customers($kga['user']['groups']));
         if ($filters[1] != "")
-          $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
+          $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
 
         $filterProjects = array_map(function($project) {
           return $project['projectID'];
         }, $database->get_projects($kga['user']['groups']));
         if ($filters[2] != "")
-          $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
+          $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
 
         $filterActivities = array_map(function($activity) {
           return $activity['activityID'];
         }, $database->get_activities($kga['user']['groups']));
         if ($filters[3] != "")
-          $filterActivities = array_intersect($filterActivities, explode(':',$filters[3]));
+          $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
 
         // if no userfilter is set, set it to current user
         if (isset($kga['user']) && count($filterUsers) == 0)
-          array_push($filterUsers,$kga['user']['userID']);
+          array_push($filterUsers, $kga['user']['userID']);
 
         if (isset($kga['customer']))
           $filterCustomers = array($kga['customer']['customerID']);
 
-        $timeSheetEntries = $database->get_timeSheet($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities,1);
-        if (count($timeSheetEntries)>0) {
+        $timeSheetEntries = $database->get_timeSheet($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, 1);
+        if (count($timeSheetEntries) > 0) {
             $view->timeSheetEntries = $timeSheetEntries;
         } else {
             $view->timeSheetEntries = 0;
         }
         $view->latest_running_entry = $database->get_latest_running_entry();
-        $view->total = Kimai_Format::formatDuration($database->get_duration($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities));
+        $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities));
 
-        $ann = $database->get_time_users($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_users($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
         $view->user_annotations = $ann;
 
-        $ann = $database->get_time_customers($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_customers($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
         $view->customer_annotations = $ann;
 
-        $ann = $database->get_time_projects($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_projects($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
         $view->project_annotations = $ann;
 
-        $ann = $database->get_time_activities($in,$out,$filterUsers,$filterCustomers,$filterProjects,$filterActivities);
+        $ann = $database->get_time_activities($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
         $view->activity_annotations = $ann;
 
@@ -402,12 +402,12 @@ switch ($axAction) {
 
         // user can change these settings
         if (isset($kga['user'])) {
-            $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
-            $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines')!=1;
-            $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber')!=0;
+            $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
+            $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines') != 1;
+            $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber') != 0;
         }
 
-        $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-showRates');
+        $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates');
 
         echo $view->render("timeSheet.php");
     break;
@@ -430,7 +430,7 @@ switch ($axAction) {
         $data = $database->timeSheet_get_data($id);
 
         // check if editing or deleting with the old values would be allowed
-        if (!timesheetAccessAllowed($data,$action,$errors)) {
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
           echo json_encode(array('errors'=>$errors));
           break;
         }
@@ -451,18 +451,18 @@ switch ($axAction) {
       $data['description']    = $_REQUEST['description'];
       $data['comment']        = $_REQUEST['comment'];
       $data['commentType']    = $_REQUEST['commentType'];
-      if ($database->global_role_allows($kga['user']['globalRoleID'],'ki_timesheets-editRates')) {
-        $data['rate']         = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['rate']);
-        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
+      if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates')) {
+        $data['rate']         = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
+        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['fixedRate']);
       } else if (!$id) {
-        $data['rate']         = $database->get_best_fitting_rate($kga['user']['userID'],$data['projectID'],$data['activityID']);
-        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['fixedRate']);
+        $data['rate']         = $database->get_best_fitting_rate($kga['user']['userID'], $data['projectID'], $data['activityID']);
+        $data['fixedRate']      = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['fixedRate']);
       }
       $data['cleared']        = isset($_REQUEST['cleared']);
       $data['statusID']       = $_REQUEST['statusID'];
       $data['billable']       = $_REQUEST['billable'];
-      $data['budget']         = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['budget']);
-      $data['approved']       = str_replace($kga['conf']['decimalSeparator'],'.',$_REQUEST['approved']);
+      $data['budget']         = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['budget']);
+      $data['approved']       = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['approved']);
       $data['userID']         = $_REQUEST['userID'];
 
 
@@ -480,10 +480,10 @@ switch ($axAction) {
           $errors['start_time'] = $kga['lang']['TimeDateInputError'];
       }
 
-      if ( $_REQUEST['end_day'] != '' && !$validateDate->isValid($_REQUEST['end_day']) )
+      if ($_REQUEST['end_day'] != '' && !$validateDate->isValid($_REQUEST['end_day']))
         $errors['end_day'] = $kga['lang']['TimeDateInputError'];
 
-      if ( $_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time']) ) {
+      if ($_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time'])) {
         $_REQUEST['end_time'] = $_REQUEST['end_time'] . ':00';
         if (!$validateTime->isValid($_REQUEST['end_time']))
           $errors['end_time'] = $kga['lang']['TimeDateInputError'];
@@ -523,23 +523,23 @@ switch ($axAction) {
         $outDate = null;
       }
 
-      $data['start']   = $inDate->getTimestamp();
+      $data['start'] = $inDate->getTimestamp();
 
       if ($outDate != null) {
-        $data['end']  = $outDate->getTimestamp();
+        $data['end'] = $outDate->getTimestamp();
         $data['duration'] = $data['end'] - $data['start'];
       }
 
       if ($id) { // TIME RIGHT - NEW OR EDIT ?
 
-          if (!timesheetAccessAllowed($data,$action,$errors)) {
+          if (!timesheetAccessAllowed($data, $action, $errors)) {
             echo json_encode(array('errors'=>$errors));
             break;
           }
 
           // TIME RIGHT - EDIT ENTRY
-          Kimai_Logger::logfile("timeEntry_edit: " .$id);
-          $database->timeEntry_edit($id,$data);
+          Kimai_Logger::logfile("timeEntry_edit: " . $id);
+          $database->timeEntry_edit($id, $data);
 
       } else {
 
@@ -550,7 +550,7 @@ switch ($axAction) {
         foreach ($_REQUEST['userID'] as $userID) {
           $data['userID'] = $userID;
 
-          if (!timesheetAccessAllowed($data,$action,$errors)) {
+          if (!timesheetAccessAllowed($data, $action, $errors)) {
             echo json_encode(array('errors'=>$errors));
             $database->transaction_rollback();
             break 2;
@@ -580,7 +580,7 @@ switch ($axAction) {
             $data = $database->timeSheet_get_data($id);
 
             // check if editing or deleting with the old values would be allowed
-            if ( ! timesheetAccessAllowed($data, $action, $errors)) {
+            if (!timesheetAccessAllowed($data, $action, $errors)) {
                 echo json_encode(array('errors' => $errors));
                 break;
             }
@@ -592,7 +592,7 @@ switch ($axAction) {
         $data['commentType'] = $_REQUEST['commentType'];
         $data['userID'] = $_REQUEST['userID'];
 
-        if ( ! timesheetAccessAllowed($data, $action, $errors)) {
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
             echo json_encode(array('errors' => $errors));
             break;
         }

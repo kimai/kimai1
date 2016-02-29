@@ -94,13 +94,13 @@ class Kimai_Invoice_PrintModel
     public function toArray()
     {
         return array(
-            'entries'       => $this->getEntries(),     // array
+            'entries'       => $this->getEntries(), // array
             'amount'        => $this->getAmount(),
-            'customer'      => $this->getCustomer(),    // array
+            'customer'      => $this->getCustomer(), // array
             'vat'           => $this->getVat(),
             'vatRate'       => $this->getVatRate(),
             'total'         => $this->getTotal(),
-            'projects'      => $this->getProjects(),    // array
+            'projects'      => $this->getProjects(), // array
             'invoiceId'     => $this->getInvoiceId(),
             'beginDate'     => $this->getBeginDate(),
             'endDate'       => $this->getEndDate(),

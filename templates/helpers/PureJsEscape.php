@@ -26,6 +26,6 @@ class Zend_View_Helper_PureJsEscape extends Zend_View_Helper_Abstract
 {
     public function pureJsEscape($text)
     {
-        return str_replace("'","\\'",str_replace('"','\\"',$text));
+        return str_replace("'", "\\'", str_replace('"', '\\"', $text));
     }
 } 

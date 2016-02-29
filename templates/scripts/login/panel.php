@@ -85,7 +85,6 @@
                     <?php echo $this->kga['lang']['password']?>:
                 </label>
                 <input type='password' name="password" id="kimaipassword" />
-                <?php echo $this->selectbox ?>
                 <button id="loginButton" type='submit'></button>
                 <a id="forgotPasswordLink" href=""><?php echo $this->kga['lang']['forgotPassword'] ?></a>
             </fieldset>

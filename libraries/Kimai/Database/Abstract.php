@@ -85,14 +85,14 @@ abstract class Kimai_Database_Abstract {
      * @param $serverType
      * @return
      */
-    public abstract function connect($host,$database,$username,$password,$utf8,$serverType);
+    public abstract function connect($host, $database, $username, $password, $utf8, $serverType);
 
     /**
      * @return string the tablename with the server prefix
      */
     public function getProjectTable()
     {
-        return $this->kga['server_prefix'].'projects';
+        return $this->kga['server_prefix'] . 'projects';
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class Kimai_Database_Abstract {
      */
     public function getActivityTable()
     {
-        return $this->kga['server_prefix'].'activities';
+        return $this->kga['server_prefix'] . 'activities';
     }
 
     /**
@@ -108,23 +108,23 @@ abstract class Kimai_Database_Abstract {
      */
     public function getCustomerTable()
     {
-        return $this->kga['server_prefix'].'customers';
+        return $this->kga['server_prefix'] . 'customers';
     }
 
 
     public function getTimeSheetTable()
     {
-        return $this->kga['server_prefix'].'timeSheet';
+        return $this->kga['server_prefix'] . 'timeSheet';
     }
 
     public function getExpenseTable() 
     {
-        return $this->kga['server_prefix'].'expenses';
+        return $this->kga['server_prefix'] . 'expenses';
     }
 
     public function getUserTable() 
     {
-        return $this->kga['server_prefix'].'users';
+        return $this->kga['server_prefix'] . 'users';
     }
 
     /**
@@ -383,7 +383,7 @@ abstract class Kimai_Database_Abstract {
      * @param integer $userId  (optional) id of the user to fetch the preference for
      * @return string value of the preference or null if there is no such preference
      */
-    public abstract function user_get_preference($key,$userId=null);
+    public abstract function user_get_preference($key, $userId = null);
 
     /**
      * Get several preferences for a user. If no user ID is given the current user is used.
@@ -392,7 +392,7 @@ abstract class Kimai_Database_Abstract {
      * @param integer $userId  (optional) id of the user to fetch the preference for
      * @return array  with keys for every found preference and the found value
      */
-    public abstract function user_get_preferences(array $keys,$userId=null);
+    public abstract function user_get_preferences(array $keys, $userId = null);
 
     /**
      * Get several preferences for a user which have a common prefix. The returned preferences are striped off
@@ -403,7 +403,7 @@ abstract class Kimai_Database_Abstract {
      * @param integer $userId  (optional) id of the user to fetch the preference for
      * @return array  with keys for every found preference and the found value
      */
-    public abstract function user_get_preferences_by_prefix($prefix,$userId=null);
+    public abstract function user_get_preferences_by_prefix($prefix, $userId = null);
 
     /**
      * Save one or more preferences for a user. If no user ID is given the current user is used.
@@ -417,7 +417,7 @@ abstract class Kimai_Database_Abstract {
      * @param integer $userId (optional) id of another user than the current
      * @return boolean        true on success, false on failure
      */
-    public abstract function user_set_preferences(array $data,$prefix='',$userId=null);
+    public abstract function user_set_preferences(array $data, $prefix = '', $userId = null);
 
     /**
      * Adds a new group
@@ -458,7 +458,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $groups  array of the group ids to be part of
      * @return boolean       true on success, false on failure
      */
-    public abstract function setGroupMemberships($userId,array $groups = null);
+    public abstract function setGroupMemberships($userId, array $groups = null);
 
     /**
      * Get the groups in which the user is a member in.
@@ -544,7 +544,7 @@ abstract class Kimai_Database_Abstract {
      * @param string $timeframeEnd unix seconds
      * @param string $user ID of user
      */
-    public abstract function save_timeframe($timeframeBegin,$timeframeEnd,$user);
+    public abstract function save_timeframe($timeframeBegin, $timeframeEnd, $user);
 
     /**
      * returns list of projects for specific group as array
@@ -561,7 +561,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $groups list of group ids
      * @return array
      */
-    public abstract function get_projects_by_customer($customerID,array $groups = null);
+    public abstract function get_projects_by_customer($customerID, array $groups = null);
 
     /**
      *  Creates an array of clauses which can be joined together in the WHERE part
@@ -577,7 +577,7 @@ abstract class Kimai_Database_Abstract {
      * @return array list of where clauses to include in the query
      *
      */
-    public abstract function timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities );
+    public abstract function timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
 
     /**
      * returns timesheet for specific user as multidimensional array
@@ -595,7 +595,7 @@ abstract class Kimai_Database_Abstract {
      * @param int $limitRows
      * @return array
      */
-    public abstract function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null,$limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
+    public abstract function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0);
 
     /**
      * Returns a username for the given $apikey.
@@ -663,7 +663,7 @@ abstract class Kimai_Database_Abstract {
      * @param null $filterCleared
      * @return int
      */
-    public abstract function get_duration($start,$end,$users = null, $customers = null, $projects = null, $activities = null, $filterCleared = null);
+    public abstract function get_duration($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $filterCleared = null);
 
     /**
      * returns list of customers in a group as array
@@ -802,7 +802,7 @@ abstract class Kimai_Database_Abstract {
      * @param int $timeSheetEntryID id of the timesheet entry
      * @param int $projectID id of the project to change to
      */
-    public abstract function timeEntry_edit_project($timeSheetEntryID,$projectID);
+    public abstract function timeEntry_edit_project($timeSheetEntryID, $projectID);
 
     /**
      * Just edit the activity for an entry. This is used for changing the activity
@@ -811,7 +811,7 @@ abstract class Kimai_Database_Abstract {
      * @param int $timeSheetEntryID id of the timesheet entry
      * @param int $activityID id of the activity to change to
      */
-    public abstract function timeEntry_edit_activity($timeSheetEntryID,$activityID);
+    public abstract function timeEntry_edit_activity($timeSheetEntryID, $activityID);
 
 
     /**
@@ -874,7 +874,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $activities
      * @return array
      */
-    public abstract function get_time_users($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+    public abstract function get_time_users($start, $end, $users = null, $customers = null, $projects = null, $activities = null);
 
     /**
      * returns list of time summary attached to customer ID's within specific timeframe as array
@@ -887,7 +887,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $activities
      * @return array
      */
-    public abstract function get_time_customers($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+    public abstract function get_time_customers($start, $end, $users = null, $customers = null, $projects = null, $activities = null);
 
     /**
      * returns list of time summary attached to project ID's within specific timeframe as array
@@ -900,7 +900,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $activities
      * @return array
      */
-    public abstract function get_time_projects($start,$end,$users = null, $customers = null, $projects = null,$activities = null);
+    public abstract function get_time_projects($start, $end, $users = null, $customers = null, $projects = null, $activities = null);
 
     /**
      * returns list of time summary attached to activity ID's within specific timeframe as array
@@ -913,7 +913,7 @@ abstract class Kimai_Database_Abstract {
      * @param array $activities
      * @return array
      */
-    public abstract function get_time_activities($start,$end,$users = null, $customers = null, $projects = null, $activities = null);
+    public abstract function get_time_activities($start, $end, $users = null, $customers = null, $projects = null, $activities = null);
 
     /**
      * Save hourly rate to database.
@@ -924,7 +924,7 @@ abstract class Kimai_Database_Abstract {
      * @param $rate
      * @return
      */
-    public abstract function save_rate($userID,$projectID,$activityID,$rate);
+    public abstract function save_rate($userID, $projectID, $activityID, $rate);
 
     /**
      * Read hourly rate from database.
@@ -934,7 +934,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function get_rate($userID,$projectID,$activityID);
+    public abstract function get_rate($userID, $projectID, $activityID);
 
     /**
      * Remove hourly rate from database.
@@ -944,7 +944,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function remove_rate($userID,$projectID,$activityID);
+    public abstract function remove_rate($userID, $projectID, $activityID);
 
     /**
      * Query the database for the best fitting hourly rate for the given user, project and activity.
@@ -954,7 +954,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function get_best_fitting_rate($userID,$projectID,$activityID);
+    public abstract function get_best_fitting_rate($userID, $projectID, $activityID);
 
     /**
      * Query the database for all fitting hourly rates for the given user, project and activity.
@@ -964,7 +964,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function allFittingRates($userID,$projectID,$activityID);
+    public abstract function allFittingRates($userID, $projectID, $activityID);
 
     /**
      * Save fixed rate to database.
@@ -974,7 +974,7 @@ abstract class Kimai_Database_Abstract {
      * @param $rate
      * @return
      */
-    public abstract function save_fixed_rate($projectID,$activityID,$rate);
+    public abstract function save_fixed_rate($projectID, $activityID, $rate);
 
     /**
      * Read fixed rate from database.
@@ -983,7 +983,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function get_fixed_rate($projectID,$activityID);
+    public abstract function get_fixed_rate($projectID, $activityID);
 
     /**
      * Remove fixed rate from database.
@@ -992,7 +992,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function remove_fixed_rate($projectID,$activityID);
+    public abstract function remove_fixed_rate($projectID, $activityID);
 
     /**
      * Query the database for the best fitting fixed rate for the given user, project and activity.
@@ -1001,7 +1001,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function get_best_fitting_fixed_rate($projectID,$activityID);
+    public abstract function get_best_fitting_fixed_rate($projectID, $activityID);
 
     /**
      * Query the database for all fitting fixed rates for the given user, project and activity.
@@ -1010,7 +1010,7 @@ abstract class Kimai_Database_Abstract {
      * @param $activityID
      * @return
      */
-    public abstract function allFittingFixedRates($projectID,$activityID);
+    public abstract function allFittingFixedRates($projectID, $activityID);
 
     /**
      * Save a new secure key for a user to the database. This key is stored in the users cookie and used
@@ -1020,7 +1020,7 @@ abstract class Kimai_Database_Abstract {
      * @param $keymai
      * @return
      */
-    public abstract function user_loginSetKey($userId,$keymai);
+    public abstract function user_loginSetKey($userId, $keymai);
 
     /**
      * Save a new secure key for a customer to the database. This key is stored in the clients cookie and used
@@ -1030,7 +1030,7 @@ abstract class Kimai_Database_Abstract {
      * @param $keymai
      * @return
      */
-    public abstract function customer_loginSetKey($customerId,$keymai);
+    public abstract function customer_loginSetKey($customerId, $keymai);
 
     /**
      * Update the ban status of a user. This increments the ban counter.
@@ -1040,7 +1040,7 @@ abstract class Kimai_Database_Abstract {
      * @param bool $resetTime
      * @return
      */
-    public abstract function loginUpdateBan($userId,$resetTime = false);
+    public abstract function loginUpdateBan($userId, $resetTime = false);
 
 
     /**
@@ -1169,17 +1169,17 @@ abstract class Kimai_Database_Abstract {
                             break; //element is viewable, so we can stop here
                         }
                     }
-                    if(!$seen)
+                    if (!$seen)
                     {
                         $startvisibleIds[] = $allElement[$idField];
                     }
                 }
-                if(count($startvisibleIds) > 0)
+                if (count($startvisibleIds) > 0)
                 {
                     //2nd, find the invisible assigned elements and add them to the result array
-                    foreach($selectedIds as $selectedId)
+                    foreach ($selectedIds as $selectedId)
                     {
-                        if(in_array($selectedId, $startvisibleIds))
+                        if (in_array($selectedId, $startvisibleIds))
                         {
                             $resultIds[] = $selectedId;
                         }

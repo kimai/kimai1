@@ -31,7 +31,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   }
 
   // check if expense is too far in the past to allow editing (or deleting)
-  if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time()-$entry['timestamp'] > $kga['conf']['editLimit']) {
+  if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time() - $entry['timestamp'] > $kga['conf']['editLimit']) {
     $errors[''] = $kga['lang']['editLimitError'];
     return false;
   }
@@ -53,7 +53,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
   
   if (count($assignedOwnGroups) > 0) {
     $permissionName = 'ki_expenses-otherEntry-ownGroup-' . $action;
-    if ($database->checkMembershipPermission($kga['user']['userID'],$assignedOwnGroups, $permissionName)) {
+    if ($database->checkMembershipPermission($kga['user']['userID'], $assignedOwnGroups, $permissionName)) {
       return true;
     } else {
       Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
@@ -73,7 +73,7 @@ function expenseAccessAllowed($entry, $action, &$errors) {
 }
 
 
-include('private_db_layer_'.$kga['server_conn'].'.php');
+include('private_db_layer_' . $kga['server_conn'] . '.php');
 
 switch ($axAction) {
 
@@ -81,51 +81,51 @@ switch ($axAction) {
     // = Load expense data from DB and return it =
     // ===========================================
     case 'reload_exp':
-      $filters = explode('|',$axValue);
+      $filters = explode('|', $axValue);
       if ($filters[0] == "")
         $filterUsers = array();
       else
-        $filterUsers = explode(':',$filters[0]);
+        $filterUsers = explode(':', $filters[0]);
 
       $filterCustomers = array_map(function($customer) {
         return $customer['customerID'];
       }, $database->get_customers($kga['user']['groups']));
       if ($filters[1] != "")
-        $filterCustomers = array_intersect($filterCustomers, explode(':',$filters[1]));
+        $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
 
       $filterProjects = array_map(function($project) {
         return $project['projectID'];
       }, $database->get_projects($kga['user']['groups']));
       if ($filters[2] != "")
-        $filterProjects = array_intersect($filterProjects, explode(':',$filters[2]));
+        $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
 
       // if no userfilter is set, set it to current user
       if (isset($kga['user']) && count($filterUsers) == 0)
-        array_push($filterUsers,$kga['user']['userID']);
+        array_push($filterUsers, $kga['user']['userID']);
         
       if (isset($kga['customer']))
         $filterCustomers = array($kga['customer']['customerID']);
 
-      $view->expenses= get_expenses($in,$out,$filterUsers,$filterCustomers,$filterProjects,1);
+      $view->expenses = get_expenses($in, $out, $filterUsers, $filterCustomers, $filterProjects, 1);
       $view->total = Kimai_Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
 
-      $ann = expenses_by_user($in,$out,$filterUsers,$filterCustomers,$filterProjects);
+      $ann = expenses_by_user($in, $out, $filterUsers, $filterCustomers, $filterProjects);
       $ann = Kimai_Format::formatCurrency($ann);
       $view->user_annotations = $ann;
 
       // TODO: function for loops or convert it in template with new function
-      $ann = expenses_by_customer($in,$out,$filterUsers,$filterCustomers,$filterProjects);
+      $ann = expenses_by_customer($in, $out, $filterUsers, $filterCustomers, $filterProjects);
       $ann = Kimai_Format::formatCurrency($ann);
       $view->customer_annotations = $ann;
 
-      $ann = expenses_by_project($in,$out,$filterUsers,$filterCustomers,$filterProjects);
+      $ann = expenses_by_project($in, $out, $filterUsers, $filterCustomers, $filterProjects);
       $ann = Kimai_Format::formatCurrency($ann);
       $view->project_annotations = $ann;
 
       $view->activity_annotations = array();
 
       if (isset($kga['user']))
-        $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault')!=1;
+        $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
       else
         $view->hideComments = true;
 
@@ -140,7 +140,7 @@ switch ($axAction) {
       
       $data = expense_get($id);
 
-      expenseAccessAllowed($data,'delete',$errors);
+      expenseAccessAllowed($data, 'delete', $errors);
 
       if (count($errors) == 0) {
         expense_delete($id);
@@ -204,7 +204,7 @@ switch ($axAction) {
         }
 
         // convert to internal time format
-        $new_time = convert_time_strings($new,$new);
+        $new_time = convert_time_strings($new, $new);
         $data['timestamp'] = $new_time['in'];
 
         if (!is_numeric($data['projectID']))
@@ -213,7 +213,7 @@ switch ($axAction) {
         if (!is_numeric($data['multiplier']) || $data['multiplier'] <= 0)
           $errors['multiplier'] = $kga['lang']['errorMessages']['multiplierNegative'];
 
-        expenseAccessAllowed($data,$action,$errors);
+        expenseAccessAllowed($data, $action, $errors);
 
         if (count($errors) > 0) {
           echo json_encode(array('errors'=>$errors));
@@ -221,9 +221,9 @@ switch ($axAction) {
         }
 
         if ($id)
-            expense_edit($id,$data);
+            expense_edit($id, $data);
         else
-            expense_create($kga['user']['userID'],$data);
+            expense_create($kga['user']['userID'], $data);
 
         echo json_encode(array('errors'=>$errors));
     break;

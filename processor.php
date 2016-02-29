@@ -53,7 +53,7 @@ $view->kga = $kga;
 // = processing login and displaying either login screen or errors =
 // =================================================================
 
-switch($_REQUEST['a'])
+switch ($_REQUEST['a'])
 {
 
     case "forgotPassword":
@@ -61,7 +61,7 @@ switch($_REQUEST['a'])
 
         $is_customer = $database->is_customer_name($name);
 
-        Kimai_Logger::logfile("password reset: " . $name. ($is_customer?" as customer":" as user"));
+        Kimai_Logger::logfile("password reset: " . $name . ($is_customer ? " as customer" : " as user"));
 
         if ($is_customer) {
           $id = $database->customer_nameToID($name);
@@ -72,7 +72,7 @@ switch($_REQUEST['a'])
           $database->customer_edit($id, array('passwordResetHash' => $passwordResetHash));
 
           $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-          $url = ($ssl? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name). '&key=' . $passwordResetHash;
+          $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
 
           $message = $kga['lang']['passwordReset']['mailMessage'];
           $message = str_replace('%{URL}', $url, $message);
@@ -119,7 +119,7 @@ switch($_REQUEST['a'])
         }
 
         $data = array();
-        $data['password'] = md5($kga['password_salt'].$password.$kga['password_salt']);
+        $data['password'] = md5($kga['password_salt'] . $password . $kga['password_salt']);
         $data['passwordResetHash'] = null;
         $database->customer_edit($id, $data);
         echo json_encode(array(

@@ -313,7 +313,7 @@ return array(
     'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
     'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
     'credits' => <<<EOF
-        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow und andere...<br />
+        Torsten Höltge, Severin Leonhardt, Kevin Papst, Simon Schaufelberger, Oleg Britvin, Martin Klemkow und andere...<br />
         
         <br />
         
@@ -325,32 +325,26 @@ return array(
         <a href='http://www.kimai.org' target='_blank'>offizielle Website</a> | 
         <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
         <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
         <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
         
         <br /><br />
 
         Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="http://forum.kimai.org" title="Kimai Forum">Forum</a> freuen.
         Außerdem finden sie dort einen speziellen "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">freundliche Hacks</a>" Bereich.
-        Die neueste Entwickler Version kann <a href="https://github.com/kimai/kimai/archive/master.zip">hier</a> (nur für Testzwecke!) heruntergeladen werden.
+        Die neueste Entwickler Version kann für Testzwecke <a href="https://github.com/kimai/kimai/archive/master.zip">hier</a> heruntergeladen werden.
         
         <br /><br />
         
-        Bitte unterstützen Sie die weiter Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a>
+        Bitte unterstützen Sie die weitere Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a>
         oder durch <a href="https://github.com/kimai/kimai/tree/master/core/language">Übersetzungen</a>.
 
-        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben kontaktieren Sie uns im Forum.
-        Oder besser: Erstellen Sie ein <a href="https://github.com/kimai/kimai/issues">Ticket</a>!<br /><br />
+        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben, erstellen Sie bitte ein <a href="https://github.com/kimai/kimai/issues">Ticket</a>.<br /><br />
 
         <strong>Weiteren Dank für Ihre Unterstützung an:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
         Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-        <strong>Besonderen Dank an:</strong> Alle Betatester, welche viel zu viele sind, um Sie alle zu nenne - Ihr wisst wer ihr seid! ;)<br /><br />
+        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso, RRZE (Regionales Rechenzentrum Erlangen) und alle Betatester!<br /><br />
 
         Die invoice extension verwendet die PclZip Library, welche man unter <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a> findet.<br/><br/>
-
-        Version 0.8 entstand mit freundlicher Unterstützung des RRZE (Regionales Rechenzentrum Erlangen).
 EOF
     ,
 

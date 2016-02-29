@@ -42,7 +42,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
 checkDBversion("..");
 
-$extensions = new Kimai_Extensions($kga, WEBROOT.'/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
@@ -69,30 +69,30 @@ else {
 // =======================================
 // = Display date and time in the header =
 // =======================================
-$wd = $kga['lang']['weekdays_short'][date("w",time())];
+$wd       = $kga['lang']['weekdays_short'][date("w", time())];
 
 $dp_start = 0;
 if ($kga['calender_start'] != "") {
-  $dp_start = $kga['calender_start'];
+    $dp_start = $kga['calender_start'];
 } else if (isset($kga['user'])) {
-  $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
+    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date("d/m/Y",time());
+$dp_today = date("d/m/Y", time());
 
 $view->dp_start = $dp_start;
 $view->dp_today = $dp_today;
 
 if (isset($kga['customer'])) {
-  $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID'])));
+    $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID'])));
 } else {
-  $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $kga['user']['userID']));
+    $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $kga['user']['userID']));
 }
 
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker ="";
+$localized_DatePicker = "";
 
 $view->weekdays_array = sprintf(
     "['%s','%s','%s','%s','%s','%s','%s']\n",
@@ -151,7 +151,7 @@ $view->months_short_array = sprintf(
 $view->current_timer_hour  = $current_timer['hour'];
 $view->current_timer_min   = $current_timer['min'];
 $view->current_timer_sec   = $current_timer['sec'];
-$view->current_timer_start = $current_timer['all']?$current_timer['all']:time();
+$view->current_timer_start = $current_timer['all'] ? $current_timer['all'] : time();
 $view->current_time        = time();
 
 $view->timeframe_in = $in;
@@ -180,7 +180,7 @@ $view->lang_checkGlobalRoleName = $kga['lang']['checkGlobalRoleName'];
 $view->lang_checkMembershipRoleName = $kga['lang']['checkMembershipRoleName'];
 
 $customerData = array('customerID'=>false, 'name'=>'');
-$projectData  = array('projectID'=>false,  'name'=>'');
+$projectData  = array('projectID'=>false, 'name'=>'');
 $activityData = array('activityID'=>false, 'name'=>'');
 
 if (!isset($kga['customer'])) {

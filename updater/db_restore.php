@@ -57,7 +57,7 @@ function exec_query($query) {
 
 if (isset($_REQUEST['submit']) && $authenticated)
 {
-	$version_temp  = $database->get_DBversion();
+	$version_temp = $database->get_DBversion();
 	$versionDB  = $version_temp[0];
 	$revisionDB = $version_temp[1];
 	$p = $kga['server_prefix'];
@@ -78,10 +78,10 @@ if (isset($_REQUEST['submit']) && $authenticated)
 		}
 		$prefix_length = strlen($p);
 
-		foreach($tables as $row) {
+		foreach ($tables as $row) {
 			if ((substr($row[0], 0, $prefix_length) == $p) && (substr($row[0], 0, 10) != "kimai_bak_")) {
 				$backupTable = "kimai_bak_" . $backup_stamp . "_" . $row[0];
-				$query = "CREATE TABLE ". $backupTable . " LIKE " . $row[0];
+				$query = "CREATE TABLE " . $backupTable . " LIKE " . $row[0];
 				exec_query($query);
 
 				$query = "INSERT INTO " . $backupTable . " SELECT * FROM " . $row[0];
@@ -112,16 +112,16 @@ if (isset($_REQUEST['submit']) && $authenticated)
 		{
 			if ((substr($row[0], 0, 10) == "kimai_bak_"))
 			{
-				if ( in_array(substr($row[0], 10, 10),$dates) )
+				if (in_array(substr($row[0], 10, 10), $dates))
 				{
-					$arr2[] = "DROP TABLE `".$row[0]."`;";	
+					$arr2[] = "DROP TABLE `" . $row[0] . "`;";	
 				}
 			}
 		}
 
 		if (is_object($conn)) 
 		{
-			foreach($arr2 AS $row)
+			foreach ($arr2 AS $row)
 			{
 				$success = $conn->Query($row);
 				if (!$success)
@@ -208,9 +208,9 @@ if ($authenticated && isset($_REQUEST['submit']))
 {
 	if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
 	{
-		if (count($_REQUEST['dates'])>1) 
+		if (count($_REQUEST['dates']) > 1) 
 		{
-			echo "<h1 class='fail'>".$kga['lang']['backup'][5]."</h1>";
+			echo "<h1 class='fail'>" . $kga['lang']['backup'][5] . "</h1>";
 		}
 		else
 		{
@@ -227,7 +227,7 @@ if ($authenticated && isset($_REQUEST['submit']))
 
 			foreach ($tables as $row)
 			{
-				if ( (substr($row[0], 0, 10) == "kimai_bak_"))
+				if ((substr($row[0], 0, 10) == "kimai_bak_"))
 				{
 					if (substr($row[0], 10, 10) == $restoreDate)
 					{
@@ -238,21 +238,21 @@ if ($authenticated && isset($_REQUEST['submit']))
 				}
 			}
 
-			$i=0;
-			foreach($arr2 AS $newTable)
+			$i = 0;
+			foreach ($arr2 AS $newTable)
 			{
-				$query = "DROP TABLE ". $arr2[$i];
-				exec_query($query,1);
+				$query = "DROP TABLE " . $arr2[$i];
+				exec_query($query, 1);
 
 				$query = "CREATE TABLE " . $newTable . " LIKE " . $arr[$i];
-				exec_query($query,1);
+				exec_query($query, 1);
 				$query = "INSERT INTO " . $newTable . " SELECT * FROM " . $arr[$i];
-				exec_query($query,1);
+				exec_query($query, 1);
 				$i++;
 			}
 
-			$date = @date ("d. M Y, H:i:s", $restoreDate);
-			echo "<h1 class='message'>" .$kga['lang']['backup'][6]. " ".$date."<br>" . $kga['lang']['backup'][7] ."</h1>";
+			$date = @date("d. M Y, H:i:s", $restoreDate);
+			echo "<h1 class='message'>" . $kga['lang']['backup'][6] . " " . $date . "<br>" . $kga['lang']['backup'][7] . "</h1>";
 		}
 	}
 }
@@ -272,29 +272,29 @@ else
 
 	$query = ("SHOW TABLES;");
 
-	$result_backup=$database->queryAll($query);
+	$result_backup = $database->queryAll($query);
 
 	$arr = array();
 	$arr2 = array();
 
 	foreach ($result_backup as $row)
 	{
-		if ( (substr($row[0], 0, 10) == "kimai_bak_"))
+		if ((substr($row[0], 0, 10) == "kimai_bak_"))
 		{
 			$time = substr($row[0], 10, 10);
-			$arr[]=$time;
+			$arr[] = $time;
 		}
 	}
 
-	$neues_array = array_unique ($arr);
+	$neues_array = array_unique($arr);
 
-	foreach($neues_array AS $date)
+	foreach ($neues_array AS $date)
 	{
-		$value = @date ("d. M Y - H:i:s", $date);
+		$value = @date("d. M Y - H:i:s", $date);
 
-		if ( @date("dMY", $date) == @date("dMY", time()) )
+		if (@date("dMY", $date) == @date("dMY", time()))
 		{
-			$label = $kga['lang']['heute'] . @date (" - H:i:s", $date);
+			$label = $kga['lang']['heute'] . @date(" - H:i:s", $date);
 		}
 		else
 		{

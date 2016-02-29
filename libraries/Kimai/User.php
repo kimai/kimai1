@@ -90,7 +90,7 @@ class Kimai_User
         }
 
         // set all values
-        foreach($settings as $key => $value) {
+        foreach ($settings as $key => $value) {
             if (property_exists($this, $key)) {
                 $this->$key = $value;
             }

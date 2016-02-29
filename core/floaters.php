@@ -39,7 +39,7 @@ switch ($axAction) {
      * set from 2006 to the current year.
      */
     case 'credits':
-        $view->devtimespan = '2006-'.date('y');
+        $view->devtimespan = '2006-' . date('y');
 
         echo $view->render("floaters/credits.php");
     break;
@@ -62,13 +62,13 @@ switch ($axAction) {
         $skins = array();
         $langs = array();
 
-        $allSkins = glob(__DIR__."/../skins/*", GLOB_ONLYDIR);
-        foreach($allSkins as $skin) {
+        $allSkins = glob(__DIR__ . "/../skins/*", GLOB_ONLYDIR);
+        foreach ($allSkins as $skin) {
             $name = basename($skin);
             $skins[$name] = $name;
         }
 
-        foreach(Kimai_Translations::langs() as $lang) {
+        foreach (Kimai_Translations::langs() as $lang) {
             $langs[$lang] = $lang;
         }
 
@@ -76,7 +76,7 @@ switch ($axAction) {
         $view->langs = $langs;
         $view->timezones = timezoneList();
         $view->user = $kga['user'];
-        $view->rate = $database->get_rate($kga['user']['userID'],NULL,NULL);
+        $view->rate = $database->get_rate($kga['user']['userID'], NULL, NULL);
 
         echo $view->render("floaters/preferences.php");
     break;
@@ -89,30 +89,30 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->customer_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Customer', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
 
             $data = $database->customer_get_data($id);
             if ($data) {
-                $view->name      = $data['name'    ];
-                $view->comment   = $data['comment' ];
+                $view->name      = $data['name'];
+                $view->comment   = $data['comment'];
                 $view->password  = $data['password'];
                 $view->timezone  = $data['timezone'];
-                $view->company   = $data['company' ];
-                $view->vat       = $data['vat'     ];
-                $view->contact   = $data['contact' ];
-                $view->street    = $data['street'  ];
-                $view->zipcode   = $data['zipcode' ];
-                $view->city      = $data['city'    ];
-                $view->phone     = $data['phone'   ];
-                $view->fax       = $data['fax'     ];
-                $view->mobile    = $data['mobile'  ];
-                $view->mail      = $data['mail'    ];
+                $view->company   = $data['company'];
+                $view->vat       = $data['vat'];
+                $view->contact   = $data['contact'];
+                $view->street    = $data['street'];
+                $view->zipcode   = $data['zipcode'];
+                $view->city      = $data['city'];
+                $view->phone     = $data['phone'];
+                $view->fax       = $data['fax'];
+                $view->mobile    = $data['mobile'];
+                $view->mail      = $data['mail'];
                 $view->homepage  = $data['homepage'];
-                $view->visible   = $data['visible' ];
-                $view->filter    = $data['filter'  ];
+                $view->visible   = $data['visible'];
+                $view->filter    = $data['filter'];
                 $view->selectedGroups = $database->customer_get_groupIDs($id);
                 $view->id = $id;
             }
@@ -123,14 +123,14 @@ switch ($axAction) {
 
         $view->timezones = timezoneList();
 
-        $view->groups = makeSelectBox("group",$kga['user']['groups']);
+        $view->groups = makeSelectBox("group", $kga['user']['groups']);
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
             $view->selectedGroups = array();
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
-               if ($database->membership_role_allows($membershipRoleID,'core-user-add'))
+               if ($database->membership_role_allows($membershipRoleID, 'core-user-add'))
                  $view->selectedGroups[] = $group;
             }
             $view->id = 0;
@@ -147,28 +147,28 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->project_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Project', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) die();
  
-        $view->customers = makeSelectBox("customer",$kga['user']['groups'],isset($data)?$data['customerID']:null);
-        $view->groups = makeSelectBox("group",$kga['user']['groups']);
+        $view->customers = makeSelectBox("customer", $kga['user']['groups'], isset($data) ? $data['customerID'] : null);
+        $view->groups = makeSelectBox("group", $kga['user']['groups']);
         $view->allActivities = $database->get_activities($kga['user']['groups']);
 
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
-                $view->name         = $data['name'        ];
-                $view->comment      = $data['comment'     ];
-                $view->visible      = $data['visible'     ];
-                $view->internal     = $data['internal'    ];
-                $view->filter       = $data['filter'      ];
-                $view->budget       = $data['budget'      ];
-                $view->effort       = $data['effort'      ];
-                $view->approved     = $data['approved' 	 ];
-                $view->selectedCustomer  = $data['customerID'];
-                $view->selectedActivities    = $database->project_get_activities($id);
+                $view->name         = $data['name'];
+                $view->comment      = $data['comment'];
+                $view->visible      = $data['visible'];
+                $view->internal     = $data['internal'];
+                $view->filter       = $data['filter'];
+                $view->budget       = $data['budget'];
+                $view->effort       = $data['effort'];
+                $view->approved     = $data['approved'];
+                $view->selectedCustomer = $data['customerID'];
+                $view->selectedActivities = $database->project_get_activities($id);
                 $view->defaultRate = $data['defaultRate'];
-                $view->myRate      = $data['myRate'     ];
-                $view->fixedRate   = $data['fixedRate'  ];
+                $view->myRate      = $data['myRate'];
+                $view->fixedRate   = $data['fixedRate'];
                 $view->selectedGroups = $database->project_get_groupIDs($id);
                 $view->id = $id;
 
@@ -190,7 +190,7 @@ switch ($axAction) {
             $view->selectedGroups = array();
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
-               if ($database->membership_role_allows($membershipRoleID,'core-project-add'))
+               if ($database->membership_role_allows($membershipRoleID, 'core-project-add'))
                  $view->selectedGroups[] = $group;
             }
 
@@ -209,18 +209,18 @@ switch ($axAction) {
         if ($id)
           $oldGroups = $database->activity_get_groupIDs($id);
 
-        if (!checkGroupedObjectPermission('Activity', $id?'edit':'add', $oldGroups, $oldGroups)) die();
+        if (!checkGroupedObjectPermission('Activity', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) die();
 
         if ($id) {
             $data = $database->activity_get_data($id);
             if ($data) {
-                $view->name         = $data['name'        ];
-                $view->comment      = $data['comment'     ];
-                $view->visible      = $data['visible'     ];
-                $view->filter       = $data['filter'      ];
+                $view->name         = $data['name'];
+                $view->comment      = $data['comment'];
+                $view->visible      = $data['visible'];
+                $view->filter       = $data['filter'];
                 $view->defaultRate  = $data['defaultRate'];
-                $view->myRate       = $data['myRate'     ];
-                $view->fixedRate    = $data['fixedRate'  ];
+                $view->myRate       = $data['myRate'];
+                $view->fixedRate    = $data['fixedRate'];
                 $view->selectedGroups = $database->activity_get_groups($id);
                 $view->selectedProjects = $database->activity_get_projects($id);
                 $view->id = $id;
@@ -229,17 +229,17 @@ switch ($axAction) {
         }
 
         // Create a <select> element to chosse the groups.
-        $view->groups = makeSelectBox("group",$kga['user']['groups']);
+        $view->groups = makeSelectBox("group", $kga['user']['groups']);
 
         // Create a <select> element to chosse the projects.
-        $view->projects = makeSelectBox("project",$kga['user']['groups']);
+        $view->projects = makeSelectBox("project", $kga['user']['groups']);
 
         // Set defaults for a new project.
         if (!$id) {
             $view->selectedGroups = array();
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
-               if ($database->membership_role_allows($membershipRoleID,'core-activity-add'))
+               if ($database->membership_role_allows($membershipRoleID, 'core-activity-add'))
                  $view->selectedGroups[] = $group;
             }
             $view->id = 0;
