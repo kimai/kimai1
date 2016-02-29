@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 
 $kga = array();
 
-require(dirname(__FILE__) . '/version.php');
+require dirname(__FILE__) . '/version.php';
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -34,13 +34,13 @@ require(dirname(__FILE__) . '/version.php');
                                         // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
                                         // DON'T BLAME US - YOU HAVE BEEN WARNED!
 
-$kga['logfile_lines']      = 100; // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
-$kga['delete_logfile']     = 1; // can the logfile be cleaned via debug_ext?
+$kga['logfile_lines']      = 100;       // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
+$kga['delete_logfile']     = 1;         // can the logfile be cleaned via debug_ext?
 
-$kga['utf8']               = 0; // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case,
+$kga['utf8']               = 0;         // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case,
                                         // depends on server settings
 
-$kga['calender_start']     = "0"; // here you can set a custom start day for the date-picker.
+$kga['calender_start']     = "0";       // here you can set a custom start day for the date-picker.
                                         // if this is not set the day of the users first day in the system will be taken
                                         // Format: ... = "DD/MM/YYYY";
 
