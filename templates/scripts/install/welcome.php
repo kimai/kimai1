@@ -19,7 +19,7 @@
                         <div class="txt">
                             <input type="checkbox" name="accept" value="1" style="width:15px;height:15px;display:inline;">
                             <?php if ($this->disagreedGPL):?><strong style="color:red"><?php endif; ?> I accept the terms of the GNU GPL Version 3<?php if ($this->disagreedGPL):?></strong><?php endif; ?>
-                            <?php if ($this->disagreedGPL): ?><br /><img src="grfx/caution_small.png" alt="Caution" /> <span style="color:red">You have to accept the the terms!</span><?php endif; ?>
+                            <?php if ($this->disagreedGPL): ?><br /><img src="installer/grfx/caution_small.png" alt="Caution" /> <span style="color:red">You have to accept the the terms!</span><?php endif; ?>
                         </div>
                     </div>
                     <button type="submit">Install</button>
