@@ -65,7 +65,7 @@ abstract class Kimai_Auth_Abstract
     }
 
     /**
-     * @return array
+     * @return string
      */
     protected function getKga()
     {
@@ -146,9 +146,10 @@ abstract class Kimai_Auth_Abstract
 
         $memberships = $database->membership_roles();
         $membership = $memberships[0]['membershipRoleID'];
-        foreach ($memberships as $membership)
-          if ($membership['name'] == 'User')
+        foreach ($memberships as $membership) {
+                  if ($membership['name'] == 'User')
             $membership = $membership['membershipRoleID'];
+        }
 
         return array($group => $membership);
     }
@@ -165,9 +166,10 @@ abstract class Kimai_Auth_Abstract
         $roles = $database->global_roles();
 
         $globalRoleID = $roles[0]['globalRoleID'];
-        foreach ($roles as $role)
-          if ($role['name'] == 'User')
+        foreach ($roles as $role) {
+                  if ($role['name'] == 'User')
             $globalRoleID = $role['globalRoleID'];
+        }
 
         return $globalRoleID;
     }

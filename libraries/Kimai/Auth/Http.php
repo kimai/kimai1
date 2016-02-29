@@ -66,7 +66,9 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
     $userId = false;
 
     // No autologin if not allowed or if no remote user authorized by web server
-    if (!$this->HTAUTH_ALLOW_AUTOLOGIN) return false;
+    if (!$this->HTAUTH_ALLOW_AUTOLOGIN) {
+        return false;
+    }
     $check_username = "";
     if ($this->HTAUTH_REMOTE_USER) {
 	if (isset($_SERVER['REMOTE_USER'])) {
@@ -83,7 +85,9 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract {
 	    $check_username = $_SERVER["PHP_AUTH_USER"];
 	    }
 	}
-    if ($check_username == "" || $check_username == false) return false;
+    if ($check_username == "" || $check_username == false) {
+        return false;
+    }
 
     // User is authenticated by web server. Does the user exist in Kimai yet?
     global $kga;

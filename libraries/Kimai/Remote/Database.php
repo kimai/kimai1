@@ -212,6 +212,7 @@ class Kimai_Remote_Database {
    * @param Array list of IDs of customers to include
    * @param Array list of IDs of projects to include
    * @param Array list of IDs of activities to include
+   * @param integer|null $users
    * @return Array list of where clauses to include in the query
    */
   public function expenses_widthhereClausesFromFilters($users, $customers, $projects) {

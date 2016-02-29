@@ -22,7 +22,9 @@
  * will be redirected to core/kimai.php.
  */
 
-if (!isset($_REQUEST['a'])) $_REQUEST['a'] = '';
+if (!isset($_REQUEST['a'])) {
+    $_REQUEST['a'] = '';
+}
 
 if (!isset($_POST['name']) || is_array($_POST['name'])) {
     $name = ""; 
@@ -84,15 +86,13 @@ switch ($_REQUEST['a'])
             'message' => $kga['lang']['passwordReset']['mailConfirmation']
           ));
 
-        }
-        else
+        } else
         {
           if (!method_exists($authPlugin, "forgotPassword")) {
             echo json_encode(array(
               'message' => $kga['lang']['passwordReset']['notSupported']
             ));
-          }
-          else {
+          } else {
             echo json_encode(array(
               'message' => $authPlugin->forgotPassword($name)
             ));
@@ -126,8 +126,7 @@ switch ($_REQUEST['a'])
           "message" => $kga['lang']['passwordReset']['success'],
           "showLoginLink" => true,
         ));
-      }
-      else {
+      } else {
         echo json_encode($authPlugin->resetPassword($name, $password, $key));
       }
     break;

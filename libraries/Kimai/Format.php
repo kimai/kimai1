@@ -134,6 +134,7 @@ class Kimai_Format
      * length when copying data to a place where you can only store or display
      * a limited number of characters, then it will append “…” to it showing
      * that some characters were removed from the original entry.
+     * @param integer $length
      */
     public static function addEllipsis($string, $length, $end = '…')
     {
@@ -207,7 +208,6 @@ class Kimai_Format
      *
      * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
      *
-     * @param string $date shortcut time
      * @return string
      * @author th
      */
