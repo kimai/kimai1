@@ -272,16 +272,22 @@ function get_cookie($cookie_name, $default = null) {
     return isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : $default;
 }
 
-// based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
-function createPassword($length) {
-        $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $i = 0;
-        $password = "";
-        while ($i <= $length) {
-                $password .= $chars{mt_rand(0, strlen($chars) - 1)};
-                $i++;
-        }
-        return $password;
+/**
+ * based on http://wiki.jumba.com.au/wiki/PHP_Generate_random_password
+ *
+ * @param $length
+ * @return string
+ */
+function createPassword($length)
+{
+    $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $i = 0;
+    $password = "";
+    while ($i <= $length) {
+        $password .= $chars{mt_rand(0,strlen($chars)-1)};
+        $i++;
+    }
+    return $password;
 }
 
 function write_config_file($database, $hostname, $username, $password, $db_layer, $db_type, $prefix, $lang, $salt, $timezone = null)
@@ -308,8 +314,9 @@ function write_config_file($database, $hostname, $username, $password, $db_layer
     }
 
     // fetch skin from global config with "standard" fallback
-    $skin = !empty($kga['skin']) ? $kga['skin'] : 'standard';
-    $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : 'array(0,50,100)';
+    $skin = !empty($kga['skin']) ? $kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
+    $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
+    $authenticator = !empty($kga['authenticator']) ? $kga['authenticator'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
 
 $config = <<<EOD
 <?php
@@ -344,6 +351,7 @@ $config = <<<EOD
 \$password_salt   = "$salt";
 \$defaultTimezone = $timezone;
 \$skin            = "$skin";
+\$authenticator   = "$authenticator";
 \$billable        = $billable;
 
 EOD;
