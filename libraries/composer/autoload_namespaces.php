@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Zend_' => array($vendorDir . '/zendframework/zendframework1/library'),
-    'Kimai_' => array($baseDir . '/library'),
+    'TCPDF' => array($vendorDir . '/tcpdf/tcpdf.php'),
+    'Kimai_' => array($vendorDir),
 );

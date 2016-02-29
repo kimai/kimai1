@@ -44,7 +44,7 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
      */
     protected function getSkinName()
     {
-        $skin = 'standard';
+        $skin = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
 
         if (isset($this->view->kga['conf']['skin'])) {
             $skin = $this->view->kga['conf']['skin'];
