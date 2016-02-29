@@ -6,6 +6,7 @@ filter:
     - 'extensions/ki_export/templates/scripts/*'
     - 'extensions/ki_invoice/templates/scripts/*'
     - 'extensions/ki_timesheets/templates/scripts/*'
+    - 'libraries/composer/*'
     - 'libraries/tcpdf/*'
     - 'libraries/TinyButStrong/*'
     - 'libraries/zendframework/*'
