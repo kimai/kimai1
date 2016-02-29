@@ -40,7 +40,7 @@ coding_style:
   php:
     indentation:
       general:
-        size: 1
+        size: 2
     spaces:
       other:
         after_type_cast: false
