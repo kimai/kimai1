@@ -75,15 +75,15 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
 
         $userId = $this->database->user_name2id($check_username);
-        if ($userId === false)  {
+        if ($userId === false) {
             // User does not exist (yet)
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
-		$userId   = $this->database->user_create(array(
+		$userId = $this->database->user_create(array(
 			'name' => $check_username,
 			'globalRoleID' => $this->getDefaultGlobalRole(),
 			'active' => 1
 		));
-                $this->database->setGroupMemberships($userId,array($this->getDefaultGroups()));
+                $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down
                 $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));

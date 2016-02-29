@@ -381,10 +381,10 @@ function get_timeframe() {
     /* database has no entries? */
     $mon = date("n"); $day = date("j"); $Y = date("Y");
     if (!$timeframe[0]) {
-        $timeframe[0] = mktime(0,0,0,$mon,1,$Y);
+        $timeframe[0] = mktime(0, 0, 0, $mon, 1, $Y);
     }
     if (!$timeframe[1]) {
-        $timeframe[1] = mktime(23,59,59,$mon,$day,$Y);
+        $timeframe[1] = mktime(23, 59, 59, $mon, $day, $Y);
     }
     
     return $timeframe;
@@ -394,8 +394,8 @@ function get_timeframe() {
  * @param string $haystack
  * @param string $needle
  */
-function endsWith($haystack,$needle) {
-  return strcmp(substr($haystack, strlen($haystack)-strlen($needle)),$needle)===0;
+function endsWith($haystack, $needle) {
+  return strcmp(substr($haystack, strlen($haystack) - strlen($needle)), $needle) === 0;
 }
 
 /**

@@ -19,17 +19,17 @@
  * will be redirected to core/kimai.php.
  */
 
-if ( ! isset($_REQUEST['a'])) {
+if (!isset($_REQUEST['a'])) {
     $_REQUEST['a'] = '';
 }
 
-if ( ! isset($_POST['name']) || is_array($_POST['name'])) {
+if (!isset($_POST['name']) || is_array($_POST['name'])) {
     $name = "";
 } else {
     $name = $_POST['name'];
 }
 
-if ( ! isset($_POST['password']) || is_array($_POST['password'])) {
+if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = "";
 } else {
     $password = $_POST['password'];
@@ -49,7 +49,7 @@ $view->setBasePath(WEBROOT . '/templates');
 // = authentication method =
 // =========================
 $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-if ( ! class_exists($authClass)) {
+if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 }
 $authPlugin = new $authClass($database, $kga);
@@ -90,7 +90,7 @@ if ($_REQUEST['a'] == "logout") {
 // ===========================
 // = User already logged in? =
 // ===========================
-if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != '0' && $_COOKIE['kimai_key'] != '0' && ! $_REQUEST['a'] == "logout") {
+if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != '0' && $_COOKIE['kimai_key'] != '0' && !$_REQUEST['a'] == "logout") {
     if ($database->get_seq($_COOKIE['kimai_user']) == $_COOKIE['kimai_key']) {
         header("Location: core/kimai.php");
         exit;
@@ -100,7 +100,7 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
 // ======================================
 // = if possible try an automatic login =
 // ======================================
-if ( ! $justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
+if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
     if ($userId === false) {
         $userId = $database->user_create(array(
             'name' => $name,
@@ -171,7 +171,7 @@ switch ($_REQUEST['a']) {
                 // global configuration must be present from now on
                 $database->get_global_config();
 
-                if ( ! isset($kga['conf']) || ! isset($kga['conf']['loginTries']) || ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
+                if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) || ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
 
                     // login tries not used up OR bantime is over => grant access
 
