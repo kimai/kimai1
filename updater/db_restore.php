@@ -1,9 +1,8 @@
 <?php
-
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +23,7 @@
  * snapshots.
  */ 
 
-require('includes/basics.php');
+require_once '../includes/basics.php';
 
 if (isset($_REQUEST['submit']) &&
 	isset($_REQUEST['salt']) &&
@@ -142,7 +141,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 	<title>Kimai Backup Restore Utility</title>
 	<style type="text/css" media="screen">
 		body {
-			background: #46E715 url('grfx/ki_twitter_bg.jpg') no-repeat;
+			background: #46E715 url('ki_twitter_bg.jpg') no-repeat;
 			font-family: sans-serif;
 			color:#333;
 		}
@@ -151,7 +150,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 		}
 		div.warn {
 			padding:5px;
-			background-image: url('skins/standard/grfx/floaterborder.png');
+			background-image: url('../skins/standard/grfx/floaterborder.png');
 			color:red;
 			font-weight:bold;
 			text-align:center;
@@ -320,7 +319,7 @@ EOD;
 ?>
 </form>
 <br/>
-<a href="index.php">Login</a>
+<a href="../index.php">Login</a>
 <p class="caution"><?php echo $kga['lang']['backup'][9]; ?></p>
 </div>
 </body>
