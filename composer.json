@@ -22,15 +22,14 @@
     },
     "autoload": {
         "classmap" : [
-            "libraries/TinyButStrong",
-            "libraries/Kimai"
+            "libraries/TinyButStrong"
         ],
         "psr-0": {
-            "Kimai_": "library/"
+            "Kimai_": "libraries/",
+            "TCPDF": "libraries/tcpdf/tcpdf.php"
         },
         "files": [
-            "libraries/mysql.class.php",
-            "libraries/tcpdf/tcpdf.php"
+            "libraries/mysql.class.php"
         ]
     },
     "include-path": [
