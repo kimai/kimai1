@@ -38,7 +38,7 @@ class Kimai_Update_Version
      *
      * @param $version
      * @param $revision
-     * @return bool
+     * @return integer
      */
     public function compare($version, $revision = null)
     {

@@ -80,8 +80,8 @@ function exec_query($query, $errorProcessing = true, $displayQuery = null)
 }
 
 /**
- * @param $level
- * @param $text
+ * @param string $level
+ * @param string $text
  * @param string $errorInfo
  */
 function printLine($level, $text, $errorInfo = '')

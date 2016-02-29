@@ -22,7 +22,9 @@
  * will be redirected to core/kimai.php.
  */
 
-if (!isset($_REQUEST['a'])) $_REQUEST['a'] = '';
+if (!isset($_REQUEST['a'])) {
+    $_REQUEST['a'] = '';
+}
 
 if (!isset($_REQUEST['name']) || is_array($_REQUEST['name'])) {
     $name = ""; 
@@ -62,8 +64,7 @@ if ($is_customer) {
   $id = $database->customer_nameToID($name);
   $customer = $database->customer_get_data($id);
   $keyCorrect = $key === $customer['passwordResetHash'];
-}
-else {
+} else {
   $id = $database->user_name2id($name);
   $user = $database->user_get_data($id);
   $keyCorrect = $key === $user['passwordResetHash'];

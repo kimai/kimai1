@@ -118,8 +118,9 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
 	            foreach ($customers as $customer) {
 	                if ($customer['visible']) {
 	                    $sel[$customer['customerID']] = $customer['name'];
-	                    if ($selection == $customer['customerID'])
-	                      $selectionFound = true;
+	                    if ($selection == $customer['customerID']) {
+	                    	                      $selectionFound = true;
+	                    }
 	                }
 	            }
             }
@@ -131,8 +132,10 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
 
         case 'group':
             $groups = $database->get_groups();
-            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
-              $groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
+                          $groups = array_filter($groups, function($group) {global $kga;
+            }
+            return array_search($group['groupID'], $kga['user']['groups']) !== false; });
 
             foreach ($groups as $group) {
                 if ($includeDeleted || !$group['trash']) {
@@ -283,7 +286,7 @@ function createPassword($length)
     $i = 0;
     $password = "";
     while ($i <= $length) {
-        $password .= $chars{mt_rand(0,strlen($chars)-1)};
+        $password .= $chars{mt_rand(0, strlen($chars) - 1)};
         $i++;
     }
     return $password;
@@ -441,7 +444,7 @@ function getRequestDecimal($value) {
     if (trim($value) != '') {
         return (double)str_replace($kga['conf']['decimalSeparator'], '.', $value);
     }
-    return NULL;
+    return null;
 }
 
 /**
@@ -460,7 +463,9 @@ function getRequestDecimal($value) {
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups) {
   global $database, $kga;
 
-  if (!isset($kga['user'])) return false;
+  if (!isset($kga['user'])) {
+      return false;
+  }
 
   $assignedOwnGroups   = array_intersect($oldGroups, $database->getGroupMemberships($kga['user']['userID']));
   $assignedOtherGroups = array_diff($oldGroups, $database->getGroupMemberships($kga['user']['userID']));
@@ -546,11 +551,13 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
 function coreObjectActionAllowed($objectTypeName, $action) {
   global $database, $kga;
 
-  if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action"))
-   return true;
+  if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action")) {
+     return true;
+  }
 
-  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'], "core-$objectTypeName-$action", 'any'))
-    return true;
+  if ($database->checkMembershipPermission($kga['user']['userID'], $kga['user']['groups'], "core-$objectTypeName-$action", 'any')) {
+      return true;
+  }
 
   return false;
 }

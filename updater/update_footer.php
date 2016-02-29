@@ -67,7 +67,7 @@ if (isset($new_passwords))
     ?>
     <br/><br/>
     <script type="text/javascript">
-        $("#important_message").append("<?php echo $kga['lang']['updater'][120] . ' <br/>';?>");
+        $("#important_message").append("<?php echo $kga['lang']['updater'][120] . ' <br/>'; ?>");
         $("#important_message").show();
     </script>
     <div class="important_block_head"> <?php echo $kga['lang']['updater'][110]; ?>:</div>

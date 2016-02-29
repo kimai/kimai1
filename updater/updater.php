@@ -43,7 +43,7 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0)
 {
     exitUpdater(
         'PHP version outdated',
-        'You are using <b>PHP '.phpversion().'</b> but Kimai requires at least <b>PHP '.$min_php_version.'</b>',
+        'You are using <b>PHP ' . phpversion() . '</b> but Kimai requires at least <b>PHP ' . $min_php_version . '</b>',
         'Please update your PHP installation, <br>we cannot continue the update otherwise.'
     );
 }
@@ -71,7 +71,7 @@ if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
 {
     exitUpdater(
         'UPDATE',
-        $kga['lang']['updater'][0] .'
+        $kga['lang']['updater'][0] . '
             <form action="" method="post">
             <input type="hidden" name="a" value="1"><br><input type="submit" value="START UPDATE">
             </form>
@@ -96,7 +96,7 @@ if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
         }
     }
 
-    $selectTimezone = '<form action="" method="post"><select name="timezone">' . $timeZonesOptions .  '</select>' .
+    $selectTimezone = '<form action="" method="post"><select name="timezone">' . $timeZonesOptions . '</select>' .
         '<br><br><input type="hidden" name="a" value="1"><input type="submit" value="START UPDATE"></form>';
 
     exitUpdater(

@@ -76,7 +76,7 @@ class Kimai_Remote_Api
 	/**
 	 * Returns the current kimai environment.
 	 *
-	 * @return array
+	 * @return integer|null
 	 */
 	private function getKimaiEnv()
 	{

@@ -82,10 +82,12 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-if (isset($_REQUEST['first_day']))
+if (isset($_REQUEST['first_day'])) {
   $in  = (int)$_REQUEST['first_day'];
-if (isset($_REQUEST['last_day']))
+}
+if (isset($_REQUEST['last_day'])) {
   $out = mktime(23, 59, 59, date("n", $_REQUEST['last_day']), date("j", $_REQUEST['last_day']), date("Y", $_REQUEST['last_day']));
+}
 
 if ($axAction != "reloadLogfile") {
     Kimai_Logger::logfile("KSPI axAction (" . (array_key_exists('customer', $kga) ? $kga['customer']['name'] : $kga['user']['name']) . "): " . $axAction);
