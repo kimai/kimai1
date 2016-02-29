@@ -51,7 +51,7 @@ $kga['defaultTimezone'] = $defaultTimezone;
 $kga['password_salt']   = isset($password_salt) ? $password_salt : '';
 $kga['language']        = isset($language) ? $language : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
 $kga['authenticator']   = isset($authenticator) ? trim($authenticator) : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
-$kga['billable']        = isset($billable) && is_array($billable) ? $billable             : Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE);
+$kga['billable']        = isset($billable) && is_array($billable) ? $billable : Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE);
 $kga['skin']            = isset($skin) ? $skin : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
 
 $cleanup = array(
