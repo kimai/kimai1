@@ -38,9 +38,6 @@ checks:
     no_exit: false
 coding_style:
   php:
-    indentation:
-      general:
-        size: 2
     spaces:
       other:
         after_type_cast: false
