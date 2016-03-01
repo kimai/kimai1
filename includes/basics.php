@@ -26,6 +26,15 @@
 defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(APPLICATION_PATH . '/libraries/zendframework/zendframework1/library/'),
+        )
+    )
+);
+
 if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
     header('Location: installer/index.php');
     exit;
