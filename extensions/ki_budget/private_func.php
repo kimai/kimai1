@@ -87,9 +87,8 @@ foreach ($projects as $project) {
    $wages[$projectID][0]['expenses'] = $expenses;
   }
 
-  if ($expenses > 0) {
-      $expensesOccured = true;
-  }
+  if ($expenses > 0)
+    $expensesOccured = true;
 
   if ($wages[$projectID][0]['budget'] < 0) {
     //Costs over budget, set remaining budget to 0.
@@ -153,32 +152,27 @@ foreach ($projects as $project) {
       $wages[$projectID][0]['budget']       += $timeSheetEntry['budget'];
       $wages[$projectID][0]['approved']     += $timeSheetEntry['approved'];
       if ($tmpCost > 0) {
-          if (!isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString])) {
-                      $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = 0;
-          }
+          if (!isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString]))
+            $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = 0;
 
-	      if (isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString])) {
-	                $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] += $tmpCost;
-	      } else {
-                  $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = $tmpCost;
-        }
+	      if (isset($wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString]))
+          $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] += $tmpCost;
+        else
+          $wages[$projectID][0][$timeSheetEntry['userName'] . ' ' . $billableLangString] = $tmpCost;
 
-        if (isset($wages[$projectID][$timeSheetEntry['activityID']][$billableLangString])) {
-                  $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] += $tmpCost;
-        } else {
-                  $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] = $tmpCost;
-        }
+        if (isset($wages[$projectID][$timeSheetEntry['activityID']][$billableLangString]))
+          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] += $tmpCost;
+        else
+          $wages[$projectID][$timeSheetEntry['activityID']][$billableLangString] = $tmpCost;
       }
       if ($timeSheetEntry['wage_decimal'] - $tmpCost > 0) {
-          if (!isset($wages[$projectID][0][$timeSheetEntry['userName']])) {
-                      $wages[$projectID][0][$timeSheetEntry['userName']] = 0;
-          }
+          if (!isset($wages[$projectID][0][$timeSheetEntry['userName']]))
+            $wages[$projectID][0][$timeSheetEntry['userName']] = 0;
 
           $wages[$projectID][0][$timeSheetEntry['userName']] += $timeSheetEntry['wage_decimal'] - $tmpCost;
 
-          if (!isset($wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['userName']])) {
-                      $wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['userName']] = 0;
-          }
+          if (!isset($wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['userName']]))
+            $wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['userName']] = 0;
 
           $wages[$projectID][$timeSheetEntry['activityID']][$timeSheetEntry['userName']] += $timeSheetEntry['wage_decimal'] - $tmpCost;
       }
@@ -200,9 +194,8 @@ foreach ($projects as $project) {
     }
   }
 
-  if (!isset($wages[$projectId])) {
-      continue;
-  }
+  if (!isset($wages[$projectId]))
+    continue;
 
   //cleanup: don't show charts without any data
   foreach ($wages[$projectId] as $activityId => $entry) {

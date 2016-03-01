@@ -51,23 +51,19 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
       if ($originalLevel == 1) {
         $id = $parentKeys[$originalLevel - 1];
         echo "<fieldset id=\"${id}\" class=\"hierarchyLevel${level}\">";
-      } else {
-              echo "<fieldset class=\"hierarchyLevel${level}\">";
       }
+      else
+        echo "<fieldset class=\"hierarchyLevel${level}\">";
 
       $names = array();
       for ($i = max(0, $originalLevel - 1); $i < count($parentKeys); $i++) {
-        if (array_search($i, $noLegendOnLevel) !== false) {
-            continue;
-        }
+        if (array_search($i, $noLegendOnLevel) !== false) continue;
 
         $name = $parentKeys[$i];
-        if (isset($kga['lang']['permissions'][$name])) {
-                  $name = $kga['lang']['permissions'][$name];
-        }
-        if (isset($kga['lang'][$name])) {
-                  $name = $kga['lang'][$name];
-        }
+        if (isset($kga['lang']['permissions'][$name]))
+          $name = $kga['lang']['permissions'][$name];
+        if (isset($kga['lang'][$name]))
+          $name = $kga['lang'][$name];
         $names[] = $name;
       }
 
@@ -75,36 +71,28 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
     }
 
     foreach ($keyHierarchy as $key => $subKeys) {
-      if (is_array($subKeys)) {
-          continue;
-      }
+      if (is_array($subKeys)) continue;
 
-      if (empty($parentKeys)) {
-              $permissionKey = $key;
-      } else {
-              $permissionKey = implode('-', $parentKeys) . '-' . $key;
-      }
+      if (empty($parentKeys))
+        $permissionKey = $key;
+      else
+        $permissionKey = implode('-', $parentKeys) . '-' . $key;
       $name = $key;
 
-      if (isset($kga['lang']['permissions'][$name])) {
-              $name = $kga['lang']['permissions'][$name];
-      }
-      if (isset($kga['lang'][$name])) {
-              $name = $kga['lang'][$name];
-      }
+      if (isset($kga['lang']['permissions'][$name]))
+        $name = $kga['lang']['permissions'][$name];
+      if (isset($kga['lang'][$name]))
+        $name = $kga['lang'][$name];
 
       $checkedAttribute = '';
-      if ($subKeys == 1) {
-              $checkedAttribute = 'checked = "checked"';
-      }
+      if ($subKeys == 1)
+        $checkedAttribute = 'checked = "checked"';
 
       echo '<span class="permission"><input type="checkbox" value="1" name="' . $permissionKey . '" ' . $checkedAttribute . ' />' . $name . '</span>';
     }
 
     foreach ($keyHierarchy as $key => $subKeys) {
-      if (!is_array($subKeys)) {
-          continue;
-      }
+      if (!is_array($subKeys)) continue;
 
       $newParentKeys = $parentKeys;
       $newParentKeys[] = $key;
@@ -112,9 +100,8 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
       $this->echoHierarchy($kga, $subKeys, $newParentKeys, $level + 1);
     }
 
-    if ($level > 0) {
-          echo "</fieldset>";
-    }
+    if ($level > 0)
+      echo "</fieldset>";
   }
 
 
@@ -130,15 +117,13 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
    * @return boolean if this level can be jumped, false otherwise
    */
   private function isJumpable($keyHierarchy) {
-    if (count($keyHierarchy) != 1) {
-          return false;
-    }
+    if (count($keyHierarchy) != 1)
+      return false;
 
     $keys = array_keys($keyHierarchy);
     $values = $keyHierarchy[$keys[0]];
-    if (!is_array($values)) {
-          return false;
-    }
+    if (!is_array($values))
+      return false;
 
     return true;
   }

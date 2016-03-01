@@ -44,20 +44,18 @@
     // ==========================
     // = display customer table =
     // ==========================
-    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view')) {
-          $customers = $database->get_customers();
-    } else {
-          $customers = $database->get_customers($kga['user']['groups']);
-    }
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view'))
+      $customers = $database->get_customers();
+    else
+      $customers = $database->get_customers($kga['user']['groups']);
 
     foreach ($customers as $row=>$data) {
       $groupNames = array();
       $groups = $database->customer_get_groupIDs($data['customerID']);
       if ($groups !== false) {
         foreach ($groups as $groupID) {
-          if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                      continue;
-          }
+          if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+            continue;
           $data = $database->group_get_data($groupID);
           $groupNames[] = $data['name'];
         }
@@ -71,20 +69,18 @@
     // =========================
     // = display project table =
     // =========================
-    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view')) {
-          $projects = $database->get_projects();
-    } else {
-          $projects = $database->get_projects($kga['user']['groups']);
-    }
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view'))
+      $projects = $database->get_projects();
+    else
+      $projects = $database->get_projects($kga['user']['groups']);
 
     $view->projects = array();
     if ($projects !== null && is_array($projects)) {
         foreach ($projects as $row=>$project) {
             $groupNames = array();
             foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-                if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                                  continue;
-                }
+                if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+                  continue;
                 $data = $database->group_get_data($groupID);
                 $groupNames[] = $data['name'];
             }
@@ -97,18 +93,16 @@
     // ========================
     // = display activity table =
     // ========================
-    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view')) {
-          $activities = $database->get_activities_by_project(-2);
-    } else {
-          $activities = $database->get_activities_by_project(-2, $kga['user']['groups']);
-    }
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view'))
+      $activities = $database->get_activities_by_project(-2);
+    else
+      $activities = $database->get_activities_by_project(-2, $kga['user']['groups']);
 
     foreach ($activities as $row=>$activity) {
       $groupNames = array();
       foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
-        if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                  continue;
-        }
+        if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false)
+          continue;
         $data = $database->group_get_data($groupID);
          $groupNames[] = $data['name'];
       }
@@ -123,20 +117,17 @@
     $view->curr_user = $kga['user']['name'];
 
     $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
-    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
-          $view->groups = $groups;
-    } else {
-          $view->groups = array_filter($groups, function($group) {global $kga;
-    }
-    return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
+      $view->groups = $groups;
+    else
+      $view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
 
     $view->arr_statuses = $database->get_statuses();
         
-    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view')) {
-          $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
-    } else {
-          $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0), $kga['user']['groups']);
-    }
+    if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view'))
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
+    else
+      $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0), $kga['user']['groups']);
 
     // get group names
     foreach ($users as &$user) {
@@ -144,9 +135,8 @@
       $groups = $database->getGroupMemberships($user['userID']);
       if (is_array($groups)) {
 	      foreach ($groups as $group) {
-          if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false) {
-                      continue;
-          }
+          if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false)
+            continue;
 	        $groupData = $database->group_get_data($group);
 	        $user['groups'][] = $groupData['name'];
 	      }
@@ -187,7 +177,8 @@
       $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
       $view->editLimitDays = (int)($editLimit / 24);
       $view->editLimitHours = (int)($editLimit % 24);
-    } else {
+    }
+    else {
       $view->editLimitEnabled = false;
       $view->editLimitDays = '';
       $view->editLimitHours = '';
@@ -196,7 +187,8 @@
       $view->roundTimesheetEntries = true;
       $view->roundMinutes = $kga['conf']['roundMinutes'];
       $view->roundSeconds = $kga['conf']['roundSeconds'];
-    } else {
+    }
+    else {
       $view->roundTimesheetEntries = false;
       $view->roundMinutes = '';
       $view->roundSeconds = '';

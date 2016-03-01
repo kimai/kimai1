@@ -54,9 +54,8 @@ switch ($axAction)
             $view->refundable       = $expense['refundable'];
 
             // check if this entry may be edited
-            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit')) {
-                          break;
-            }
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit'))
+              break;
 
             if (!isset($view->projects[$expense['projectID']])) {
               // add the currently assigned project to the list
@@ -64,7 +63,8 @@ switch ($axAction)
               $customerData = $database->customer_get_data($projectData['customerID']);
               $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
             }
-        } else
+        }
+        else
         {
           $view->id         = 0;
           $view->edit_day   = date("d.m.Y");
@@ -72,9 +72,8 @@ switch ($axAction)
           $view->multiplier = '1' . $kga['conf']['decimalSeparator'] . '0';
 
           // check if this entry may be added
-          if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add')) {
-                      break;
-          }
+          if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add'))
+            break;
         }
 
         echo $view->render("floaters/add_edit_record.php");

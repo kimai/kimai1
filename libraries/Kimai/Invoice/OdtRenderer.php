@@ -41,12 +41,14 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         // use zip extension if available
         if (class_exists('ZipArchive')) {
             $doc->setZipMethod('ziparchive');
-        } else {
+        }
+        else {
             $doc->setZipMethod('shell');
             try {
                 $doc->setZipBinary('zip');
                 $doc->setUnzipBinary('unzip');
-            } catch (tinyDocException $e) {
+            }
+            catch (tinyDocException $e) {
                 $doc->setZipMethod('pclzip');
             }
         }
@@ -67,9 +69,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
 
         // assign all available variables (which are not arrays as they do not work in tinyButStrong)
         foreach ($this->getModel()->toArray() as $k => $v) {
-            if (is_array($v)) {
-                continue;
-            }
+            if (is_array($v)) continue;
             $GLOBALS[$k] = $v;
         }
 

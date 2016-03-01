@@ -54,11 +54,10 @@ class Kimai_Format
         }
 
         $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f", $number));
-        if ($kga['conf']['currency_first']) {
-                    $value = $kga['currency_sign'] . " " . $value;
-        } else {
-                    $value = $value . " " . $kga['currency_sign'];
-        }
+        if ($kga['conf']['currency_first'])
+            $value = $kga['currency_sign'] . " " . $value;
+        else
+            $value = $value . " " . $kga['currency_sign'];
 
         if ($htmlNoWrap) {
             return "<span style=\"white-space: nowrap;\">$value</span>";
@@ -84,9 +83,8 @@ class Kimai_Format
 
         $userIds = array_keys($ann);
 
-        if ($type == null) {
-                    $type = 0;
-        }
+        if ($type == null)
+            $type = 0;
 
         switch ($type) {
             case 0:
@@ -162,41 +160,36 @@ class Kimai_Format
         $date = str_replace(" ", "", $date);
 
         // empty string can't be a time value
-        if (strlen($date) == 0) {
-                    return false;
-        }
+        if (strlen($date) == 0)
+            return false;
 
         // get the parts
         $parts = preg_split("/\./", $date);
 
-        if (count($parts) == 0 || count($parts) > 3) {
-                    return false;
-        }
+        if (count($parts) == 0 || count($parts) > 3)
+            return false;
 
         // check day
-        if (strlen($parts[0]) == 1) {
-                    $parts[0] = "0" . $parts[0];
-        }
+        if (strlen($parts[0]) == 1)
+            $parts[0] = "0" . $parts[0];
 
         // check month
-        if (!isset($parts[1])) {
-                    $parts[1] = date("m");
-        } else if (strlen($parts[1]) == 1) {
-                    $parts[1] = "0" . $parts[1];
-        }
+        if (!isset($parts[1]))
+            $parts[1] = date("m");
+        else if (strlen($parts[1]) == 1)
+            $parts[1] = "0" . $parts[1];
 
         // check year
         if (!isset($parts[2])) {
             $parts[2] = date("Y");
         } else if (strlen($parts[2]) == 2) {
-            if ($parts[2] > 70) {
-                            $parts[2] = "19" . $parts[2];
-            } else {
-                if ($parts[2] < 10) {
-                                    $parts[2] = "200" . $parts[2];
-                } else {
-                                    $parts[2] = "20" . $parts[2];
-                }
+            if ($parts[2] > 70)
+                $parts[2] = "19" . $parts[2];
+            else {
+                if ($parts[2] < 10)
+                    $parts[2] = "200" . $parts[2];
+                else
+                    $parts[2] = "20" . $parts[2];
             }
         }
 
@@ -223,9 +216,8 @@ class Kimai_Format
         $time = str_replace(" ", "", $time);
 
         // empty string can't be a time value
-        if (strlen($time) == 0) {
-                    return false;
-        }
+        if (strlen($time) == 0)
+            return false;
 
         // get the parts
         $parts = preg_split("/:|\./", $time);
@@ -275,15 +267,9 @@ class Kimai_Format
         $minutes = substr($timestring, 14, 2);
         $seconds = substr($timestring, 17, 2);
 
-        if ((int)$hours >= 24) {
-            $ok = 0;
-        }
-        if ((int)$minutes >= 60) {
-            $ok = 0;
-        }
-        if ((int)$seconds >= 60) {
-            $ok = 0;
-        }
+        if ((int)$hours >= 24) $ok = 0;
+        if ((int)$minutes >= 60) $ok = 0;
+        if ((int)$seconds >= 60) $ok = 0;
 
         Kimai_Logger::logfile("timecheck: " . $ok);
 
