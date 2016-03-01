@@ -22,7 +22,9 @@
  */
 class Kimai_Update_Version
 {
-
+    /**
+     * @var array
+     */
     private $vars = array();
 
     public function __construct(array $versionInfo)
@@ -38,12 +40,12 @@ class Kimai_Update_Version
      *
      * @param $version
      * @param $revision
-     * @return integer
+     * @return bool
      */
     public function compare($version, $revision = null)
     {
         $current = $version;
-        $remote  = $this->vars['version'];
+        $remote = $this->vars['version'];
 
         if ($revision != null) {
             $current = $current . '.' . $revision;
@@ -53,11 +55,17 @@ class Kimai_Update_Version
         return version_compare($remote, $current);
     }
 
+    /**
+     * @return bool
+     */
     public function isBeta()
     {
         return (strtolower($this->vars['status']) != 'stable');
     }
 
+    /**
+     * @return bool
+     */
     public function isStable()
     {
         return !$this->isBeta();
@@ -77,7 +85,6 @@ class Kimai_Update_Version
                 return false;
             }
         }
-
         return true;
     }
 
