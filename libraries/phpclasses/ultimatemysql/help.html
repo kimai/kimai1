@@ -1,0 +1,2535 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- template designed by Marco Von Ballmoos -->
+<title>Docs For Class MySQL</title>
+<link rel="stylesheet" href="../media/stylesheet.css" />
+<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+<style type="text/css">
+<!--
+a { color: #336699; text-decoration: none; }
+a:hover { color: #6699CC; text-decoration: underline; }
+a:active { color: #6699CC; text-decoration: underline; }
+body { background : #FFFFFF; }
+body, table { font-family: Georgia, Times New Roman, Times, serif; font-size: 10pt }
+p, li { line-height: 140% }
+a img { border: 0px; }
+dd { margin-left: 0px; padding-left: 1em; }
+/* Page layout/boxes */
+.info-box {}
+.info-box-title { margin: 1em 0em 0em 0em; padding: .25em; font-weight: normal; font-size: 14pt; border: 2px solid #999999; background-color: #CCCCFF }
+.info-box-body { border: 1px solid #999999; padding: .5em; }
+.nav-bar { font-size: 8pt; white-space: nowrap; text-align: right; padding: .2em; margin: 0em 0em 1em 0em; }
+.oddrow { background-color: #F8F8F8; border: 1px solid #AAAAAA; padding: .5em; margin-bottom: 1em}
+.evenrow { border: 1px solid #AAAAAA; padding: .5em; margin-bottom: 1em}
+.page-body { max-width: 800px; margin: auto; }
+.tree dl { margin: 0px }
+/* Index formatting classes */
+.index-item-body { margin-top: .5em; margin-bottom: .5em}
+.index-item-description { margin-top: .25em }
+.index-item-details { font-weight: normal; font-style: italic; font-size: 8pt }
+.index-letter-section { background-color: #EEEEEE; border: 1px dotted #999999; padding: .5em; margin-bottom: 1em}
+.index-letter-title { font-size: 12pt; font-weight: bold }
+.index-letter-menu { text-align: center; margin: 1em }
+.index-letter { font-size: 12pt }
+/* Docbook classes */
+.description {}
+.short-description { font-weight: bold; color: #666666; }
+.tags {padding-left: 0em; margin-left: 3em; color: #666666; list-style-type: square; }
+.parameters {padding-left: 0em; margin-left: 3em; font-style: italic; list-style-type: square; }
+.redefinitions { font-size: 8pt; padding-left: 0em; margin-left: 2em; }
+.package { }
+.package-title { font-weight: bold; font-size: 14pt; border-bottom: 1px solid black }
+.package-details { font-size: 85%; }
+.sub-package { font-weight: bold; font-size: 120% }
+.tutorial { border-width: thin; border-color: #0066ff }
+.tutorial-nav-box { width: 100%; border: 1px solid #999999; background-color: #F8F8F8; }
+.nav-button-disabled { color: #999999; }
+.nav-button:active,
+.nav-button:focus,
+.nav-button:hover { background-color: #DDDDDD; outline: 1px solid #999999; text-decoration: none }
+.folder-title { font-style: italic }
+/* Generic formatting */
+.field { font-weight: bold; }
+.detail { font-size: 8pt; }
+.notes { font-style: italic; font-size: 8pt; }
+.separator { background-color: #999999; height: 2px; }
+.warning { color: #FF6600; }
+.disabled { font-style: italic; color: #999999; }
+/* Code elements */
+.line-number { }
+.class-table { width: 100%; }
+.class-table-header { border-bottom: 1px dotted #666666; text-align: left}
+.class-name { color: #000000; font-weight: bold; }
+.method-summary { padding-left: 1em; font-size: 8pt }
+.method-header { }
+.method-definition { margin-bottom: .3em }
+.method-title { font-weight: bold; }
+.method-name { font-weight: bold; }
+.method-signature { font-size: 85%; color: #666666; margin: .5em 0em }
+.method-result { font-style: italic; }
+.var-summary { padding-left: 1em; font-size: 8pt; }
+.var-header { }
+.var-title { margin-bottom: .3em }
+.var-type { font-style: italic; }
+.var-name { font-weight: bold; }
+.var-default {}
+.var-description { font-weight: normal; color: #000000; }
+.include-title { }
+.include-type { font-style: italic; }
+.include-name { font-weight: bold; }
+.const-title { }
+.const-name { font-weight: bold; }
+/* Syntax highlighting */
+.src-code { border: 1px solid #336699; padding: 1em; background-color: #EEEEEE; }
+*[class="src-code"] {line-height : 0.5em }
+.src-comm { color: green; }
+.src-id { }
+.src-inc { color: #0000FF; }
+.src-key { color: #0000FF; }
+.src-num { color: #CC0000; }
+.src-str { color: #66cccc; }
+.src-sym { font-weight: bold; }
+.src-var { }
+.src-php { font-weight: bold; }
+.src-doc { color: #009999 }
+.src-doc-close-template { color: #0000FF }
+.src-doc-coretag { color: #0099FF; font-weight: bold }
+.src-doc-inlinetag { color: #0099FF }
+.src-doc-internal { color: #6699cc }
+.src-doc-tag { color: #0080CC }
+.src-doc-template { color: #0000FF }
+.src-doc-type { font-style: italic }
+.src-doc-var { font-style: italic }
+.tute-tag { color: #009999 }
+.tute-attribute-name { color: #0000FF }
+.tute-attribute-value { color: #0099FF }
+.tute-entity { font-weight: bold; }
+.tute-comment { font-style: italic }
+.tute-inline-tag { color: #636311; font-weight: bold }
+/* tutorial */
+.authors { }
+.author { font-style: italic; font-weight: bold }
+.author-blurb { margin: .5em 0em .5em 2em; font-size: 85%; font-weight: normal; font-style: normal }
+.example { border: 1px dashed #999999; background-color: #EEEEEE; padding: .5em; }
+*[class="example"] { line-height : 0.5em }
+.listing { border: 1px dashed #999999; background-color: #EEEEEE; padding: .5em; white-space: nowrap; }
+*[class="listing"] { line-height : 0.5em }
+.release-info { font-size: 85%; font-style: italic; margin: 1em 0em }
+.ref-title-box { }
+.ref-title { }
+.ref-purpose { font-style: italic; color: #666666 }
+.ref-synopsis { }
+.title { font-weight: bold; margin: 1em 0em 0em 0em; padding: .25em; border: 2px solid #999999; background-color: #CCCCFF }
+.cmd-synopsis { margin: 1em 0em }
+.cmd-title { font-weight: bold }
+.toc { margin-left: 2em; padding-left: 0em }
+.courier {
+font-family: "Courier New", Courier, monospace;
+font-size: 12px;
+}
+.php1-identifier {color: #0000A0; }
+.php1-reservedword {color: #0000FF; }
+.php1-space {}
+.php1-string {color: #800000; }
+.php1-symbol {color: #000080; }
+.php1-variable {color: #000000; }
+.php1-comment {color: #008000; }
+.php1-number {color: #800080; }
+-->
+</style>
+</head>
+<body>
+<div class="page-body">
+<h2 class="class-name">Ultimate MySQL Class</h2>
+<a name="sec-description"></a>
+<div class="info-box">
+<div class="info-box-title">Description</div>
+<div class="nav-bar">
+<span class="disabled">Description</span> |
+<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+| <a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+</div>
+<div class="info-box-body">
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Ultimate MySQL Wrapper Class for PHP 5.x</p>
+<p class="description">
+<ul class="tags">
+<li>Establish MySQL server connections easily</li>
+<li>Execute SQL queries</li>
+<li>Retrieve query results into objects or arrays</li>
+<li>Retrieve the last inserted ID</li>
+<li>Manage transactions (transaction processing)</li>
+<li>Retrieve the list tables of a database</li>
+<li>Retrieve the list fields of a table (or field comments)</li>
+<li>Retrieve the length or data type of a field</li>
+<li>Measure the time a query takes to execute</li>
+<li>Display query results in an HTML table</li>
+<li>Easy formatting for SQL parameters and values</li>
+<li>Generate SQL Selects, Inserts, Updates, and Deletes </li>
+<li>Error handling with error numbers and text</li>
+<li><span class="field">And much more!</span></li>
+</ul>
+<p class="courier"><strong><a href="http://www.phpclasses.org/browse/package/3698.html" target="phpclass">http://www.phpclasses.org/browse/package/3698.html</a></strong></p>
+<p class="courier">Feb 02, 2007 - Written by Jeff Williams (Initial Release)<br />
+Feb 11, 2007 - Contributions from Frank P. Walentynowicz<br />
+Feb 21, 2007 - Contribution from Larry Wakeman<br />
+Feb 21, 2007 - Bug Fixes and PHPDoc<br />
+Mar 09, 2007 - Contribution from Nicola Abbiuso<br />
+Mar 22, 2007 - Added array types to RecordsArray and RowArray<br />
+Jul 01, 2007 - Class name change, constructor values, static methods, fixe<br />
+Jul 16, 2007 - Bug fix, removed test, major improvements in error handling<br />
+Aug 11, 2007 - Added InsertRow() and UpdateRows() methods<br />
+Aug 19, 2007 - Added BuildSQL static functions, DeleteRows(), SelectRows(),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IsConnected(), and ability to throw Exceptions on errors<br />
+Sep 07, 2007 - Enhancements to SQL SELECT (column aliases, sorting, limits)<br />
+Sep 09, 2007 - Updated SelectRows(), UpdateRows() and added SelectTable(),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TruncateTable() and SQLVALUE constants for SQLValue()<br />
+Oct 23, 2007 - Added QueryArray(), QuerySingleRow(), QuerySingleRowArray(),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QuerySingleValue(), HasRecords(), AutoInsertUpdate()<br />
+Oct 28, 2007 - Small bug fixes<br />
+Nov 28, 2007 - Contribution from Douglas Gintz<br />
+Jul 06, 2009 - GetXML() and GetJSON() contribution from Emre Erkan<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and ability to use a blank password if needed</p>
+</p>
+<ul class="tags">
+<li><span class="field">author:</span> Jeff L. Williams</li>
+<li><span class="field">version:</span> 2.5</li>
+</ul>
+<p>Usage:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">include</span><span class="php1-symbol">(</span><span class="php1-string">&quot;mysql.class.php&quot;</span><span class="php1-symbol">);</span></span></code></p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span>)<span class="php1-symbol">;</span></span></code>
+<br />
+<code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span><span class="php1-string">true</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;database&quot;</span>)<span class="php1-symbol">;</span></span></code>
+<br />
+<code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span><span class="php1-string">true</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;database&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;localhost&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;username&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;password&quot;</span>)<span class="php1-symbol">;</span></span></code></p>
+</div>
+</div>
+<a name="sec-const-summary"></a>
+<div class="info-box">
+<div class="info-box-title">Class Constant Summary (Use with <a href="#SQLValue" title="details" class="method-name">SQLValue()</a> method)</span></div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+|
+|
+<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+</div>
+<div class="info-box-body">
+<div class="const-summary">
+<div class="const-title"><a href="#SQLVALUE_BIT" title="details" class="const-name">SQLVALUE_BIT</a> = <span class="var-type"> &quot;bit&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_BOOLEAN" title="details" class="const-name">SQLVALUE_BOOLEAN</a> = <span class="var-type"> &quot;boolean&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_DATE" title="details" class="const-name">SQLVALUE_DATE</a> = <span class="var-type"> &quot;date&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_DATETIME" title="details" class="const-name">SQLVALUE_DATETIME</a> = <span class="var-type"> &quot;datetime&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_NUMBER" title="details" class="const-name">SQLVALUE_NUMBER</a> = <span class="var-type"> &quot;number&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_TEXT" title="details" class="const-name">SQLVALUE_TEXT</a> = <span class="var-type"> &quot;text&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_TIME" title="details" class="const-name">SQLVALUE_TIME</a> = <span class="var-type"> &quot;time&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_T_F" title="details" class="const-name">SQLVALUE_T_F</a> = <span class="var-type"> &quot;t-f&quot;</span></div>
+<div class="const-title"><a href="#SQLVALUE_Y_N" title="details" class="const-name">SQLVALUE_Y_N</a> = <span class="var-type"> &quot;y-n&quot;</span></div>
+</div>
+</div>
+</div>
+<a name="sec-var-summary"></a>
+<div class="info-box">
+<div class="info-box-title">Variable Summary</span></div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+|
+<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+</div>
+<div class="info-box-body">
+<div class="var-summary">
+<div class="var-title">
+<span class="var-type">boolean</span>
+<a href="#$ThrowExceptions" title="details" class="var-name">$ThrowExceptions</a>
+</div>
+</div>
+</div>
+</div>
+<a name="sec-method-summary"></a>
+<div class="info-box">
+<div class="info-box-title">Method Summary</span></div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+|
+<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+</div>
+<div class="info-box-body">
+<div class="method-summary">
+<div class="method-definition">
+<span class="method-result">MySQL</span>
+<a href="#__construct" title="details" class="method-name">__construct</a>
+([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$connect</span> = <span class="var-default">true</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$username</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">void</span>
+<a href="#__destruct" title="details" class="method-name">__destruct</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#AutoInsertUpdate" title="details" class="method-name">AutoInsertUpdate</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#BeginningOfSeek" title="details" class="method-name">BeginningOfSeek</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#BuildSQLDelete" title="details" class="method-name">BuildSQLDelete</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#BuildSQLInsert" title="details" class="method-name">BuildSQLInsert</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#BuildSQLSelect" title="details" class="method-name">BuildSQLSelect</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$columns</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$sortColumns</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$sortAscending</span> = <span class="var-default">true</span>], [<span class="var-type">integer/string</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#BuildSQLUpdate" title="details" class="method-name">BuildSQLUpdate</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#BuildSQLWhereClause" title="details" class="method-name">BuildSQLWhereClause</a>
+(<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">object Returns</span>
+<a href="#Close" title="details" class="method-name">Close</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#DeleteRows" title="details" class="method-name">DeleteRows</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#EndOfSeek" title="details" class="method-name">EndOfSeek</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#Error" title="details" class="method-name">Error</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#ErrorNumber" title="details" class="method-name">ErrorNumber</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#GetBooleanValue" title="details" class="method-name">GetBooleanValue</a>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#GetColumnComments" title="details" class="method-name">GetColumnComments</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#GetColumnCount" title="details" class="method-name">GetColumnCount</a>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#GetColumnDataType" title="details" class="method-name">GetColumnDataType</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#GetColumnID" title="details" class="method-name">GetColumnID</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#GetColumnLength" title="details" class="method-name">GetColumnLength</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#GetColumnName" title="details" class="method-name">GetColumnName</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$columnID</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#GetColumnNames" title="details" class="method-name">GetColumnNames</a>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#GetHTML" title="details" class="method-name">GetHTML</a>
+([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$showCount</span> = <span class="var-default">true</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleTable</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleHeader</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleData</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#GetJSON" title="details" class="method-name">GetJSON</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#GetLastInsertID" title="details" class="method-name">GetLastInsertID</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#GetLastSQL" title="details" class="method-name">GetLastSQL</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#GetTables" title="details" class="method-name">GetTables</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#GetXML" title="details" class="method-name">GetXML</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#HasRecords" title="details" class="method-name">HasRecords</a>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#InsertRow" title="details" class="method-name">InsertRow</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#IsConnected" title="details" class="method-name">IsConnected</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#IsDate" title="details" class="method-name">IsDate</a>
+(<span class="var-type">date/string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">void</span>
+<a href="#Kill" title="details" class="method-name">Kill</a>
+([<span class="var-type">mixed</span>&nbsp;<span class="var-name">$message</span> = <span class="var-default">''</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#MoveFirst" title="details" class="method-name">MoveFirst</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#MoveLast" title="details" class="method-name">MoveLast</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#Open" title="details" class="method-name">Open</a>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$username</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$pcon</span> = <span class="var-default">false</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">object PHP</span>
+<a href="#Query" title="details" class="method-name">Query</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#QueryArray" title="details" class="method-name">QueryArray</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">object PHP</span>
+<a href="#QuerySingleRow" title="details" class="method-name">QuerySingleRow</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#QuerySingleRowArray" title="details" class="method-name">QuerySingleRowArray</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">mixed</span>
+<a href="#QuerySingleValue" title="details" class="method-name">QuerySingleValue</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">object PHP</span>
+<a href="#QueryTimed" title="details" class="method-name">QueryTimed</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">object PHP</span>
+<a href="#Records" title="details" class="method-name">Records</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">Records</span>
+<a href="#RecordsArray" title="details" class="method-name">RecordsArray</a>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#Release" title="details" class="method-name">Release</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">object PHP</span>
+<a href="#Row" title="details" class="method-name">Row</a>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$optional_row_number</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">array</span>
+<a href="#RowArray" title="details" class="method-name">RowArray</a>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$optional_row_number</span> = <span class="var-default">null</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#RowCount" title="details" class="method-name">RowCount</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">object Fetched</span>
+<a href="#Seek" title="details" class="method-name">Seek</a>
+(<span class="var-type">integer</span>&nbsp;<span class="var-name">$row_number</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">integer</span>
+<a href="#SeekPosition" title="details" class="method-name">SeekPosition</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#SelectDatabase" title="details" class="method-name">SelectDatabase</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#SelectRows" title="details" class="method-name">SelectRows</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$columns</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$sortColumns</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$sortAscending</span> = <span class="var-default">true</span>], [<span class="var-type">integer/string</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#SelectTable" title="details" class="method-name">SelectTable</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#SQLBooleanValue" title="details" class="method-name">SQLBooleanValue</a>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>, <span class="var-type">any</span>&nbsp;<span class="var-name">$trueValue</span>, <span class="var-type">any</span>&nbsp;<span class="var-name">$falseValue</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$datatype</span> = <span class="var-default">self::SQLVALUE_TEXT</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#SQLFix" title="details" class="method-name">SQLFix</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#SQLUnfix" title="details" class="method-name">SQLUnfix</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">string</span>
+<a href="#SQLValue" title="details" class="method-name">SQLValue</a>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$datatype</span> = <span class="var-default">self::SQLVALUE_TEXT</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">Float</span>
+<a href="#TimerDuration" title="details" class="method-name">TimerDuration</a>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$decimals</span> = <span class="var-default">4</span>])
+</div>
+<div class="method-definition">
+<span class="method-result">void</span>
+<a href="#TimerStart" title="details" class="method-name">TimerStart</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">void</span>
+<a href="#TimerStop" title="details" class="method-name">TimerStop</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#TransactionBegin" title="details" class="method-name">TransactionBegin</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#TransactionEnd" title="details" class="method-name">TransactionEnd</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#TransactionRollback" title="details" class="method-name">TransactionRollback</a>
+()
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#TruncateTable" title="details" class="method-name">TruncateTable</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>)
+</div>
+<div class="method-definition">
+<span class="method-result">boolean</span>
+<a href="#UpdateRows" title="details" class="method-name">UpdateRows</a>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+</div>
+</div>
+</div>
+<a name="sec-vars"></a>
+<div class="info-box">
+<div class="info-box-title">Variables</div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+|
+<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+</div>
+<div class="info-box-body">
+<a name="var$ThrowExceptions" id="$ThrowExceptions"><!-- --></A>
+<div class="oddrow">
+<div class="var-header">
+<span class="var-title">
+<span class="var-type">boolean</span>
+<span class="var-name">$ThrowExceptions</span>
+= <span class="var-default"> false</span> (line <span class="line-number">47</span>)
+</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if an error throws an exception</p>
+<ul class="tags">
+<li><span class="field">var:</span> Set to true to throw error exceptions</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+</div>
+</div>
+</div>
+<a name="sec-methods"></a>
+<div class="info-box">
+<div class="info-box-title">Methods</div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+</div>
+<div class="info-box-body">
+<A NAME='method_detail'></A>
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Constructor __construct</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Constructor: Opens the connection to the database</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">MySQL</span>
+<span class="method-name">
+__construct
+</span>
+([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$connect</span> = <span class="var-default">true</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$username</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">boolean</span>
+<span class="var-name">$connect</span><span class="var-description">: (Optional) Auto-connect when object is created</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$database</span><span class="var-description">: (Optional) Database name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$server</span><span class="var-description">: (Optional) Host address</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$username</span><span class="var-description">: (Optional) User name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$password</span><span class="var-description">: (Optional) Password</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$charset</span><span class="var-description">: (Optional) Character set (i.e. 'utf8')</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span>)<span class="php1-symbol">;</span></span></code>
+<br />
+<code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span><span class="php1-string">true</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;database&quot;</span>)<span class="php1-symbol">;</span></span></code>
+<br />
+<code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db </span><span class="php1-symbol">=</span> <span class="php1-reservedword">new</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">(</span><span class="php1-string">true</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;database&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;localhost&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;username&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;password&quot;</span>)<span class="php1-symbol">;</span></span></code></p>
+</div>
+<a name="method__destruct" id="__destruct"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Destructor __destruct</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Destructor: Closes the connection to the database</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">void</span>
+<span class="method-name">
+__destruct
+</span>
+()
+</div>
+</div>
+<a name="methodAutoInsertUpdate" id="AutoInsertUpdate"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">AutoInsertUpdate</span> (line <span class="line-number">113</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Automatically does an INSERT or UPDATE depending if an existing record exists in a table</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+AutoInsertUpdate
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$valuesArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect).</span> </li>
+</ul>
+</div>
+<a name="methodBeginningOfSeek" id="BeginningOfSeek"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BeginningOfSeek</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns true if the internal pointer is at the beginning of the records</p>
+<ul class="tags">
+<li><span class="field">return:</span> TRUE if at the first row or FALSE if not</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+BeginningOfSeek
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">BeginningOfSeek</span><span class="php1-symbol">())</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;We are at the beggining of the record set&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodBuildSQLDelete" id="BuildSQLDelete"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BuildSQLDelete</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Builds a SQL DELETE statement</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns the SQL DELETE statement</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+BuildSQLDelete
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect). If not specified then all values in the table are deleted.</span> </li>
+</ul>
+<pre><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// Let's create an array for the example
+// $arrayVariable[&quot;column name&quot;] = formatted SQL value
+</span><span class="php1-variable">$filter</span><span class="php1-symbol">[</span><span class="php1-string">&quot;ID&quot;</span><span class="php1-symbol">] =</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">7</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);
+</span><span class="php1-comment">// Echo out the SQL statement
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">BuildSQLDelete</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $filter</span><span class="php1-symbol">);</span></span></code></pre>
+</div>
+<a name="methodBuildSQLInsert" id="BuildSQLInsert"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BuildSQLInsert</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Builds a SQL INSERT statement</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns a SQL INSERT statement</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+BuildSQLInsert
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$valuesArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+</ul>
+<pre><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// Let's create an array for the example
+// $arrayVariable[&quot;column name&quot;] = formatted SQL value
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Name&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Violet&quot;</span><span class="php1-symbol"></span><span class="php1-string"></span><span class="php1-symbol">);
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">777</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);
+</span><span class="php1-comment">// Echo out the SQL statement
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">BuildSQLInsert</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $values</span><span class="php1-symbol">);</span></span></code></pre>
+</div>
+<a name="methodBuildSQLSelect" id="BuildSQLSelect"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BuildSQLSelect</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Builds a simple SQL SELECT statement</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns a SQL SELECT statement</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+BuildSQLSelect
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$columns</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$sortColumns</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$sortAscending</span> = <span class="var-default">true</span>], [<span class="var-type">integer/string</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+<li>
+<span class="var-type">array/string</span>
+<span class="var-name">$columns</span><span class="var-description">: (Optional) The column or list of columns to select</span> </li>
+<li>
+<span class="var-type">array/string</span>
+<span class="var-name">$sortColumns</span><span class="var-description">: (Optional) Column or list of columns to sort by</span> </li>
+<li>
+<span class="var-type">boolean</span>
+<span class="var-name">$sortAscending</span><span class="var-description">: (Optional) TRUE for ascending; FALSE for descending This only works if $sortColumns are specified</span> </li>
+<li>
+<span class="var-type">integer/string</span>
+<span class="var-name">$limit</span><span class="var-description">: (Optional) The limit of rows to return</span> </li>
+</ul>
+<pre><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// Let's create an array for the example
+// $arrayVariable[&quot;column name&quot;] = formatted SQL value
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Name&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Violet&quot;</span><span class="php1-symbol">);
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">777</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);
+</span><span class="php1-comment">// Echo out the SQL statement
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">BuildSQLSelect</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $values</span><span class="php1-symbol">);</span></span></code></pre>
+</div>
+<a name="methodBuildSQLUpdate" id="BuildSQLUpdate"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BuildSQLUpdate</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Builds a SQL UPDATE statement</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns a SQL UPDATE statement</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+BuildSQLUpdate
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$valuesArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect). If not specified then all values in the table are updated.</span> </li>
+</ul>
+<pre><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// Let's create two arrays for the example
+// $arrayVariable[&quot;column name&quot;] = formatted SQL value
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Name&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Violet&quot;</span><span class="php1-symbol"></span><span class="php1-space"></span><span class="php1-string"></span><span class="php1-symbol">);
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">777</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);
+</span><span class="php1-variable">$filter</span><span class="php1-symbol">[</span><span class="php1-string">&quot;ID&quot;</span><span class="php1-symbol">] =</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">10</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);
+</span><span class="php1-comment">// Echo out some SQL statements
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">BuildSQLUpdate</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Test&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $values</span><span class="php1-symbol">,</span><span class="php1-space"> $filter</span><span class="php1-symbol">)</span><span class="php1-string">&quot;;</span></span></code></pre>
+</div>
+<a name="methodBuildSQLWhereClause" id="BuildSQLWhereClause"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">BuildSQLWhereClause</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Builds a SQL WHERE clause from an array. If a key is specified, the key is used at the field name and the value as a comparison. If a key is not used, the value is used as the clause.</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns a string containing the SQL WHERE clause</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+BuildSQLWhereClause
+</span>
+(<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+</ul>
+</div>
+<a name="methodClose" id="Close"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Close</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Close current MySQL connection</p>
+<ul class="tags">
+<li><span class="field">return:</span> TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object Returns</span>
+<span class="method-name">
+Close
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Close</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodDeleteRows" id="DeleteRows"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">DeleteRows</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Deletes rows in a table based on a WHERE filter (can be just one or many rows based on the filter)</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+DeleteRows
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect). If not specified then all values in the table are deleted.</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// $arrayVariable[&quot;column name&quot;] = formatted SQL value<br />
+</span><span class="php1-variable">$filter</span><span class="php1-symbol">[</span><span class="php1-string">&quot;ID&quot;</span><span class="php1-symbol">]</span> <span class="php1-symbol">= </span><span class="php1-number">7</span><span class="php1-symbol">;<br />
+<br />
+</span><span class="php1-comment">// Execute the delete <br />
+</span><span class="php1-variable">$result </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">DeleteRows</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $filter</span><span class="php1-symbol">);<br />
+<br />
+</span><span class="php1-comment">// If we have an error<br />
+</span><span class="php1-reservedword">if</span> <span class="php1-symbol">(!</span><span class="php1-space"> $result</span><span class="php1-symbol">)</span> <span class="php1-symbol">{<br />
+</span><span class="php1-comment"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;// Show the error and kill the script<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();<br />
+<br />
+}</span></span></code></p>
+</div>
+<a name="methodEndOfSeek" id="EndOfSeek"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">EndOfSeek</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns true if the internal pointer is at the end of the records</p>
+<ul class="tags">
+<li><span class="field">return:</span> TRUE if at the last row or FALSE if not</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+EndOfSeek
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">EndOfSeek</span><span class="php1-symbol">())</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-string">&quot;We are at the end of the record set&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodError" id="Error"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Error</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last MySQL error as text</p>
+<ul class="tags">
+<li><span class="field">return:</span> Error text from last known error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+Error
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-string">&quot;SELECT * FROM Table&quot;</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Error</span><span class="php1-symbol">();</span><span class="php1-space"> </span><span class="php1-comment">//Shows the error<br />
+</span><span class="php1-symbol">}</span></span></code></p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span> <span class="php1-symbol">(</span><span class="php1-space">$db</span><span class="php1-symbol">-&gt;Error())</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;Kill();</span></span></code></p>
+</div>
+<a name="methodErrorNumber" id="ErrorNumber"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">ErrorNumber</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last MySQL error as a number</p>
+<ul class="tags">
+<li><span class="field">return:</span> Error number from last known error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+ErrorNumber
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">ErrorNumber</span><span class="php1-symbol">()</span><span class="php1-space"> </span><span class="php1-symbol">&lt;&gt;</span><span class="php1-space"> </span><span class="php1-number">0</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();</span><span class="php1-space"> </span><span class="php1-comment">//show the error message<br />
+</span><span class="php1-symbol">}</span></span></code></p>
+</div>
+<a name="methodGetBooleanValue" id="GetBooleanValue"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetBooleanValue</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Converts any value of any datatype into boolean (true or false)</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE or FALSE</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+GetBooleanValue
+</span>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">any</span>
+<span class="var-name">$value</span><span class="var-description">: Value to analyze for TRUE or FALSE</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-symbol">(</span><span class="php1-variable">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">GetBooleanValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Y&quot;</span><span class="php1-symbol">)</span> <span class="php1-symbol">?</span> <span class="php1-string">&quot;True&quot;</span> <span class="php1-symbol">:</span> <span class="php1-string">&quot;False&quot;</span><span class="php1-symbol">);</span></span></code></p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-symbol">(</span><span class="php1-variable">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">GetBooleanValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;no&quot;</span><span class="php1-symbol">)</span> <span class="php1-symbol">?</span> <span class="php1-string">&quot;True&quot;</span> <span class="php1-symbol">:</span> <span class="php1-string">&quot;False&quot;</span><span class="php1-symbol">);</span></span></code></p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-symbol">(</span><span class="php1-variable">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">GetBooleanValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;TRUE&quot;</span><span class="php1-symbol">)</span> <span class="php1-symbol">?</span> <span class="php1-string">&quot;True&quot;</span> <span class="php1-symbol">:</span> <span class="php1-string">&quot;False&quot;</span><span class="php1-symbol">);</span></span></code></p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-symbol">(</span><span class="php1-variable">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">GetBooleanValue</span><span class="php1-symbol">(<span class="php1-number">1</span>)</span> <span class="php1-symbol">?</span> <span class="php1-string">&quot;True&quot;</span> <span class="php1-symbol">:</span> <span class="php1-string">&quot;False&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnComments" id="GetColumnComments"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnComments</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the comments for fields in a table into an array or NULL if the table has not got any fields</p>
+<ul class="tags">
+<li><span class="field">return:</span> An array that contains the column comments</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+GetColumnComments
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: Table name</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$columns </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnComments</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">foreach</span> <span class="php1-symbol">(</span><span class="php1-variable">$columns </span><span class="php1-identifier">as</span> <span class="php1-variable">$column </span><span class="php1-identifier">=&gt;</span><span class="php1-space"> $comment</span><span class="php1-symbol">)</span> <span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $column </span><span class="php1-symbol">.</span> <span class="php1-string">&quot; = &quot;</span> <span class="php1-symbol">.</span> <span class="php1-space">$comment </span><span class="php1-symbol">.</span> <span class="php1-string">&quot;&lt;br /&gt;\n&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodGetColumnCount" id="GetColumnCount"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnCount</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the number of columns or returns FALSE on error</p>
+<ul class="tags">
+<li><span class="field">return:</span> The total count of columns</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+GetColumnCount
+</span>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the column count is returned from the last query</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Total Columns: &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnCount</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnDataType" id="GetColumnDataType"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnDataType</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the data type for a specified column. If the column does not exists or no records exist, it returns FALSE</p>
+<ul class="tags">
+<li><span class="field">return:</span> MySQL data (field) type</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+GetColumnDataType
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$column</span><span class="var-description">: Column name or number (first column is 0)</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the last returned records are used</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Type: &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnDataType</span><span class="php1-symbol">(</span><span class="php1-string">&quot;FirstName&quot;</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;Customer&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnID" id="GetColumnID"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnID</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the position of a column</p>
+<ul class="tags">
+<li><span class="field">return:</span> Column ID</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+GetColumnID
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$column</span><span class="var-description">: Column name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the last returned records are used.</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Column Position: &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnID</span><span class="php1-symbol">(</span><span class="php1-string">&quot;FirstName&quot;</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;Customer&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnLength" id="GetColumnLength"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnLength</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the field length or returns FALSE on error</p>
+<ul class="tags">
+<li><span class="field">return:</span> Field length</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+GetColumnLength
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$column</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$column</span><span class="var-description">: Column name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the last returned records are used.</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Length: &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnLength</span><span class="php1-symbol">(</span><span class="php1-string">&quot;FirstName&quot;</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;Customer&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnName" id="GetColumnName"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnName</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the name for a specified column number. If the index does not exists or no records exist, it returns FALSE</p>
+<ul class="tags">
+<li><span class="field">return:</span> Field Length</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+GetColumnName
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$columnID</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$columnID</span><span class="var-description">: Column position (0 is the first column)</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the last returned records are used.</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Column Name: &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnName</span><span class="php1-symbol">(</span><span class="php1-number">0</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodGetColumnNames" id="GetColumnNames"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetColumnNames</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the field names in a table in an array or NULL if the table has no fields</p>
+<ul class="tags">
+<li><span class="field">return:</span> An array that contains the column names</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+GetColumnNames
+</span>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$table</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$table</span><span class="var-description">: (Optional) If a table name is not specified, the last returned records are used</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$columns </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetColumnNames</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">foreach</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$columns </span><span class="php1-identifier">as</span><span class="php1-space"> $columnName</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $columnName </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot;&lt;br /&gt;\n&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodGetHTML" id="GetHTML"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetHTML</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns the last query as an HTML table</p>
+<ul class="tags">
+<li><span class="field">return:</span> HTML containing a table with all records listed</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+GetHTML
+</span>
+([<span class="var-type">boolean</span>&nbsp;<span class="var-name">$showCount</span> = <span class="var-default">true</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleTable</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleHeader</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$styleData</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">boolean</span>
+<span class="var-name">$showCount</span><span class="var-description">: (Optional) TRUE if you want to show the row count, FALSE if you do not want to show the count</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$styleTable</span><span class="var-description">: (Optional) Style information for the table</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$styleHeader</span><span class="var-description">: (Optional) Style information for the header row</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$styleData</span><span class="var-description">: (Optional) Style information for the cells</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-string">&quot;SELECT * FROM Customer&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetHTML</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodGetJSON" id="GetJSON"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetJSON</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last query as a JSON document</p>
+<ul class="tags">
+<li><span class="field">return:</span> JSON document</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+GetJSON
+</span>
+()
+</div>
+</div>
+<a name="methodGetLastInsertID" id="GetLastInsertID"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetLastInsertID</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last autonumber ID field from a previous INSERT query</p>
+<ul class="tags">
+<li><span class="field">return:</span> ID number from previous INSERT query</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+GetLastInsertID
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-string">&quot;INSERT INTO Employee (Name) Values ('Bob')&quot;</span><span class="php1-symbol">;<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-variable">$sql</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-variable">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();<br />
+}<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Last ID inserted was: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetLastInsertID</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodGetLastSQL" id="GetLastSQL"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetLastSQL</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last SQL statement executed</p>
+<ul class="tags">
+<li><span class="field">return:</span> Current SQL query string</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+GetLastSQL
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-string">&quot;INSERT INTO Employee (Name) Values ('Bob')&quot;</span><span class="php1-symbol">;<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-variable">$sql</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();}<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetLastSQL</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodGetTables" id="GetTables"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetTables</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">This function returns table names from the database into an array. If the database does not contains any tables, the returned value is FALSE</p>
+<ul class="tags">
+<li><span class="field">return:</span> An array that contains the table names</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+GetTables
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$tables </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetTables</span><span class="php1-symbol">(</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">foreach</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$tables </span><span class="php1-identifier">as</span><span class="php1-space"> $table</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $table </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot;&lt;br /&gt;\n&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodGetXML" id="GetXML"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">GetXML</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last query as an XML Document.</p>
+<ul class="tags">
+<li><span class="field">return:</span> A string that contains XML</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+GetXML
+</span>
+()
+</div>
+</div>
+<a name="methodHasRecords" id="HasRecords"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">HasRecords</span> (line <span class="line-number">801</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Determines if a query contains any rows</p>
+<ul class="tags">
+<li><span class="field">return:</span> TRUE if records exist, FALSE if not or query error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+HasRecords
+</span>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: [Optional] If specified, the query is first executed Otherwise, the last query is used for comparison</span> </li>
+</ul>
+</div>
+<a name="methodInsertRow" id="InsertRow"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">InsertRow</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Inserts a row into a table in the connected database</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns last insert ID on success or FALSE on failure</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+InsertRow
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span></li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$valuesArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span></li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// $arrayVariable[&quot;column name&quot;] = formatted SQL value<br />
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Name&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Violet&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-variable">$values</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]&nbsp;</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">777</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);<br />
+<br />
+</span><span class="php1-comment">// Execute the insert<br />
+</span><span class="php1-variable">$result </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">InsertRow</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $values</span><span class="php1-symbol">);<br />
+<br />
+</span></span></code><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// If we have an error<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $result</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-comment"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;// Show the error and kill the script<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();<br />
+<br />
+}</span><span class="php1-space"> </span><span class="php1-reservedword">else</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-comment"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;// No error, show the new record's ID<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;The new record's ID is: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $result</span><span class="php1-symbol">;<br />
+<br />
+}</span></span></code></p>
+</div>
+<a name="methodIsDate" id="IsDate"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">IsDate</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Determines if a value of any data type is a date PHP can convert</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE if value is date or FALSE if not date</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+IsDate
+</span>
+(<span class="var-type">date/string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">date/string</span>
+<span class="var-name">$value</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">IsDate</span><span class="php1-symbol">(</span><span class="php1-string">&quot;January 1, 2000&quot;</span><span class="php1-symbol">))</span> <span class="php1-symbol">{<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span> <span class="php1-string">&quot;valid date&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodKill" id="Kill"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Kill</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Stop executing (die/exit) and show the last MySQL error message</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">void</span>
+<span class="method-name">
+Kill
+</span>
+([<span class="var-type">mixed</span>&nbsp;<span class="var-name">$message</span> = <span class="var-default">''</span>])
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">//Stop executing the script and show the last error<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodMoveFirst" id="MoveFirst"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">MoveFirst</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Seeks to the beginning of the records</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+MoveFirst
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">MoveFirst</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">while</span> <span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">EndOfSeek</span><span class="php1-symbol">())</span> <span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$row </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Row</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $row</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">ColumnName1</span> <span class="php1-symbol">.</span> <span class="php1-string">&quot; &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $row</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">ColumnName2</span> <span class="php1-symbol">.</span> <span class="php1-string">&quot;\n&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodMoveLast" id="MoveLast"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">MoveLast</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Seeks to the end of the records</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+MoveLast
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">MoveLast</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodOpen" id="Open"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Open</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Connect to specified MySQL server</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+Open
+</span>
+([<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$server</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$username</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$password</span> = <span class="var-default">""</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$pcon</span> = <span class="var-default">false</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$database</span><span class="var-description">: (Optional) Database name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$server</span><span class="var-description">: (Optional) Host address</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$username</span><span class="var-description">: (Optional) User name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$password</span><span class="var-description">: (Optional) Password</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$charset</span><span class="var-description">: (Optional) Character set</span> </li>
+<li>
+<span class="var-type">boolean</span>
+<span class="var-name">$pcon</span><span class="var-description">: (Optional) Persistant connection</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Open</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyDatabase&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;localhost&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;user&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;password&quot;</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();<br />
+}</span></span></code></p>
+</div>
+<a name="methodQuery" id="Query"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Query</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the given SQL query and returns the records</p>
+<ul class="tags">
+<li><span class="field">return:</span> 'mysql result' resource object containing the records on SELECT, SHOW, DESCRIBE or EXPLAIN queries and returns; TRUE or FALSE for all others i.e. UPDATE, DELETE, DROP AND FALSE on all errors (setting the local Error message)</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object PHP</span>
+<span class="method-name">
+Query
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">if</span> <span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-string">&quot;SELECT * FROM Table&quot;</span><span class="php1-symbol">))</span><span class="php1-reservedword">&nbsp;echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;Kill();</span></span></code></p>
+</div>
+<a name="methodQueryArray" id="QueryArray"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">QueryArray</span> (line <span class="line-number">1017</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the given SQL query and returns a multi-dimensional array</p>
+<ul class="tags">
+<li><span class="field">return:</span> A multi-dimensional array containing all the data returned from the query or FALSE on all errors</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+QueryArray
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$resultType</span><span class="var-description">: (Optional) The type of array Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH</span> </li>
+</ul>
+</div>
+<a name="methodQuerySingleRow" id="QuerySingleRow"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">QuerySingleRow</span> (line <span class="line-number">1033</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the given SQL query and returns only one (the first) row</p>
+<ul class="tags">
+<li><span class="field">return:</span> resource object containing the first row or FALSE if no row is returned from the query</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object PHP</span>
+<span class="method-name">
+QuerySingleRow
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+</ul>
+</div>
+<a name="methodQuerySingleRowArray" id="QuerySingleRowArray"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">QuerySingleRowArray</span> (line <span class="line-number">1051</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the given SQL query and returns the first row as an array</p>
+<ul class="tags">
+<li><span class="field">return:</span> An array containing the first row or FALSE if no row is returned from the query</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+QuerySingleRowArray
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>, [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$resultType</span><span class="var-description">: (Optional) The type of array Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH</span> </li>
+</ul>
+</div>
+<a name="methodQuerySingleValue" id="QuerySingleValue"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">QuerySingleValue</span> (line <span class="line-number">1067</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes a query and returns a single value. If more than one row is returned, only the first value in the first column is returned.</p>
+<ul class="tags">
+<li><span class="field">return:</span> The value returned or FALSE if no value</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">mixed</span>
+<span class="method-name">
+QuerySingleValue
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+</ul>
+</div>
+<a name="methodQueryTimed" id="QueryTimed"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">QueryTimed</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Executes the given SQL query, measures it, and saves the total duration in microseconds</p>
+<ul class="tags">
+<li><span class="field">return:</span> 'mysql result' resource object containing the records on SELECT, SHOW, DESCRIBE or EXPLAIN queries and returns TRUE or FALSE for all others i.e. UPDATE, DELETE, DROP</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object PHP</span>
+<span class="method-name">
+QueryTimed
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$sql</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$sql</span><span class="var-description">: The query string should not end with a semicolon</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">QueryTimed</span><span class="php1-symbol">(</span><span class="php1-string">&quot;SELECT * FROM MyTable&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Query took &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerDuration</span><span class="php1-symbol">()</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot; microseconds&quot;</span><span class="php1-symbol">;</span></span></code></p>
+</div>
+<a name="methodRecords" id="Records"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Records</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the records from the last query</p>
+<ul class="tags">
+<li><span class="field">return:</span> 'mysql result' resource object containing the records for the last query executed</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object PHP</span>
+<span class="method-name">
+Records
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$records </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Records</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodRecordsArray" id="RecordsArray"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">RecordsArray</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns all records from last query and returns contents as array or FALSE on error</p>
+<ul class="tags">
+<li><span class="field">return:</span> in array form</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">Records</span>
+<span class="method-name">
+RecordsArray
+</span>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$resultType</span><span class="var-description">: (Optional) The type of array Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$myArray </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">RecordsArray</span><span class="php1-symbol">(MYSQL_ASSOC);</span></span></code></p>
+</div>
+<a name="methodRelease" id="Release"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Release</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Frees memory used by the query results and returns the function result</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on failure</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+Release
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Release</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodRow" id="Row"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Row</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Reads the current row and returns contents as a PHP object or returns false on error</p>
+<ul class="tags">
+<li><span class="field">return:</span> object or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object PHP</span>
+<span class="method-name">
+Row
+</span>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$optional_row_number</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$optional_row_number</span><span class="var-description">: (Optional) Use to specify a row</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">MoveFirst</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">while</span> <span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">EndOfSeek</span><span class="php1-symbol">())</span> <span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$row </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Row</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> $row</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">ColumnName1</span> <span class="php1-symbol">.</span> <span class="php1-string">&quot; &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $row</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">ColumnName2</span> <span class="php1-symbol">.</span> <span class="php1-string">&quot;\n&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodRowArray" id="RowArray"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">RowArray</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Reads the current row and returns contents as an array or returns false on error</p>
+<ul class="tags">
+<li><span class="field">return:</span> Array that corresponds to fetched row or FALSE if no rows</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">array</span>
+<span class="method-name">
+RowArray
+</span>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$optional_row_number</span> = <span class="var-default">null</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$resultType</span> = <span class="var-default">MYSQL_BOTH</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$optional_row_number</span><span class="var-description">: (Optional) Use to specify a row</span> </li>
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$resultType</span><span class="var-description">: (Optional) The type of array Values can be: MYSQL_ASSOC, MYSQL_NUM, MYSQL_BOTH</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">for</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$index </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-number">0</span><span class="php1-symbol">;</span><span class="php1-space"> $index </span><span class="php1-symbol">&lt;</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">RowCount</span><span class="php1-symbol">();</span><span class="php1-space"> $index</span><span class="php1-symbol">++)</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$val </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">RowArray</span><span class="php1-symbol">(</span><span class="php1-variable">$index</span><span class="php1-symbol">);<br />
+}</span></span></code></p>
+</div>
+<a name="methodRowCount" id="RowCount"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">RowCount</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the last query row count</p>
+<ul class="tags">
+<li><span class="field">return:</span> Row count or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+RowCount
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-string">&quot;SELECT * FROM Customer&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Row Count: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">RowCount</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodSeek" id="Seek"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">Seek</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Sets the internal database pointer to the specified row number and returns the result</p>
+<ul class="tags">
+<li><span class="field">return:</span> row as PHP object</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">object Fetched</span>
+<span class="method-name">
+Seek
+</span>
+(<span class="var-type">integer</span>&nbsp;<span class="var-name">$row_number</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$row_number</span><span class="var-description">: Row number</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Seek</span><span class="php1-symbol">(</span><span class="php1-number">0</span><span class="php1-symbol">);</span><span class="php1-space"> </span><span class="php1-comment">//Move to the first record</span></span></code></p>
+</div>
+<a name="methodSeekPosition" id="SeekPosition"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SeekPosition</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns the current cursor row location</p>
+<ul class="tags">
+<li><span class="field">return:</span> Current row number</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">integer</span>
+<span class="method-name">
+SeekPosition
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span> <span class="php1-string">&quot;Current Row Cursor : &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetSeekPosition</span><span class="php1-symbol">();</span></span></code></p>
+</div>
+<a name="methodSelectDatabase" id="SelectDatabase"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SelectDatabase</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Selects a different database and character set</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+SelectDatabase
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$database</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$charset</span> = <span class="var-default">""</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$database</span><span class="var-description">: Database name</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$charset</span><span class="var-description">: (Optional) Character set (i.e. 'utf8')</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">SelectDatabase</span><span class="php1-symbol">(</span><span class="php1-string">&quot;DatabaseName&quot;</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodSelectRows" id="SelectRows"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SelectRows</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gets rows in a table based on a WHERE filter</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns records on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+SelectRows
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$columns</span> = <span class="var-default">null</span>], [<span class="var-type">array/string</span>&nbsp;<span class="var-name">$sortColumns</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$sortAscending</span> = <span class="var-default">true</span>], [<span class="var-type">integer/string</span>&nbsp;<span class="var-name">$limit</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+<li>
+<span class="var-type">array/string</span>
+<span class="var-name">$columns</span><span class="var-description">: (Optional) The column or list of columns to select</span> </li>
+<li>
+<span class="var-type">array/string</span>
+<span class="var-name">$sortColumns</span><span class="var-description">: (Optional) Column or list of columns to sort by</span> </li>
+<li>
+<span class="var-type">boolean</span>
+<span class="var-name">$sortAscending</span><span class="var-description">: (Optional) TRUE for ascending; FALSE for descending This only works if $sortColumns are specified</span> </li>
+<li>
+<span class="var-type">integer/string</span>
+<span class="var-name">$limit</span><span class="var-description">: (Optional) The limit of rows to return</span> </li>
+</ul>
+<p>Example</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// $arrayVariable[&quot;column name&quot;] = formatted SQL value<br />
+</span><span class="php1-variable">$filter</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Color&quot;</span><span class="php1-symbol">]</span> <span class="php1-symbol">=</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Violet&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-variable">$filter</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]&nbsp;&nbsp;</span> <span class="php1-symbol">=</span> <span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">777</span><span class="php1-symbol">,</span><span class="php1-identifier"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);<br />
+<br />
+</span><span class="php1-comment">// Execute the select <br />
+</span><span class="php1-variable">$result </span><span class="php1-symbol">=</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">SelectRows</span><span class="php1-symbol">(</span><span class="php1-string">&quot;MyTable&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $filter</span><span class="php1-symbol">);<br />
+<br />
+</span><span class="php1-comment">// If we have an error<br />
+</span><span class="php1-reservedword">if</span> <span class="php1-symbol">(!</span><span class="php1-space"> $result</span><span class="php1-symbol">)</span> <span class="php1-symbol">{<br />
+</span><span class="php1-comment"><br />
+&nbsp;&nbsp;&nbsp;&nbsp;// Show the error and kill the script<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span><span class="php1-symbol">();<br />
+<br />
+</span><span class="php1-symbol">}</span></span></code></p>
+</div>
+<a name="methodSelectTable" id="SelectTable"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SelectTable</span> (line <span class="line-number">1229</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Retrieves all rows in a specified table</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns records on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+SelectTable
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+</ul>
+</div>
+<a name="methodSQLBooleanValue" id="SQLBooleanValue"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SQLBooleanValue</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Converts a boolean into a formatted TRUE or FALSE value of choice</p>
+<ul class="tags">
+<li><span class="field">return:</span> SQL formatted value of the specified data type</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+SQLBooleanValue
+</span>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>, <span class="var-type">any</span>&nbsp;<span class="var-name">$trueValue</span>, <span class="var-type">any</span>&nbsp;<span class="var-name">$falseValue</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$datatype</span> = <span class="var-default">'string'</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">any</span>
+<span class="var-name">$value</span><span class="var-description">: value to analyze for TRUE or FALSE</span> </li>
+<li>
+<span class="var-type">any</span>
+<span class="var-name">$trueValue</span><span class="var-description">: value to use if TRUE</span> </li>
+<li>
+<span class="var-type">any</span>
+<span class="var-name">$falseValue</span><span class="var-description">: value to use if FALSE</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$datatype</span><span class="var-description">: Use <a href="#sec-const-summary">SQLVALUE constants</a> or the strings: string, text, varchar, char, boolean, bool, Y-N, T-F, bit, date, datetime, time, integer, int, number, double, float</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLBooleanValue</span><span class="php1-symbol">(</span><span class="php1-reservedword">false</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;1&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;0&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);</span><br />
+<span class="php1-reservedword">echo</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLBooleanValue</span><span class="php1-symbol">(</span><span class="php1-variable">$test</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;Jan 1, 2007 &quot;</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;2007/06/01&quot;</span><span class="php1-symbol">,</span><span class="php1-identifier"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_DATE</span><span class="php1-symbol">);</span><br />
+<span class="php1-reservedword">echo</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLBooleanValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;ON&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;Ya&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">&quot;Nope&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLBooleanValue</span><span class="php1-symbol">(</span><span class="php1-number">1</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">'+'</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-string">'-'</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodSQLFix" id="SQLFix"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SQLFix</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Returns string suitable for SQL<br />Depreciated - instead use SQLValue($value, "text")</p>
+<ul class="tags">
+<li><span class="field">return:</span> SQL formatted value</li>
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+SQLFix
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$value</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"> <span class="php1-variable">$value </span><span class="php1-symbol">=</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLFix</span><span class="php1-symbol">(</span><span class="php1-string">&quot;\hello\ /world/&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-variable"> $value</span><span class="php1-symbol"> . </span><span class="php1-string">&quot;\n&quot;</span><span class="php1-symbol"> . </span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLUnfix</span><span class="php1-symbol">(</span><span class="php1-variable">$value</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodSQLUnfix" id="SQLUnfix"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SQLUnfix</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Returns MySQL string as normal string<br />Depreciated</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+SQLUnfix
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$value</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$value</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"> <span class="php1-variable">$value </span><span class="php1-symbol">=</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLFix</span><span class="php1-symbol">(</span><span class="php1-string">&quot;\hello\ /world/&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-variable"> $value</span><span class="php1-symbol"> . </span><span class="php1-string">&quot;\n&quot;</span><span class="php1-symbol"> . </span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLUnfix</span><span class="php1-symbol">(</span><span class="php1-variable">$value</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodSQLValue" id="SQLValue"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">SQLValue</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">[STATIC] Formats any value into a string suitable for SQL statements (NOTE: Also supports data types returned from the gettype function)</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+<li><span class="field">static</span> </li>
+</ul>
+<div class="method-signature">
+<span class="method-result">string</span>
+<span class="method-name">
+SQLValue </span>
+(<span class="var-type">any</span>&nbsp;<span class="var-name">$value</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$datatype</span> = <span class="var-default"><a href="#sec-const-summary">SQLVALUE_TEXT</a></span>]) </div>
+<ul class="parameters">
+<li>
+<span class="var-type">any</span>
+<span class="var-name">$value</span><span class="var-description">: Any value of any type to be formatted to SQL</span> </li>
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$datatype</span><span class="var-description">: Use <a href="#sec-const-summary">SQLVALUE constants</a> or the strings: string, text, varchar, char, boolean, bool, Y-N, T-F, bit, date, datetime, time, integer, int, number, double, float</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-reservedword">echo</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;it's a string&quot;</span><span class="php1-symbol">,</span> <span class="php1-string">&quot;text&quot;</span><span class="php1-symbol">);</span></span></code><br />
+<code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span> <span class="php1-string">&quot;SELECT * FROM Table WHERE Field1 = &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;123&quot;</span><span class="php1-symbol">,</span><span class="php1-identifier"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);</span><br />
+<span class="php1-variable">$sql </span><span class="php1-symbol">=</span> <span class="php1-string">&quot;UPDATE Table SET Field1 = &quot;</span> <span class="php1-symbol">.</span><span class="php1-space"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;July 4, 2007&quot;</span><span class="php1-symbol">,</span><span class="php1-identifier"> MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_DATE</span><span class="php1-symbol">);</span></span></code></p>
+</div>
+<a name="methodTimerDuration" id="TimerDuration"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TimerDuration</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Returns last measured duration (time between TimerStart and TimerStop)</p>
+<ul class="tags">
+<li><span class="field">return:</span> Microseconds elapsed</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">Float</span>
+<span class="method-name">
+TimerDuration
+</span>
+([<span class="var-type">integer</span>&nbsp;<span class="var-name">$decimals</span> = <span class="var-default">4</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">integer</span>
+<span class="var-name">$decimals</span><span class="var-description">: (Optional) The number of decimal places to show</span> </li>
+</ul>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStart</span><span class="php1-symbol">();<br />
+</span><span class="php1-comment">// Do something or run some queries<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStop</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerDuration</span><span class="php1-symbol">(</span><span class="php1-number">2</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot; microseconds&quot;</span><span class="php1-symbol">;</span></span></code></p>
+</div>
+<a name="methodTimerStart" id="TimerStart"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TimerStart</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Starts time measurement (in microseconds)</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">void</span>
+<span class="method-name">
+TimerStart
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStart</span><span class="php1-symbol">();<br />
+</span><span class="php1-comment">// Do something or run some queries<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStop</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerDuration</span><span class="php1-symbol">(</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot; microseconds&quot;</span><span class="php1-symbol">;</span></span></code></p>
+</div>
+<a name="methodTimerStop" id="TimerStop"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TimerStop</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Stops time measurement (in microseconds)</p>
+<ul class="tags">
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">void</span>
+<span class="method-name">
+TimerStop
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStart</span><span class="php1-symbol">();<br />
+</span><span class="php1-comment">// Do something or run some queries<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerStop</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">echo</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TimerDuration</span><span class="php1-symbol">(</span><span class="php1-symbol">)</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> </span><span class="php1-string">&quot; microseconds&quot;</span><span class="php1-symbol">;</span></span></code></p>
+</div>
+<a name="methodTransactionBegin" id="TransactionBegin"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TransactionBegin</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Starts a transaction</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+TransactionBegin
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-string">&quot;INSERT INTO MyTable (Field1, Field2) Values ('abc', 123)&quot;</span><span class="php1-symbol">;<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionBegin</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-variable">$sql</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionEnd</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Last ID inserted was: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetLastInsertID</span><span class="php1-symbol">()</span><span class="php1-symbol">;<br />
+}</span><span class="php1-space"> </span><span class="php1-reservedword">else</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionRollback</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Query Failed&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodTransactionEnd" id="TransactionEnd"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TransactionEnd</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Ends a transaction and commits the queries</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+TransactionEnd
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-string">&quot;INSERT INTO MyTable (Field1, Field2) Values ('abc', 123)&quot;</span><span class="php1-symbol">;<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionBegin</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-variable">$sql</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionEnd</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Last ID inserted was: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetLastInsertID</span><span class="php1-symbol">()</span><span class="php1-symbol">;<br />
+}</span><span class="php1-space"> </span><span class="php1-reservedword">else</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionRollback</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Query Failed&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodTransactionRollback" id="TransactionRollback"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TransactionRollback</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Rolls the transaction back</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on failure</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+TransactionRollback
+</span>
+()
+</div>
+<p>Example:</p>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-variable">$sql </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-string">&quot;INSERT INTO MyTable (Field1, Field2) Values ('abc', 123)&quot;</span><span class="php1-symbol">;<br />
+</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionBegin</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(</span><span class="php1-variable">$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Query</span><span class="php1-symbol">(</span><span class="php1-variable">$sql</span><span class="php1-symbol">))</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionEnd</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Last ID inserted was: &quot;</span><span class="php1-space"> </span><span class="php1-symbol">.</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">GetLastInsertID</span><span class="php1-symbol">()</span><span class="php1-symbol">;<br />
+}</span><span class="php1-space"> </span><span class="php1-reservedword">else</span><span class="php1-space"> </span><span class="php1-symbol">{<br />
+</span><span class="php1-space">&nbsp;&nbsp;&nbsp;&nbsp;$db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">TransactionRollback</span><span class="php1-symbol">();<br />
+</span><span class="php1-reservedword">&nbsp;&nbsp;&nbsp;&nbsp;echo</span><span class="php1-space"> </span><span class="php1-string">&quot;Query Failed&quot;</span><span class="php1-symbol">;<br />
+}</span></span></code></p>
+</div>
+<a name="methodTruncateTable" id="TruncateTable"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">TruncateTable</span> (line <span class="line-number">1503</span>)
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Truncates a table removing all data</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+TruncateTable
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>)
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+</ul>
+</div>
+<a name="methodUpdateRows" id="UpdateRows"><!-- --></a>
+<div class="oddrow">
+<div class="method-header">
+<span class="method-title">UpdateRows</span>
+</div>
+<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Updates a row in a table from the connected database</p>
+<ul class="tags">
+<li><span class="field">return:</span> Returns TRUE on success or FALSE on error</li>
+<li><span class="field">access:</span> public</li>
+</ul>
+<div class="method-signature">
+<span class="method-result">boolean</span>
+<span class="method-name">
+UpdateRows
+</span>
+(<span class="var-type">string</span>&nbsp;<span class="var-name">$tableName</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$valuesArray</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$whereArray</span> = <span class="var-default">null</span>])
+</div>
+<ul class="parameters">
+<li>
+<span class="var-type">string</span>
+<span class="var-name">$tableName</span><span class="var-description">: The name of the table</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$valuesArray</span><span class="var-description">: An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect)</span> </li>
+<li>
+<span class="var-type">array</span>
+<span class="var-name">$whereArray</span><span class="var-description">: (Optional) An associative array containing the column names as keys and values as data. The values must be SQL ready (i.e. quotes around strings, formatted dates, ect). If not specified then all values in the table are updated.</span> </li>
+</ul>
+<p><code><span style="font: 12pt Fixedsys;"><span class="php1-comment">// Create an array that holds the update information<br />
+// $arrayVariable[&quot;column name&quot;] = formatted SQL value<br />
+</span><span class="php1-variable">$update</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Name&quot;</span><span class="php1-symbol">]</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-string">&quot;Bob&quot;</span><span class="php1-symbol">);<br />
+</span><span class="php1-variable">$update</span><span class="php1-symbol">[</span><span class="php1-string">&quot;Age&quot;</span><span class="php1-symbol">]&nbsp;</span><span class="php1-space"> </span><span class="php1-symbol">=</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLValue</span><span class="php1-symbol">(</span><span class="php1-number">25</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-identifier">MySQL</span><span class="php1-symbol">::</span><span class="php1-identifier">SQLVALUE_NUMBER</span><span class="php1-symbol">);<br />
+<br />
+</span><span class="php1-comment">// Execute the update where the ID is 1<br />
+</span><span class="php1-reservedword">if</span><span class="php1-space"> </span><span class="php1-symbol">(!</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">UpdateRows</span><span class="php1-symbol">(</span><span class="php1-string">&quot;test&quot;</span><span class="php1-symbol">,</span><span class="php1-space"> $values</span><span class="php1-symbol">,</span><span class="php1-space"> </span><span class="php1-reservedword">array</span><span class="php1-symbol">(</span><span class="php1-string">&quot;id&quot;</span><span class="php1-space"> </span><span class="php1-symbol">=&gt;</span><span class="php1-space"> </span><span class="php1-number">1</span><span class="php1-symbol">)))</span><span class="php1-space"> $db</span><span class="php1-symbol">-&gt;</span><span class="php1-identifier">Kill</span></span></code></p>
+</div>
+</div>
+</div>
+<a name="sec-consts"></a>
+<div class="info-box">
+<div class="info-box-title">Class Constants (Use with <a href="#SQLValue" title="details" class="method-name">SQLValue()</a> method)</div>
+<div class="nav-bar">
+<a href="#sec-description">Description</a> |
+<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+|
+<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+</div>
+<div class="info-box-body">
+<a name="constSQLVALUE_BIT" id="SQLVALUE_BIT"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_BIT</span>
+= <span class="const-default"> &quot;bit&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_BOOLEAN" id="SQLVALUE_BOOLEAN"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_BOOLEAN</span>
+= <span class="const-default"> &quot;boolean&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_DATE" id="SQLVALUE_DATE"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_DATE</span>
+= <span class="const-default"> &quot;date&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_DATETIME" id="SQLVALUE_DATETIME"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_DATETIME</span>
+= <span class="const-default"> &quot;datetime&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_NUMBER" id="SQLVALUE_NUMBER"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_NUMBER</span>
+= <span class="const-default"> &quot;number&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_TEXT" id="SQLVALUE_TEXT"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_TEXT</span>
+= <span class="const-default"> &quot;text&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_TIME" id="SQLVALUE_TIME"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_TIME</span>
+= <span class="const-default"> &quot;time&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_T_F" id="SQLVALUE_T_F"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_T_F</span>
+= <span class="const-default"> &quot;t-f&quot;</span>
+</span></div>
+<!-- ========== Info from phpDoc block ========= -->
+</div>
+<a name="constSQLVALUE_Y_N" id="SQLVALUE_Y_N"><!-- --></A>
+<div class="oddrow">
+<div class="const-header"><span class="const-title">
+<span class="const-name">SQLVALUE_Y_N</span>
+= <span class="const-default"> &quot;y-n&quot;</span>
+</span></div>
+</div>
+</div>
+</div>
+</div>
+<p class="notes" id="credit" align="center">
+Documentation generated on Mon, 16 Jul 2007 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.3.0RC3</a> and modified by Jeff L. Williams</p></div>
+</body>
+</html>
