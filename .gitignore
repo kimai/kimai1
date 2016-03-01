@@ -7,6 +7,5 @@ autoconf.php
 .idea/
 .DS_Store
 libraries/bin/
-libraries/composer/
 libraries/phpunit/
 libraries/symfony/
