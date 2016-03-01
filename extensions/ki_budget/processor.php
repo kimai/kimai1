@@ -38,23 +38,20 @@ if ($filters[0] == "") {
 $filterCustomers = array_map(function($customer) {
   return $customer['customerID'];
 }, $database->get_customers($kga['user']['groups']));
-if ($filters[1] != "") {
+if ($filters[1] != "")
   $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
-}
 
 $filterProjects = array_map(function($project) {
   return $project['projectID'];
 }, $database->get_projects($kga['user']['groups']));
-if ($filters[2] != "") {
+if ($filters[2] != "")
   $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
-}
 
 $filterActivities = array_map(function($activity) {
   return $activity['activityID'];
 }, $database->get_activities($kga['user']['groups']));
-if ($filters[3] != "") {
+if ($filters[3] != "")
   $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
-}
 
 // if no userfilter is set, set it to current user
 if (isset($kga['user']) && count($filterUsers) == 0) {
@@ -92,14 +89,16 @@ switch ($axAction)
 		if (isset($kga['customer'])) {
 			$projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
 			$activities = $database->get_activities();
-		} else {
+		}
+		else {
 			$customers = $database->get_customers($kga['user']['groups']);
 			if (is_array($filterCustomers) && count($filterCustomers) > 0) {
 				$projects = array();
 				foreach ($filterCustomers as $customerId) {
 					$projects = array_merge($database->get_projects_by_customer($customerId), $projects);
 				}
-			} else {
+			}
+			else {
 				$projects = $database->get_projects($kga['user']['groups']);
 			}
 			$activities = $database->get_activities($kga['user']['groups']);
@@ -126,7 +125,8 @@ switch ($axAction)
 			$view->arr_plotdata = $arr_plotdata;
 			$view->projects = $projects;
 			$view->activities = $activities;
-		} else {
+		}
+		else {
 			$view->projects = array();
 		}
 		$view->projects_selected = $projectsSelected;
@@ -137,9 +137,8 @@ switch ($axAction)
 		// Create the keys which explain to the user which color means what for the project based charts
 		$keys = array();
 		$keys[] = array('color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
-		if ($expensesOccured) {
-					$keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
-		}
+		if ($expensesOccured)
+			$keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
 		/*for ($i = 0; $i < count($usedEvents); $i++) {
 			$keys[] = array('color' => $chartColors[($i + 2) % (count($chartColors) - 1)], 'name' => $usedEvents[$i]['evt_name']);
 		}*/

@@ -5,9 +5,7 @@ $hostname = isset($_REQUEST['hostname']) ? $_REQUEST['hostname'] : "localhost";
 $username = isset($_REQUEST['username']) ? $_REQUEST['username'] : "";
 $password = isset($_REQUEST['password']) ? $_REQUEST['password'] : "";
 
-if ($hostname == "") {
-    $hostname = "localhost";
-}
+if ($hostname == "") $hostname = "localhost";
 
 if ($_REQUEST['lang'] == "en") {
 

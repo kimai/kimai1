@@ -16,11 +16,10 @@ if ($_REQUEST['lang'] == "en") {
         $serverZone = @date_default_timezone_get();
 
         foreach (timezoneList() as $name) {
-            if ($name == $serverZone) {
-                            echo "<option selected=\"selected\">$name</option>";
-            } else {
-                            echo "<option>$name</option>";
-            }
+            if ($name == $serverZone)
+                echo "<option selected=\"selected\">$name</option>";
+            else
+                echo "<option>$name</option>";
         }
         ?>
     </select>
@@ -42,11 +41,10 @@ if ($_REQUEST['lang'] == "en") {
         $serverZone = @date_default_timezone_get();
 
         foreach (timezoneList() as $name) {
-            if ($name == $serverZone) {
-                            echo "<option selected=\"selected\">$name</option>";
-            } else {
-                            echo "<option>$name</option>";
-            }
+            if ($name == $serverZone)
+                echo "<option selected=\"selected\">$name</option>";
+            else
+                echo "<option>$name</option>";
         }
         ?>
     </select>

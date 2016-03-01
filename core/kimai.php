@@ -61,7 +61,8 @@ if (isset($kga['customer'])) {
   $current_timer['hour'] = 0;
   $current_timer['min']  = 0;
   $current_timer['sec']  = 0;
-} else {
+}
+else {
   $current_timer = $database->get_current_timer();
 }
 
@@ -166,10 +167,9 @@ $view->currentRecording = -1;
 
 if (isset($kga['user'])) {
   $currentRecordings = $database->get_current_recordings($kga['user']['userID']);
-  if (count($currentRecordings) > 0) {
-      $view->currentRecording = $currentRecordings[0];
-  }
-  }
+  if (count($currentRecordings) > 0)
+    $view->currentRecording = $currentRecordings[0];
+}
 
 $view->openAfterRecorded = isset($kga['conf']['openAfterRecorded']) && $kga['conf']['openAfterRecorded'];
 
@@ -191,10 +191,9 @@ if (!isset($kga['customer'])) {
     $projectData = $lastProject;
     $customerData = $database->customer_get_data($lastProject['customerID']);
   }
-  if (!$lastActivity['trash']) {
-      $activityData = $lastActivity;
-  }
-  }
+  if (!$lastActivity['trash'])
+    $activityData = $lastActivity;    
+}
 $view->customerData = $customerData;
 $view->projectData  = $projectData;
 $view->activityData = $activityData;
@@ -209,11 +208,10 @@ foreach ($extensions->phpIncludeFiles() as $includeFile) {
 // =======================
 // = display user table =
 // =======================
-if (isset($kga['customer'])) {
+if (isset($kga['customer']))
   $view->users = $database->get_customer_watchable_users($kga['customer']);
-} else {
+else
   $view->users = $database->get_user_watchable_users($kga['user']);
-}
 $view->user_display = $view->render("lists/users.php");
 
 // ==========================

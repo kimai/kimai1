@@ -110,9 +110,8 @@ class MYPDF extends BasePDF {
                  $this->Cell($w[2], 6, $this->time_unit($timeSum), isset($this->columns['wage']) ? 'R' : '', 0, 'R', true);
               }
            }
-           if (isset($this->columns['wage'])) {
-                         $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
-           }
+           if (isset($this->columns['wage']))
+              $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
         }
         $this->Ln();  
         $this->AddPage();
@@ -141,9 +140,8 @@ class MYPDF extends BasePDF {
           }
       }
       
-      if (isset($this->columns['wage'])) {
-              $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill);
-      }
+      if (isset($this->columns['wage']))
+        $this->Cell($w[3], 6, $this->money($row['wage']), 'LR', 0, 'R', $fill); 
       $this->Ln(); 
         
         
@@ -176,9 +174,8 @@ class MYPDF extends BasePDF {
                   $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
                }
            }   
-            if (isset($this->columns['wage'])) {
-                          $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill);
-            }
+            if (isset($this->columns['wage']))
+              $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill); 
            $this->Ln();
                }
              }
@@ -207,9 +204,8 @@ class MYPDF extends BasePDF {
            $this->Cell($w[2], 6, $this->time_unit($timeSum), isset($this->columns['wage']) ? 'R' : '', 0, 'R', true);
         }
       } 
-      if (isset($this->columns['wage'])) {
-              $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true);
-      }
+      if (isset($this->columns['wage']))
+        $this->Cell($w[3], 6, $this->money($moneySum), 'L', 0, 'R', true); 
     }
   }
 }
@@ -258,9 +254,8 @@ $pdf->SetTitle($pdf_title);
 $pdf->setPrintHeader(false); 
 $pdf->AddPage();
 
-if (isset($_REQUEST['create_bookmarks'])) {
+if (isset($_REQUEST['create_bookmarks']))
   $pdf->Bookmark($pdf_title, 0, 0);
-}
 
 //$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
 
@@ -284,9 +279,8 @@ if (!empty($_REQUEST['document_comment'])) {
 
 if (isset($_REQUEST['print_summary'])) {
   
-  if (isset($_REQUEST['create_bookmarks'])) {
-      $pdf->Bookmark($kga['lang']['export_extension']['summary'], 0, 0);
-  }
+  if (isset($_REQUEST['create_bookmarks']))
+    $pdf->Bookmark($kga['lang']['export_extension']['summary'], 0, 0);
   
   $pdf->ln();
   $pdf->WriteHtml('<h3>' . $kga['lang']['export_extension']['summary'] . '</h3>');
@@ -329,11 +323,10 @@ $firstRun = true;
 foreach ($orderedExportData as $customer) {
   // process each customer in first dimension
 
-  if ($firstRun) {
-      $firstRun = false;
-  } else if (isset($_REQUEST['customer_new_page'])) {
-      $pdf->AddPage();
-  }
+  if ($firstRun)
+    $firstRun = false;
+  else if (isset($_REQUEST['customer_new_page']))
+    $pdf->AddPage();
 
   $pdf->ln();
   $pdf->WriteHtml('<h3>' . $kga['lang']['export_extension']['full_list'] . '</h3>');
