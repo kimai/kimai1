@@ -82,29 +82,34 @@ switch ($axAction) {
     // ===========================================
     case 'reload_exp':
       $filters = explode('|', $axValue);
-      if ($filters[0] == "")
-        $filterUsers = array();
-      else
-        $filterUsers = explode(':', $filters[0]);
+      if ($filters[0] == "") {
+              $filterUsers = array();
+      } else {
+              $filterUsers = explode(':', $filters[0]);
+      }
 
       $filterCustomers = array_map(function($customer) {
         return $customer['customerID'];
       }, $database->get_customers($kga['user']['groups']));
-      if ($filters[1] != "")
-        $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
+      if ($filters[1] != "") {
+              $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
+      }
 
       $filterProjects = array_map(function($project) {
         return $project['projectID'];
       }, $database->get_projects($kga['user']['groups']));
-      if ($filters[2] != "")
-        $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
+      if ($filters[2] != "") {
+              $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
+      }
 
       // if no userfilter is set, set it to current user
-      if (isset($kga['user']) && count($filterUsers) == 0)
-        array_push($filterUsers, $kga['user']['userID']);
+      if (isset($kga['user']) && count($filterUsers) == 0) {
+              array_push($filterUsers, $kga['user']['userID']);
+      }
         
-      if (isset($kga['customer']))
-        $filterCustomers = array($kga['customer']['customerID']);
+      if (isset($kga['customer'])) {
+              $filterCustomers = array($kga['customer']['customerID']);
+      }
 
       $view->expenses = get_expenses($in, $out, $filterUsers, $filterCustomers, $filterProjects, 1);
       $view->total = Kimai_Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
@@ -124,10 +129,11 @@ switch ($axAction) {
 
       $view->activity_annotations = array();
 
-      if (isset($kga['user']))
-        $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-      else
-        $view->hideComments = true;
+      if (isset($kga['user'])) {
+              $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
+      } else {
+              $view->hideComments = true;
+      }
 
       echo $view->render("expenses.php");
     break;
@@ -160,10 +166,12 @@ switch ($axAction) {
 
         // determine action for permission check
         $action = 'add';
-        if ($id)
-          $action = 'edit';
-        if (isset($_REQUEST['erase']))
-          $action = 'delete';
+        if ($id) {
+                  $action = 'edit';
+        }
+        if (isset($_REQUEST['erase'])) {
+                  $action = 'delete';
+        }
 
         if ($id) {
           $data = expense_get($id);
@@ -207,11 +215,13 @@ switch ($axAction) {
         $new_time = convert_time_strings($new, $new);
         $data['timestamp'] = $new_time['in'];
 
-        if (!is_numeric($data['projectID']))
-          $errors['projectID'] = $kga['lang']['errorMessages']['noProjectSelected'];
+        if (!is_numeric($data['projectID'])) {
+                  $errors['projectID'] = $kga['lang']['errorMessages']['noProjectSelected'];
+        }
 
-        if (!is_numeric($data['multiplier']) || $data['multiplier'] <= 0)
-          $errors['multiplier'] = $kga['lang']['errorMessages']['multiplierNegative'];
+        if (!is_numeric($data['multiplier']) || $data['multiplier'] <= 0) {
+                  $errors['multiplier'] = $kga['lang']['errorMessages']['multiplierNegative'];
+        }
 
         expenseAccessAllowed($data, $action, $errors);
 
@@ -220,10 +230,11 @@ switch ($axAction) {
           break;
         }
 
-        if ($id)
-            expense_edit($id, $data);
-        else
-            expense_create($kga['user']['userID'], $data);
+        if ($id) {
+                    expense_edit($id, $data);
+        } else {
+                    expense_create($kga['user']['userID'], $data);
+        }
 
         echo json_encode(array('errors'=>$errors));
     break;

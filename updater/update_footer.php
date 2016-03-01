@@ -25,8 +25,7 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
 if ((int)$revisionDB == $kga['revision'])
 {
     echo '<script type="text/javascript">window.location.href = "../index.php";</script>';
-}
-else
+} else
 {
     $l2 = $kga['lang']['login'];
     $l3 = $kga['lang']['updater'][90];
@@ -43,8 +42,7 @@ $("#link").addClass("success");
 $("#queries").append("$executed_queries $l3</p>");
 </script>
 EOD;
-    }
-    else
+    } else
     {
         $l1 = $kga['lang']['updater'][100];
 

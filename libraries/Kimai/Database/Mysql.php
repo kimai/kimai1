@@ -37,10 +37,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * @param string $serverType
      */
     public function connect($host, $database, $username, $password, $utf8, $serverType) {
-        if (isset($utf8) && $utf8)
-            $this->conn = new MySQL(true, $database, $host, $username, $password, "utf8");
-        else
-            $this->conn = new MySQL(true, $database, $host, $username, $password);
+        if (isset($utf8) && $utf8) {
+                    $this->conn = new MySQL(true, $database, $host, $username, $password, "utf8");
+        } else {
+                    $this->conn = new MySQL(true, $database, $host, $username, $password);
+        }
     }
 
     /**
@@ -90,10 +91,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $values['name'] = MySQL::SQLValue($data['name']);
         $values['comment'] = MySQL::SQLValue($data['comment']);
-        if (isset($data['password']))
-            $values['password'] = MySQL::SQLValue($data['password']);
-        else
-            $values['password'] = "''";
+        if (isset($data['password'])) {
+                    $values['password'] = MySQL::SQLValue($data['password']);
+        } else {
+                    $values['password'] = "''";
+        }
         $values['company'] = MySQL::SQLValue($data['company']);
         $values['vat'] = MySQL::SQLValue($data['vat']);
         $values['contact'] = MySQL::SQLValue($data['contact']);
@@ -160,14 +162,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             'fax', 'mobile', 'mail', 'homepage', 'timezone',
             'passwordResetHash');
         foreach ($strings as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key]);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key]);
+            }
         }
 
         $numbers = array('visible', 'filter');
         foreach ($numbers as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['customerID'] = MySQL::SQLValue($customerID, MySQL::SQLVALUE_NUMBER);
@@ -305,24 +309,27 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $projectID = $this->conn->GetLastInsertID();
 
         if (isset($data['defaultRate'])) {
-            if (is_numeric($data['defaultRate']))
-                $this->save_rate(NULL, $projectID, NULL, $data['defaultRate']);
-            else
-                $this->remove_rate(NULL, $projectID, NULL);
+            if (is_numeric($data['defaultRate'])) {
+                            $this->save_rate(NULL, $projectID, NULL, $data['defaultRate']);
+            } else {
+                            $this->remove_rate(NULL, $projectID, NULL);
+            }
         }
 
         if (isset($data['myRate'])) {
-            if (is_numeric($data['myRate']))
-                $this->save_rate($this->kga['user']['userID'], $projectID, NULL, $data['myRate']);
-            else
-                $this->remove_rate($this->kga['user']['userID'], $projectID, NULL);
+            if (is_numeric($data['myRate'])) {
+                            $this->save_rate($this->kga['user']['userID'], $projectID, NULL, $data['myRate']);
+            } else {
+                            $this->remove_rate($this->kga['user']['userID'], $projectID, NULL);
+            }
         }
 
         if (isset($data['fixedRate'])) {
-            if (is_numeric($data['fixedRate']))
-                $this->save_fixed_rate($projectID, NULL, $data['fixedRate']);
-            else
-                $this->remove_fixed_rate($projectID, NULL);
+            if (is_numeric($data['fixedRate'])) {
+                            $this->save_fixed_rate($projectID, NULL, $data['fixedRate']);
+            } else {
+                            $this->remove_fixed_rate($projectID, NULL);
+            }
         }
 
         return $projectID;
@@ -370,20 +377,23 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
         $strings = array('name', 'comment');
         foreach ($strings as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key]);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key]);
+            }
         }
 
         $numbers = array(
             'budget', 'customerID', 'visible', 'internal', 'filter', 'effort', 'approved');
         foreach ($numbers as $key) {
-            if (!isset($data[$key]))
-                continue;
+            if (!isset($data[$key])) {
+                            continue;
+            }
 
-            if ($data[$key] == NULL)
-                $values[$key] = 'NULL';
-            else
-                $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            if ($data[$key] == NULL) {
+                            $values[$key] = 'NULL';
+            } else {
+                            $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['projectID'] = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
@@ -400,24 +410,27 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         if ($this->conn->Query($query)) {
 
             if (isset($data['defaultRate'])) {
-                if (is_numeric($data['defaultRate']))
-                    $this->save_rate(NULL, $projectID, NULL, $data['defaultRate']);
-                else
-                    $this->remove_rate(NULL, $projectID, NULL);
+                if (is_numeric($data['defaultRate'])) {
+                                    $this->save_rate(NULL, $projectID, NULL, $data['defaultRate']);
+                } else {
+                                    $this->remove_rate(NULL, $projectID, NULL);
+                }
             }
 
             if (isset($data['myRate'])) {
-                if (is_numeric($data['myRate']))
-                    $this->save_rate($this->kga['user']['userID'], $projectID, NULL, $data['myRate']);
-                else
-                    $this->remove_rate($this->kga['user']['userID'], $projectID, NULL);
+                if (is_numeric($data['myRate'])) {
+                                    $this->save_rate($this->kga['user']['userID'], $projectID, NULL, $data['myRate']);
+                } else {
+                                    $this->remove_rate($this->kga['user']['userID'], $projectID, NULL);
+                }
             }
 
             if (isset($data['fixedRate'])) {
-                if (is_numeric($data['fixedRate']))
-                    $this->save_fixed_rate($projectID, NULL, $data['fixedRate']);
-                else
-                    $this->remove_fixed_rate($projectID, NULL);
+                if (is_numeric($data['fixedRate'])) {
+                                    $this->save_fixed_rate($projectID, NULL, $data['fixedRate']);
+                } else {
+                                    $this->remove_fixed_rate($projectID, NULL);
+                }
             }
 
             if (!$this->conn->TransactionEnd()) {
@@ -562,24 +575,27 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $activityID = $this->conn->GetLastInsertID();
 
         if (isset($data['defaultRate'])) {
-            if (is_numeric($data['defaultRate']))
-                $this->save_rate(NULL, NULL, $activityID, $data['defaultRate']);
-            else
-                $this->remove_rate(NULL, NULL, $activityID);
+            if (is_numeric($data['defaultRate'])) {
+                            $this->save_rate(NULL, NULL, $activityID, $data['defaultRate']);
+            } else {
+                            $this->remove_rate(NULL, NULL, $activityID);
+            }
         }
 
         if (isset($data['myRate'])) {
-            if (is_numeric($data['myRate']))
-                $this->save_rate($this->kga['user']['userID'], NULL, $activityID, $data['myRate']);
-            else
-                $this->remove_rate($this->kga['user']['userID'], NULL, $activityID);
+            if (is_numeric($data['myRate'])) {
+                            $this->save_rate($this->kga['user']['userID'], NULL, $activityID, $data['myRate']);
+            } else {
+                            $this->remove_rate($this->kga['user']['userID'], NULL, $activityID);
+            }
         }
 
         if (isset($data['fixedRate'])) {
-            if (is_numeric($data['fixedRate']))
-                $this->save_fixed_rate(NULL, $activityID, $data['fixedRate']);
-            else
-                $this->remove_fixed_rate(NULL, $activityID);
+            if (is_numeric($data['fixedRate'])) {
+                            $this->save_fixed_rate(NULL, $activityID, $data['fixedRate']);
+            } else {
+                            $this->remove_fixed_rate(NULL, $activityID);
+            }
         }
 
         return $activityID;
@@ -624,14 +640,16 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
         $strings = array('name', 'comment');
         foreach ($strings as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key]);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key]);
+            }
         }
 
         $numbers = array('visible', 'filter');
         foreach ($numbers as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['activityID'] = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
@@ -647,24 +665,27 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         if ($this->conn->Query($query)) {
 
             if (isset($data['defaultRate'])) {
-                if (is_numeric($data['defaultRate']))
-                    $this->save_rate(NULL, NULL, $activityID, $data['defaultRate']);
-                else
-                    $this->remove_rate(NULL, NULL, $activityID);
+                if (is_numeric($data['defaultRate'])) {
+                                    $this->save_rate(NULL, NULL, $activityID, $data['defaultRate']);
+                } else {
+                                    $this->remove_rate(NULL, NULL, $activityID);
+                }
             }
 
             if (isset($data['myRate'])) {
-                if (is_numeric($data['myRate']))
-                    $this->save_rate($this->kga['user']['userID'], NULL, $activityID, $data['myRate']);
-                else
-                    $this->remove_rate($this->kga['user']['userID'], NULL, $activityID);
+                if (is_numeric($data['myRate'])) {
+                                    $this->save_rate($this->kga['user']['userID'], NULL, $activityID, $data['myRate']);
+                } else {
+                                    $this->remove_rate($this->kga['user']['userID'], NULL, $activityID);
+                }
             }
 
             if (isset($data['fixedRate'])) {
-                if (is_numeric($data['fixedRate']))
-                    $this->save_fixed_rate(NULL, $activityID, $data['fixedRate']);
-                else
-                    $this->remove_fixed_rate(NULL, $activityID);
+                if (is_numeric($data['fixedRate'])) {
+                                    $this->save_fixed_rate(NULL, $activityID, $data['fixedRate']);
+                } else {
+                                    $this->remove_fixed_rate(NULL, $activityID);
+                }
             }
 
             if (!$this->conn->TransactionEnd()) {
@@ -1236,8 +1257,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $numbers = array('status', 'trash', 'active', 'lastProject', 'lastActivity', 'lastRecord', 'globalRoleID');
         foreach ($numbers as $key) {
-            if (isset($data[$key]))
-                $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            if (isset($data[$key])) {
+                            $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
@@ -1317,8 +1339,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * @author sl
      */
     public function user_get_preference($key, $userId = null) {
-        if ($userId === null)
-            $userId = $this->kga['user']['userID'];
+        if ($userId === null) {
+                    $userId = $this->kga['user']['userID'];
+        }
 
         $table = $this->kga['server_prefix'] . "preferences";
         $userId = MySQL::SQLValue($userId, MySQL::SQLVALUE_NUMBER);
@@ -1328,8 +1351,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $this->conn->Query($query);
 
-        if ($this->conn->RowCount() == 0)
-            return null;
+        if ($this->conn->RowCount() == 0) {
+                    return null;
+        }
 
         if ($this->conn->RowCount() == 1) {
             $row = $this->conn->RowArray(0, MYSQLI_NUM);
@@ -1346,15 +1370,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * @author sl
      */
     public function user_get_preferences(array $keys, $userId = null) {
-        if ($userId === null)
-            $userId = $this->kga['user']['userID'];
+        if ($userId === null) {
+                    $userId = $this->kga['user']['userID'];
+        }
 
         $table = $this->kga['server_prefix'] . "preferences";
         $userId = MySQL::SQLValue($userId, MySQL::SQLVALUE_NUMBER);
 
         $preparedKeys = array();
-        foreach ($keys as $key)
-            $preparedKeys[] = MySQL::SQLValue($key);
+        foreach ($keys as $key) {
+                    $preparedKeys[] = MySQL::SQLValue($key);
+        }
 
         $keysString = implode(",", $preparedKeys);
 
@@ -1383,8 +1409,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      * @author sl
      */
     public function user_get_preferences_by_prefix($prefix, $userId = null) {
-        if ($userId === null)
-            $userId = $this->kga['user']['userID'];
+        if ($userId === null) {
+                    $userId = $this->kga['user']['userID'];
+        }
 
         $prefixLength = strlen($prefix);
 
@@ -1615,8 +1642,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         if (!$result) {
             $this->logLastError('setGroupMemberships');
-            if (!$this->conn->TransactionRollback())
-                $this->logLastError('setGroupMemberships');
+            if (!$this->conn->TransactionRollback()) {
+                            $this->logLastError('setGroupMemberships');
+            }
             return false;
         }
 
@@ -1626,8 +1654,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $result = $this->conn->InsertRow($table, $data);
             if ($result === false) {
                 $this->logLastError('setGroupMemberships');
-                if (!$this->conn->TransactionRollback())
-                    $this->logLastError('setGroupMemberships');
+                if (!$this->conn->TransactionRollback()) {
+                                    $this->logLastError('setGroupMemberships');
+                }
                 return false;
             }
         }
@@ -1808,8 +1837,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         if (!$result) {
             return null;
-        }
-        else {
+        } else {
             return $this->conn->RowArray(0, MYSQLI_ASSOC);
         }
     }
@@ -1941,10 +1969,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values['description'] = MySQL::SQLValue($new_array['description']);
         $values['comment'] = MySQL::SQLValue($new_array['comment']);
         $values['location'] = MySQL::SQLValue($new_array['location']);
-        if ($new_array['trackingNumber'] == '')
-            $values['trackingNumber'] = 'NULL';
-        else
-            $values['trackingNumber'] = MySQL::SQLValue($new_array['trackingNumber']);
+        if ($new_array['trackingNumber'] == '') {
+                    $values['trackingNumber'] = 'NULL';
+        } else {
+                    $values['trackingNumber'] = MySQL::SQLValue($new_array['trackingNumber']);
+        }
         $values['userID'] = MySQL::SQLValue($new_array['userID'], MySQL::SQLVALUE_NUMBER);
         $values['projectID'] = MySQL::SQLValue($new_array['projectID'], MySQL::SQLVALUE_NUMBER);
         $values['activityID'] = MySQL::SQLValue($new_array['activityID'], MySQL::SQLVALUE_NUMBER);
@@ -1971,7 +2000,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $success = true;
 
-        if (!$this->conn->Query($query)) $success = false;
+        if (!$this->conn->Query($query)) {
+            $success = false;
+        }
 
         if ($success) {
             if (!$this->conn->TransactionEnd()) {
@@ -2009,8 +2040,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $timeframeEnd = mktime(23, 59, 59, $mon, $day, $Y);
         }
 
-        if ($timeframeEnd == mktime(23, 59, 59, date('n'), date('j'), date('Y')))
-            $timeframeEnd = 0;
+        if ($timeframeEnd == mktime(23, 59, 59, date('n'), date('j'), date('Y'))) {
+                    $timeframeEnd = 0;
+        }
 
         $values['timeframeBegin'] = MySQL::SQLValue($timeframeBegin, MySQL::SQLVALUE_NUMBER);
         $values['timeframeEnd'] = MySQL::SQLValue($timeframeEnd, MySQL::SQLVALUE_NUMBER);
@@ -2166,19 +2198,31 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities) {
 
-        if (!is_array($users)) $users = array();
-        if (!is_array($customers)) $customers = array();
-        if (!is_array($projects)) $projects = array();
-        if (!is_array($activities)) $activities = array();
+        if (!is_array($users)) {
+            $users = array();
+        }
+        if (!is_array($customers)) {
+            $customers = array();
+        }
+        if (!is_array($projects)) {
+            $projects = array();
+        }
+        if (!is_array($activities)) {
+            $activities = array();
+        }
 
-        for ($i = 0; $i < count($users); $i++)
-            $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-        for ($i = 0; $i < count($customers); $i++)
-            $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-        for ($i = 0; $i < count($projects); $i++)
-            $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-        for ($i = 0; $i < count($activities); $i++)
-            $activities[$i] = MySQL::SQLValue($activities[$i], MySQL::SQLVALUE_NUMBER);
+        for ($i = 0; $i < count($users); $i++) {
+                    $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
+        }
+        for ($i = 0; $i < count($customers); $i++) {
+                    $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
+        }
+        for ($i = 0; $i < count($projects); $i++) {
+                    $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+        }
+        for ($i = 0; $i < count($activities); $i++) {
+                    $activities[$i] = MySQL::SQLValue($activities[$i], MySQL::SQLVALUE_NUMBER);
+        }
 
         $whereClauses = array();
 
@@ -2236,23 +2280,26 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
 
-        if (isset($this->kga['customer']))
-            $whereClauses[] = "project.internal = 0";
+        if (isset($this->kga['customer'])) {
+                    $whereClauses[] = "project.internal = 0";
+        }
 
-        if ($start)
-            $whereClauses[] = "(end > $start || end = 0)";
-        if ($end)
-            $whereClauses[] = "start < $end";
-        if ($filterCleared > -1)
-            $whereClauses[] = "cleared = $filterCleared";
+        if ($start) {
+                    $whereClauses[] = "(end > $start || end = 0)";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
+        if ($filterCleared > -1) {
+                    $whereClauses[] = "cleared = $filterCleared";
+        }
 
         if ($limit) {
             if (!empty($limitRows))
             {
                 $startRows = (int)$startRows;
                 $limit = "LIMIT $startRows, $limitRows";
-            }
-            else
+            } else
             {
                 if (isset($this->kga['conf']['rowlimit'])) {
                     $limit = "LIMIT " . $this->kga['conf']['rowlimit'];
@@ -2285,8 +2332,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $result = $this->conn->Query($query);
 
-        if ($result === false)
-            $this->logLastError('get_timeSheet');
+        if ($result === false) {
+                    $this->logLastError('get_timeSheet');
+        }
 
         if ($countOnly)
         {
@@ -2323,8 +2371,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
                 $arr[$i]['wage'] = sprintf("%01.2f", $arr[$i]['wage_decimal']);
-            }
-            else {
+            } else {
                 $arr[$i]['duration'] = null;
                 $arr[$i]['formattedDuration'] = null;
                 $arr[$i]['wage_decimal'] = null;
@@ -2379,8 +2426,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
                 Kimai_Logger::logfile("Kicking customer $customerName because he is unknown to the system.");
                 kickUser();
             }
-        }
-        else
+        } else
         {
             $query = "SELECT userID FROM ${p}users WHERE name = '$kimai_user' AND active = '1' AND NOT trash = '1';";
             $this->conn->Query($query);
@@ -2500,7 +2546,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      *
      */
     public function get_user_config($user) {
-        if (!$user) return;
+        if (!$user) {
+            return;
+        }
 
         $table = $this->kga['server_prefix'] . "users";
         $filter['userID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
@@ -2537,10 +2585,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $this->kga['conf'] = array_merge($this->kga['conf'], $this->user_get_preferences_by_prefix('ui.'));
         $userTimezone = $this->user_get_preference('timezone');
-        if ($userTimezone != '')
-            $this->kga['timezone'] = $userTimezone;
-        else
-            $this->kga['timezone'] = $this->kga['defaultTimezone'];
+        if ($userTimezone != '') {
+                    $this->kga['timezone'] = $userTimezone;
+        } else {
+                    $this->kga['timezone'] = $this->kga['defaultTimezone'];
+        }
 
         date_default_timezone_set($this->kga['timezone']);
     }
@@ -2554,7 +2603,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      *
      */
     public function get_customer_config($user) {
-        if (!$user) return;
+        if (!$user) {
+            return;
+        }
 
         $table = $this->kga['server_prefix'] . "customers";
         $filter['customerID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
@@ -2630,12 +2681,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
 
-        if ($start)
-            $whereClauses[] = "end > $start";
-        if ($end)
-            $whereClauses[] = "start < $end";
-        if ($filterCleared > -1)
-            $whereClauses[] = "cleared = $filterCleared";
+        if ($start) {
+                    $whereClauses[] = "end > $start";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
+        if ($filterCleared > -1) {
+                    $whereClauses[] = "cleared = $filterCleared";
+        }
 
         $query = "SELECT start,end,duration FROM ${p}timeSheet
               JOIN ${p}projects USING(projectID)
@@ -2654,16 +2708,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row->start <= $start && $row->end < $end) {
                 $consideredStart = $start;
                 $consideredEnd = $row->end;
-            }
-            else if ($row->start <= $start && $row->end >= $end) {
+            } else if ($row->start <= $start && $row->end >= $end) {
                 $consideredStart = $start;
                 $consideredEnd = $end;
-            }
-            else if ($row->start > $start && $row->end < $end) {
+            } else if ($row->start > $start && $row->end < $end) {
                 $consideredStart = $row->start;
                 $consideredEnd = $row->end;
-            }
-            else if ($row->start > $start && $row->end >= $end) {
+            } else if ($row->start > $start && $row->end >= $end) {
                 $consideredStart = $row->start;
                 $consideredEnd = $end;
             }
@@ -2893,8 +2944,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $current_timer['hour'] = 0;
             $current_timer['min'] = 0;
             $current_timer['sec'] = 0;
-        }
-        else {
+        } else {
             $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
 
             $start = (int)$row['start'];
@@ -2934,7 +2984,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
         $return[] = $row['value'];
 
-        if ($result == false) $return[0] = "0.5.1";
+        if ($result == false) {
+            $return[0] = "0.5.1";
+        }
 
         $filter['option'] = MySQL::SQLValue('revision');
         $result = $this->conn->SelectRows($table, $filter, $columns);
@@ -2968,8 +3020,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             $filter['name'] = MySQL::SQLValue(substr($user, 9));
             $filter['trash'] = 0;
             $table = $this->getCustomerTable();
-        }
-        else {
+        } else {
             $filter['name'] = MySQL::SQLValue($user);
             $filter['trash'] = 0;
             $table = $this->getUserTable();
@@ -3078,16 +3129,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         
         $trash = MySQL::SQLValue($trash, MySQL::SQLVALUE_NUMBER);
 
-        if ($groups === null)
-            $query = "SELECT * FROM ${p}users
+        if ($groups === null) {
+                    $query = "SELECT * FROM ${p}users
         WHERE trash = $trash
         ORDER BY name ;";
-        else
-            $query = "SELECT DISTINCT u.* FROM ${p}users AS u
+        } else {
+                    $query = "SELECT DISTINCT u.* FROM ${p}users AS u
          JOIN ${p}groups_users AS g_u USING(userID)
         WHERE g_u.groupID IN (" . implode($groups, ',') . ") AND
          trash = $trash
         ORDER BY name ;";
+        }
         $this->conn->Query($query);
 
         $rows = $this->conn->RowArray(0, MYSQLI_ASSOC);
@@ -3349,8 +3401,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
 
-        if ($row === false)
-            return false;
+        if ($row === false) {
+                    return false;
+        }
 
         return $row[$endColumn];
     }
@@ -3425,8 +3478,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             });
 
             $group_filter = "";
-            if (count($forbidden_groups) > 0)
-                $group_filter = " AND count(SELECT * FROM ${p}groups_users AS p WHERE u.`userID` = p.`userID` AND `groupID` NOT IN (" . implode(', ', $forbidden_groups) . ")) > 0";
+            if (count($forbidden_groups) > 0) {
+                            $group_filter = " AND count(SELECT * FROM ${p}groups_users AS p WHERE u.`userID` = p.`userID` AND `groupID` NOT IN (" . implode(', ', $forbidden_groups) . ")) > 0";
+            }
 
             $query = "SELECT * FROM ${p}users AS u WHERE trash=0 $group_filter ORDER BY name";
             $result = $this->conn->Query($query);
@@ -3467,8 +3521,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $watchableUsers = $this->get_watchable_users($user);
         foreach ($watchableUsers as $watchableUser) {
-            if ($watchableUser['userID'] == $userID)
-                return true;
+            if ($watchableUser['userID'] == $userID) {
+                            return true;
+            }
         }
         return false;
     }
@@ -3495,10 +3550,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
         $whereClauses[] = "${p}users.trash=0";
 
-        if ($start)
-            $whereClauses[] = "end > $start";
-        if ($end)
-            $whereClauses[] = "start < $end";
+        if ($start) {
+                    $whereClauses[] = "end > $start";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
 
         $query = "SELECT start,end, userID, (end - start) / 3600 * rate AS costs
               FROM ${p}timeSheet
@@ -3515,7 +3572,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         }
 
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        if (!$rows) return array();
+        if (!$rows) {
+            return array();
+        }
 
         $arr = array();
         $consideredStart = 0;
@@ -3524,16 +3583,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row['start'] <= $start && $row['end'] < $end) {
                 $consideredStart = $start;
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] <= $start && $row['end'] >= $end) {
+            } else if ($row['start'] <= $start && $row['end'] >= $end) {
                 $consideredStart = $start;
                 $consideredEnd = $end;
-            }
-            else if ($row['start'] > $start && $row['end'] < $end) {
+            } else if ($row['start'] > $start && $row['end'] < $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] > $start && $row['end'] >= $end) {
+            } else if ($row['start'] > $start && $row['end'] >= $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
@@ -3541,8 +3597,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if (isset($arr[$row['userID']])) {
                 $arr[$row['userID']]['time']  += (int)($consideredEnd - $consideredStart);
                 $arr[$row['userID']]['costs'] += (double)$row['costs'];
-            }
-            else {
+            } else {
                 $arr[$row['userID']]['time'] = (int)($consideredEnd - $consideredStart);
                 $arr[$row['userID']]['costs'] = (double)$row['costs'];
             }
@@ -3572,10 +3627,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
         $whereClauses[] = "${p}customers.trash=0";
 
-        if ($start)
-            $whereClauses[] = "end > $start";
-        if ($end)
-            $whereClauses[] = "start < $end";
+        if ($start) {
+                    $whereClauses[] = "end > $start";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
 
 
         $query = "SELECT start,end, customerID, (end - start) / 3600 * rate AS costs
@@ -3590,7 +3647,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return array();
         }
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        if (!$rows) return array();
+        if (!$rows) {
+            return array();
+        }
 
         $arr = array();
         $consideredStart = 0;
@@ -3599,16 +3658,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row['start'] <= $start && $row['end'] < $end) {
                 $consideredStart = $start;
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] <= $start && $row['end'] >= $end) {
+            } else if ($row['start'] <= $start && $row['end'] >= $end) {
                 $consideredStart = $start;
                 $consideredEnd = $end;
-            }
-            else if ($row['start'] > $start && $row['end'] < $end) {
+            } else if ($row['start'] > $start && $row['end'] < $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] > $start && $row['end'] >= $end) {
+            } else if ($row['start'] > $start && $row['end'] >= $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
@@ -3616,8 +3672,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if (isset($arr[$row['customerID']])) {
                 $arr[$row['customerID']]['time']  += (int)($consideredEnd - $consideredStart);
                 $arr[$row['customerID']]['costs'] += (double)$row['costs'];
-            }
-            else {
+            } else {
                 $arr[$row['customerID']]['time'] = (int)($consideredEnd - $consideredStart);
                 $arr[$row['customerID']]['costs'] = (double)$row['costs'];
             }
@@ -3647,10 +3702,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
         $whereClauses[] = "${p}projects.trash=0";
 
-        if ($start)
-            $whereClauses[] = "end > $start";
-        if ($end)
-            $whereClauses[] = "start < $end";
+        if ($start) {
+                    $whereClauses[] = "end > $start";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
 
         $query = "SELECT start, end,projectID, (end - start) / 3600 * rate AS costs
           FROM ${p}timeSheet
@@ -3664,7 +3721,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return array();
         }
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        if (!$rows) return array();
+        if (!$rows) {
+            return array();
+        }
 
         $arr = array();
         $consideredStart = 0;
@@ -3673,16 +3732,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row['start'] <= $start && $row['end'] < $end) {
                 $consideredStart = $start;
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] <= $start && $row['end'] >= $end) {
+            } else if ($row['start'] <= $start && $row['end'] >= $end) {
                 $consideredStart = $start;
                 $consideredEnd = $end;
-            }
-            else if ($row['start'] > $start && $row['end'] < $end) {
+            } else if ($row['start'] > $start && $row['end'] < $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] > $start && $row['end'] >= $end) {
+            } else if ($row['start'] > $start && $row['end'] >= $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
@@ -3690,8 +3746,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if (isset($arr[$row['projectID']])) {
                 $arr[$row['projectID']]['time']  += (int)($consideredEnd - $consideredStart);
                 $arr[$row['projectID']]['costs'] += (double)$row['costs'];
-            }
-            else {
+            } else {
                 $arr[$row['projectID']]['time'] = (int)($consideredEnd - $consideredStart);
                 $arr[$row['projectID']]['costs'] = (double)$row['costs'];
             }
@@ -3720,10 +3775,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $whereClauses = $this->timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities);
         $whereClauses[] = "${p}activities.trash = 0";
 
-        if ($start)
-            $whereClauses[] = "end > $start";
-        if ($end)
-            $whereClauses[] = "start < $end";
+        if ($start) {
+                    $whereClauses[] = "end > $start";
+        }
+        if ($end) {
+                    $whereClauses[] = "start < $end";
+        }
 
         $query = "SELECT start, end, activityID, (end - start) / 3600 * rate AS costs
           FROM ${p}timeSheet
@@ -3738,7 +3795,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return array();
         }
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        if (!$rows) return array();
+        if (!$rows) {
+            return array();
+        }
 
         $arr = array();
         $consideredStart = 0;
@@ -3747,16 +3806,13 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if ($row['start'] <= $start && $row['end'] < $end) {
                 $consideredStart = $start;
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] <= $start && $row['end'] >= $end) {
+            } else if ($row['start'] <= $start && $row['end'] >= $end) {
                 $consideredStart = $start;
                 $consideredEnd = $end;
-            }
-            else if ($row['start'] > $start && $row['end'] < $end) {
+            } else if ($row['start'] > $start && $row['end'] < $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $row['end'];
-            }
-            else if ($row['start'] > $start && $row['end'] >= $end) {
+            } else if ($row['start'] > $start && $row['end'] >= $end) {
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
@@ -3764,8 +3820,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             if (isset($arr[$row['activityID']])) {
                 $arr[$row['activityID']]['time']  += (int)($consideredEnd - $consideredStart);
                 $arr[$row['activityID']]['costs'] += (double)$row['costs'];
-            }
-            else {
+            } else {
                 $arr[$row['activityID']]['time'] = (int)($consideredEnd - $consideredStart);
                 $arr[$row['activityID']]['costs'] = (double)$row['costs'];
             }
@@ -3785,29 +3840,38 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function save_rate($userID, $projectID, $activityID, $rate) {
         // validate input
-        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
-        if (!is_numeric($rate)) return false;
+        if ($userID == NULL || !is_numeric($userID)) {
+            $userID = "NULL";
+        }
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
+        if (!is_numeric($rate)) {
+            return false;
+        }
 
 
         // build update or insert statement
-        if ($this->get_rate($userID, $projectID, $activityID) === false)
-            $query = "INSERT INTO " . $this->kga['server_prefix'] . "rates VALUES($userID,$projectID,$activityID,$rate);";
-        else
-            $query = "UPDATE " . $this->kga['server_prefix'] . "rates SET rate = $rate WHERE " .
+        if ($this->get_rate($userID, $projectID, $activityID) === false) {
+                    $query = "INSERT INTO " . $this->kga['server_prefix'] . "rates VALUES($userID,$projectID,$activityID,$rate);";
+        } else {
+                    $query = "UPDATE " . $this->kga['server_prefix'] . "rates SET rate = $rate WHERE " .
                      (($userID == "NULL") ? "userID is NULL" : "userID = $userID") . " AND " .
                      (($projectID == "NULL") ? "projectID is NULL" : "projectID = $projectID") . " AND " .
                      (($activityID == "NULL") ? "activityID is NULL" : "activityID = $activityID");
+        }
 
         $result = $this->conn->Query($query);
 
         if ($result == false) {
             $this->logLastError('save_rate');
             return false;
+        } else {
+                    return true;
         }
-        else
-            return true;
     }
 
     /**
@@ -3821,9 +3885,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function get_rate($userID, $projectID, $activityID) {
         // validate input
-        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) {
+            $userID = "NULL";
+        }
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
 
         $query = "SELECT rate FROM " . $this->kga['server_prefix'] . "rates WHERE " .
@@ -3833,8 +3903,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $result = $this->conn->Query($query);
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+                    return false;
+        }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
         return $data['rate'];
@@ -3851,9 +3922,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function remove_rate($userID, $projectID, $activityID) {
         // validate input
-        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) {
+            $userID = "NULL";
+        }
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
 
         $query = "DELETE FROM " . $this->kga['server_prefix'] . "rates WHERE " .
@@ -3866,9 +3943,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         if ($result === false) {
             $this->logLastError('remove_rate');
             return false;
+        } else {
+                    return true;
         }
-        else
-            return true;
     }
 
     /**
@@ -3882,9 +3959,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function get_best_fitting_rate($userID, $projectID, $activityID) {
         // validate input
-        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) {
+            $userID = "NULL";
+        }
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
         $query = "SELECT rate FROM " . $this->kga['server_prefix'] . "rates WHERE
     (userID = $userID OR userID IS NULL)  AND
@@ -3900,8 +3983,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return false;
         }
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+                    return false;
+        }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
         return $data['rate'];
@@ -3918,9 +4002,15 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function allFittingRates($userID, $projectID, $activityID) {
         // validate input
-        if ($userID == NULL || !is_numeric($userID)) $userID = "NULL";
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($userID == NULL || !is_numeric($userID)) {
+            $userID = "NULL";
+        }
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
         $query = "SELECT rate, userID, projectID, activityID FROM " . $this->kga['server_prefix'] . "rates WHERE
     (userID = $userID OR userID IS NULL)  AND
@@ -3949,26 +4039,33 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function save_fixed_rate($projectID, $activityID, $rate) {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
-        if (!is_numeric($rate)) return false;
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
+        if (!is_numeric($rate)) {
+            return false;
+        }
 
         // build update or insert statement
-        if ($this->get_fixed_rate($projectID, $activityID) === false)
-            $query = "INSERT INTO " . $this->kga['server_prefix'] . "fixedRates VALUES($projectID,$activityID,$rate);";
-        else
-            $query = "UPDATE " . $this->kga['server_prefix'] . "fixedRates SET rate = $rate WHERE " .
+        if ($this->get_fixed_rate($projectID, $activityID) === false) {
+                    $query = "INSERT INTO " . $this->kga['server_prefix'] . "fixedRates VALUES($projectID,$activityID,$rate);";
+        } else {
+                    $query = "UPDATE " . $this->kga['server_prefix'] . "fixedRates SET rate = $rate WHERE " .
                      (($projectID == "NULL") ? "projectID is NULL" : "projectID = $projectID") . " AND " .
                      (($activityID == "NULL") ? "activityID is NULL" : "activityID = $activityID");
+        }
 
         $result = $this->conn->Query($query);
 
         if ($result == false) {
             $this->logLastError('save_fixed_rate');
             return false;
+        } else {
+                    return true;
         }
-        else
-            return true;
     }
 
     /**
@@ -3981,8 +4078,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function get_fixed_rate($projectID, $activityID) {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
 
         $query = "SELECT rate FROM " . $this->kga['server_prefix'] . "fixedRates WHERE " .
@@ -3996,8 +4097,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return false;
         }
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+                    return false;
+        }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
         return $data['rate'];
@@ -4032,8 +4134,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
     public function get_activity_budget($projectID, $activityID)
     {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
         $query = "SELECT budget, approved, effort FROM " . $this->kga['server_prefix'] . "projects_activities WHERE " .
                  (($projectID == "NULL") ? "projectID is NULL" : "projectID = $projectID") . " AND " .
@@ -4046,8 +4152,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return false;
         }
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
-        if (!isset($data['budget'])) $data['budget'] = 0;
-        if (!isset($data['approved'])) $data['approved'] = 0;
+        if (!isset($data['budget'])) {
+            $data['budget'] = 0;
+        }
+        if (!isset($data['approved'])) {
+            $data['approved'] = 0;
+        }
 
         $timeSheet = $this->get_timeSheet(0, time(), null, null, array($projectID), array($activityID));
         foreach ($timeSheet as $timeSheetEntry)
@@ -4072,8 +4182,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function remove_fixed_rate($projectID, $activityID) {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
         $query = "DELETE FROM " . $this->kga['server_prefix'] . "fixedRates WHERE " .
                  (($projectID == "NULL") ? "projectID is NULL" : "projectID = $projectID") . " AND " .
@@ -4084,9 +4198,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         if ($result === false) {
             $this->logLastError('remove_fixed_rate');
             return false;
+        } else {
+                    return true;
         }
-        else
-            return true;
     }
 
     /**
@@ -4099,8 +4213,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function get_best_fitting_fixed_rate($projectID, $activityID) {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
 
 
@@ -4117,8 +4235,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
             return false;
         }
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+                    return false;
+        }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
         return $data['rate'];
@@ -4134,8 +4253,12 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function allFittingFixedRates($projectID, $activityID) {
         // validate input
-        if ($projectID == NULL || !is_numeric($projectID)) $projectID = "NULL";
-        if ($activityID == NULL || !is_numeric($activityID)) $activityID = "NULL";
+        if ($projectID == NULL || !is_numeric($projectID)) {
+            $projectID = "NULL";
+        }
+        if ($activityID == NULL || !is_numeric($activityID)) {
+            $activityID = "NULL";
+        }
 
         $query = "SELECT rate, projectID, activityID FROM " . $this->kga['server_prefix'] . "fixedRates WHERE
     (projectID = $projectID OR projectID IS NULL)  AND
@@ -4197,15 +4320,17 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $filter['userID'] = MySQL::SQLValue($userId);
 
         $values['ban'] = "ban+1";
-        if ($resetTime)
-            $values['banTime'] = MySQL::SQLValue(time(), MySQL::SQLVALUE_NUMBER);
+        if ($resetTime) {
+                    $values['banTime'] = MySQL::SQLValue(time(), MySQL::SQLVALUE_NUMBER);
+        }
 
         $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
         $result = $this->conn->Query($query);
 
-        if ($result === false)
-            $this->logLastError('loginUpdateBan');
+        if ($result === false) {
+                    $this->logLastError('loginUpdateBan');
+        }
     }
 
     /**
@@ -4257,16 +4382,19 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $userGroups = $this->getGroupMemberships($userId);
         $commonGroups = array_intersect($userGroups, $objectGroups);
 
-        if (count($commonGroups) == 0)
-            return false;
+        if (count($commonGroups) == 0) {
+                    return false;
+        }
 
         foreach ($commonGroups as $commonGroup) {
             $roleId = $this->user_get_membership_role($userId, $commonGroup);
 
-            if ($requiredFor == 'any' && $this->membership_role_allows($roleId, $permission))
-                return true;
-            if ($requiredFor == 'all' && !$this->membership_role_allows($roleId, $permission))
-                return false;
+            if ($requiredFor == 'any' && $this->membership_role_allows($roleId, $permission)) {
+                            return true;
+            }
+            if ($requiredFor == 'all' && !$this->membership_role_allows($roleId, $permission)) {
+                            return false;
+            }
         }
 
         return $requiredFor == 'all';
@@ -4287,8 +4415,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $result = $this->conn->SelectRows($table, $filter, $columns);
 
-        if ($result === false)
-            return false;
+        if ($result === false) {
+                    return false;
+        }
 
         $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
         return $row['membershipRoleID'];
@@ -4309,8 +4438,9 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
 
         $result = $this->conn->SelectRows($table, $filter, $columns);
 
-        if ($result === false)
-            return false;
+        if ($result === false) {
+                    return false;
+        }
 
         return $this->conn->RowCount() > 0;
     }
@@ -4349,10 +4479,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
 
         foreach ($data as $key => $value) {
-            if ($key == 'name')
-                $values[$key] = MySQL::SQLValue($value);
-            else
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            if ($key == 'name') {
+                            $values[$key] = MySQL::SQLValue($value);
+            } else {
+                            $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $table = $this->kga['server_prefix'] . "globalRoles";
@@ -4376,10 +4507,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
 
         foreach ($data as $key => $value) {
-            if ($key == 'name')
-                $values[$key] = MySQL::SQLValue($value);
-            else
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            if ($key == 'name') {
+                            $values[$key] = MySQL::SQLValue($value);
+            } else {
+                            $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
@@ -4438,10 +4570,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function globalRole_find($filter) {
         foreach ($filter as $key => &$value) {
-            if (is_numeric($value))
-                $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            else
-                $value = MySQL::SQLValue($value);
+            if (is_numeric($value)) {
+                            $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            } else {
+                            $value = MySQL::SQLValue($value);
+            }
         }
         $table = $this->kga['server_prefix'] . "globalRoles";
         $result = $this->conn->SelectRows($table, $filter);
@@ -4481,10 +4614,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
 
         foreach ($data as $key => $value) {
-            if ($key == 'name')
-                $values[$key] = MySQL::SQLValue($value);
-            else
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            if ($key == 'name') {
+                            $values[$key] = MySQL::SQLValue($value);
+            } else {
+                            $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $table = $this->kga['server_prefix'] . "membershipRoles";
@@ -4508,10 +4642,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         $values = array();
 
         foreach ($data as $key => $value) {
-            if ($key == 'name')
-                $values[$key] = MySQL::SQLValue($value);
-            else
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            if ($key == 'name') {
+                            $values[$key] = MySQL::SQLValue($value);
+            } else {
+                            $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            }
         }
 
         $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
@@ -4563,10 +4698,11 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
      */
     public function membershipRole_find($filter) {
         foreach ($filter as $key => &$value) {
-            if (is_numeric($value))
-                $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            else
-                $value = MySQL::SQLValue($value);
+            if (is_numeric($value)) {
+                            $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            } else {
+                            $value = MySQL::SQLValue($value);
+            }
         }
         $table = $this->kga['server_prefix'] . "membershipRoles";
         $result = $this->conn->SelectRows($table, $filter);
@@ -4612,8 +4748,7 @@ class Kimai_Database_Mysql extends Kimai_Database_Abstract {
         if (!$select) {
             $this->logLastError('rowExists');
             return false;
-        }
-        else
+        } else
         {
             $rowExits = (bool)$this->conn->RowArray(0, MYSQLI_ASSOC);
             return $rowExits;

@@ -22,14 +22,16 @@ function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
 
 function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions) {
   global $p;
-  foreach ($allowedPermissions as &$permission)
-    $permission = '`' . $permission . '`';
+  foreach ($allowedPermissions as &$permission) {
+      $permission = '`' . $permission . '`';
+  }
 
-  if (count($allowedPermissions) == 0)
-    $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
-  else
-    $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
+  if (count($allowedPermissions) == 0) {
+      $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
+  } else {
+      $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
     implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
+  }
   return $query;
 }
 
@@ -39,19 +41,22 @@ $globalPermissions = array();
 $membershipPermissions = array();
 
 // extension permissions
-foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension)
+foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension) {
   $globalPermissions[] = $extension . '-access';
+}
 
 // domain object permissions
-foreach (array('customer', 'project', 'activity', 'user') as $object)
+foreach (array('customer', 'project', 'activity', 'user') as $object) {
   foreach (array('add', 'edit', 'delete', 'assign', 'unassign') as $action) {
     $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
+}
     $membershipPermissions[] = 'core-' . $object . '-' . $action;
   }
 
 // status permissions
-foreach (array('add', 'edit', 'delete') as $action)
+foreach (array('add', 'edit', 'delete') as $action) {
   $globalPermissions[] = 'core-status-' . $action;
+}
 
 // group permissions
 $globalPermissions[] = 'core-group-add';

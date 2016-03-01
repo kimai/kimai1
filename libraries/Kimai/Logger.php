@@ -75,8 +75,9 @@ class Kimai_Logger
     {
 
         // If the @ error-control operator is set don't log the error.
-        if (error_reporting() === 0)
-            return false;
+        if (error_reporting() === 0) {
+                    return false;
+        }
 
         $line = '';
         switch ($errno) {

@@ -46,11 +46,13 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 	global $expense_ext_available, $database;
 	$timeSheetEntries = array();
 	$expenses = array();
-	if ($filter_type != 1)
-		$timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
+	if ($filter_type != 1) {
+			$timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
+	}
 		
-		if ($filter_type != 0 && $expense_ext_available)
-		$expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
+		if ($filter_type != 0 && $expense_ext_available) {
+				$expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
+		}
 	$result_arr = array();
 	$timeSheetEntries_index = 0;
 	$expenses_index = 0;
@@ -60,8 +62,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     'location', 'trackingNumber', 'username', 'cleared');
 	while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
 		$arr = array();
-    foreach ($keys as $key)
-      $arr[$key] = null;
+    foreach ($keys as $key) {
+          $arr[$key] = null;
+    }
     $arr['location'] = $default_location;
 
 		if ((!$reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
@@ -90,10 +93,11 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 				$arr['projectComment'] = $timeSheetEntries[$timeSheetEntries_index]['projectComment'];
 				$arr['activityID'] = $timeSheetEntries[$timeSheetEntries_index]['activityID'];
 				$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
-				if ($limitCommentSize)
-					$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
-				else
-					$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+				if ($limitCommentSize) {
+									$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+				} else {
+									$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+				}
 				$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
 				$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
 				$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
@@ -102,8 +106,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         $result_arr[] = $arr;
 			}
 			$timeSheetEntries_index++;
-		}
-		else {
+		} else {
 			$arr['type'] = 'expense';
 			$arr['id'] = $expenses[$expenses_index]['expenseID'];
 			$arr['time_in'] = $expenses[$expenses_index]['timestamp'];
@@ -115,10 +118,11 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['projectName'] = $expenses[$expenses_index]['projectName'];
       $arr['description'] = $expenses[$expenses_index]['designation'];
       $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
-			if ($limitCommentSize)
-				$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
-			else
-				$arr['comment'] = $expenses[$expenses_index]['comment'];
+			if ($limitCommentSize) {
+							$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+			} else {
+							$arr['comment'] = $expenses[$expenses_index]['comment'];
+			}
 			$arr['activityName'] = $expenses[$expenses_index]['designation'];
 			$arr['comment'] = $expenses[$expenses_index]['comment'];
 			$arr['commentType'] = $expenses[$expenses_index]['commentType'];
@@ -132,8 +136,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 		if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
 			// active recordings will be omitted
 			$arr = array();
-      foreach ($keys as $key)
-        $arr[$key] = null;
+      foreach ($keys as $key) {
+              $arr[$key] = null;
+      }
       $arr['location'] = $default_location;
 
 			$arr['type'] = 'timeSheet';
@@ -159,10 +164,11 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 			$arr['activityID'] = $timeSheetEntries[$timeSheetEntries_index]['activityID'];
 			$arr['activityName'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
 			$arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
-			if ($limitCommentSize)
-				$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
-			else
-				$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+			if ($limitCommentSize) {
+							$arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
+			} else {
+							$arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
+			}
 			$arr['commentType'] = $timeSheetEntries[$timeSheetEntries_index]['commentType'];
 			$arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
 			$arr['trackingNumber'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
@@ -174,8 +180,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 	}
 	while ($expenses_index < count($expenses)) {
 		$arr = array();
-    foreach ($keys as $key)
-      $arr[$key] = null;
+    foreach ($keys as $key) {
+          $arr[$key] = null;
+    }
     $arr['location'] = $default_location;
 
 		$arr['type'] = 'expense';
@@ -189,10 +196,11 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 		$arr['projectName'] = $expenses[$expenses_index]['projectName'];
     $arr['description'] = $expenses[$expenses_index]['designation'];
     $arr['projectComment'] = $expenses[$expenses_index]['projectComment'];
-		if ($limitCommentSize)
-			$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
-		else
-			$arr['comment'] = $expenses[$expenses_index]['comment'];
+		if ($limitCommentSize) {
+					$arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
+		} else {
+					$arr['comment'] = $expenses[$expenses_index]['comment'];
+		}
 		$arr['commentType'] = $expenses[$expenses_index]['commentType'];
 		$arr['username'] = $expenses[$expenses_index]['userName'];
 		$arr['cleared'] = $expenses[$expenses_index]['cleared'];
@@ -211,10 +219,11 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
  */
 function merge_annotations(&$timeSheetEntries, &$expenses) {
 	foreach ($expenses as $id => $costs) {
-		if (!isset($timeSheetEntries[$id]))
-			$timeSheetEntries[$id]['costs'] = $costs;
-		else
-			$timeSheetEntries[$id]['costs'] += $costs;
+		if (!isset($timeSheetEntries[$id])) {
+					$timeSheetEntries[$id]['costs'] = $costs;
+		} else {
+					$timeSheetEntries[$id]['costs'] += $costs;
+		}
 	}
 }
 
@@ -310,8 +319,9 @@ function export_get_activity_annotations($start, $end, $users = null, $customers
  * @return string Correctly formatted string.
  */
 function csv_prepare_field($field, $column_delimiter, $quote_char) {
-	if (strpos($field, $column_delimiter) === false && strpos($field, $quote_char) === false && strpos($field, "\n") === false)
-		return $field;
+	if (strpos($field, $column_delimiter) === false && strpos($field, $quote_char) === false && strpos($field, "\n") === false) {
+			return $field;
+	}
 	$field = str_replace($quote_char, $quote_char . $quote_char, $field);
 	$field = $quote_char . $field . $quote_char;
 	return $field;

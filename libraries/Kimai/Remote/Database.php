@@ -126,8 +126,9 @@ class Kimai_Remote_Database {
   
 	  	$whereClauses = $this->expenses_widthhereClausesFromFilters($users, $customers, $projects);
 	  
-	  	if (isset($kga['customer']))
-	  		$whereClauses[] = "${p}projects.internal = 0";
+	  	if (isset($kga['customer'])) {
+	  		  		$whereClauses[] = "${p}projects.internal = 0";
+	  	}
 	
 	  	if (!empty($start)) {
 	  		$whereClauses[] = "timestamp >= $start";
@@ -217,16 +218,25 @@ class Kimai_Remote_Database {
    */
   public function expenses_widthhereClausesFromFilters($users, $customers, $projects) {
   
-  	if (!is_array($users)) $users = array();
-  	if (!is_array($customers)) $customers = array();
-  	if (!is_array($projects)) $projects = array();
+  	if (!is_array($users)) {
+  	    $users = array();
+  	}
+  	if (!is_array($customers)) {
+  	    $customers = array();
+  	}
+  	if (!is_array($projects)) {
+  	    $projects = array();
+  	}
   
-  	for ($i = 0; $i < count($users); $i++)
-  		$users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-  		for ($i = 0; $i < count($customers); $i++)
-  			$customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-  			for ($i = 0; $i < count($projects); $i++)
-  			$projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+  	for ($i = 0; $i < count($users); $i++) {
+  	  		$users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
+  	}
+  		for ($i = 0; $i < count($customers); $i++) {
+  		  			$customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
+  		}
+  			for ($i = 0; $i < count($projects); $i++) {
+  			  			$projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+  			}
   
   			$whereClauses = array();
   
