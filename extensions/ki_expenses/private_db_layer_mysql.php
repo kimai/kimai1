@@ -86,16 +86,25 @@ function expense_create($userID, $data) {
 
 function expenses_widthhereClausesFromFilters($users, $customers, $projects) {
     
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
+    if (!is_array($users)) {
+        $users = array();
+    }
+    if (!is_array($customers)) {
+        $customers = array();
+    }
+    if (!is_array($projects)) {
+        $projects = array();
+    }
 
-    for ($i = 0; $i < count($users); $i++)
-      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0; $i < count($customers); $i++)
-      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0; $i < count($projects); $i++)
-      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+    for ($i = 0; $i < count($users); $i++) {
+          $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
+    }
+    for ($i = 0; $i < count($customers); $i++) {
+          $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
+    }
+    for ($i = 0; $i < count($projects); $i++) {
+          $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+    }
 
     $whereClauses = array();
     
@@ -147,15 +156,19 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
 
     $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
 
-    if (isset($kga['customer']))
-      $whereClauses[] = "project.internal = 0";
+    if (isset($kga['customer'])) {
+          $whereClauses[] = "project.internal = 0";
+    }
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end";
-    if ($filterCleared > -1)
-      $whereClauses[] = "cleared = $filterCleared";
+    if ($start) {
+          $whereClauses[] = "timestamp >= $start";
+    }
+    if ($end) {
+          $whereClauses[] = "timestamp <= $end";
+    }
+    if ($filterCleared > -1) {
+          $whereClauses[] = "cleared = $filterCleared";
+    }
 
     switch ($filter_refundable) {
     	case 0:
@@ -317,7 +330,9 @@ function expense_edit($id, $data) {
 
     $success = true;
     
-    if (!$conn->Query($query)) $success = false;
+    if (!$conn->Query($query)) {
+        $success = false;
+    }
     
     return $success;
 } 
@@ -342,10 +357,12 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
     $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}users.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end"; 
+    if ($start) {
+          $whereClauses[] = "timestamp >= $start";
+    }
+    if ($end) {
+          $whereClauses[] = "timestamp <= $end";
+    }
 
    $query = "SELECT SUM(value*multiplier) as expenses, userID
              FROM ${p}expenses
@@ -355,9 +372,13 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
              " GROUP BY userID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
+    if (!$rows) {
+        return array();
+    }
    
 
     $arr = array(); 
@@ -390,10 +411,12 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
     $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}customers.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end"; 
+    if ($start) {
+          $whereClauses[] = "timestamp >= $start";
+    }
+    if ($end) {
+          $whereClauses[] = "timestamp <= $end";
+    }
     
     $query = "SELECT SUM(value*multiplier) as expenses, customerID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
@@ -401,9 +424,13 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
             " GROUP BY customerID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
+    if (!$rows) {
+        return array();
+    }
 
     $arr = array();
     foreach ($rows as $row) {
@@ -433,10 +460,12 @@ function expenses_by_project($start, $end, $users = null, $customers = null, $pr
     $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}projects.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end";
+    if ($start) {
+          $whereClauses[] = "timestamp >= $start";
+    }
+    if ($end) {
+          $whereClauses[] = "timestamp <= $end";
+    }
  
     $query = "SELECT sum(value*multiplier) as expenses, projectID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
@@ -444,9 +473,13 @@ function expenses_by_project($start, $end, $users = null, $customers = null, $pr
        " GROUP BY projectID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
+    if (!$rows) {
+        return array();
+    }
 
     $arr = array();
     foreach ($rows as $row) {

@@ -50,10 +50,11 @@ header("Pragma: no-cache");
 
 
 // Get the total time displayed in the table.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']), null));
-else
+} else {
   $total = Kimai_Format::formatDuration($database->get_duration($in, $out, array($kga['user']['userID']), null, null));
+}
 $view->total = $total;
 
 // Get the array of timesheet entries.
@@ -72,34 +73,38 @@ if (count($timeSheetEntries) > 0) {
 }
 
 // Get the annotations for the user sub list.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $ann = $database->get_time_users($in, $out, null, array($kga['customer']['customerID']));
-else
+} else {
   $ann = $database->get_time_users($in, $out, array($kga['user']['userID']));
+}
 Kimai_Format::formatAnnotations($ann);
 $view->user_annotations = $ann;
 
 // Get the annotations for the customer sub list.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $ann = $database->get_time_customers($in, $out, null, array($kga['customer']['customerID']));
-else
+} else {
   $ann = $database->get_time_customers($in, $out, array($kga['user']['userID']));
+}
 Kimai_Format::formatAnnotations($ann);
 $view->customer_annotations = $ann;
 
 // Get the annotations for the project sub list.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $ann = $database->get_time_projects($in, $out, null, array($kga['customer']['customerID']));
-else
+} else {
   $ann = $database->get_time_projects($in, $out, array($kga['user']['userID']));
+}
 Kimai_Format::formatAnnotations($ann);
 $view->project_annotations = $ann;
 
 // Get the annotations for the activity sub list.
-if (isset($kga['customer']))
+if (isset($kga['customer'])) {
   $ann = $database->get_time_activities($in, $out, null, array($kga['customer']['customerID']));
-else
+} else {
   $ann = $database->get_time_activities($in, $out, array($kga['user']['userID']));
+}
 Kimai_Format::formatAnnotations($ann);
 $view->activity_annotations = $ann;
 
@@ -122,8 +127,7 @@ $view->buzzerAction = "startRecord()";
 // select for projects
 if (isset($kga['customer'])) {
   $view->projects = array();
-}
-else {
+} else {
   $sel = makeSelectBox("project", $kga['user']['groups']);
   $view->projects = $sel;
 }
@@ -131,8 +135,7 @@ else {
 // select for activities
 if (isset($kga['customer'])) {
   $view->activities = array();
-}
-else {
+} else {
   $sel = makeSelectBox("activity", $kga['user']['groups']);
   $view->activities = $sel;
 }

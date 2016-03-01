@@ -43,8 +43,9 @@ if ($axAction == 'export_csv' ||
   if (isset($_REQUEST['axColumns'])) {
     $axColumns = explode('|', $_REQUEST['axColumns']);
     $columns = array();
-    foreach ($axColumns as $column)
-      $columns[$column] = true;
+    foreach ($axColumns as $column) {
+          $columns[$column] = true;
+    }
   }
 
   $timeformat = strip_tags($_REQUEST['timeformat']);
@@ -63,10 +64,11 @@ if ($axAction == 'export_csv' ||
   
   $filters = explode('|', $axValue);
 
-  if ($filters[0] == "")
-    $filterUsers = array();
-  else
-    $filterUsers = explode(':', $filters[0]);
+  if ($filters[0] == "") {
+      $filterUsers = array();
+  } else {
+      $filterUsers = explode(':', $filters[0]);
+  }
 
   if (isset($kga['customer'])) {
     $filterCustomers = $kga['customer']['customerID'];
@@ -76,8 +78,7 @@ if ($axAction == 'export_csv' ||
     $filterActivities = array_map(function($activity) {
       return $activity['activityID'];
     }, $database->get_activities_by_customer($kga['customer']['customerID']));
-  }
-  else {
+  } else {
     $filterCustomers = array_map(function($customer) {
       return $customer['customerID'];
     }, $database->get_customers($kga['user']['groups']));
@@ -89,18 +90,22 @@ if ($axAction == 'export_csv' ||
     }, $database->get_activities($kga['user']['groups']));
 
     // if no userfilter is set, set it to current user
-    if (isset($kga['user']) && count($filterUsers) == 0)
-      array_push($filterUsers, $kga['user']['userID']);
+    if (isset($kga['user']) && count($filterUsers) == 0) {
+          array_push($filterUsers, $kga['user']['userID']);
+    }
   }
 
-  if ($filters[1] != "")
-    $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
+  if ($filters[1] != "") {
+      $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
+  }
 
-  if ($filters[2] != "")
-    $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
+  if ($filters[2] != "") {
+      $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
+  }
 
-  if ($filters[3] != "")
-    $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
+  if ($filters[3] != "") {
+      $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
+  }
 
 }
 
@@ -126,10 +131,11 @@ switch ($axAction) {
       $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
       $success = false;
 
-      if (strncmp($id, "timeSheet", 9) == 0)
-        $success = export_timeSheetEntry_set_cleared(substr($id, 9), $axValue == 1);
-      else if (strncmp($id, "expense", 7) == 0)
-        $success = export_expense_set_cleared(substr($id, 7), $axValue == 1);
+      if (strncmp($id, "timeSheet", 9) == 0) {
+              $success = export_timeSheetEntry_set_cleared(substr($id, 9), $axValue == 1);
+      } else if (strncmp($id, "expense", 7) == 0) {
+              $success = export_expense_set_cleared(substr($id, 7), $axValue == 1);
+      }
 
       echo $success ? 1 : 0;
     break;
@@ -170,8 +176,9 @@ switch ($axAction) {
 
         $view->timeformat = $timeformat;
         $view->dateformat = $dateformat;
-        if (isset($kga['user']))
-          $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+        if (isset($kga['user'])) {
+                  $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+        }
         echo $view->render("table.php");
     break;
 
@@ -213,16 +220,14 @@ switch ($axAction) {
                 $timeSheetSummary[$one_entry['activityID']]['wage']   += $one_entry['wage']; //Currency
                 $timeSheetSummary[$one_entry['activityID']]['budget'] += $one_entry['budget']; //Currency
                 $timeSheetSummary[$one_entry['activityID']]['approved'] += $one_entry['approved']; //Currency
-              }
-              else {
+              } else {
                 $timeSheetSummary[$one_entry['activityID']]['name']         = html_entity_decode($one_entry['activityName']);
                 $timeSheetSummary[$one_entry['activityID']]['time']         = $one_entry['decimalDuration'];
                 $timeSheetSummary[$one_entry['activityID']]['wage']         = $one_entry['wage'];
                 $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget']; 
                 $timeSheetSummary[$one_entry['activityID']]['approved'] = $one_entry['approved'];
               }
-            }
-            else {
+            } else {
               $expenseInfo['name']   = $kga['lang']['export_extension']['expense'] . ': ' . $one_entry['activityName'];
               $expenseInfo['time']   = -1;
               $expenseInfo['wage'] = $one_entry['wage'];
@@ -235,9 +240,9 @@ switch ($axAction) {
           
           $summary = array_merge($timeSheetSummary, $expenseSummary);
           $view->summary = $summary;
+        } else {
+                  $view->summary = 0;
         }
-        else
-          $view->summary = 0;
 
 
         // Create filter descirption, Same is in PDF export
@@ -319,46 +324,66 @@ switch ($axAction) {
         $row = array();
         
         // output of headers
-        if (isset($columns['date']))
-          $row[] = csv_prepare_field($kga['lang']['datum'], $column_delimiter, $quote_char);
-        if (isset($columns['from']))
-          $row[] = csv_prepare_field($kga['lang']['in'], $column_delimiter, $quote_char);            
-        if (isset($columns['to']))
-          $row[] = csv_prepare_field($kga['lang']['out'], $column_delimiter, $quote_char);           
-        if (isset($columns['time']))
-          $row[] = csv_prepare_field($kga['lang']['time'], $column_delimiter, $quote_char);          
-        if (isset($columns['dec_time']))
-          $row[] = csv_prepare_field($kga['lang']['timelabel'], $column_delimiter, $quote_char);     
-        if (isset($columns['rate']))
-          $row[] = csv_prepare_field($kga['lang']['rate'], $column_delimiter, $quote_char);          
-        if (isset($columns['wage']))
-          $row[] = csv_prepare_field($kga['currency_name'], $column_delimiter, $quote_char);                      
-        if (isset($columns['budget']))
-          $row[] = csv_prepare_field($kga['lang']['budget'], $column_delimiter, $quote_char);                      
-        if (isset($columns['approved']))
-          $row[] = csv_prepare_field($kga['lang']['approved'], $column_delimiter, $quote_char);                      
-        if (isset($columns['status']))
-          $row[] = csv_prepare_field($kga['lang']['status'], $column_delimiter, $quote_char);                      
-        if (isset($columns['billable']))
-          $row[] = csv_prepare_field($kga['lang']['billable'], $column_delimiter, $quote_char);                      
-        if (isset($columns['customer']))
-          $row[] = csv_prepare_field($kga['lang']['customer'], $column_delimiter, $quote_char);           
-        if (isset($columns['project']))
-          $row[] = csv_prepare_field($kga['lang']['project'], $column_delimiter, $quote_char);           
-        if (isset($columns['activity']))
-          $row[] = csv_prepare_field($kga['lang']['activity'], $column_delimiter, $quote_char);  
-        if (isset($columns['description']))
-        	$row[] = csv_prepare_field($kga['lang']['description'], $column_delimiter, $quote_char);
-        if (isset($columns['comment']))
-          $row[] = csv_prepare_field($kga['lang']['comment'], $column_delimiter, $quote_char);       
-        if (isset($columns['location']))
-          $row[] = csv_prepare_field($kga['lang']['location'], $column_delimiter, $quote_char);      
-        if (isset($columns['trackingNumber']))
-          $row[] = csv_prepare_field($kga['lang']['trackingNumber'], $column_delimiter, $quote_char);    
-        if (isset($columns['user']))
-          $row[] = csv_prepare_field($kga['lang']['username'], $column_delimiter, $quote_char);          
-        if (isset($columns['cleared']))
-          $row[] = csv_prepare_field($kga['lang']['cleared'], $column_delimiter, $quote_char);  
+        if (isset($columns['date'])) {
+                  $row[] = csv_prepare_field($kga['lang']['datum'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['from'])) {
+                  $row[] = csv_prepare_field($kga['lang']['in'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['to'])) {
+                  $row[] = csv_prepare_field($kga['lang']['out'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['time'])) {
+                  $row[] = csv_prepare_field($kga['lang']['time'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['dec_time'])) {
+                  $row[] = csv_prepare_field($kga['lang']['timelabel'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['rate'])) {
+                  $row[] = csv_prepare_field($kga['lang']['rate'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['wage'])) {
+                  $row[] = csv_prepare_field($kga['currency_name'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['budget'])) {
+                  $row[] = csv_prepare_field($kga['lang']['budget'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['approved'])) {
+                  $row[] = csv_prepare_field($kga['lang']['approved'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['status'])) {
+                  $row[] = csv_prepare_field($kga['lang']['status'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['billable'])) {
+                  $row[] = csv_prepare_field($kga['lang']['billable'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['customer'])) {
+                  $row[] = csv_prepare_field($kga['lang']['customer'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['project'])) {
+                  $row[] = csv_prepare_field($kga['lang']['project'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['activity'])) {
+                  $row[] = csv_prepare_field($kga['lang']['activity'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['description'])) {
+                	$row[] = csv_prepare_field($kga['lang']['description'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['comment'])) {
+                  $row[] = csv_prepare_field($kga['lang']['comment'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['location'])) {
+                  $row[] = csv_prepare_field($kga['lang']['location'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['trackingNumber'])) {
+                  $row[] = csv_prepare_field($kga['lang']['trackingNumber'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['user'])) {
+                  $row[] = csv_prepare_field($kga['lang']['username'], $column_delimiter, $quote_char);
+        }
+        if (isset($columns['cleared'])) {
+                  $row[] = csv_prepare_field($kga['lang']['cleared'], $column_delimiter, $quote_char);
+        }
 
         echo implode($column_delimiter, $row);
         echo "\n";
@@ -366,46 +391,66 @@ switch ($axAction) {
         // output of data
         foreach ($exportData as $data) {
           $row = array();
-          if (isset($columns['date']))
-            $row[] = csv_prepare_field(strftime($dateformat, $data['time_in']), $column_delimiter, $quote_char);
-          if (isset($columns['from']))
-            $row[] = csv_prepare_field(strftime($timeformat, $data['time_in']), $column_delimiter, $quote_char);            
-          if (isset($columns['to']))
-            $row[] = csv_prepare_field(strftime($timeformat, $data['time_out']), $column_delimiter, $quote_char);           
-          if (isset($columns['time']))
-            $row[] = csv_prepare_field($data['formattedDuration'], $column_delimiter, $quote_char);          
-          if (isset($columns['dec_time']))
-            $row[] = csv_prepare_field($data['decimalDuration'], $column_delimiter, $quote_char);     
-          if (isset($columns['rate']))
-            $row[] = csv_prepare_field($data['rate'], $column_delimiter, $quote_char);          
-          if (isset($columns['wage']))
-            $row[] = csv_prepare_field($data['wage'], $column_delimiter, $quote_char);                 
-          if (isset($columns['budget']))
-            $row[] = csv_prepare_field($data['budget'], $column_delimiter, $quote_char);                  
-          if (isset($columns['approved']))
-            $row[] = csv_prepare_field($data['approved'], $column_delimiter, $quote_char);                  
-          if (isset($columns['status']))
-            $row[] = csv_prepare_field($data['status'], $column_delimiter, $quote_char);                  
-          if (isset($columns['billable']))
-            $row[] = csv_prepare_field($data['billable'], $column_delimiter, $quote_char) . '%';                       
-          if (isset($columns['customer']))
-            $row[] = csv_prepare_field($data['customerName'], $column_delimiter, $quote_char);           
-          if (isset($columns['project']))
-            $row[] = csv_prepare_field($data['projectName'], $column_delimiter, $quote_char);           
-          if (isset($columns['activity']))
-            $row[] = csv_prepare_field($data['activityName'], $column_delimiter, $quote_char);
-          if (isset($columns['description']))
-          	$row[] = csv_prepare_field($data['description'], $column_delimiter, $quote_char);
-          if (isset($columns['comment']))
-            $row[] = csv_prepare_field($data['comment'], $column_delimiter, $quote_char);       
-          if (isset($columns['location']))
-            $row[] = csv_prepare_field($data['location'], $column_delimiter, $quote_char);      
-          if (isset($columns['trackingNumber']))
-            $row[] = csv_prepare_field($data['trackingNumber'], $column_delimiter, $quote_char);    
-          if (isset($columns['user']))
-            $row[] = csv_prepare_field($data['username'], $column_delimiter, $quote_char);          
-          if (isset($columns['cleared']))
-            $row[] = csv_prepare_field($data['cleared'], $column_delimiter, $quote_char);  
+          if (isset($columns['date'])) {
+                      $row[] = csv_prepare_field(strftime($dateformat, $data['time_in']), $column_delimiter, $quote_char);
+          }
+          if (isset($columns['from'])) {
+                      $row[] = csv_prepare_field(strftime($timeformat, $data['time_in']), $column_delimiter, $quote_char);
+          }
+          if (isset($columns['to'])) {
+                      $row[] = csv_prepare_field(strftime($timeformat, $data['time_out']), $column_delimiter, $quote_char);
+          }
+          if (isset($columns['time'])) {
+                      $row[] = csv_prepare_field($data['formattedDuration'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['dec_time'])) {
+                      $row[] = csv_prepare_field($data['decimalDuration'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['rate'])) {
+                      $row[] = csv_prepare_field($data['rate'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['wage'])) {
+                      $row[] = csv_prepare_field($data['wage'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['budget'])) {
+                      $row[] = csv_prepare_field($data['budget'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['approved'])) {
+                      $row[] = csv_prepare_field($data['approved'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['status'])) {
+                      $row[] = csv_prepare_field($data['status'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['billable'])) {
+                      $row[] = csv_prepare_field($data['billable'], $column_delimiter, $quote_char) . '%';
+          }
+          if (isset($columns['customer'])) {
+                      $row[] = csv_prepare_field($data['customerName'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['project'])) {
+                      $row[] = csv_prepare_field($data['projectName'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['activity'])) {
+                      $row[] = csv_prepare_field($data['activityName'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['description'])) {
+                    	$row[] = csv_prepare_field($data['description'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['comment'])) {
+                      $row[] = csv_prepare_field($data['comment'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['location'])) {
+                      $row[] = csv_prepare_field($data['location'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['trackingNumber'])) {
+                      $row[] = csv_prepare_field($data['trackingNumber'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['user'])) {
+                      $row[] = csv_prepare_field($data['username'], $column_delimiter, $quote_char);
+          }
+          if (isset($columns['cleared'])) {
+                      $row[] = csv_prepare_field($data['cleared'], $column_delimiter, $quote_char);
+          }
 
         echo implode($column_delimiter, $row);
         echo "\n";
@@ -438,12 +483,14 @@ switch ($axAction) {
         $projectID = $row['projectID'];
 
         // create key for customer, if not present
-        if (!array_key_exists($customerID, $orderedExportData))
-          $orderedExportData[$customerID] = array();
+        if (!array_key_exists($customerID, $orderedExportData)) {
+                  $orderedExportData[$customerID] = array();
+        }
 
         // create key for project, if not present
-        if (!array_key_exists($projectID, $orderedExportData[$customerID]))
-          $orderedExportData[$customerID][$projectID] = array();
+        if (!array_key_exists($projectID, $orderedExportData[$customerID])) {
+                  $orderedExportData[$customerID][$projectID] = array();
+        }
 
         // add row
         $orderedExportData[$customerID][$projectID][] = $row;
@@ -479,12 +526,14 @@ switch ($axAction) {
         $projectID = $row['projectID'];
 
         // create key for customer, if not present
-        if (!array_key_exists($customerID, $orderedExportData))
-          $orderedExportData[$customerID] = array();
+        if (!array_key_exists($customerID, $orderedExportData)) {
+                  $orderedExportData[$customerID] = array();
+        }
 
         // create key for project, if not present
-        if (!array_key_exists($projectID, $orderedExportData[$customerID]))
-          $orderedExportData[$customerID][$projectID] = array();
+        if (!array_key_exists($projectID, $orderedExportData[$customerID])) {
+                  $orderedExportData[$customerID][$projectID] = array();
+        }
 
         // add row
         $orderedExportData[$customerID][$projectID][] = $row;
