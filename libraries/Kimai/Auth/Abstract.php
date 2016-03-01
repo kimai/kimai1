@@ -36,6 +36,7 @@ abstract class Kimai_Auth_Abstract
      * @var array
      */
     protected $kga = null;
+
     /**
      * @var Kimai_Database_Abstract
      */
@@ -65,7 +66,7 @@ abstract class Kimai_Auth_Abstract
     }
 
     /**
-     * @return string
+     * @return array
      */
     protected function getKga()
     {
@@ -94,8 +95,7 @@ abstract class Kimai_Auth_Abstract
      *
      * This allows users to be logged in automatically. Mostly used with SSO (single sign on) solutions.
      *
-     * @return boolean <code>true</code> if this authentication method can login users without credentials,
-     *   <code>false</code> otherwise
+     * @return boolean true if this authentication method can login users without credentials, false otherwise
      */
     public function autoLoginPossible()
     {
@@ -105,9 +105,9 @@ abstract class Kimai_Auth_Abstract
     /**
      * Try to authenticate the user before he sees the login page.
      *
-     * @param int $userId is set to the id of the user in Kimai. If none exists it will be <code>false</code>
-     * @return boolean either <code>true</code> if the user could be authenticated or <code>false</code> otherwise
-     **/
+     * @param int $userId user id. If none exists it will be false
+     * @return boolean either true if the user could be authenticated or false otherwise
+     */
     public function performAutoLogin(&$userId)
     {
         return false;
@@ -119,21 +119,21 @@ abstract class Kimai_Auth_Abstract
      *
      * @param string $username name of the user who wants to authenticate
      * @param string $plainPassword password in plaintext the user has provided
-     * @param int $userId is set to the id of the user in Kimai. If none exists it will be <code>false</code>
-     * @return boolean either <code>true</code> if the credentials were correct, or <code>false</code> otherwise
-     **/
+     * @param int $userId user id. If none exists it will be false
+     * @return boolean either true if the credentials were correct, or false otherwise
+     */
     abstract public function authenticate($username, $plainPassword, &$userId);
 
     /**
      * Return a map from group IDs to membership role IDs to which users should be added, if they authenticated but are not known to Kimai.
      * The default implementation uses the second group and and a membership role named 'User', otherwise the first one it can find.
      *
-     * @return integer id of the group to add the user to
-     **/
+     * @return array id of the group to add the user to
+     */
     public function getDefaultGroups()
     {
         $database = $this->getDatabase();
-        $groups   = $database->get_groups();
+        $groups = $database->get_groups();
 
         $group = 0;
         if (count($groups) > 1) {
@@ -147,8 +147,9 @@ abstract class Kimai_Auth_Abstract
         $memberships = $database->membership_roles();
         $membership = $memberships[0]['membershipRoleID'];
         foreach ($memberships as $membership) {
-                  if ($membership['name'] == 'User')
-            $membership = $membership['membershipRoleID'];
+            if ($membership['name'] == 'User') {
+                $membership = $membership['membershipRoleID'];
+            }
         }
 
         return array($group => $membership);
@@ -161,14 +162,13 @@ abstract class Kimai_Auth_Abstract
      */
     public function getDefaultGlobalRole()
     {
-        $database = $this->getDatabase();
-
-        $roles = $database->global_roles();
+        $roles = $this->getDatabase()->global_roles();
 
         $globalRoleID = $roles[0]['globalRoleID'];
         foreach ($roles as $role) {
-                  if ($role['name'] == 'User')
-            $globalRoleID = $role['globalRoleID'];
+            if ($role['name'] == 'User') {
+                $globalRoleID = $role['globalRoleID'];
+            }
         }
 
         return $globalRoleID;
