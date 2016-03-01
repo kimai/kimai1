@@ -1,4 +1,4 @@
-<?
+<?php
 include("mysql.class.php");
 
 $db = new MySQL();
