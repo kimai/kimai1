@@ -6,6 +6,7 @@ autoconf.php
 .settings
 .idea/
 .DS_Store
+libraries/bin/
+libraries/composer/
 libraries/phpunit/
 libraries/symfony/
-libraries/bin
