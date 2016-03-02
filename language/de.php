@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,41 +312,19 @@ return array(
     'sublistAnnotations' => 'Anmerkungen bei den Listen',
     'TimeDateInputError' => 'Ihre Eingabe für die Uhrzeit oder das Datum ist nicht gültig.',
     'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
-    'credits' => <<<EOF
-        Torsten Höltge, Severin Leonhardt, Kevin Papst, Simon Schaufelberger, Oleg Britvin, Martin Klemkow und andere...<br />
-        
-        <br />
-        
-        <strong>Dieses Programm ist kostenlos und wurde 'WIE ES IST' ohne Gewährleistung veröffentlicht </strong> unter der 
-        <a href="../COPYING">GPL Version 3</a> (<a href='http://www.gnu.de/documents/gpl.de.html' target='_blank'>Deutsche &Uuml;bersetzung</a>). 
-        
+
+    'credits' => <<<'EOD'
+        Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="%1$s">Forum</a> freuen.
+        Die neueste Entwickler Version kann für Testzwecke <a href="%2$s">hier</a> heruntergeladen werden.
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>offizielle Website</a> | 
-        <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
-        <a href='http://www.kimai.org/en/download.html' target='_blank'>Download</a>
-        
-        <br /><br />
-
-        Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="http://forum.kimai.org" title="Kimai Forum">Forum</a> freuen.
-        Außerdem finden sie dort einen speziellen "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">freundliche Hacks</a>" Bereich.
-        Die neueste Entwickler Version kann für Testzwecke <a href="https://github.com/kimai/kimai/archive/master.zip">hier</a> heruntergeladen werden.
-        
-        <br /><br />
-        
-        Bitte unterstützen Sie die weitere Entwicklung von Kimai mit einer <a href="http://www.kimai.org/spenden.html">Spende</a>
-        oder durch <a href="https://github.com/kimai/kimai/tree/master/core/language">Übersetzungen</a>.
-
-        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben, erstellen Sie bitte ein <a href="https://github.com/kimai/kimai/issues">Ticket</a>.<br /><br />
-
-        <strong>Weiteren Dank für Ihre Unterstützung an:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso, RRZE (Regionales Rechenzentrum Erlangen) und alle Betatester!<br /><br />
-
-        Die invoice extension verwendet die PclZip Library, welche man unter <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a> findet.<br/><br/>
-EOF
+        Bitte unterstützen Sie die weitere Entwicklung von Kimai mit einer <a href="%3$s">Spende</a>
+        oder durch <a href="%5$s">Übersetzungen</a>.
+        Wenn Sie Fehler finden oder Verbesserungsvorschläge haben, erstellen Sie bitte ein <a href="%4$s">Ticket</a>.
+EOD
     ,
+    'credits_license' => 'Dieses Programm ist kostenlos und wird ohne Gewährleistung unter der Lizenz %1$s veröffentlicht.',
+    'credits_thanks' => 'Weiteren Dank für Ihre Unterstützung an:',
+    'credits_libs' => 'Unser Dank geht auch an die Projekte:',
 
     'months' => array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"),
     'months_short' => array("Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"),
@@ -406,7 +384,7 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         6 => "Backup vom",
         7 => "wurde wiederhergestellt.",
         8 => "neues Backup erstellen",
-        9 => "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datanträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)",
+        9 => "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datenträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)",
         10 => "Autorisierung erforderlich",
         11 => "Um nicht autorisierte Personen daran zu hindern Backups zu erstellen, zu löschen oder widerherzustellen müssen sie den Passwort Salt (\$password_salt) aus include/autoconf.php eingeben. Dieser besteht nur aus Buchstaben und Zahlen."
     ),

@@ -337,46 +337,19 @@ return array(
 
     'StartTimeBeforeEndTime' => 'Algusaeg peab olema enne lõpuaega.',
 
-    'credits' => <<<EOF
-        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow ja teised...<br />
-        
-        <br />
-        
-        <strong>See programm on vaba tarkvara ja on avaldatud 'AS IS' (niisugusel kujul, nagu ta on) ilma mingisuguse garantiita</strong> vastavalt 
-        <a href="../COPYING">GNU üldlitsentsi versioonile 3</a>. 
-        
+    'credits' => <<<'EOD'
+        Kui teete Kimai’sse muudatusi, oleksime tänulikud, kui sellest <a href="%1$s">meie foorumis</a> teada annate.
+        Uusima arendusversiooni saate alla laadida <a href="%2$s">siit</a> (aga ainult testimiseks!).
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Ametlik veebisait</a> | 
-        <a href='http://forum.kimai.org/' target='_blank'>Foorum</a> |
-        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
-        <a href='http://www.kimai.org/en/download.html' target='_blank'>Allalaadimine</a>
-        
-        <br /><br />
-
-        Kui teete Kimai’sse muudatusi, oleksime tänulikud, kui sellest <a href="http://forum.kimai.org" title="Kimai Forum">meie foorumis</a> teada annate. Foorumis on olemas ka eraldi sektsioon nimega „<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>”.
-        Uusima arendusversiooni saate alla laadida <a href="https://github.com/kimai/kimai/archive/master.zip">siit</a> (aga ainult testimiseks!).
-        
-        <br /><br />
-        
-        Palun toetage Kimai edasist arendamist <a href="http://www.kimai.org/en/donate.html">annetusega</a> või laiendades Kimai <a href="https://github.com/kimai/kimai/tree/master/core/language">keelebaasi</a>.
-
+        Palun toetage Kimai edasist arendamist <a href="%3$s">annetusega</a> või laiendades Kimai
+        <a href="%5$s">keelebaasi</a>.
         Kui leiate tarkvaras vigu või teil on mõtteid, kuidas seda paremaks muuta, võtke meiega foorumi kaudu ühendust.
-        Või veel parem koostage <a href="https://github.com/kimai/kimai/issues">veateade</a>!<br /><br />
-
-        <strong>Täname toetuse eest:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-        <strong>Eriline tänu</strong> beetatestijatele, keda on liiga arvukalt, et kõiki nimetada, aga kui olete nende hulgas, siis teate! ;)<br /><br />
-
-        Arvete koostamise lisas on kasutatud teeki PclZip, mille leiab aadressilt <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
-
-        Versioon 0.8 jõudis kasutajateni RRZE (Regionales Rechenzentrum Erlangen) lahkel toel.<br /><br />
-        <br />
-EOF
+        Või veel parem koostage <a href="%4$s">veateade</a>
+EOD
 ,
+    'credits_license' => 'See programm on vaba tarkvara ja on avaldatud \'AS IS\' (niisugusel kujul, nagu ta on) ilma mingisuguse garantiita vastavalt %1$s.',
+    'credits_thanks' => 'Täname toetuse eest:',
+    'credits_libs' => 'Our thanks also go to the projects:',
 
     'months' => array("jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember"),
     'months_short' => array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"),

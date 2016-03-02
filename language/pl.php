@@ -278,49 +278,18 @@ return array(
 
     'StartTimeBeforeEndTime' => 'Czas pocztkowy musi być mniejszy niż czas końcowy.',
 
-
-    'credits' => <<<EOF
-        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow and others...<br />
-        
-        <br />
-        
-        <strong>Program ten jest wolny i opublikowany  'TAK JAK' bez jakielkolwiek gwarancji</strong> <br />zgodnie z warunkami
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+    'credits' => <<<'EOD'
+        Jeśli dokonasz jakichkolwiek przeróbek, modyfikacji będziemy wdzięczni za opublikowanie ich na <a href="%1$s">forum</a>.
+        Ostatnie wersje do pobrania <a href="%2$s">tutaj</a> (tylko w celach testowych!).
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Oficjalna strona</a> | 
-        <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
-        <a href='http://www.kimai.org/en/download.html' target='_blank'>Pobieranie</a>
-        
-        <br /><br />
-
-        Jeśli dokonasz jakichkolwiek przeróbek, modyfikacji będziemy wdzięczni za opublikowanie ich na <a href="http://forum.kimai.org" title="Kimai Forum"> forum</a>. Znajdziesz tam specjalną tablicę pt. "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>".
-        Ostatnie wersje do pobrania <a href="https://github.com/kimai/kimai/archive/master.zip">tutaj</a> (tylko w celach testowych!).
-        
-        <br /><br />
-        
-        Wspomóż dalszy rozwój Kimai poprzez <a href="http://www.kimai.org/en/donate.html" title="donację">donację</a> lub poprzez
-        rozbudowę biblioteki <a href="https://github.com/kimai/kimai/tree/master/core/language" title="języków">języków</a>.
-
+        Wspomóż dalszy rozwój Kimai poprzez <a href="%3$s">donację</a> lub poprzez rozbudowę biblioteki <a href="%5$s">języków</a>.
         Jesli znajdziesz jakiekolwiek błędy lub masz pomysły na nowe elementy, czuj się nieskrępowany aby skontaktować się z nami poprzez forum.
-        Lub lepiej: stwórz nowe <a href="https://github.com/kimai/kimai/issues">zgloszenie -ticket</a>!<br /><br />
-
-        <strong>Dalsze podziękowania za wsparcie dla:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-        <strong>Specjalne podziękowania dla</strong> wszystkich beta testerów, których jest zbyt wielu aby ich wymienić - wiecie kim jesteście! ;)<br /><br />
-
-        Rozszerzenie rachunek używa biblioteki PclZip, którą można znaleźć na  <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
-
-        Wersja 0.8 powstała przy uprzejmym wsparciu RRZE (Regionales Rechenzentrum Erlangen).<br /><br />
-        <br />
-EOF
+        Lub lepiej: stwórz nowe <a href="%4$s">zgloszenie-ticket</a>.
+EOD
 ,
-
+    'credits_license' => 'Program ten jest wolny i opublikowany \'TAK JAK\' bez jakielkolwiek gwarancji zgodnie z warunkami %1$s.',
+    'credits_thanks' => 'Dalsze podziękowania za wsparcie dla:',
+    'credits_libs' => 'Our thanks also go to the projects:',
 
     'months' => array("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"),
     'months_short' => array("Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"),

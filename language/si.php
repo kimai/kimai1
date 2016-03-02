@@ -284,48 +284,20 @@ return array(
 
     'StartTimeBeforeEndTime' => 'Začetni čas mora biti pred končnim časom.',
 
-    'credits' => <<<EOF
-        Torsten H&ouml;ltge, Severin Leonhardt, Kevin Papst, Oleg Britvin, Martin Klemkow in ostali...<br />
-        
-        <br />
-        
-        <strong>To je odprtokodni program in je objavljen 'KOT JE' brez kakršne koli garancije</strong> pod naslednjimi pogoji
-        <a href="../COPYING">GPL Version 3</a>. 
-        
+    'credits' => <<<'EOD'
+        Če boste naredili kaj sprememb, bi vas prosili, da nam jih pošljete na <a href="%1$s">forum</a>.
+        Zadnja verzija je na voljo na <a href="%2$s">here</a> (naloži samo za testne namene!).
         <br /><br />
-         
-        <a href='http://www.kimai.org' target='_blank'>Uradna spletna stran</a> | 
-        <a href='http://forum.kimai.org/' target='_blank'>Forum</a> |
-        <a href='https://github.com/kimai/kimai' target='_blank'>GitHub</a> |
-        <a href='http://sourceforge.net/projects/kimai/' target='_blank'>Sourceforge</a> |
-        <a href='http://www.kimai.org/en/download.html' target='_blank'>Naloži</a>
-        
-        <br /><br />
-
-        Če boste naredili kaj sprememb, bi vas prosili, da nam jih pošljete na <a href="http://forum.kimai.org" title="Kimai Forum">forum</a>. Tukaj boste poseben odbor "<a href="http://forum.kimai.org/index.php?board=10.0" title="Extensions / Friendly Hacks">Friendly Hacks</a>".
-        Zadnja verzija je na voljo na <a href="https://github.com/kimai/kimai/archive/master.zip">here</a> (naloži samo za testne namene!).
-        
-        <br /><br />
-        
-        Prosimo podprite nadaljni razvoj Kimai-a z donacijo na <a href="http://www.kimai.org/en/donate.html">donation</a> ali z
-        razširitvijo podpore jezikov <a href="https://github.com/kimai/kimai/tree/master/core/language">language library</a>.
-
+        Prosimo podprite nadaljni razvoj Kimai-a z donacijo na <a href="%3$s">donation</a> ali z razširitvijo podpore jezikov <a href="%5$s">language library</a>.
         Če najdete hrošče ali če imate ideje za nove funkcije programa, nas kontaktirajte na forumu.
-        Ali še bolje: kreirajte <a href="https://github.com/kimai/kimai/issues">ticket</a>!<br /><br />
-
-        <strong>Velika zahvala za podporo tudi:</strong> Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
-        Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, G&uuml;nter Hengsbach, Paul Brand, Joaqu&iacute;n G. de la Zerda,
-        Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso.<br /><br />
-
-        <strong>Posebna zahvala</strong> vsem beta testerjem, ki jih je preveč, da bi omenili vse - saj veste kdo ste! ;)<br /><br />
-
-        Razširjevalci računov uporabljajo PclZip knjige, katere lahko najdete na <a href="http://www.phpconcept.net" rel="nofollow">http://www.phpconcept.net</a>.<br/><br/>
-
-        Verzija 0.8 je nastala s prijazno podporo RRZE-ja (Regionales Rechenzentrum Erlangen).<br /><br />
-        Slovenski prevod: Aleksandra Zupanc, CRM sistemi d.o.o. <a href="http://www.crmsistemi.si">http://www.crmsistemi.si</a><br /><br />
-        <br />
-EOF
+        Ali še bolje: kreirajte <a href="%4$s">ticket</a>.
+        <br /><br />
+        Slovenski prevod: Aleksandra Zupanc, CRM sistemi d.o.o. <a href="http://www.crmsistemi.si">http://www.crmsistemi.si</a>
+EOD
 ,
+    'credits_license' => 'To je odprtokodni program in je objavljen \'KOT JE\' brez kakršne koli garancije pod naslednjimi pogoji %1$s.',
+    'credits_thanks' => 'Velika zahvala za podporo tudi:',
+    'credits_libs' => 'Our thanks also go to the projects:',
 
     'months' => array("Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"),
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"),
