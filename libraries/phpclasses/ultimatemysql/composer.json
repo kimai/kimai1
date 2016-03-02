@@ -1,0 +1,6 @@
+{
+	"autoload":
+	{
+		"classmap": ["mysql.class.php"]
+	}
+}

@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'cbf76343bf04ec29aff28d9dbe386ba0' => $vendorDir . '/mysql.class.php',
+    '77a96519c4483cee8899338015bc0df2' => $vendorDir . '/phpclasses/ultimatemysql/mysql.class.php',
 );

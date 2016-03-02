@@ -29,7 +29,7 @@
             "TCPDF": "libraries/tcpdf/tcpdf.php"
         },
         "files": [
-            "libraries/mysql.class.php"
+            "libraries/phpclasses/ultimatemysql/mysql.class.php"
         ]
     },
     "include-path": [
