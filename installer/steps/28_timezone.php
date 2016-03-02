@@ -9,7 +9,7 @@ function getTimezoneInputField()
     try {
         $serverZone = @date_default_timezone_get();
         if (empty($serverZone)) {
-            $serverZone ='UTC';
+            $serverZone = 'UTC';
         }
 
         $allZones = timezoneList();
@@ -17,9 +17,9 @@ function getTimezoneInputField()
         if (!empty($allZones)) {
             foreach ($allZones as $name) {
                 if ($name == $serverZone) {
-                    $html .= "<option selected=\"selected\">$name</option>";
+                    $html .= '<option selected="selected">' . $name . '</option>';
                 } else {
-                    $html .= "<option>$name</option>";
+                    $html .= '<option>'.$name.'</option>';
                 }
             }
         }
@@ -33,7 +33,7 @@ function getTimezoneInputField()
 
     // sometimes fetching the list of timezones seems to fail
     // see https://github.com/kimai/kimai/issues/579
-    return '<input type="text" value="'.$serverZone.'" id="timezone">';
+    return '<input type="text" value="' . $serverZone . '" id="timezone">';
 }
 
 if ($_REQUEST['lang'] == "en") {
