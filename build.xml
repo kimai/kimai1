@@ -1,65 +1,54 @@
 <project name="Kimai" default="help">
 
-	<description>
-		Build File for the Kimai - Time Tracking Software.
-
-		Copyright (C) Kimai Team.
-		See http://www.kimai.org/ for further informations.
-
-		Distributed under the terms of the GNU General Public License.
-	</description>
-
+	<!-- values depending on the Kimai version and your development environment -->
 	<property name="release.version" value="0.9.3"/>
 	<property name="release.directory" location="/tmp/kimai/"/>
 
-	<!-- Name and location of the release files -->
-	<property name="install.zip.filename" value="kimai_install_${release.version}.zip"/>
-	<property name="release.zip.filename" value="kimai_${release.version}.zip"/>
-	<property name="target.release.dir" location="${release.directory}/v.${release.version}/"/>
-	<property name="target.extensions.dir" location="${extensions.directory}/"/>
-	<property name="target.install.file" location="${release.directory}/${install.zip.filename}"/>
-	<property name="target.release.zip" location="${release.directory}/${release.zip.filename}"/>
-
-	<!-- These files will be excluded from every task. Add files like Eclipse .project or CVS files here. -->
-	<patternset id="always.exclude.files" description="Files to be excluded from copy tasks">
-		<exclude name=".settings"/>
-		<exclude name=".project"/>
-		<exclude name=".git"/>
-		<exclude name=".gitignore"/>
-	</patternset>
-
-	<!-- These files will be excluded from release task. Only add project specific files here. -->
-	<patternset id="release.exclude.files" description="Files to be excluded from release tasks">
-		<exclude name="test_umysql_layer.php"/>
-		<!-- exclude name="kimaiversion.php"/ -->
-		<exclude name="README.md"/>
-	</patternset>
-
+	<!-- default target just dumps a copyright notice -->
 	<target name="help" description="Show help">
 		<echo>
-			==============================================================
-			KIMAI - Time Tracking Software, copyright (C) www.kimai.org
-			Distributed under the terms of the GNU General Public License.
-			==============================================================
-
-			Run "ant release" to create a KIMAI release archive for distribution
+			Build file for Kimai - Open Source Time Tracking
+			Copyright (C) Kimai Team since 2006
+			See http://www.kimai.org/ for further informations
+			Distributed under the terms of the GPL v3
 		</echo>
 	</target>
 
+	<!-- Name and location of the release files -->
+	<property name="target.release.dir" location="${release.directory}/v.${release.version}/"/>
+	<property name="target.release.zip" location="${release.directory}/kimai_${release.version}.zip"/>
+
 	<!--
-		Creates a Kimai ZIP release.
-		This is more or less a copy of the "core" folder.
-		After checking dependencies and creating the file release, a ZIP archive will be created.
+		Creates a Kimai ZIP release by copying of required files and zipping everything afterwards.
 	-->
-	<target name="release" description="Creates a Kimai release ZIP archive.">
+	<target name="build" description="Creates a Kimai release ZIP archive">
 		<!-- cleanup release dir -->
 		<delete dir="${target.release.dir}"/>
-		
-		<!-- copy files to release dir -->
-		<antcall target="copy-core">
-			<param name="release.path" value="${target.release.dir}"/>
-		</antcall>
-		
+
+		<!-- create release directory -->
+		<mkdir dir="${target.release.dir}"/>
+
+		<!-- and copy all required files there -->
+		<copy todir="${target.release.dir}" includeemptydirs="true" overwrite="true">
+			<fileset dir=".">
+				<patternset id="always.exclude.files">
+					<exclude name=".project"/>
+					<exclude name=".git*"/>
+					<exclude name=".travis*"/>
+					<exclude name=".scrutinizer*"/>
+					<exclude name="composer.*"/>
+					<exclude name="phpunit.*"/>
+					<exclude name="kimai.json"/>
+					<exclude name="build.xml"/>
+					<exclude name="README.md"/>
+					<exclude name="CONTRIBUTING.md"/>
+					<exclude name=".idea/"/>
+					<exclude name="tests/"/>
+					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
+				</patternset>
+			</fileset>
+		</copy>
+
 		<!-- deactivate debug extension -->
 		<move todir="${target.release.dir}/extensions/#ext_debug/">
 			<fileset dir="${target.release.dir}/extensions/ext_debug/"/>
@@ -74,50 +63,16 @@
 			</filterchain>
 		</move>
 		<move file="${target.release.dir}/includes/version.php.modified" tofile="${target.release.dir}/includes/version.php" />
-	
-		<antcall target="create-archives"/>
-		<echo>Created the release at: ${target.release.zip}</echo>
-	</target>
 
-	<!--
-		This task creates a KIMAI file release.
-
-		ATTENTION: All existing resources will be overwritten!
-	-->
-	<target name="copy-core" depends="check-settings" if="release.initialized">
-		<mkdir dir="${release.path}"/>
-		<copy todir="${release.path}" includeemptydirs="true" overwrite="true">
-			<fileset dir=".">
-				<patternset refid="always.exclude.files"/>
-				<patternset refid="release.exclude.files"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<!-- 
-		This task creates the KIMAI release like mentioned in the Task "copy-core"
-		and creates a ZIP File from all these resources.
-
-		Make sure that the release directory is cleaned up before, otherwise you might
-		have data within your release ZIP, which is NOT part of KIMAI!
-	-->
-	<target name="create-archives">
-		<mkdir dir="${target.release.dir}"/>
+		<!-- create a ZIP file from all resources -->
 		<zip destfile="${target.release.zip}">
 			<fileset dir="${target.release.dir}"/>
 		</zip>
-		<delete dir="${target.release.dir}"/>
-	</target>
 
-	<!--
-		Checks whether all required variables for releasing files are set.
-	-->
-	<target name="check-settings">
-		<condition property="release.initialized">
-			<and>
-				<isset property="release.path"/>
-			</and>
-		</condition>
+		<!-- remove all temporary files -->
+		<delete dir="${target.release.dir}"/>
+
+		<echo>Created the release at: ${target.release.zip}</echo>
 	</target>
 
 </project>
