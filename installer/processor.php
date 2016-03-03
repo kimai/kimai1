@@ -43,7 +43,6 @@ function return_bytes($val) {
     return $val;
 }
 
-
 // stolen somewhere ... please forgive me - i don't know who wrote this .... O-o
 function getpass() {
     $newpass = "";
@@ -136,46 +135,39 @@ switch ($axAction) {
         echo $javascript;
     break;
 
-
-////////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Create the autoconf.php file.
      */
     case ("write_config"):
-    include("../includes/func.php");
-     // special characters " and $ are escaped
-    $database    = $_REQUEST['database'];
-    $hostname    = $_REQUEST['hostname'];
-    $username    = $_REQUEST['username'];
-    $password    = $_REQUEST['password'];
-    $timezone    = $_REQUEST['timezone'];
-    $db_layer    = $_REQUEST['db_layer'];
-    $db_type     = $_REQUEST['db_type'];
-    $prefix      = addcslashes($_REQUEST['prefix'], '"$');
-    $lang        = $_REQUEST['lang'];
-    $salt        = createPassword(20);
+        include "../includes/func.php";
+         // special characters " and $ are escaped
+        $database    = $_REQUEST['database'];
+        $hostname    = $_REQUEST['hostname'];
+        $username    = $_REQUEST['username'];
+        $password    = $_REQUEST['password'];
+        $timezone    = $_REQUEST['timezone'];
+        $prefix      = addcslashes($_REQUEST['prefix'], '"$');
+        $lang        = $_REQUEST['lang'];
+        $salt        = createPassword(20);
 
-    write_config_file($database, $hostname, $username, $password, $db_layer, $db_type, $prefix, $lang, $salt, $timezone);
+        write_config_file($database, $hostname, $username, $password, $prefix, $lang, $salt, $timezone);
 
     break;
     
     /**
      * Create the database.
      */
-    case ("make_database");
+    case ("make_database"):
         $databaseName = $_REQUEST['database'];
         $hostname     = $_REQUEST['hostname'];
         $username     = $_REQUEST['username'];
         $password     = $_REQUEST['password'];
-        $server_type  = $_REQUEST['db_type'];
-        $db_layer     = $_REQUEST['db_layer'];
 
         $db_error = false;
         $result = false;
 
-        $database = new Kimai_Database_Mysql($result);
-        $database->connect($hostname, null, $username, $password, true, $server_type);
+        $database = new Kimai_Database_Mysql($result, false);
+        $database->connect($hostname, null, $username, $password, true);
         $conn = $database->getConnectionHandler();
         
         $query = "CREATE DATABASE `" . $databaseName . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";

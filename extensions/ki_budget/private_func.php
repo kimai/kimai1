@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-include('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php');
+include '../ki_expenses/private_db_layer_mysql.php';
 
 
 /**

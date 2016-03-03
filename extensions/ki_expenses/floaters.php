@@ -20,9 +20,9 @@
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
-require("../../includes/kspi.php");
+require "../../includes/kspi.php";
 
-include('private_db_layer_' . $kga['server_conn'] . '.php');
+include 'private_db_layer_mysql.php';
 
 switch ($axAction)
 {
