@@ -591,8 +591,6 @@ switch ($axAction)
                 $kga['server_hostname'],
                 $kga['server_username'],
                 $kga['server_password'],
-                $kga['server_conn'],
-                $kga['server_type'],
                 $kga['server_prefix'],
                 $_REQUEST['language'],
                 $kga['password_salt'],

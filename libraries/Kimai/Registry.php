@@ -29,7 +29,7 @@ class Kimai_Registry extends Zend_Registry
     /**
      * Returns the database layer to use.
      *
-     * @return Kimai_Database_Abstract
+     * @return Kimai_Database_Mysql
      */
     public static function getDatabase()
     {
@@ -39,9 +39,9 @@ class Kimai_Registry extends Zend_Registry
     /**
      * Sets the global database layer.
      *
-     * @param Kimai_Database_Abstract $database
+     * @param Kimai_Database_Mysql $database
      */
-    public static function setDatabase(Kimai_Database_Abstract $database)
+    public static function setDatabase(Kimai_Database_Mysql $database)
     {
         self::set('database', $database);
     }

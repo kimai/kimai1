@@ -11,7 +11,6 @@ $password         = isset($_REQUEST['password']) ? $_REQUEST['password'] : '';
 $lang             = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : 'en';
 $database         = isset($_REQUEST['database']) ? $_REQUEST['database'] : null;
 $create_database  = isset($_REQUEST['create_database']) ? $_REQUEST['create_database'] : '';
-$server_type      = isset($_REQUEST['db_type']) ? $_REQUEST['db_type'] : null;
 $prefix           = isset($_REQUEST['prefix']) ? $_REQUEST['prefix'] : "kimai_";
 
 $con = new MySQL(true, $database, $hostname, $username, $password);
