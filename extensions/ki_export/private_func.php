@@ -19,11 +19,11 @@
 $all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'budget', 'approved', 'status', 'billable', 'customer', 'project', 'activity', 'description', 'comment', 'location', 'trackingNumber', 'user', 'cleared');
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
-if (file_exists('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php')) {
-	include ('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php');
+if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
+	include ('../ki_expenses/private_db_layer_mysql.php');
 	$expense_ext_available = true;
 }
-include ('private_db_layer_' . $kga['server_conn'] . '.php');
+include ('private_db_layer_mysql.php');
 
 /**
  * Get a combined array with time recordings and expenses to export.

@@ -45,8 +45,6 @@ $kga['server_hostname'] = $server_hostname;
 $kga['server_database'] = $server_database;
 $kga['server_username'] = $server_username;
 $kga['server_password'] = $server_password;
-$kga['server_type']     = "";
-$kga['server_conn']     = $server_conn;
 $kga['defaultTimezone'] = $defaultTimezone;
 $kga['password_salt']   = isset($password_salt) ? $password_salt : '';
 $kga['language']        = isset($language) ? $language : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
@@ -56,8 +54,7 @@ $kga['skin']            = isset($skin) ? $skin : Kimai_Config::getDefault(Kimai_
 
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
-    'server_type', 'server_conn', 'language', 'password_salt', 'authenticator', 'defaultTimezone',
-    'billable', 'skin'
+    'language', 'password_salt', 'authenticator', 'defaultTimezone', 'billable', 'skin'
 );
 
 date_default_timezone_set($defaultTimezone);
