@@ -195,8 +195,10 @@
         
         <div id="main_tools_menu">
             <div class="slider">
-                <a href="#" id="main_credits_button"><?php echo $this->kga['lang']['about'] ?></a> |
-                <a href="#" id="main_prefs_button"><?php echo $this->kga['lang']['preferences'] ?></a>
+                <a href="#" id="main_credits_button"><?php echo $this->kga['lang']['about'] ?></a>
+                <?php if (!isset($this->kga['customer'])) { ?>
+                 | <a href="#" id="main_prefs_button"><?php echo $this->kga['lang']['preferences'] ?></a>
+                <?php } ?>
             </div>
             <div class="end"></div>
         </div>
