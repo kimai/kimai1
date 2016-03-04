@@ -51,7 +51,7 @@ function step_back() {
     step=step-2;
     step_ahead();        
     $('#installsteps').slideUp(500,function() {
-        $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database },
+        $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, lang:language, prefix:prefix, database:database },
             function(data) {
                 $('#installsteps').html(data);
                 $('#installsteps').slideDown(500);
@@ -180,7 +180,7 @@ function cp_proceed() {
     $('#installsteps').slideUp(500,function(){
         target = "50_enter_access_data";
 
-        $.post("steps/"+target+".php", {lang:language, db_layer:db_layer},
+        $.post("steps/"+target+".php", {lang:language},
             function(data) {
                 $('#installsteps').html(data);
                 $('#installsteps').slideDown(500);
@@ -212,9 +212,9 @@ function host_proceed() {
         step_ahead();
         $('#installsteps').slideUp(500,function(){
         
-            target = "60_db_select_" + db_layer;
+            target = "60_db_select_mysql";
         
-            $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_type:db_type, lang:language},
+            $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, lang:language},
                 function(data) {
                     $('#installsteps').html(data);
                     $('#installsteps').slideDown(500);
@@ -249,7 +249,7 @@ function db_check() {
     }
     else {
       $('#installsteps').slideUp(500,function(){
-        $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, create_database:create_database, prefix:prefix, redirect:true},
+        $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, lang:language, database:database, create_database:create_database, prefix:prefix, redirect:true},
               function(data) {
                 $('#installsteps').html(data);
                 $('#installsteps').slideDown(500);
@@ -273,7 +273,7 @@ function db_proceed() {
   
   step_ahead();
   
-  $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, db_layer:db_layer, db_type:db_type, lang:language, database:database, prefix:prefix},
+  $.post("steps/"+target+".php", { hostname:hostname, username:username, password:password, lang:language, database:database, prefix:prefix},
     function(data) {
       $('#installsteps').html(data);
       $('td.use_db').html(database);
@@ -297,7 +297,7 @@ function install() {
 
 function create_db() {
 
-    $.post("processor.php", { axAction: 'make_database', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database },
+    $.post("processor.php", { axAction: 'make_database', hostname:hostname, username:username, password:password, lang:language, prefix:prefix, database:database },
         function(data) {
             
             if (data == "1") {
@@ -322,11 +322,11 @@ function write_config() {
   
     step_ahead();
 
-    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, db_layer:db_layer, db_type:db_type, prefix:prefix, database:database, timezone:timezone },
+    $.post("processor.php", { axAction: 'write_config', hostname:hostname, username:username, password:password, lang:language, prefix:prefix, database:database, timezone:timezone },
         function(data) {
             $('#wrapper').fadeOut(2000);
             $('#footer').fadeOut(2000, function() {
-                window.location.href='install.php?accept=1&db_layer='+db_layer+'&timezone='+timezone;
+                window.location.href='install.php?accept=1&timezone='+timezone;
             });
         }
     );

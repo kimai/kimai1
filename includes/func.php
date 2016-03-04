@@ -298,7 +298,18 @@ function createPassword($length)
     return $password;
 }
 
-function write_config_file($database, $hostname, $username, $password, $db_layer, $db_type, $prefix, $lang, $salt, $timezone = null)
+/**
+ * @param $database
+ * @param $hostname
+ * @param $username
+ * @param $password
+ * @param $prefix
+ * @param $lang
+ * @param $salt
+ * @param null $timezone
+ * @return bool
+ */
+function write_config_file($database, $hostname, $username, $password, $prefix, $lang, $salt, $timezone = null)
 {
     global $kga;
     $database = addcslashes($database, '"$');
@@ -352,8 +363,6 @@ $config = <<<EOD
 \$server_database = "$database";
 \$server_username = "$username";
 \$server_password = "$password";
-\$server_conn     = "$db_layer";
-\$server_type     = "$db_type";
 \$server_prefix   = "$prefix";
 \$language        = "$lang";
 \$password_salt   = "$salt";

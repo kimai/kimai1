@@ -55,8 +55,6 @@ if (!isset($_REQUEST['accept'])) {
 }
 
 include('../includes/basics.php');
-$db_layer = $kga['server_conn'];
-if ($db_layer == '') $db_layer = $_REQUEST['db_layer'];
 
 date_default_timezone_set($_REQUEST['timezone']);
 
