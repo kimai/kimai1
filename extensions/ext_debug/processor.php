@@ -96,13 +96,16 @@ switch ($axAction) {
         // clean out some data that is way too private to be shown in the frontend ...
 
         if (!$kga['show_sensible_data']) {
-            $output['server_hostname'] = "xxx";
-            $output['server_database'] = "xxx";
-            $output['server_username'] = "xxx";
-            $output['server_password'] = "xxx";
+            $output['server_hostname']  = "xxx";
+            $output['server_database']  = "xxx";
+            $output['server_username']  = "xxx";
+            $output['server_password']  = "xxx";
+            $output['password_salt']    = "xxx";
             $output['user']['secure']   = "xxx";
             $output['user']['userID']   = "xxx";
             $output['user']['pw']       = "xxx";
+            $output['user']['password'] = "xxx";
+            $output['user']['apikey']   = "xxx";
         }
         echo"<pre>";
         print_r($output);
