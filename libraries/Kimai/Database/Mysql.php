@@ -1666,7 +1666,7 @@ class Kimai_Database_Mysql
 
         $prefixLength = strlen($prefix);
 
-        $table = $this->kga['server_prefix'] . "preferences";
+        $table = $this->getPreferencesTable();
         $userId = MySQL::SQLValue($userId, MySQL::SQLVALUE_NUMBER);
         $prefix = MySQL::SQLValue($prefix . '%');
 
@@ -2684,11 +2684,42 @@ class Kimai_Database_Mysql
 
         // load configuration and language
         $this->get_global_config();
+
+        $this->kga['timezone'] = $this->kga['defaultTimezone'];
+        $this->kga['conf']['showQuickNote'] = 0;
+
+        // and add user or customer specific settings on top
         if (strncmp($kimai_user, 'customer_', 9) == 0) {
-            $this->get_customer_config($customerID);
+            $configs = $this->get_customer_config($customerID);
+            if ($configs !== null) {
+                foreach ($configs as $key => $value) {
+                    $this->kga['customer'][$key] = $value;
+                }
+
+                $this->kga['timezone'] = $this->kga['customer']['timezone'];
+            }
+
         } else {
-            $this->get_user_config($userID);
+            $configs = $this->get_user_config($userID);
+            if ($configs !== null) {
+                foreach ($configs as $key => $value) {
+                    $this->kga['user'][$key] = $value;
+                }
+
+                $this->kga['user']['groups'] = $this->getGroupMemberships($userID);
+                $this->kga['conf'] = array_merge(
+                    $this->kga['conf'],
+                    $this->user_get_preferences_by_prefix('ui.')
+                );
+
+                $userTimezone = $this->user_get_preference('timezone');
+                if ($userTimezone != '') {
+                    $this->kga['timezone'] = $userTimezone;
+                }
+            }
         }
+
+        date_default_timezone_set($this->kga['timezone']);
 
         // skin fallback
         $skin = isset($this->kga['skin']) ? $this->kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
@@ -2779,18 +2810,15 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * write details of a specific user into $this->kga
+     * returns configuration data for specified user
      *
-     * @param integer $user ID of user in table users
+     * @param integer $userID
      * @return array $this->kga
-     * @author th
-     *
      */
-    public function get_user_config($user) {
-        if (!$user) return;
-
-        $table = $this->kga['server_prefix'] . "users";
-        $filter['userID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+    public function get_user_config($userID)
+    {
+        $table = $this->getUserTable();
+        $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
 
         // get values from user record
         $columns[] = "userID";
@@ -2811,40 +2839,19 @@ class Kimai_Database_Mysql
         $columns[] = "globalRoleID";
 
         $this->conn->SelectRows($table, $filter, $columns);
-        $rows = $this->conn->RowArray(0, MYSQLI_ASSOC);
-        foreach ($rows as $key => $value) {
-            $this->kga['user'][$key] = $value;
-        }
-
-        $this->kga['user']['groups'] = $this->getGroupMemberships($user);
-
-        // get values from user configuration (user-preferences)
-        unset($columns);
-        unset($filter);
-
-        $this->kga['conf'] = array_merge($this->kga['conf'], $this->user_get_preferences_by_prefix('ui.'));
-        $userTimezone = $this->user_get_preference('timezone');
-        if ($userTimezone != '')
-            $this->kga['timezone'] = $userTimezone;
-        else
-            $this->kga['timezone'] = $this->kga['defaultTimezone'];
-
-        date_default_timezone_set($this->kga['timezone']);
+        return $this->conn->RowArray(0, MYSQLI_ASSOC);
     }
 
     /**
-     * write details of a specific customer into $this->kga
+     * returns configuration for specified customer
      *
-     * @param integer $user ID of user in table users
-     * @return array $this->kga
-     * @author sl
-     *
+     * @param integer $userID
+     * @return array
      */
-    public function get_customer_config($user) {
-        if (!$user) return;
-
-        $table = $this->kga['server_prefix'] . "customers";
-        $filter['customerID'] = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
+    public function get_customer_config($userID)
+    {
+        $table = $this->getCustomerTable();
+        $filter['customerID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
 
         // get values from user record
         $columns[] = "customerID";
@@ -2867,12 +2874,7 @@ class Kimai_Database_Mysql
         $columns[] = "timezone";
 
         $this->conn->SelectRows($table, $filter, $columns);
-        $rows = $this->conn->RowArray(0, MYSQLI_ASSOC);
-        foreach ($rows as $key => $value) {
-            $this->kga['customer'][$key] = $value;
-        }
-
-        date_default_timezone_set($this->kga['customer']['timezone']);
+        return $this->conn->RowArray(0, MYSQLI_ASSOC);
     }
 
     /**
