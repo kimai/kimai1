@@ -21,6 +21,8 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require "../../includes/kspi.php";
 
+require 'functions.php';
+
 switch ($axAction)
 {
     case "createUser" :
@@ -122,30 +124,8 @@ switch ($axAction)
             );
         }
 
-        if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-user-otherGroup-view')) {
-            $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0));
-        } else {
-            $users = $database->get_users(get_cookie('adminPanel_extension_show_deleted_users', 0), $kga['user']['groups']);
-        }
-
-        // get group names
-        foreach ($users as &$user)
-        {
-            $user['groups'] = array();
-
-            $groups = $database->getGroupMemberships($user['userID']);
-            if (is_array($groups)) {
-                foreach ($groups as $group) {
-                    if (!$viewOtherGroupsAllowed && array_search($group, $kga['user']['groups']) === false) {
-                        continue;
-                    }
-                    $groupData = $database->group_get_data($group);
-                    $user['groups'][] = $groupData['name'];
-                }
-            }
-        }
         $arr_status = $database->get_statuses();
-        $view->users = $users;
+        $view->users = getEditUserList($database, $kga['user'], $viewOtherGroupsAllowed);
         $view->arr_status = $arr_status;
         $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
         $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
@@ -307,13 +287,24 @@ switch ($axAction)
 
         if (count($errors) == 0) {
             switch ($axValue) {
-                case 1 :
-                    // If the confirmation is returned the user gets the trash-flag.
+                // If the confirmation is returned the user is moved to trash
+                case 0:
+                    $database->user_edit($id, array('trash' => 0));
+                    break;
+
+                // If the confirmation is returned the user is moved to trash
+                case 1:
                     $database->user_delete($id, true);
                     break;
-                case 2 :
-                    // User is finally deleted after confirmed through trash view
+
+                // User is finally deleted after confirmed through trash view
+                case 2:
                     $database->user_delete($id, false);
+                    break;
+
+                // unknown action, display an error message
+                default:
+                    $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
                     break;
             }
         }

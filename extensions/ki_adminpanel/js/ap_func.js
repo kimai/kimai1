@@ -340,8 +340,7 @@ function adminPanel_extension_refreshSubtab(tab) {
 function adminPanel_extension_deleteUser(id, trash) {
   if (!confirm(lang_sure)) return;
   
-  var axData = (trash ? 1 : 2);
-  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: axData, id: id },
+  $.post(adminPanel_extension_path + "processor.php", {axAction: "deleteUser", axValue: trash, id: id },
       function() { 
         adminPanel_extension_refreshSubtab('users');
         adminPanel_extension_refreshSubtab('groups');

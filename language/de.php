@@ -166,6 +166,7 @@ return array(
     "backupUser" => "Backup des Account Anlegen",
     "mailUser" => "Email an diesen Benutzer senden",
     "deleteUser" => "Account löschen",
+    "restoreAccount" => "Account wiederherstellen",
     "bannedUser" => "Account gesperrt - hier klicken zum Aktivieren",
     "activeAccount" => "Account aktiv - hier klicken zum Sperren",
     "members" => "Mitglieder",
@@ -337,8 +338,8 @@ EOD
         'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.',
         'sameGlobalRoleName' => 'Eine globale Rolle mit diesem Namen existiert bereits.',
         'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
-        'noActivitySelected' => 'Keine Aktivität ausgwählt.',
-        'noProjectSelected' => 'Kein Projekt ausgwählt.',
+        'noActivitySelected' => 'Keine Aktivität ausgewählt.',
+        'noProjectSelected' => 'Kein Projekt ausgewählt.',
         'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
     ),
 

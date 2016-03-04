@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,83 +20,93 @@
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates";
-require("../../includes/kspi.php");
+require '../../includes/kspi.php';
 
+$settings = parse_ini_file("config.ini");
 
-$datasrc = "config.ini";
-$settings = parse_ini_file($datasrc);
-$dir_ext = $settings['EXTENSION_DIR'];
-$view->addHelperPath(WEBROOT . 'extensions/' . $dir_ext . '/templates/helpers', 'Zend_View_Helper');
+$view = new Kimai_View();
+$view->addBasePath(__DIR__ . '/templates/');
+
+require 'functions.php';
 
 switch ($axAction) {
 
-    case "editUser":
     // =============================
     // = Builds edit-user dialogue =
     // =============================
+    case "editUser":
 
         $userDetails = $database->user_get_data($id);
 
         $userDetails['rate'] = $database->get_rate($userDetails['userID'], NULL, NULL);
-        
+
         $view->globalRoles = array();
         foreach ($database->global_roles() as $role) {
-          $view->globalRoles[$role['globalRoleID']] = $role['name'];
+            $view->globalRoles[$role['globalRoleID']] = $role['name'];
         }
-        
+
         $view->memberships = array();
         foreach ($database->getGroupMemberships($id) as $groupId) {
-          $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
+            $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
 
         $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
-        if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view'))
-          $view->groups = $groups;
-        else
-          $view->groups = array_filter($groups, function($group) {global $kga; return array_search($group['groupID'], $kga['user']['groups']) !== false; });
+        if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
+            $view->groups = $groups;
+        } else {
+            $view->groups = array_filter(
+                $groups,
+                function ($group) {
+                    global $kga;
+                    return array_search($group['groupID'], $kga['user']['groups']) !== false;
+                }
+            );
+        }
 
         $view->membershipRoles = array();
-        foreach ($database->membership_roles() as $role)
-          $view->membershipRoles[$role['membershipRoleID']] = $role['name'];
+        foreach ($database->membership_roles() as $role) {
+            $view->membershipRoles[$role['membershipRoleID']] = $role['name'];
+        }
 
         $view->user_details = $userDetails;
-        echo $view->render("floaters/edituser.php");  
-        
-    break;
+        echo $view->render("floaters/edituser.php");
 
-    case "editGroup":    
+        break;
+
     // =============================
     // = Builds edit-group dialogue =
     // =============================
-        
+    case "editGroup":
+
         $groupDetails = $database->group_get_data($_REQUEST['id']);
-                      
+
         $view->users = makeSelectBox('sameGroupUser', null, null, true);
-        
         $view->group_details = $groupDetails;
-        echo $view->render("floaters/editgroup.php"); 
-        
-    break;     
-    
-    case "editStatus":    
+
+        echo $view->render("floaters/editgroup.php");
+
+        break;
+
     // =============================
     // = Builds edit-status dialogue =
     // =============================
-        
-        $statusDetails = $database->status_get_data($_REQUEST['id']);
-        
-        $view->status_details = $statusDetails;
-        echo $view->render("floaters/editstatus.php"); 
-        
-    break;    
+    case "editStatus":
 
-    case "editGlobalRole":    
+        $statusDetails = $database->status_get_data($_REQUEST['id']);
+
+        $view->status_details = $statusDetails;
+
+        echo $view->render("floaters/editstatus.php");
+
+        break;
+
     // =============================
     // = Builds edit-group dialogue =
     // =============================
-        
+    case "editGlobalRole":
+
         $globalRoleDetails = $database->globalRole_get_data($_REQUEST['id']);
-        
+
         $view->id = $globalRoleDetails['globalRoleID'];
         $view->name = $globalRoleDetails['name'];
         $view->action = 'editGlobalRole';
@@ -105,17 +115,18 @@ switch ($axAction) {
         $view->permissions = $globalRoleDetails;
         unset($view->permissions['globalRoleID']);
         unset($view->permissions['name']);
-        echo $view->render("floaters/editglobalrole.php"); 
-        
-    break;     
 
-    case "editMembershipRole":    
+        echo $view->render("floaters/editglobalrole.php");
+
+        break;
+
     // =============================
     // = Builds edit-group dialogue =
     // =============================
-        
+    case "editMembershipRole":
+
         $membershipRoleDetails = $database->membershipRole_get_data($_REQUEST['id']);
-        
+
         $view->id = $membershipRoleDetails['membershipRoleID'];
         $view->name = $membershipRoleDetails['name'];
         $view->action = 'editMembershipRole';
@@ -124,10 +135,9 @@ switch ($axAction) {
         $view->permissions = $membershipRoleDetails;
         unset($view->permissions['membershipRoleID']);
         unset($view->permissions['name']);
-        echo $view->render("floaters/editglobalrole.php"); 
-        
-    break;     
+
+        echo $view->render("floaters/editglobalrole.php");
+
+        break;
 
 }
-
-?>
