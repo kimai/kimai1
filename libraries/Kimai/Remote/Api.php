@@ -39,7 +39,7 @@ class Kimai_Remote_Api
 	private $kga = null;
 	
 	/**
-	 * @var Kimai_Database_Abstract
+	 * @var Kimai_Database_Mysql
 	 */
 	private $oldDatabase = null;
 

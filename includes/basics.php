@@ -47,8 +47,7 @@ require_once WEBROOT . 'includes/autoconf.php';
 require_once WEBROOT . 'includes/vars.php';
 require_once WEBROOT . 'includes/func.php';
 
-$database = new Kimai_Database_Mysql($kga);
-$database->connect($kga['server_hostname'], $kga['server_database'], $kga['server_username'], $kga['server_password'], $kga['utf8'], $kga['server_type']);
+$database = new Kimai_Database_Mysql($kga, true);
 if (!$database->isConnected()) {
     die('Kimai could not connect to database. Check your autoconf.php.');
 }

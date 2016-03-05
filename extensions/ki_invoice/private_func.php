@@ -19,8 +19,8 @@
 
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
-if (file_exists('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php')) {
-    include('../ki_expenses/private_db_layer_' . $kga['server_conn'] . '.php');
+if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
+    include('../ki_expenses/private_db_layer_mysql.php');
     $expense_ext_available = true;
 }
 

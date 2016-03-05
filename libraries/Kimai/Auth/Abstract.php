@@ -38,12 +38,12 @@ abstract class Kimai_Auth_Abstract
     protected $kga = null;
 
     /**
-     * @var Kimai_Database_Abstract
+     * @var Kimai_Database_Mysql
      */
     protected $database = null;
 
     /**
-     * @param Kimai_Database_Abstract $database
+     * @param Kimai_Database_Mysql $database
      * @param array $kga
      */
     public function __construct($database = null, $kga = null)
@@ -74,15 +74,15 @@ abstract class Kimai_Auth_Abstract
     }
 
     /**
-     * @param Kimai_Database_Abstract $database
+     * @param Kimai_Database_Mysql $database
      */
-    public function setDatabase(Kimai_Database_Abstract $database)
+    public function setDatabase(Kimai_Database_Mysql $database)
     {
         $this->database = $database;
     }
 
     /**
-     * @return Kimai_Database_Abstract
+     * @return Kimai_Database_Mysql
      */
     protected function getDatabase()
     {
