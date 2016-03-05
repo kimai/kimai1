@@ -2173,7 +2173,7 @@ class Kimai_Database_Mysql
         $values['start']        = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
         $values['end']          = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
         $values['duration']     = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
-        $values['rate']         = MySQL::SQLValue($data['rate'], MySQL::SQLVALUE_NUMBER);
+        $values['rate']         = MySQL::SQLValue($data['rate'] ? $data['rate'] : 0, MySQL::SQLVALUE_NUMBER);
         $values['cleared']      = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
         $values['budget']       = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
         $values['approved']     = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
@@ -4189,8 +4189,11 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        if ($this->conn->RowCount() == 0)
-            return false;
+        if ($this->conn->RowCount() == 0) {
+            // no error, but no best fitting rate, return default value
+            Kimai_Logger::logfile("get_best_fitting_rate - using default rate 0.00");
+            return 0.00;
+        }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
         return $data['rate'];
