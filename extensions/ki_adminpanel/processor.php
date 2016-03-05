@@ -287,7 +287,7 @@ switch ($axAction)
 
         if (count($errors) == 0) {
             switch ($axValue) {
-                // If the confirmation is returned the user is moved to trash
+                // User is re-activated, moving back from trash to "normal state"
                 case 0:
                     $database->user_edit($id, array('trash' => 0));
                     break;
