@@ -2321,7 +2321,7 @@ class Kimai_Database_Mysql
     public function get_projects(array $groups = null) {
         $p = $this->kga['server_prefix'];
 
-        if ($groups === null) {
+        if (empty($groups)) {
             $query = "SELECT project.*, customer.name AS customerName
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
@@ -2390,7 +2390,7 @@ class Kimai_Database_Mysql
             $sort = "name, customerName";
         }
 
-        if ($groups === null) {
+        if (empty($groups)) {
             $query = "SELECT project.*, customer.name AS customerName
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
@@ -2971,7 +2971,7 @@ class Kimai_Database_Mysql
     public function get_customers(array $groups = null) {
         $p = $this->kga['server_prefix'];
 
-        if ($groups === null) {
+        if (empty($groups)) {
             $query = "SELECT customerID, name, contact, visible
               FROM ${p}customers
               WHERE trash=0
@@ -3013,7 +3013,7 @@ class Kimai_Database_Mysql
     public function get_activities(array $groups = null) {
         $p = $this->kga['server_prefix'];
 
-        if ($groups === null) {
+        if (empty($groups)) {
             $query = "SELECT activityID, name, visible
               FROM ${p}activities
               WHERE trash=0
@@ -3070,7 +3070,7 @@ class Kimai_Database_Mysql
 
         $p = $this->kga['server_prefix'];
 
-        if ($groups === null) {
+        if (empty($groups)) {
             $query = "SELECT activity.*, p_a.budget, p_a.approved, p_a.effort
             FROM ${p}activities AS activity
             LEFT JOIN ${p}projects_activities AS p_a USING(activityID)
@@ -3367,16 +3367,17 @@ class Kimai_Database_Mysql
         
         $trash = MySQL::SQLValue($trash, MySQL::SQLVALUE_NUMBER);
 
-        if ($groups === null)
+        if (empty($groups)) {
             $query = "SELECT * FROM ${p}users
-        WHERE trash = $trash
-        ORDER BY name ;";
-        else
+                WHERE trash = $trash
+                ORDER BY name ;";
+        } else {
             $query = "SELECT DISTINCT u.* FROM ${p}users AS u
-         JOIN ${p}groups_users AS g_u USING(userID)
-        WHERE g_u.groupID IN (" . implode($groups, ',') . ") AND
-         trash = $trash
-        ORDER BY name ;";
+                JOIN ${p}groups_users AS g_u USING(userID)
+                WHERE g_u.groupID IN (" . implode($groups, ',') . ") AND
+                trash = $trash
+                ORDER BY name ;";
+        }
         $this->conn->Query($query);
 
         $rows = $this->conn->RowArray(0, MYSQLI_ASSOC);
