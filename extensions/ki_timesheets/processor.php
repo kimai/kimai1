@@ -557,7 +557,10 @@ switch ($axAction) {
           }
 
           Kimai_Logger::logfile("timeEntry_create");
-          $database->timeEntry_create($data);
+          $createdId = $database->timeEntry_create($data);
+          if (!$createdId) {
+            $errors[''] = $kga['lang']['error'];
+          }
         }
 
         $database->transaction_end();
