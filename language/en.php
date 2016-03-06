@@ -344,6 +344,8 @@ EOD
         'noActivitySelected' => 'No activity selected.',
         'noProjectSelected' => 'No project selected.',
         'multiplierNegative' => 'The multiplier must be larger than 0.',
+        'emptyField' => 'Missing value for field: %s',
+        'wrongData' => 'The given data is invalid',
     ),
 
     'confirmations' => array(

@@ -340,7 +340,9 @@ EOD
         'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
         'noActivitySelected' => 'Keine Aktivität ausgewählt.',
         'noProjectSelected' => 'Kein Projekt ausgewählt.',
-        'multiplierNegative' => 'Der Multiplikator größer als 0 sein.',
+        'multiplierNegative' => 'Der Multiplikator muss größer als 0 sein.',
+        'emptyField' => 'Fehlender Wert für Feld: %s',
+        'wrongData' => 'Die eingetragenen Daten sind fehlerhaft',
     ),
 
     'confirmations' => array(

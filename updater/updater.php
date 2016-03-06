@@ -1087,6 +1087,12 @@ if ((int)$revisionDB < 1385) {
     exec_query("ALTER TABLE ${p}activities CHANGE `comment` `comment` TEXT NULL;");
 }
 
+if ((int)$revisionDB < 1386) {
+    Kimai_Logger::logfile("-- update to r1386");
+    exec_query("ALTER TABLE ${p}expenses CHANGE `comment` `comment` TEXT NULL;");
+}
+
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
