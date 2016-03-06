@@ -161,15 +161,15 @@ switch ($axAction) {
     break;
 
     /**
-     * Return a list of users. Customers are not shown any users. The
-     * type of the current user decides which users are shown to him.
-     * See get_user_watchable_users.
+     * Return a list of users.
+     * The type of the current user decides which users are shown to him.
+     * @see kimai.php as well
      */
     case 'reload_users':
         if (isset($kga['customer'])) {
-                    $view->users = array();
+            $view->users = $database->get_customer_watchable_users($kga['customer']);
         } else {
-                    $view->users = $database->get_user_watchable_users($kga['user']);
+            $view->users = $database->get_user_watchable_users($kga['user']);
         }
 
         echo $view->render("lists/users.php");
