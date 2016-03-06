@@ -14,7 +14,8 @@
         <th><?php echo $this->kga['lang']['options'] ?></th>
         <th><?php echo $this->kga['lang']['username'] ?></th>
         <th><?php echo $this->kga['lang']['status'] ?></th>
-        <th><?php echo $this->kga['lang']['group'] ?></th>
+        <th><?php echo $this->kga['lang']['globalRole'] ?></th>
+        <th><?php echo $this->kga['lang']['groups'] ?></th>
     </tr>
     </thead>
     <tbody>
@@ -31,7 +32,7 @@
         foreach ($this->users as $userarray) {
             ?>
             <tr class='<?php echo $this->cycle(array("odd", "even"))->next() ?>'>
-                <!-- ########## Option cells ########## -->
+                <?php /* ########## Option cells ########## */ ?>
                 <td class="option">
                     <a href="#" onclick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/edit2.gif" title="<?php echo $this->kga['lang']['editUser'] ?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editUser'] ?>" border="0"></a>
@@ -45,15 +46,15 @@
                     <?php endif; ?>
                     &nbsp;
                     <?php if ($this->curr_user != $userarray['name']) { ?>
-                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, <?php echo($userarray['trash'] ? "false" : "true"); ?>)"><img
+                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, <?php echo($userarray['trash'] ? "2" : "1"); ?>)"><img
                                 src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['deleteUser'] ?>"
                                 width="13" height="13" alt="<?php echo $this->kga['lang']['deleteUser'] ?>" border="0"></a>
                     <?php } else { ?>
                         <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/button_trashcan_.png" title="<?php echo $this->kga['lang']['deleteUser'] ?>" width="13" height="13" alt="<?php echo $this->kga['lang']['deleteUser'] ?>" border="0">
                     <?php } ?>
                 </td>
-                <!-- ########## /Option cells ########## -->
-                <!-- ########## USER NAME ########## -->
+
+                <?php /* ########## User Name ########## */ ?>
                 <td>
                     <?php if ($this->curr_user == $userarray['name']): ?>
                         <strong style="color:#00E600"><?php echo $this->escape($userarray['name']) ?></strong>
@@ -63,7 +64,8 @@
                         <?php if ($userarray['trash']): ?></span><?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <!-- ########## /USER NAME ########## -->
+
+                <?php /* ########## Status ########## */ ?>
                 <td>
                     <?php if ($userarray['active'] == 1): ?>
                         <?php if ($this->curr_user != $userarray['name']): ?>
@@ -85,10 +87,17 @@
                     <?php endif; ?>
                     &nbsp;
                     <?php if ($userarray['trash']): ?>
-                        <strong style="color:red">X</strong>
+                        <a href="#" id="deleteUser<?php echo $userarray['userID'] ?>" onclick="adminPanel_extension_deleteUser(<?php echo $userarray['userID'] ?>, 0)"><img
+                                src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['restoreAccount'] ?>"
+                                width="13" height="13" alt="<?php echo $this->kga['lang']['restoreAccount'] ?>" border="0"></a>
                     <?php endif; ?>
                 </td>
                 <!-- ########## /Status cells ########## -->
+                <!-- ########## Global Group ########## -->
+                <td>
+                    <?php echo $userarray['globalRoleName']; ?>
+                </td>
+                <!-- ########## Group cells ########## -->
                 <!-- ########## Group cells ########## -->
                 <td>
                     <?php echo implode(', ', $userarray['groups']); ?>
