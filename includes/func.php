@@ -161,7 +161,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             break;
 
         case 'allUser':
-            $users = $database->get_users($kga['user']);
+            $users = $database->get_users();
 
             foreach ($users as $user) {
               if ($includeDeleted || !$user['trash']) {
