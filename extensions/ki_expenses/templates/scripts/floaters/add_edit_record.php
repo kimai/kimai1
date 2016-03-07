@@ -82,10 +82,7 @@
                     </li>
                     <li>
                         <label for="commentType"><?php echo $this->kga['lang']['commentType'] ?>:</label>
-                        <?php echo $this->formSelect('commentType', $this->commentType, array(
-                            'id' => 'commentType',
-                            'class' => 'formfield',
-                            'tabindex' => '14'), $this->commentTypes); ?>
+                        <?php echo $this->commentTypeSelect($this->commentType); ?>
                     </li>
                     <li>
                         <label for="erase"><?php echo $this->kga['lang']['erase'] ?>:</label>

@@ -207,7 +207,6 @@ switch ($axAction) {
       $billableText[] = $billableValue . '%';
     }
     $view->billable = array_combine($billableValues, $billableText);
-    $view->commentTypes = $commentTypes;
 
     echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
@@ -270,7 +269,6 @@ switch ($axAction) {
             $view->commentType = $timeSheetEntry['commentType'];
             $view->statusID = $timeSheetEntry['statusID'];
             $view->billable_active = $timeSheetEntry['billable'];
-            $view->commentTypes = $commentTypes;
         }
         echo $view->render("floaters/add_edit_timeSheetQuickNote.php");
 

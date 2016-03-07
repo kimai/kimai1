@@ -60,8 +60,6 @@ $user = checkUser();
 
 $view->kga = $kga;
 
-$commentTypes = array($kga['lang']['ctype0'], $kga['lang']['ctype1'], $kga['lang']['ctype2']);
-
 // ==================
 // = security check =
 // ==================
