@@ -3728,6 +3728,12 @@ class Kimai_Database_Mysql
             return $that->membership_role_allows($roleID, 'core-user-view');
         });
 
+        // user is not allowed to see users of different groups, so he only gets to see himself
+        if(empty($allowed_groups)) {
+            return array($user);
+        }
+
+        // otherwise return the list of all active users within the allowed groups
         return $this->get_users(0, $allowed_groups);
     }
 
