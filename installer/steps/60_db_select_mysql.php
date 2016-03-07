@@ -26,13 +26,12 @@ $prefix = isset($_REQUEST['prefix']) ? $_REQUEST['prefix'] : 'kimai_';
 $con = new MySQL(true, $database, $hostname, $username, $password);
 
 // we could not connect to the database, show error and leave the script
-if ( ! $con) {
+if (! $con) {
     if ($lang == 'de') {
         echo 'Datenbank hat Zugriff verweigert. Gehen Sie bitte zurück.<br /><button onclick="step_back(); return false;">Zurück</button>';
     } else {
         echo 'The database refused access. Please go back.<br /><button onclick="step_back(); return false;">Back</button>';
     }
-
     return;
 }
 
@@ -117,7 +116,6 @@ if ( ! $showDatabasesAllowed) {
 }
 
 if ($createDatabaseAllowed) {
-
     if ($database === '' && $create_database !== '') {
         if ( ! preg_match('/^[a-zA-Z0-9_]+$/', $create_database)) {
             $databaseErrorMessage = ($lang == 'de') ? 'Nur Buchstaben, Zahlen und Unterstriche.' : 'Only letters, numbers and underscores.';
