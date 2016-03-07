@@ -24,14 +24,12 @@
  */
 class Zend_View_Helper_CommentTypeSelect extends Zend_View_Helper_FormSelect
 {
+    /**
+     * @param null $value
+     * @return string
+     */
     public function commentTypeSelect($value = null)
     {
-        $commentTypes = array(
-            0 => $this->view->translate('ctype0'),
-            1 => $this->view->translate('ctype1'),
-            2 => $this->view->translate('ctype2')
-        );
-
         return $this->formSelect(
             'commentType',
             $value,
@@ -40,7 +38,19 @@ class Zend_View_Helper_CommentTypeSelect extends Zend_View_Helper_FormSelect
                 'class' => 'formfield',
                 'tabindex' => '14'
             ),
-            $commentTypes
+            $this->getTypes()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTypes()
+    {
+        return array(
+            0 => $this->view->translate('ctype0'),
+            1 => $this->view->translate('ctype1'),
+            2 => $this->view->translate('ctype2')
         );
     }
 }
