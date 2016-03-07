@@ -55,7 +55,7 @@ while ($row = $con->RowArray(null, MYSQLI_NUM)) {
     }
 }
 
-if ( ! $showDatabasesAllowed) {
+if (! $showDatabasesAllowed) {
     if ($lang == 'de') {
         echo 'Kein Berechtigung um Datenbanken aufzulisten. Name der zu verwendenden Datenbank:<br/>';
     } else {
