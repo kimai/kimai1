@@ -117,7 +117,7 @@ if (! $showDatabasesAllowed) {
 
 if ($createDatabaseAllowed) {
     if ($database === '' && $create_database !== '') {
-        if ( ! preg_match('/^[a-zA-Z0-9_]+$/', $create_database)) {
+        if (! preg_match('/^[a-zA-Z0-9_]+$/', $create_database)) {
             $databaseErrorMessage = ($lang == 'de') ? 'Nur Buchstaben, Zahlen und Unterstriche.' : 'Only letters, numbers and underscores.';
         } elseif (strlen($create_database) > 64) {
             $databaseErrorMessage = ($lang == 'de') ? 'Maximal 64 Zeichen.' : 'At most 64 characters.';
