@@ -1,5 +1,17 @@
 <?php
 defined('WEBROOT') || define('WEBROOT', dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR);
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(dirname(__FILE__)) . '/../'));
+
+set_include_path(
+    implode(
+        PATH_SEPARATOR,
+        array(
+            realpath(APPLICATION_PATH . '/libraries/zendframework/zendframework1/library/'),
+        )
+    )
+);
+
+require_once WEBROOT . '/libraries/autoload.php';
 
 echo '<script type="text/javascript" charset="utf-8">current=60;</script>';
 
@@ -152,9 +164,9 @@ if ($prefix != 'kimai' && strlen($prefix) > 64) {
 }
 
 if ($lang == 'de') {
-    echo 'Möchten Sie einen Tabellen-Prefix vergeben?<br/>(Wenn Sie nicht wissen was das ist, lassen Sie einfach "kimai_" stehen.)<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
+    echo 'Möchten Sie einen Tabellen-Prefix vergeben?<br/>(Wenn Sie nicht wissen was das ist, lassen Sie einfach "kimai_" stehen)<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
 } else {
-    echo 'Would you like to assign a table-prefix?<br/>(If you don\'t know what this is - leave it as "kimai_".)<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
+    echo 'Would you like to assign a table-prefix?<br/>(If you don\'t know what this is - leave it as "kimai_")<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
 }
 
 if (isset($prefixErrorMessage)) {
