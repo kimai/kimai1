@@ -32,7 +32,6 @@ switch ($axAction)
             die();
         }
 
-        $view->commentTypes = $commentTypes;
         $view->projects     = makeSelectBox("project", $kga['user']['groups']); // select for projects
         $view->activities   = makeSelectBox("activity", $kga['user']['groups']); // select for activities
 
