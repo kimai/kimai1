@@ -25,7 +25,7 @@
 class Zend_View_Helper_CommentTypeSelect extends Zend_View_Helper_FormSelect
 {
     /**
-     * @param null $value
+     * @param string|int|null $value
      * @return string
      */
     public function commentTypeSelect($value = null)
