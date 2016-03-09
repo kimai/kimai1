@@ -347,9 +347,6 @@ exec_query($query);
 $query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('login', '1');";
 exec_query($query);
 
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('kimail', 'kimai@example.com');";
-exec_query($query);
-
 $query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@example.com');";
 exec_query($query);
 
