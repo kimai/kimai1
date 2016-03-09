@@ -63,16 +63,14 @@ $out = $timeframe[1];
 
 require_once('private_func.php');
 
-if (count($_REQUEST['projectID']) == 0) {
-    echo '<script language="javascript">alert("' . $kga['lang']['ext_invoice']['noProject'] . '")</script>';
-    return;
+if (!isset($_REQUEST['projectID']) || count($_REQUEST['projectID']) == 0) {
+    die($kga['lang']['ext_invoice']['noProject']);
 }
 
 $invoiceArray = invoice_get_data($in, $out, $_REQUEST['projectID'], $_REQUEST['filter_cleared'], isset($_REQUEST['short']));
 
 if (count($invoiceArray) == 0) {
-    echo '<script language="javascript">alert("' . $kga['lang']['ext_invoice']['noData'] . '")</script>';
-    return;
+    die($kga['lang']['ext_invoice']['noData']);
 }
 
 // ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
@@ -95,8 +93,8 @@ $dueDate = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 
 $round = 0;
 // do we have to round the time ?
-if (isset($_REQUEST['round'])) {
-    $round = $_REQUEST['roundValue'];
+if (isset($_REQUEST['roundValue']) && (float)$_REQUEST['roundValue'] > 0) {
+    $round = (float)$_REQUEST['roundValue'];
     $time_index = 0;
     $amount = count($invoiceArray);
 
@@ -183,10 +181,14 @@ foreach ($renderers as $rendererType => $renderer) {
     $renderer->setTemplateDir($baseFolder);
     $renderer->setTemplateFile($tplFilename);
     $renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
-    if ($renderer->canRender()) {
-        $renderer->setModel($model);
-        $renderer->render();
-        return;
+    try {
+        if ($renderer->canRender()) {
+            $renderer->setModel($model);
+            $renderer->render();
+            return;
+        }
+    } catch (Exception $ex) {
+        die(sprintf($kga['lang']['ext_invoice']['failure'], $ex->getMessage()));
     }
 }
 

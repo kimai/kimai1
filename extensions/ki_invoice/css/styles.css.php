@@ -13,7 +13,7 @@
 
 #invoice_extension {
     padding: 10px;
-    font-size: 20px;
+    font-size: 16px;
     background-color: #eee;
     color: #000;
     overflow: auto;
@@ -30,7 +30,7 @@
 }
 
 #invoice_extension_advanced {
-    padding: 10px;
+    padding: 0 10px;
 }
 
 #invoice_timespan {
@@ -44,4 +44,22 @@
 #invoice_screenshot {
     float: left;
     margin-right: 10px;
+}
+
+#invoice_extension_advanced div {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+#invoice_extension_advanced div select {
+    min-width: 200px;
+}
+
+#invoice_extension_advanced label {
+    min-width: 200px;
+    display: inline-block;
+}
+
+#invoice_extension_advanced div#invoice_button {
+    border: none;
 }
