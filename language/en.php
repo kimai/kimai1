@@ -453,12 +453,14 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceProject' => 'Projects',
         'invoiceTimePeriod' => 'Time Period',
         'invoiceTemplate' => 'Invoice template',
-        'defaultVat' => 'Default VAT rate',
+        'defaultVat' => 'VAT rate',
         'invoiceOptionShort' => 'Short Invoice',
         'invoiceOptionRound' => 'Round time',
         'invoiceButton' => 'Create',
-        'noData' => 'There are no time entries for the selected project & time period.',
+        'noData' => 'There are no entries for the selected project & time period',
         'noProject' => 'No project was selected.',
+        'includedEntries' => 'Include entries',
+        'failure' => 'Failed rendering invoice: %s',
     ),
 
     'ext_budget' => array(

@@ -444,15 +444,17 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
     'ext_invoice' => array(
         "invoiceTitle" => "Rechnung Erstellen",
         "invoiceCustomer" => "Kunde",
-        "invoiceProject" => "Projekter",
+        "invoiceProject" => "Projekte",
         "invoiceTimePeriod" => "Zeitspanne",
         "invoiceTemplate" => "Rechnungsvorlage",
         "invoiceOptionShort" => "Kurze Abrechnung",
-        "invoiceOptionRound" => "Zeiten Runden",
+        "invoiceOptionRound" => "Zeiten runden",
         "invoiceButton" => "Erstellen",
-        'noData' => 'In der ausgewählten Zeitspanne sind keine Einträge!',
+        'noData' => 'Für die ausgewählte Zeitspanne existieren keine Einträge',
         'noProject' => 'Es wurde kein Projekt ausgewählt.',
-        'defaultVat' => 'Standard-Mehrwertsteuer'
+        'defaultVat' => 'Mehrwertsteuer',
+        'includedEntries' => 'Einträge einbeziehen',
+        'failure' => 'Fehler beim Rendern der Rechnung: %s'
     ),
 
     'ext_budget' => array(

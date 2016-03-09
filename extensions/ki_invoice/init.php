@@ -52,6 +52,7 @@ $view->assign('projects', $tmpProjects);
 
 // Select values for Round Time option
 $roundingOptions = array(
+    '0' => '',
     '1' => '0.1h',
     '2.5' => '0.25h',
     '5' => '0.5h',
