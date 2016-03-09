@@ -201,3 +201,40 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
     return $result_arr;
 }
+
+function ext_invoice_sort_by_date_asc($a, $b)
+{
+    $aTime = DateTime::createFromFormat('m/d/Y', $a['date'])->getTimestamp();
+    $bTime = DateTime::createFromFormat('m/d/Y', $b['date'])->getTimestamp();
+
+    if ($aTime == $bTime) {
+        return 0;
+    }
+    return ($aTime < $bTime) ? -1 : 1;
+}
+
+function ext_invoice_sort_by_date_desc($a, $b)
+{
+    $aTime = DateTime::createFromFormat('m/d/Y', $a['date'])->getTimestamp();
+    $bTime = DateTime::createFromFormat('m/d/Y', $b['date'])->getTimestamp();
+
+    if ($aTime == $bTime) {
+        return 0;
+    }
+    return ($aTime > $bTime) ? -1 : 1;
+}
+
+/**
+ * @param $value
+ * @param $precision
+ * @return float
+ */
+function ext_invoice_round_value($value, $precision)
+{
+    // suppress division by zero error
+    if ($precision == 0.0) {
+        $precision = 1.0;
+    }
+
+    return floor($value / $precision + 0.5) * $precision;
+}

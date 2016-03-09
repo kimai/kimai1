@@ -456,7 +456,10 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'noProject' => 'Es wurde kein Projekt ausgewählt.',
         'defaultVat' => 'Mehrwertsteuer',
         'includedEntries' => 'Einträge einbeziehen',
-        'failure' => 'Fehler beim Rendern der Rechnung: %s'
+        'failure' => 'Fehler beim Rendern der Rechnung: %s',
+        'sortOrder' => 'Reihenfolge',
+        'orderDateAsc' => 'Datum - älteste zuerst',
+        'orderDateDesc' => 'Datum - neueste zuerst',
     ),
 
     'ext_budget' => array(

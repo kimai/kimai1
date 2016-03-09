@@ -62,10 +62,19 @@
                     <label for="filter_cleared">
                         <?php echo $this->kga['lang']['ext_invoice']['includedEntries'] ?>
                     </label>
-                    <select name="filter_cleared" name="cleared">
+                    <select name="filter_cleared">
                         <option value="-1" <?php if (!$this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->kga['lang']['export_extension']['cleared_all'] ?></option>
                         <option value="1"><?php echo $this->kga['lang']['export_extension']['cleared_cleared'] ?></option>
                         <option value="0" <?php if ($this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->kga['lang']['export_extension']['cleared_open'] ?></option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sort_invoice">
+                        <?php echo $this->kga['lang']['ext_invoice']['sortOrder'] ?>
+                    </label>
+                    <select name="sort_invoice">
+                        <option value="date_asc"><?php echo $this->kga['lang']['ext_invoice']['orderDateAsc'] ?></option>
+                        <option value="date_desc"><?php echo $this->kga['lang']['ext_invoice']['orderDateDesc'] ?></option>
                     </select>
                 </div>
                 <div id="invoice_button">

@@ -463,6 +463,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'noProject' => 'No project was selected.',
         'includedEntries' => 'Include entries',
         'failure' => 'Failed rendering invoice: %s',
+        'sortOrder' => 'Order',
+        'orderDateAsc' => 'Date - oldest first',
+        'orderDateDesc' => 'Datum - newest first',
     ),
 
     'ext_budget' => array(
