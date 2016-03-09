@@ -75,6 +75,7 @@
                     <select name="sort_invoice">
                         <option value="date_asc"><?php echo $this->kga['lang']['ext_invoice']['orderDateAsc'] ?></option>
                         <option value="date_desc"><?php echo $this->kga['lang']['ext_invoice']['orderDateDesc'] ?></option>
+                        <option value="name"><?php echo $this->kga['lang']['activity'] ?></option>
                     </select>
                 </div>
                 <div id="invoice_button">

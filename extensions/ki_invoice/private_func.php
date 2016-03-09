@@ -224,6 +224,11 @@ function ext_invoice_sort_by_date_desc($a, $b)
     return ($aTime > $bTime) ? -1 : 1;
 }
 
+function ext_invoice_sort_by_name($a, $b)
+{
+    return strcasecmp($a['desc'], $b['desc']);
+}
+
 /**
  * @param $value
  * @param $precision
