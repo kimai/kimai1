@@ -130,8 +130,6 @@ return array(
     "adminmail" => "e-mailadres van de administrator",
     "logintries" => "aantal foutieve logins vooraleer gebruiker verbannen wordt",
     "bantime" => "aantal seconden verbannen",
-    "lastdbbackup" => "Laatste backup",
-    "runbackup" => "Nu back-uppen",
     "defaultGroup" => "Standaard (0)",
     "user" => "Gewone gebruiker",
     "adminUser" => "Admin gebruiker",

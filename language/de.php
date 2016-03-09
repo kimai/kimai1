@@ -151,8 +151,6 @@ return array(
     "adminmail" => "eMail-Adresse des Administrators",
     "logintries" => "Mögliche Loginversuche, bevor der Account gesperrt wird",
     "bantime" => "Zeit in Sekunden für die der Account gesperrt wird",
-    "lastdbbackup" => "Letztes Backup",
-    "runbackup" => "Backup starten",
     "defaultGroup" => "Standard (0)",
     "user" => "Benutzer",
     "editUser" => "Benutzer editieren",

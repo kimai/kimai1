@@ -151,8 +151,6 @@ return array(
     "adminmail" => "on administraatori e-posti aadress.",
     "logintries" => "ebaõnnestunud sisselogimiskatse järel kasutaja blokeeritakse.",
     "bantime" => "sekundi möödudes blokeering lõpetatakse.",
-    "lastdbbackup" => "Viimatine varukoopia",
-    "runbackup" => "Tee varukoopia nüüd",
     "defaultGroup" => "Määramata (0)",
     "user" => "tavaline kasutaja",
     "editUser" => "Kasutaja redigeerimine",

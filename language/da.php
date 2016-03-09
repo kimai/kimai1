@@ -121,8 +121,6 @@ return array(
     "adminmail" => "administrators emailadresse",
     "logintries" => "Antal loginfejl, inden bruger blokeres",
     "bantime" => "Tidsrum for blokering: Antal sekunder",
-    "lastdbbackup" => "Sidste sikkerhedskopiering",
-    "runbackup" => "Tag sikkerhedskopi nu",
     "defaultGroup" => "Standard (0)",
     "user" => "Standardbruger",
     "editUser" => "Rediger bruger",

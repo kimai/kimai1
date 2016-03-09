@@ -124,8 +124,6 @@ return array(
     "adminmail" => "adres e-mail administratora",
     "logintries" => "ilość logowań pozostałych do blokady użytkownika",
     "bantime" => "czas blokady w sekundach",
-    "lastdbbackup" => "Ostatnia kopia bezpiczeństwa",
-    "runbackup" => "Wykonaj kopię bezpieczeństwa",
     "defaultGroup" => "Domyślnie (0)",
     "user" => "Użytkownik podstawowy",
     "editUser" => "Edycja użykownika",

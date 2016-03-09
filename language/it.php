@@ -116,8 +116,6 @@ return array(
     "adminmail" => "email address of administrator",
     "logintries" => "number of false logins before user gets banned",
     "bantime" => "login bantime in seconds",
-    "lastdbbackup" => "Last backup",
-    "runbackup" => "Backup now",
     "defaultGroup" => "Default (0)",
     "user" => "Regular user",
     "editUser" => "Edit user",

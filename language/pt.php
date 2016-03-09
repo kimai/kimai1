@@ -125,8 +125,6 @@ return array(
     "adminmail" => "endereço de e-mail do administrador",
     "logintries" => "número de falsos logins antes do utilizador ser banido",
     "bantime" => "login bantime in seconds",
-    "lastdbbackup" => "Último backup",
-    "runbackup" => "Executar Backup",
     "defaultGroup" => "Por omissão (0)",
     "user" => "Utilizador Normal",
     "editUser" => "Editar utilizador",

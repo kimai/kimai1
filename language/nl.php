@@ -116,8 +116,6 @@ return array(
     "adminmail" => "E-mailadres van de administrator",
     "logintries" => "aantal foutieve inlogpogingne voordat gebruiker wordt geblokkeerd",
     "bantime" => "login geblokkeerd in seconden",
-    "lastdbbackup" => "Laatste backup",
-    "runbackup" => "Backup nu",
     "defaultGroup" => "Standaard (0)",
     "user" => "Gewone gebruiker",
     "editUser" => "Edit gebruiker",

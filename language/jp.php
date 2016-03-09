@@ -152,8 +152,6 @@ return array(
 	"adminmail" => "管理者のメールアドレス",
 	"logintries" => "ログイン不可になるまでのログイン試行数",
 	"bantime" => "ログイン不可時間（秒）",
-	"lastdbbackup" => "最新バックアップ",
-	"runbackup" => "今すぐバックアップ",
 	"defaultGroup" => "既定 (0)",
 	"user" => "一般ユーザー",
 	"editUser" => "ユーザー編集",

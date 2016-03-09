@@ -122,8 +122,6 @@ return array(
     "adminmail" => "dirección de email del administrador",
     "logintries" => "Número de intentos de inicio en el sistema antes de banear el usuario",
     "bantime" => "Tiempo de baneo de sesión en segundos",
-    "lastdbbackup" => "Última copia de seguridad",
-    "runbackup" => "Hacer copia de seguridad ahora",
     "defaultgrp" => "Por defecto (0)",
     "regusr" => "Usuario normal",
     "adminusr" => "Usuario administrador",

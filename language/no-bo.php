@@ -128,8 +128,6 @@ return array(
     "adminmail" => "e-post adressen til administrator",
     "logintries" => "antall mislykkede pålogginger før brukeren blir utestengt",
     "bantime" => "sperret for adgang til å logge inn i sekunder",
-    "lastdbbackup" => "Nyeste sikkerhetskopi",
-    "runbackup" => "Ta sikkerhetskopi nå",
     "defaultGroup" => "Ordinær (0)",
     "user" => "Ordinær bruker",
     "editUser" => "Redigere bruker",

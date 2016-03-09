@@ -156,8 +156,6 @@ return array(
     "adminmail" => "系统管理员的邮件地址",
     "logintries" => "登录失败次数",
     "bantime" => "禁止登录时间单位秒",
-    "lastdbbackup" => "最后备份",
-    "runbackup" => "现在备份",
     "defaultGroup" => "默认组(0)",
     "user" => "普通用户",
     "editUser" => "编辑用户",

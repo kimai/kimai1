@@ -127,8 +127,6 @@ return array(
     "adminmail" => "ylläpitäjän sähköpostiosoite",
     "logintries" => "virheellisten kirjautumisten lukumäärä ennen tunnuksen jäädytystä",
     "bantime" => "kirjautumisen jäädytysika sekunteina",
-    "lastdbbackup" => "Viimeisin varmuuskopio",
-    "runbackup" => "Varmuuskopioi nyt",
     "defaultgrp" => "Oletus (0)",
     "regusr" => "Tavallinen käyttäjä",
     "adminusr" => "Ylläpitäjä käyttäjä",
