@@ -103,6 +103,9 @@ if (isset($_REQUEST['sort_invoice']))
         case 'date_desc':
             uasort($invoiceArray, 'ext_invoice_sort_by_date_desc');
             break;
+        case 'name':
+            uasort($invoiceArray, 'ext_invoice_sort_by_name');
+            break;
     }
 }
 
