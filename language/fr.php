@@ -170,8 +170,6 @@ return array(
     "adminmail" => "Adresse courriel de l'administrateur",
     "logintries" => "Nombre de mauvaises tentatives de connexions autorisées avant de bloquer l'utilisateur",
     "bantime" => "Durée du bloquage en secondes",
-    "lastdbbackup" => "Dernière sauvegarde",
-    "runbackup" => "Sauvegarde immédiate",
     "defaultGroup" => "Défaut (0)",
     "user" => "Utilisateur standard",
     "editUser" => "Editer l'utilisateur",

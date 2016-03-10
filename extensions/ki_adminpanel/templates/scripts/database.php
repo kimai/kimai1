@@ -3,20 +3,3 @@
     <br /><br />
     <a href="../updater/db_restore.php">Database Backup Utility</a>
 <?php } ?>
-
-<?php /*
-<br /><br />
-
-<?php echo $this->kga['lang']['lastdbbackup']?>: 
-
-<?php if ($this->kga['conf']['lastdbbackup']): ?>
-    <?php echo strftime("%c", $this->kga['conf']['lastdbbackup']); ?>
-<?php else: ?>
-    none
-<?php endif; ?>
-
-<br />
-
-<input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['runbackup']?>' onclick='backupAll(); return false;' />
-
-*/ ?>

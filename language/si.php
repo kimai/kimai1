@@ -126,8 +126,6 @@ return array(
     "adminmail" => "elektronski naslov administratorja",
     "logintries" => "število nepravilnih prijav preden je uporabnik zaklenjen",
     "bantime" => "čas zaklepanja v sekundah",
-    "lastdbbackup" => "Zadnja posodobitev",
-    "runbackup" => "Posodobi zdaj",
     "defaultGroup" => "Privzeto (0)",
     "user" => "Navadni uporanik",
     "editUser" => "Uredi uporabnika",

@@ -121,8 +121,6 @@ return array(
     "adminmail" => "endereço de e-mail do administrador",
     "logintries" => "número de tentativas de logins antes do usuário ser banido(bloqeuado)",
     "bantime" => "Proibição tempo em segundos",
-    "lastdbbackup" => "Último backup",
-    "runbackup" => "Executar Backup",
     "defaultgrp" => "Por padrão (0)",
     "regusr" => "Usuário Normal",
     "adminusr" => "Usuário Admin",

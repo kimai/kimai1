@@ -126,8 +126,6 @@ return array(
     "adminmail" => "Netfang kerfisstjóra",
     "logintries" => "Fjöldi rangra innslátta áður en notandi verður bannaður",
     "bantime" => "Innskráningarbann í sekúndum",
-    "lastdbbackup" => "Síðasta afritun",
-    "runbackup" => "Afrita núna",
     "defaultGroup" => "Default (0)",
     "user" => "Venjulegur notandi",
     "editUser" => "Breyta notenda",

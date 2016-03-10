@@ -119,8 +119,6 @@ return array(
     "adminmail" => "mejl adress till administratören",
     "logintries" => "antal felaktiga inloggningar inan användaren blir bannlyst",
     "bantime" => "Bannlyst inloggning i sekunder",
-    "lastdbbackup" => "Senaste säkerhetskopia",
-    "runbackup" => "Säkerhetskopiera nu",
     "defaultGroup" => "Standard (0)",
     "user" => "Normal användare",
     "editUser" => "Redigera användare",

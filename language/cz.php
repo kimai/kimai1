@@ -124,8 +124,6 @@ return array(
     "adminmail" => "email Administrátora",
     "logintries" => "Počet chybných přihlášení před zablokováním",
     "bantime" => "čas blokování přístupu",
-    "lastdbbackup" => "Poslední záloha",
-    "runbackup" => "Zálohuj teď",
     "defaultGroup" => "Default (0)",
     "user" => "Regular user",
     "editUser" => "Editace uživatele",

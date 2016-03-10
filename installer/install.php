@@ -359,9 +359,6 @@ exec_query($query);
 $query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginBanTime', '900');";
 exec_query($query);
 
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('lastdbbackup', '0');";
-exec_query($query);
-
 $query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
 exec_query($query);
 
