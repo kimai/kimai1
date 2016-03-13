@@ -60,7 +60,8 @@ foreach($allInvoices as $tplFile)
     if (!is_dir($tplFile)) {
         $extension = strtoupper($tplInfo['extension']);
     }
-    $invoice_template_files[$extension][$tplInfo['basename']] = $tplInfo['filename'];
+    $filename = str_replace('_', ' ', $tplInfo['filename']);
+    $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
 }
 
 $view->assign('invoice_templates', $invoice_template_files);
