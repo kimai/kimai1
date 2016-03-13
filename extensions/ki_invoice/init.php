@@ -50,24 +50,24 @@ $roundingOptions = array(
 );
 $view->assign('roundingOptions', $roundingOptions);
 
-// Get Invoice Template FileNames
+// Extract all Invoice Templates in groups
 $invoice_template_files = array();
-$handle = opendir('invoices/');
-while (false !== ($file = readdir($handle))) {
-    if (stripos($file, '.') !== 0) {
-        $invoice_template_files[$file] = $file;
+$allInvoices = glob('invoices/*');
+foreach($allInvoices as $tplFile)
+{
+    $extension = 'HTML';
+    $tplInfo = pathinfo($tplFile);
+    if (!is_dir($tplFile)) {
+        $extension = strtoupper($tplInfo['extension']);
     }
+    $invoice_template_files[$extension][$tplInfo['basename']] = $tplInfo['filename'];
 }
-closedir($handle);
-asort($invoice_template_files);
+
 $view->assign('invoice_templates', $invoice_template_files);
 
 // Retrieve start & stop times
 $timeframe = get_timeframe();
-$view->assign('timeframe', $timeframe);
-
 $view->assign('start_day', date($kga['date_format'][3], $timeframe[0]));
 $view->assign('end_day', date($kga['date_format'][3], $timeframe[1]));
-$view->assign('date_format', $kga['date_format'][0]);
 
 echo $view->render('main.php');
