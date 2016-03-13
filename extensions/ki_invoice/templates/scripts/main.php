@@ -23,7 +23,7 @@
                         'multiple' => 'multiple'), $this->projects); ?>
                 </div>
                 <div>
-                    <label>
+                    <label for="invoice_start_day">
                         <?php echo $this->translate('ext_invoice:invoiceTimePeriod') ?>
                     </label>
                     <input id="invoice_start_day" type="text" name="invoice_start_day" value="<?php echo $this->escape($this->start_day) ?>" maxlength="10" size="10" tabindex="6" />
