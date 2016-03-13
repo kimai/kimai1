@@ -465,6 +465,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'sortOrder' => 'Order',
         'orderDateAsc' => 'Date - oldest first',
         'orderDateDesc' => 'Datum - newest first',
+        'noDateSelected' => 'Missing time period',
     ),
 
     'ext_budget' => array(

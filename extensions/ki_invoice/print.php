@@ -30,16 +30,14 @@ if (!isset($_REQUEST['projectID']) || count($_REQUEST['projectID']) == 0) {
 }
 
 if (!isset($_REQUEST['invoice_start_day']) || !isset($_REQUEST['invoice_end_day'])) {
-    // TODO use proper translation
-    die('missing dates');
+    die($kga['lang']['ext_invoice']['noDateSelected']);
 }
 
 $dateIn = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_start_day']);
 $dateOut = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_end_day']);
 
 if ($dateIn === false || $dateOut === false) {
-    // TODO use proper translation
-    die('missing dates');
+    die($kga['lang']['ext_invoice']['noDateSelected']);
 }
 
 $in = $dateIn->getTimestamp();
