@@ -279,7 +279,6 @@ return array(
     'currency_sign' => '使用的货币字符.',
     'currency_first' => '使用的货币显示格式',
     'display_date_format' => '时间范围数据显示格式',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => '表格中的数据格式',
     'round_time' => '周期时间到',
     'round_time_minute' => ' 分.',

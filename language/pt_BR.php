@@ -219,7 +219,6 @@ return array(
     'currency_sign' => 'Registo da moeda corrente.',
     'currency_first' => 'Mostrar nome da moeda na frente do valor (por exemplo, R$ 100,00)',
     'display_date_format' => 'Formato de data.',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Formato de data para gravar na tabela do banco de dados.',
     'round_time' => 'Depois deste tempo, volta para ',
     'round_time_minute' => ' minuto(s).',

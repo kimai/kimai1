@@ -229,7 +229,6 @@ return array(
     'currency_sign' => 'Znak używanej waluty.',
     'currency_first' => 'Pokaż nazwę waluty z przodu wartości (np. &euro; 100,00)',
     'display_date_format' => 'Format daty okresu czasu (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">objaśnienie strftime()</a>)',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Format daty dla tabel (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">objaśnienie strftime()</a>)',
     'round_time' => 'Zaokrąglij czas do ',
     'round_time_minute' => ' minut.',

@@ -238,7 +238,6 @@ return array(
     'currency_sign' => 'Örnefni penningarmyntar.',
     'currency_first' => 'Sýna penningarmynt fyrir framan gildi (t.d.. &kr; 100,00)',
     'display_date_format' => 'Uppsetning á dagsetningu (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">Athugasemd strftime()</a>)',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Dagssetningar val reita (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">Athugasemd strftime()</a>)',
     'round_time' => 'Rúna tíma í',
     'round_time_minute' => ' mínúndur.',

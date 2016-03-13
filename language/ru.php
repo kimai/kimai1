@@ -269,7 +269,6 @@ return array(
     'currency_sign' => 'Символ валюты',
     'currency_first' => 'Показывать название валюты перед суммой (например, &euro; 100,00)',
     'display_date_format' => 'Формат даты отметки (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Округлять время до ',
     'round_time_minute' => ' минут.',

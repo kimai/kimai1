@@ -218,7 +218,6 @@ return array(
     'currency_sign' => 'Symbol för valuta.',
     'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
     'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Round time to ',
     'round_time_minute' => ' minute(s).',
