@@ -34,9 +34,17 @@
                     <label for="invoice_form_docs">
                         <?php echo $this->translate('ext_invoice:invoiceTemplate') ?>
                     </label>
-                    <?php echo $this->formSelect('ivform_file', null, array(
-                        'id' => 'invoice_form_docs',
-                        'class' => 'formfield'), $this->sel_form_files); ?>
+                    <?php
+                    echo $this->formSelect(
+                        'ivform_file',
+                        null,
+                        array(
+                            'id' => 'invoice_form_docs',
+                            'class' => 'formfield'
+                        ),
+                        $this->invoice_templates
+                    );
+                    ?>
                 </div>
                 <div>
                     <label>
