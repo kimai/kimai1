@@ -1,5 +1,5 @@
 <div id="invoice_extension_header">
-    <strong><?php echo $this->kga['lang']['ext_invoice']['invoiceTitle'] ?></strong>
+    <strong><?php echo $this->translate('ext_invoice:invoiceTitle') ?></strong>
 </div>
 <div id="invoice_extension_wrap">
     <div id="invoice_extension">
@@ -7,7 +7,7 @@
             <div id="invoice_extension_advanced">
                 <div>
                     <label for="invoice_customerID">
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceCustomer'] ?>
+                        <?php echo $this->translate('ext_invoice:invoiceCustomer') ?>
                     </label>
                     <?php echo $this->formSelect('customerID', $this->preselected_customer, array(
                         'id' => 'invoice_customerID', 
@@ -15,23 +15,24 @@
                 </div>
                 <div>
                     <label for="invoice_projectID">
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceProject'] ?>
+                        <?php echo $this->translate('ext_invoice:invoiceProject') ?>
                     </label>
                     <?php echo $this->formSelect('projectID[]', $this->preselected_project, array(
                         'id' => 'invoice_projectID', 
                         'class' => 'formfield', 
                         'multiple' => 'multiple'), $this->projects); ?>
                 </div>
-                <div id="invoice_timespan">
+                <div>
                     <label>
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceTimePeriod'] ?>
+                        <?php echo $this->translate('ext_invoice:invoiceTimePeriod') ?>
                     </label>
-                    <b><?php echo $this->escape(strftime($this->kga['date_format'][2], $this->timeframe[0])) . ' - ' .
-                            $this->escape(strftime($this->kga['date_format'][2], $this->timeframe[1])) ?></b>
+                    <input id="invoice_start_day" type="text" name="invoice_start_day" value="<?php echo $this->escape($this->start_day) ?>" maxlength="10" size="10" tabindex="6" />
+                    -
+                    <input id="invoice_end_day" type="text" name="invoice_end_day" value="<?php echo $this->escape($this->end_day) ?>" maxlength="10" size="10" tabindex="7" />
                 </div>
                 <div>
                     <label for="invoice_form_docs">
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceTemplate'] ?>
+                        <?php echo $this->translate('ext_invoice:invoiceTemplate') ?>
                     </label>
                     <?php echo $this->formSelect('ivform_file', null, array(
                         'id' => 'invoice_form_docs',
@@ -39,20 +40,20 @@
                 </div>
                 <div>
                     <label>
-                        <?php echo $this->kga['lang']['ext_invoice']['defaultVat'] ?>
+                        <?php echo $this->translate('ext_invoice:defaultVat') ?>
                     </label>
                     <span id="defaultVat"><?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])) ?></span>
-                    % (<a id="editVatLink" href="#"><?php echo $this->kga['lang']['change'] ?></a>)
+                    % (<a id="editVatLink" href="#"><?php echo $this->translate('change') ?></a>)
                 </div>
                 <div>
-                    <label for="short">
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceOptionShort'] ?>
+                    <label for="short_invoice">
+                        <?php echo $this->translate('ext_invoice:invoiceOptionShort') ?>
                     </label>
-                    <input type="checkbox" name="short" checked="checked">
+                    <input type="checkbox" id="short_invoice" name="short" checked="checked">
                 </div>
                 <div>
                     <label for="invoice_round_ID">
-                        <?php echo $this->kga['lang']['ext_invoice']['invoiceOptionRound'] ?>
+                        <?php echo $this->translate('ext_invoice:invoiceOptionRound') ?>
                     </label>
                     <?php echo $this->formSelect('roundValue', null, array(
                         'id' => 'invoice_round_ID',
@@ -60,26 +61,26 @@
                 </div>
                 <div>
                     <label for="filter_cleared">
-                        <?php echo $this->kga['lang']['ext_invoice']['includedEntries'] ?>
+                        <?php echo $this->translate('ext_invoice:includedEntries') ?>
                     </label>
-                    <select name="filter_cleared">
-                        <option value="-1" <?php if (!$this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->kga['lang']['export_extension']['cleared_all'] ?></option>
-                        <option value="1"><?php echo $this->kga['lang']['export_extension']['cleared_cleared'] ?></option>
-                        <option value="0" <?php if ($this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->kga['lang']['export_extension']['cleared_open'] ?></option>
+                    <select id="filter_cleared" name="filter_cleared">
+                        <option value="-1" <?php if (!$this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_all') ?></option>
+                        <option value="1"><?php echo $this->translate('export_extension:cleared_cleared') ?></option>
+                        <option value="0" <?php if ($this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_open') ?></option>
                     </select>
                 </div>
                 <div>
                     <label for="sort_invoice">
-                        <?php echo $this->kga['lang']['ext_invoice']['sortOrder'] ?>
+                        <?php echo $this->translate('ext_invoice:sortOrder') ?>
                     </label>
-                    <select name="sort_invoice">
-                        <option value="date_asc"><?php echo $this->kga['lang']['ext_invoice']['orderDateAsc'] ?></option>
-                        <option value="date_desc"><?php echo $this->kga['lang']['ext_invoice']['orderDateDesc'] ?></option>
-                        <option value="name"><?php echo $this->kga['lang']['activity'] ?></option>
+                    <select name="sort_invoice" id="sort_invoice">
+                        <option value="date_asc"><?php echo $this->translate('ext_invoice:orderDateAsc') ?></option>
+                        <option value="date_desc"><?php echo $this->translate('ext_invoice:orderDateDesc') ?></option>
+                        <option value="name"><?php echo $this->translate('activity') ?></option>
                     </select>
                 </div>
                 <div id="invoice_button">
-                    <input type="submit" class="btn_ok" value="<?php echo $this->kga['lang']['ext_invoice']['invoiceButton'] ?>">
+                    <input type="submit" class="btn_ok" value="<?php echo $this->translate('ext_invoice:invoiceButton') ?>">
                 </div>
             </div>
         </form>
@@ -112,5 +113,22 @@
                 }
             });
         });
+
+        $('#invoice_start_day').datepicker();$('#invoice_end_day').datepicker();
+
+        $('#invoice_start_day').datepicker('option', {
+            maxDate: $('#invoice_end_day').datepicker("getDate"),
+            onSelect: function (dateText, instance) {
+                $('#invoice_end_day').datepicker('option', 'minDate', $('#invoice_start_day').datepicker("getDate"));
+            }
+        });
+
+        $('#invoice_end_day').datepicker('option', {
+            minDate: $('#invoice_start_day').datepicker("getDate"),
+            onSelect: function (dateText, instance) {
+                $('#invoice_start_day').datepicker('option', 'maxDate', $('#invoice_end_day').datepicker("getDate"));
+            }
+        });
+
     });
 </script>

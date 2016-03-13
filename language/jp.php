@@ -270,7 +270,7 @@ return array(
 	'currency_sign' => '通貨文字',
 	'currency_first' => '値の前に通貨名を表示する (e.g. &yen; 10,000)',
 	'display_date_format' => '期間の日付フォーマット (<a href="http://php.net/manual/ja/function.strftime.php" target="_blank">strftime()の表記法</a>)',
-	'display_currentDate_format' => '期間の下記にあるフィールドの日付フォーマット (<a href="http://php.net/manual/ja/function.strftime.php" target="_blank">strftime()の表記法</a>)',
+	'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
 	'table_date_format' => 'テーブルの日付フォーマット (<a href="http://php.net/manual/ja/function.strftime.php" target="_blank">strftime()の表記法</a>)',
 	'round_time' => '時間を丸める',
 	'round_time_minute' => ' 分に丸める',

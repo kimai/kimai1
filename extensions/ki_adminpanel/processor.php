@@ -546,6 +546,7 @@ switch ($axAction)
             $config_data['date_format_0'] = $_REQUEST['date_format_0'];
             $config_data['date_format_1'] = $_REQUEST['date_format_1'];
             $config_data['date_format_2'] = $_REQUEST['date_format_2'];
+            $config_data['date_format_3'] = $_REQUEST['date_format_3'];
             $config_data['language'] = $_REQUEST['language'];
             if (isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
                 $config_data['status'] = implode(',', $_REQUEST['status']);

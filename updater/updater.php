@@ -1092,6 +1092,12 @@ if ((int)$revisionDB < 1386) {
     exec_query("ALTER TABLE ${p}expenses CHANGE `comment` `comment` TEXT NULL;");
 }
 
+if ((int)$revisionDB < 1387) {
+    Kimai_Logger::logfile("-- update to r1387");
+    exec_query("UPDATE `${p}configuration` set `value`= 'dd.mm.yy' WHERE `option` = 'date_format_0'");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
+}
+
 
 // ================================================================================
 // FINALIZATION: update DB version number

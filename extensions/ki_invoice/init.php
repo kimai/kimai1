@@ -75,4 +75,9 @@ $view->assign('sel_form_files', $invoice_template_files);
 // Retrieve start & stop times
 $timeframe = get_timeframe();
 $view->assign('timeframe', $timeframe);
+
+$view->assign('start_day', date($kga['date_format'][3], $timeframe[0]));
+$view->assign('end_day', date($kga['date_format'][3], $timeframe[1]));
+$view->assign('date_format', $kga['date_format'][0]);
+
 echo $view->render('main.php');

@@ -277,7 +277,7 @@ return array(
     'currency_sign' => 'Kasutatava rahaühiku sümbol',
     'currency_first' => 'Rahaühik näidatakse summa ees (nt. &euro; 100,00).',
     'display_date_format' => 'Ajavahemiku kuupäevavorming (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">tähiste juhend</a>)',
-    'display_currentDate_format' => 'Ajavahemiku aluse välja kuupäevavorming (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">tähiste juhend</a>)',
+    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Tabelite kuupäevavorming (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">tähiste juhend</a>)',
     'round_time' => 'Aeg ümardatakse täpsusele',
     'round_time_minute' => ' minut(it).',

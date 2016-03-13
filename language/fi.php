@@ -237,7 +237,7 @@ return array(
     'currency_sign' => 'Käytettävän valuutan symboli.',
     'currency_first' => 'Näytä valuutan nimi arvon edellä (esim. &euro; 100.00)',
     'display_date_format' => 'Aikajakson formaatti (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Aikajakson alla olevan Aika -kentän formaatti (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Taulujen aikaformaatti (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Pyöristä aika ',
     'round_time_minute' => ' minuutti(a).',

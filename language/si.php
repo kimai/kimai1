@@ -235,7 +235,7 @@ return array(
     'currency_sign' => 'Izklopi valuto v uporabi.',
     'currency_first' => 'Pokaži ime valute pred vrednostjo (e.g. &euro; 100,00)',
     'display_date_format' => ' Prikaži zapis formata časovnega obdobja (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Prikaži obstoječi zapis formata za polje pod časovnim obdobjem (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Prikaži zapis formata za tabele (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Skupni čas ',
     'round_time_minute' => ' minuta(e).',

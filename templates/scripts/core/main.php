@@ -107,7 +107,7 @@
             <?php if ($this->kga['conf']['noFading']): ?>
               showAnim: '',
             <?php endif; ?>
-            dateFormat : 'dd.mm.yy', // TODO use correct format depending on admin panel setting
+            dateFormat : '<?php echo $this->kga['date_format'][0] ?>',
             dayNames: <?php echo $this->weekdays_array ?>,
             dayNamesMin: <?php echo $this->weekdays_short_array ?>,
             dayNamesShort: <?php echo $this->weekdays_short_array ?>,

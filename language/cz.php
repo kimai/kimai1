@@ -234,7 +234,7 @@ return array(
     'currency_sign' => 'Označení použité měny.',
     'currency_first' => 'Zobraz měnu před částkou (e.g. &euro; 100,00)',
     'display_date_format' => 'Formát data v časovém rozmezí (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Formát data pod časovým rozmezím (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'display_currentDate_format' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#option-dateFormat" target="_blank">notation for dateFormat()</a>)',
     'table_date_format' => 'Formát data v tabulkách (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Zaokrouhli čas na ',
     'round_time_minute' => ' minute(s).',

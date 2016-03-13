@@ -99,7 +99,11 @@
             </div>
 
             <div>
-               <input type="text" name="date_format_0" size="15" value="<?php echo $this->escape($this->kga['date_format'][0]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_currentDate_format']?>
+               <input type="text" name="date_format_0" size="15" value="<?php echo $this->escape($this->kga['date_format'][0]) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_0']?>
+            </div>
+
+            <div>
+                <input type="text" name="date_format_3" size="15" value="<?php echo $this->escape($this->kga['date_format'][3]) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_3']?>
             </div>
 
             <div>

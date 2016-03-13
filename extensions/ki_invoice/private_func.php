@@ -24,11 +24,177 @@ if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
     $expense_ext_available = true;
 }
 
+// when creating the short form contains index of each activity in the array
+$activityIndexMap = array();
 
-$activityIndexMap = array(); // when creating the short form contains index of each activity in the array
 /**
- * @param boolean $short_form
+ * Get a combined array with time recordings and expenses to export.
+ *
+ * @param int $start Time from which to take entries into account.
+ * @param int $end Time until which to take entries into account.
+ * @param array $projects Array of project IDs to filter by.
+ * @param int $filter_cleared (-1: show all, 0:only cleared 1: only not cleared) entries
+ * @param bool $short_form should the short form be created
+ * @return array with time recordings and expenses chronologically sorted
  */
+function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
+{
+    global $expense_ext_available, $database;
+
+    $limitCommentSize = true;
+
+    $expenses = array();
+    $results = array();
+    $timeSheetEntries_index = 0;
+    $expenses_index = 0;
+
+    $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, false, false, $filter_cleared);
+    if ($expense_ext_available) {
+        $expenses = get_expenses($start, $end, null, null, $projects, false, false, -1, $filter_cleared);
+    }
+
+    while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses))
+    {
+        $arr = ext_invoice_empty_entry();
+
+        if ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])
+        {
+            $index = $timeSheetEntries_index++;
+
+            // active recordings will be omitted
+            if ($timeSheetEntries[$index]['end'] == 0) {
+                continue;
+            }
+
+            $arr['type'] = 'timeSheet';
+            $arr['desc'] = $timeSheetEntries[$index]['activityName'];
+            $arr['hour'] = $timeSheetEntries[$index]['duration'] / 3600;
+            $arr['duration'] = $timeSheetEntries[$index]['formattedDuration'];
+            $arr['amount'] = $timeSheetEntries[$index]['wage'];
+            $arr['date'] = date("m/d/Y", $timeSheetEntries[$index]['start']);
+            $arr['description'] = $timeSheetEntries[$index]['description'];
+            $arr['rate'] = $timeSheetEntries[$index]['rate'];
+            $arr['comment'] = $timeSheetEntries[$index]['comment'];
+            $arr['username'] = $timeSheetEntries[$index]['userName'];
+            $arr['useralias'] = $timeSheetEntries[$index]['userAlias'];
+            $arr['location'] = $timeSheetEntries[$index]['location'];
+            $arr['trackingNr'] = $timeSheetEntries[$index]['trackingNumber'];
+        }
+        else
+        {
+            $arr['type'] = 'expense';
+            $arr['desc'] = $expenses[$expenses_index]['designation'];
+            $arr['hour'] = null;
+            $arr['duration'] = $expenses[$expenses_index]['multiplier'];
+            $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+            $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
+            $arr['description'] = $expenses[$expenses_index]['designation'];
+            $arr['rate'] = $expenses[$expenses_index]['value'];
+            $arr['comment'] = $expenses[$expenses_index]['comment'];
+            $arr['username'] = $expenses[$expenses_index]['userName'];
+            $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
+            $arr['location'] = null;
+            $arr['trackingNr'] = null;
+
+            // TODO these are only available here, can we delete them?
+            $arr['activityName'] = $expenses[$expenses_index]['designation'];
+            $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
+            $arr['value'] = $expenses[$expenses_index]['value'];
+            $expenses_index++;
+        }
+
+        invoice_add_to_array($results, $arr, $short_form);
+    }
+
+    // timesheet entries
+    while ($timeSheetEntries_index < count($timeSheetEntries))
+    {
+        $index = $timeSheetEntries_index++;
+
+        // active recordings will be omitted
+        if ($timeSheetEntries[$index]['end'] == 0) {
+            continue;
+        }
+
+        $arr = ext_invoice_empty_entry();
+
+        $arr['type'] = 'timeSheet';
+        $arr['desc'] = $timeSheetEntries[$index]['activityName'];
+        $arr['hour'] = $timeSheetEntries[$index]['duration'] / 3600;
+        $arr['duration'] = $timeSheetEntries[$index]['formattedDuration'];
+        $arr['amount'] = $timeSheetEntries[$index]['wage'];
+        $arr['date'] = date("m/d/Y", $timeSheetEntries[$index]['start']);
+        $arr['description'] = $timeSheetEntries[$index]['description'];
+        $arr['rate'] = $timeSheetEntries[$index]['rate'];
+        $arr['comment'] = $timeSheetEntries[$index]['comment'];
+        $arr['username'] = $timeSheetEntries[$index]['userName'];
+        $arr['useralias'] = $timeSheetEntries[$index]['userAlias'];
+        $arr['location'] = $timeSheetEntries[$index]['location'];
+        $arr['trackingNr'] = $timeSheetEntries[$index]['trackingNumber'];
+
+        invoice_add_to_array($results, $arr, $short_form);
+    }
+
+    // expenses entries
+    while ($expenses_index < count($expenses)) {
+        $arr = ext_invoice_empty_entry();
+
+        $arr['type'] = 'expense';
+        $arr['desc'] = $expenses[$expenses_index]['designation'];
+        $arr['hour'] = null;
+        $arr['duration'] = $expenses[$expenses_index]['multiplier'];
+        $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
+        $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
+        $arr['description'] = $expenses[$expenses_index]['designation'];
+        $arr['rate'] = $expenses[$expenses_index]['value'];
+        $arr['comment'] = $expenses[$expenses_index]['comment'];
+        $arr['username'] = $expenses[$expenses_index]['userName'];
+        $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
+        $arr['location'] = null;
+        $arr['trackingNr'] = null;
+
+        // TODO these are only available here, can we delete them?
+        $arr['activityName'] = $expenses[$expenses_index]['designation'];
+        $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
+        $arr['value'] = $expenses[$expenses_index]['value'];
+
+        $expenses_index++;
+
+        invoice_add_to_array($results, $arr, $short_form);
+    }
+
+    $allEntries = array();
+    foreach($results as $entry)
+    {
+        if ($limitCommentSize) {
+            $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
+        }
+
+        $allEntries[] = $entry;
+    }
+
+    return $allEntries;
+}
+
+function ext_invoice_empty_entry()
+{
+    return array(
+        'type' => null,
+        'desc' => null,
+        'hour' => null,
+        'duration' => null,
+        'amount' => null,
+        'date' => null,
+        'description' => null,
+        'rate' => null,
+        'comment' => null,
+        'username' => null,
+        'useralias' => null,
+        'location' => null,
+        'trackingNr => null'
+    );
+}
+
 function invoice_add_to_array(&$array, $row, $short_form)
 {
     global $activityIndexMap;
@@ -43,7 +209,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
                 'location' => $row['location'],
                 'desc' => $row['desc'],
                 'hour' => $totalTime + $row['hour'],
-                'fduration' => $row['fduration'],
+                'duration' => $row['duration'],
                 'amount' => $totalAmount + $row['amount'],
                 'date' => $row['date'],
                 'description' => $row['description'],
@@ -59,147 +225,6 @@ function invoice_add_to_array(&$array, $row, $short_form)
         }
     }
     $array[] = $row;
-}
-
-/**
- * Get a combined array with time recordings and expenses to export.
- *
- * FIXME this method is the worst nightmare i have seen in month - kevin
- *
- * @param int $start Time from which to take entries into account.
- * @param int $end Time until which to take entries into account.
- * @param array $projects Array of project IDs to filter by.
- * @param int $filter_cleared (-1: show all, 0:only cleared 1: only not cleared) entries
- * @param bool $short_form should the short form be created
- * @return array with time recordings and expenses chronologically sorted
- */
-function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
-{
-    global $expense_ext_available, $database;
-    $limit = false;
-    $reverse_order = false;
-    $limitCommentSize = true;
-    $filter_refundable = -1;
-    $timeSheetEntries = array();
-    $expenses = array();
-    $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, $limit, $reverse_order, $filter_cleared);
-    if ($expense_ext_available) {
-        $expenses = get_expenses($start, $end, null, null, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
-    }
-    $result_arr = array();
-    $timeSheetEntries_index = 0;
-    $expenses_index = 0;
-    $keys = array('type', 'desc', 'hour', 'fduration', 'amount', 'date', 'description', 'rate', 'comment', 'username', 'useralias', 'location');
-    while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
-        $arr = array();
-        foreach ($keys as $key) {
-            $arr[$key] = null;
-        }
-
-        if ((!$reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
-            if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
-                // active recordings will be omitted
-                $arr['type'] = 'timeSheet';
-                $arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
-                $arr['desc'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
-                $arr['hour'] = $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600;
-                $arr['fDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-                $arr['amount'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
-                $arr['date'] = date("m/d/Y", $timeSheetEntries[$timeSheetEntries_index]['start']);
-                $arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
-                $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
-                $arr['trackingNr'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
-                if ($limitCommentSize) {
-                    $arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
-                } else {
-                    $arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
-                }
-                $arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
-                $arr['useralias'] = $timeSheetEntries[$timeSheetEntries_index]['userAlias'];
-            }
-            $timeSheetEntries_index++;
-        } else {
-            $arr['type'] = 'expense';
-            $arr['desc'] = $expenses[$expenses_index]['designation'];
-            $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
-            $arr['value'] = $expenses[$expenses_index]['value'];
-            $arr['fDuration'] = $expenses[$expenses_index]['multiplier'];
-            $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
-            $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
-            $arr['rate'] = $expenses[$expenses_index]['value'];
-            if ($limitCommentSize) {
-                $arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
-            } else {
-                $arr['comment'] = $expenses[$expenses_index]['comment'];
-            }
-            $arr['activityName'] = $expenses[$expenses_index]['designation'];
-            $arr['username'] = $expenses[$expenses_index]['userName'];
-            $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
-            $expenses_index++;
-        }
-
-        invoice_add_to_array($result_arr, $arr, $short_form);
-    }
-
-    // timesheet entries
-    while ($timeSheetEntries_index < count($timeSheetEntries)) {
-        if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
-            // active recordings will be omitted
-            $arr = array();
-            foreach ($keys as $key) {
-                $arr[$key] = null;
-            }
-
-            $arr['type'] = 'timeSheet';
-            $arr['location'] = $timeSheetEntries[$timeSheetEntries_index]['location'];
-            $arr['desc'] = $timeSheetEntries[$timeSheetEntries_index]['activityName'];
-            $arr['hour'] = $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600;
-            $arr['fDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-            $arr['amount'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
-            $arr['date'] = date("m/d/Y", $timeSheetEntries[$timeSheetEntries_index]['start']);
-            $arr['description'] = $timeSheetEntries[$timeSheetEntries_index]['description'];
-            $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
-            $arr['trackingNr'] = $timeSheetEntries[$timeSheetEntries_index]['trackingNumber'];
-            if ($limitCommentSize) {
-                $arr['comment'] = Kimai_Format::addEllipsis($timeSheetEntries[$timeSheetEntries_index]['comment'], 150);
-            } else {
-                $arr['comment'] = $timeSheetEntries[$timeSheetEntries_index]['comment'];
-            }
-            $arr['username'] = $timeSheetEntries[$timeSheetEntries_index]['userName'];
-            $arr['useralias'] = $timeSheetEntries[$timeSheetEntries_index]['userAlias'];
-            invoice_add_to_array($result_arr, $arr, $short_form);
-        }
-        $timeSheetEntries_index++;
-    }
-
-    // expenses entries
-    while ($expenses_index < count($expenses)) {
-        $arr = array();
-        foreach ($keys as $key) {
-            $arr[$key] = null;
-        }
-
-        $arr['type'] = 'expense';
-        $arr['desc'] = $expenses[$expenses_index]['designation'];
-        $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
-        $arr['value'] = $expenses[$expenses_index]['value'];
-        $arr['fDuration'] = $expenses[$expenses_index]['multiplier'];
-        $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
-        $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
-        $arr['rate'] = $expenses[$expenses_index]['value'];
-        if ($limitCommentSize) {
-            $arr['comment'] = Kimai_Format::addEllipsis($expenses[$expenses_index]['comment'], 150);
-        } else {
-            $arr['comment'] = $expenses[$expenses_index]['comment'];
-        }
-        $arr['activityName'] = $expenses[$expenses_index]['designation'];
-        $arr['username'] = $expenses[$expenses_index]['userName'];
-        $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
-        $expenses_index++;
-        invoice_add_to_array($result_arr, $arr, $short_form);
-    }
-
-    return $result_arr;
 }
 
 function ext_invoice_sort_by_date_asc($a, $b)
@@ -229,11 +254,6 @@ function ext_invoice_sort_by_name($a, $b)
     return strcasecmp($a['desc'], $b['desc']);
 }
 
-/**
- * @param $value
- * @param $precision
- * @return float
- */
 function ext_invoice_round_value($value, $precision)
 {
     // suppress division by zero error

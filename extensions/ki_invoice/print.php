@@ -22,15 +22,28 @@ include_once '../../includes/basics.php';
 // insert KSPI
 $isCoreProcessor = 0;
 $user = checkUser();
-$timeframe = get_timeframe();
-$in = $timeframe[0];
-$out = $timeframe[1];
 
 require_once 'private_func.php';
 
 if (!isset($_REQUEST['projectID']) || count($_REQUEST['projectID']) == 0) {
     die($kga['lang']['ext_invoice']['noProject']);
 }
+
+if (!isset($_REQUEST['invoice_start_day']) || !isset($_REQUEST['invoice_end_day'])) {
+    // TODO use proper translation
+    die('missing dates');
+}
+
+$dateIn = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_start_day']);
+$dateOut = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_end_day']);
+
+if ($dateIn === false || $dateOut === false) {
+    // TODO use proper translation
+    die('missing dates');
+}
+
+$in = $dateIn->getTimestamp();
+$out = $dateOut->getTimestamp();
 
 $invoiceArray = invoice_get_data($in, $out, $_REQUEST['projectID'], $_REQUEST['filter_cleared'], isset($_REQUEST['short']));
 

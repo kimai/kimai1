@@ -369,9 +369,10 @@ exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('show_dayS
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('show_gabBreaks','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('show_RecordAgain','1')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('show_TrackingNr','1')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_0','%d.%m.%Y')");
+exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_0','dd.mm.yy')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_1','%d.%m.')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_2','%d.%m.%Y')");
+exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('language','$kga[language]')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('roundPrecision','0')");
 exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('decimalSeparator',',')");
