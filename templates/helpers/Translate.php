@@ -18,7 +18,15 @@
  */
 
 /**
- * Returns the translated string ($key refers to the entry in your language file).
+ * Returns the translated string.
+ *
+ * - $key refers to the entry in your language file
+ * - $subpackage refers to a potential sub-array in the language file
+ * - an alternative referencing is possible by using the delimiter :
+ *
+ * $view->translate('foo')
+ * $view->translate('foo', 'bar')
+ * $view->translate('bar:foo')
  *
  * @author Kevin Papst
  */
@@ -26,9 +34,23 @@ class Zend_View_Helper_Translate extends Zend_View_Helper_Abstract
 {
     public function translate($key, $subpackage = null)
     {
+        $keys = explode(':', $key);
+        if ($subpackage === null && count($keys) > 1) {
+            $subpackage = $keys[0];
+            $key = $keys[1];
+        }
+
         if ($subpackage !== null) {
+            if (!isset($this->view->kga['lang'][$subpackage][$key])) {
+                return '*' . $subpackage . ':' . $key . '*';
+            }
             return $this->view->kga['lang'][$subpackage][$key];
         }
+
+        if (!isset($this->view->kga['lang'][$key])) {
+            return '*' . $key . '*';
+        }
+
         return $this->view->kga['lang'][$key];
     }
 } 
