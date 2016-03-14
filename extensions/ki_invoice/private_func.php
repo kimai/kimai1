@@ -17,13 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Determine if the expenses extension is used.
-$expense_ext_available = false;
-if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
-    include('../ki_expenses/private_db_layer_mysql.php');
-    $expense_ext_available = true;
-}
-
 // when creating the short form contains index of each activity in the array
 $activityIndexMap = array();
 
@@ -39,128 +32,80 @@ $activityIndexMap = array();
  */
 function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 {
-    global $expense_ext_available, $database;
+    global $database;
 
     $limitCommentSize = true;
-
-    $expenses = array();
     $results = array();
-    $timeSheetEntries_index = 0;
-    $expenses_index = 0;
 
-    $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, false, false, $filter_cleared);
-    if ($expense_ext_available) {
-        $expenses = get_expenses($start, $end, null, null, $projects, false, false, -1, $filter_cleared);
-    }
-
-    while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses))
-    {
-        $arr = ext_invoice_empty_entry();
-
-        if ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])
-        {
-            $index = $timeSheetEntries_index++;
-
-            // active recordings will be omitted
-            if ($timeSheetEntries[$index]['end'] == 0) {
-                continue;
-            }
-
-            $arr['type'] = 'timeSheet';
-            $arr['desc'] = $timeSheetEntries[$index]['activityName'];
-            $arr['hour'] = $timeSheetEntries[$index]['duration'] / 3600;
-            $arr['duration'] = $timeSheetEntries[$index]['formattedDuration'];
-            $arr['amount'] = $timeSheetEntries[$index]['wage'];
-            $arr['date'] = date("m/d/Y", $timeSheetEntries[$index]['start']);
-            $arr['description'] = $timeSheetEntries[$index]['description'];
-            $arr['rate'] = $timeSheetEntries[$index]['rate'];
-            $arr['comment'] = $timeSheetEntries[$index]['comment'];
-            $arr['username'] = $timeSheetEntries[$index]['userName'];
-            $arr['useralias'] = $timeSheetEntries[$index]['userAlias'];
-            $arr['location'] = $timeSheetEntries[$index]['location'];
-            $arr['trackingNr'] = $timeSheetEntries[$index]['trackingNumber'];
-        }
-        else
-        {
-            $arr['type'] = 'expense';
-            $arr['desc'] = $expenses[$expenses_index]['designation'];
-            $arr['hour'] = null;
-            $arr['duration'] = $expenses[$expenses_index]['multiplier'];
-            $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
-            $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
-            $arr['description'] = $expenses[$expenses_index]['designation'];
-            $arr['rate'] = $expenses[$expenses_index]['value'];
-            $arr['comment'] = $expenses[$expenses_index]['comment'];
-            $arr['username'] = $expenses[$expenses_index]['userName'];
-            $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
-            $arr['location'] = null;
-            $arr['trackingNr'] = null;
-
-            // TODO these are only available here, can we delete them?
-            $arr['activityName'] = $expenses[$expenses_index]['designation'];
-            $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
-            $arr['value'] = $expenses[$expenses_index]['value'];
-            $expenses_index++;
-        }
-
-        invoice_add_to_array($results, $arr, $short_form);
-    }
-
+    // --------------------------------------------------------------------------------
     // timesheet entries
-    while ($timeSheetEntries_index < count($timeSheetEntries))
-    {
-        $index = $timeSheetEntries_index++;
+    $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, false, false, $filter_cleared);
 
+    foreach($timeSheetEntries as $entry)
+    {
         // active recordings will be omitted
-        if ($timeSheetEntries[$index]['end'] == 0) {
+        if ($entry['end'] == 0) {
             continue;
         }
 
         $arr = ext_invoice_empty_entry();
 
         $arr['type'] = 'timeSheet';
-        $arr['desc'] = $timeSheetEntries[$index]['activityName'];
-        $arr['hour'] = $timeSheetEntries[$index]['duration'] / 3600;
-        $arr['duration'] = $timeSheetEntries[$index]['formattedDuration'];
-        $arr['amount'] = $timeSheetEntries[$index]['wage'];
-        $arr['date'] = date("m/d/Y", $timeSheetEntries[$index]['start']);
-        $arr['description'] = $timeSheetEntries[$index]['description'];
-        $arr['rate'] = $timeSheetEntries[$index]['rate'];
-        $arr['comment'] = $timeSheetEntries[$index]['comment'];
-        $arr['username'] = $timeSheetEntries[$index]['userName'];
-        $arr['useralias'] = $timeSheetEntries[$index]['userAlias'];
-        $arr['location'] = $timeSheetEntries[$index]['location'];
-        $arr['trackingNr'] = $timeSheetEntries[$index]['trackingNumber'];
+        $arr['desc'] = $entry['activityName'];
+        $arr['hour'] = $entry['duration'] / 3600;
+        $arr['duration'] = $entry['formattedDuration'];
+        $arr['amount'] = $entry['wage'];
+        $arr['timestamp'] = $entry['start'];
+        $arr['description'] = $entry['description'];
+        $arr['rate'] = $entry['rate'];
+        $arr['comment'] = $entry['comment'];
+        $arr['username'] = $entry['userName'];
+        $arr['useralias'] = $entry['userAlias'];
+        $arr['location'] = $entry['location'];
+        $arr['trackingNr'] = $entry['trackingNumber'];
+        $arr['projectID'] = $entry['projectID'];
+        $arr['projectName'] = $entry['projectName'];
+        $arr['projectComment'] = $entry['projectComment'];
 
         invoice_add_to_array($results, $arr, $short_form);
     }
 
-    // expenses entries
-    while ($expenses_index < count($expenses)) {
-        $arr = ext_invoice_empty_entry();
+    // --------------------------------------------------------------------------------
+    // if expenses extension is used, load expenses as well
+    if (file_exists('../ki_expenses/private_db_layer_mysql.php'))
+    {
+        include_once '../ki_expenses/private_db_layer_mysql.php';
 
-        $arr['type'] = 'expense';
-        $arr['desc'] = $expenses[$expenses_index]['designation'];
-        $arr['hour'] = null;
-        $arr['duration'] = $expenses[$expenses_index]['multiplier'];
-        $arr['amount'] = sprintf("%01.2f", $expenses[$expenses_index]['value'] * $expenses[$expenses_index]['multiplier']);
-        $arr['date'] = date("m/d/Y", $expenses[$expenses_index]['timestamp']);
-        $arr['description'] = $expenses[$expenses_index]['designation'];
-        $arr['rate'] = $expenses[$expenses_index]['value'];
-        $arr['comment'] = $expenses[$expenses_index]['comment'];
-        $arr['username'] = $expenses[$expenses_index]['userName'];
-        $arr['useralias'] = $expenses[$expenses_index]['userAlias'];
-        $arr['location'] = null;
-        $arr['trackingNr'] = null;
+        $expenses = get_expenses($start, $end, null, null, $projects, false, false, -1, $filter_cleared);
 
-        // TODO these are only available here, can we delete them?
-        $arr['activityName'] = $expenses[$expenses_index]['designation'];
-        $arr['multiplier'] = $expenses[$expenses_index]['multiplier'];
-        $arr['value'] = $expenses[$expenses_index]['value'];
+        foreach($expenses as $entry)
+        {
+            $arr = ext_invoice_empty_entry();
 
-        $expenses_index++;
+            $arr['type'] = 'expense';
+            $arr['desc'] = $entry['designation'];
+            $arr['hour'] = null;
+            $arr['duration'] = $entry['multiplier'];
+            $arr['amount'] = sprintf("%01.2f", $entry['value'] * $entry['multiplier']);
+            $arr['timestamp'] = $entry['timestamp'];
+            $arr['description'] = $entry['designation'];
+            $arr['rate'] = $entry['value'];
+            $arr['comment'] = $entry['comment'];
+            $arr['username'] = $entry['userName'];
+            $arr['useralias'] = $entry['userAlias'];
+            $arr['location'] = null;
+            $arr['trackingNr'] = null;
+            $arr['projectID'] = $entry['projectID'];
+            $arr['projectName'] = $entry['projectName'];
+            $arr['projectComment'] = $entry['projectComment'];
 
-        invoice_add_to_array($results, $arr, $short_form);
+            // TODO these are only available here, can we delete them?
+            $arr['activityName'] = $entry['designation'];
+            $arr['multiplier'] = $entry['multiplier'];
+            $arr['value'] = $entry['value'];
+
+            invoice_add_to_array($results, $arr, $short_form);
+        }
     }
 
     $allEntries = array();
@@ -169,6 +114,8 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         if ($limitCommentSize) {
             $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
         }
+        // FIXME use date_format instead
+        $entry['date'] = date("m/d/Y", $entry['timestamp']);
 
         $allEntries[] = $entry;
     }
