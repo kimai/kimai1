@@ -2623,7 +2623,6 @@ class Kimai_Database_Mysql
             $arr[$i]['projectID'] = $row->projectID;
             $arr[$i]['activityID'] = $row->activityID;
             $arr[$i]['userID'] = $row->userID;
-            $arr[$i]['projectID'] = $row->projectID;
             $arr[$i]['customerName'] = $row->customerName;
             $arr[$i]['customerID'] = $row->customerID;
             $arr[$i]['activityName'] = $row->activityName;
