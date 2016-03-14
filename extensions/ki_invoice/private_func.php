@@ -176,8 +176,8 @@ function invoice_add_to_array(&$array, $row, $short_form)
 
 function ext_invoice_sort_by_date_asc($a, $b)
 {
-    $aTime = DateTime::createFromFormat('m/d/Y', $a['date'])->getTimestamp();
-    $bTime = DateTime::createFromFormat('m/d/Y', $b['date'])->getTimestamp();
+    $aTime = $a['timestamp'];
+    $bTime = $b['timestamp'];
 
     if ($aTime == $bTime) {
         return 0;
@@ -187,8 +187,8 @@ function ext_invoice_sort_by_date_asc($a, $b)
 
 function ext_invoice_sort_by_date_desc($a, $b)
 {
-    $aTime = DateTime::createFromFormat('m/d/Y', $a['date'])->getTimestamp();
-    $bTime = DateTime::createFromFormat('m/d/Y', $b['date'])->getTimestamp();
+    $aTime = $a['timestamp'];
+    $bTime = $b['timestamp'];
 
     if ($aTime == $bTime) {
         return 0;
