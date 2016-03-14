@@ -40,6 +40,9 @@ if ($dateIn === false || $dateOut === false) {
     die($kga['lang']['ext_invoice']['noDateSelected']);
 }
 
+$dateIn->setTime(0, 0, 0);
+$dateOut->setTime(23, 59, 59);
+
 $in = $dateIn->getTimestamp();
 $out = $dateOut->getTimestamp();
 
