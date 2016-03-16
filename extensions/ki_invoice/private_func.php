@@ -123,25 +123,6 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
     return $allEntries;
 }
 
-function ext_invoice_empty_entry()
-{
-    return array(
-        'type' => null,
-        'desc' => null,
-        'hour' => null,
-        'duration' => null,
-        'amount' => null,
-        'date' => null,
-        'description' => null,
-        'rate' => null,
-        'comment' => null,
-        'username' => null,
-        'useralias' => null,
-        'location' => null,
-        'trackingNr' => null
-    );
-}
-
 function invoice_add_to_array(&$array, $row, $short_form)
 {
     global $activityIndexMap;
@@ -172,6 +153,25 @@ function invoice_add_to_array(&$array, $row, $short_form)
         }
     }
     $array[] = $row;
+}
+
+function ext_invoice_empty_entry()
+{
+    return array(
+        'type' => null,
+        'desc' => null,
+        'hour' => null,
+        'duration' => null,
+        'amount' => null,
+        'date' => null,
+        'description' => null,
+        'rate' => null,
+        'comment' => null,
+        'username' => null,
+        'useralias' => null,
+        'location' => null,
+        'trackingNr' => null
+    );
 }
 
 function ext_invoice_sort_by_date_asc($a, $b)
