@@ -213,7 +213,7 @@ class Kimai_Remote_Api
      * @param array $items
      * @return array
      */
-    protected function getDebugResult(Array $items, Array $debugItems)
+    protected function getDebugResult(array $items, array $debugItems)
     {
         $total = count($items);
         return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
@@ -227,7 +227,7 @@ class Kimai_Remote_Api
      * @param int $total = 0
      * @return array
      */
-    protected function getSuccessResult(Array $items, $total = 0)
+    protected function getSuccessResult(array $items, $total = 0)
     {
         if (empty($total)) {
             $total = count($items);
@@ -428,7 +428,7 @@ class Kimai_Remote_Api
         // @FIXME
         if (isset($kga['customer'])) {
             $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
-        } else if ($projectId !== null) {
+        } elseif ($projectId !== null) {
             $tasks = $this->getTasksByProjectId($projectId, $user);
         } else {
             $tasks = $this->getBackend()->get_activities($user['groups']);
@@ -603,7 +603,7 @@ class Kimai_Remote_Api
      * @param bool $doUpdate
      * @return array
      */
-    public function setTimesheetRecord($apiKey, Array $record, $doUpdate)
+    public function setTimesheetRecord($apiKey, array $record, $doUpdate)
     {
         if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
             return $this->getAuthErrorResult();
@@ -806,7 +806,7 @@ class Kimai_Remote_Api
      * @param bool $doUpdate
      * @return array
      */
-    public function setExpenseRecord($apiKey, Array $record, $doUpdate)
+    public function setExpenseRecord($apiKey, array $record, $doUpdate)
     {
         if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
             return $this->getAuthErrorResult();

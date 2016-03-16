@@ -221,16 +221,15 @@ class Kimai_Remote_Database
      *
      *  This method also makes the values SQL-secure.
      *
-     * @param Array list of IDs of users to include
-     * @param Array list of IDs of customers to include
-     * @param Array list of IDs of projects to include
-     * @param Array list of IDs of activities to include
+     * @param array list of IDs of users to include
+     * @param array list of IDs of customers to include
+     * @param array list of IDs of projects to include
+     * @param array list of IDs of activities to include
      * @param integer|null $users
-     * @return Array list of where clauses to include in the query
+     * @return array list of where clauses to include in the query
      */
     public function expenses_widthhereClausesFromFilters($users, $customers, $projects)
     {
-
         if (!is_array($users)) {
             $users = array();
         }
@@ -266,17 +265,16 @@ class Kimai_Remote_Database
         }
 
         return $whereClauses;
-
     }
 
     /**
      * create exp entry
      *
-     * @param Array $data
+     * @param array $data
      * @author sl
      * @author Alexander Bauer
      */
-    public function expense_create(Array $data)
+    public function expense_create(array $data)
     {
         $conn = $this->conn;
         $data = $this->dbLayer->clean_data($data);
@@ -324,7 +322,7 @@ class Kimai_Remote_Database
      * @author th
      * @author Alexander Bauer
      */
-    public function expense_edit($id, Array $data)
+    public function expense_edit($id, array $data)
     {
         $conn = $this->conn;
         $data = $this->dbLayer->clean_data($data);
