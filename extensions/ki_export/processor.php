@@ -51,7 +51,6 @@ if ($axAction == 'export_csv' ||
   $timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
 
   $dateformat = strip_tags($_REQUEST['dateformat']);
-  $dateformat = preg_replace('/([A-Za-z])/', '%$1', $dateformat);
 
   $default_location = strip_tags($_REQUEST['default_location']);
 

@@ -46,7 +46,6 @@ $view->dateformat = $dateformat;
 echo $view->render('panel.php');
 
 $view->timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
-$view->dateformat = preg_replace('/([A-Za-z])/', '%$1', $dateformat);
 
 $users = null;
 $customers = null;
