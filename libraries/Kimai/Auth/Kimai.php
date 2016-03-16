@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Class Kimai_Auth_Kimai
+ */
 class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
 {
     /**
@@ -27,7 +30,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        $kga      = $this->getKga();
+        $kga = $this->getKga();
         $database = $this->getDatabase();
 
         $id = $database->user_name2id($username);
@@ -38,60 +41,59 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         }
 
         $passCrypt = md5($kga['password_salt'] . $password . $kga['password_salt']);
-        $userData  = $database->user_get_data($id);
-        $pass      = $userData['password'];
-        $userId    = $userData['userID'];
+        $userData = $database->user_get_data($id);
+        $pass = $userData['password'];
+        $userId = $userData['userID'];
 
         return $pass == $passCrypt && $username != "";
     }
 
     public function forgotPassword($name)
     {
-      $kga      = $this->getKga();
-      $database = $this->getDatabase();
+        $kga = $this->getKga();
+        $database = $this->getDatabase();
 
-      $id = $database->user_name2id($name);
+        $id = $database->user_name2id($name);
 
-      $user = $database->user_get_data($id);
-      $passwordResetHash = str_shuffle(MD5(microtime()));
+        $user = $database->user_get_data($id);
+        $passwordResetHash = str_shuffle(MD5(microtime()));
 
-      $database->user_edit($id, array('passwordResetHash' => $passwordResetHash));
+        $database->user_edit($id, array('passwordResetHash' => $passwordResetHash));
 
-      $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-      $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
+        $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
 
-      $message = $kga['lang']['passwordReset']['mailMessage'];
-      $message = str_replace('%{URL}', $url, $message);
-      error_log($user['mail']);
-      mail($user['mail'], 
-        $kga['lang']['passwordReset']['mailSubject'], 
-        $message);
+        $message = $kga['lang']['passwordReset']['mailMessage'];
+        $message = str_replace('%{URL}', $url, $message);
+        error_log($user['mail']);
+        mail($user['mail'],
+            $kga['lang']['passwordReset']['mailSubject'],
+            $message);
 
-      return $kga['lang']['passwordReset']['mailConfirmation'];
+        return $kga['lang']['passwordReset']['mailConfirmation'];
     }
 
     public function resetPassword($username, $password, $key)
     {
-      $kga      = $this->getKga();
-      $database = $this->getDatabase();
+        $kga = $this->getKga();
+        $database = $this->getDatabase();
 
-      $id = $database->user_name2id($username);
-      $user = $database->user_get_data($id);
-      if ($key != $user['passwordResetHash']) {
+        $id = $database->user_name2id($username);
+        $user = $database->user_get_data($id);
+        if ($key != $user['passwordResetHash']) {
+            return array(
+                "message" => $kga['lang']['passwordReset']['invalidKey']
+            );
+        }
+
+        $data = array();
+        $data['password'] = md5($kga['password_salt'] . $password . $kga['password_salt']);
+        $data['passwordResetHash'] = null;
+        $database->user_edit($id, $data);
+
         return array(
-          "message" => $kga['lang']['passwordReset']['invalidKey']
+            "message" => $kga['lang']['passwordReset']['success'],
+            "showLoginLink" => true,
         );
-      }
-
-      $data = array();
-      $data['password'] = md5($kga['password_salt'] . $password . $kga['password_salt']);
-      $data['passwordResetHash'] = null;
-      $database->user_edit($id, $data);
-
-      return array(
-        "message" => $kga['lang']['passwordReset']['success'],
-        "showLoginLink" => true,
-      );
     }
-
 }

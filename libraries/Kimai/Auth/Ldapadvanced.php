@@ -1,4 +1,21 @@
 <?php
+/**
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) Kimai-Development-Team since 2006
+ *
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
+ *
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * Copyright (C) 2011 by Skaldrom Y. Sarg of oncode.info
@@ -18,7 +35,6 @@
  * @author Andreas Heigl<andras@heigl.org>
  * @since  15.08.2014
  */
-
 class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
 {
 
@@ -52,7 +68,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      *
      * @var string $searchBase
      */
-    protected  $searchBase = 'dc=example,c=org';
+    protected $searchBase = 'dc=example,c=org';
 
     /**
      * The filter to use when searching for a user

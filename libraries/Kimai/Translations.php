@@ -68,5 +68,4 @@ class Kimai_Translations
             $this->kga['lang'] = array_replace_recursive($this->kga['lang'], include($languageFile));
         }
     }
-
 }

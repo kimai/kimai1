@@ -242,5 +242,4 @@ class Kimai_User
     {
         return $this->userID;
     }
-
 }
