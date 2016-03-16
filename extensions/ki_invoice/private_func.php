@@ -138,7 +138,7 @@ function ext_invoice_empty_entry()
         'username' => null,
         'useralias' => null,
         'location' => null,
-        'trackingNr => null'
+        'trackingNr' => null
     );
 }
 
