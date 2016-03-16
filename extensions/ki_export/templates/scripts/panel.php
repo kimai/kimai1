@@ -61,8 +61,3 @@
         <div class="r">&nbsp;</div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        export_extension_onload();
-    });
-</script>

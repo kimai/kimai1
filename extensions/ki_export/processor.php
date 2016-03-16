@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +51,6 @@ if ($axAction == 'export_csv' ||
   $timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
 
   $dateformat = strip_tags($_REQUEST['dateformat']);
-  $dateformat = preg_replace('/([A-Za-z])/', '%$1', $dateformat);
 
   $default_location = strip_tags($_REQUEST['default_location']);
 
@@ -103,10 +102,6 @@ if ($axAction == 'export_csv' ||
     $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
 
 }
-
-
-
-
 
 // ==================
 // = handle request =
@@ -199,7 +194,7 @@ switch ($axAction) {
           $approvedSum += $data['approved'];
         }
         
-        $view->timespan = strftime($kga['date_format']['2'], $in) . ' - ' . strftime($kga['date_format']['2'], $out);
+        $view->timespan = strftime($kga['date_format'][2], $in) . ' - ' . strftime($kga['date_format'][2], $out);
 
         if (isset($_REQUEST['print_summary'])) {
           //Create the summary. Same as in PDF export
@@ -494,5 +489,3 @@ switch ($axAction) {
       break;
 
 }
-
-?>

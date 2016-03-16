@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,19 +17,10 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// ==================================
-// = implementing standard includes =
-// ==================================
-include('../../includes/basics.php');
-
-require("private_func.php");
+include '../../includes/basics.php';
+require "private_func.php";
 
 $user = checkUser();
-
-$dir_templates = "templates/";
-$datasrc = "config.ini";
-$settings = parse_ini_file($datasrc);
-$dir_ext = $settings['EXTENSION_DIR'];
 
 // ============================================
 // = initialize currently displayed timeframe =
@@ -38,11 +29,8 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
-
-$view->kga = $kga;
+$view = new Kimai_View();
+$view->addBasePath(__DIR__ . '/templates/');
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -51,67 +39,53 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $timeformat = 'H:M';
-$dateformat = 'd.m.';
+$dateformat = $kga['date_format'][1];
 $view->timeformat = $timeformat;
 $view->dateformat = $dateformat;
 
 echo $view->render('panel.php');
 
-
 $view->timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
-$view->dateformat = preg_replace('/([A-Za-z])/', '%$1', $dateformat);
+
+$users = null;
+$customers = null;
+
+if (isset($kga['customer'])) {
+    $customers = array($kga['customer']['customerID']);
+} else {
+    $users = array($kga['user']['userID']);
+}
 
 // Get the total amount of time shown in the table.
-if (isset($kga['customer']))
-  $total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']), null));
-else
-  $total = Kimai_Format::formatDuration($database->get_duration($in, $out, array($kga['user']['userID']), null, null));
-
-if (isset($kga['customer']))
-  $view->exportData = export_get_data($in, $out, null, array($kga['customer']['customerID']));
-else
-  $view->exportData = export_get_data($in, $out, array($kga['user']['userID']));
-
+$total = Kimai_Format::formatDuration($database->get_duration($in, $out, $users, $customers, null));
 $view->total = $total;
+$view->exportData = export_get_data($in, $out, $users, $customers);
 
 // Get the annotations for the user sub list.
-if (isset($kga['customer']))
-  $ann = export_get_user_annotations($in, $out, null, array($kga['customer']['customerID']));
-else
-  $ann = export_get_user_annotations($in, $out, array($kga['user']['userID']));
-Kimai_Format::formatAnnotations($ann);
-$view->user_annotations = $ann;
+$userAnnotations = export_get_user_annotations($in, $out, $users, $customers);
+Kimai_Format::formatAnnotations($userAnnotations);
+$view->user_annotations = $userAnnotations;
 
 // Get the annotations for the customer sub list.
-if (isset($kga['customer']))
-  $ann = export_get_customer_annotations($in, $out, null, array($kga['customer']['customerID']));
-else
-  $ann = export_get_customer_annotations($in, $out, array($kga['user']['userID']));
-Kimai_Format::formatAnnotations($ann);
-$view->customer_annotations = $ann;
+$customerAnnotations = export_get_customer_annotations($in, $out, $users, $customers);
+Kimai_Format::formatAnnotations($customerAnnotations);
+$view->customer_annotations = $customerAnnotations;
 
 // Get the annotations for the project sub list.
-if (isset($kga['customer']))
-  $ann = export_get_project_annotations($in, $out, null, array($kga['customer']['customerID']));
-else
-  $ann = export_get_project_annotations($in, $out, array($kga['user']['userID']));
-Kimai_Format::formatAnnotations($ann);
-$view->project_annotations = $ann;
+$projectAnnotations = export_get_project_annotations($in, $out, $users, $customers);
+Kimai_Format::formatAnnotations($projectAnnotations);
+$view->project_annotations = $projectAnnotations;
 
 // Get the annotations for the activity sub list.
-if (isset($kga['customer']))
-  $ann = export_get_activity_annotations($in, $out, null, array($kga['customer']['customerID']));
-else
-  $ann = export_get_activity_annotations($in, $out, array($kga['user']['userID']));
-Kimai_Format::formatAnnotations($ann);
-$view->activity_annotations = $ann;
+$activityAnnotations = export_get_activity_annotations($in, $out, $users, $customers);
+Kimai_Format::formatAnnotations($activityAnnotations);
+$view->activity_annotations = $activityAnnotations;
 
 // Get the columns the user had disabled last time.
-if (isset($kga['user']))
-  $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+if (isset($kga['user'])) {
+    $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+}
 
 $view->table_display = $view->render("table.php");
 
 echo $view->render('main.php');
-
-?>
