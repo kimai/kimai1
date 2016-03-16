@@ -46,7 +46,7 @@ abstract class Kimai_Invoice_AbstractRenderer
      *
      * @return mixed
      */
-    public abstract function render();
+    abstract public function render();
 
     /**
      * @param string $templateDir

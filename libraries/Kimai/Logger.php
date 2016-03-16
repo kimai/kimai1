@@ -22,7 +22,7 @@ class Kimai_Logger
     /**
      * Close the file if the instance is destroyed.
      */
-    function __destruct()
+    public function __destruct()
     {
         fclose($this->file);
     }
@@ -75,8 +75,9 @@ class Kimai_Logger
     {
 
         // If the @ error-control operator is set don't log the error.
-        if (error_reporting() === 0)
+        if (error_reporting() === 0) {
             return false;
+        }
 
         $line = '';
         switch ($errno) {
@@ -110,5 +111,4 @@ class Kimai_Logger
 
         return false;
     }
-
 }
