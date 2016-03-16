@@ -141,5 +141,4 @@ abstract class Kimai_Invoice_AbstractRenderer
 
         return $new;
     }
-
 }

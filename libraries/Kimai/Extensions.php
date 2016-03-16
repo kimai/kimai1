@@ -61,9 +61,10 @@ class Kimai_Extensions
 
             // Check if user has the correct rank to use this extension
             if (isset($this->kga['user'])) {
-                if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $settings['EXTENSION_KEY'] . '-access'))
+                if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $settings['EXTENSION_KEY'] . '-access')) {
                     continue;
-            } else if ($settings['CUSTOMER_ALLOWED'] != "1") {
+                }
+            } elseif ($settings['CUSTOMER_ALLOWED'] != "1") {
                 continue;
             }
 
@@ -106,19 +107,22 @@ class Kimai_Extensions
     {
         if (is_array($value)) {
             foreach ($value as $subvalue) {
-                if (!in_array($subvalue, $list))
+                if (!in_array($subvalue, $list)) {
                     $list[] = $subvalue;
+                }
             }
         } else {
-            if (!in_array($value, $list))
+            if (!in_array($value, $list)) {
                 $list[] = $value;
+            }
         }
     }
 
     private function addOptionalValue(&$settings, $key, &$list)
     {
-        if (isset($settings[$key]))
+        if (isset($settings[$key])) {
             $this->addValue($settings[$key], $list);
+        }
     }
 
     public function extensionsTabData()
@@ -194,5 +198,4 @@ class Kimai_Extensions
         }
         return $timeoutlist;
     }
-
 }

@@ -41,9 +41,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         // use zip extension if available
         if (class_exists('ZipArchive')) {
             $doc->setZipMethod('ziparchive');
-        }
-        else
-        {
+        } else {
             $doc->setZipMethod('shell');
             try {
                 $doc->setZipBinary('zip');
