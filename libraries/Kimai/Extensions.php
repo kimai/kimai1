@@ -41,7 +41,6 @@ class Kimai_Extensions
         }
 
         while (false !== ($dir = readdir($handle))) {
-
             if (is_file($dir) || $dir == "." || $dir == ".." || substr($dir, 0) == "." || substr($dir, 0, 1) == "#") {
                 continue;
             }
