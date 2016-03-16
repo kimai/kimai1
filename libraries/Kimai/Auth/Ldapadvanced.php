@@ -68,7 +68,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      *
      * @var string $searchBase
      */
-    protected  $searchBase = 'dc=example,c=org';
+    protected $searchBase = 'dc=example,c=org';
 
     /**
      * The filter to use when searching for a user
