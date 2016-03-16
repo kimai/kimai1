@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
+
 $all_column_headers = array('date', 'from', 'to', 'time', 'dec_time', 'rate', 'wage', 'budget', 'approved', 'status', 'billable', 'customer', 'project', 'activity', 'description', 'comment', 'location', 'trackingNumber', 'user', 'cleared');
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
@@ -316,4 +317,3 @@ function csv_prepare_field($field, $column_delimiter, $quote_char) {
 	$field = $quote_char . $field . $quote_char;
 	return $field;
 }
-?>
