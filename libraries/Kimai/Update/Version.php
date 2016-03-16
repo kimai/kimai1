@@ -87,5 +87,4 @@ class Kimai_Update_Version
         }
         return true;
     }
-
-} 
+}

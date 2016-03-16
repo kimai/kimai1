@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,99 +23,94 @@
  * - Soap // WORK IN PROGRESS
  * - JSON // WORK IN PROGRESS
  *
+ * Every public method in here, will be available for SOAP/JSON Requests and auto-discovered for WSDL queries.
+ *
  * @author Kevin Papst <kpapst@gmx.net>
  * @author Alexander Bauer
  */
-
-/**
- * The real class, answering all SOAP methods.
- *
- * Every public method in here, will be available for SOAP/JSON Requests and auto-discovered for WSDL queries.
- */
 class Kimai_Remote_Api
 {
-	private $backend = null;
-	private $user = null;
-	private $kga = null;
-	
-	/**
-	 * @var Kimai_Database_Mysql
-	 */
-	private $oldDatabase = null;
+    private $backend = null;
+    private $user = null;
+    private $kga = null;
 
-	public function __construct()
-	{
-		global $kga, $database;
+    /**
+     * @var Kimai_Database_Mysql
+     */
+    private $oldDatabase = null;
 
-		// and remember the most important stuff
-		$this->kga     = $kga;
-		$this->backend = new Kimai_Remote_Database($kga, $database);
-		$this->oldDatabase = $database;
-	}
+    public function __construct()
+    {
+        global $kga, $database;
 
-	/**
-	 * Returns the database object to access Kimais system.
-	 *
-	 * @return Kimai_Remote_Database
-	 */
-	private function getBackend()
-	{
-		return $this->backend;
-	}
+        // and remember the most important stuff
+        $this->kga = $kga;
+        $this->backend = new Kimai_Remote_Database($kga, $database);
+        $this->oldDatabase = $database;
+    }
 
-	/**
-	 * Returns the current users config array.
-	 *
-	 * @return array
-	 */
-	private function getUser()
-	{
-		return $this->user;
-	}
+    /**
+     * Returns the database object to access Kimais system.
+     *
+     * @return Kimai_Remote_Database
+     */
+    private function getBackend()
+    {
+        return $this->backend;
+    }
 
-	/**
-	 * Returns the current kimai environment.
-	 *
-	 * @return integer|null
-	 */
-	private function getKimaiEnv()
-	{
-		return $this->kga;
-	}
+    /**
+     * Returns the current users config array.
+     *
+     * @return array
+     */
+    private function getUser()
+    {
+        return $this->user;
+    }
 
-	/**
-	 * Checks if the given $apiKey is allowed to fetch data from this system.
-	 * If so, sets all internal values to their needed state and returns true.
-	 *
-	 * @param string $apiKey
-	 * @param string $permission
-	 * @return boolean
-	 */
-	private function init($apiKey, $permission = null, $allowCustomer = false)
-	{
-		if ($this->getBackend() === null) {
-			return false;
-		}
+    /**
+     * Returns the current kimai environment.
+     *
+     * @return integer|null
+     */
+    private function getKimaiEnv()
+    {
+        return $this->kga;
+    }
 
-		$uName = $this->getBackend()->getUserByApiKey($apiKey);
+    /**
+     * Checks if the given $apiKey is allowed to fetch data from this system.
+     * If so, sets all internal values to their needed state and returns true.
+     *
+     * @param string $apiKey
+     * @param string $permission
+     * @return boolean
+     */
+    private function init($apiKey, $permission = null, $allowCustomer = false)
+    {
+        if ($this->getBackend() === null) {
+            return false;
+        }
+
+        $uName = $this->getBackend()->getUserByApiKey($apiKey);
         if ($uName === null || $uName === false) {
             return false;
         }
 
-		$this->user = $this->getBackend()->checkUserInternal($uName);
+        $this->user = $this->getBackend()->checkUserInternal($uName);
 
-		if ($permission !== null)
-		{
-			// if we ever want to check permissions!
-		}
+        if ($permission !== null) {
+            // if we ever want to check permissions!
+        }
 
-		// do not let customers access the SOAP API
+        // do not let customers access the SOAP API
         if ($this->user === null || (!$allowCustomer && isset($this->kga['customer']))) {
             return false;
-		}
+        }
 
-	    return true;
-	}
+        return true;
+    }
 
     /**
      * Returns the configured Authenticator for Kimai.
@@ -124,7 +119,7 @@ class Kimai_Remote_Api
      */
     protected function getAuthenticator()
     {
-        $kga      = $this->getKimaiEnv();
+        $kga = $this->getKimaiEnv();
         $database = $this->getBackend();
 
         // load authenticator
@@ -152,9 +147,9 @@ class Kimai_Remote_Api
      */
     public function authenticate($username, $password)
     {
-        $userId     = null;
+        $userId = null;
         $authPlugin = $this->getAuthenticator();
-        $result     = $authPlugin->authenticate($username, $password, $userId);
+        $result = $authPlugin->authenticate($username, $password, $userId);
 
         // user could not be authenticated or has no account yet ...
         // ... like an SSO account, where the user has to login at least once in web-frontend before using remote API
@@ -211,33 +206,35 @@ class Kimai_Remote_Api
 
         return array('success' => false, 'error' => array('msg' => $msg));
     }
-	
-  /**
-   * Returns the array for success responses.
-   * 
-   * @param array $items
-   * @return array
-   */
-  protected function getDebugResult(Array $items, Array $debugItems) {
-    $total = count($items);
-    return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
-  }
 
-  
-	/**
-	 * Returns the array for success responses.
-	 * 
-	 * @param array $items
-	 * @param int $total = 0
-	 * @return array
-	 */
-	protected function getSuccessResult(Array $items, $total = 0) {
-		if (empty($total)) {
-			$total = count($items);
-		}
-		
-		return array('success' => true, 'items' => $items, 'total' => $total);
-	}
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @return array
+     */
+    protected function getDebugResult(array $items, array $debugItems)
+    {
+        $total = count($items);
+        return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
+    }
+
+
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @param int $total = 0
+     * @return array
+     */
+    protected function getSuccessResult(array $items, $total = 0)
+    {
+        if (empty($total)) {
+            $total = count($items);
+        }
+
+        return array('success' => true, 'items' => $items, 'total' => $total);
+    }
 
     /**
      * The user started the recording of an activity via the buzzer. If this method
@@ -248,21 +245,21 @@ class Kimai_Remote_Api
      * @param integer $activityId
      * @return array
      */
-	public function startRecord($apiKey, $projectId, $activityId)
-	{
+    public function startRecord($apiKey, $projectId, $activityId)
+    {
         if (!$this->init($apiKey, 'startRecord')) {
             return $this->getAuthErrorResult();
         }
-		
-		// check for valid params
-		if (!$this->getBackend()->isValidProjectId($projectId) || 
-			!$this->getBackend()->isValidActivityId($activityId))
-		{
-			return $this->getErrorResult("Invalid project or task");
-		}
+
+        // check for valid params
+        if (!$this->getBackend()->isValidProjectId($projectId) ||
+            !$this->getBackend()->isValidActivityId($activityId)
+        ) {
+            return $this->getErrorResult("Invalid project or task");
+        }
 
         $user = $this->getUser();
-        $uid  = $user['userID'];
+        $uid = $user['userID'];
 
         /*
         if (count($this->getBackend()->get_current_recordings($uid)) > 0) {
@@ -271,13 +268,13 @@ class Kimai_Remote_Api
         */
 
         $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, time());
-		if ($result) {
-			return $this->getSuccessResult(array());
-		} else {
-			return $this->getErrorResult("Unable to start, invalid params?");
-		}
+        if ($result) {
+            return $this->getSuccessResult(array());
+        } else {
+            return $this->getErrorResult("Unable to start, invalid params?");
+        }
         return $this->getErrorResult();
-	}
+    }
 
     /**
      * Stops the currently running recording.
@@ -286,20 +283,20 @@ class Kimai_Remote_Api
      * @param integer $entryId
      * @return boolean
      */
-	public function stopRecord($apiKey, $entryId)
-	{
+    public function stopRecord($apiKey, $entryId)
+    {
         if (!$this->init($apiKey, 'stopRecord')) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
 
         $result = $this->getBackend()->stopRecorder($entryId);
-		if ($result) {
-			return $this->getSuccessResult(array());
-		} else {
-			return $this->getErrorResult("Unable to stop, not recording?");
-		}
+        if ($result) {
+            return $this->getSuccessResult(array());
+        } else {
+            return $this->getErrorResult("Unable to stop, not recording?");
+        }
         return $this->getErrorResult();
-	}
+    }
 
 
     /**
@@ -314,24 +311,24 @@ class Kimai_Remote_Api
      * @see processor.php: 'reload_users'
      * @return array|boolean
      */
-	public function getUsers($apiKey)
-	{
+    public function getUsers($apiKey)
+    {
         if (!$this->init($apiKey, 'getUsers')) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
 
-		$users = $this->getBackend()->get_user_watchable_users($this->getUser());
+        $users = $this->getBackend()->get_user_watchable_users($this->getUser());
 
         if (count($users) > 0) {
-			$results = array();
-			foreach ($users as $row) {
-				$results[] = array('userID' => $row['userID'], 'name' => $row['name']);
-			}
-			return $this->getSuccessResult($results);
+            $results = array();
+            foreach ($users as $row) {
+                $results[] = array('userID' => $row['userID'], 'name' => $row['name']);
+            }
+            return $this->getSuccessResult($results);
         }
 
         return $this->getErrorResult();
-	}
+    }
 
 
     /**
@@ -341,32 +338,32 @@ class Kimai_Remote_Api
      * @see 'reload_customers'
      * @return array|boolean
      */
-	public function getCustomers($apiKey)
-	{
+    public function getCustomers($apiKey)
+    {
         if (!$this->init($apiKey, 'getCustomers', true)) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
-		
-		$user = $this->getUser();
+
+        $user = $this->getUser();
         $kga = $this->getKimaiEnv();
         if (isset($kga['customer'])) {
-          return array(
-			'customerID' => $kga['customer']['customerID'], 'ame' => $kga['customer']['name']
-          );
-		}
+            return array(
+                'customerID' => $kga['customer']['customerID'], 'ame' => $kga['customer']['name']
+            );
+        }
 
-		$customers = $this->getBackend()->get_customers($user['groups']);
+        $customers = $this->getBackend()->get_customers($user['groups']);
 
         if (count($customers) > 0) {
-			$results = array();
-			foreach ($customers as $row) {
-				$results[] = array('customerID' => $row['customerID'], 'name' => $row['name'], 'visible' => $row['visible']);
-			}
-			return $this->getSuccessResult($results);
+            $results = array();
+            foreach ($customers as $row) {
+                $results[] = array('customerID' => $row['customerID'], 'name' => $row['name'], 'visible' => $row['visible']);
+            }
+            return $this->getSuccessResult($results);
         }
 
         return $this->getErrorResult();
-	}
+    }
 
     /**
      * Return a list of projects. Customers are only shown their projects.
@@ -375,21 +372,21 @@ class Kimai_Remote_Api
      * @see 'reload_projects'
      * @return array|boolean
      */
-	public function getProjects($apiKey, $includeTasks = false)
-	{
+    public function getProjects($apiKey, $includeTasks = false)
+    {
         if (!$this->init($apiKey, 'getProjects', true)) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
 
         $projects = array();
-        $kga      = $this->getKimaiEnv();
-        $user     = $this->getUser();
+        $kga = $this->getKimaiEnv();
+        $user = $this->getUser();
 
         if (isset($kga['customer'])) {
-			$projects = $this->getBackend()->get_projects_by_customer($kga['customer']['customerID']);
-		} else {
-			$projects = $this->getBackend()->get_projects($user['groups']);
-		}
+            $projects = $this->getBackend()->get_projects_by_customer($kga['customer']['customerID']);
+        } else {
+            $projects = $this->getBackend()->get_projects($user['groups']);
+        }
 
         if (count($projects) > 0) {
             if ($includeTasks) {
@@ -401,11 +398,11 @@ class Kimai_Remote_Api
                 $projects = $tempProjects;
             }
 
-			return $this->getSuccessResult($projects);
+            return $this->getSuccessResult($projects);
         }
 
         return $this->getErrorResult();
-	}
+    }
 
 
     /**
@@ -418,31 +415,31 @@ class Kimai_Remote_Api
      * @see 'reload_activities'
      * @return array|boolean
      */
-	public function getTasks($apiKey, $projectId = null)
-	{
+    public function getTasks($apiKey, $projectId = null)
+    {
         if (!$this->init($apiKey, 'getTasks', true)) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
 
         $tasks = array();
-        $kga   = $this->getKimaiEnv();
-        $user  = $this->getUser();
+        $kga = $this->getKimaiEnv();
+        $user = $this->getUser();
 
         // @FIXME
         if (isset($kga['customer'])) {
-          $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
-		} else if ($projectId !== null) {
-          $tasks = $this->getTasksByProjectId($projectId, $user);
+            $tasks = $this->getBackend()->get_activities_by_customer($kga['customer']['customerID']);
+        } elseif ($projectId !== null) {
+            $tasks = $this->getTasksByProjectId($projectId, $user);
         } else {
-          $tasks = $this->getBackend()->get_activities($user['groups']);
-		}
+            $tasks = $this->getBackend()->get_activities($user['groups']);
+        }
 
         if (!empty($tasks)) {
-			return $this->getSuccessResult($tasks);
+            return $this->getSuccessResult($tasks);
         }
 
         return $this->getErrorResult();
-	}
+    }
 
     /**
      * Returns an array of tasks for the given projectId.
@@ -460,15 +457,14 @@ class Kimai_Remote_Api
          * if we do not do this, soap server will break our response scheme
          */
         $tempTasks = array();
-        foreach ($tasks as $task)
-        {
+        foreach ($tasks as $task) {
             $tempTasks[] = array(
-                'activityID'       => $task['activityID'],
-                'name'     => $task['name'],
-                'visible'  => $task['visible'],
-                'budget'   => $task['budget'],
+                'activityID' => $task['activityID'],
+                'name' => $task['name'],
+                'visible' => $task['visible'],
+                'budget' => $task['budget'],
                 'approved' => $task['approved'],
-                'effort'   => $task['effort']
+                'effort' => $task['effort']
             );
         }
         $tasks = $tempTasks;
@@ -476,454 +472,441 @@ class Kimai_Remote_Api
         return $tasks;
     }
 
-	/**
-	 * Returns an array with values of the currently active recording.
-	 *
+    /**
+     * Returns an array with values of the currently active recording.
+     *
      * @param string $apiKey
-	 * @return array
-	 */
-	public function getActiveRecording($apiKey)
-	{
+     * @return array
+     */
+    public function getActiveRecording($apiKey)
+    {
         if (!$this->init($apiKey, 'getActiveTask', true)) {
-			return $this->getAuthErrorResult();
+            return $this->getAuthErrorResult();
         }
 
         $user = $this->getUser();
-        $uid  = $user['userID'];
+        $uid = $user['userID'];
 
         $result = $this->getBackend()->get_current_recordings($uid);
 
-		// no "last" activity existing
+        // no "last" activity existing
         if (count($result) == 0) {
-			return $this->getErrorResult('No active recording.');
-		}
+            return $this->getErrorResult('No active recording.');
+        }
 
         // get the data of the first active recording
         $result = $this->getBackend()->timeSheet_get_data($result[0]);
 
         // do not expose all values, but only the public visible ones
-        $keys    = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration');
+        $keys = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration');
         $current = array();
         foreach ($keys as $key) {
-			if (array_key_exists($key, $result)) {
-				$current[$key] = $result[$key];
-			}
-		}
-		/**
-		 * add current server time
-		 * this is needed to synchronize time on any extern api calls
-		 */
-		$current['servertime'] = time();
-		/**
-		 * add customerId & Name
-		 */
-		
-    $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
-		$current['customerID'] = $timeSheet[0]['customerID'];
-		$current['customerName'] = $timeSheet[0]['customerName'];
-		$current['projectName'] = $timeSheet[0]['projectName'];
-		$current['activityName'] = $timeSheet[0]['activityName'];
-		
-    /*
-    $debugItems = array();
-    $debugItems['get_timeSheet'] = $timeSheet;
-    $result = $this->getDebugResult(array($current), array($debugItems));
-    */	
-		
-		$result = $this->getSuccessResult(array($current));
+            if (array_key_exists($key, $result)) {
+                $current[$key] = $result[$key];
+            }
+        }
+        /**
+         * add current server time
+         * this is needed to synchronize time on any extern api calls
+         */
+        $current['servertime'] = time();
+        /**
+         * add customerId & Name
+         */
+
+        $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
+        $current['customerID'] = $timeSheet[0]['customerID'];
+        $current['customerName'] = $timeSheet[0]['customerName'];
+        $current['projectName'] = $timeSheet[0]['projectName'];
+        $current['activityName'] = $timeSheet[0]['activityName'];
+
+        /*
+        $debugItems = array();
+        $debugItems['get_timeSheet'] = $timeSheet;
+        $result = $this->getDebugResult(array($current), array($debugItems));
+        */
+
+        $result = $this->getSuccessResult(array($current));
         return $result;
-	}
-	
-	/**
-	 * Returns a list of recorded times.
+    }
+
+    /**
+     * Returns a list of recorded times.
      * @param string $apiKey
-	 * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
-	 * @param int $start limit start
-	 * @param int $limit count rows to select
-	 * @return array
-	 */
-	public function getTimesheet($apiKey, $from = 0, $to = 0, $cleared = -1, $start = 0, $limit = 0)
-	{
-		if (!$this->init($apiKey, 'getTimesheet', true)) {
-			return $this->getAuthErrorResult();
+     * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
+     * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
+     * @param int $start limit start
+     * @param int $limit count rows to select
+     * @return array
+     */
+    public function getTimesheet($apiKey, $from = 0, $to = 0, $cleared = -1, $start = 0, $limit = 0)
+    {
+        if (!$this->init($apiKey, 'getTimesheet', true)) {
+            return $this->getAuthErrorResult();
         }
-		
-		$kga = $this->getKimaiEnv();
-		$backend = $this->getBackend();
-		$user = $this->getUser();
-		
-		$in = (int)strtotime($from);
-		$out = (int)strtotime($to);
 
-		// Get the array of timesheet entries.
-		if (isset($kga['customer'])) {
-		  $timeSheetEntries = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
-		  $totalCount = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit, true);
-		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
-		} else {
-		  $timeSheetEntries = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
-		  $totalCount = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
-		  return $this->getSuccessResult($timeSheetEntries, $totalCount);
-		}
-		
-		$result = $this->getErrorResult();
-		return $result;
-	}
-	
-	/**
-	 * @param string $apiKey
-	 * @param int $id
-	 * @return array
-	 */
-	public function getTimesheetRecord($apiKey, $id) {
-		if (!$this->init($apiKey, 'getTimesheetRecord', true)) {
-			return $this->getAuthErrorResult();
-        }
-		
-		$id = (int)$id;
-		// valid id?
-		if (empty($id)) {
-			return $this->getErrorResult('Invalid ID');
-		}
-		
-		$backend = $this->getBackend();
-		$timeSheetEntry = $backend->timeSheet_get_data($id);
-		
-		// valid entry?
-		if (!empty($timeSheetEntry)) {
-			return $this->getSuccessResult(array($timeSheetEntry));
-		}
-		
-		$result = $this->getErrorResult();
-		return  $result;
-	}
-	
-	/**
-	 * @param string $apiKey
-	 * @param array $record
-	 * @param bool $doUpdate
-	 * @return array
-	 */
-	public function setTimesheetRecord($apiKey, Array $record, $doUpdate) {
-		if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
-			return $this->getAuthErrorResult();
-        }
-		
-		// valid $record?
-		if (empty($record)) {
-			return $this->getErrorResult('Invalid record');
-		}
-		
-		$backend = $this->getBackend();
-		$kga = $this->getKimaiEnv();
-		$user = $this->getUser();
-		
-		// check for project
-		$record['projectId'] = (int)$record['projectId'];
-		if (empty($record['projectId'])) {
-			return $this->getErrorResult('Invalid projectId.');
-		}
-		//check for task
-		$record['taskId'] = (int)$record['taskId'];
-		if (empty($record['taskId'])) {
-			return $this->getErrorResult('Invalid taskId.');
-		}
-		
-		// check from/to
-		$in = (int)strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
-		$out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
-		
-		// make sure the timestamp is not negative
-		if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
-			return $this->getErrorResult('Invalid from/to, make sure there is at least a second difference.');
-		}
-		
-		// prepare data array
-		/**
-		 * requried
-		 */
-		$data['userID'] = $user['userID'];
-		$data['projectID'] = $record['projectId'];
-		$data['activityID'] = $record['taskId'];
-		$data['start'] = $in;
-		$data['end'] = $out;
-		$data['duration'] = $out - $in;
-		
-		
-		/**
-		 * optional
-		 */
-		if (isset($record['location'])) {
-			$data['location'] = $record['location'];
-		}
-		
-		if (isset($record['trackingNumber'])) {
-			$data['trackingNumber'] = $record['trackingNumber'];
-		}
-		if (isset($record['description'])) {
-			$data['description']    = $record['description'];
-		}
-		if (isset($record['comment'])) {
-			$data['comment']        = $record['comment'];
-		}
-		if (isset($record['commentType'])) {
-			$data['commentType'] = (int)$record['commentType'];
-		}
-		if (isset($record['rate'])) {
-			$data['rate'] = (double)$record['rate'];
-		}
-		else {
-			$data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'], $data['activityID']);
-		}
-		if (isset($record['fixedRate'])) {
-			$data['fixedRate'] = (double)$record['fixedRate'];
-		}
-		if (isset($record['flagCleared'])) {
-			$data['cleared'] = (int)$record['flagCleared'];
-		}
-		if (isset($record['statusId'])) {
-			$data['statusID'] = (int)$record['statusId'];
-		}
-		if (isset($record['flagBillable'])) {
-			$data['billable'] = (int)$record['flagBillable'];
-		}
-		if (isset($record['budget'])) {
-			$data['budget'] = (double)$record['budget'];
-		}
-		if (isset($record['approved'])) {
-			$data['approved'] = (double)$record['approved'];
-		}
-		
-		
-		if ($doUpdate) {
-			$id = isset($record['id']) ? (int)$record['id'] : 0;
-			if (!empty($id)) {
-				$backend->timeEntry_edit($id, $data);
-				return $this->getSuccessResult(array());
-			} else {
-				return $this->getErrorResult('Performed an update, but missing id property.');
-			}
-		} else {
-			$id = $backend->timeEntry_create($data);
-			if (!empty($id)) {
-				return $this->getSuccessResult(array(array('id' => $id)));
-			} else {
-				return $this->getErrorResult('Failed to add entry.');
-			}
-		}
-		$result = $this->getErrorResult();
-		return $result;
-	}
+        $kga = $this->getKimaiEnv();
+        $backend = $this->getBackend();
+        $user = $this->getUser();
 
-	/**
-	 * @param string $apiKey
-	 * @param int $id
-	 * @return array
-	 */
-	public function removeTimesheetRecord($apiKey, $id) {
-		if (!$this->init($apiKey, 'removeTimesheetRecord', true)) {
-			return $this->getAuthErrorResult();
-        }
-		
-		
-		$id = (int)$id;
-		$result = $this->getErrorResult('Invalid ID');
-		// valid id?
-		if (empty($id)) {
-			return $result;
-		}
-		
-		$backend = $this->getBackend();
-		$kga = $this->getKimaiEnv();
-		
-		if ($backend->timeEntry_delete($id)) {
-			$result = $this->getSuccessResult(array());
-		}
-		return $result;	
-	}
+        $in = (int)strtotime($from);
+        $out = (int)strtotime($to);
 
-	/**
-	 * Returns a list of expenses.
+        // Get the array of timesheet entries.
+        if (isset($kga['customer'])) {
+            $timeSheetEntries = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit);
+            $totalCount = $backend->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), false, $cleared, $start, $limit, true);
+            return $this->getSuccessResult($timeSheetEntries, $totalCount);
+        } else {
+            $timeSheetEntries = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit);
+            $totalCount = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
+            return $this->getSuccessResult($timeSheetEntries, $totalCount);
+        }
+
+        $result = $this->getErrorResult();
+        return $result;
+    }
+
+    /**
      * @param string $apiKey
-	 * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
-	 * @param int $refundable -1 all, 0 only refundable
-	 * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
-	 * @param int $start limit start
-	 * @param int $limit count rows to select
-	 * @return array
-	 */
-	public function getExpenses($apiKey, $from = 0, $to = 0, $refundable = -1, $cleared = -1, $start = 0, $limit = 0) {
-		
-		if (!$this->init($apiKey, 'getExpenses', true)) {
-			return $this->getAuthErrorResult();
+     * @param int $id
+     * @return array
+     */
+    public function getTimesheetRecord($apiKey, $id)
+    {
+        if (!$this->init($apiKey, 'getTimesheetRecord', true)) {
+            return $this->getAuthErrorResult();
         }
-        
-		$kga = $this->getKimaiEnv();
-		$backend = $this->getBackend();
-		$user = $this->getUser();
-		
-		$in = (int)strtotime($from);
-		$out = (int)strtotime($to);
-		
-		
-		// Get the array of timesheet entries.
-		if (isset($kga['customer'])) {
-		  $arr_exp = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit);
-		  $totalCount = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit, true);
-		} else {
-			$arr_exp = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
-			$totalCount = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
-		}
-		$result = $this->getSuccessResult($arr_exp, $totalCount);
-		
-		return $result;
-	}
 
-	/**
-	 * @param string $apiKey
-	 * @param int $id
-	 * @return array
-	 */
-	public function getExpenseRecord($apiKey, $id) {
-		if (!$this->init($apiKey, 'getExpenseRecord', true)) {
-			return $this->getAuthErrorResult();
+        $id = (int)$id;
+        // valid id?
+        if (empty($id)) {
+            return $this->getErrorResult('Invalid ID');
         }
-		
-		$id = (int)$id;
-		// valid id?
-		if (empty($id)) {
-			return $this->getErrorResult('Invalid ID');
-		}
-		
-		$backend = $this->getBackend();
-		$expense = $backend->get_expense($id);
-		
-		// valid entry?
-		if (!empty($expense)) {
-			return $this->getSuccessResult(array($expense));
-		}
-		
-		$result = $this->getErrorResult();
-		return  $result;
-	}
-	/**
-	 * @param string $apiKey
-	 * @param array $record
-	 * @param bool $doUpdate
-	 * @return array
-	 */
-	public function setExpenseRecord($apiKey, Array $record, $doUpdate) {
-		if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
-			return $this->getAuthErrorResult();
-        }
-		
-		// valid $record?
-		if (empty($record)) {
-			return $this->getErrorResult('Invalid record');
-		}
-		
-		$backend = $this->getBackend();
-		$kga = $this->getKimaiEnv();
-		$user = $this->getUser();
-		
-		// check for project
-		$record['projectId'] = (int)$record['projectId'];
-		if (empty($record['projectId'])) {
-			return $this->getErrorResult('Invalid projectId.');
-		}
-		
-		// converto to timestamp
-		$timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
-		
-		// make sure the timestamp is not negative
-		if ($timestamp <= 0) {
-			return $this->getErrorResult('Invalid date, make sure there is a valid date property.');
-		}
-		
-		// prepare data array
-		/**
-		 * requried
-		 */
-		$data['userID'] = $user['userID'];
-		$data['projectID'] = (int)$record['projectId'];
-		$data['timestamp'] = $timestamp;
-		
-		
-		/**
-		 * optional
-		 */
-		if (isset($record['designation'])) {
-	    	$data['designation'] = $record['designation'];
-		}
-		if (isset($record['comment'])) {
-	    	$data['comment'] = $record['comment'];
-		}
-		if (isset($record['commentType'])) {
-	    	$data['commentType'] = (int)$record['commentType'];
-		}
-		if (isset($record['refundable'])) {
-	    	$data['refundable'] = (int)$record['refundable'];
-		}
-		if (isset($record['cleared'])) {
-	    	$data['cleared'] = (int)$record['cleared'];
-		}
-		if (isset($record['multiplier'])) {
-	    	$data['multiplier'] = (double)$record['multiplier'];
-		}
-		if (isset($record['value'])) {
-	    	$data['value'] = (double)$record['value'];
-		}
-		
-		
-		if ($doUpdate) {
-			$id = isset($record['id']) ? (int)$record['id'] : 0;
-			if (!empty($id)) {
-				$backend->expense_edit($id, $data);
-				return $this->getSuccessResult(array());
-			} else {
-				return $this->getErrorResult('Performed an update, but missing id property.');
-			}
-		} else {
-			$id = $backend->expense_create($data);
-			if (!empty($id)) {
-				return $this->getSuccessResult(array(array('id' => $id)));
-			} else {
-				return $this->getErrorResult('Failed to add entry.');
-			}
-		}
-		$result = $this->getErrorResult();
-		return $result;
-	}
 
-	/**
-	 * @param string $apiKey
-	 * @param int $id
-	 * @return array
-	 */
-	public function removeExpenseRecord($apiKey, $id) {
-		if (!$this->init($apiKey, 'removeTimesheetRecord', true)) {
-			return $this->getAuthErrorResult();
-        }
-		
-		
-		$id = (int)$id;
-		$result = $this->getErrorResult('Invalid ID');
-		// valid id?
-		if (empty($id)) {
-			return $result;
-		}
-		
-		$backend = $this->getBackend();
-		$kga = $this->getKimaiEnv();
-		
-		if ($backend->expense_delete($id)) {
-			$result = $this->getSuccessResult(array());
-		}
-		return $result;	
-	}
-	
+        $backend = $this->getBackend();
+        $timeSheetEntry = $backend->timeSheet_get_data($id);
 
+        // valid entry?
+        if (!empty($timeSheetEntry)) {
+            return $this->getSuccessResult(array($timeSheetEntry));
+        }
+
+        $result = $this->getErrorResult();
+        return $result;
+    }
+
+    /**
+     * @param string $apiKey
+     * @param array $record
+     * @param bool $doUpdate
+     * @return array
+     */
+    public function setTimesheetRecord($apiKey, array $record, $doUpdate)
+    {
+        if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        // valid $record?
+        if (empty($record)) {
+            return $this->getErrorResult('Invalid record');
+        }
+
+        $backend = $this->getBackend();
+        $kga = $this->getKimaiEnv();
+        $user = $this->getUser();
+
+        // check for project
+        $record['projectId'] = (int)$record['projectId'];
+        if (empty($record['projectId'])) {
+            return $this->getErrorResult('Invalid projectId.');
+        }
+        //check for task
+        $record['taskId'] = (int)$record['taskId'];
+        if (empty($record['taskId'])) {
+            return $this->getErrorResult('Invalid taskId.');
+        }
+
+        // check from/to
+        $in = (int)strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+
+        // make sure the timestamp is not negative
+        if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
+            return $this->getErrorResult('Invalid from/to, make sure there is at least a second difference.');
+        }
+
+        // prepare data array - required values
+        $data['userID'] = $user['userID'];
+        $data['projectID'] = $record['projectId'];
+        $data['activityID'] = $record['taskId'];
+        $data['start'] = $in;
+        $data['end'] = $out;
+        $data['duration'] = $out - $in;
+
+        // optional values
+        if (isset($record['location'])) {
+            $data['location'] = $record['location'];
+        }
+
+        if (isset($record['trackingNumber'])) {
+            $data['trackingNumber'] = $record['trackingNumber'];
+        }
+        if (isset($record['description'])) {
+            $data['description'] = $record['description'];
+        }
+        if (isset($record['comment'])) {
+            $data['comment'] = $record['comment'];
+        }
+        if (isset($record['commentType'])) {
+            $data['commentType'] = (int)$record['commentType'];
+        }
+        if (isset($record['rate'])) {
+            $data['rate'] = (double)$record['rate'];
+        } else {
+            $data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'], $data['activityID']);
+        }
+        if (isset($record['fixedRate'])) {
+            $data['fixedRate'] = (double)$record['fixedRate'];
+        }
+        if (isset($record['flagCleared'])) {
+            $data['cleared'] = (int)$record['flagCleared'];
+        }
+        if (isset($record['statusId'])) {
+            $data['statusID'] = (int)$record['statusId'];
+        }
+        if (isset($record['flagBillable'])) {
+            $data['billable'] = (int)$record['flagBillable'];
+        }
+        if (isset($record['budget'])) {
+            $data['budget'] = (double)$record['budget'];
+        }
+        if (isset($record['approved'])) {
+            $data['approved'] = (double)$record['approved'];
+        }
+
+        if ($doUpdate) {
+            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            if (!empty($id)) {
+                $backend->timeEntry_edit($id, $data);
+                return $this->getSuccessResult(array());
+            } else {
+                return $this->getErrorResult('Performed an update, but missing id property.');
+            }
+        } else {
+            $id = $backend->timeEntry_create($data);
+            if (!empty($id)) {
+                return $this->getSuccessResult(array(array('id' => $id)));
+            } else {
+                return $this->getErrorResult('Failed to add entry.');
+            }
+        }
+        $result = $this->getErrorResult();
+        return $result;
+    }
+
+    /**
+     * @param string $apiKey
+     * @param int $id
+     * @return array
+     */
+    public function removeTimesheetRecord($apiKey, $id)
+    {
+        if (!$this->init($apiKey, 'removeTimesheetRecord', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        $id = (int)$id;
+        $result = $this->getErrorResult('Invalid ID');
+        // valid id?
+        if (empty($id)) {
+            return $result;
+        }
+
+        $backend = $this->getBackend();
+        $kga = $this->getKimaiEnv();
+
+        if ($backend->timeEntry_delete($id)) {
+            $result = $this->getSuccessResult(array());
+        }
+        return $result;
+    }
+
+    /**
+     * Returns a list of expenses.
+     * @param string $apiKey
+     * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
+     * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $refundable -1 all, 0 only refundable
+     * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
+     * @param int $start limit start
+     * @param int $limit count rows to select
+     * @return array
+     */
+    public function getExpenses($apiKey, $from = 0, $to = 0, $refundable = -1, $cleared = -1, $start = 0, $limit = 0)
+    {
+        if (!$this->init($apiKey, 'getExpenses', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        $kga = $this->getKimaiEnv();
+        $backend = $this->getBackend();
+        $user = $this->getUser();
+
+        $in = (int)strtotime($from);
+        $out = (int)strtotime($to);
+
+        // Get the array of timesheet entries.
+        if (isset($kga['customer'])) {
+            $arr_exp = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit);
+            $totalCount = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+        } else {
+            $arr_exp = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
+            $totalCount = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+        }
+        $result = $this->getSuccessResult($arr_exp, $totalCount);
+
+        return $result;
+    }
+
+    /**
+     * @param string $apiKey
+     * @param int $id
+     * @return array
+     */
+    public function getExpenseRecord($apiKey, $id)
+    {
+        if (!$this->init($apiKey, 'getExpenseRecord', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        $id = (int)$id;
+        // valid id?
+        if (empty($id)) {
+            return $this->getErrorResult('Invalid ID');
+        }
+
+        $backend = $this->getBackend();
+        $expense = $backend->get_expense($id);
+
+        // valid entry?
+        if (!empty($expense)) {
+            return $this->getSuccessResult(array($expense));
+        }
+
+        $result = $this->getErrorResult();
+        return $result;
+    }
+
+    /**
+     * @param string $apiKey
+     * @param array $record
+     * @param bool $doUpdate
+     * @return array
+     */
+    public function setExpenseRecord($apiKey, array $record, $doUpdate)
+    {
+        if (!$this->init($apiKey, 'setTimesheetRecord', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        // valid $record?
+        if (empty($record)) {
+            return $this->getErrorResult('Invalid record');
+        }
+
+        $backend = $this->getBackend();
+        $kga = $this->getKimaiEnv();
+        $user = $this->getUser();
+
+        // check for project
+        $record['projectId'] = (int)$record['projectId'];
+        if (empty($record['projectId'])) {
+            return $this->getErrorResult('Invalid projectId.');
+        }
+
+        // converto to timestamp
+        $timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+
+        // make sure the timestamp is not negative
+        if ($timestamp <= 0) {
+            return $this->getErrorResult('Invalid date, make sure there is a valid date property.');
+        }
+
+        // prepare data array - required values
+        $data['userID'] = $user['userID'];
+        $data['projectID'] = (int)$record['projectId'];
+        $data['timestamp'] = $timestamp;
+
+        // optional values
+        if (isset($record['designation'])) {
+            $data['designation'] = $record['designation'];
+        }
+        if (isset($record['comment'])) {
+            $data['comment'] = $record['comment'];
+        }
+        if (isset($record['commentType'])) {
+            $data['commentType'] = (int)$record['commentType'];
+        }
+        if (isset($record['refundable'])) {
+            $data['refundable'] = (int)$record['refundable'];
+        }
+        if (isset($record['cleared'])) {
+            $data['cleared'] = (int)$record['cleared'];
+        }
+        if (isset($record['multiplier'])) {
+            $data['multiplier'] = (double)$record['multiplier'];
+        }
+        if (isset($record['value'])) {
+            $data['value'] = (double)$record['value'];
+        }
+
+        if ($doUpdate) {
+            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            if (!empty($id)) {
+                $backend->expense_edit($id, $data);
+                return $this->getSuccessResult(array());
+            } else {
+                return $this->getErrorResult('Performed an update, but missing id property.');
+            }
+        } else {
+            $id = $backend->expense_create($data);
+            if (!empty($id)) {
+                return $this->getSuccessResult(array(array('id' => $id)));
+            } else {
+                return $this->getErrorResult('Failed to add entry.');
+            }
+        }
+        $result = $this->getErrorResult();
+        return $result;
+    }
+
+    /**
+     * @param string $apiKey
+     * @param int $id
+     * @return array
+     */
+    public function removeExpenseRecord($apiKey, $id)
+    {
+        if (!$this->init($apiKey, 'removeTimesheetRecord', true)) {
+            return $this->getAuthErrorResult();
+        }
+
+        $id = (int)$id;
+        $result = $this->getErrorResult('Invalid ID');
+        // valid id?
+        if (empty($id)) {
+            return $result;
+        }
+
+        $backend = $this->getBackend();
+        $kga = $this->getKimaiEnv();
+
+        if ($backend->expense_delete($id)) {
+            $result = $this->getSuccessResult(array());
+        }
+        return $result;
+    }
 }

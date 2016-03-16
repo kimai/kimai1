@@ -351,6 +351,4 @@ class Kimai_Invoice_PrintModel
     {
         return $this->projects;
     }
-
-
 }
