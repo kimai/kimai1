@@ -194,7 +194,7 @@ switch ($axAction) {
           $approvedSum += $data['approved'];
         }
         
-        $view->timespan = strftime($kga['date_format']['2'], $in) . ' - ' . strftime($kga['date_format']['2'], $out);
+        $view->timespan = strftime($kga['date_format'][2], $in) . ' - ' . strftime($kga['date_format'][2], $out);
 
         if (isset($_REQUEST['print_summary'])) {
           //Create the summary. Same as in PDF export
