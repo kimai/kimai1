@@ -1,12 +1,29 @@
 <?php
+/**
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) Kimai-Development-Team since 2006
+ *
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
+ *
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * Copyright (C) 2011 by Skaldrom Y. Sarg of oncode.info
- *  
+ *
  * This is free software. Use it however you want.
  */
-
-class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
+class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
+{
 
     /** Your LDAP-Server */
     private $LADP_SERVER = 'ldap://localhost';
@@ -25,12 +42,14 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
      */
     private $kimaiAuth = null;
 
-    public function __construct($database = null, $kga = null) {
+    public function __construct($database = null, $kga = null)
+    {
         parent::__construct($database, $kga);
         $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
     }
 
-    public function authenticate($username, $password, &$userId) {
+    public function authenticate($username, $password, &$userId)
+    {
         // Check if username should be authenticated locally
         if (in_array($username, $this->LDAP_LOCAL_ACCOUNTS)) {
             return $this->kimaiAuth->authenticate($username, $password, $userId);
@@ -78,11 +97,11 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
         if ($userId === false) {
             // User does not exist (yet)
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
-		$userId = $this->database->user_create(array(
-			'name' => $check_username,
-			'globalRoleID' => $this->getDefaultGlobalRole(),
-			'active' => 1
-		));
+                $userId = $this->database->user_create(array(
+                    'name' => $check_username,
+                    'globalRoleID' => $this->getDefaultGlobalRole(),
+                    'active' => 1
+                ));
                 $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
 
                 // Set a password, to calm kimai down
@@ -96,8 +115,4 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract {
 
         return true;
     }
-
 }
-
-// There should be NO trailing whitespaces.
-?>

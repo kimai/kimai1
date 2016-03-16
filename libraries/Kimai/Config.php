@@ -33,8 +33,7 @@ class Kimai_Config
      */
     public static function getDefault($config)
     {
-        switch ($config)
-        {
+        switch ($config) {
             case self::DEFAULT_BILLABLE:
                 return array(0,50,100);
             case self::DEFAULT_AUTHENTICATOR:
