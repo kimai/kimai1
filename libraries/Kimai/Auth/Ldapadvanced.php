@@ -433,4 +433,5 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
 
         return $map;
     }
+
 }

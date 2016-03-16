@@ -45,4 +45,5 @@ class Kimai_Update_Check
         }
         return self::CURRENT;
     }
+
 }
