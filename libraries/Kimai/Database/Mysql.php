@@ -88,28 +88,32 @@ class Kimai_Database_Mysql
     /**
      * @param string $scope
      */
-    private function logLastError($scope) {
+    private function logLastError($scope)
+    {
         Kimai_Logger::logfile($scope . ': ' . $this->conn->Error());
     }
 
     /**
      * @return bool
      */
-    public function transaction_begin() {
+    public function transaction_begin()
+    {
         return $this->conn->TransactionBegin();
     }
 
     /**
      * @return bool
      */
-    public function transaction_end() {
+    public function transaction_end()
+    {
         return $this->conn->TransactionEnd();
     }
 
     /**
      * @return bool
      */
-    public function transaction_rollback() {
+    public function transaction_rollback()
+    {
         return $this->conn->TransactionRollback();
     }
 
