@@ -184,14 +184,14 @@ class Kimai_Format
         // check month
         if (!isset($parts[1])) {
             $parts[1] = date("m");
-        } else if (strlen($parts[1]) == 1) {
+        } elseif (strlen($parts[1]) == 1) {
             $parts[1] = "0" . $parts[1];
         }
 
         // check year
         if (!isset($parts[2])) {
             $parts[2] = date("Y");
-        } else if (strlen($parts[2]) == 2) {
+        } elseif (strlen($parts[2]) == 2) {
             if ($parts[2] > 70) {
                 $parts[2] = "19" . $parts[2];
             } else {
