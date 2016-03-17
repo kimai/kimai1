@@ -19,20 +19,36 @@
 
 namespace KimaiTest;
 
-use Kimai_User;
+use Kimai_View;
 
 /**
  * Class UserTest
  *
- * @coversDefaultClass Kimai_User
+ * @coversDefaultClass Kimai_View
  */
-class UserTest extends TestCase
+class ViewTest extends TestCase
 {
 
-    public function testIsAdmin()
+    /**
+     * @covers ::init
+     */
+    public function testInit()
     {
-        $user = new Kimai_User(array('status' => Kimai_User::ADMIN));
-        $this->assertTrue($user->isAdmin());
-    }
+        $myKga = array('foo' => 'bar');
+        $this->setKga($myKga);
 
+        $view = new Kimai_View();
+
+        $helperPaths = $view->getHelperPaths();
+        $this->assertArrayHasKey('Zend_View_Helper_', $helperPaths);
+        $this->assertContains(APPLICATION_PATH . '/templates/helpers/', $helperPaths['Zend_View_Helper_']);
+
+        $scriptsPaths = $view->getScriptPaths();
+        $this->assertContains(APPLICATION_PATH . '/templates/scripts/', $scriptsPaths);
+
+        $vars = $view->getVars();
+        $this->assertArrayHasKey('kga', $vars);
+
+        $this->assertEquals($myKga, $vars['kga']);
+    }
 }

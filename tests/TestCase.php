@@ -1,9 +1,8 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) Kimai-Development-Team since 2006
- * http://www.kimai.org
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +17,40 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: check include path
-ini_set ( 'date.timezone', 'Europe/Berlin' );
+namespace KimaiTest;
 
-if (!file_exists(__DIR__ . '/../libraries/autoload.php')) {
-    die('You have to execute "composer install" or "composer update" before executing unit tests!');
+use PHPUnit_Framework_TestCase;
+
+/**
+ * Base and helper class for Kimai Unittests.
+ */
+class TestCase extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @var array
+     */
+    private $kgaLast;
+
+
+    protected function setKga($kgaNew)
+    {
+        global $kga;
+
+        if (null !== $kga) {
+            $this->kgaLast = clone $kga;
+        }
+        $kga = $kgaNew;
+    }
+
+    protected function resetKga()
+    {
+        if (null === $this->kgaLast) {
+            return;
+        }
+
+        global $kga;
+
+        $kga = $this->kgaLast;
+    }
+
 }
-require_once __DIR__ . '/../libraries/autoload.php';
-require_once __DIR__ . '/TestCase.php';
-
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
