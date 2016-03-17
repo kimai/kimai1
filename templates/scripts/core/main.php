@@ -359,7 +359,7 @@
 
 <div id="customers_foot">    
 <?php if ($this->show_customer_add_button): ?>
-        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_customer',0,0,450); $(this).blur(); return false;"></a>
+        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_customer',0,0,450,function() {$('#floater input#name').focus();}); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onclick="lists_filter_select_all('customers'); $(this).blur(); return false;"></a>
 <a href="#" class="deselectAllLink" onclick="lists_filter_deselect_all('customers'); $(this).blur(); return false;"></a>
@@ -369,7 +369,7 @@
 
 <div id="projects_foot">
 <?php if ($this->show_project_add_button): ?>
-        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_project',0,0,650); $(this).blur(); return false;"></a>
+        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_project',0,0,650,function() {$('#floater input#name').focus();}); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onclick="lists_filter_select_all('projects'); $(this).blur(); return false;"></a>
 <a href="#" class="deselectAllLink" onclick="lists_filter_deselect_all('projects'); $(this).blur(); return false;"></a>
@@ -379,7 +379,7 @@
 
 <div id="activities_foot">
 <?php if ($this->show_activity_add_button): ?>
-        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_activity',0,0,450); $(this).blur(); return false;"></a>
+        <a href="#" class="addLink" onclick="floaterShow('floaters.php','add_edit_activity',0,0,450,function() {$('#floater input#name').focus();}); $(this).blur(); return false;"></a>
 <?php endif; ?>
 <a href="#" class="selectAllLink" onclick="lists_filter_select_all('activities'); $(this).blur(); return false;"></a>
 <a href="#" class="deselectAllLink" onclick="lists_filter_deselect_all('activities'); $(this).blur(); return false;"></a>
