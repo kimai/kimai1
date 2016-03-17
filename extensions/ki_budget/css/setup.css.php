@@ -8,11 +8,16 @@
     margin:10px;
     background-color:#eee;
     overflow:auto;
-}
-
-#budgetArea { 
     top:150px;
     z-index:2;
+}
+
+#budgetArea table.data {
+    font-size: .9em;
+}
+
+#budgetArea td.budgetminus {
+    color: red;
 }
 
 .project_head {
@@ -29,7 +34,7 @@
   /*min-width:150px;
   height:150px;*/
   height: 250px;
-  width: 210px;
+  width: 230px;
   background-color:#fafafa;
   border:1px solid black;
   margin:5px;
@@ -57,8 +62,6 @@
   margin:5px;
 }
 
-
-
 .key {
   float:left;
   white-space:nowrap;
@@ -76,4 +79,8 @@
 
 .key_end {
   clear:both;
+}
+
+.budget_project table.jqplot-table-legend {
+    right: 10px !important;
 }
