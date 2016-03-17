@@ -2,7 +2,7 @@
     <div id="floater_handle">
         <span id="floater_title"><?php
             if (isset($this->id) && $this->id !== 0) {
-                echo $this->kga['lang']['edit'], ': ', $this->kga['lang']['activity'];
+                echo $this->kga['lang']['edit'] . ': ' . $this->kga['lang']['activity'];
             } else {
                 echo $this->kga['lang']['new_activity'];
             }
