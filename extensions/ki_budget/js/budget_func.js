@@ -149,7 +149,7 @@ function budget_extension_reload() {
 	$.ajax({
 		dataType: "html",
 		url: budget_extension_path+'processor.php',
-    type: 'POST',
+        type: 'POST',
 		data: {
 			axAction: "reload",
 			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"),
@@ -158,9 +158,9 @@ function budget_extension_reload() {
 		},
 		success: function( data ) {
             $('#budgetArea').html(data);
-			},
+        },
 		error: function(error) {
 				alert(error);
-			}
+        }
 	});
 }
