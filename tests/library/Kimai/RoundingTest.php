@@ -30,7 +30,7 @@ class RoundingTest extends TestCase
     /**
      * @covers ::roundTimespan
      */
-    public function testRoundTimespanWithZero()
+    public function testRoundTimespanWithStepsZero()
     {
         $start = time() - 3600;
         $end = time() + 3600;
@@ -44,5 +44,27 @@ class RoundingTest extends TestCase
         $this->assertEquals($actual['start'], $start);
         $this->assertEquals($actual['end'], $end);
         $this->assertEquals($actual['duration'], $end - $start);
+    }
+
+    /**
+     * @covers ::roundTimespan
+     * @covers ::roundTimespanCheckIfBetter
+     */
+    public function testRoundTimespan()
+    {
+        $start = 1458406233;
+        $end = 1458413297;
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+
+        $this->assertInternalType('array', $actual);
+        $this->assertArrayHasKey('start', $actual);
+        $this->assertArrayHasKey('end', $actual);
+        $this->assertArrayHasKey('duration', $actual);
+        $this->assertArrayHasKey('totalDeviation', $actual);
+
+        $this->assertEquals($actual['start'], 1458405900);
+        $this->assertEquals($actual['end'], 1458413100);
+        $this->assertEquals($actual['duration'], 7200);
+        $this->assertEquals($actual['totalDeviation'], 530);
     }
 }
