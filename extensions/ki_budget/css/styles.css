@@ -1,1 +1,80 @@
-@import "setup.css.php";
+#budgetArea {
+    border:1px solid black;
+    margin:10px;
+    background-color:#eee;
+    overflow:auto;
+    top:150px;
+    z-index:2;
+}
+
+#budgetArea table.data {
+    font-size: .9em;
+    width: 100%;
+    margin: 0 4px;
+}
+
+#budgetArea td.budgetminus {
+    color: red;
+}
+
+.project_head {
+    color:#FFF;
+    font-size:11px;
+    font-weight:bold;
+    padding:2px 4px 2px 6px;
+    text-align:center;
+}
+
+.budget_project {
+    float:left;
+    /*min-width:150px;
+    height:150px;*/
+    height: 250px;
+    width: 230px;
+    background-color:#fafafa;
+    border:1px solid black;
+    margin:5px;
+}
+
+.budget_plot_area {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.budget_project_end {
+    clear:both;
+}
+
+.keys {
+    background-color:#fafafa;
+    border:1px solid black;
+    margin:5px;
+}
+
+.filter {
+    background-color:#fafafa;
+    margin:5px;
+}
+
+.key {
+    float:left;
+    white-space:nowrap;
+    padding:5px;
+    font-size: smaller;
+}
+
+.key_color {
+    float:left;
+    width:1em;
+    height:1em;
+    margin-right: 5px;
+    border: 1px solid black;
+}
+
+.key_end {
+    clear:both;
+}
+
+.budget_project table.jqplot-table-legend {
+    right: 10px !important;
+}

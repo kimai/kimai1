@@ -31,6 +31,41 @@ function budget_extension_onload() {
     }
 }
 
+function recalculate_budget_window() {
+    // adjust length of the elements if the legend is longer than the space allows
+    $('.project_overview').each(function () {
+        try {
+            var element = $(this).parent();
+            var numberOfElements = element.nextUntil('br').andSelf().length;
+            var numberOnLine = Math.floor(($(document).width() - 45) / 225);
+            var height = Math.ceil(numberOfElements / numberOnLine) * 270;
+            var br = element.nextAll('br').eq(0);
+            br.css('line-height', height + 'px');
+            var addHeight = $(this).next().find('.jqplot-table-legend').height() - 150;
+
+            if ($(this).next().find('.jqplot-table-legend').height() > 150) {
+                var br = element.nextAll('br').eq(0);
+                br.css('line-height', parseInt(br.css('line-height')) + addHeight + 'px');
+                element.nextUntil('br').andSelf().slice(0, numberOnLine).each(function () {
+                    // only add the height if it's not added already before (like if
+                    // we make the windows smaller and then bigger again, we need to
+                    // add the height so some of the charts)
+                    if ($(this).height() < 250 + addHeight) {
+                        $(this).height(($(this).height() + addHeight));
+                    }
+                });
+                // in case we make the window bigger and some "long" elements are on a new page
+                // and need the "normal" length
+                element.nextUntil('br').andSelf().slice(numberOnLine).each(function () {
+                    $(this).height(250);
+                });
+            }
+        } catch (err) {
+            alert(err);
+        }
+    });
+}
+
 /**
  * If the extension is being shrinked so the sublists are shown larger
  * adjust to that.
@@ -146,10 +181,11 @@ function budget_extension_plot(plotdata) {
 // reloads timesheet, customer, project and activity tables
 //
 function budget_extension_reload() {
+    $("#loader").show();
 	$.ajax({
 		dataType: "html",
 		url: budget_extension_path+'processor.php',
-    type: 'POST',
+        type: 'POST',
 		data: {
 			axAction: "reload",
 			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"),
@@ -158,9 +194,11 @@ function budget_extension_reload() {
 		},
 		success: function( data ) {
             $('#budgetArea').html(data);
-			},
+            $("#loader").hide();
+        },
 		error: function(error) {
-				alert(error);
-			}
+            $("#loader").hide();
+            alert(error);
+        }
 	});
 }
