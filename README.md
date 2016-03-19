@@ -37,5 +37,5 @@ This is just a short feature list, play around with the [demo installation](http
 ## Contributing
 
 We would love to get input from all developer out there.
-Please read our [contribution guidelines](http://www.kimai.org/documentation/team/contributing.html) to find out how.
+Please read our [contribution guidelines](https://github.com/kimai/kimai/blob/master/.github/CONTRIBUTING.md) to find out how.
 
