@@ -11,10 +11,10 @@ The decision about it was discussed [here](https://github.com/kimai/kimai/issues
 1. Fork Kimai or one of its [other repos][1]
 2. Clone repository to your local disc
 3. Checkout develop (`git checkout -b develop origin/develop`)
-3. Create a branch for your feature (`git checkout -b my_feature`)
-4. Commit your changes to your fork. In your commit message refer to the issue number if there is already one, e.g. (`git commit -am "fixed this and that (resolves #0815)"`)
-5. Push your branch (`git push origin my_feature`)
-6. Submit a [Pull Request][2] using GitHub with a link to your branch (here are some hints on [How to write the perfect pull request](https://github.com/blog/1943-how-to-write-the-perfect-pull-request))
+4. Create a branch for your feature (`git checkout -b my_feature`)
+5. Commit the changes to your fork. In your commit message refer to the issue number if there is already one, e.g. (`git commit -am "fixed this and that (resolves #0815)"`)
+6. Push your branch (`git push origin my_feature`)
+7. Submit a [Pull Request][2] using GitHub with a link to your branch (here are some hints on [How to write the perfect pull request](https://github.com/blog/1943-how-to-write-the-perfect-pull-request))
 
 ## Keep your fork in sync with original repository
 
@@ -24,7 +24,7 @@ The decision about it was discussed [here](https://github.com/kimai/kimai/issues
 4. git merge upstream/master
 5. git push origin master
 
-## Pull request rules
+## Pull request notes
 
 Here are a few rules to follow in order to ease code reviews and discussions before maintainers accept and merge your work:
 
@@ -35,10 +35,10 @@ Here are a few rules to follow in order to ease code reviews and discussions bef
 
 ## Important things to consider
 
-* Follow PSR-1 code style
+* Follow PSR-2 code style
 * No whitespace changes in a Pull request
-* We know that a lot of the Kimai codebase is old and "funny" ... you can safely ignore that ;-)
-* You can restructure the code, but that should be done in a independent branch
+* We know that a lot of the Kimai codebase is old and "funny" ... you can ignore that ;-)
+* You can restructure the code, but that should be done in an independent branch
 * Make sure the Pull request has a decent size, otherwise we won't be able to review and merge it
 
 [1]: https://github.com/kimai
