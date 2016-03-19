@@ -141,7 +141,7 @@ class Kimai_Format
      * @param string $end
      * @return string
      */
-    public static function addEllipsis($string, $length, $end = '…')
+    public static function addEllipsis($string, $length, $end = '...')
     {
         if (strlen($string) > $length) {
             $length -= strlen($end); // $length =  $length - strlen($end);

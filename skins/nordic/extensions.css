@@ -87,10 +87,6 @@ div.active .ap_ext_panel_header a:hover {
     background-color:#ffe !important;
 }
 
-.project_head {
-        background:#159 !important;
-}
-
 /* Overrides for ki_expenses extension */
 #expenses, #exp {
     background-color:#ffe !important;

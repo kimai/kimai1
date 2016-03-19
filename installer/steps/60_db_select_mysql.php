@@ -55,11 +55,28 @@ while ($row = $con->RowArray(null, MYSQLI_NUM)) {
     }
 }
 
-if (! $showDatabasesAllowed) {
+$useDatabases = array();
+
+if ($showDatabasesAllowed) {
+    try {
+        $con->MoveFirst();
+        $result = $con->Query('SHOW DATABASES');
+        while ($row = $con->RowArray(-2, MYSQLI_NUM)) {
+            if (($row[0] != 'information_schema') && ($row[0] != 'mysql')) {
+                $useDatabases[] = $row[0];
+            }
+        }
+    } catch (Exception $ex) {
+        // we cannot always detect if we can read read databases, see https://github.com/kimai/kimai/issues/492
+        // no need for error handling, user will see an input field for the database name
+    }
+}
+
+if (count($useDatabases) == 0) {
     if ($lang == 'de') {
-        echo 'Kein Berechtigung um Datenbanken aufzulisten. Name der zu verwendenden Datenbank:<br/>';
+        echo 'Keine Datenbank(en) vorhanden oder keine Berechtigung um Datenbanken aufzulisten. Name der zu verwendenden Datenbank:<br/>';
     } else {
-        echo 'No permission to list databases. Name of the database to use:<br/>';
+        echo 'No database(s) found or no permission to list databases. Name of the database to use:<br/>';
     }
 
     echo '<input type="text" id="db_names" value="' . htmlspecialchars($database) . '"/>';
@@ -75,45 +92,29 @@ if (! $showDatabasesAllowed) {
         echo '<strong id="db_select_label"></strong>';
     }
     echo '<br/><br/>';
+
 } else {
-    // read existing databases
-    $con->MoveFirst();
-    $result = $con->Query('SHOW DATABASES');
-    $databases = array();
-    while ($row = $con->RowArray(-2, MYSQLI_NUM)) {
-        if (($row[0] != 'information_schema') && ($row[0] != 'mysql')) {
-            $databases[] = $row[0];
-        }
-    }
-
-    if (count($databases) == 0) {
-        if ($lang == 'de') {
-            echo 'Keine Datenbank(en) vorhanden.<br/><br/>';
-        } else {
-            echo 'No database(s) found.<br/><br/>';
-        }
+    // if there are databases build selectbox
+    if ($lang == 'de') {
+        echo 'Bitte wählen Sie eine Datenbank:';
     } else {
-        // if there are databases build selectbox
-        if ($lang == 'de') {
-            echo 'Bitte wählen Sie eine Datenbank:';
-        } else {
-            echo 'Please choose a database:';
-        }
-
-        echo '<br/><select id="db_names">';
-        echo '<option value=""></option>';
-
-        foreach ($databases as $db_name) {
-            if ($database == $db_name) {
-                echo '<option selected="selected" value="' . htmlspecialchars($db_name) . '">' . htmlspecialchars($db_name) . '</option>';
-            } else {
-                echo '<option value="' . htmlspecialchars($db_name) . '">' . htmlspecialchars($db_name) . '</option>';
-            }
-        }
-
-        echo '</select> <strong id="db_select_label"></strong><br/><br/>';
+        echo 'Please choose a database:';
     }
+
+    echo '<br/><select id="db_names">';
+    echo '<option value=""></option>';
+
+    foreach ($useDatabases as $db_name) {
+        if ($database == $db_name) {
+            echo '<option selected="selected" value="' . htmlspecialchars($db_name) . '">' . htmlspecialchars($db_name) . '</option>';
+        } else {
+            echo '<option value="' . htmlspecialchars($db_name) . '">' . htmlspecialchars($db_name) . '</option>';
+        }
+    }
+
+    echo '</select> <strong id="db_select_label"></strong><br/><br/>';
 }
+
 
 if ($createDatabaseAllowed) {
     if ($database === '' && $create_database !== '') {

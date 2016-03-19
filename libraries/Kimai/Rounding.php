@@ -28,6 +28,7 @@ class Kimai_Rounding
             $bestTime = array();
             $bestTime['start'] = $start;
             $bestTime['end'] = $end;
+            $bestTime['duration'] = $end - $start;
             return $bestTime;
         }
 

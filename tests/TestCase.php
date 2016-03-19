@@ -17,21 +17,40 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace KimaiTest;
+
+use PHPUnit_Framework_TestCase;
+
 /**
- * View object for Kimai.
- *
- * @author Kevin Papst
+ * Base and helper class for Kimai Unittests.
  */
-class Kimai_View extends Zend_View
+class TestCase extends PHPUnit_Framework_TestCase
 {
-    public function init()
+    /**
+     * @var array
+     */
+    private $kgaLast;
+
+
+    protected function setKga($kgaNew)
     {
         global $kga;
 
-        $this->setBasePath(APPLICATION_PATH . '/templates/');
-        $this->addHelperPath(APPLICATION_PATH . '/templates/helpers/', 'Zend_View_Helper');
-
-        parent::init();
-        $this->kga = $kga;
+        if (null !== $kga) {
+            $this->kgaLast = clone $kga;
+        }
+        $kga = $kgaNew;
     }
+
+    protected function resetKga()
+    {
+        if (null === $this->kgaLast) {
+            return;
+        }
+
+        global $kga;
+
+        $kga = $this->kgaLast;
+    }
+
 }
