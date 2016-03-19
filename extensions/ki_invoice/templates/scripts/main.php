@@ -57,7 +57,7 @@
                     <label for="short_invoice">
                         <?php echo $this->translate('ext_invoice:invoiceOptionShort') ?>
                     </label>
-                    <input type="checkbox" id="short_invoice" name="short" checked="checked">
+                    <input type="checkbox" id="short_invoice" name="short">
                 </div>
                 <div>
                     <label for="invoice_round_ID">

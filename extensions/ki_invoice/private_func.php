@@ -52,10 +52,13 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
         $arr['type'] = 'timeSheet';
         $arr['desc'] = $entry['activityName'];
+        $arr['start'] = $entry['start'];
+        $arr['end'] = $entry['end'];
         $arr['hour'] = $entry['duration'] / 3600;
-        $arr['duration'] = $entry['formattedDuration'];
-        $arr['amount'] = $entry['wage'];
+        $arr['fDuration'] = $entry['formattedDuration']; // @deprecated use duration instead
+        $arr['duration'] = $entry['duration'];
         $arr['timestamp'] = $entry['start'];
+        $arr['amount'] = $entry['wage'];
         $arr['description'] = $entry['description'];
         $arr['rate'] = $entry['rate'];
         $arr['comment'] = $entry['comment'];
@@ -84,10 +87,13 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
             $arr['type'] = 'expense';
             $arr['desc'] = $entry['designation'];
+            $arr['start'] = $entry['timestamp'];
+            $arr['end'] = $entry['timestamp'];
             $arr['hour'] = null;
+            $arr['fDuration'] = $entry['multiplier']; // @deprecated use duration instead
             $arr['duration'] = $entry['multiplier'];
-            $arr['amount'] = sprintf("%01.2f", $entry['value'] * $entry['multiplier']);
             $arr['timestamp'] = $entry['timestamp'];
+            $arr['amount'] = sprintf("%01.2f", $entry['value'] * $entry['multiplier']);
             $arr['description'] = $entry['designation'];
             $arr['rate'] = $entry['value'];
             $arr['comment'] = $entry['comment'];
@@ -99,9 +105,11 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
             $arr['projectName'] = $entry['projectName'];
             $arr['projectComment'] = $entry['projectComment'];
 
-            // TODO these are only available here, can we delete them?
+            // @deprecated expenses only: will be removed in the future, can be fetched otherwise
             $arr['activityName'] = $entry['designation'];
+            // @deprecated expenses only: will be removed in the future, can be fetched otherwise
             $arr['multiplier'] = $entry['multiplier'];
+            // @deprecated expenses only: will be removed in the future, can be fetched otherwise
             $arr['value'] = $entry['value'];
 
             invoice_add_to_array($results, $arr, $short_form);
@@ -114,7 +122,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         if ($limitCommentSize) {
             $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
         }
-        // FIXME use date_format instead
+        // FIXME use date_format_3 instead
         $entry['date'] = date("m/d/Y", $entry['timestamp']);
 
         $allEntries[] = $entry;
@@ -132,20 +140,31 @@ function invoice_add_to_array(&$array, $row, $short_form)
             $index = $activityIndexMap[$row['desc']];
             $totalTime = $array[$index]['hour'];
             $totalAmount = $array[$index]['amount'];
+            $start = $array[$index]['start'];
+            $end = $array[$index]['end'];
+            $duration = $array[$index]['duration'];
             $array[$index] = array(
                 'type' => 'timeSheet',
-                'location' => $row['location'],
                 'desc' => $row['desc'],
+                'start' => ($start < $row['start']) ? $start : $row['start'],
+                'end' => ($end > $row['end']) ? $end : $row['end'],
                 'hour' => $totalTime + $row['hour'],
-                'duration' => $row['duration'],
+                'fDuration' => Kimai_Format::formatDuration($duration + $row['duration']), // @deprecated use duration instead
+                'duration' => $duration + $row['duration'],
+                'timestamp' => ($start < $row['start']) ? $start : $row['start'],
                 'amount' => $totalAmount + $row['amount'],
-                'date' => $row['date'],
                 'description' => $row['description'],
                 'rate' => ($totalAmount + $row['amount']) / ($totalTime + $row['hour']),
-                'trackingNr' => $row['trackingNr'],
                 'comment' => $row['comment'],
                 'username' => $row['username'],
-                'useralias' => $row['useralias']
+                'useralias' => $row['useralias'],
+                'location' => $row['location'],
+                'trackingNr' => $row['trackingNr'],
+                'projectID' => $row['projectID'],
+                'projectName' => $row['projectName'],
+                'projectComment' => $row['projectComment'],
+                // FIXME use date_format_3 instead
+                'date' => date("m/d/Y", $row['timestamp']),
             );
             return;
         } else {
@@ -160,17 +179,24 @@ function ext_invoice_empty_entry()
     return array(
         'type' => null,
         'desc' => null,
+        'start' => null,
+        'end' => null,
         'hour' => null,
+        'fDuration' => null, // @deprecated use duration instead
         'duration' => null,
+        'timestamp' => null,
         'amount' => null,
-        'date' => null,
         'description' => null,
         'rate' => null,
         'comment' => null,
         'username' => null,
         'useralias' => null,
         'location' => null,
-        'trackingNr' => null
+        'trackingNr' => null,
+        'projectID' => null,
+        'projectName' => null,
+        'projectComment' => null,
+        'date' => null,
     );
 }
 

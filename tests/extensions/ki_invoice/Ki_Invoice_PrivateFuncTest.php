@@ -37,8 +37,9 @@ class Ki_Invoice_PrivateFuncTest extends PHPUnit_Framework_TestCase
     public function testext_invoice_empty_entry()
     {
         $keys = array(
-            'type', 'desc', 'hour', 'duration', 'amount', 'date', 'description', 'rate', 'comment',
-            'username', 'useralias', 'location', 'trackingNr'
+            'type', 'desc', 'start', 'end', 'hour', 'fDuration', 'duration', 'timestamp', 'amount', 'description',
+            'rate', 'comment', 'username', 'useralias', 'location', 'trackingNr', 'projectID', 'projectName',
+            'projectComment', 'date'
         );
 
         $actual = ext_invoice_empty_entry();
@@ -46,6 +47,8 @@ class Ki_Invoice_PrivateFuncTest extends PHPUnit_Framework_TestCase
         foreach($keys as $key) {
             $this->assertArrayHasKey($key, $actual);
         }
+
+        $this->assertEquals(count($keys), count(array_keys($actual)));
     }
 
     public function testext_invoice_sort_by_date_asc()
