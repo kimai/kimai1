@@ -27,4 +27,4 @@ if (!file_exists(__DIR__ . '/../libraries/autoload.php')) {
 require_once __DIR__ . '/../libraries/autoload.php';
 require_once __DIR__ . '/TestCase.php';
 
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../') . '/');
