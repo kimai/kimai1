@@ -22,8 +22,6 @@ namespace KimaiTest;
 use Kimai_Format;
 
 /**
- * Class UserTest
- *
  * @coversDefaultClass Kimai_Format
  */
 class FormatTest extends TestCase

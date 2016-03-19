@@ -22,8 +22,6 @@ namespace KimaiTest;
 use Kimai_User;
 
 /**
- * Class UserTest
- *
  * @coversDefaultClass Kimai_User
  */
 class UserTest extends TestCase
