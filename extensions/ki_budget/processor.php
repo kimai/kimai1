@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,13 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// ================
-// = TS PROCESSOR =
-// ================
-
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
-require("../../includes/kspi.php");
-require("private_func.php");
+require "../../includes/kspi.php";
+require "private_func.php";
+
+$view = new Kimai_View();
+$view->addBasePath(__DIR__ . '/templates/');
 
 $filters = explode('|', $axValue);
 
@@ -82,7 +80,6 @@ if (isset($kga['customer'])) {
 // ==================
 switch ($axAction) {
 
-    // Filter the charts by projects and activities
     case 'reload':
         // track which activities we want to see, so we can exclude them when we create the plot
         $activitiesFilter = false;
@@ -131,11 +128,55 @@ switch ($axAction) {
         $expensesOccured = false;
 
         // If there are any projects create the plot data.
-        if (count($projects) > 0) {
+        if (count($projects) > 0)
+        {
             $arr_plotdata = budget_plot_data($projects, $projectsSelected, $activitiesSelected, $expensesOccured, $kga);
-            $view->javascript_arr_plotdata = json_encode($arr_plotdata);
-            $view->arr_plotdata = $arr_plotdata;
-            $view->projects = $projects;
+
+            $renderProjects = array();
+            $plotData = array();
+
+            // filter out projects that are a) not selected or b) have no relevant/zero data to be displayed
+            foreach ($projects as $project)
+            {
+                if (array_search($project['projectID'], $projectsSelected) === false) {
+                    continue;
+                }
+
+                $temp = $project['projectID'];
+
+                // do not render projects that have only empty values
+                if ($arr_plotdata[$temp]['total'] == 0 &&
+                    $arr_plotdata[$temp]['budget'] == 0 &&
+                    (!isset($arr_plotdata[$temp][0]['expenses']) || $arr_plotdata[$temp][0]['expenses'] == 0)
+                ) {
+                    continue;
+                }
+
+                $renderProjects[] = $project;
+
+                // filter out activities that have no relevant/zero data to be plotted
+                $plotData[$temp] = array();
+                foreach ($arr_plotdata[$temp] as $id => $activity)
+                {
+                    $isActivity = is_array($activity) && isset($activity['name']);
+
+                    if ($isActivity && array_search($id, $activitiesSelected) === false) {
+                        continue;
+                    }
+
+                    if ($isActivity && $activity['total'] == 0 &&
+                        $activity['budget'] == 0 && $activity['budget_total'] == 0 &&
+                        $activity['approved'] == 0 && $activity['approved_total'] == 0
+                    ) {
+                        continue;
+                    }
+
+                    $plotData[$temp][$id] = $arr_plotdata[$temp][$id];
+                }
+            }
+
+            $view->plotdata = $plotData;
+            $view->projects = $renderProjects;
             $view->activities = $activities;
         } else {
             $view->projects = array();
@@ -152,38 +193,10 @@ switch ($axAction) {
         if ($expensesOccured) {
             $keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
         }
-        /*for ($i = 0; $i < count($usedEvents); $i++) {
-            $keys[] = array('color' => $chartColors[($i + 2) % (count($chartColors) - 1)], 'name' => $usedEvents[$i]['evt_name']);
-        }*/
+
         // the activity based charts only need numbers
         $view->arr_keys = $keys;
         echo $view->render("charts.php");
 
-        //if (is_array($_REQUEST['projects'])) {
-        //	// HERE ARE ONLY IDS!!!
-        //	$pcts = $_REQUEST['projects'];
-        //	if (is_array($_REQUEST['activities'])) {
-        //		$evts = $_REQUEST['activities'];
-        //	}
-        //	else {
-        //		foreach ($pcts as $index => $project) {
-        //			$projects[$index]['activities'] = $database->get_activities_by_pct($project);
-        //		}
-        //	}
-        //}
-        //if (count($projects) > 0) {
-        //	$arr_plotdata = budget_plot_data($projects, $usedEvents, $expensesOccured, $kga);
-        //	$view->javascript_arr_plotdata = json_encode($arr_plotdata);
-        //	$view->arr_plotdata = $arr_plotdata;
-        //	$view->projects = $projects;
-        //	$view->activities = $activities;
-        //}
-        //else {
-        //	$view->projects = 0;
-        //}
-        //$chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
-        //$view->chartColors = json_encode($chartColors);
-        //
-        //        echo json_encode($arr_plotdata);
         break;
 }
