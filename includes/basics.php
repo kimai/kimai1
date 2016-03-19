@@ -73,6 +73,7 @@ if (!empty($vars)) {
     $kga['date_format'][0] = $vars['date_format_0'];
     $kga['date_format'][1] = $vars['date_format_1'];
     $kga['date_format'][2] = $vars['date_format_2'];
+    $kga['date_format'][3] = $vars['date_format_3'];
     if ($vars['language'] != '') {
         $kga['language'] = $vars['language'];
     } elseif ($kga['language'] == '') {

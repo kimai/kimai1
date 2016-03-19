@@ -1,0 +1,110 @@
+<!doctype html><?php
+
+/**
+ * Freelancer - Stundenzettel
+ *
+ * @author Kevin Papst <kpapst@gmx.net>
+ */
+
+$entries        = $this->entries;
+$amount         = $this->amount;
+$vat            = $this->vat;
+$vatRate        = $this->vatRate;
+$total          = $this->total;
+$projects       = $this->projects;
+$customer       = $this->customer;
+$invoiceId      = $this->invoiceId;
+$currency       = $this->currencySign;
+$dateFormat     = $this->dateFormat;
+$beginDate      = $this->beginDate;
+$endDate        = $this->endDate;
+$invoiceDate    = $this->invoiceDate;
+$sumHours       = 0;
+
+// calculate total hours
+foreach($entries as $row) { 
+	$sumHours += $row['hour'];
+}
+
+global $kga;
+$months = $kga['lang']['months'];
+$monthIndex = (int)date('n', $beginDate)-1;
+$year = date('Y', $beginDate);
+
+$translations   = array(
+	'title'	=> 'Projektbericht',
+	'date' => 'Datum',
+	'activity' => 'Tätigkeit',
+	'total' => 'Summe',
+	'hours' => 'Stunden',
+	'month' => 'Monat',
+	'customer' => 'Kunde',
+	'freelancer' => 'Berater',
+	'contact' => 'Abteilung',
+	'footer-freelancer' => 'Leistungsbestätigung - Name Berater / Unterschrift',
+	'footer-customer' => 'Leistungsbestätigung - Name Kunde / Unterschrift',
+);
+
+?><html>
+	<head>
+		<meta charset="utf-8">
+		<title><?php echo $translations['title']; ?></title>
+		<link rel="stylesheet" href="invoices/freelancer/style.css">
+	</head>
+	<body>
+		<header>
+			<h1><?php echo $translations['title']; ?></h1>
+			<address>
+				<p>
+					<label><?php echo $translations['month']; ?></label>
+					<span contenteditable="true"><?php echo $months[$monthIndex] . ' ' . $year; ?></span>
+				</p>
+				<p>
+					<label><?php echo $translations['customer']; ?></label>
+					<span contenteditable="true"><?php echo $customer['company']; ?></span>
+				</p>
+				<p>
+					<label><?php echo $translations['contact']; ?></label>
+					<span contenteditable="true"><?php echo $customer['contact']; ?></span>
+				</p>
+				<p>
+					<label><?php echo $translations['freelancer']; ?></label>
+					<span contenteditable="true"><?php echo $entries[0]['useralias']; ?></span>
+				</p>
+			</address>
+		</header>
+		<article>
+			<table class="inventory">
+				<thead>
+					<tr>
+						<th><span><?php echo $translations['date']; ?></span></th>
+                        <th><span><?php echo $translations['activity']; ?></span></th>
+						<th><span><?php echo $translations['hours']; ?></span></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th><span></span></th>
+						<th><span><?php echo $translations['total']; ?></span></th>
+						<th><span><?php echo number_format($sumHours, 2); ?></span></th>
+					</tr>
+				</tfoot>
+				<tbody>
+                <?php foreach($entries as $row) { ?>
+					<tr>
+						<td><span><?php echo date('d.m.', $row['timestamp']); ?></span></td>
+                        <td><span><?php echo $row['desc']; ?> - <?php echo $row['projectName']; ?></span></td>
+						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
+					</tr>
+                <?php } ?>
+				</tbody>
+			</table>
+		</article>
+		<aside>
+			<address>
+	            <p><?php echo $translations['footer-freelancer']; ?></p>
+	            <p><?php echo $translations['footer-customer']; ?></p>
+			</address>
+		</aside>
+	</body>
+</html>

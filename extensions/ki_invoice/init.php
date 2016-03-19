@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,22 +17,12 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-// ==================================
-// = implementing standard includes =
-// ==================================
-include('../../includes/basics.php');
-
-$dir_templates = "templates/";
-$datasrc = "config.ini";
-$settings = parse_ini_file($datasrc);
-$dir_ext = $settings['EXTENSION_DIR'];
+include '../../includes/basics.php';
 
 $user = checkUser();
 
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-$view->assign('kga', $kga);
+$view = new Kimai_View();
+$view->addBasePath(__DIR__ . '/templates/');
 
 // get list of projects for select box
 if (isset($kga['customer'])) {
@@ -52,6 +42,7 @@ $view->assign('projects', $tmpProjects);
 
 // Select values for Round Time option
 $roundingOptions = array(
+    '0' => '',
     '1' => '0.1h',
     '2.5' => '0.25h',
     '5' => '0.5h',
@@ -59,19 +50,25 @@ $roundingOptions = array(
 );
 $view->assign('roundingOptions', $roundingOptions);
 
-// Get Invoice Template FileNames
+// Extract all Invoice Templates in groups
 $invoice_template_files = array();
-$handle = opendir('invoices/');
-while (false !== ($file = readdir($handle))) {
-    if (stripos($file, '.') !== 0) {
-        $invoice_template_files[$file] = $file;
+$allInvoices = glob('invoices/*');
+foreach($allInvoices as $tplFile)
+{
+    $extension = 'HTML';
+    $tplInfo = pathinfo($tplFile);
+    if (!is_dir($tplFile)) {
+        $extension = strtoupper($tplInfo['extension']);
     }
+    $filename = str_replace('_', ' ', $tplInfo['filename']);
+    $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
 }
-closedir($handle);
-asort($invoice_template_files);
-$view->assign('sel_form_files', $invoice_template_files);
+
+$view->assign('invoice_templates', $invoice_template_files);
 
 // Retrieve start & stop times
 $timeframe = get_timeframe();
-$view->assign('timeframe', $timeframe);
+$view->assign('start_day', date($kga['date_format'][3], $timeframe[0]));
+$view->assign('end_day', date($kga['date_format'][3], $timeframe[1]));
+
 echo $view->render('main.php');

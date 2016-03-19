@@ -296,7 +296,6 @@ return array(
     'currency_sign' => 'Symbole de la monnaie à utiliser.',
     'currency_first' => 'Indiquer la monnaie avant la valeur (ex: &euro; 100,00)',
     'display_date_format' => 'Format de la date pour la notation de la plage de temps (<a href="http://php.net/manual/en/function.strftime.php" target="_blank"> pour la fonction strftime()</a>)',
-    'display_currentDate_format' => 'Format de la date pour le champ sous la plage de temps (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
     'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
     'round_time' => 'Arrondir le temps à ',
     'round_time_minute' => ' minute(s).',

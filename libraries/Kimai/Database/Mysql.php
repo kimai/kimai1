@@ -2503,8 +2503,6 @@ class Kimai_Database_Mysql
      * @param int $limitRows
      * @param bool $countOnly
      * @return array
-     * @internal param int $user ID of user in table users
-     * @internal param $
      * @author th
      */
     public function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false)
@@ -2627,7 +2625,6 @@ class Kimai_Database_Mysql
             $arr[$i]['projectID'] = $row->projectID;
             $arr[$i]['activityID'] = $row->activityID;
             $arr[$i]['userID'] = $row->userID;
-            $arr[$i]['projectID'] = $row->projectID;
             $arr[$i]['customerName'] = $row->customerName;
             $arr[$i]['customerID'] = $row->customerID;
             $arr[$i]['activityName'] = $row->activityName;

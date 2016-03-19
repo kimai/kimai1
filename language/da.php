@@ -227,7 +227,6 @@ return array(
     'currency_sign' => 'Tegn for valutaen, der anvendes.',
     'currency_first' => 'Vis valutanavnet foran beløbet (f.eks. &euro; 100,00)',
     'display_date_format' => 'Datoformat for tidsrummet (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'display_currentDate_format' => 'Datoformat for feltet under tidsrummet (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'table_date_format' => 'Datoformat for tabeller (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Afrund tid til ',
     'round_time_minute' => ' minut(ter).',

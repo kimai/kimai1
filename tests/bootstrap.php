@@ -25,3 +25,5 @@ if (!file_exists(__DIR__ . '/../libraries/autoload.php')) {
     die('You have to execute "composer install" or "composer update" before executing unit tests!');
 }
 require_once __DIR__ . '/../libraries/autoload.php';
+
+define('TESTS_BASE_DIR', realpath(__DIR__.'/../') . '/');

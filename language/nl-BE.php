@@ -255,7 +255,6 @@ return array(
     'currency_sign' => 'Valuta symbool',
     'currency_first' => 'Toon valuta voor de waarde (bv. &euro; 100,00)',
     'display_date_format' => 'Datumformaat van de tijdspanne (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notatie voor strftime()</a>)',
-    'display_currentDate_format' => 'Datumformaat voor het veld onder de tijdspanne (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notatie voor strftime()</a>)',
     'table_date_format' => 'Datumformaat voor tabellen (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notatie voor strftime()</a>)',
     'round_time' => 'Tijd afronden op ',
     'round_time_minute' => ' minu(u)t(en).',

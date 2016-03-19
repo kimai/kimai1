@@ -17,62 +17,39 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-include_once('../../includes/basics.php');
-
-/**
- * returns true if activity is in the arrays
- *
- * @param $arrays
- * @param $activity
- * @return integer true if $activity is in the array
- * @author AA
- */
-function array_activity_exists($arrays, $activity)
-{
-    $index = 0;
-    foreach ($arrays as $array) {
-        if (in_array($activity, $array)) {
-            return $index;
-        }
-        $index++;
-    }
-    return -1;
-}
-
-/**
- * @param $value
- * @param $precision
- * @return float
- */
-function RoundValue($value, $precision)
-{
-    // suppress division by zero error
-    if ($precision == 0.0) {
-        $precision = 1.0;
-    }
-
-    return floor($value / $precision + 0.5) * $precision;
-}
+include_once '../../includes/basics.php';
 
 // insert KSPI
 $isCoreProcessor = 0;
 $user = checkUser();
-$timeframe = get_timeframe();
-$in = $timeframe[0];
-$out = $timeframe[1];
 
-require_once('private_func.php');
+require_once 'private_func.php';
 
-if (count($_REQUEST['projectID']) == 0) {
-    echo '<script language="javascript">alert("' . $kga['lang']['ext_invoice']['noProject'] . '")</script>';
-    return;
+if (!isset($_REQUEST['projectID']) || count($_REQUEST['projectID']) == 0) {
+    die($kga['lang']['ext_invoice']['noProject']);
 }
+
+if (!isset($_REQUEST['invoice_start_day']) || !isset($_REQUEST['invoice_end_day'])) {
+    die($kga['lang']['ext_invoice']['noDateSelected']);
+}
+
+$dateIn = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_start_day']);
+$dateOut = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_end_day']);
+
+if ($dateIn === false || $dateOut === false) {
+    die($kga['lang']['ext_invoice']['noDateSelected']);
+}
+
+$dateIn->setTime(0, 0, 0);
+$dateOut->setTime(23, 59, 59);
+
+$in = $dateIn->getTimestamp();
+$out = $dateOut->getTimestamp();
 
 $invoiceArray = invoice_get_data($in, $out, $_REQUEST['projectID'], $_REQUEST['filter_cleared'], isset($_REQUEST['short']));
 
 if (count($invoiceArray) == 0) {
-    echo '<script language="javascript">alert("' . $kga['lang']['ext_invoice']['noData'] . '")</script>';
-    return;
+    die($kga['lang']['ext_invoice']['noData']);
 }
 
 // ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
@@ -92,17 +69,16 @@ $invoiceID = $customer['name'] . "-" . date("y", $in) . "-" . date("m", $in);
 $today = time();
 $dueDate = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 
-
 $round = 0;
 // do we have to round the time ?
-if (isset($_REQUEST['round'])) {
-    $round = $_REQUEST['roundValue'];
+if (isset($_REQUEST['roundValue']) && (float)$_REQUEST['roundValue'] > 0) {
+    $round = (float)$_REQUEST['roundValue'];
     $time_index = 0;
     $amount = count($invoiceArray);
 
     while ($time_index < $amount) {
         if ($invoiceArray[$time_index]['type'] == 'timeSheet') {
-            $rounded = RoundValue($invoiceArray[$time_index]['hour'], $round / 10);
+            $rounded = ext_invoice_round_value($invoiceArray[$time_index]['hour'], $round / 10);
 
             // Write a logfile entry for each value that is rounded.
             Kimai_Logger::logfile("Round " . $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with " . $round);
@@ -111,7 +87,7 @@ if (isset($_REQUEST['round'])) {
                 // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
                 $rate = 0;
             } else {
-                $rate = RoundValue($invoiceArray[$time_index]['amount'] / $invoiceArray[$time_index]['hour'], 0.05);
+                $rate = ext_invoice_round_value($invoiceArray[$time_index]['amount'] / $invoiceArray[$time_index]['hour'], 0.05);
             }
 
             $invoiceArray[$time_index]['hour'] = $rounded;
@@ -129,6 +105,23 @@ while (list($id, $fd) = each($invoiceArray)) {
     $ttltime += $invoiceArray[$id]['hour'];
 }
 $fttltime = Kimai_Format::formatDuration($ttltime * 3600);
+
+// sort invoice entries
+if (isset($_REQUEST['sort_invoice']))
+{
+    switch($_REQUEST['sort_invoice'])
+    {
+        case 'date_asc':
+            uasort($invoiceArray, 'ext_invoice_sort_by_date_asc');
+            break;
+        case 'date_desc':
+            uasort($invoiceArray, 'ext_invoice_sort_by_date_desc');
+            break;
+        case 'name':
+            uasort($invoiceArray, 'ext_invoice_sort_by_name');
+            break;
+    }
+}
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
@@ -183,10 +176,14 @@ foreach ($renderers as $rendererType => $renderer) {
     $renderer->setTemplateDir($baseFolder);
     $renderer->setTemplateFile($tplFilename);
     $renderer->setTemporaryDirectory(APPLICATION_PATH . '/temporary');
-    if ($renderer->canRender()) {
-        $renderer->setModel($model);
-        $renderer->render();
-        return;
+    try {
+        if ($renderer->canRender()) {
+            $renderer->setModel($model);
+            $renderer->render();
+            return;
+        }
+    } catch (Exception $ex) {
+        die(sprintf($kga['lang']['ext_invoice']['failure'], $ex->getMessage()));
     }
 }
 

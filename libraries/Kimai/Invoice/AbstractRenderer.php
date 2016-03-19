@@ -125,18 +125,18 @@ abstract class Kimai_Invoice_AbstractRenderer
     protected function prepareCustomerArray($customer)
     {
         $new = array(
-            'customerContact' => $customer['contact'],
-            'companyName' => $customer['company'],
-            'customerStreet' => $customer['street'],
-            'customerCity' => $customer['city'],
-            'customerZip' => $customer['zipcode'],
-            'customerPhone' => $customer['phone'],
-            'customerEmail' => $customer['mail'],
-            'customerComment' => $customer['comment'],
-            'customerFax' => $customer['fax'],
-            'customerMobile' => $customer['mobile'],
-            'customerURL' => $customer['homepage'],
-            'customerVat' => $customer['vat']
+            'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
+            'companyName' => isset($customer['company']) ? $customer['company'] : '',
+            'customerStreet' => isset($customer['street']) ? $customer['street'] : '',
+            'customerCity' => isset($customer['city']) ? $customer['city'] : '',
+            'customerZip' => isset($customer['zipcode']) ? $customer['zipcode'] : '',
+            'customerPhone' => isset($customer['phone']) ? $customer['phone'] : '',
+            'customerEmail' => isset($customer['mail']) ? $customer['mail'] : '',
+            'customerComment' => isset($customer['comment']) ? $customer['comment'] : '',
+            'customerFax' => isset($customer['fax']) ? $customer['fax'] : '',
+            'customerMobile' => isset($customer['mobile']) ? $customer['mobile'] : '',
+            'customerURL' => isset($customer['homepage']) ? $customer['homepage'] : '',
+            'customerVat' => isset($customer['vat']) ? $customer['vat'] : '',
         );
 
         return $new;

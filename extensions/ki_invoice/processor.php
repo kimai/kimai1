@@ -24,22 +24,13 @@
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
-require("../../includes/kspi.php");
+require "../../includes/kspi.php";
 
 // ==================
 // = handle request =
 // ==================
-switch ($axAction) {
-
-    // =====================================
-    // = Reload the timespan and return it =
-    // =====================================
-    case 'reload_timespan':
-        $timeframe = get_timeframe();
-        $view->assign('timeframe', $timeframe);
-        echo $view->render("timespan.php");
-        break;
-
+switch ($axAction)
+{
     // ==========================
     // = Change the default vat =
     // ==========================
@@ -54,7 +45,7 @@ switch ($axAction) {
         break;
 
     // ==========================
-    // = Change the default vat =
+    // = Reload projects        =
     // ==========================
     case 'projects':
         if (isset($kga['customer'])) {
@@ -62,6 +53,7 @@ switch ($axAction) {
         } else {
             $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
         }
+
         $js_projects = array();
         foreach ($db_projects as $project) {
             $js_projects[$project['projectID']] = $project['name'];
