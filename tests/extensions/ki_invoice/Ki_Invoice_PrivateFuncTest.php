@@ -31,7 +31,7 @@ class Ki_Invoice_PrivateFuncTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        include_once TESTS_BASE_DIR . 'extensions/ki_invoice/private_func.php';
+        include_once APPLICATION_PATH . 'extensions/ki_invoice/private_func.php';
     }
 
     public function testext_invoice_empty_entry()
