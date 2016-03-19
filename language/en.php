@@ -464,7 +464,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'failure' => 'Failed rendering invoice: %s',
         'sortOrder' => 'Order',
         'orderDateAsc' => 'Date - oldest first',
-        'orderDateDesc' => 'Datum - newest first',
+        'orderDateDesc' => 'Date - newest first',
         'noDateSelected' => 'Missing time period',
     ),
 
