@@ -2370,12 +2370,12 @@ class Kimai_Database_Mysql
         $p = $this->kga['server_prefix'];
 
         if (empty($groups)) {
-            $query = "SELECT project.*, customer.name AS customerName
+            $query = "SELECT project.*, customer.name AS customerName, customer.visible as customerVisible
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   WHERE project.trash=0";
         } else {
-            $query = "SELECT DISTINCT project.*, customer.name AS customerName
+            $query = "SELECT DISTINCT project.*, customer.name AS customerName, customer.visible as customerVisible
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
@@ -2413,6 +2413,7 @@ class Kimai_Database_Mysql
                 $arr[$i]['approved'] = $row['approved'];
                 $arr[$i]['internal'] = $row['internal'];
                 $arr[$i]['customerName'] = $row['customerName'];
+                $arr[$i]['customerVisible'] = $row['customerVisible'];
                 $i++;
             }
             return $arr;
@@ -2440,7 +2441,7 @@ class Kimai_Database_Mysql
         }
 
         if (empty($groups)) {
-            $query = "SELECT project.*, customer.name AS customerName
+            $query = "SELECT project.*, customer.name AS customerName, customer.visible as customerVisible
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   WHERE customerID = $customerID
@@ -2448,7 +2449,7 @@ class Kimai_Database_Mysql
                     AND project.trash=0
                   ORDER BY $sort;";
         } else {
-            $query = "SELECT DISTINCT project.*, customer.name AS customerName
+            $query = "SELECT DISTINCT project.*, customer.name AS customerName, customer.visible as customerVisible
                   FROM ${p}projects AS project
                   JOIN ${p}customers AS customer USING(customerID)
                   JOIN ${p}groups_projects USING(projectID)
@@ -2469,12 +2470,13 @@ class Kimai_Database_Mysql
             $row = $this->conn->Row();
             $arr[$i]['projectID'] = $row->projectID;
             $arr[$i]['name'] = $row->name;
-            $arr[$i]['customerName'] = $row->customerName;
             $arr[$i]['customerID'] = $row->customerID;
             $arr[$i]['visible'] = $row->visible;
             $arr[$i]['budget'] = $row->budget;
             $arr[$i]['effort'] = $row->effort;
             $arr[$i]['approved'] = $row->approved;
+            $arr[$i]['customerName'] = $row->customerName;
+            $arr[$i]['customerVisible'] = $row->customerVisible;
             $i++;
         }
 
