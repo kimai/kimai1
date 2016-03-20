@@ -3802,7 +3802,7 @@ class Kimai_Database_Mysql
             return $this->conn->RecordsArray(MYSQLI_ASSOC);
         }
 
-        $allowed_groups = array_filter($user['groups'], function ($groupID) use ($userID,$that) {
+        $allowed_groups = array_filter($user['groups'], function ($groupID) use ($userID, $that) {
             $roleID = $that->user_get_membership_role($userID, $groupID);
             return $that->membership_role_allows($roleID, 'core-user-view');
         });
