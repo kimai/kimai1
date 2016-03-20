@@ -16,14 +16,19 @@
 </thead>
 <tbody>
 <?php
-	if (!isset($this->projects) || $this->projects == '0' || count($this->projects) == 0) {
+	if (!isset($this->projects) || $this->projects == '0' || count($this->projects) == 0) 
+	{
 		?>
 		<tr>
 			<td nowrap colspan="3"><?php echo $this->error(); ?></td>
 		</tr>
 		<?php
-	} else {
-		foreach ($this->projects as $row) {
+	} 
+	else 
+	{
+		foreach ($this->projects as $row) 
+		{
+			$isHidden = $row['visible'] != 1;
 			?>
 			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 				<td class="option">
@@ -36,29 +41,23 @@
 						width="13" height="13" alt="<?php echo $this->kga['lang']['delete_project']?>" border="0"></a>
 				</td>
 				<?php if ($this->kga['conf']['flip_project_display']): ?>
-				<td class="customer">
-					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>
-					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
-				</td>
-				<td class="projects">
-					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<?php echo $this->escape($row['name']) ?>
-					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
-				</td>
+					<td class="customer <?php if ($isHidden) { echo 'hidden'; } ?>">
+						<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>
+					</td>
+					<td class="projects <?php if ($isHidden) { echo 'hidden'; } ?>">
+						<?php echo $this->escape($row['name']) ?>
+					</td>
 				<?php else: ?>
-				<td class="projects">
-					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<?php echo $this->escape($row['name']) ?>
-					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
-				</td>
-				<td class="customer">
-					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
-					<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>
-					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
-				</td>
+					<td class="projects <?php if ($isHidden) { echo 'hidden'; } ?>">
+						<?php echo $this->escape($row['name']) ?>
+					</td>
+					<td class="customer <?php if ($isHidden) { echo 'hidden'; } ?>">
+						<?php echo $this->escape($this->truncate($row['customerName'], 30, '...'))?>
+					</td>
 				<?php endif; ?>
-				<td><?php echo $this->escape($row['groups'])?></td>
+				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
+					<?php echo $this->escape($row['groups'])?>
+				</td>
 			</tr>
 			<?php
 		}

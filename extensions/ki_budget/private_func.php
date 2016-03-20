@@ -71,6 +71,10 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             }
         }
 
+        if ($project['customerVisible'] != 1 || $project['visible'] != 1) {
+            continue;
+        }
+
         $projectID = $project['projectID'];
         // in "activity 0" we will track the available budget, while in the project array directly,
         // we will track the total budget for the project
@@ -103,6 +107,9 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
                 if (!in_array($activity['activityID'], $activitiesFilter)) {
                     continue;
                 }
+            }
+            if ($activity['visible'] != 1) {
+                continue;
             }
             $wages[$projectID][$activity['activityID']] = array('name' => $activity['name'], 'budget' => 0, 'budget_total' => 0, 'approved' => 0, 'approved_total' => 0, 'total' => 0);
             if (!isset($activity['budget']) || $activity['budget'] <= 0) {

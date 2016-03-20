@@ -23,6 +23,7 @@
 	{
 		foreach ($this->customers as $row)
 		{
+			$isHidden = $row['visible'] != 1;
 			?>
 			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 				<td class="option">
@@ -34,15 +35,13 @@
 						src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_customer']?>"
 						width="13" height="13" alt="<?php echo $this->kga['lang']['delete_customer']?>" border="0"></a>
 				</td>
-				<td class="clients">
-					<?php if ($row['visible'] != 1):?><span style="color:#bbb"><?php endif; ?>
+				<td class="clients <?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($row['name']);?>
-					<?php if ($row['visible'] != 1):?></span><?php endif; ?>
 				</td>
-				<td>
+				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($row['contact']);?>
 				</td>
-				<td>
+				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($row['groups'])?>
 				</td>
 			</tr>
