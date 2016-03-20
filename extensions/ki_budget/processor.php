@@ -27,7 +27,7 @@ $view->addBasePath(__DIR__ . '/templates/');
 
 $filters = explode('|', $axValue);
 
-if ($filters[0] == "") {
+if ($filters[0] == '') {
     $filterUsers = array();
 } else {
     $filterUsers = explode(':', $filters[0]);
@@ -40,7 +40,7 @@ $filterCustomers = array_map(
     $database->get_customers($kga['user']['groups'])
 );
 
-if (isset($filters[1]) && $filters[1] != "") {
+if (isset($filters[1]) && $filters[1] != '') {
     $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
 }
 
@@ -51,7 +51,7 @@ $filterProjects = array_map(
     $database->get_projects($kga['user']['groups'])
 );
 
-if (isset($filters[2]) && $filters[2] != "") {
+if (isset($filters[2]) && $filters[2] != '') {
     $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
 }
 
@@ -62,7 +62,7 @@ $filterActivities = array_map(
     $database->get_activities($kga['user']['groups'])
 );
 
-if (isset($filters[3]) && $filters[3] != "") {
+if (isset($filters[3]) && $filters[3] != '') {
     $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
 }
 
@@ -118,14 +118,14 @@ switch ($axAction) {
                 }
                 $projects[$index]['activities'] = $database->get_activities_by_project($project['projectID']);
 
-                foreach ($projects[$index]['activities'] as $index => $activity) {
+                foreach ($projects[$index]['activities'] as $activity) {
                     if ($activitiesFilter === false) {
                         $activitiesSelected[] = $activity['activityID'];
                     }
                 }
             }
         }
-        $expensesOccured = false;
+        $expensesOccurred = false;
 
         // If there are any projects create the plot data.
         if (count($projects) > 0)
@@ -184,19 +184,19 @@ switch ($axAction) {
         $view->projects_selected = $projectsSelected;
         $view->activities_selected = $activitiesSelected;
 
-        $chartColors = array("#efefef", "#4bb2c5", "#EAA228", "#c5b47f", "#579575", "#839557", "#958c12", "#953579", "#4b5de4", "#d8b83f", "#ff5800", "#0085cc");
+        $chartColors = array('#efefef', '#4bb2c5', '#EAA228', '#c5b47f', '#579575', '#839557', '#958c12', '#953579', '#4b5de4', '#d8b83f', '#ff5800', '#0085cc');
         $view->chartColors = json_encode($chartColors);
 
         // Create the keys which explain to the user which color means what for the project based charts
         $keys = array();
         $keys[] = array('color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
-        if ($expensesOccured) {
+        if ($expensesOccurred) {
             $keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
         }
 
         // the activity based charts only need numbers
         $view->arr_keys = $keys;
-        echo $view->render("charts.php");
+        echo $view->render('charts.php');
 
         break;
 }

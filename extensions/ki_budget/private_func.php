@@ -21,6 +21,9 @@ include '../ki_expenses/private_db_layer_mysql.php';
 
 /**
  * Sum up expenses for the project.
+ *
+ * @param int $projectId
+ * @return int
  */
 function calculate_expenses_sum($projectId)
 {
@@ -44,26 +47,28 @@ function calculate_expenses_sum($projectId)
  *
  * An visual example for two projects with the ID 2 and 5:
  * $array = {
- *   2 => array (budget left , expenses cost, activity1, activity2 ),
- *   5 => array (budget left , expenses cost, activity1, activity2 ),
+ *   2 => array (budget left , expenses cost, activity1, activity2),
+ *   5 => array (budget left , expenses cost, activity1, activity2),
  * };
  *
  * @param array $projects IDs of all projects to include in the plot data
+ * @param $projectsFilter
+ * @param $activitiesFilter
+ * @param $expensesOccurred
+ * @param $kga
  * @return array containing arrays for every project which hold the size of the pie chart elements
  */
-function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expensesOccured, &$kga)
+function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expensesOccurred, &$kga)
 {
     global $database;
 
     $wages = array();
-    $expensesOccured = false;
+    $expensesOccurred = false;
 
     $billableLangString = $kga['lang']['billable'];
     $timebillableLangString = $kga['lang']['time_billable'];
 
-    /*
-     * sum up expenses
-     */
+    /* sum up expenses */
     foreach ($projects as $project) {
         if (is_array($projectsFilter) && !empty($projectsFilter)) {
             if (!in_array($project['projectID'], $projectsFilter)) {
@@ -92,7 +97,7 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
         }
 
         if ($expenses > 0) {
-            $expensesOccured = true;
+            $expensesOccurred = true;
         }
 
         if ($wages[$projectID][0]['budget'] < 0) {
@@ -111,7 +116,14 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             if ($activity['visible'] != 1) {
                 continue;
             }
-            $wages[$projectID][$activity['activityID']] = array('name' => $activity['name'], 'budget' => 0, 'budget_total' => 0, 'approved' => 0, 'approved_total' => 0, 'total' => 0);
+            $wages[$projectID][$activity['activityID']] = array(
+                'name' => $activity['name'], 
+                'budget' => 0, 
+                'budget_total' => 0, 
+                'approved' => 0,
+                'approved_total' => 0,
+                'total' => 0
+            );
             if (!isset($activity['budget']) || $activity['budget'] <= 0) {
                 continue;
             }
@@ -119,8 +131,8 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             $wages[$projectID][$activity['activityID']]['budget_total'] = $activity['budget'];
             // this budget shall not be added, otherwise we have the project budget in all activities
             // so they would be doubled.
-//  	$wages[$projectID][$activity['evt_ID']]['budget_total'] += $project['pct_budget'];
-//  	$wages[$projectID][$activity['evt_ID']]['approved_total'] = $project['pct_approved'];
+            //$wages[$projectID][$activity['evt_ID']]['budget_total'] += $project['pct_budget'];
+            //$wages[$projectID][$activity['evt_ID']]['approved_total'] = $project['pct_approved'];
             $wages[$projectID][$activity['activityID']]['approved_total'] += $activity['approved'];
             $wages[$projectID][$activity['activityID']]['approved'] = $activity['approved'];
             $wages[$projectID][$activity['activityID']]['total'] = 0;
@@ -132,9 +144,8 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             $wages[$projectID]['approved'] += $activity['approved'];
         }
     }
-    /*
-     * sum up wages for every project and every activity
-     */
+   
+    /* sum up wages for every project and every activity */
     foreach ($projects as $project) {
         $projectId = $project['projectID'];
         $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, array($projectId));
