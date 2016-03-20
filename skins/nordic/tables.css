@@ -1,3 +1,7 @@
 .table_header {
     background:#159;
 }
+
+td.hidden {
+    color:#bbb;
+}

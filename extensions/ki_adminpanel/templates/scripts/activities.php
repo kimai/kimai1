@@ -31,6 +31,7 @@
 	{
 		foreach ($this->activities as $activity)
 		{
+			$isHidden = $activity['visible'] != 1;
 			?>
 			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 				<td class="option">
@@ -40,12 +41,10 @@
 					<a href="#" id="delete_activity<?php echo $activity['activityID']?>" onclick="adminPanel_extension_deleteActivity(<?php echo $activity['activityID']?>)">
 						<img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png" title="<?php echo $this->kga['lang']['delete_activity']?>" width="13" height="13" alt="<?php echo $this->kga['lang']['delete_activity']?>" border="0"></a>
 				</td>
-				<td class="activities">
-					<?php if ($activity['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
+				<td class="activities <?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($activity['name']); ?>
-					<?php if ($activity['visible'] != 1): ?></span><?php endif; ?>
 				</td>
-				<td>
+				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($activity['groups']); ?>
 				</td>
 			</tr>

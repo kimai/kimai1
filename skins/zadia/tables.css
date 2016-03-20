@@ -5,3 +5,7 @@
 table td {
     font-size: 11px;
 }
+
+td.hidden {
+    color:#bbb;
+}
