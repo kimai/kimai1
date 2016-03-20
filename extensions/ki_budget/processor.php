@@ -18,9 +18,9 @@
  */
 
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
-require "private_func.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+require 'private_func.php';
 
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');
@@ -67,7 +67,7 @@ if (isset($filters[3]) && $filters[3] != '') {
 }
 
 // if no userfilter is set, set it to current user
-if (isset($kga['user']) && count($filterUsers) == 0) {
+if (isset($kga['user']) && count($filterUsers) === 0) {
     array_push($filterUsers, $kga['user']['userID']);
 }
 
@@ -184,7 +184,20 @@ switch ($axAction) {
         $view->projects_selected = $projectsSelected;
         $view->activities_selected = $activitiesSelected;
 
-        $chartColors = array('#efefef', '#4bb2c5', '#EAA228', '#c5b47f', '#579575', '#839557', '#958c12', '#953579', '#4b5de4', '#d8b83f', '#ff5800', '#0085cc');
+        $chartColors = array(
+            '#efefef',
+            '#4bb2c5',
+            '#EAA228',
+            '#c5b47f',
+            '#579575',
+            '#839557',
+            '#958c12',
+            '#953579',
+            '#4b5de4',
+            '#d8b83f',
+            '#ff5800',
+            '#0085cc'
+        );
         $view->chartColors = json_encode($chartColors);
 
         // Create the keys which explain to the user which color means what for the project based charts
