@@ -4,32 +4,30 @@ foreach ($this->projects as $project)
 {
     $projectId = $project['projectID'];
     $projectPlotData = $this->plotdata[$projectId];
-
     ?>
     <div class="budget_project">
         <div class="project_head table_header project_overview">
-            <?php echo $this->escape($project['customerName']) ?>
+            <?php echo $this->escape($this->truncate($project['customerName'], 28, '...')) ?>
             <br>
-            <?php echo $this->escape($project['name']) ?>
+            <?php echo $this->escape($this->truncate($project['name'], 28, '...')) ?>
         </div>
-        <div id="budget_chartdiv_<?php echo $project['projectID'] ?>" class="budget_plot_area"
-             style="height:140px;width:200px;"></div>
+        <div id="budget_chartdiv_<?php echo $project['projectID'] ?>" class="budget_plot_area" style="height:140px;width:200px;"></div>
         <table class="data">
             <tr>
                 <td class="total"><?php echo $this->translate('total'); ?>:</td>
-                <td><?php echo sprintf("%.2f", $projectPlotData['total']) ?></td>
+                <td><?php echo sprintf('%.2f', $projectPlotData['total']) ?></td>
             </tr>
             <tr>
                 <td class="budget"><?php echo $this->translate('budget'); ?>:</td>
-                <td><?php echo sprintf("%.2f", $projectPlotData['budget']) ?></td>
+                <td><?php echo sprintf('%.2f', $projectPlotData['budget']) ?></td>
             </tr>
             <tr>
                 <td class="billable"><?php echo $this->translate('billable'); ?>:</td>
-                <td><?php echo sprintf("%.2f", $projectPlotData['billable_total']) ?></td>
+                <td><?php echo sprintf('%.2f', $projectPlotData['billable_total']) ?></td>
             </tr>
             <tr>
                 <td class="approved"><?php echo $this->translate('approved'); ?>:</td>
-                <td><?php echo sprintf("%.2f", $projectPlotData['approved']) ?></td>
+                <td><?php echo sprintf('%.2f', $projectPlotData['approved']) ?></td>
             </tr>
             <?php
             if ($projectPlotData['budget'] - $projectPlotData['budget'] < 0) {
@@ -47,23 +45,20 @@ foreach ($this->projects as $project)
             ?>
         </table>
     </div>
-
     <?php
     foreach ($projectPlotData as $id => $activity)
     {
         if (!is_array($activity) || !isset($activity['name'])) {
             continue;
         }
-
         ?>
         <div class="budget_project">
             <div class="project_head table_header">
-                <?php echo $this->escape($project['name']); ?>
+                <?php echo $this->escape($this->truncate($project['name'], 28, '...')); ?>
                 <br>
-                <?php echo $this->escape($activity['name']); ?>
+                <?php echo $this->escape($this->truncate($activity['name'], 28, '...')); ?>
             </div>
-            <div id="budget_chartdiv_<?php echo $project['projectID'] ?>_activity_<?php echo $id ?>"
-                 class="budget_plot_area" style="height:140px;width:200px; "></div>
+            <div id="budget_chartdiv_<?php echo $project['projectID'] ?>_activity_<?php echo $id ?>" class="budget_plot_area" style="height:140px;width:200px; "></div>
             <table class="data">
                 <tr>
                     <td class="total"><?php echo $this->translate('total'); ?>:</td>
@@ -102,7 +97,6 @@ foreach ($this->projects as $project)
 }
 ?>
 <div class="budget_project_end"></div>
-
 <script type="text/javascript">
     $(document).ready(function() {
         chartColors = <?php echo $this->chartColors ?>;

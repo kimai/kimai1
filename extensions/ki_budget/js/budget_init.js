@@ -21,7 +21,7 @@
 // =====================
 
 // set path of extension
-var budget_extension_path = "../extensions/ki_budget/";
+var budget_extension_path = '../extensions/ki_budget/';
 
 var budget_w;
 var budget_h;
@@ -29,14 +29,13 @@ var budget_h;
 var chartColors;
 
 $(document).ready(function(){
-
     var budget_resizeTimer = null;
     $(window).bind('resize', function() {
-       if (budget_resizeTimer) clearTimeout(budget_resizeTimer);
-       budget_resizeTimer = setTimeout(budget_extension_resize, 500);
+        if (budget_resizeTimer) {
+            clearTimeout(budget_resizeTimer);
+        }
+        budget_resizeTimer = setTimeout(budget_extension_resize, 500);
     });
 
     $.jqplot.config.enablePlugins = true;
-
-    
 });
