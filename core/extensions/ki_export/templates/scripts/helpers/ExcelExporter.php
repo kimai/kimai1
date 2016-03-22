@@ -213,10 +213,14 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 				$type = array_key_exists('type', $fieldConf) ? $fieldConf['type'] : 'string';
 				switch ($type) {
 					case 'date':
-						$formattedValue =  PHPExcel_Shared_Date::PHPToExcel($data[$key]);
+						$date = date('Y-m-d H:i:s +0000', $data[$key]);
+						$tstamp = date('U', strtotime($date));
+						$formattedValue =  PHPExcel_Shared_Date::PHPToExcel($tstamp);
 						break;
 					case 'time':
-						$formattedValue =  PHPExcel_Shared_Date::PHPToExcel($data[$key]);
+						$date = date('Y-m-d H:i:s +0000', $data[$key]);
+						$tstamp = date('U', strtotime($date));
+						$formattedValue =  PHPExcel_Shared_Date::PHPToExcel($tstamp);
 						break;
 					case 'duration':
 						$formattedValue = (((date('H', $data[$key]) - 1) * 3600) + (date('i', $data[$key]) * 60) + date('s', $data[$key])) / 86400;
