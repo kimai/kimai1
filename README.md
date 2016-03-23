@@ -5,7 +5,7 @@
 Kimai Time Tracking
 ===================
 
-![Kimai](http://www.kimai.org/images/header.jpg)
+![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
 This is the repository of Kimai, a open source time tracking software
 that runs on (almost) every webserver with PHP and MySQL.
