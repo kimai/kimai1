@@ -92,7 +92,6 @@ return array(
     "new_activity" => "添加事件",
     "day_summary" => "时间摘要",
     "plzChoose" => "请选择",
-    "noEntries" => "在指定的时间范围内没有记录",
     "recordAgain" => "再次记录该事件",
     "comment" => "注释",
     "location" => "位置",

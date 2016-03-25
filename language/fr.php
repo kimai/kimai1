@@ -80,7 +80,6 @@ return array(
     "new_activity" => "Ajouter tâche",
     "day_summary" => "Résumé heures",
     "plzChoose" => "Choisissez svp",
-    "noEntries" => "Pas d'entrées enregistrées pour le moment...",
     "recordAgain" => "Enregistrer cette tâche de nouveau",
     "comment" => "Commentaire",
     "location" => "Lieu",

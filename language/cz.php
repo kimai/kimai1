@@ -63,7 +63,6 @@ return array(
     "new_activity" => "přidej task",
     "day_summary" => "Časový přehled",
     "plzChoose" => "prosím vyber",
-    "noEntries" => "Nejsou trekovatelná data pro specifikovaný čas...",
     "recordAgain" => "Zaznamenej znovu",
     "comment" => "Komentář",
     "location" => "Umístění",

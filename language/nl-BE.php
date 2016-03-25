@@ -66,7 +66,6 @@ return array(
     "new_activity" => "activiteit toevoegen",
     "day_summary" => "Tijd samenvatting",
     "plzChoose" => "kies een optie",
-    "noEntries" => "Geen registraties gevonden voor de geselecteerde tijdsperiode...",
     "recordAgain" => "Neem deze registratie nogmaals op",
     "comment" => "Commentaar",
     "location" => "Locatie",

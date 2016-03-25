@@ -69,7 +69,6 @@ return array(
 
     "day_summary" => "Resumo de tempo",
     "plzChoose" => "por favor seleccione",
-    "noEntries" => "Não existem entradas registadas...",
     "recordAgain" => "Gravar esta tarefa novamente",
     "comment" => "Comentário",
 
