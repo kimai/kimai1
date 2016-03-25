@@ -247,6 +247,12 @@ div#export_head div.right {
 	right:3px;
 }
 
+div.ki_export table td.disabled a,
+div.ki_export table td a.disabled {
+     text-decoration:line-through;
+     color: #FFC7BB;
+}
+
 div#export_head div.right a {
 	background-image: url('../grfx/invert.png');
 	overflow:hidden;
