@@ -85,7 +85,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
         case 'project':
             $projects = $database->get_projects($groups);
             foreach ($projects as $project) {
-                if ($project['visible']) {
+                if ($project['visible'] && $project['customerVisible']) {
                     if ($kga['conf']['flip_project_display']) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
                         if ($kga['conf']['project_comment_flag']) {
@@ -119,7 +119,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
 	                if ($customer['visible']) {
 	                    $sel[$customer['customerID']] = $customer['name'];
 	                    if ($selection == $customer['customerID']) {
-	                    	                      $selectionFound = true;
+                            $selectionFound = true;
 	                    }
 	                }
 	            }
@@ -141,7 +141,6 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
                     }
                 );
             }
-
 
             foreach ($groups as $group) {
                 if ($includeDeleted || !$group['trash']) {
