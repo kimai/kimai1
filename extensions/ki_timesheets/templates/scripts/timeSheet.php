@@ -6,26 +6,24 @@ if ($this->timeSheetEntries)
         <div id="timeSheetTable">
         
           <table>
-              
             <colgroup>
-              <col class="option" />
-              <col class="date" />
-              <col class="from" />
-              <col class="to" />
-              <col class="time" />
-<?php if ($this->showRates): ?>
-              <col class="wage" />
-<?php endif; ?>
-              <col class="client" />
-              <col class="project" />
-              <col class="activity" />
-            <?php if ($this->showTrackingNumber) { ?>
-              <col class="description" />
-              <col class="trackingnumber" />
+                <col class="option" />
+                <col class="date" />
+                <col class="from" />
+                <col class="to" />
+                <col class="time" />
+            <?php if ($this->showRates) { ?>
+                <col class="wage" />
             <?php } ?>
-              <col class="username" />
+                <col class="client" />
+                <col class="project" />
+                <col class="activity" />
+                <col class="description" />
+            <?php if ($this->showTrackingNumber) { ?>
+                <col class="trackingnumber" />
+            <?php } ?>
+                <col class="username" />
             </colgroup>
-
             <tbody>
 
     <?php
@@ -193,13 +191,14 @@ if ($this->timeSheetEntries)
                 <?php endif; ?>
             </td>
 
-            <?php if ($this->showTrackingNumber) { ?>
             <td class="description <?php echo $tdClass; ?>" >
-              <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
+                <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
                 <?php if ($row['description']): ?>
-                <a href="#" onclick="$(this).blur();  return false;" ><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
-              <?php endif; ?>
+                    <a href="#" onclick="$(this).blur();  return false;" ><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+                <?php endif; ?>
             </td>
+
+            <?php if ($this->showTrackingNumber) { ?>
             <td class="trackingnumber <?php echo $tdClass; ?>">
                 <?php echo $this->escape($row['trackingNumber']) ?>
             </td>
@@ -258,13 +257,4 @@ else
                              <?php echo $this->latest_running_entry['projectID']?> ,'<?php echo $this->jsEscape($this->latest_running_entry['projectName'])?>',
                              <?php echo $this->latest_running_entry['activityID']?>,'<?php echo $this->jsEscape($this->latest_running_entry['activityName'])?>');
   <?php endif; ?>
-
-    function timesheet_hide_column(name) {
-        $('.'+name).hide();
-    }
-
-    <?php if (!$this->showTrackingNumber) { ?>
-        timesheet_hide_column('trackingnumber');
-    <?php } ?>
-
 </script>

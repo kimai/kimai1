@@ -298,7 +298,7 @@ return array(
     'editLimitError' => 'The end date is further in the past than it was allowed to be.',
     'hideClearedEntries' => 'hide cleared entries',
     'showCommentsByDefault' => 'show comments by default',
-    'showTrackingNumber' => 'show tracking number and description details in timesheet',
+    'showTrackingNumber' => 'show tracking number in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
     'defaultLocation' => 'Default location',
     'showQuickNote'	=> 'show quick note button',
@@ -511,6 +511,11 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'current' => "You are running the latest version :)"
     ),
 
-    "log_delete" => "log cleared",
+    'debug' => array(
+        'lines' => '(limited to %s lines)',
+        'logfile' => 'LOGFILE',
+        'clear' => 'Clear logfile',
+        'log_delete' => 'log cleared',
+    ),
 
 );

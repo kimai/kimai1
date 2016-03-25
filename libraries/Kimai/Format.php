@@ -77,9 +77,9 @@ class Kimai_Format
     {
         global $database, $kga;
 
-        $type = 2;
+        $type = 0;
         if (isset($kga['user'])) {
-            $type = $database->user_get_preference('ui.sublistAnnotations');
+            $type = $kga->getSettings()->getSublistAnnotationType();
         }
 
         $userIds = array_keys($ann);

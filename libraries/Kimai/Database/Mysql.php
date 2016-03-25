@@ -29,7 +29,7 @@ class Kimai_Database_Mysql
     /**
      * Kimai Global Array
      *
-     * @var array
+     * @var Kimai_Config
      */
     protected $kga;
 
@@ -83,6 +83,14 @@ class Kimai_Database_Mysql
     public function isConnected()
     {
         return $this->conn->IsConnected();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastError()
+    {
+        return $this->conn->Error();
     }
 
     /**
@@ -1533,7 +1541,7 @@ class Kimai_Database_Mysql
             }
         }
 
-        $numbers = array('status', 'trash', 'active', 'lastProject', 'lastActivity', 'lastRecord', 'globalRoleID');
+        $numbers = array('trash', 'active', 'lastProject', 'lastActivity', 'lastRecord', 'globalRoleID');
         foreach ($numbers as $key) {
             if (isset($data[$key])) {
                 $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
@@ -1629,7 +1637,7 @@ class Kimai_Database_Mysql
      * @return string value of the preference or null if there is no such preference
      * @author sl
      */
-    public function user_get_preference($key, $userId = null)
+    protected function user_get_preference($key, $userId = null)
     {
         if ($userId === null) {
             $userId = $this->kga['user']['userID'];
@@ -2023,28 +2031,6 @@ class Kimai_Database_Mysql
         $table = $this->kga['server_prefix'] . "statuses";
         $query = MySQL::BuildSQLDelete($table, $filter);
         return $this->conn->Query($query);
-    }
-
-    /**
-     * Returns all configuration variables
-     *
-     * @return array       array with the options from the configuration table
-     * @author th
-     */
-    public function configuration_get_data()
-    {
-        $table = $this->kga['server_prefix'] . "configuration";
-        $result = $this->conn->SelectRows($table);
-
-        $config_data = array();
-
-        $this->conn->MoveFirst();
-        while (!$this->conn->EndOfSeek()) {
-            $row = $this->conn->Row();
-            $config_data[$row->option] = $row->value;
-        }
-
-        return $config_data;
     }
 
     /**
@@ -2716,7 +2702,6 @@ class Kimai_Database_Mysql
      */
     public function checkUserInternal($kimai_user)
     {
-        global $translations;
         $p = $this->kga['server_prefix'];
 
         if (strncmp($kimai_user, 'customer_', 9) == 0) {
@@ -2744,11 +2729,7 @@ class Kimai_Database_Mysql
             }
         }
 
-        // load configuration and language
-        $this->get_global_config();
-
         $this->kga['timezone'] = $this->kga['defaultTimezone'];
-        $this->kga['conf']['showQuickNote'] = 0;
 
         // and add user or customer specific settings on top
         if (strncmp($kimai_user, 'customer_', 9) == 0) {
@@ -2758,46 +2739,36 @@ class Kimai_Database_Mysql
                     $this->kga['customer'][$key] = $value;
                 }
 
-                $this->kga['timezone'] = $this->kga['customer']['timezone'];
+                $this->kga->setTimezone($this->kga['customer']['timezone']);
             }
         } else {
             $configs = $this->get_user_config($userID);
             if ($configs !== null) {
-                foreach ($configs as $key => $value) {
-                    $this->kga['user'][$key] = $value;
-                }
+                $user = new Kimai_User($configs);
+                $user->setGroups($this->getGroupMemberships($userID));
+                $this->kga->setUser($user);
+                Kimai_Registry::setUser($user);
 
-                $this->kga['user']['groups'] = $this->getGroupMemberships($userID);
-                $this->kga['conf'] = array_merge(
-                    $this->kga['conf'],
-                    $this->user_get_preferences_by_prefix('ui.')
+                $this->kga->getSettings()->add(
+                    $this->user_get_preferences_by_prefix('ui.', $userID)
                 );
 
-                $userTimezone = $this->user_get_preference('timezone');
+                $userTimezone = $this->user_get_preference('timezone', $userID);
                 if ($userTimezone != '') {
-                    $this->kga['timezone'] = $userTimezone;
+                    $this->kga->setTimezone($userTimezone);
                 }
             }
         }
 
-        date_default_timezone_set($this->kga['timezone']);
+        date_default_timezone_set($this->kga->getTimezone());
 
         // skin fallback
-        $skin = isset($this->kga['skin']) ? $this->kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
-        if (isset($this->kga['conf']['skin']) && is_dir(WEBROOT . "/skins/" . $this->kga['conf']['skin'])) {
-            $skin = $this->kga['conf']['skin'];
+        if (!is_dir(WEBROOT . "/skins/" . $this->kga->getSettings()->getSkin())) {
+            $this->kga->getSettings()->setSkin($this->kga->getSkin());
         }
-        $this->kga['conf']['skin'] = $skin;
 
-        // importance of language override order from high to low: user, admin, autoconf
-        $language = $this->kga['language'];
-        if (!empty($this->kga['conf']['lang'])) {
-            $language = $this->kga['conf']['lang'];
-        } elseif (!empty($this->kga['conf']['language'])) {
-            $language = $this->kga['conf']['language'];
-        }
-        $translations->load($language);
-        $this->kga['language'] = $language;
+        // load user specific translation
+        Kimai_Registry::getTranslation()->addTranslations($this->kga->getLanguage());
 
         if (isset($this->kga['user'])) {
             return $this->kga['user'];
@@ -2807,34 +2778,34 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * write global configuration into $this->kga including defaults for user settings.
+     * Returns all configuration variables
      *
-     * @return array $this->kga
-     * @author th
+     * @return array with the options from the configuration table
      */
-    public function get_global_config()
+    public function configuration_get_data()
     {
-        // get values from global configuration
         $table = $this->kga['server_prefix'] . "configuration";
-        $this->conn->SelectRows($table);
+        $result = $this->conn->SelectRows($table);
+
+        $config_data = array();
 
         $this->conn->MoveFirst();
         while (!$this->conn->EndOfSeek()) {
             $row = $this->conn->Row();
-            $this->kga['conf'][$row->option] = $row->value;
+            $config_data[$row->option] = $row->value;
         }
 
-        $this->kga['conf']['rowlimit'] = 100;
-        $this->kga['conf']['skin'] = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
-        $this->kga['conf']['autoselection'] = 1;
-        $this->kga['conf']['quickdelete'] = 0;
-        $this->kga['conf']['flip_project_display'] = 0;
-        $this->kga['conf']['project_comment_flag'] = 0;
-        $this->kga['conf']['showIDs'] = 0;
-        $this->kga['conf']['noFading'] = 0;
-        $this->kga['conf']['lang'] = '';
-        $this->kga['conf']['user_list_hidden'] = 0;
-        $this->kga['conf']['hideClearedEntries'] = 0;
+        return $config_data;
+    }
+
+    /**
+     * Return all available status entries.
+     *
+     * @return array
+     */
+    public function status_get_all()
+    {
+        $status = array();
 
         $table = $this->kga['server_prefix'] . "statuses";
         $this->conn->SelectRows($table);
@@ -2842,8 +2813,9 @@ class Kimai_Database_Mysql
         $this->conn->MoveFirst();
         while (!$this->conn->EndOfSeek()) {
             $row = $this->conn->Row();
-            $this->kga['conf']['status'][$row->statusID] = $row->status;
+            $status[$row->statusID] = $row->status; // TODO translate me
         }
+        return $status;
     }
 
     /**
@@ -2858,15 +2830,15 @@ class Kimai_Database_Mysql
             return null;
         }
 
-        $table = $this->kga['server_prefix'] . "users";
-        $filter['apikey'] = MySQL::SQLValue($apikey, MySQL::SQLVALUE_TEXT);
-        $filter['trash'] = MySQL::SQLValue(0, MySQL::SQLVALUE_NUMBER);
+        $filter = array(
+            'apikey' => MySQL::SQLValue($apikey, MySQL::SQLVALUE_TEXT),
+            'trash' => MySQL::SQLValue(0, MySQL::SQLVALUE_NUMBER)
+        );
 
         // get values from user record
-        $columns[] = "userID";
-        $columns[] = "name";
+        $columns = array("userID", "name");
 
-        $this->conn->SelectRows($table, $filter, $columns);
+        $this->conn->SelectRows($this->getUserTable(), $filter, $columns);
         $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
         return $row['name'];
     }

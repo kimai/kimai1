@@ -35,7 +35,7 @@ if (!isset($_POST['name']) || is_array($_POST['name'])) {
 // =====================
 // = standard includes =
 // =====================
-require('includes/basics.php');
+require 'includes/basics.php';
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
@@ -43,11 +43,7 @@ $view->setBasePath(WEBROOT . '/templates');
 // =========================
 // = authentication method =
 // =========================
-$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-if (!class_exists($authClass)) {
-    $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-}
-$authPlugin = new $authClass($database, $kga);
+$authPlugin = Kimai_Registry::getAuthenticator();
 
 $view->assign('kga', $kga);
 
@@ -59,7 +55,7 @@ switch ($_REQUEST['a']) {
 
     case "forgotPassword":
         $name = htmlspecialchars(trim($name));
-    
+
         $is_customer = $database->is_customer_name($name);
 
         Kimai_Logger::logfile("password reset: " . $name . ($is_customer ? " as customer" : " as user"));

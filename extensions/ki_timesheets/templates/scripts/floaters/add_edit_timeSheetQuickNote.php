@@ -38,7 +38,7 @@
                                value='<?php echo $this->escape($this->location) ?>' maxlength='50' size='20'
                                tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
                     </li>
-                    <?php if ($this->kga['show_TrackingNr']): ?>
+                    <?php if ($this->kga->isTrackingNumberEnabled()): ?>
                         <li>
                             <label for="trackingNumber"><?php echo $this->kga['lang']['trackingNumber'] ?>:</label>
                             <input id='trackingNumber' type='text' name='trackingNumber'

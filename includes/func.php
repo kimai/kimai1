@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +36,7 @@ function checkUser()
         Kimai_Logger::logfile("Kicking user $kimai_user because of authentication key mismatch.");
         kickUser();
       } else {
-          $user = $database->checkUserInternal($kimai_user);
-          Kimai_Registry::setUser(new Kimai_User($user));
-          return $user;
+          return $database->checkUserInternal($kimai_user);
       }
     }
 
@@ -225,8 +223,10 @@ function random_number($length) {
  * @return array
  * @author th
  */
-function checkDBversion($path) {
-    global $kga, $database;
+function checkDBversion($path)
+{
+    $database = Kimai_Registry::getDatabase();
+    $config = Kimai_Registry::getConfig();
 
     // check for versions before 0.7.13r96
     $installedVersion = $database->get_DBversion();
@@ -235,24 +235,18 @@ function checkDBversion($path) {
 
     if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
       // fresh install
-      header("Location: $path/installer");
+      header("Location: $path/installer/");
       exit;
     }
 
-    if ($checkVersion != $kga['version']) {
-        header("Location: $path/updater/updater.php");
-        exit;
-    }
-
-    // the check for revision is much simpler ...
-    if ((int)$installedVersion[1] < (int)$kga['revision']) {
+    if ($checkVersion != $config->getVersion() || (int)$installedVersion[1] < $config->getRevision()) {
         header("Location: $path/updater/updater.php");
         exit;
     }
 }
 
-function convert_time_strings($in, $out) {
-
+function convert_time_strings($in, $out)
+{
     $explode_in  = explode("-", $in);
     $explode_out = explode("-", $out);
 
@@ -338,6 +332,7 @@ function write_config_file($database, $hostname, $username, $password, $prefix, 
     $skin = !empty($kga['skin']) ? $kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
     $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
     $authenticator = !empty($kga['authenticator']) ? $kga['authenticator'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
+    $lang = !empty($lang) ? $lang : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
 
 $config = <<<EOD
 <?php
@@ -420,6 +415,7 @@ function get_timeframe() {
 /**
  * @param string $haystack
  * @param string $needle
+ * @return bool
  */
 function endsWith($haystack, $needle) {
   return strcmp(substr($haystack, strlen($haystack) - strlen($needle)), $needle) === 0;
