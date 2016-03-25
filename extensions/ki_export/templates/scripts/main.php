@@ -27,7 +27,7 @@
                 <a onclick="export_toggle_column('budget');" title="<?php echo $this->kga['lang']['budget'] ?>"><?php echo $this->ellipsis($this->kga['lang']['budget'], 5) ?></a>
             </td>
             <td class="approved <?php if (isset($this->disabled_columns['approved'])): ?>disabled<?php endif; ?>">
-                <a onclick="export_toggle_column('approved');" title="<?php echo $this->kga['lang']['approved'] ?>"><?php echo $this->ellipsis($this->kga['lang']['approved'], 5) ?></a>
+                <a onclick="export_toggle_column('approved');" title="<?php echo $this->kga['lang']['approved'] ?>"><?php echo $this->ellipsis($this->kga['lang']['approved'], 4) ?></a>
             </td>
             <td class="status <?php if (isset($this->disabled_columns['status'])): ?>disabled<?php endif; ?>">
                 <a onclick="export_toggle_column('status');" title="<?php echo $this->kga['lang']['status'] ?>"><?php echo $this->ellipsis($this->kga['lang']['status'], 4) ?></a>
