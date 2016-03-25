@@ -31,7 +31,7 @@
           return false;
         });
 
-        $("#loginButton").click(function() {
+        $("#loginButton").click(function(event) {
           requestData['password'] = $("#password").val();
           event.preventDefault();
           $.ajax({
