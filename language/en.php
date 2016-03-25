@@ -67,7 +67,6 @@ return array(
     "new_activity" => "add activity",
     "day_summary" => "Time summary",
     "plzChoose" => "please select",
-    "noEntries" => "No tracking entries for the specified time period...",
     "recordAgain" => "Record this recording again",
     "comment" => "Comment",
     "location" => "Location",

@@ -63,7 +63,6 @@ return array(
     "new_activity" => "tilføj opgave",
     "day_summary" => "Tidsresummé",
     "plzChoose" => "vælg venligst",
-    "noEntries" => "Ingen registrerede posteringer for det angivne tidsrum...",
     "recordAgain" => "Registrer denne opgave igen",
     "comment" => "Kommentar",
     "location" => "Sted",

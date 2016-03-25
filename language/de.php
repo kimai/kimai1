@@ -65,7 +65,6 @@ return array(
     "new_activity" => "Tätigkeit hinzufügen",
     "day_summary" => "Tageserfassung",
     "plzChoose" => "bitte auswählen",
-    "noEntries" => "Keine Messungen für den angegebenen Zeitraum vorhanden...",
     "recordAgain" => "Dieses Ereignis erneut aufnehmen",
     "comment" => "Kommentar",
     "location" => "Ort",

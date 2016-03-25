@@ -63,7 +63,6 @@ return array(
     "new_activity" => "aggiungi evento",
     "day_summary" => "Riassunto ore",
     "plzChoose" => "Prego selezionare",
-    "noEntries" => "Ancora nessuna registrazione...",
     "recordAgain" => "Salva l'evento di nuovo",
     "comment" => "Commento",
     "location" => "Location",

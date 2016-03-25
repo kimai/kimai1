@@ -67,7 +67,6 @@ return array(
     "new_evt" => "agregar evento",
     "day_summary" => "Sumario de Tiempo",
     "plzChoose" => "seleccionar",
-    "noEntries" => "No hay entradas...",
     "recordAgain" => "Guardar este evento nuevamente",
     "comment" => "Comentario",
     "zlocation" => "Ubicación",

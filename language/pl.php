@@ -63,7 +63,6 @@ return array(
     "new_activity" => "Dodaj zadanie",
     "day_summary" => "Podsumowanie czasu",
     "plzChoose" => "wybierz",
-    "noEntries" => "Brak wpisów w zadanym okresie czasu...",
     "recordAgain" => "Wprowadź ponownie to zdarzenie",
     "comment" => "Notatka",
     "location" => "Lokalizacja",

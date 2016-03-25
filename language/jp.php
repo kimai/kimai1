@@ -66,7 +66,6 @@ return array(
 	"new_activity" => "タスク追加",
 	"day_summary" => "時間概要",
 	"plzChoose" => "選択してください",
-	"noEntries" => "指定してる期間にエントリーがない...",
 	"recordAgain" => "このイベントをもう一度記録する",
 	"comment" => "コメント",
 	"location" => "場所",

@@ -74,7 +74,6 @@ return array(
     "new_activity" => "Ny oppgave",
     "day_summary" => "Total tid",
     "plzChoose" => "Velg her",
-    "noEntries" => "Finner ikke søkeresultat for den angitt tidsperioden...",
     "recordAgain" => "Registrer denne oppgaven på nytt",
     "comment" => "Kommentar",
     "location" => "Sted",

@@ -65,7 +65,6 @@ return array(
     "new_activity" => "Lisan uue töö",
     "day_summary" => "Aja kokkuvõte",
     "plzChoose" => "Palun valige",
-    "noEntries" => "Valitud ajavahemikus ei ole salvestatud kirjeid...",
     "recordAgain" => "Salvestan selle tegevuse uuesti",
     "comment" => "Kommentaar",
     "location" => "Koht",
