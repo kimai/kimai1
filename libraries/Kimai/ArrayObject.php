@@ -18,7 +18,7 @@
  */
 
 /**
- * Class Kimai_ArrayObject
+ * Base class for all ArrayObjects in Kimai.
  */
 class Kimai_ArrayObject extends \ArrayObject
 {
