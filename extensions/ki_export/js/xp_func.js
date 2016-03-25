@@ -183,23 +183,26 @@ function export_extension_set_TableWidths() {
 
 	$("#export_head > table").css("width", "100%");
 
-
-	$("#export_head > table > tbody > tr > td.time").css("width", $("div#xp > div > table > tbody > tr > td.time").width());
-	$("#export_head > table > tbody > tr > td.wage").css("width", $("div#xp > div > table > tbody > tr > td.wage").width());
-	$("#export_head > table > tbody > tr > td.rate").css("width", $("div#xp > div > table > tbody > tr > td.rate").width());
-	$("#export_head > table > tbody > tr > td.billable").css("width", $("div#xp > div > table > tbody > tr > td.billable").width());
-	$("#export_head > table > tbody > tr > td.status").css("width", $("div#xp > div > table > tbody > tr > td.status").width());
-	$("#export_head > table > tbody > tr > td.budget").css("width", $("div#xp > div > table > tbody > tr > td.budget").width());
-	$("#export_head > table > tbody > tr > td.approved").css("width", $("div#xp > div > table > tbody > tr > td.approved").width());
-	$("#export_head > table > tbody > tr > td.customer").css("width", $("div#xp > div > table > tbody > tr > td.customer").width());
-	$("#export_head > table > tbody > tr > td.project").css("width", $("div#xp > div > table > tbody > tr > td.project").width());
-	$("#export_head > table > tbody > tr > td.activity").css("width", $("div#xp > div > table > tbody > tr > td.activity").width());
-	$("#export_head > table > tbody > tr > td.description").css("width", $("div#xp > div > table > tbody > tr > td.description").width());
-	$("#export_head > table > tbody > tr > td.moreinfo").css("width",
-		$("div#xp > div > table > tbody > tr > td.comment").width() +
-		$("div#xp > div > table > tbody > tr > td.location").width() +
-		$("div#xp > div > table > tbody > tr > td.trackingNumber").width()
-	);
+	$("#export_head > table > tbody > tr > td.date").css("width", 		$("div#xp > div > table > tbody > tr > td.date").width());
+	$("#export_head > table > tbody > tr > td.from").css("width", 		$("div#xp > div > table > tbody > tr > td.from").width());
+	$("#export_head > table > tbody > tr > td.to").css("width", 		$("div#xp > div > table > tbody > tr > td.to").width());
+	$("#export_head > table > tbody > tr > td.time").css("width", 		$("div#xp > div > table > tbody > tr > td.time").width());
+	$("#export_head > table > tbody > tr > td.dec_time").css("width", 	$("div#xp > div > table > tbody > tr > td.dec_time").width());
+	$("#export_head > table > tbody > tr > td.rate").css("width", 		$("div#xp > div > table > tbody > tr > td.rate").width());
+	$("#export_head > table > tbody > tr > td.wage").css("width", 		$("div#xp > div > table > tbody > tr > td.wage").width());
+	$("#export_head > table > tbody > tr > td.budget").css("width", 	$("div#xp > div > table > tbody > tr > td.budget").width());
+	$("#export_head > table > tbody > tr > td.approved").css("width", 	$("div#xp > div > table > tbody > tr > td.approved").width());
+	$("#export_head > table > tbody > tr > td.status").css("width", 	$("div#xp > div > table > tbody > tr > td.status").width());
+	$("#export_head > table > tbody > tr > td.billable").css("width",	$("div#xp > div > table > tbody > tr > td.billable").width());
+	$("#export_head > table > tbody > tr > td.customer").css("width", 	$("div#xp > div > table > tbody > tr > td.customer").width());
+	$("#export_head > table > tbody > tr > td.project").css("width", 	$("div#xp > div > table > tbody > tr > td.project").width());
+	$("#export_head > table > tbody > tr > td.activity").css("width", 	$("div#xp > div > table > tbody > tr > td.activity").width());
+	$("#export_head > table > tbody > tr > td.description").css("width",$("div#xp > div > table > tbody > tr > td.description").width());
+	$("#export_head > table > tbody > tr > td.comment").css("width", 	$("div#xp > div > table > tbody > tr > td.comment").width());
+	$("#export_head > table > tbody > tr > td.location").css("width", 	$("div#xp > div > table > tbody > tr > td.location").width());
+	$("#export_head > table > tbody > tr > td.trackingNumber").css("width", $("div#xp > div > table > tbody > tr > td.trackingNumber").width());
+	$("#export_head > table > tbody > tr > td.user").css("width", 		$("div#xp > div > table > tbody > tr > td.user").width());
+	$("#export_head > table > tbody > tr > td.cleared").css("width", 	$("div#xp > div > table > tbody > tr > td.cleared").width() + scr);
 }
 
 function export_extension_tab_changed() {
