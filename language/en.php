@@ -175,6 +175,8 @@ return array(
     "nopassword" => "No password",
     "noItems" => "no Entries",
     "DBname" => "Name of database",
+    "DBbackup" => "Database Backup Utility",
+    "DButf8" => "UTF-8 activated",
     "autoselection" => "Autoselection",
     "openAfterRecorded" => "Open entry after the recording was stopped",
     "quickdelete" => "Option to delete entries from within tables",
