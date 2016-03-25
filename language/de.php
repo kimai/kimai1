@@ -91,6 +91,7 @@ return array(
     "passwordTooShort" => "Das eingegebene Passwort hat nicht mindestens 5 Zeichen.",
     "forgotPassword" => "Passwort vergessen",
     "passwordReset" => array(
+        "button" => "Passwort zurücksetzen",
         "notSupported" => "Das aktuelle Authentifizierungsplugin unterstützt kein Zurücksetzen des Passworts.",
         "instructions" => "Geben Sie Ihren Benutzernamen ein und eine Mail mit einem Link wird an die hinterlegte Mail-Adresse versendet. Achten Sie auf eine korrekte Eingabe, da Fehleingaben nicht angezeigt werden.",
         "mailSubject" => "Kimai - Passwort zurücksetzen",
