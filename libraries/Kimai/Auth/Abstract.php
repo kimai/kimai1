@@ -58,9 +58,9 @@ abstract class Kimai_Auth_Abstract
     }
 
     /**
-     * @param array $kga
+     * @param $kga
      */
-    public function setKga(array $kga)
+    public function setKga($kga)
     {
         $this->kga = $kga;
     }

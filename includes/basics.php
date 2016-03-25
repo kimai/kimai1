@@ -44,40 +44,152 @@ if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
 ini_set('display_errors', '0');
 
 require_once WEBROOT . '/libraries/autoload.php';
-require_once WEBROOT . 'includes/autoconf.php';
-require_once WEBROOT . 'includes/vars.php';
 require_once WEBROOT . 'includes/func.php';
 
+// The $kga (formerly Kimai Global Array) is initialized here
+// It was replaced by an proxy object, but by now it is still used everywhere as array
+require_once WEBROOT . 'includes/autoconf.php';
+$kga = new Kimai_Config(array(
+    'server_prefix' => $server_prefix,
+    'server_hostname' => $server_hostname,
+    'server_database' => $server_database,
+    'server_username' => $server_username,
+    'server_password' => $server_password,
+    'defaultTimezone' => $defaultTimezone,
+    'password_salt' => isset($password_salt) ? $password_salt : ''
+));
+
+include WEBROOT . 'includes/version.php';
+
+// write vars from autoconf.php into kga
+if (isset($language))       { $kga->set('language', $language); }
+if (isset($authenticator))  { $kga->set('authenticator', $authenticator); }
+if (isset($billable))       { $kga->set('billable', $billable); }
+if (isset($skin))           { $kga->set('skin', $skin); }
+
+$cleanup = array(
+    'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
+    'language', 'password_salt', 'authenticator', 'defaultTimezone', 'billable', 'skin'
+);
+
+date_default_timezone_set($defaultTimezone);
+
+foreach ($cleanup as $varName) {
+    if (isset($$varName)) {
+        unset($$varName);
+    }
+}
+
+unset($cleanup);
+
+Kimai_Registry::setConfig($kga);
+
+// ============ setup database ============
+// we do not unset the $database variable
+// as it is historically referenced in many places by from the global namespace
 $database = new Kimai_Database_Mysql($kga, true);
 if (!$database->isConnected()) {
-    die('Kimai could not connect to database. Check your autoconf.php.');
+    die('Kimai could not connect to database, check autoconf.php: '.$database->getLastError());
 }
 Kimai_Registry::setDatabase($database);
 
-global $translations;
-$translations = new Kimai_Translations($kga);
-if ($kga['language'] != 'en') {
-    $translations->load($kga['language']);
-}
 
-$vars = $database->configuration_get_data();
-if (!empty($vars)) {
-    $kga['currency_name'] = $vars['currency_name'];
-    $kga['currency_sign'] = $vars['currency_sign'];
-    $kga['show_sensible_data'] = $vars['show_sensible_data'];
-    $kga['show_update_warn'] = $vars['show_update_warn'];
-    $kga['check_at_startup'] = $vars['check_at_startup'];
-    $kga['show_daySeperatorLines'] = $vars['show_daySeperatorLines'];
-    $kga['show_gabBreaks'] = $vars['show_gabBreaks'];
-    $kga['show_RecordAgain'] = $vars['show_RecordAgain'];
-    $kga['show_TrackingNr'] = $vars['show_TrackingNr'];
-    $kga['date_format'][0] = $vars['date_format_0'];
-    $kga['date_format'][1] = $vars['date_format_1'];
-    $kga['date_format'][2] = $vars['date_format_2'];
-    $kga['date_format'][3] = $vars['date_format_3'];
-    if ($vars['language'] != '') {
-        $kga['language'] = $vars['language'];
-    } elseif ($kga['language'] == '') {
-        $kga['language'] = 'en';
+// ============ setup authenticator ============
+$auth = $kga->get('authenticator');
+$authClass = 'Kimai_Auth_' . ucfirst($auth);
+if (!class_exists($authClass)) {
+    $authClass = 'Kimai_Auth_Kimai';
+}
+$authPlugin = new $authClass($database, $kga);
+Kimai_Registry::setAuthenticator($authPlugin);
+unset($authPlugin);
+
+// ============ load global configurations ============
+$diffs = array(); // FIXME remove me after configs are cleared up
+$allConf = $database->configuration_get_data();
+if (!empty($allConf))
+{
+    foreach($allConf as $key => $value) {
+        switch($key)
+        {
+            // TODO get rid of date_format array, use plain values only!
+            case 'date_format_0';
+                $kga['date_format'][0] = $value;
+                $kga->set($key, $value);
+                break;
+            case 'date_format_1';
+                $kga['date_format'][1] = $value;
+                $kga->set($key, $value);
+                break;
+            case 'date_format_2';
+                $kga['date_format'][2] = $value;
+                $kga->set($key, $value);
+                break;
+            case 'date_format_3';
+                $kga['date_format'][3] = $value;
+                $kga->set($key, $value);
+                break;
+
+            case 'language';
+                if (!empty($value)) {
+                    $kga->set($key, $value);
+                }
+                break;
+
+            case 'currency_name':
+            case 'currency_sign':
+            case 'show_sensible_data':
+            case 'show_update_warn':
+            case 'check_at_startup':
+            case 'show_daySeperatorLines':
+            case 'show_gabBreaks':
+            case 'show_RecordAgain':
+            case 'show_TrackingNr':
+            case 'adminmail':
+            case 'revision':
+            case 'version':
+                $kga->set($key, $value);
+                break;
+
+            // FIXME remove me after configs are cleared up
+            default:
+                $diffs[$key] = $value;
+        }
+
+        // TODO this is currently backward compatibility, we need to cleanup the config namespaces:
+        // settings which can be overwritten by the user belong to => $kga->getSettings()
+        // global configs, which are "owned" by admins only belong into => $kga
+        /*
+            ["allowRoundDown"]
+            ["currency_first"]
+            ["decimalSeparator"]
+            ["defaultStatusID"]
+            ["defaultVat"]
+            ["durationWithSeconds"]
+            ["editLimit"]
+            ["exactSums"]
+            ["login"]
+            ["loginBanTime"] ["loginTries"]
+            ["roundPrecision"]
+            ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
+
+        */
+
+        $kga->getSettings()->set($key, $value);
     }
 }
+unset($allConf);
+// FIXME remove me after configs are cleared up
+//echo '<pre>';var_dump($diffs);exit;
+
+// ============ status entries ============
+$kga['conf']['status'] = $database->status_get_all();
+
+// ============ setup translation object ============
+$service = new Kimai_Translation_Service();
+Kimai_Registry::setTranslation(
+    $service->load(
+        $kga->getLanguage()
+    )
+);
+unset($service);

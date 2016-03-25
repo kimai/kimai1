@@ -108,9 +108,9 @@ $view->assign('showOverlapLines', false);
 $view->assign('showTrackingNumber', false);
 
 if (isset($kga['user'])) {
-    $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
-    $view->assign('showOverlapLines', $database->user_get_preference('ui.hideOverlapLines') != 1);
-    $view->assign('showTrackingNumber', $database->user_get_preference('ui.showTrackingNumber') != 0);
+    $view->assign('hideComments', !$kga->getSettings()->isShowComments());
+    $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
+    $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
 }
 
 $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));

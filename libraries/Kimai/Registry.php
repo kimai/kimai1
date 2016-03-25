@@ -9,21 +9,21 @@ class Kimai_Registry extends Zend_Registry
     /**
      * Sets the configuration to use.
      *
-     * @param Zend_Config $config
+     * @param Kimai_Config $config
      */
-    public static function setConfig(Zend_Config $config)
+    public static function setConfig(Kimai_Config $config)
     {
-        self::set('Zend_Config', $config);
+        self::set('Kimai_Config', $config);
     }
 
     /**
      * Return the global configuration, merged with all user related configurations.
      *
-     * @return Zend_Config
+     * @return Kimai_Config
      */
     public static function getConfig()
     {
-        return self::get('Zend_Config');
+        return self::get('Kimai_Config');
     }
 
     /**
@@ -62,5 +62,38 @@ class Kimai_Registry extends Zend_Registry
     public static function getUser()
     {
         return self::get('Kimai_User');
+    }
+
+    /**
+     * @param Kimai_Auth_Abstract $authenticator
+     */
+    public static function setAuthenticator(Kimai_Auth_Abstract $authenticator)
+    {
+        self::set('Kimai_Auth', $authenticator);
+    }
+
+    /**
+     * @return Kimai_Auth_Abstract
+     */
+    public static function getAuthenticator()
+    {
+        return self::get('Kimai_Auth');
+    }
+
+    /**
+     * @param Kimai_Translation_Data $translation
+     */
+    public static function setTranslation(Kimai_Translation_Data $translation)
+    {
+        self::getConfig()->setTranslation($translation);
+        self::set('Kimai_Translation', $translation);
+    }
+
+    /**
+     * @return Kimai_Translation_Data
+     */
+    public static function getTranslation()
+    {
+        return self::get('Kimai_Translation');
     }
 }

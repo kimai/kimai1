@@ -36,7 +36,7 @@
         
         <fieldset class="adminPanel_extension_advanced">
             <div>
-                <input type="text" name="adminmail" size="20" value="<?php echo $this->escape($this->kga['conf']['adminmail']) ?>" class="formfield"> <?php echo $this->kga['lang']['adminmail']?>
+                <input type="text" name="adminmail" size="20" value="<?php echo $this->escape($this->kga->getAdminEmail()) ?>" class="formfield"> <?php echo $this->kga['lang']['adminmail']?>
             </div>
             <div>
                 <input type="text" name="logintries" size="2" value="<?php echo $this->escape($this->kga['conf']['loginTries']) ?>" class="formfield"> <?php echo $this->kga['lang']['logintries']?>
@@ -79,7 +79,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="show_TrackingNr" <?php if ($this->kga['show_TrackingNr']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_TrackingNr']?>
+               <input type="checkbox" name="show_TrackingNr" <?php if ($this->kga->isTrackingNumberEnabled()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_TrackingNr']?>
             </div>
 
             <div>

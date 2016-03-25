@@ -146,7 +146,7 @@ switch ($axAction)
         $view->assign('activity_annotations', array());
 
         if (isset($kga['user'])) {
-            $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+            $view->assign('hideComments', !$kga->getSettings()->isShowComments());
         } else {
             $view->assign('hideComments', true);
         }

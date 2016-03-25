@@ -40,17 +40,13 @@ if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
 
 
 // standard includes
-require('includes/basics.php');
+require 'includes/basics.php';
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
 // authentication method
-$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-if (!class_exists($authClass)) {
-    $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-}
-$authPlugin = new $authClass($database, $kga);
+$authPlugin = Kimai_Registry::getAuthenticator();
 
 $view->assign('kga', $kga);
 

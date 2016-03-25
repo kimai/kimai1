@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -227,7 +227,8 @@ function random_number($length)
  */
 function checkDBversion($path)
 {
-    global $kga, $database;
+    $database = Kimai_Registry::getDatabase();
+    $config = Kimai_Registry::getConfig();
 
     // check for versions before 0.7.13r96
     $installedVersion = $database->get_DBversion();
@@ -236,17 +237,11 @@ function checkDBversion($path)
 
     if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
         // fresh install
-        header("Location: $path/installer");
+        header("Location: $path/installer/");
         exit;
     }
 
-    if ($checkVersion != $kga['version']) {
-        header("Location: $path/updater/updater.php");
-        exit;
-    }
-
-    // the check for revision is much simpler ...
-    if ((int)$installedVersion[1] < (int)$kga['revision']) {
+    if ($checkVersion != $config->getVersion() || (int)$installedVersion[1] < $config->getRevision()) {
         header("Location: $path/updater/updater.php");
         exit;
     }
@@ -345,6 +340,7 @@ function write_config_file($database, $hostname, $username, $password, $prefix, 
     $skin = !empty($kga['skin']) ? $kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
     $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
     $authenticator = !empty($kga['authenticator']) ? $kga['authenticator'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
+    $lang = !empty($lang) ? $lang : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
 
     $config = <<<EOD
 <?php

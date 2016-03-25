@@ -159,7 +159,7 @@ $model->setInvoiceId($invoiceID);
 $model->setBeginDate($beginDate);
 $model->setEndDate($endDate);
 $model->setInvoiceDate(time());
-$model->setDateFormat($kga['conf']['date_format_2']);
+$model->setDateFormat($kga['conf']['date_format'][2]);
 $model->setCurrencySign($kga['conf']['currency_sign']);
 $model->setCurrencyName($kga['conf']['currency_name']);
 $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));

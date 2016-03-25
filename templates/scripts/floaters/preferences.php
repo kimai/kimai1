@@ -120,10 +120,12 @@
                         <label for="showCommentsByDefault"></label>
                         <?php echo $this->formCheckbox('showCommentsByDefault', '1', array('checked' => isset($this->kga['conf']['showCommentsByDefault']) && $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault'] ?>
                     </li>
+                    <?php if ($this->kga->isTrackingNumberEnabled()) { ?>
                     <li>
                         <label for="showTrackingNumber"></label>
-                        <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => isset($this->kga['conf']['showTrackingNumber']) && $this->kga['conf']['showTrackingNumber'])), $this->kga['lang']['showTrackingNumber'] ?>
+                        <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => $this->kga->getSettings()->isShowTrackingNumber())), $this->kga['lang']['showTrackingNumber'] ?>
                     </li>
+                    <?php } ?>
                     <li>
                         <label for="hideOverlapLines"></label>
                         <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines'] ?>
