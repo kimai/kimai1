@@ -2384,9 +2384,9 @@ class Kimai_Database_Mysql
         }
 
         if ($this->kga['conf']['flip_project_display']) {
-            $query .= " ORDER BY project.visible DESC, customerName, name;";
+            $query .= " ORDER BY project.visible DESC, customer.visible DESC, customerName, name;";
         } else {
-            $query .= " ORDER BY project.visible DESC, name, customerName;";
+            $query .= " ORDER BY project.visible DESC, customer.visible DESC, name, customerName;";
         }
 
         $result = $this->conn->Query($query);
@@ -3066,7 +3066,14 @@ class Kimai_Database_Mysql
         return array();
     }
 
-    ## Load into Array: Activities
+    /**
+     * Get all available activities.
+     *
+     * This is either a list of all or a list of all for the given groups.
+     *
+     * @param array|null $groups
+     * @return array|bool
+     */
     public function get_activities(array $groups = null)
     {
         $p = $this->kga['server_prefix'];
@@ -3103,9 +3110,9 @@ class Kimai_Database_Mysql
                 $i++;
             }
             return $arr;
-        } else {
-            return array();
         }
+
+        return array();
     }
 
     /**
@@ -3166,9 +3173,8 @@ class Kimai_Database_Mysql
                 $arr[$row->activityID]['effort'] = $row->effort;
             }
             return $arr;
-        } else {
-            return array();
         }
+        return array();
     }
 
     /**
