@@ -6,6 +6,7 @@ table td {
     font-size: 11px;
 }
 
+td span.hidden,
 td.hidden {
     color:#bbb;
 }

@@ -2,6 +2,7 @@
     background-image: url('grfx/g3_table_header.png');
 }
 
+td span.hidden,
 td.hidden {
     color:#bbb;
 }
