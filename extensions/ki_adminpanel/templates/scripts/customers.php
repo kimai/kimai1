@@ -3,10 +3,10 @@
 <table>
 	<thead>
 		<tr class="headerrow">
-			<th><?php echo $this->kga['lang']['options']?></th>
-			<th><?php echo $this->kga['lang']['customer']?></th>
+			<th width="80px"><?php echo $this->kga['lang']['options']?></th>
+			<th width="25%"><?php echo $this->kga['lang']['customer']?></th>
 			<th><?php echo $this->kga['lang']['contactPerson']?></th>
-			<th><?php echo $this->kga['lang']['groups']?></th>
+			<th width="25%"><?php echo $this->kga['lang']['groups']?></th>
 		</tr>
 	</thead>
 	<tbody>

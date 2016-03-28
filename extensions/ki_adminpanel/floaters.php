@@ -22,8 +22,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates";
 require '../../includes/kspi.php';
 
-$settings = parse_ini_file("config.ini");
-
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');
 
@@ -50,7 +48,7 @@ switch ($axAction) {
             $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
 
-        $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
+        $groups = $database->get_groups();
         if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
             $view->assign('groups', $groups);
         } else {
