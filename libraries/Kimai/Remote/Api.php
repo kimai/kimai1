@@ -347,9 +347,11 @@ class Kimai_Remote_Api
         $user = $this->getUser();
         $kga = $this->getKimaiEnv();
         if (isset($kga['customer'])) {
-            return array(
-                'customerID' => $kga['customer']['customerID'], 'ame' => $kga['customer']['name']
-            );
+            return $this->getSuccessResult(array(
+                'customerID' => $kga['customer']['customerID'],
+                'name' => $kga['customer']['name'],
+                'visible' => 1
+            ));
         }
 
         $customers = $this->getBackend()->get_customers($user['groups']);
@@ -357,7 +359,11 @@ class Kimai_Remote_Api
         if (count($customers) > 0) {
             $results = array();
             foreach ($customers as $row) {
-                $results[] = array('customerID' => $row['customerID'], 'name' => $row['name'], 'visible' => $row['visible']);
+                $results[] = array(
+                    'customerID' => $row['customerID'],
+                    'name' => $row['name'],
+                    'visible' => $row['visible']
+                );
             }
             return $this->getSuccessResult($results);
         }
