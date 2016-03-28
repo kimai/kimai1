@@ -4814,7 +4814,10 @@ class Kimai_Database_Mysql
 
         $result = $this->conn->RowCount() > 0;
 
+        /*
+        // TODO should we add a setting for debugging permissions?
         Kimai_Logger::logfile("Global role $roleID gave " . ($result ? 'true' : 'false') . " for $permission.");
+        */
         return $result;
     }
 
