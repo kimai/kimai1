@@ -12,9 +12,10 @@
 <table>
 	<thead>
 		<tr class="headerrow">
-			<th><?php echo $this->kga['lang']['options']?></th>
-			<th><?php echo $this->kga['lang']['activity']?></th>
-			<th><?php echo $this->kga['lang']['groups']?></th>
+			<th width="80px"><?php echo $this->kga['lang']['options']?></th>
+			<th width="25%"><?php echo $this->kga['lang']['activity']?></th>
+			<th><?php echo $this->kga['lang']['projects']?></th>
+			<th width="25%"><?php echo $this->kga['lang']['groups']?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -23,7 +24,7 @@
 	{
 		?>
 		<tr>
-			<td nowrap colspan="3"><?php echo $this->error(); ?></td>
+			<td nowrap colspan="4"><?php echo $this->error(); ?></td>
 		</tr>
 		<?php
 	}
@@ -43,6 +44,21 @@
 				</td>
 				<td class="activities <?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($activity['name']); ?>
+				</td>
+				<td>
+					<?php
+					$activityProjects = array();
+					foreach($this->projects as $project) {
+						if (in_array($project['projectID'], $activity['projects'])) {
+							$name = $this->escape($project['name']) . ' (' . $this->escape($this->ellipsis($project['customerName'], 30)) . ')';
+							if ($project['visible'] != 1 || $project['customerVisible'] != 1) {
+								$name = '<span class="hidden">'.$name.'</span>';
+							}
+							$activityProjects[] = $name;
+						}
+					}
+					echo implode(', ', $activityProjects);
+					?>
 				</td>
 				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($activity['groups']); ?>
