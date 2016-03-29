@@ -37,7 +37,6 @@ $projects = $this->filterListEntries($this->projects);
             </td>
 
             <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onclick="buzzer_preselect_project(<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); lists_reload('activity'); return false;">
-                <?php if ($project['visible'] != 1): ?><span style="color:#bbb"><?php endif; ?>
                 <?php if ($this->kga['conf']['flip_project_display']): ?>
                     <?php if ($this->kga['conf']['showIDs'] == 1): ?>
                       <span class="ids"><?php echo $project['projectID']?></span>
@@ -64,7 +63,6 @@ $projects = $this->filterListEntries($this->projects);
                         <span class="lighter">(<?php echo $this->escape($this->truncate($project['customerName'],30,'...')) ?>)</span>
                     <?php endif; ?>
                 <?php endif; ?>
-                <?php if ($project['visible'] != 1): ?></span><?php endif; ?>
             </td>
             <td nowrap class="annotation"></td>
           </tr>

@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@
 // insert KSPI
 $isCoreProcessor = 1;
 $dir_templates = "templates/scripts/"; // folder of the template files
-require("../includes/kspi.php");
-
+require "../includes/kspi.php";
 
 switch ($axAction) {
 
@@ -135,7 +134,7 @@ switch ($axAction) {
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-user-add')) {
-                                $view->selectedGroups[] = $group;
+                   $view->selectedGroups[] = $group;
                }
             }
             $view->id = 0;
@@ -150,17 +149,17 @@ switch ($axAction) {
     case 'add_edit_project':
         $oldGroups = array();
         if ($id) {
-                  $oldGroups = $database->project_get_groupIDs($id);
+            $oldGroups = $database->project_get_groupIDs($id);
         }
 
         if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) {
             die();
         }
- 
-        $view->customers = makeSelectBox("customer", $kga['user']['groups'], isset($data) ? $data['customerID'] : null);
+
+        $view->customers = makeSelectBox("customer", $kga['user']['groups'], (isset($data) ? $data['customerID'] : null));
         $view->groups = makeSelectBox("group", $kga['user']['groups']);
         $view->allActivities = $database->get_activities($kga['user']['groups']);
-
+ 
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
@@ -181,13 +180,15 @@ switch ($axAction) {
                 $view->id = $id;
 
                 if (!isset($view->customers[$data['customerID']])) {
-                  // add the currently assigned customer to the list although the user is in no group to see him
-                  $customerData = $database->customer_get_data($data['customerID']);
-                  $view->customers[$data['customerID']] = $customerData['name'];
+                    // add the currently assigned customer to the list although
+                    // a) the user is in no group to see him
+                    // b) the customer is hidden
+                    $customerData = $database->customer_get_data($data['customerID']);
+                    $view->customers[$data['customerID']] = $customerData['name'];
                 }
             }
         }
-        
+
         if (!isset($view->id)) {
           $view->selectedActivities = array();
           $view->internal = false;
@@ -199,7 +200,7 @@ switch ($axAction) {
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-project-add')) {
-                                $view->selectedGroups[] = $group;
+                    $view->selectedGroups[] = $group;
                }
             }
 
@@ -216,12 +217,14 @@ switch ($axAction) {
     case 'add_edit_activity':
         $oldGroups = array();
         if ($id) {
-                  $oldGroups = $database->activity_get_groupIDs($id);
+          $oldGroups = $database->activity_get_groupIDs($id);
         }
 
         if (!checkGroupedObjectPermission('Activity', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) {
             die();
         }
+
+        $selectedProjects = array();
 
         if ($id) {
             $data = $database->activity_get_data($id);
@@ -234,17 +237,17 @@ switch ($axAction) {
                 $view->myRate       = $data['myRate'];
                 $view->fixedRate    = $data['fixedRate'];
                 $view->selectedGroups = $database->activity_get_groups($id);
-                $view->selectedProjects = $database->activity_get_projects($id);
+                $selectedProjects = $database->activity_get_projects($id);
+                $view->selectedProjects = $selectedProjects;
                 $view->id = $id;
-        
             }
         }
 
-        // Create a <select> element to chosse the groups.
+        // Create a <select> element to choose the groups.
         $view->groups = makeSelectBox("group", $kga['user']['groups']);
 
         // Create a <select> element to chosse the projects.
-        $view->projects = makeSelectBox("project", $kga['user']['groups']);
+        $view->projects = makeSelectBox("project", $kga['user']['groups'], null, false, $selectedProjects);
 
         // Set defaults for a new project.
         if (!$id) {
@@ -252,7 +255,7 @@ switch ($axAction) {
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-activity-add')) {
-                                $view->selectedGroups[] = $group;
+                    $view->selectedGroups[] = $group;
                }
             }
             $view->id = 0;

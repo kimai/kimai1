@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2012 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +19,6 @@
 
 /**
  * Filters the given list entries.
- *
- * @author Kevin Papst
  */
 class Zend_View_Helper_FilterListEntries extends Zend_View_Helper_Abstract
 {
@@ -37,12 +35,23 @@ class Zend_View_Helper_FilterListEntries extends Zend_View_Helper_Abstract
 
         $listEntries = array();
         foreach ($entries as $row) {
-            if ($filterHidden && isset($row['visible']) && !$row['visible']) {
+            if ($filterHidden &&
+                ($this->filter($row, 'visible') || $this->filter($row, 'customerVisible'))) {
                 continue;
             }
             $listEntries[] = $row;
         }
 
         return $listEntries;
+    }
+
+    /**
+     * @param $row
+     * @param $key
+     * @return bool
+     */
+    protected function filter($row, $key)
+    {
+        return isset($row[$key]) && !$row[$key];
     }
 } 
