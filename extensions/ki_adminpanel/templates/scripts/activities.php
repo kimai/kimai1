@@ -49,7 +49,7 @@
 					<?php
 					$activityProjects = array();
 					foreach($this->projects as $project) {
-						if (in_array($project['projectID'], $activity['projects'])) {
+						if (isset($activity['projects']) && in_array($project['projectID'], $activity['projects'])) {
 							$name = $this->escape($project['name']) . ' (' . $this->escape($this->ellipsis($project['customerName'], 30)) . ')';
 							if ($project['visible'] != 1 || $project['customerVisible'] != 1) {
 								$name = '<span class="hidden">'.$name.'</span>';
