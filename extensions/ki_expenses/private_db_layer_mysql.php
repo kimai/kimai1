@@ -65,70 +65,22 @@ function expense_create($userID, $data) {
     }
 
     return $result;
-} 
-
-
-
-/**
- *  Creates an array of clauses which can be joined together in the WHERE part
- *  of a sql query. The clauses describe whether a line should be included
- *  depending on the filters set.
- *  
- *  This method also makes the values SQL-secure.
- *
- * @param Array list of IDs of users to include
- * @param Array list of IDs of customers to include
- * @param Array list of IDs of projects to include
- * @param Array list of IDs of activities to include
- * @return Array list of where clauses to include in the query
- *
- */
-
-function expenses_widthhereClausesFromFilters($users, $customers, $projects) {
-    
-    if (!is_array($users)) $users = array();
-    if (!is_array($customers)) $customers = array();
-    if (!is_array($projects)) $projects = array();
-
-    for ($i = 0; $i < count($users); $i++)
-      $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0; $i < count($customers); $i++)
-      $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-    for ($i = 0; $i < count($projects); $i++)
-      $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-
-    $whereClauses = array();
-    
-    if (count($users) > 0) {
-      $whereClauses[] = "userID in (" . implode(',', $users) . ")";
-    }
-    
-    if (count($customers) > 0) {
-      $whereClauses[] = "customerID in (" . implode(',', $customers) . ")";
-    }
-    
-    if (count($projects) > 0) {
-      $whereClauses[] = "projectID in (" . implode(',', $projects) . ")";
-    }  
-
-    return $whereClauses;
-
 }
 
 /**
  * returns expenses for specific user as multidimensional array
+ * TODO: Test it!
  *
- * @param integer $user ID of user in table users
- * @global array $kga kimai-global-array
+ * @param $start
+ * @param $end
+ * @param null $users
+ * @param null $customers
+ * @param null $projects
+ * @param bool $limit
+ * @param bool $reverse_order
+ * @param int $filter_refundable
+ * @param null $filterCleared
  * @return array
- * @author th 
- */
-
-// TODO: Test it!
-/**
- * @param integer $start
- * @param integer $end
- * @param integer $filterCleared
  */
 function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $limit = false, $reverse_order = false, $filter_refundable = -1, $filterCleared = null) {
     global $kga, $database;
@@ -143,9 +95,9 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit, MySQL::SQLVALUE_NUMBER);
 
-    $p     = $kga['server_prefix'];
+    $p = $database->getTablePrefix();
 
-    $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
+    $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
 
     if (isset($kga['customer']))
       $whereClauses[] = "project.internal = 0";
@@ -338,8 +290,8 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
-    $p     = $kga['server_prefix'];
-    $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
+    $p = $database->getTablePrefix();
+    $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}users.trash = 0";
 
     if ($start)
@@ -385,9 +337,9 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
-    $p     = $kga['server_prefix'];
-
-    $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
+    $p = $database->getTablePrefix();
+    
+    $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}customers.trash = 0";
 
     if ($start)
@@ -429,8 +381,8 @@ function expenses_by_project($start, $end, $users = null, $customers = null, $pr
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
-    $p     = $kga['server_prefix'];
-    $whereClauses = expenses_widthhereClausesFromFilters($users, $customers, $projects);
+    $p = $database->getTablePrefix();
+    $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}projects.trash = 0";
 
     if ($start)
