@@ -129,8 +129,8 @@ Please note that this is not a recommended setup!
 
 * Uncompress `kimai.zip` locally
 * Delete all files except:
-  * include/autoconf.php
-  * any self made invoice templates under ```extensions/ki_invoice/invoices/```7
+  * ```includes/autoconf.php```
+  * any self made invoice templates under ```extensions/ki_invoice/invoices/```
   * any self written extensions under ```extensions/```
 * Upload all files and subdirectories directly in your Document Root
   (where files that are served by your webserver are located).
