@@ -27,14 +27,14 @@ if (!isset($_REQUEST['a'])) {
 }
 
 if (!isset($_REQUEST['name']) || is_array($_REQUEST['name'])) {
-    $name = ""; 
-} else { 
+    $name = "";
+} else {
     $name = $_REQUEST['name'];
 }
 
 if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
     $key = "nokey"; // will never match since hash values are either NULL or 32 characters
-} else { 
+} else {
     $key = $_REQUEST['key'];
 }
 
@@ -52,7 +52,7 @@ if (!class_exists($authClass)) {
 }
 $authPlugin = new $authClass($database, $kga);
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // current database setup correct?
 checkDBversion(".");
@@ -61,30 +61,30 @@ checkDBversion(".");
 $name = htmlspecialchars(trim($name));
 $is_customer = $database->is_customer_name($name);
 if ($is_customer) {
-  $id = $database->customer_nameToID($name);
-  $customer = $database->customer_get_data($id);
-  $keyCorrect = $key === $customer['passwordResetHash'];
+    $id = $database->customer_nameToID($name);
+    $customer = $database->customer_get_data($id);
+    $keyCorrect = $key === $customer['passwordResetHash'];
 } else {
-  $id = $database->user_name2id($name);
-  $user = $database->user_get_data($id);
-  $keyCorrect = $key === $user['passwordResetHash'];
+    $id = $database->user_name2id($name);
+    $user = $database->user_get_data($id);
+    $keyCorrect = $key === $user['passwordResetHash'];
 }
 
 switch ($_REQUEST['a'])
 {
     case "request":
         Kimai_Logger::logfile("password reset: " . $name . ($is_customer ? " as customer" : " as user"));
-    break;
+        break;
 
     // Show password reset page
     default:
-      $view->devtimespan = '2006-' . date('y');
-      $view->keyCorrect = $keyCorrect;
-      $view->requestData = array(
-        'key' => $key,
-        'name' => $name
-      );
+        $view->assign('devtimespan', '2006-' . date('y'));
+        $view->assign('keyCorrect', $keyCorrect);
+        $view->assign('requestData', array(
+            'key' => $key,
+            'name' => $name
+        ));
 
-      echo $view->render('login/forgotPassword.php');
-    break;
+        echo $view->render('login/forgotPassword.php');
+        break;
 }

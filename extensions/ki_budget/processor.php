@@ -175,14 +175,14 @@ switch ($axAction) {
                 }
             }
 
-            $view->plotdata = $plotData;
-            $view->projects = $renderProjects;
-            $view->activities = $activities;
+            $view->assign('plotdata', $plotData);
+            $view->assign('projects', $renderProjects);
+            $view->assign('activities', $activities);
         } else {
-            $view->projects = array();
+            $view->assign('projects', array());
         }
-        $view->projects_selected = $projectsSelected;
-        $view->activities_selected = $activitiesSelected;
+        $view->assign('projects_selected', $projectsSelected);
+        $view->assign('activities_selected', $activitiesSelected);
 
         $chartColors = array(
             '#efefef',
@@ -198,7 +198,7 @@ switch ($axAction) {
             '#ff5800',
             '#0085cc'
         );
-        $view->chartColors = json_encode($chartColors);
+        $view->assign('chartColors', json_encode($chartColors));
 
         // Create the keys which explain to the user which color means what for the project based charts
         $keys = array();
@@ -208,7 +208,7 @@ switch ($axAction) {
         }
 
         // the activity based charts only need numbers
-        $view->arr_keys = $keys;
+        $view->assign('arr_keys', $keys);
         echo $view->render('charts.php');
 
         break;

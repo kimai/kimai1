@@ -21,7 +21,7 @@
  * =============================
  * = Floating Window Generator =
  * =============================
- * 
+ *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * some HTML will be returned, which will then be shown in a floater.
  */
@@ -38,20 +38,20 @@ switch ($axAction) {
      * set from 2006 to the current year.
      */
     case 'credits':
-        $view->devtimespan = '2006-' . date('y');
+        $view->assign('devtimespan', '2006-' . date('y'));
 
         echo $view->render("floaters/credits.php");
-    break;
+        break;
 
     /**
      * Display a warning in case the installer is still present.
      */
     case 'securityWarning':
         if ($axValue == 'installer') {
-          echo $view->render("floaters/security_warning.php");
+            echo $view->render("floaters/security_warning.php");
         }
-    break;
-   
+        break;
+
     /**
      * Display the preferences dialog.
      */
@@ -73,22 +73,22 @@ switch ($axAction) {
             $langs[$lang] = $lang;
         }
 
-        $view->skins = $skins;
-        $view->langs = $langs;
-        $view->timezones = timezoneList();
-        $view->user = $kga['user'];
-        $view->rate = $database->get_rate($kga['user']['userID'], null, null);
+        $view->assign('skins', $skins);
+        $view->assign('langs', $langs);
+        $view->assign('timezones', timezoneList());
+        $view->assign('user', $kga['user']);
+        $view->assign('rate', $database->get_rate($kga['user']['userID'], null, null));
 
         echo $view->render("floaters/preferences.php");
-    break;
-    
+        break;
+
     /**
      * Display the dialog to add or edit a customer.
      */
     case 'add_edit_customer':
         $oldGroups = array();
         if ($id) {
-                  $oldGroups = $database->customer_get_groupIDs($id);
+            $oldGroups = $database->customer_get_groupIDs($id);
         }
 
         if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) {
@@ -100,49 +100,49 @@ switch ($axAction) {
 
             $data = $database->customer_get_data($id);
             if ($data) {
-                $view->name      = $data['name'];
-                $view->comment   = $data['comment'];
-                $view->password  = $data['password'];
-                $view->timezone  = $data['timezone'];
-                $view->company   = $data['company'];
-                $view->vat       = $data['vat'];
-                $view->contact   = $data['contact'];
-                $view->street    = $data['street'];
-                $view->zipcode   = $data['zipcode'];
-                $view->city      = $data['city'];
-                $view->phone     = $data['phone'];
-                $view->fax       = $data['fax'];
-                $view->mobile    = $data['mobile'];
-                $view->mail      = $data['mail'];
-                $view->homepage  = $data['homepage'];
-                $view->visible   = $data['visible'];
-                $view->filter    = $data['filter'];
-                $view->selectedGroups = $database->customer_get_groupIDs($id);
-                $view->id = $id;
+                $view->assign('name', $data['name']);
+                $view->assign('comment', $data['comment']);
+                $view->assign('password', $data['password']);
+                $view->assign('timezone', $data['timezone']);
+                $view->assign('company', $data['company']);
+                $view->assign('vat', $data['vat']);
+                $view->assign('contact', $data['contact']);
+                $view->assign('street', $data['street']);
+                $view->assign('zipcode', $data['zipcode']);
+                $view->assign('city', $data['city']);
+                $view->assign('phone', $data['phone']);
+                $view->assign('fax', $data['fax']);
+                $view->assign('mobile', $data['mobile']);
+                $view->assign('mail', $data['mail']);
+                $view->assign('homepage', $data['homepage']);
+                $view->assign('visible', $data['visible']);
+                $view->assign('filter', $data['filter']);
+                $view->assign('selectedGroups', $database->customer_get_groupIDs($id));
+                $view->assign('id', $id);
             }
         } else {
-          $view->timezone = $kga['timezone'];
+            $view->assign('timezone', $kga['timezone']);
         }
 
-        $view->timezones = timezoneList();
+        $view->assign('timezones', timezoneList());
 
-        $view->groups = makeSelectBox("group", $kga['user']['groups']);
+        $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $view->selectedGroups = array();
+            $view->assign('selectedGroups', array());
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-user-add')) {
                    $view->selectedGroups[] = $group;
                }
             }
-            $view->id = 0;
+            $view->assign('id', 0);
         }
 
         echo $view->render("floaters/add_edit_customer.php");
-    break;
-        
+        break;
+
     /**
      * Display the dialog to add or edit a project.
      */
@@ -156,28 +156,28 @@ switch ($axAction) {
             die();
         }
 
-        $view->customers = makeSelectBox("customer", $kga['user']['groups'], (isset($data) ? $data['customerID'] : null));
-        $view->groups = makeSelectBox("group", $kga['user']['groups']);
-        $view->allActivities = $database->get_activities($kga['user']['groups']);
+        $view->assign('customers', makeSelectBox("customer", $kga['user']['groups'], (isset($data) ? $data['customerID'] : null)));
+        $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
+        $view->assign('allActivities', $database->get_activities($kga['user']['groups']));
  
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
-                $view->name         = $data['name'];
-                $view->comment      = $data['comment'];
-                $view->visible      = $data['visible'];
-                $view->internal     = $data['internal'];
-                $view->filter       = $data['filter'];
-                $view->budget       = $data['budget'];
-                $view->effort       = $data['effort'];
-                $view->approved     = $data['approved'];
-                $view->selectedCustomer = $data['customerID'];
-                $view->selectedActivities = $database->project_get_activities($id);
-                $view->defaultRate = $data['defaultRate'];
-                $view->myRate      = $data['myRate'];
-                $view->fixedRate   = $data['fixedRate'];
-                $view->selectedGroups = $database->project_get_groupIDs($id);
-                $view->id = $id;
+                $view->assign('name', $data['name']);
+                $view->assign('comment', $data['comment']);
+                $view->assign('visible', $data['visible']);
+                $view->assign('internal', $data['internal']);
+                $view->assign('filter', $data['filter']);
+                $view->assign('budget', $data['budget']);
+                $view->assign('effort', $data['effort']);
+                $view->assign('approved', $data['approved']);
+                $view->assign('selectedCustomer', $data['customerID']);
+                $view->assign('selectedActivities', $database->project_get_activities($id));
+                $view->assign('defaultRate', $data['defaultRate']);
+                $view->assign('myRate', $data['myRate']);
+                $view->assign('fixedRate', $data['fixedRate']);
+                $view->assign('selectedGroups', $database->project_get_groupIDs($id));
+                $view->assign('id', $id);
 
                 if (!isset($view->customers[$data['customerID']])) {
                     // add the currently assigned customer to the list although
@@ -190,13 +190,13 @@ switch ($axAction) {
         }
 
         if (!isset($view->id)) {
-          $view->selectedActivities = array();
-          $view->internal = false;
+            $view->assign('selectedActivities', array());
+            $view->assign('internal', false);
         }
-        
+
         // Set defaults for a new project.
         if (!$id) {
-            $view->selectedGroups = array();
+            $view->assign('selectedGroups', array());
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-project-add')) {
@@ -204,13 +204,13 @@ switch ($axAction) {
                }
             }
 
-            $view->selectedCustomer = null;
-            $view->id = 0;
+            $view->assign('selectedCustomer', null);
+            $view->assign('id', 0);
         }
 
         echo $view->render("floaters/add_edit_project.php");
-    break;
-    
+        break;
+
     /**
      * Display the dialog to add or edit an activity.
      */
@@ -229,39 +229,39 @@ switch ($axAction) {
         if ($id) {
             $data = $database->activity_get_data($id);
             if ($data) {
-                $view->name         = $data['name'];
-                $view->comment      = $data['comment'];
-                $view->visible      = $data['visible'];
-                $view->filter       = $data['filter'];
-                $view->defaultRate  = $data['defaultRate'];
-                $view->myRate       = $data['myRate'];
-                $view->fixedRate    = $data['fixedRate'];
-                $view->selectedGroups = $database->activity_get_groups($id);
+                $view->assign('name', $data['name']);
+                $view->assign('comment', $data['comment']);
+                $view->assign('visible', $data['visible']);
+                $view->assign('filter', $data['filter']);
+                $view->assign('defaultRate', $data['defaultRate']);
+                $view->assign('myRate', $data['myRate']);
+                $view->assign('fixedRate', $data['fixedRate']);
+                $view->assign('selectedGroups', $database->activity_get_groups($id));
                 $selectedProjects = $database->activity_get_projects($id);
-                $view->selectedProjects = $selectedProjects;
-                $view->id = $id;
+                $view->assign('selectedProjects', $selectedProjects);
+                $view->assign('id', $id);
             }
         }
 
         // Create a <select> element to choose the groups.
-        $view->groups = makeSelectBox("group", $kga['user']['groups']);
+        $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
 
         // Create a <select> element to chosse the projects.
-        $view->projects = makeSelectBox("project", $kga['user']['groups'], null, false, $selectedProjects);
+        $view->assign('projects', makeSelectBox("project", $kga['user']['groups'], null, false, $selectedProjects));
 
         // Set defaults for a new project.
         if (!$id) {
-            $view->selectedGroups = array();
+            $view->assign('selectedGroups', array());
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-activity-add')) {
                     $view->selectedGroups[] = $group;
                }
             }
-            $view->id = 0;
+            $view->assign('id', 0);
         }
 
         echo $view->render("floaters/add_edit_activity.php");
-    break;
-    
+        break;
+
 }
