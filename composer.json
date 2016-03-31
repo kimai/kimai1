@@ -31,8 +31,5 @@
         "files": [
             "libraries/phpclasses/ultimatemysql/mysql.class.php"
         ]
-    },
-    "include-path": [
-        "libraries"
-    ]
+    }
 }
