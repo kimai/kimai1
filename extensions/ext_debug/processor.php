@@ -26,8 +26,6 @@ $isCoreProcessor = 0;
 $dir_templates = "templates/";
 require("../../includes/kspi.php");
 
-
-
 switch ($axAction) {
     
     /**
@@ -91,27 +89,23 @@ switch ($axAction) {
      * information if not configured otherwise.
      */
     case "reloadKGA":    
-    // read kga --------------------------------------- 
         $output = $kga;
         // clean out some data that is way too private to be shown in the frontend ...
 
         if (!$kga['show_sensible_data']) {
-            $output['server_hostname']  = "xxx";
-            $output['server_database']  = "xxx";
-            $output['server_username']  = "xxx";
-            $output['server_password']  = "xxx";
-            $output['password_salt']    = "xxx";
-            $output['user']['secure']   = "xxx";
-            $output['user']['userID']   = "xxx";
-            $output['user']['pw']       = "xxx";
+            $output['server_hostname'] = "xxx";
+            $output['server_database'] = "xxx";
+            $output['server_username'] = "xxx";
+            $output['server_password'] = "xxx";
+            $output['password_salt'] = "xxx";
+            $output['user']['secure'] = "xxx";
+            $output['user']['userID'] = "xxx";
+            $output['user']['pw'] = "xxx";
             $output['user']['password'] = "xxx";
-            $output['user']['apikey']   = "xxx";
+            $output['user']['apikey'] = "xxx";
         }
-        echo"<pre>";
+        echo "<pre>";
         print_r($output);
-        echo"</pre>";
-    // /read kga --------------------------------------
+        echo "</pre>";
     break;
 }
-
-?>

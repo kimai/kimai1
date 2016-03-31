@@ -55,12 +55,10 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors,
-                'userId' => $userId
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors,
+            'userId' => $userId
+        ));
         break;
 
     case "createStatus" :
@@ -77,12 +75,10 @@ switch ($axAction)
         $new_status_id = $database->status_create($status_data);
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors,
-                'statusId' => $new_status_id
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors,
+            'statusId' => $new_status_id
+        ));
         break;
 
     case "createGroup" :
@@ -99,36 +95,34 @@ switch ($axAction)
         $newGroupID = $database->group_create($group);
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors,
-                'groupId' => $newGroupID
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors, 
+            'groupId' => $newGroupID
+        ));
         break;
 
     case "refreshSubtab" :
         // builds either user/group/advanced/DB subtab
-        $view->curr_user = $kga['user']['name'];
+        $view->assign('curr_user', $kga['user']['name']);
         $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
         $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
         if ($viewOtherGroupsAllowed) {
-            $view->groups = $groups;
+            $view->assign('groups', $groups);
         } else {
-            $view->groups = array_filter(
+            $view->assign('groups', array_filter(
                 $groups,
                 function ($group) {
                     global $kga;
                     return array_search($group['groupID'], $kga['user']['groups']) !== false;
                 }
-            );
+            ));
         }
 
         $arr_status = $database->get_statuses();
-        $view->users = getEditUserList($database, $kga['user'], $viewOtherGroupsAllowed);
-        $view->arr_status = $arr_status;
-        $view->showDeletedGroups = get_cookie('adminPanel_extension_show_deleted_groups', 0);
-        $view->showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
+        $view->assign('users', getEditUserList($database, $kga['user'], $viewOtherGroupsAllowed));
+        $view->assign('arr_status', $arr_status);
+        $view->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
+        $view->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users', 0));
 
         switch ($axValue)
         {
@@ -146,14 +140,14 @@ switch ($axAction)
 
             case "advanced" :
                 if ($kga['conf']['editLimit'] != '-') {
-                    $view->editLimitEnabled = true;
+                    $view->assign('editLimitEnabled', true);
                     $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
-                    $view->editLimitDays = (int)($editLimit / 24);
-                    $view->editLimitHours = (int)($editLimit % 24);
+                    $view->assign('editLimitDays', (int)($editLimit / 24));
+                    $view->assign('editLimitHours', (int)($editLimit % 24));
                 } else {
-                    $view->editLimitEnabled = false;
-                    $view->editLimitDays = '';
-                    $view->editLimitHours = '';
+                    $view->assign('editLimitEnabled', false);
+                    $view->assign('editLimitDays', '');
+                    $view->assign('editLimitHours', '');
                 }
                 echo $view->render('advanced.php');
                 break;
@@ -185,9 +179,9 @@ switch ($axAction)
                     }
                 }
                 if (count($customers) > 0) {
-                    $view->customers = $customers;
+                    $view->assign('customers', $customers);
                 } else {
-                    $view->customers = '0';
+                    $view->assign('customers', '0');
                 }
                 echo $view->render('customers.php');
                 break;
@@ -212,7 +206,7 @@ switch ($axAction)
                         }
                         $projects[$row]['groups'] = implode(", ", $groupNames);
                     }
-                    $view->projects = $projects;
+                    $view->assign('projects', $projects);
                 }
 
                 echo $view->render('projects.php');
@@ -254,24 +248,24 @@ switch ($axAction)
                 }
 
                 if (count($activities) > 0) {
-                    $view->activities = $activities;
+                    $view->assign('activities', $activities);
                 } else {
-                    $view->activities = '0';
+                    $view->assign('activities', '0');
                 }
 
                 $projects = $database->get_projects($groups);
-                $view->projects = $projects;
-                $view->selected_activity_filter = isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2;
+                $view->assign('projects', $projects);
+                $view->assign('selected_activity_filter', isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2);
                 echo $view->render('activities.php');
                 break;
 
             case "globalRoles":
-                $view->globalRoles = $database->global_roles();
+                $view->assign('globalRoles', $database->global_roles());
                 echo $view->render('globalRoles.php');
                 break;
 
             case "membershipRoles":
-                $view->membershipRoles = $database->membership_roles();
+                $view->assign('membershipRoles', $database->membership_roles());
                 echo $view->render('membershipRoles.php');
                 break;
         }
@@ -310,11 +304,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteGroup" :
@@ -330,11 +322,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteStatus" :
@@ -349,11 +339,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteProject" :
@@ -371,11 +359,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteCustomer" :
@@ -392,11 +378,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteActivity" :
@@ -413,11 +397,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "banUser" :
@@ -470,11 +452,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errorMessages
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errorMessages
+        ));
         break;
 
     case "sendEditGroup" :
@@ -492,11 +472,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "sendEditStatus" :
@@ -515,11 +493,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "sendEditAdvanced" :
@@ -591,11 +567,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "toggleDeletedUsers" :
@@ -619,11 +593,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "createMembershipRole":
@@ -645,11 +617,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "editGlobalRole":
@@ -679,11 +649,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "editMembershipRole":
@@ -713,11 +681,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteGlobalRole":
@@ -732,11 +698,9 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
     case "deleteMembershipRole":
@@ -751,10 +715,8 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(
-            array(
-                'errors' => $errors
-            )
-        );
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 }
