@@ -4,18 +4,17 @@
 	<meta name="robots" content="noindex,nofollow" />
 	<title>Kimai <?php echo $this->translate('login') ?></title>
 	<link rel="SHORTCUT ICON" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->skin('login.css'); ?>" />
 	<script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
 	<script type='text/javascript'>
 	var requestData = <?php echo json_encode($this->requestData); ?>;
 
 	$(function(){
-		$.cookie('KimaiCookietest', 'yes');
-		KimaiCookietest = $.cookie('KimaiCookietest');
-
-		if (KimaiCookietest == 'yes') {
+		$.cookie('KimaiCookieTest', 'yes');
+		if ($.cookie('KimaiCookieTest') == 'yes') {
 			$("#cookiewarning").remove();
-			$.cookie('KimaiCookietest', '', {expires: -1});
+			$.cookie('KimaiCookieTest', '', {expires: -1});
 		}
 
 		if ($("#warning").find("p").size() < 2) {
@@ -52,7 +51,6 @@
 		$("#kimaiusername").focus();
 	});
 	</script>
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->skin('login.css'); ?>" />
 </head>
 <body>
 <div id="content">
@@ -72,14 +70,10 @@
 				</fieldset>
 			</form>
 		</div>
-
 		<div id="message" <?php if (!$this->keyCorrect): ?>style="display:block" <?php endif; ?>>
-			<p>
-				<?php echo $this->translate('passwordReset:invalidKey'); ?>
-			</p>
+			<p><?php echo $this->translate('passwordReset:invalidKey'); ?></p>
 			<a style="display:none" href="index.php"><?php echo $this->translate('passwordReset:returnToLogin') ?></a>
 		</div>
-
 		<div id="warning">
 			<p id="JSwarning"><strong style="color:red"><?php echo $this->translate('JSwarning') ?></strong></p>
 			<p id="cookiewarning"><strong style="color:red"><?php echo $this->translate('cookiewarning') ?></strong></p>
