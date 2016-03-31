@@ -67,7 +67,8 @@ class Kimai_Extensions
                 continue;
             }
 
-            $this->extensions[] = array('name' => $settings['EXTENSION_NAME'],
+            $this->extensions[] = array(
+                'name' => $settings['EXTENSION_NAME'],
                 'key' => $settings['EXTENSION_KEY'],
                 'initFile' => $settings['EXTENSION_INIT_FILE'],
                 'tabChangeTrigger' => isset($settings['TAB_CHANGE_TRIGGER']) ? $settings['TAB_CHANGE_TRIGGER'] : "");
