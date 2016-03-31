@@ -19,12 +19,12 @@
 
 include '../../includes/basics.php';
 
-$user = checkUser();
+checkUser();
 
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');
 
 // track which activities we want to see, so we can exclude them when we create the plot
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 echo $view->render('index.php');
