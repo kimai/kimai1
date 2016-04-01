@@ -26,8 +26,7 @@
             "libraries/TinyButStrong"
         ],
         "psr-0": {
-            "Kimai_": "libraries/",
-            "TCPDF": "libraries/tecnickcom/tcpdf/tcpdf.php"
+            "Kimai_": "libraries/"
         },
         "files": [
             "libraries/phpclasses/ultimatemysql/mysql.class.php"

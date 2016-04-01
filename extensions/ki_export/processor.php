@@ -3,13 +3,16 @@
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) Kimai-Development-Team since 2006
+ *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; Version 3, 29 June 2007
+ *
  * Kimai is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+ *
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,7 +28,17 @@ require("../../includes/kspi.php");
 
 require("private_func.php");
 
-if ($axAction == 'export_csv' || $axAction == 'export_pdf' || $axAction == 'export_pdf2' || $axAction == 'export_html' || $axAction == 'export_xls' || $axAction == 'reload') {
+
+// ============================
+// = parse general parameters =
+// ============================
+
+if ($axAction == 'export_csv' ||
+    $axAction == 'export_pdf' ||
+    $axAction == 'export_pdf2' ||
+    $axAction == 'export_html' ||
+    $axAction == 'export_xls' ||
+    $axAction == 'reload') {
 
     if (isset($_REQUEST['axColumns'])) {
         $axColumns = explode('|', $_REQUEST['axColumns']);
