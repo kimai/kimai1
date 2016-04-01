@@ -170,8 +170,7 @@ switch ($axAction)
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(array(
-            'errors' => $errors
-        ));
+            'errors' => $errors));
         break;
 
     // =============================
@@ -197,9 +196,7 @@ switch ($axAction)
 
             // check if editing or deleting with the old values would be allowed
             if (!expenseAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array(
-                    'errors' => $errors
-                ));
+                echo json_encode(array('errors' => $errors));
                 break;
             }
         }
@@ -207,9 +204,7 @@ switch ($axAction)
         // delete now because next steps don't need to be taken for deleted entries
         if (isset($_REQUEST['erase'])) {
             expense_delete($id);
-            echo json_encode(array(
-                'errors' => $errors
-            ));
+            echo json_encode(array('errors' => $errors));
             break;
         }
 
@@ -255,9 +250,7 @@ switch ($axAction)
         }
 
         if (count($errors) > 0) {
-            echo json_encode(array(
-                'errors' => $errors
-            ));
+            echo json_encode(array('errors' => $errors));
             break;
         }
 
@@ -292,9 +285,7 @@ switch ($axAction)
         expenseAccessAllowed($data, $action, $errors);
 
         if (count($errors) > 0) {
-            echo json_encode(array(
-                'errors' => $errors
-            ));
+            echo json_encode(array('errors' => $errors));
             break;
         }
 
@@ -309,9 +300,7 @@ switch ($axAction)
             }
         }
 
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(array('errors' => $errors));
         break;
 
 }

@@ -19,7 +19,7 @@
 
 include '../../includes/basics.php';
 
-checkUser();
+$user = checkUser();
 
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');

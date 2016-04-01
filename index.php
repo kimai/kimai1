@@ -208,7 +208,7 @@ switch ($_REQUEST['a']) {
             }
         }
         break;
-
+    
     default:
         // Show login panel
         $view->assign('devtimespan', '2006-' . date('y'));

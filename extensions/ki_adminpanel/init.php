@@ -21,8 +21,10 @@
 include '../../includes/basics.php';
 $settings = parse_ini_file("config.ini");
 
-checkUser();
-
+$user = checkUser();
+// ============================================
+// = initialize currently displayed timeframe =
+// ============================================
 $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];

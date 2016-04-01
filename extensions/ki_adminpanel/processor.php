@@ -55,10 +55,12 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors,
-            'userId' => $userId
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors,
+                'userId' => $userId
+            )
+        );
         break;
 
     case "createStatus" :
@@ -75,10 +77,12 @@ switch ($axAction)
         $new_status_id = $database->status_create($status_data);
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors,
-            'statusId' => $new_status_id
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors,
+                'statusId' => $new_status_id
+            )
+        );
         break;
 
     case "createGroup" :
@@ -95,10 +99,12 @@ switch ($axAction)
         $newGroupID = $database->group_create($group);
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors, 
-            'groupId' => $newGroupID
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors,
+                'groupId' => $newGroupID
+            )
+        );
         break;
 
     case "refreshSubtab" :
@@ -304,9 +310,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteGroup" :
@@ -322,9 +330,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteStatus" :
@@ -339,9 +349,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteProject" :
@@ -359,9 +371,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteCustomer" :
@@ -378,9 +392,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteActivity" :
@@ -397,9 +413,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "banUser" :
@@ -452,9 +470,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errorMessages
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errorMessages
+            )
+        );
         break;
 
     case "sendEditGroup" :
@@ -472,9 +492,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "sendEditStatus" :
@@ -493,9 +515,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "sendEditAdvanced" :
@@ -567,9 +591,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "toggleDeletedUsers" :
@@ -593,9 +619,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "createMembershipRole":
@@ -617,9 +645,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "editGlobalRole":
@@ -649,9 +679,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "editMembershipRole":
@@ -681,9 +713,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteGlobalRole":
@@ -698,9 +732,11 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 
     case "deleteMembershipRole":
@@ -715,8 +751,10 @@ switch ($axAction)
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
-            'errors' => $errors
-        ));
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
         break;
 }
