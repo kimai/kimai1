@@ -63,7 +63,6 @@ return array(
     "new_activity" => "gebeurtenis toevoegen",
     "day_summary" => "Tijd samenvatting",
     "plzChoose" => "kies aub",
-    "noEntries" => "Nog geen tracking entries...",
     "recordAgain" => "Neem deze gebeurtenis nogmaals op",
     "comment" => "Commentaar",
     "location" => "Locatie",

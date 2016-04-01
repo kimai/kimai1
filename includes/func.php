@@ -63,7 +63,7 @@ function timezoneList() {
 }
 
 /**
- * Returns array for smarty's html_options funtion.
+ * Returns array for rendering a select input.
  *
  * <pre>
  * returns:
@@ -71,11 +71,14 @@ function timezoneList() {
  * [1] -> values as IDs
  * </pre>
  *
- * @param string either 'project', 'activity', 'customer', 'group'
+ * @param string $subject one of 'project', 'activity', 'customer', 'group', 'sameGroupUser', 'user'
+ * @param $groups
+ * @param null $selection
+ * @param bool $includeDeleted
+ * @param array $showIds an array of IDs that should be shown, no matter of their visibility
  * @return array
- * @author th, sl, kp
  */
-function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false) {
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = array()) {
 
     global $kga, $database;
 
@@ -85,7 +88,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
         case 'project':
             $projects = $database->get_projects($groups);
             foreach ($projects as $project) {
-                if ($project['visible']) {
+                if (($project['visible'] && $project['customerVisible']) || in_array($project['projectID'], $showIds)) {
                     if ($kga['conf']['flip_project_display']) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
                         if ($kga['conf']['project_comment_flag']) {
@@ -105,7 +108,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
         case 'activity':
             $activities = $database->get_activities($groups);
             foreach ($activities as $activity) {
-                if ($activity['visible']) {
+                if ($activity['visible'] || in_array($activity['activityID'], $showIds)) {
                     $sel[$activity['activityID']] = $activity['name'];
                 }
             }
@@ -116,10 +119,10 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             $selectionFound = false;
             if (is_array($customers)) {
 	            foreach ($customers as $customer) {
-	                if ($customer['visible']) {
+	                if ($customer['visible'] || in_array($customer['customerID'], $showIds)) {
 	                    $sel[$customer['customerID']] = $customer['name'];
 	                    if ($selection == $customer['customerID']) {
-	                    	                      $selectionFound = true;
+                            $selectionFound = true;
 	                    }
 	                }
 	            }
@@ -141,7 +144,6 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
                     }
                 );
             }
-
 
             foreach ($groups as $group) {
                 if ($includeDeleted || !$group['trash']) {

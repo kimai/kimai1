@@ -27,21 +27,33 @@
  */
 class Kimai_Remote_Database
 {
+    /**
+     * @var array|null
+     */
     private $kga = null;
+    /**
+     * @var string
+     */
     private $tablePrefix = null;
+    /**
+     * @var Kimai_Database_Mysql
+     */
     private $dbLayer = null;
+    /**
+     * @var MySQL
+     */
     private $conn = null;
 
     /**
      * Kimai_Remote_Database constructor.
-     * @param $kga
-     * @param $database
+     * @param array $kga
+     * @param Kimai_Database_Mysql $database
      */
     public function __construct($kga, $database)
     {
         $oldDatabase = $database;
 
-        $this->tablePrefix = $kga['server_prefix'];
+        $this->tablePrefix = $database->getTablePrefix();
         $this->kga = $kga;
         $this->dbLayer = $oldDatabase;
         $this->conn = $this->dbLayer->getConnectionHandler();
@@ -136,7 +148,7 @@ class Kimai_Remote_Database
 
         $p = $kga['server_prefix'];
 
-        $whereClauses = $this->expenses_widthhereClausesFromFilters($users, $customers, $projects);
+        $whereClauses = $this->dbLayer->timeSheet_whereClausesFromFilters($users, $customers, $projects);
 
         if (isset($kga['customer'])) {
             $whereClauses[] = "${p}projects.internal = 0";
@@ -215,64 +227,10 @@ class Kimai_Remote_Database
     }
 
     /**
-     *  Creates an array of clauses which can be joined together in the WHERE part
-     *  of a sql query. The clauses describe whether a line should be included
-     *  depending on the filters set.
-     *
-     *  This method also makes the values SQL-secure.
-     *
-     * @param array list of IDs of users to include
-     * @param array list of IDs of customers to include
-     * @param array list of IDs of projects to include
-     * @param array list of IDs of activities to include
-     * @param integer|null $users
-     * @return array list of where clauses to include in the query
-     */
-    public function expenses_widthhereClausesFromFilters($users, $customers, $projects)
-    {
-        if (!is_array($users)) {
-            $users = array();
-        }
-        if (!is_array($customers)) {
-            $customers = array();
-        }
-        if (!is_array($projects)) {
-            $projects = array();
-        }
-
-        for ($i = 0; $i < count($users); $i++) {
-            $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
-        }
-        for ($i = 0; $i < count($customers); $i++) {
-            $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
-        }
-        for ($i = 0; $i < count($projects); $i++) {
-            $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
-        }
-
-        $whereClauses = array();
-
-        if (count($users) > 0) {
-            $whereClauses[] = "userID in (" . implode(',', $users) . ")";
-        }
-
-        if (count($customers) > 0) {
-            $whereClauses[] = "customerID in (" . implode(',', $customers) . ")";
-        }
-
-        if (count($projects) > 0) {
-            $whereClauses[] = "projectID in (" . implode(',', $projects) . ")";
-        }
-
-        return $whereClauses;
-    }
-
-    /**
      * create exp entry
      *
      * @param array $data
-     * @author sl
-     * @author Alexander Bauer
+     * @return int
      */
     public function expense_create(array $data)
     {
@@ -319,8 +277,7 @@ class Kimai_Remote_Database
      *
      * @param integer $id
      * @param array $data
-     * @author th
-     * @author Alexander Bauer
+     * @return object
      */
     public function expense_edit($id, array $data)
     {
@@ -359,8 +316,7 @@ class Kimai_Remote_Database
      * delete exp entry
      *
      * @param integer $id -> ID of record
-     * @global array $kga kimai-global-array
-     * @author th
+     * @return object
      */
     public function expense_delete($id)
     {

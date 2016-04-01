@@ -65,7 +65,6 @@ return array(
     "new_activity" => "Bæta við verki",
     "day_summary" => "Tíma samantekt",
     "plzChoose" => "Vinsamlega veljið",
-    "noEntries" => "Engar skráningar fyrir þennan tíma...",
     "recordAgain" => "Skrá samskonar skráningu",
     "comment" => "Athugasemd",
     "location" => "Staðsetning",

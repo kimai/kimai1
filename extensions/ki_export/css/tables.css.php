@@ -238,16 +238,12 @@ div.ki_export table td.cleared a.isnt_cleared {
 	background:url('../grfx/cleared.png') no-repeat;
 }
 
-div#export_head div.right { 
-	position:absolute;
-	overflow:hidden;
-	width:32px;
-	height:20px;
-	top:3px;
-	right:3px;
+#export_head td.disabled a {
+     text-decoration:line-through;
+     color: #FFC7BB;
 }
 
-div#export_head div.right a {
+div#export_head td.cleared a {
 	background-image: url('../grfx/invert.png');
 	overflow:hidden;
 	display:block;

@@ -67,7 +67,6 @@ return array(
     "new_evt" => "Adicionar evento",
     "day_summary" => "Resumo de tempo",
     "plzChoose" => "Selecione por favor",
-    "noEntries" => "Não existem entradas registadas...",
     "recordAgain" => "Gravar esta tarefa novamente",
     "comment" => "Comentário",
     "zlocation" => "Localização",

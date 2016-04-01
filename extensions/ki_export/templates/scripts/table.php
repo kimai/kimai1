@@ -1,28 +1,6 @@
 <?php if (count($this->exportData) > 0): ?>
     <div id="xptable">
         <table>
-            <colgroup>
-                <col class="date"/>
-                <col class="from"/>
-                <col class="to"/>
-                <col class="time"/>
-                <col class="dec_time"/>
-                <col class="rate"/>
-                <col class="wage"/>
-                <col class="budget"/>
-                <col class="approved"/>
-                <col class="status"/>
-                <col class="billable"/>
-                <col class="client"/>
-                <col class="project"/>
-                <col class="activity"/>
-                <col class="description"/>
-                <col class="comment"/>
-                <col class="location"/>
-                <col class="trackingNumber"/>
-                <col class="user"/>
-                <col class="cleared"/>
-            </colgroup>
             <tbody>
             <?php
             $day_buffer = 0;
@@ -186,9 +164,7 @@
         </table>
     </div>
 <?php else: ?>
-    <div style='padding:5px;color:#f00'>
-        <strong><?php echo $this->kga['lang']['noEntries'] ?></strong>
-    </div>
+    <?php echo $this->error(); ?>
 <?php endif; ?>
 <script type="text/javascript">
     ts_user_annotations = <?php echo json_encode($this->user_annotations); ?>;

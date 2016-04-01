@@ -65,7 +65,6 @@ return array(
     "new_activity" => "Dodaj opravilo",
     "day_summary" => "Seštevek časa",
     "plzChoose" => "prosim izberi",
-    "noEntries" => "Ni zasledenih vnosov za določen časovni prostor...",
     "recordAgain" => "Zapiši dogodek ponovno",
     "comment" => "Komentar",
     "location" => "Lokacija",

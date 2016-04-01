@@ -2,6 +2,7 @@
     background:#159;
 }
 
+td span.hidden,
 td.hidden {
     color:#bbb;
 }

@@ -28,7 +28,7 @@
 	{
 		foreach ($this->projects as $row) 
 		{
-			$isHidden = $row['visible'] != 1;
+			$isHidden = $row['visible'] != 1 || $row['customerVisible'] != 1;
 			?>
 			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 				<td class="option">

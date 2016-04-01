@@ -128,6 +128,14 @@ class Kimai_Database_Mysql
     }
 
     /**
+     * @return string
+     */
+    public function getTablePrefix()
+    {
+        return $this->kga['server_prefix'];
+    }
+
+    /**
      * @return string tablename including prefix
      */
     public function getProjectTable()
@@ -2384,9 +2392,9 @@ class Kimai_Database_Mysql
         }
 
         if ($this->kga['conf']['flip_project_display']) {
-            $query .= " ORDER BY project.visible DESC, customerName, name;";
+            $query .= " ORDER BY project.visible DESC, customer.visible DESC, customerName, name;";
         } else {
-            $query .= " ORDER BY project.visible DESC, name, customerName;";
+            $query .= " ORDER BY project.visible DESC, customer.visible DESC, name, customerName;";
         }
 
         $result = $this->conn->Query($query);
@@ -2484,20 +2492,19 @@ class Kimai_Database_Mysql
     }
 
     /**
-     *  Creates an array of clauses which can be joined together in the WHERE part
-     *  of a sql query. The clauses describe whether a line should be included
-     *  depending on the filters set.
+     * Creates an array of clauses which can be joined together in the WHERE part
+     * of a sql query. The clauses describe whether a line should be included
+     * depending on the filters set.
      *
-     *  This method also makes the values SQL-secure.
+     * This method also makes the values SQL-secure.
      *
      * @param array $users list of IDs of users to include
      * @param array $customers list of IDs of customers to include
      * @param array $projects list of IDs of projects to include
      * @param array $activities list of IDs of activities to include
      * @return array list of where clauses to include in the query
-     *
      */
-    public function timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities)
+    public function timeSheet_whereClausesFromFilters($users, $customers, $projects, $activities = array())
     {
         if (!is_array($users)) {
             $users = array();
@@ -2512,17 +2519,17 @@ class Kimai_Database_Mysql
             $activities = array();
         }
 
-        for ($i = 0; $i < count($users); $i++) {
-            $users[$i] = MySQL::SQLValue($users[$i], MySQL::SQLVALUE_NUMBER);
+        foreach ($users as $i => $value) {
+            $users[$i] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
         }
-        for ($i = 0; $i < count($customers); $i++) {
-            $customers[$i] = MySQL::SQLValue($customers[$i], MySQL::SQLVALUE_NUMBER);
+        foreach ($customers as $i => $value) {
+            $customers[$i] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
         }
-        for ($i = 0; $i < count($projects); $i++) {
-            $projects[$i] = MySQL::SQLValue($projects[$i], MySQL::SQLVALUE_NUMBER);
+        foreach ($projects as $i => $value) {
+            $projects[$i] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
         }
-        for ($i = 0; $i < count($activities); $i++) {
-            $activities[$i] = MySQL::SQLValue($activities[$i], MySQL::SQLVALUE_NUMBER);
+        foreach ($activities as $i => $value) {
+            $activities[$i] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
         }
 
         $whereClauses = array();
@@ -3066,7 +3073,14 @@ class Kimai_Database_Mysql
         return array();
     }
 
-    ## Load into Array: Activities
+    /**
+     * Get all available activities.
+     *
+     * This is either a list of all or a list of all for the given groups.
+     *
+     * @param array|null $groups
+     * @return array|bool
+     */
     public function get_activities(array $groups = null)
     {
         $p = $this->kga['server_prefix'];
@@ -3103,9 +3117,9 @@ class Kimai_Database_Mysql
                 $i++;
             }
             return $arr;
-        } else {
-            return array();
         }
+
+        return array();
     }
 
     /**
@@ -3166,9 +3180,8 @@ class Kimai_Database_Mysql
                 $arr[$row->activityID]['effort'] = $row->effort;
             }
             return $arr;
-        } else {
-            return array();
         }
+        return array();
     }
 
     /**
@@ -3918,12 +3931,15 @@ class Kimai_Database_Mysql
                 $consideredEnd = $end;
             }
 
+            $time = (int)($consideredEnd - $consideredStart);
+            $costs = (double)$row['costs'];
+
             if (isset($arr[$row['userID']])) {
-                $arr[$row['userID']]['time']  += (int)($consideredEnd - $consideredStart);
-                $arr[$row['userID']]['costs'] += (double)$row['costs'];
+                $arr[$row['userID']]['time']  += $time;
+                $arr[$row['userID']]['costs'] += $costs;
             } else {
-                $arr[$row['userID']]['time'] = (int)($consideredEnd - $consideredStart);
-                $arr[$row['userID']]['costs'] = (double)$row['costs'];
+                $arr[$row['userID']]['time'] = $time;
+                $arr[$row['userID']]['costs'] = $costs;
             }
         }
 
@@ -4814,7 +4830,10 @@ class Kimai_Database_Mysql
 
         $result = $this->conn->RowCount() > 0;
 
+        /*
+        // TODO should we add a setting for debugging permissions?
         Kimai_Logger::logfile("Global role $roleID gave " . ($result ? 'true' : 'false') . " for $permission.");
+        */
         return $result;
     }
 

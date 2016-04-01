@@ -260,7 +260,7 @@ switch ($axAction) {
         $view->budgetSum = $budgetSum;
         $view->approvedSum = $approvedSum;
 
-        header("Content-Type: text/html");
+        header("Content-Type: text/html;charset=utf-8");
         echo $view->render("formats/html.php");
     break;
 

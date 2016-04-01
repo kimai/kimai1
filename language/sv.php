@@ -65,7 +65,6 @@ return array(
     "new_activity" => "lägg till uppgift",
     "day_summary" => "Tidsummering",
     "plzChoose" => "Var god välj",
-    "noEntries" => "Inga registrerade data för den valda tidsperioden...",
     "recordAgain" => "Registrera denna händelse igen",
     "comment" => "Kommentar",
     "location" => "Plats",

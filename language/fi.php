@@ -66,7 +66,6 @@ return array(
     "new_evt" => "lisää tehtävä",
     "day_summary" => "Aikayhteenveto",
     "plzChoose" => "valitse",
-    "noEntries" => "Ei seurattuja kirjauksia tälle aikajaksolle",
     "recordAgain" => "Rekisteröi tämä kohde uudelleen",
     "comment" => "Kommentoi",
     "zlocation" => "Sijainti",

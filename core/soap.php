@@ -27,7 +27,7 @@
  * @author Kevin Papst <kpapst@gmx.net>
  */
 
-// Bootstrap Kimai the old fashioned way
+// Bootstrap Kimai
 require(dirname(__FILE__) . "/../includes/basics.php");
 
 ini_set('soap.wsdl_cache_enabled', 0); // @TODO
@@ -39,13 +39,11 @@ ini_set('soap.wsdl_cache_ttl', 0); // cache lifetime
 //$soapOpts = array('soap_version' => SOAP_1_2, 'encoding' => 'UTF-8'/*, 'uri' => $wsdlUrl*/);
 $soapOpts = array();
 
-if (isset($_GET['wsdl']) || isset($_GET['WSDL']))
-{
+if (isset($_GET['wsdl']) || isset($_GET['WSDL'])) {
 	$autodiscover = new Zend_Soap_AutoDiscover();
 	$autodiscover->setClass('Kimai_Remote_Api');
 	$autodiscover->handle();
-} else
-{
+} else {
 	$wsdlUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?wsdl';
 	$server = new Kimai_Remote_Api();
 

@@ -28,11 +28,19 @@ This is just a short feature list, play around with the [demo installation](http
 * Record expenses
 * Print invoices in multiple formats (ODT, ODS, HTML)
 * Export data in multiple formats (PDF, XLS, CSV, direct print)
-* Beautiful UI
 * SOAP and JSON API
 * Native apps ... see our [Apps page](http://www.kimai.org/apps/)
 
 ![Screenshot](http://www.kimai.org/assets/kimai08.jpg)
+
+Getting Started
+---------------
+
+Kimai requires a webserver with PHP and a database (MySQL recommended).
+Accessing the backend through a supported browser.
+
+Please see the [INSTALL.md](INSTALL.md) in this folder in order to set up Kimai
+on your webserver.
 
 ## Contributing
 
