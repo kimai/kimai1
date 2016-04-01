@@ -143,30 +143,33 @@ switch ($axAction) {
     // = Load data and return it =
     // ===========================
     case 'reload':
-        $view->exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $view->assign('exportData',
+            export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable));
 
-        $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, $filter_cleared));
+        $view->assign('total',
+            Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, $filter_cleared)));
 
         $ann = export_get_user_annotations($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->user_annotations = $ann;
-        
+        $view->assign('user_annotations', $ann);
+
         $ann = export_get_customer_annotations($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->customer_annotations = $ann;
+        $view->assign('customer_annotations', $ann);
 
         $ann = export_get_project_annotations($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->project_annotations = $ann;
+        $view->assign('project_annotations', $ann);
 
         $ann = export_get_activity_annotations($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->activity_annotations = $ann;
+        $view->assign('activity_annotations', $ann);
 
-        $view->timeformat = $timeformat;
-        $view->dateformat = $dateformat;
-        if (isset($kga['user']))
-          $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+        $view->assign('timeformat', $timeformat);
+        $view->assign('dateformat', $dateformat);
+        if (isset($kga['user'])) {
+            $view->assign('disabled_columns', export_get_disabled_headers($kga['user']['userID']));
+        }
         echo $view->render("table.php");
     break;
 
@@ -229,10 +232,10 @@ switch ($axAction) {
           }
           
           $summary = array_merge($timeSheetSummary, $expenseSummary);
-          $view->summary = $summary;
+            $view->assign('summary', $summary);
         }
         else
-          $view->summary = 0;
+          $view->assign('summary', 0);
 
 
         // Create filter descirption, Same is in PDF export
@@ -241,24 +244,24 @@ switch ($axAction) {
           $customer_info = $database->customer_get_data($customerID);
           $customers[] = $customer_info['name'];
         }
-        $view->customersFilter = implode(', ', $customers);
+        $view->assign('customersFilter', implode(', ', $customers));
 
         $projects = array();
         foreach ($filterProjects as $projectID) {
           $project_info = $database->project_get_data($projectID);
           $projects[] = $project_info['name'];
         }
-        $view->projectsFilter = implode(', ', $projects);
+        $view->assign('projectsFilter', implode(', ', $projects));
 
-        $view->exportData = count($exportData) > 0 ? $exportData : 0;
+        $view->assign('exportData', count($exportData) > 0 ? $exportData : 0);
 
-        $view->columns = $columns;
-        $view->custom_timeformat = $timeformat;
-        $view->custom_dateformat = $dateformat;
-        $view->timeSum = $timeSum;
-        $view->wageSum = $wageSum;
-        $view->budgetSum = $budgetSum;
-        $view->approvedSum = $approvedSum;
+        $view->assign('columns', $columns);
+        $view->assign('custom_timeformat', $timeformat);
+        $view->assign('custom_dateformat', $dateformat);
+        $view->assign('timeSum', $timeSum);
+        $view->assign('wageSum', $wageSum);
+        $view->assign('budgetSum', $budgetSum);
+        $view->assign('approvedSum', $approvedSum);
 
         header("Content-Type: text/html;charset=utf-8");
         echo $view->render("formats/html.php");
@@ -281,11 +284,11 @@ switch ($axAction) {
           $exportData[$i]['rate'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['rate']);
           $exportData[$i]['wage'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['wage']);
         }
-        $view->exportData = count($exportData) > 0 ? $exportData : 0;
+        $view->assign('exportData', count($exportData) > 0 ? $exportData : 0);
 
-        $view->columns = $columns;
-        $view->custom_timeformat = $timeformat;
-        $view->custom_dateformat = $dateformat;
+        $view->assign('columns', $columns);
+        $view->assign('custom_timeformat', $timeformat);
+        $view->assign('custom_dateformat', $dateformat);
 
         header("Content-Disposition:attachment;filename=export.xls");
         header("Content-Type: application/vnd.ms-excel");

@@ -373,41 +373,41 @@ switch ($axAction) {
 
         $timeSheetEntries = $database->get_timeSheet($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, 1);
         if (count($timeSheetEntries) > 0) {
-            $view->timeSheetEntries = $timeSheetEntries;
+            $view->assign('timeSheetEntries', $timeSheetEntries);
         } else {
-            $view->timeSheetEntries = 0;
+            $view->assign('timeSheetEntries', 0);
         }
-        $view->latest_running_entry = $database->get_latest_running_entry();
-        $view->total = Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities));
+        $view->assign('latest_running_entry', $database->get_latest_running_entry());
+        $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities)));
 
         $ann = $database->get_time_users($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->user_annotations = $ann;
+        $view->assign('user_annotations', $ann);
 
         $ann = $database->get_time_customers($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->customer_annotations = $ann;
+        $view->assign('customer_annotations', $ann);
 
         $ann = $database->get_time_projects($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->project_annotations = $ann;
+        $view->assign('project_annotations', $ann);
 
         $ann = $database->get_time_activities($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
-        $view->activity_annotations = $ann;
+        $view->assign('activity_annotations', $ann);
 
-        $view->hideComments = true;
-        $view->showOverlapLines = false;
-        $view->showTrackingNumber = true;
+        $view->assign('hideComments', true);
+        $view->assign('showOverlapLines', false);
+        $view->assign('showTrackingNumber', true);
 
         // user can change these settings
         if (isset($kga['user'])) {
-            $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-            $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines') != 1;
-            $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber') != 0;
+            $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+            $view->assign('showOverlapLines', $database->user_get_preference('ui.hideOverlapLines') != 1);
+            $view->assign('showTrackingNumber', $database->user_get_preference('ui.showTrackingNumber') != 0);
         }
 
-        $view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates');
+        $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
         echo $view->render("timeSheet.php");
     break;

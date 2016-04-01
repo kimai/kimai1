@@ -49,7 +49,7 @@ if (!class_exists($authClass)) {
 }
 $authPlugin = new $authClass($database, $kga);
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // =================================================================
 // = processing login and displaying either login screen or errors =

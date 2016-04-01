@@ -52,16 +52,15 @@ $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 		$output['user']['password'] = "xxx";
 		$output['user']['apikey']   = "xxx";
     }
-	
-    $view->kga = $kga;
-    $view->kga_display = print_r($output, true);
+
+$view->assign('kga', $kga);
+$view->assign('kga_display', print_r($output, true));
 // /read kga -------------------------------------- 
 
-    if ($kga['logfile_lines'] == "@") {
-        $view->limitText = "(unlimited lines)";
-    } else {
-        $view->limitText = "(limited to " . $kga['logfile_lines'] . " lines)";
-    }
-   
-	echo $view->render('index.php');
-?>
+if ($kga['logfile_lines'] == "@") {
+	$view->assign('limitText', "(unlimited lines)");
+} else {
+	$view->assign('limitText', "(limited to " . $kga['logfile_lines'] . " lines)");
+}
+
+echo $view->render('index.php');

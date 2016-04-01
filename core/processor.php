@@ -167,9 +167,9 @@ switch ($axAction) {
      */
     case 'reload_users':
         if (isset($kga['customer'])) {
-            $view->users = $database->get_customer_watchable_users($kga['customer']);
+            $view->assign('users', $database->get_customer_watchable_users($kga['customer']));
         } else {
-            $view->users = $database->get_user_watchable_users($kga['user']);
+            $view->assign('users', $database->get_user_watchable_users($kga['user']));
         }
 
         echo $view->render("lists/users.php");
@@ -180,12 +180,12 @@ switch ($axAction) {
      */
     case 'reload_customers':
         if (isset($kga['customer'])) {
-                  $view->customers = array($database->customer_get_data($kga['customer']['customerID']));
+            $view->assign('customers', array($database->customer_get_data($kga['customer']['customerID'])));
         } else {
-                  $view->customers = $database->get_customers($kga['user']['groups']);
+            $view->assign('customers', $database->get_customers($kga['user']['groups']));
         }
 
-        $view->show_customer_edit_button = coreObjectActionAllowed('customer', 'edit');
+        $view->assign('show_customer_edit_button', coreObjectActionAllowed('customer', 'edit'));
 
         echo $view->render("lists/customers.php");
     break;
@@ -195,12 +195,12 @@ switch ($axAction) {
      */
     case 'reload_projects':
         if (isset($kga['customer'])) {
-                  $view->projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
+            $view->assign('projects', $database->get_projects_by_customer(($kga['customer']['customerID'])));
         } else {
-                  $view->projects = $database->get_projects($kga['user']['groups']);
+            $view->assign('projects', $database->get_projects($kga['user']['groups']));
         }
 
-        $view->show_project_edit_button = coreObjectActionAllowed('project', 'edit');
+        $view->assign('show_project_edit_button', coreObjectActionAllowed('project', 'edit'));
 
         echo $view->render("lists/projects.php");
     break;
@@ -212,14 +212,14 @@ switch ($axAction) {
      */
     case 'reload_activities':
         if (isset($kga['customer'])) {
-                  $view->activities = $database->get_activities_by_customer($kga['customer']['customerID']);
+            $view->assign('activities', $database->get_activities_by_customer($kga['customer']['customerID']));
         } else if (isset($_REQUEST['project'])) {
-                  $view->activities = $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']);
+            $view->assign('activities', $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']));
         } else {
-                  $view->activities = $database->get_activities($kga['user']['groups']);
+            $view->assign('activities', $database->get_activities($kga['user']['groups']));
         }
 
-        $view->show_activity_edit_button = coreObjectActionAllowed('activity', 'edit');
+        $view->assign('show_activity_edit_button', coreObjectActionAllowed('activity', 'edit'));
 
         echo $view->render("lists/activities.php");
     break;

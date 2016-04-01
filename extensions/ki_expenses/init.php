@@ -40,7 +40,7 @@ $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -48,12 +48,17 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-if (isset($kga['user'])) // user logged in
-$view->expenses = get_expenses($in, $out, array($kga['user']['userID']), null, null, 1);
-else // customer logged in
-$view->expenses = get_expenses($in, $out, null, array($kga['customer']['customerID']), null, 1);
+if (isset($kga['user'])) {
+    // user logged in
+    $view->assign('expenses', get_expenses($in, $out, [$kga['user']['userID']], null, null, 1));
+} else {
+    // customer logged in
+    $view->assign('expenses', get_expenses($in, $out, null, [$kga['customer']['customerID']], null, 1));
+}
 
-$view->total = Kimai_Format::formatCurrency(array_reduce($view->expenses, function($sum, $expense) { return $sum + $expense['multiplier'] * $expense['value']; }, 0));
+$view->assign('total', Kimai_Format::formatCurrency(array_reduce($view->expenses, function ($sum, $expense) {
+    return $sum + $expense['multiplier'] * $expense['value'];
+}, 0)));
 
 
 if (isset($kga['user'])) // user logged in
@@ -61,7 +66,7 @@ if (isset($kga['user'])) // user logged in
 else // customer logged in
   $ann = expenses_by_user($in, $out, null, array($kga['customer']['customerID']));
 $ann = Kimai_Format::formatCurrency($ann);
-$view->user_annotations = $ann;
+$view->assign('user_annotations', $ann);
 
 // TODO: function for loops or convert it in template with new function
 if (isset($kga['user'])) // user logged in
@@ -69,22 +74,21 @@ if (isset($kga['user'])) // user logged in
 else // customer logged in
   $ann = expenses_by_customer($in, $out, null, array($kga['customer']['customerID']));
 $ann = Kimai_Format::formatCurrency($ann);
-$view->customer_annotations = $ann;
+$view->assign('customer_annotations', $ann);
 
 if (isset($kga['user'])) // user logged in
   $ann = expenses_by_project($in, $out, array($kga['user']['userID']));
 else // customer logged in
   $ann = expenses_by_project($in, $out, null, array($kga['customer']['customerID']));
 $ann = Kimai_Format::formatCurrency($ann);
-$view->project_annotations = $ann;
+$view->assign('project_annotations', $ann);
 
-if (isset($kga['user']))
-  $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-else
-  $view->hideComments = true;
+if (isset($kga['user'])) {
+    $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+} else {
+    $view->assign('hideComments', true);
+}
 
-$view->expenses_display = $view->render("expenses.php");
+$view->assign('expenses_display', $view->render("expenses.php"));
 
 echo $view->render('main.php');
-
-?>

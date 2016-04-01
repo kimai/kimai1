@@ -58,7 +58,7 @@ $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 // ============================================================================================
 $user = checkUser();
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // ==================
 // = security check =

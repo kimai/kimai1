@@ -54,7 +54,7 @@ if (!class_exists($authClass)) {
 }
 $authPlugin = new $authClass($database, $kga);
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // ===================================
 // = current database setup correct? =
@@ -66,11 +66,11 @@ checkDBversion(".");
 // ==========================
 $users = $database->get_users();
 if (count($users) == 0) {
-    $view->devtimespan = '2006-' . date('y');
+    $view->assign('devtimespan', '2006-' . date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {
-        $view->disagreedGPL = 1;
+        $view->assign('disagreedGPL', 1);
     } else {
-        $view->disagreedGPL = 0;
+        $view->assign('disagreedGPL', 0);
     }
     echo $view->render('install/welcome.php');
     ob_end_flush();
@@ -149,9 +149,9 @@ switch ($_REQUEST['a']) {
             } else {
                 setcookie("kimai_key", "0");
                 setcookie("kimai_user", "0");
-                $view->headline = $kga['lang']['accessDenied'];
-                $view->message = $kga['lang']['wrongPass'];
-                $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+                $view->assign('headline', $kga['lang']['accessDenied']);
+                $view->assign('message', $kga['lang']['wrongPass']);
+                $view->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
                 echo $view->render('misc/error.php');
             }
         } else {
@@ -188,9 +188,9 @@ switch ($_REQUEST['a']) {
                     setcookie("kimai_user", "0");
                     $database->loginUpdateBan($userId);
 
-                    $view->headline = $kga['lang']['banned'];
-                    $view->message = $kga['lang']['tooManyLogins'];
-                    $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+                    $view->assign('headline', $kga['lang']['banned']);
+                    $view->assign('message', $kga['lang']['tooManyLogins']);
+                    $view->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
                     echo $view->render('misc/error.php');
                 }
             } else {
@@ -201,9 +201,9 @@ switch ($_REQUEST['a']) {
                     $database->loginUpdateBan($userId, true);
                 }
 
-                $view->headline = $kga['lang']['accessDenied'];
-                $view->message = $kga['lang']['wrongPass'];
-                $view->refresh = '<meta http-equiv="refresh" content="5;URL=index.php">';
+                $view->assign('headline', $kga['lang']['accessDenied']);
+                $view->assign('message', $kga['lang']['wrongPass']);
+                $view->assign('refresh', '<meta http-equiv="refresh" content="5;URL=index.php">');
                 echo $view->render('misc/error.php');
             }
         }
@@ -211,7 +211,7 @@ switch ($_REQUEST['a']) {
     
     default:
         // Show login panel
-        $view->devtimespan = '2006-' . date('y');
+        $view->assign('devtimespan', '2006-' . date('y'));
         echo $view->render('login/panel.php');
 }
 
