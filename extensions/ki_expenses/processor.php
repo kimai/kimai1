@@ -119,8 +119,8 @@ switch ($axAction)
             $filterCustomers = array($kga['customer']['customerID']);
         }
 
-        $view->expenses = get_expenses($in, $out, $filterUsers, $filterCustomers, $filterProjects, 1);
-        $view->total = Kimai_Format::formatCurrency(
+        $view->assign('expenses', get_expenses($in, $out, $filterUsers, $filterCustomers, $filterProjects, 1));
+        $view->assign('total', Kimai_Format::formatCurrency(
             array_reduce(
                 $view->expenses,
                 function ($sum, $expense) {
@@ -128,27 +128,27 @@ switch ($axAction)
                 },
                 0
             )
-        );
+        ));
 
         $ann = expenses_by_user($in, $out, $filterUsers, $filterCustomers, $filterProjects);
         $ann = Kimai_Format::formatCurrency($ann);
-        $view->user_annotations = $ann;
+        $view->assign('user_annotations', $ann);
 
         // TODO: function for loops or convert it in template with new function
         $ann = expenses_by_customer($in, $out, $filterUsers, $filterCustomers, $filterProjects);
         $ann = Kimai_Format::formatCurrency($ann);
-        $view->customer_annotations = $ann;
+        $view->assign('customer_annotations', $ann);
 
         $ann = expenses_by_project($in, $out, $filterUsers, $filterCustomers, $filterProjects);
         $ann = Kimai_Format::formatCurrency($ann);
-        $view->project_annotations = $ann;
+        $view->assign('project_annotations', $ann);
 
-        $view->activity_annotations = array();
+        $view->assign('activity_annotations', array());
 
         if (isset($kga['user'])) {
-            $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
+            $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
         } else {
-            $view->hideComments = true;
+            $view->assign('hideComments', true);
         }
 
         echo $view->render("expenses.php");
@@ -170,7 +170,8 @@ switch ($axAction)
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(array(
-            'errors' => $errors));
+            'errors' => $errors
+        ));
         break;
 
     // =============================
@@ -196,7 +197,9 @@ switch ($axAction)
 
             // check if editing or deleting with the old values would be allowed
             if (!expenseAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array('errors' => $errors));
+                echo json_encode(array(
+                    'errors' => $errors
+                ));
                 break;
             }
         }
@@ -204,7 +207,9 @@ switch ($axAction)
         // delete now because next steps don't need to be taken for deleted entries
         if (isset($_REQUEST['erase'])) {
             expense_delete($id);
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(array(
+                'errors' => $errors
+            ));
             break;
         }
 
@@ -250,7 +255,9 @@ switch ($axAction)
         }
 
         if (count($errors) > 0) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(array(
+                'errors' => $errors
+            ));
             break;
         }
 
@@ -285,7 +292,9 @@ switch ($axAction)
         expenseAccessAllowed($data, $action, $errors);
 
         if (count($errors) > 0) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(array(
+                'errors' => $errors
+            ));
             break;
         }
 
@@ -300,7 +309,9 @@ switch ($axAction)
             }
         }
 
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(array(
+            'errors' => $errors
+        ));
         break;
 
 }
