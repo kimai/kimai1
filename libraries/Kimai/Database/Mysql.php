@@ -2835,6 +2835,7 @@ class Kimai_Database_Mysql
         $this->kga['conf']['lang'] = '';
         $this->kga['conf']['user_list_hidden'] = 0;
         $this->kga['conf']['hideClearedEntries'] = 0;
+        $this->kga['conf']['defaultLocation'] = '';
 
         $table = $this->kga['server_prefix'] . "statuses";
         $this->conn->SelectRows($table);
@@ -3617,7 +3618,7 @@ class Kimai_Database_Mysql
             $values['rate'] = $rate;
         }
 
-        if (!$this->kga['conf']['defaultLocation'] == '') {
+        if (isset($this->kga['conf']['defaultLocation']) && !$this->kga['conf']['defaultLocation'] == '') {
             $values['location'] = "'" . $this->kga['conf']['defaultLocation'] . "'";
         }
         $table = $this->kga['server_prefix'] . "timeSheet";
