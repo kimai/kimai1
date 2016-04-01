@@ -32,25 +32,25 @@ switch ($axAction)
             die();
         }
 
-        $view->projects     = makeSelectBox("project", $kga['user']['groups']); // select for projects
-        $view->activities   = makeSelectBox("activity", $kga['user']['groups']); // select for activities
+        $view->assign('projects', makeSelectBox("project", $kga['user']['groups'])); // select for projects
+        $view->assign('activities', makeSelectBox("activity", $kga['user']['groups'])); // select for activities
 
         // ==============================================
         // = display edit dialog for timesheet record   =
         // ==============================================
         if ($id)
         {
-            $expense                = get_expense($id);
-            $view->id               = $id;
-            $view->comment          = $expense['comment'];
-            $view->edit_day         = date("d.m.Y", $expense['timestamp']);
-            $view->edit_time        = date("H:i:s", $expense['timestamp']);
-            $view->multiplier       = $expense['multiplier'];
-            $view->edit_value       = $expense['value'];
-            $view->designation      = $expense['designation'];
-            $view->selected_project = $expense['projectID'];
-            $view->commentType      = $expense['commentType'];
-            $view->refundable       = $expense['refundable'];
+            $expense = get_expense($id);
+            $view->assign('id', $id);
+            $view->assign('comment', $expense['comment']);
+            $view->assign('edit_day', date("d.m.Y", $expense['timestamp']));
+            $view->assign('edit_time', date("H:i:s", $expense['timestamp']));
+            $view->assign('multiplier', $expense['multiplier']);
+            $view->assign('edit_value', $expense['value']);
+            $view->assign('designation', $expense['designation']);
+            $view->assign('selected_project', $expense['projectID']);
+            $view->assign('commentType', $expense['commentType']);
+            $view->assign('refundable', $expense['refundable']);
 
             // check if this entry may be edited
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit'))
@@ -65,10 +65,10 @@ switch ($axAction)
         }
         else
         {
-          $view->id         = 0;
-          $view->edit_day   = date("d.m.Y");
-          $view->edit_time  = date("H:i:s");
-          $view->multiplier = '1' . $kga['conf']['decimalSeparator'] . '0';
+            $view->assign('id', 0);
+            $view->assign('edit_day', date("d.m.Y"));
+            $view->assign('edit_time', date("H:i:s"));
+            $view->assign('multiplier', '1' . $kga['conf']['decimalSeparator'] . '0');
 
           // check if this entry may be added
           if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add'))

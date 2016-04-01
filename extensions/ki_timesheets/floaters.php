@@ -31,14 +31,14 @@ switch ($axAction) {
     // ==============================================
     $selected = explode('|', $axValue);
 
-    $view->projects = makeSelectBox("project", $kga['user']['groups']);
-    $view->activities = makeSelectBox("activity", $kga['user']['groups']);
+    $view->assign('projects', makeSelectBox("project", $kga['user']['groups']));
+    $view->assign('activities', makeSelectBox("activity", $kga['user']['groups']));
 
     // edit record
     if ($id) {
         $timeSheetEntry = $database->timeSheet_get_data($id);
-        $view->id = $id;
-        $view->location = $timeSheetEntry['location'];
+        $view->assign('id', $id);
+        $view->assign('location', $timeSheetEntry['location']);
 
         // check if this entry may be edited
         if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
@@ -67,49 +67,49 @@ switch ($axAction) {
             $users[$kga['user']['userID']] = $kga['user']['name'];
         }
 
-        $view->users = $users;
+        $view->assign('users', $users);
 
-        $view->trackingNumber = $timeSheetEntry['trackingNumber'];
-        $view->description = $timeSheetEntry['description'];
-        $view->comment = $timeSheetEntry['comment'];
+        $view->assign('trackingNumber', $timeSheetEntry['trackingNumber']);
+        $view->assign('description', $timeSheetEntry['description']);
+        $view->assign('comment', $timeSheetEntry['comment']);
 
-        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates');
-        $view->rate = $timeSheetEntry['rate'];
-        $view->fixedRate = $timeSheetEntry['fixedRate'];
+        $view->assign('showRate', $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates'));
+        $view->assign('rate', $timeSheetEntry['rate']);
+        $view->assign('fixedRate', $timeSheetEntry['fixedRate']);
 
-        $view->cleared = $timeSheetEntry['cleared'] != 0;
+        $view->assign('cleared', $timeSheetEntry['cleared'] != 0);
 
-        $view->userID = $timeSheetEntry['userID'];
+        $view->assign('userID', $timeSheetEntry['userID']);
 
-        $view->start_day = date("d.m.Y", $timeSheetEntry['start']);
-        $view->start_time = date("H:i:s", $timeSheetEntry['start']);
+        $view->assign('start_day', date("d.m.Y", $timeSheetEntry['start']));
+        $view->assign('start_time', date("H:i:s", $timeSheetEntry['start']));
 
         if ($timeSheetEntry['end'] == 0) {
-          $view->end_day = '';
-          $view->end_time = '';
+          $view->assign('end_day', '');
+          $view->assign('end_time', '');
         }
         else {
-          $view->end_day = date("d.m.Y", $timeSheetEntry['end']);
-          $view->end_time = date("H:i:s", $timeSheetEntry['end']);
+          $view->assign('end_day', date("d.m.Y", $timeSheetEntry['end']));
+          $view->assign('end_time', date("H:i:s", $timeSheetEntry['end']));
         }
 
-        $view->approved = $timeSheetEntry['approved'];
-        $view->budget = $timeSheetEntry['budget'];
+        $view->assign('approved', $timeSheetEntry['approved']);
+        $view->assign('budget', $timeSheetEntry['budget']);
 
         // preselected
-        $view->projectID = $timeSheetEntry['projectID'];
-        $view->activityID = $timeSheetEntry['activityID'];
+        $view->assign('projectID', $timeSheetEntry['projectID']);
+        $view->assign('activityID', $timeSheetEntry['activityID']);
 
-        $view->commentType = $timeSheetEntry['commentType'];
-        $view->statusID = $timeSheetEntry['statusID'];
-        $view->billable_active = $timeSheetEntry['billable'];
+        $view->assign('commentType', $timeSheetEntry['commentType']);
+        $view->assign('statusID', $timeSheetEntry['statusID']);
+        $view->assign('billable_active', $timeSheetEntry['billable']);
 
         // budget
         $activityBudgets = $database->get_activity_budget($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
         $activityUsed = $database->get_budget_used($timeSheetEntry['projectID'], $timeSheetEntry['activityID']);
-        $view->budget_activity = round($activityBudgets['budget'], 2);
-        $view->approved_activity = round($activityBudgets['approved'], 2);
-        $view->budget_activity_used = $activityUsed;
+        $view->assign('budget_activity', round($activityBudgets['budget'], 2));
+        $view->assign('approved_activity', round($activityBudgets['approved'], 2));
+        $view->assign('budget_activity_used', $activityUsed);
 
 
         if (!isset($view->projects[$timeSheetEntry['projectID']])) {
@@ -123,7 +123,7 @@ switch ($axAction) {
         // create new record
         //$view->id = 0;
 
-        $view->statusID = $kga['conf']['defaultStatusID'];
+        $view->assign('statusID', $kga['conf']['defaultStatusID']);
 
 
         $users = array();
@@ -134,12 +134,12 @@ switch ($axAction) {
         if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-ownEntry-add'))
           $users[$kga['user']['userID']] = $kga['user']['name'];
 
-        $view->users = $users;
+        $view->assign('users', $users);
 
-        $view->start_day = date("d.m.Y");
-        $view->end_day = date("d.m.Y");
+        $view->assign('start_day', date("d.m.Y"));
+        $view->assign('end_day', date("d.m.Y"));
 
-        $view->userID = $kga['user']['userID'];
+        $view->assign('userID', $kga['user']['userID']);
 
         if ($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
           $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
@@ -176,37 +176,37 @@ switch ($axAction) {
           $dayEntry = date("d", $timeSheetData['end']);
 
           if ($day == $dayEntry) {
-                  $view->start_time = date("H:i:s", $timeSheetData['end']);
+                  $view->assign('start_time', date("H:i:s", $timeSheetData['end']));
           } else {
-                  $view->start_time = date("H:i:s");
+                  $view->assign('start_time', date("H:i:s"));
           }
-          $view->end_time = date("H:i:s", $end);
+          $view->assign('end_time', date("H:i:s", $end));
         } else {
-          $view->start_time = date("H:i:s");
-          $view->end_time = date("H:i:s");
+          $view->assign('start_time', date("H:i:s"));
+          $view->assign('end_time', date("H:i:s"));
         }
 
-        $view->location = $kga['conf']['defaultLocation'];
-        $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates');
-        $view->rate = $database->get_best_fitting_rate($kga['user']['userID'], $selected[0], $selected[1]);
-        $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0], $selected[1]);
+        $view->assign('location', $kga['conf']['defaultLocation']);
+        $view->assign('showRate', $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates'));
+        $view->assign('rate', $database->get_best_fitting_rate($kga['user']['userID'], $selected[0], $selected[1]));
+        $view->assign('fixedRate', $database->get_best_fitting_fixed_rate($selected[0], $selected[1]));
 
         // budget
-        $view->budget_activity = 0;
-        $view->approved_activity = 0;
-        $view->budget_activity_used = 0;
+        $view->assign('budget_activity', 0);
+        $view->assign('approved_activity', 0);
+        $view->assign('budget_activity_used', 0);
 
-        $view->cleared = false;
+        $view->assign('cleared', false);
     }
 
-    $view->status = $kga['conf']['status'];
+    $view->assign('status', $kga['conf']['status']);
 
     $billableValues = $kga['billable'];
     $billableText = array();
     foreach ($billableValues as $billableValue) {
       $billableText[] = $billableValue . '%';
     }
-    $view->billable = array_combine($billableValues, $billableText);
+    $view->assign('billable', array_combine($billableValues, $billableText));
 
     echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
@@ -220,13 +220,13 @@ switch ($axAction) {
         // ================================================
         $selected = explode('|', $axValue);
 
-        $view->projects = makeSelectBox("project", $kga['user']['groups']);
-        $view->activities = makeSelectBox("activity", $kga['user']['groups']);
+        $view->assign('projects', makeSelectBox("project", $kga['user']['groups']));
+        $view->assign('activities', makeSelectBox("activity", $kga['user']['groups']));
 
         if ($id) {
             $timeSheetEntry = $database->timeSheet_get_data($id);
-            $view->id = $id;
-            $view->location = $timeSheetEntry['location'];
+            $view->assign('id', $id);
+            $view->assign('location', $timeSheetEntry['location']);
 
             // check if this entry may be edited
             if ($timeSheetEntry['userID'] == $kga['user']['userID']) {
@@ -252,23 +252,23 @@ switch ($axAction) {
                 }
             }
 
-            $view->users = $users;
+            $view->assign('users', $users);
 
-            $view->trackingNumber = $timeSheetEntry['trackingNumber'];
-            $view->description = $timeSheetEntry['description'];
-            $view->comment = $timeSheetEntry['comment'];
+            $view->assign('trackingNumber', $timeSheetEntry['trackingNumber']);
+            $view->assign('description', $timeSheetEntry['description']);
+            $view->assign('comment', $timeSheetEntry['comment']);
 
-            $view->commentType = $timeSheetEntry['commentType'];
-            $view->cleared = $timeSheetEntry['cleared'] != 0;
+            $view->assign('commentType', $timeSheetEntry['commentType']);
+            $view->assign('cleared', $timeSheetEntry['cleared'] != 0);
 
-            $view->userID = $timeSheetEntry['userID'];
+            $view->assign('userID', $timeSheetEntry['userID']);
 
-            $view->projectID = $timeSheetEntry['projectID'];
-            $view->activityID = $timeSheetEntry['activityID'];
+            $view->assign('projectID', $timeSheetEntry['projectID']);
+            $view->assign('activityID', $timeSheetEntry['activityID']);
 
-            $view->commentType = $timeSheetEntry['commentType'];
-            $view->statusID = $timeSheetEntry['statusID'];
-            $view->billable_active = $timeSheetEntry['billable'];
+            $view->assign('commentType', $timeSheetEntry['commentType']);
+            $view->assign('statusID', $timeSheetEntry['statusID']);
+            $view->assign('billable_active', $timeSheetEntry['billable']);
         }
         echo $view->render("floaters/add_edit_timeSheetQuickNote.php");
 

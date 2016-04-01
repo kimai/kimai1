@@ -35,12 +35,12 @@ header("Pragma: no-cache");
 // = implementing standard includes =
 // ==================================
 
-checkUser();
+$user = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
-checkDBversion('..');
+checkDBversion("..");
 
 $extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
 $extensions->loadConfigurations();
@@ -57,28 +57,28 @@ $out = $timeframe[1];
 // ===============================================
 $current_timer = array();
 if (isset($kga['customer'])) {
-    $current_timer['all'] = 0;
-    $current_timer['hour'] = 0;
-    $current_timer['min'] = 0;
-    $current_timer['sec'] = 0;
+  $current_timer['all']  = 0;
+  $current_timer['hour'] = 0;
+  $current_timer['min']  = 0;
+  $current_timer['sec']  = 0;
 }
 else {
-    $current_timer = $database->get_current_timer();
+  $current_timer = $database->get_current_timer();
 }
 
 // =======================================
 // = Display date and time in the header =
 // =======================================
-$wd = $kga['lang']['weekdays_short'][date('w', time())];
+$wd = $kga['lang']['weekdays_short'][date("w", time())];
 
 $dp_start = 0;
-if ($kga['calender_start'] != '') {
+if ($kga['calender_start'] != "") {
     $dp_start = $kga['calender_start'];
-} elseif (isset($kga['user'])) {
-    $dp_start = date('d/m/Y', $database->getjointime($kga['user']['userID']));
+} else if (isset($kga['user'])) {
+    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date('d/m/Y', time());
+$dp_today = date("d/m/Y", time());
 
 $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);
@@ -92,7 +92,7 @@ if (isset($kga['customer'])) {
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker = '';
+$localized_DatePicker = "";
 
 $view->assign('weekdays_array', sprintf(
     "['%s','%s','%s','%s','%s','%s','%s']\n",
@@ -182,21 +182,20 @@ $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 $view->assign('lang_checkGlobalRoleName', $kga['lang']['checkGlobalRoleName']);
 $view->assign('lang_checkMembershipRoleName', $kga['lang']['checkMembershipRoleName']);
 
-$customerData = array('customerID' => false, 'name' => '');
-$projectData = array('projectID' => false, 'name' => '');
-$activityData = array('activityID' => false, 'name' => '');
+$customerData = array('customerID'=>false, 'name'=>'');
+$projectData  = array('projectID'=>false, 'name'=>'');
+$activityData = array('activityID'=>false, 'name'=>'');
 
 if (!isset($kga['customer'])) {
-    //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
-    $lastProject = $database->project_get_data($kga['user']['lastProject']);
-    $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
-    if (!$lastProject['trash']) {
-        $projectData = $lastProject;
-        $customerData = $database->customer_get_data($lastProject['customerID']);
-    }
-    if (! $lastActivity['trash']) {
-        $activityData = $lastActivity;
-    }
+  //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
+  $lastProject = $database->project_get_data($kga['user']['lastProject']);
+  $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
+  if (!$lastProject['trash']) {
+    $projectData = $lastProject;
+    $customerData = $database->customer_get_data($lastProject['customerID']);
+  }
+  if (!$lastActivity['trash'])
+    $activityData = $lastActivity;    
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);
@@ -206,7 +205,7 @@ $view->assign('activityData', $activityData);
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
 foreach ($extensions->phpIncludeFiles() as $includeFile) {
-    require_once $includeFile;
+  require_once $includeFile;
 }
 
 // =======================

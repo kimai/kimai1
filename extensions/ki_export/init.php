@@ -40,12 +40,12 @@ header("Pragma: no-cache");
 
 $timeformat = 'H:M';
 $dateformat = $kga['date_format'][1];
-$view->timeformat = $timeformat;
-$view->dateformat = $dateformat;
+$view->assign('timeformat', $timeformat);
+$view->assign('dateformat', $dateformat);
 
 echo $view->render('panel.php');
 
-$view->timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
+$view->assign('timeformat', preg_replace('/([A-Za-z])/', '%$1', $timeformat));
 
 $users = null;
 $customers = null;

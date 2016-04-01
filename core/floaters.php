@@ -21,7 +21,7 @@
  * =============================
  * = Floating Window Generator =
  * =============================
- *
+ * 
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * some HTML will be returned, which will then be shown in a floater.
  */
@@ -41,17 +41,17 @@ switch ($axAction) {
         $view->assign('devtimespan', '2006-' . date('y'));
 
         echo $view->render("floaters/credits.php");
-        break;
+    break;
 
     /**
      * Display a warning in case the installer is still present.
      */
     case 'securityWarning':
         if ($axValue == 'installer') {
-            echo $view->render("floaters/security_warning.php");
+          echo $view->render("floaters/security_warning.php");
         }
-        break;
-
+    break;
+   
     /**
      * Display the preferences dialog.
      */
@@ -80,15 +80,15 @@ switch ($axAction) {
         $view->assign('rate', $database->get_rate($kga['user']['userID'], null, null));
 
         echo $view->render("floaters/preferences.php");
-        break;
-
+    break;
+    
     /**
      * Display the dialog to add or edit a customer.
      */
     case 'add_edit_customer':
         $oldGroups = array();
         if ($id) {
-            $oldGroups = $database->customer_get_groupIDs($id);
+                  $oldGroups = $database->customer_get_groupIDs($id);
         }
 
         if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) {
@@ -141,8 +141,8 @@ switch ($axAction) {
         }
 
         echo $view->render("floaters/add_edit_customer.php");
-        break;
-
+    break;
+        
     /**
      * Display the dialog to add or edit a project.
      */
@@ -193,7 +193,7 @@ switch ($axAction) {
             $view->assign('selectedActivities', array());
             $view->assign('internal', false);
         }
-
+        
         // Set defaults for a new project.
         if (!$id) {
             $view->assign('selectedGroups', array());
@@ -209,8 +209,8 @@ switch ($axAction) {
         }
 
         echo $view->render("floaters/add_edit_project.php");
-        break;
-
+    break;
+    
     /**
      * Display the dialog to add or edit an activity.
      */
@@ -262,6 +262,6 @@ switch ($axAction) {
         }
 
         echo $view->render("floaters/add_edit_activity.php");
-        break;
-
+    break;
+    
 }
