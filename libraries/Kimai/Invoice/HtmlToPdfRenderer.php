@@ -32,9 +32,8 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
      */
     public function render()
     {
-        /* @var $l array */
-        require_once('tcpdf/config/lang/eng.php');
-        require_once('tcpdf/tcpdf.php');
+        /* @var array $l */
+        require_once(WEBROOT . 'libraries/tecnickcom/tcpdf/examples/lang/eng.php');
 
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
