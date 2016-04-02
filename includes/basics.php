@@ -106,7 +106,7 @@ unset($authPlugin);
 
 // ============ load global configurations ============
 $diffs = array(); // FIXME remove me after configs are cleared up
-$allConf = $database->configuration_get_data();
+$allConf = $database->getConfigurationData();
 if (!empty($allConf))
 {
     foreach ($allConf as $key => $value) {
