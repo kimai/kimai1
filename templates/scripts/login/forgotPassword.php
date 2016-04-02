@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta name="robots" content="noindex,nofollow" />
@@ -6,15 +7,15 @@
 	<link rel="SHORTCUT ICON" href="favicon.ico">
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->skin('login.css'); ?>" />
 	<script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="libraries/jQuery/jquery.cookie.js"></script>
+	<script type="text/javascript" src="libraries/jQuery/js.cookie-2.1.0.min.js"></script>
 	<script type='text/javascript'>
 	var requestData = <?php echo json_encode($this->requestData); ?>;
 
 	$(function(){
-		$.cookie('KimaiCookieTest', 'yes');
-		if ($.cookie('KimaiCookieTest') == 'yes') {
+		Cookies.set('KimaiCookieTest', 'yes');
+		if (Cookies.get('KimaiCookieTest') == 'yes') {
 			$("#cookiewarning").remove();
-			$.cookie('KimaiCookieTest', '', {expires: -1});
+			Cookies.remove('KimaiCookieTest');
 		}
 
 		if ($("#warning").find("p").size() < 2) {

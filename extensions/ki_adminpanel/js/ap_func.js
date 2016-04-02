@@ -61,10 +61,10 @@ function adminPanel_extension_subtab_expand(id) {
 	$("#adminPanel_extension_sub4").removeClass("active");
 	$("#adminPanel_extension_sub5").removeClass("active");
 	$("#adminPanel_extension_sub6").removeClass("active");
-        $("#adminPanel_extension_sub7").removeClass("active");
-        $("#adminPanel_extension_sub8").removeClass("active");
-        $("#adminPanel_extension_sub9").removeClass("active");
-        $("#adminPanel_extension_sub10").removeClass("active");
+    $("#adminPanel_extension_sub7").removeClass("active");
+    $("#adminPanel_extension_sub8").removeClass("active");
+    $("#adminPanel_extension_sub9").removeClass("active");
+    $("#adminPanel_extension_sub10").removeClass("active");
 	$(".adminPanel_extension_subtab").css("display", "none");	
 	
 	sub_id="#adminPanel_extension_sub" +id;
@@ -72,8 +72,8 @@ function adminPanel_extension_subtab_expand(id) {
 	
 	subtab="#adminPanel_extension_s"+id;
 	$(subtab).css("display", "block");
-	
-	$.cookie('adminPanel_extension_activePanel_'+userID, id);
+
+    Cookies.set('adminPanel_extension_activePanel_' + userID, id);
 }
 
 /**
@@ -81,7 +81,7 @@ function adminPanel_extension_subtab_expand(id) {
  * cookie. If we're unable to read it show the first subtab.
  */
 function adminPanel_extension_subtab_autoexpand() {
-	adminPanel_extension_activePanel  = $.cookie('adminPanel_extension_activePanel_'+userID);
+	adminPanel_extension_activePanel = Cookies.get('adminPanel_extension_activePanel_' + userID);
     if (adminPanel_extension_activePanel) {
         adminPanel_extension_subtab_expand(adminPanel_extension_activePanel);
     } else {
