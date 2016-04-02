@@ -1,5 +1,7 @@
 <?php
 
+$dateFormat = $this->kga->getDateFormat(1);
+
 if ($this->timeSheetEntries)
 {
     ?>
@@ -119,7 +121,7 @@ if ($this->timeSheetEntries)
             </td>
 
             <td class="date <?php echo $tdClass; ?>">
-                <?php echo $this->escape(strftime($this->kga['date_format'][1],$row['start']));?>
+                <?php echo $this->escape(strftime($dateFormat, $row['start']));?>
             </td>
 
             <td class="from <?php echo $tdClass; ?>">

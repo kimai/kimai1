@@ -77,7 +77,7 @@ mso-number-format:Fixed;
                         <?php  if ($this->custom_dateformat)
                             echo $this->escape(strftime($this->custom_dateformat,$row['time_in']));
                           else
-                            echo $this->escape(strftime($this->kga['date_format'][1], $row['time_in']));
+                            echo $this->escape(strftime($this->kga->getDateFormat(1), $row['time_in']));
                         ?>
                     </td>
 <?php endif; ?>
