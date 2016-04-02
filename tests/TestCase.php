@@ -40,6 +40,7 @@ class TestCase extends PHPUnit_Framework_TestCase
             $this->kgaLast = clone $kga;
         }
         $kga = $kgaNew;
+        \Kimai_Registry::setConfig($kga);
     }
 
     protected function resetKga()
@@ -51,6 +52,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         global $kga;
 
         $kga = $this->kgaLast;
+        \Kimai_Registry::setConfig($kga);
     }
 
 }
