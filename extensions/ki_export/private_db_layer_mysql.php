@@ -26,7 +26,8 @@
  * @author sl
  * @return bool
  */
-function export_timeSheetEntry_set_cleared($id, $cleared) {
+function export_timeSheetEntry_set_cleared($id, $cleared)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
@@ -35,10 +36,11 @@ function export_timeSheetEntry_set_cleared($id, $cleared) {
     $filter['timeEntryID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-    if ($conn->Query($query))
+    if ($conn->Query($query)) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -50,7 +52,8 @@ function export_timeSheetEntry_set_cleared($id, $cleared) {
  * @author sl
  * @return bool
  */
-function export_expense_set_cleared($id, $cleared) {
+function export_expense_set_cleared($id, $cleared)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
 
@@ -59,10 +62,11 @@ function export_expense_set_cleared($id, $cleared) {
     $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
-    if ($conn->Query($query))
+    if ($conn->Query($query)) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -74,20 +78,22 @@ function export_expense_set_cleared($id, $cleared) {
  * @author sl
  * @return bool
  */
-function export_toggle_header($header) {
+function export_toggle_header($header)
+{
     global $kga, $database, $all_column_headers;
     $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header, $all_column_headers);
-    $table  = $kga['server_prefix'] . "preferences";
+    $table = $kga['server_prefix'] . "preferences";
     $userID = MySQL::SQLValue($kga['user']['userID'], MySQL::SQLVALUE_NUMBER);
 
-    $query = "INSERT INTO $table (`userID`, `option`, `value`) VALUES($userID, 'export_disabled_columns', POWER(2,$header_number)) ON DUPLICATE KEY UPDATE `value`=`value`^POWER(2,$header_number)";
+    $query = "INSERT INTO $table (`userID`, `option`, `value`) VALUES($userID, 'export_disabled_columns', POWER(2, $header_number)) ON DUPLICATE KEY UPDATE `value`=`value`^POWER(2, $header_number)";
 
-    if ($conn->Query($query))
+    if ($conn->Query($query)) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
 
 /**
@@ -99,7 +105,8 @@ function export_toggle_header($header) {
  * @author sl
  * @return array|int
  */
-function export_get_disabled_headers($userID) {
+function export_get_disabled_headers($userID)
+{
     global $kga, $database, $all_column_headers;
     $conn = $database->getConnectionHandler();
 
@@ -109,19 +116,24 @@ function export_get_disabled_headers($userID) {
     $filter['option'] = MySQL::SQLValue('export_disabled_columns');
     $table = $kga['server_prefix'] . "preferences";
 
-    if (!$conn->SelectRows($table, $filter)) return 0;
+    if (! $conn->SelectRows($table, $filter)) {
+        return 0;
+    }
 
     $result_array = $conn->RowArray(0, MYSQLI_ASSOC);
     $code = $result_array['value'];
 
     $i = 0;
     while ($code > 0) {
-        if ($code % 2 == 1) // bit set?
+        // bit set?
+        if ($code % 2 == 1) {
             $disabled_headers[$all_column_headers[$i]] = true;
+        }
 
         // next bit and array element
         $code = $code / 2;
         $i++;
     }
+
     return $disabled_headers;
 }
