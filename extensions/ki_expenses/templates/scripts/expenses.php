@@ -55,7 +55,7 @@ if ($this->expenses)
                       elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
                 ?>
             ">
-                <?php echo $this->escape(strftime($this->kga['date_format'][1], $row['timestamp'])) ?>
+                <?php echo $this->escape(strftime($this->kga->getDateFormat(1), $row['timestamp'])) ?>
             </td>
 
             <td class="time

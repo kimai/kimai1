@@ -86,12 +86,18 @@ class Kimai_Config extends Kimai_ArrayObject
             // if this is not set the day of the users first day in the system will be taken
             // Format: ... = "DD/MM/YYYY";
             'calender_start' => '0',
-            // some date formats for display and export
+            // TODO remove me once we are sure that the array values are not used any longer
             'date_format' => array(
                 0 => '%d.%m.%Y',
                 1 => '%d.%m.',
                 2 => '%d.%m.%Y',
+                3 => 'd.m.Y',
             ),
+            // date formats for display and export
+            'date_format_0' => '%d.%m.%Y',
+            'date_format_1' => '%d.%m.',
+            'date_format_2' => '%d.%m.%Y',
+            'date_format_3' => 'd.m.Y',
             'language' => self::getDefault(self::DEFAULT_LANGUAGE),
             'authenticator' => self::getDefault(self::DEFAULT_AUTHENTICATOR),
             'billable' => self::getDefault(self::DEFAULT_BILLABLE),
@@ -240,5 +246,29 @@ class Kimai_Config extends Kimai_ArrayObject
     public function setStatuses($statuses)
     {
         $this->set('status', $statuses);
+    }
+
+    /**
+     * Set one of the date formats.
+     *
+     * @param int $id
+     * @param string $value
+     */
+    public function setDateFormat($id, $value)
+    {
+        // backward compatibility, will be removed soon
+        $this->date_format[$id] = $value;
+        $this->set('date_format_' . $id, $value);
+    }
+
+    /**
+     * Set one of the date formats.
+     *
+     * @param int $id
+     * @return string
+     */
+    public function getDateFormat($id)
+    {
+        return $this->get('date_format_' . $id);
     }
 }

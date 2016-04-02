@@ -39,7 +39,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $timeformat = 'H:M';
-$dateformat = $kga['date_format'][1];
+$dateformat = $kga->getDateFormat(1);
 $view->assign('timeformat', $timeformat);
 $view->assign('dateformat', $dateformat);
 

@@ -109,25 +109,19 @@ $diffs = array(); // FIXME remove me after configs are cleared up
 $allConf = $database->configuration_get_data();
 if (!empty($allConf))
 {
-    foreach($allConf as $key => $value) {
-        switch($key)
-        {
-            // TODO get rid of date_format array, use plain values only!
+    foreach ($allConf as $key => $value) {
+        switch($key) {
             case 'date_format_0';
-                $kga['date_format'][0] = $value;
-                $kga->set($key, $value);
+                $kga->setDateFormat(0, $value);
                 break;
             case 'date_format_1';
-                $kga['date_format'][1] = $value;
-                $kga->set($key, $value);
+                $kga->setDateFormat(1, $value);
                 break;
             case 'date_format_2';
-                $kga['date_format'][2] = $value;
-                $kga->set($key, $value);
+                $kga->setDateFormat(2, $value);
                 break;
             case 'date_format_3';
-                $kga['date_format'][3] = $value;
-                $kga->set($key, $value);
+                $kga->setDateFormat(3, $value);
                 break;
 
             case 'language';
@@ -181,7 +175,6 @@ if (!empty($allConf))
 unset($allConf);
 
 // ============ status entries ============
-// TODO translate statuses
 $kga->setStatuses($database->status_get_all());
 
 // ============ setup translation object ============
