@@ -119,7 +119,7 @@ class Kimai_Remote_Api
      */
     protected function getAuthenticator()
     {
-		return Kimai_Registry::getAuthenticator();
+        return Kimai_Registry::getAuthenticator();
     }
 
     /**

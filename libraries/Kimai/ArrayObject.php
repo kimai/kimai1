@@ -61,8 +61,7 @@ class Kimai_ArrayObject extends \ArrayObject
      */
     public function add(array $values)
     {
-        foreach($values as $key => $value)
-        {
+        foreach($values as $key => $value) {
             $this->set($key, $value);
         }
     }
