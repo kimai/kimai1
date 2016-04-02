@@ -186,7 +186,7 @@ switch ($axAction) {
           $view->end_time = date("H:i:s");
         }
 
-        $view->location = $kga['conf']['defaultLocation'];
+        $view->location = isset($kga['conf']['defaultLocation']) ? $kga['conf']['defaultLocation'] : '';
         $view->showRate = $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates');
         $view->rate = $database->get_best_fitting_rate($kga['user']['userID'], $selected[0], $selected[1]);
         $view->fixedRate = $database->get_best_fitting_fixed_rate($selected[0], $selected[1]);
