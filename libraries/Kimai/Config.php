@@ -221,4 +221,24 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         $this->set('user', $user);
     }
+
+    /**
+     * Returns an array of all available statuses.
+     *
+     * @return array
+     */
+    public function getStatuses()
+    {
+        return $this->get('status');
+    }
+
+    /**
+     * Sets all available statuses.
+     *
+     * @param array $statuses
+     */
+    public function setStatuses($statuses)
+    {
+        $this->set('status', $statuses);
+    }
 }

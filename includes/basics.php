@@ -179,11 +179,10 @@ if (!empty($allConf))
     }
 }
 unset($allConf);
-// FIXME remove me after configs are cleared up
-//echo '<pre>';var_dump($diffs);exit;
 
 // ============ status entries ============
-$kga['conf']['status'] = $database->status_get_all();
+// TODO translate statuses
+$kga->setStatuses($database->status_get_all());
 
 // ============ setup translation object ============
 $service = new Kimai_Translation_Service();

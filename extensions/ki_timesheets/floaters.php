@@ -199,7 +199,7 @@ switch ($axAction) {
         $view->assign('cleared', false);
     }
 
-    $view->assign('status', $kga['conf']['status']);
+    $view->assign('status', $kga->getStatuses());
 
     $billableValues = $kga['billable'];
     $billableText = array();
