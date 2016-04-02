@@ -144,6 +144,10 @@ switch ($axAction) {
 
                 $temp = $project['projectID'];
 
+                if (!isset($arr_plotdata[$temp])) {
+                    continue;
+                }
+
                 // do not render projects that have only empty values
                 if ($arr_plotdata[$temp]['total'] == 0 &&
                     $arr_plotdata[$temp]['budget'] == 0 &&
