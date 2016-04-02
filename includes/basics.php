@@ -174,7 +174,7 @@ if (!empty($allConf))
 unset($allConf);
 
 // ============ status entries ============
-$kga->setStatuses($database->status_get_all());
+$kga->setStatuses($database->getStatuses());
 
 // ============ setup translation object ============
 $service = new Kimai_Translation_Service();
