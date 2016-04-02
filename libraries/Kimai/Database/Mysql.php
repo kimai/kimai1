@@ -2782,7 +2782,7 @@ class Kimai_Database_Mysql
      *
      * @return array with the options from the configuration table
      */
-    public function configuration_get_data()
+    public function getConfigurationData()
     {
         $table = $this->kga['server_prefix'] . "configuration";
         $result = $this->conn->SelectRows($table);
