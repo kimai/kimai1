@@ -2803,7 +2803,7 @@ class Kimai_Database_Mysql
      *
      * @return array
      */
-    public function status_get_all()
+    public function getStatuses()
     {
         $status = array();
 
