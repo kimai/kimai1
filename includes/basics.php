@@ -143,6 +143,7 @@ if (!empty($allConf))
             case 'adminmail':
             case 'revision':
             case 'version':
+            case 'roundPrecision':
             case 'allowRoundDown':
                 $kga->set($key, $value);
                 break;
@@ -165,7 +166,6 @@ if (!empty($allConf))
             ["exactSums"]
             ["login"]
             ["loginBanTime"] ["loginTries"]
-            ["roundPrecision"]
             ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
 
         */
