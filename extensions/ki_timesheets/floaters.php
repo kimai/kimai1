@@ -123,7 +123,7 @@ switch ($axAction) {
         // create new record
         //$view->id = 0;
 
-        $view->assign('statusID', $kga['conf']['defaultStatusID']);
+        $view->assign('statusID', $kga->getDefaultStatus());
 
 
         $users = array();

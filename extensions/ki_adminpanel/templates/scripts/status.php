@@ -42,7 +42,7 @@
                     <?php echo $this->escape($statusarray['status']) ?>
                 </td>
                 <td>
-                    <?php echo $statusarray['statusID'] == $this->kga['conf']['defaultStatusID'] ? $this->kga['lang']['default'] : '' ?>
+                    <?php echo $statusarray['statusID'] == $this->kga->getDefaultStatus() ? $this->kga['lang']['default'] : '' ?>
                 </td>
             </tr>
             <?php

@@ -17,7 +17,7 @@
                     </li>
                     <li>
                         <label for="default"><?php echo $this->kga['lang']['default'] ?>:</label>
-                        <input class="formfield" type="checkbox" name="default" id="status" value="1" <?php if ($this->status_details['statusID'] == $this->kga['conf']['defaultStatusID']) echo 'checked="checked"' ?>/>
+                        <input class="formfield" type="checkbox" name="default" id="status" value="1" <?php if ($this->status_details['statusID'] == $this->kga->getDefaultStatus()) echo 'checked="checked"' ?>/>
                     </li>
                 </ul>
                 <div id="formbuttons">
