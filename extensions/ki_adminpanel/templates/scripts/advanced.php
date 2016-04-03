@@ -91,7 +91,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="currency_first" <?php if ($this->kga['conf']['currency_first']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['currency_first']?>
+               <input type="checkbox" name="currency_first" <?php if ($this->kga->isDisplayCurrencyFirst()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['currency_first']?>
             </div>
 
             <div>

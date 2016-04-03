@@ -70,7 +70,7 @@ class Kimai_Format
         }
 
         $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f", $number));
-        if ($kga['conf']['currency_first']) {
+        if ($kga->isDisplayCurrencyFirst()) {
             $value = $kga['currency_sign'] . " " . $value;
         } else {
             $value = $value . " " . $kga['currency_sign'];

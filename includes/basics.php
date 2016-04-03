@@ -145,6 +145,7 @@ if (!empty($allConf))
             case 'version':
             case 'roundPrecision':
             case 'allowRoundDown':
+            case 'currency_first':
             case 'loginBanTime':
             case 'loginTries':
 
@@ -160,7 +161,6 @@ if (!empty($allConf))
         // settings which can be overwritten by the user belong to => $kga->getSettings()
         // global configs, which are "owned" by admins only belong into => $kga
         /*
-            ["currency_first"]
             ["decimalSeparator"]
             ["defaultStatusID"]
             ["defaultVat"]

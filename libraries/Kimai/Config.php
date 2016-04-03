@@ -303,4 +303,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (int)$this->get('loginTries', 3);
     }
+
+    /**
+     * @return bool
+     */
+    public function isDisplayCurrencyFirst()
+    {
+        return (bool)$this->get('currency_first', false);
+    }
 }
