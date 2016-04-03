@@ -10,7 +10,7 @@
             <input type="hidden" name="axAction" value="editVat"/>
             <fieldset>
                 <label for="vat"><?php echo $this->kga['lang']['vat'] ?></label>
-                <input type="number" name="vat" id="vat" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])); ?>" style="width: 50px;"/>
+                <input type="number" name="vat" id="vat" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga->getDefaultVat())); ?>" style="width: 50px;"/>
                 %
                 <div id="formbuttons">
                     <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>

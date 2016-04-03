@@ -148,6 +148,7 @@ if (!empty($allConf))
             case 'allowRoundDown':
             case 'currency_first':
             case 'defaultStatusID':
+            case 'defaultVat':
             case 'loginBanTime':
             case 'loginTries':
 
@@ -164,7 +165,6 @@ if (!empty($allConf))
         // global configs, which are "owned" by admins only belong into => $kga
         /*
             ["decimalSeparator"]
-            ["defaultVat"]
             ["durationWithSeconds"]
             ["editLimit"]
             ["exactSums"]

@@ -125,7 +125,7 @@ if (isset($_REQUEST['sort_invoice']))
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
-    $vat_rate = $kga['conf']['defaultVat'];
+    $vat_rate = $kga->getDefaultVat();
 }
 
 $vat = $vat_rate * $total / 100;
