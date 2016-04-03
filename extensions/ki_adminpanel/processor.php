@@ -547,7 +547,7 @@ switch ($axAction)
             $config_data['show_daySeperatorLines'] = isset($_REQUEST['show_daySeperatorLines']);
             $config_data['show_gabBreaks'] = isset($_REQUEST['show_gabBreaks']);
             $config_data['show_RecordAgain'] = isset($_REQUEST['show_RecordAgain']);
-            $config_data['show_TrackingNr'] = getRequestBool($_REQUEST['show_TrackingNr']);
+            $config_data['show_TrackingNr'] = getRequestBool('show_TrackingNr');
             $config_data['currency_name'] = $_REQUEST['currency_name'];
             $config_data['currency_sign'] = $_REQUEST['currency_sign'];
             $config_data['currency_first'] = isset($_REQUEST['currency_first']);
