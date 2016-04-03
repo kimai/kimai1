@@ -67,12 +67,17 @@ if (isset($authenticator))  { $kga->set('authenticator', $authenticator); }
 if (isset($billable))       { $kga->set('billable', $billable); }
 if (isset($skin))           { $kga->set('skin', $skin); }
 
+date_default_timezone_set($defaultTimezone);
+
+Kimai_Registry::setConfig($kga);
+
+// ============ global namespace cleanup ============
+// remove some variables from the global namespace, that should either be
+// not accessible or which are available through the kga config object
 $cleanup = array(
     'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
     'language', 'password_salt', 'authenticator', 'defaultTimezone', 'billable', 'skin'
 );
-
-date_default_timezone_set($defaultTimezone);
 
 foreach ($cleanup as $varName) {
     if (isset($$varName)) {
@@ -82,17 +87,14 @@ foreach ($cleanup as $varName) {
 
 unset($cleanup);
 
-Kimai_Registry::setConfig($kga);
-
 // ============ setup database ============
 // we do not unset the $database variable
-// as it is historically referenced in many places by from the global namespace
+// as it is historically referenced in many places from the global namespace
 $database = new Kimai_Database_Mysql($kga, true);
 if (!$database->isConnected()) {
     die('Kimai could not connect to database, check autoconf.php: '.$database->getLastError());
 }
 Kimai_Registry::setDatabase($database);
-
 
 // ============ setup authenticator ============
 $auth = $kga->get('authenticator');
@@ -142,6 +144,7 @@ if (!empty($allConf))
             case 'adminmail':
             case 'revision':
             case 'version':
+            case 'allowRoundDown':
                 $kga->set($key, $value);
                 break;
 
@@ -154,7 +157,6 @@ if (!empty($allConf))
         // settings which can be overwritten by the user belong to => $kga->getSettings()
         // global configs, which are "owned" by admins only belong into => $kga
         /*
-            ["allowRoundDown"]
             ["currency_first"]
             ["decimalSeparator"]
             ["defaultStatusID"]

@@ -123,7 +123,7 @@
                  <option value="15" <?php if ($this->kga['conf']['roundPrecision']==15): ?> selected="selected" <?php endif; ?>>15</option>
                  <option value="15" <?php if ($this->kga['conf']['roundPrecision']==20): ?> selected="selected" <?php endif; ?>>20</option>
                  <option value="30" <?php if ($this->kga['conf']['roundPrecision']==30): ?> selected="selected" <?php endif; ?>>30</option>
-               </select> <?php echo $this->kga['lang']['round_time_minute']?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga['conf']['allowRoundDown']): ?> checked="checked" <?php endif; ?> value="1" class="formfiled"> <?php echo $this->kga['lang']['allowRoundDown'];?>
+               </select> <?php echo $this->kga['lang']['round_time_minute']?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga->isRoundDownRecorderTimes()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['allowRoundDown'];?>
             </div>
 
             <div>
