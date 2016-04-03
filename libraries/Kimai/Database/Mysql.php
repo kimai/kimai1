@@ -3549,7 +3549,7 @@ class Kimai_Database_Mysql
             $activity['start'],
             time(),
             $this->kga['conf']['roundPrecision'],
-            $this->kga['conf']['allowRoundDown']
+            $this->kga->isRoundDownRecorderTimes()
         );
 
         $values['start'] = $rounded['start'];

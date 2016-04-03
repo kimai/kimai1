@@ -271,4 +271,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return $this->get('date_format_' . $id);
     }
+
+    /**
+     * @return bool
+     */
+    public function isRoundDownRecorderTimes()
+    {
+        return (bool)$this->get('allowRoundDown', false);
+    }
 }
