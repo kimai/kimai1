@@ -153,7 +153,7 @@ switch ($_REQUEST['a'])
 
                 $userData = $database->user_get_data($userId);
 
-                if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) || ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
+                if ($userData['ban'] < $kga->getLoginTriesBeforeBan() || (time() - $userData['banTime']) > $kga->getLoginBanTime()) {
 
                     // login tries not used up OR bantime is over => grant access
 

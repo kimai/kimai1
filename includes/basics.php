@@ -145,6 +145,9 @@ if (!empty($allConf))
             case 'version':
             case 'roundPrecision':
             case 'allowRoundDown':
+            case 'loginBanTime':
+            case 'loginTries':
+
                 $kga->set($key, $value);
                 break;
 
@@ -165,9 +168,7 @@ if (!empty($allConf))
             ["editLimit"]
             ["exactSums"]
             ["login"]
-            ["loginBanTime"] ["loginTries"]
             ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
-
         */
 
         $kga->getSettings()->set($key, $value);
