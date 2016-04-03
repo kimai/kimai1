@@ -39,10 +39,10 @@
                 <input type="text" name="adminmail" size="20" value="<?php echo $this->escape($this->kga->getAdminEmail()) ?>" class="formfield"> <?php echo $this->kga['lang']['adminmail']?>
             </div>
             <div>
-                <input type="text" name="logintries" size="2" value="<?php echo $this->escape($this->kga['conf']['loginTries']) ?>" class="formfield"> <?php echo $this->kga['lang']['logintries']?>
+                <input type="text" name="logintries" size="2" value="<?php echo $this->escape($this->kga->getLoginTriesBeforeBan()) ?>" class="formfield"> <?php echo $this->kga['lang']['logintries']?>
             </div>
             <div>
-                <input type="text" name="loginbantime" size="4" value="<?php echo $this->escape($this->kga['conf']['loginBanTime']) ?>" class="formfield"> <?php echo $this->kga['lang']['bantime']?>
+                <input type="text" name="loginbantime" size="4" value="<?php echo $this->escape($this->kga->getLoginBanTime()) ?>" class="formfield"> <?php echo $this->kga['lang']['bantime']?>
             </div>
 
             <div id="adminPanel_extension_checkupdate">

@@ -287,4 +287,20 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (int)$this->get('roundPrecision', 0);
     }
+
+    /**
+     * @return int
+     */
+    public function getLoginBanTime()
+    {
+        return (int)$this->get('loginBanTime', 900);
+    }
+
+    /**
+     * @return int
+     */
+    public function getLoginTriesBeforeBan()
+    {
+        return (int)$this->get('loginTries', 3);
+    }
 }
