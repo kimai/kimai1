@@ -327,4 +327,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return $this->get('defaultVat', 0);
     }
+
+    /**
+     * @return bool
+     */
+    public function isUseExactSums()
+    {
+        return (bool)$this->get('exactSums', false);
+    }
 }

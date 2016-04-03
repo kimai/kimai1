@@ -136,7 +136,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="exactSums" <?php if ($this->kga['conf']['exactSums']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['exactSums']?>
+               <input type="checkbox" name="exactSums" <?php if ($this->kga->isUseExactSums()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['exactSums']?>
             </div>
 
             <div <?php if (!$this->editLimitEnabled): ?> class="disabled" <?php endif; ?>>

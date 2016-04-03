@@ -149,6 +149,7 @@ if (!empty($allConf))
             case 'currency_first':
             case 'defaultStatusID':
             case 'defaultVat':
+            case 'exactSums':
             case 'loginBanTime':
             case 'loginTries':
 
@@ -167,7 +168,6 @@ if (!empty($allConf))
             ["decimalSeparator"]
             ["durationWithSeconds"]
             ["editLimit"]
-            ["exactSums"]
             ["login"]
             ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
         */
