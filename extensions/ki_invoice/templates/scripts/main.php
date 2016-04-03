@@ -50,7 +50,7 @@
                     <label>
                         <?php echo $this->translate('ext_invoice:defaultVat') ?>
                     </label>
-                    <span id="defaultVat"><?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])) ?></span>
+                    <span id="defaultVat"><?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga->getDefaultVat())) ?></span>
                     % (<a id="editVatLink" href="#"><?php echo $this->translate('change') ?></a>)
                 </div>
                 <div>

@@ -319,4 +319,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (bool)$this->get('currency_first', false);
     }
+
+    /**
+     * @return int
+     */
+    public function getDefaultVat()
+    {
+        return $this->get('defaultVat', 0);
+    }
 }
