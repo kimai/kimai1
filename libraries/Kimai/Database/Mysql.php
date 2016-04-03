@@ -3548,7 +3548,7 @@ class Kimai_Database_Mysql
         $rounded = Kimai_Rounding::roundTimespan(
             $activity['start'],
             time(),
-            $this->kga['conf']['roundPrecision'],
+            $this->kga->getRoundPrecisionRecorderTimes(),
             $this->kga->isRoundDownRecorderTimes()
         );
 

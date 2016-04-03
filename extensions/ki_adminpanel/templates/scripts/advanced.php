@@ -116,13 +116,13 @@
 
             <div>
                <?php echo $this->kga['lang']['round_time']?> <select name="roundPrecision" class="formfield">
-                 <option value="0" <?php if ($this->kga['conf']['roundPrecision']==0): ?> selected="selected" <?php endif; ?>>-</option>
-                 <option value="1" <?php if ($this->kga['conf']['roundPrecision']==1): ?> selected="selected" <?php endif; ?>>1</option>
-                 <option value="5" <?php if ($this->kga['conf']['roundPrecision']==5): ?> selected="selected" <?php endif; ?>>5</option>
-                 <option value="10" <?php if ($this->kga['conf']['roundPrecision']==10): ?> selected="selected" <?php endif; ?>>10</option>
-                 <option value="15" <?php if ($this->kga['conf']['roundPrecision']==15): ?> selected="selected" <?php endif; ?>>15</option>
-                 <option value="15" <?php if ($this->kga['conf']['roundPrecision']==20): ?> selected="selected" <?php endif; ?>>20</option>
-                 <option value="30" <?php if ($this->kga['conf']['roundPrecision']==30): ?> selected="selected" <?php endif; ?>>30</option>
+                 <option value="0" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 0): ?> selected="selected" <?php endif; ?>>-</option>
+                 <option value="1" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 1): ?> selected="selected" <?php endif; ?>>1</option>
+                 <option value="5" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 5): ?> selected="selected" <?php endif; ?>>5</option>
+                 <option value="10" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 10): ?> selected="selected" <?php endif; ?>>10</option>
+                 <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 15): ?> selected="selected" <?php endif; ?>>15</option>
+                 <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 20): ?> selected="selected" <?php endif; ?>>20</option>
+                 <option value="30" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 30): ?> selected="selected" <?php endif; ?>>30</option>
                </select> <?php echo $this->kga['lang']['round_time_minute']?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga->isRoundDownRecorderTimes()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['allowRoundDown'];?>
             </div>
 

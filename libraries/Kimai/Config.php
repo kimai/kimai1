@@ -279,4 +279,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (bool)$this->get('allowRoundDown', false);
     }
+
+    /**
+     * @return int
+     */
+    public function getRoundPrecisionRecorderTimes()
+    {
+        return (int)$this->get('roundPrecision', 0);
+    }
 }
