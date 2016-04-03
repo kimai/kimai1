@@ -229,6 +229,14 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * @return int
+     */
+    public function getDefaultStatus()
+    {
+        return (int)$this->get('defaultStatusID', 1);
+    }
+
+    /**
      * Returns an array of all available statuses.
      *
      * @return array

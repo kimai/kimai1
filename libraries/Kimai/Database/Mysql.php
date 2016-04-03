@@ -3582,7 +3582,7 @@ class Kimai_Database_Mysql
         $values['activityID'] = $activityID;
         $values['start'] = $startTime;
         $values['userID'] = $user;
-        $values['statusID'] = $this->kga['conf']['defaultStatusID'];
+        $values['statusID'] = $this->kga->getDefaultStatus();
 
         $rate = $this->get_best_fitting_rate($user, $projectID, $activityID);
         if ($rate) {
