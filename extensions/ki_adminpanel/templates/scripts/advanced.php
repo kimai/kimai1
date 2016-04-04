@@ -1,32 +1,32 @@
-    <script type="text/javascript">
-        function cb(result) {
-            if (result.errors.length == 0) {
-              window.location.reload();
-              return;
-            }
-            $("#adminPanel_extension_form_editadv_submit").blur();
-            $("#adminPanel_extension_output").width($(".adminPanel_extension_panel_header").width()-22);
-            $("#adminPanel_extension_output").fadeIn(fading_enabled?500:0,function(){
-                $("#adminPanel_extension_output").fadeOut(fading_enabled?4000:0);
-            });
+<script type="text/javascript">
+    function cb(result) {
+        if (result.errors.length == 0) {
+          window.location.reload();
+          return;
         }
-        $(document).ready(function() {
-    
-            $('.disableInput').click(function(){
-              var input = $(this);
-              if (input.is (':checked')) {
-                input.parent().removeClass("disabled");
-                input.siblings().prop("disabled", false);
-              }
-              else {
-                input.parent().addClass("disabled");
-                input.siblings().prop("disabled", true);
-              }
-            });
+        $("#adminPanel_extension_form_editadv_submit").blur();
+        $("#adminPanel_extension_output").width($(".adminPanel_extension_panel_header").width()-22);
+        $("#adminPanel_extension_output").fadeIn(fading_enabled?500:0,function(){
+            $("#adminPanel_extension_output").fadeOut(fading_enabled?4000:0);
+        });
+    }
+    $(document).ready(function() {
 
-            $('#adminPanel_extension_form_editadv').ajaxForm({target:'#adminPanel_extension_output',success:cb}); 
-        }); 
-    </script>
+        $('.disableInput').click(function(){
+          var input = $(this);
+          if (input.is (':checked')) {
+            input.parent().removeClass("disabled");
+            input.siblings().prop("disabled", false);
+          }
+          else {
+            input.parent().addClass("disabled");
+            input.siblings().prop("disabled", true);
+          }
+        });
+
+        $('#adminPanel_extension_form_editadv').ajaxForm({target:'#adminPanel_extension_output',success:cb});
+    });
+</script>
 
 <div class="content">
     
@@ -145,19 +145,6 @@
               <input type="text" name="editLimitHours" size="3" class="formfield" value="<?php echo $this->editLimitHours?>" <?php if (!$this->editLimitEnabled): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['editLimitPart3']?>
             </div>
 
-            <?php /* FIXME make status field editable */ ?>
-
-<!--        -->
-<!--            <div>-->
-<!--               <select name="status[]" multiple="multiple">-->
-<!--                    {html_options values=$status output=$status_names selected=$this->kga.conf.status}-->
-<!--                </select> <?php echo $this->kga['lang']['status']?>-->
-<!--            </div>-->
-<!--            -->
-<!--            <div>-->
-<!--               <input type="text" name="new_status" class="formfield"> <?php echo $this->kga['lang']['new_status']?>-->
-<!--            </div>-->
-            
             <div <?php if (!$this->roundTimesheetEntries): ?> class="disabled" <?php endif; ?>>
               <input type="checkbox" name="roundTimesheetEntries" value="1" <?php if ($this->roundTimesheetEntries): ?> checked="checked" <?php endif; ?> class="formfield, disableInput"> <?php echo $this->kga['lang']['roundTimesheetEntries']?>
               <input type="text" name="roundMinutes" size="3" class="formfield" value="<?php echo $this->roundMinutes?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['minutes']?> <?php echo $this->kga['lang']['and']?>
@@ -168,7 +155,6 @@
             <div id="formbuttons">
                 <input id="adminPanel_extension_form_editadv_submit" class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['save']?>' />
             </div>
-            
         
         </fieldset>
         
