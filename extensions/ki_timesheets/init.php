@@ -40,7 +40,7 @@ $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -54,21 +54,21 @@ if (isset($kga['customer']))
   $total = Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']), null));
 else
   $total = Kimai_Format::formatDuration($database->get_duration($in, $out, array($kga['user']['userID']), null, null));
-$view->total = $total;
+$view->assign('total', $total);
 
 // Get the array of timesheet entries.
 if (isset($kga['customer'])) {
   $timeSheetEntries = $database->get_timeSheet($in, $out, null, array($kga['customer']['customerID']), null, 1);
-  $view->latest_running_entry = null;
+  $view->assign('latest_running_entry', null);
 } else {
   $timeSheetEntries = $database->get_timeSheet($in, $out, array($kga['user']['userID']), null, null, 1);
-  $view->latest_running_entry = $database->get_latest_running_entry();
+  $view->assign('latest_running_entry', $database->get_latest_running_entry());
 }
 
 if (count($timeSheetEntries) > 0) {
-    $view->timeSheetEntries = $timeSheetEntries;
+    $view->assign('timeSheetEntries', $timeSheetEntries);
 } else {
-    $view->timeSheetEntries = 0;
+    $view->assign('timeSheetEntries', 0);
 }
 
 // Get the annotations for the user sub list.
@@ -77,7 +77,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_users($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
-$view->user_annotations = $ann;
+$view->assign('user_annotations', $ann);
 
 // Get the annotations for the customer sub list.
 if (isset($kga['customer']))
@@ -85,7 +85,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_customers($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
-$view->customer_annotations = $ann;
+$view->assign('customer_annotations', $ann);
 
 // Get the annotations for the project sub list.
 if (isset($kga['customer']))
@@ -93,7 +93,7 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_projects($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
-$view->project_annotations = $ann;
+$view->assign('project_annotations', $ann);
 
 // Get the annotations for the activity sub list.
 if (isset($kga['customer']))
@@ -101,40 +101,40 @@ if (isset($kga['customer']))
 else
   $ann = $database->get_time_activities($in, $out, array($kga['user']['userID']));
 Kimai_Format::formatAnnotations($ann);
-$view->activity_annotations = $ann;
+$view->assign('activity_annotations', $ann);
 
-$view->hideComments = true;
-$view->showOverlapLines = false;
-$view->showTrackingNumber = false;
+$view->assign('hideComments', true);
+$view->assign('showOverlapLines', false);
+$view->assign('showTrackingNumber', false);
 
 if (isset($kga['user'])) {
-    $view->hideComments = $database->user_get_preference('ui.showCommentsByDefault') != 1;
-    $view->showOverlapLines = $database->user_get_preference('ui.hideOverlapLines') != 1;
-    $view->showTrackingNumber = $database->user_get_preference('ui.showTrackingNumber') != 0;
+    $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+    $view->assign('showOverlapLines', $database->user_get_preference('ui.hideOverlapLines') != 1);
+    $view->assign('showTrackingNumber', $database->user_get_preference('ui.showTrackingNumber') != 0);
 }
 
-$view->showRates = isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates');
+$view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
-$view->timeSheet_display = $view->render("timeSheet.php");
+$view->assign('timeSheet_display', $view->render("timeSheet.php"));
 
-$view->buzzerAction = "startRecord()";
+$view->assign('buzzerAction', "startRecord()");
 
 // select for projects
 if (isset($kga['customer'])) {
-  $view->projects = array();
+  $view->assign('projects', array());
 }
 else {
   $sel = makeSelectBox("project", $kga['user']['groups']);
-  $view->projects = $sel;
+  $view->assign('projects', $sel);
 }
 
 // select for activities
 if (isset($kga['customer'])) {
-  $view->activities = array();
+  $view->assign('activities', array());
 }
 else {
   $sel = makeSelectBox("activity", $kga['user']['groups']);
-  $view->activities = $sel;
+  $view->assign('activities', $sel);
 }
 
 echo $view->render('main.php');

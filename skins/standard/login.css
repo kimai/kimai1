@@ -229,10 +229,8 @@ body {
 }
 
 #warning {
-	margin: 5px 0 0 38px;
-	width: 434px;
 	border: 2px solid red;
-	padding: 10px 5px 5px 5px;
+	padding: 10px 5px 5px 5px !important;
 	background: url(grfx/bg_warning.gif) repeat-x;
 }
 

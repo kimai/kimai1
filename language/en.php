@@ -92,6 +92,7 @@ return array(
     "passwordTooShort" => "The password doesn't have at least 5 characters.",
     "forgotPassword" => "Forgot my password",
     "passwordReset" => array(
+        "button" => "Reset password",
         "notSupported" => "The current authentication plugin doesn't support resetting the password.",
         "instructions" => "Enter your username and an email will containing a link will be sent to the associated email address. There will be no indication if your username is correct so make sure to enter it correctly!",
         "mailSubject" => "Kimai - Password reset",

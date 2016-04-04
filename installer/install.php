@@ -390,8 +390,8 @@ if ($errors) {
     $view = new Zend_View();
     $view->setBasePath(WEBROOT . '/templates');
 
-    $view->headline = $kga['lang']['errors'][1]['hdl'];
-    $view->message = $kga['lang']['errors'][1]['txt'];
+    $view->assign('headline', $kga['lang']['errors'][1]['hdl']);
+    $view->assign('message', $kga['lang']['errors'][1]['txt']);
     echo $view->render('misc/error.php');
     Kimai_Logger::logfile("-- showing install error --------------------------");
 } else {
