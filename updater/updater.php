@@ -587,6 +587,8 @@ if ((int)$revisionDB < 1305) {
     }
 }
 
+// release of kimai 0.9.2 with r1306
+
 if ((int)$revisionDB < 1326) {
     Kimai_Logger::logfile("-- update to r1326");
     exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
@@ -936,7 +938,7 @@ if ((int)$revisionDB < 1373) {
 
 if ((int)$revisionDB < 1374) {
     Kimai_Logger::logfile("-- update to r1374");
-    require("installer/installPermissions.php");
+    require("../installer/installPermissions.php");
 
     // add membershipRoleID column, initialized with user role
     exec_query("ALTER TABLE `${p}groups_users` ADD `membershipRoleID` int(10) DEFAULT $membershipUserRoleID;");
@@ -1079,6 +1081,8 @@ if ((int)$revisionDB < 1384) {
     exec_query("ALTER TABLE ${p}customers ADD COLUMN `passwordResetHash` char(32) NULL DEFAULT NULL AFTER `password`");
 }
 
+// release of kimai 0.9.3
+
 if ((int)$revisionDB < 1385) {
     Kimai_Logger::logfile("-- update to r1385");
     exec_query("ALTER TABLE ${p}customers CHANGE `comment` `comment` TEXT NULL;");
@@ -1111,6 +1115,7 @@ if ((int)$revisionDB < 1387) {
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
 }
 
+// release of kimai 1.0
 
 // ================================================================================
 // FINALIZATION: update DB version number
