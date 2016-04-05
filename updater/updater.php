@@ -106,9 +106,7 @@ if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
     );
 }
 
-// ================================================================================
 require_once 'update_header.php';
-// ================================================================================
 
 $errors = 0;
 $executed_queries = 0;
@@ -133,7 +131,7 @@ if ((int)$revisionDB < $kga['revision']) {
     $query = ("SHOW TABLES;");
 
     $result_backup = $database->queryAll($query);
-    Kimai_Logger::logfile($query, $result_backup);
+    Kimai_Logger::logfile($query);
     $prefix_length = strlen($p);
 
     echo "</table>";
@@ -175,7 +173,7 @@ if ((int)$revisionDB < 221) {
 }
 
 if ((int)$revisionDB < 733) {
-    Kimai_Logger::logfile("-- update to 0.8.0a");
+    Kimai_Logger::logfile("-- update to r733 (0.8.0a)");
 
     exec_query("ALTER TABLE `${p}evt` CHANGE `evt_visible` `evt_visible` TINYINT(1) NOT NULL DEFAULT '1';", 0);
     exec_query("ALTER TABLE `${p}knd` CHANGE `knd_visible` `knd_visible` TINYINT(1) NOT NULL DEFAULT '1';", 0);
@@ -199,7 +197,6 @@ if ((int)$revisionDB < 733) {
     exec_query("ALTER TABLE `${p}var` ADD PRIMARY KEY (`var`);", 0);
 
     exec_query("ALTER TABLE `${p}zef` CHANGE `zef_ID` `zef_ID` INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY;", 0);
-
 }
 
 if ((int)$revisionDB < 809) {
@@ -277,7 +274,6 @@ if ((int)$revisionDB < 1067) {
         die($kga['lang']['updater'][130]);
     }
 
-
     /*
      *  Reset all passwords
      */
@@ -291,7 +287,7 @@ if ((int)$revisionDB < 1067) {
         } else {
             $new_password = createPassword(8);
         }
-        exec_query("UPDATE ${p}usr SET pw = '" .
+        exec_query("UPDATE `${p}usr` SET pw = '" .
             md5($kga['password_salt'] . $new_password . $kga['password_salt']) .
             "' WHERE usr_ID = $user[usr_ID]");
         if ($result) {
@@ -330,45 +326,47 @@ if ((int)$revisionDB < 1089) {
 
 if ((int)$revisionDB < 1103) {
     Kimai_Logger::logfile("-- update to r1103");
-    exec_query("ALTER TABLE ${p}usr DROP `allvisible`");
+    exec_query("ALTER TABLE `${p}usr` DROP `allvisible`");
 }
 
 if ((int)$revisionDB < 1112) {
     Kimai_Logger::logfile("-- update to r1112");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_name','Euro')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_sign','€')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_sensible_data','1')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_update_warn','1')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('check_at_startup','0')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_daySeperatorLines','1')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_gabBreaks','0')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_RecordAgain','1')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('show_TrackingNr','1')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_name','Euro')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_sign','€')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_sensible_data','1')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_update_warn','1')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('check_at_startup','0')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_daySeperatorLines','1')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_gabBreaks','0')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_RecordAgain','1')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('show_TrackingNr','1')");
 }
 
 if ((int)$revisionDB < 1113) {
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_1','%d.%m.')");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
-    exec_query("DELETE FROM ${p}var WHERE `var` = 'charset' LIMIT 1");
+    Kimai_Logger::logfile("-- update to r1113");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_0','%d.%m.%Y')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_1','%d.%m.')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('date_format_2','%d.%m.%Y')");
+    exec_query("DELETE FROM `${p}var` WHERE `var` = 'charset' LIMIT 1");
 }
 
 if ((int)$revisionDB < 1115) {
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('language','$kga[language]')");
+    Kimai_Logger::logfile("-- update to r1115");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('language','$kga[language]')");
 }
 
 if ((int)$revisionDB < 1126) {
     Kimai_Logger::logfile("-- update to r1126");
-    exec_query("ALTER TABLE `${p}grp_evt` ADD UNIQUE (`grp_ID` ,`evt_ID`);");
-    exec_query("ALTER TABLE `${p}grp_knd` ADD UNIQUE (`grp_ID` ,`knd_ID`);");
-    exec_query("ALTER TABLE `${p}grp_pct` ADD UNIQUE (`grp_ID` ,`pct_ID`);");
-    exec_query("ALTER TABLE `${p}ldr` ADD UNIQUE (`grp_ID` ,`grp_leader`);");
+    exec_query("ALTER TABLE `${p}grp_evt` ADD UNIQUE (`grp_ID`, `evt_ID`);");
+    exec_query("ALTER TABLE `${p}grp_knd` ADD UNIQUE (`grp_ID`, `knd_ID`);");
+    exec_query("ALTER TABLE `${p}grp_pct` ADD UNIQUE (`grp_ID`, `pct_ID`);");
+    exec_query("ALTER TABLE `${p}ldr` ADD UNIQUE (`grp_ID`, `grp_leader`);");
 }
 
 if ((int)$revisionDB < 1132) {
     Kimai_Logger::logfile("-- update to r1132");
-    exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
-    exec_query("UPDATE ${p}usr, ${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
+    exec_query("UPDATE `${p}usr`, ${p}ldr SET usr_sts = 2 WHERE usr_sts = 1");
+    exec_query("UPDATE `${p}usr`, ${p}ldr SET usr_sts = 1 WHERE usr_sts = 2 AND grp_leader = usr_ID");
 }
 
 if ((int)$revisionDB < 1139) {
@@ -378,12 +376,12 @@ if ((int)$revisionDB < 1139) {
 
 if ((int)$revisionDB < 1142) {
     Kimai_Logger::logfile("-- update to r1142");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('roundPrecision','0')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('roundPrecision','0')");
 }
 
 if ((int)$revisionDB < 1145) {
     Kimai_Logger::logfile("-- update to r1145");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('currency_first','0')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('currency_first','0')");
 }
 
 if ((int)$revisionDB < 1176) {
@@ -403,30 +401,29 @@ if ((int)$revisionDB < 1183) {
 
 if ((int)$revisionDB < 1184) {
     Kimai_Logger::logfile("-- update to r1184");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('decimalSeparator',',')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('decimalSeparator',',')");
 }
 
 if ((int)$revisionDB < 1185) {
     Kimai_Logger::logfile("-- update to r1185");
-    exec_query("CREATE TABLE ${p}pct_evt (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID` ,`evt_ID`)) ;");
+    exec_query("CREATE TABLE `${p}pct_evt` (`uid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, `pct_ID` INT NOT NULL, `evt_ID` INT NOT NULL, UNIQUE (`pct_ID`, `evt_ID`));");
 }
 
 if ((int)$revisionDB < 1206) {
     Kimai_Logger::logfile("-- update to r1206");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('durationWithSeconds','0')");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('durationWithSeconds','0')");
 }
 
 if ((int)$revisionDB < 1207) {
     Kimai_Logger::logfile("-- update to r1207");
     exec_query("ALTER TABLE `${p}exp` ADD `exp_multiplier` INT NOT NULL DEFAULT '1'");
-
 }
 
 if ((int)$revisionDB < 1213) {
     Kimai_Logger::logfile("-- update to r1213");
-    exec_query("ALTER TABLE ${p}knd DROP `knd_logo`");
-    exec_query("ALTER TABLE ${p}pct DROP `pct_logo`");
-    exec_query("ALTER TABLE ${p}evt DROP `evt_logo`");
+    exec_query("ALTER TABLE `${p}knd` DROP `knd_logo`");
+    exec_query("ALTER TABLE `${p}pct` DROP `pct_logo`");
+    exec_query("ALTER TABLE `${p}evt` DROP `evt_logo`");
 }
 
 if ((int)$revisionDB < 1216) {
@@ -440,7 +437,7 @@ if ((int)$revisionDB < 1219) {
     Kimai_Logger::logfile("-- update to r1219");
     exec_query("ALTER TABLE `${p}usr` ADD `timezone` VARCHAR( 40 ) NOT NULL DEFAULT ''");
     exec_query("UPDATE `${p}usr` SET `timezone` = $timezone");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('defaultTimezone',$timezone)");
+    exec_query("INSERT INTO `${p}var` (`var`,`value`) VALUES('defaultTimezone', $timezone)");
 }
 
 if ((int)$revisionDB < 1225) {
@@ -558,8 +555,7 @@ if ((int)$revisionDB < 1305) {
         }
 
         exec_query("UPDATE ${p}evt SET evt_name = " .
-            quoteForSql($name) .
-            " WHERE evt_ID = $event[evt_ID]");
+            quoteForSql($name) . ' WHERE evt_ID = ' . $event['evt_ID']);
     }
 
     // update usr_name
@@ -573,8 +569,7 @@ if ((int)$revisionDB < 1305) {
         }
 
         exec_query("UPDATE ${p}usr SET usr_name = " .
-            quoteForSql($name) .
-            " WHERE usr_ID = $user[usr_ID]");
+            quoteForSql($name) . ' WHERE usr_ID = ' . $user['usr_ID']);
     }
 
     // update grp_name
@@ -588,8 +583,7 @@ if ((int)$revisionDB < 1305) {
         }
 
         exec_query("UPDATE ${p}grp SET grp_name = " .
-            quoteForSql($name) .
-            " WHERE grp_ID = $group[grp_ID]");
+            quoteForSql($name) . ' WHERE grp_ID = ' . $group['grp_ID']);
     }
 }
 
@@ -644,7 +638,7 @@ PRIMARY KEY (`grp_ID`,`usr_ID`)
 
     $result = $database->queryAll("SELECT usr_ID,usr_grp FROM ${p}usr");
     foreach ($result as $row) {
-        exec_query("INSERT INTO ${p}grp_usr (`grp_ID`,`usr_ID`) VALUES($row[usr_grp],$row[usr_ID]);");
+        exec_query('INSERT INTO ' . $p . 'grp_usr (`grp_ID`, `usr_ID`) VALUES(' . $row['usr_grp'] . ',' . $row['usr_ID'] . ');');
     }
 
     exec_query("ALTER TABLE ${p}usr DROP `usr_grp`;");
@@ -737,6 +731,7 @@ CHANGE `grp_name`  `name`    varchar(160) NOT NULL,
 CHANGE `grp_trash` `trash`   tinyint(1) NOT NULL DEFAULT '0'
 ;");
 
+    exec_query("ALTER TABLE `${p}grp_evt` DROP INDEX `grp_ID`;", false);
     exec_query("ALTER TABLE `${p}grp_evt` RENAME TO `${p}groups_activities`,
 CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
 CHANGE `evt_ID` `activityID` int(10) NOT NULL,
@@ -744,6 +739,7 @@ DROP `uid`,
 ADD PRIMARY KEY (`groupID`, `activityID`)
 ;");
 
+    exec_query("ALTER TABLE `${p}grp_knd` DROP INDEX `grp_ID`;", false);
     exec_query("ALTER TABLE `${p}grp_knd` RENAME TO `${p}groups_customers`,
 CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
 CHANGE `knd_ID` `customerID` int(10) NOT NULL,
@@ -751,6 +747,7 @@ DROP `uid`,
 ADD PRIMARY KEY (`groupID`, `customerID`)
 ;");
 
+    exec_query("ALTER TABLE `${p}grp_pct` DROP INDEX `grp_ID`;", false);
     exec_query("ALTER TABLE `${p}grp_pct` RENAME TO `${p}groups_projects`,
 CHANGE `grp_ID` `groupID`    int(10) NOT NULL,
 CHANGE `pct_ID` `projectID` int(10) NOT NULL,
@@ -859,8 +856,7 @@ CHANGE `var` `option` varchar(255) NOT NULL
 ;");
 
     exec_query("UPDATE `${p}configuration` SET `option` = 'project_comment_flag' WHERE `option` = 'pct_comment_flag';");
-
-
+    
     exec_query("ALTER TABLE `${p}zef` RENAME TO `${p}timeSheet`,
 CHANGE `zef_ID`           `timeEntryID`     int(10) NOT NULL AUTO_INCREMENT,
 CHANGE `zef_in`           `start`           int(10) NOT NULL DEFAULT '0',
@@ -882,10 +878,10 @@ CHANGE `zef_approved`     `approved`        decimal(10,2) DEFAULT NULL,
 CHANGE `zef_status`       `statusID`        smallint(6) NOT NULL,
 CHANGE `zef_billable`     `billable`        tinyint(4) DEFAULT NULL COMMENT 'how many percent are billable to customer'
 ;");
-
 }
 
 if ((int)$revisionDB < 1370) {
+    Kimai_Logger::logfile("-- update to r1370");
     $result = $database->queryAll("SELECT `value` FROM ${p}configuration WHERE `option` = 'defaultTimezone'");
     $defaultTimezone = $result[0][0];
 
@@ -915,7 +911,8 @@ if ((int)$revisionDB < 1370) {
 }
 
 if ((int)$revisionDB < 1371) {
-    // The mentioned columns were accidentially removed by the update script. But there was no release since then.
+    Kimai_Logger::logfile("-- update to r1371");
+    // The mentioned columns were accidentally removed by the update script. But there was no release since then.
     // Therefore this updater was fixed to to the right thing now: Keep the column and rename it correctly.
     // But there might be people using the development version. They lost their data but we have to add the columns again.
     // That's why these queries are allowed to fail. This will happen for all not using a development version.
@@ -925,23 +922,20 @@ DROP `budget`,
 DROP `effort`,
 DROP `approved`
 ;", false);
-
-    exec_query("ALTER TABLE `${p}projects_activities`
-ADD `budget`     decimal(10,2) NOT NULL DEFAULT '0.00',
-ADD `effort`     decimal(10,2) DEFAULT NULL,
-ADD `approved`   decimal(10,2) DEFAULT NULL
-;", false);
 }
 
 if ((int)$revisionDB < 1372) {
+    Kimai_Logger::logfile("-- update to r1372");
     exec_query("ALTER TABLE `${p}users` CHANGE `alias` `alias` varchar(160);");
 }
 
 if ((int)$revisionDB < 1373) {
+    Kimai_Logger::logfile("-- update to r1373");
     exec_query("ALTER TABLE `${p}activities` DROP `assignable`;");
 }
 
 if ((int)$revisionDB < 1374) {
+    Kimai_Logger::logfile("-- update to r1374");
     require("installer/installPermissions.php");
 
     // add membershipRoleID column, initialized with user role
@@ -961,6 +955,7 @@ if ((int)$revisionDB < 1374) {
 }
 
 if ((int)$revisionDB < 1375) {
+    Kimai_Logger::logfile("-- update to r1375");
     foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
         exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 1;");
         exec_query("ALTER TABLE `${p}globalRoles` CHANGE `core-$object-otherGroup-view` `core-$object-otherGroup-view` tinyint DEFAULT 0;");
@@ -970,19 +965,24 @@ if ((int)$revisionDB < 1375) {
 }
 
 if ((int)$revisionDB < 1376) {
-    exec_query("ALTER TABLE `${p}globalRoles` ADD `demo_ext-access` tinyint DEFAULT 0;", false);
+    Kimai_Logger::logfile("-- update to r1376");
+    # column already added in installer/installPermissions.php in r1374
+    #exec_query("ALTER TABLE `${p}globalRoles` ADD `demo_ext-access` tinyint DEFAULT 0;", false);
     exec_query("UPDATE `${p}globalRoles` SET `demo_ext-access` = 1 WHERE `name` = 'Admin';");
 }
 
 if ((int)$revisionDB < 1377) {
+    Kimai_Logger::logfile("-- update to r1377");
     exec_query("ALTER TABLE `${p}rates` ADD UNIQUE KEY(`userID`, `projectID`, `activityID`);");
 }
 
 if ((int)$revisionDB < 1378) {
+    Kimai_Logger::logfile("-- update to r1378");
     exec_query("UPDATE `${p}configuration` SET `value` = '0' WHERE `option` = 'show_sensible_data';");
 }
 
 if ((int)$revisionDB < 1379) {
+    Kimai_Logger::logfile("-- update to r1379");
     if (!isset($defaultTimezone) && isset($kga['defaultTimezone'])) {
         $defaultTimezone = $kga['defaultTimezone'];
     }
@@ -1017,40 +1017,53 @@ if ((int)$revisionDB < 1380) {
 if ((int)$revisionDB < 1381) {
     Kimai_Logger::logfile("-- update to r1381");
     // make sure all keys are defined correctly
-    exec_query("ALTER TABLE `${p}activities`          ADD PRIMARY KEY(`activityID`);", false);
-    exec_query("ALTER TABLE `${p}configuration`       ADD PRIMARY KEY(`option`);", false);
-    exec_query("ALTER TABLE `${p}customers`           ADD PRIMARY KEY(`customerID`);", false);
-    exec_query("ALTER TABLE `${p}expenses`            ADD PRIMARY KEY(`expenseID`);", false);
+    # primary key since r733
+    #exec_query("ALTER TABLE `${p}activities`          ADD PRIMARY KEY(`activityID`);", false);
+    #exec_query("ALTER TABLE `${p}configuration`       ADD PRIMARY KEY(`option`);", false);
+    #exec_query("ALTER TABLE `${p}customers`           ADD PRIMARY KEY(`customerID`);", false);
+    #exec_query("ALTER TABLE `${p}expenses`            ADD PRIMARY KEY(`expenseID`);", false);
     exec_query("ALTER TABLE `${p}expenses`            ADD INDEX      (`userID`);", false);
     exec_query("ALTER TABLE `${p}expenses`            ADD INDEX      (`projectID`);", false);
     exec_query("ALTER TABLE `${p}fixedRates`          ADD UNIQUE  KEY(`projectID`, `activityID`);", false);
-    exec_query("ALTER TABLE `${p}globalRoles`         ADD PRIMARY KEY(`globalRoleID`);", false);
-    exec_query("ALTER TABLE `${p}groups`              ADD PRIMARY KEY(`groupID`);", false);
+    #exec_query("ALTER TABLE `${p}globalRoles`         ADD PRIMARY KEY(`globalRoleID`);", false);
+    #exec_query("ALTER TABLE `${p}groups`              ADD PRIMARY KEY(`groupID`);", false);
     exec_query("ALTER TABLE `${p}groups_activities`   ADD UNIQUE  KEY(`groupID`, `activityID`);", false);
-    exec_query("ALTER TABLE `${p}groups_customers`    ADD UNIQUE  KEY(`groupID`, `customersID`);", false);
-    exec_query("ALTER TABLE `${p}groups_projects`     ADD UNIQUE  KEY(`groupID`, `projectsID`);", false);
+    exec_query("ALTER TABLE `${p}groups_customers`    ADD UNIQUE  KEY(`groupID`, `customerID`);", false);
+    exec_query("ALTER TABLE `${p}groups_projects`     ADD UNIQUE  KEY(`groupID`, `projectID`);", false);
     exec_query("ALTER TABLE `${p}groups_users`        ADD UNIQUE  KEY(`groupID`, `userID`);", false);
-    exec_query("ALTER TABLE `${p}membershipRoles`     ADD PRIMARY KEY(`membershipRoleID`);", false);
-    exec_query("ALTER TABLE `${p}preferences`         ADD PRIMARY KEY(`userID`, `option`);", false);
-    exec_query("ALTER TABLE `${p}projects`            ADD PRIMARY KEY(`projectID`);", false);
+    #exec_query("ALTER TABLE `${p}membershipRoles`     ADD PRIMARY KEY(`membershipRoleID`);", false);
+    #exec_query("ALTER TABLE `${p}preferences`         ADD PRIMARY KEY(`userID`, `option`);", false);
+    #exec_query("ALTER TABLE `${p}projects`            ADD PRIMARY KEY(`projectID`);", false);
     exec_query("ALTER TABLE `${p}projects`            ADD INDEX      (`customerID`);", false);
     exec_query("ALTER TABLE `${p}projects_activities` ADD UNIQUE  KEY(`projectID`, `activityID`);", false);
     exec_query("ALTER TABLE `${p}rates`               ADD UNIQUE  KEY(`userID`, `projectID`, `activityID`);", false);
-    exec_query("ALTER TABLE `${p}statuses`            ADD PRIMARY KEY(`statusID`);", false);
-    exec_query("ALTER TABLE `${p}timeSheet`           ADD PRIMARY KEY(`timeEntryID`);", false);
-    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`userID`);", false);
-    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`projectID`);", false);
-    exec_query("ALTER TABLE `${p}timeSheet`           ADD INDEX      (`activityID`);", false);
-    exec_query("ALTER TABLE `${p}users`               ADD PRIMARY KEY(`userID`);", false);
-    exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`name`);", false);
-    exec_query("ALTER TABLE `${p}users`               ADD UNIQUE  KEY(`apiKey`);", false);
+    #exec_query("ALTER TABLE `${p}statuses`            ADD PRIMARY KEY(`statusID`);", false);
+    
+    # primary key exists since r733 (renamed in r1368)
+    #exec_query("ALTER TABLE `${p}timeSheet` ADD PRIMARY KEY(`timeEntryID`);", false);
+
+    #drop keys from r1176 and create new ones
+    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_usrID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`userID`)", false);
+
+    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_pctID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`projectID`)", false);
+
+    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_evtID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`activityID`)", false);
+    
+    # column has primary key since r1368
+    #exec_query("ALTER TABLE `${p}users` ADD PRIMARY KEY(`userID`);", false);
+    exec_query("ALTER TABLE `${p}users` ADD UNIQUE  KEY(`name`);", false);
+    exec_query("ALTER TABLE `${p}users` ADD UNIQUE  KEY(`apiKey`);", false);
 
     exec_query("UPDATE `${p}preferences` SET `option` = 'ui.project_comment_flag' WHERE `option` = 'ui.pct_comment_flag';");
 }
 
 if ((int)$revisionDB < 1382) {
     Kimai_Logger::logfile("-- update to r1382");
-    exec_query("ALTER TABLE `${p}membershipRoles` ADD `core-user-view` tinyint DEFAULT 0 AFTER `core-user-unassign`;", false);
+    #column already added in installer/installPermissions.php in r1374
+    #exec_query("ALTER TABLE `${p}membershipRoles` ADD `core-user-view` tinyint DEFAULT 0 AFTER `core-user-unassign`;", false);
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Admin';");
     exec_query("UPDATE `${p}membershipRoles` SET `core-user-view` = 1 WHERE `name` = 'Groupleader';");
 }
@@ -1113,6 +1126,4 @@ if ((int)$revisionDB < $kga['revision'] && !$errors)
 
 Kimai_Logger::logfile("-- update finished --------------------------------");
 
-// ================================================================================
 require_once 'update_footer.php';
-// ================================================================================
