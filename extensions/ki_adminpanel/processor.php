@@ -443,7 +443,7 @@ switch ($axAction)
         $userData['globalRoleID'] = $_REQUEST['globalRoleID'];
         $userData['rate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
         // if password field is empty => password unchanged (not overwritten with "")
-        if ($_REQUEST['password'] != "") {
+        if (!empty($_REQUEST['password'])) {
             $userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
         }
 
