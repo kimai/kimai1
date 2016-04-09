@@ -82,7 +82,7 @@ switch ($axAction)
     // ===========================================
     case 'reload_exp':
         $filters = explode('|', $axValue);
-        if ($filters[0] == "") {
+        if (empty($filters[0])) {
             $filterUsers = array();
         } else {
             $filterUsers = explode(':', $filters[0]);
@@ -95,7 +95,7 @@ switch ($axAction)
             $database->get_customers($kga['user']['groups'])
         );
 
-        if ($filters[1] != "") {
+        if (!empty($filters[1])) {
             $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
         }
 
@@ -106,7 +106,7 @@ switch ($axAction)
             $database->get_projects($kga['user']['groups'])
         );
 
-        if ($filters[2] != "") {
+        if (!empty($filters[2])) {
             $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
         }
 
