@@ -180,9 +180,9 @@ function changeTab(target,path) {
       lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
       lists_write_annotations();
 	}
-        if (userID) {
-	  $.cookie('ki_active_tab_target_'+userID, target);
-	  $.cookie('ki_active_tab_path_'+userID, path);
+    if (userID) {
+	  Cookies.set('ki_active_tab_target_' + userID, target);
+	  Cookies.set('ki_active_tab_path_' + userID, path);
 	}
 }
 
