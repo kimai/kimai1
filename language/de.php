@@ -298,6 +298,8 @@ return array(
     'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
     'showTrackingNumber' => 'Auftragsnummer und Beschreibung in Zeiterfassung anzeigen',
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
+    'defaultLocation' => 'Standard Ort',
+    'showQuickNote'	=> 'Zeige Schnellbearbeitungs-Button',
     'general' => 'Allgemein',
     'address' => 'Adresse',
     'contact' => 'Kontakt',
