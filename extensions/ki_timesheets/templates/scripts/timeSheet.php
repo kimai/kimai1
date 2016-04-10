@@ -52,9 +52,9 @@ if ($this->timeSheetEntries)
         $tdClass = "";
         if ($this->showOverlapLines && $end > $time_buffer) {
             $tdClass = " time_overlap";
-        } elseif ($this->kga->isShowDaySeperatorLines() && $start != $day_buffer) {
+        } elseif ($this->kga->isShowDaySeperatorLines()['show_daySeperatorLines'] && $start != $day_buffer) {
             $tdClass = " break_day";
-        } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
+        } elseif ($this->kga['show_gabBreaks'] && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
             $tdClass = " break_gap";
         }
 
@@ -72,7 +72,7 @@ if ($this->timeSheetEntries)
 
             <?php if ($row['end']): // Stop oder Record Button? ?>
 
-                <?php if ($this->kga->isShowRecordAgain()): ?>
+                <?php if ($this->kga['show_RecordAgain']): ?>
                   <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
                      href ="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
                      width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
@@ -100,7 +100,7 @@ if ($this->timeSheetEntries)
                     alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
             <?php endif; ?>
 
-            <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
+            <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
                 <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
                     src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
                     height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'

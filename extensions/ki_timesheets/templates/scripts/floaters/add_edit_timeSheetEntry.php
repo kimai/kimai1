@@ -1,5 +1,5 @@
 <?php
-$autoSelection = $this->kga['conf']['autoselection'];
+$autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 ?>
 <div id="floater_innerwrap">
     <div id="floater_handle">

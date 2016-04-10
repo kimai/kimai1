@@ -154,15 +154,18 @@ if (!empty($allConf))
                 $kga->set($key, $value);
                 break;
 
+            case 'quickdelete':
+            case 'autoselection':
+            case 'noFading':
+                $kga->getSettings()->set($key, $value);
+                break;
+
             // TODO the following user settings are still used in array syntax
             case 'showIDs':
-            case 'noFading':
             case 'sublistAnnotations':
             case 'user_list_hidden':
             case 'hideClearedEntries':
-            case 'quickdelete':
             case 'showQuickNote':
-            case 'autoselection':
             case 'project_comment_flag':
             case 'openAfterRecorded':
             case 'flip_project_display':
@@ -173,6 +176,7 @@ if (!empty($allConf))
                 $kga->set($key, $value);
                 $kga->getSettings()->set($key, $value);
                 break;
+
         }
 
         // TODO this is currently backward compatibility, we need to cleanup the config namespaces!

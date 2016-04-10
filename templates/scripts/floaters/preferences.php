@@ -57,7 +57,7 @@
                     </li>
                     <li>
                         <label for="autoselection"></label>
-                        <?php echo $this->formCheckbox('autoselection', '1', array('checked' => $this->kga['conf']['autoselection']));
+                        <?php echo $this->formCheckbox('autoselection', '1', array('checked' => $this->kga->getSettings()->isUseAutoSelection()));
                         echo $this->kga['lang']['autoselection'] ?>
                     </li>
                     <li>
@@ -92,7 +92,7 @@
                     </li>
                     <li>
                         <label for="noFading"></label>
-                        <?php echo $this->formCheckbox('noFading', '1', array('checked' => $this->kga['conf']['noFading'])),
+                        <?php echo $this->formCheckbox('noFading', '1', array('checked' => !$this->kga->getSettings()->isUseSmoothFading())),
                         $this->kga['lang']['noFading'] ?>
                     </li>
                     <li>
@@ -114,7 +114,7 @@
                     </li>
                     <li>
                         <?php echo $this->kga['lang']['quickdelete'] ?>:
-                        <?php echo $this->formSelect('quickdelete', $this->kga['conf']['quickdelete'], null, array($this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm'])); ?>
+                        <?php echo $this->formSelect('quickdelete', $this->kga->getSettings()->getQuickDeleteType(), null, array($this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm'])); ?>
                     </li>
                     <li>
                         <label for="showCommentsByDefault"></label>

@@ -116,7 +116,6 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
      */
     public function getLanguage()
     {
-        // "lang" is
         $lang = $this->getUserLanguage();
         if (!empty($lang)) {
             return $lang;
@@ -166,5 +165,37 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     public function getRowLimit()
     {
         return (int)$this->get('rowlimit', 100);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseSmoothFading()
+    {
+        return !(bool)$this->get('noFading', false);
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuickDeleteType()
+    {
+        return $this->get('quickdelete', 0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowQuickDelete()
+    {
+        return $this->getQuickDeleteType() > 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseAutoSelection()
+    {
+        return (bool)$this->get('autoselection', true);
     }
 }

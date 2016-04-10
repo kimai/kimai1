@@ -63,7 +63,7 @@
 
         var openAfterRecorded      = <?php echo json_encode($this->openAfterRecorded) ?>;
 
-        <?php if ($this->kga['conf']['quickdelete'] == 2): ?>
+        <?php if ($this->kga->getSettings()->getQuickDeleteType() == 2): ?>
         var confirmText           = "<?php echo $this->escape($this->kga['lang']['sure']) ?>";
         <?php else: ?>
         var confirmText           = undefined;
@@ -76,7 +76,7 @@
         <?php endif; ?>
 
 
-        <?php if ($this->kga['conf']['noFading']): ?>
+        <?php if (!$this->kga->getSettings()->isUseSmoothFading()): ?>
         fading_enabled = false;
         <?php endif; ?>
        
@@ -104,7 +104,7 @@
             selectOtherMonths : true,
             nextText: '',
             prevText: '',
-            <?php if ($this->kga['conf']['noFading']): ?>
+            <?php if (!$this->kga->getSettings()->isUseSmoothFading()): ?>
               showAnim: '',
             <?php endif; ?>
             dateFormat : '<?php echo $this->kga->getDateFormat(0) ?>',
