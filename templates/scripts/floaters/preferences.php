@@ -136,7 +136,7 @@
                     </li>
                     <li>
                         <label for="showQuickNote"></label>
-                        <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => isset($this->kga['conf']['showQuickNote']) && $this->kga['conf']['showQuickNote'])), $this->kga['lang']['showQuickNote'] ?>
+                        <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => $this->kga->getSettings()->isShowQuickNote())), $this->kga['lang']['showQuickNote'] ?>
                     </li>
                 </ul>
             </fieldset>

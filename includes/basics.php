@@ -47,7 +47,7 @@ require_once WEBROOT . '/libraries/autoload.php';
 require_once WEBROOT . 'includes/func.php';
 
 // The $kga (formerly Kimai Global Array) is initialized here
-// It was replaced by an proxy object, but by now it is still used everywhere as array
+// It was replaced by an proxy object, but until refactored it is still used as array in a lot of places
 require_once WEBROOT . 'includes/autoconf.php';
 $kga = new Kimai_Config(array(
     'server_prefix' => $server_prefix,
@@ -154,6 +154,7 @@ if (!empty($allConf))
                 $kga->set($key, $value);
                 break;
 
+            case 'showQuickNote':
             case 'quickdelete':
             case 'autoselection':
             case 'noFading':
@@ -165,7 +166,6 @@ if (!empty($allConf))
             case 'sublistAnnotations':
             case 'user_list_hidden':
             case 'hideClearedEntries':
-            case 'showQuickNote':
             case 'project_comment_flag':
             case 'openAfterRecorded':
             case 'flip_project_display':

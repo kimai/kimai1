@@ -86,14 +86,14 @@ if ($this->timeSheetEntries)
 
             <?php endif; ?>
 
-      <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
-        <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-           title='<?php echo $this->kga['lang']['edit']?>'><img
-           src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
-           alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
-      <?php endif; ?>
+            <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
+                <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+                   title='<?php echo $this->kga['lang']['edit']?>'><img
+                   src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
+                   alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+            <?php endif; ?>
 
-            <?php if ($this->kga['conf']['showQuickNote'] > 0): ?>
+            <?php if ($this->kga->getSettings()->isShowQuickNote()): ?>
                 <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
                     title='<?php echo $this->kga['lang']['editNote']?>'><img
                     src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
@@ -173,15 +173,15 @@ if ($this->timeSheetEntries)
                 <?php echo $this->escape($row['activityName'])?>
             </a>
 
-                <?php if ($row['comment']): ?>
-                    <?php if ($row['commentType'] == '0'): ?>
-                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
-                    <?php elseif ($row['commentType'] == '1'): ?>
-                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
-                    <?php elseif ($row['commentType'] == '2'): ?>
-                        <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
-                    <?php endif; ?>
+            <?php if ($row['comment']): ?>
+                <?php if ($row['commentType'] == '0'): ?>
+                    <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                <?php elseif ($row['commentType'] == '1'): ?>
+                    <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
+                <?php elseif ($row['commentType'] == '2'): ?>
+                    <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
                 <?php endif; ?>
+            <?php endif; ?>
         </td>
 
         <td class="description <?php echo $tdClass; ?>" >
@@ -209,14 +209,14 @@ if ($this->timeSheetEntries)
 
         <?php if ($row['comment']): ?>
             <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($this->hideComments): ?> style="display:none" <?php endif; ?> >
-                        <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
+                <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
             </tr>
         <?php endif; ?>
 
-                <?php
-                $day_buffer = strftime("%d",$row['start']);
-                $time_buffer = $row['start'];
-                $end_buffer = $row['end'];
+        <?php
+        $day_buffer = strftime("%d",$row['start']);
+        $time_buffer = $row['start'];
+        $end_buffer = $row['end'];
     }
     ?>
 
@@ -244,10 +244,15 @@ else
   <?php if ($this->latest_running_entry == null): ?>
     updateRecordStatus(false);
   <?php else: ?>
-
-    updateRecordStatus(<?php echo $this->latest_running_entry['timeEntryID']?>,<?php echo $this->latest_running_entry['start']?>,
-                             <?php echo $this->latest_running_entry['customerID']?>,'<?php echo $this->jsEscape($this->latest_running_entry['customerName'])?>',
-                             <?php echo $this->latest_running_entry['projectID']?> ,'<?php echo $this->jsEscape($this->latest_running_entry['projectName'])?>',
-                             <?php echo $this->latest_running_entry['activityID']?>,'<?php echo $this->jsEscape($this->latest_running_entry['activityName'])?>');
+    updateRecordStatus(
+        <?php echo $this->latest_running_entry['timeEntryID']?>,
+        <?php echo $this->latest_running_entry['start']?>,
+        <?php echo $this->latest_running_entry['customerID']?>,
+        '<?php echo $this->jsEscape($this->latest_running_entry['customerName'])?>',
+        <?php echo $this->latest_running_entry['projectID']?>,
+        '<?php echo $this->jsEscape($this->latest_running_entry['projectName'])?>',
+        <?php echo $this->latest_running_entry['activityID']?>,
+        '<?php echo $this->jsEscape($this->latest_running_entry['activityName'])?>'
+    );
   <?php endif; ?>
 </script>

@@ -194,6 +194,14 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     /**
      * @return bool
      */
+    public function isShowQuickNote()
+    {
+        return (bool)$this->get('showQuickNote', false);
+    }
+
+    /**
+     * @return bool
+     */
     public function isUseAutoSelection()
     {
         return (bool)$this->get('autoselection', true);
