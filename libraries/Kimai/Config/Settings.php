@@ -246,4 +246,12 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     {
         return (bool)$this->get('hideClearedEntries', false);
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowProjectComment()
+    {
+        return (bool)$this->get('project_comment_flag', false);
+    }
 }

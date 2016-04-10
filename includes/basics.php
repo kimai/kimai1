@@ -162,12 +162,12 @@ if (!empty($allConf))
             case 'showIDs':
             case 'sublistAnnotations':
             case 'user_list_hidden':
+            case 'project_comment_flag':
                 $kga->getSettings()->set($key, $value);
                 break;
 
             // TODO the following user settings are still used in array syntax
             case 'hideClearedEntries':
-            case 'project_comment_flag':
             case 'flip_project_display':
 
             // FIXME remove me after configs are cleared up

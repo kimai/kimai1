@@ -110,7 +110,7 @@ if (count($this->exportData) > 0)
                            onclick="buzzer_preselect_project(<?php echo $row['projectID'] ?>,'<?php echo $this->jsEscape($row['projectName']) ?>',<?php echo $row['customerID'] ?>,'<?php echo $this->jsEscape($row['customerName']) ?>');
                                return false;">
                             <?php echo $this->escape($row['projectName']) ?>
-                            <?php if ($this->kga['conf']['project_comment_flag'] == 1): ?>
+                            <?php if ($this->kga->getSettings()->isShowProjectComment()): ?>
                                 <?php if ($row['projectComment']): ?>
                                     <span class="lighter">(<?php echo $this->jsEscape($row['projectComment']); ?>
                                         )</span>

@@ -160,7 +160,7 @@ if ($this->timeSheetEntries)
                 onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                 return false;">
                 <?php echo $this->escape($row['projectName'])?>
-                <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
+                <?php if ($this->kga->getSettings()->isShowProjectComment() && $row['projectComment']): ?>
                     <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
                 <?php endif; ?>
             </a>

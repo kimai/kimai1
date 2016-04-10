@@ -94,12 +94,12 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
                 if (($project['visible'] && $project['customerVisible']) || in_array($project['projectID'], $showIds)) {
                     if ($kga['conf']['flip_project_display']) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
-                        if ($kga['conf']['project_comment_flag']) {
+                        if ($kga->getSettings()->isShowProjectComment()) {
                             $projectName .= "(" . $project['comment'] . ")";
                         }
                     } else {
                         $projectName = $project['name'] . " (" . $project['customerName'] . ")";
-                        if ($kga['conf']['project_comment_flag']) {
+                        if ($kga->getSettings()->isShowProjectComment()) {
                             $projectName .= "(" . $project['comment'] . ")";
                         }
                     }

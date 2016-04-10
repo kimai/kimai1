@@ -82,7 +82,7 @@
                     </li>
                     <li>
                         <label for="project_comment_flag"></label>
-                        <?php echo $this->formCheckbox('project_comment_flag', '1', array('checked' => $this->kga['conf']['project_comment_flag'])),
+                        <?php echo $this->formCheckbox('project_comment_flag', '1', array('checked' => $this->kga->getSettings()->isShowProjectComment())),
                         $this->kga['lang']['project_comment_flag'] ?>
                     </li>
                     <li>
