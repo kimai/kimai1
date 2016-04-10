@@ -154,20 +154,20 @@ if (!empty($allConf))
                 $kga->set($key, $value);
                 break;
 
+            case 'openAfterRecorded':
             case 'showQuickNote':
             case 'quickdelete':
             case 'autoselection':
             case 'noFading':
+            case 'showIDs':
+            case 'sublistAnnotations':
                 $kga->getSettings()->set($key, $value);
                 break;
 
             // TODO the following user settings are still used in array syntax
-            case 'showIDs':
-            case 'sublistAnnotations':
             case 'user_list_hidden':
             case 'hideClearedEntries':
             case 'project_comment_flag':
-            case 'openAfterRecorded':
             case 'flip_project_display':
 
             // FIXME remove me after configs are cleared up

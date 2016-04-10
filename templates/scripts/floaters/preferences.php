@@ -62,7 +62,7 @@
                     </li>
                     <li>
                         <label for="openAfterRecorded"></label>
-                        <?php echo $this->formCheckbox('openAfterRecorded', '1', array('checked' => isset($this->kga['conf']['openAfterRecorded']) && $this->kga['conf']['openAfterRecorded']));
+                        <?php echo $this->formCheckbox('openAfterRecorded', '1', array('checked' => $this->kga->getSettings()->isShowAfterRecorded()));
                         echo $this->kga['lang']['openAfterRecorded'] ?>
                     </li>
                 </ul>
@@ -71,7 +71,7 @@
                 <ul>
                     <li>
                         <?php echo $this->kga['lang']['sublistAnnotations'] ?>:
-                        <?php echo $this->formSelect('sublistAnnotations', isset($this->kga['conf']['sublistAnnotations']) && $this->kga['conf']['sublistAnnotations'], null, array(
+                        <?php echo $this->formSelect('sublistAnnotations', $this->kga->getSettings()->getSublistAnnotationType(), null, array(
                             $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs'], $this->kga['lang']['timelabel'] . ' & ' . $this->kga['lang']['export_extension']['costs']
                         )); ?>
                     </li>
@@ -87,7 +87,7 @@
                     </li>
                     <li>
                         <label for="showIDs"></label>
-                        <?php echo $this->formCheckbox('showIDs', '1', array('checked' => $this->kga['conf']['showIDs'])),
+                        <?php echo $this->formCheckbox('showIDs', '1', array('checked' => $this->kga->getSettings()->isShowIds())),
                         $this->kga['lang']['showIDs'] ?>
                     </li>
                     <li>

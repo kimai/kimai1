@@ -206,4 +206,49 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     {
         return (bool)$this->get('autoselection', true);
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowIds()
+    {
+        return (bool)$this->get('showIDs', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserListHidden()
+    {
+        return (bool)$this->get('user_list_hidden', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowAfterRecorded()
+    {
+        return (bool)$this->get('openAfterRecorded', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFlipProjectDisplay()
+    {
+        return (bool)$this->get('flip_project_display', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHideClearedEntries()
+    {
+        return (bool)$this->get('hideClearedEntries', false);
+    }
+
+/*
+case 'project_comment_flag':
+*/
+
 }
