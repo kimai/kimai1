@@ -361,4 +361,12 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (bool)$this->get('show_daySeperatorLines', true);
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowRecordAgain()
+    {
+        return (bool)$this->get('show_RecordAgain', true);
+    }
 }

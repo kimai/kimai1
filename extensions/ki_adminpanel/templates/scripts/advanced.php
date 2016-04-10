@@ -75,7 +75,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="show_RecordAgain" <?php if ($this->kga['show_RecordAgain']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_RecordAgain']?>
+               <input type="checkbox" name="show_RecordAgain" <?php if ($this->kga->isShowRecordAgain()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_RecordAgain']?>
             </div>
 
             <div>

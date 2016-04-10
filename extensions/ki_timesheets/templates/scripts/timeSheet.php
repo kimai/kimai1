@@ -72,15 +72,15 @@ if ($this->timeSheetEntries)
 
             <?php if ($row['end']): // Stop oder Record Button? ?>
 
-            <?php if ($this->kga['show_RecordAgain']): ?>
-              <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
-                 href ="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
-                 width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
-            <?php endif; ?>
+                <?php if ($this->kga->isShowRecordAgain()): ?>
+                  <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
+                     href ="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
+                     width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
+                <?php endif; ?>
 
             <?php else: ?>
 
-            <a href ='#' class='stop' onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
+                <a href ='#' class='stop' onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
                     src="<?php echo $this->skin('grfx/button_stopthis.gif'); ?>" width='13'
                     height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
 
@@ -93,19 +93,19 @@ if ($this->timeSheetEntries)
            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
       <?php endif; ?>
 
-        <?php if ($this->kga['conf']['showQuickNote'] > 0): ?>
-            <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-               title='<?php echo $this->kga['lang']['editNote']?>'><img 
+            <?php if ($this->kga['conf']['showQuickNote'] > 0): ?>
+                <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+                    title='<?php echo $this->kga['lang']['editNote']?>'><img
                     src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
                     alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
             <?php endif; ?>
 
-      <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
-        <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
-            src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
-            height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
-            border=0 /></a>
-      <?php endif; ?>
+            <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
+                <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
+                    src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
+                    height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
+                    border=0 /></a>
+            <?php endif; ?>
 
         <?php endif; ?>
 
@@ -182,14 +182,14 @@ if ($this->timeSheetEntries)
                         <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
                     <?php endif; ?>
                 <?php endif; ?>
-            </td>
+        </td>
 
-            <td class="description <?php echo $tdClass; ?>" >
-                <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
-                <?php if ($row['description']): ?>
-                    <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
-                <?php endif; ?>
-            </td>
+        <td class="description <?php echo $tdClass; ?>" >
+            <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
+            <?php if ($row['description']): ?>
+                <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+            <?php endif; ?>
+        </td>
 
         <?php if ($this->showTrackingNumber) { ?>
         <td class="trackingnumber <?php echo $tdClass; ?>">
