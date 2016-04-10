@@ -21,7 +21,7 @@
     <!-- Libs -->
     <script src="../libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/js.cookie-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery-ui-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
