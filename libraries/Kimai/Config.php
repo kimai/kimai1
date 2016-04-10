@@ -86,13 +86,6 @@ class Kimai_Config extends Kimai_ArrayObject
             // if this is not set the day of the users first day in the system will be taken
             // Format: ... = "DD/MM/YYYY";
             'calender_start' => '0',
-            // TODO remove me once we are sure that the array values are not used any longer
-            'date_format' => array(
-                0 => '%d.%m.%Y',
-                1 => '%d.%m.',
-                2 => '%d.%m.%Y',
-                3 => 'd.m.Y',
-            ),
             // date formats for display and export
             'date_format_0' => '%d.%m.%Y',
             'date_format_1' => '%d.%m.',
@@ -351,5 +344,21 @@ class Kimai_Config extends Kimai_ArrayObject
     public function isEditLimit()
     {
         return $this->getEditLimit() > 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowGabBreaks()
+    {
+        return (bool)$this->get('show_gabBreaks', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowDaySeperatorLines()
+    {
+        return (bool)$this->get('show_daySeperatorLines', true);
     }
 }

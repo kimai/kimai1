@@ -67,11 +67,11 @@
             </div>
 
             <div>
-               <input type="checkbox" name="show_daySeperatorLines" <?php if ($this->kga['show_daySeperatorLines']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_daySeperatorLines']?>
+               <input type="checkbox" name="show_daySeperatorLines" <?php if ($this->kga->isShowDaySeperatorLines()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_daySeperatorLines']?>
             </div>
 
             <div>
-               <input type="checkbox" name="show_gabBreaks" <?php if ($this->kga['show_gabBreaks']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_gabBreaks']?>
+               <input type="checkbox" name="show_gabBreaks" <?php if ($this->kga->isShowGabBreaks()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_gabBreaks']?>
             </div>
 
             <div>

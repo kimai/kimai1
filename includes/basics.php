@@ -107,11 +107,11 @@ Kimai_Registry::setAuthenticator($authPlugin);
 unset($authPlugin);
 
 // ============ load global configurations ============
-$diffs = array(); // FIXME remove me after configs are cleared up
 $allConf = $database->getConfigurationData();
 if (!empty($allConf))
 {
-    foreach ($allConf as $key => $value) {
+    foreach ($allConf as $key => $value)
+    {
         switch($key) {
             case 'date_format_0';
                 $kga->setDateFormat(0, $value);
@@ -153,44 +153,44 @@ if (!empty($allConf))
             case 'loginBanTime':
             case 'loginTries':
             case 'editLimit':
+            // TODO the following system settings are still used in array syntax
+            case 'decimalSeparator':
+            case 'durationWithSeconds':
+            case 'roundTimesheetEntries':
+            case 'roundMinutes':
+            case 'roundSeconds':
 
                 $kga->set($key, $value);
                 break;
 
+            // TODO the following user settings are still used in array syntax
+            case 'showIDs':
+            case 'noFading':
+            case 'sublistAnnotations':
+            case 'user_list_hidden':
+            case 'hideClearedEntries':
+            case 'quickdelete':
+            case 'showQuickNote':
+            case 'autoselection':
+            case 'project_comment_flag':
+            case 'openAfterRecorded':
+            case 'flip_project_display':
+
+                $kga->getSettings()->set($key, $value);
+                break;
+
             // FIXME remove me after configs are cleared up
+            case 'skin':
             default:
-                /*
-                $diffs[$key] = $value;
-                var_dump($diffs);
-                exit;
-                */
+
+                $kga->set($key, $value);
+                $kga->getSettings()->set($key, $value);
+                break;
         }
 
-        // TODO this is currently backward compatibility, we need to cleanup the config namespaces:
+        // TODO this is currently backward compatibility, we need to cleanup the config namespaces!
         // settings which can be overwritten by the user belong to => $kga->getSettings()
         // global configs, which are "owned" by admins only belong into => $kga
-        /*
-        // showIDs - user
-        // noFading - user
-        // sublistAnnotations - user
-        // user_list_hidden - user
-        // hideClearedEntries - user
-        // quickdelete - user
-        // showQuickNote - user
-        // autoselection - user
-        // project_comment_flag - user
-
-        // skin - user & admin
-
-        // openAfterRecorded - admin
-        // flip_project_display - admin
-        // show_gabBreaks - admin
-        // decimalSeparator - admin
-        // durationWithSeconds - admin
-        // roundTimesheetEntries - admin
-        // roundMinutes - admin
-        // roundSeconds - admin
-        */
         $kga->getSettings()->set($key, $value);
     }
 }

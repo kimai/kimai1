@@ -52,16 +52,11 @@ if ($this->timeSheetEntries)
         $tdClass = "";
         if ($this->showOverlapLines && $end > $time_buffer) {
             $tdClass = " time_overlap";
-        } elseif ($this->kga['show_daySeperatorLines'] && $start != $day_buffer) {
+        } elseif ($this->kga->isShowDaySeperatorLines() && $start != $day_buffer) {
             $tdClass = " break_day";
-        } elseif ($this->kga['show_gabBreaks'] && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
+        } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
             $tdClass = " break_gap";
         }
-        /*
-        if ($row['end'] > $time_buffer                      && $this->showOverlapLines)              echo "time_overlap";
-        elseif (strftime("%d",$row['start']) != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-        elseif ($row['end'] != $start_buffer                && $this->kga['show_gabBreaks'])         echo "break_gap";
-        */
 
         ?>
 
@@ -83,13 +78,13 @@ if ($this->timeSheetEntries)
                  width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
             <?php endif; ?>
 
-        <?php else: ?>
+            <?php else: ?>
 
             <a href ='#' class='stop' onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
                     src="<?php echo $this->skin('grfx/button_stopthis.gif'); ?>" width='13'
                     height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
 
-        <?php endif; ?>
+            <?php endif; ?>
 
       <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
         <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
@@ -103,7 +98,7 @@ if ($this->timeSheetEntries)
                title='<?php echo $this->kga['lang']['editNote']?>'><img 
                     src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
                     alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
-        <?php endif; ?>
+            <?php endif; ?>
 
       <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
         <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
@@ -112,39 +107,39 @@ if ($this->timeSheetEntries)
             border=0 /></a>
       <?php endif; ?>
 
-    <?php endif; ?>
+        <?php endif; ?>
 
-            </td>
+        </td>
 
-            <td class="date <?php echo $tdClass; ?>">
-                <?php echo $this->escape(strftime($dateFormat, $row['start']));?>
-            </td>
+        <td class="date <?php echo $tdClass; ?>">
+            <?php echo $this->escape(strftime($dateFormat, $row['start']));?>
+        </td>
 
-            <td class="from <?php echo $tdClass; ?>">
-                <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
-            </td>
+        <td class="from <?php echo $tdClass; ?>">
+            <?php echo $this->escape(strftime("%H:%M",$row['start']));?>
+        </td>
 
-            <td class="to <?php echo $tdClass; ?>">
+        <td class="to <?php echo $tdClass; ?>">
+        <?php
+            if ($row['end']) {
+                echo $this->escape(strftime("%H:%M",$row['end']));
+            } else {
+                echo "&ndash;&ndash;:&ndash;&ndash;";
+            }
+        ?>
+        </td>
+
+        <td class="time <?php echo $tdClass; ?>">
             <?php
-                if ($row['end']) {
-                    echo $this->escape(strftime("%H:%M",$row['end']));
-                } else {
-                    echo "&ndash;&ndash;:&ndash;&ndash;";
-                }
+            if (isset($row['duration'])) {
+                echo $row['formattedDuration'];
+            } else {
+                echo "&ndash;:&ndash;&ndash;";
+            }
             ?>
-            </td>
+        </td>
 
-            <td class="time <?php echo $tdClass; ?>">
-                <?php
-                if (isset($row['duration'])) {
-                    echo $row['formattedDuration'];
-                } else {
-                    echo "&ndash;:&ndash;&ndash;";
-                }
-                ?>
-            </td>
-
-<?php if ($this->showRates): ?>
+        <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
                 if (isset($row['wage'])) {
@@ -154,29 +149,29 @@ if ($this->timeSheetEntries)
                 }
             ?>
             </td>
-<?php endif; ?>
+        <?php endif; ?>
 
-            <td class="customer <?php echo $tdClass; ?>">
-                <?php echo $this->escape($row['customerName']) ?>
-            </td>
+        <td class="customer <?php echo $tdClass; ?>">
+            <?php echo $this->escape($row['customerName']) ?>
+        </td>
 
-            <td class="project <?php echo $tdClass; ?>">
-                <a href ="#" class="preselect_lnk"
-                    onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
-                    return false;">
-                    <?php echo $this->escape($row['projectName'])?>
-                    <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
-                        <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
-                    <?php endif; ?>
-                </a>
-            </td>
+        <td class="project <?php echo $tdClass; ?>">
+            <a href ="#" class="preselect_lnk"
+                onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                return false;">
+                <?php echo $this->escape($row['projectName'])?>
+                <?php if ($this->kga['conf']['project_comment_flag'] == 1 && $row['projectComment']): ?>
+                    <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
+                <?php endif; ?>
+            </a>
+        </td>
 
-            <td class="activity <?php echo $tdClass; ?>">
-                <a href ="#" class="preselect_lnk"
-                    onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
-                    return false;">
-                    <?php echo $this->escape($row['activityName'])?>
-                </a>
+        <td class="activity <?php echo $tdClass; ?>">
+            <a href ="#" class="preselect_lnk"
+                onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
+                return false;">
+                <?php echo $this->escape($row['activityName'])?>
+            </a>
 
                 <?php if ($row['comment']): ?>
                     <?php if ($row['commentType'] == '0'): ?>
@@ -196,19 +191,19 @@ if ($this->timeSheetEntries)
                 <?php endif; ?>
             </td>
 
-            <?php if ($this->showTrackingNumber) { ?>
-            <td class="trackingnumber <?php echo $tdClass; ?>">
-                <?php echo $this->escape($row['trackingNumber']) ?>
-            </td>
-            <?php } ?>
+        <?php if ($this->showTrackingNumber) { ?>
+        <td class="trackingnumber <?php echo $tdClass; ?>">
+            <?php echo $this->escape($row['trackingNumber']) ?>
+        </td>
+        <?php } ?>
 
-            <td class="username <?php echo $tdClass; ?>">
-              <?php if ($row['userAlias']): ?>
-                <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
-              <?php else: ?>
-                <?php echo $this->escape($row['userName']) ?>
-              <?php endif; ?>
-            </td>
+        <td class="username <?php echo $tdClass; ?>">
+          <?php if ($row['userAlias']): ?>
+            <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
+          <?php else: ?>
+            <?php echo $this->escape($row['userName']) ?>
+          <?php endif; ?>
+        </td>
 
         </tr>
 
@@ -222,7 +217,7 @@ if ($this->timeSheetEntries)
                 $day_buffer = strftime("%d",$row['start']);
                 $time_buffer = $row['start'];
                 $end_buffer = $row['end'];
-            }
+    }
     ?>
 
                 </tbody>
