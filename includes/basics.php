@@ -170,17 +170,27 @@ if (!empty($allConf))
         // settings which can be overwritten by the user belong to => $kga->getSettings()
         // global configs, which are "owned" by admins only belong into => $kga
         /*
+        // showIDs - user
+        // noFading - user
+        // sublistAnnotations - user
+        // user_list_hidden - user
+        // hideClearedEntries - user
+        // quickdelete - user
+        // showQuickNote - user
+        // autoselection - user
+        // project_comment_flag - user
 
-            ["decimalSeparator"]
-            ["durationWithSeconds"]
-            ["login"]
-            ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
+        // skin - user & admin
 
-        // showQuickNote
-        // show_gabBreaks
-        // quickdelete
+        // openAfterRecorded - admin
+        // flip_project_display - admin
+        // show_gabBreaks - admin
+        // decimalSeparator - admin
+        // durationWithSeconds - admin
+        // roundTimesheetEntries - admin
+        // roundMinutes - admin
+        // roundSeconds - admin
         */
-
         $kga->getSettings()->set($key, $value);
     }
 }

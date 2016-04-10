@@ -2594,11 +2594,7 @@ class Kimai_Database_Mysql
                 $startRows = (int)$startRows;
                 $limit = "LIMIT $startRows, $limitRows";
             } else {
-                if (isset($this->kga['conf']['rowlimit'])) {
-                    $limit = "LIMIT " . $this->kga['conf']['rowlimit'];
-                } else {
-                    $limit = "LIMIT 100";
-                }
+                $limit = "LIMIT " . $this->kga->getSettings()->getRowLimit();
             }
         } else {
             $limit = "";

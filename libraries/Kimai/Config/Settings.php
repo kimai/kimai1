@@ -159,4 +159,12 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     {
         return $this->get('sublistAnnotations', 0);
     }
+
+    /**
+     * @return int
+     */
+    public function getRowLimit()
+    {
+        return (int)$this->get('rowlimit', 100);
+    }
 }

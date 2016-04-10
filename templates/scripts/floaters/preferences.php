@@ -106,7 +106,7 @@
                 <ul>
                     <li>
                         <label for="rowlimit"><?php echo $this->kga['lang']['rowlimit'] ?>:</label>
-                        <?php echo $this->formText('rowlimit', $this->kga['conf']['rowlimit'], array('size' => 9)); ?>
+                        <?php echo $this->formText('rowlimit', $this->kga->getSettings()->getRowLimit(), array('size' => 9)); ?>
                     </li>
                     <li>
                         <label for="hideClearedEntries"></label>
