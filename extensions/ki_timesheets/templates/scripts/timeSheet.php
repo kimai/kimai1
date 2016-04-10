@@ -91,25 +91,21 @@ if ($this->timeSheetEntries)
 
         <?php endif; ?>
 
-
-      <?php if ($this->kga['conf']['editLimit'] == "-" || time()-$row['end'] <= $this->kga['conf']['editLimit']):
-    //Edit Record Button ?>
+      <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
         <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
            title='<?php echo $this->kga['lang']['edit']?>'><img
            src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
            alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
       <?php endif; ?>
 
-        <?php if ($this->kga['conf']['showQuickNote'] > 0):
-            //Edit quick-note Button ?>
+        <?php if ($this->kga['conf']['showQuickNote'] > 0): ?>
             <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
                title='<?php echo $this->kga['lang']['editNote']?>'><img 
                     src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
                     alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
         <?php endif; ?>
 
-      <?php if ($this->kga['conf']['quickdelete'] > 0):
-    // quick erase trashcan  ?>
+      <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
         <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
             src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
             height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'

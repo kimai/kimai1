@@ -591,7 +591,7 @@ if ((int)$revisionDB < 1305) {
 
 if ((int)$revisionDB < 1326) {
     Kimai_Logger::logfile("-- update to r1326");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','0')");
 }
 
 if ((int)$revisionDB < 1327) {

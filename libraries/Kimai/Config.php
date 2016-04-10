@@ -335,4 +335,21 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return (bool)$this->get('exactSums', false);
     }
+
+    /**
+     * @return int
+     */
+    public function getEditLimit()
+    {
+        $editLimit = $this->get('editLimit', '-');
+        return (int)($editLimit !== '-' ? $editLimit : 0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditLimit()
+    {
+        return $this->getEditLimit() > 0;
+    }
 }

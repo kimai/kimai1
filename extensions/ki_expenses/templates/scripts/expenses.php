@@ -33,11 +33,11 @@ if ($this->expenses)
 
             <td nowrap class="option
                 <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
+                      elseif ($cur_timestamp_buffer != $timestamp_buffer && $this->kga['show_gabBreaks']) echo "break_gap";
                 ?>
             ">
 
-            <?php if (isset($this->kga['user']) &&  ($this->kga['conf']['editLimit'] == "-" || time()-$row['timestamp'] <= $this->kga['conf']['editLimit'])): ?>
+            <?php if (isset($this->kga['user']) && (!$this->kga->isEditLimit() || time() - $row['timestamp'] <= $this->kga->getEditLimit())): ?>
                 <a href ='#' onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
                 <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
 

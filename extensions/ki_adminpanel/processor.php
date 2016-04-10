@@ -153,9 +153,9 @@ switch ($axAction)
                 break;
 
             case "advanced" :
-                if ($kga['conf']['editLimit'] != '-') {
+                if ($kga->isEditLimit()) {
                     $view->assign('editLimitEnabled', true);
-                    $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
+                    $editLimit = $kga->getEditLimit() / (60 * 60); // convert to hours
                     $view->assign('editLimitDays', (int)($editLimit / 24));
                     $view->assign('editLimitHours', (int)($editLimit % 24));
                 } else {
@@ -575,7 +575,7 @@ switch ($axAction)
                 $editLimit *= 60 * 60; // convert to seconds
             }
             if ($editLimit === false || $editLimit === 0) {
-                $config_data['editLimit'] = '-';
+                $config_data['editLimit'] = 0;
             } else {
                 $config_data['editLimit'] = $editLimit;
             }

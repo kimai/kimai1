@@ -162,9 +162,9 @@ $view->assign('editLimitEnabled', false);
 $view->assign('editLimitDays', '');
 $view->assign('editLimitHours', '');
 
-if ($kga['conf']['editLimit'] != '-') {
+if ($kga->isEditLimit()) {
     $view->assign('editLimitEnabled', true);
-    $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
+    $editLimit = $kga->getEditLimit() / (60 * 60); // convert to hours
     $view->assign('editLimitDays', (int)($editLimit / 24));
     $view->assign('editLimitHours', (int)($editLimit % 24));
 }

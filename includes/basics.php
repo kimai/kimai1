@@ -152,24 +152,33 @@ if (!empty($allConf))
             case 'exactSums':
             case 'loginBanTime':
             case 'loginTries':
+            case 'editLimit':
 
                 $kga->set($key, $value);
                 break;
 
             // FIXME remove me after configs are cleared up
             default:
+                /*
                 $diffs[$key] = $value;
+                var_dump($diffs);
+                exit;
+                */
         }
 
         // TODO this is currently backward compatibility, we need to cleanup the config namespaces:
         // settings which can be overwritten by the user belong to => $kga->getSettings()
         // global configs, which are "owned" by admins only belong into => $kga
         /*
+
             ["decimalSeparator"]
             ["durationWithSeconds"]
-            ["editLimit"]
             ["login"]
             ["roundTimesheetEntries"] ["roundMinutes"] ["roundSeconds"]
+
+        // showQuickNote
+        // show_gabBreaks
+        // quickdelete
         */
 
         $kga->getSettings()->set($key, $value);
