@@ -141,7 +141,7 @@
     $('#usersShrink').hide();
   <?php endif; ?>
 
-  <?php if ($this->kga['conf']['user_list_hidden'] or count($this->users) <= 1): ?>
+  <?php if ($this->kga->getSettings()->isUserListHidden() || count($this->users) <= 1): ?>
     lists_shrinkUserToggle();
   <?php endif; ?>
     $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');

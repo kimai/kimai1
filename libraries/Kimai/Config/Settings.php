@@ -246,9 +246,4 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     {
         return (bool)$this->get('hideClearedEntries', false);
     }
-
-/*
-case 'project_comment_flag':
-*/
-
 }

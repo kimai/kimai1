@@ -97,7 +97,7 @@
                     </li>
                     <li>
                         <label for="user_list_hidden"></label>
-                        <?php echo $this->formCheckbox('user_list_hidden', '1', array('checked' => $this->kga['conf']['user_list_hidden'])),
+                        <?php echo $this->formCheckbox('user_list_hidden', '1', array('checked' => $this->kga->getSettings()->isUserListHidden())),
                         $this->kga['lang']['user_list_hidden'] ?>
                     </li>
                 </ul>

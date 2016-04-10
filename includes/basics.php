@@ -161,11 +161,11 @@ if (!empty($allConf))
             case 'noFading':
             case 'showIDs':
             case 'sublistAnnotations':
+            case 'user_list_hidden':
                 $kga->getSettings()->set($key, $value);
                 break;
 
             // TODO the following user settings are still used in array syntax
-            case 'user_list_hidden':
             case 'hideClearedEntries':
             case 'project_comment_flag':
             case 'flip_project_display':
