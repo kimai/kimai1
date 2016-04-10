@@ -253,19 +253,6 @@ class Kimai_Config extends Kimai_ArrayObject
      * Set one of the date formats.
      *
      * @param int $id
-     * @param string $value
-     */
-    public function setDateFormat($id, $value)
-    {
-        // backward compatibility, will be removed soon
-        $this->date_format[$id] = $value;
-        $this->set('date_format_' . $id, $value);
-    }
-
-    /**
-     * Set one of the date formats.
-     *
-     * @param int $id
      * @return string
      */
     public function getDateFormat($id)

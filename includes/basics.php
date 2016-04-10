@@ -113,25 +113,16 @@ if (!empty($allConf))
     foreach ($allConf as $key => $value)
     {
         switch($key) {
-            case 'date_format_0';
-                $kga->setDateFormat(0, $value);
-                break;
-            case 'date_format_1';
-                $kga->setDateFormat(1, $value);
-                break;
-            case 'date_format_2';
-                $kga->setDateFormat(2, $value);
-                break;
-            case 'date_format_3';
-                $kga->setDateFormat(3, $value);
-                break;
-
             case 'language';
                 if (!empty($value)) {
                     $kga->set($key, $value);
                 }
                 break;
 
+            case 'date_format_0';
+            case 'date_format_1';
+            case 'date_format_2';
+            case 'date_format_3';
             case 'currency_name':
             case 'currency_sign':
             case 'show_sensible_data':
@@ -153,13 +144,13 @@ if (!empty($allConf))
             case 'loginBanTime':
             case 'loginTries':
             case 'editLimit':
+
             // TODO the following system settings are still used in array syntax
             case 'decimalSeparator':
             case 'durationWithSeconds':
             case 'roundTimesheetEntries':
             case 'roundMinutes':
             case 'roundSeconds':
-
                 $kga->set($key, $value);
                 break;
 
@@ -176,13 +167,9 @@ if (!empty($allConf))
             case 'openAfterRecorded':
             case 'flip_project_display':
 
-                $kga->getSettings()->set($key, $value);
-                break;
-
             // FIXME remove me after configs are cleared up
             case 'skin':
             default:
-
                 $kga->set($key, $value);
                 $kga->getSettings()->set($key, $value);
                 break;
