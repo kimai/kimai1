@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow" />
@@ -21,22 +21,25 @@
     <!-- Libs -->
     <script src="../libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/js.cookie-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery-ui-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
-    <!--[if IE]><script src="../libraries/jQuery/excanvas.min.js" type="text/javascript"></script><![endif]-->
-    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
-    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
     <script src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
     <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
 	<script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
     <!-- /Libs -->
+    
+    <!-- Libs Extensions -->
+    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
+    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
+    <!--[if IE]><script src="../libraries/jQuery/excanvas.min.js" type="text/javascript"></script><![endif]-->
+    <!-- /Libs Extensions -->
 
-    <!-- Default JavaScripts -->
+    <!-- Default JavaScript -->
     <script src="../js/main.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/init.js" type="text/javascript" charset="utf-8"></script>
-    <!-- /Default JavaScripts -->
+    <!-- /Default JavaScript -->
 
     <!-- Extension JavaScripts -->
 <?php foreach ($this->js_extension_files as $object): ?>
