@@ -20,9 +20,9 @@ The decision about it was discussed [here](https://github.com/kimai/kimai/issues
 
 1. git remote add upstream https://github.com/kimai/kimai.git
 2. git fetch upstream
-3. git checkout master
-4. git merge upstream/master
-5. git push origin master
+3. git checkout develop
+4. git merge upstream/develop
+5. git push origin develop
 
 ## Pull request notes
 
