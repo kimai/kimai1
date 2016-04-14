@@ -30,7 +30,7 @@
           return false;
         });
 
-        $("#resetPassword").click(function() {
+        $("#resetPassword").click(function(event) {
           event.preventDefault();
           $("#forgotPasswordUsername").blur();
           $.ajax({
