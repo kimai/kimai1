@@ -3592,8 +3592,8 @@ class Kimai_Database_Mysql
             $values['rate'] = $rate;
         }
 
-        if (isset($this->kga['conf']['defaultLocation']) && !$this->kga['conf']['defaultLocation'] == '') {
-            $values['location'] = "'" . $this->kga['conf']['defaultLocation'] . "'";
+        if ($this->kga->getSettings()->getDefaultLocation() != '') {
+            $values['location'] = "'" . $this->kga->getSettings()->getDefaultLocation() . "'";
         }
         $table = $this->kga['server_prefix'] . "timeSheet";
         $result = $this->conn->InsertRow($table, $values);

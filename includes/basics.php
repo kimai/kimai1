@@ -165,6 +165,7 @@ if (!empty($allConf))
             case 'project_comment_flag':
             case 'flip_project_display':
             case 'hideClearedEntries':
+            case 'defaultLocation':
                 $kga->getSettings()->set($key, $value);
                 break;
 

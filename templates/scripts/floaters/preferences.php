@@ -132,7 +132,7 @@
                     </li>
                     <li>
                         <label for="defaultLocation"><?php echo $this->kga['lang']['defaultLocation']?>:</label>
-                        <?php echo $this->formText('defaultLocation', $this->kga['conf']['defaultLocation'], array('size' => 20)); ?>
+                        <?php echo $this->formText('defaultLocation', $this->kga->getSettings()->getDefaultLocation(), array('size' => 20)); ?>
                     </li>
                     <li>
                         <label for="showQuickNote"></label>

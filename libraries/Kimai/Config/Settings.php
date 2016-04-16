@@ -184,6 +184,14 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     }
 
     /**
+     * @return string
+     */
+    public function getDefaultLocation()
+    {
+        return $this->get('defaultLocation', '');
+    }
+
+    /**
      * @return bool
      */
     public function isShowQuickDelete()
