@@ -2377,7 +2377,7 @@ class Kimai_Database_Mysql
                   AND project.trash=0";
         }
 
-        if ($this->kga['conf']['flip_project_display']) {
+        if ($this->kga->getSettings()->isFlipProjectDisplay()) {
             $query .= " ORDER BY project.visible DESC, customer.visible DESC, customerName, name;";
         } else {
             $query .= " ORDER BY project.visible DESC, customer.visible DESC, name, customerName;";
@@ -2428,7 +2428,7 @@ class Kimai_Database_Mysql
         $customerID = MySQL::SQLValue($customerID, MySQL::SQLVALUE_NUMBER);
         $p = $this->kga['server_prefix'];
 
-        if ($this->kga['conf']['flip_project_display']) {
+        if ($this->kga->getSettings()->isFlipProjectDisplay()) {
             $sort = "customerName, name";
         } else {
             $sort = "name, customerName";
@@ -2559,9 +2559,12 @@ class Kimai_Database_Mysql
      */
     public function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false)
     {
+        // -1 for disabled, 0 for only not cleared entries
         if (!is_numeric($filterCleared)) {
-            // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
-            $filterCleared = $this->kga['conf']['hideClearedEntries'] - 1;
+            $filterCleared = -1;
+            if ($this->kga->getSettings()->isHideClearedEntries()) {
+                $filterCleared = 0;
+            }
         }
 
         $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
@@ -2940,8 +2943,12 @@ class Kimai_Database_Mysql
      */
     public function get_duration($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $filterCleared = null)
     {
+        // -1 for disabled, 0 for only not cleared entries
         if (!is_numeric($filterCleared)) {
-            $filterCleared = $this->kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+            $filterCleared = -1;
+            if ($this->kga->getSettings()->isHideClearedEntries()) {
+                $filterCleared = 0;
+            }
         }
 
         $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);

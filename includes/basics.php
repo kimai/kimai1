@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,12 +163,10 @@ if (!empty($allConf))
             case 'sublistAnnotations':
             case 'user_list_hidden':
             case 'project_comment_flag':
+            case 'flip_project_display':
+            case 'hideClearedEntries':
                 $kga->getSettings()->set($key, $value);
                 break;
-
-            // TODO the following user settings are still used in array syntax
-            case 'hideClearedEntries':
-            case 'flip_project_display':
 
             // FIXME remove me after configs are cleared up
             case 'skin':

@@ -77,7 +77,7 @@
                     </li>
                     <li>
                         <label for="flip_project_display"></label>
-                        <?php echo $this->formCheckbox('flip_project_display', '1', array('checked' => $this->kga['conf']['flip_project_display'])),
+                        <?php echo $this->formCheckbox('flip_project_display', '1', array('checked' => $this->kga->getSettings()->isFlipProjectDisplay())),
                         $this->kga['lang']['flip_project_display'] ?>
                     </li>
                     <li>
@@ -110,7 +110,7 @@
                     </li>
                     <li>
                         <label for="hideClearedEntries"></label>
-                        <?php echo $this->formCheckbox('hideClearedEntries', '1', array('checked' => $this->kga['conf']['hideClearedEntries'])), $this->kga['lang']['hideClearedEntries'] ?>
+                        <?php echo $this->formCheckbox('hideClearedEntries', '1', array('checked' => $this->kga->getSettings()->isHideClearedEntries())), $this->kga['lang']['hideClearedEntries'] ?>
                     </li>
                     <li>
                         <?php echo $this->kga['lang']['quickdelete'] ?>:

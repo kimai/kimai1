@@ -92,7 +92,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             $projects = $database->get_projects($groups);
             foreach ($projects as $project) {
                 if (($project['visible'] && $project['customerVisible']) || in_array($project['projectID'], $showIds)) {
-                    if ($kga['conf']['flip_project_display']) {
+                    if ($kga->getSettings()->isFlipProjectDisplay()) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
                         if ($kga->getSettings()->isShowProjectComment()) {
                             $projectName .= "(" . $project['comment'] . ")";

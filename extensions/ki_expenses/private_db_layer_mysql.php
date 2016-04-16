@@ -89,8 +89,12 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     $conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
+    // -1 for disabled, 0 for only not cleared entries
     if (!is_numeric($filterCleared)) {
-      $filterCleared = $kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+        $filterCleared = -1;
+        if ($kga->getSettings()->isHideClearedEntries()) {
+            $filterCleared = 0;
+        }
     }
     
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
