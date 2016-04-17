@@ -91,20 +91,20 @@ if ($this->timeSheetEntries)
                    title='<?php echo $this->kga['lang']['edit']?>'><img
                    src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
                    alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
-            <?php endif; ?>
 
-            <?php if ($this->kga->getSettings()->isShowQuickNote()): ?>
-                <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-                    title='<?php echo $this->kga['lang']['editNote']?>'><img
-                    src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
-                    alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
-            <?php endif; ?>
+                <?php if ($this->kga->getSettings()->isShowQuickNote()): ?>
+                    <a href='#' onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+                        title='<?php echo $this->kga['lang']['editNote']?>'><img
+                        src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width='14' height='14'
+                        alt='<?php echo $this->kga['lang']['editNote']?>' title='<?php echo $this->kga['lang']['editNote']?>' border='0' /></a>
+                <?php endif; ?>
 
-            <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
-                <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
-                    src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
-                    height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
-                    border=0 /></a>
+                <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
+                    <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
+                        src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
+                        height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
+                        border=0 /></a>
+                <?php endif; ?>
             <?php endif; ?>
 
         <?php endif; ?>
