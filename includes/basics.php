@@ -62,10 +62,10 @@ $kga = new Kimai_Config(array(
 include WEBROOT . 'includes/version.php';
 
 // write vars from autoconf.php into kga
-if (isset($language))       { $kga->set('language', $language); }
-if (isset($authenticator))  { $kga->set('authenticator', $authenticator); }
-if (isset($billable))       { $kga->set('billable', $billable); }
-if (isset($skin))           { $kga->set('skin', $skin); }
+if (isset($language))       { $kga->setLanguage($language); }
+if (isset($authenticator))  { $kga->setAuthenticator($authenticator); }
+if (isset($billable))       { $kga->setBillable($billable); }
+if (isset($skin))           { $kga->setSkin($skin); }
 
 date_default_timezone_set($defaultTimezone);
 
@@ -97,8 +97,7 @@ if (!$database->isConnected()) {
 Kimai_Registry::setDatabase($database);
 
 // ============ setup authenticator ============
-$auth = $kga->get('authenticator');
-$authClass = 'Kimai_Auth_' . ucfirst($auth);
+$authClass = 'Kimai_Auth_' . ucfirst($kga->getAuthenticator());
 if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_Kimai';
 }
@@ -113,47 +112,6 @@ if (!empty($allConf))
     foreach ($allConf as $key => $value)
     {
         switch($key) {
-            case 'language';
-                if (!empty($value)) {
-                    $kga->set($key, $value);
-                }
-                break;
-
-            case 'date_format_0';
-            case 'date_format_1';
-            case 'date_format_2';
-            case 'date_format_3';
-            case 'currency_name':
-            case 'currency_sign':
-            case 'show_sensible_data':
-            case 'show_update_warn':
-            case 'check_at_startup':
-            case 'show_daySeperatorLines':
-            case 'show_gabBreaks':
-            case 'show_RecordAgain':
-            case 'show_TrackingNr':
-            case 'adminmail':
-            case 'revision':
-            case 'version':
-            case 'roundPrecision':
-            case 'allowRoundDown':
-            case 'currency_first':
-            case 'defaultStatusID':
-            case 'defaultVat':
-            case 'exactSums':
-            case 'loginBanTime':
-            case 'loginTries':
-            case 'editLimit':
-
-            // TODO the following system settings are still used in array syntax
-            case 'decimalSeparator':
-            case 'durationWithSeconds':
-            case 'roundTimesheetEntries':
-            case 'roundMinutes':
-            case 'roundSeconds':
-                $kga->set($key, $value);
-                break;
-
             case 'openAfterRecorded':
             case 'showQuickNote':
             case 'quickdelete':
@@ -169,18 +127,25 @@ if (!empty($allConf))
                 $kga->getSettings()->set($key, $value);
                 break;
 
-            // FIXME remove me after configs are cleared up
-            case 'skin':
+            // TODO the following system settings are still used in array syntax
+            case 'language';
+                if (empty($value)) {
+                    die('language is empty'); // FIXME test installer if that can happen
+                    break;
+                }
+            case 'decimalSeparator':
+            case 'durationWithSeconds':
+            case 'roundTimesheetEntries':
+            case 'roundMinutes':
+            case 'roundSeconds':
             default:
                 $kga->set($key, $value);
-                $kga->getSettings()->set($key, $value);
                 break;
-
         }
 
         // TODO this is currently backward compatibility, we need to cleanup the config namespaces!
         // settings which can be overwritten by the user belong to => $kga->getSettings()
-        // global configs, which are "owned" by admins only belong into => $kga
+        // global/system configs belong into => $kga
         $kga->getSettings()->set($key, $value);
     }
 }

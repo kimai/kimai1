@@ -181,6 +181,36 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * Sets the system language.
+     *
+     * @param $language
+     */
+    public function setLanguage($language)
+    {
+        $this->set('language', $language);
+    }
+
+    /**
+     * Returns the applications default authenticator.
+     *
+     * @return string
+     */
+    public function getAuthenticator()
+    {
+        return $this->get('authenticator');
+    }
+
+    /**
+     * Sets the authenticator.
+     *
+     * @param $authenticator
+     */
+    public function setAuthenticator($authenticator)
+    {
+        $this->set('authenticator', $authenticator);
+    }
+
+    /**
      * Returns the applications default skin.
      *
      * @return mixed|null
@@ -188,6 +218,34 @@ class Kimai_Config extends Kimai_ArrayObject
     public function getSkin()
     {
         return $this->get('skin');
+    }
+
+    /**
+     * Sets the skin.
+     *
+     * @param $skin
+     */
+    public function setSkin($skin)
+    {
+        $this->set('skin', $skin);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBillable()
+    {
+        return $this->get('billable');
+    }
+
+    /**
+     * Sets the billable values as array.
+     *
+     * @param array $billable
+     */
+    public function setBillable(array $billable)
+    {
+        $this->set('billable', $billable);
     }
 
     /**

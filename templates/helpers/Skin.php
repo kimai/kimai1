@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2012 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,14 @@
  */
 class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
 {
+
+    /**
+     * @var string
+     */
+    protected $skinName = null;
+    /**
+     * @var string
+     */
     protected $fileName = null;
 
     /**
@@ -55,14 +63,19 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
      */
     public function getName()
     {
-        $skin = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
+        if (null === $this->skinName) {
+            $skin = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
+            $kga = Kimai_Registry::getConfig();
 
-        if (isset($this->view->kga['conf']['skin'])) {
-            $skin = $this->view->kga['conf']['skin'];
-        } else if (isset($this->view->kga['skin'])) {
-            $skin = $this->view->kga['skin'];
+            if (!empty($kga->getSettings()->getSkin())) {
+                $skin = $kga->getSettings()->getSkin();
+            } else if (!empty($kga->getSkin())) {
+                $skin = $kga->getSkin();
+            }
+
+            $this->skinName = $this->view->escape($skin);
         }
 
-        return $this->view->escape($skin);
+        return $this->skinName;
     }
 } 
