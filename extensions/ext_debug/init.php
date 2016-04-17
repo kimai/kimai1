@@ -33,9 +33,9 @@ $dir_ext = $settings['EXTENSION_DIR'];
 	$in = $timeframe[0];
 	$out = $timeframe[1];
 	
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
-	
+$view = new Kimai_View();
+$view->addBasePath(__DIR__ . '/templates/');
+
 // read kga --------------------------------------- 
 	$output = $kga;
     // clean out sone data that is way too private to be shown in the frontend ...
