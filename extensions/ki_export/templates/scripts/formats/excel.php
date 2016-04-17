@@ -53,7 +53,7 @@ mso-number-format:Fixed;
 <?php if (isset($this->columns['time'])):         ?> <td><?php echo $this->kga['lang']['time']?></td>        <?php endif; ?>
 <?php if (isset($this->columns['dec_time'])):     ?> <td><?php echo $this->kga['lang']['timelabel']?></td>   <?php endif; ?>
 <?php if (isset($this->columns['rate'])):         ?> <td><?php echo $this->kga['lang']['rate']?></td>        <?php endif; ?>
-<?php if (isset($this->columns['wage'])):         ?> <td><?php echo $this->kga['currency_name']?>}</td>      <?php endif; ?>
+<?php if (isset($this->columns['wage'])):         ?> <td><?php echo $this->kga->getCurrencyName()?>}</td>      <?php endif; ?>
 <?php if (isset($this->columns['budget'])):       ?> <td><?php echo $this->kga['lang']['budget']?></td>      <?php endif; ?>
 <?php if (isset($this->columns['approved'])):     ?> <td><?php echo $this->kga['lang']['approved']?></td>    <?php endif; ?>
 <?php if (isset($this->columns['status'])):       ?> <td><?php echo $this->kga['lang']['status']?></td>      <?php endif; ?>

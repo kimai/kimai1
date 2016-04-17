@@ -165,13 +165,16 @@ class Kimai_Config extends Kimai_ArrayObject
      * Returns the current language.
      * Can either be user specific, admin specific or system specific.
      *
+     * @param bool $system whether the system language is re
      * @return string|null
      */
-    public function getLanguage()
+    public function getLanguage($system = false)
     {
-        $language = $this->getSettings()->getLanguage();
-        if (!empty($language)) {
-            return $language;
+        if (!$system) {
+            $language = $this->getSettings()->getLanguage();
+            if (!empty($language)) {
+                return $language;
+            }
         }
 
         return $this->get('language');
@@ -261,14 +264,6 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
-     * @return bool
-     */
-    public function isRoundDownRecorderTimes()
-    {
-        return (bool)$this->get('allowRoundDown', false);
-    }
-
-    /**
      * @return int
      */
     public function getRoundPrecisionRecorderTimes()
@@ -293,11 +288,19 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isDisplayCurrencyFirst()
+    public function getCurrencySign()
     {
-        return (bool)$this->get('currency_first', false);
+        return $this->get('currency_sign', '€');
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyName()
+    {
+        return $this->get('currency_name', 'Euro');
     }
 
     /**
@@ -309,6 +312,23 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * @return int
+     */
+    public function getEditLimit()
+    {
+        $editLimit = $this->get('editLimit', '-');
+        return (int)($editLimit !== '-' ? $editLimit : 0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRoundDownRecorderTimes()
+    {
+        return (bool)$this->get('allowRoundDown', false);
+    }
+
+    /**
      * @return bool
      */
     public function isUseExactSums()
@@ -317,12 +337,11 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getEditLimit()
+    public function isDisplayCurrencyFirst()
     {
-        $editLimit = $this->get('editLimit', '-');
-        return (int)($editLimit !== '-' ? $editLimit : 0);
+        return (bool)$this->get('currency_first', false);
     }
 
     /**

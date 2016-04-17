@@ -71,9 +71,9 @@ class Kimai_Format
 
         $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f", $number));
         if ($kga->isDisplayCurrencyFirst()) {
-            $value = $kga['currency_sign'] . " " . $value;
+            $value = $kga->getCurrencySign() . " " . $value;
         } else {
-            $value = $value . " " . $kga['currency_sign'];
+            $value = $value . " " . $kga->getCurrencySign();
         }
 
         if ($htmlNoWrap) {

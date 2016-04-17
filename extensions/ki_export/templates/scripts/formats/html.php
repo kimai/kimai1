@@ -202,7 +202,7 @@ if ($this->projectsFilter != ""): ?>
 <?php if (isset($this->columns['time'])):         ?> <th><?php echo $this->kga['lang']['time']?></th>        <?php endif; ?>
 <?php if (isset($this->columns['dec_time'])):     ?> <th><?php echo $this->kga['lang']['timelabel']?></th>   <?php endif; ?>
 <?php if (isset($this->columns['rate'])):         ?> <th><?php echo $this->kga['lang']['rate']?></th>        <?php endif; ?>
-<?php if (isset($this->columns['wage'])):         ?> <th><?php echo $this->kga['currency_name']?></th>       <?php endif; ?>
+<?php if (isset($this->columns['wage'])):         ?> <th><?php echo $this->kga->getCurrencyName()?></th>       <?php endif; ?>
 <?php if (isset($this->columns['budget'])):       ?> <th><?php echo $this->kga['lang']['budget']?></th>      <?php endif; ?>
 <?php if (isset($this->columns['approved'])):     ?> <th><?php echo $this->kga['lang']['approved']?></th>    <?php endif; ?>
 <?php if (isset($this->columns['status'])):       ?> <th><?php echo $this->kga['lang']['status']?></th>      <?php endif; ?>

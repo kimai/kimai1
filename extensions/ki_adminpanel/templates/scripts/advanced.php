@@ -51,7 +51,7 @@
 
             <div>
                 <?php echo $this->kga['lang']['lang']?>:
-                <?php echo $this->formSelect('language', $this->kga['conf']['language'], array('class' => 'formfield'), array_combine($this->languages, $this->languages)); ?>
+                <?php echo $this->formSelect('language', $this->kga->getLanguage(true), array('class' => 'formfield'), array_combine($this->languages, $this->languages)); ?>
             </div>
 
             <div>
@@ -83,11 +83,11 @@
             </div>
 
             <div>
-               <input type="text" name="currency_name" size="8" value="<?php echo $this->escape($this->kga['currency_name']) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_name']?>
+               <input type="text" name="currency_name" size="8" value="<?php echo $this->escape($this->kga->getCurrencyName()) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_name']?>
             </div>
 
             <div>
-               <input type="text" name="currency_sign" size="2" value="<?php echo $this->escape($this->kga['currency_sign']) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_sign']?>
+               <input type="text" name="currency_sign" size="2" value="<?php echo $this->escape($this->kga->getCurrencySign()) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_sign']?>
             </div>
 
             <div>

@@ -326,7 +326,7 @@ switch ($axAction) {
             $row[] = csv_prepare_field($kga['lang']['rate'], $column_delimiter, $quote_char);
         }
         if (isset($columns['wage'])) {
-            $row[] = csv_prepare_field($kga['currency_name'], $column_delimiter, $quote_char);
+            $row[] = csv_prepare_field($kga->getCurrencyName(), $column_delimiter, $quote_char);
         }
         if (isset($columns['budget'])) {
             $row[] = csv_prepare_field($kga['lang']['budget'], $column_delimiter, $quote_char);

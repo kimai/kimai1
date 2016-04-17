@@ -49,7 +49,7 @@
                     </li>
                     <li>
                         <label for="lang"><?php echo $this->kga['lang']['lang'] ?>:</label>
-                        <?php echo $this->formSelect('lang', $this->kga['conf']['lang'], null, $this->langs); ?>
+                        <?php echo $this->formSelect('lang', $this->kga->getLanguage(), null, $this->langs); ?>
                     </li>
                     <li>
                         <label for="timezone"><?php echo $this->kga['lang']['timezone'] ?>:</label>
@@ -118,7 +118,7 @@
                     </li>
                     <li>
                         <label for="showCommentsByDefault"></label>
-                        <?php echo $this->formCheckbox('showCommentsByDefault', '1', array('checked' => isset($this->kga['conf']['showCommentsByDefault']) && $this->kga['conf']['showCommentsByDefault'])), $this->kga['lang']['showCommentsByDefault'] ?>
+                        <?php echo $this->formCheckbox('showCommentsByDefault', '1', array('checked' => $this->kga->getSettings()->isShowComments())), $this->kga['lang']['showCommentsByDefault'] ?>
                     </li>
                     <?php if ($this->kga->isTrackingNumberEnabled()) { ?>
                     <li>
@@ -128,7 +128,7 @@
                     <?php } ?>
                     <li>
                         <label for="hideOverlapLines"></label>
-                        <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => isset($this->kga['conf']['hideOverlapLines']) && $this->kga['conf']['hideOverlapLines'])), $this->kga['lang']['hideOverlapLines'] ?>
+                        <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => !$this->kga->getSettings()->isShowOverlapLines())), $this->kga['lang']['hideOverlapLines'] ?>
                     </li>
                     <li>
                         <label for="defaultLocation"><?php echo $this->kga['lang']['defaultLocation']?>:</label>
