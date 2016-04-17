@@ -72,7 +72,7 @@ if ($this->timeSheetEntries)
 
             <?php if ($row['end']): // Stop oder Record Button? ?>
 
-                <?php if ($this->kga['show_RecordAgain']): ?>
+                <?php if ($this->kga->isShowRecordAgain()): ?>
                   <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
                      href ="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
                      width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
