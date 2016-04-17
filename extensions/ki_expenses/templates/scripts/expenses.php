@@ -39,11 +39,11 @@ if ($this->expenses)
 
             <?php if (isset($this->kga['user']) &&  ($this->kga['conf']['editLimit'] == "-" || time()-$row['timestamp'] <= $this->kga['conf']['editLimit'])): ?>
                 <a href ='#' onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
-                <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+                <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
 
                 <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
                     <a href ='#' class='quickdelete' onclick="expense_quickdelete(<?php echo $row['expenseID']?>); return false;">
-                    <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/button_trashcan.png' width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
+                    <img src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -107,11 +107,11 @@ if ($this->expenses)
 
             <?php if ($row['comment']): ?>
                 <?php if ($row['commentType'] == '0'): ?>
-                            <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase.gif' width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
                 <?php elseif ($row['commentType'] == '1'): ?>
-                            <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_sys.gif' width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
                 <?php elseif ($row['commentType'] == '2'): ?>
-                            <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/blase_caution.gif' width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
                 <?php endif; ?>
             <?php endif; ?>
             </td>

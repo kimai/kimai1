@@ -424,14 +424,14 @@ switch ($axAction)
         // Ban a user from login
         $sts['active'] = 0;
         $database->user_edit($id, $sts);
-        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['banneduser'], $kga['lang']['banneduser'], $kga['conf']['skin']);
+        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['bannedUser'], $kga['lang']['bannedUser'], $view->skin()->getName());
         break;
 
     case "unbanUser" :
         // Unban a user from login
         $sts['active'] = 1;
         $database->user_edit($id, $sts);
-        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $kga['conf']['skin']);
+        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $view->skin()->getName());
         break;
 
     case "sendEditUser" :

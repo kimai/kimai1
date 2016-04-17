@@ -39,7 +39,7 @@
                         <input class="formfield" type="password" name="password" size="9" id="password"/> <?php echo $this->kga['lang']['minLength'] ?>
                         <?php if ($this->user_details['password'] == ""): ?>
                             <br/>
-                            <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/caution_mini.png" alt="Caution" valign="middle"/>
+                            <img src="<?php echo $this->skin('grfx/caution_mini.png'); ?>" alt="Caution" valign="middle"/>
                             <strong style="color:red"><?php echo $this->kga['lang']['nopasswordset'] ?></strong>
                         <?php endif; ?>
                     </li>
@@ -91,7 +91,7 @@
                             </td>
                             <td>
                                 <a class="deleteButton">
-                                    <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']) ?>/grfx/close.png" width="22" height="16"/>
+                                    <img src="<?php echo $this->skin('grfx/close.png'); ?>" width="22" height="16"/>
                                 </a>
                             </td>
                         </tr>
