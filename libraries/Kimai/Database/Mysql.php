@@ -2781,10 +2781,10 @@ class Kimai_Database_Mysql
      *
      * @return array with the options from the configuration table
      */
-    public function getConfigurationData()
+    protected function getConfigurationData()
     {
         $table = $this->kga['server_prefix'] . "configuration";
-        $result = $this->conn->SelectRows($table);
+        $this->conn->SelectRows($table, array("option NOT IN ('version', 'revision')"));
 
         $config_data = array();
 
@@ -2795,6 +2795,84 @@ class Kimai_Database_Mysql
         }
 
         return $config_data;
+    }
+
+    /**
+     * Prefills the Config (and inherited settings) object with configuration data.
+     *
+     * @param Kimai_Config $config
+     */
+    public function initializeConfig(Kimai_Config $config)
+    {
+        $config->setStatuses($this->getStatuses());
+
+        $allConf = $this->getConfigurationData();
+        if (empty($allConf)) {
+            return;
+        }
+
+        foreach ($allConf as $key => $value)
+        {
+            switch($key) {
+                case 'language':
+                    if (!empty($value)) {
+                        $config->setLanguage($value);
+                    }
+                    break;
+
+                // TODO move to Kimai_Config as they are NOT user specific!
+                // the following system settings are still used in ['conf'] array syntax
+                case 'decimalSeparator':
+                case 'durationWithSeconds':
+                case 'roundTimesheetEntries':
+                case 'roundMinutes':
+                case 'roundSeconds':
+                    $config->getSettings()->set($key, $value);
+                    // break is not here on purpose!
+
+                case 'adminmail':
+                case 'loginTries':
+                case 'loginBanTime':
+                case 'currency_name':
+                case 'currency_sign':
+                case 'currency_first':
+                case 'show_sensible_data':
+                case 'show_update_warn':
+                case 'check_at_startup':
+                case 'show_daySeperatorLines':
+                case 'show_gabBreaks':
+                case 'show_RecordAgain':
+                case 'show_TrackingNr':
+                case 'date_format_0':
+                case 'date_format_1':
+                case 'date_format_2':
+                case 'date_format_3':
+                case 'roundPrecision':
+                case 'exactSums':
+                case 'defaultVat':
+                case 'editLimit':
+                case 'allowRoundDown':
+                case 'defaultStatusID':
+                    $config->set($key, $value);
+                    break;
+
+                case 'openAfterRecorded':
+                case 'showQuickNote':
+                case 'quickdelete':
+                case 'autoselection':
+                case 'noFading':
+                case 'showIDs':
+                case 'sublistAnnotations':
+                case 'user_list_hidden':
+                case 'project_comment_flag':
+                case 'flip_project_display':
+                case 'hideClearedEntries':
+                case 'defaultLocation':
+                default:
+                    $config->getSettings()->set($key, $value);
+                    break;
+            }
+        }
     }
 
     /**
@@ -3252,7 +3330,7 @@ class Kimai_Database_Mysql
      * @author th
      *
      * [0] => version number (x.x.x)
-     * [1] => svn revision number
+     * [1] => revision number
      */
     public function get_DBversion()
     {

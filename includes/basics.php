@@ -59,6 +59,7 @@ $kga = new Kimai_Config(array(
     'password_salt' => isset($password_salt) ? $password_salt : ''
 ));
 
+// will inject the version variables into the Kimai_Config object
 include WEBROOT . 'includes/version.php';
 
 // write vars from autoconf.php into kga
@@ -106,53 +107,7 @@ Kimai_Registry::setAuthenticator($authPlugin);
 unset($authPlugin);
 
 // ============ load global configurations ============
-$allConf = $database->getConfigurationData();
-if (!empty($allConf))
-{
-    foreach ($allConf as $key => $value)
-    {
-        switch($key) {
-            case 'openAfterRecorded':
-            case 'showQuickNote':
-            case 'quickdelete':
-            case 'autoselection':
-            case 'noFading':
-            case 'showIDs':
-            case 'sublistAnnotations':
-            case 'user_list_hidden':
-            case 'project_comment_flag':
-            case 'flip_project_display':
-            case 'hideClearedEntries':
-            case 'defaultLocation':
-                $kga->getSettings()->set($key, $value);
-                break;
-
-            // TODO the following system settings are still used in array syntax
-            case 'language';
-                if (empty($value)) {
-                    die('language is empty'); // FIXME test installer if that can happen
-                    break;
-                }
-            case 'decimalSeparator':
-            case 'durationWithSeconds':
-            case 'roundTimesheetEntries':
-            case 'roundMinutes':
-            case 'roundSeconds':
-            default:
-                $kga->set($key, $value);
-                break;
-        }
-
-        // TODO this is currently backward compatibility, we need to cleanup the config namespaces!
-        // settings which can be overwritten by the user belong to => $kga->getSettings()
-        // global/system configs belong into => $kga
-        $kga->getSettings()->set($key, $value);
-    }
-}
-unset($allConf);
-
-// ============ status entries ============
-$kga->setStatuses($database->getStatuses());
+$database->initializeConfig($kga);
 
 // ============ setup translation object ============
 $service = new Kimai_Translation_Service();
