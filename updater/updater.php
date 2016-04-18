@@ -1115,6 +1115,12 @@ if ((int)$revisionDB < 1387) {
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
 }
 
+if ((int)$revisionDB < 1388) {
+    Kimai_Logger::logfile("-- update to r1388");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'lastdbbackup'");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'kimail'");
+}
+
 // release of kimai 1.0
 
 // ================================================================================
