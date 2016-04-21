@@ -671,7 +671,7 @@ switch ($axAction)
         foreach ($roleData as $key => &$value) {
             if (isset($newData[$key])) {
                 $value = $newData[$key];
-            } else if ($key != "globalRoleID" && $key != "name") {
+            } else if ($key != "role_id" && $key != "role_name") {
                 $value = 0;
             }
         }
@@ -683,6 +683,8 @@ switch ($axAction)
         }
 
         if (count($errors) == 0) {
+// FIXME saving name
+// FIXME saving permissions
             $database->global_role_edit($id, $roleData);
         }
 
@@ -705,7 +707,7 @@ switch ($axAction)
         foreach ($roleData as $key => &$value) {
             if (isset($newData[$key])) {
                 $value = $newData[$key];
-            } else if ($key != "membershipRoleID" && $key != "name") {
+            } else if ($key != "role_id" && $key != "role_name") {
                 $value = 0;
             }
         }
@@ -717,6 +719,8 @@ switch ($axAction)
         }
 
         if (count($errors) == 0) {
+// FIXME saving name
+// FIXME saving permissions
             $database->membership_role_edit($id, $roleData);
         }
 

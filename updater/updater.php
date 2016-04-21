@@ -123,7 +123,7 @@ if ((int)$revisionDB < $kga['revision']) {
      * Perform an backup (or snapshot) of the current tables.
      */
     Kimai_Logger::logfile("-- begin backup -----------------------------------");
-
+/*
     $backup_stamp = time(); // as an individual backup label the timestamp should be enough for now...
     // by using this type of label we can also exactly identify when it was done
     // may be shown by a recovering script in human-readable format
@@ -153,7 +153,7 @@ if ((int)$revisionDB < $kga['revision']) {
             }
         }
     }
-
+*/
     Kimai_Logger::logfile("-- backup finished -----------------------------------");
 
     echo "</table><br /><br />";
@@ -1117,16 +1117,86 @@ if ((int)$revisionDB < 1387) {
 
 // release of kimai 1.0
 
+if ((int)$revisionDB < 1389) {
+    Kimai_Logger::logfile("-- update to r1389");
+
+    exec_query("CREATE TABLE `${p}global_role` (
+    `role_id` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `role_name` VARCHAR( 255 ) NOT NULL,
+    UNIQUE KEY `role_name` (`role_name`)
+    );");
+
+    exec_query("CREATE TABLE `${p}global_role_acl` (
+    `role_id` int(11) NOT NULL,
+    `acl_name` varchar(100) NOT NULL,
+    `acl_active` tinyint(1) NOT NULL DEFAULT '0',
+    UNIQUE KEY `role_acl` (`role_id`,`acl_name`)
+    );");
+
+    $roles = $database->queryAll("SELECT * FROM ${p}globalRoles", MYSQLI_ASSOC);
+
+    foreach ($roles as $role) {
+        $roleId = $role['globalRoleID'];
+        $roleName = $role['name'];
+
+        exec_query("INSERT INTO `${p}global_role` (`role_id`, `role_name`) VALUES ('$roleId', '$roleName')");
+
+        unset($role['globalRoleID']);
+        unset($role['name']);
+
+        foreach($role as $roleName => $roleActivated) {
+            $sql = "INSERT INTO `${p}global_role_acl` (`role_id`, `acl_name`, `acl_active`) VALUES ('$roleId', '$roleName', '$roleActivated');";
+            exec_query($sql);
+        }
+    }
+
+    exec_query("DROP TABLE ${p}globalRoles");
+
+    exec_query("CREATE TABLE `${p}membership_role` (
+    `role_id` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `role_name` VARCHAR( 255 ) NOT NULL,
+    UNIQUE KEY `role_name` (`role_name`)
+    );");
+
+    exec_query("CREATE TABLE `${p}membership_role_acl` (
+    `role_id` int(11) NOT NULL,
+    `acl_name` varchar(100) NOT NULL,
+    `acl_active` tinyint(1) NOT NULL DEFAULT '0',
+    UNIQUE KEY `role_acl` (`role_id`,`acl_name`)
+    );");
+
+    $roles = $database->queryAll("SELECT * FROM ${p}membershipRoles", MYSQLI_ASSOC);
+
+    foreach ($roles as $role) {
+        $roleId = $role['membershipRoleID'];
+        $roleName = $role['name'];
+
+        exec_query("INSERT INTO `${p}membership_role` (`role_id`, `role_name`) VALUES ('$roleId', '$roleName')");
+
+        unset($role['membershipRoleID']);
+        unset($role['name']);
+
+        foreach($role as $roleName => $roleActivated) {
+            $sql = "INSERT INTO `${p}membership_role_acl` (`role_id`, `acl_name`, `acl_active`) VALUES ('$roleId', '$roleName', '$roleActivated');";
+            exec_query($sql);
+        }
+    }
+
+    exec_query("DROP TABLE ${p}membershipRoles");
+    exit;
+}
+
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
 if ((int)$revisionDB < $kga['revision'] && !$errors)
 {
     $query = sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
-    exec_query($query, 0);
+    //exec_query($query, 0);
 
     $query = sprintf("UPDATE `${p}configuration` SET value = '%d' WHERE `option` = 'revision';", $kga['revision']);
-    exec_query($query, 0);
+    //exec_query($query, 0);
 }
 
 Kimai_Logger::logfile("-- update finished --------------------------------");

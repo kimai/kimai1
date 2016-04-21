@@ -107,14 +107,13 @@ switch ($axAction) {
 
         $globalRoleDetails = $database->globalRole_get_data($_REQUEST['id']);
 
-        $view->assign('id', $globalRoleDetails['globalRoleID']);
-        $view->assign('name', $globalRoleDetails['name']);
+        $view->assign('id', $globalRoleDetails['role_id']);
+        $view->assign('name', $globalRoleDetails['role_name']);
         $view->assign('action', 'editGlobalRole');
         $view->assign('reloadSubtab', 'globalRoles');
         $view->assign('title', $kga['lang']['editGlobalRole']);
-        $view->assign('permissions', $globalRoleDetails);
-        unset($view->permissions['globalRoleID']);
-        unset($view->permissions['name']);
+
+        $view->assign('permissions', $database->globalRole_get_permissions($_REQUEST['id']));
 
         echo $view->render("floaters/editglobalrole.php");
 
@@ -127,14 +126,13 @@ switch ($axAction) {
 
         $membershipRoleDetails = $database->membershipRole_get_data($_REQUEST['id']);
 
-        $view->assign('id', $membershipRoleDetails['membershipRoleID']);
-        $view->assign('name', $membershipRoleDetails['name']);
+        $view->assign('id', $membershipRoleDetails['role_id']);
+        $view->assign('name', $membershipRoleDetails['role_name']);
         $view->assign('action', 'editMembershipRole');
         $view->assign('reloadSubtab', 'membershipRoles');
         $view->assign('title', $kga['lang']['editMembershipRole']);
-        $view->assign('permissions', $membershipRoleDetails);
-        unset($view->permissions['membershipRoleID']);
-        unset($view->permissions['name']);
+
+        $view->assign('permissions', $database->membershipRole_get_permissions($_REQUEST['id']));
 
         echo $view->render("floaters/editglobalrole.php");
 

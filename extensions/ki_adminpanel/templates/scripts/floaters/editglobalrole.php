@@ -1,5 +1,7 @@
 <?php
 
+// FIXME fetch available extensions from extension service
+
 $extensions = array();
 $keyHierarchy = array();
 
