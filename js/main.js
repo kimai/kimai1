@@ -337,11 +337,10 @@ function updateTimeframeWarning() {
 function startRecord(projectID,activityID,userID) {
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
-    offset = 0;
-    startsec = now;
+    startsec = now - offset;
     show_stopwatch();
     value = projectID +"|"+ activityID;
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID, startTime: now},
+    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
@@ -480,8 +479,7 @@ function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
 // ... so just THX! ;)
 
 function ticktac() {
-    startsecoffset = startsec ? startsec : offset;
-    sek   = Math.floor((new Date()).getTime()/1000)-startsecoffset;
+    sek   = Math.floor((new Date()).getTime()/1000) - startsec - offset;
     hour  = Math.floor(sek / 3600);
     min   = Math.floor((sek-hour*3600) / 60);
     sec   = Math.floor(sek-hour*3600-min*60);
