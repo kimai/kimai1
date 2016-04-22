@@ -278,8 +278,7 @@ function ts_ext_recordAgain(project,activity,id) {
     $('#timeSheetEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
     hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
-    offset = now;
-    startsec = 0;
+    startsec = now - offset;
     show_stopwatch();
     $('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
 
