@@ -3596,20 +3596,18 @@ class Kimai_Database_Mysql
      * @param integer $projectID ID of project to record
      * @param $activityID
      * @param $user
-     * @param $startTime
      * @return int id of the new entry or false on failure
      * @author th, sl
      */
-    public function startRecorder($projectID, $activityID, $user, $startTime)
+    public function startRecorder($projectID, $activityID, $user)
     {
         $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
         $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
         $user = MySQL::SQLValue($user, MySQL::SQLVALUE_NUMBER);
-        $startTime = MySQL::SQLValue($startTime, MySQL::SQLVALUE_NUMBER);
 
         $values['projectID'] = $projectID;
         $values['activityID'] = $activityID;
-        $values['start'] = $startTime;
+        $values['start'] = time();
         $values['userID'] = $user;
         $values['statusID'] = $this->kga['conf']['defaultStatusID'];
 
