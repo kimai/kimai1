@@ -32,7 +32,7 @@
                 <ul>
                     <li>
                         <label for="skin"><?php echo $this->kga['lang']['skin'] ?>:</label>
-                        <?php echo $this->formSelect('skin', $this->kga['conf']['skin'], null, $this->skins); ?>
+                        <?php echo $this->formSelect('skin', $this->skin()->getName(), null, $this->skins); ?>
                     </li>
                     <li>
                         <label for="password"><?php echo $this->kga['lang']['newPassword'] ?>:</label>

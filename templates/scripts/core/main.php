@@ -50,7 +50,7 @@
 
     <script type="text/javascript"> 
     
-        var skin ="<?php echo $this->escape($this->kga['conf']['skin']); ?>";
+        var skin ="<?php echo $this->escape($this->skin()->getName()); ?>";
 
         var lang_checkUsername    = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
         var lang_checkGroupname   = "<?php echo $this->escape($this->kga['lang']['checkGroupname']); ?>";
@@ -187,12 +187,12 @@
     <div id="top">
         
         <div id="logo">
-            <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_logo.png" width="151" height="52" alt="Logo" />
+            <img src="<?php echo $this->skin('grfx/g3_logo.png'); ?>" width="151" height="52" alt="Logo" />
         </div>
         
         <div id="menu">
-            <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
-            <a id="main_tools_button" href="#" ><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
+            <a id="main_logout_button" href="../index.php?a=logout"><img src="<?php echo $this->skin('grfx/g3_menu_logout.png'); ?>" width="36" height="27" alt="Logout" /></a>
+            <a id="main_tools_button" href="#" ><img src="<?php echo $this->skin('grfx/g3_menu_dropdown.png'); ?>" width="44" height="27" alt="Menu Dropdown" /></a>
             <br/><?php echo $this->kga['lang']['logged_in_as']?> <b><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?></b>
         </div>
         
@@ -240,10 +240,10 @@
 
           <div id="infos">
               <span id="n_date"></span>&nbsp;
-              <a href="#" title="<?php echo $this->escape($this->kga['lang']['now']);?>" onclick="setTimeframe(new Date(),new Date()); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']);?>/grfx/timeframe_now.png" width="12" height="14" alt="Select date of today" /></a>&nbsp;
-              <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']);?>/grfx/g3_display_smallclock.png" width="13" height="13" alt="Display Smallclock" />
+              <a href="#" title="<?php echo $this->escape($this->kga['lang']['now']);?>" onclick="setTimeframe(new Date(),new Date()); return false;"><img src="<?php echo $this->skin('grfx/timeframe_now.png'); ?>" width="12" height="14" alt="Select date of today" /></a>&nbsp;
+              <img src="<?php echo $this->skin('grfx/g3_display_smallclock.png'); ?>" width="13" height="13" alt="Display Smallclock" />
               <span id="n_uhr">00:00</span> &nbsp; 
-              <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_display_eye.png" width="15" height="12" alt="Display Eye" />
+              <img src="<?php echo $this->skin('grfx/g3_display_eye.png'); ?>" width="15" height="12" alt="Display Eye" />
               <strong id="display_total"><?php echo $this->total?></strong> 
           </div>
         </div> 

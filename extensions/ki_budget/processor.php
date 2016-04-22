@@ -27,7 +27,7 @@ $view->addBasePath(__DIR__ . '/templates/');
 
 $filters = explode('|', $axValue);
 
-if ($filters[0] == '') {
+if (empty($filters[0])) {
     $filterUsers = array();
 } else {
     $filterUsers = explode(':', $filters[0]);
@@ -40,7 +40,7 @@ $filterCustomers = array_map(
     $database->get_customers($kga['user']['groups'])
 );
 
-if (isset($filters[1]) && $filters[1] != '') {
+if (!empty($filters[1])) {
     $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
 }
 
@@ -51,7 +51,7 @@ $filterProjects = array_map(
     $database->get_projects($kga['user']['groups'])
 );
 
-if (isset($filters[2]) && $filters[2] != '') {
+if (!empty($filters[2])) {
     $filterProjects = array_intersect($filterProjects, explode(':', $filters[2]));
 }
 
@@ -62,7 +62,7 @@ $filterActivities = array_map(
     $database->get_activities($kga['user']['groups'])
 );
 
-if (isset($filters[3]) && $filters[3] != '') {
+if (!empty($filters[3])) {
     $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
 }
 
