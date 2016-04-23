@@ -488,18 +488,9 @@ function ticktac() {
     
     if (sec==60) { sec=0; min++; }
     if (min > 59) { min = 0; hour++; }
-    if (sec==0) $("#s").html("00");
-    else {
-        $("#s").html(((sec<10)?"0":"")+sec);
-    }
-    if (min==0) $("#m").html("00");
-    else {
-        $("#m").html(((min<10)?"0":"")+min);
-     }
-    if (hour==0) $("#h").html("00");
-    else {
-        $("#h").html(((hour<10)?"0":"")+hour);
-    }
+    $("#s").html(((sec<10)?"0":"")+sec);
+    $("#m").html(((min<10)?"0":"")+min);
+    $("#h").html(((hour<10)?"0":"")+hour);
 
     htmp = $("#h").html();
     mtmp = $("#m").html();
