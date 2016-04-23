@@ -473,18 +473,11 @@ function ticktac() {
 
     // Split total seconds from start time to current time into
     // separate variables for viewing hours:minutes:seconds
-    var hours   = Math.floor(total_seconds / 3600);
-    var minutes = Math.floor((total_seconds - hours * 3600) / 60);
-    var seconds = Math.floor(total_seconds - hours * 3600 - minutes * 60);
+    var total_minutes = Math.trunc(total_seconds / 60);
 
-    if (seconds == 60) {
-        seconds = 0;
-        minutes++;
-    }
-    if (minutes > 59) {
-        minutes = 0;
-        hours++;
-    }
+    var hours = Math.trunc(total_minutes / 60);
+    var minutes = total_minutes % 60;
+    var seconds = total_seconds % 60;
 
     $("#s").html(prependZeroIfNeeded(seconds));
     $("#m").html(prependZeroIfNeeded(minutes));
