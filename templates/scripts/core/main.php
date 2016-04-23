@@ -82,9 +82,9 @@
        
         var timeoutTicktack       = 0;
         
-        var startsec              = <?php echo $this->current_timer_start ?>;
         var now                   = <?php echo $this->current_time ?>;
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;
+        var startsec              = <?php echo $this->current_timer_start ?> + offset;
         
 
         var default_title         = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
