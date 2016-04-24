@@ -2812,7 +2812,7 @@ class Kimai_Database_Mysql
         }
 
         foreach ($allConf as $key => $value) {
-            switch($key) {
+            switch ($key) {
                 case 'language':
                     if (!empty($value)) {
                         $config->setLanguage($value);
