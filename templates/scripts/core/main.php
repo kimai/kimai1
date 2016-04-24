@@ -82,9 +82,6 @@
        
         var timeoutTicktack       = 0;
         
-        var hour                  = <?php echo $this->current_timer_hour ?>;
-        var min                   = <?php echo $this->current_timer_min ?>;
-        var sec                   = <?php echo $this->current_timer_sec ?>;
         var startsec              = <?php echo $this->current_timer_start ?>;
         var now                   = <?php echo $this->current_time ?>;
         var offset                = Math.floor(((new Date()).getTime())/1000)-now;

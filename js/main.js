@@ -335,7 +335,6 @@ function updateTimeframeWarning() {
 // starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID,activityID,userID) {
-    hour=0;min=0;sec=0;
     now = Math.floor(((new Date()).getTime())/1000);
     offset = 0;
     startsec = now;
@@ -479,11 +478,11 @@ function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
 // ... so just THX! ;)
 
 function ticktac() {
-    startsecoffset = startsec ? startsec : offset;
-    sek   = Math.floor((new Date()).getTime()/1000)-startsecoffset;
-    hour  = Math.floor(sek / 3600);
-    min   = Math.floor((sek-hour*3600) / 60);
-    sec   = Math.floor(sek-hour*3600-min*60);
+    var startsecoffset = startsec ? startsec : offset;
+    var sek   = Math.floor((new Date()).getTime()/1000)-startsecoffset;
+    var hour  = Math.floor(sek / 3600);
+    var min   = Math.floor((sek-hour*3600) / 60);
+    var sec   = Math.floor(sek-hour*3600-min*60);
     
     if (sec==60) { sec=0; min++; }
     if (min > 59) { min = 0; hour++; }
@@ -491,10 +490,10 @@ function ticktac() {
     $("#m").html(((min<10)?"0":"")+min);
     $("#h").html(((hour<10)?"0":"")+hour);
 
-    htmp = $("#h").html();
-    mtmp = $("#m").html();
-    stmp = $("#s").html();
-    titleclock = htmp + ":" + mtmp  + ":" + stmp;
+    var htmp = $("#h").html();
+    var mtmp = $("#m").html();
+    var stmp = $("#s").html();
+    var titleclock = htmp + ":" + mtmp  + ":" + stmp;
     document.title = titleclock;
     timeoutTicktack = setTimeout("ticktac()", 1000);
 }
