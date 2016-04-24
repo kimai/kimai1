@@ -2811,8 +2811,7 @@ class Kimai_Database_Mysql
             return;
         }
 
-        foreach ($allConf as $key => $value)
-        {
+        foreach ($allConf as $key => $value) {
             switch($key) {
                 case 'language':
                     if (!empty($value)) {
