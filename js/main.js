@@ -335,7 +335,7 @@ function updateTimeframeWarning() {
 // starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID,activityID,userID) {
-    now = Math.floor(((new Date()).getTime())/1000);
+    var now = Math.floor(((new Date()).getTime())/1000);
     offset = 0;
     startsec = now;
     show_stopwatch();

@@ -276,7 +276,7 @@ function ts_ext_recordAgain(project,activity,id) {
     }
 
     $('#timeSheetEntry'+id+'>td>a.recordAgain>img').attr("src","../skins/"+skin+"/grfx/loading13.gif");
-    now = Math.floor(((new Date()).getTime())/1000);
+    var now = Math.floor(((new Date()).getTime())/1000);
     offset = now;
     startsec = 0;
     show_stopwatch();
@@ -404,7 +404,7 @@ function getBestRates() {
 //
 function pasteNow(value) {
 
-    now = new Date();
+    var now = new Date();
 
     H = now.getHours();
     i = now.getMinutes();
