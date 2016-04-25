@@ -406,15 +406,15 @@ function pasteNow(value) {
 
     var now = new Date();
 
-    H = now.getHours();
-    i = now.getMinutes();
-    s = now.getSeconds();
+    var H = now.getHours();
+    var i = now.getMinutes();
+    var s = now.getSeconds();
 
     if (H<10) H = "0"+H;
     if (i<10) i = "0"+i;
     if (s<10) s = "0"+s;
 
-    time  = H + ":" + i + ":" + s;
+    var time  = H + ":" + i + ":" + s;
 
     $("#end_time").val(time);
     $('#end_time').trigger('change');
