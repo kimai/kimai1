@@ -24,16 +24,27 @@
  */
 class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
 {
+    protected $fileName = null;
+
     /**
      * @param string $file
      * @return string
      */
     public function skin($file = null)
     {
-        $url = '../skins/' . $this->getSkinName() . '/';
-
         if ($file !== null) {
-            $url .= $file;
+            $this->fileName = $file;
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        $url = '../skins/' . $this->getName() . '/';
+
+        if ($this->fileName !== null) {
+            $url .= $this->fileName;
         }
 
         return $url;
@@ -42,7 +53,7 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
     /**
      * @return string
      */
-    protected function getSkinName()
+    public function getName()
     {
         $skin = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
 

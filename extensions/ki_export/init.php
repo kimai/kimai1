@@ -40,12 +40,12 @@ header("Pragma: no-cache");
 
 $timeformat = 'H:M';
 $dateformat = $kga['date_format'][1];
-$view->timeformat = $timeformat;
-$view->dateformat = $dateformat;
+$view->assign('timeformat', $timeformat);
+$view->assign('dateformat', $dateformat);
 
 echo $view->render('panel.php');
 
-$view->timeformat = preg_replace('/([A-Za-z])/', '%$1', $timeformat);
+$view->assign('timeformat', preg_replace('/([A-Za-z])/', '%$1', $timeformat));
 
 $users = null;
 $customers = null;
@@ -58,34 +58,34 @@ if (isset($kga['customer'])) {
 
 // Get the total amount of time shown in the table.
 $total = Kimai_Format::formatDuration($database->get_duration($in, $out, $users, $customers, null));
-$view->total = $total;
-$view->exportData = export_get_data($in, $out, $users, $customers);
+$view->assign('total', $total);
+$view->assign('exportData', export_get_data($in, $out, $users, $customers));
 
 // Get the annotations for the user sub list.
 $userAnnotations = export_get_user_annotations($in, $out, $users, $customers);
 Kimai_Format::formatAnnotations($userAnnotations);
-$view->user_annotations = $userAnnotations;
+$view->assign('user_annotations', $userAnnotations);
 
 // Get the annotations for the customer sub list.
 $customerAnnotations = export_get_customer_annotations($in, $out, $users, $customers);
 Kimai_Format::formatAnnotations($customerAnnotations);
-$view->customer_annotations = $customerAnnotations;
+$view->assign('customer_annotations', $customerAnnotations);
 
 // Get the annotations for the project sub list.
 $projectAnnotations = export_get_project_annotations($in, $out, $users, $customers);
 Kimai_Format::formatAnnotations($projectAnnotations);
-$view->project_annotations = $projectAnnotations;
+$view->assign('project_annotations', $projectAnnotations);
 
 // Get the annotations for the activity sub list.
 $activityAnnotations = export_get_activity_annotations($in, $out, $users, $customers);
 Kimai_Format::formatAnnotations($activityAnnotations);
-$view->activity_annotations = $activityAnnotations;
+$view->assign('activity_annotations', $activityAnnotations);
 
 // Get the columns the user had disabled last time.
 if (isset($kga['user'])) {
-    $view->disabled_columns = export_get_disabled_headers($kga['user']['userID']);
+    $view->assign('disabled_columns', export_get_disabled_headers($kga['user']['userID']));
 }
 
-$view->table_display = $view->render("table.php");
+$view->assign('table_display', $view->render("table.php"));
 
 echo $view->render('main.php');

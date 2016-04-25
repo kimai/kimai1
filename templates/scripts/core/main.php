@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow" />
@@ -21,22 +21,25 @@
     <!-- Libs -->
     <script src="../libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/jquery.form.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js" type="text/javascript" charset="utf-8"></script>
-    <script src="../libraries/jQuery/jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../libraries/jQuery/js.cookie-2.1.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="../libraries/jQuery/jquery-ui-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
-    <!--[if IE]><script src="../libraries/jQuery/excanvas.min.js" type="text/javascript"></script><![endif]-->
-    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
-    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
     <script src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
     <script src="../libraries/phpjs/strftime.min.js" type="text/javascript" ></script>
 	<script src="../libraries/jQuery/jquery.selectboxes.min.js" type="text/javascript" charset="utf-8"></script>
     <!-- /Libs -->
+    
+    <!-- Libs Extensions -->
+    <script src="../libraries/jQuery/jquery.jqplot.min.js" type="text/javascript"></script>
+    <script src="../libraries/jQuery/jqplot.pieRenderer.min.js" type="text/javascript" ></script>
+    <!--[if IE]><script src="../libraries/jQuery/excanvas.min.js" type="text/javascript"></script><![endif]-->
+    <!-- /Libs Extensions -->
 
-    <!-- Default JavaScripts -->
+    <!-- Default JavaScript -->
     <script src="../js/main.js" type="text/javascript" charset="utf-8"></script>
     <script src="../js/init.js" type="text/javascript" charset="utf-8"></script>
-    <!-- /Default JavaScripts -->
+    <!-- /Default JavaScript -->
 
     <!-- Extension JavaScripts -->
 <?php foreach ($this->js_extension_files as $object): ?>
@@ -47,7 +50,7 @@
 
     <script type="text/javascript"> 
     
-        var skin ="<?php echo $this->escape($this->kga['conf']['skin']); ?>";
+        var skin ="<?php echo $this->escape($this->skin()->getName()); ?>";
 
         var lang_checkUsername    = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
         var lang_checkGroupname   = "<?php echo $this->escape($this->kga['lang']['checkGroupname']); ?>";
@@ -184,12 +187,12 @@
     <div id="top">
         
         <div id="logo">
-            <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_logo.png" width="151" height="52" alt="Logo" />
+            <img src="<?php echo $this->skin('grfx/g3_logo.png'); ?>" width="151" height="52" alt="Logo" />
         </div>
         
         <div id="menu">
-            <a id="main_logout_button" href="../index.php?a=logout"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_logout.png" width="36" height="27" alt="Logout" /></a>
-            <a id="main_tools_button" href="#" ><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_menu_dropdown.png" width="44" height="27" alt="Menu Dropdown" /></a>
+            <a id="main_logout_button" href="../index.php?a=logout"><img src="<?php echo $this->skin('grfx/g3_menu_logout.png'); ?>" width="36" height="27" alt="Logout" /></a>
+            <a id="main_tools_button" href="#" ><img src="<?php echo $this->skin('grfx/g3_menu_dropdown.png'); ?>" width="44" height="27" alt="Menu Dropdown" /></a>
             <br/><?php echo $this->kga['lang']['logged_in_as']?> <b><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?></b>
         </div>
         
@@ -237,10 +240,10 @@
 
           <div id="infos">
               <span id="n_date"></span>&nbsp;
-              <a href="#" title="<?php echo $this->escape($this->kga['lang']['now']);?>" onclick="setTimeframe(new Date(),new Date()); return false;"><img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']);?>/grfx/timeframe_now.png" width="12" height="14" alt="Select date of today" /></a>&nbsp;
-              <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin']);?>/grfx/g3_display_smallclock.png" width="13" height="13" alt="Display Smallclock" />
+              <a href="#" title="<?php echo $this->escape($this->kga['lang']['now']);?>" onclick="setTimeframe(new Date(),new Date()); return false;"><img src="<?php echo $this->skin('grfx/timeframe_now.png'); ?>" width="12" height="14" alt="Select date of today" /></a>&nbsp;
+              <img src="<?php echo $this->skin('grfx/g3_display_smallclock.png'); ?>" width="13" height="13" alt="Display Smallclock" />
               <span id="n_uhr">00:00</span> &nbsp; 
-              <img src="../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/g3_display_eye.png" width="15" height="12" alt="Display Eye" />
+              <img src="<?php echo $this->skin('grfx/g3_display_eye.png'); ?>" width="15" height="12" alt="Display Eye" />
               <strong id="display_total"><?php echo $this->total?></strong> 
           </div>
         </div> 

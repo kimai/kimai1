@@ -52,8 +52,8 @@ $(document).ready(function () {
 
 	if (userID) {
 		// automatic tab-change on reload
-		ki_active_tab_target = $.cookie('ki_active_tab_target_' + userID);
-		ki_active_tab_path = $.cookie('ki_active_tab_path_' + userID);
+		ki_active_tab_target = Cookies.get('ki_active_tab_target_' + userID);
+		ki_active_tab_path = Cookies.get('ki_active_tab_path_' + userID);
 	}
 	else {
 		ki_active_tab_target = null;

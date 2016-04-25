@@ -30,7 +30,8 @@ set_include_path(
     implode(
         PATH_SEPARATOR,
         array(
-            realpath(APPLICATION_PATH . '/libraries/zendframework/zendframework1/library/'),
+            '.',
+            realpath(APPLICATION_PATH . '/libraries/'),
         )
     )
 );

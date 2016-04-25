@@ -25,11 +25,11 @@ $customers = $this->filterListEntries($this->customers);
               <td nowrap class="option">
                 <?php if ($this->show_customer_edit_button): ?>
                 <a href="#" onclick="editSubject('customer',<?php echo $customer['customerID']?>); $(this).blur(); return false;">
-                  <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/edit2.gif' width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
+                  <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' />
                 </a>
                 <?php endif; ?>
                 <a href="#" onclick="lists_update_filter('customer',<?php echo $customer['customerID']?>); $(this).blur(); return false;">
-                  <img src='../skins/<?php echo $this->escape($this->kga['conf']['skin'])?>/grfx/filter.png' width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
+                  <img src="<?php echo $this->skin('grfx/filter.png'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['filter']?>' title='<?php echo $this->kga['lang']['filter']?>' border='0' />
                 </a>
               </td>
 

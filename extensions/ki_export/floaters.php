@@ -36,7 +36,7 @@ switch ($axAction) {
             'time_type' => 'dec_time'
         );
         $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
-        $view->prefs = array_merge($defaults, $prefs);
+        $view->assign('prefs', array_merge($defaults, $prefs));
 
         echo $view->render("floaters/export_PDF.php");
         break;
@@ -44,7 +44,7 @@ switch ($axAction) {
     case "XLS":
         $defaults = array('reverse_order' => 0);
         $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
-        $view->prefs = array_merge($defaults, $prefs);
+        $view->assign('prefs', array_merge($defaults, $prefs));
 
         echo $view->render("floaters/export_XLS.php");
         break;
@@ -52,7 +52,7 @@ switch ($axAction) {
     case "CSV":
         $defaults = array('column_delimiter' => ',', 'quote_char' => '"', 'reverse_order' => 0);
         $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
-        $view->prefs = array_merge($defaults, $prefs);
+        $view->assign('prefs', array_merge($defaults, $prefs));
 
         echo $view->render("floaters/export_CSV.php");
         break;
@@ -60,7 +60,7 @@ switch ($axAction) {
     case "print":
         $defaults = array('print_summary' => 1, 'reverse_order' => 0);
         $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
-        $view->prefs = array_merge($defaults, $prefs);
+        $view->assign('prefs', array_merge($defaults, $prefs));
 
         echo $view->render("floaters/print.php");
         break;

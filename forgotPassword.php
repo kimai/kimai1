@@ -52,7 +52,7 @@ if (!class_exists($authClass)) {
 }
 $authPlugin = new $authClass($database, $kga);
 
-$view->kga = $kga;
+$view->assign('kga', $kga);
 
 // current database setup correct?
 checkDBversion(".");
@@ -78,12 +78,12 @@ switch ($_REQUEST['a'])
 
     // Show password reset page
     default:
-      $view->devtimespan = '2006-' . date('y');
-      $view->keyCorrect = $keyCorrect;
-      $view->requestData = array(
-        'key' => $key,
-        'name' => $name
-      );
+        $view->assign('devtimespan', '2006-' . date('y'));
+        $view->assign('keyCorrect', $keyCorrect);
+        $view->assign('requestData', array(
+            'key' => $key,
+            'name' => $name
+        ));
 
       echo $view->render('login/forgotPassword.php');
     break;
