@@ -28,18 +28,18 @@ The decision about it was discussed [here](https://github.com/kimai/kimai/issues
 
 Here are a few rules to follow in order to ease code reviews and discussions before maintainers accept and merge your work:
 
-* You SHOULD write documentation.
+* You SHOULD write [documentation][3].
 * Please, write commit messages that make sense, and rebase your branch before submitting your Pull Request.
-* One may ask you to squash your commits too. This is used to "clean" your Pull Request before merging it (we don't want commits such as fix tests, fix 2, fix 3, etc.).
-* When creating your Pull Request on GitHub, you MUST write a description which gives the context and/or explains why you are creating it.
+* When creating your Pull Request, you MUST write a description which explains why you are creating it.
 
 ## Important things to consider
 
-* Follow PSR-2 code style
-* No whitespace changes in a Pull request
-* We know that a lot of the Kimai codebase is old and "funny" ... you can ignore that ;-)
+* Follow [PSR-2](http://www.php-fig.org/psr/psr-2/) code style
+* No whitespace changes in a Pull Request
+* We know that a lot of the Kimai codebase is old. Feel free to improve it!
 * You can restructure the code, but that should be done in an independent branch
-* Make sure the Pull request has a decent size, otherwise we won't be able to review and merge it
+* Make sure the Pull Request has a decent size, otherwise we won't be able to review and merge it
 
 [1]: https://github.com/kimai
 [2]: https://github.com/kimai/kimai/pulls
+[3]: https://github.com/kimai/documentation
