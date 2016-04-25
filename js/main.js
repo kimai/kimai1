@@ -346,7 +346,6 @@ function startRecord(projectID,activityID,userID) {
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
             $('#buzzer').removeClass('disabled');
-            ts_ext_reload();
         }
     );
 }
