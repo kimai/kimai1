@@ -335,7 +335,7 @@ function updateTimeframeWarning() {
 // starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID,activityID,userID) {
-    var now = Math.floor(((new Date()).getTime())/1000);
+    var now = Math.floor(((new Date()).getTime()) / 1000);
     offset = 0;
     startsec = now;
     show_stopwatch();
@@ -481,16 +481,23 @@ function ticktac() {
     // Split total seconds from start time to current time into
     // separate variables for viewing hours:minutes:seconds
     var startsecoffset = startsec ? startsec : offset;
-    var total_seconds = Math.floor((new Date()).getTime()/1000)-startsecoffset;
+    var total_seconds = Math.floor((new Date()).getTime() / 1000) - startsecoffset;
     var hours   = Math.floor(total_seconds / 3600);
-    var minutes = Math.floor((total_seconds-hours*3600) / 60);
-    var seconds = Math.floor(total_seconds-hours*3600-minutes*60);
-    
-    if (seconds==60) { seconds=0; minutes++; }
-    if (minutes > 59) { minutes = 0; hours++; }
-    $("#s").html(((seconds<10)?"0":"")+seconds);
-    $("#m").html(((minutes<10)?"0":"")+minutes);
-    $("#h").html(((hours<10)?"0":"")+hours);
+    var minutes = Math.floor((total_seconds - hours * 3600) / 60);
+    var seconds = Math.floor(total_seconds - hours * 3600 - minutes * 60);
+
+    if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+    }
+    if (minutes > 59) {
+        minutes = 0;
+        hours++;
+    }
+
+    $("#s").html(((seconds < 10) ? "0" : "") + seconds);
+    $("#m").html(((minutes < 10) ? "0" : "") + minutes);
+    $("#h").html(((hours   < 10) ? "0" : "") + hours);
 
     var htmp = $("#h").html();
     var mtmp = $("#m").html();
