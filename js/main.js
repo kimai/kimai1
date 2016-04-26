@@ -478,17 +478,19 @@ function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
 // ... so just THX! ;)
 
 function ticktac() {
+    // Split total seconds from start time to current time into
+    // separate variables for viewing hours:minutes:seconds
     var startsecoffset = startsec ? startsec : offset;
-    var sek   = Math.floor((new Date()).getTime()/1000)-startsecoffset;
-    var hour  = Math.floor(sek / 3600);
-    var min   = Math.floor((sek-hour*3600) / 60);
-    var sec   = Math.floor(sek-hour*3600-min*60);
+    var total_seconds = Math.floor((new Date()).getTime()/1000)-startsecoffset;
+    var hours   = Math.floor(total_seconds / 3600);
+    var minutes = Math.floor((total_seconds-hours*3600) / 60);
+    var seconds = Math.floor(total_seconds-hours*3600-minutes*60);
     
-    if (sec==60) { sec=0; min++; }
-    if (min > 59) { min = 0; hour++; }
-    $("#s").html(((sec<10)?"0":"")+sec);
-    $("#m").html(((min<10)?"0":"")+min);
-    $("#h").html(((hour<10)?"0":"")+hour);
+    if (seconds==60) { seconds=0; minutes++; }
+    if (minutes > 59) { minutes = 0; hours++; }
+    $("#s").html(((seconds<10)?"0":"")+seconds);
+    $("#m").html(((minutes<10)?"0":"")+minutes);
+    $("#h").html(((hours<10)?"0":"")+hours);
 
     var htmp = $("#h").html();
     var mtmp = $("#m").html();
