@@ -514,7 +514,9 @@ function ts_durationToTime() {
         begin.setTime(end.getTime()-(secs*1000));
 
         $("#start_time").val(ts_formatTime(begin));
+        $("#end_time").val(ts_formatTime(end));
         $("#start_day").val(ts_formatDate(begin));
+        $("#end_day").val(ts_formatDate(end));
     }
 }
 
