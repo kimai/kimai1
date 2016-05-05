@@ -31,6 +31,21 @@ function ts_ext_onload() {
 }
 
 /**
+ * Formats a date object to be used in the time input field.
+ */
+function ts_formatTime(value) {
+    var H = value.getHours();
+    var i = value.getMinutes();
+    var s = value.getSeconds();
+
+    if (H<10) H = "0"+H;
+    if (i<10) i = "0"+i;
+    if (s<10) s = "0"+s;
+
+    return H + ":" + i + ":" + s;
+}
+
+/**
  * Update the dimension variables to reflect new height and width.
  */
 function ts_ext_get_dimensions() {
@@ -484,16 +499,7 @@ function ts_durationToTime() {
         begin = new Date();
         begin.setTime(end.getTime()-(secs*1000));
 
-
-        var H = begin.getHours();
-        var i = begin.getMinutes();
-        var s = begin.getSeconds();
-
-        if (H<10) H = "0"+H;
-        if (i<10) i = "0"+i;
-        if (s<10) s = "0"+s;
-
-        $("#start_time").val(H + ":" + i + ":" + s);
+        $("#start_time").val(ts_formatTime(begin));
 
         var d = begin.getDate();
         var m = begin.getMonth() + 1;
