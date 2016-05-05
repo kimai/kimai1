@@ -46,6 +46,20 @@ function ts_formatTime(value) {
 }
 
 /**
+ * format a date object to be used in the date input field.
+ */
+function ts_formatDate(value) {
+    var d = value.getDate();
+    var m = value.getMonth() + 1;
+    var y = value.getFullYear();
+
+    if (d<10) d = "0"+d;
+    if (m<10) m = "0"+m;
+
+    return d + "." + m + "." + y;
+}
+
+/**
  * Update the dimension variables to reflect new height and width.
  */
 function ts_ext_get_dimensions() {
@@ -500,14 +514,7 @@ function ts_durationToTime() {
         begin.setTime(end.getTime()-(secs*1000));
 
         $("#start_time").val(ts_formatTime(begin));
-
-        var d = begin.getDate();
-        var m = begin.getMonth() + 1;
-        var y = begin.getFullYear();
-        if (d<10) d = "0"+d;
-        if (m<10) m = "0"+m;
-
-        $("#start_day").val(d + "." + m + "." + y);
+        $("#start_day").val(ts_formatDate(begin));
     }
 }
 
