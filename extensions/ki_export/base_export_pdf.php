@@ -96,6 +96,20 @@ class BasePDF extends TCPDF
 
         return sprintf('% 2d:%02d', $hours, $minutes);
     }
+    
+    /**
+     * calculate time in hh:mm from duration lenght in second
+     * rounded to minutes
+     * @param int $duration, duration lenght in second
+     * @return string time in format hh:mm
+     */
+    public function timeLength($duration)
+    {
+        $s=$duration % 60;
+        $m=(($duration-$s) / 60) % 60;
+        $h=floor($duration / 3600);
+        return $h.":".substr("0".$m,-2)." ".$kga['lang']['export_extension']['duration_unit'];
+    }   
 
     /**
      * Format a number as a money value.
@@ -200,7 +214,7 @@ class BasePDF extends TCPDF
                 }
             } else {
                 if (isset($this->columns['time'])) {
-                    $this->Cell($w[1], 6, gmdate('H:i', $row['std_time']), 'LR', 0, 'R', $fill);
+                    $this->Cell($w[1], 6, $this->timeLength($row['std_time']), 'LR', 0, 'R', $fill);
                 }
             }
             if (isset($this->columns['wage'])) {
@@ -223,7 +237,7 @@ class BasePDF extends TCPDF
             }
         } else {
             if (isset($this->columns['time'])) {
-                $this->Cell($w[1], 6, gmdate('H:i', $sum_std_time), '', 0, 'R', true);
+                $this->Cell($w[1], 6, $this->timeLength($sum_std_time), '', 0, 'R', true);
             }
         }
         if (isset($this->columns['wage'])) {

@@ -102,7 +102,16 @@ class MYPDF extends BasePDF {
       else {
         $this->printTimeRow($widths, $row);
         $this->moneySum += $row['wage'];
-        $this->timeSum += $row['decimalDuration'] == -1 ? 0 : $row['decimalDuration'];
+        if ($_REQUEST['time_type']=="dec_time"){
+             if (isset($this->columns['dec_time'])) {
+                $this->timeSum +=$row['decimalDuration']==-1?0:$row['decimalDuration'];
+             }
+        } else {
+             if (isset($this->columns['time'])) {
+                $this->timeSum = $this->SumStdTime($row['formattedDuration']==-1?0:$row['formattedDuration'],$this->timeSum);
+             }   
+        } 
+        
       }
     }
   }
@@ -143,9 +152,14 @@ class MYPDF extends BasePDF {
 
     // check if page break is nessessary
     if ($this->getPageHeight() - $this->pagedim[$this->page]['bm'] - ($this->getY() + ($field_rows + $probable_comment_lines + 4) * 6) < 0) {
-      if (isset($this->columns['wage']) && isset($this->columns['dec_time'])) {
-        $this->ln();
-        $this->WriteHtmlCell($w[0] + $w[1] + $w[2], 6, $this->getX(), $this->getY(), $this->timespan($this->timeSum), '', 0, 0, true, 'R');
+      if (isset($this->columns['wage']) && (isset($this->columns['dec_time']) || isset($this->columns['time']))) {
+        if ($_REQUEST['time_type']=="dec_time") {
+           $this->ln();
+           $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum),'',0,0,true,'R');
+        } else {
+            $this->ln();
+            $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->time_unit($this->timeSum),'',0,0,true,'R');
+        }
         $this->ln();
         $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
         $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->money($this->moneySum), '', 0, 0, true, 'R');
@@ -153,10 +167,16 @@ class MYPDF extends BasePDF {
         $this->ln();
         $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
         $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->money($this->moneySum), '', 0, 0, true, 'R');
-      } elseif (isset($this->columns['dec_time'])) {
-        $this->ln();
-        $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
-        $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->timespan($this->timeSum), '', 0, 0, true, 'R');
+      } else {
+        if($_REQUEST['time_type']=="dec_time") { 
+           $this->ln();
+           $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['export_extension']['subtotal'].':', '',0,0,true,'R');
+           $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum),'',0,0,true,'R');
+        } else {
+            $this->ln();
+            $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['export_extension']['subtotal'].':', '',0,0,true,'R');
+            $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->time_unit($this->timeSum),'',0,0,true,'R');
+        }  
       }
       $this->AddPage();
     }
@@ -269,11 +289,19 @@ class MYPDF extends BasePDF {
     else
       $comment_string = '';
 
-    if (isset($this->columns['time']) && !empty($row['formattedDuration']))
-      $time_string = $kga['lang']['export_extension']['duration'] . ': <i>' . $row['formattedDuration'] . ' ' . $kga['lang']['export_extension']['duration_unit'] . '</i>';
-    else
-      $time_string = '';
-
+     
+    if ($_REQUEST['time_type'] == "dec_time"){
+       if (isset($this->columns['dec_time']) && !empty($row['decimalDuration']))
+          $time_string = $kga['lang']['export_extension']['duration'].': <i>'.$row['decimalDuration'].' '.$kga['lang']['export_extension']['duration_unit'].'</i>';
+       else
+          $time_string = '';
+    } else {
+       if (isset($this->columns['time']) && !empty($row['formattedDuration']))
+          $time_string = $kga['lang']['export_extension']['duration'].': <i>'.$row['formattedDuration'].' '.$kga['lang']['export_extension']['duration_unit'].'</i>';
+       else
+          $time_string = '';
+    }
+      
     if (isset($this->columns['rate']) && !empty($row['rate']))
       $rate_string = $kga['lang']['rate'] . ': <i>' . $row['rate'] . '</i>';
     else
@@ -307,9 +335,14 @@ class MYPDF extends BasePDF {
 
     // check if page break is nessessary
     if ($this->getPageHeight() - $this->pagedim[$this->page]['bm'] - ($this->getY() + ($field_rows + $probable_comment_lines + 4) * 6) < 0) {
-      if (isset($this->columns['wage']) && isset($this->columns['dec_time'])) {
-        $this->ln();
-        $this->WriteHtmlCell($w[0] + $w[1] + $w[2], 6, $this->getX(), $this->getY(), $this->timespan($this->timeSum), '', 0, 0, true, 'R');
+      if (isset($this->columns['wage']) && (isset($this->columns['dec_time']) || isset($this->columns['time']))) {
+        if($_REQUEST['time_type']=="dec_time") {
+           $this->ln();
+           $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum),'',0,0,true,'R');
+        } else {
+            $this->ln();
+            $this->WriteHtmlCell($w[0]+$w[1]+$w[2], 6, $this->getX(),$this->getY(),$this->time_unit($this->timeSum),'',0,0,true,'R');
+        }
         $this->ln();
         $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
         $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->money($this->moneySum), '', 0, 0, true, 'R');
@@ -317,11 +350,17 @@ class MYPDF extends BasePDF {
         $this->ln();
         $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
         $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->money($this->moneySum), '', 0, 0, true, 'R');
-      } elseif (isset($this->columns['dec_time'])) {
-        $this->ln();
-        $this->WriteHtmlCell($w[0] + $w[1], 6, $this->getX(), $this->getY(), $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 0, true, 'R');
-        $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY(), $this->timespan($this->timeSum), '', 0, 0, true, 'R');
-      }
+      } else {
+        if($_REQUEST['time_type']=="dec_time") {
+            $this->ln();
+            $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['export_extension']['subtotal'].':', '',0,0,true,'R');
+            $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->timespan($this->timeSum),'',0,0,true,'R');
+        } else {
+            $this->ln();
+            $this->WriteHtmlCell($w[0]+$w[1], 6, $this->getX(),$this->getY(),$kga['lang']['export_extension']['subtotal'].':', '',0,0,true,'R');
+            $this->WriteHtmlCell($w[2], 6, $this->getX(),$this->getY(),$this->time_unit($this->timeSum),'',0,0,true,'R');
+        }
+      } 
       $this->AddPage();
     }
 
@@ -560,9 +599,14 @@ foreach ($orderedExportData as $customer) {
 
     $pdf->printRows($customer[$project_id], $widths);
     
-    if (isset($columns['wage']) && isset($columns['dec_time'])) {
-      $pdf->ln();
-      $pdf->WriteHtmlCell($widths[0] + $widths[1] + $widths[2], 6, $pdf->getX(), $pdf->getY(), $pdf->timespan($pdf->timeSum), '', 0, 0, true, 'R');
+    if (isset($columns['wage']) && (isset($columns['dec_time']) || isset($this->columns['time']))) {
+        if ($_REQUEST['time_type']=="dec_time"){
+           $pdf->ln();
+           $pdf->WriteHtmlCell($widths[0]+$widths[1]+$widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->timespan($pdf->timeSum),'',0,0,true,'R');
+        } else {
+            $pdf->ln();
+            $pdf->WriteHtmlCell($widths[0]+$widths[1]+$widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->time_unit($pdf->timeSum),'',0,0,true,'R');
+        }
       $pdf->ln();
       $pdf->WriteHtmlCell($widths[0] + $widths[1], 6, $pdf->getX(), $pdf->getY(), $kga['lang']['export_extension']['finalamount'] . ':', '', 0, 0, true, 'R');
       $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(), $pdf->getY(), $pdf->money($pdf->moneySum), '', 0, 0, true, 'R');
@@ -570,10 +614,16 @@ foreach ($orderedExportData as $customer) {
       $pdf->ln();
       $pdf->WriteHtmlCell($widths[0] + $widths[1], 6, $pdf->getX(), $pdf->getY(), $kga['lang']['export_extension']['finalamount'] . ':', '', 0, 0, true, 'R');
       $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(), $pdf->getY(), $pdf->money($pdf->moneySum), '', 0, 0, true, 'R');
-    } elseif (isset($columns['dec_time'])) {
-      $pdf->ln();
-      $pdf->WriteHtmlCell($widths[0] + $widths[1], 6, $pdf->getX(), $pdf->getY(), $kga['lang']['export_extension']['finalamount'] . ':', '', 0, 0, true, 'R');
-      $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(), $pdf->getY(), $pdf->timespan($pdf->timeSum), '', 0, 0, true, 'R');
+    } else {
+        if($_REQUEST['time_type']=="dec_time") {
+            $pdf->ln();
+            $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['export_extension']['finalamount'].':', '',0,0,true,'R');
+            $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->timespan($pdf->timeSum),'',0,0,true,'R');
+        } else {
+            $pdf->ln();
+            $pdf->WriteHtmlCell($widths[0]+$widths[1], 6, $pdf->getX(),$pdf->getY(),$kga['lang']['export_extension']['finalamount'].':', '',0,0,true,'R');
+            $pdf->WriteHtmlCell($widths[2], 6, $pdf->getX(),$pdf->getY(),$pdf->time_unit($pdf->timeSum),'',0,0,true,'R');
+        }
     }
   }
 }
