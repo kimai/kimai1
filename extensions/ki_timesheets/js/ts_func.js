@@ -38,9 +38,17 @@ function ts_formatTime(value) {
     var i = value.getMinutes();
     var s = value.getSeconds();
 
-    if (H<10) H = "0"+H;
-    if (i<10) i = "0"+i;
-    if (s<10) s = "0"+s;
+    if (H < 10) {
+        H = "0"+H;
+    }
+    
+    if (i < 10) {
+        i = "0"+i;
+    }
+    
+    if (s < 10) {
+        s = "0"+s;
+    }
 
     return H + ":" + i + ":" + s;
 }
@@ -53,8 +61,13 @@ function ts_formatDate(value) {
     var m = value.getMonth() + 1;
     var y = value.getFullYear();
 
-    if (d<10) d = "0"+d;
-    if (m<10) m = "0"+m;
+    if (d < 10) {
+        d = "0"+d;
+    }
+    
+    if (m < 10) {
+        m = "0"+m;
+    }
 
     return d + "." + m + "." + y;
 }
