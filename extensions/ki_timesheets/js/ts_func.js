@@ -32,6 +32,8 @@ function ts_ext_onload() {
 
 /**
  * Formats a date object to be used in the time input field.
+ * @param value
+ * @returns {string}
  */
 function ts_formatTime(value) {
 	var hours = prependZeroIfNeeded(value.getHours());
@@ -43,6 +45,8 @@ function ts_formatTime(value) {
 
 /**
  * format a date object to be used in the date input field.
+ * @param {Date} value
+ * @returns {string}
  */
 function ts_formatDate(value) {
 	var day = prependZeroIfNeeded(value.getDate());
