@@ -34,42 +34,42 @@ function ts_ext_onload() {
  * Formats a date object to be used in the time input field.
  */
 function ts_formatTime(value) {
-    var H = value.getHours();
-    var i = value.getMinutes();
-    var s = value.getSeconds();
+    var hours = value.getHours();
+    var minutes = value.getMinutes();
+    var seconds = value.getSeconds();
 
-    if (H < 10) {
-        H = "0"+H;
+    if (hours < 10) {
+        hours = '0' + hours;
     }
     
-    if (i < 10) {
-        i = "0"+i;
+    if (minutes < 10) {
+        minutes = '0' + minutes;
     }
     
-    if (s < 10) {
-        s = "0"+s;
+    if (seconds < 10) {
+        seconds = '0' + seconds;
     }
 
-    return H + ":" + i + ":" + s;
+    return hours + ':' + minutes + ':' + seconds;
 }
 
 /**
  * format a date object to be used in the date input field.
  */
 function ts_formatDate(value) {
-    var d = value.getDate();
-    var m = value.getMonth() + 1;
-    var y = value.getFullYear();
+    var day = value.getDate();
+    var month = value.getMonth() + 1;
+    var year = value.getFullYear();
 
-    if (d < 10) {
-        d = "0"+d;
+    if (day < 10) {
+        day = '0' + day;
     }
     
-    if (m < 10) {
-        m = "0"+m;
+    if (month < 10) {
+        month = '0' + month;
     }
 
-    return d + "." + m + "." + y;
+    return day + '.' + month + '.' + year;
 }
 
 /**
