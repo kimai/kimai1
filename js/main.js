@@ -218,49 +218,38 @@ function checkupdate(path){
 // 
 var ZeitString, DatumsString = "";
 function n_uhr() {
-        n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
-        Jetzt = new Date();
-        //aktuelle Uhrzeit
-        Stunden = Jetzt.getHours();
-        Minuten = Jetzt.getMinutes();
-        Sekunden = Jetzt.getSeconds();
-        
-        if (currentDay != Jetzt.getDate()) {
-          // it's the next day
-          $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
-          currentDay = Jetzt.getDate();
-          
-          // If the difference to the datepicker end date is less than one and a half day.
-          // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
-          if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
-            setTimeframe(undefined,Jetzt);
-          }
-        }
-        
-        var ZeitString = "";
-        
-        if (Stunden < 10) {
-            ZeitString += "0" + Stunden;
-        }
-        else {
-            ZeitString += Stunden;
-        }
-        
-        if (Sekunden%2==0) {
-          ZeitString += n_seperator;
-        }
-        else {
-          ZeitString += ":";
-        }
-        
-        if (Minuten < 10) {
-          ZeitString += "0" + Minuten;
-        } else {
-          ZeitString +=  Minuten;
-        }
+	n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
+	Jetzt = new Date();
+	//aktuelle Uhrzeit
+	Stunden = Jetzt.getHours();
+	Minuten = Jetzt.getMinutes();
+	Sekunden = Jetzt.getSeconds();
 
-        $('#n_uhr').html(ZeitString);
-        setTimeout("n_uhr()", 1000);
+	if (currentDay != Jetzt.getDate()) {
+		// it's the next day
+		$('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
+		currentDay = Jetzt.getDate();
+
+		// If the difference to the datepicker end date is less than one and a half day.
+		// One day is exactly when we need to switch. Some more time is given (but not 2 full days).
+		if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
+			setTimeframe(undefined,Jetzt);
+		}
+	}
+
+	var ZeitString = prependZeroIfNeeded(Stunden);
+
+	if (Sekunden %2 == 0) {
+		ZeitString += n_seperator;
+	}
+	else {
+		ZeitString += ":";
+	}
+
+	ZeitString += prependZeroIfNeeded(Minuten);
+
+	$('#n_uhr').html(ZeitString);
+	setTimeout("n_uhr()", 1000);
 }
 
 // ----------------------------------------------------------------------------------------
@@ -335,8 +324,7 @@ function updateTimeframeWarning() {
 // starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID,activityID,userID) {
-    hour=0;min=0;sec=0;
-    now = Math.floor(((new Date()).getTime())/1000);
+    var now = Math.floor(((new Date()).getTime()) / 1000);
     offset = 0;
     startsec = now;
     show_stopwatch();
@@ -479,22 +467,31 @@ function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
 // ... so just THX! ;)
 
 function ticktac() {
-    startsecoffset = startsec ? startsec : offset;
-    sek   = Math.floor((new Date()).getTime()/1000)-startsecoffset;
-    hour  = Math.floor(sek / 3600);
-    min   = Math.floor((sek-hour*3600) / 60);
-    sec   = Math.floor(sek-hour*3600-min*60);
-    
-    if (sec==60) { sec=0; min++; }
-    if (min > 59) { min = 0; hour++; }
-    $("#s").html(((sec<10)?"0":"")+sec);
-    $("#m").html(((min<10)?"0":"")+min);
-    $("#h").html(((hour<10)?"0":"")+hour);
+    // Split total seconds from start time to current time into
+    // separate variables for viewing hours:minutes:seconds
+    var startsecoffset = startsec ? startsec : offset;
+    var total_seconds = Math.floor((new Date()).getTime() / 1000) - startsecoffset;
+    var hours   = Math.floor(total_seconds / 3600);
+    var minutes = Math.floor((total_seconds - hours * 3600) / 60);
+    var seconds = Math.floor(total_seconds - hours * 3600 - minutes * 60);
 
-    htmp = $("#h").html();
-    mtmp = $("#m").html();
-    stmp = $("#s").html();
-    titleclock = htmp + ":" + mtmp  + ":" + stmp;
+    if (seconds == 60) {
+        seconds = 0;
+        minutes++;
+    }
+    if (minutes > 59) {
+        minutes = 0;
+        hours++;
+    }
+
+    $("#s").html(prependZeroIfNeeded(seconds));
+    $("#m").html(prependZeroIfNeeded(minutes));
+    $("#h").html(prependZeroIfNeeded(hours));
+
+    var htmp = $("#h").html();
+    var mtmp = $("#m").html();
+    var stmp = $("#s").html();
+    var titleclock = htmp + ":" + mtmp  + ":" + stmp;
     document.title = titleclock;
     timeoutTicktack = setTimeout("ticktac()", 1000);
 }
@@ -1017,4 +1014,13 @@ function clearFloaterErrorMessages() {
   $("#floater_innerwrap .errorMessage").remove();
   $("#floater_tabs li").removeClass("errorField");
   $("#floater_innerwrap .menu a").removeClass("tabError");
+}
+
+/**
+ * 
+ * @param value
+ * @returns {string}
+ */
+function prependZeroIfNeeded(value) {
+    return ((value < 10) ? '0' : '') + value;
 }

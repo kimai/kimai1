@@ -34,21 +34,9 @@ function ts_ext_onload() {
  * Formats a date object to be used in the time input field.
  */
 function ts_formatTime(value) {
-	var hours = value.getHours();
-	var minutes = value.getMinutes();
-	var seconds = value.getSeconds();
-
-	if (hours < 10) {
-		hours = '0' + hours;
-	}
-
-	if (minutes < 10) {
-		minutes = '0' + minutes;
-	}
-
-	if (seconds < 10) {
-		seconds = '0' + seconds;
-	}
+	var hours = prependZeroIfNeeded(value.getHours());
+	var minutes = prependZeroIfNeeded(value.getMinutes());
+	var seconds = prependZeroIfNeeded(value.getSeconds());
 
 	return hours + ':' + minutes + ':' + seconds;
 }
@@ -57,17 +45,9 @@ function ts_formatTime(value) {
  * format a date object to be used in the date input field.
  */
 function ts_formatDate(value) {
-	var day = value.getDate();
-	var month = value.getMonth() + 1;
+	var day = prependZeroIfNeeded(value.getDate());
+	var month = prependZeroIfNeeded(value.getMonth() + 1);
 	var year = value.getFullYear();
-
-	if (day < 10) {
-		day = '0' + day;
-	}
-
-	if (month < 10) {
-		month = '0' + month;
-	}
 
 	return day + '.' + month + '.' + year;
 }
@@ -77,7 +57,7 @@ function ts_formatDate(value) {
  */
 function ts_ext_get_dimensions() {
 	scroller_width = 17;
-	if (navigator.platform.substr(0,3) == 'Mac') {
+	if (navigator.platform.substr(0, 3) == 'Mac') {
 		scroller_width = 16;
 	}
 
@@ -332,10 +312,7 @@ function ts_ext_recordAgain(project,activity,id) {
 	}
 
 	$('#timeSheetEntry' + id + '>td>a.recordAgain>img').attr("src", "../skins/" + skin + "/grfx/loading13.gif");
-	hour = 0;
-	min = 0;
-	sec = 0;
-	now = Math.floor(((new Date()).getTime()) / 1000);
+	var now = Math.floor(((new Date()).getTime()) / 1000);
 	offset = now;
 	startsec = 0;
 	show_stopwatch();
@@ -480,20 +457,9 @@ function getBestRates() {
  */
 function pasteNow(value) {
 	var now = new Date();
-
-	var hours = now.getHours();
-	var minutes = now.getMinutes();
-	var seconds = now.getSeconds();
-
-	if (hours < 10) {
-		hours = '0' + hours;
-	}
-	if (minutes < 10) {
-		minutes = '0' + minutes;
-	}
-	if (seconds < 10) {
-		seconds = '0' + seconds;
-	}
+	var hours = prependZeroIfNeeded(now.getHours());
+	var minutes = prependZeroIfNeeded(now.getMinutes());
+	var seconds = prependZeroIfNeeded(now.getSeconds());
 
 	$("#end_time").val(hours + ':' + minutes + ':' + seconds);
 	$('#end_time').trigger('change');
@@ -539,7 +505,7 @@ function ts_getDateFromStrings(dateStr, timeStr) {
  * @returns {Date}
  */
 function ts_getStartDate() {
-	return ts_getDateFromStrings($("#start_day").val(),$("#start_time").val());
+	return ts_getDateFromStrings($("#start_day").val(), $("#start_time").val());
 }
 
 /**
@@ -547,7 +513,7 @@ function ts_getStartDate() {
  * @returns {Date}
  */
 function ts_getEndDate() {
-	return ts_getDateFromStrings($("#end_day").val(),$("#end_time").val());
+	return ts_getDateFromStrings($("#end_day").val(), $("#end_time").val());
 }
 
 /**
@@ -589,19 +555,10 @@ function ts_timeToDuration() {
 		if (durationSecs < 0) {
 			$("#duration").val("");
 		} else {
-			secs = durationSecs % 60;
-			if (secs < 10) {
-				secs = "0" + secs;
-			}
+			secs = prependZeroIfNeeded(durationSecs % 60);
 			durationSecs = Math.floor(durationSecs / 60);
-			mins = durationSecs % 60;
-			if (mins < 10) {
-				mins = "0" + mins;
-			}
-			hours = Math.floor(durationSecs / 60);
-			if (hours < 10) {
-				hours = "0" + hours;
-			}
+			mins = prependZeroIfNeeded(durationSecs % 60);
+			hours = prependZeroIfNeeded(Math.floor(durationSecs / 60));
 			$("#duration").val(hours + ":" + mins + ":" + secs);
 			$('#duration').trigger('change');
 		}
