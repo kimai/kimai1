@@ -31,6 +31,48 @@ function ts_ext_onload() {
 }
 
 /**
+ * Formats a date object to be used in the time input field.
+ */
+function ts_formatTime(value) {
+    var hours = value.getHours();
+    var minutes = value.getMinutes();
+    var seconds = value.getSeconds();
+
+    if (hours < 10) {
+        hours = '0' + hours;
+    }
+    
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+    
+    if (seconds < 10) {
+        seconds = '0' + seconds;
+    }
+
+    return hours + ':' + minutes + ':' + seconds;
+}
+
+/**
+ * format a date object to be used in the date input field.
+ */
+function ts_formatDate(value) {
+    var day = value.getDate();
+    var month = value.getMonth() + 1;
+    var year = value.getFullYear();
+
+    if (day < 10) {
+        day = '0' + day;
+    }
+    
+    if (month < 10) {
+        month = '0' + month;
+    }
+
+    return day + '.' + month + '.' + year;
+}
+
+/**
  * Update the dimension variables to reflect new height and width.
  */
 function ts_ext_get_dimensions() {
@@ -484,24 +526,10 @@ function ts_durationToTime() {
         begin = new Date();
         begin.setTime(end.getTime()-(secs*1000));
 
-
-        var H = begin.getHours();
-        var i = begin.getMinutes();
-        var s = begin.getSeconds();
-
-        if (H<10) H = "0"+H;
-        if (i<10) i = "0"+i;
-        if (s<10) s = "0"+s;
-
-        $("#start_time").val(H + ":" + i + ":" + s);
-
-        var d = begin.getDate();
-        var m = begin.getMonth() + 1;
-        var y = begin.getFullYear();
-        if (d<10) d = "0"+d;
-        if (m<10) m = "0"+m;
-
-        $("#start_day").val(d + "." + m + "." + y);
+        $("#start_time").val(ts_formatTime(begin));
+        $("#end_time").val(ts_formatTime(end));
+        $("#start_day").val(ts_formatDate(begin));
+        $("#end_day").val(ts_formatDate(end));
     }
 }
 
