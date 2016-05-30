@@ -41,15 +41,15 @@ div.ki_timesheet tr.odd td
     border-bottom: none;
     border-left: none;
     border-right: 1px dotted #CCC;
-/*    border-top: 1px solid #DDD;*/
+    border-top: 1px solid #DDD;
     padding: 3px 4px 4px 5px;
 }
 #timeSheet_head td {padding: 3px 4px 4px 6px;}
 
 div.ki_timesheet tr.hover td {
     background: #FFC !important;
-/*    border-top: 1px solid #666 !important;
-    border-bottom: 1px solid #666 !important;*/
+    border-top: 1px solid #666 !important;
+    border-bottom: 1px solid #666 !important;
 }
 
 div.ki_timesheet tr.even td {
