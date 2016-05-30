@@ -1,3 +1,10 @@
+<script type="text/javascript">
+<!--
+
+var record_durationOnly = <?php if ($this->kga['record_durationOnly'] == 1) {?>true<?php } else { ?>false<?php } ?>;
+
+-->
+</script>
 <div id="floater_innerwrap">
     <div id="floater_handle">
         <span id="floater_title"><?php 
@@ -83,14 +90,19 @@
                         <label for="start_day"><?php echo $this->kga['lang']['day'] ?>:</label>
                         <input id='start_day' type='text' name='start_day' value='<?php echo $this->escape($this->start_day) ?>' maxlength='10' size='10' tabindex='6'
                                onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
+
+<?php if ($this->kga['record_durationOnly'] == 1) {?>
+					<input id="end_day" name="end_day" type="hidden" value='<?php echo $this->escape($this->end_day) ?>'> 
+<?php } else { ?>
                         -
                         <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day) ?>' maxlength='10' size='10' tabindex='7'
                                onChange="ts_timeToDuration();" <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();" <?php endif; ?> />
+<?php } ?>
                     </li>
 <?php if ($this->kga['record_durationOnly'] == 1) {?>
 					<!-- fields are set by "duration" field -->
 					<input id="start_time" name="start_time" type="hidden" value='<?php echo $this->escape($this->start_time) ?>'> 
-					<input id="end_time" name="end_time" type="hidden" value='<?php echo $this->escape($this->start_time) ?>'> 
+					<input id="end_time" name="end_time" type="hidden" value='<?php echo $this->escape($this->end_time) ?>'> 
 <?php } else { ?>
                     <li>
                         <label for="start_time"><?php echo $this->kga['lang']['timelabel'] ?>:</label>
@@ -231,7 +243,7 @@
     var previousUsed = 0;
     var previousApproved = 0;
     $(document).ready(function () {
-        $('#help').hide();
+		$('#help').hide();
         $('#floater_innerwrap').tabs({selected: 0});
 
         // only save the value, the update will happen automatically because we trigger a changed

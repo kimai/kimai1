@@ -510,6 +510,10 @@ function ts_durationToTime() {
 // Change the duration field, based on the time, while editing a timesheet record
 //
 function ts_timeToDuration() {
+	if (record_durationOnly) {
+		// set end_day (hidden field) same as start_day
+		$("#end_day").val($("#start_day").val());
+	}
     begin = ts_getStartDate();
     end = ts_getEndDate();
     if(begin==null || end==null) {
