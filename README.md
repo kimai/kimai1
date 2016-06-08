@@ -47,3 +47,6 @@ on your webserver.
 We would love to get input from all developer out there.
 Please read our [contribution guidelines](https://github.com/kimai/kimai/blob/master/.github/CONTRIBUTING.md) to find out how.
 
+## Support / Donate
+
+If you have a feature request that you want to be implemented or a bug that you want to have fixed, you can go to [bountysource](https://www.bountysource.com/teams/kimai/issues) and donate for a specific issue by posting a bounty. The developer who then implements this feature will get the money as soon as the feature gets merged.
