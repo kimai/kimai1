@@ -427,16 +427,6 @@ function get_timeframe()
 }
 
 /**
- * @param string $haystack
- * @param string $needle
- * @return bool
- */
-function endsWith($haystack, $needle)
-{
-    return strcmp(substr($haystack, strlen($haystack) - strlen($needle)), $needle) === 0;
-}
-
-/**
  * Returns the boolean value as integer, submitted via checkbox.
  *
  * @param string $name
