@@ -359,9 +359,13 @@ class Kimai_Remote_Api
         if (count($customers) > 0) {
             $results = array();
             foreach ($customers as $row) {
+                if ($row['visible'] != 1) {
+                    continue;
+                }
                 $results[] = array(
                     'customerID' => $row['customerID'],
                     'name' => $row['name'],
+                    'contact' => $row['contact'],
                     'visible' => $row['visible']
                 );
             }
@@ -395,14 +399,17 @@ class Kimai_Remote_Api
         }
 
         if (count($projects) > 0) {
-            if ($includeTasks) {
-                $tempProjects = array();
-                foreach ($projects as $project) {
-                    $project['tasks'] = $this->getTasksByProjectId($project['projectID'], $user);
-                    $tempProjects[] = $project;
+            $tempProjects = array();
+            foreach ($projects as $project) {
+                if ($project['visible'] != 1 || $project['customerVisible'] != 1) {
+                    continue;
                 }
-                $projects = $tempProjects;
+                if ($includeTasks) {
+                    $project['tasks'] = $this->getTasksByProjectId($project['projectID'], $user);
+                }
+                $tempProjects[] = $project;
             }
+            $projects = $tempProjects;
 
             return $this->getSuccessResult($projects);
         }
@@ -440,8 +447,16 @@ class Kimai_Remote_Api
             $tasks = $this->getBackend()->get_activities($user['groups']);
         }
 
-        if (!empty($tasks)) {
-            return $this->getSuccessResult($tasks);
+        $tempTasks = array();
+        foreach ($tasks as $task) {
+            if ($task['visible'] != 1) {
+                continue;
+            }
+            $tempTasks[] = $task;
+        }
+
+        if (!empty($tempTasks)) {
+            return $this->getSuccessResult($tempTasks);
         }
 
         return $this->getErrorResult();
@@ -464,6 +479,9 @@ class Kimai_Remote_Api
          */
         $tempTasks = array();
         foreach ($tasks as $task) {
+            if ($task['visible'] != 1) {
+                continue;
+            }
             $tempTasks[] = array(
                 'activityID' => $task['activityID'],
                 'name' => $task['name'],
