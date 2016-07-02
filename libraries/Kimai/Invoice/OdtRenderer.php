@@ -81,7 +81,9 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
         }
 
         $GLOBALS['projects'] = $projects;
-        $GLOBALS['project'] = implode(', ', array_map(function ($project) { return $project['name']; }, $projects));
+        $GLOBALS['project'] = implode(', ', array_map(function ($project) {
+            return $project['name'];
+        }, $projects));
 
         $doc->mergeXmlBlock('row', $entries);
 
