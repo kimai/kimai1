@@ -22,7 +22,6 @@
  */
 class Kimai_Config extends Kimai_ArrayObject
 {
-
     const DEFAULT_LANGUAGE = 'language';
     const DEFAULT_AUTHENTICATOR = 'authenticator';
     const DEFAULT_BILLABLE = 'billable';
@@ -52,7 +51,7 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         switch ($config) {
             case self::DEFAULT_BILLABLE:
-                return array(0,50,100);
+                return array(0, 50, 100);
             case self::DEFAULT_AUTHENTICATOR:
                 return 'kimai';
             case self::DEFAULT_SKIN:
