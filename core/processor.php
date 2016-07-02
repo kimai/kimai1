@@ -392,6 +392,7 @@ switch ($axAction) {
                 $data['filter'] = $_REQUEST['activityFilter'];
                 $data['defaultRate'] = getRequestDecimal($_REQUEST['defaultRate']);
                 $data['myRate'] = getRequestDecimal($_REQUEST['myRate']);
+                $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
                 $activityGroups = $_REQUEST['activityGroups'];
 
                 $oldGroups = array();
@@ -426,7 +427,7 @@ switch ($axAction) {
                                 continue;
                             }
 
-                            $value = getRequestDecimal($_REQUEST['fixedRate'][$index]);
+                            $value = getRequestDecimal($_REQUEST['fixedRates'][$index]);
                             if ($value !== null) {
                                 $database->save_fixed_rate($projectID, $id, $value);
                             } else {

@@ -83,7 +83,7 @@
                                     <?php echo $this->escape($selectedProject['name']), $this->formHidden('assignedProjects[]', $selectedProject['projectID']); ?>
                                 </td>
                                 <td>
-                                    <?php echo $this->formText('fixedRate[]', $selectedProject['fixedRate']); ?>
+                                    <?php echo $this->formText('fixedRates[]', $selectedProject['fixedRate']); ?>
                                 </td>
                                 <td>
                                     <a class="deleteButton">
@@ -195,7 +195,7 @@
 
             var row = $('<tr>' +
                 '<td>' + $('option:selected', this).text() + '<input type="hidden" name="assignedProjects[]" value="' + $(this).val() + '"/></td>' +
-                '<td><input type="text" name="fixedRate[]"/></td>' +
+                '<td><input type="text" name="fixedRates[]"/></td>' +
                 '<td><a class="deleteButton"><img src="../skins/' + skin + '/grfx/close.png" width="22" height="16" /></a></td>' +
                 '</tr>');
             $addRow.before(row);
