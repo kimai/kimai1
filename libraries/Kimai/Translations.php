@@ -23,7 +23,6 @@
  */
 class Kimai_Translations
 {
-
     private $kga;
 
     public function __construct(&$kga)

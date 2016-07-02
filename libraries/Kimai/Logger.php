@@ -5,7 +5,6 @@
  */
 class Kimai_Logger
 {
-
     private static $instance = null;
     private $file;
 
