@@ -167,7 +167,8 @@
   display:none;
 }
 
-.activitiesTable input {
+.activitiesTable input,
+.projectsTable input {
   width: 100px
 }
 

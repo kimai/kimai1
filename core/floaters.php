@@ -224,7 +224,7 @@ switch ($axAction) {
             die();
         }
 
-        $selectedProjects = array();
+        $selectedProjectIds = array();
 
         if ($id) {
             $data = $database->activity_get_data($id);
@@ -235,29 +235,38 @@ switch ($axAction) {
                 $view->assign('filter', $data['filter']);
                 $view->assign('defaultRate', $data['defaultRate']);
                 $view->assign('myRate', $data['myRate']);
-                $view->assign('fixedRate', $data['fixedRate']);
+                $view->assign('fixedRate', $data['fixedRate']); // default fixed rate (not assigned to project)
                 $view->assign('selectedGroups', $database->activity_get_groups($id));
+                
+                $selectedProjectIds = $database->activity_get_projectIds($id);
+                $view->assign('selectedProjectIds', $selectedProjectIds);
+
                 $selectedProjects = $database->activity_get_projects($id);
+                foreach ($selectedProjects as &$selectedProject) {
+                    // edit by reference!
+                    $selectedProject['fixedRate'] = $database->get_fixed_rate($selectedProject['projectID'], $id);
+                }
                 $view->assign('selectedProjects', $selectedProjects);
                 $view->assign('id', $id);
             }
         }
+        
+        // Create a <select> element to choose the projects
+        $view->assign('allProjects', $database->get_projects($kga['user']['groups']));
 
-        // Create a <select> element to choose the groups.
+        // Create a <select> element to choose the groups
         $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
-
-        // Create a <select> element to chosse the projects.
-        $view->assign('projects', makeSelectBox("project", $kga['user']['groups'], null, false, $selectedProjects));
-
+        
         // Set defaults for a new project.
         if (!$id) {
-            $view->assign('selectedGroups', array());
+            $selectedGroups = array();
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-activity-add')) {
-                    $view->selectedGroups[] = $group;
+                    $selectedGroups[] = $group;
                }
             }
+            $view->assign('selectedGroups', $selectedGroups);
             $view->assign('id', 0);
         }
 

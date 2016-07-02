@@ -511,7 +511,7 @@ function ticktack_off() {
 // shows dialogue for editing an item in either customer, project or activity list
 //
 function editSubject(subject, id) {
-    var width = 490;
+    var width = 800;
     if (subject == 'project') {
         width = 800;
     }
