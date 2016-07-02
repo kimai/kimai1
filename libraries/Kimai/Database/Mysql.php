@@ -1187,31 +1187,6 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * @param $activityId
-     * @return bool|array
-     */
-    public function getProjectsByActivity($activityId)
-    {
-        $activityID = MySQL::SQLValue($activityId, MySQL::SQLVALUE_NUMBER);
-
-        $p = $this->kga['server_prefix'];
-        $projects_table = $p . 'projects';
-        $projects_activities_table = $p . 'projects_activities';
-        $query = 'SELECT projectID, ' . $projects_table . '.name
-            FROM ' . $projects_table . '
-            JOIN ' . $projects_activities_table . ' USING(projectID)
-            WHERE ' . $projects_activities_table . '.activityID = ' . $activityID;
-        
-        $result = $this->conn->Query($query);
-        if ($result == false) {
-            $this->logLastError('activity_get_projectIds');
-            return false;
-        }
-
-        return $this->conn->RecordsArray(MYSQLI_ASSOC);
-    }
-
-    /**
      * returns all the group ids of the given activity
      *
      * @param int $activityID  ID of the activity
