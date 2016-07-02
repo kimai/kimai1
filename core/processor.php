@@ -392,7 +392,6 @@ switch ($axAction) {
                 $data['filter'] = $_REQUEST['activityFilter'];
                 $data['defaultRate'] = getRequestDecimal($_REQUEST['defaultRate']);
                 $data['myRate'] = getRequestDecimal($_REQUEST['myRate']);
-                $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
                 $activityGroups = $_REQUEST['activityGroups'];
 
                 $oldGroups = array();
