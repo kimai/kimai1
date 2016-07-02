@@ -24,7 +24,6 @@
  */
 class Kimai_Invoice_HtmlRenderer extends Kimai_Invoice_AbstractRenderer
 {
-
     const FILE_PHTML = 'index.phtml';
     const FILE_HTML = 'index.html';
 
