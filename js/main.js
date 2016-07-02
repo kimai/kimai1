@@ -329,7 +329,7 @@ function startRecord(projectID,activityID,userID) {
     startsec = now;
     show_stopwatch();
     value = projectID +"|"+ activityID;
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID, startTime: now},
+    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];

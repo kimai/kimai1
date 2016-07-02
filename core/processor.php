@@ -144,7 +144,7 @@ switch ($axAction) {
         }
     
         $IDs = explode('|', $axValue);
-        $newID = $database->startRecorder($IDs[0], $IDs[1], $id, $_REQUEST['startTime']);
+        $newID = $database->startRecorder($IDs[0], $IDs[1], $id);
         echo json_encode(array(
           'id' =>  $newID
         ));
