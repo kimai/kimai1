@@ -6,7 +6,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="robots" content="noindex,nofollow" />
     <title>Kimai Installer</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->skin('login.css'); ?>" />
+    <link rel="stylesheet" type="text/css" media="screen" href="skins/<?php echo $this->skin()->getName(); ?>/login.css" />
 </head>
 <body>
     <div id='install'>
