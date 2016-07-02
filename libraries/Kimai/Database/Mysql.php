@@ -4865,7 +4865,7 @@ class Kimai_Database_Mysql
         }
 
         return $this->conn->GetLastInsertID();
-// FIXME save default permissions
+        // FIXME save default permissions
     }
 
     /**
@@ -4897,7 +4897,7 @@ class Kimai_Database_Mysql
         }
 
         $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
-// FIXME save permissions
+        // FIXME save permissions
         $table = $this->kga['server_prefix'] . $table;
 
         $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -4930,7 +4930,7 @@ class Kimai_Database_Mysql
      */
     protected function deleteRole($table, $roleID, $logName)
     {
-// FIXME delete permissions
+        // FIXME delete permissions
         $table = $this->kga['server_prefix'] . $table;
         $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
         $query = MySQL::BuildSQLDelete($table, $filter);
@@ -5085,7 +5085,7 @@ class Kimai_Database_Mysql
 
         $results = array();
         $entries = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $results[] = array(
                 'globalRoleID' => $entry['role_id'],
                 'id' => $entry['role_id'],
@@ -5171,7 +5171,7 @@ class Kimai_Database_Mysql
 
         $results = array();
         $entries = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $results[] = array(
                 'membershipRoleID' => $entry['role_id'],
                 'id' => $entry['role_id'],
