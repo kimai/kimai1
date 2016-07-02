@@ -339,6 +339,7 @@ EOD
     'errorMessages' => array(
         'permissionDenied' => 'Permission denied',
         'userWithSameName' => 'A customer name can not be the same as a user name.',
+        'userExistsAlready' => 'User exists already.',
         'customerWithSameName' => 'A user name can not be the same as a customer name.',
         'sameGlobalRoleName' => 'A global role with this name already exists.',
         'sameMembershipRoleName' => 'A membership role with this name already exists.',

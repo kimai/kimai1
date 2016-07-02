@@ -447,7 +447,7 @@ switch ($axAction) {
       $data['projectID']      = $_REQUEST['projectID'];
       $data['activityID']     = $_REQUEST['activityID'];
       $data['location']       = $_REQUEST['location'];
-      $data['trackingNumber'] = $_REQUEST['trackingNumber'];
+      $data['trackingNumber'] = isset($_REQUEST['trackingNumber']) ? $_REQUEST['trackingNumber'] : '';
       $data['description']    = $_REQUEST['description'];
       $data['comment']        = $_REQUEST['comment'];
       $data['commentType']    = $_REQUEST['commentType'];
@@ -590,7 +590,7 @@ switch ($axAction) {
         }
 
         $data['location'] = $_REQUEST['location'];
-        $data['trackingNumber'] = $_REQUEST['trackingNumber'];
+        $data['trackingNumber'] = isset($_REQUEST['trackingNumber']) ? $_REQUEST['trackingNumber'] : '';
         $data['comment'] = $_REQUEST['comment'];
         $data['commentType'] = $_REQUEST['commentType'];
         $data['userID'] = $_REQUEST['userID'];

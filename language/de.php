@@ -299,6 +299,8 @@ return array(
     'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
     'showTrackingNumber' => 'Auftragsnummer und Beschreibung in Zeiterfassung anzeigen',
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
+    'defaultLocation' => 'Standard Ort',
+    'showQuickNote'	=> 'Zeige Schnellbearbeitungs-Button',
     'general' => 'Allgemein',
     'address' => 'Adresse',
     'contact' => 'Kontakt',
@@ -336,6 +338,7 @@ EOD
     'errorMessages' => array(
         'permissionDenied' => 'Keine Berechtigung',
         'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
+        'userExistsAlready' => 'Benutzer existiert bereits.',
         'customerWithSameName' => 'Benutzernamen dürfen nicht gleich lauten wie Kundennamen.',
         'sameGlobalRoleName' => 'Eine globale Rolle mit diesem Namen existiert bereits.',
         'sameMembershipRoleName' => 'Eine gruppenbezogene Rolle mit diesem Namen existiert bereits.',
