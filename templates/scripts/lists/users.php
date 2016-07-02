@@ -1,7 +1,7 @@
 <table>
   <tbody>
     <?php
-    if (count($this->users) == 0)
+    if (empty($this->users))
     {
         ?>
         <tr>

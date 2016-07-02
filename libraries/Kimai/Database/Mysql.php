@@ -4694,11 +4694,12 @@ class Kimai_Database_Mysql
      * Return all rows for the given sql query.
      *
      * @param string $query the sql query to execute
+     * @param integer $resultType (Optional) The type of array (MYSQLI_ASSOC, MYSQLI_NUM, MYSQLI_BOTH)
      * @return array
      */
-    public function queryAll($query)
+    public function queryAll($query, $resultType = MYSQLI_BOTH)
     {
-        return $this->conn->QueryArray($query);
+        return $this->conn->QueryArray($query, $resultType);
     }
 
     /**
@@ -4792,18 +4793,7 @@ class Kimai_Database_Mysql
      */
     public function membership_role_allows($roleID, $permission)
     {
-        $filter['membershipRoleID'] = MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER);
-        $filter[$permission] = 1;
-        $columns[] = "membershipRoleID";
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-
-        $result = $this->conn->SelectRows($table, $filter, $columns);
-
-        if ($result === false) {
-            return false;
-        }
-
-        return $this->conn->RowCount() > 0;
+        return $this->hasRolePermission("membership_role_acl", $roleID, $permission, "Membership");
     }
 
     /**
@@ -4815,25 +4805,65 @@ class Kimai_Database_Mysql
      */
     public function global_role_allows($roleID, $permission)
     {
-        $filter['globalRoleID'] = MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER);
-        $filter[$permission] = 1;
-        $columns[] = "globalRoleID";
-        $table = $this->kga['server_prefix'] . "globalRoles";
+        return $this->hasRolePermission("global_role_acl", $roleID, $permission, "Global");
+    }
 
-        $result = $this->conn->SelectRows($table, $filter, $columns);
+    /**
+     * Checks if a role gives permission for a specific action.
+     *
+     * @param $roleID
+     * @param $permission
+     * @param $logPrefix
+     * @return array|bool
+     */
+    protected function hasRolePermission($table, $roleID, $permission, $logPrefix)
+    {
+        $filter['role_id'] = MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER);
+        $filter['acl_name'] = MySQL::SQLValue($permission, MySQL::SQLVALUE_TEXT);
+        $filter['acl_active'] = MySQL::SQLValue(1, MySQL::SQLVALUE_BOOLEAN);
+        $table = $this->kga['server_prefix'] . $table;
 
-        if ($result === false) {
-            $this->logLastError('global_role_allows');
+        $sql = $this->conn->BuildSQLSelect($table, $filter);
+        $result = $this->conn->QueryArray($sql, MYSQLI_ASSOC);
+
+        if ($result !== false) {
+            $result = $this->conn->RowCount() > 0;
+        }
+
+        // TODO should we add a setting for debugging permissions?
+        Kimai_Logger::logfile($logPrefix . " role $roleID gave " . ($result ? 'true' : 'false') . " for $permission.");
+
+        return $result;
+    }
+
+    /**
+     * @param $table
+     * @param $data
+     * @param $logName
+     * @return bool|int
+     */
+    protected function createRole($table, $data, $logName)
+    {
+        $values = array();
+
+        foreach ($data as $key => $value) {
+            if ($key == 'name') {
+                $values['role_name'] = MySQL::SQLValue($value);
+            } else {
+                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            }
+        }
+
+        $table = $this->kga['server_prefix'] . $table;
+        $result = $this->conn->InsertRow($table, $values);
+
+        if (!$result) {
+            $this->logLastError($logName);
             return false;
         }
 
-        $result = $this->conn->RowCount() > 0;
-
-        /*
-        // TODO should we add a setting for debugging permissions?
-        Kimai_Logger::logfile("Global role $roleID gave " . ($result ? 'true' : 'false') . " for $permission.");
-        */
-        return $result;
+        return $this->conn->GetLastInsertID();
+        // FIXME save default permissions
     }
 
     /**
@@ -4841,6 +4871,18 @@ class Kimai_Database_Mysql
      * @return bool|int
      */
     public function global_role_create($data)
+    {
+        return $this->createRole("global_role", $data, 'global_role_create');
+    }
+
+    /**
+     * @param $table
+     * @param $roleID
+     * @param $data
+     * @param $logName
+     * @return bool
+     */
+    protected function updateRole($table, $roleID, $data, $logName)
     {
         $values = array();
 
@@ -4852,15 +4894,20 @@ class Kimai_Database_Mysql
             }
         }
 
-        $table = $this->kga['server_prefix'] . "globalRoles";
-        $result = $this->conn->InsertRow($table, $values);
+        $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
+        // FIXME save permissions
+        $table = $this->kga['server_prefix'] . $table;
 
-        if (!$result) {
-            $this->logLastError('global_role_create');
+        $query = MySQL::BuildSQLUpdate($table, $values, $filter);
+
+        $result = $this->conn->Query($query);
+
+        if ($result == false) {
+            $this->logLastError($logName);
             return false;
         }
 
-        return $this->conn->GetLastInsertID();
+        return true;
     }
 
     /**
@@ -4870,25 +4917,25 @@ class Kimai_Database_Mysql
      */
     public function global_role_edit($globalRoleID, $data)
     {
-        $values = array();
+        return $this->updateRole("global_role", $globalRoleID, $data, 'global_role_edit');
+    }
 
-        foreach ($data as $key => $value) {
-            if ($key == 'name') {
-                $values[$key] = MySQL::SQLValue($value);
-            } else {
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            }
-        }
-
-        $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
-        $table = $this->kga['server_prefix'] . "globalRoles";
-
-        $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-
+    /**
+     * @param $table
+     * @param $roleID
+     * @param $logName
+     * @return bool
+     */
+    protected function deleteRole($table, $roleID, $logName)
+    {
+        // FIXME delete permissions
+        $table = $this->kga['server_prefix'] . $table;
+        $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
+        $query = MySQL::BuildSQLDelete($table, $filter);
         $result = $this->conn->Query($query);
 
         if ($result == false) {
-            $this->logLastError('global_role_edit');
+            $this->logLastError($logName);
             return false;
         }
 
@@ -4901,17 +4948,59 @@ class Kimai_Database_Mysql
      */
     public function global_role_delete($globalRoleID)
     {
-        $table = $this->kga['server_prefix'] . "globalRoles";
-        $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLDelete($table, $filter);
-        $result = $this->conn->Query($query);
+        return $this->deleteRole("global_role", $globalRoleID, 'global_role_delete');
+    }
 
-        if ($result == false) {
-            $this->logLastError('global_role_delete');
+    /**
+     * @param $table
+     * @param $roleID
+     * @param $logName
+     * @return array|bool
+     */
+    protected function getRolePermissions($table, $roleID, $logName)
+    {
+        $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
+        $table = $this->kga['server_prefix'] . $table;
+        $result = $this->conn->SelectRows($table, $filter);
+
+        if (!$result) {
+            $this->logLastError($logName);
             return false;
         }
 
-        return true;
+        $results = array();
+        $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
+
+        if (!$rows) {
+            $this->logLastError($logName . ' - no permissions found');
+            return array();
+        }
+
+        foreach ($rows as $row) {
+            $results[$row['acl_name']] = $row['acl_active'];
+        }
+
+        return $results;
+    }
+
+    /**
+     * @param $table
+     * @param $roleID
+     * @param $logName
+     * @return array|bool
+     */
+    protected function getRoleData($table, $roleID, $logName)
+    {
+        $filter = array('role_id' => MySQL::SQLValue($roleID, MySQL::SQLVALUE_NUMBER));
+        $table = $this->kga['server_prefix'] . $table;
+        $result = $this->conn->SelectRows($table, $filter);
+
+        if (!$result) {
+            $this->logLastError($logName);
+            return false;
+        }
+
+        return $this->conn->RowArray(0, MYSQLI_ASSOC);
     }
 
     /**
@@ -4920,17 +5009,52 @@ class Kimai_Database_Mysql
      */
     public function globalRole_get_data($globalRoleID)
     {
-        $filter['globalRoleID'] = MySQL::SQLValue($globalRoleID, MySQL::SQLVALUE_NUMBER);
-        $table = $this->kga['server_prefix'] . "globalRoles";
+        return $this->getRoleData("global_role", $globalRoleID, 'globalRole_get_data');
+    }
+
+    /**
+     * @param $globalRoleID
+     * @return array|bool
+     */
+    public function globalRole_get_permissions($globalRoleID)
+    {
+        return $this->getRolePermissions("global_role_acl", $globalRoleID, 'globalRole_get_data');
+    }
+
+    /**
+     * @param $table
+     * @param $filter
+     * @param $logName
+     * @return bool|Records
+     */
+    protected function findRole($table, $filter, $logName)
+    {
+        $filters = array();
+        foreach ($filter as $key => $value) {
+            if ($key == 'name') {
+                $key = 'role_name';
+            }
+
+            if (is_numeric($value)) {
+                $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
+            } else {
+                $value = MySQL::SQLValue($value);
+            }
+
+            $filters[$key] = $value;
+        }
+
+        $table = $this->kga['server_prefix'] . $table;
         $result = $this->conn->SelectRows($table, $filter);
 
         if (!$result) {
-            $this->logLastError('globalRole_get_data');
+            $this->logLastError($logName);
             return false;
-        } else {
-            return $this->conn->RowArray(0, MYSQLI_ASSOC);
         }
+
+        return $this->conn->RecordsArray(MYSQLI_ASSOC);
     }
+
 
     /**
      * @param $filter
@@ -4938,22 +5062,7 @@ class Kimai_Database_Mysql
      */
     public function globalRole_find($filter)
     {
-        foreach ($filter as $key => &$value) {
-            if (is_numeric($value)) {
-                $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            } else {
-                $value = MySQL::SQLValue($value);
-            }
-        }
-        $table = $this->kga['server_prefix'] . "globalRoles";
-        $result = $this->conn->SelectRows($table, $filter);
-
-        if (!$result) {
-            $this->logLastError('globalRole_find');
-            return false;
-        } else {
-            return $this->conn->RecordsArray(MYSQLI_ASSOC);
-        }
+        return $this->findRole("global_role", $filter, 'globalRole_find');
     }
 
     /**
@@ -4963,7 +5072,7 @@ class Kimai_Database_Mysql
     {
         $p = $this->kga['server_prefix'];
 
-        $query = "SELECT a.*, COUNT(b.globalRoleID) AS count_users FROM `${p}globalRoles` a LEFT JOIN `${p}users` b USING(globalRoleID) GROUP BY a.globalRoleID";
+        $query = "SELECT a.*, COUNT(b.globalRoleID) AS count_users FROM `${p}global_role` a LEFT JOIN `${p}users` b ON a.role_id = b.globalRoleID GROUP BY a.role_id";
 
         $result = $this->conn->Query($query);
 
@@ -4972,8 +5081,17 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        return $rows;
+        $results = array();
+        $entries = $this->conn->RecordsArray(MYSQLI_ASSOC);
+        foreach ($entries as $entry) {
+            $results[] = array(
+                'globalRoleID' => $entry['role_id'],
+                'id' => $entry['role_id'],
+                'name' => $entry['role_name'],
+                'count_users' => $entry['count_users'],
+            );
+        }
+        return $results;
     }
 
     /**
@@ -4982,50 +5100,17 @@ class Kimai_Database_Mysql
      */
     public function membership_role_create($data)
     {
-        $values = array();
-
-        foreach ($data as $key => $value) {
-            if ($key == 'name') {
-                $values[$key] = MySQL::SQLValue($value);
-            } else {
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            }
-        }
-
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-        $result = $this->conn->InsertRow($table, $values);
-
-        if (!$result) {
-            $this->logLastError('membership_role_create');
-            return false;
-        }
-
-        return $this->conn->GetLastInsertID();
+        return $this->createRole("membership_role", $data, 'membership_role_create');
     }
 
     /**
      * @param $membershipRoleID
      * @param $data
-     * @return object
+     * @return bool|object
      */
     public function membership_role_edit($membershipRoleID, $data)
     {
-        $values = array();
-
-        foreach ($data as $key => $value) {
-            if ($key == 'name') {
-                $values[$key] = MySQL::SQLValue($value);
-            } else {
-                $values[$key] = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            }
-        }
-
-        $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-
-        $query = MySQL::BuildSQLUpdate($table, $values, $filter);
-
-        return $this->conn->Query($query);
+        return $this->updateRole("membership_role", $membershipRoleID, $data, 'membership_role_edit');
     }
 
     /**
@@ -5034,17 +5119,7 @@ class Kimai_Database_Mysql
      */
     public function membership_role_delete($membershipRoleID)
     {
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-        $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
-        $query = MySQL::BuildSQLDelete($table, $filter);
-        $result = $this->conn->Query($query);
-
-        if ($result == false) {
-            $this->logLastError('membership_role_delete');
-            return false;
-        }
-
-        return true;
+        return $this->deleteRole("membership_role", $membershipRoleID, 'membership_role_delete');
     }
 
     /**
@@ -5053,16 +5128,18 @@ class Kimai_Database_Mysql
      */
     public function membershipRole_get_data($membershipRoleID)
     {
-        $filter['membershipRoleID'] = MySQL::SQLValue($membershipRoleID, MySQL::SQLVALUE_NUMBER);
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-        $result = $this->conn->SelectRows($table, $filter);
+        return $this->getRoleData("membership_role", $membershipRoleID, 'membershipRole_get_data');
+    }
 
-        if (!$result) {
-            $this->logLastError('membershipRole_get_data');
-            return false;
-        }
-
-        return $this->conn->RowArray(0, MYSQLI_ASSOC);
+    /**
+     * Returns an array of all permissions for the memberShipRole.
+     *
+     * @param $membershipRoleID
+     * @return array|bool
+     */
+    public function membershipRole_get_permissions($membershipRoleID)
+    {
+        return $this->getRolePermissions("membership_role_acl", $membershipRoleID, 'membershipRole_get_permissions');
     }
 
     /**
@@ -5071,22 +5148,7 @@ class Kimai_Database_Mysql
      */
     public function membershipRole_find($filter)
     {
-        foreach ($filter as $key => &$value) {
-            if (is_numeric($value)) {
-                $value = MySQL::SQLValue($value, MySQL::SQLVALUE_NUMBER);
-            } else {
-                $value = MySQL::SQLValue($value);
-            }
-        }
-        $table = $this->kga['server_prefix'] . "membershipRoles";
-        $result = $this->conn->SelectRows($table, $filter);
-
-        if (!$result) {
-            $this->logLastError('membershipRole_find');
-            return false;
-        }
-
-        return $this->conn->RecordsArray(MYSQLI_ASSOC);
+        return $this->findRole("membership_role", $filter, 'membershipRole_find');
     }
 
     /**
@@ -5096,7 +5158,7 @@ class Kimai_Database_Mysql
     {
         $p = $this->kga['server_prefix'];
 
-        $query = "SELECT a.*, COUNT(DISTINCT b.userID) as count_users FROM `${p}membershipRoles` a LEFT JOIN `${p}groups_users` b USING(membershipRoleID) GROUP BY a.membershipRoleID";
+        $query = "SELECT a.*, COUNT(DISTINCT b.userID) as count_users FROM `${p}membership_role` a LEFT JOIN `${p}groups_users` b ON a.role_id = b.membershipRoleID GROUP BY a.role_id";
 
         $result = $this->conn->Query($query);
 
@@ -5105,8 +5167,17 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
-        return $rows;
+        $results = array();
+        $entries = $this->conn->RecordsArray(MYSQLI_ASSOC);
+        foreach ($entries as $entry) {
+            $results[] = array(
+                'membershipRoleID' => $entry['role_id'],
+                'id' => $entry['role_id'],
+                'name' => $entry['role_name'],
+                'count_users' => $entry['count_users'],
+            );
+        }
+        return $results;
     }
 
 
