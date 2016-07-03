@@ -1115,7 +1115,7 @@ if ((int)$revisionDB < 1387) {
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
 }
 
-// release of kimai 1.0
+// release of kimai 1.0.0
 
 // ================================================================================
 // FINALIZATION: update DB version number
