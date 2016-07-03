@@ -5,7 +5,7 @@
     "keywords": ["timetracking", "projectmanagement", "invoicing"],
     "homepage": "https://github.com/kimai/kimai",
     "license": "GPL-3.0",
-    "version": "0.9.3",
+    "version": "1.0.1",
     "authors": [
         { "name": "Severin Leonhardt", "homepage": "https://github.com/ServiusHack" },
         { "name": "Kevin Papst", "homepage": "https://github.com/kevinpapst" }

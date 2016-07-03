@@ -25,19 +25,19 @@ $kga = array();
 
 require dirname(__FILE__) . '/version.php';
 
-//$kga['show_sensible_data'] = 1;       // turn this on to display sensible data in the debug/developer extension
-                                        // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
-                                        // DON'T BLAME US - YOU HAVE BEEN WARNED!
+$kga['show_sensible_data'] = 0;         // set to 1 to display sensible data in the debug/developer extension
+                                        // CAUTION - DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
 
-$kga['logfile_lines']      = 100;       // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
-$kga['delete_logfile']     = 1;         // can the logfile be cleaned via debug_ext?
+$kga['logfile_lines']      = 100;       // number of lines shown from the logfile in debug extension.
+                                        // Set to "@" to display the entire file (might freeze your browser...)
 
-$kga['utf8']               = 0;         // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case,
-                                        // depends on server settings
+$kga['delete_logfile']     = 1;         // activate to be able to flush the logfile via debug extension
 
-$kga['calender_start']     = "0";       // here you can set a custom start day for the date-picker.
+$kga['utf8']               = 0;         // set to 1 to activate UTF-8 CONVERSION
+                                        // this is not always needed, depends on server settings
+
+$kga['calender_start']     = "0";       // set a custom start day for the date-picker (Format: "DD/MM/YYYY")
                                         // if this is not set the day of the users first day in the system will be taken
-                                        // Format: ... = "DD/MM/YYYY";
 
 // write vars from autoconf.php into kga
 $kga['server_prefix']   = $server_prefix;
