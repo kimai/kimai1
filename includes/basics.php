@@ -83,7 +83,7 @@ if (!empty($vars)) {
 }
 
 $tmpDir = WEBROOT . 'temporary/';
-if (!file_exists($tmpDir) || !is_dir($tmpDir) ||!is_writable($tmpDir)) {
+if (!file_exists($tmpDir) || !is_dir($tmpDir) || !is_writable($tmpDir)) {
     die('Kimai needs write permissions for: temporary/');
 }
 
