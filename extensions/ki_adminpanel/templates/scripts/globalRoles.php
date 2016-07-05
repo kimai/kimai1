@@ -6,8 +6,8 @@
 <table>
     <thead>
     <tr class='headerrow'>
-        <th><?php echo $this->kga['lang']['options'] ?></th>
-        <th><?php echo $this->kga['lang']['globalRole'] ?></th>
+        <th width="80px"><?php echo $this->kga['lang']['options'] ?></th>
+        <th width="25%"><?php echo $this->kga['lang']['globalRole'] ?></th>
         <th><?php echo $this->kga['lang']['users'] ?></th>
     </tr>
     </thead>
