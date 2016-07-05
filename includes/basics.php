@@ -81,3 +81,14 @@ if (!empty($vars)) {
         $kga['language'] = 'en';
     }
 }
+
+$tmpDir = WEBROOT . 'temporary/';
+if (!file_exists($tmpDir) || !is_dir($tmpDir) ||!is_writable($tmpDir)) {
+    die('Kimai needs write permissions for: temporary/');
+}
+
+$frontendOptions = array('lifetime' => 7200, 'automatic_serialization' => true);
+$backendOptions = array('cache_dir' => $tmpDir);
+$cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
+Kimai_Registry::setCache($cache);
+Zend_Locale::setCache($cache);
