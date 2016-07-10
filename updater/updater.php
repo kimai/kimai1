@@ -1117,6 +1117,11 @@ if ((int)$revisionDB < 1387) {
 
 // release of kimai 1.0.0
 
+if ((int)$revisionDB < 1388) {
+    Kimai_Logger::logfile("-- update to r1388");
+    exec_query("ALTER TABLE ${p}customers ADD COLUMN `country` varchar(255) NULL DEFAULT NULL AFTER `city`");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

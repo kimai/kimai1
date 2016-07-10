@@ -361,6 +361,7 @@ class Kimai_Database_Mysql
         $values['street'] = MySQL::SQLValue($data['street']);
         $values['zipcode'] = MySQL::SQLValue($data['zipcode']);
         $values['city'] = MySQL::SQLValue($data['city']);
+        $values['country'] = MySQL::SQLValue($data['country']);
         $values['phone'] = MySQL::SQLValue($data['phone']);
         $values['fax'] = MySQL::SQLValue($data['fax']);
         $values['mobile'] = MySQL::SQLValue($data['mobile']);
@@ -418,10 +419,24 @@ class Kimai_Database_Mysql
         $values = array();
 
         $strings = array(
-            'name', 'comment', 'password', 'company', 'vat',
-            'contact', 'street', 'zipcode', 'city', 'phone',
-            'fax', 'mobile', 'mail', 'homepage', 'timezone',
-            'passwordResetHash');
+            'name',
+            'comment',
+            'password',
+            'company',
+            'vat',
+            'contact',
+            'street',
+            'zipcode',
+            'city',
+            'country',
+            'phone',
+            'fax',
+            'mobile',
+            'mail',
+            'homepage',
+            'timezone',
+            'passwordResetHash'
+        );
         foreach ($strings as $key) {
             if (isset($data[$key])) {
                 $values[$key] = MySQL::SQLValue($data[$key]);

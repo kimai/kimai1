@@ -88,7 +88,7 @@ switch ($axAction) {
     case 'add_edit_customer':
         $oldGroups = array();
         if ($id) {
-                  $oldGroups = $database->customer_get_groupIDs($id);
+            $oldGroups = $database->customer_get_groupIDs($id);
         }
 
         if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $oldGroups)) {
@@ -110,6 +110,7 @@ switch ($axAction) {
                 $view->assign('street', $data['street']);
                 $view->assign('zipcode', $data['zipcode']);
                 $view->assign('city', $data['city']);
+                $view->assign('country', $data['country']);
                 $view->assign('phone', $data['phone']);
                 $view->assign('fax', $data['fax']);
                 $view->assign('mobile', $data['mobile']);
