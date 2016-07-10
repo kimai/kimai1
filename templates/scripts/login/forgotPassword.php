@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="skins/<?php echo $this->skin()->getName(); ?>/login.css" />
 	<script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-	<script type='text/javascript'>
+	<script type="text/javascript">
 	var requestData = <?php echo json_encode($this->requestData); ?>;
 
 	$(function(){
@@ -18,38 +18,38 @@
 			Cookies.remove('KimaiCookieTest');
 		}
 
-		if ($("#warning").find("p").size() < 2) {
-			$("#warning").remove();
+		if ($('#warning').find("p").size() < 2) {
+			$('#warning').remove();
 		}
 
-		$("#forgotPasswordLink").click(function(event) {
-			event.preventDefault();
-			$("#login").fadeOut();
-			$("#forgotPassword").fadeIn();
+		$('#forgotPasswordLink').click(function(e) {
+			e.preventDefault();
+			$('#login').fadeOut();
+			$('#forgotPassword').fadeIn();
 			return false;
 		});
 
-		$("#loginButton").click(function(event) {
-			requestData['password'] = $("#password").val();
-			event.preventDefault();
+		$('#loginButton').click(function(e) {
+			requestData['password'] = $('#password').val();
+			e.preventDefault();
 			$.ajax({
-				type: "POST",
-				url: "processor.php?a=resetPassword",
+				type: 'POST',
+				url: 'processor.php?a=resetPassword',
 				data: requestData,
-				dataType: "json",
+				dataType: 'json',
 				success: function(data) {
-					$("#login").fadeOut();
-					$("#message").find("p").html(data.message);
+					$('#login').fadeOut();
+					$('#message').find('p').html(data.message);
 					if (data.showLoginLink) {
-						$("#message").find("a").show();
+						$('#message').find('a').show();
 					}
-					$("#message").fadeIn();
+					$('#message').fadeIn();
 				}
 			});
 			return false;
 		});
 
-		$("#kimaiusername").focus();
+		$('#kimaiusername').focus();
 	});
 	</script>
 </head>
@@ -57,17 +57,17 @@
 <div id="content">
 	<div id="box">
 		<div id="login" <?php if ($this->keyCorrect): ?>style="display:block" <?php endif; ?>>
-			<form action='index.php?a=checklogin' name='form1' method='post'>
+			<form action="index.php?a=checklogin" name="form1" method="post">
 				<fieldset>
 					<label for="password">
 						<?php echo $this->translate('newPassword') ?>:
 					</label>
-					<input type='password' name="password" id="password" />
+					<input type="password" name="password" id="password" />
 					<label for="password2">
 						<?php echo $this->translate('retypePassword') ?>:
 					</label>
-					<input type='password' name="password2" id="password2" />
-					<button id="loginButton" type='submit'></button>
+					<input type="password" name="password2" id="password2" />
+					<button id="loginButton" type="submit"></button>
 				</fieldset>
 			</form>
 		</div>

@@ -383,10 +383,10 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * Returns the data of a certain customer
+     * Returns the data of a customer
      *
-     * @param array $customerID  id of the customer
-     * @return array         the customer's data (name, address etc) as array, false on failure
+     * @param int $customerID  id of the customer
+     * @return array the customer's data, false on failure
      * @author th
      */
     public function customer_get_data($customerID)
@@ -1662,7 +1662,7 @@ class Kimai_Database_Mysql
     /**
      * deletes a user
      *
-     * @param array $userID  userID of the user
+     * @param int $userID  userID of the user
      * @param boolean $moveToTrash whether to delete user or move to trash
      * @return boolean       true on success, false on failure
      * @author th
@@ -3771,7 +3771,7 @@ class Kimai_Database_Mysql
      * return ID of specific user named 'XXX'
      *
      * @param integer $name name of user in table users
-     * @return boolean id of the customer
+     * @return int id of the customer
      */
     public function customer_nameToID($name)
     {
@@ -3818,7 +3818,7 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        return $row[$endColumn];
+        return (int)$row[$endColumn];
     }
 
     /**

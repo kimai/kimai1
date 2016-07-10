@@ -32,102 +32,38 @@ if (!isset($_POST['name']) || is_array($_POST['name'])) {
     $name = $_POST['name'];
 }
 
-// =====================
-// = standard includes =
-// =====================
 require('includes/basics.php');
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
-// =========================
-// = authentication method =
-// =========================
 $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 }
+/* @var Kimai_Auth_Kimai $authPlugin */
 $authPlugin = new $authClass($database, $kga);
 
 $view->assign('kga', $kga);
 
-// =================================================================
-// = processing login and displaying either login screen or errors =
-// =================================================================
-
 switch ($_REQUEST['a']) {
 
-    case "forgotPassword":
-        $name = htmlspecialchars(trim($name));
-    
-        $is_customer = $database->is_customer_name($name);
-
-        Kimai_Logger::logfile("password reset: " . $name . ($is_customer ? " as customer" : " as user"));
-
-        if ($is_customer) {
-            $id = $database->customer_nameToID($name);
-
-            $customer = $database->customer_get_data($id);
-            $passwordResetHash = str_shuffle(MD5(microtime()));
-
-            $database->customer_edit($id, array('passwordResetHash' => $passwordResetHash));
-
-            $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-            $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
-
-            $message = $kga['lang']['passwordReset']['mailMessage'];
-            $message = str_replace('%{URL}', $url, $message);
-            mail(
-                $customer['mail'],
-                $kga['lang']['passwordReset']['mailSubject'],
-                $message
-            );
-
+    case 'forgotPassword':
+        if (!method_exists($authPlugin, 'forgotPassword')) {
             echo json_encode(array(
-                'message' => $kga['lang']['passwordReset']['mailConfirmation']
+                'message' => $kga['lang']['passwordReset']['notSupported']
             ));
         } else {
-            if (!method_exists($authPlugin, "forgotPassword")) {
-                echo json_encode(array(
-                    'message' => $kga['lang']['passwordReset']['notSupported']
-                ));
-            } else {
-                echo json_encode(array(
-                    'message' => $authPlugin->forgotPassword($name)
-                ));
-            }
+            echo json_encode(array(
+                'message' => $authPlugin->forgotPassword($name)
+            ));
         }
         break;
 
-
-    case "resetPassword":
+    case 'resetPassword':
         $key = $_REQUEST['key'];
-
-        $name = htmlspecialchars(trim($name));
         $password = $_REQUEST['password'];
-        $is_customer = $database->is_customer_name($name);
-
-        if ($is_customer) {
-            $id = $database->customer_nameToID($name);
-            $customer = $database->customer_get_data($id);
-            if ($key != $customer['passwordResetHash']) {
-                echo json_encode(array(
-                    "message" => $kga['lang']['passwordReset']['invalidKey']
-                ));
-                break;
-            }
-
-            $data = array();
-            $data['password'] = md5($kga['password_salt'] . $password . $kga['password_salt']);
-            $data['passwordResetHash'] = null;
-            $database->customer_edit($id, $data);
-            echo json_encode(array(
-                "message" => $kga['lang']['passwordReset']['success'],
-                "showLoginLink" => true,
-            ));
-        } else {
-            echo json_encode($authPlugin->resetPassword($name, $password, $key));
-        }
+        echo json_encode($authPlugin->resetPassword($name, $password, $key));
         break;
 
 }
