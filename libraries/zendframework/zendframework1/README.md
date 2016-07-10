@@ -7,11 +7,19 @@ Master: [![Build Status](https://api.travis-ci.org/zendframework/zf1.png?branch=
 RELEASE INFORMATION
 ===================
 
-Zend Framework 1.12.17dev Release.
-Released on MMM DD, YYYY.
+Zend Framework 1.12.18 Release.
+Released on Apr 13, 2016.
 
-IMPORTANT FIXES FOR 1.12.17
+IMPORTANT FIXES FOR 1.12.18
 ---------------------------
+
+This release contains security fixes:
+
+- **ZF2016-01**: A number of classes, including `Zend_Filter_Encrypt`,
+  `Zend_Form_Element_Hash`, `Zend_Gdata_HttpClient`, `Zend_Ldap_Attribute`,
+  and `Zend_OpenId`, were using randomization methods with insufficient entropy.
+  They have been updated to each use `Zend_Crypt_Math`, and the latter was
+  updated to use PHP 7's `random_bytes()` and `random_int()` where feasible.
 
 See http://framework.zend.com/changelog for full details.
 

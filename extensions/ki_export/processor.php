@@ -262,26 +262,17 @@ switch ($axAction) {
     case 'export_xls':
 
         $database->user_set_preferences(array(
-            'decimal_separator' => $_REQUEST['decimal_separator'],
             'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
         ), 'ki_export.xls.');
 
         $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
             false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
-        for ($i = 0; $i < count($exportData); $i++) {
-            $exportData[$i]['decimalDuration'] = str_replace(".", $_REQUEST['decimal_separator'],
-                $exportData[$i]['decimalDuration']);
-            $exportData[$i]['rate'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['rate']);
-            $exportData[$i]['wage'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['wage']);
-        }
         $view->assign('exportData', count($exportData) > 0 ? $exportData : 0);
 
         $view->assign('columns', $columns);
         $view->assign('custom_timeformat', $timeformat);
         $view->assign('custom_dateformat', $dateformat);
 
-        header("Content-Disposition:attachment;filename=export.xls");
-        header("Content-Type: application/vnd.ms-excel");
         echo $view->render("formats/excel.php");
         break;
 

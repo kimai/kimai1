@@ -9,3 +9,4 @@ autoconf.php
 libraries/bin/
 libraries/phpunit/
 libraries/symfony/
+/bin/
