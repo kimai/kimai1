@@ -163,18 +163,15 @@ function getActivitiesData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherG
             $groupNames[] = $data['name'];
         }
         $activities[$row]['groups'] = implode(", ", $groupNames);
-
         $activities[$row]['projects'] = $database->activity_get_projects($activity['activityID']);
     }
 
     $result = array();
-
     if (count($activities) > 0) {
         $result['activities'] = $activities;
     } else {
         $result['activities'] = array();
     }
-
     $result['projects'] = $database->get_projects($groups);
     $result['selected_activity_filter']= $activity_filter;
 

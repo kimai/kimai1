@@ -1138,9 +1138,10 @@ class Kimai_Database_Mysql
         $activityId = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
         $p = $this->kga['server_prefix'];
 
-        $query = "SELECT ${p}projects.* 
+        $query = "SELECT ${p}projects.*, ${p}customers.name as customer_name
                 FROM ${p}projects_activities
-                JOIN ${p}projects USING(projectID)
+                JOIN ${p}projects USING (projectID)
+                JOIN ${p}customers USING (customerID)
                 WHERE activityID = $activityId AND ${p}projects.trash=0";
 
         $result = $this->conn->Query($query);
