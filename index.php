@@ -55,6 +55,7 @@ $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 }
+/* @var Kimai_Auth_Abstract $authPlugin */
 $authPlugin = new $authClass($database, $kga);
 
 $view->assign('kga', $kga);

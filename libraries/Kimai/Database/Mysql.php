@@ -1599,7 +1599,7 @@ class Kimai_Database_Mysql
     /**
      * Edits a user by replacing his data and preferences by the new array
      *
-     * @param array $userID  userID of the user to be edited
+     * @param int $userID  userID of the user to be edited
      * @param array $data    username, email, and other new data of the user
      * @return boolean       true on success, false on failure
      * @author ob/th
@@ -3779,15 +3779,15 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * return ID of specific user named 'XXX'
+     * return ID of specific user by name
      *
-     * @param integer $name name of user in table users
-     * @return boolean
+     * @param int $name name of user in table users
+     * @return string|bool
      * @author th
      */
     public function user_name2id($name)
     {
-        return $this->name2id($this->kga['server_prefix'] . "users", 'userID', 'name', $name);
+        return $this->name2id($this->kga['server_prefix'] . 'users', 'userID', 'name', $name);
     }
 
     /**
@@ -3798,7 +3798,7 @@ class Kimai_Database_Mysql
      * @param string $endColumn
      * @param string $filterColumn
      * @param integer $value
-     * @return bool
+     * @return string|bool
      */
     private function name2id($table, $endColumn, $filterColumn, $value)
     {
