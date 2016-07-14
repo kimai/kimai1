@@ -29,7 +29,7 @@ class ComposerStaticInit8c00ac27a90dfc4ac1a7acb480023ed4
         array (
             'Kimai_' => 
             array (
-                0 => 'C:\\xampp704\\htdocs\\kimai\\htdocs\\libraries',
+                0 => __DIR__ . '/../..' . '/libraries',
             ),
         ),
     );
