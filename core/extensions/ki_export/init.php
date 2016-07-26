@@ -51,7 +51,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $timeformat = 'H:M';
-$dateformat = 'd.m.';
+$dateformat = 'd.m.Y';
 $view->timeformat = $timeformat;
 $view->dateformat = $dateformat;
 
