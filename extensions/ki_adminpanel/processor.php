@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,54 +116,29 @@ switch ($axAction)
         break;
 
     case "refreshSubtab" :
-        // builds either user/group/advanced/DB subtab
-        $view->assign('curr_user', $kga['user']['name']);
-        $groups = $database->get_groups(get_cookie('adminPanel_extension_show_deleted_groups', 0));
         $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
-        if ($viewOtherGroupsAllowed) {
-            $view->assign('groups', $groups);
-        } else {
-            $view->assign('groups', array_filter(
-                $groups,
-                function ($group) {
-                    global $kga;
-                    return array_search($group['groupID'], $kga['user']['groups']) !== false;
-                }
-            ));
-        }
-
-        $arr_status = $database->get_statuses();
-        $view->assign('users', getEditUserList($database, $kga['user'], $viewOtherGroupsAllowed));
-        $view->assign('arr_status', $arr_status);
-        $view->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
-        $view->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users', 0));
 
         switch ($axValue)
         {
-            case "users" :
+            case "users":
+                $userData = getUsersData($database, $kga['user'], $viewOtherGroupsAllowed);
+                foreach($userData as $key => $value) {
+                    $view->assign($key, $value);
+                }
                 echo $view->render('users.php');
                 break;
 
-            case "groups" :
+            case "groups":
+                $groupsData = getGroupsData($database, $kga['user'], $viewOtherGroupsAllowed);
+                foreach($groupsData as $key => $value) {
+                    $view->assign($key, $value);
+                }
                 echo $view->render('groups.php');
                 break;
 
-            case "status" :
+            case "status":
+                $view->assign('statuses', $database->get_statuses());
                 echo $view->render('status.php');
-                break;
-
-            case "advanced" :
-                if ($kga->isEditLimit()) {
-                    $view->assign('editLimitEnabled', true);
-                    $editLimit = $kga->getEditLimit() / (60 * 60); // convert to hours
-                    $view->assign('editLimitDays', (int)($editLimit / 24));
-                    $view->assign('editLimitHours', (int)($editLimit % 24));
-                } else {
-                    $view->assign('editLimitEnabled', false);
-                    $view->assign('editLimitDays', '');
-                    $view->assign('editLimitHours', '');
-                }
-                echo $view->render('advanced.php');
                 break;
 
             case "database" :
@@ -171,105 +146,26 @@ switch ($axAction)
                 break;
 
             case "customers" :
-                $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
-                if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-customer-otherGroup-view')) {
-                    $customers = $database->get_customers();
-                } else {
-                    $customers = $database->get_customers($kga['user']['groups']);
-                }
-
-                foreach ($customers as $row => $data) {
-                    $groupNames = array();
-                    $groups = $database->customer_get_groupIDs($data['customerID']);
-                    if ($groups !== false) {
-                        foreach ($groups as $groupID) {
-                            if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                                continue;
-                            }
-                            $data = $database->group_get_data($groupID);
-                            $groupNames[] = $data['name'];
-                        }
-                        $customers[$row]['groups'] = implode(", ", $groupNames);
-                    }
-                }
-                if (count($customers) > 0) {
-                    $view->assign('customers', $customers);
-                } else {
-                    $view->assign('customers', '0');
+                $customersData = getCustomersData($database, $kga['user'], $viewOtherGroupsAllowed);
+                foreach ($customersData as $key => $value) {
+                    $view->assign($key, $value);
                 }
                 echo $view->render('customers.php');
                 break;
 
             case "projects" :
-                $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
-                if ($database->global_role_allows($kga['user']['globalRoleID'], 'core-project-otherGroup-view')) {
-                    $projects = $database->get_projects();
-                } else {
-                    $projects = $database->get_projects($kga['user']['groups']);
+                $projectsData = getProjectsData($database, $kga['user'], $viewOtherGroupsAllowed);
+                foreach ($projectsData as $key => $value) {
+                    $view->assign($key, $value);
                 }
-
-                if ($projects !== null && is_array($projects)) {
-                    foreach ($projects as $row => $project) {
-                        $groupNames = array();
-                        foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
-                            if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                                continue;
-                            }
-                            $data = $database->group_get_data($groupID);
-                            $groupNames[] = $data['name'];
-                        }
-                        $projects[$row]['groups'] = implode(", ", $groupNames);
-                    }
-                    $view->assign('projects', $projects);
-                }
-
                 echo $view->render('projects.php');
                 break;
 
             case "activities" :
-                $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
-                $groups = null;
-                if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-activity-otherGroup-view')) {
-                    $groups = $kga['user']['groups'];
+                $activitiesData = getActivitiesData($database, $kga['user'], $viewOtherGroupsAllowed);
+                foreach($activitiesData as $key => $data) {
+                    $view->assign($key, $data);
                 }
-
-                $activity_filter = isset($_REQUEST['activity_filter']) ? intval($_REQUEST['activity_filter']) : -2;
-
-                switch ($activity_filter) {
-                    case -2:
-                        // -2 is to get unassigned activities. As -2 is never
-                        // an id of a project this will give us all unassigned
-                        // activities.
-                        $activities = $database->get_activities_by_project(-2, $groups);
-                        break;
-                    case -1:
-                        $activities = $database->get_activities($groups);
-                        break;
-                    default:
-                        $activities = $database->get_activities_by_project($activity_filter, $groups);
-                }
-
-                foreach ($activities as $row => $activity) {
-                    $groupNames = array();
-                    foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
-                        if (!$viewOtherGroupsAllowed && array_search($groupID, $kga['user']['groups']) === false) {
-                            continue;
-                        }
-                        $data = $database->group_get_data($groupID);
-                        $groupNames[] = $data['name'];
-                    }
-                    $activities[$row]['groups'] = implode(", ", $groupNames);
-                }
-
-                if (count($activities) > 0) {
-                    $view->assign('activities', $activities);
-                } else {
-                    $view->assign('activities', '0');
-                }
-
-                $projects = $database->get_projects($groups);
-                $view->assign('projects', $projects);
-                $view->assign('selected_activity_filter', isset($_REQUEST['activity_filter']) ? $_REQUEST['activity_filter'] : -2);
                 echo $view->render('activities.php');
                 break;
 

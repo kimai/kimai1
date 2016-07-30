@@ -1121,7 +1121,7 @@ if ((int)$revisionDB < 1388) {
     exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'kimail'");
 }
 
-// release of kimai 1.0
+// release of kimai 1.0.0
 
 // ================================================================================
 // FINALIZATION: update DB version number

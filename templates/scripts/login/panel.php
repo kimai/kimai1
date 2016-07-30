@@ -5,7 +5,7 @@
 	<meta name="robots" content="noindex,nofollow" />
 	<title>Kimai <?php echo $this->translate('login') ?></title>
 	<link rel="SHORTCUT ICON" href="favicon.ico">
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->skin('login.css'); ?>" />
+	<link rel="stylesheet" type="text/css" media="screen" href="skins/<?php echo $this->skin()->getName(); ?>/login.css" />
 	<script type="text/javascript" src="libraries/jQuery/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="libraries/jQuery/js.cookie-2.1.0.min.js"></script>
 	<script type='text/javascript'>

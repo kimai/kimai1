@@ -1,7 +1,7 @@
 <project name="Kimai" default="help">
 
 	<!-- values depending on the Kimai version and your development environment -->
-	<property name="release.version" value="0.9.3"/>
+	<property name="release.version" value="1.0.1"/>
 	<property name="release.directory" location="/tmp/kimai/"/>
 
 	<!-- default target just dumps a copyright notice -->
@@ -15,7 +15,7 @@
 	</target>
 
 	<!-- Name and location of the release files -->
-	<property name="target.release.dir" location="${release.directory}/v.${release.version}/"/>
+	<property name="target.release.dir" location="${release.directory}/${release.version}/"/>
 	<property name="target.release.zip" location="${release.directory}/kimai_${release.version}.zip"/>
 
 	<!--
@@ -36,7 +36,8 @@
 					<exclude name=".git*"/>
 					<exclude name=".github/"/>
 					<exclude name=".travis*"/>
-					<exclude name=".scrutinizer*"/>
+					<exclude name=".scrutinizer.yml"/>
+					<exclude name=".styleci.yml"/>
 					<exclude name="composer.*"/>
 					<exclude name="phpunit.*"/>
 					<exclude name="kimai.json"/>
@@ -45,6 +46,7 @@
 					<exclude name=".idea/"/>
 					<exclude name="tests/"/>
 					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
+					<exclude name="libraries/tecnickcom/tcpdf/examples/**"/>
 				</patternset>
 			</fileset>
 		</copy>
@@ -74,5 +76,4 @@
 
 		<echo>Created the release at: ${target.release.zip}</echo>
 	</target>
-
 </project>

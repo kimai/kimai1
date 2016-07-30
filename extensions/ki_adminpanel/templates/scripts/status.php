@@ -6,14 +6,14 @@
 <table>
     <thead>
     <tr class='headerrow'>
-        <th><?php echo $this->kga['lang']['options'] ?></th>
-        <th><?php echo $this->kga['lang']['status'] ?></th>
+        <th width="80px"><?php echo $this->kga['lang']['options'] ?></th>
+        <th width="25%"><?php echo $this->kga['lang']['status'] ?></th>
         <th><?php echo $this->kga['lang']['default'] ?></th>
     </tr>
     </thead>
     <tbody>
     <?php
-    if (!isset($this->arr_status) || $this->arr_status == '0' || count($this->arr_status) == 0) {
+    if (!isset($this->statuses) || $this->statuses == '0' || count($this->statuses) == 0) {
         ?>
         <tr>
             <td nowrap colspan='3'>
@@ -22,7 +22,7 @@
         </tr>
         <?php
     } else {
-        foreach ($this->arr_status as $statusarray) {
+        foreach ($this->statuses as $statusarray) {
             ?>
             <tr class='<?php echo $this->cycle(array("odd", "even"))->next() ?>'>
                 <td class="option">

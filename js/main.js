@@ -329,7 +329,7 @@ function startRecord(projectID,activityID,userID) {
     startsec = now;
     show_stopwatch();
     value = projectID +"|"+ activityID;
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID, startTime: now},
+    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
@@ -511,7 +511,7 @@ function ticktack_off() {
 // shows dialogue for editing an item in either customer, project or activity list
 //
 function editSubject(subject, id) {
-    var width = 490;
+    var width = 800;
     if (subject == 'project') {
         width = 800;
     }

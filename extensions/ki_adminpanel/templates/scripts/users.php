@@ -11,11 +11,11 @@
 <table>
     <thead>
     <tr>
-        <th><?php echo $this->kga['lang']['options'] ?></th>
-        <th><?php echo $this->kga['lang']['username'] ?></th>
+        <th width="80px"><?php echo $this->kga['lang']['options'] ?></th>
+        <th width="25%"><?php echo $this->kga['lang']['username'] ?></th>
         <th><?php echo $this->kga['lang']['status'] ?></th>
         <th><?php echo $this->kga['lang']['globalRole'] ?></th>
-        <th><?php echo $this->kga['lang']['groups'] ?></th>
+        <th width="25%"><?php echo $this->kga['lang']['groups']?></th>
     </tr>
     </thead>
     <tbody>

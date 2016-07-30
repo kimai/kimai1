@@ -81,6 +81,28 @@ class Kimai_Registry extends Zend_Registry
     }
 
     /**
+     * Sets the global cache object.
+     *
+     * @param Zend_Cache_Core $cache
+     */
+    public static function setCache(Zend_Cache_Core $cache)
+    {
+        self::set('Zend_Cache', $cache);
+    }
+
+    /**
+     * Returns the global cache object.
+     * This should be used, if you have no use for a dedicated cache.
+     *
+     * @return mixed
+     * @throws Zend_Exception
+     */
+    public static function getCache()
+    {
+        return self::get('Zend_Cache');
+    }
+    
+    /**
      * @param Kimai_Auth_Abstract $authenticator
      */
     public static function setAuthenticator(Kimai_Auth_Abstract $authenticator)
