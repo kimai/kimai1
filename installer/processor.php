@@ -74,25 +74,29 @@ switch ($axAction) {
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
     case "checkRequirements":
-       if (version_compare(PHP_VERSION, '5.4') < 0) {
-           $errors++;
-           $javascript .= "$('div.sp_phpversion').addClass('fail');";
-       }
+        if (version_compare(PHP_VERSION, '5.4') < 0) {
+            $errors++;
+            $javascript .= "$('div.sp_phpversion').addClass('fail');";
+        }
 
-       if (!extension_loaded('mysqli')) {
-           $errors++;
-           $javascript .= "$('div.sp_mysql').addClass('fail');";
-       }
+        if (!extension_loaded('mysqli')) {
+            $errors++;
+            $javascript .= "$('div.sp_mysql').addClass('fail');";
+        }
 
         if (!extension_loaded('iconv')) {
             $errors++;
             $javascript .= "$('div.sp_iconv').addClass('fail');";
         }
 
-       if (return_bytes(ini_get('memory_limit')) < 20000000) {
-           $javascript .= "$('div.sp_memory').addClass('fail');";
-       }
+        if (!class_exists('DOMDocument')) {
+            $errors++;
+            $javascript .= "$('div.sp_dom').addClass('fail');";
+        }
 
+        if (return_bytes(ini_get('memory_limit')) < 20000000) {
+            $javascript .= "$('div.sp_memory').addClass('fail');";
+        }
 
         if (empty($javascript)) {
             $javascript = "$('#installsteps button.sp-button').hide();";
