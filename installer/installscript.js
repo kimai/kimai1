@@ -80,8 +80,12 @@ function lang_selected(lang) {
 // -------------------------------------------------
 // Agree to GPL
 
-function gpl_agreed() {
-    $('#installsteps button.proceed').fadeIn('slow');
+function gpl_agreed(checkbox) {
+    if($(checkbox).prop('checked')) {
+        $('#installsteps button.proceed').fadeIn('slow');
+    } else {
+        $('#installsteps button.proceed').fadeOut();
+    }
 }
 
 function gpl_proceed() {
