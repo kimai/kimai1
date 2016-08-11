@@ -20,7 +20,7 @@
 /**
  * Authenticator to be used with Microsofts Active Directory and the activated
  * option "Enhanced Identity Privacy".
- * 
+ *
  * See https://technet.microsoft.com/en-us/library/f351e0e3-6c78-49dc-9b0f-2b24e1b7411c
  *
  * To activate this Authentication Adapter, add the following line to the
@@ -30,7 +30,6 @@
  */
 class Kimai_Auth_ActiveDirectory extends Kimai_Auth_Ldapadvanced
 {
-
     protected function createCheckUsername($username, $uidAttribute)
     {
         return $this->forceLowercase ? strtolower($username) : $username;
