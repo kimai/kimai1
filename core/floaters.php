@@ -141,6 +141,11 @@ switch ($axAction) {
             $view->assign('id', 0);
         }
 
+        $countries = Zend_Locale::getTranslationList('Territory', $kga['language'], 2);
+        asort($countries);
+        
+        $view->assign('countries', $countries);
+
         echo $view->render("floaters/add_edit_customer.php");
     break;
         

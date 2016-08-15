@@ -124,13 +124,15 @@ abstract class Kimai_Invoice_AbstractRenderer
     
     protected function prepareCustomerArray($customer)
     {
+        global $kga;
+        $countryName = Zend_Locale::getTranslation($customer['country'], 'country', $kga['language']);
         $new = array(
             'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
             'companyName' => isset($customer['company']) ? $customer['company'] : '',
             'customerStreet' => isset($customer['street']) ? $customer['street'] : '',
             'customerZip' => isset($customer['zipcode']) ? $customer['zipcode'] : '',
             'customerCity' => isset($customer['city']) ? $customer['city'] : '',
-            'customerCountry' => isset($customer['country']) ? $customer['country'] : '',
+            'customerCountry' => isset($customer['country']) ? $countryName : '',
             'customerPhone' => isset($customer['phone']) ? $customer['phone'] : '',
             'customerEmail' => isset($customer['mail']) ? $customer['mail'] : '',
             'customerComment' => isset($customer['comment']) ? $customer['comment'] : '',

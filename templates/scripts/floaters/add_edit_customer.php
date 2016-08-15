@@ -102,7 +102,10 @@
                     </li>
                     <li>
                         <label for="country"><?php echo $this->kga['lang']['country'] ?>:</label>
-                        <?php echo $this->formText('country', $this->country); ?>
+                        <?php echo $this->formSelect('country', $this->country, array(
+                            'class' => 'formfield',
+                            'id' => 'country',
+                            'style' => 'width:255px'), $this->countries); ?>
                     </li>
                 </ul>
             </fieldset>
