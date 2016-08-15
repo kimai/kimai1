@@ -49,31 +49,57 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
 
     /**
      * @param string $name
-     * @return mixed
+     * @return string
+     * @throws \Zend_Mail_Exception
      */
     public function forgotPassword($name)
     {
         $kga = $this->getKga();
         $database = $this->getDatabase();
 
-        $id = $database->user_name2id($name);
+        $is_customer = $database->is_customer_name($name);
 
-        $user = $database->user_get_data($id);
+        $mail = new Zend_Mail('utf-8');
+        $mail->setFrom($kga['conf']['adminmail'], 'Kimai - Open Source Time Tracking');
+        $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
+        
+        $transport = new Zend_Mail_Transport_Sendmail();
+
         $passwordResetHash = str_shuffle(MD5(microtime()));
 
-        $database->user_edit($id, array('passwordResetHash' => $passwordResetHash));
+        if ($is_customer) {
+            $customerId = $database->customer_nameToID($name);
+            $customer = $database->customer_get_data($customerId);
+
+            $database->customer_edit($customerId, array('passwordResetHash' => $passwordResetHash));
+
+            $mail->addTo($customer['mail']);
+        } else {
+            $userId = $database->user_name2id($name);
+            $user = $database->user_get_data($userId);
+            
+            $database->user_edit($userId, array('passwordResetHash' => $passwordResetHash));
+
+            $mail->addTo($user['mail']);
+        }
+        
+        Kimai_Logger::logfile('password reset: ' . $name . ($is_customer ? ' as customer' : ' as user'));
 
         $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
         $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
 
         $message = $kga['lang']['passwordReset']['mailMessage'];
         $message = str_replace('%{URL}', $url, $message);
-        error_log($user['mail']);
-        mail($user['mail'],
-            $kga['lang']['passwordReset']['mailSubject'],
-            $message);
 
-        return $kga['lang']['passwordReset']['mailConfirmation'];
+        $mail->setBodyText($message);
+
+        try {
+            $mail->send($transport);
+
+            return $kga['lang']['passwordReset']['mailConfirmation'];
+        } catch (Zend_Mail_Transport_Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -87,20 +113,40 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $kga = $this->getKga();
         $database = $this->getDatabase();
 
-        $id = $database->user_name2id($username);
-        $userData = $database->user_get_data($id);
-        if ($key != $userData['passwordResetHash']) {
-            return array(
-                'message' => $kga['lang']['passwordReset']['invalidKey']
+        $is_customer = $database->is_customer_name($username);
+
+        if ($is_customer) {
+            $customerId = $database->customer_nameToID($username);
+            $customer = $database->customer_get_data($customerId);
+            
+            if ($key != $customer['passwordResetHash']) {
+                return array(
+                    'message' => $kga['lang']['passwordReset']['invalidKey']
+                );
+            }
+
+            $data = array(
+                'password' => md5($kga['password_salt'] . $password . $kga['password_salt']),
+                'passwordResetHash' => null
             );
+            $database->customer_edit($customerId, $data);
+        } else {
+            $userId = $database->user_name2id($username);
+            $user = $database->user_get_data($userId);
+
+            if ($key != $user['passwordResetHash']) {
+                return array(
+                    'message' => $kga['lang']['passwordReset']['invalidKey']
+                );
+            }
+
+            $data = array(
+                'password' => md5($kga['password_salt'] . $password . $kga['password_salt']),
+                'passwordResetHash' => null
+            );
+            $database->user_edit($userId, $data);
         }
-
-        $data = array(
-            'password' => md5($kga['password_salt'] . $password . $kga['password_salt']),
-            'passwordResetHash' => null,
-        );
-        $database->user_edit($id, $data);
-
+        
         return array(
             'message' => $kga['lang']['passwordReset']['success'],
             'showLoginLink' => true,
