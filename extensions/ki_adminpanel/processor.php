@@ -437,16 +437,16 @@ switch ($axAction)
             $config_data['adminmail'] = $_REQUEST['adminmail'];
             $config_data['loginTries'] = $_REQUEST['logintries'];
             $config_data['loginBanTime'] = $_REQUEST['loginbantime'];
-            $config_data['show_sensible_data'] = isset($_REQUEST['show_sensible_data']);
-            $config_data['show_update_warn'] = isset($_REQUEST['show_update_warn']);
-            $config_data['check_at_startup'] = isset($_REQUEST['check_at_startup']);
-            $config_data['show_daySeperatorLines'] = isset($_REQUEST['show_daySeperatorLines']);
-            $config_data['show_gabBreaks'] = isset($_REQUEST['show_gabBreaks']);
-            $config_data['show_RecordAgain'] = isset($_REQUEST['show_RecordAgain']);
-            $config_data['show_TrackingNr'] = isset($_REQUEST['show_TrackingNr']);
+            $config_data['show_sensible_data'] = getRequestBool($_REQUEST['show_sensible_data']);
+            $config_data['show_update_warn'] = getRequestBool($_REQUEST['show_update_warn']);
+            $config_data['check_at_startup'] = getRequestBool($_REQUEST['check_at_startup']);
+            $config_data['show_daySeperatorLines'] = getRequestBool($_REQUEST['show_daySeperatorLines']);
+            $config_data['show_gabBreaks'] = getRequestBool($_REQUEST['show_gabBreaks']);
+            $config_data['show_RecordAgain'] = getRequestBool($_REQUEST['show_RecordAgain']);
+            $config_data['show_TrackingNr'] = getRequestBool($_REQUEST['show_TrackingNr']);
             $config_data['currency_name'] = $_REQUEST['currency_name'];
             $config_data['currency_sign'] = $_REQUEST['currency_sign'];
-            $config_data['currency_first'] = isset($_REQUEST['currency_first']);
+            $config_data['currency_first'] = getRequestBool($_REQUEST['currency_first']);
             $config_data['date_format_0'] = $_REQUEST['date_format_0'];
             $config_data['date_format_1'] = $_REQUEST['date_format_1'];
             $config_data['date_format_2'] = $_REQUEST['date_format_2'];
@@ -456,15 +456,15 @@ switch ($axAction)
                 $config_data['status'] = implode(',', $_REQUEST['status']);
             }
             $config_data['roundPrecision'] = $_REQUEST['roundPrecision'];
-            $config_data['allowRoundDown'] = isset($_REQUEST['allowRoundDown']);
+            $config_data['allowRoundDown'] = getRequestBool($_REQUEST['allowRoundDown']);
             $config_data['roundMinutes'] = $_REQUEST['roundMinutes'];
             $config_data['roundSeconds'] = $_REQUEST['roundSeconds'];
             $config_data['roundTimesheetEntries'] = $_REQUEST['roundTimesheetEntries'];
             $config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
-            $config_data['durationWithSeconds'] = isset($_REQUEST['durationWithSeconds']);
-            $config_data['exactSums'] = isset($_REQUEST['exactSums']);
+            $config_data['durationWithSeconds'] = getRequestBool($_REQUEST['durationWithSeconds']);
+            $config_data['exactSums'] = getRequestBool($_REQUEST['exactSums']);
             $editLimit = false;
-            if (isset($_REQUEST['editLimitEnabled'])) {
+            if (getRequestBool($_REQUEST['editLimitEnabled'])) {
                 $hours = (int)$_REQUEST['editLimitHours'];
                 $days = (int)$_REQUEST['editLimitDays'];
                 $editLimit = $hours + $days * 24;
