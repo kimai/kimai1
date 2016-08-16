@@ -1129,20 +1129,20 @@ class Kimai_Database_Mysql
     /**
      * returns all the projects to which the activity was assigned
      *
-     * @param int $activityID  activityID of the project
+     * @param int $activityId  activityId of the project
      * @return array         contains the IDs of the projects or false on error
      * @author th
      */
-    public function activity_get_projects($activityID)
+    public function activity_get_projects($activityId)
     {
-        $activityId = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
+        $activityId = MySQL::SQLValue($activityId, MySQL::SQLVALUE_NUMBER);
         $p = $this->kga['server_prefix'];
 
-        $query = "SELECT ${p}projects.*, ${p}customers.name as customer_name
+        $query = "SELECT project.*, customer.name as customer_name, customer.visible as customerVisible
                 FROM ${p}projects_activities
-                JOIN ${p}projects USING (projectID)
-                JOIN ${p}customers USING (customerID)
-                WHERE activityID = $activityId AND ${p}projects.trash=0";
+                JOIN ${p}projects AS project USING (projectID)
+                JOIN ${p}customers AS customer USING (customerID)
+                WHERE activityID = $activityId AND project.trash=0";
 
         $result = $this->conn->Query($query);
         

@@ -46,7 +46,7 @@
 					$activityProjects = array();
 					foreach($activity['projects'] as $project) {
 						$name = $this->escape($project['name']) . ' (' . $this->escape($this->ellipsis($project['customer_name'], 30)) . ')';
-						if (!$project['visible']) {
+						if ($project['visible'] != 1 || $project['customerVisible'] != 1) {
 							$name = '<span class="hidden">' . $name . '</span>';
 						}
 						$activityProjects[] = $name;

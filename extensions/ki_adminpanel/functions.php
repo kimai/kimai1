@@ -173,7 +173,7 @@ function getActivitiesData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherG
         $result['activities'] = array();
     }
     $result['projects'] = $database->get_projects($groups);
-    $result['selected_activity_filter']= $activity_filter;
+    $result['selected_activity_filter'] = $activity_filter;
 
     return $result;
 }
