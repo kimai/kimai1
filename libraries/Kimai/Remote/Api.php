@@ -239,6 +239,7 @@ class Kimai_Remote_Api
     /**
      * The user started the recording of an activity via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
+     * If $projectId and $activityId are empty the last activity will be restarted.
      *
      * @param string $apiKey
      * @param integer $projectId
@@ -249,6 +250,16 @@ class Kimai_Remote_Api
     {
         if (!$this->init($apiKey, 'startRecord')) {
             return $this->getAuthErrorResult();
+        }
+
+        // check for empty params
+        if ($projectId == '' && $activityId == '') {
+            // get the last used project/activity
+            $user = $this->getUser();
+            $uid = $user['userID'];
+            $ary = $this->getBackend()->get_user_config($uid);
+            $projectId = $ary['lastProject'];
+            $activityId = $ary['lastActivity'];
         }
 
         // check for valid params
@@ -277,7 +288,8 @@ class Kimai_Remote_Api
     }
 
     /**
-     * Stops the currently running recording.
+     * Stops the currently running recording. If $entryId is empty the
+     * current activity will be stopped.
      *
      * @param string $apiKey
      * @param integer $entryId
@@ -287,6 +299,25 @@ class Kimai_Remote_Api
     {
         if (!$this->init($apiKey, 'stopRecord')) {
             return $this->getAuthErrorResult();
+        }
+
+        // check for empty params
+        if ($entryId == '') {
+            $user = $this->getUser();
+            $uid = $user['userID'];
+            $result = $this->getBackend()->get_current_recordings($uid);
+
+            // no "last" activity existing
+            if (count($result) == 0) {
+                return $this->getErrorResult('No active recording.');
+            }
+
+            // get the data of the first active recording
+            $result = $this->getBackend()->timeSheet_get_data($result[0]);
+
+            if (array_key_exists('timeEntryID', $result)) {
+                $entryId = $result['timeEntryID'];
+            }
         }
 
         $result = $this->getBackend()->stopRecorder($entryId);
