@@ -18,20 +18,31 @@
  */
 
 /**
- * Authenticator to be used with Microsofts Active Directory and the activated
- * option "Enhanced Identity Privacy".
+ * Authenticator to be used with Microsofts Active Directory.
  *
- * See https://technet.microsoft.com/en-us/library/f351e0e3-6c78-49dc-9b0f-2b24e1b7411c
+ * Supports the "Enhanced Identity Privacy" option, see:
+ * https://technet.microsoft.com/en-us/library/f351e0e3-6c78-49dc-9b0f-2b24e1b7411c
  *
  * To activate this Authentication Adapter, add the following line to the
  * file ```includes/autoconf.php```
  *
  *     $authenticator = 'activeDirectory';
+ *
+ * To activate "Enhanced Identity Privacy" create the file includes/auth.php and
+ * activate at least the setting 'enhancedIdentityPrivacy':
+ *
+ *      return array('enhancedIdentityPrivacy' => true);
+ *
  */
 class Kimai_Auth_ActiveDirectory extends Kimai_Auth_Ldapadvanced
 {
+    protected $enhancedIdentityPrivacy = false;
+
     protected function createCheckUsername($username, $uidAttribute)
     {
-        return $this->forceLowercase ? strtolower($username) : $username;
+        if ($this->enhancedIdentityPrivacy) {
+            return $this->forceLowercase ? strtolower($username) : $username;
+        }
+        return parent::createCheckUsername($username, $uidAttribute);
     }
 }
