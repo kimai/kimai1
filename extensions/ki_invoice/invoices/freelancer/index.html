@@ -78,7 +78,7 @@ $translations   = array(
 				<thead>
 					<tr>
 						<th><span><?php echo $translations['date']; ?></span></th>
-                        <th><span><?php echo $translations['activity']; ?></span></th>
+						<th><span><?php echo $translations['activity']; ?></span></th>
 						<th><span><?php echo $translations['hours']; ?></span></th>
 					</tr>
 				</thead>
@@ -90,20 +90,20 @@ $translations   = array(
 					</tr>
 				</tfoot>
 				<tbody>
-                <?php foreach($entries as $row) { ?>
+				<?php foreach($entries as $row) { ?>
 					<tr>
 						<td><span><?php echo date('d.m.', $row['timestamp']); ?></span></td>
-                        <td><span><?php echo $row['desc']; ?> - <?php echo $row['projectName']; ?></span></td>
+						<td><span><?php echo $row['desc']; ?> - <?php echo $row['projectName']; ?></span></td>
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
 					</tr>
-                <?php } ?>
+				<?php } ?>
 				</tbody>
 			</table>
 		</article>
 		<aside>
 			<address>
-	            <p><?php echo $translations['footer-freelancer']; ?></p>
-	            <p><?php echo $translations['footer-customer']; ?></p>
+				<p><?php echo $translations['footer-freelancer']; ?></p>
+				<p><?php echo $translations['footer-customer']; ?></p>
 			</address>
 		</aside>
 	</body>

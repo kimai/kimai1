@@ -48,29 +48,24 @@ $invoiceDate    = $this->invoiceDate;
 			<h1>Rechnung</h1>
 			<address>
 				<p>
-                    Firmen Name
-                    <br>
-				    Beispielstraße 1
-                    <br>
-                    12345 Eine Stadt
-                </p>
+					Firmen Name <br>
+					Beispielstraße 1 <br>
+					12345 Eine Stadt
+				</p>
 				<p>(0123) 456-78901</p>
 			</address>
-			<span><img alt="" src="invoices/my_company/logo.png"></span>
+			<span><img src="invoices/my_company/logo.png" alt=""></span>
 		</header>
 		<article>
 			<h1>Empfänger</h1>
 			<address>
 				<p>
-                    <?php echo $customer['company']; ?>
-                    <br>
-                    <?php echo $customer['contact']; ?>
-				    <br>
-                    <?php echo $customer['street']; ?>
-                    <br>
-                    <?php echo $customer['zipcode']; ?>
-                    <?php echo $customer['city']; ?>
-                </p>
+					<?php echo $customer['company']; ?><br>
+					<?php echo $customer['contact']; ?><br>
+					<?php echo $customer['street']; ?><br>
+					<?php echo $customer['zipcode']; ?>
+					<?php echo $customer['city']; ?>
+				</p>
 			</address>
 			<table class="meta">
 				<tr>
@@ -79,44 +74,44 @@ $invoiceDate    = $this->invoiceDate;
 				</tr>
 				<tr>
 					<th><span>Leistungsdatum</span></th>
-                    <td><span><?php echo strftime($dateFormat, $endDate); ?></span></td>
+					<td><span><?php echo strftime($dateFormat, $endDate); ?></span></td>
 				</tr>
-                <tr>
-                    <th><span>Rechnungsnummer</span></th>
-                    <td><span><?php echo $invoiceId;?></span></td>
-                </tr>
+				<tr>
+					<th><span>Rechnungsnummer</span></th>
+					<td><span><?php echo $invoiceId;?></span></td>
+				</tr>
 			</table>
 			<table class="inventory">
 				<thead>
 					<tr>
 						<th><span>Bezeichnung</span></th>
-                        <th><span>Auftragsnummer</span></th>
+						<th><span>Auftragsnummer</span></th>
 						<th><span>Einzelpreis</span></th>
 						<th><span>Anzahl</span></th>
 						<th><span>Gesamtpreis</span></th>
 					</tr>
 				</thead>
 				<tbody>
-                <?php foreach($entries as $row) {
-                if ($row['type'] == 'timeSheet') {
-                ?>
+				<?php foreach($entries as $row) {
+				if ($row['type'] == 'timeSheet') {
+				?>
 					<tr>
 						<td><span><?php echo $row['desc']; ?></span></td>
-                        <td><span><?php echo $row['trackingNr']; ?></span></td>
+						<td><span><?php echo $row['trackingNr']; ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['rate'],2 ); ?></span></td>
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
 					</tr>
-                <?php } else { ?>
+				<?php } else { ?>
 					<tr>
 						<td><span><?php echo $row['desc']; ?></span></td>
-                        <td><span><?php echo $row['trackingNr']; ?></span></td>
+						<td><span><?php echo $row['trackingNr']; ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo number_format($row['value'],2 ); ?></span></td>
 						<td><span><?php echo number_format($row['multiplier'], 2); ?></span></td>
 						<td><span><?php echo $currency; ?></span> <span><?php echo $row['amount']; ?></span></td>
 					</tr>
-                <?php }
-                } ?>
+				<?php }
+				} ?>
 				</tbody>
 			</table>
 			<table class="balance">
@@ -124,26 +119,26 @@ $invoiceDate    = $this->invoiceDate;
 					<th><span>Rechnungsbetrag (netto)</span></th>
 					<td><span data-prefix><?php echo $currency; ?></span> <span><?php echo number_format($amount, 2); ?></span></td>
 				</tr>
-                <tr>
-                    <th><span>zzgl. <?php echo $vatRate; ?>% Umsatzsteuer</span></th>
-                    <td><span data-prefix><?php echo $currency; ?></span> <span><?php echo number_format($vat, 2); ?></span></td>
-                </tr>
-                <tr>
-                    <th><span>Rechnungsendbetrag</span></th>
-                    <td><span data-prefix><?php echo $currency; ?></span> <span><?php echo number_format($total, 2); ?></span></td>
-                </tr>
+				<tr>
+					<th><span>zzgl. <?php echo $vatRate; ?>% Umsatzsteuer</span></th>
+					<td><span data-prefix><?php echo $currency; ?></span> <span><?php echo number_format($vat, 2); ?></span></td>
+				</tr>
+				<tr>
+					<th><span>Rechnungsendbetrag</span></th>
+					<td><span data-prefix><?php echo $currency; ?></span> <span><?php echo number_format($total, 2); ?></span></td>
+				</tr>
 			</table>
 		</article>
 		<aside>
 			<h1><span></span></h1>
-            <p>
-                Bitte überweisen Sie den Gesamtbetrag, innerhalb von zwei Wochen nach Erhalt der Rechnung,
-                auf das unten genannte Konto. Verwenden Sie als Betreff Ihrer Überweisung bitte Ihre Rechnungsnummer.
-            </p>
-            <div>
-                <p><span>Kontakt:</span>Firmen Name, Beispielstraße 1, 12345 Eine Stadt, (0123) 456-78901, info@example.com</p>
-                <p><span>Bankverbindung:</span>Firmen Name, Kto.Nr. 1234567890, BLZ 1234567890, IBAN DE12345678901234567890</p>
-            </div>
+			<p>
+				Bitte überweisen Sie den Gesamtbetrag, innerhalb von zwei Wochen nach Erhalt der Rechnung,
+				auf das unten genannte Konto. Verwenden Sie als Betreff Ihrer Überweisung bitte Ihre Rechnungsnummer.
+			</p>
+			<div>
+				<p><span>Kontakt:</span>Firmen Name, Beispielstraße 1, 12345 Eine Stadt, (0123) 456-78901, info@example.com</p>
+				<p><span>Bankverbindung:</span>Firmen Name, Kto.Nr. 1234567890, BLZ 1234567890, IBAN DE12345678901234567890</p>
+			</div>
 		</aside>
 	</body>
 </html>
