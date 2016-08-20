@@ -2,6 +2,7 @@
 *.*~
 vendor/
 temporary/*.txt
+temporary/zend_cache*
 autoconf.php
 .settings
 .idea/
