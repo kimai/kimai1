@@ -182,7 +182,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     public function __construct($database = null, $kga = null)
     {
         if (!function_exists('ldap_bind')) {
-            throw new InvalidArgumentException('LDAP-Extension is not installed');
+            throw new Kimai_Auth_Exception('LDAP-Extension is not installed');
         }
         parent::__construct($database, $kga);
         $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
