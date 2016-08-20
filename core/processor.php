@@ -242,6 +242,7 @@ switch ($axAction) {
                 $data['street'] = $_REQUEST['street'];
                 $data['zipcode'] = $_REQUEST['zipcode'];
                 $data['city'] = $_REQUEST['city'];
+                $data['country'] = $_REQUEST['country'];
                 $data['phone'] = $_REQUEST['phone'];
                 $data['fax'] = $_REQUEST['fax'];
                 $data['mobile'] = $_REQUEST['mobile'];

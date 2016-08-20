@@ -78,31 +78,6 @@
                     </li>
                 </ul>
             </fieldset>
-            <fieldset id="commenttab">
-                <ul>
-                    <li>
-                        <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('comment', $this->comment, array(
-                            'cols' => 30,
-                            'rows' => 5,
-                            'class' => 'comment'
-                        )); ?>
-                    </li>
-                </ul>
-            </fieldset>
-            <fieldset id="groups">
-                <ul>
-                    <li>
-                        <label for="customerGroups"><?php echo $this->kga['lang']['groups'] ?>:</label>
-                        <?php echo $this->formSelect('customerGroups[]', $this->selectedGroups, array(
-                            'class' => 'formfield',
-                            'id' => 'customerGroups',
-                            'multiple' => 'multiple',
-                            'size' => 3,
-                            'style' => 'width:255px'), $this->groups); ?>
-                    </li>
-                </ul>
-            </fieldset>
             <fieldset id="address">
                 <ul>
                     <li>
@@ -124,6 +99,13 @@
                     <li>
                         <label for="city"><?php echo $this->kga['lang']['city'] ?>:</label>
                         <?php echo $this->formText('city', $this->city); ?>
+                    </li>
+                    <li>
+                        <label for="country"><?php echo $this->kga['lang']['country'] ?>:</label>
+                        <?php echo $this->formSelect('country', $this->country, array(
+                            'class' => 'formfield',
+                            'id' => 'country',
+                            'style' => 'width:255px'), $this->countries); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -151,6 +133,31 @@
                     </li>
                 </ul>
             </fieldset>
+            <fieldset id="groups">
+                <ul>
+                    <li>
+                        <label for="customerGroups"><?php echo $this->kga['lang']['groups'] ?>:</label>
+                        <?php echo $this->formSelect('customerGroups[]', $this->selectedGroups, array(
+                            'class' => 'formfield',
+                            'id' => 'customerGroups',
+                            'multiple' => 'multiple',
+                            'size' => 3,
+                            'style' => 'width:255px'), $this->groups); ?>
+                    </li>
+                </ul>
+            </fieldset>
+            <fieldset id="commenttab">
+                <ul>
+                    <li>
+                        <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
+                        <?php echo $this->formTextarea('comment', $this->comment, array(
+                            'cols' => 30,
+                            'rows' => 5,
+                            'class' => 'comment'
+                        )); ?>
+                    </li>
+                </ul>
+            </fieldset>
         </div>
         <div id="formbuttons">
             <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
@@ -175,8 +182,7 @@
                 clearFloaterErrorMessages();
                 if ($add_edit_customer.attr('submitting')) {
                     return false;
-                }
-                else {
+                } else {
                     $add_edit_customer.attr('submitting', true);
                     return true;
                 }

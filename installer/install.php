@@ -175,6 +175,7 @@ $query =
   `street` varchar(255) NULL,
   `zipcode` varchar(255) NULL,
   `city` varchar(255) NULL,
+  `country` varchar(2) NULL,
   `phone` varchar(255) NULL,
   `fax` varchar(255) NULL,
   `mobile` varchar(255) NULL,
