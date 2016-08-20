@@ -1133,6 +1133,11 @@ if ((int)$revisionDB < 1390) {
     exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'show_sensible_data'");
 }
 
+if ((int)$revisionDB < 1391) {
+    Kimai_Logger::logfile("-- update to r1391");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('table_time_format', '%H:%M')");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

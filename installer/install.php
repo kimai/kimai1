@@ -146,7 +146,7 @@ exec_query($query);
 $query = "CREATE TABLE `${p}groups_activities` (
   `groupID` INT NOT NULL,
   `activityID` INT NOT NULL,
-  UNIQUE (`groupID` ,`activityID`)) ;";
+  UNIQUE (`groupID` ,`activityID`));";
 exec_query($query);
 
 // project/event cross-table (projects n:m events)
@@ -156,7 +156,7 @@ $query = "CREATE TABLE `${p}projects_activities` (
   `budget` DECIMAL( 10, 2 ) NULL DEFAULT '0.00',
   `effort` DECIMAL( 10, 2 ) NULL ,
   `approved` DECIMAL( 10, 2 ) NULL,
-  UNIQUE (`projectID` ,`activityID`)) ;";
+  UNIQUE (`projectID` ,`activityID`));";
 exec_query($query);
 
 $query =
@@ -279,7 +279,7 @@ $query =
 "CREATE TABLE `${p}statuses` (
 `statusID` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `status` VARCHAR( 200 ) NOT NULL
-) ENGINE = InnoDB ";
+) ENGINE = InnoDB";
 exec_query($query);
 
 // The included script only sets up the initial permissions.
@@ -298,8 +298,6 @@ $defaultGroup = $kga['lang']['defaultGroup'];
 $query = "INSERT INTO `${p}groups` (`name`) VALUES ('admin');";
 exec_query($query);
 
-
-
 // MISC
 $query = "INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '" . $kga['lang']['testActivity'] . "', '');";
 exec_query($query);
@@ -317,17 +315,17 @@ $query = "INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRol
 exec_query($query);
 
 $query = "INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
-('$randomAdminID','ui.rowlimit','100'),
-('$randomAdminID','ui.skin','standard'),
-('$randomAdminID','ui.showCommentsByDefault','0'),
-('$randomAdminID','ui.hideOverlapLines','1'),
-('$randomAdminID','ui.showTrackingNumber','1'),
-('$randomAdminID','timezone'," . quoteForSql($_REQUEST['timezone']) . ");";
+('$randomAdminID', 'ui.rowlimit', '100'),
+('$randomAdminID', 'ui.skin', 'standard'),
+('$randomAdminID', 'ui.showCommentsByDefault', '0'),
+('$randomAdminID', 'ui.hideOverlapLines', '1'),
+('$randomAdminID', 'ui.showTrackingNumber', '1'),
+('$randomAdminID', 'timezone', " . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 
 
 // CROSS TABLES
-$query = "INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES ('1','$randomAdminID','1');";
+$query = "INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES (1, '" . $randomAdminID . "', 1);";
 exec_query($query);
 
 $query = "INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
@@ -342,6 +340,44 @@ exec_query($query);
 
 
 // VARS
+
+/*
+exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
+('login', '1'),
+('adminmail', 'admin@example.com'),
+('loginTries', '3'),
+('version', '" . $kga['version'] . "'),
+('loginBanTime', '900'),
+('revision', '" . $kga['revision'] . "'),
+('currency_name', 'Euro'),
+('currency_sign', '€'),
+('currency_first', '0'),
+('show_sensible_data', '0'),
+('show_update_warn', '1'),
+('check_at_startup', '0'),
+('show_daySeperatorLines', '1'),
+('show_gabBreaks', '0'),
+('show_RecordAgain', '1'),
+('show_TrackingNr', '1'),
+('date_format_0', 'dd.mm.yy'),
+('date_format_1', '%d.%m.'),
+('date_format_2', '%d.%m.%Y'),
+('date_format_3', 'd.m.Y'),
+('table_time_format', '%H:%M'),
+('language', '" . $kga['language'] . "'),
+('roundPrecision', '0'),
+('decimalSeparator', ','),
+('durationWithSeconds', '0'),
+('exactSums', '0'),
+('defaultVat', '0'),
+('editLimit', '-'),
+('roundTimesheetEntries', '0'),
+('roundMinutes', '0'),
+('roundSeconds', '0'),
+('allowRoundDown', '0'),
+('defaultStatusID', '1')"); 
+*/
+
 $query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('version', '" . $kga['version'] . "');";
 exec_query($query);
 

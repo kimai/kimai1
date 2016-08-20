@@ -27,27 +27,25 @@ if ($this->timeSheetEntries)
                 <col class="username" />
             </colgroup>
             <tbody>
+            <?php
+            $day_buffer = 0; // last day entry
+            $time_buffer = 0; // last time entry
+            $end_buffer = 0; // last time entry
+            $ts_buffer = 0; // current time entry
 
-    <?php
-    $day_buffer     = 0; // last day entry
-    $time_buffer    = 0; // last time entry
-    $end_buffer     = 0; // last time entry
-    $ts_buffer      = 0; // current time entry
+            foreach ($this->timeSheetEntries as $rowIndex => $row) {
+                //Assign initial value to time buffer which must be larger than or equal to "end"
+                if ($time_buffer == 0) {
+                    $time_buffer = $row['end'];
+                }
 
-    foreach ($this->timeSheetEntries as $rowIndex => $row)
-    {
-        //Assign initial value to time buffer which must be larger than or equal to "end"
-        if ($time_buffer == 0) {
-            $time_buffer = $row['end'];
-        }
+                if ($end_buffer == 0) {
+                    $end_buffer = $row['end'];
+                }
 
-        if ($end_buffer == 0) {
-            $end_buffer = $row['end'];
-        }
-
-        $start          = strftime("%d",$row['start']);
-        $end            = (isset($row['end']) && $row['end']) ? $row['end'] : 0;
-        $ts_buffer      = strftime("%H%M",$end);
+                $start = strftime("%d", $row['start']);
+                $end = (isset($row['end']) && $row['end']) ? $row['end'] : 0;
+                $ts_buffer = strftime("%H%M", $end);
 
         $tdClass = "";
         if ($this->showOverlapLines && $end > $time_buffer) {
@@ -224,24 +222,21 @@ if ($this->timeSheetEntries)
             </table>
         </div>
     <?php
-}
-else
-{
+} else {
     echo $this->error();
 }
 ?>
-
-<script type="text/javascript"> 
+<script type="text/javascript">
     ts_user_annotations = <?php echo json_encode($this->user_annotations); ?>;
     ts_customer_annotations = <?php echo json_encode($this->customer_annotations) ?>;
     ts_project_annotations = <?php echo json_encode($this->project_annotations) ?>;
     ts_activity_annotations = <?php echo json_encode($this->activity_annotations) ?>;
     ts_total = '<?php echo $this->total?>';
-    
+
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
-    
-  <?php if ($this->latest_running_entry == null): ?>
+
+    <?php if ($this->latest_running_entry == null): ?>
     updateRecordStatus(false);
   <?php else: ?>
     updateRecordStatus(
