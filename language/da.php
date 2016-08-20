@@ -215,7 +215,6 @@ return array(
     "noFading" => "ingen fade-effekt",
     "user_list_hidden" => "skjul brugerliste som standard",
 
-    'show_sensible_data' => 'Vis også læsbare data i debug-udvidelsen.',
     'show_update_warn' => 'Deaktiver advarsel før opdatering.',
     'check_at_startup' => 'Vis en meddelelse på login-siden, hvis en nyere version er til rådighed.',
     'show_daySeperatorLines' => 'Vis en linie mellem posteringer på forskellige dage.',

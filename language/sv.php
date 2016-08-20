@@ -206,7 +206,6 @@ return array(
     "noFading" => "ingen fading effekt",
     "user_list_hidden" => "hide user list by default",
 
-    'show_sensible_data' => 'Visa även känslig data i felsöknings (debug) tillägget.',
     'show_update_warn' => 'Stäng av varning innan en uppdatering.',
     'check_at_startup' => 'Visa ett meddelande på inloggningssidan om en nyare version finns tillgänglig.',
     'show_daySeperatorLines' => 'Rita en linje mellan poster i olika dagar.',

@@ -201,7 +201,6 @@ return array(
     "noFading" => "geen vervagings effect",
     "user_list_hidden" => "hide user list by default",
 
-    'show_sensible_data' => 'Toon zinnige gegevens ook in de debug extentie.',
     'show_update_warn' => 'Schakel waarschuwingen uit voordat de update plaatsvindt.',
     'check_at_startup' => 'Toon bericht op loginpagina als er een nieuwe update beschikbaar is.',
     'show_daySeperatorLines' => 'Trek een lijn tussen gegevens van verschillende dagen.',

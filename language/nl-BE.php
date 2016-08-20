@@ -243,7 +243,6 @@ return array(
     "noFading" => "geen vervagingseffect",
     "user_list_hidden" => "gebruikerslijst standaard verbergen",
 
-    'show_sensible_data' => 'Zinnige data ook in debug extensie weergeven.',
     'show_update_warn' => 'Waarschuwingen uitzetten v&oacute;&oacute;r een update.',
     'check_at_startup' => 'Toon een bericht op de login pagina als een nieuwe versie beschikbaar is.',
     'show_daySeperatorLines' => 'Trek een lijn tussen entries van verschillende dagen.',

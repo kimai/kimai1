@@ -55,10 +55,6 @@
             </div>
 
             <div>
-               <input type="checkbox" name="show_sensible_data" <?php if ($this->kga['show_sensible_data']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_sensible_data']?>
-            </div>
-
-            <div>
                <input type="checkbox" name="show_update_warn" <?php if ($this->kga['show_update_warn']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_update_warn']?>
             </div>
 

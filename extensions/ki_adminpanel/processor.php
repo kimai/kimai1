@@ -437,7 +437,6 @@ switch ($axAction)
             $config_data['adminmail'] = $_REQUEST['adminmail'];
             $config_data['loginTries'] = $_REQUEST['logintries'];
             $config_data['loginBanTime'] = $_REQUEST['loginbantime'];
-            $config_data['show_sensible_data'] = getRequestBool('show_sensible_data');
             $config_data['show_update_warn'] = getRequestBool('show_update_warn');
             $config_data['check_at_startup'] = getRequestBool('check_at_startup');
             $config_data['show_daySeperatorLines'] = getRequestBool('show_daySeperatorLines');

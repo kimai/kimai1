@@ -226,7 +226,6 @@ return array(
     "noFading" => "Minni sjónhrif",
     "user_list_hidden" => "Fela alltof notendur",
     
-    'show_sensible_data' => 'Sýni venjulegan sem og aðrar viðbætur.',
     'show_update_warn' => 'Slökkva á viðvörunum fyrir uppfærslu.',
     'check_at_startup' => 'Sýna skilaboð á forsíðu ef nýrri útgáfa er fáanleg.',
     'show_daySeperatorLines' => 'Aðskylja daga með línu.',
