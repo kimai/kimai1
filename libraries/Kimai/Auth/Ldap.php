@@ -25,41 +25,65 @@
 class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
 {
 
-    /** Your LDAP-Server */
-    private $LADP_SERVER = 'ldap://localhost';
-    /** Case-insensitivity of some Servers may confuse the case-sensitive-accounting system. */
+    /**
+     * Your LDAP-Server
+     * @var string
+     */
+    private $LDAP_SERVER = 'ldap://localhost';
+    /**
+     * Case-insensitivity of some server may confuse the case-sensitive-accounting system
+     * @var bool
+     */
     private $LDAP_FORCE_USERNAME_LOWERCASE = true;
-    /** Preprends to username */
+    /**
+     * Prefix for username in LDAP query
+     * @var string
+     */
     private $LDAP_USERNAME_PREFIX = 'cn=';
-    /** Appends to username */
+    /**
+     * Postfix for username in LDAP query
+     * @var string
+     */
     private $LDAP_USERNAME_POSTFIX = ',dc=example,dc=com';
-    /** Accounts that sould be locally verified */
+    /**
+     * Accounts that should be verified locally only (in Kimai database)
+     * @var array
+     */
     private $LDAP_LOCAL_ACCOUNTS = array('admin');
-    /** Automatically create a user in kimai if the login is successful. */
+    /**
+     * Automatically create a user in kimai if the login is successful
+     * @var bool
+     */
     private $LDAP_USER_AUTOCREATE = true;
     /**
-     * @var Kimai_Auth_Kimai|null
+     * The original Kimai authenticator for local authentication and user creation.
+     * @var Kimai_Auth_Kimai
      */
     private $kimaiAuth = null;
 
+    /**
+     * {@inherit}
+     */
     public function __construct($database = null, $kga = null)
     {
+        if (!function_exists('ldap_bind')) {
+            throw new Kimai_Auth_Exception('LDAP-Extension is not installed');
+        }
         parent::__construct($database, $kga);
         $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
     }
 
+    /**
+     * @param string $username
+     * @param string $password
+     * @param int $userId
+     * @return bool
+     */
     public function authenticate($username, $password, &$userId)
     {
         // Check if username should be authenticated locally
         if (in_array($username, $this->LDAP_LOCAL_ACCOUNTS)) {
             return $this->kimaiAuth->authenticate($username, $password, $userId);
-        }
-
-        // Check environment sanity
-        if (!function_exists('ldap_bind')) {
-            echo 'ldap is not installed!';
-            $userId = false;
-            return false;
         }
 
         // Check if username is legal
@@ -71,9 +95,9 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
         }
 
         // Connect to LDAP
-        $connect_result = ldap_connect($this->LADP_SERVER);
+        $connect_result = ldap_connect($this->LDAP_SERVER);
         if (!$connect_result) {
-            echo "Cannot connect to ", $this->LADP_SERVER;
+            echo "Cannot connect to ", $this->LDAP_SERVER;
             $userId = false;
             return false;
         }
