@@ -148,7 +148,7 @@ $view->assign('membershipRoles_display', $view->render("membershipRoles.php"));
 
 $view->assign('showDeletedGroups', get_cookie('adminPanel_extension_show_deleted_groups', 0));
 $view->assign('showDeletedUsers', get_cookie('adminPanel_extension_show_deleted_users', 0));
-$view->assign('languages', Kimai_Translations::langs());
+$view->assign('languages', Kimai_Translations::languages());
 
 $view->assign('timezones', timezoneList());
 $status = $database->get_statuses();
