@@ -23,6 +23,9 @@
  */
 class Kimai_Translations
 {
+    /**
+     * @var array
+     */
     private $kga;
 
     public function __construct(&$kga)
@@ -39,24 +42,21 @@ class Kimai_Translations
      * @return array
      * @author unknown/th
      */
-    public static function langs()
+    public static function languages()
     {
-        $arr_files = array();
-        $arr_files[] = "";
-        $handle = opendir(WEBROOT . '/language/');
-        while (false !== ($readdir = readdir($handle))) {
-            if ($readdir != '.' && $readdir != '..' && substr($readdir, 0, 1) != '.' && endsWith($readdir, '.php')) {
-                $arr_files[] = str_replace(".php", "", $readdir);
-            }
+        $files = glob(WEBROOT . 'language' . DIRECTORY_SEPARATOR . '*.php');
+        $languages = array('');
+        foreach ($files as $file) {
+            $languages[] = str_replace('.php', '', basename($file));
         }
-        closedir($handle);
-        sort($arr_files);
-
-        return $arr_files;
+        sort($languages);
+        return $languages;
     }
 
     /**
      * Load a translation into the kga.
+     *
+     * @param string $name
      */
     public function load($name)
     {

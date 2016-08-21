@@ -63,13 +63,13 @@ switch ($axAction) {
         $skins = array();
         $langs = array();
 
-        $allSkins = glob(__DIR__ . "/../skins/*", GLOB_ONLYDIR);
+        $allSkins = glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'skins' . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
         foreach ($allSkins as $skin) {
             $name = basename($skin);
             $skins[$name] = $name;
         }
 
-        foreach (Kimai_Translations::langs() as $lang) {
+        foreach (Kimai_Translations::languages() as $lang) {
             $langs[$lang] = $lang;
         }
 

@@ -43,7 +43,7 @@ if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
 
 ini_set('display_errors', '0');
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 require_once WEBROOT . 'includes/autoconf.php';
 require_once WEBROOT . 'includes/vars.php';
 require_once WEBROOT . 'includes/func.php';

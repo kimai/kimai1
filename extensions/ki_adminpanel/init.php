@@ -96,9 +96,8 @@ $view->assign('tab_status', $view->render("status.php"));
 // = display advanced tab =
 // ========================
 $showAdvancedTab = $database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced');
-if ($showAdvancedTab)
-{
-    $view->assign('languages', Kimai_Translations::langs());
+if ($showAdvancedTab) {
+    $view->assign('languages', Kimai_Translations::languages());
     $view->assign('timezones', timezoneList());
 
     $view->assign('editLimitEnabled', false);
