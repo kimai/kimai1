@@ -18,8 +18,8 @@
  */
 
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
 
 require 'functions.php';
 
@@ -487,6 +487,7 @@ switch ($axAction)
                 $kga['server_hostname'],
                 $kga['server_username'],
                 $kga['server_password'],
+                $kga['server_charset'],
                 $kga['server_prefix'],
                 $_REQUEST['language'],
                 $kga['password_salt'],
