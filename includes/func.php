@@ -579,3 +579,17 @@ function coreObjectActionAllowed($objectTypeName, $action)
 
     return false;
 }
+
+/**
+ * Encode a password
+ *
+ * @param $password $password the password string to encode
+ * @return string the encoded password string
+ */
+function encode_password($password)
+{
+    global $kga;    
+    
+    $salt = $kga['password_salt'];
+    return md5($salt . $password . $salt);
+}

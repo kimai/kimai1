@@ -64,8 +64,6 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
      */
     public function performAutoLogin(&$userId)
     {
-        $kga = $this->getKga();
-
         $userId = false;
 
         // No autologin if not allowed or if no remote user authorized by web server
@@ -108,7 +106,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
                 'name' => $check_username,
                 'globalRoleID' => $this->getDefaultGlobalRole(),
                 'active' => 1,
-                'password' => md5($kga['password_salt'] . md5(uniqid(rand(), true)) . $kga['password_salt'])
+                'password' => encode_password(md5(uniqid(rand(), true)))
             ));
             $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
             return true;
@@ -125,8 +123,6 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        $kga = $this->getKga();
-
         $userId = $this->database->user_name2id($username);
         if ($userId === false) {
             return true;
@@ -135,7 +131,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
         $userData = $this->database->user_get_data($userId);
         $pass = $userData['password'];
         $userId = $userData['userID'];
-        $passCrypt = md5($kga['password_salt'] . $password . $kga['password_salt']);
+        $passCrypt = encode_password($password);
 
         return $pass == $passCrypt && $username != '';
     }
