@@ -583,7 +583,7 @@ function coreObjectActionAllowed($objectTypeName, $action)
 /**
  * Encode a password
  *
- * @param $password $password the password string to encode
+ * @param string $password the password string to encode
  * @return string the encoded password string
  */
 function encode_password($password)
