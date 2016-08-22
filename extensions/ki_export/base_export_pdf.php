@@ -98,9 +98,10 @@ class BasePDF extends TCPDF
     }
     
     /**
-     * calculate time in hh:mm from duration lenght in second
-     * rounded to minutes
-     * @param int $duration, duration lenght in second
+     * Calculate time in hh:mm from duration lenght in second
+     * rounded to minutes.
+     *
+     * @param int $duration , duration lenght in second
      * @return string time in format hh:mm
      */
     public function timeLength($duration)
@@ -130,7 +131,7 @@ class BasePDF extends TCPDF
      */
     public function printHeader($w, $header)
     {
-        // Colors, line width and bold font 
+        // Colors, line width and bold font
         $this->SetFillColor(240, 240, 240);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -168,10 +169,10 @@ class BasePDF extends TCPDF
             $w[0] -= 30;
         }
 
-        // Header 
+        // Header
         $this->printHeader($w, $header);
 
-        // Color and font restoration 
+        // Color and font restoration
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('');
@@ -202,7 +203,7 @@ class BasePDF extends TCPDF
                 $this->AddPage();
                 $this->printHeader($w, $header);
 
-                // Color and font restoration 
+                // Color and font restoration
                 $this->SetFillColor(224, 235, 255);
                 $this->SetTextColor(0);
                 $this->SetFont('');
