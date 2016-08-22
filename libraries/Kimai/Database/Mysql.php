@@ -1331,17 +1331,12 @@ class Kimai_Database_Mysql
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
 
         $activityIDs = array();
-        $counter = 0;
-        
         if ($this->conn->RowCount()) {
             foreach ($rows as $row) {
                 $activityIDs[$row['activityID']] = $row['activityID'];
-                $counter++;
             }
-            return $activityIDs;
-        } else {
-            return false;
         }
+        return $activityIDs;
     }
 
     /**
