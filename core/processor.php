@@ -100,7 +100,7 @@ switch ($axAction) {
 
         // If the password field is empty don't overwrite the old password.
         if (trim($_REQUEST['password']) != "") {
-            $userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
+            $userData['password'] = encode_password($_REQUEST['password']);
             $database->user_edit($kga['user']['userID'], $userData);
         }
 
@@ -253,7 +253,7 @@ switch ($axAction) {
 
                 // If password field is empty don't overwrite the password.
                 if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
-                    $data['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
+                    $data['password'] = encode_password($_REQUEST['password']);
                 }
                 if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                     $data['password'] = '';

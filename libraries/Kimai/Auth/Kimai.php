@@ -39,7 +39,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             return false;
         }
 
-        $passCrypt = md5($kga['password_salt'] . $password . $kga['password_salt']);
+        $passCrypt = encode_password($password);
         $userData = $database->user_get_data($userId);
         $pass = $userData['password'];
         $userId = $userData['userID'];
@@ -126,7 +126,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             }
 
             $data = array(
-                'password' => md5($kga['password_salt'] . $password . $kga['password_salt']),
+                'password' => encode_password($password),
                 'passwordResetHash' => null
             );
             $database->customer_edit($customerId, $data);
@@ -141,7 +141,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             }
 
             $data = array(
-                'password' => md5($kga['password_salt'] . $password . $kga['password_salt']),
+                'password' => encode_password($password),
                 'passwordResetHash' => null
             );
             $database->user_edit($userId, $data);

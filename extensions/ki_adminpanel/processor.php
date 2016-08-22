@@ -348,7 +348,7 @@ switch ($axAction)
         $userData['rate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
         // if password field is empty => password unchanged (not overwritten with "")
         if (!empty($_REQUEST['password'])) {
-            $userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
+            $userData['password'] = encode_password($_REQUEST['password']);
         }
 
         $oldGroups = $database->getGroupMemberships($id);

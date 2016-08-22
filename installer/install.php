@@ -312,7 +312,7 @@ exec_query($query);
 
 
 // ADMIN USER
-$adminPassword = md5($kga['password_salt'] . 'changeme' . $kga['password_salt']);
+$adminPassword = encode_password('changeme');
 $query = "INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@example.com','$adminPassword',1);";
 exec_query($query);
 

@@ -288,7 +288,7 @@ if ((int)$revisionDB < 1067) {
             $new_password = createPassword(8);
         }
         exec_query("UPDATE `${p}usr` SET pw = '" .
-            md5($kga['password_salt'] . $new_password . $kga['password_salt']) .
+                   encode_password($new_password) .
             "' WHERE usr_ID = $user[usr_ID]");
         if ($result) {
             $new_passwords[$user['usr_name']] = $new_password;
