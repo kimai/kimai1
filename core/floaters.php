@@ -248,9 +248,11 @@ switch ($axAction) {
                 $view->assign('selectedProjectIds', $selectedProjectIds);
 
                 $selectedProjects = $database->activity_get_projects($id);
-                foreach ($selectedProjects as &$selectedProject) {
-                    // edit by reference!
-                    $selectedProject['fixedRate'] = $database->get_fixed_rate($selectedProject['projectID'], $id);
+                if (is_array($selectedProjects)) {
+                    foreach ($selectedProjects as &$selectedProject) {
+                        // edit by reference!
+                        $selectedProject['fixedRate'] = $database->get_fixed_rate($selectedProject['projectID'], $id);
+                    }
                 }
                 $view->assign('selectedProjects', $selectedProjects);
                 $view->assign('id', $id);
