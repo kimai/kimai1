@@ -1122,11 +1122,12 @@ if ((int)$revisionDB < 1389) {
     exec_query("ALTER TABLE ${p}customers ADD COLUMN `country` varchar(2) NULL DEFAULT NULL AFTER `city`");
 }
 
+// release of kimai 1.1.0
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
-if ((int)$revisionDB < $kga['revision'] && !$errors)
-{
+if ((int)$revisionDB < $kga['revision'] && !$errors) {
     $query = sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
     exec_query($query, 0);
 
