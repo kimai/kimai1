@@ -374,6 +374,8 @@ switch ($axAction) {
                         foreach ($itemsToRemove as $item) {
                             $database->remove_fixed_rate($id, $item);
                         }
+                    } else {
+                        $database->assignProjectToActivitiesForGroup($id, array(), $kga['user']['groups']);
                     }
                 }
 
