@@ -101,8 +101,7 @@ class BasePDF extends TCPDF
      * Calculate time in hh:mm from duration lenght in second
      * rounded to minutes.
      *
-     * @param int $duration
-     *            , duration lenght in second
+     * @param int $duration , duration lenght in second
      * @return string time in format hh:mm
      */
     public function timeLength($duration)
@@ -110,7 +109,7 @@ class BasePDF extends TCPDF
         $s = $duration % 60;
         $m = (($duration - $s) / 60) % 60;
         $h = floor($duration / 3600);
-        return $h . ":" . substr("0" . $m, - 2) . " " . $kga['lang']['export_extension']['duration_unit'];
+        return $h . ":" . substr('0' . $m, - 2) . " " . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
