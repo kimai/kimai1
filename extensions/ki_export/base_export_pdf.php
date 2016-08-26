@@ -109,7 +109,8 @@ class BasePDF extends TCPDF
         $s = $duration % 60;
         $m = (($duration - $s) / 60) % 60;
         $h = floor($duration / 3600);
-        return $h . ":" . substr('0' . $m, - 2) . " " . $kga['lang']['export_extension']['duration_unit'];
+        $timeLength =  $h . ":" . substr('0' . $m, - 2);
+        return $this->time_unit($timeLength);
     }
 
     /**
