@@ -50,7 +50,7 @@ class Kimai_Database_Mysql
         $this->kga = &$kga;
         if ($autoConnect) {
             $useUtf8 = false;
-            if ($kga['utf8'] || $kga['server_charset'] === 'utf8') {
+            if ($kga['server_charset'] === 'utf8') {
                 $useUtf8 = true;
             }
             $this->connect(
