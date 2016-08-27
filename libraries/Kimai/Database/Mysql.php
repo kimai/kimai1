@@ -879,13 +879,9 @@ class Kimai_Database_Mysql
 
         if (isset($data['fixedRate'])) {
             if (is_numeric($data['fixedRate'])) {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->save_fixed_rate($activityGroup, $activityID, $data['fixedRate']);
-                }
+                $this->save_fixed_rate(null, $activityID, $data['fixedRate']);
             } else {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->remove_fixed_rate($activityGroup, $activityID);
-                }
+                $this->remove_fixed_rate(null, $activityID);
             }
         }
 
@@ -1160,7 +1156,7 @@ class Kimai_Database_Mysql
                 WHERE activityID = $activityId AND project.trash=0";
 
         $result = $this->conn->Query($query);
-        
+
         if ($result == false) {
             $this->logLastError('activity_get_projects');
             return false;
@@ -2769,7 +2765,7 @@ class Kimai_Database_Mysql
                 $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
-                
+
                 $fixedRate = (double)$row->fixedRate;
                 if ($fixedRate) {
                     $arr[$i]['wage'] = sprintf("%01.2f", $fixedRate);
@@ -3545,7 +3541,7 @@ class Kimai_Database_Mysql
     public function get_users($trash = 0, array $groups = null)
     {
         $p = $this->kga['server_prefix'];
-        
+
         $trash = MySQL::SQLValue($trash, MySQL::SQLVALUE_NUMBER);
 
         if (empty($groups)) {
@@ -3710,7 +3706,7 @@ class Kimai_Database_Mysql
         if ($rate) {
             $values['rate'] = $rate;
         }
-        
+
         $fixedRate = $this->get_best_fitting_fixed_rate($projectID, $activityID);
         if ($fixedRate) {
             $values['fixedRate'] = $fixedRate;
@@ -4082,7 +4078,7 @@ class Kimai_Database_Mysql
         if ($end) {
             $whereClauses[] = "start < $end";
         }
-        
+
         $query = "SELECT start, end, customerID, (end - start) / 3600 * rate AS costs, fixedRate
               FROM ${p}timeSheet
               LEFT JOIN ${p}projects USING(projectID)
@@ -4116,7 +4112,7 @@ class Kimai_Database_Mysql
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
-            
+
             $costs = (double)$row['costs'];
             $fixedRate = (double)$row['fixedRate'];
 
