@@ -37,8 +37,10 @@ function checkUser()
             kickUser();
         } else {
             $user = $database->checkUserInternal($kimai_user);
-            Kimai_Registry::setUser(new Kimai_User($user));
-
+            if (!$user instanceof Kimai_User) {
+                $user = new Kimai_User($user);
+            }
+            Kimai_Registry::setUser($user);
             return $user;
         }
     }
