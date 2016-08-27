@@ -100,7 +100,7 @@ switch ($axAction) {
 
         // If the password field is empty don't overwrite the old password.
         if (trim($_REQUEST['password']) != "") {
-            $userData['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
+            $userData['password'] = encode_password($_REQUEST['password']);
             $database->user_edit($kga['user']['userID'], $userData);
         }
 
@@ -242,6 +242,7 @@ switch ($axAction) {
                 $data['street'] = $_REQUEST['street'];
                 $data['zipcode'] = $_REQUEST['zipcode'];
                 $data['city'] = $_REQUEST['city'];
+                $data['country'] = $_REQUEST['country'];
                 $data['phone'] = $_REQUEST['phone'];
                 $data['fax'] = $_REQUEST['fax'];
                 $data['mobile'] = $_REQUEST['mobile'];
@@ -252,7 +253,7 @@ switch ($axAction) {
 
                 // If password field is empty don't overwrite the password.
                 if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {
-                    $data['password'] = md5($kga['password_salt'] . $_REQUEST['password'] . $kga['password_salt']);
+                    $data['password'] = encode_password($_REQUEST['password']);
                 }
                 if (isset($_REQUEST['no_password']) && $_REQUEST['no_password']) {
                     $data['password'] = '';
@@ -373,6 +374,8 @@ switch ($axAction) {
                         foreach ($itemsToRemove as $item) {
                             $database->remove_fixed_rate($id, $item);
                         }
+                    } else {
+                        $database->assignProjectToActivitiesForGroup($id, array(), $kga['user']['groups']);
                     }
                 }
 

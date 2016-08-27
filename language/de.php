@@ -118,6 +118,7 @@ return array(
     "street" => "Straße",
     "zipcode" => "PLZ",
     "city" => "Ort",
+    "country" => "Land",
     "telephon" => "Tel.",
     "fax" => "Fax",
     "mobilephone" => "Mobil",

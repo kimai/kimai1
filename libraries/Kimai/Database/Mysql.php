@@ -369,6 +369,7 @@ class Kimai_Database_Mysql
         $values['street'] = MySQL::SQLValue($data['street']);
         $values['zipcode'] = MySQL::SQLValue($data['zipcode']);
         $values['city'] = MySQL::SQLValue($data['city']);
+        $values['country'] = MySQL::SQLValue($data['country']);
         $values['phone'] = MySQL::SQLValue($data['phone']);
         $values['fax'] = MySQL::SQLValue($data['fax']);
         $values['mobile'] = MySQL::SQLValue($data['mobile']);
@@ -391,10 +392,10 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * Returns the data of a certain customer
+     * Returns the data of a customer
      *
-     * @param array $customerID  id of the customer
-     * @return array         the customer's data (name, address etc) as array, false on failure
+     * @param int $customerID  id of the customer
+     * @return array the customer's data, false on failure
      * @author th
      */
     public function customer_get_data($customerID)
@@ -426,10 +427,24 @@ class Kimai_Database_Mysql
         $values = array();
 
         $strings = array(
-            'name', 'comment', 'password', 'company', 'vat',
-            'contact', 'street', 'zipcode', 'city', 'phone',
-            'fax', 'mobile', 'mail', 'homepage', 'timezone',
-            'passwordResetHash');
+            'name',
+            'comment',
+            'password',
+            'company',
+            'vat',
+            'contact',
+            'street',
+            'zipcode',
+            'city',
+            'country',
+            'phone',
+            'fax',
+            'mobile',
+            'mail',
+            'homepage',
+            'timezone',
+            'passwordResetHash'
+        );
         foreach ($strings as $key) {
             if (isset($data[$key])) {
                 $values[$key] = MySQL::SQLValue($data[$key]);
@@ -872,13 +887,9 @@ class Kimai_Database_Mysql
 
         if (isset($data['fixedRate'])) {
             if (is_numeric($data['fixedRate'])) {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->save_fixed_rate($activityGroup, $activityID, $data['fixedRate']);
-                }
+                $this->save_fixed_rate(null, $activityID, $data['fixedRate']);
             } else {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->remove_fixed_rate($activityGroup, $activityID);
-                }
+                $this->remove_fixed_rate(null, $activityID);
             }
         }
 
@@ -1137,22 +1148,23 @@ class Kimai_Database_Mysql
     /**
      * returns all the projects to which the activity was assigned
      *
-     * @param int $activityID  activityID of the project
+     * @param int $activityId  activityId of the project
      * @return array         contains the IDs of the projects or false on error
      * @author th
      */
-    public function activity_get_projects($activityID)
+    public function activity_get_projects($activityId)
     {
-        $activityId = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
+        $activityId = MySQL::SQLValue($activityId, MySQL::SQLVALUE_NUMBER);
         $p = $this->kga['server_prefix'];
 
-        $query = "SELECT ${p}projects.* 
+        $query = "SELECT project.*, customer.name as customer_name, customer.visible as customerVisible
                 FROM ${p}projects_activities
-                JOIN ${p}projects USING(projectID)
-                WHERE activityID = $activityId AND ${p}projects.trash=0";
+                JOIN ${p}projects AS project USING (projectID)
+                JOIN ${p}customers AS customer USING (customerID)
+                WHERE activityID = $activityId AND project.trash=0";
 
         $result = $this->conn->Query($query);
-        
+
         if ($result == false) {
             $this->logLastError('activity_get_projects');
             return false;
@@ -1323,17 +1335,12 @@ class Kimai_Database_Mysql
         $rows = $this->conn->RecordsArray(MYSQLI_ASSOC);
 
         $activityIDs = array();
-        $counter = 0;
-        
         if ($this->conn->RowCount()) {
             foreach ($rows as $row) {
                 $activityIDs[$row['activityID']] = $row['activityID'];
-                $counter++;
             }
-            return $activityIDs;
-        } else {
-            return false;
         }
+        return $activityIDs;
     }
 
     /**
@@ -1607,7 +1614,7 @@ class Kimai_Database_Mysql
     /**
      * Edits a user by replacing his data and preferences by the new array
      *
-     * @param array $userID  userID of the user to be edited
+     * @param int $userID  userID of the user to be edited
      * @param array $data    username, email, and other new data of the user
      * @return boolean       true on success, false on failure
      * @author ob/th
@@ -1670,7 +1677,7 @@ class Kimai_Database_Mysql
     /**
      * deletes a user
      *
-     * @param array $userID  userID of the user
+     * @param int $userID  userID of the user
      * @param boolean $moveToTrash whether to delete user or move to trash
      * @return boolean       true on success, false on failure
      * @author th
@@ -2743,7 +2750,7 @@ class Kimai_Database_Mysql
                 $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
-                
+
                 $fixedRate = (double)$row->fixedRate;
                 if ($fixedRate) {
                     $arr[$i]['wage'] = sprintf("%01.2f", $fixedRate);
@@ -3585,7 +3592,7 @@ class Kimai_Database_Mysql
     public function get_users($trash = 0, array $groups = null)
     {
         $p = $this->kga['server_prefix'];
-        
+
         $trash = MySQL::SQLValue($trash, MySQL::SQLVALUE_NUMBER);
 
         if (empty($groups)) {
@@ -3750,7 +3757,7 @@ class Kimai_Database_Mysql
         if ($rate) {
             $values['rate'] = $rate;
         }
-        
+
         $fixedRate = $this->get_best_fitting_fixed_rate($projectID, $activityID);
         if ($fixedRate) {
             $values['fixedRate'] = $fixedRate;
@@ -3822,7 +3829,7 @@ class Kimai_Database_Mysql
      * return ID of specific user named 'XXX'
      *
      * @param integer $name name of user in table users
-     * @return boolean id of the customer
+     * @return int id of the customer
      */
     public function customer_nameToID($name)
     {
@@ -3830,15 +3837,15 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * return ID of specific user named 'XXX'
+     * return ID of specific user by name
      *
-     * @param integer $name name of user in table users
-     * @return boolean
+     * @param int $name name of user in table users
+     * @return string|bool
      * @author th
      */
     public function user_name2id($name)
     {
-        return $this->name2id($this->kga['server_prefix'] . "users", 'userID', 'name', $name);
+        return $this->name2id($this->kga['server_prefix'] . 'users', 'userID', 'name', $name);
     }
 
     /**
@@ -3849,7 +3856,7 @@ class Kimai_Database_Mysql
      * @param string $endColumn
      * @param string $filterColumn
      * @param integer $value
-     * @return bool
+     * @return string|bool
      */
     private function name2id($table, $endColumn, $filterColumn, $value)
     {
@@ -3869,7 +3876,7 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        return $row[$endColumn];
+        return (int)$row[$endColumn];
     }
 
     /**
@@ -4122,7 +4129,7 @@ class Kimai_Database_Mysql
         if ($end) {
             $whereClauses[] = "start < $end";
         }
-        
+
         $query = "SELECT start, end, customerID, (end - start) / 3600 * rate AS costs, fixedRate
               FROM ${p}timeSheet
               LEFT JOIN ${p}projects USING(projectID)
@@ -4156,7 +4163,7 @@ class Kimai_Database_Mysql
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
-            
+
             $costs = (double)$row['costs'];
             $fixedRate = (double)$row['fixedRate'];
 

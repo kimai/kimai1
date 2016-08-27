@@ -32,10 +32,6 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
      */
     public function render()
     {
-        // libs TinyButStrong
-        include_once('TinyButStrong/tinyButStrong.class.php');
-        include_once('TinyButStrong/tinyDoc.class.php');
-
         $doc = new tinyDoc();
 
         // use zip extension if available
@@ -55,15 +51,14 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
 
         //This is where the template is selected
 
-        $templateform = $this->getTemplateDir() . $this->getTemplateFile();
-        $doc->createFrom($templateform);
-
+        $templateForm = $this->getTemplateDir() . $this->getTemplateFile();
+        $doc->createFrom($templateForm);
         $doc->loadXml('content.xml');
 
         // fetch variables from model to get values
-        $customer   = $this->getModel()->getCustomer();
-        $projects   = $this->getModel()->getProjects();
-        $entries    = $this->getModel()->getEntries();
+        $customer = $this->getModel()->getCustomer();
+        $projects = $this->getModel()->getProjects();
+        $entries = $this->getModel()->getEntries();
 
         // assign all available variables (which are not arrays as they do not work in tinyButStrong)
         foreach ($this->getModel()->toArray() as $k => $v) {
@@ -73,7 +68,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
             $GLOBALS[$k] = $v;
         }
 
-        // ugly but neccessary for tinyButStrong
+        // ugly but necessary for tinyButStrong
         // set globals variables, so they can be used in invoice templates
         $allCustomer = $this->prepareCustomerArray($customer);
         foreach ($allCustomer as $k => $v) {

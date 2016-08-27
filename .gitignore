@@ -2,6 +2,7 @@
 *.*~
 vendor/
 temporary/*.txt
+temporary/zend_cache*
 autoconf.php
 .settings
 .idea/
@@ -9,3 +10,4 @@ autoconf.php
 libraries/bin/
 libraries/phpunit/
 libraries/symfony/
+/bin/

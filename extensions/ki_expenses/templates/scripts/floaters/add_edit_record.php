@@ -111,6 +111,12 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         $('#help').hide();
 
         $('#edit_day').datepicker();
+
+        $('#edit_value').keyup(function() {
+            var $self = $(this);
+            $self.val($self.val().replace(/,/g, '.'));
+        });
+        
         var $expense_extension_form_add_edit_record = $('#expense_extension_form_add_edit_record');
         $expense_extension_form_add_edit_record.ajaxForm({
             'beforeSubmit': function () {
@@ -118,8 +124,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 
                 if ($expense_extension_form_add_edit_record.attr('submitting')) {
                     return false;
-                }
-                else {
+                } else {
                     $expense_extension_form_add_edit_record.attr('submitting', true);
                     return true;
                 }

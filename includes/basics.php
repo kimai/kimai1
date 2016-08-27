@@ -44,6 +44,7 @@ if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
 ini_set('display_errors', '0');
 
 require_once WEBROOT . '/libraries/autoload.php';
+//require_once WEBROOT . 'includes/vars.php';
 require_once WEBROOT . 'includes/func.php';
 
 // The $kga (formerly Kimai Global Array) is initialized here
@@ -93,7 +94,7 @@ unset($cleanup);
 // as it is historically referenced in many places from the global namespace
 $database = new Kimai_Database_Mysql($kga, true);
 if (!$database->isConnected()) {
-    die('Kimai could not connect to database, check autoconf.php: '.$database->getLastError());
+    die('Kimai could not connect to database. Check your autoconf.php.');
 }
 Kimai_Registry::setDatabase($database);
 

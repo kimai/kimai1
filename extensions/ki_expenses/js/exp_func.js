@@ -37,14 +37,13 @@ function expense_extension_applyHoverIntent() {
 	$('#expenses').find('tr').hoverIntent({
 		sensitivity: 1,
 		interval: 500,
-		over:
-			function() {
-				$('#expenses').find('tr').removeClass('hover');
-				$(this).addClass('hover');},
-		out:
-			function() {
-				$(this).removeClass('hover');
-			}
+		over: function() {
+			$('#expenses').find('tr').removeClass('hover');
+			$(this).addClass('hover');
+		},
+		out: function() {
+			$(this).removeClass('hover');
+		}
 	});
 }
 

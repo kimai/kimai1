@@ -80,8 +80,12 @@ function lang_selected(lang) {
 // -------------------------------------------------
 // Agree to GPL
 
-function gpl_agreed() {
-    $('#installsteps button.proceed').fadeIn('slow');
+function gpl_agreed(checkbox) {
+    if($(checkbox).prop('checked')) {
+        $('#installsteps button.proceed').fadeIn('slow');
+    } else {
+        $('#installsteps button.proceed').fadeOut();
+    }
 }
 
 function gpl_proceed() {
@@ -113,11 +117,13 @@ function resetRequirementsIndicators() {
     $('div.sp_mysql').removeClass("fail");
     $('div.sp_iconv').removeClass("fail");
     $('div.sp_memory').removeClass("fail");
-    
+    $('div.sp_dom').removeClass("fail");
+
     $('div.sp_phpversion').addClass("ok");
     $('div.sp_mysql').addClass("ok");
     $('div.sp_iconv').addClass("ok");
     $('div.sp_memory').addClass("ok");
+    $('div.sp_dom').addClass("ok");
 }
 
 function system_requirements_proceed() {

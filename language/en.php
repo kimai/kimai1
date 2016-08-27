@@ -121,6 +121,7 @@ return array(
     "street" => "Street",
     "zipcode" => "Zipcode",
     "city" => "City",
+    "country" => "Country",
     "telephon" => "Phone",
     "fax" => "Fax",
     "mobilephone" => "Cell",

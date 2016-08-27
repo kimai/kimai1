@@ -288,7 +288,7 @@ if ((int)$revisionDB < 1067) {
             $new_password = createPassword(8);
         }
         exec_query("UPDATE `${p}usr` SET pw = '" .
-            md5($kga['password_salt'] . $new_password . $kga['password_salt']) .
+                   encode_password($new_password) .
             "' WHERE usr_ID = $user[usr_ID]");
         if ($result) {
             $new_passwords[$user['usr_name']] = $new_password;
@@ -1123,11 +1123,17 @@ if ((int)$revisionDB < 1388) {
 
 // release of kimai 1.0.0
 
+if ((int)$revisionDB < 1389) {
+    Kimai_Logger::logfile("-- update to r1389");
+    exec_query("ALTER TABLE ${p}customers ADD COLUMN `country` varchar(2) NULL DEFAULT NULL AFTER `city`");
+}
+
+// release of kimai 1.1.0
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
-if ((int)$revisionDB < $kga['revision'] && !$errors)
-{
+if ((int)$revisionDB < $kga['revision'] && !$errors) {
     $query = sprintf("UPDATE `${p}configuration` SET value = '%s' WHERE `option` = 'version';", $kga['version']);
     exec_query($query, 0);
 

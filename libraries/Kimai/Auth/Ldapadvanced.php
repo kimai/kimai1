@@ -138,7 +138,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     protected $forceLowercase = true;
 
     /**
-     * Accounts that sould be verified locally.
+     * Accounts that should be verified locally.
      *
      * All entries in this array will not be checked against the LDAP
      *
@@ -149,7 +149,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     );
 
     /**
-     * Automatically create a user in kimai if the login is successful.
+     * Automatically create a user in Kimai if the login is successful.
      *
      * @var boolean $autocreateUsers
      */
@@ -182,7 +182,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     public function __construct($database = null, $kga = null)
     {
         if (!function_exists('ldap_bind')) {
-            throw new InvalidArgumentException('LDAP-Extension is not installed');
+            throw new Kimai_Auth_Exception('LDAP-Extension is not installed');
         }
         parent::__construct($database, $kga);
         $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
@@ -345,7 +345,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         }
 
         // User is authenticated. Does it exist in Kimai yet?
-        $check_username = $this->forceLowercase ? strtolower($uidAttribute) : $uidAttribute;
+        $check_username = $this->createCheckUsername($username, $uidAttribute);
 
         $userId = $this->database->user_name2id($check_username);
         if ($userId === false) {
@@ -432,5 +432,15 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         }
 
         return $map;
+    }
+
+    /**
+     * @param $username
+     * @param $uidAttribute
+     * @return string
+     */
+    protected function createCheckUsername($username, $uidAttribute)
+    {
+        return $this->forceLowercase ? strtolower($uidAttribute) : $uidAttribute;
     }
 }

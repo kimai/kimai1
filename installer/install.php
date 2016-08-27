@@ -175,6 +175,7 @@ $query =
   `street` varchar(255) NULL,
   `zipcode` varchar(255) NULL,
   `city` varchar(255) NULL,
+  `country` varchar(2) NULL,
   `phone` varchar(255) NULL,
   `fax` varchar(255) NULL,
   `mobile` varchar(255) NULL,
@@ -311,7 +312,7 @@ exec_query($query);
 
 
 // ADMIN USER
-$adminPassword = md5($kga['password_salt'] . 'changeme' . $kga['password_salt']);
+$adminPassword = encode_password('changeme');
 $query = "INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRoleID` ) VALUES ('$randomAdminID','admin','admin@example.com','$adminPassword',1);";
 exec_query($query);
 

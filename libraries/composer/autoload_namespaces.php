@@ -7,5 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Zend_' => array($vendorDir . '/zendframework/zendframework1/library'),
+    'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
     'Kimai_' => array($vendorDir),
 );
