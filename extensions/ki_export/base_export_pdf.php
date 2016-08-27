@@ -98,6 +98,22 @@ class BasePDF extends TCPDF
     }
 
     /**
+     * Calculate time in hh:mm from duration lenght in second
+     * rounded to minutes.
+     *
+     * @param int $duration lenght in second
+     * @return string time in format hh:mm
+     */
+    public function timeLength($duration)
+    {
+        $s = $duration % 60;
+        $m = (($duration - $s) / 60) % 60;
+        $h = floor($duration / 3600);
+        $timeLength =  $h . ":" . substr('0' . $m, - 2);
+        return $this->time_unit($timeLength);
+    }
+
+    /**
      * Format a number as a money value.
      *
      * @param int $number amount of money
@@ -116,7 +132,7 @@ class BasePDF extends TCPDF
      */
     public function printHeader($w, $header)
     {
-        // Colors, line width and bold font 
+        // Colors, line width and bold font
         $this->SetFillColor(240, 240, 240);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -154,10 +170,10 @@ class BasePDF extends TCPDF
             $w[0] -= 30;
         }
 
-        // Header 
+        // Header
         $this->printHeader($w, $header);
 
-        // Color and font restoration 
+        // Color and font restoration
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('');
@@ -188,7 +204,7 @@ class BasePDF extends TCPDF
                 $this->AddPage();
                 $this->printHeader($w, $header);
 
-                // Color and font restoration 
+                // Color and font restoration
                 $this->SetFillColor(224, 235, 255);
                 $this->SetTextColor(0);
                 $this->SetFont('');
@@ -200,7 +216,7 @@ class BasePDF extends TCPDF
                 }
             } else {
                 if (isset($this->columns['time'])) {
-                    $this->Cell($w[1], 6, gmdate('H:i', $row['std_time']), 'LR', 0, 'R', $fill);
+                    $this->Cell($w[1], 6, $this->timeLength($row['std_time']), 'LR', 0, 'R', $fill);
                 }
             }
             if (isset($this->columns['wage'])) {
@@ -223,7 +239,7 @@ class BasePDF extends TCPDF
             }
         } else {
             if (isset($this->columns['time'])) {
-                $this->Cell($w[1], 6, gmdate('H:i', $sum_std_time), '', 0, 'R', true);
+                $this->Cell($w[1], 6, $this->timeLength($sum_std_time), '', 0, 'R', true);
             }
         }
         if (isset($this->columns['wage'])) {
