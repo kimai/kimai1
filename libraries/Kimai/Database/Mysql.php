@@ -42,7 +42,7 @@ class Kimai_Database_Mysql
      * Instantiate a new database layer.
      * The provided kimai global array will be stored as a reference.
      *
-     * @param array $kga
+     * @param Kimai_Config $kga
      * @param bool $autoConnect
      */
     public function __construct(&$kga, $autoConnect = true)
@@ -2880,7 +2880,7 @@ class Kimai_Database_Mysql
     protected function getConfigurationData()
     {
         $table = $this->kga['server_prefix'] . "configuration";
-        $this->conn->SelectRows($table, array("option NOT IN ('version', 'revision')"));
+        $this->conn->SelectRows($table, array("`option` NOT IN ('version', 'revision')"));
 
         $config_data = array();
 
