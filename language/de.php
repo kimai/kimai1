@@ -262,7 +262,6 @@ return array(
     "atLeastOneGroup" => 'Es muss mindestens eine Gruppe ausgewählt sein.',
     "noFading" => "Ein-/Ausblenden deaktivieren",
     "user_list_hidden" => "standardmäßig Liste mit Benutzern ausblenden",
-    'show_sensible_data' => 'Zeige in der Debug Extension auch sensible Daten an.',
     'show_update_warn' => 'Warnung vor dem Update nicht mehr anzeigen.',
     'check_at_startup' => 'Auf der Login-Seite über eine neue Version informieren.',
     'show_daySeperatorLines' => 'Trennlinie zwischen Tagen in den Tabellen anzeigen.',

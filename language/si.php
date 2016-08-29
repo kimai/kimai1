@@ -223,7 +223,6 @@ return array(
     "noFading" => "brez izginjajočega učinka",
     "user_list_hidden" => "sktit privzet uporabnikov seznam",
 
-    'show_sensible_data' => 'Prikaži smiselne podatke tudi v popravljenih razširitvah.',
     'show_update_warn' => 'Ugasni opozorilo pred posodabljanjem.',
     'check_at_startup' => 'Pokaži sporočilo na prijavni strani, če je na voljo nova različica.',
     'show_daySeperatorLines' => 'Nariši črto med vnosi različnih dni.',

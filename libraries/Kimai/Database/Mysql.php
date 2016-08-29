@@ -2931,7 +2931,6 @@ class Kimai_Database_Mysql
                 case 'currency_name':
                 case 'currency_sign':
                 case 'currency_first':
-                case 'show_sensible_data':
                 case 'show_update_warn':
                 case 'check_at_startup':
                 case 'show_daySeperatorLines':

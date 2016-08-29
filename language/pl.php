@@ -217,7 +217,6 @@ return array(
     "noFading" => "bez efektu ściemniania",
     "user_list_hidden" => "domyślnie ukryj listę użytkowników",
 
-    'show_sensible_data' => 'Wyswietl dane krytyczne w rozszerzeniami debugera',
     'show_update_warn' => 'Przed aktalizacją wyłącz ostrzeżenia.',
     'check_at_startup' => 'Pokaż informację o nowej wersji na stronie logowania.',
     'show_daySeperatorLines' => 'Kreśl linię pomiędzy wpisami z różnych dni.',

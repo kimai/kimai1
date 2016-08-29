@@ -222,7 +222,6 @@ return array(
     "noFading" => "no fading effect",
     "user_list_hidden" => "hide user list by default",
     
-    'show_sensible_data' => 'Zobraz citlivá data na záložce debug.',
     'show_update_warn' => 'Vypni varování před aktualizací.',
     'check_at_startup' => 'Zobraz zprávu o nových verzích na přihlašovací stránce.',
     'show_daySeperatorLines' => 'Nakresli čáru mezi položka z různých dní.',

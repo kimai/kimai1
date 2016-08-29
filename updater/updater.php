@@ -1130,6 +1130,11 @@ if ((int)$revisionDB < 1389) {
 
 // release of kimai 1.1.0
 
+if ((int)$revisionDB < 1390) {
+    Kimai_Logger::logfile("-- update to r1390");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'show_sensible_data'");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

@@ -284,7 +284,6 @@ return array(
     "noFading" => "Pas d'effet fondu",
     "user_list_hidden" => "Cacher la liste util. par défaut",
     "checkStatusname" => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
-    'show_sensible_data' => 'Montrer les données sensibles aussi dans l\'extension Débugage.',
     'show_update_warn' => 'Désactiver l\'alerte avant une mise à jour.',
     'check_at_startup' => 'Montrer un message sur la page de conection si une nouvelle version est disponible.',
     'show_daySeperatorLines' => 'Tirer une ligne entre les entrées de jours différents.',

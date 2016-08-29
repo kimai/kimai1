@@ -225,7 +225,6 @@ return array(
     "noFading" => "ei häivytysefektiä",
     "user_list_hidden" => "piilota käyttäjälista oletuksena",
 
-    'show_sensible_data' => 'Näytä virheenjäljityksen yksityiskohtainen tieto',
     'show_update_warn' => 'Kytke varoitukset pois päältä ennen päivitystä.',
     'check_at_startup' => 'Näytä viesti kirjautumissivulla uusista saatavilla olevista versiosta.',
     'show_daySeperatorLines' => 'Piirrä viiva kirjausten välille päivien mukaan',
