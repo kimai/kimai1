@@ -1,32 +1,32 @@
-    <script type="text/javascript">
-        function cb(result) {
-            if (result.errors.length == 0) {
-              window.location.reload();
-              return;
-            }
-            $("#adminPanel_extension_form_editadv_submit").blur();
-            $("#adminPanel_extension_output").width($(".adminPanel_extension_panel_header").width()-22);
-            $("#adminPanel_extension_output").fadeIn(fading_enabled?500:0,function(){
-                $("#adminPanel_extension_output").fadeOut(fading_enabled?4000:0);
-            });
+<script type="text/javascript">
+    function cb(result) {
+        if (result.errors.length == 0) {
+          window.location.reload();
+          return;
         }
-        $(document).ready(function() {
-    
-            $('.disableInput').click(function(){
-              var input = $(this);
-              if (input.is (':checked')) {
-                input.parent().removeClass("disabled");
-                input.siblings().prop("disabled", false);
-              }
-              else {
-                input.parent().addClass("disabled");
-                input.siblings().prop("disabled", true);
-              }
-            });
+        $("#adminPanel_extension_form_editadv_submit").blur();
+        $("#adminPanel_extension_output").width($(".adminPanel_extension_panel_header").width()-22);
+        $("#adminPanel_extension_output").fadeIn(fading_enabled?500:0,function(){
+            $("#adminPanel_extension_output").fadeOut(fading_enabled?4000:0);
+        });
+    }
+    $(document).ready(function() {
 
-            $('#adminPanel_extension_form_editadv').ajaxForm({target:'#adminPanel_extension_output',success:cb}); 
-        }); 
-    </script>
+        $('.disableInput').click(function(){
+          var input = $(this);
+          if (input.is (':checked')) {
+            input.parent().removeClass("disabled");
+            input.siblings().prop("disabled", false);
+          }
+          else {
+            input.parent().addClass("disabled");
+            input.siblings().prop("disabled", true);
+          }
+        });
+
+        $('#adminPanel_extension_form_editadv').ajaxForm({target:'#adminPanel_extension_output',success:cb});
+    });
+</script>
 
 <div class="content">
     
@@ -36,13 +36,13 @@
         
         <fieldset class="adminPanel_extension_advanced">
             <div>
-                <input type="text" name="adminmail" size="20" value="<?php echo $this->escape($this->kga['conf']['adminmail']) ?>" class="formfield"> <?php echo $this->kga['lang']['adminmail']?>
+                <input type="text" name="adminmail" size="20" value="<?php echo $this->escape($this->kga->getAdminEmail()) ?>" class="formfield"> <?php echo $this->kga['lang']['adminmail']?>
             </div>
             <div>
-                <input type="text" name="logintries" size="2" value="<?php echo $this->escape($this->kga['conf']['loginTries']) ?>" class="formfield"> <?php echo $this->kga['lang']['logintries']?>
+                <input type="text" name="logintries" size="2" value="<?php echo $this->escape($this->kga->getLoginTriesBeforeBan()) ?>" class="formfield"> <?php echo $this->kga['lang']['logintries']?>
             </div>
             <div>
-                <input type="text" name="loginbantime" size="4" value="<?php echo $this->escape($this->kga['conf']['loginBanTime']) ?>" class="formfield"> <?php echo $this->kga['lang']['bantime']?>
+                <input type="text" name="loginbantime" size="4" value="<?php echo $this->escape($this->kga->getLoginBanTime()) ?>" class="formfield"> <?php echo $this->kga['lang']['bantime']?>
             </div>
 
             <div id="adminPanel_extension_checkupdate">
@@ -51,7 +51,7 @@
 
             <div>
                 <?php echo $this->kga['lang']['lang']?>:
-                <?php echo $this->formSelect('language', $this->kga['conf']['language'], array('class' => 'formfield'), array_combine($this->languages, $this->languages)); ?>
+                <?php echo $this->formSelect('language', $this->kga->getLanguage(true), array('class' => 'formfield'), array_combine($this->languages, $this->languages)); ?>
             </div>
 
             <div>
@@ -67,47 +67,47 @@
             </div>
 
             <div>
-               <input type="checkbox" name="show_daySeperatorLines" <?php if ($this->kga['show_daySeperatorLines']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_daySeperatorLines']?>
+               <input type="checkbox" name="show_daySeperatorLines" <?php if ($this->kga->isShowDaySeperatorLines()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_daySeperatorLines']?>
             </div>
 
             <div>
-               <input type="checkbox" name="show_gabBreaks" <?php if ($this->kga['show_gabBreaks']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_gabBreaks']?>
+               <input type="checkbox" name="show_gabBreaks" <?php if ($this->kga->isShowGabBreaks()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_gabBreaks']?>
             </div>
 
             <div>
-               <input type="checkbox" name="show_RecordAgain" <?php if ($this->kga['show_RecordAgain']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_RecordAgain']?>
+               <input type="checkbox" name="show_RecordAgain" <?php if ($this->kga->isShowRecordAgain()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_RecordAgain']?>
             </div>
 
             <div>
-               <input type="checkbox" name="show_TrackingNr" <?php if ($this->kga['show_TrackingNr']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_TrackingNr']?>
+               <input type="checkbox" name="show_TrackingNr" <?php if ($this->kga->isTrackingNumberEnabled()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['show_TrackingNr']?>
             </div>
 
             <div>
-               <input type="text" name="currency_name" size="8" value="<?php echo $this->escape($this->kga['currency_name']) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_name']?>
+               <input type="text" name="currency_name" size="8" value="<?php echo $this->escape($this->kga->getCurrencyName()) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_name']?>
             </div>
 
             <div>
-               <input type="text" name="currency_sign" size="2" value="<?php echo $this->escape($this->kga['currency_sign']) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_sign']?>
+               <input type="text" name="currency_sign" size="2" value="<?php echo $this->escape($this->kga->getCurrencySign()) ?>" class="formfield"> <?php echo $this->kga['lang']['currency_sign']?>
             </div>
 
             <div>
-               <input type="checkbox" name="currency_first" <?php if ($this->kga['conf']['currency_first']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['currency_first']?>
+               <input type="checkbox" name="currency_first" <?php if ($this->kga->isDisplayCurrencyFirst()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['currency_first']?>
             </div>
 
             <div>
-               <input type="text" name="date_format_2" size="15" value="<?php echo $this->escape($this->kga['date_format'][2]) ?>" class="formfield"> <?php echo $this->kga['lang']['display_date_format']?>
+               <input type="text" name="date_format_2" size="15" value="<?php echo $this->escape($this->kga->getDateFormat(2)) ?>" class="formfield"> <?php echo $this->kga['lang']['display_date_format']?>
             </div>
 
             <div>
-               <input type="text" name="date_format_0" size="15" value="<?php echo $this->escape($this->kga['date_format'][0]) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_0']?>
+               <input type="text" name="date_format_0" size="15" value="<?php echo $this->escape($this->kga->getDateFormat(0)) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_0']?>
             </div>
 
             <div>
-                <input type="text" name="date_format_3" size="15" value="<?php echo $this->escape($this->kga['date_format'][3]) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_3']?>
+                <input type="text" name="date_format_3" size="15" value="<?php echo $this->escape($this->kga->getDateFormat(3)) ?>" class="formfield"> <?php echo $this->kga['lang']['date_format_3']?>
             </div>
 
             <div>
-               <input type="text" name="date_format_1" size="15" value="<?php echo $this->escape($this->kga['date_format'][1]) ?>" class="formfield"> <?php echo $this->kga['lang']['table_date_format']?>
+               <input type="text" name="date_format_1" size="15" value="<?php echo $this->escape($this->kga->getDateFormat(1)) ?>" class="formfield"> <?php echo $this->kga['lang']['table_date_format']?>
             </div>
 
             <div>
@@ -116,14 +116,14 @@
 
             <div>
                <?php echo $this->kga['lang']['round_time']?> <select name="roundPrecision" class="formfield">
-                 <option value="0" <?php if ($this->kga['conf']['roundPrecision']==0): ?> selected="selected" <?php endif; ?>>-</option>
-                 <option value="1" <?php if ($this->kga['conf']['roundPrecision']==1): ?> selected="selected" <?php endif; ?>>1</option>
-                 <option value="5" <?php if ($this->kga['conf']['roundPrecision']==5): ?> selected="selected" <?php endif; ?>>5</option>
-                 <option value="10" <?php if ($this->kga['conf']['roundPrecision']==10): ?> selected="selected" <?php endif; ?>>10</option>
-                 <option value="15" <?php if ($this->kga['conf']['roundPrecision']==15): ?> selected="selected" <?php endif; ?>>15</option>
-                 <option value="15" <?php if ($this->kga['conf']['roundPrecision']==20): ?> selected="selected" <?php endif; ?>>20</option>
-                 <option value="30" <?php if ($this->kga['conf']['roundPrecision']==30): ?> selected="selected" <?php endif; ?>>30</option>
-               </select> <?php echo $this->kga['lang']['round_time_minute']?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga['conf']['allowRoundDown']): ?> checked="checked" <?php endif; ?> value="1" class="formfiled"> <?php echo $this->kga['lang']['allowRoundDown'];?>
+                 <option value="0" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 0): ?> selected="selected" <?php endif; ?>>-</option>
+                 <option value="1" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 1): ?> selected="selected" <?php endif; ?>>1</option>
+                 <option value="5" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 5): ?> selected="selected" <?php endif; ?>>5</option>
+                 <option value="10" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 10): ?> selected="selected" <?php endif; ?>>10</option>
+                 <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 15): ?> selected="selected" <?php endif; ?>>15</option>
+                 <option value="15" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 20): ?> selected="selected" <?php endif; ?>>20</option>
+                 <option value="30" <?php if ($this->kga->getRoundPrecisionRecorderTimes() == 30): ?> selected="selected" <?php endif; ?>>30</option>
+               </select> <?php echo $this->kga['lang']['round_time_minute']?> <input type="checkbox" name="allowRoundDown" <?php if($this->kga->isRoundDownRecorderTimes()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['allowRoundDown'];?>
             </div>
 
             <div>
@@ -136,7 +136,7 @@
             </div>
 
             <div>
-               <input type="checkbox" name="exactSums" <?php if ($this->kga['conf']['exactSums']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['exactSums']?>
+               <input type="checkbox" name="exactSums" <?php if ($this->kga->isUseExactSums()): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['exactSums']?>
             </div>
 
             <div <?php if (!$this->editLimitEnabled): ?> class="disabled" <?php endif; ?>>
@@ -145,19 +145,6 @@
               <input type="text" name="editLimitHours" size="3" class="formfield" value="<?php echo $this->editLimitHours?>" <?php if (!$this->editLimitEnabled): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['editLimitPart3']?>
             </div>
 
-            <?php /* FIXME make status field editable */ ?>
-
-<!--        -->
-<!--            <div>-->
-<!--               <select name="status[]" multiple="multiple">-->
-<!--                    {html_options values=$status output=$status_names selected=$this->kga.conf.status}-->
-<!--                </select> <?php echo $this->kga['lang']['status']?>-->
-<!--            </div>-->
-<!--            -->
-<!--            <div>-->
-<!--               <input type="text" name="new_status" class="formfield"> <?php echo $this->kga['lang']['new_status']?>-->
-<!--            </div>-->
-            
             <div <?php if (!$this->roundTimesheetEntries): ?> class="disabled" <?php endif; ?>>
               <input type="checkbox" name="roundTimesheetEntries" value="1" <?php if ($this->roundTimesheetEntries): ?> checked="checked" <?php endif; ?> class="formfield, disableInput"> <?php echo $this->kga['lang']['roundTimesheetEntries']?>
               <input type="text" name="roundMinutes" size="3" class="formfield" value="<?php echo $this->roundMinutes?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['minutes']?> <?php echo $this->kga['lang']['and']?>
@@ -168,7 +155,6 @@
             <div id="formbuttons">
                 <input id="adminPanel_extension_form_editadv_submit" class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['save']?>' />
             </div>
-            
         
         </fieldset>
         

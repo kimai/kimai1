@@ -591,7 +591,7 @@ if ((int)$revisionDB < 1305) {
 
 if ((int)$revisionDB < 1326) {
     Kimai_Logger::logfile("-- update to r1326");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','0')");
 }
 
 if ((int)$revisionDB < 1327) {
@@ -1113,6 +1113,12 @@ if ((int)$revisionDB < 1387) {
     Kimai_Logger::logfile("-- update to r1387");
     exec_query("UPDATE `${p}configuration` set `value`= 'dd.mm.yy' WHERE `option` = 'date_format_0'");
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
+}
+
+if ((int)$revisionDB < 1388) {
+    Kimai_Logger::logfile("-- update to r1388");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'lastdbbackup'");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'kimail'");
 }
 
 // release of kimai 1.0.0

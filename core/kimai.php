@@ -174,8 +174,7 @@ if (isset($kga['user'])) {
     }
 }
 
-$view->assign('openAfterRecorded', isset($kga['conf']['openAfterRecorded']) && $kga['conf']['openAfterRecorded']);
-
+$view->assign('openAfterRecorded', $kga->getSettings()->isShowAfterRecorded());
 $view->assign('lang_checkUsername', $kga['lang']['checkUsername']);
 $view->assign('lang_checkGroupname', $kga['lang']['checkGroupname']);
 $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);

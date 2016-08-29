@@ -33,7 +33,7 @@ function expenseAccessAllowed($entry, $action, &$errors)
     }
 
     // check if expense is too far in the past to allow editing (or deleting)
-    if (isset($entry['id']) && $kga['conf']['editLimit'] != "-" && time() - $entry['timestamp'] > $kga['conf']['editLimit']) {
+    if ($kga->isEditLimit() && time() - $entry['timestamp'] > $kga->getEditLimit()) {
         $errors[''] = $kga['lang']['editLimitError'];
         return false;
     }
@@ -146,7 +146,7 @@ switch ($axAction)
         $view->assign('activity_annotations', array());
 
         if (isset($kga['user'])) {
-            $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+            $view->assign('hideComments', !$kga->getSettings()->isShowComments());
         } else {
             $view->assign('hideComments', true);
         }

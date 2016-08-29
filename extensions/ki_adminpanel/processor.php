@@ -471,7 +471,7 @@ switch ($axAction)
                 $editLimit *= 60 * 60; // convert to seconds
             }
             if ($editLimit === false || $editLimit === 0) {
-                $config_data['editLimit'] = '-';
+                $config_data['editLimit'] = 0;
             } else {
                 $config_data['editLimit'] = $editLimit;
             }

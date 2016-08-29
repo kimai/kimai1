@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team since 2006
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,42 +17,38 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest;
-
-use PHPUnit_Framework_TestCase;
-
 /**
- * Base and helper class for Kimai Unittests.
+ * Class Kimai_Translation_Service
+ *
+ * All things related to translations.
  */
-class TestCase extends PHPUnit_Framework_TestCase
+class Kimai_Translation_Service
 {
+
     /**
-     * @var array
+     * Returns an array of all language codes.
+     *
+     * @return array
      */
-    private $kgaLast;
-
-
-    protected function setKga($kgaNew)
+    public static function getAvailableLanguages()
     {
-        global $kga;
-
-        if (null !== $kga) {
-            $this->kgaLast = clone $kga;
+        $languages = array();
+        foreach (glob(WEBROOT . '/language/*.php') as $langFile) {
+            $languages[] = str_replace(".php", "", basename($langFile));
         }
-        $kga = $kgaNew;
-        \Kimai_Registry::setConfig($kga);
+        sort($languages);
+
+        return $languages;
     }
 
-    protected function resetKga()
+    /**
+     * Load a translation data.
+     *
+     * @param $name
+     * @return Kimai_Translation_Data
+     */
+    public function load($name)
     {
-        if (null === $this->kgaLast) {
-            return;
-        }
-
-        global $kga;
-
-        $kga = $this->kgaLast;
-        \Kimai_Registry::setConfig($kga);
+        return new Kimai_Translation_Data($name);
     }
-
 }

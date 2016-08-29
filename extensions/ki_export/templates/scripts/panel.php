@@ -5,9 +5,9 @@
                 <div class="c">
                     <div id="export_extension_tab_filter">
                         <select id="export_extension_tab_filter_cleared" name="cleared" onchange="export_extension_reload()">
-                            <option value="-1" <?php if (!$this->kga['conf']['hideClearedEntries']): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['cleared_all'] ?></option>
+                            <option value="-1" <?php if (!$this->kga->getSettings()->isHideClearedEntries()): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['cleared_all'] ?></option>
                             <option value="1"><?php echo $this->kga['lang']['export_extension']['cleared_cleared'] ?></option>
-                            <option value="0" <?php if ($this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['cleared_open'] ?></option>
+                            <option value="0" <?php if ($this->kga->getSettings()->isHideClearedEntries()): ?> selected="selected" <?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['cleared_open'] ?></option>
                         </select>
                         <select id="export_extension_tab_filter_refundable" name="refundable" onchange="export_extension_reload()">
                             <option value="-1" selected="selected"><?php echo $this->kga['lang']['export_extension']['refundable_all'] ?></option>

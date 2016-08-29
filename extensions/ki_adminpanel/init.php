@@ -96,20 +96,21 @@ $view->assign('tab_status', $view->render("status.php"));
 // = display advanced tab =
 // ========================
 $showAdvancedTab = $database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced');
-if ($showAdvancedTab) {
-    $view->assign('languages', Kimai_Translations::languages());
+if ($showAdvancedTab)
+{
+    $view->assign('languages', Kimai_Translation_Service::getAvailableLanguages());
     $view->assign('timezones', timezoneList());
 
     $view->assign('editLimitEnabled', false);
     $view->assign('editLimitDays', '');
     $view->assign('editLimitHours', '');
 
-    if ($kga['conf']['editLimit'] != '-') {
-        $view->assign('editLimitEnabled', true);
-        $editLimit = $kga['conf']['editLimit'] / (60 * 60); // convert to hours
-        $view->assign('editLimitDays', (int)($editLimit / 24));
-        $view->assign('editLimitHours', (int)($editLimit % 24));
-    }
+if ($kga->isEditLimit()) {
+    $view->assign('editLimitEnabled', true);
+    $editLimit = $kga->getEditLimit() / (60 * 60); // convert to hours
+    $view->assign('editLimitDays', (int)($editLimit / 24));
+    $view->assign('editLimitHours', (int)($editLimit % 24));
+}
 
     $view->assign('roundTimesheetEntries', false);
     $view->assign('roundMinutes', '');

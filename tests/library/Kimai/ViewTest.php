@@ -32,7 +32,7 @@ class ViewTest extends TestCase
      */
     public function testInit()
     {
-        $myKga = array('foo' => 'bar');
+        $myKga = new \Kimai_Config(array('foo' => 'bar'));
         $this->setKga($myKga);
 
         $view = new Kimai_View();

@@ -266,14 +266,14 @@ class BasePDF extends TCPDF
                     // summary aggregation
                     if ($row['type'] == 'timeSheet') {
                         if (isset($timeSheetSummary[$row['activityID']])) {
-                            $timeSheetSummary[$row['activityID']]['time'] += ($kga['conf']['exactSums'] == 1) ? $row['duration'] / 3600 : $row['decimalDuration']; //Sekunden
+                            $timeSheetSummary[$row['activityID']]['time'] += ($kga->isUseExactSums() == 1) ? $row['duration'] / 3600 : $row['decimalDuration']; //Sekunden
                             $timeSheetSummary[$row['activityID']]['std_time'] += $row['duration'];
-                            $timeSheetSummary[$row['activityID']]['wage'] += ($kga['conf']['exactSums'] == 1) ? $row['wage_decimal'] : $row['wage']; //Euro
+                            $timeSheetSummary[$row['activityID']]['wage'] += ($kga->isUseExactSums() == 1) ? $row['wage_decimal'] : $row['wage']; //Euro
                         } else {
                             $timeSheetSummary[$row['activityID']]['name'] = html_entity_decode($row['activityName']);
-                            $timeSheetSummary[$row['activityID']]['time'] = ($kga['conf']['exactSums'] == 1) ? $row['duration'] / 3600 : $row['decimalDuration'];
+                            $timeSheetSummary[$row['activityID']]['time'] = ($kga->isUseExactSums() == 1) ? $row['duration'] / 3600 : $row['decimalDuration'];
                             $timeSheetSummary[$row['activityID']]['std_time'] = $row['duration'];
-                            $timeSheetSummary[$row['activityID']]['wage'] = ($kga['conf']['exactSums'] == 1) ? $row['wage_decimal'] : $row['wage'];
+                            $timeSheetSummary[$row['activityID']]['wage'] = ($kga->isUseExactSums() == 1) ? $row['wage_decimal'] : $row['wage'];
                         }
                     } else {
                         $expenseInfo['name'] = $kga['lang']['export_extension']['expense'] . ': ' . $row['projectName'];

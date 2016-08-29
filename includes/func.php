@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,8 +37,10 @@ function checkUser()
             kickUser();
         } else {
             $user = $database->checkUserInternal($kimai_user);
-            Kimai_Registry::setUser(new Kimai_User($user));
-
+            if (!$user instanceof Kimai_User) {
+                $user = new Kimai_User($user);
+            }
+            Kimai_Registry::setUser($user);
             return $user;
         }
     }
@@ -92,14 +94,14 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             $projects = $database->get_projects($groups);
             foreach ($projects as $project) {
                 if (($project['visible'] && $project['customerVisible']) || in_array($project['projectID'], $showIds)) {
-                    if ($kga['conf']['flip_project_display']) {
+                    if ($kga->getSettings()->isFlipProjectDisplay()) {
                         $projectName = $project['customerName'] . ": " . $project['name'];
-                        if ($kga['conf']['project_comment_flag']) {
+                        if ($kga->getSettings()->isShowProjectComment()) {
                             $projectName .= "(" . $project['comment'] . ")";
                         }
                     } else {
                         $projectName = $project['name'] . " (" . $project['customerName'] . ")";
-                        if ($kga['conf']['project_comment_flag']) {
+                        if ($kga->getSettings()->isShowProjectComment()) {
                             $projectName .= "(" . $project['comment'] . ")";
                         }
                     }
@@ -227,7 +229,8 @@ function random_number($length)
  */
 function checkDBversion($path)
 {
-    global $kga, $database;
+    $database = Kimai_Registry::getDatabase();
+    $config = Kimai_Registry::getConfig();
 
     // check for versions before 0.7.13r96
     $installedVersion = $database->get_DBversion();
@@ -236,17 +239,11 @@ function checkDBversion($path)
 
     if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
         // fresh install
-        header("Location: $path/installer");
+        header("Location: $path/installer/");
         exit;
     }
 
-    if ($checkVersion != $kga['version']) {
-        header("Location: $path/updater/updater.php");
-        exit;
-    }
-
-    // the check for revision is much simpler ...
-    if ((int)$installedVersion[1] < (int)$kga['revision']) {
+    if ($checkVersion != $config->getVersion() || (int)$installedVersion[1] < $config->getRevision()) {
         header("Location: $path/updater/updater.php");
         exit;
     }
@@ -320,7 +317,8 @@ function createPassword($length)
  */
 function write_config_file($database, $hostname, $username, $password, $prefix, $lang, $salt, $timezone = null)
 {
-    global $kga;
+    $kga = Kimai_Registry::getConfig();
+
     $database = addcslashes($database, '"$');
     $hostname = addcslashes($hostname, '"$');
     $username = addcslashes($username, '"$');
@@ -342,16 +340,17 @@ function write_config_file($database, $hostname, $username, $password, $prefix, 
     }
 
     // fetch skin from global config with "standard" fallback
-    $skin = !empty($kga['skin']) ? $kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
-    $billable = !empty($kga['billable']) ? var_export($kga['billable'], true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
-    $authenticator = !empty($kga['authenticator']) ? $kga['authenticator'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
+    $skin = !empty($kga->getSkin()) ? $kga->getSkin() : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
+    $billable = !empty($kga->getBillable()) ? var_export($kga->getBillable(), true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
+    $authenticator = !empty($kga->getAuthenticator()) ? $kga->getAuthenticator() : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
+    $lang = !empty($lang) ? $lang : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
 
     $config = <<<EOD
 <?php
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team - since 2006
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

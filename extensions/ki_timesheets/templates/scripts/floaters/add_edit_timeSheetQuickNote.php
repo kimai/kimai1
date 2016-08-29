@@ -36,14 +36,14 @@
                         <label for="location"><?php echo $this->kga['lang']['location'] ?>:</label>
                         <input id='location' type='text' name='location'
                                value='<?php echo $this->escape($this->location) ?>' maxlength='50' size='20'
-                               tabindex='11' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
+                               tabindex='11' <?php if ($this->kga->getSettings()->isUseAutoSelection()): ?> onclick="this.select();"<?php endif; ?> />
                     </li>
-                    <?php if ($this->kga['show_TrackingNr']): ?>
+                    <?php if ($this->kga->isTrackingNumberEnabled()): ?>
                         <li>
                             <label for="trackingNumber"><?php echo $this->kga['lang']['trackingNumber'] ?>:</label>
                             <input id='trackingNumber' type='text' name='trackingNumber'
                                    value='<?php echo $this->escape($this->trackingNumber) ?>' maxlength='20' size='20'
-                                   tabindex='12' <?php if ($this->kga['conf']['autoselection']): ?> onclick="this.select();"<?php endif; ?> />
+                                   tabindex='12' <?php if ($this->kga->getSettings()->isUseAutoSelection()): ?> onclick="this.select();"<?php endif; ?> />
                         </li>
                     <?php endif; ?>
                     <li>

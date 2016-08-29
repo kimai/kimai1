@@ -1,4 +1,21 @@
 <?php
+/**
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) Kimai-Development-Team since 2006
+ *
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
+ *
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /**
  * Provides methods for formatting and parsing various data.
@@ -12,7 +29,6 @@ class Kimai_Format
      *
      * @param integer|array one value in seconds or an array of values in seconds
      * @return integer|array depending on the $sek param which contains the formatted duration
-     * @author sl
      */
     public static function formatDuration($sek)
     {
@@ -37,9 +53,9 @@ class Kimai_Format
     /**
      * Format a currency or an array of currencies accordingly.
      *
-     * @param integer|array one value or an array of decimal numbers
-     * @return integer|array formatted string(s)
-     * @author sl
+     * @param integer|array $number one value or an array of decimal numbers
+     * @param bool $htmlNoWrap
+     * @return integer|array|string formatted string(s)
      */
     public static function formatCurrency($number, $htmlNoWrap = true)
     {
@@ -54,10 +70,10 @@ class Kimai_Format
         }
 
         $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f", $number));
-        if ($kga['conf']['currency_first']) {
-            $value = $kga['currency_sign'] . " " . $value;
+        if ($kga->isDisplayCurrencyFirst()) {
+            $value = $kga->getCurrencySign() . " " . $value;
         } else {
-            $value = $value . " " . $kga['currency_sign'];
+            $value = $value . " " . $kga->getCurrencySign();
         }
 
         if ($htmlNoWrap) {
@@ -77,9 +93,9 @@ class Kimai_Format
     {
         global $database, $kga;
 
-        $type = 2;
+        $type = 0;
         if (isset($kga['user'])) {
-            $type = $database->user_get_preference('ui.sublistAnnotations');
+            $type = $kga->getSettings()->getSublistAnnotationType();
         }
 
         $userIds = array_keys($ann);
@@ -114,12 +130,10 @@ class Kimai_Format
     }
 
     /**
-     * returns hours, minutes and seconds as array
-     * input: number of seconds
+     * Returns hours, minutes and seconds as array.
      *
-     * @param integer $sek seconds to extract the time from
+     * @param integer $sek number of seconds to extract the time from
      * @return array
-     * @author th
      */
     public static function hourminsec($sek)
     {
@@ -152,13 +166,11 @@ class Kimai_Format
     }
 
     /**
-     * preprocess shortcut for date entries
-     *
-     * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
+     * Preprocess shortcut for date entries.
+     * Allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
      *
      * @param string $date shortcut date
      * @return string
-     * @author th
      */
     public static function expand_date_shortcut($date)
     {
@@ -213,12 +225,10 @@ class Kimai_Format
     }
 
     /**
-     * preprocess shortcut for time entries
-     *
-     * allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?")
+     * Preprocess shortcut for time entries.
+     * Allowed shortcut formats are shown in the dialogue for edit timesheet entries (click the "?").
      *
      * @return string
-     * @author th
      */
     public static function expand_time_shortcut($time)
     {
@@ -259,12 +269,10 @@ class Kimai_Format
     }
 
     /**
-     * check if a parset string matches with the following time-formatting: 20.08.2008-19:00:00
-     * returns true if string is ok
+     * Check if a parset string matches with the following time-formatting: 20.08.2008-19:00:00.
      *
      * @param string $timestring
      * @return boolean
-     * @author th
      */
     public static function check_time_format($timestring)
     {

@@ -123,7 +123,7 @@ switch ($axAction) {
         // create new record
         //$view->id = 0;
 
-        $view->assign('statusID', $kga['conf']['defaultStatusID']);
+        $view->assign('statusID', $kga->getDefaultStatus());
 
 
         $users = array();
@@ -186,7 +186,7 @@ switch ($axAction) {
           $view->assign('end_time', date("H:i:s"));
         }
 
-        $view->assign('location', $kga['conf']['defaultLocation']);
+        $view->assign('location', $kga->getSettings()->getDefaultLocation());
         $view->assign('showRate', $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates'));
         $view->assign('rate', $database->get_best_fitting_rate($kga['user']['userID'], $selected[0], $selected[1]));
         $view->assign('fixedRate', $database->get_best_fitting_fixed_rate($selected[0], $selected[1]));
@@ -199,7 +199,7 @@ switch ($axAction) {
         $view->assign('cleared', false);
     }
 
-    $view->assign('status', $kga['conf']['status']);
+    $view->assign('status', $kga->getStatuses());
 
     $billableValues = $kga['billable'];
     $billableText = array();

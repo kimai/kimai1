@@ -34,7 +34,7 @@ $customers = $this->filterListEntries($this->customers);
               </td>
 
               <td width="100%" class="clients" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onclick="lists_customer_highlight(<?php echo $customer['customerID']?>); $(this).blur(); return false;">
-                  <?php if ($this->kga['conf']['showIDs'] == 1): ?><span class="ids"><?php echo $customer['customerID']?></span> <?php endif; echo $this->escape($customer['name'])?>
+                  <?php if ($this->kga->getSettings()->isShowIds()): ?><span class="ids"><?php echo $customer['customerID']?></span> <?php endif; echo $this->escape($customer['name'])?>
               </td>
 
               <td nowrap class="annotation"></td>

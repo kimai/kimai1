@@ -1,156 +1,45 @@
 <?php
 /**
- * A user within Kimai
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) Kimai-Development-Team since 2006
+ *
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
+ *
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * A user within Kimai.
+ *
+ * No methods to access fields: password, secure
  *
  * @author Kevin Papst
  */
-class Kimai_User
+class Kimai_User extends Kimai_ArrayObject
 {
-    const USER = 2;
-    const ADMIN = 0;
-
-    /**
-     * @var integer
-     */
-    private $userID = null;
-    /**
-     * @var string
-     */
-    private $name = null;
-    /**
-     * @var integer
-     */
-    private $status = self::USER;
-    /**
-     * @var boolean
-     */
-    private $trash = false;
-    /**
-     * @var boolean
-     */
-    private $active = false;
-    /**
-     * @var string
-     */
-    private $mail = null;
-    /**
-     * @var string
-     */
-    private $password = null;
-    /**
-     * @var boolean
-     */
-    private $ban = false;
-    /**
-     * @var integer
-     */
-    private $banTime = 0;
-    /**
-     * @var string
-     */
-    private $secure = null;
-    /**
-     * @var integer
-     */
-    private $lastProject = null;
-    /**
-     * @var integer
-     */
-    private $lastActivity = null;
-    /**
-     * @var integer
-     */
-    private $lastRecord = null;
-    /**
-     * @var integer
-     */
-    private $timeframeBegin = null;
-    /**
-     * @var integer
-     */
-    private $timeframeEnd = null;
-    /**
-     * @var string
-     */
-    private $apikey = null;
-    /**
-     * @var array()
-     */
-    private $groups = array();
 
     /**
      * Create a new user instance, either empty or with the given $settings.
      *
-     * @param array|null $settings
+     * @param array $data
      */
-    public function __construct($settings = null)
+    public function __construct(array $data)
     {
-        if ($settings === null) {
-            return;
-        }
-
-        // set all values
-        foreach ($settings as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->$key = $value;
-            }
-        }
+        parent::__construct($data, \ArrayObject::ARRAY_AS_PROPS);
     }
 
-    /**
-     * @return bool
-     */
-    public function isAdmin()
+    public function setGroups(array $groups)
     {
-        return $this->status == self::ADMIN;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isUser()
-    {
-        return $this->status == self::USER;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isBanned()
-    {
-        return $this->ban;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isTrashed()
-    {
-        return $this->trash;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApikey()
-    {
-        return $this->apikey;
-    }
-
-    /**
-     * @return int
-     */
-    public function getBanTime()
-    {
-        return $this->banTime;
+        return $this->set('groups', $groups);
     }
 
     /**
@@ -158,7 +47,47 @@ class Kimai_User
      */
     public function getGroups()
     {
-        return $this->groups;
+        return $this->get('groups', array());
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->get('active');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBanned()
+    {
+        return $this->get('ban');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isTrashed()
+    {
+        return $this->get('trash');
+    }
+
+    /**
+     * @return string
+     */
+    public function getApikey()
+    {
+        return $this->get('apikey');
+    }
+
+    /**
+     * @return int
+     */
+    public function getBanTime()
+    {
+        return $this->get('banTime');
     }
 
     /**
@@ -166,7 +95,7 @@ class Kimai_User
      */
     public function getLastActivity()
     {
-        return $this->lastActivity;
+        return $this->get('lastActivity');
     }
 
     /**
@@ -174,7 +103,7 @@ class Kimai_User
      */
     public function getLastProject()
     {
-        return $this->lastProject;
+        return $this->get('lastProject');
     }
 
     /**
@@ -182,7 +111,7 @@ class Kimai_User
      */
     public function getLastRecord()
     {
-        return $this->lastRecord;
+        return $this->get('lastRecord');
     }
 
     /**
@@ -190,7 +119,7 @@ class Kimai_User
      */
     public function getMail()
     {
-        return $this->mail;
+        return $this->get('mail');
     }
 
     /**
@@ -198,25 +127,12 @@ class Kimai_User
      */
     public function getName()
     {
-        return $this->name;
+        return $this->get('name');
     }
 
-    /**
-     * @return string
-     */
-    public function getSecure()
+    public function getStatus()
     {
-        return $this->secure;
-    }
-
-    /**
-     * @see Kimai_User::USER
-     * @see Kimai_User::ADMIN
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->status;
+        return $this->get('status');
     }
 
     /**
@@ -224,7 +140,7 @@ class Kimai_User
      */
     public function getTimeframeBegin()
     {
-        return $this->timeframeBegin;
+        return $this->get('timeframeBegin');
     }
 
     /**
@@ -232,7 +148,7 @@ class Kimai_User
      */
     public function getTimeframeEnd()
     {
-        return $this->timeframeEnd;
+        return $this->get('timeframeEnd');
     }
 
     /**
@@ -240,6 +156,6 @@ class Kimai_User
      */
     public function getUserID()
     {
-        return $this->userID;
+        return $this->get('userID');
     }
 }

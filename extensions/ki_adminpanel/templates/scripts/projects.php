@@ -4,7 +4,7 @@
 <thead>
 	<tr class="headerrow">
 		<th width="80px"><?php echo $this->kga['lang']['options']?></th>
-		<?php if ($this->kga['conf']['flip_project_display']): ?>
+		<?php if ($this->kga->getSettings()->isFlipProjectDisplay()): ?>
 			<th width="25%"><?php echo $this->kga['lang']['customer']?></th>
 			<th><?php echo $this->kga['lang']['project']?></th>
 		<?php else: ?>
@@ -40,7 +40,7 @@
 						src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" title="<?php echo $this->kga['lang']['delete_project']?>"
 						width="13" height="13" alt="<?php echo $this->kga['lang']['delete_project']?>" border="0"></a>
 				</td>
-				<?php if ($this->kga['conf']['flip_project_display']): ?>
+				<?php if ($this->kga->getSettings()->isFlipProjectDisplay()): ?>
 					<td class="customer <?php if ($isHidden) { echo 'hidden'; } ?>">
 						<?php echo $this->escape($this->ellipsis($row['customerName'], 30))?>
 					</td>

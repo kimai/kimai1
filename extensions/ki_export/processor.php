@@ -186,7 +186,7 @@ switch ($axAction) {
             $approvedSum += $data['approved'];
         }
 
-        $view->timespan = strftime($kga['date_format'][2], $in) . ' - ' . strftime($kga['date_format'][2], $out);
+        $view->timespan = strftime($kga->getDateFormat(2), $in) . ' - ' . strftime($kga->getDateFormat(2), $out);
 
         if (isset($_REQUEST['print_summary'])) {
             //Create the summary. Same as in PDF export
@@ -317,7 +317,7 @@ switch ($axAction) {
             $row[] = csv_prepare_field($kga['lang']['rate'], $column_delimiter, $quote_char);
         }
         if (isset($columns['wage'])) {
-            $row[] = csv_prepare_field($kga['currency_name'], $column_delimiter, $quote_char);
+            $row[] = csv_prepare_field($kga->getCurrencyName(), $column_delimiter, $quote_char);
         }
         if (isset($columns['budget'])) {
             $row[] = csv_prepare_field($kga['lang']['budget'], $column_delimiter, $quote_char);
