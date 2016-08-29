@@ -70,10 +70,6 @@ class Kimai_Config extends Kimai_ArrayObject
     protected function getCoreDefaults()
     {
         return array(
-            // turn this on to display sensible data in the debug/developer extension
-            // CAUTION - THINK TWICE IF YOU REALLY WANNA DO THIS AND DON'T FORGET TO TURN IT OFF IN A PRODUCTION ENVIRONMENT!!!
-            // DON'T BLAME US - YOU HAVE BEEN WARNED!
-            'show_sensible_data' => 1,
             // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
             'logfile_lines' => 100,
             // TODO remove this setting completely, can always be turned on (or move to extension)

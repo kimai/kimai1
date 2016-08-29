@@ -131,17 +131,15 @@ switch ($axAction)
         }
 
         // clean out some data that is way too private to be shown in the frontend ...
-        if (!$kga['show_sensible_data']) {
-            foreach($filter as $k => $v) {
-                if (is_array($v)) {
-                    foreach($v as $k2 => $v2) {
-                        if (isset($output[$k]) && isset($output[$k][$k2])) {
-                            $output[$k][$k2] = $v2;
-                        }
+        foreach($filter as $k => $v) {
+            if (is_array($v)) {
+                foreach($v as $k2 => $v2) {
+                    if (isset($output[$k]) && isset($output[$k][$k2])) {
+                        $output[$k][$k2] = $v2;
                     }
-                } else {
-                    $output[$k] = $v;
                 }
+            } else {
+                $output[$k] = $v;
             }
         }
 
