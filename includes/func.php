@@ -235,7 +235,6 @@ function checkDBversion($path)
     // check for versions before 0.7.13r96
     $installedVersion = $database->get_DBversion();
     $checkVersion = $installedVersion[0];
-    $checkVersion = "$checkVersion";
 
     if ($checkVersion == "0.5.1" && count($database->get_users()) == 0) {
         // fresh install
@@ -243,7 +242,8 @@ function checkDBversion($path)
         exit;
     }
 
-    if ($checkVersion != $config->getVersion() || (int)$installedVersion[1] < $config->getRevision()) {
+    // only call updater when database changes no matter the kimai version
+    if ((int)$installedVersion[1] < $config->getRevision()) {
         header("Location: $path/updater/updater.php");
         exit;
     }

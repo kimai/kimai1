@@ -36,8 +36,7 @@ checkDBversion(".");
 // ==========================
 // = installation required? =
 // ==========================
-if (count($database->get_users()) == 0)
-{
+if (count($database->get_users()) == 0) {
     $view->assign('devtimespan', '2006-' . date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {
         $view->assign('disagreedGPL', 1);
@@ -111,8 +110,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
 // =================================================================
 // = processing login and displaying either login screen or errors =
 // =================================================================
-switch ($_REQUEST['a'])
-{
+switch ($_REQUEST['a']) {
 
     case 'checklogin':
         $is_customer = $database->is_customer_name($name);
