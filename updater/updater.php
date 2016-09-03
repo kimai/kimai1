@@ -67,8 +67,7 @@ unset($version_temp);
 // ================================================================================
 // Display starting screen before executing the Update finally
 // ================================================================================
-if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
-{
+if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) {
     exitUpdater(
         'UPDATE',
         $kga['lang']['updater'][0] . '
@@ -83,8 +82,7 @@ if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
 // ================================================================================
 // timezone was introduced, give the user an option to select the default one
 // ================================================================================
-if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
-{
+if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone'])) {
     $timeZonesOptions = '';
     $serverZone = @date_default_timezone_get();
 
