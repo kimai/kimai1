@@ -67,8 +67,7 @@ $errors = false;
 
 $p = $kga['server_prefix'];
 
-$query =
-"CREATE TABLE `${p}users` (
+$query = "CREATE TABLE `${p}users` (
   `userID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
   `alias` varchar(160),
@@ -100,8 +99,7 @@ $query = "CREATE TABLE `${p}preferences` (
 );";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}activities` (
+$query = "CREATE TABLE `${p}activities` (
   `activityID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `comment` TEXT NULL,
@@ -111,16 +109,14 @@ $query =
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}groups` (
+$query = "CREATE TABLE `${p}groups` (
   `groupID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(160) NOT NULL,
   `trash` TINYINT(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}groups_users` (
+$query = "CREATE TABLE `${p}groups_users` (
   `groupID` int(10) NOT NULL,
   `userID` int(10) NOT NULL,
   `membershipRoleID` int(10) NOT NULL,
@@ -146,7 +142,7 @@ exec_query($query);
 $query = "CREATE TABLE `${p}groups_activities` (
   `groupID` INT NOT NULL,
   `activityID` INT NOT NULL,
-  UNIQUE (`groupID` ,`activityID`)) ;";
+  UNIQUE (`groupID` ,`activityID`));";
 exec_query($query);
 
 // project/event cross-table (projects n:m events)
@@ -156,11 +152,10 @@ $query = "CREATE TABLE `${p}projects_activities` (
   `budget` DECIMAL( 10, 2 ) NULL DEFAULT '0.00',
   `effort` DECIMAL( 10, 2 ) NULL ,
   `approved` DECIMAL( 10, 2 ) NULL,
-  UNIQUE (`projectID` ,`activityID`)) ;";
+  UNIQUE (`projectID` ,`activityID`));";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}customers` (
+$query = "CREATE TABLE `${p}customers` (
   `customerID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` varchar(255) NOT NULL,
   `password` varchar(255),
@@ -186,8 +181,7 @@ $query =
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}projects` (
+$query = "CREATE TABLE `${p}projects` (
   `projectID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `customerID` int(3) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -203,8 +197,7 @@ $query =
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}timeSheet` (
+$query = "CREATE TABLE `${p}timeSheet` (
   `timeEntryID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `start` int(10) NOT NULL default '0',
   `end` int(10) NOT NULL default '0',
@@ -230,16 +223,14 @@ $query =
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}configuration` (
+$query = "CREATE TABLE `${p}configuration` (
   `option` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY  (`option`)
 );";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}rates` (
+$query = "CREATE TABLE `${p}rates` (
   `userID` int(10) DEFAULT NULL,
   `projectID` int(10) DEFAULT NULL,
   `activityID` int(10) DEFAULT NULL,
@@ -248,8 +239,7 @@ $query =
 );";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}fixedRates` (
+$query = "CREATE TABLE `${p}fixedRates` (
   `projectID` int(10) DEFAULT NULL,
   `activityID` int(10) DEFAULT NULL,
   `rate` decimal(10,2) NOT NULL,
@@ -257,8 +247,7 @@ $query =
 );";
 exec_query($query);
 
-$query =
-"CREATE TABLE `${p}expenses` (
+$query = "CREATE TABLE `${p}expenses` (
   `expenseID` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `timestamp` int(10) NOT NULL DEFAULT '0',
   `userID` int(10) NOT NULL,
@@ -275,11 +264,10 @@ $query =
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 
-$query = 
-"CREATE TABLE `${p}statuses` (
+$query = "CREATE TABLE `${p}statuses` (
 `statusID` TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 `status` VARCHAR( 200 ) NOT NULL
-) ENGINE = InnoDB ";
+) ENGINE = InnoDB";
 exec_query($query);
 
 // The included script only sets up the initial permissions.
@@ -287,8 +275,8 @@ exec_query($query);
 require("installPermissions.php");
 
 foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
-  exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
-  exec_query("UPDATE `${p}globalRoles` SET `core-$object-otherGroup-view` = 1 WHERE `name` = 'Admin';");
+    exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
+    exec_query("UPDATE `${p}globalRoles` SET `core-$object-otherGroup-view` = 1 WHERE `name` = 'Admin';");
 }
 
 exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open'), ('2', 'review'), ('3', 'closed');");
@@ -297,8 +285,6 @@ exec_query("INSERT INTO `${p}statuses` (`statusID` ,`status`) VALUES ('1', 'open
 $defaultGroup = $kga['lang']['defaultGroup'];
 $query = "INSERT INTO `${p}groups` (`name`) VALUES ('admin');";
 exec_query($query);
-
-
 
 // MISC
 $query = "INSERT INTO `${p}activities` (`activityID`, `name`, `comment`) VALUES (1, '" . $kga['lang']['testActivity'] . "', '');";
@@ -317,17 +303,52 @@ $query = "INSERT INTO `${p}users` (`userID`,`name`,`mail`,`password`, `globalRol
 exec_query($query);
 
 $query = "INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
-('$randomAdminID','ui.rowlimit','100'),
-('$randomAdminID','ui.skin','standard'),
-('$randomAdminID','ui.showCommentsByDefault','0'),
-('$randomAdminID','ui.hideOverlapLines','1'),
-('$randomAdminID','ui.showTrackingNumber','1'),
-('$randomAdminID','timezone'," . quoteForSql($_REQUEST['timezone']) . ");";
+('$randomAdminID', 'ui.rowlimit', '100'),
+('$randomAdminID', 'ui.skin', 'standard'),
+('$randomAdminID', 'ui.showCommentsByDefault', '0'),
+('$randomAdminID', 'ui.hideOverlapLines', '1'),
+('$randomAdminID', 'ui.showTrackingNumber', '1'),
+('$randomAdminID', 'timezone', " . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 
+// Configuration
+exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
+('version', '" . $kga['version'] . "'),
+('login', '1'),
+('adminmail', 'admin@example.com'),
+('loginTries', '3'),
+('loginBanTime', '900'),
+('revision', '" . $kga['revision'] . "'),
+('currency_name', 'Euro'),
+('currency_sign', '€'),
+('currency_first', '0'),
+('show_update_warn', '1'),
+('check_at_startup', '0'),
+('show_daySeperatorLines', '1'),
+('show_gabBreaks', '0'),
+('show_RecordAgain', '1'),
+('show_TrackingNr', '1'),
+('date_format_0', 'dd.mm.yy'),
+('date_format_1', '%d.%m.'),
+('date_format_2', '%d.%m.%Y'),
+('date_format_3', 'd.m.Y'),
+('table_time_format', '%H:%M'),
+('language', '" . $kga['language'] . "'),
+('roundPrecision', '0'),
+('decimalSeparator', ','),
+('durationWithSeconds', '0'),
+('exactSums', '0'),
+('defaultVat', '0'),
+('editLimit', '0'),
+('roundTimesheetEntries', '0'),
+('roundMinutes', '0'),
+('roundSeconds', '0'),
+('allowRoundDown', '0'),
+('defaultStatusID', '1')
+");
 
 // CROSS TABLES
-$query = "INSERT INTO `${p}groups_users` (`groupID`,`userID`, `membershipRoleID`) VALUES ('1','$randomAdminID','1');";
+$query = "INSERT INTO `${p}groups_users` (`groupID`, `userID`, `membershipRoleID`) VALUES (1, '" . $randomAdminID . "', 1);";
 exec_query($query);
 
 $query = "INSERT INTO `${p}groups_activities` (`groupID`, `activityID`) VALUES (1, 1);";
@@ -338,53 +359,6 @@ exec_query($query);
 
 $query = "INSERT INTO `${p}groups_projects` (`groupID`, `projectID`) VALUES (1, 1);";
 exec_query($query);
-
-
-
-// VARS
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('version', '" . $kga['version'] . "');";
-exec_query($query);
-
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('login', '1');";
-exec_query($query);
-
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('adminmail', 'admin@example.com');";
-exec_query($query);
-
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginTries', '3');";
-exec_query($query);
-
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('loginBanTime', '900');";
-exec_query($query);
-
-$query = "INSERT INTO `${p}configuration` (`option`, `value`) VALUES ('revision', '" . $kga['revision'] . "');";
-exec_query($query);
-
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('currency_name', 'Euro')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('currency_sign', '€')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('currency_first', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('show_update_warn', '1')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('check_at_startup', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('show_daySeperatorLines', '1')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('show_gabBreaks', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('show_RecordAgain', '1')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('show_TrackingNr', '1')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('date_format_0', 'dd.mm.yy')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('date_format_1', '%d.%m.')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('date_format_2', '%d.%m.%Y')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('date_format_3', 'd.m.Y')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('language', '" . $kga['language'] . "')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('roundPrecision', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('decimalSeparator', ',')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('durationWithSeconds', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('exactSums', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('defaultVat', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('editLimit', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('roundTimesheetEntries', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('roundMinutes', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('roundSeconds', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('allowRoundDown', '0')");
-exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES ('defaultStatusID', '1')");
 
 if ($errors) {
     $view = new Zend_View();

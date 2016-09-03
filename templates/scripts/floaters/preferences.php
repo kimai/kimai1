@@ -138,29 +138,36 @@
                         <label for="showQuickNote"></label>
                         <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => $this->kga->getSettings()->isShowQuickNote())), $this->kga['lang']['showQuickNote'] ?>
                     </li>
+                    <li>
+                        <label for="table_time_format"></label>
+                        <?php echo $this->kga['lang']['table_time_format']?>:
+                        <?php echo $this->formText('table_time_format', $this->prefs['table_time_format'], array('size' => 20)); ?>
+                    </li>
                 </ul>
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-            <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+            <input class="btn_norm" type="button" value="<?php echo $this->kga['lang']['cancel'] ?>" onclick="floaterClose();return false;"/>
+            <input class="btn_ok" type="submit" value="<?php echo $this->kga['lang']['submit'] ?>"/>
         </div>
     </form>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#floater_innerwrap').tabs({selected: 0});
+      
         var $core_prefs = $('#core_prefs');
-        var options = {
+        $core_prefs.ajaxForm({
             beforeSubmit: function () {
-                if (($('#password').val() != '' || $('#retypePassword').val() != '')
-                    && !validatePassword($('#password').val(), $('#retypePassword').val())) {
+                var $password = $('#password');
+                var $retypePassword = $('#retypePassword');
+                if (($password.val() != '' || $retypePassword.val() != '')
+                    && !validatePassword($password.val(), $retypePassword.val())) {
                     return false;
                 }
                 if ($core_prefs.attr('submitting')) {
                     return false;
-                }
-                else {
+                } else {
                     $core_prefs.attr('submitting', true);
                     return true;
                 }
@@ -172,7 +179,6 @@
             'error': function () {
                 $core_prefs.removeAttr('submitting');
             }
-        };
-        $core_prefs.ajaxForm(options);
+        });
     });
 </script>

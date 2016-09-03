@@ -59,25 +59,30 @@ switch ($axAction) {
         if (isset($kga['customer'])) {
             die();
         }
-
-        $skins = array();
-        $langs = array();
-
+        
         $allSkins = glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'skins' . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+        $skins = array();
         foreach ($allSkins as $skin) {
             $name = basename($skin);
             $skins[$name] = $name;
         }
 
+        $languages = array();
         foreach (Kimai_Translation_Service::getAvailableLanguages() as $lang) {
-            $langs[$lang] = $lang;
+            $languages[$lang] = $lang;
         }
 
         $view->assign('skins', $skins);
-        $view->assign('langs', $langs);
+        $view->assign('langs', $languages);
         $view->assign('timezones', timezoneList());
         $view->assign('user', $kga['user']);
         $view->assign('rate', $database->get_rate($kga['user']['userID'], null, null));
+
+        $defaults = array(
+            'table_time_format' => $kga['conf']['table_time_format'],
+        );
+        $prefs = $database->user_get_preferences_by_prefix('ui.');
+        $view->assign('prefs', array_merge($defaults, $prefs));
 
         echo $view->render("floaters/preferences.php");
     break;
