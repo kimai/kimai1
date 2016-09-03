@@ -31,7 +31,7 @@ set_include_path(
         PATH_SEPARATOR,
         array(
             '.',
-            realpath(APPLICATION_PATH . '/libraries/'),
+            realpath(APPLICATION_PATH . 'libraries/'),
         )
     )
 );
@@ -43,8 +43,7 @@ if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
 
 ini_set('display_errors', '0');
 
-require_once WEBROOT . '/libraries/autoload.php';
-//require_once WEBROOT . 'includes/vars.php';
+require_once WEBROOT . 'libraries/autoload.php';
 require_once WEBROOT . 'includes/func.php';
 
 // The $kga (formerly Kimai Global Array) is initialized here
@@ -56,6 +55,7 @@ $kga = new Kimai_Config(array(
     'server_database' => $server_database,
     'server_username' => $server_username,
     'server_password' => $server_password,
+    'server_charset' => $server_charset,
     'defaultTimezone' => $defaultTimezone,
     'password_salt' => isset($password_salt) ? $password_salt : ''
 ));
@@ -64,10 +64,18 @@ $kga = new Kimai_Config(array(
 include WEBROOT . 'includes/version.php';
 
 // write vars from autoconf.php into kga
-if (isset($language))       { $kga->setLanguage($language); }
-if (isset($authenticator))  { $kga->setAuthenticator($authenticator); }
-if (isset($billable))       { $kga->setBillable($billable); }
-if (isset($skin))           { $kga->setSkin($skin); }
+if (isset($language)) {
+    $kga->setLanguage($language);
+}
+if (isset($authenticator)) {
+    $kga->setAuthenticator($authenticator);
+}
+if (isset($billable)) {
+    $kga->setBillable($billable);
+}
+if (isset($skin)) {
+    $kga->setSkin($skin);
+}
 
 date_default_timezone_set($defaultTimezone);
 
@@ -77,8 +85,18 @@ Kimai_Registry::setConfig($kga);
 // remove some variables from the global namespace, that should either be
 // not accessible or which are available through the kga config object
 $cleanup = array(
-    'server_prefix', 'server_hostname', 'server_database', 'server_username', 'server_password',
-    'language', 'password_salt', 'authenticator', 'defaultTimezone', 'billable', 'skin'
+    'server_prefix',
+    'server_hostname',
+    'server_database',
+    'server_username',
+    'server_password',
+    'server_charset',
+    'language',
+    'password_salt',
+    'authenticator',
+    'defaultTimezone',
+    'billable',
+    'skin'
 );
 
 foreach ($cleanup as $varName) {

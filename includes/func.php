@@ -309,13 +309,14 @@ function createPassword($length)
  * @param $hostname
  * @param $username
  * @param $password
+ * @param $charset
  * @param $prefix
  * @param $lang
  * @param $salt
- * @param null $timezone
+ * @param $timezone
  * @return bool
  */
-function write_config_file($database, $hostname, $username, $password, $prefix, $lang, $salt, $timezone = null)
+function write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone = null)
 {
     $kga = Kimai_Registry::getConfig();
 
@@ -371,13 +372,14 @@ function write_config_file($database, $hostname, $username, $password, $prefix, 
 \$server_database = "$database";
 \$server_username = "$username";
 \$server_password = "$password";
-\$server_prefix   = "$prefix";
-\$language        = "$lang";
-\$password_salt   = "$salt";
+\$server_charset = "$charset";
+\$server_prefix = "$prefix";
+\$language = "$lang";
+\$password_salt = "$salt";
 \$defaultTimezone = $timezone;
-\$skin            = "$skin";
-\$authenticator   = "$authenticator";
-\$billable        = $billable;
+\$skin = "$skin";
+\$authenticator = "$authenticator";
+\$billable = $billable;
 
 EOD;
 

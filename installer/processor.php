@@ -65,7 +65,6 @@ $errors = 0;
 
 switch ($axAction) {
 
-
     /**
      * Check for the requirements of Kimai:
      *  - PHP major version >= 5.4
@@ -145,16 +144,17 @@ switch ($axAction) {
     case ("write_config"):
         include "../includes/func.php";
          // special characters " and $ are escaped
-        $database    = $_REQUEST['database'];
-        $hostname    = $_REQUEST['hostname'];
-        $username    = $_REQUEST['username'];
-        $password    = $_REQUEST['password'];
-        $timezone    = $_REQUEST['timezone'];
-        $prefix      = addcslashes($_REQUEST['prefix'], '"$');
-        $lang        = $_REQUEST['lang'];
-        $salt        = createPassword(20);
+        $database = $_REQUEST['database'];
+        $hostname = $_REQUEST['hostname'];
+        $username = $_REQUEST['username'];
+        $password = $_REQUEST['password'];
+        $charset = 'utf8';
+        $prefix = addcslashes($_REQUEST['prefix'], '"$');
+        $lang = $_REQUEST['lang'];
+        $salt = createPassword(20);
+        $timezone = $_REQUEST['timezone'];
 
-        write_config_file($database, $hostname, $username, $password, $prefix, $lang, $salt, $timezone);
+        write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone);
 
     break;
     
