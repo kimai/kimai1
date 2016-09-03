@@ -75,8 +75,7 @@ class Kimai_Config extends Kimai_ArrayObject
             // TODO remove this setting completely, can always be turned on (or move to extension)
             // can the logfile be cleaned via debug_ext?
             'delete_logfile' => 1,
-            // set to 1 if utf-8 CONVERSION (!) is needed - this is not always the case (depends on server settings)
-            'utf8' => 0,
+            'server_charset' => 'utf8',
             // here you can set a custom start day for the date-picker.
             // if this is not set the day of the users first day in the system will be taken
             // Format: ... = "DD/MM/YYYY";
