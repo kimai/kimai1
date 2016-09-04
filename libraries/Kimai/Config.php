@@ -373,6 +373,14 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * @return string
+     */
+    public function getTableTimeFormat()
+    {
+        return $this->get('table_time_format', '%H:%M');
+    }
+
+    /**
      * @return bool
      */
     public function isRoundDownRecorderTimes()

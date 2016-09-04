@@ -2945,6 +2945,7 @@ class Kimai_Database_Mysql
                 case 'date_format_1':
                 case 'date_format_2':
                 case 'date_format_3':
+                case 'table_time_format':
                 case 'roundPrecision':
                 case 'exactSums':
                 case 'defaultVat':
