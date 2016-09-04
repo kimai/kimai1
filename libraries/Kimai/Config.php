@@ -291,7 +291,7 @@ class Kimai_Config extends Kimai_ArrayObject
      */
     public function getStatuses()
     {
-        return $this->get('status');
+        return $this->get('statuses');
     }
 
     /**
@@ -301,7 +301,7 @@ class Kimai_Config extends Kimai_ArrayObject
      */
     public function setStatuses($statuses)
     {
-        $this->set('status', $statuses);
+        $this->set('statuses', $statuses);
     }
 
     /**

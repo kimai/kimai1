@@ -24,10 +24,11 @@
 defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
-function return_bytes($val) {
+function return_bytes($val)
+{
     $val = trim($val);
     $last = strtolower($val[strlen($val) - 1]);
     switch ($last) {
@@ -44,7 +45,8 @@ function return_bytes($val) {
 }
 
 // stolen somewhere ... please forgive me - i don't know who wrote this .... O-o
-function getpass() {
+function getpass()
+{
     $newpass = "";
     $laenge = 10;
     $string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -108,7 +110,7 @@ switch ($axAction) {
         $javascript .= "resetRequirementsIndicators();" . $javascript;
         echo $javascript;
 
-      break;
+        break;
 
     /**
      * Check access rights to autoconf.php, the logfile and the temporary folder.
@@ -136,14 +138,14 @@ switch ($axAction) {
         }
 
         echo $javascript;
-    break;
+        break;
 
     /**
      * Create the autoconf.php file.
      */
     case ("write_config"):
         include "../includes/func.php";
-         // special characters " and $ are escaped
+        // special characters " and $ are escaped
         $database = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
         $username = $_REQUEST['username'];
@@ -154,18 +156,30 @@ switch ($axAction) {
         $salt = createPassword(20);
         $timezone = $_REQUEST['timezone'];
 
+        $kimaiConfig = new Kimai_Config(array(
+            'server_prefix' => $server_prefix,
+            'server_hostname' => $hostname,
+            'server_database' => $database,
+            'server_username' => $username,
+            'server_password' => $password,
+            'server_charset' => $charset,
+            'defaultTimezone' => $timezone,
+            'password_salt' => $salt
+        ));
+        Kimai_Registry::setConfig($kimaiConfig);
+
         write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone);
 
-    break;
-    
+        break;
+
     /**
      * Create the database.
      */
-    case ("make_database"):
+    case ('make_database'):
         $databaseName = $_REQUEST['database'];
-        $hostname     = $_REQUEST['hostname'];
-        $username     = $_REQUEST['username'];
-        $password     = $_REQUEST['password'];
+        $hostname = $_REQUEST['hostname'];
+        $username = $_REQUEST['username'];
+        $password = $_REQUEST['password'];
 
         $db_error = false;
         $result = false;
@@ -173,16 +187,14 @@ switch ($axAction) {
         $database = new Kimai_Database_Mysql($result, false);
         $database->connect($hostname, null, $username, $password, true);
         $conn = $database->getConnectionHandler();
-        
+
         $query = "CREATE DATABASE `" . $databaseName . "` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci";
         $result = $conn->Query($query);
 
         if ($result !== false) {
-            echo "1"; // <-- hat geklappt
+            echo "1"; // ok
         } else {
-            echo "0"; // <-- schief gegangen
+            echo "0"; // error
         }
-
-    break;
-
+        break;
 }
