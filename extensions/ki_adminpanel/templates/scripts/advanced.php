@@ -60,7 +60,7 @@
                 <input type="text" name="date_format_1" size="15" value="<?php echo $this->escape($this->kga->getDateFormat(1)) ?>" class="formfield"> <?php echo $this->kga['lang']['table_date_format']?>
             </div>
             <div>
-                <input type="text" name="table_time_format" size="15" value="<?php echo $this->escape($this->kga['table_time_format']) ?>" class="formfield"> <?php echo $this->kga['lang']['table_time_format']?>
+                <input type="text" name="table_time_format" size="15" value="<?php echo $this->escape($this->kga->getTableTimeFormat()) ?>" class="formfield"> <?php echo $this->kga['lang']['table_time_format']?>
             </div>
             <div>
                 <input type="checkbox" name="durationWithSeconds" <?php if ($this->kga['conf']['durationWithSeconds']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->kga['lang']['durationWithSeconds']?>
