@@ -77,10 +77,11 @@
                     if (isset($this->selectedProjects) && is_array($this->selectedProjects)) {
                         foreach ($this->selectedProjects as $selectedProject) {
                             $assignedProjects[] = $selectedProject['projectID'];
+                            $name = $this->ellipsis($this->escape($selectedProject['name']), 30) . ' (' . $this->ellipsis($this->escape($selectedProject['customer_name']), 30) . ')';
                             ?>
                             <tr>
                                 <td>
-                                    <?php echo $this->escape($selectedProject['name']), $this->formHidden('assignedProjects[]', $selectedProject['projectID']); ?>
+                                    <?php echo $name . $this->formHidden('assignedProjects[]', $selectedProject['projectID']); ?>
                                 </td>
                                 <td>
                                     <?php echo $this->formText('fixedRates[]', $selectedProject['fixedRate']); ?>
@@ -98,7 +99,7 @@
                     $selectArray = array(-1 => '');
                     foreach ($this->allProjects as $project) {
                         if (array_search($project['projectID'], $assignedProjects) === false) {
-                            $selectArray[$project['projectID']] = $project['name'];
+                            $selectArray[$project['projectID']] = $this->ellipsis($project['name'], 30) . ' (' . $this->ellipsis($project['customerName'], 30) . ')';
                         }
                     }
                     ?>
@@ -135,8 +136,8 @@
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-            <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+            <input class="btn_norm" type="button" value="<?php echo $this->kga['lang']['cancel'] ?>" onclick="floaterClose();return false;"/>
+            <input class="btn_ok" type="submit" value="<?php echo $this->kga['lang']['submit'] ?>"/>
         </div>
     </form>
 </div>
