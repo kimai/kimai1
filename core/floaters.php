@@ -79,7 +79,7 @@ switch ($axAction) {
         $view->assign('rate', $database->get_rate($kga['user']['userID'], null, null));
 
         $defaults = array(
-            'table_time_format' => $kga['conf']['table_time_format'],
+            'table_time_format' => $kga->getTableTimeFormat()
         );
         $prefs = $database->user_get_preferences_by_prefix('ui.');
         $view->assign('prefs', array_merge($defaults, $prefs));
