@@ -231,9 +231,10 @@ class Kimai_Remote_Api
      * @param string $apiKey
      * @param integer $projectId
      * @param integer $activityId
+     * @param string $description
      * @return array
      */
-    public function startRecord($apiKey, $projectId, $activityId)
+    public function startRecord($apiKey, $projectId, $activityId, $description = null)
     {
         if (!$this->init($apiKey, 'startRecord')) {
             return $this->getAuthErrorResult();
@@ -265,7 +266,7 @@ class Kimai_Remote_Api
         }
         */
 
-        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
+        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, $description);
         if ($result) {
             return $this->getSuccessResult(array());
         } else {
@@ -280,9 +281,10 @@ class Kimai_Remote_Api
      *
      * @param string $apiKey
      * @param integer $entryId
+     * @param string $description
      * @return boolean
      */
-    public function stopRecord($apiKey, $entryId)
+    public function stopRecord($apiKey, $entryId, $description = null)
     {
         if (!$this->init($apiKey, 'stopRecord')) {
             return $this->getAuthErrorResult();
@@ -307,7 +309,7 @@ class Kimai_Remote_Api
             }
         }
 
-        $result = $this->getBackend()->stopRecorder($entryId);
+        $result = $this->getBackend()->stopRecorder($entryId, $description);
         if ($result) {
             return $this->getSuccessResult(array());
         } else {
