@@ -268,7 +268,7 @@ class Kimai_Remote_Api
 
         $entryId = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
         if ($entryId) {
-            // if there are optional data we update the record entry 
+            // if there are optional data we update the record entry
             if (!is_null($data)) {
                 $this->updateEntry($apiKey, $entryId, $data);
             }
@@ -360,7 +360,7 @@ class Kimai_Remote_Api
         } else {
             return $this->getErrorResult('Failed to update record.');
         }
-        return $this->getErrorResult(); 
+        return $this->getErrorResult();
     }
     
     /**
