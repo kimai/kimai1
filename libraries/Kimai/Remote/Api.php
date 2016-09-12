@@ -231,10 +231,10 @@ class Kimai_Remote_Api
      * @param string $apiKey
      * @param integer $projectId
      * @param integer $activityId
-     * @param string $description
+     * @param array $data
      * @return array
      */
-    public function startRecord($apiKey, $projectId, $activityId, $description = null)
+    public function startRecord($apiKey, $projectId, $activityId, $data = null)
     {
         if (!$this->init($apiKey, 'startRecord')) {
             return $this->getAuthErrorResult();
@@ -266,8 +266,12 @@ class Kimai_Remote_Api
         }
         */
 
-        $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid, $description);
-        if ($result) {
+        $entryId = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
+        if ($entryId) {
+            // if there are optional data we update the record entry 
+            if (!is_null($data)) {
+                $this->updateEntry($apiKey, $entryId, $data);
+            }
             return $this->getSuccessResult(array());
         } else {
             return $this->getErrorResult("Unable to start, invalid params?");
@@ -276,15 +280,98 @@ class Kimai_Remote_Api
     }
 
     /**
+     * Updates the currently running recording. If $entryId is empty the
+     * current activity will be updated.
+     *
+     * @param string $apiKey
+     * @param integer $entryId
+     * @param array $record
+     * @return boolean
+     */
+    public function updateEntry($apiKey, $entryId, $record)
+    {
+        if (!$this->init($apiKey, 'updateEntry')) {
+            return $this->getAuthErrorResult();
+        }
+
+        // check for empty params
+        if ($entryId == '') {
+            $user = $this->getUser();
+            $uid = $user['userID'];
+            $result = $this->getBackend()->get_current_recordings($uid);
+
+            // no "last" activity existing
+            if (count($result) == 0) {
+                return $this->getErrorResult('No active recording.');
+            }
+
+            // get the data of the first active recording
+            $result = $this->getBackend()->timeSheet_get_data($result[0]);
+
+            if (array_key_exists('timeEntryID', $result)) {
+                $entryId = $result['timeEntryID'];
+            }
+        }
+        
+        // valid $record?
+        if (empty($record)) {
+            return $this->getErrorResult('Invalid record');
+        }
+
+        // optional values
+        if (isset($record['location'])) {
+            $data['location'] = $record['location'];
+        }
+        if (isset($record['trackingNumber'])) {
+            $data['trackingNumber'] = $record['trackingNumber'];
+        }
+        if (isset($record['description'])) {
+            $data['description'] = $record['description'];
+        }
+        if (isset($record['comment'])) {
+            $data['comment'] = $record['comment'];
+        }
+        if (isset($record['commentType'])) {
+            $data['commentType'] = (int)$record['commentType'];
+        }
+        if (isset($record['fixedRate'])) {
+            $data['fixedRate'] = (double)$record['fixedRate'];
+        }
+        if (isset($record['flagCleared'])) {
+            $data['cleared'] = (int)$record['flagCleared'];
+        }
+        if (isset($record['statusId'])) {
+            $data['statusID'] = (int)$record['statusId'];
+        }
+        if (isset($record['flagBillable'])) {
+            $data['billable'] = (int)$record['flagBillable'];
+        }
+        if (isset($record['budget'])) {
+            $data['budget'] = (double)$record['budget'];
+        }
+        if (isset($record['approved'])) {
+            $data['approved'] = (double)$record['approved'];
+        }
+        
+        //call timeEntry_edit
+        $result = $this->getBackend()->timeEntry_edit($entryId, $data);
+        if ($result) {
+            return $this->getSuccessResult(array());
+        } else {
+            return $this->getErrorResult('Failed to update record.');
+        }
+        return $this->getErrorResult(); 
+    }
+    
+    /**
      * Stops the currently running recording. If $entryId is empty the
      * current activity will be stopped.
      *
      * @param string $apiKey
      * @param integer $entryId
-     * @param string $description
      * @return boolean
      */
-    public function stopRecord($apiKey, $entryId, $description = null)
+    public function stopRecord($apiKey, $entryId)
     {
         if (!$this->init($apiKey, 'stopRecord')) {
             return $this->getAuthErrorResult();
@@ -309,7 +396,7 @@ class Kimai_Remote_Api
             }
         }
 
-        $result = $this->getBackend()->stopRecorder($entryId, $description);
+        $result = $this->getBackend()->stopRecorder($entryId);
         if ($result) {
             return $this->getSuccessResult(array());
         } else {

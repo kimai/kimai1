@@ -3708,11 +3708,10 @@ class Kimai_Database_Mysql
      * Performed when the stop buzzer is hit.
      *
      * @param integer $id id of the entry to stop
-     * @param string $description associated to the entry to stop
      * @author th, sl
      * @return boolean
      */
-    public function stopRecorder($id, $description = null)
+    public function stopRecorder($id)
     {
         $table = $this->getTimeSheetTable();
 
@@ -3731,9 +3730,6 @@ class Kimai_Database_Mysql
         $values['start'] = $rounded['start'];
         $values['end'] = $rounded['end'];
         $values['duration'] = $values['end'] - $values['start'];
-        if ($description != null) {
-            $values['description'] = MySQL::SQLValue($description);
-        }
 
         $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
@@ -3746,11 +3742,10 @@ class Kimai_Database_Mysql
      * @param integer $projectID ID of project to record
      * @param $activityID
      * @param $user
-     * @param string $description associated to the entry to stop
      * @return int id of the new entry or false on failure
      * @author th, sl
      */
-    public function startRecorder($projectID, $activityID, $user, $description = null)
+    public function startRecorder($projectID, $activityID, $user)
     {
         $projectID = MySQL::SQLValue($projectID, MySQL::SQLVALUE_NUMBER);
         $activityID = MySQL::SQLValue($activityID, MySQL::SQLVALUE_NUMBER);
@@ -3761,10 +3756,6 @@ class Kimai_Database_Mysql
         $values['start'] = time();
         $values['userID'] = $user;
         $values['statusID'] = $this->kga->getDefaultStatus();
-        if ($description != null) {
-            $values['description'] = MySQL::SQLValue($description);
-        }
-
         $rate = $this->get_best_fitting_rate($user, $projectID, $activityID);
         if ($rate) {
             $values['rate'] = $rate;
