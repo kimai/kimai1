@@ -215,7 +215,6 @@ switch ($axAction) {
         echo json_encode($data);
         break;
 
-
     // ==============================================================
     // = Get the new budget data after changing project or activity =
     // ==============================================================
@@ -447,7 +446,6 @@ switch ($axAction) {
         echo $view->render("timeSheet.php");
         break;
 
-
     // ==============================
     // = add / edit timeSheet entry =
     // ==============================
@@ -460,7 +458,6 @@ switch ($axAction) {
         if ($id) {
             $action = 'edit';
         }
-
         if (isset($_REQUEST['erase'])) {
             $action = 'delete';
         }
@@ -566,7 +563,6 @@ switch ($axAction) {
         }
 
         if ($id) { // TIME RIGHT - NEW OR EDIT ?
-
             if (!timesheetAccessAllowed($data, $action, $errors)) {
                 echo json_encode(array('errors' => $errors));
                 break;
@@ -575,9 +571,7 @@ switch ($axAction) {
             // TIME RIGHT - EDIT ENTRY
             Kimai_Logger::logfile("timeEntry_edit: " . $id);
             $database->timeEntry_edit($id, $data);
-
         } else {
-
             // TIME RIGHT - NEW ENTRY
 
             $database->transaction_begin();
