@@ -1669,12 +1669,13 @@ class Kimai_Database_Mysql
             return true;
         }
 
+        $this->logLastError('user_edit failed');
+
         if (!$this->conn->TransactionRollback()) {
             $this->logLastError('user_edit rollback');
             return false;
         }
-
-        $this->logLastError('user_edit failed');
+        
         return false;
     }
 
@@ -2393,10 +2394,10 @@ class Kimai_Database_Mysql
                 return false;
             }
         } else {
-            //      	$budgetChange += $values['budget'];
-//      	$approvedChange += $values['approved'];
-//      	$this->update_evt_budget($values['projectID'], $values['activityID'], $budgetChange);
-//      	$this->update_evt_approved($values['projectID'], $values['activityID'], $budgetChange);
+            // $budgetChange += $values['budget'];
+            // $approvedChange += $values['approved'];
+            // $this->update_evt_budget($values['projectID'], $values['activityID'], $budgetChange);
+            // $this->update_evt_approved($values['projectID'], $values['activityID'], $budgetChange);
             $this->logLastError('timeEntry_edit');
             if (!$this->conn->TransactionRollback()) {
                 $this->logLastError('timeEntry_edit');
