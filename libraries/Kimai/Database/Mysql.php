@@ -2285,27 +2285,28 @@ class Kimai_Database_Mysql
     {
         $data = $this->clean_data($data);
 
-        $values['location']     = MySQL::SQLValue($data['location']);
-        $values['comment']      = MySQL::SQLValue($data['comment']);
-        $values['description']  = MySQL::SQLValue($data['description']);
+        $values['location'] = MySQL::SQLValue($data['location']);
+        $values['comment'] = MySQL::SQLValue($data['comment']);
+        $values['description'] = MySQL::SQLValue($data['description']);
         if ($data['trackingNumber'] == '') {
             $values['trackingNumber'] = 'NULL';
         } else {
             $values['trackingNumber'] = MySQL::SQLValue($data['trackingNumber']);
         }
-        $values['userID']       = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
-        $values['projectID']    = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
-        $values['activityID']   = MySQL::SQLValue($data['activityID'], MySQL::SQLVALUE_NUMBER);
-        $values['commentType']  = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
-        $values['start']        = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
-        $values['end']          = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
-        $values['duration']     = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
-        $values['rate']         = MySQL::SQLValue($data['rate'] ? $data['rate'] : 0, MySQL::SQLVALUE_NUMBER);
-        $values['cleared']      = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
-        $values['budget']       = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
-        $values['approved']     = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
-        $values['statusID']     = MySQL::SQLValue($data['statusID'], MySQL::SQLVALUE_NUMBER);
-        $values['billable']     = MySQL::SQLValue($data['billable'], MySQL::SQLVALUE_NUMBER);
+        $values['userID'] = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
+        $values['projectID'] = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
+        $values['activityID'] = MySQL::SQLValue($data['activityID'], MySQL::SQLVALUE_NUMBER);
+        $values['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
+        $values['start'] = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
+        $values['end'] = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
+        $values['duration'] = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
+        $values['rate'] = MySQL::SQLValue($data['rate'] ? : 0, MySQL::SQLVALUE_NUMBER);
+        $values['fixedRate'] = MySQL::SQLValue($data['fixedRate'] ? : 0, MySQL::SQLVALUE_NUMBER);
+        $values['cleared'] = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
+        $values['budget'] = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
+        $values['approved'] = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
+        $values['statusID'] = MySQL::SQLValue($data['statusID'], MySQL::SQLVALUE_NUMBER);
+        $values['billable'] = MySQL::SQLValue($data['billable'], MySQL::SQLVALUE_NUMBER);
 
         $table = $this->getTimeSheetTable();
         $success = $this->conn->InsertRow($table, $values);
@@ -4521,10 +4522,10 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        if ($this->conn->RowCount() == 0) {
+        if ($this->conn->RowCount() == -1) {
             // no error, but no best fitting rate, return default value
             Kimai_Logger::logfile("get_best_fitting_rate - using default rate 0.00");
-            return 0.00;
+            return 0.0;
         }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);
