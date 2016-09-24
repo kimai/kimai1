@@ -18,15 +18,21 @@
  */
 
 /**
- * Truncates a given message.
+ * Truncates a given message
  */
 class Zend_View_Helper_Ellipsis extends Zend_View_Helper_Abstract
 {
-
+    /**
+     * Truncates a given message
+     * 
+     * @param string $text
+     * @param int $maxLength
+     * @return string
+     */
     public function ellipsis($text, $maxLength = 5)
     {
         if (strlen($text) > $maxLength) {
-            return substr($text, 0, $maxLength) . '&hellip;';
+            return substr($text, 0, $maxLength) . '…';
         }
 
         return $text;
