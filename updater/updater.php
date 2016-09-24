@@ -1042,13 +1042,13 @@ if ((int)$revisionDB < 1381) {
     #exec_query("ALTER TABLE `${p}timeSheet` ADD PRIMARY KEY(`timeEntryID`);", false);
 
     #drop keys from r1176 and create new ones
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_usrID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_usrID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`userID`)", false);
 
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_pctID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_pctID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`projectID`)", false);
 
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_evtID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_evtID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`activityID`)", false);
 
     # column has primary key since r1368
@@ -1166,6 +1166,12 @@ if ((int)$revisionDB < 1392) {
     }
 
     printLine($level, 'Store charset in configuration file <i>autoconf.php</i>.', $additional);
+}
+
+if ((int)$revisionDB < 1393) {
+    Kimai_Logger::logfile("-- update to r1393");
+    exec_query("ALTER TABLE `${p}users` CHANGE `mail` `mail` VARCHAR(160) NULL");
+    exec_query("ALTER TABLE `${p}timeSheet` CHANGE `fixedRate` `fixedRate` DECIMAL(10,2) NULL");
 }
 
 // ================================================================================
