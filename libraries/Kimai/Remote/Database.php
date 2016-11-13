@@ -68,6 +68,14 @@ class Kimai_Remote_Database
     }
 
     /**
+     * @return Kimai_Database_Mysql
+     */
+    public function getDbLayer()
+    {
+        return $this->dbLayer;
+    }
+
+    /**
      * returns single expense entry as array
      *
      * @param integer $id ID of entry in table exp
