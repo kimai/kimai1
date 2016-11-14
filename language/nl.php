@@ -22,7 +22,7 @@
  * by Paul Brand and Vasilis van Gemert
  */
 return array(
-    "countryCode" => "Dutch",
+    "countryCode" => "nl-NL",
     "preferences" => "Voorkeuren",
     "total" => "Totaal",
     "monatzeit" => "Maand",
@@ -35,15 +35,17 @@ return array(
     "out" => "tot",
     "time" => "u:min",
     "timelabel" => "Tijd",
+    "starttime" => "start tijd",
+    "DateTimeNotInFuture" => "De dag en tijd mogen niet in de toekomst zijn.",
     "durationlabel" => "Tijdsduur",
     "customer" => "Klant",
     "project" => "Project",
-    "activity" => "Actie",
+    "activity" => "Activiteit",
     "customers" => "Klanten",
     "projects" => "Projecten",
-    "activities" => "Acties",
+    "activities" => "Activiteiten",
     "admin" => "Admin",
-    "rowlimit" => "max. regels",
+    "rowlimit" => "max. rijen",
     "breiteZeitspalte" => "breedte tijd kolom",
     "breiteUhrspalte" => "breedte klok kolom",
     "breiteDatumspalte" => "breedte datum kolom",
@@ -60,10 +62,10 @@ return array(
     "erase" => "Wissen",
     "new_customer" => "klant toevoegen",
     "new_project" => "project toevoegen",
-    "new_activity" => "gebeurtenis toevoegen",
+    "new_activity" => "activiteit toevoegen",
     "day_summary" => "Tijd samenvatting",
     "plzChoose" => "Selecteer",
-    "recordAgain" => "Neem deze gebeurtenis nogmaals op",
+    "recordAgain" => "Neem deze activiteit nogmaals op",
     "comment" => "Commentaar",
     "location" => "Locatie",
     "trackingNumber" => "Tracking Nummer",
@@ -83,6 +85,21 @@ return array(
     "username" => "Gebruiker",
     "password" => "Wachtwoord",
     "newPassword" => "Nieuw wachtwoord",
+    "retypePassword" => "Typ het wachtwoord opnieuw",
+    "passwordsDontMatch" => "Ingevoerde wachtwoorden komen niet overeen.",
+    "passwordTooShort" => "Het wachtwoord heeft niet tenminste 5 karakters.",
+    "forgotPassword" => "Wachtwoord vergeten",
+    "passwordReset" => array(
+        "button" => "Wachtwoord opnieuw instellen",
+        "notSupported" => "Het herstellen van het wachtwoord wordt door de huidige authenticatie plugin niet ondersteund.",
+        "instructions" => "Voer een gebruikersnaam in en een email zal worden gestuurd naar het adres dat geassocieerd wordt met de opegegeven gebruikersnaam. Zorg ervoor dat de gebruikersnaam juist is omdat een foute invoer niet wordt aangegeven!",
+        "mailSubject" => "Kimai - Wachtwoord opnieuw instellen",
+        "mailMessage" => "Dit is een automatisch gegenereerde email om het wachtwoord opnieuw in te stellen voor Kimai. Open het volgende adres in je browser:\n%{URL}",
+        "mailConfirmation" => "Er is een email gestuurd naar het geassocieerde emailadres. Volg de instructie in de zojuist verzonden email. Als er geen emailadres geassocieerd wordt met de gebruikersnaam zal er geen email worden verstuurd. Neem in dit geval contact op met de administrator.",
+        "returnToLogin" => "ga terug naar de login pagina",
+        "invalidKey" => "De beveiligingssleutel komt niet overeen met de sleutel in de email. Zorg ervoor dat de complete URL is geopend door je browser.",
+        "success" => "Je wachtwoord is veranderd.",
+    ),
     "minLength" => "Het wachtwoord moet minimaal 5 karakters bevatten!",
     "update" => "De structuur van de huidige Kimai-database moet geupdate worden.<br />Maak voor de zekerheid een back up van uw database zodat u geen gegevens verliest tijdens het updaten.",
     "updateNow" => "De database moet nu geüpdatet worden!",
@@ -140,8 +157,8 @@ return array(
     "delete_group" => "Verwijder groep",
     "delete_project" => "Verwijder project",
     "delete_customer" => "Verwijder klant",
-    "delete_activity" => "Verwijder gebeurtenis",
-    "delete_status" => "Verwijder status",,
+    "delete_activity" => "Verwijder activiteit",
+    "delete_status" => "Verwijder status",
     "switchUser" => "Schakel naar deze gebruiker",
     "backupUser" => "Maak backup van deze gebruiker",
     "mailUser" => "Stuur email naar deze gebruiker",
@@ -168,15 +185,17 @@ return array(
     "select" => "Selecteer",
     "hidedeletedusers" => "Verberg verwijderde gebruikers",
     "showdeletedusers" => "Toon verwijderde gebruikers",
-
     "month" => "Maand",
     "day" => "Dag",
     "year" => "Jaar",
-
     "lang" => "Taal",
-
     "ac" => "Automatisch voortgezette invoer .",
     "ac_error" => "Automatisch voortgezette invoer met fout (tijdsduur te lang).",
+    "refundable_long" => "Terugvorderbaar (aan werknemer)",
+    "refundable" => "Terugvorderbaar",
+    "yes" => "ja",
+    "no" => "nee",
+    "default" => "standaard",
     "commentType" => "Commentaar type",
     "ctype0" => "Commentaar",
     "ctype1" => "Notitie",
@@ -204,12 +223,10 @@ return array(
     "showIDs" => "Toon IDs",
     "error" => "Er is een fout opgetreden!",
     "checkupdate" => "Zoek naar een update",
-
     "selectedForRecording" => "Selecteer voor tijdregistratie:",
     "selectedCustomerLabel" => "K:",
     "selectedProjectLabel" => "P:",
     "selectedActivityLabel" => "G:",
-
     "testCustomer" => "Test-Customer",
     "testProject" => "Test-Project",
     "testActivity" => "testing",
@@ -225,7 +242,7 @@ return array(
     "fixedRate" => "Vaststaand tarief",
     "used" => "Gebruikt",
     "budget_available" => "Budget beschikbaar",
-    "budget_activity" => "Budget van gebeurtenis",
+    "budget_activity" => "Budget van activiteit",
     "budget_activity_used" => "Budget gebruikt",
     "budget_activity_approved" => "Budget goedgekeurd",
     "budget_minus" => "over budget",
@@ -238,7 +255,6 @@ return array(
     "expense" => "Kosten",
     "cleared" => "Leeggemaakt",
     "designation" => "Omschrijving",
-
     "cleared" => "Betaald",
     "atLeastOneGroup" => 'Er moet ten minste één groep geselecteerd zijn.',
     "noFading" => "geen vervagings effect",
@@ -267,7 +283,6 @@ return array(
     'durationWithSeconds' => 'Toon tijdsduur exact op de seconde.',
     'multiplier' => 'Vermenigvuldiger',
     'timezone' => 'Tijdzone',
-
     'dateAndTimeHelp' => '<strong>Tijden en datums moeten in de volgende form worden ingevoerd:</strong><br />Datums: DD.MM.JJJJ<br />Tijden: UU:MM:SS of UU:MM of alleen UU. Overgeslagen delen worden op 0 gezet.',
     'editNoteHelp' => '<strong>Commentaar kan in elke volgorde worden ingevoerd<br />en kan later, indien nodig, zonder limiet worden veranderd.</strong>',
     'defaultTimezone' => 'tijdzone voor nieuwe gebruikers en klanten',
@@ -298,6 +313,18 @@ return array(
     'TimeDateInputError' => 'De tijd of datum die je hebt ingevuld is niet geldig.',
     'StartTimeBeforeEndTime' => 'De start tijd moet voor de eind tijd zijn.',
 
+    'credits' => <<<'EOD'
+        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
+        The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
+        <br /><br />
+        Please support further development of Kimai with a <a href="%3$s">donation</a> or by extending its <a href="%5$s">translations</a>.
+        If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
+EOD
+    ,
+    'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
+    'credits_thanks' => 'Further thanks for support to:',
+    'credits_libs' => 'Our thanks also go to the projects:',
+
     'months' => array("Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"),
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
     'weekdays' => array("zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"),
@@ -310,7 +337,7 @@ return array(
         'customerWithSameName' => 'Een gebruikersnaam kan niet hetzelfde zijn als de klantnaam.',
         'sameGlobalRoleName' => 'Een globale rol met deze naam bestaat al.',
         'sameMembershipRoleName' => 'Een lidmaatschap rol met deze naam bestaat al.',
-        'noActivitySelected' => 'Geen gebeurtenis geselecteerd.',
+        'noActivitySelected' => 'Geen activiteit geselecteerd.',
         'noProjectSelected' => 'Geen project geselecteerd.',
         'multiplierNegative' => 'De vermenigvuldiger moet groter zijn dan 0.',
         'emptyField' => 'Waarde mist in veld: %s',
@@ -345,6 +372,7 @@ return array(
         120 => "Zie hieronder voor nieuwe wachtwoorden voor elke gebruiker.",
         130 => "Kon niet schijven naar autoconf.php.",
         140 => "update bestand autoconf.php",
+        'timezone' => 'Kimai understeund nu tijdzones. Selecteer de standaard tijdzone. Deze zal gebruikt worden voor alle gebruikers en klanten. Gebruikers kunnen hun eigen tijdzone aanpassen.',
     ),
 
     'backup' => array(
@@ -357,20 +385,17 @@ return array(
         6 => "Backup van",
         7 => "is herstelt.",
         8 => "maak backup",
-        9 => "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een echte backup op een fysiek ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken ;)"),
+        9 => "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een echte backup op een fysiek ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken.",
         10 => "Authenticatie vereist",
         11 => "Om te voorkomen dat ongeauthoriseerde personen backups maken, verwijderen of herstellen, moet je het password salt opgeven die opgeslagen staat in include/autoconf.php. Het bestaat alleen uit letters en getallen."
-      ),
+    ),
 
     'export_extension' => array(
-
         "print_hint" => "Klik op OK om een tabel te openen die je kunt printen.",
         "dl_hint" => "Klik op OK om bestand te downloaden.",
-
         "tab_filter" => "Filter",
         "tab_location" => "Locatie",
         "tab_timeformat" => "Tijd opmaak",
-
         "cleared_all" => "Alles",
         "cleared_cleared" => "Alleen Betaald",
         "cleared_open" => "Alleen Openstaand",
@@ -380,7 +405,6 @@ return array(
         "refundable_all" => "all",
         "refundable_refundable" => "alleen teruggave",
         "refundable_not_refundable" => "alleen zonder teruggave",
-
         "print_comment" => "print opmerking",
         "print_summary" => "print samenvatting",
         "create_bookmarks" => "maak bookmarks",
@@ -388,16 +412,13 @@ return array(
         "pdf_format" => "format",
         "export_pdf" => "tabel",
         "export_pdf2" => "lijst",
-
         "column_delimiter" => "scheidingsteken voor kolommen",
         "quote_char" => "grensteken voor velden",
-
         "exportCSV" => "CSV Export",
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
         "print" => "Print",
         "export_timeformat_help" => "Tijd opmaak help",
-
         'subtotal' => 'Sub Totaal',
         'finalamount' => 'Totaal',
         'pdf_headline' => 'Lijst met werktijden en uitgaven',
@@ -412,15 +433,15 @@ return array(
         'done_by' => 'gedaan door',
         'duration' => 'Tijdsduur',
         'customer_new_page' => 'nieuwe pagina voor elke klant',
-
         'times_and_expenses' => 'tijden en uitgaven',
         'times' => 'tijden',
         'expenses' => 'uitgaven',
-
         'reverse_order' => 'oude invoer eerst',
         'time_period' => 'tijdvak',
-
         'duration_unit' => 'u',
+        'time_type' => 'Tijd opmaak',
+        'dec_time' => 'Decimale tijd',
+        'time' => 'Standaard tijd',
     ),
 
     'ext_invoice' => array(
@@ -433,7 +454,7 @@ return array(
         'invoiceOptionShort' => 'Korte factuur',
         'invoiceOptionRound' => 'Tijd afronden',
         'invoiceButton' => 'Maken',
-        'noData' => 'Er is geen tijd invoer voor het geselecteerde project en periode.'
+        'noData' => 'Er is geen tijd invoer voor het geselecteerde project en periode.',
         'noProject' => 'Er is geen project geselecteerd.',
         'includedEntries' => 'Bijvoegen invoer',
         'failure' => 'Weergave factuur mislukt: %s',
@@ -476,6 +497,12 @@ return array(
       'ki_export' => 'Exporteer',
       'core' => 'Toestemmingen',
       'demo_ext' => 'Demo'
+    ),
+
+    'updatecheck' => array(
+        'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest that you update.</b>",
+        'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
+        'current' => "You are running the latest version :)"
     ),
 
     "log_delete" => "log gewist",
