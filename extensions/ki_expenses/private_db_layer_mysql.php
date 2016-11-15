@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,10 @@
  * delete expense entry 
  *
  * @param integer $id -> ID of record
- * @global array  $kga kimai-global-array
- * @author th
+ * @return object
  */
-function expense_delete($id) {
+function expense_delete($id)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     $filter["expenseID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
@@ -36,11 +36,12 @@ function expense_delete($id) {
 /**
  * create exp entry 
  *
- * @param integer $data  array with record data
- * @global array  $kga    kimai-global-array
- * @author sl
+ * @param $userID
+ * @param array $data  array with record data
+ * @return bool|int
  */
-function expense_create($userID, $data) {
+function expense_create($userID, $data)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
  
@@ -82,13 +83,18 @@ function expense_create($userID, $data) {
  * @param null $filterCleared
  * @return array
  */
-function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $limit = false, $reverse_order = false, $filter_refundable = -1, $filterCleared = null) {
+function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $limit = false, $reverse_order = false, $filter_refundable = -1, $filterCleared = null)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     $p = $kga['server_prefix'];
 
+    // -1 for disabled, 0 for only not cleared entries
     if (!is_numeric($filterCleared)) {
-      $filterCleared = $kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+        $filterCleared = -1;
+        if ($kga->getSettings()->isHideClearedEntries()) {
+            $filterCleared = 0;
+        }
     }
     
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
@@ -99,15 +105,19 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
 
     $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
 
-    if (isset($kga['customer']))
-      $whereClauses[] = "project.internal = 0";
+    if (isset($kga['customer'])) {
+        $whereClauses[] = "project.internal = 0";
+    }
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end";
-    if ($filterCleared > -1)
-      $whereClauses[] = "cleared = $filterCleared";
+    if ($start) {
+        $whereClauses[] = "timestamp >= $start";
+    }
+    if ($end) {
+        $whereClauses[] = "timestamp <= $end";
+    }
+    if ($filterCleared > -1) {
+        $whereClauses[] = "cleared = $filterCleared";
+    }
 
     switch ($filter_refundable) {
     	case 0:
@@ -120,15 +130,13 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     	default:
     		// return all expenses - refundable and non refundable
     }
+
     if ($limit) {
-        if (isset($kga['conf']['rowlimit'])) {
-            $limit = "LIMIT " . $kga['conf']['rowlimit'];
-        } else {
-            $limit = "LIMIT 100";
-        }
+        $limit = "LIMIT " . $kga->getSettings()->getRowLimit();
     } else {
         $limit = "";
     }
+
     $query = "SELECT expenses.*,
               customer.name AS customerName, customer.customerID AS customerID,
               project.name AS projectName, project.comment AS projectComment,
@@ -174,7 +182,6 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     return $arr;
 }
 
-
 /**
  * returns single expense entry as array
  *
@@ -195,8 +202,6 @@ function get_expense($id) {
     $conn->Query($query);
     return $conn->RowArray(0, MYSQLI_ASSOC);
 }
-
-
 
 /**
  * Returns the data of a certain expense record
@@ -227,17 +232,15 @@ function expense_get($expenseID) {
     }
 }
 
-
 /**
  * edit exp entry 
  *
  * @param integer $id ID of record
- * @global array $kga kimai-global-array
  * @param integer $data  array with new record data
- * @author th
+ * @return bool
  */
- 
-function expense_edit($id, $data) {
+function expense_edit($id, $data)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -276,6 +279,7 @@ function expense_edit($id, $data) {
 
 /**
  * Get the sum of expenses for every user.
+ *
  * @param int $start Time from which to take the expenses into account.
  * @param int $end Time until which to take the expenses into account.
  * @param array $users Array of user IDs to filter the expenses by.
@@ -283,7 +287,8 @@ function expense_edit($id, $data) {
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every user (via his ID) the sum of his expenses.
  */
-function expenses_by_user($start, $end, $users = null, $customers = null, $projects = null) {
+function expenses_by_user($start, $end, $users = null, $customers = null, $projects = null)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -320,9 +325,9 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
     return $arr;
 }
 
-
 /**
  * Get the sum of expenses for every customer.
+ *
  * @param int $start Time from which to take the expenses into account.
  * @param int $end Time until which to take the expenses into account.
  * @param array $users Array of user IDs to filter the expenses by.
@@ -330,7 +335,8 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every customer (via his ID) the sum of his expenses.
  */
-function expenses_by_customer($start, $end, $users = null, $customers = null, $projects = null) {
+function expenses_by_customer($start, $end, $users = null, $customers = null, $projects = null)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     
@@ -367,6 +373,7 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
 
 /**
  * Get the sum of expenses for every project.
+ *
  * @param int $start Time from which to take the expenses into account.
  * @param int $end Time until which to take the expenses into account.
  * @param array $users Array of user IDs to filter the expenses by.
@@ -374,7 +381,8 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
  * @param array $projects Array of project IDs to filter the expenses by.
  * @return array Array which assigns every project (via his ID) the sum of his expenses.
  */
-function expenses_by_project($start, $end, $users = null, $customers = null, $projects = null) {
+function expenses_by_project($start, $end, $users = null, $customers = null, $projects = null)
+{
     global $kga, $database;
     $conn = $database->getConnectionHandler();
     

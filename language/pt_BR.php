@@ -207,7 +207,6 @@ return array(
     "cleared" => "apuradas",
     "noFading" => "sem efeito desvanecimento",
     "user_list_hidden" => "ocultar a lista de usuário por padrão",
-    'show_sensible_data' => 'Exibir dados sensíveis, bem como na extensão de depuração.',
     'show_update_warn' => 'Desligue aviso antes de uma atualização.',
     'check_at_startup' => 'Mostrar uma mensagem na página de login, se uma nova versão estiver disponível.',
     'show_daySeperatorLines' => 'Desenhar uma linha entre as entradas de diferentes dias.',

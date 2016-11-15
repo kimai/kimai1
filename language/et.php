@@ -265,7 +265,6 @@ return array(
     "noFading" => "Hajumisefekti ei kuvata.",
     "user_list_hidden" => "Kasutajate nimekirja vaikimisi ei kuvata.",
 
-    'show_sensible_data' => 'Debugimislisas kuvatakse ka tundlikud andmed.',
     'show_update_warn' => 'Enne tarkvara uuendamist lülitatakse hoiatus välja.',
     'check_at_startup' => 'Uue tarkvaraversiooni olemasolu korral kuvatakse sisselogimise lehel sellekohane sõnum.',
     'show_daySeperatorLines' => 'Eri päevade kirjete vahel kuvatakse joon.',

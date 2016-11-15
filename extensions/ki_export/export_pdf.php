@@ -40,17 +40,17 @@ class MYPDF extends BasePDF
         $this->SetY(-15);
 
         // customer data
-        //$this->SetFont('helvetica', '', 8); // Set font
+        //$this->SetFont('freesans', '', 8); // Set font
         //$this->Cell(80, 10, $customerData['name'].' ('.$projectData['pct_name'].')', 0, 0, 'L');
 
         // Page number 
-        $this->SetFont('helvetica', 'I', 8); // Set font 
+        $this->SetFont('freesans', 'I', 8); // Set font
         $this->Cell(30, 10,
             $kga['lang']['export_extension']['page'] . ' ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(),
             0, 0, 'C');
 
         //Date
-        $this->SetFont('helvetica', '', 8); // Set font
+        $this->SetFont('freesans', '', 8); // Set font
         $this->Cell(0, 10, date('d.m.Y H:i:s', $this->print_time), 0, 0, 'R');
     }
 
@@ -270,6 +270,8 @@ $pdf->SetTitle($pdf_title);
 $pdf->setPrintHeader(false);
 $pdf->AddPage();
 
+$pdf->SetFont('freesans');
+
 if (isset($_REQUEST['create_bookmarks'])) {
     $pdf->Bookmark($pdf_title, 0, 0);
 }
@@ -279,8 +281,8 @@ if (isset($_REQUEST['create_bookmarks'])) {
 $pdf->WriteHtml('<h1>' . $pdf_title . '</h1>');
 $pdf->ln();
 
-$pdf->WriteHtml('<b>' . $kga['lang']['export_extension']['time_period'] . ':</b> ' . strftime($kga['date_format']['2'],
-        $in) . ' - ' . strftime($kga['date_format']['2'], $out));
+$pdf->WriteHtml('<b>' . $kga['lang']['export_extension']['time_period'] . ':</b> ' . strftime($kga->getDateFormat(2),
+        $in) . ' - ' . strftime($kga->getDateFormat(2), $out));
 
 if (isset($pdf_filter)) {
     $pdf->ln();

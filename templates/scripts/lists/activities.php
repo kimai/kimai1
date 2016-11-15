@@ -39,7 +39,7 @@ $activities = $this->filterListEntries($this->activities);
                 </td>
 
                 <td width="100%" class="activities" onclick="buzzer_preselect_activity(<?php echo $activity['activityID']?>,'<?php echo $this->jsEscape($activity['name'])?>'); return false;" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);">
-                    <?php if ($this->kga['conf']['showIDs'] == 1): ?><span class="ids"><?php echo $activity['activityID']?></span> <?php endif; echo $this->escape($activity['name']) ?>
+                    <?php if ($this->kga->getSettings()->isShowIds()): ?><span class="ids"><?php echo $activity['activityID']?></span> <?php endif; echo $this->escape($activity['name']) ?>
                 </td>
 
                 <td nowrap class="annotation"></td>

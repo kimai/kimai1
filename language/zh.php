@@ -267,7 +267,6 @@ return array(
     "noFading" => "非淡出效果",
     "user_list_hidden" => "默认隐藏用户列表",
 
-    'show_sensible_data' => '调试扩展模块中显示实际数据.',
     'show_update_warn' => '更新的时候关闭警告.',
     'check_at_startup' => '如果有新的版本可用，在首页显示消息.',
     'show_daySeperatorLines' => '每日数据之间绘画一条分割线.',

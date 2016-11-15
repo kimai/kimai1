@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) 2006-2009 Kimai-Development-Team
+ * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ $ann = Kimai_Format::formatCurrency($ann);
 $view->assign('project_annotations', $ann);
 
 if (isset($kga['user'])) {
-    $view->assign('hideComments', $database->user_get_preference('ui.showCommentsByDefault') != 1);
+    $view->assign('hideComments', !$kga->getSettings()->isShowComments());
 } else {
     $view->assign('hideComments', true);
 }

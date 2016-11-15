@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team since 2006
+ * (c) Kimai-Development-Team - since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,23 +18,37 @@
  */
 
 /**
- * Truncates a given message
+ * Class Kimai_Translation_Service
+ *
+ * All things related to translations.
  */
-class Zend_View_Helper_Ellipsis extends Zend_View_Helper_Abstract
+class Kimai_Translation_Service
 {
-    /**
-     * Truncates a given message
-     * 
-     * @param string $text
-     * @param int $maxLength
-     * @return string
-     */
-    public function ellipsis($text, $maxLength = 5)
-    {
-        if (strlen($text) > $maxLength) {
-            return substr($text, 0, $maxLength) . '…';
-        }
 
-        return $text;
+    /**
+     * Returns an array of all language codes.
+     *
+     * @return array
+     */
+    public static function getAvailableLanguages()
+    {
+        $languages = array();
+        foreach (glob(WEBROOT . '/language/*.php') as $langFile) {
+            $languages[] = str_replace(".php", "", basename($langFile));
+        }
+        sort($languages);
+
+        return $languages;
     }
-} 
+
+    /**
+     * Load a translation data.
+     *
+     * @param $name
+     * @return Kimai_Translation_Data
+     */
+    public function load($name)
+    {
+        return new Kimai_Translation_Data($name);
+    }
+}

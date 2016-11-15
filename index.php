@@ -22,6 +22,32 @@
  * will be redirected to core/kimai.php.
  */
 
+ob_start();
+
+require_once 'includes/basics.php';
+
+$view = new Kimai_View();
+
+$authPlugin = Kimai_Registry::getAuthenticator();
+
+// current database setup correct?
+checkDBversion(".");
+
+// ==========================
+// = installation required? =
+// ==========================
+if (count($database->get_users()) == 0) {
+    $view->assign('devtimespan', '2006-' . date('y'));
+    if (isset($_REQUEST['disagreedGPL'])) {
+        $view->assign('disagreedGPL', 1);
+    } else {
+        $view->assign('disagreedGPL', 0);
+    }
+    echo $view->render('install/welcome.php');
+    ob_end_flush();
+    exit;
+}
+
 if (!isset($_REQUEST['a'])) {
     $_REQUEST['a'] = '';
 }
@@ -36,49 +62,6 @@ if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = '';
 } else {
     $password = $_POST['password'];
-}
-
-ob_start();
-
-// =====================
-// = standard includes =
-// =====================
-require_once 'includes/basics.php';
-
-$view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
-
-// =========================
-// = authentication method =
-// =========================
-$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-if (!class_exists($authClass)) {
-    $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-}
-/* @var Kimai_Auth_Abstract $authPlugin */
-$authPlugin = new $authClass($database, $kga);
-
-$view->assign('kga', $kga);
-
-// ===================================
-// = current database setup correct? =
-// ===================================
-checkDBversion('.');
-
-// ==========================
-// = installation required? =
-// ==========================
-$users = $database->get_users();
-if (count($users) == 0) {
-    $view->assign('devtimespan', '2006-' . date('y'));
-    if (isset($_REQUEST['disagreedGPL'])) {
-        $view->assign('disagreedGPL', 1);
-    } else {
-        $view->assign('disagreedGPL', 0);
-    }
-    echo $view->render('install/welcome.php');
-    ob_end_flush();
-    exit;
 }
 
 // =========================
@@ -127,7 +110,6 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
 // =================================================================
 // = processing login and displaying either login screen or errors =
 // =================================================================
-
 switch ($_REQUEST['a']) {
 
     case 'checklogin':
@@ -170,10 +152,7 @@ switch ($_REQUEST['a']) {
 
                 $userData = $database->user_get_data($userId);
 
-                // global configuration must be present from now on
-                $database->get_global_config();
-
-                if (!isset($kga['conf']) || !isset($kga['conf']['loginTries']) || ($userData['ban'] < ($kga['conf']['loginTries']) || (time() - $userData['banTime']) > $kga['conf']['loginBanTime'])) {
+                if ($userData['ban'] < $kga->getLoginTriesBeforeBan() || (time() - $userData['banTime']) > $kga->getLoginBanTime()) {
 
                     // login tries not used up OR bantime is over => grant access
 

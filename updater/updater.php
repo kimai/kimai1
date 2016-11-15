@@ -67,8 +67,7 @@ unset($version_temp);
 // ================================================================================
 // Display starting screen before executing the Update finally
 // ================================================================================
-if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
-{
+if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1) {
     exitUpdater(
         'UPDATE',
         $kga['lang']['updater'][0] . '
@@ -83,8 +82,7 @@ if (!isset($_REQUEST['a']) && $kga['show_update_warn'] == 1)
 // ================================================================================
 // timezone was introduced, give the user an option to select the default one
 // ================================================================================
-if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone']))
-{
+if ((int)$revisionDB < 1219 && !isset($_REQUEST['timezone'])) {
     $timeZonesOptions = '';
     $serverZone = @date_default_timezone_get();
 
@@ -256,15 +254,14 @@ PRIMARY KEY (`exp_ID`)
 if ((int)$revisionDB < 1067) {
     Kimai_Logger::logfile("-- update to r1067");
 
-    /*
-     *  Write new config file with password salt
-     */
+    // Write new config file with password salt
     $kga['password_salt'] = createPassword(20);
     if (write_config_file(
         $kga['server_database'],
         $kga['server_hostname'],
         $kga['server_username'],
         $kga['server_password'],
+        '',
         $kga['server_prefix'],
         $kga['language'],
         $kga['password_salt'],
@@ -274,13 +271,9 @@ if ((int)$revisionDB < 1067) {
         die($kga['lang']['updater'][130]);
     }
 
-    /*
-     *  Reset all passwords
-     */
+    // Reset all passwords
     $new_passwords = array();
-
     $users = $database->queryAll("SELECT * FROM ${p}usr");
-
     foreach ($users as $user) {
         if ($user['usr_name'] == 'admin') {
             $new_password = 'changeme';
@@ -457,7 +450,7 @@ PRIMARY KEY (`userID`,`var`)
     foreach ($columns as $column) {
         exec_query("INSERT INTO ${p}preferences (`userID`,`var`,`value`) SELECT `usr_ID` , \"$column\", `$column` FROM `${p}usr`");
     }
-    
+
     // add unused columns and drop all in usr table
     $columns = array_merge($columns, array('zef_anzahl', 'filter', 'filter_knd', 'filter_pct', 'filter_evt', 'view_knd', 'view_pct', 'view_evt'));
     foreach ($columns as $column) {
@@ -493,7 +486,7 @@ if ((int)$revisionDB < 1256) {
 
 if ((int)$revisionDB < 1257) {
     Kimai_Logger::logfile("-- update to r1257");
-    exec_query("UPDATE ${p}preferences SET var = CONCAT('ui.',var) WHERE var 
+    exec_query("UPDATE ${p}preferences SET var = CONCAT('ui.',var) WHERE var
 IN ('skin', 'rowlimit', 'lang', 'autoselection', 'quickdelete', 'flip_pct_display',
 'pct_comment_flag', 'showIDs', 'noFading', 'user_list_hidden', 'hideClearedEntries')");
 }
@@ -591,7 +584,7 @@ if ((int)$revisionDB < 1305) {
 
 if ((int)$revisionDB < 1326) {
     Kimai_Logger::logfile("-- update to r1326");
-    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','-')");
+    exec_query("INSERT INTO ${p}var (`var`,`value`) VALUES('editLimit','0')");
 }
 
 if ((int)$revisionDB < 1327) {
@@ -785,7 +778,7 @@ CHANGE `knd_trash`    `trash`      tinyint(1) NOT NULL DEFAULT '0',
 CHANGE `knd_timezone` `timezone`   varchar(255) NOT NULL
 ;");
 
-    exec_query("ALTER TABLE `${p}ldr` RENAME TO `${p}groupleaders`,  
+    exec_query("ALTER TABLE `${p}ldr` RENAME TO `${p}groupleaders`,
 CHANGE `grp_ID`     `groupID` int(10) NOT NULL,
 CHANGE `grp_leader` `userID`  int(10) NOT NULL,
 DROP `uid`,
@@ -858,7 +851,7 @@ CHANGE `var` `option` varchar(255) NOT NULL
 ;");
 
     exec_query("UPDATE `${p}configuration` SET `option` = 'project_comment_flag' WHERE `option` = 'pct_comment_flag';");
-    
+
     exec_query("ALTER TABLE `${p}zef` RENAME TO `${p}timeSheet`,
 CHANGE `zef_ID`           `timeEntryID`     int(10) NOT NULL AUTO_INCREMENT,
 CHANGE `zef_in`           `start`           int(10) NOT NULL DEFAULT '0',
@@ -892,10 +885,12 @@ if ((int)$revisionDB < 1370) {
         $kga['server_hostname'],
         $kga['server_username'],
         $kga['server_password'],
+        '',
         $kga['server_prefix'],
         $kga['language'],
         $kga['password_salt'],
-        $defaultTimezone);
+        $defaultTimezone
+    );
 
     if ($success) {
         $level = 'green';
@@ -997,10 +992,12 @@ if ((int)$revisionDB < 1379) {
         $kga['server_hostname'],
         $kga['server_username'],
         $kga['server_password'],
+        '',
         $kga['server_prefix'],
         $kga['language'],
         $kga['password_salt'],
-        $defaultTimezone);
+        $defaultTimezone
+    );
 
     if ($success) {
         $level = 'green';
@@ -1040,20 +1037,20 @@ if ((int)$revisionDB < 1381) {
     exec_query("ALTER TABLE `${p}projects_activities` ADD UNIQUE  KEY(`projectID`, `activityID`);", false);
     exec_query("ALTER TABLE `${p}rates`               ADD UNIQUE  KEY(`userID`, `projectID`, `activityID`);", false);
     #exec_query("ALTER TABLE `${p}statuses`            ADD PRIMARY KEY(`statusID`);", false);
-    
+
     # primary key exists since r733 (renamed in r1368)
     #exec_query("ALTER TABLE `${p}timeSheet` ADD PRIMARY KEY(`timeEntryID`);", false);
 
     #drop keys from r1176 and create new ones
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_usrID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_usrID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`userID`)", false);
 
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_pctID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_pctID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`projectID`)", false);
 
-    exec_query("ALTER TABLE `${p}timesheet` DROP INDEX zef_evtID", false);
+    exec_query("ALTER TABLE `${p}timeSheet` DROP INDEX zef_evtID", false);
     exec_query("ALTER TABLE `${p}timeSheet` ADD INDEX (`activityID`)", false);
-    
+
     # column has primary key since r1368
     #exec_query("ALTER TABLE `${p}users` ADD PRIMARY KEY(`userID`);", false);
     exec_query("ALTER TABLE `${p}users` ADD UNIQUE  KEY(`name`);", false);
@@ -1097,10 +1094,10 @@ if ((int)$revisionDB < 1385) {
     exec_query("ALTER TABLE ${p}customers CHANGE `mobile` `mobile` VARCHAR(255) NULL;");
     exec_query("ALTER TABLE ${p}customers CHANGE `mail` `mail` VARCHAR(255) NULL;");
     exec_query("ALTER TABLE ${p}customers CHANGE `homepage` `homepage` VARCHAR(255) NULL;");
-    
+
     exec_query("ALTER TABLE ${p}projects CHANGE `comment` `comment` TEXT NULL;");
     exec_query("ALTER TABLE ${p}projects CHANGE `budget` `budget` DECIMAL(10,2) NULL DEFAULT '0.00';");
-    
+
     exec_query("ALTER TABLE ${p}activities CHANGE `comment` `comment` TEXT NULL;");
 }
 
@@ -1115,6 +1112,12 @@ if ((int)$revisionDB < 1387) {
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('date_format_3','d.m.Y')");
 }
 
+if ((int)$revisionDB < 1388) {
+    Kimai_Logger::logfile("-- update to r1388");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'lastdbbackup'");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'kimail'");
+}
+
 // release of kimai 1.0.0
 
 if ((int)$revisionDB < 1389) {
@@ -1123,6 +1126,53 @@ if ((int)$revisionDB < 1389) {
 }
 
 // release of kimai 1.1.0
+
+if ((int)$revisionDB < 1390) {
+    Kimai_Logger::logfile("-- update to r1390");
+    exec_query("DELETE FROM `${p}configuration` WHERE `option` = 'show_sensible_data'");
+}
+
+if ((int)$revisionDB < 1391) {
+    Kimai_Logger::logfile("-- update to r1391");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('table_time_format', '%H:%M')");
+}
+
+if ((int)$revisionDB < 1392) {
+    Kimai_Logger::logfile("-- update to r1392");
+
+    $charset = '';
+    if ($kga['utf8']) {
+        $charset = 'utf8';
+    }
+
+    $success = write_config_file(
+        $kga['server_database'],
+        $kga['server_hostname'],
+        $kga['server_username'],
+        $kga['server_password'],
+        $charset,
+        $kga['server_prefix'],
+        $kga['language'],
+        $kga['password_salt'],
+        $kga['defaultTimezone']
+    );
+
+    if ($success) {
+        $level = 'green';
+        $additional = 'charset: ' . $charset;
+    } else {
+        $level = 'red';
+        $additional = 'Unable to write config file.';
+    }
+
+    printLine($level, 'Store charset in configuration file <i>autoconf.php</i>.', $additional);
+}
+
+if ((int)$revisionDB < 1393) {
+    Kimai_Logger::logfile("-- update to r1393");
+    exec_query("ALTER TABLE `${p}users` CHANGE `mail` `mail` VARCHAR(160) NULL");
+    exec_query("ALTER TABLE `${p}timeSheet` CHANGE `fixedRate` `fixedRate` DECIMAL(10,2) NULL");
+}
 
 // ================================================================================
 // FINALIZATION: update DB version number

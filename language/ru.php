@@ -257,7 +257,6 @@ return array(
     "atLeastOneGroup" => 'Должно быть выбрано не менее одной группы.',
     "noFading" => "без эффектов",
     "user_list_hidden" => "скрывать список пользователей по умолчанию",
-    'show_sensible_data' => 'Display sensible data as well in the debug extension.',
     'show_update_warn' => 'Turn off warning before an update.',
     'check_at_startup' => 'Show a message on the login page if a newer version is available.',
     'show_daySeperatorLines' => 'Draw a line between entries of different days.',

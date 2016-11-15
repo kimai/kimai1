@@ -50,7 +50,7 @@
                     <label>
                         <?php echo $this->translate('ext_invoice:defaultVat') ?>
                     </label>
-                    <span id="defaultVat"><?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga['conf']['defaultVat'])) ?></span>
+                    <span id="defaultVat"><?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->kga->getDefaultVat())) ?></span>
                     % (<a id="editVatLink" href="#"><?php echo $this->translate('change') ?></a>)
                 </div>
                 <div>
@@ -72,9 +72,9 @@
                         <?php echo $this->translate('ext_invoice:includedEntries') ?>
                     </label>
                     <select id="filter_cleared" name="filter_cleared">
-                        <option value="-1" <?php if (!$this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_all') ?></option>
+                        <option value="-1" <?php if (!$this->kga->getSettings()->isHideClearedEntries()): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_all') ?></option>
                         <option value="1"><?php echo $this->translate('export_extension:cleared_cleared') ?></option>
-                        <option value="0" <?php if ($this->kga['conf']['hideClearedEntries']): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_open') ?></option>
+                        <option value="0" <?php if ($this->kga->getSettings()->isHideClearedEntries()): ?> selected="selected" <?php endif; ?>><?php echo $this->translate('export_extension:cleared_open') ?></option>
                     </select>
                 </div>
                 <div>

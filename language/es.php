@@ -210,7 +210,6 @@ return array(
     "noFading" => "sin efecto de fundido",
     "user_list_hidden" => "ocultar lista de usuarios por defecto",
 
-    'show_sensible_data' => 'Mostrar también datos privados en la extensión "debug".',
     'show_update_warn' => 'No mostrar una advertencia antes de la actualización .',
     'check_at_startup' => 'Mostrar un mensaje en la página de inicio de sesión si hay una versión nueva.',
     'show_daySeperatorLines' => 'Dibujar una línea entre entradas de días distintos.',

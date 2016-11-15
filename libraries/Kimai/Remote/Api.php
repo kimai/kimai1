@@ -119,20 +119,7 @@ class Kimai_Remote_Api
      */
     protected function getAuthenticator()
     {
-        $kga = $this->getKimaiEnv();
-        $database = $this->getBackend();
-
-        // load authenticator
-        $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-        if (!class_exists($authClass)) {
-            $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-        }
-
-        $authPlugin = new $authClass();
-        $authPlugin->setDatabase($this->oldDatabase);
-        $authPlugin->setKga($kga);
-
-        return $authPlugin;
+        return Kimai_Registry::getAuthenticator();
     }
 
     /**

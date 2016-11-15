@@ -24,12 +24,10 @@
 // insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates/";
-require("../../includes/kspi.php");
+require "../../includes/kspi.php";
 
-
-
-switch ($axAction) {
-    
+switch ($axAction)
+{
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
@@ -83,35 +81,69 @@ switch ($axAction) {
      * Write some message to the logfile.
      */
     case "shoutbox":
-        Kimai_Logger::logfile("text: " . $axValue);
+        Kimai_Logger::logfile("[".Kimai_Registry::getUser()->getName()."] " . $axValue);
     break;
 
     /**
      * Return the $kga variable (Kimai Global Array). Strip out some sensitive
      * information if not configured otherwise.
      */
-    case "reloadKGA":    
-    // read kga --------------------------------------- 
-        $output = $kga;
-        // clean out some data that is way too private to be shown in the frontend ...
+    case "reloadKGA":
 
-        if (!$kga['show_sensible_data']) {
-            $output['server_hostname']  = "xxx";
-            $output['server_database']  = "xxx";
-            $output['server_username']  = "xxx";
-            $output['server_password']  = "xxx";
-            $output['password_salt']    = "xxx";
-            $output['user']['secure']   = "xxx";
-            $output['user']['userID']   = "xxx";
-            $output['user']['pw']       = "xxx";
-            $output['user']['password'] = "xxx";
-            $output['user']['apikey']   = "xxx";
+        $output = $kga;
+        $filter = array(
+            'server_hostname' => "xxx",
+            'server_database' => "xxx",
+            'server_username' => "xxx",
+            'server_password' => "xxx",
+            'password_salt' => "xxx",
+            'user' => array(
+                'secure' => "xxx",
+                'userID' => "xxx",
+                'pw' => "xxx",
+                'password' => "xxx",
+                'apikey' => "xxx"
+            ),
+        );
+
+        switch($axValue)
+        {
+            case 'plain':
+                $output = $kga;
+                $output['conf'] = '## HIDDEN ##';
+                $output['user'] = '## HIDDEN ##';
+                $output['lang'] = '## HIDDEN ##';
+                break;
+
+            case 'lang':
+                $output = $kga['lang'];
+                $filter = array();
+                break;
+
+            case 'user':
+                $output = $kga['user'];
+                $filter = $filter['user'];
+                break;
+
+            case 'conf':
+                $output = $kga['conf'];
+                break;
         }
-        echo"<pre>";
+
+        // clean out some data that is way too private to be shown in the frontend ...
+        foreach($filter as $k => $v) {
+            if (is_array($v)) {
+                foreach($v as $k2 => $v2) {
+                    if (isset($output[$k]) && isset($output[$k][$k2])) {
+                        $output[$k][$k2] = $v2;
+                    }
+                }
+            } else {
+                $output[$k] = $v;
+            }
+        }
+
         print_r($output);
-        echo"</pre>";
-    // /read kga --------------------------------------
+
     break;
 }
-
-?>

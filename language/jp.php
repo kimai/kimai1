@@ -258,7 +258,6 @@ return array(
 	"atLeastOneGroup" => '少なくとも一つのグループを選択しなければならない',
 	"noFading" => "フェージング効果無しで",
 	"user_list_hidden" => "既定にユーザーリストを非表示する",
-	'show_sensible_data' => 'デバッグエクステンションにセンシブルデータを表示する',
 	'show_update_warn' => 'アップデートの前に注意が面を非表示にする',
 	'check_at_startup' => '新バージョンが利用できるようになったら、路銀ページにメッセージを表示する',
 	'show_daySeperatorLines' => '違う日の間に区別線を表示する',

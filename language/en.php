@@ -264,7 +264,6 @@ return array(
     "atLeastOneGroup" => 'At least one group has to be selected.',
     "noFading" => "no fading effect",
     "user_list_hidden" => "hide user list by default",
-    'show_sensible_data' => 'Display sensible data as well in the debug extension.',
     'show_update_warn' => 'Turn off warning before an update.',
     'check_at_startup' => 'Show a message on the login page if a newer version is available.',
     'show_daySeperatorLines' => 'Draw a line between entries of different days.',
@@ -299,7 +298,7 @@ return array(
     'editLimitError' => 'The end date is further in the past than it was allowed to be.',
     'hideClearedEntries' => 'hide cleared entries',
     'showCommentsByDefault' => 'show comments by default',
-    'showTrackingNumber' => 'show tracking number and description details in timesheet',
+    'showTrackingNumber' => 'show tracking number in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
     'defaultLocation' => 'Default location',
     'showQuickNote'	=> 'show quick note button',
@@ -513,6 +512,11 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'current' => "You are running the latest version :)"
     ),
 
-    "log_delete" => "log cleared",
+    'debug' => array(
+        'lines' => '(limited to %s lines)',
+        'logfile' => 'LOGFILE',
+        'clear' => 'Clear logfile',
+        'log_delete' => 'log cleared',
+    ),
 
 );

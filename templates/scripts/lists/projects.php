@@ -37,14 +37,14 @@ $projects = $this->filterListEntries($this->projects);
             </td>
 
             <td width="100%" class="projects" onmouseover="lists_change_color(this,true);" onmouseout="lists_change_color(this,false);" onclick="buzzer_preselect_project(<?php echo $project['projectID']?>,'<?php echo $this->jsEscape($project['name'])?>',<?php echo $project['customerID']?>,'<?php echo $this->jsEscape($project['customerName'])?>'); lists_reload('activity'); return false;">
-                <?php if ($this->kga['conf']['flip_project_display']): ?>
-                    <?php if ($this->kga['conf']['showIDs'] == 1): ?>
+                <?php if ($this->kga->getSettings()->isFlipProjectDisplay()): ?>
+                    <?php if ($this->kga->getSettings()->isShowIds()): ?>
                       <span class="ids"><?php echo $project['projectID']?></span>
                     <?php endif; ?>
                     <span class="lighter"><?php echo $this->escape($this->truncate($project['customerName'],30,'...'))?>:</span> <?php echo $this->escape($project['name']) ?>
                 <?php else: ?>
-                    <?php if ($this->kga['conf']['project_comment_flag'] == 1): ?>
-                        <?php if ($this->kga['conf']['showIDs'] == 1): ?>
+                    <?php if ($this->kga->getSettings()->isShowProjectComment()): ?>
+                        <?php if ($this->kga->getSettings()->isShowIds()): ?>
                           <span class="ids"><?php echo $project['projectID']?></span>
                         <?php endif; ?>
                         <?php echo $this->escape($project['name'])?>
@@ -56,7 +56,7 @@ $projects = $this->filterListEntries($this->projects);
                         <?php endif; ?>
                         </span>
                     <?php else: ?>
-                        <?php if ($this->kga['conf']['showIDs'] == 1): ?>
+                        <?php if ($this->kga->getSettings()->isShowIds()): ?>
                           <span class="ids"><?php echo $project['projectID']?></span>
                         <?php endif; ?>
                         <?php echo $this->escape($project['name'])?>

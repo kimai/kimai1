@@ -33,8 +33,8 @@ if (!isset($_REQUEST['invoice_start_day']) || !isset($_REQUEST['invoice_end_day'
     die($kga['lang']['ext_invoice']['noDateSelected']);
 }
 
-$dateIn = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_start_day']);
-$dateOut = DateTime::createFromFormat($kga['date_format'][3], $_REQUEST['invoice_end_day']);
+$dateIn = DateTime::createFromFormat($kga->getDateFormat(3), $_REQUEST['invoice_start_day']);
+$dateOut = DateTime::createFromFormat($kga->getDateFormat(3), $_REQUEST['invoice_end_day']);
 
 if ($dateIn === false || $dateOut === false) {
     die($kga['lang']['ext_invoice']['noDateSelected']);
@@ -125,7 +125,7 @@ if (isset($_REQUEST['sort_invoice']))
 
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
-    $vat_rate = $kga['conf']['defaultVat'];
+    $vat_rate = $kga->getDefaultVat();
 }
 
 $vat = $vat_rate * $total / 100;
@@ -159,9 +159,9 @@ $model->setInvoiceId($invoiceID);
 $model->setBeginDate($beginDate);
 $model->setEndDate($endDate);
 $model->setInvoiceDate(time());
-$model->setDateFormat($kga['conf']['date_format_2']);
-$model->setCurrencySign($kga['conf']['currency_sign']);
-$model->setCurrencyName($kga['conf']['currency_name']);
+$model->setDateFormat($kga->getDateFormat(2));
+$model->setCurrencySign($kga->getCurrencySign());
+$model->setCurrencyName($kga->getCurrencyName());
 $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
 
 // ---------------------------------------------------------------------------

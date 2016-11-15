@@ -63,7 +63,7 @@
 
         var openAfterRecorded      = <?php echo json_encode($this->openAfterRecorded) ?>;
 
-        <?php if ($this->kga['conf']['quickdelete'] == 2): ?>
+        <?php if ($this->kga->getSettings()->getQuickDeleteType() == 2): ?>
         var confirmText           = "<?php echo $this->escape($this->kga['lang']['sure']) ?>";
         <?php else: ?>
         var confirmText           = undefined;
@@ -76,7 +76,7 @@
         <?php endif; ?>
 
 
-        <?php if ($this->kga['conf']['noFading']): ?>
+        <?php if (!$this->kga->getSettings()->isUseSmoothFading()): ?>
         fading_enabled = false;
         <?php endif; ?>
        
@@ -89,7 +89,7 @@
 
         var default_title         = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
         var revision              = <?php echo $this->kga['revision'] ?>;
-        var timeframeDateFormat   = "<?php echo $this->escape($this->kga['date_format'][2]) ?>";
+        var timeframeDateFormat   = "<?php echo $this->escape($this->kga->getDateFormat(2)) ?>";
 
         var selected_customer  = '<?php echo $this->customerData['customerID']?>';
         var selected_project   = '<?php echo $this->projectData['projectID']?>';
@@ -104,10 +104,10 @@
             selectOtherMonths : true,
             nextText: '',
             prevText: '',
-            <?php if ($this->kga['conf']['noFading']): ?>
+            <?php if (!$this->kga->getSettings()->isUseSmoothFading()): ?>
               showAnim: '',
             <?php endif; ?>
-            dateFormat : '<?php echo $this->kga['date_format'][0] ?>',
+            dateFormat : '<?php echo $this->kga->getDateFormat(0) ?>',
             dayNames: <?php echo $this->weekdays_array ?>,
             dayNamesMin: <?php echo $this->weekdays_short_array ?>,
             dayNamesShort: <?php echo $this->weekdays_short_array ?>,
@@ -141,7 +141,7 @@
     $('#usersShrink').hide();
   <?php endif; ?>
 
-  <?php if ($this->kga['conf']['user_list_hidden'] or count($this->users) <= 1): ?>
+  <?php if ($this->kga->getSettings()->isUserListHidden() || count($this->users) <= 1): ?>
     lists_shrinkUserToggle();
   <?php endif; ?>
     $('#projects>table>tbody>tr>td>a.preselect#ps'+selected_project+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');

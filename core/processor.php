@@ -87,6 +87,7 @@ switch ($axAction) {
         $preferences['hideOverlapLines'] = getRequestBool('hideOverlapLines');
         $preferences['showQuickNote'] = getRequestBool('showQuickNote');
         $preferences['defaultLocation'] = isset($_REQUEST['defaultLocation']) ? $_REQUEST['defaultLocation'] : '';
+        $preferences['table_time_format'] = $_REQUEST['table_time_format'];
 
         $database->user_set_preferences($preferences, 'ui.');
         $database->user_set_preferences(array('timezone' => $_REQUEST['timezone']));

@@ -26,14 +26,11 @@
  * First it is checked if automatic login is possible with this method.
  * If so it is tried via the performAutoLogin function.
  * When a user provides credentials the authenticate function is called.
- *
- * @author sl
- * @author Kevin Papst
  */
 abstract class Kimai_Auth_Abstract
 {
     /**
-     * @var array
+     * @var Kimai_Config
      */
     protected $kga = null;
 
@@ -44,7 +41,7 @@ abstract class Kimai_Auth_Abstract
 
     /**
      * @param Kimai_Database_Mysql $database
-     * @param array $kga
+     * @param Kimai_Config $kga
      */
     public function __construct($database = null, $kga = null)
     {
@@ -79,15 +76,15 @@ abstract class Kimai_Auth_Abstract
     }
 
     /**
-     * @param array $kga
+     * @param Kimai_Config $kga
      */
-    public function setKga(array $kga)
+    public function setKga($kga)
     {
         $this->kga = $kga;
     }
 
     /**
-     * @return array
+     * @return Kimai_Config
      */
     protected function getKga()
     {

@@ -1,6 +1,9 @@
 <?php
 if ($this->expenses)
 {
+    $showGabBreaks = $this->kga->isShowGabBreaks();
+    $showDaySeperatorLines = $this->kga->isShowDaySeperatorLines();
+
     ?>
     <div id="exptable">
 
@@ -28,20 +31,22 @@ if ($this->expenses)
     {
         $cur_day_buffer = strftime("%d",$row['timestamp']);
         $cur_timestamp_buffer = strftime("%H%M",$row['timestamp']);
+        $tdClass = '';
+        if ($cur_day_buffer != $day_buffer && $showDaySeperatorLines) {
+            $tdClass = "break_day";
+        } elseif ($cur_timestamp_buffer != $timestamp_buffer && $showGabBreaks) {
+            $tdClass = "break_gap";
+        }
         ?>
         <tr id="expEntry<?php echo $row['expenseID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
 
-            <td nowrap class="option
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td nowrap class="option <?php echo $tdClass ?>">
 
-            <?php if (isset($this->kga['user']) &&  ($this->kga['conf']['editLimit'] == "-" || time()-$row['timestamp'] <= $this->kga['conf']['editLimit'])): ?>
+            <?php if (isset($this->kga['user']) && (!$this->kga->isEditLimit() || time() - $row['timestamp'] <= $this->kga->getEditLimit())): ?>
                 <a href ='#' onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
                 <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
 
-                <?php if ($this->kga['conf']['quickdelete'] > 0): ?>
+                <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
                     <a href ='#' class='quickdelete' onclick="expense_quickdelete(<?php echo $row['expenseID']?>); return false;">
                     <img src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
                     </a>
@@ -50,77 +55,45 @@ if ($this->expenses)
 
             </td>
 
-            <td class="date
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
-                <?php echo $this->escape(strftime($this->kga['date_format'][1], $row['timestamp'])) ?>
+            <td class="date <?php echo $tdClass ?>">
+                <?php echo $this->escape(strftime($this->kga->getDateFormat(1), $row['timestamp'])) ?>
             </td>
 
-            <td class="time
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="time <?php echo $tdClass ?>">
                 <?php echo $this->escape(strftime("%H:%M", $row['timestamp'])) ?>
             </td>
 
-            <td class="value
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="value <?php echo $tdClass ?>">
                 <?php echo $this->escape( number_format($row['value']*$row['multiplier'], 2, $this->kga['conf']['decimalSeparator'],'') ) ?>
             </td>
 
-            <td class="refundable
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="refundable <?php echo $tdClass ?>">
                     <?php echo $row['refundable'] ? $this->kga['lang']['yes'] : $this->kga['lang']['no'] ?>
             </td>
 
-            <td class="customer
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="customer <?php echo $tdClass ?>">
                 <?php echo $this->escape($row['customerName'])?>
             </td>
 
-            <td class="project
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="project <?php echo $tdClass ?>">
                 <?php echo $this->escape($row['projectName'])?>
             </td>
 
-            <td class="designation
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="designation <?php echo $tdClass ?>">
                 <?php echo $this->escape($row['designation'])?>
 
-            <?php if ($row['comment']): ?>
-                <?php if ($row['commentType'] == '0'): ?>
-                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
-                <?php elseif ($row['commentType'] == '1'): ?>
-                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
-                <?php elseif ($row['commentType'] == '2'): ?>
-                    <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                <?php if ($row['comment']): ?>
+                    <?php if ($row['commentType'] == '0'): ?>
+                        <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <?php elseif ($row['commentType'] == '1'): ?>
+                        <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <?php elseif ($row['commentType'] == '2'): ?>
+                        <a href="#" onclick="comment(<?php echo $row['expenseID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase_caution.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment']);?>' border="0" /></a>
+                    <?php endif; ?>
                 <?php endif; ?>
-            <?php endif; ?>
             </td>
 
-            <td class="username
-                <?php if ($cur_day_buffer != $day_buffer && $this->kga['show_daySeperatorLines']) echo "break_day";
-                      elseif ($cur_timestamp_buffer != $timestamp_buffer            && $this->kga['show_gabBreaks'])         echo "break_gap";
-                ?>
-            ">
+            <td class="username <?php echo $tdClass ?>">
                 <?php echo $this->escape($row['userName'])?>
             </td>
 

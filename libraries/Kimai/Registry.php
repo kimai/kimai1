@@ -1,29 +1,45 @@
 <?php
 /**
- * Registry to fetch several global Kimai objects.
+ * This file is part of
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * (c) Kimai-Development-Team since 2006
  *
- * @author Kevin Papst
+ * Kimai is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; Version 3, 29 June 2007
+ *
+ * Kimai is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Registry to fetch several global Kimai objects.
  */
 class Kimai_Registry extends Zend_Registry
 {
     /**
      * Sets the configuration to use.
      *
-     * @param Zend_Config $config
+     * @param Kimai_Config $config
      */
-    public static function setConfig(Zend_Config $config)
+    public static function setConfig(Kimai_Config $config)
     {
-        self::set('Zend_Config', $config);
+        self::set('Kimai_Config', $config);
     }
 
     /**
      * Return the global configuration, merged with all user related configurations.
      *
-     * @return Zend_Config
+     * @return Kimai_Config
      */
     public static function getConfig()
     {
-        return self::get('Zend_Config');
+        return self::get('Kimai_Config');
     }
 
     /**
@@ -84,5 +100,38 @@ class Kimai_Registry extends Zend_Registry
     public static function getCache()
     {
         return self::get('Zend_Cache');
+    }
+    
+    /**
+     * @param Kimai_Auth_Abstract $authenticator
+     */
+    public static function setAuthenticator(Kimai_Auth_Abstract $authenticator)
+    {
+        self::set('Kimai_Auth', $authenticator);
+    }
+
+    /**
+     * @return Kimai_Auth_Abstract
+     */
+    public static function getAuthenticator()
+    {
+        return self::get('Kimai_Auth');
+    }
+
+    /**
+     * @param Kimai_Translation_Data $translation
+     */
+    public static function setTranslation(Kimai_Translation_Data $translation)
+    {
+        self::getConfig()->setTranslation($translation);
+        self::set('Kimai_Translation', $translation);
+    }
+
+    /**
+     * @return Kimai_Translation_Data
+     */
+    public static function getTranslation()
+    {
+        return self::get('Kimai_Translation');
     }
 }

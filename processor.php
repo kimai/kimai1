@@ -32,17 +32,15 @@ if (!isset($_POST['name']) || is_array($_POST['name'])) {
     $name = $_POST['name'];
 }
 
-require('includes/basics.php');
+require 'includes/basics.php';
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
-$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-if (!class_exists($authClass)) {
-    $authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
-}
-/* @var Kimai_Auth_Kimai $authPlugin */
-$authPlugin = new $authClass($database, $kga);
+// =========================
+// = authentication method =
+// =========================
+$authPlugin = Kimai_Registry::getAuthenticator();
 
 $view->assign('kga', $kga);
 

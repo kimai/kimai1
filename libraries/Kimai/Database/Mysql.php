@@ -29,7 +29,7 @@ class Kimai_Database_Mysql
     /**
      * Kimai Global Array
      *
-     * @var array
+     * @var Kimai_Config
      */
     protected $kga;
 
@@ -42,19 +42,23 @@ class Kimai_Database_Mysql
      * Instantiate a new database layer.
      * The provided kimai global array will be stored as a reference.
      *
-     * @param array $kga
+     * @param Kimai_Config $kga
      * @param bool $autoConnect
      */
     public function __construct(&$kga, $autoConnect = true)
     {
         $this->kga = &$kga;
         if ($autoConnect) {
+            $useUtf8 = false;
+            if ($kga['server_charset'] === 'utf8') {
+                $useUtf8 = true;
+            }
             $this->connect(
                 $kga['server_hostname'],
                 $kga['server_database'],
                 $kga['server_username'],
                 $kga['server_password'],
-                $kga['utf8']
+                $useUtf8
             );
         }
     }
@@ -83,6 +87,14 @@ class Kimai_Database_Mysql
     public function isConnected()
     {
         return $this->conn->IsConnected();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastError()
+    {
+        return $this->conn->Error();
     }
 
     /**
@@ -879,13 +891,9 @@ class Kimai_Database_Mysql
 
         if (isset($data['fixedRate'])) {
             if (is_numeric($data['fixedRate'])) {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->save_fixed_rate($activityGroup, $activityID, $data['fixedRate']);
-                }
+                $this->save_fixed_rate(null, $activityID, $data['fixedRate']);
             } else {
-                foreach ($activityGroups as $activityGroup) {
-                    $this->remove_fixed_rate($activityGroup, $activityID);
-                }
+                $this->remove_fixed_rate(null, $activityID);
             }
         }
 
@@ -1160,7 +1168,7 @@ class Kimai_Database_Mysql
                 WHERE activityID = $activityId AND project.trash=0";
 
         $result = $this->conn->Query($query);
-        
+
         if ($result == false) {
             $this->logLastError('activity_get_projects');
             return false;
@@ -1627,7 +1635,7 @@ class Kimai_Database_Mysql
             }
         }
 
-        $numbers = array('status', 'trash', 'active', 'lastProject', 'lastActivity', 'lastRecord', 'globalRoleID');
+        $numbers = array('trash', 'active', 'lastProject', 'lastActivity', 'lastRecord', 'globalRoleID');
         foreach ($numbers as $key) {
             if (isset($data[$key])) {
                 $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
@@ -1661,12 +1669,13 @@ class Kimai_Database_Mysql
             return true;
         }
 
+        $this->logLastError('user_edit failed');
+
         if (!$this->conn->TransactionRollback()) {
             $this->logLastError('user_edit rollback');
             return false;
         }
-
-        $this->logLastError('user_edit failed');
+        
         return false;
     }
 
@@ -1723,7 +1732,7 @@ class Kimai_Database_Mysql
      * @return string value of the preference or null if there is no such preference
      * @author sl
      */
-    public function user_get_preference($key, $userId = null)
+    protected function user_get_preference($key, $userId = null)
     {
         if ($userId === null) {
             $userId = $this->kga['user']['userID'];
@@ -2120,28 +2129,6 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * Returns all configuration variables
-     *
-     * @return array       array with the options from the configuration table
-     * @author th
-     */
-    public function configuration_get_data()
-    {
-        $table = $this->kga['server_prefix'] . "configuration";
-        $result = $this->conn->SelectRows($table);
-
-        $config_data = array();
-
-        $this->conn->MoveFirst();
-        while (!$this->conn->EndOfSeek()) {
-            $row = $this->conn->Row();
-            $config_data[$row->option] = $row->value;
-        }
-
-        return $config_data;
-    }
-
-    /**
      * Edits a configuration variables by replacing the data by the new array
      *
      * @param array $data    variables array
@@ -2299,27 +2286,28 @@ class Kimai_Database_Mysql
     {
         $data = $this->clean_data($data);
 
-        $values['location']     = MySQL::SQLValue($data['location']);
-        $values['comment']      = MySQL::SQLValue($data['comment']);
-        $values['description']  = MySQL::SQLValue($data['description']);
+        $values['location'] = MySQL::SQLValue($data['location']);
+        $values['comment'] = MySQL::SQLValue($data['comment']);
+        $values['description'] = MySQL::SQLValue($data['description']);
         if ($data['trackingNumber'] == '') {
             $values['trackingNumber'] = 'NULL';
         } else {
             $values['trackingNumber'] = MySQL::SQLValue($data['trackingNumber']);
         }
-        $values['userID']       = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
-        $values['projectID']    = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
-        $values['activityID']   = MySQL::SQLValue($data['activityID'], MySQL::SQLVALUE_NUMBER);
-        $values['commentType']  = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
-        $values['start']        = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
-        $values['end']          = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
-        $values['duration']     = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
-        $values['rate']         = MySQL::SQLValue($data['rate'] ? $data['rate'] : 0, MySQL::SQLVALUE_NUMBER);
-        $values['cleared']      = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
-        $values['budget']       = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
-        $values['approved']     = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
-        $values['statusID']     = MySQL::SQLValue($data['statusID'], MySQL::SQLVALUE_NUMBER);
-        $values['billable']     = MySQL::SQLValue($data['billable'], MySQL::SQLVALUE_NUMBER);
+        $values['userID'] = MySQL::SQLValue($data['userID'], MySQL::SQLVALUE_NUMBER);
+        $values['projectID'] = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
+        $values['activityID'] = MySQL::SQLValue($data['activityID'], MySQL::SQLVALUE_NUMBER);
+        $values['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
+        $values['start'] = MySQL::SQLValue($data['start'], MySQL::SQLVALUE_NUMBER);
+        $values['end'] = MySQL::SQLValue($data['end'], MySQL::SQLVALUE_NUMBER);
+        $values['duration'] = MySQL::SQLValue($data['duration'], MySQL::SQLVALUE_NUMBER);
+        $values['rate'] = MySQL::SQLValue($data['rate'] ? : 0, MySQL::SQLVALUE_NUMBER);
+        $values['fixedRate'] = MySQL::SQLValue($data['fixedRate'] ? : 0, MySQL::SQLVALUE_NUMBER);
+        $values['cleared'] = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
+        $values['budget'] = MySQL::SQLValue($data['budget'], MySQL::SQLVALUE_NUMBER);
+        $values['approved'] = MySQL::SQLValue($data['approved'], MySQL::SQLVALUE_NUMBER);
+        $values['statusID'] = MySQL::SQLValue($data['statusID'], MySQL::SQLVALUE_NUMBER);
+        $values['billable'] = MySQL::SQLValue($data['billable'], MySQL::SQLVALUE_NUMBER);
 
         $table = $this->getTimeSheetTable();
         $success = $this->conn->InsertRow($table, $values);
@@ -2406,10 +2394,10 @@ class Kimai_Database_Mysql
                 return false;
             }
         } else {
-            //      	$budgetChange += $values['budget'];
-//      	$approvedChange += $values['approved'];
-//      	$this->update_evt_budget($values['projectID'], $values['activityID'], $budgetChange);
-//      	$this->update_evt_approved($values['projectID'], $values['activityID'], $budgetChange);
+            // $budgetChange += $values['budget'];
+            // $approvedChange += $values['approved'];
+            // $this->update_evt_budget($values['projectID'], $values['activityID'], $budgetChange);
+            // $this->update_evt_approved($values['projectID'], $values['activityID'], $budgetChange);
             $this->logLastError('timeEntry_edit');
             if (!$this->conn->TransactionRollback()) {
                 $this->logLastError('timeEntry_edit');
@@ -2485,7 +2473,7 @@ class Kimai_Database_Mysql
                   AND project.trash=0";
         }
 
-        if ($this->kga['conf']['flip_project_display']) {
+        if ($this->kga->getSettings()->isFlipProjectDisplay()) {
             $query .= " ORDER BY project.visible DESC, customer.visible DESC, customerName, name;";
         } else {
             $query .= " ORDER BY project.visible DESC, customer.visible DESC, name, customerName;";
@@ -2536,7 +2524,7 @@ class Kimai_Database_Mysql
         $customerID = MySQL::SQLValue($customerID, MySQL::SQLVALUE_NUMBER);
         $p = $this->kga['server_prefix'];
 
-        if ($this->kga['conf']['flip_project_display']) {
+        if ($this->kga->getSettings()->isFlipProjectDisplay()) {
             $sort = "customerName, name";
         } else {
             $sort = "name, customerName";
@@ -2667,9 +2655,12 @@ class Kimai_Database_Mysql
      */
     public function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false)
     {
+        // -1 for disabled, 0 for only not cleared entries
         if (!is_numeric($filterCleared)) {
-            // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
-            $filterCleared = $this->kga['conf']['hideClearedEntries'] - 1;
+            $filterCleared = -1;
+            if ($this->kga->getSettings()->isHideClearedEntries()) {
+                $filterCleared = 0;
+            }
         }
 
         $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
@@ -2702,11 +2693,7 @@ class Kimai_Database_Mysql
                 $startRows = (int)$startRows;
                 $limit = "LIMIT $startRows, $limitRows";
             } else {
-                if (isset($this->kga['conf']['rowlimit'])) {
-                    $limit = "LIMIT " . $this->kga['conf']['rowlimit'];
-                } else {
-                    $limit = "LIMIT 100";
-                }
+                $limit = "LIMIT " . $this->kga->getSettings()->getRowLimit();
             }
         } else {
             $limit = "";
@@ -2769,7 +2756,7 @@ class Kimai_Database_Mysql
                 $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
-                
+
                 $fixedRate = (double)$row->fixedRate;
                 if ($fixedRate) {
                     $arr[$i]['wage'] = sprintf("%01.2f", $fixedRate);
@@ -2816,7 +2803,6 @@ class Kimai_Database_Mysql
      */
     public function checkUserInternal($kimai_user)
     {
-        global $translations;
         $p = $this->kga['server_prefix'];
 
         if (strncmp($kimai_user, 'customer_', 9) == 0) {
@@ -2844,11 +2830,7 @@ class Kimai_Database_Mysql
             }
         }
 
-        // load configuration and language
-        $this->get_global_config();
-
         $this->kga['timezone'] = $this->kga['defaultTimezone'];
-        $this->kga['conf']['showQuickNote'] = 0;
 
         // and add user or customer specific settings on top
         if (strncmp($kimai_user, 'customer_', 9) == 0) {
@@ -2858,46 +2840,36 @@ class Kimai_Database_Mysql
                     $this->kga['customer'][$key] = $value;
                 }
 
-                $this->kga['timezone'] = $this->kga['customer']['timezone'];
+                $this->kga->setTimezone($this->kga['customer']['timezone']);
             }
         } else {
             $configs = $this->get_user_config($userID);
             if ($configs !== null) {
-                foreach ($configs as $key => $value) {
-                    $this->kga['user'][$key] = $value;
-                }
+                $user = new Kimai_User($configs);
+                $user->setGroups($this->getGroupMemberships($userID));
+                $this->kga->setUser($user);
+                Kimai_Registry::setUser($user);
 
-                $this->kga['user']['groups'] = $this->getGroupMemberships($userID);
-                $this->kga['conf'] = array_merge(
-                    $this->kga['conf'],
-                    $this->user_get_preferences_by_prefix('ui.')
+                $this->kga->getSettings()->add(
+                    $this->user_get_preferences_by_prefix('ui.', $userID)
                 );
 
-                $userTimezone = $this->user_get_preference('timezone');
+                $userTimezone = $this->user_get_preference('timezone', $userID);
                 if ($userTimezone != '') {
-                    $this->kga['timezone'] = $userTimezone;
+                    $this->kga->setTimezone($userTimezone);
                 }
             }
         }
 
-        date_default_timezone_set($this->kga['timezone']);
+        date_default_timezone_set($this->kga->getTimezone());
 
         // skin fallback
-        $skin = isset($this->kga['skin']) ? $this->kga['skin'] : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
-        if (isset($this->kga['conf']['skin']) && is_dir(WEBROOT . "/skins/" . $this->kga['conf']['skin'])) {
-            $skin = $this->kga['conf']['skin'];
+        if (!is_dir(WEBROOT . "/skins/" . $this->kga->getSettings()->getSkin())) {
+            $this->kga->getSettings()->setSkin($this->kga->getSkin());
         }
-        $this->kga['conf']['skin'] = $skin;
 
-        // importance of language override order from high to low: user, admin, autoconf
-        $language = $this->kga['language'];
-        if (!empty($this->kga['conf']['lang'])) {
-            $language = $this->kga['conf']['lang'];
-        } elseif (!empty($this->kga['conf']['language'])) {
-            $language = $this->kga['conf']['language'];
-        }
-        $translations->load($language);
-        $this->kga['language'] = $language;
+        // load user specific translation
+        Kimai_Registry::getTranslation()->addTranslations($this->kga->getLanguage());
 
         if (isset($this->kga['user'])) {
             return $this->kga['user'];
@@ -2907,35 +2879,111 @@ class Kimai_Database_Mysql
     }
 
     /**
-     * write global configuration into $this->kga including defaults for user settings.
+     * Returns all configuration variables
      *
-     * @return array $this->kga
-     * @author th
+     * @return array with the options from the configuration table
      */
-    public function get_global_config()
+    protected function getConfigurationData()
     {
-        // get values from global configuration
         $table = $this->kga['server_prefix'] . "configuration";
-        $this->conn->SelectRows($table);
+        $this->conn->SelectRows($table, array("`option` NOT IN ('version', 'revision')"));
+
+        $config_data = array();
 
         $this->conn->MoveFirst();
         while (!$this->conn->EndOfSeek()) {
             $row = $this->conn->Row();
-            $this->kga['conf'][$row->option] = $row->value;
+            $config_data[$row->option] = $row->value;
         }
 
-        $this->kga['conf']['rowlimit'] = 100;
-        $this->kga['conf']['skin'] = Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
-        $this->kga['conf']['autoselection'] = 1;
-        $this->kga['conf']['quickdelete'] = 0;
-        $this->kga['conf']['flip_project_display'] = 0;
-        $this->kga['conf']['project_comment_flag'] = 0;
-        $this->kga['conf']['showIDs'] = 0;
-        $this->kga['conf']['noFading'] = 0;
-        $this->kga['conf']['lang'] = '';
-        $this->kga['conf']['user_list_hidden'] = 0;
-        $this->kga['conf']['hideClearedEntries'] = 0;
-        $this->kga['conf']['defaultLocation'] = '';
+        return $config_data;
+    }
+
+    /**
+     * Prefills the Config (and inherited settings) object with configuration data.
+     *
+     * @param Kimai_Config $config
+     */
+    public function initializeConfig(Kimai_Config $config)
+    {
+        $config->setStatuses($this->getStatuses());
+
+        $allConf = $this->getConfigurationData();
+        if (empty($allConf)) {
+            return;
+        }
+
+        foreach ($allConf as $key => $value) {
+            switch ($key) {
+                case 'language':
+                    if (!empty($value)) {
+                        $config->setLanguage($value);
+                    }
+                    break;
+
+                // TODO move to Kimai_Config as they are NOT user specific!
+                // the following system settings are still used in ['conf'] array syntax
+                case 'decimalSeparator':
+                case 'durationWithSeconds':
+                case 'roundTimesheetEntries':
+                case 'roundMinutes':
+                case 'roundSeconds':
+                    $config->getSettings()->set($key, $value);
+                    // break is not here on purpose!
+
+                case 'adminmail':
+                case 'loginTries':
+                case 'loginBanTime':
+                case 'currency_name':
+                case 'currency_sign':
+                case 'currency_first':
+                case 'show_update_warn':
+                case 'check_at_startup':
+                case 'show_daySeperatorLines':
+                case 'show_gabBreaks':
+                case 'show_RecordAgain':
+                case 'show_TrackingNr':
+                case 'date_format_0':
+                case 'date_format_1':
+                case 'date_format_2':
+                case 'date_format_3':
+                case 'table_time_format':
+                case 'roundPrecision':
+                case 'exactSums':
+                case 'defaultVat':
+                case 'editLimit':
+                case 'allowRoundDown':
+                case 'defaultStatusID':
+                    $config->set($key, $value);
+                    break;
+
+                case 'openAfterRecorded':
+                case 'showQuickNote':
+                case 'quickdelete':
+                case 'autoselection':
+                case 'noFading':
+                case 'showIDs':
+                case 'sublistAnnotations':
+                case 'user_list_hidden':
+                case 'project_comment_flag':
+                case 'flip_project_display':
+                case 'hideClearedEntries':
+                case 'defaultLocation':
+                default:
+                    $config->getSettings()->set($key, $value);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Return all available status entries.
+     *
+     * @return array
+     */
+    public function getStatuses()
+    {
+        $status = array();
 
         $table = $this->kga['server_prefix'] . "statuses";
         $this->conn->SelectRows($table);
@@ -2943,8 +2991,9 @@ class Kimai_Database_Mysql
         $this->conn->MoveFirst();
         while (!$this->conn->EndOfSeek()) {
             $row = $this->conn->Row();
-            $this->kga['conf']['status'][$row->statusID] = $row->status;
+            $status[$row->statusID] = $row->status; // TODO translate me
         }
+        return $status;
     }
 
     /**
@@ -2959,15 +3008,15 @@ class Kimai_Database_Mysql
             return null;
         }
 
-        $table = $this->kga['server_prefix'] . "users";
-        $filter['apikey'] = MySQL::SQLValue($apikey, MySQL::SQLVALUE_TEXT);
-        $filter['trash'] = MySQL::SQLValue(0, MySQL::SQLVALUE_NUMBER);
+        $filter = array(
+            'apikey' => MySQL::SQLValue($apikey, MySQL::SQLVALUE_TEXT),
+            'trash' => MySQL::SQLValue(0, MySQL::SQLVALUE_NUMBER)
+        );
 
         // get values from user record
-        $columns[] = "userID";
-        $columns[] = "name";
+        $columns = array("userID", "name");
 
-        $this->conn->SelectRows($table, $filter, $columns);
+        $this->conn->SelectRows($this->getUserTable(), $filter, $columns);
         $row = $this->conn->RowArray(0, MYSQLI_ASSOC);
         return $row['name'];
     }
@@ -3073,8 +3122,12 @@ class Kimai_Database_Mysql
      */
     public function get_duration($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $filterCleared = null)
     {
+        // -1 for disabled, 0 for only not cleared entries
         if (!is_numeric($filterCleared)) {
-            $filterCleared = $this->kga['conf']['hideClearedEntries'] - 1; // 0 gets -1 for disabled, 1 gets 0 for only not cleared entries
+            $filterCleared = -1;
+            if ($this->kga->getSettings()->isHideClearedEntries()) {
+                $filterCleared = 0;
+            }
         }
 
         $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
@@ -3378,7 +3431,7 @@ class Kimai_Database_Mysql
      * @author th
      *
      * [0] => version number (x.x.x)
-     * [1] => svn revision number
+     * [1] => revision number
      */
     public function get_DBversion()
     {
@@ -3545,7 +3598,7 @@ class Kimai_Database_Mysql
     public function get_users($trash = 0, array $groups = null)
     {
         $p = $this->kga['server_prefix'];
-        
+
         $trash = MySQL::SQLValue($trash, MySQL::SQLVALUE_NUMBER);
 
         if (empty($groups)) {
@@ -3672,8 +3725,8 @@ class Kimai_Database_Mysql
         $rounded = Kimai_Rounding::roundTimespan(
             $activity['start'],
             time(),
-            $this->kga['conf']['roundPrecision'],
-            $this->kga['conf']['allowRoundDown']
+            $this->kga->getRoundPrecisionRecorderTimes(),
+            $this->kga->isRoundDownRecorderTimes()
         );
 
         $values['start'] = $rounded['start'];
@@ -3704,20 +3757,20 @@ class Kimai_Database_Mysql
         $values['activityID'] = $activityID;
         $values['start'] = time();
         $values['userID'] = $user;
-        $values['statusID'] = $this->kga['conf']['defaultStatusID'];
+        $values['statusID'] = $this->kga->getDefaultStatus();
 
         $rate = $this->get_best_fitting_rate($user, $projectID, $activityID);
         if ($rate) {
             $values['rate'] = $rate;
         }
-        
+
         $fixedRate = $this->get_best_fitting_fixed_rate($projectID, $activityID);
         if ($fixedRate) {
             $values['fixedRate'] = $fixedRate;
         }
 
-        if (isset($this->kga['conf']['defaultLocation']) && !$this->kga['conf']['defaultLocation'] == '') {
-            $values['location'] = "'" . $this->kga['conf']['defaultLocation'] . "'";
+        if ($this->kga->getSettings()->getDefaultLocation() != '') {
+            $values['location'] = "'" . $this->kga->getSettings()->getDefaultLocation() . "'";
         }
         $table = $this->getTimeSheetTable();
         $result = $this->conn->InsertRow($table, $values);
@@ -4082,7 +4135,7 @@ class Kimai_Database_Mysql
         if ($end) {
             $whereClauses[] = "start < $end";
         }
-        
+
         $query = "SELECT start, end, customerID, (end - start) / 3600 * rate AS costs, fixedRate
               FROM ${p}timeSheet
               LEFT JOIN ${p}projects USING(projectID)
@@ -4116,7 +4169,7 @@ class Kimai_Database_Mysql
                 $consideredStart = $row['start'];
                 $consideredEnd = $end;
             }
-            
+
             $costs = (double)$row['costs'];
             $fixedRate = (double)$row['fixedRate'];
 
@@ -4470,10 +4523,10 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        if ($this->conn->RowCount() == 0) {
+        if ($this->conn->RowCount() == -1) {
             // no error, but no best fitting rate, return default value
             Kimai_Logger::logfile("get_best_fitting_rate - using default rate 0.00");
-            return 0.00;
+            return 0.0;
         }
 
         $data = $this->conn->rowArray(0, MYSQLI_ASSOC);

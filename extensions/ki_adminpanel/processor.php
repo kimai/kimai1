@@ -18,8 +18,8 @@
  */
 
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
 
 require 'functions.php';
 
@@ -437,7 +437,6 @@ switch ($axAction)
             $config_data['adminmail'] = $_REQUEST['adminmail'];
             $config_data['loginTries'] = $_REQUEST['logintries'];
             $config_data['loginBanTime'] = $_REQUEST['loginbantime'];
-            $config_data['show_sensible_data'] = getRequestBool('show_sensible_data');
             $config_data['show_update_warn'] = getRequestBool('show_update_warn');
             $config_data['check_at_startup'] = getRequestBool('check_at_startup');
             $config_data['show_daySeperatorLines'] = getRequestBool('show_daySeperatorLines');
@@ -451,6 +450,7 @@ switch ($axAction)
             $config_data['date_format_1'] = $_REQUEST['date_format_1'];
             $config_data['date_format_2'] = $_REQUEST['date_format_2'];
             $config_data['date_format_3'] = $_REQUEST['date_format_3'];
+            $config_data['table_time_format'] = $_REQUEST['table_time_format'];
             $config_data['language'] = $_REQUEST['language'];
             if (isset($_REQUEST['status']) && is_array($_REQUEST['status'])) {
                 $config_data['status'] = implode(',', $_REQUEST['status']);
@@ -471,7 +471,7 @@ switch ($axAction)
                 $editLimit *= 60 * 60; // convert to seconds
             }
             if ($editLimit === false || $editLimit === 0) {
-                $config_data['editLimit'] = '-';
+                $config_data['editLimit'] = 0;
             } else {
                 $config_data['editLimit'] = $editLimit;
             }
@@ -487,6 +487,7 @@ switch ($axAction)
                 $kga['server_hostname'],
                 $kga['server_username'],
                 $kga['server_password'],
+                $kga['server_charset'],
                 $kga['server_prefix'],
                 $_REQUEST['language'],
                 $kga['password_salt'],

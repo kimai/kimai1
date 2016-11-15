@@ -27,10 +27,10 @@ use Kimai_User;
 class UserTest extends TestCase
 {
 
-    public function testIsAdmin()
+    public function testName()
     {
-        $user = new Kimai_User(array('status' => Kimai_User::ADMIN));
-        $this->assertTrue($user->isAdmin());
+        $user = new Kimai_User(array('name' => 'foo'));
+        $this->assertEquals('foo', $user->getName());
     }
 
 }
