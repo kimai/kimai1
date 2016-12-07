@@ -55,13 +55,29 @@ $invoice_template_files = array();
 $allInvoices = glob('invoices/*');
 foreach($allInvoices as $tplFile)
 {
-    $extension = 'HTML';
+    $extension = '';
     $tplInfo = pathinfo($tplFile);
     if (!is_dir($tplFile)) {
         $extension = strtoupper($tplInfo['extension']);
+    } else {
+        //Check if index.hmtl or invoice.tex is there!
+        if (file_exists($tplFile.'/index.html')) {
+            $extension = 'HTML';
+        } elseif (file_exists($tplFile.'/invoice.tex')) {
+            $extension = 'LaTeX';
+            //Test if we can execute pdflatex
+            $output = exec($kga['LaTeXExec']);
+            if(strlen($output) == 0) {
+                Kimai_Logger::logfile("Could not execute pdflatex. Check your installation!");
+                $extension = '';
+            }
+        }
     }
     $filename = str_replace('_', ' ', $tplInfo['filename']);
-    $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
+    //Only add if the extension was detected.
+    if ($extension != "") {
+        $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
+    }
 }
 
 $view->assign('invoice_templates', $invoice_template_files);

@@ -257,6 +257,7 @@ return array(
     "roundTimesheetEntries" => "Round new timesheet entries to",
     "minutes" => "Minutes",
     "seconds" => "Seconds",
+    "LaTeXExecutable" => "Full path to LaTeX executable, i.e., 'pdflatex'.",
     "and" => "and",
     "customerlogin" => "customer login",
     "expense" => "Expense",

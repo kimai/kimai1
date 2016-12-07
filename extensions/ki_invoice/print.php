@@ -168,7 +168,8 @@ $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
 $renderers = array(
     'odt' => new Kimai_Invoice_OdtRenderer(),
     'html' => new Kimai_Invoice_HtmlRenderer(),
-    'pdf' => new Kimai_Invoice_HtmlToPdfRenderer()
+    'pdf' => new Kimai_Invoice_HtmlToPdfRenderer(),
+    'LaTeX' => new Kimai_Invoice_LaTeXRenderer()
 );
 
 /* @var $renderer Kimai_Invoice_AbstractRenderer */

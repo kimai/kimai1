@@ -96,6 +96,9 @@
                 <input type="text" name="roundMinutes" size="3" class="formfield" value="<?php echo $this->roundMinutes?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['minutes']?> <?php echo $this->kga['lang']['and']?>
                 <input type="text" name="roundSeconds" size="3" class="formfield" value="<?php echo $this->roundSeconds?>" <?php if (!$this->roundTimesheetEntries): ?> disabled="disabled" <?php endif; ?>> <?php echo $this->kga['lang']['seconds']?>
             </div>
+            <div>
+                <input type="text" name="LaTeX_exec" size="45" value="<?php echo $this->escape($this->kga['LaTeXExec']) ?>" class="formfield"> <?php echo $this->kga['lang']['LaTeXExecutable']?>
+            </div>
             <div id="formbuttons">
                 <input id="adminPanel_extension_form_editadv_submit" class="btn_ok" type="submit" value="<?php echo $this->kga['lang']['save']?>" />
             </div>
