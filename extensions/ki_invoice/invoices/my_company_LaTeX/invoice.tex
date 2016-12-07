@@ -1,0 +1,84 @@
+\documentclass{invoice}
+
+%%
+% This file is part of
+% Kimai - Open Source Time Tracking // http://www.kimai.org
+% (c) Kimai-Development-Team since 2006
+%
+% Kimai is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; Version 3, 29 June 2007
+%
+% Kimai is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with Kimai; If not, see <http://www.gnu.org/licenses/>.
+%%
+
+%%
+% An example LaTeX template for printing invoices.
+%
+% @author Gustav Johansson <gustav@neer.se>
+%%
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Setup other stuff  %
+%%%%%%%%%%%%%%%%%%%%%%
+%Language
+\usepackage[utf8]{inputenc} %Needed since the data from PHP is in utf8. Don't use any other encoding!
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Setup page         %
+%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\topmargin}{-2cm}
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{22cm}
+\setlength{\oddsidemargin}{5.5mm}
+\setlength{\intextsep}{24pt}
+\setlength{\headheight}{3cm}
+\setlength{\headwidth}{16cm}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Setup footer       %
+%%%%%%%%%%%%%%%%%%%%%%
+\def\leftOne{Test company AB}
+\def\leftTwo{Fake address 33}
+\def\leftThree{SE-123 45 Gotham City}
+\def\centerOne{Telephone: +99 99 999 9999}
+\def\centerTwo{E-mail: contact@batman.robin}
+\def\centerThree{Web: www.batman.robin}
+\def\rightOne{Org. nr: 123456-7890}
+\def\rightTwo{Bankgiro: 123-1234}
+\def\rightThree{Approved for tax.}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Setup table units  %
+%%%%%%%%%%%%%%%%%%%%%%
+\def\unitOne{}
+\def\unitTwo{}
+\def\unitThree{\space h}
+\def\unitFour{\space\currency}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Start document     %
+%%%%%%%%%%%%%%%%%%%%%%
+\input{info.tex}
+\pagestyle{fancy}%
+\thispagestyle{fancy}%
+\begin{document}
+ \sffamily%
+ %Process company info
+ \makecompany
+ %Write any text you like before the table
+ The following invoice is for services performed from \startDate{} through
+\endDate{} under agreement 11111 between \leftOne{} and \companyName.
+ %Load data
+ \input{data.tex}
+ %Alternating colors in table
+% \rowcolors{2}{gray!25}{white}%
+ %Create the table
+ \makeproducts
+\end{document}
