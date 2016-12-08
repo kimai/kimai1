@@ -121,6 +121,14 @@ if ($showAdvancedTab) {
         $view->assign('roundSeconds', $kga['conf']['roundSeconds']);
     }
 
+    if(!function_exists('exec')) {
+        // deactivate latex functionality
+        Kimai_Logger::logfile("Cannot execute external files. LaTeX invoices will be disabled.");
+        $view->assign('canExecute', false);
+    } else {
+        $view->assign('canExecute', true);
+    }
+
     $view->assign('tab_advanced', $view->render("advanced.php"));
     $view->assign('tab_database', $view->render("database.php"));
 }

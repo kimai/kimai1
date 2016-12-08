@@ -258,6 +258,7 @@ return array(
     "minutes" => "Minutes",
     "seconds" => "Seconds",
     "LaTeXExecutable" => "Full path to LaTeX executable, i.e., 'pdflatex'.",
+    "cannotExecute" => "Your system does not allow execution of external files. LaTeX invoice generation will be disabled.",
     "and" => "and",
     "customerlogin" => "customer login",
     "expense" => "Expense",

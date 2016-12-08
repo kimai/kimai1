@@ -66,8 +66,7 @@ foreach($allInvoices as $tplFile)
         } elseif (file_exists($tplFile.'/invoice.tex')) {
             $extension = 'LaTeX';
             //Test if we can execute pdflatex
-            $output = exec($kga['LaTeXExec']);
-            if(strlen($output) == 0) {
+            if(!function_exists('exec') or !is_executable($kga['LaTeXExec'])) {
                 Kimai_Logger::logfile("Could not execute pdflatex. Check your installation!");
                 $extension = '';
             }
