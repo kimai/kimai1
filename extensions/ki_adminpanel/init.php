@@ -124,9 +124,9 @@ if ($showAdvancedTab) {
     if(!function_exists('exec')) {
         // deactivate latex functionality
         Kimai_Logger::logfile("Cannot execute external files. LaTeX invoices will be disabled.");
-        $view->assign('canExecute', false);
+        $view->assign('execAvailable', false);
     } else {
-        $view->assign('canExecute', true);
+        $view->assign('execAvailable', true);
     }
 
     $view->assign('tab_advanced', $view->render("advanced.php"));
