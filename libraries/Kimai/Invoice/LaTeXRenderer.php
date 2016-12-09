@@ -50,9 +50,9 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
         global $kga;
         //Create invoiceId
         $in = time();
-        $invoiceID = date("y",$in).$customer['customerID'].date("m", $in).date("d", $in);
+        $invoiceID = date("y", $in).$customer['customerID'].date("m", $in).date("d", $in);
         include "Checksum.php";
-        $invoiceID	= checksum('OCR', $invoiceID, True);
+        $invoiceID    = checksum('OCR', $invoiceID, true);
         Kimai_Logger::logfile("invoiceID = $invoiceID");
         $this->getModel()->setInvoiceId($invoiceID);
         //Get data model
@@ -60,48 +60,48 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
         Kimai_Logger::logfile("tempdir = ".$vault);
 
         //Write the header/footer data
-        $File 	= $vault."/info.tex";
-        $Handle	= fopen($File, 'w');
-    	fwrite($Handle, "\\def\\duedate{".strftime($dateFormat, $data['dueDate'])."}%\n");
+        $File    = $vault."/info.tex";
+        $Handle    = fopen($File, 'w');
+        fwrite($Handle, "\\def\\duedate{".strftime($dateFormat, $data['dueDate'])."}%\n");
         fwrite($Handle, "\\def\\total{".$data['amount']."}%\n");
-	fwrite($Handle, "\\def\\invoiceID{".$data['invoiceId']."}%\n");
+        fwrite($Handle, "\\def\\invoiceID{".$data['invoiceId']."}%\n");
         fwrite($Handle, "\\def\\currency{".$data['currencySign']."}%\n");
         fwrite($Handle, "\\def\\companyName{".$customer['company']."}%\n");
-	fwrite($Handle, "\\def\\companyAddress{".$customer['street']."\\\\".$customer['zipcode']." ".$customer['city']."}%\n");
+        fwrite($Handle, "\\def\\companyAddress{".$customer['street']."\\\\".$customer['zipcode']." ".$customer['city']."}%\n");
         fwrite($Handle, "\\def\\companyPhone{".$customer['phone']."}%\n");
-	fwrite($Handle, "\\def\\companyEmail{".$customer['mail']."}%\n");
+        fwrite($Handle, "\\def\\companyEmail{".$customer['mail']."}%\n");
         fwrite($Handle, "\\def\\comment{".$customer['comment']."}%\n");
-	fwrite($Handle, "\\def\\startDate{".strftime($dateFormat, $data['beginDate'])."}%\n");
+        fwrite($Handle, "\\def\\startDate{".strftime($dateFormat, $data['beginDate'])."}%\n");
         fwrite($Handle, "\\def\\endDate{".strftime($dateFormat, $data['endDate'])."}%\n");
-	fwrite($Handle, "\\def\\vatRate{".$data['vatRate']."}%\n");
+        fwrite($Handle, "\\def\\vatRate{".$data['vatRate']."}%\n");
         fwrite($Handle, "\\def\\vat{".$data['vat']."}%\n");
-	fwrite($Handle, "\\def\\gtotal{".$data['total']."}%\n");
+        fwrite($Handle, "\\def\\gtotal{".$data['total']."}%\n");
         fwrite($Handle, "\\endinput");
-	fclose($Handle);
+        fclose($Handle);
 
         //Write the table
-	$File 	= $vault."/data.tex";
-        $Handle	= fopen($File, "w");
-	foreach($entries as $row){
-	    $table_row = "\product";
-            foreach($ini_array['table'] as $index) {
+    $File    = $vault."/data.tex";
+        $Handle    = fopen($File, "w");
+        foreach ($entries as $row) {
+            $table_row = "\product";
+            foreach ($ini_array['table'] as $index) {
                 $table_row = $table_row."{".$row[$index]."}";
             }
             $table_row = $table_row."%\n";
             fwrite($Handle, $table_row);
-	}
+        }
         fwrite($Handle, "\\endinput");
         fclose($Handle);
         
         //Copy all the neccessary files to the rendering directory
         copy($templateDir."/invoice.tex", $vault."/".$data['invoiceId'].".tex");
-        foreach($ini_array['files'] as $file) {
+        foreach ($ini_array['files'] as $file) {
             copy($templateDir."/".$file, $vault."/".$file);
         }
 
         //Run pdflatex, throw error if not!
         $output = exec("cd ".$vault." && ".$kga['LaTeXExec']." ".$data['invoiceId'].".tex");
-        if(strlen($output) == 0) {
+        if (strlen($output) == 0) {
             Kimai_Logger::logfile("Could not execute pdflatex. Check your installation!");
             return;
         }
@@ -146,5 +146,4 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
             is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_TEX)
         );
     }
-
 }

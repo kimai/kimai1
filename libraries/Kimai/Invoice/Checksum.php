@@ -24,7 +24,8 @@
  * @author Gustav Johansson
  */
 
-function checksum($type, $id, $args) {
+function checksum($type, $id, $args)
+{
     switch ($type) {
         case 'OCR':
             return OCR($id, $args);
@@ -33,8 +34,9 @@ function checksum($type, $id, $args) {
 }
 
  
-function OCR($id, $addLength = True) {
-/**
+function OCR($id, $addLength = true)
+{
+    /**
  * Calculates the checksum with length number according to the swedish OCR
  * system. I.e., 123456 will have a length number added to it (including the
  * length number itself and a checksum digit. The return invoice id will be
@@ -43,45 +45,44 @@ function OCR($id, $addLength = True) {
  */
     //Check length. Max is 25 including checksum and length no.
     if ($addLength) {
-        $max	= 23;
+        $max    = 23;
     } else {
-        $max	= 24;
+        $max    = 24;
     }
-    if (strlen($id) > $max){
+    if (strlen($id) > $max) {
         return -1;
     }
 
     //Calculate the length number (only last digit)
-    $len	= (strlen($id) + 2) % 10;
+    $len    = (strlen($id) + 2) % 10;
     if ($addLength) {
-        $invoice	= $id.$len;
+        $invoice    = $id.$len;
     } else {
-        $invoice	= $id;
+        $invoice    = $id;
     }
 
     //Calculate checksum
-    $inReverse	= array_reverse(str_split($invoice));
-    $sum	= 0;
-    $even	= True;
-    foreach ($inReverse as $num){
+    $inReverse    = array_reverse(str_split($invoice));
+    $sum    = 0;
+    $even    = true;
+    foreach ($inReverse as $num) {
         if ($even) {
-            $even	= False;
-            $tmp	= $num * 2;
+            $even    = false;
+            $tmp    = $num * 2;
             if ($tmp > 9) {
-                $tmp	= $tmp - 9;
+                $tmp    = $tmp - 9;
             }
-            $sum	= $sum + $tmp;
+            $sum    = $sum + $tmp;
         } else {
-            $even	= True;
-            $sum	= $sum + $num;
+            $even    = true;
+            $sum    = $sum + $num;
         }
     }
-    $check	= 10 - ($sum % 10);
+    $check    = 10 - ($sum % 10);
     //Make sure we use 0 and not 10
     if ($check == 10) {
         $check = 0;
     }
-    $checksum	= $invoice.$check;
+    $checksum    = $invoice.$check;
     return $checksum;
 }
-?>
