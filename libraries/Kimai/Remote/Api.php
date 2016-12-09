@@ -30,6 +30,9 @@
  */
 class Kimai_Remote_Api
 {
+    /**
+     * @var \Kimai_Remote_Database
+     */
     private $backend = null;
     private $user = null;
     private $kga = null;
@@ -43,83 +46,10 @@ class Kimai_Remote_Api
     {
         global $kga, $database;
 
-        // and remember the most important stuff
+        // remember the most important stuff
         $this->kga = $kga;
         $this->backend = new Kimai_Remote_Database($kga, $database);
         $this->oldDatabase = $database;
-    }
-
-    /**
-     * Returns the database object to access Kimais system.
-     *
-     * @return Kimai_Remote_Database
-     */
-    private function getBackend()
-    {
-        return $this->backend;
-    }
-
-    /**
-     * Returns the current users config array.
-     *
-     * @return array
-     */
-    private function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Returns the current kimai environment.
-     *
-     * @return integer|null
-     */
-    private function getKimaiEnv()
-    {
-        return $this->kga;
-    }
-
-    /**
-     * Checks if the given $apiKey is allowed to fetch data from this system.
-     * If so, sets all internal values to their needed state and returns true.
-     *
-     * @param string $apiKey
-     * @param string $permission
-     * @return boolean
-     */
-    private function init($apiKey, $permission = null, $allowCustomer = false)
-    {
-        if ($this->getBackend() === null) {
-            return false;
-        }
-
-        $uName = $this->getBackend()->getUserByApiKey($apiKey);
-        if ($uName === null || $uName === false) {
-            return false;
-        }
-
-        $this->user = $this->getBackend()->checkUserInternal($uName);
-
-        if ($permission !== null) {
-            // if we ever want to check permissions!
-        }
-
-        // do not let customers access the SOAP API
-        if ($this->user === null || (!$allowCustomer && isset($this->kga['customer']))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns the configured Authenticator for Kimai.
-     *
-     * @return Kimai_Auth_Abstract
-     */
-    protected function getAuthenticator()
-    {
-        return Kimai_Registry::getAuthenticator();
     }
 
     /**
@@ -166,61 +96,6 @@ class Kimai_Remote_Api
         $this->getBackend()->user_edit($userId, array('apikey' => $apiKey));
 
         return $this->getSuccessResult(array(array('apiKey' => $apiKey)));
-    }
-
-    /**
-     * Returns the result array for failed authentication.
-     *
-     * @return array
-     */
-    protected function getAuthErrorResult()
-    {
-        return $this->getErrorResult('Unknown user or no permissions.');
-    }
-
-    /**
-     * Returns the array for failure messages.
-     * Returned messages will always be a string, but might be empty!
-     *
-     * @param string $msg
-     * @return array
-     */
-    protected function getErrorResult($msg = null)
-    {
-        if ($msg === null) {
-            $msg = 'An unhandled error occured.';
-        }
-
-        return array('success' => false, 'error' => array('msg' => $msg));
-    }
-
-    /**
-     * Returns the array for success responses.
-     *
-     * @param array $items
-     * @return array
-     */
-    protected function getDebugResult(array $items, array $debugItems)
-    {
-        $total = count($items);
-        return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
-    }
-
-
-    /**
-     * Returns the array for success responses.
-     *
-     * @param array $items
-     * @param int $total = 0
-     * @return array
-     */
-    protected function getSuccessResult(array $items, $total = 0)
-    {
-        if (empty($total)) {
-            $total = count($items);
-        }
-
-        return array('success' => true, 'items' => $items, 'total' => $total);
     }
 
     /**
@@ -316,7 +191,6 @@ class Kimai_Remote_Api
         return $this->getErrorResult();
     }
 
-
     /**
      * Return a list of users. Customers are not shown any users. The
      * type of the current user decides which users are shown to him.
@@ -347,7 +221,6 @@ class Kimai_Remote_Api
 
         return $this->getErrorResult();
     }
-
 
     /**
      * Return a list of customers. A customer can only see himself.
@@ -435,7 +308,6 @@ class Kimai_Remote_Api
         return $this->getErrorResult();
     }
 
-
     /**
      * Return a list of tasks. Customers are only shown tasks which are
      * used for them. If a project is set as filter via the project parameter
@@ -478,40 +350,6 @@ class Kimai_Remote_Api
         }
 
         return $this->getErrorResult();
-    }
-
-    /**
-     * Returns an array of tasks for the given projectId.
-     *
-     * @param string $projectId
-     * @param array $user
-     * @return array
-     */
-    private function getTasksByProjectId($projectId, $user)
-    {
-        $tasks = array();
-        $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
-        /**
-         * we need to copy the array with new keys (remove the customerID key)
-         * if we do not do this, soap server will break our response scheme
-         */
-        $tempTasks = array();
-        foreach ($tasks as $task) {
-            if ($task['visible'] != 1) {
-                continue;
-            }
-            $tempTasks[] = array(
-                'activityID' => $task['activityID'],
-                'name' => $task['name'],
-                'visible' => $task['visible'],
-                'budget' => $task['budget'],
-                'approved' => $task['approved'],
-                'effort' => $task['effort']
-            );
-        }
-        $tasks = $tempTasks;
-
-        return $tasks;
     }
 
     /**
@@ -950,5 +788,169 @@ class Kimai_Remote_Api
             $result = $this->getSuccessResult(array());
         }
         return $result;
+    }
+
+
+    /**
+     * Returns the database object to access Kimai's system.
+     *
+     * @return Kimai_Remote_Database
+     */
+    private function getBackend()
+    {
+        return $this->backend;
+    }
+
+    /**
+     * Returns the current users config array.
+     *
+     * @return array
+     */
+    private function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Returns the current kimai environment.
+     *
+     * @return integer|null
+     */
+    private function getKimaiEnv()
+    {
+        return $this->kga;
+    }
+
+    /**
+     * Checks if the given $apiKey is allowed to fetch data from this system.
+     * If so, sets all internal values to their needed state and returns true.
+     *
+     * @param string $apiKey
+     * @param string $permission
+     * @param bool $allowCustomer
+     * @return bool
+     */
+    private function init($apiKey, $permission = null, $allowCustomer = false)
+    {
+        if ($this->getBackend() === null) {
+            return false;
+        }
+
+        $uName = $this->getBackend()->getUserByApiKey($apiKey);
+        if ($uName === null || $uName === false) {
+            return false;
+        }
+
+        $this->user = $this->getBackend()->checkUserInternal($uName);
+
+        if ($permission !== null) {
+            // if we ever want to check permissions!
+        }
+
+        // do not let customers access the SOAP API
+        if ($this->user === null || (!$allowCustomer && isset($this->kga['customer']))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the configured Authenticator for Kimai.
+     *
+     * @return Kimai_Auth_Abstract
+     */
+    protected function getAuthenticator()
+    {
+        return Kimai_Registry::getAuthenticator();
+    }
+    
+    /**
+     * Returns the result array for failed authentication.
+     *
+     * @return array
+     */
+    protected function getAuthErrorResult()
+    {
+        return $this->getErrorResult('Unknown user or no permissions.');
+    }
+
+    /**
+     * Returns the array for failure messages.
+     * Returned messages will always be a string, but might be empty!
+     *
+     * @param string $msg
+     * @return array
+     */
+    protected function getErrorResult($msg = null)
+    {
+        if ($msg === null) {
+            $msg = 'An unhandled error occured.';
+        }
+
+        return array('success' => false, 'error' => array('msg' => $msg));
+    }
+
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @param array $debugItems
+     * @return array
+     */
+    protected function getDebugResult(array $items, array $debugItems)
+    {
+        $total = count($items);
+        return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
+    }
+
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @param int $total = 0
+     * @return array
+     */
+    protected function getSuccessResult(array $items, $total = 0)
+    {
+        if (empty($total)) {
+            $total = count($items);
+        }
+
+        return array('success' => true, 'items' => $items, 'total' => $total);
+    }
+
+    /**
+     * Returns an array of tasks for the given projectId.
+     *
+     * @param string $projectId
+     * @param array $user
+     * @return array
+     */
+    private function getTasksByProjectId($projectId, $user)
+    {
+        $tasks = array();
+        $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
+        /**
+         * we need to copy the array with new keys (remove the customerID key)
+         * if we do not do this, soap server will break our response scheme
+         */
+        $tempTasks = array();
+        foreach ($tasks as $task) {
+            if ($task['visible'] != 1) {
+                continue;
+            }
+            $tempTasks[] = array(
+                'activityID' => $task['activityID'],
+                'name' => $task['name'],
+                'visible' => $task['visible'],
+                'budget' => $task['budget'],
+                'approved' => $task['approved'],
+                'effort' => $task['effort']
+            );
+        }
+        $tasks = $tempTasks;
+
+        return $tasks;
     }
 }

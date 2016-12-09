@@ -51,17 +51,15 @@ class Kimai_Remote_Database
      */
     public function __construct($kga, $database)
     {
-        $oldDatabase = $database;
-
-        $this->tablePrefix = $database->getTablePrefix();
         $this->kga = $kga;
-        $this->dbLayer = $oldDatabase;
+        $this->dbLayer = $database;
+        $this->tablePrefix = $this->dbLayer->getTablePrefix();
         $this->conn = $this->dbLayer->getConnectionHandler();
     }
 
     /**
-     * @param $fnName
-     * @param $arguments
+     * @param string $fnName
+     * @param array $arguments
      * @return mixed
      */
     public function __call($fnName, $arguments)
@@ -125,11 +123,19 @@ class Kimai_Remote_Database
 
     /**
      * returns expenses for specific user as multidimensional array
+     *
      * @TODO: needs comments
-     * @param integer $users ID of user in table users
      * @param integer $start
      * @param integer $end
+     * @param integer $users ID of user in table users
+     * @param null $customers
+     * @param null $projects
+     * @param bool $reverse_order
+     * @param int $filter_refundable
      * @param integer $filterCleared
+     * @param int $startRows
+     * @param int $limitRows
+     * @param bool $countOnly
      * @return array
      * @author th
      * @author Alexander Bauer
