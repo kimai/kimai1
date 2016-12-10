@@ -54,7 +54,8 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
         $in = time();
         $invoiceID = date('y', $in) . $customer['customerID'] . date('m', $in) . date('d', $in);
         require_once 'Checksum.php';
-        $invoiceID = checksum('OCR', $invoiceID, true);
+        $checksum = new Kimai_Invoice_Checksum();
+        $invoiceID = $checksum->generateChecksum('OCR', $invoiceID, true);
         Kimai_Logger::logfile('invoiceID: ' . $invoiceID);
         $this->getModel()->setInvoiceId($invoiceID);
 
