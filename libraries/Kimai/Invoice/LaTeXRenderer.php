@@ -33,95 +33,103 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
      */
     public function render()
     {
-        //Setup
-        Kimai_Logger::logfile("Rendering LaTeX invoice!");
-        $vault = $this->getTemporaryDirectory();
-        $dateFormat = "%B %e, %Y";
-        $templateDir = $this->getTemplateDir().$this->getTemplateFile();
+        global $kga;
+
+        Kimai_Logger::logfile('Rendering LaTeX invoice!');
+        $tempDir = $this->getTemporaryDirectory();
+        $dateFormat = '%B %e, %Y';
+        $templateDir = $this->getTemplateDir() . $this->getTemplateFile();
+
         //Load the ini file
-        $ini_file = $templateDir."/invoice.ini";
-        $ini_array = parse_ini_file($ini_file, true);
+        $iniFile = $templateDir . '/invoice.ini';
+        $iniArray = parse_ini_file($iniFile, true);
+
         // fetch variables from model to get values
         $customer = $this->getModel()->getCustomer();
         $projects = $this->getModel()->getProjects();
         $entries = $this->getModel()->getEntries();
         $data = $this->getModel()->toArray();
-        //Get global settings
-        global $kga;
+
         //Create invoiceId
         $in = time();
-        $invoiceID = date("y", $in).$customer['customerID'].date("m", $in).date("d", $in);
-        include "Checksum.php";
-        $invoiceID    = checksum('OCR', $invoiceID, true);
-        Kimai_Logger::logfile("invoiceID = $invoiceID");
+        $invoiceID = date('y', $in) . $customer['customerID'] . date('m', $in) . date('d', $in);
+        require_once 'Checksum.php';
+        $invoiceID = checksum('OCR', $invoiceID, true);
+        Kimai_Logger::logfile('invoiceID: ' . $invoiceID);
         $this->getModel()->setInvoiceId($invoiceID);
-        //Get data model
+
         $data = $this->getModel()->toArray();
-        Kimai_Logger::logfile("tempdir = ".$vault);
 
         //Write the header/footer data
-        $File    = $vault."/info.tex";
-        $Handle    = fopen($File, 'w');
-        fwrite($Handle, "\\def\\duedate{".strftime($dateFormat, $data['dueDate'])."}%\n");
-        fwrite($Handle, "\\def\\total{".$data['amount']."}%\n");
-        fwrite($Handle, "\\def\\invoiceID{".$data['invoiceId']."}%\n");
-        fwrite($Handle, "\\def\\currency{".$data['currencySign']."}%\n");
-        fwrite($Handle, "\\def\\companyName{".$customer['company']."}%\n");
-        fwrite($Handle, "\\def\\companyAddress{".$customer['street']."\\\\".$customer['zipcode']." ".$customer['city']."}%\n");
-        fwrite($Handle, "\\def\\companyPhone{".$customer['phone']."}%\n");
-        fwrite($Handle, "\\def\\companyEmail{".$customer['mail']."}%\n");
-        fwrite($Handle, "\\def\\comment{".$customer['comment']."}%\n");
-        fwrite($Handle, "\\def\\startDate{".strftime($dateFormat, $data['beginDate'])."}%\n");
-        fwrite($Handle, "\\def\\endDate{".strftime($dateFormat, $data['endDate'])."}%\n");
-        fwrite($Handle, "\\def\\vatRate{".$data['vatRate']."}%\n");
-        fwrite($Handle, "\\def\\vat{".$data['vat']."}%\n");
-        fwrite($Handle, "\\def\\gtotal{".$data['total']."}%\n");
-        fwrite($Handle, "\\endinput");
-        fclose($Handle);
+        $file = $tempDir . '/info.tex';
+        $handle = fopen($file, 'w');
+        $content = '';
+        $content .= "\\def\\duedate{" . strftime($dateFormat, $data['dueDate']) . "}%\n";
+        $content .= "\\def\\total{" . $data['amount'] . "}%\n";
+        $content .= "\\def\\invoiceID{" . $data['invoiceId'] . "}%\n";
+        $content .= "\\def\\currency{" . $data['currencySign'] . "}%\n";
+        $content .= "\\def\\companyName{" . $customer['company'] . "}%\n";
+        $content .= "\\def\\companyAddress{" . $customer['street'] . "\\\\" . $customer['zipcode'] . " " . $customer['city'] . "}%\n";
+        $content .= "\\def\\companyPhone{" . $customer['phone'] . "}%\n";
+        $content .= "\\def\\companyEmail{" . $customer['mail'] . "}%\n";
+        $content .= "\\def\\comment{" . $customer['comment'] . "}%\n";
+        $content .= "\\def\\startDate{" . strftime($dateFormat, $data['beginDate']) . "}%\n";
+        $content .= "\\def\\endDate{" . strftime($dateFormat, $data['endDate']) . "}%\n";
+        $content .= "\\def\\vatRate{" . $data['vatRate'] . "}%\n";
+        $content .= "\\def\\vat{" . $data['vat'] . "}%\n";
+        $content .= "\\def\\gtotal{" . $data['total'] . "}%\n";
+        $content .= "\\endinput";
+        fwrite($handle, $content);
+        fclose($handle);
 
         //Write the table
-    $File    = $vault."/data.tex";
-        $Handle    = fopen($File, "w");
+        $file = $tempDir . '/data.tex';
+        $handle = fopen($file, 'w');
+        $content = '';
         foreach ($entries as $row) {
-            $table_row = "\product";
-            foreach ($ini_array['table'] as $index) {
-                $table_row = $table_row."{".$row[$index]."}";
+            $table_row = "\\product";
+            foreach ($iniArray['table'] as $index) {
+                $table_row = $table_row . '{' . $row[$index] . '}';
             }
-            $table_row = $table_row."%\n";
-            fwrite($Handle, $table_row);
+            $table_row = $table_row . "%\n";
+            $content .= $table_row;
         }
-        fwrite($Handle, "\\endinput");
-        fclose($Handle);
-        
+        $content .= "\\endinput";
+        fwrite($handle, $content);
+        fclose($handle);
+
         //Copy all the neccessary files to the rendering directory
-        copy($templateDir."/invoice.tex", $vault."/".$data['invoiceId'].".tex");
-        foreach ($ini_array['files'] as $file) {
-            copy($templateDir."/".$file, $vault."/".$file);
+        copy($templateDir . '/invoice.tex', $tempDir . '/' . $data['invoiceId'] . '.tex');
+        foreach ($iniArray['files'] as $file) {
+            copy($templateDir . '/' . $file, $tempDir . '/' . $file);
         }
 
         //Run pdflatex, throw error if not!
-        $output = exec("cd ".$vault." && ".$kga['LaTeXExec']." ".$data['invoiceId'].".tex");
+        $output = exec('cd ' . $tempDir . ' && ' . $kga['LaTeXExec'] . ' ' . $data['invoiceId'] . '.tex');
         if (strlen($output) == 0) {
-            Kimai_Logger::logfile("Could not execute pdflatex. Check your installation!");
+            Kimai_Logger::logfile('Could not execute pdflatex. Check your installation!');
             return;
         }
         //Run pdflatex again, throw error if not!
-        $output = exec("cd ".$vault." && ".$kga['LaTeXExec']." ".$data['invoiceId'].".tex");
+        $output = exec('cd ' . $tempDir . ' && ' . $kga['LaTeXExec'] . ' ' . $data['invoiceId'] . '.tex');
 
         //Return the rendered file
-        $this->sendResponse($vault."/".$data['invoiceId'].".pdf");
+        $this->sendResponse($tempDir . '/' . $data['invoiceId'] . '.pdf');
     }
-    
+
     /**
      * @return pdf
      */
     public function sendResponse($data)
     {
+        Kimai_Logger::logfile('File to send: ' . $data);
         header('Content-Type: pdf');
-        header('Content-Disposition: attachment; filename="'.basename($data).'"');
-        header('Content-Length: '.filesize($data));
-        Kimai_Logger::logfile("File to send:".$data);
+        header('Content-Disposition: attachment; filename="' . basename($data) . '"');
+        header('Content-Length: ' . filesize($data));
+        ob_clean();
+        flush();
         readfile($data);
+        exit;
     }
 
     /**
@@ -142,8 +150,7 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
         if (!is_dir($this->getTemplateDir() . $this->getTemplateFile())) {
             return false;
         }
-        return (
-            is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_TEX)
-        );
+
+        return (is_file($this->getTemplateDir() . $this->getTemplateFile() . DIRECTORY_SEPARATOR . self::FILE_TEX));
     }
 }
