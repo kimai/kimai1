@@ -344,7 +344,7 @@ exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
 ('roundMinutes', '0'),
 ('roundSeconds', '0'),
 ('allowRoundDown', '0'),
-('defaultStatusID', '1')
+('defaultStatusID', '1'),
 ('LaTeXExec', '')
 ");
 
