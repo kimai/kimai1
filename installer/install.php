@@ -345,6 +345,7 @@ exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
 ('roundSeconds', '0'),
 ('allowRoundDown', '0'),
 ('defaultStatusID', '1')
+('LaTeXExec', '')
 ");
 
 // CROSS TABLES
