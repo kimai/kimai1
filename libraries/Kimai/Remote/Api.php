@@ -640,8 +640,8 @@ class Kimai_Remote_Api
 
         // Get the array of timesheet entries.
         if (isset($kga['customer'])) {
-            $arr_exp = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit);
-            $totalCount = $backend->get_expenses($in, $out, array($kga['customer']['customerID']), null, null, false, $refundable, $cleared, $start, $limit, true);
+            $arr_exp = $backend->get_expenses($in, $out, null, array($kga['customer']['customerID']), null, false, $refundable, $cleared, $start, $limit);
+            $totalCount = $backend->get_expenses($in, $out, null, array($kga['customer']['customerID']), null, false, $refundable, $cleared, $start, $limit, true);
         } else {
             $arr_exp = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
             $totalCount = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
