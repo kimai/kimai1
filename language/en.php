@@ -94,7 +94,7 @@ return array(
     "passwordReset" => array(
         "button" => "Reset password",
         "notSupported" => "The current authentication plugin doesn't support resetting the password.",
-        "instructions" => "Enter your username and an email will containing a link will be sent to the associated email address. There will be no indication if your username is correct so make sure to enter it correctly!",
+        "instructions" => "Enter your username and an email containing a link will be sent to the associated email address. There will be no indication if your username is correct so make sure to enter it correctly!",
         "mailSubject" => "Kimai - Password reset",
         "mailMessage" => "This is an automatically generated mail to reset your password at Kimai. Please open the following address in your browser:\n%{URL}",
         "mailConfirmation" => "An email has been sent to the associated email address. Please follow the instructions provided in that email. If no email address is associated with this username you won't receive an email and need to contact your administrator.",
@@ -209,7 +209,7 @@ return array(
     "ctype1" => "Notice",
     "ctype2" => "Caution!",
     "hint" => "Hint:",
-    "rename_caution_before_username" => "If you change the user-name of",
+    "rename_caution_before_username" => "If you change the username of",
     "rename_caution_after_username" => "you have to re-login under your new username immediately!",
     "timediff_warn" => "You must enter different times into the time in-/out fields!",
     "visibility" => "Visibility",
