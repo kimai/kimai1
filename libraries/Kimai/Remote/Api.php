@@ -99,6 +99,16 @@ class Kimai_Remote_Api
     }
 
     /**
+     * Returns the current version & revision of kimai, useful for e.g. having version dependant features
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->kga['version'] . '-' . $this->kga['revision'];
+    }
+
+    /**
      * The user started the recording of an activity via the buzzer. If this method
      * is called while another recording is running the first one will be stopped.
      * If $projectId and $activityId are empty the last activity will be restarted.
@@ -393,7 +403,6 @@ class Kimai_Remote_Api
         /**
          * add customerId & Name
          */
-
         $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
         $current['customerID'] = $timeSheet[0]['customerID'];
         $current['customerName'] = $timeSheet[0]['customerName'];
@@ -430,8 +439,8 @@ class Kimai_Remote_Api
         $backend = $this->getBackend();
         $user = $this->getUser();
 
-        $in = (int)strtotime($from);
-        $out = (int)strtotime($to);
+        $in = (int) strtotime($from);
+        $out = (int) strtotime($to);
 
         // Get the array of timesheet entries.
         if (isset($kga['customer'])) {
@@ -459,7 +468,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         // valid id?
         if (empty($id)) {
             return $this->getErrorResult('Invalid ID');
@@ -499,19 +508,19 @@ class Kimai_Remote_Api
         $user = $this->getUser();
 
         // check for project
-        $record['projectId'] = (int)$record['projectId'];
+        $record['projectId'] = (int) $record['projectId'];
         if (empty($record['projectId'])) {
             return $this->getErrorResult('Invalid projectId.');
         }
         //check for task
-        $record['taskId'] = (int)$record['taskId'];
+        $record['taskId'] = (int) $record['taskId'];
         if (empty($record['taskId'])) {
             return $this->getErrorResult('Invalid taskId.');
         }
 
         // check from/to
-        $in = (int)strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
-        $out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $in = (int) strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $out = (int) strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 
         // make sure the timestamp is not negative
         if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
@@ -541,34 +550,34 @@ class Kimai_Remote_Api
             $data['comment'] = $record['comment'];
         }
         if (isset($record['commentType'])) {
-            $data['commentType'] = (int)$record['commentType'];
+            $data['commentType'] = (int) $record['commentType'];
         }
         if (isset($record['rate'])) {
-            $data['rate'] = (double)$record['rate'];
+            $data['rate'] = (double) $record['rate'];
         } else {
             $data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'], $data['activityID']);
         }
         if (isset($record['fixedRate'])) {
-            $data['fixedRate'] = (double)$record['fixedRate'];
+            $data['fixedRate'] = (double) $record['fixedRate'];
         }
         if (isset($record['flagCleared'])) {
-            $data['cleared'] = (int)$record['flagCleared'];
+            $data['cleared'] = (int) $record['flagCleared'];
         }
         if (isset($record['statusId'])) {
-            $data['statusID'] = (int)$record['statusId'];
+            $data['statusID'] = (int) $record['statusId'];
         }
         if (isset($record['flagBillable'])) {
-            $data['billable'] = (int)$record['flagBillable'];
+            $data['billable'] = (int) $record['flagBillable'];
         }
         if (isset($record['budget'])) {
-            $data['budget'] = (double)$record['budget'];
+            $data['budget'] = (double) $record['budget'];
         }
         if (isset($record['approved'])) {
-            $data['approved'] = (double)$record['approved'];
+            $data['approved'] = (double) $record['approved'];
         }
 
         if ($doUpdate) {
-            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            $id = isset($record['id']) ? (int) $record['id'] : 0;
             if (!empty($id)) {
                 $backend->timeEntry_edit($id, $data);
                 return $this->getSuccessResult(array());
@@ -598,7 +607,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         $result = $this->getErrorResult('Invalid ID');
         // valid id?
         if (empty($id)) {
@@ -635,8 +644,8 @@ class Kimai_Remote_Api
         $backend = $this->getBackend();
         $user = $this->getUser();
 
-        $in = (int)strtotime($from);
-        $out = (int)strtotime($to);
+        $in = (int) strtotime($from);
+        $out = (int) strtotime($to);
 
         // Get the array of timesheet entries.
         if (isset($kga['customer'])) {
@@ -662,7 +671,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         // valid id?
         if (empty($id)) {
             return $this->getErrorResult('Invalid ID');
@@ -702,13 +711,13 @@ class Kimai_Remote_Api
         $user = $this->getUser();
 
         // check for project
-        $record['projectId'] = (int)$record['projectId'];
+        $record['projectId'] = (int) $record['projectId'];
         if (empty($record['projectId'])) {
             return $this->getErrorResult('Invalid projectId.');
         }
 
         // converto to timestamp
-        $timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $timestamp = (int) strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 
         // make sure the timestamp is not negative
         if ($timestamp <= 0) {
@@ -717,7 +726,7 @@ class Kimai_Remote_Api
 
         // prepare data array - required values
         $data['userID'] = $user['userID'];
-        $data['projectID'] = (int)$record['projectId'];
+        $data['projectID'] = (int) $record['projectId'];
         $data['timestamp'] = $timestamp;
 
         // optional values
@@ -728,23 +737,23 @@ class Kimai_Remote_Api
             $data['comment'] = $record['comment'];
         }
         if (isset($record['commentType'])) {
-            $data['commentType'] = (int)$record['commentType'];
+            $data['commentType'] = (int) $record['commentType'];
         }
         if (isset($record['refundable'])) {
-            $data['refundable'] = (int)$record['refundable'];
+            $data['refundable'] = (int) $record['refundable'];
         }
         if (isset($record['cleared'])) {
-            $data['cleared'] = (int)$record['cleared'];
+            $data['cleared'] = (int) $record['cleared'];
         }
         if (isset($record['multiplier'])) {
-            $data['multiplier'] = (double)$record['multiplier'];
+            $data['multiplier'] = (double) $record['multiplier'];
         }
         if (isset($record['value'])) {
-            $data['value'] = (double)$record['value'];
+            $data['value'] = (double) $record['value'];
         }
 
         if ($doUpdate) {
-            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            $id = isset($record['id']) ? (int) $record['id'] : 0;
             if (!empty($id)) {
                 $backend->expense_edit($id, $data);
                 return $this->getSuccessResult(array());
@@ -774,7 +783,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         $result = $this->getErrorResult('Invalid ID');
         // valid id?
         if (empty($id)) {
@@ -864,7 +873,7 @@ class Kimai_Remote_Api
     {
         return Kimai_Registry::getAuthenticator();
     }
-    
+
     /**
      * Returns the result array for failed authentication.
      *
