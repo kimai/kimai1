@@ -277,14 +277,14 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         // bother the server any more.
         ldap_free_result($_ldapresults);
         $distinguishedName = $_results[0]['dn'];
-        $uidAttribute      = $_results[0][$this->usernameAttribute][0];
+        $uidAttribute      = $_results[0][strtolower($this->usernameAttribute)][0];
         $emailAddress      = '';
         $commonName        = '';
-        if (isset($_results[0][$this->mailAttribute][0])) {
-            $emailAddress = $_results[0][$this->mailAttribute][0];
+        if (isset($_results[0][strtolower($this->mailAttribute)][0])) {
+            $emailAddress = $_results[0][strtolower($this->mailAttribute)][0];
         }
-        if (isset($_results[0][$this->commonNameAttribute][0])) {
-            $commonName = $_results[0][$this->commonNameAttribute][0];
+        if (isset($_results[0][strtolower($this->commonNameAttribute)][0])) {
+            $commonName = $_results[0][strtolower($this->commonNameAttribute)][0];
         }
 
         // Now lets try to bind with the returned distinguishedName and the
@@ -331,8 +331,8 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         $groups = array();
         foreach ($_results as $result) {
             $resultGroups = array();
-            for ($i = 0; $i < $result[$this->groupidAttribute]['count']; $i++) {
-                $resultGroups[] = $result[$this->groupidAttribute][$i];
+            for ($i = 0; $i < $result[strtolower($this->groupidAttribute)]['count']; $i++) {
+                $resultGroups[] = $result[strtolower($this->groupidAttribute)][$i];
             }
             $groups = array_merge($groups, $resultGroups);
         }
