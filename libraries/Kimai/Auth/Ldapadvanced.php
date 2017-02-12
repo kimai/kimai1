@@ -163,6 +163,12 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     protected $defaultGlobalRoleName = 'User';
 
     /**
+     *
+     * @var boolean $createGroupMembershipsOnLogin
+     */
+    protected $createGroupMembershipsOnLogin = false;
+
+    /**
      * Map of group=>role names for new users
      *
      * @var array $defaultGroupMemberships
@@ -372,6 +378,13 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
             } else {
                 $userId = false;
                 return false;
+            }
+        } else {
+            // User exists
+            if ($this->createGroupMembershipsOnLogin === true) {
+                // create the groups as defined in $defaultGroupMemberships
+                // this will not affect a user's existing groups or roles in those existing groups
+                $this->database->setGroupMemberships($userId, $this->getDefaultGroups(), false);
             }
         }
 
