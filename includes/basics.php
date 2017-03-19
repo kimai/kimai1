@@ -116,17 +116,17 @@ if (!$database->isConnected()) {
 }
 Kimai_Registry::setDatabase($database);
 
+// ============ load global configurations ============
+$database->initializeConfig($kga);
+
 // ============ setup authenticator ============
-$authClass = 'Kimai_Auth_' . ucfirst($kga->getAuthenticator());
+$authClass = 'Kimai_Auth_' . ucfirst($kga['authenticator']);
 if (!class_exists($authClass)) {
     $authClass = 'Kimai_Auth_Kimai';
 }
 $authPlugin = new $authClass($database, $kga);
 Kimai_Registry::setAuthenticator($authPlugin);
 unset($authPlugin);
-
-// ============ load global configurations ============
-$database->initializeConfig($kga);
 
 // ============ setup translation object ============
 $service = new Kimai_Translation_Service();
