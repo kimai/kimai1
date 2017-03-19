@@ -81,23 +81,29 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
+
+        Kimai_Logger::logfile('ldap: login attempt: ' . $username);
         // Check if username should be authenticated locally
-        if (in_array($username, $this->LDAP_LOCAL_ACCOUNTS)) {
+        if (in_array($username, explode(',', $this->kga['ldap_nonLdapAccounts']))) {
+            Kimai_Logger::logfile('ldap: admin login attempt: ' . $username . ' in ' . $this->kga['ldap_nonLdapAccounts']);
             return $this->kimaiAuth->authenticate($username, $password, $userId);
         }
 
         // Check if username is legal
         $check_username = trim($username);
 
-        if (!$check_username || !trim($password) || ($this->LDAP_FORCE_USERNAME_LOWERCASE && strtolower($check_username) !== $check_username)) {
+        if (!$check_username || !trim($password) || ($this->kga['ldap_forceLowercase'] && strtolower($check_username) !== $check_username)) {
+            // blank username, blank password, username not lowercase with force lower case set
+            Kimai_Logger::logfile('ldap: invalid username - force lowercase: ' .$username);
             $userId = false;
             return false;
         }
 
         // Connect to LDAP
-        $connect_result = ldap_connect($this->LDAP_SERVER);
+        $connect_result = ldap_connect($this->kga['ldap_host']);
         if (!$connect_result) {
-            echo "Cannot connect to ", $this->LDAP_SERVER;
+            echo "Cannot connect to ", $this->kga['ldap_host'];
+            Kimai_Logger::logfile('ldap: unable to connect to: ' . $this->kga['ldap_host']);
             $userId = false;
             return false;
         }
@@ -105,22 +111,26 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
         ldap_set_option($connect_result, LDAP_OPT_PROTOCOL_VERSION, 3);
 
         // Try to bind. Binding means user and pwd are valid.
-        $bind_result = ldap_bind($connect_result, $this->LDAP_USERNAME_PREFIX . $check_username . $this->LDAP_USERNAME_POSTFIX, $password);
+        $bind_result = ldap_bind($connect_result, $this->kga['ldap_usernameprefix'] . $check_username . $this->kga['ldap_usernamepostfix'], $password);
 
         if (!$bind_result) {
             // Nope!
+            Kimai_Logger::logfile('ldap: unable bind to: ' . $this->kga['ldap_host'] . ' as ' . $this->kga['ldap_usernameprefix'] . $check_username . $this->kga['ldap_usernamepostfix']);
             $userId = false;
             return false;
         }
         ldap_unbind($connect_result);
 
         // User is authenticated. Does it exist in Kimai yet?
-        $check_username = $this->LDAP_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
+
+        // This next line doesn't do anything?  Check above for valid accounts would eliminate username with caps if forceLowercase is set
+        $check_username = $this->kga['ldap_forceLowercase'] ? strtolower($check_username) : $check_username;
 
         $userId = $this->database->user_name2id($check_username);
         if ($userId === false) {
             // User does not exist (yet)
-            if ($this->LDAP_USER_AUTOCREATE) { // Create it!
+            if ($this->kga['ldap_autocreateUsers']) { // Create it!
+                Kimai_Logger::logfile('ldap: auto-create : ' . $check_username);
                 $userId = $this->database->user_create(array(
                     'name' => $check_username,
                     'globalRoleID' => $this->getDefaultGlobalRole(),
@@ -132,6 +142,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
                 $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
                 $this->database->user_edit($userId, $usr_data);
             } else {
+                Kimai_Logger::logfile('ldap: do not auto-create : ' . $check_username);
                 $userId = false;
                 return false;
             }
