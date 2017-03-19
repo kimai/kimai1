@@ -123,6 +123,7 @@ if ($showAdvancedTab) {
 
     $view->assign('tab_advanced', $view->render("advanced.php"));
     $view->assign('tab_database', $view->render("database.php"));
+    $view->assign('tab_authentication', $view->render("authentication.php"));
 }
 
 echo $view->render('main.php');
