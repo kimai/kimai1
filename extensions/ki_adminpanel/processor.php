@@ -503,6 +503,62 @@ switch ($axAction)
         );
         break;
 
+    case "sendEditAuthentication" :
+        $errors = array();
+        if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced')) {
+            $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+        }
+
+        if (count($errors) == 0) {
+            // process Authentication form
+
+            // http options
+            $config_data['http_allowAutoLogin'] = (!empty($_REQUEST['http_allowAutoLogin']) ? getRequestBool('http_allowAutoLogin') : 0);
+            $config_data['http_forceLowercase'] = (!empty($_REQUEST['http_forceLowercase']) ? getRequestBool('http_forceLowercase') : 0);
+            $config_data['http_autocreateUsers'] = (!empty($_REQUEST['http_autocreateUsers']) ? getRequestBool('http_autocreateUsers') : 0);
+            $config_data['http_phpAuthUser'] = (!empty($_REQUEST['http_phpAuthUser']) ? getRequestBool('http_phpAuthUser'): 0);
+            $config_data['http_remoteuser'] = (!empty($_REQUEST['http_remoteuser']) ? getRequestBool('http_remoteuser'): 0);
+            $config_data['http_redirectRemoteUser'] = (!empty($_REQUEST['http_redirectRemoteUser']) ? getRequestBool('http_redirectRemoteUser') : 0);
+            //ldap options
+            $config_data['ldap_host'] = (!empty($_REQUEST['l_ldaphost']) ? $_REQUEST['l_ldaphost'] : ' ');
+            $config_data['ldap_usernameprefix'] = (!empty($_REQUEST['l_usernameprefix']) ? $_REQUEST['l_usernameprefix'] : ' ');
+            $config_data['ldap_usernamepostfix'] = (!empty($_REQUEST['l_usernamepostfix']) ? $_REQUEST['l_usernamepostfix'] : ' ');
+            $config_data['ldap_forceLowercase'] = (!empty($_REQUEST['l_forceLowercase']) ? getRequestBool('l_forceLowercase') : 0);
+            $config_data['ldap_nonLdapAccounts'] = (!empty($_REQUEST['l_nonLdapAccounts']) ? $_REQUEST['l_nonLdapAccounts'] : ' ');
+            $config_data['ldap_autocreateUsers'] = (!empty($_REQUEST['l_autocreateUsers']) ? getRequestBool('l_autocreateUsers') : 0);
+
+            // ldap_advanced options
+            $config_data['ldapadv_host'] = (!empty($_REQUEST['la_ldaphost']) ? $_REQUEST['la_ldaphost'] : ' ');
+            $config_data['ldapadv_bindDN'] = (!empty($_REQUEST['la_bindDN']) ? $_REQUEST['la_bindDN'] : ' ');
+            $config_data['ldapadv_bindPW'] = (!empty($_REQUEST['la_bindPW']) ? $_REQUEST['la_bindPW'] : ' ');
+            $config_data['ldapadv_searchBase'] = (!empty($_REQUEST['la_searchBase']) ? $_REQUEST['la_searchBase'] : ' ');
+            $config_data['ldapadv_userFilter'] = (!empty($_REQUEST['la_userFilter']) ? $_REQUEST['la_userFilter'] : ' ');
+            $config_data['ldapadv_groupFilter'] = (!empty($_REQUEST['la_groupFilter']) ? $_REQUEST['la_groupFilter'] : ' ');
+            $config_data['ldapadv_usernameAttribute'] = (!empty($_REQUEST['la_usernameAttribute']) ? $_REQUEST['la_usernameAttribute'] : ' ');
+            $config_data['ldapadv_commonNameAttribute'] = (!empty($_REQUEST['la_commonNameAttribute']) ? $_REQUEST['la_commonNameAttribute'] : ' ');
+            $config_data['ldapadv_groupidAttribute'] = (!empty($_REQUEST['la_groupidAttribute']) ? $_REQUEST['la_groupidAttribute'] : ' ');
+            $config_data['ldapadv_mailAttribute'] = (!empty($_REQUEST['la_mailAttribute']) ? $_REQUEST['la_mailAttribute'] : ' ');
+            $config_data['ldapadv_allowedGroupIds'] = (!empty($_REQUEST['la_allowedGroupIds']) ? $_REQUEST['la_allowedGroupIds'] : ' ');
+            $config_data['ldapadv_forceLowercase'] = (!empty($_REQUEST['la_forceLowercase']) ? getRequestBool('la_forceLowercase') : 0);
+            $config_data['ldapadv_nonLdapAccounts'] = (!empty($_REQUEST['la_nonLdapAccounts']) ? $_REQUEST['la_nonLdapAccounts'] : ' ');
+            $config_data['ldapadv_autocreateUsers'] = (!empty($_REQUEST['la_autocreateUsers']) ? getRequestBool('la_autocreateUsers') : 0);
+            $config_data['ldapadv_defaultGlobalRoleName'] = (!empty($_REQUEST['la_defaultGlobalRoleName']) ? $_REQUEST['la_defaultGlobalRoleName'] : ' ');
+            $config_data['ldapadv_createGroupMembershipsOnLogin'] = (!empty($_REQUEST['la_createGroupMembershipsOnLogin']) ? getRequestBool('la_createGroupMembershipsOnLogin') : 0);
+            $config_data['ldapadv_defaultGroupMemberships'] = (!empty($_REQUEST['la_defaultGroupMemberships']) ? $_REQUEST['la_defaultGroupMemberships'] : ' ');
+            // Active Directory options
+            $config_data['ad_enhancedIdentityPrivacy'] = (!empty($_REQUEST['enhancedIdentityPrivacy']) ? getRequestBool('enhancedIdentityPrivacy') : 0 );
+            if (!$database->configuration_edit($config_data)) {
+                $errors[''] = $kga['lang']['error'] . var_dump($config_data);
+            }
+        }
+        header('Content-Type: application/json;charset=utf-8');
+        echo json_encode(
+            array(
+                'errors' => $errors
+            )
+        );
+        break;
+
     case "toggleDeletedUsers" :
         setcookie("adminPanel_extension_show_deleted_users", $axValue);
         break;

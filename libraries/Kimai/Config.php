@@ -104,6 +104,308 @@ class Kimai_Config extends Kimai_ArrayObject
     }
 
     /**
+     * Returns the Ldap Host.
+     *
+     * @return string
+     */
+    public function getLdapHost()
+    {
+        return $this->get('ldap_host');
+    }
+
+    /**
+     * Returns the Ldap Force Lower Case username.
+     *
+     * @return string
+     */
+    public function getLdapForceLowercase()
+    {
+        return $this->get('ldap_forceLowercase');
+    }
+
+    /**
+     * Returns the Ldap non Ldap accounts
+     *
+     * @return string
+     */
+    public function getLdapNonLdapAccounts()
+    {
+        return $this->get('ldap_nonLdapAccounts');
+    }
+
+    /**
+     * Returns the Ldap Auto Creat Users
+     *
+     * @return string
+     */
+    public function getLdapAutocreateUsers()
+    {
+        return $this->get('ldap_autocreateUsers');
+    }
+
+    /**
+     * Returns the Ldap usernameprefix
+     *
+     * @return string
+     */
+    public function getLdapUsernameprefix()
+    {
+        return $this->get('ldap_usernameprefix', '');
+    }
+
+    /**
+     * Returns the Ldap usernamepostfix
+     *
+     * @return string
+     */
+    public function getLdapUsernamepostfix()
+    {
+        return $this->get('ldap_usernamepostfix', '');
+    }
+
+    /**
+     * Returns the Ldap Adv Host.
+     *
+     * @return string
+     */
+    public function getLdapAdvHost()
+    {
+        return $this->get('ldapadv_host');
+    }
+
+    /**
+     * Returns the Ldap Adv Bind User.
+     *
+     * @return string
+     */
+    public function getLdapAdvBindDN()
+    {
+        return $this->get('ldapadv_bindDN');
+    }
+
+
+    /**
+     * Returns the Ldap Adv Bind Password.
+     *
+     * @return string
+     */
+    public function getLdapAdvBindPW()
+    {
+        return $this->get('ldapadv_bindPW');
+    }
+
+
+    /**
+     * Returns the Ldap Adv Search Base.
+     *
+     * @return string
+     */
+    public function getLdapAdvSearchBase()
+    {
+        return $this->get('ldapadv_searchBase');
+    }
+
+    /**
+     * Returns the Ldap Adv User Filter.
+     *
+     * @return string
+     */
+    public function getLdapAdvUserFilter()
+    {
+        return $this->get('ldapadv_userFilter');
+    }
+
+    /**
+     * Returns the Ldap Adv Group Filter.
+     *
+     * @return string
+     */
+    public function getLdapAdvGroupFilter()
+    {
+        return $this->get('ldapadv_groupFilter');
+    }
+
+    /**
+     * Returns the Ldap Adv User Name attribute.
+     *
+     * @return string
+     */
+    public function getLdapAdvUsernameAttribute()
+    {
+        return $this->get('ldapadv_usernameAttribute');
+    }
+
+    /**
+     * Returns the Ldap Adv Common Name Attribute.
+     *
+     * @return string
+     */
+    public function getLdapAdvCommonNameAttribute()
+    {
+        return $this->get('ldapadv_commonNameAttribute');
+    }
+
+    /**
+     * Returns the Ldap Adv Group ID Attribute
+     *
+     * @return string
+     */
+    public function getLdapAdvGroupidAttribute()
+    {
+        return $this->get('ldapadv_groupidAttribute');
+    }
+
+    /**
+     * Returns the Ldap Adv Mail Attribute.
+     *
+     * @return string
+     */
+    public function getLdapAdvMailAttribute()
+    {
+        return $this->get('ldapadv_mailAttribute');
+    }
+
+    /**
+     * Returns the Ldap Adv User Filter.llowed Group IDs
+     *
+     * @return string
+     */
+    public function getLdapAdvAllowedGroupIds()
+    {
+        return $this->get('ldapadv_allowedGroupIds');
+    }
+
+    /**
+     * Returns the Ldap Adv Force Lower Case username.
+     *
+     * @return string
+     */
+    public function getLdapAdvForceLowercase()
+    {
+        return $this->get('ldapadv_forceLowercase');
+    }
+
+    /**
+     * Returns the Ldap Adv non Ldap accounts
+     *
+     * @return string
+     */
+    public function getLdapAdvNonLdapAccounts()
+    {
+        return $this->get('ldapadv_nonLdapAccounts');
+    }
+
+    /**
+     * Returns the Ldap Adv Auto Creat Users
+     *
+     * @return string
+     */
+    public function getLdapAdvAutocreateUsers()
+    {
+        return $this->get('ldapadv_autocreateUsers');
+    }
+
+    /**
+     * Returns the Ldap Adv Default Role Name.
+     *
+     * @return string
+     */
+    public function getLdapAdvDefaultGlobalRoleName()
+    {
+        return $this->get('ldapadv_defaultGlobalRoleName');
+    }
+
+    /**
+     * Returns the Ldap Adv Create Group Membership on Login
+     *
+     * @return string
+     */
+    public function getLdapAdvCreateGroupMembershipsOnLogin()
+    {
+        return $this->get('ldapadv_createGroupMembershipsOnLogin');
+    }
+
+    /**
+     * Returns the Ldap Default Group Memberships
+     *
+     * @return string
+     */
+    public function getLdapAdvDefaultGroupMemberships()
+    {
+        return $this->get('ldapadv_defaultGroupMemberships');
+    }
+
+    /**
+     * Returns the AD EnhancedIdentityPrivacy
+     *
+     * @return string
+     */
+    public function getADEnhancedIdentityPrivacy()
+    {
+        return $this->get('ad_enhancedIdentityPrivacy');
+    }
+
+    /**
+     * Returns the Http AllowAutoLogin
+     *
+     * @return string
+     */
+    public function getHttpAllowAutoLogin()
+    {
+        return $this->get('http_allowAutoLogin');
+    }
+
+    /**
+     * Returns the Http Force Lower Case username.
+     *
+     * @return string
+     */
+    public function getHttpForceLowercase()
+    {
+        return $this->get('http_forceLowercase');
+    }
+
+    /**
+     * Returns the Http Auto Creat Users
+     *
+     * @return string
+     */
+    public function getHttpAutocreateUsers()
+    {
+        return $this->get('http_autocreateUsers');
+    }
+
+    /**
+     * Returns the Http phpAuthUser
+     *
+     * @return string
+     */
+    public function getHttpPhpAuthUser()
+    {
+        return $this->get('http_phpAuthUser');
+    }
+
+    /**
+     * Returns the Http remoteuser
+     *
+     * @return string
+     */
+    public function getHttpRemoteuser()
+    {
+        return $this->get('http_remoteuser');
+    }
+
+    /**
+     * Returns the Http redirectRemoteUse
+     *
+     * @return string
+     */
+    public function getHttpRedirectRemoteUser()
+    {
+        return $this->get('http_redirectRemoteUser');
+    }
+
+    /**
      * Returns whether the tracking number field is editable.
      *
      * @return mixed|null
