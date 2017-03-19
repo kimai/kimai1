@@ -81,7 +81,6 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-
         Kimai_Logger::logfile('ldap: login attempt: ' . $username);
         // Check if username should be authenticated locally
         if (in_array($username, explode(',', $this->kga['ldap_nonLdapAccounts']))) {
