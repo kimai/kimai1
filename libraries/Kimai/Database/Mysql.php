@@ -2970,6 +2970,7 @@ class Kimai_Database_Mysql
                 case 'editLimit':
                 case 'allowRoundDown':
                 case 'defaultStatusID':
+                case 'authenticator':
                 case 'ldap_host':
                 case 'ldap_usernameprefix':
                 case 'ldap_usernamepostfix':

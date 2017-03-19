@@ -512,6 +512,9 @@ switch ($axAction)
         if (count($errors) == 0) {
             // process Authentication form
 
+            // authenticator
+            $config_data['authenticator'] = (!empty($_REQUEST['authenticator']) ? $_REQUEST['authenticator'] : ' ');
+
             // http options
             $config_data['http_allowAutoLogin'] = (!empty($_REQUEST['http_allowAutoLogin']) ? getRequestBool('http_allowAutoLogin') : 0);
             $config_data['http_forceLowercase'] = (!empty($_REQUEST['http_forceLowercase']) ? getRequestBool('http_forceLowercase') : 0);

@@ -1207,6 +1207,11 @@ if ((int)$revisionDB < 1394) {
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_defaultGroupMemberships','\'User => User\'')");
     exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ad_enhancedIdentityPrivacy','0')");
 }
+
+if ((int)$revisionDB < 1395) {
+    Kimai_Logger::logfile("-- update to r1395");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('authenticator','kimai')");
+}
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
