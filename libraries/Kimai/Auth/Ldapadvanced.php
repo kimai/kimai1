@@ -35,6 +35,7 @@
  * @author Andreas Heigl<andras@heigl.org>
  * @since  15.08.2014
  */
+
 class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
 {
 
@@ -199,8 +200,9 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
+        Kimai_Logger::logfile('ldapAdvanced: login attempt: ' . $username);
         // Check if username should be authenticated locally
-        if (in_array($username, $this->nonLdapAcounts)) {
+        if (in_array($username, explode(',', $this->kga['ldapadv_nonLdapAccounts']))) {
             return $this->kimaiAuth->authenticate($username, $password, $userId);
         }
 
@@ -211,10 +213,10 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         }
 
         // Connect to LDAP
-        $connect_result = ldap_connect($this->host);
-
+        $connect_result = ldap_connect($this->kga['ldapadv_host']);
         if (!$connect_result) {
-            echo "Cannot connect to ", $this->host;
+            echo "Cannot connect to ", $this->kga['ldapadv_host'];
+            Kimai_Logger::logfile('ldapAdvanced: Cannot connect to ' . $this->kga['ldapadv_host']);
             $userId = false;
             return false;
         }
@@ -222,31 +224,34 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         ldap_set_option($connect_result, LDAP_OPT_PROTOCOL_VERSION, 3);
 
         // Bind to the ldap and query for the given userinformation.
-        if ($this->bindDN && $this->bindPW) {
-            $bindResult = ldap_bind($connect_result, $this->bindDN, $this->bindPW);
+        if ($this->kga['ldapadv_bindDN'] && $this->kga['ldapadv_bindPW']) {
+            Kimai_Logger::logfile('ldapAdvanced: authenticated_bind: ' . $this->kga['ldapadv_bindDN']);
+            $bindResult = ldap_bind($connect_result, $this->kga['ldapadv_bindDN'], $this->kga['ldapadv_bindPW']);
         } else {
+            Kimai_Logger::logfile('ldapAdvanced: unauthenticated_bind');
             $bindResult = ldap_bind($connect_result);
         }
 
         if (!$bindResult) {
             echo sprintf(
                 "Can't bind to the LDAP with DN %s",
-                $this->bindDN
+                $this->kga['ldapadv_bindDN']
             );
+            Kimai_Logger::logfile('ldapAdvanced: Can\'t bind to the LDAP with DN: ' . $this->kga['ldapadv_bindDN']);
             $userId = false;
             return false;
         }
 
-        $filter = sprintf($this->userFilter, $username);
+        $filter = sprintf($this->kga['ldapadv_userFilter'], $username);
 
         $_ldapresults = ldap_search(
             $connect_result,
-            $this->searchBase,
+            $this->kga['ldapadv_searchBase'],
             $filter,
             array(
-                $this->usernameAttribute,
-                $this->mailAttribute,
-                $this->commonNameAttribute,
+                $this->kga['ldapadv_usernameAttribute'],
+                $this->kga['ldapadv_mailAttribute'],
+                $this->kga['ldapadv_commonNameAttribute'],
             ),
             0,
             0,
@@ -255,12 +260,14 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         if (!$_ldapresults) {
             // The server returned no result-set at all.
             echo "No user with that information found";
+            Kimai_Logger::logfile('ldapAdvanced: No user with that information found');
             $userId = false;
             return false;
         }
         if (1 > ldap_count_entries($connect_result, $_ldapresults)) {
             // The returned result set contains no data.
             echo "No user with that information found";
+            Kimai_Logger::logfile('ldapAdvanced: No user with that information found');
             $userId = false;
             return false;
         }
@@ -268,6 +275,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
             // The returned result-set contains more than one person. So we
             // can not be sure, that the user is unique.
             echo "More than one user found with that information";
+            Kimai_Logger::logfile('ldapAdvanced: More than one user found with that information');
             $userId = false;
             return false;
         }
@@ -276,6 +284,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         if (false === $_results) {
             // The returned result-set could not be retrieved.
             echo 'no result set found';
+            Kimai_Logger::logfile('ldapAdvanced: No result set found');
             $userId = false;
             return false;
         }
@@ -283,32 +292,34 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         // bother the server any more.
         ldap_free_result($_ldapresults);
         $distinguishedName = $_results[0]['dn'];
-        $uidAttribute      = $_results[0][strtolower($this->usernameAttribute)][0];
+        $uidAttribute      = $_results[0][strtolower($this->kga['ldapadv_usernameAttribute'])][0];
         $emailAddress      = '';
         $commonName        = '';
-        if (isset($_results[0][strtolower($this->mailAttribute)][0])) {
-            $emailAddress = $_results[0][strtolower($this->mailAttribute)][0];
+        if (isset($_results[0][strtolower($this->kga['ldapadv_mailAttribute'])][0])) {
+            $emailAddress = $_results[0][strtolower($this->kga['ldapadv_mailAttribute'])][0];
         }
-        if (isset($_results[0][strtolower($this->commonNameAttribute)][0])) {
-            $commonName = $_results[0][strtolower($this->commonNameAttribute)][0];
+        if (isset($_results[0][strtolower($this->kga['ldapadv_commonNameAttribute'])][0])) {
+            $commonName = $_results[0][strtolower($this->kga['ldapadv_commonNameAttribute'])][0];
         }
 
         // Now lets try to bind with the returned distinguishedName and the
-        // provided passwort to the LDAP.
+        // provided password to the LDAP.
         $link_id = @ldap_bind($connect_result, $distinguishedName, $password);
         if (false === $link_id) {
             echo 'Password and/or Username mismatch';
+            Kimai_Logger::logfile('ldapAdvanced: Password and/or Username mismatch - ' . $distinguishedName);
             $userId = false;
             return false;
         }
 
         // Check whether the user is member of one of the required LDAP-groups
-        $filter = sprintf($this->groupFilter, $uidAttribute, $distinguishedName);
+        $filter = sprintf($this->kga['ldapadv_groupFilter'], $uidAttribute, $distinguishedName);
+
         $_ldapresults = ldap_search(
             $connect_result,
-            $this->searchBase,
+            $this->kga['ldapadv_searchBase'],
             $filter,
-            array($this->groupidAttribute),
+            array($this->kga['ldapadv_groupidAttribute']),
             0,
             0,
             10
@@ -316,12 +327,14 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         if (!$_ldapresults) {
             // The server returned no result-set at all.
             echo "No group for the user found";
+            Kimai_Logger::logfile('ldapAdvanced: No group for the user found: ' . $username);
             $userId = false;
             return false;
         }
         if (1 > ldap_count_entries($connect_result, $_ldapresults)) {
             // The returned result set contains no data.
             echo "No group for that user found";
+            Kimai_Logger::logfile('ldapAdvanced: No group for that user found: ' . $username);
             $userId = false;
             return false;
         }
@@ -329,6 +342,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         if (false === $_results) {
             // The returned result-set could not be retrieved.
             echo 'no result set for groups found';
+            Kimai_Logger::logfile('ldapAdvanced: No result set for groups found');
             $userId = false;
             return false;
         }
@@ -337,15 +351,16 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         $groups = array();
         foreach ($_results as $result) {
             $resultGroups = array();
-            for ($i = 0; $i < $result[strtolower($this->groupidAttribute)]['count']; $i++) {
-                $resultGroups[] = $result[strtolower($this->groupidAttribute)][$i];
+            for ($i = 0; $i < $result[strtolower($this->kga['ldapadv_groupidAttribute'])]['count']; $i++) {
+                $resultGroups[] = $result[strtolower($this->kga['ldapadv_groupidAttribute'])][$i];
             }
             $groups = array_merge($groups, $resultGroups);
         }
 
-        if (!array_intersect($groups, $this->allowedGroupIds)) {
+        if (!array_intersect($groups, explode(',', $this->kga['ldapadv_allowedGroupIds']))) {
             // The returned result-set could not be retrieved.
             echo 'no valid groups found';
+            Kimai_Logger::logfile('ldapAdvanced: No valid groups found');
             $userId = false;
             return false;
         }
@@ -356,7 +371,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
         $userId = $this->database->user_name2id($check_username);
         if ($userId === false) {
             // User does not exist (yet)
-            if ($this->autocreateUsers) {
+            if ($this->kga['ldapadv_autocreateUsers']) {
                 // Create it!
                 $userId = $this->database->user_create(array(
                     'name'         => $check_username,
@@ -376,12 +391,13 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
                 }
                 $this->database->user_edit($userId, $usr_data);
             } else {
+                Kimai_Logger::logfile('ldapAdvanced: User does not exist and do not Auto Create');
                 $userId = false;
                 return false;
             }
         } else {
             // User exists
-            if ($this->createGroupMembershipsOnLogin === true) {
+            if ($this->kga['ldapadv_createGroupMembershipsOnLogin'] != false) {
                 // create the groups as defined in $defaultGroupMemberships
                 // this will not affect a user's existing groups or roles in those existing groups
                 $this->database->setGroupMemberships($userId, $this->getDefaultGroups(), false);
@@ -398,13 +414,13 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      */
     public function getDefaultGlobalRole()
     {
-        if ($this->defaultGlobalRoleName) {
+        if ($this->kga['ldapadv_defaultGlobalRoleName']) {
             $database = $this->getDatabase();
 
             $roles = $database->global_roles();
 
             foreach ($roles as $role) {
-                if ($role['name'] == $this->defaultGlobalRoleName) {
+                if ($role['name'] == $this->kga['ldapadv_defaultGlobalRoleName']) {
                     return $role['globalRoleID'];
                 }
             }
@@ -433,7 +449,9 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
             $groups[$group['name']] = $group['groupID'];
         }
 
-        foreach ($this->defaultGroupMemberships as $group => $role) {
+        foreach (explode(',', $this->kga['ldapadv_defaultGroupMemberships']) as $group_role) {
+            list($group, $role) = explode('=>', $group_role);
+            Kimai_Logger::logfile('group -> role: ' . $group . $role);
             if (!isset($groups[$group])) {
                 continue;
             }
@@ -454,6 +472,6 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      */
     protected function createCheckUsername($username, $uidAttribute)
     {
-        return $this->forceLowercase ? strtolower($uidAttribute) : $uidAttribute;
+        return $this->kga['ldapadv_forceLowercase'] ? strtolower($uidAttribute) : $uidAttribute;
     }
 }
