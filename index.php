@@ -29,6 +29,7 @@ require_once 'includes/basics.php';
 $view = new Kimai_View();
 
 $authPlugin = Kimai_Registry::getAuthenticator();
+Kimai_Logger::logfile('Authenticator: ' . $kga['authenticator']);
 
 // current database setup correct?
 checkDBversion(".");
