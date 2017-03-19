@@ -53,7 +53,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
      */
     public function autoLoginPossible()
     {
-        return $this->HTAUTH_ALLOW_AUTOLOGIN;
+        return $this->kga['http_allowAutoLogin'];
     }
 
     /**
@@ -66,49 +66,57 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
     {
         $userId = false;
 
+        Kimai_Logger::logfile('http auth: Begin AutoLogin Sequence');
         // No autologin if not allowed or if no remote user authorized by web server
-        if (!$this->HTAUTH_ALLOW_AUTOLOGIN) {
+        if (!$this->kga['http_allowAutoLogin']) {
+            Kimai_Logger::logfile('http auth: No Auto Login allowed');
             return false;
         }
         $check_username = '';
-        if ($this->HTAUTH_REMOTE_USER) {
+        if ($this->kga['http_remoteuser']) {
             if (isset($_SERVER['REMOTE_USER'])) {
                 $check_username = $_SERVER['REMOTE_USER'];
+                Kimai_Logger::logfile('http auth: REMOTE_USER: ' .$check_username);
             }
         }
-        if ($check_username == '' && $this->HTAUTH_REDIRECT_REMOTE_USER) {
+        if ($check_username == '' && $this->kga['http_redirectRemoteUser']) {
             if (isset($_SERVER['REDIRECT_REMOTE_USER'])) {
                 $check_username = $_SERVER['REDIRECT_REMOTE_USER'];
+                Kimai_Logger::logfile('http auth: REDIRECT_ REMOTE_USER: ' .$check_username);
             }
         }
-        if ($check_username == '' && $this->HTAUTH_PHP_AUTH_USER) {
+        if ($check_username == '' && $this->kga['http_phpAuthUser']) {
             if (isset($_SERVER['PHP_AUTH_USER'])) {
                 $check_username = $_SERVER['PHP_AUTH_USER'];
+                Kimai_Logger::logfile('http auth: PHP_AUTH: ' .$check_username);
             }
         }
         if ($check_username == '' || $check_username == false) {
+            Kimai_Logger::logfile('http auth: Invalid username');
             return false;
         }
 
         // User is authenticated by web server. Does the user exist in Kimai yet?
         
-        $check_username = $this->HTAUTH_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
+        $check_username = $this->kga['http_forceLowercase'] ? strtolower($check_username) : $check_username;
         $userId = $this->database->user_name2id($check_username);
         if ($userId !== false) {
+            Kimai_Logger::logfile('http auth: Valid user login for: ' . $check_username);
             return true;
         }
 
         // User does not exist (yet)
-        if ($this->HTAUTH_USER_AUTOCREATE) {
+        if ($this->kga['http_autocreateUsers']) {
             // AutoCreate the user and return true
             // Set a random password, unknown to the user. Autologin must be used until user sets own password
+            Kimai_Logger::logfile('http auth: Auto Creating user login for: ' . $check_username);
             $userId = $this->database->user_create(array(
                 'name' => $check_username,
                 'globalRoleID' => $this->getDefaultGlobalRole(),
                 'active' => 1,
                 'password' => encode_password(md5(uniqid(rand(), true)))
             ));
-            $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
+            $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
             return true;
         }
 
