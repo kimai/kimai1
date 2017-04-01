@@ -39,7 +39,7 @@ function step_back() {
 		case 25: target = '20_gpl'; break;
 		case 28: target = '25_system_requirements'; break;
 		case 30: target = '28_timezone'; break;
-		case 40: target = '28_timezone'; break;
+		case 40: target = '30_enter_mail_server_details'; break;
 		case 45: target = '40_permissions'; break;
 		case 50: target = '40_permissions'; break;
 		case 60: target = '50_enter_access_data'; break;
@@ -152,6 +152,31 @@ function system_requirements_proceed() {
 function timezone_proceed() {
 	step_ahead();
 	timezone = $('#timezone').val();
+	$('#installsteps').slideUp(500, function() {
+		target = "30_enter_mail_server_details";
+
+		$.post('steps/30_enter_mail_server_details.php', {
+			lang: language
+		}, function(data) {
+			$('#installsteps').html(data);
+			$('#installsteps').slideDown(500);
+		});
+	});
+}
+
+// -------------------------------------------------
+// Mail Server selection
+
+function mail_proceed() {
+	step_ahead();
+	smtp_transport = $('#smtp_transport').val();
+	smtp_host = $('#smtp_host').val();
+	smtp_port = $('#smtp_port').val();
+	smtp_user = $('#smtp_user').val();
+	smtp_pass = $('#smtp_pass').val();
+	smtp_auth = $('#smtp_auth').val();
+	smtp_ssl = $('#smtp_ssl').val();
+	smtp_name = $('#smtp_name').val();
 	$('#installsteps').slideUp(500, function() {
 		target = "40_permissions";
 		
@@ -358,7 +383,15 @@ function write_config() {
 		lang: language,
 		prefix: prefix,
 		database: database,
-		timezone: timezone
+		timezone: timezone,
+		smtp_transport: smtp_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function (data) {
 		$('#wrapper').fadeOut(2000);
 		$('#footer').fadeOut(2000, function () {
