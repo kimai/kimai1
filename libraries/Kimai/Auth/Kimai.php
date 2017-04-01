@@ -60,10 +60,31 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $is_customer = $database->is_customer_name($name);
 
         $mail = new Zend_Mail('utf-8');
-        $mail->setFrom($kga['conf']['adminmail'], 'Kimai - Open Source Time Tracking');
+        $mail->setFrom($kga['adminmail'], 'Kimai - Open Source Time Tracking');
         $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
         
-        $transport = new Zend_Mail_Transport_Sendmail();
+        switch ($kga['smtp_transport']) {
+            case 'file':
+                $transport = new Zend_Mail_Transport_File();
+                break;
+            case 'sendmail':
+                $transport = new Zend_Mail_Transport_Sendmail();
+                break;
+            case 'smtp':
+                $config = array(
+                    'name'     => $kga['smtp_name'],
+                    'host'     => $kga['smtp_host'],
+                    'port'     => $kga['smtp_port'],
+                    'auth'     => $kga['smtp_auth'],
+                    'username' => $kga['smtp_user'],
+                    'password' => $kga['smtp_pass'],
+                    'ssl'      => $kga['smtp_ssl'],
+                    );
+                $transport = new Zend_Mail_Transport_Smtp($kga['smtp_host'], $config);
+                break;
+            default:
+                Kimai_Logger::logfile('SMTP transport transport not setup correctly');
+        }
 
         $passwordResetHash = str_shuffle(MD5(microtime()));
 
