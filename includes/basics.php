@@ -60,6 +60,14 @@ $kga = new Kimai_Config(array(
     'server_username' => $server_username,
     'server_password' => $server_password,
     'server_charset' => $server_charset,
+    'smtp_transport' => $smtp_transport,
+    'smtp_name' => $smtp_name,
+    'smtp_host' => $smtp_host,
+    'smtp_port' => $smtp_port,
+    'smtp_auth' => $smtp_auth,
+    'smtp_user' => $smtp_user,
+    'smtp_pass' => $smtp_pass,
+    'smtp_ssl' => $smtp_ssl,
     'defaultTimezone' => $defaultTimezone,
     'password_salt' => isset($password_salt) ? $password_salt : ''
 ));
