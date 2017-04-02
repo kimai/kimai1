@@ -55,7 +55,15 @@ function step_back() {
 			password: password,
 			lang: language,
 			prefix: prefix,
-			database: database
+			database: database,
+			smtp_transport: smtp_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
@@ -181,7 +189,15 @@ function mail_proceed() {
 		target = "40_permissions";
 		
 		$.post('steps/40_permissions.php', {
-			lang: language
+			lang: language,
+			smtp_transport: smtp_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
@@ -219,7 +235,15 @@ function cp_proceed() {
 		target = "50_enter_access_data";
 		
 		$.post("steps/50_enter_access_data.php", {
-			lang: language
+			lang: language,
+			smtp_transport: smtp_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
@@ -256,7 +280,15 @@ function host_proceed() {
 				hostname: hostname, 
 				username: username, 
 				password: password, 
-				lang: language
+				lang: language,
+				smtp_transport: smtp_transport,
+				smtp_host: smtp_host,
+				smtp_port: smtp_port,
+				smtp_user: smtp_user,
+				smtp_pass: smtp_pass,
+				smtp_auth: smtp_auth,
+				smtp_ssl: smtp_ssl,
+				smtp_name: smtp_name
 			}, function(data) {
 				$('#installsteps').html(data);
 				$('#installsteps').slideDown(500);
@@ -298,7 +330,15 @@ function db_check() {
 				database: database,
 				create_database: create_database,
 				prefix: prefix,
-				redirect: true
+				redirect: true,
+				smtp_transport: smtp_transport,
+				smtp_host: smtp_host,
+				smtp_port: smtp_port,
+				smtp_user: smtp_user,
+				smtp_pass: smtp_pass,
+				smtp_auth: smtp_auth,
+				smtp_ssl: smtp_ssl,
+				smtp_name: smtp_name
 			}, function(data) {
 				$('#installsteps').html(data);
 				$('#installsteps').slideDown(500);
@@ -327,7 +367,15 @@ function db_proceed() {
 		password: password,
 		lang: language,
 		database: database,
-		prefix: prefix
+		prefix: prefix,
+		smtp_transport: smtp_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function(data) {
 		$('#installsteps').html(data);
 		$('td.use_db').html(database);
@@ -356,7 +404,15 @@ function create_db() {
 		password: password,
 		lang: language,
 		prefix: prefix,
-		database: database
+		database: database,
+		smtp_transport: smtp_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function(data) {
 		if (data == "1") {
 			write_config();
