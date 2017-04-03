@@ -67,6 +67,12 @@ function step_back() {
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
+			if (target == '30_enter_mail_server_details') {
+                            transport = $('#smtp_transport').val();
+                            if (transport == 'sendmail') {
+                                $('.smtp').hide();
+                            }
+			}
 		});
 	});
 }
@@ -168,6 +174,10 @@ function timezone_proceed() {
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
+			transport = $('#smtp_transport').val();
+                        if (transport == 'sendmail') {
+				$('.smtp').hide();
+			}
 		});
 	});
 }
@@ -203,6 +213,21 @@ function mail_proceed() {
 			$('#installsteps').slideDown(500);
 		});
 	});
+}
+
+function mail_transport_select() {
+	var selected = $('select[name="smtp_transport"] option:selected').text();
+	// show current
+	if ( selected == 'smtp') {
+		$('.smtp').show();
+	}
+	else if ( selected == 'file') {
+		$('.smtp').show();
+	}
+	else {
+		// hide all
+		$('.smtp').hide();
+	}
 }
 
 // -------------------------------------------------
