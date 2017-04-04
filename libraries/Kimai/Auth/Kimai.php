@@ -75,11 +75,18 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
                     'name'     => $kga['smtp_name'],
                     'host'     => $kga['smtp_host'],
                     'port'     => $kga['smtp_port'],
-                    'auth'     => $kga['smtp_auth'],
-                    'username' => $kga['smtp_user'],
-                    'password' => $kga['smtp_pass'],
-                    'ssl'      => $kga['smtp_ssl'],
-                    );
+                );
+                # Authentication is required
+                if ($kga['smtp_auth'] != '') {
+                    $config['auth'] = $kga['smtp_auth'];
+                    $config['username'] = $kga['smtp_user'];
+                    $config['password'] = $kga['smtp_pass'];
+                }
+                # SSL/TLS does not seem to depend on the auth method
+                if ($kga['smtp_ssl'] != '') {
+                    $config['ssl'] = $kga['smtp_ssl'];
+                }
+
                 $transport = new Zend_Mail_Transport_Smtp($kga['smtp_host'], $config);
                 break;
             default:
