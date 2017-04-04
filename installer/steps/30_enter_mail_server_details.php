@@ -50,7 +50,7 @@ if ($_REQUEST['lang'] == "en") {
             <td>Port:<br/><input id="smtp_port" type="text" value="<?php echo $smtp_port; ?>"/>   </td>
         </tr>
         <tr class="smtp">
-            <td>Auth Method:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('login', 'plain', 'crammd5')); ?>
+            <td>Auth Method:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?>
             </td>
         </tr class="smtp">
         <tr class="smtp">
@@ -86,7 +86,7 @@ if ($_REQUEST['lang'] == "en") {
             <td>TCP-Port:<br/><input id="smtp_port" type="text" value="<?php echo $smtp_port; ?>"/>   </td>
         </tr>
         <tr class="smtp">
-            <td>Authentifizierung:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('login', 'plain', 'crammd5')); ?>
+            <td>Authentifizierung:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?>
             </td>
         </tr>
         <tr class="smtp">
