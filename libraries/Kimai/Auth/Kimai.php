@@ -75,13 +75,13 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
                     'host'     => $kga['smtp_host'],
                     'port'     => $kga['smtp_port'],
                 );
-                # Authentication is required
+                /* Authentication is required */
                 if ($kga['smtp_auth'] != '') {
                     $config['auth'] = $kga['smtp_auth'];
                     $config['username'] = $kga['smtp_user'];
                     $config['password'] = $kga['smtp_pass'];
                 }
-                # SSL/TLS does not seem to depend on the auth method
+                /* SSL/TLS does not seem to depend on the auth method */
                 if ($kga['smtp_ssl'] != '') {
                     $config['ssl'] = $kga['smtp_ssl'];
                 }
