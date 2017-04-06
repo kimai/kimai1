@@ -2,7 +2,7 @@
 <?php
 require "../../includes/func.php";
 
-$smtp_transport = isset($_REQUEST['smtp_transport']) ? $_REQUEST['smtp_transport'] : "sendmail";
+$mail_transport = isset($_REQUEST['mail_transport']) ? $_REQUEST['mail_transport'] : "sendmail";
 $smtp_name = isset($_REQUEST['smtp_name']) ? $_REQUEST['smtp_name'] : "smtp.example.org";
 $smtp_host = isset($_REQUEST['smtp_host']) ? $_REQUEST['smtp_host'] : "127.0.0.1";
 $smtp_port = isset($_REQUEST['smtp_port']) ? $_REQUEST['smtp_port'] : "25";
@@ -39,7 +39,7 @@ if ($_REQUEST['lang'] == "en") {
     
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Mail Transport Type:<br/> <?php echo get_list("smtp_transport", $smtp_transport, array('sendmail', 'smtp', 'file')); ?>
+            <td>Mail Transport Type:<br/> <?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp', 'file')); ?>
             </td>
         </tr>
         <tr class="smtp">
@@ -75,7 +75,7 @@ if ($_REQUEST['lang'] == "en") {
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Transportart:<br/><?php echo get_list("smtp_transport", $smtp_transport, array('sendmail', 'smtp', 'file')); ?>
+            <td>Transportart:<br/><?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp', 'file')); ?>
             </td>
         </tr>
         <tr class="smtp">

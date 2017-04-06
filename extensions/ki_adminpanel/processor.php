@@ -494,7 +494,7 @@ switch ($axAction)
                 $_REQUEST['language'],
                 $kga['password_salt'],
                 $_REQUEST['defaultTimezone'],
-                $kga['smtp_transport'],
+                $kga['mail_transport'],
                 $kga['smtp_name'],
                 $kga['smtp_host'],
                 $kga['smtp_port'],

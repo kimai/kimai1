@@ -317,7 +317,7 @@ function createPassword($length)
  * @param $timezone
  * @return bool
  */
-function write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone =null, $smtp_transport,
+function write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone =null, $mail_transport,
             $smtp_name = null, $smtp_host = null, $smtp_port = null, $smtp_auth = null, $smtp_user = null, $smtp_pass = null, $smtp_ssl = null)
 {
     $kga = Kimai_Registry::getConfig();
@@ -382,7 +382,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
 \$skin = "$skin";
 \$authenticator = "$authenticator";
 \$billable = $billable;
-\$smtp_transport = "$smtp_transport";
+\$mail_transport = "$mail_transport";
 \$smtp_name = "$smtp_name";
 \$smtp_host = "$smtp_host";
 \$smtp_port = "$smtp_port";
