@@ -178,6 +178,20 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
     );
 
     /**
+     * The text to remove from the beginning of a username.
+     *
+     * @var string $removeUsernamePrefix
+     */
+    protected $removeUsernamePrefix = '';
+
+    /**
+     * The text to remove from the end of a username.
+     *
+     * @var string $removeUsernameSuffix
+     */
+    protected $removeUsernameSuffix = '';
+
+    /**
      * @var Kimai_Auth_Kimai $kimaiAuth
      */
     private $kimaiAuth;
@@ -199,6 +213,14 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
+        // Remove the prefif and suffix from the user name
+        if (substr(strtoupper($username), 0, strlen($this->removeUsernamePrefix)) == strtoupper($this->removeUsernamePrefix)) {
+            $username = substr($username, strlen($this->removeUsernamePrefix));
+        }
+        if (substr(strtoupper($username), strlen($username)-strlen($this->removeUsernameSuffix), strlen($username)) == strtoupper($this->removeUsernameSuffix)) {
+            $username = substr($username, 0, strlen($username) - strlen($this->removeUsernameSuffix));
+        }
+
         // Check if username should be authenticated locally
         if (in_array($username, $this->nonLdapAcounts)) {
             return $this->kimaiAuth->authenticate($username, $password, $userId);
