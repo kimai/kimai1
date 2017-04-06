@@ -39,7 +39,7 @@ if ($_REQUEST['lang'] == "en") {
     
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Mail Transport Type:<br/> <?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp', 'file')); ?>
+            <td>Mail Transport Type:<br/> <?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?>
             </td>
         </tr>
         <tr class="smtp">
@@ -75,7 +75,7 @@ if ($_REQUEST['lang'] == "en") {
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Transportart:<br/><?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp', 'file')); ?>
+            <td>Transportart:<br/><?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?>
             </td>
         </tr>
         <tr class="smtp">

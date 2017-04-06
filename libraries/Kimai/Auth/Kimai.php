@@ -64,7 +64,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         
         switch ($kga['mail_transport']) {
             case 'file':
-                $transport = new Zend_Mail_Transport_File();
+                Kimai_Logger::logfile('file transport not supported');
                 break;
             case 'sendmail':
                 $transport = new Zend_Mail_Transport_Sendmail();
@@ -89,7 +89,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
                 $transport = new Zend_Mail_Transport_Smtp($kga['smtp_host'], $config);
                 break;
             default:
-                Kimai_Logger::logfile('SMTP transport transport not setup correctly');
+                Kimai_Logger::logfile('Mail transport mechanism specified is unsupported');
         }
 
         $passwordResetHash = str_shuffle(MD5(microtime()));
