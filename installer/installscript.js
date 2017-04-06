@@ -56,7 +56,7 @@ function step_back() {
 			lang: language,
 			prefix: prefix,
 			database: database,
-			smtp_transport: smtp_transport,
+			mail_transport: mail_transport,
 			smtp_host: smtp_host,
 			smtp_port: smtp_port,
 			smtp_user: smtp_user,
@@ -68,7 +68,7 @@ function step_back() {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
 			if (target == '30_enter_mail_server_details') {
-                            transport = $('#smtp_transport').val();
+                            transport = $('#mail_transport').val();
                             if (transport == 'sendmail') {
                                 $('.smtp').hide();
                             }
@@ -174,7 +174,7 @@ function timezone_proceed() {
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
-			transport = $('#smtp_transport').val();
+			transport = $('#mail_transport').val();
                         if (transport == 'sendmail') {
 				$('.smtp').hide();
 			}
@@ -187,7 +187,7 @@ function timezone_proceed() {
 
 function mail_proceed() {
 	step_ahead();
-	smtp_transport = $('#smtp_transport').val();
+	mail_transport = $('#mail_transport').val();
 	smtp_host = $('#smtp_host').val();
 	smtp_port = $('#smtp_port').val();
 	smtp_user = $('#smtp_user').val();
@@ -200,7 +200,7 @@ function mail_proceed() {
 		
 		$.post('steps/40_permissions.php', {
 			lang: language,
-			smtp_transport: smtp_transport,
+			mail_transport: mail_transport,
 			smtp_host: smtp_host,
 			smtp_port: smtp_port,
 			smtp_user: smtp_user,
@@ -216,7 +216,7 @@ function mail_proceed() {
 }
 
 function mail_transport_select() {
-	var selected = $('select[name="smtp_transport"] option:selected').text();
+	var selected = $('select[name="mail_transport"] option:selected').text();
 	// show current
 	if ( selected == 'smtp') {
 		$('.smtp').show();
@@ -261,7 +261,7 @@ function cp_proceed() {
 		
 		$.post("steps/50_enter_access_data.php", {
 			lang: language,
-			smtp_transport: smtp_transport,
+			mail_transport: mail_transport,
 			smtp_host: smtp_host,
 			smtp_port: smtp_port,
 			smtp_user: smtp_user,
@@ -306,7 +306,7 @@ function host_proceed() {
 				username: username, 
 				password: password, 
 				lang: language,
-				smtp_transport: smtp_transport,
+				mail_transport: mail_transport,
 				smtp_host: smtp_host,
 				smtp_port: smtp_port,
 				smtp_user: smtp_user,
@@ -356,7 +356,7 @@ function db_check() {
 				create_database: create_database,
 				prefix: prefix,
 				redirect: true,
-				smtp_transport: smtp_transport,
+				mail_transport: mail_transport,
 				smtp_host: smtp_host,
 				smtp_port: smtp_port,
 				smtp_user: smtp_user,
@@ -393,7 +393,7 @@ function db_proceed() {
 		lang: language,
 		database: database,
 		prefix: prefix,
-		smtp_transport: smtp_transport,
+		mail_transport: mail_transport,
 		smtp_host: smtp_host,
 		smtp_port: smtp_port,
 		smtp_user: smtp_user,
@@ -430,7 +430,7 @@ function create_db() {
 		lang: language,
 		prefix: prefix,
 		database: database,
-		smtp_transport: smtp_transport,
+		mail_transport: mail_transport,
 		smtp_host: smtp_host,
 		smtp_port: smtp_port,
 		smtp_user: smtp_user,
@@ -465,7 +465,7 @@ function write_config() {
 		prefix: prefix,
 		database: database,
 		timezone: timezone,
-		smtp_transport: smtp_transport,
+		mail_transport: mail_transport,
 		smtp_host: smtp_host,
 		smtp_port: smtp_port,
 		smtp_user: smtp_user,

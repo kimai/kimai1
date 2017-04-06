@@ -63,7 +63,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $mail->setFrom($kga['adminmail'], 'Kimai - Open Source Time Tracking');
         $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
         
-        switch ($kga['smtp_transport']) {
+        switch ($kga['mail_transport']) {
             case 'file':
                 $transport = new Zend_Mail_Transport_File();
                 break;

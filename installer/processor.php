@@ -155,7 +155,7 @@ switch ($axAction) {
         $lang = $_REQUEST['lang'];
         $salt = createPassword(20);
         $timezone = $_REQUEST['timezone'];
-        $smtp_transport = $_REQUEST['smtp_transport'];
+        $mail_transport = $_REQUEST['mail_transport'];
         $smtp_name = $_REQUEST['smtp_name'];
         $smtp_host = $_REQUEST['smtp_host'];
         $smtp_port = $_REQUEST['smtp_port'];
@@ -171,7 +171,7 @@ switch ($axAction) {
             'server_username' => $username,
             'server_password' => $password,
             'server_charset' => $charset,
-            'smtp_transport' => $smtp_transport,
+            'mail_transport' => $mail_transport,
             'smtp_name' => $smtp_name,
             'smtp_host' => $smtp_host,
             'smtp_port' => $smtp_port,
@@ -184,7 +184,7 @@ switch ($axAction) {
         ));
         Kimai_Registry::setConfig($kimaiConfig);
 
-        write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone, $smtp_transport,
+        write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone, $mail_transport,
             $smtp_name, $smtp_host, $smtp_port, $smtp_auth, $smtp_user, $smtp_pass, $smtp_ssl);
 
         break;
