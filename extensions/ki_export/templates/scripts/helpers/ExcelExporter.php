@@ -124,7 +124,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	 * @param array $columns_dict dictionary of columns: column name => active (true/false)
 	 * @param string $customTimeformat strftime format string for fields of type time (for dates $this->kga['conf']['date_format_1'] will be used)
 	 */
-	public function render(array $kga, array $exportData_arr, array $columns_dict, $customTimeformat) {
+	public function render($kga, array $exportData_arr, array $columns_dict, $customTimeformat) {
 		$this->kga = $kga;
 		$this->exportData_arr = $exportData_arr;
 		$this->columns_dict = $columns_dict;
@@ -167,7 +167,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 		}));
 
 		// convert strftime format to Excel date/time formats:
-		$this->dateFormat = str_replace('%', '', $this->kga['conf']['date_format_1']); // preferring the configurable value over $this->dateformat (hardcoded)
+		$this->dateFormat = str_replace('%', '', $this->kga['date_format_1']); // preferring the configurable value over $this->dateformat (hardcoded)
 		$this->dateFormat = str_replace('y', 'yy', $this->dateFormat);
 		$this->dateFormat = str_replace('Y', 'yyyy', $this->dateFormat);
 		$this->dateFormat = str_replace('d', 'dd', $this->dateFormat);
@@ -343,7 +343,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 				case 'money':
 					$this->sheet->getStyle($curRange)
 								->getNumberFormat()
-								->setFormatCode("{$this->kga['conf']['currency_sign']} " . PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
+								->setFormatCode("{$this->kga['currency_sign']} " . PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00);
 					break;
 				case 'text':
 					$this->sheet->getStyle($curRange)
