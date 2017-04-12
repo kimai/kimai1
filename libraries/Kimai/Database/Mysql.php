@@ -2889,6 +2889,8 @@ class Kimai_Database_Mysql
 
         if (isset($this->kga['user'])) {
             return $this->kga['user'];
+        } else {
+            return $this->kga['customer'];
         }
 
         return null;
