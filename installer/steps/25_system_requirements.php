@@ -17,7 +17,7 @@ if ($_REQUEST['lang'] == "en") {
     <button class="sp-button" onclick='check_system_requirements();'>Check requirements now</button>
     <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Proceed</button>
     <?php
-} else {
+} elseif ($_REQUEST['lang'] == "de") {
     ?>
     <h2>Systemanforderungen</h2>
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
@@ -32,6 +32,22 @@ if ($_REQUEST['lang'] == "en") {
     <br/><br/>
     <button class="sp-button" onclick='check_system_requirements();'>Anforderungen jetzt pr&uuml;fen</button>
     <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Fortfahren</button>
+    <?php
+} elseif ($_REQUEST['lang'] == "bg") {
+    ?>
+    <h2>Изисквания към системата</h2>
+    Следните точни трябва да са изпълнени:<br/>
+    <div class="sp_phpversion fail">Версия на PHP най-малко 5.4</div>
+    <div class="sp_mysql"><b>MySQLi</b> разширението за PHP трябва да е активирано</div>
+    <div class="sp_iconv"><b>iconv</b> разширението за PHP трябва да е активирано</div>
+    <div class="sp_dom"><b>DOM</b> разширението за PHP трябва да е активирано</div>
+    <br/><br/>
+    За да можете да ползвате безпроблемно експорта в PDF формат трябва да са изпълнени следните условия:<br/>
+    <div class="sp_memory">Скриптът трябва да може да ползва най-малко 20MБ работна памет</div>
+    <div class="note gray">виж "memory_limit" във файла php.ini </div>
+    <br/><br/>
+    <button class="sp-button" onclick='check_system_requirements();'>Провери изискванията</button>
+    <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Продължи</button>
     <?php
 }
 ?>

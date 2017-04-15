@@ -35,7 +35,7 @@ echo<<<EOD
     <button onclick="install(); return false;" class="proceed">Install</button>
 EOD;
 
-} else {
+} elseif ($_REQUEST['lang'] == "de") {
 
 echo<<<EOD
     <h2>Config-Datei Schreiben</h2>
@@ -60,6 +60,33 @@ echo<<<EOD
     </div>
     <button onclick="step_back(); return false;">Zurück</button>
     <button onclick="install(); return false;" class="proceed">Installieren</button>
+EOD;
+
+} elseif ($_REQUEST['lang'] == "bg") {
+
+echo<<<EOD
+    <h2>Записване на конфигурационния файл</h2>
+    
+    Всички данни са налице. Kimai може да бъде инсталиран със следната база данни:
+    
+    <br/ >
+    
+    <table>
+        <tr><td>База данни:</td> <td class="use_db"></td></tr> 
+        <tr><td>На сървър:</td> <td class="use_host"></td></tr> 
+        <tr><td>Представка:</td> <td class="use_prefix"></td></tr>
+    </table>
+    
+    <br/ >
+    
+    <div class="logindata">
+        След инсталацията можете да влезете в системата с<br/>                
+        <strong>Потребител:</strong> admin<br/>
+        <strong>Парола:</strong> changeme<br/>
+        Не забравяйте да смените тази парола веднага след като влезете в системата!
+    </div>
+    <button onclick="step_back(); return false;">Назад</button>
+    <button onclick="install(); return false;" class="proceed">Инсталирай</button>
 EOD;
 
 }

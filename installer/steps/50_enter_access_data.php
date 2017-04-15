@@ -26,7 +26,7 @@ $echo = <<<EOD
     <button onclick="host_proceed(); return false;" class="proceed">Proceed</button>
 EOD;
 
-} else {
+} elseif ($_REQUEST['lang'] == "de") {
 
 $echo = <<<EOD
     <h2>Datenbank Server</h2>
@@ -43,6 +43,25 @@ $echo = <<<EOD
     <span id='caution'></span><br /><br />
     <button onclick="step_back(); return false;">Zurück</button>
     <button onclick="host_proceed(); return false;" class="proceed">Fortfahren</button>
+EOD;
+
+} elseif ($_REQUEST['lang'] == "bg") {
+
+$echo = <<<EOD
+    <h2>Сървър база данни</h2>
+    Моля, задайте потребителя и паролата за базата данни:<br/>
+    (Внимание: Ако инсталацията в момента не кодирана с SSL, тези данни ще бъдат изпратени некодирани!)<br/><br/>
+
+    <table border="0" cellspacing="0" cellpadding="5">
+        <tr>
+            <td>Сървър:<br/><input id="host" type="text" value="$hostname"/>    </td>
+            <td>Потребител:<br/><input id="user" type="text" value="$username"/></td>
+            <td>Парола:<br/><input id="pass" type="password" value="$password"/> </td>
+        </tr>
+    </table>
+    <span id='caution'></span><br /><br />
+    <button onclick="step_back(); return false;">Назад</button>
+    <button onclick="host_proceed(); return false;" class="proceed">Напред</button>
 EOD;
 
 }
