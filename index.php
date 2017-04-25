@@ -83,7 +83,33 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
         exit;
     }
 }
+// ======================================
+// = Check for SAML login               =
+//=======================================
+if ($kga['authenticator'] == 'saml' && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
+    if (isset($_POST['SAMLResponse'])) {
+        $authPlugin->processResponse($_POST['SAMLResponse'], $userId);
+    }
+    if ($userId === false) {
+        $userId = $database->user_create(array(
+            'name' => $name,
+            'globalRoleID' => $kga['user']['globalRoleID'],
+            'active' => 1
+        ));
+        $database->setGroupMemberships($userId, array($authPlugin->getDefaultGroups()));
+    }
+    $userData = $database->user_get_data($userId);
+
+    $loginKey = random_code(30);
+    setcookie('kimai_key', $loginKey);
+    setcookie('kimai_user', $userData['name']);
+
+    $database->user_loginSetKey($userId, $loginKey);
+
+    header('Location: core/kimai.php');
+    exit;
+}
 // ======================================
 // = if possible try an automatic login =
 // ======================================
