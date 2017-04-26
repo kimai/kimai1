@@ -68,10 +68,10 @@ function step_back() {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
 			if (target == '30_enter_mail_server_details') {
-                            transport = $('#mail_transport').val();
-                            if (transport == 'sendmail') {
-                                $('.smtp').hide();
-                            }
+				transport = $('#mail_transport').val();
+				if (transport == 'sendmail') {
+					$('.smtp').hide();
+				}
 			}
 		});
 	});
@@ -220,11 +220,9 @@ function mail_transport_select() {
 	// show current
 	if ( selected == 'smtp') {
 		$('.smtp').show();
-	}
-	else if ( selected == 'file') {
+	} else if ( selected == 'file') {
 		$('.smtp').show();
-	}
-	else {
+	} else {
 		// hide all
 		$('.smtp').hide();
 	}
