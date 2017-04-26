@@ -114,6 +114,17 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
     protected $saml_idpcertFingerprintAlgorithm = 'sha1';
 
     /**
+     * Accounts that should be verified locally.
+     *
+     * All entries in this array will not be checked against the SAML
+     *
+     * @var array $nonSAMLAccounts
+     */
+    protected $nonSAMLAcounts = array(
+        'admin'
+    );
+
+    /**
      * {@inherit}
      */
     public function __construct($database = null, $kga = null)
@@ -266,7 +277,11 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        Kimai_Logger::logfile("SAML: This should never be called if SAML is enabled!");
+        // Check if username should be authenticated locally
+        if (in_array($username, $this->nonSAMLAcounts)) {
+            Kimai_Logger::logfile("SAML: Local Authentication for: " .$username);
+            return $this->kimaiAuth->authenticate($username, $password, $userId);
+        }
 
         return false;
     }

@@ -86,11 +86,10 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
 // ======================================
 // = Check for SAML login               =
 //=======================================
-if ($kga['authenticator'] == 'saml' && $_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($kga['authenticator'] == 'saml' && $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['SAMLResponse'])) {
 
-    if (isset($_POST['SAMLResponse'])) {
-        $authPlugin->processResponse($_POST['SAMLResponse'], $userId);
-    }
+    $authPlugin->processResponse($_POST['SAMLResponse'], $userId);
+
     if ($userId === false) {
         $userId = $database->user_create(array(
             'name' => $name,
