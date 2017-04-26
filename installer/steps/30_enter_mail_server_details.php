@@ -17,57 +17,19 @@ function get_list($id, $selected, $list) {
     foreach ($list as $item) {
         if ($item == $selected) {
             $html .= '<option selected="selected">' . $item . '</option>';
-        }
-        else {
+        } else {
             $html .= '<option>'.$item.'</option>';
         }
     }
 
     if (!empty($html)) {
-//        return '<select name="' . $id . '" id="' . $id .'" >' . $html . '</select>';
         return '<select name="' . $id . '" id="' . $id .'" onchange="mail_transport_select();" >' . $html . '</select>';
     }
 
     return '<input type="text" value="' . $selected . '" id="timezone">';
 }
 
-if ($_REQUEST['lang'] == "en") {
-    ?>
-    <h2>Mail Server</h2>
-    Please enter the email server information:<br/>
-    (Caution: If you are not using an SSL-connection your data is going to be transmitted unencrypted!)<br/><br/>
-    
-    <table border="0" cellspacing="0" cellpadding="5">
-        <tr>
-            <td>Mail Transport Type:<br/> <?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?>
-            </td>
-        </tr>
-        <tr class="smtp">
-            <td>Name:<br/><input id="smtp_name" type="text" value="<?php echo $smtp_name; ?>"/>   </td>
-        </tr>
-        <tr class="smtp">
-            <td>Mail Server:<br/><input id="smtp_host" type="text" value="<?php echo $smtp_host; ?>"/>   </td>
-            <td>Port:<br/><input id="smtp_port" type="text" value="<?php echo $smtp_port; ?>"/>   </td>
-        </tr>
-        <tr class="smtp">
-            <td>Auth Method:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?>
-            </td>
-        </tr class="smtp">
-        <tr class="smtp">
-            <td>User:<br/><input id="smtp_user" type="text" value="<?php echo $smtp_user; ?>"/>   </td>
-            <td>Password:<br/><input id="smtp_pass" type="password" value="<?php echo $smtp_pass; ?>"/>   </td>
-        </tr>
-        <tr class="smtp">
-            <td>SSL:<br/> <?php echo get_list("smtp_ssl", $smtp_ssl, array('', 'ssl', 'tls')); ?>
-            </td>
-        </tr>
-    </table>
-    <span id='caution'></span><br />
-    <button onclick="step_back(); return false;">Back</button>
-    <button onclick="mail_proceed(); return false;" class="proceed">Proceed</button>
-
-    <?php
-} else {
+if ($_REQUEST['lang'] == "de") {
     ?>
     <h2>Mail-Server</h2>
     Bitte geben Sie Ihre E-Mail-Server-Details ein:<br/>
@@ -75,31 +37,60 @@ if ($_REQUEST['lang'] == "en") {
 
     <table border="0" cellspacing="0" cellpadding="5">
         <tr>
-            <td>Transportart:<br/><?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?>
-            </td>
+            <td>Transportart:<br/><?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?></td>
         </tr>
         <tr class="smtp">
-            <td>Beschreibung:<br/><input id="smtp_name" type="text" value="<?php echo $smtp_name; ?>"/>   </td>
+            <td>Beschreibung:<br/><input id="smtp_name" type="text" value="<?php echo htmlspecialchars($smtp_name); ?>"/>   </td>
         </tr>
         <tr class="smtp">
-            <td>Host:<br/><input id="smtp_host" type="text" value="<?php echo $smtp_host; ?>"/>   </td>
-            <td>TCP-Port:<br/><input id="smtp_port" type="text" value="<?php echo $smtp_port; ?>"/>   </td>
+            <td>Host:<br/><input id="smtp_host" type="text" value="<?php echo htmlspecialchars($smtp_host); ?>"/>   </td>
+            <td>TCP-Port:<br/><input id="smtp_port" type="text" value="<?php echo htmlspecialchars($smtp_port); ?>"/>   </td>
         </tr>
         <tr class="smtp">
-            <td>Authentifizierung:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?>
-            </td>
+            <td>Authentifizierung:<br/><?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?></td>
         </tr>
         <tr class="smtp">
-            <td>Benutzer:<br/><input id="smtp_user" type="text" value="<?php echo $smtp_user; ?>"/>   </td>
-            <td>Passwort:<br/><input id="smtp_pass" type="password" value="<?php echo $smtp_pass; ?>"/>   </td>
+            <td>Benutzer:<br/><input id="smtp_user" type="text" value="<?php echo htmlspecialchars($smtp_user); ?>" /></td>
+            <td>Passwort:<br/><input id="smtp_pass" type="password" value="<?php echo htmlspecialchars($smtp_pass); ?>" /></td>
         </tr>
         <tr class="smtp">
-            <td>SSL:<br/> <?php echo get_list("smtp_ssl", $smtp_ssl, array('', 'ssl', 'tls')); ?>
-            </td>
+            <td>SSL:<br/><?php echo get_list("smtp_ssl", $smtp_ssl, array('', 'ssl', 'tls')); ?></td>
         </tr>
     </table>
     <span id='caution'></span><br /><br />
     <button onclick="step_back(); return false;">Zurück</button>
     <button onclick="mail_proceed(); return false;" class="proceed">Fortfahren</button>
     <?php
-} ?>
+} else {
+    ?>
+    <h2>Mail Server</h2>
+    Please enter the email server information:<br/>
+    (Caution: If you are not using an SSL-connection your data is going to be transmitted unencrypted!)<br/><br/>
+    
+    <table border="0" cellspacing="0" cellpadding="5">
+        <tr>
+            <td>Mail Transport Type:<br/> <?php echo get_list("mail_transport", $mail_transport, array('sendmail', 'smtp')); ?></td>
+        </tr>
+        <tr class="smtp">
+            <td>Name:<br/><input id="smtp_name" type="text" value="<?php echo $smtp_name; ?>"/>   </td>
+        </tr>
+        <tr class="smtp">
+            <td>Mail Server:<br/><input id="smtp_host" type="text" value="<?php echo $smtp_host; ?>"/></td>
+            <td>Port:<br/><input id="smtp_port" type="text" value="<?php echo $smtp_port; ?>"/></td>
+        </tr>
+        <tr class="smtp">
+            <td>Auth Method:<br/> <?php echo get_list("smtp_auth", $smtp_auth, array('', 'login', 'plain', 'crammd5')); ?></td>
+        </tr>
+        <tr class="smtp">
+            <td>User:<br/><input id="smtp_user" type="text" value="<?php echo $smtp_user; ?>"/></td>
+            <td>Password:<br/><input id="smtp_pass" type="password" value="<?php echo $smtp_pass; ?>"/></td>
+        </tr>
+        <tr class="smtp">
+            <td>SSL:<br/><?php echo get_list("smtp_ssl", $smtp_ssl, array('', 'ssl', 'tls')); ?></td>
+        </tr>
+    </table>
+    <span id='caution'></span><br />
+    <button onclick="step_back(); return false;">Back</button>
+    <button onclick="mail_proceed(); return false;" class="proceed">Proceed</button>
+    <?php
+}
