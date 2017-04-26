@@ -72,9 +72,9 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
                 break;
             case 'smtp':
                 $config = array(
-                    'name'     => $kga['smtp_name'],
-                    'host'     => $kga['smtp_host'],
-                    'port'     => $kga['smtp_port'],
+                    'name' => $kga['smtp_name'],
+                    'host' => $kga['smtp_host'],
+                    'port' => $kga['smtp_port']
                 );
                 /* Authentication is required */
                 if ($kga['smtp_auth'] != '') {
