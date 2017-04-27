@@ -30,6 +30,9 @@
  */
 class Kimai_Remote_Api
 {
+    /**
+     * @var \Kimai_Remote_Database
+     */
     private $backend = null;
     private $user = null;
     private $kga = null;
@@ -43,83 +46,10 @@ class Kimai_Remote_Api
     {
         global $kga, $database;
 
-        // and remember the most important stuff
+        // remember the most important stuff
         $this->kga = $kga;
         $this->backend = new Kimai_Remote_Database($kga, $database);
         $this->oldDatabase = $database;
-    }
-
-    /**
-     * Returns the database object to access Kimais system.
-     *
-     * @return Kimai_Remote_Database
-     */
-    private function getBackend()
-    {
-        return $this->backend;
-    }
-
-    /**
-     * Returns the current users config array.
-     *
-     * @return array
-     */
-    private function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Returns the current kimai environment.
-     *
-     * @return integer|null
-     */
-    private function getKimaiEnv()
-    {
-        return $this->kga;
-    }
-
-    /**
-     * Checks if the given $apiKey is allowed to fetch data from this system.
-     * If so, sets all internal values to their needed state and returns true.
-     *
-     * @param string $apiKey
-     * @param string $permission
-     * @return boolean
-     */
-    private function init($apiKey, $permission = null, $allowCustomer = false)
-    {
-        if ($this->getBackend() === null) {
-            return false;
-        }
-
-        $uName = $this->getBackend()->getUserByApiKey($apiKey);
-        if ($uName === null || $uName === false) {
-            return false;
-        }
-
-        $this->user = $this->getBackend()->checkUserInternal($uName);
-
-        if ($permission !== null) {
-            // if we ever want to check permissions!
-        }
-
-        // do not let customers access the SOAP API
-        if ($this->user === null || (!$allowCustomer && isset($this->kga['customer']))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns the configured Authenticator for Kimai.
-     *
-     * @return Kimai_Auth_Abstract
-     */
-    protected function getAuthenticator()
-    {
-        return Kimai_Registry::getAuthenticator();
     }
 
     /**
@@ -169,58 +99,13 @@ class Kimai_Remote_Api
     }
 
     /**
-     * Returns the result array for failed authentication.
+     * Returns the current version & revision of kimai, useful for e.g. having version dependant features
      *
-     * @return array
+     * @return string
      */
-    protected function getAuthErrorResult()
+    public function getVersion()
     {
-        return $this->getErrorResult('Unknown user or no permissions.');
-    }
-
-    /**
-     * Returns the array for failure messages.
-     * Returned messages will always be a string, but might be empty!
-     *
-     * @param string $msg
-     * @return array
-     */
-    protected function getErrorResult($msg = null)
-    {
-        if ($msg === null) {
-            $msg = 'An unhandled error occured.';
-        }
-
-        return array('success' => false, 'error' => array('msg' => $msg));
-    }
-
-    /**
-     * Returns the array for success responses.
-     *
-     * @param array $items
-     * @return array
-     */
-    protected function getDebugResult(array $items, array $debugItems)
-    {
-        $total = count($items);
-        return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
-    }
-
-
-    /**
-     * Returns the array for success responses.
-     *
-     * @param array $items
-     * @param int $total = 0
-     * @return array
-     */
-    protected function getSuccessResult(array $items, $total = 0)
-    {
-        if (empty($total)) {
-            $total = count($items);
-        }
-
-        return array('success' => true, 'items' => $items, 'total' => $total);
+        return $this->kga['version'] . '-' . $this->kga['revision'];
     }
 
     /**
@@ -316,7 +201,6 @@ class Kimai_Remote_Api
         return $this->getErrorResult();
     }
 
-
     /**
      * Return a list of users. Customers are not shown any users. The
      * type of the current user decides which users are shown to him.
@@ -347,7 +231,6 @@ class Kimai_Remote_Api
 
         return $this->getErrorResult();
     }
-
 
     /**
      * Return a list of customers. A customer can only see himself.
@@ -435,7 +318,6 @@ class Kimai_Remote_Api
         return $this->getErrorResult();
     }
 
-
     /**
      * Return a list of tasks. Customers are only shown tasks which are
      * used for them. If a project is set as filter via the project parameter
@@ -481,40 +363,6 @@ class Kimai_Remote_Api
     }
 
     /**
-     * Returns an array of tasks for the given projectId.
-     *
-     * @param string $projectId
-     * @param array $user
-     * @return array
-     */
-    private function getTasksByProjectId($projectId, $user)
-    {
-        $tasks = array();
-        $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
-        /**
-         * we need to copy the array with new keys (remove the customerID key)
-         * if we do not do this, soap server will break our response scheme
-         */
-        $tempTasks = array();
-        foreach ($tasks as $task) {
-            if ($task['visible'] != 1) {
-                continue;
-            }
-            $tempTasks[] = array(
-                'activityID' => $task['activityID'],
-                'name' => $task['name'],
-                'visible' => $task['visible'],
-                'budget' => $task['budget'],
-                'approved' => $task['approved'],
-                'effort' => $task['effort']
-            );
-        }
-        $tasks = $tempTasks;
-
-        return $tasks;
-    }
-
-    /**
      * Returns an array with values of the currently active recording.
      *
      * @param string $apiKey
@@ -555,7 +403,6 @@ class Kimai_Remote_Api
         /**
          * add customerId & Name
          */
-
         $timeSheet = $this->getBackend()->get_timeSheet($current['start'], $current['end'], array($uid));
         $current['customerID'] = $timeSheet[0]['customerID'];
         $current['customerName'] = $timeSheet[0]['customerName'];
@@ -592,8 +439,8 @@ class Kimai_Remote_Api
         $backend = $this->getBackend();
         $user = $this->getUser();
 
-        $in = (int)strtotime($from);
-        $out = (int)strtotime($to);
+        $in = (int) strtotime($from);
+        $out = (int) strtotime($to);
 
         // Get the array of timesheet entries.
         if (isset($kga['customer'])) {
@@ -621,7 +468,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         // valid id?
         if (empty($id)) {
             return $this->getErrorResult('Invalid ID');
@@ -661,19 +508,19 @@ class Kimai_Remote_Api
         $user = $this->getUser();
 
         // check for project
-        $record['projectId'] = (int)$record['projectId'];
+        $record['projectId'] = (int) $record['projectId'];
         if (empty($record['projectId'])) {
             return $this->getErrorResult('Invalid projectId.');
         }
         //check for task
-        $record['taskId'] = (int)$record['taskId'];
+        $record['taskId'] = (int) $record['taskId'];
         if (empty($record['taskId'])) {
             return $this->getErrorResult('Invalid taskId.');
         }
 
         // check from/to
-        $in = (int)strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
-        $out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $in = (int) strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $out = (int) strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 
         // make sure the timestamp is not negative
         if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
@@ -703,34 +550,34 @@ class Kimai_Remote_Api
             $data['comment'] = $record['comment'];
         }
         if (isset($record['commentType'])) {
-            $data['commentType'] = (int)$record['commentType'];
+            $data['commentType'] = (int) $record['commentType'];
         }
         if (isset($record['rate'])) {
-            $data['rate'] = (double)$record['rate'];
+            $data['rate'] = (double) $record['rate'];
         } else {
             $data['rate'] = $backend->get_best_fitting_rate($data['userID'], $data['projectID'], $data['activityID']);
         }
         if (isset($record['fixedRate'])) {
-            $data['fixedRate'] = (double)$record['fixedRate'];
+            $data['fixedRate'] = (double) $record['fixedRate'];
         }
         if (isset($record['flagCleared'])) {
-            $data['cleared'] = (int)$record['flagCleared'];
+            $data['cleared'] = (int) $record['flagCleared'];
         }
         if (isset($record['statusId'])) {
-            $data['statusID'] = (int)$record['statusId'];
+            $data['statusID'] = (int) $record['statusId'];
         }
         if (isset($record['flagBillable'])) {
-            $data['billable'] = (int)$record['flagBillable'];
+            $data['billable'] = (int) $record['flagBillable'];
         }
         if (isset($record['budget'])) {
-            $data['budget'] = (double)$record['budget'];
+            $data['budget'] = (double) $record['budget'];
         }
         if (isset($record['approved'])) {
-            $data['approved'] = (double)$record['approved'];
+            $data['approved'] = (double) $record['approved'];
         }
 
         if ($doUpdate) {
-            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            $id = isset($record['id']) ? (int) $record['id'] : 0;
             if (!empty($id)) {
                 $backend->timeEntry_edit($id, $data);
                 return $this->getSuccessResult(array());
@@ -760,7 +607,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         $result = $this->getErrorResult('Invalid ID');
         // valid id?
         if (empty($id)) {
@@ -797,8 +644,8 @@ class Kimai_Remote_Api
         $backend = $this->getBackend();
         $user = $this->getUser();
 
-        $in = (int)strtotime($from);
-        $out = (int)strtotime($to);
+        $in = (int) strtotime($from);
+        $out = (int) strtotime($to);
 
         // Get the array of timesheet entries.
         if (isset($kga['customer'])) {
@@ -824,7 +671,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         // valid id?
         if (empty($id)) {
             return $this->getErrorResult('Invalid ID');
@@ -864,13 +711,13 @@ class Kimai_Remote_Api
         $user = $this->getUser();
 
         // check for project
-        $record['projectId'] = (int)$record['projectId'];
+        $record['projectId'] = (int) $record['projectId'];
         if (empty($record['projectId'])) {
             return $this->getErrorResult('Invalid projectId.');
         }
 
         // converto to timestamp
-        $timestamp = (int)strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+        $timestamp = (int) strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 
         // make sure the timestamp is not negative
         if ($timestamp <= 0) {
@@ -879,7 +726,7 @@ class Kimai_Remote_Api
 
         // prepare data array - required values
         $data['userID'] = $user['userID'];
-        $data['projectID'] = (int)$record['projectId'];
+        $data['projectID'] = (int) $record['projectId'];
         $data['timestamp'] = $timestamp;
 
         // optional values
@@ -890,23 +737,23 @@ class Kimai_Remote_Api
             $data['comment'] = $record['comment'];
         }
         if (isset($record['commentType'])) {
-            $data['commentType'] = (int)$record['commentType'];
+            $data['commentType'] = (int) $record['commentType'];
         }
         if (isset($record['refundable'])) {
-            $data['refundable'] = (int)$record['refundable'];
+            $data['refundable'] = (int) $record['refundable'];
         }
         if (isset($record['cleared'])) {
-            $data['cleared'] = (int)$record['cleared'];
+            $data['cleared'] = (int) $record['cleared'];
         }
         if (isset($record['multiplier'])) {
-            $data['multiplier'] = (double)$record['multiplier'];
+            $data['multiplier'] = (double) $record['multiplier'];
         }
         if (isset($record['value'])) {
-            $data['value'] = (double)$record['value'];
+            $data['value'] = (double) $record['value'];
         }
 
         if ($doUpdate) {
-            $id = isset($record['id']) ? (int)$record['id'] : 0;
+            $id = isset($record['id']) ? (int) $record['id'] : 0;
             if (!empty($id)) {
                 $backend->expense_edit($id, $data);
                 return $this->getSuccessResult(array());
@@ -936,7 +783,7 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $id = (int)$id;
+        $id = (int) $id;
         $result = $this->getErrorResult('Invalid ID');
         // valid id?
         if (empty($id)) {
@@ -950,5 +797,169 @@ class Kimai_Remote_Api
             $result = $this->getSuccessResult(array());
         }
         return $result;
+    }
+
+
+    /**
+     * Returns the database object to access Kimai's system.
+     *
+     * @return Kimai_Remote_Database
+     */
+    private function getBackend()
+    {
+        return $this->backend;
+    }
+
+    /**
+     * Returns the current users config array.
+     *
+     * @return array
+     */
+    private function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Returns the current kimai environment.
+     *
+     * @return integer|null
+     */
+    private function getKimaiEnv()
+    {
+        return $this->kga;
+    }
+
+    /**
+     * Checks if the given $apiKey is allowed to fetch data from this system.
+     * If so, sets all internal values to their needed state and returns true.
+     *
+     * @param string $apiKey
+     * @param string $permission
+     * @param bool $allowCustomer
+     * @return bool
+     */
+    private function init($apiKey, $permission = null, $allowCustomer = false)
+    {
+        if ($this->getBackend() === null) {
+            return false;
+        }
+
+        $uName = $this->getBackend()->getUserByApiKey($apiKey);
+        if ($uName === null || $uName === false) {
+            return false;
+        }
+
+        $this->user = $this->getBackend()->checkUserInternal($uName);
+
+        if ($permission !== null) {
+            // if we ever want to check permissions!
+        }
+
+        // do not let customers access the SOAP API
+        if ($this->user === null || (!$allowCustomer && isset($this->kga['customer']))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the configured Authenticator for Kimai.
+     *
+     * @return Kimai_Auth_Abstract
+     */
+    protected function getAuthenticator()
+    {
+        return Kimai_Registry::getAuthenticator();
+    }
+
+    /**
+     * Returns the result array for failed authentication.
+     *
+     * @return array
+     */
+    protected function getAuthErrorResult()
+    {
+        return $this->getErrorResult('Unknown user or no permissions.');
+    }
+
+    /**
+     * Returns the array for failure messages.
+     * Returned messages will always be a string, but might be empty!
+     *
+     * @param string $msg
+     * @return array
+     */
+    protected function getErrorResult($msg = null)
+    {
+        if ($msg === null) {
+            $msg = 'An unhandled error occured.';
+        }
+
+        return array('success' => false, 'error' => array('msg' => $msg));
+    }
+
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @param array $debugItems
+     * @return array
+     */
+    protected function getDebugResult(array $items, array $debugItems)
+    {
+        $total = count($items);
+        return array('success' => true, 'items' => $items, 'total' => $total, 'debug' => $debugItems);
+    }
+
+    /**
+     * Returns the array for success responses.
+     *
+     * @param array $items
+     * @param int $total = 0
+     * @return array
+     */
+    protected function getSuccessResult(array $items, $total = 0)
+    {
+        if (empty($total)) {
+            $total = count($items);
+        }
+
+        return array('success' => true, 'items' => $items, 'total' => $total);
+    }
+
+    /**
+     * Returns an array of tasks for the given projectId.
+     *
+     * @param string $projectId
+     * @param array $user
+     * @return array
+     */
+    private function getTasksByProjectId($projectId, $user)
+    {
+        $tasks = array();
+        $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
+        /**
+         * we need to copy the array with new keys (remove the customerID key)
+         * if we do not do this, soap server will break our response scheme
+         */
+        $tempTasks = array();
+        foreach ($tasks as $task) {
+            if ($task['visible'] != 1) {
+                continue;
+            }
+            $tempTasks[] = array(
+                'activityID' => $task['activityID'],
+                'name' => $task['name'],
+                'visible' => $task['visible'],
+                'budget' => $task['budget'],
+                'approved' => $task['approved'],
+                'effort' => $task['effort']
+            );
+        }
+        $tasks = $tempTasks;
+
+        return $tasks;
     }
 }

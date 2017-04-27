@@ -22,12 +22,12 @@
  * external APPs to allow remote access.
  *
  * Please read the following page to know how this server works:
- * http://framework.zend.com/manual/en/zend.json.server.html
+ * https://framework.zend.com/manual/1.12/en/zend.json.server.html
  *
  * @author Kevin Papst <kpapst@gmx.net>
  */
 
-// Bootstrap Kimai the old fashioned way
+// Bootstrap Kimai
 require(dirname(__FILE__) . "/../includes/basics.php");
 
 header('Access-Control-Allow-Origin: *');
@@ -36,11 +36,14 @@ $server = new Zend_Json_Server();
 $server->setClass('Kimai_Remote_Api');
 
 if ('GET' == $_SERVER['REQUEST_METHOD']) {
-    // Indicate the URL endpoint, and the JSON-RPC version used:
+    // Indicate the URL endpoint and the JSON-RPC version used
+    
+    /* @var Zend_Json_Server_Smd $server */
     $server->setTarget('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])
            ->setEnvelope(Zend_Json_Server_Smd::ENV_JSONRPC_2);
 
     // Grab the SMD
+    /* @var Zend_Json_Server $server */
     $smd = $server->getServiceMap();
 
     // Return the SMD to the client
@@ -58,5 +61,4 @@ if ('GET' == $_SERVER['REQUEST_METHOD']) {
  */
 $request = new Zend_Json_Server_Request_Http();
 $server->setRequest($request);
-
 $server->handle();
