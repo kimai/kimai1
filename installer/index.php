@@ -20,6 +20,7 @@
 $installsteps = 8;
 $kga = array();
 require("../includes/version.php");
+$browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 ?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -58,12 +59,31 @@ require("../includes/version.php");
                 </script>";
             ?>
             </div>
-            <h1>Installation <?php echo "v" . $kga['version'] . "." . $kga['revision'] ?></h1>
+            <?php
+                switch ($browser_lang) {
+                    case "bg":
+                        echo "<h1>Инсталация v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
+                        break;
+                    default:
+                        echo "<h1>Installation v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
+                        break;
+                }
+            ?>
         </div>
         <div id="body">
             <div id="jswarn">
-                JavaScript MUST be activated!<br/>
-                JavaScript MUSS aktiviert sein!
+                <?php
+                    switch ($browser_lang) {
+                        case "de":
+                            echo "JavaScript MUSS aktiviert sein!";
+                            break;
+                        case "bg":
+                            echo "JavaScript ТРЯБВА да е активиран!";
+                            break;
+                        default:
+                            echo "JavaScript MUST be activated!";
+                    }
+                ?>
             </div>
             <div class="invisible" id="installsteps">
                 <?php include 'steps/10_language.php'; ?>
