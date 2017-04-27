@@ -93,7 +93,7 @@ if ($kga['authenticator'] == 'saml' && $_SERVER['REQUEST_METHOD'] == 'POST' && i
     if ($userId === false) {
         $userId = $database->user_create(array(
             'name' => $name,
-            'globalRoleID' => $kga['user']['globalRoleID'],
+            'globalRoleID' => $authPlugin->getDefaultGlobalRole(),
             'active' => 1
         ));
         $database->setGroupMemberships($userId, array($authPlugin->getDefaultGroups()));

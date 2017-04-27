@@ -125,6 +125,13 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
     );
 
     /**
+     * The name of the default global role the user should be added to.
+     *
+     * @var string $defaultGlobalRoleName
+     */
+    protected $defaultGlobalRoleName = 'User';
+
+    /**
      * Map of group=>role names for new users
      *
      * @var array $defaultGroupMemberships
@@ -264,6 +271,7 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
                 'active' => 1,
                 'password' => encode_password(md5(uniqid(rand(), true)))
             ));
+
             $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
             // Set a password, to calm kimai down
             $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
@@ -276,6 +284,28 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
             $this->database->user_edit($userId, $usr_data);
             return true;
        }
+    }
+
+    /**
+     * Get the default global role
+     *
+     * @return integer
+     */
+    public function getDefaultGlobalRole()
+    {
+        if ($this->defaultGlobalRoleName) {
+            $database = $this->getDatabase();
+
+            $roles = $database->global_roles();
+
+            foreach ($roles as $role) {
+                if ($role['name'] == $this->defaultGlobalRoleName) {
+                    return $role['globalRoleID'];
+                }
+            }
+        }
+
+        return parent::getDefaultGlobalRole();
     }
 
     /**
