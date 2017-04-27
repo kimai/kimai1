@@ -209,7 +209,7 @@ return array(
     "ctype1" => "Notice",
     "ctype2" => "Caution!",
     "hint" => "Hint:",
-    "rename_caution_before_username" => "If you change the user-name of",
+    "rename_caution_before_username" => "If you change the username of",
     "rename_caution_after_username" => "you have to re-login under your new username immediately!",
     "timediff_warn" => "You must enter different times into the time in-/out fields!",
     "visibility" => "Visibility",

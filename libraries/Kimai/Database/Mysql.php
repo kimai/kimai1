@@ -2028,7 +2028,7 @@ class Kimai_Database_Mysql
      * @return false|null       true on success, false on failure
      * @author sl
      */
-    public function setGroupMemberships($userId, array $groups = null)
+    public function setGroupMemberships($userId, array $groups = null, $deleteCurrentGroupUsers = true)
     {
         $table = $this->getGroupsUsersTable();
 
@@ -2038,26 +2038,42 @@ class Kimai_Database_Mysql
         }
 
         $data['userID'] = MySQL::SQLValue($userId, MySQL::SQLVALUE_NUMBER);
-        $result = $this->conn->DeleteRows($table, $data);
+        if ($deleteCurrentGroupUsers) {
+            $result = $this->conn->DeleteRows($table, $data);
 
-        if (!$result) {
-            $this->logLastError('setGroupMemberships');
-            if (!$this->conn->TransactionRollback()) {
-                $this->logLastError('setGroupMemberships_rollback');
-            }
-            return false;
-        }
-
-        foreach ($groups as $group => $role) {
-            $data['groupID'] = MySQL::SQLValue($group, MySQL::SQLVALUE_NUMBER);
-            $data['membershipRoleID'] = MySQL::SQLValue($role, MySQL::SQLVALUE_NUMBER);
-            $result = $this->conn->InsertRow($table, $data);
-            if ($result === false) {
+            if (!$result) {
                 $this->logLastError('setGroupMemberships');
                 if (!$this->conn->TransactionRollback()) {
                     $this->logLastError('setGroupMemberships_rollback');
                 }
                 return false;
+            }
+        }
+
+        foreach ($groups as $group => $role) {
+            $data['groupID'] = MySQL::SQLValue($group, MySQL::SQLVALUE_NUMBER);
+
+            // Check whether a row for userId and groupID already exists
+            $columns[] = "groupID";
+            $result = $this->conn->SelectRows($table, $data, $columns);
+            if ($result === false) {
+                $this->logLastError('setGroupMemberships');
+                return false;
+            }
+
+            if (!$this->conn->RowCount()) {
+                // no row for userId and groupID exists
+                $data['membershipRoleID'] = MySQL::SQLValue($role, MySQL::SQLVALUE_NUMBER);
+                $result = $this->conn->InsertRow($table, $data);
+                if ($result === false) {
+                    $this->logLastError('setGroupMemberships');
+                    if (!$this->conn->TransactionRollback()) {
+                        $this->logLastError('setGroupMemberships_rollback');
+                    }
+                    return false;
+                }
+                // remove membershipRoleID from $data array so it is not part of next userId, groupID existing row check
+                unset($data['membershipRoleID']);
             }
         }
 
@@ -2873,6 +2889,8 @@ class Kimai_Database_Mysql
 
         if (isset($this->kga['user'])) {
             return $this->kga['user'];
+        } else {
+            return $this->kga['customer'];
         }
 
         return null;
