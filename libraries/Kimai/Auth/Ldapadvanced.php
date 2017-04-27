@@ -221,6 +221,9 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
 
         ldap_set_option($connect_result, LDAP_OPT_PROTOCOL_VERSION, 3);
 
+        // Disable referral support for enhanced Active Directory compatibility
+        ldap_set_option($connect_result, LDAP_OPT_REFERRALS, 0);
+
         // Bind to the ldap and query for the given userinformation.
         if ($this->bindDN && $this->bindPW) {
             $bindResult = ldap_bind($connect_result, $this->bindDN, $this->bindPW);
