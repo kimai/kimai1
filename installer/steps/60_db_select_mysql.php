@@ -79,7 +79,7 @@ if (count($useDatabases) == 0) {
         echo 'Не е намерена база данни или правата на потребителя са ограничени. Име на базата данни:<br/>';
     } else {
         echo 'No database(s) found or no permission to list databases. Name of the database to use:<br/>';
-    } 
+    }
 
     echo '<input type="text" id="db_names" value="' . htmlspecialchars($database) . '"/>';
 
@@ -91,7 +91,7 @@ if (count($useDatabases) == 0) {
             echo '<strong id="db_select_label" class="arrow">Няма достъп до базата данни.</strong>';
         } else {
             echo '<strong id="db_select_label" class="arrow">Unable to open that database.</strong>';
-        } 
+        }
     } else {
         echo '<strong id="db_select_label"></strong>';
     }
@@ -105,7 +105,7 @@ if (count($useDatabases) == 0) {
         echo 'Моля изберете база данни:';
     } else {
         echo 'Please choose a database:';
-    } 
+    }
 
     echo '<br/><select id="db_names">';
     echo '<option value=""></option>';
@@ -145,7 +145,7 @@ if ($createDatabaseAllowed) {
         echo 'Създай празна база данни: (потребителят трябва да има нужните права за това!)<br/><input id="db_create" type="text" value="' . $create_database . '"/>';
     } else {
         echo 'Create a blank database: (the db-user you entered must have appropriate rights!)<br/><input id="db_create" type="text" value="' . $create_database . '"/>';
-    } 
+    }
 
     if (isset($databaseErrorMessage)) {
         $errors = true;
@@ -165,7 +165,7 @@ if ($database !== '' && $create_database !== '') {
         echo '<strong class="fail">Или изберете база данни или задайте ново име, но не и двете наведнъж.</strong><br/><br/>';
     } else {
         echo '<strong class="fail">Either choose a database or give a new one, but not both.</strong><br/><br/>';
-    } 
+    }
 }
 
 // Table prefix
@@ -188,7 +188,7 @@ if ($lang == 'de') {
     echo 'Бихте ли искали да сложите представка на табелите?<br/>(Ако не знаете какво означава това, оставете "kimai_")<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
 } else {
     echo 'Would you like to assign a table-prefix?<br/>(If you don\'t know what this is - leave it as "kimai_")<br/><input id="prefix" type="text" value="' . htmlspecialchars($prefix) . '"/>';
-} 
+}
 
 if (isset($prefixErrorMessage)) {
     echo '<strong id="prefix_label" class="arrow">' . $prefixErrorMessage . '</strong><br/><br/>';
@@ -204,7 +204,7 @@ if ($lang == 'de') {
     echo '<button onclick="step_back(); return false;">Назад</button> <button onclick="db_check(); return false;" class="proceed">Напред</button>';
 } else {
     echo '<button onclick="step_back(); return false;">Back</button> <button onclick="db_check(); return false;" class="proceed">Proceed</button>';
-} 
+}
 
 if (($database === '' && $create_database === '') || $errors || ! isset($_REQUEST['redirect'])) {
     echo ob_get_clean();
