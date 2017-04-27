@@ -175,7 +175,7 @@ function timezone_proceed() {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
 			transport = $('#mail_transport').val();
-                        if (transport == 'sendmail') {
+			if (transport == 'sendmail') {
 				$('.smtp').hide();
 			}
 		});
