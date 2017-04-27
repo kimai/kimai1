@@ -125,6 +125,15 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
     );
 
     /**
+     * Map of group=>role names for new users
+     *
+     * @var array $defaultGroupMemberships
+     */
+    protected $defaultGroupMemberships = array(
+        'Users' => 'User',
+    );
+
+    /**
      * {@inherit}
      */
     public function __construct($database = null, $kga = null)
@@ -255,7 +264,7 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
                 'active' => 1,
                 'password' => encode_password(md5(uniqid(rand(), true)))
             ));
-            $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
+            $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
             // Set a password, to calm kimai down
             $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
             if ($mail) {
@@ -267,6 +276,40 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
             $this->database->user_edit($userId, $usr_data);
             return true;
        }
+    }
+
+    /**
+     * Get a map of group=>role associations for new users
+     *
+     * @return array
+     */
+    public function getDefaultGroups()
+    {
+        $groups = array();
+        $roles  = array();
+        $map    = array();
+
+        $database = $this->getDatabase();
+        foreach ($database->membership_roles() as $role) {
+            $roles[$role['name']] = $role['membershipRoleID'];
+        }
+
+        foreach ($database->get_groups() as $group) {
+            $groups[$group['name']] = $group['groupID'];
+        }
+
+        foreach ($this->defaultGroupMemberships as $group => $role) {
+            if (!isset($groups[$group])) {
+                continue;
+            }
+            if (!isset($roles[$role])) {
+                continue;
+            }
+
+            $map[$groups[$group]] = $roles[$role];
+        }
+
+        return $map;
     }
 
     /**
