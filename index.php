@@ -94,7 +94,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
             'globalRoleID' => $kga['user']['globalRoleID'],
             'active' => 1
         ));
-        $database->setGroupMemberships($userId, array($authPlugin->getDefaultGroups()));
+        $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
     }
     $userData = $database->user_get_data($userId);
 
@@ -147,7 +147,7 @@ switch ($_REQUEST['a']) {
                         'globalRoleID' => $authPlugin->getDefaultGlobalRole(),
                         'active' => 1
                     ));
-                    $database->setGroupMemberships($userId, array($authPlugin->getDefaultGroups()));
+                    $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
                 }
 
                 $userData = $database->user_get_data($userId);

@@ -54,7 +54,7 @@ h1 {
 
 #lang_sel, #layer_sel {
     padding-top:50px;
-    padding-left:210px;
+    padding-left:130px;
 }
 .lang, .layer {
     display:block;
@@ -69,7 +69,12 @@ h1 {
 }
 
 #en {
+    margin-right:20px;
     background: url(grfx/en.jpg);
+}
+
+#bg {
+    background: url(grfx/bg.jpg);
 }
 
 #mysql {

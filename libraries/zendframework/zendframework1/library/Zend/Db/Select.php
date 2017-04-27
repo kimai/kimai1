@@ -81,7 +81,26 @@ class Zend_Db_Select
     const SQL_ASC        = 'ASC';
     const SQL_DESC       = 'DESC';
 
-    const REGEX_COLUMN_EXPR = '/^([\w]*\s*\(([^\(\)]|(?1))*\))$/';
+    const REGEX_COLUMN_EXPR       = '/^([\w]*\s*\(([^\(\)]|(?1))*\))$/';
+    const REGEX_COLUMN_EXPR_ORDER = '/^([\w]+\s*\(([^\(\)]|(?1))*\))$/';
+    const REGEX_COLUMN_EXPR_GROUP = '/^([\w]+\s*\(([^\(\)]|(?1))*\))$/';
+    
+    // @see http://stackoverflow.com/a/13823184/2028814
+    const REGEX_SQL_COMMENTS      = '@
+    (([\'"]).*?[^\\\]\2) # $1 : Skip single & double quoted expressions
+    |(                   # $3 : Match comments
+        (?:\#|--).*?$    # - Single line comments
+        |                # - Multi line (nested) comments
+         /\*             #   . comment open marker
+            (?: [^/*]    #   . non comment-marker characters
+                |/(?!\*) #   . ! not a comment open
+                |\*(?!/) #   . ! not a comment close
+                |(?R)    #   . recursive case
+            )*           #   . repeat eventually
+        \*\/             #   . comment close marker
+    )\s*                 # Trim after comments
+    |(?<=;)\s+           # Trim after semi-colon
+    @msx';
 
     /**
      * Bind variables for query
@@ -511,7 +530,9 @@ class Zend_Db_Select
         }
 
         foreach ($spec as $val) {
-            if (preg_match(self::REGEX_COLUMN_EXPR, (string) $val)) {
+            // Remove comments from SQL statement
+            $noComments = preg_replace(self::REGEX_SQL_COMMENTS, '$1', (string) $val);
+            if (preg_match(self::REGEX_COLUMN_EXPR_GROUP, $noComments)) {
                 $val = new Zend_Db_Expr($val);
             }
             $this->_parts[self::GROUP][] = $val;
@@ -603,7 +624,9 @@ class Zend_Db_Select
                     $val = trim($matches[1]);
                     $direction = $matches[2];
                 }
-                if (preg_match(self::REGEX_COLUMN_EXPR, (string) $val)) {
+                // Remove comments from SQL statement
+                $noComments = preg_replace(self::REGEX_SQL_COMMENTS, '$1', (string) $val);
+                if (preg_match(self::REGEX_COLUMN_EXPR_ORDER, $noComments)) {
                     $val = new Zend_Db_Expr($val);
                 }
                 $this->_parts[self::ORDER][] = array($val, $direction);

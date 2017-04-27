@@ -164,9 +164,9 @@ abstract class Kimai_Auth_Abstract
 
         $memberships = $database->membership_roles();
         $membership = $memberships[0]['membershipRoleID'];
-        foreach ($memberships as $membership) {
-            if ($membership['name'] == 'User') {
-                $membership = $membership['membershipRoleID'];
+        foreach ($memberships as $membership_tmp) {
+            if ($membership_tmp['name'] == 'User') {
+                $membership = $membership_tmp['membershipRoleID'];
             }
         }
 
