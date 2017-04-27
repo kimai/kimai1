@@ -16,5 +16,5 @@
 <div class="invisible create_err en">
     <h2 style='color:red;'>Database could not be created!</h2>
     The user you entered doesn't have permission to create databases.<br/>
-    Sorry ... please create a database manually first and start the installation proccess anew.
+    Sorry ... please create a database manually first and start the installation proccess again.
 </div>
