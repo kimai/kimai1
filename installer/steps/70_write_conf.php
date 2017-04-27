@@ -9,7 +9,7 @@ if (strlen($database) > 64 || !preg_match('/^[a-zA-Z0-9_-]+$/', $database) ||
 }
 
 if ($_REQUEST['lang'] == "de") {
-    echo<<<EOD
+    echo <<<EOD
     <h2>Config-Datei Schreiben</h2>
     Die Daten sind jetzt komplett. Kimai kann jetzt mit folgender Datanbank-Verbindung installiert werden:
     <br/ >
