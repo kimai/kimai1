@@ -1,5 +1,18 @@
 # CONTRIBUTING
 
+> ## End-of-Life occurs 28 Sep 2016
+>
+> Between now and 28 Sep 2016, we will only be accepting security patches to
+> this repository; after that date, we will issue no more releases.
+>
+> For more information:
+>
+> - https://framework.zend.com/blog/2016-06-28-zf1-eol.html
+
+---
+
+> ## Contributors License Agreement
+>
 > **To submit code, patches, and proposals to Zend Framework, contributors must
 agree to the New BSD License and also submit a signed
 [Contributor License Agreement (CLA)](https://github.com/zendframework/zf1/wiki/Contributor-License-Agreement-%28CLA%29).**
