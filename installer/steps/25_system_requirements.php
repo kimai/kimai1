@@ -1,23 +1,7 @@
 <script type="text/javascript" charset="utf-8">current = 25;</script>
 
 <?php
-if ($_REQUEST['lang'] == "en") {
-    ?>
-    <h2>System Requirements</h2>
-    The following conditions must be met:<br/>
-    <div class="sp_phpversion fail">at least PHP version 5.4</div>
-    <div class="sp_mysql">The <b>MySQLi</b> extension for PHP has to be loaded</div>
-    <div class="sp_iconv">The <b>iconv</b> extension for PHP has to be loaded</div>
-    <div class="sp_dom">The <b>DOM</b> extension for PHP has to be loaded</div>
-    <br/><br/>
-    For PDF export the following requirement must be met:<br/>
-    <div class="sp_memory">Allowed memory usage should be at least 20MB</div>
-    <div class="note gray">See memory_limit in php.ini file</div>
-    <br/><br/>
-    <button class="sp-button" onclick='check_system_requirements();'>Check requirements now</button>
-    <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Proceed</button>
-    <?php
-} elseif ($_REQUEST['lang'] == "de") {
+if ($_REQUEST['lang'] == "de") {
     ?>
     <h2>Systemanforderungen</h2>
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
@@ -48,6 +32,22 @@ if ($_REQUEST['lang'] == "en") {
     <br/><br/>
     <button class="sp-button" onclick='check_system_requirements();'>Провери изискванията</button>
     <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Продължи</button>
+    <?php
+} else {
+    ?>
+    <h2>System Requirements</h2>
+    The following conditions must be met:<br/>
+    <div class="sp_phpversion fail">at least PHP version 5.4</div>
+    <div class="sp_mysql">The <b>MySQLi</b> extension for PHP has to be loaded</div>
+    <div class="sp_iconv">The <b>iconv</b> extension for PHP has to be loaded</div>
+    <div class="sp_dom">The <b>DOM</b> extension for PHP has to be loaded</div>
+    <br/><br/>
+    For PDF export the following requirement must be met:<br/>
+    <div class="sp_memory">Allowed memory usage should be at least 20MB</div>
+    <div class="note gray">See memory_limit in php.ini file</div>
+    <br/><br/>
+    <button class="sp-button" onclick='check_system_requirements();'>Check requirements now</button>
+    <button onclick="system_requirements_proceed(); return false;" class="invisible proceed">Proceed</button>
     <?php
 }
 ?>
