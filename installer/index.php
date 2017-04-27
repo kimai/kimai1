@@ -62,10 +62,10 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
             <?php
                 switch ($browser_lang) {
                     case "bg":
-                        echo "<h1>Инсталация " . "v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
+                        echo "<h1>Инсталация v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
                         break;
                     default:
-                        echo "<h1>Installation " . "v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
+                        echo "<h1>Installation v" . $kga['version'] . "." . $kga['revision'] . "</h1>";
                         break;
                 }
             ?>
