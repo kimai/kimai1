@@ -145,21 +145,20 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
      */
     public function __construct($database = null, $kga = null)
     {
-
         parent::__construct($database, $kga);
         $this->kimaiAuth = new Kimai_Auth_Kimai($database, $kga);
 
-        $this->saml_settings = array (
+        $this->saml_settings = array(
             'strict' => $this->saml_strict,
             'debug' => $this->saml_debug,
             'baseurl' => $this->saml_baseurl,
-            'sp' => array (
+            'sp' => array(
                 'entityId' => $this->saml_spentityId,
-                'assertionConsumerService' => array (
+                'assertionConsumerService' => array(
                     'url' => $this->saml_spacsURL,
                     'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
                 ),
-                'singleLogoutService' => array (
+                'singleLogoutService' => array(
                     'url' => $this->saml_spslsURL,
                     'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                 ),
@@ -167,13 +166,13 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
                 'x509cert' => $this->saml_spx509cert,
                 'privateKey' => $this->saml_spprivateKey,
             ),
-            'idp' => array (
+            'idp' => array(
                 'entityId' => $this->saml_idpentityId,
-                'singleSignOnService' => array (
+                'singleSignOnService' => array(
                     'url' => $this->saml_idpssoURL,
                     'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                 ),
-                'singleLogoutService' => array (
+                'singleLogoutService' => array(
                     'url' => $this->saml_idpslsURL,
                     'binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
                 ),
@@ -181,7 +180,6 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
                 'certFingerprintAlgorithm' => $this->saml_idpcertFingerprintAlgorithm,
             ),
         );
-
     }
 
     /**
@@ -229,7 +227,8 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
         return false;
     }
 
-   public function processResponse($idpResponse, &$userId) {
+   public function processResponse($idpResponse, &$userId) 
+   {
         Kimai_Logger::logfile("SAML: processResponse");
         $auth = new OneLogin_Saml2_Auth($this->saml_settings);
         $auth->processResponse();
@@ -263,8 +262,7 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
         if ($userId !== false) {
             Kimai_Logger::logfile("SAML: Username: " . $check_username . " exists!");
             return true;
-        }
-        else {
+        } else {
             $userId = $this->database->user_create(array(
                 'name' => $check_username,
                 'globalRoleID' => $this->getDefaultGlobalRole(),
@@ -283,7 +281,7 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
             }
             $this->database->user_edit($userId, $usr_data);
             return true;
-       }
+        }
     }
 
     /**
