@@ -227,8 +227,8 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
         return false;
     }
 
-   public function processResponse($idpResponse, &$userId) 
-   {
+    public function processResponse($idpResponse, &$userId) 
+    {
         Kimai_Logger::logfile("SAML: processResponse");
         $auth = new OneLogin_Saml2_Auth($this->saml_settings);
         $auth->processResponse();
