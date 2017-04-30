@@ -213,7 +213,7 @@ class Kimai_Auth_Ldapadvanced extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        // Remove the prefif and suffix from the user name
+        // Remove the prefix and suffix from the user name
         $lenprefix = strlen($this->removeUsernamePrefix);
         if (substr(strtoupper($username), 0, $lenprefix) == strtoupper($this->removeUsernamePrefix)) {
             $username = substr($username, $lenprefix);
