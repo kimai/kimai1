@@ -39,7 +39,7 @@ switch ($axAction)
         $i = 0;
         
         $lines = $kga['logfile_lines'];
-        $filearray = "";
+        $filearray = [];
         
         while (!feof($fh)) {
             $filearray[$i] = fgets($fh);
