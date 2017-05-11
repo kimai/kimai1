@@ -141,6 +141,20 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
     );
 
     /**
+     * The text to remove from the beginning of a username.
+     *
+     * @var string $removeUsernamePrefix
+     */
+    protected $removeUsernamePrefix = '';
+
+    /**
+     * The text to remove from the end of a username.
+     *
+     * @var string $removeUsernameSuffix
+     */
+    protected $removeUsernameSuffix = '';
+
+    /**
      * {@inherit}
      */
     public function __construct($database = null, $kga = null)
@@ -257,6 +271,17 @@ class Kimai_Auth_Saml extends Kimai_Auth_Abstract
             Kimai_Logger::logfile("SAML: Invalid SAML Response");
             return false;
         }
+        // Remove the prefix and suffix from the user name
+        $lenprefix = strlen($this->removeUsernamePrefix);
+        if (substr(strtoupper($check_username), 0, $lenprefix) == strtoupper($this->removeUsernamePrefix)) {
+            $check_username = substr($check_username, $lenprefix);
+        }
+
+        $suffixStart = strlen($check_username)-strlen($this->removeUsernameSuffix);
+        if (substr(strtoupper($check_username), $suffixStart, strlen($check_username)) == strtoupper($this->removeUsernameSuffix)) {
+            $check_username = substr($check_username, 0, $suffixStart);
+        }
+
         $userId = $this->database->user_name2id($check_username);
 
         if ($userId !== false) {
