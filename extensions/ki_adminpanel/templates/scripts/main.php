@@ -40,6 +40,10 @@
         <?php echo $this->adminScreen()->accordion(5, $this->translate('database'), $this->tab_database); ?>
     <?php endif; ?>
 
+    <?php if (isset($this->tab_authentication)): ?>
+        <?php echo $this->adminScreen()->accordion(11, $this->translate('authentication'), $this->tab_authentication); ?>
+    <?php endif; ?>
+
 </div>
 
 <script type="text/javascript">

@@ -2972,6 +2972,37 @@ class Kimai_Database_Mysql
                 case 'editLimit':
                 case 'allowRoundDown':
                 case 'defaultStatusID':
+                case 'authenticator':
+                case 'ldap_host':
+                case 'ldap_usernameprefix':
+                case 'ldap_usernamepostfix':
+                case 'ldap_nonLdapAccounts':
+                case 'ldap_forceLowercase':
+                case 'ldap_autocreateUsers':
+                case 'ldapadv_host':
+                case 'ldapadv_bindDN':
+                case 'ldapadv_bindPW':
+                case 'ldapadv_searchBase':
+                case 'ldapadv_userFilter':
+                case 'ldapadv_groupFilter':
+                case 'ldapadv_usernameAttribute':
+                case 'ldapadv_commonNameAttribute':
+                case 'ldapadv_groupidAttribute':
+                case 'ldapadv_mailAttribute':
+                case 'ldapadv_allowedGroupIds':
+                case 'ldapadv_forceLowercase':
+                case 'ldapadv_nonLdapAccounts':
+                case 'ldapadv_autocreateUsers':
+                case 'ldapadv_defaultGlobalRoleName':
+                case 'ldapadv_createGroupMembershipsOnLogin':
+                case 'ldapadv_defaultGroupMemberships':
+                case 'ad_enhancedIdentityPrivacy':
+                case 'http_allowAutoLogin':
+                case 'http_autocreateUsers':
+                case 'http_forceLowercase':
+                case 'http_phpAuthUser':
+                case 'http_remoteuser':
+                case 'http_redirectRemoteUser':
                     $config->set($key, $value);
                     break;
 

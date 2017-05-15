@@ -1174,6 +1174,44 @@ if ((int)$revisionDB < 1393) {
     exec_query("ALTER TABLE `${p}timeSheet` CHANGE `fixedRate` `fixedRate` DECIMAL(10,2) NULL");
 }
 
+if ((int)$revisionDB < 1394) {
+    Kimai_Logger::logfile("-- update to r1394");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_forceLowercase','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_allowAutoLogin','0')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_autocreateUsers','0')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_phpAuthUser','0')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_remoteuser','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('http_redirectRemoteUser','0')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_host','ldap://localhost')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_forceLowercase','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_nonLdapAccounts','admin')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_autocreateUsers','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_usernameprefix','cn=')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldap_usernamepostfix','dc=example,dc=com')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_host','ldap://localhost')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_bindDN','')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_bindPW','')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_searchBase','dc=example,dc=org')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_userFilter','uid=%s')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_groupFilter','memberUid=%1$s')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_usernameAttribute','uid')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_commonNameAttribute','cn')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_groupidAttribute','cn')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_mailAttribute','mail')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_allowedGroupIds','kimai-access')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_forceLowercase','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_nonLdapAccounts','admin')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_autocreateUsers','1')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_defaultGlobalRoleName','User')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_createGroupMembershipsOnLogin','0')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ldapadv_defaultGroupMemberships','\'User => User\'')");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('ad_enhancedIdentityPrivacy','0')");
+}
+
+if ((int)$revisionDB < 1395) {
+    Kimai_Logger::logfile("-- update to r1395");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('authenticator','kimai')");
+}
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

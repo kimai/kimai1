@@ -40,7 +40,7 @@ class Kimai_Auth_ActiveDirectory extends Kimai_Auth_Ldapadvanced
 
     protected function createCheckUsername($username, $uidAttribute)
     {
-        if ($this->enhancedIdentityPrivacy) {
+        if ($this->kga['ad_enhancedIdentityPrivacy']) {
             return $this->forceLowercase ? strtolower($username) : $username;
         }
         return parent::createCheckUsername($username, $uidAttribute);
