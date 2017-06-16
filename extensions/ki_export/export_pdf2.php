@@ -416,7 +416,10 @@ class MYPDF extends BasePDF {
 
         if ($field_rows == 0) { // if this is the last row
           $this->ln($this->getLastH());
-          $this->Cell($w[0], 6, '');
+          if ($i == 0)
+            $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
+          else
+            $this->Cell($w[0], 6, '');
           $this->Cell($w[1], 6, '', 'T');
           $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY() - $this->getLastH(), $wage_string, '', 0, 0, true, 'R');
           $this->ln();
@@ -425,7 +428,10 @@ class MYPDF extends BasePDF {
         }
         else {
           $this->ln();
-          $this->Cell($w[0], 6, '');
+          if ($i == 0)
+            $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
+          else
+            $this->Cell($w[0], 6, '');
         }
       }
     }
