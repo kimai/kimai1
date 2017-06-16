@@ -159,42 +159,11 @@ class MYPDF extends BasePDF
             $this->Ln();
 
             //Kommentar anzeigen:
-            if ($show_comment) {
-                // comment line width
-                $comment_line_width = 58;
-                // split comment in lines
-                $comment_lines = explode("\n",
-                    wordwrap(stripslashes($row['comment']), $comment_line_width, "\n", true));
-                // loop through all comment lines an add a cell for each line
-                if (is_array($comment_lines)) {
-                    // determine font sizes to work with
-                    $current_font_size = $this->getFontSizePt();
-                    if ($current_font_size <= 0) {
-                        $current_font_size = 12;
-                    }
-                    $comment_font_size = $current_font_size - 2;
-                    foreach ($comment_lines as $comment_line) {
-                        $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill);
-                        $this->SetFont('', 'I', $comment_font_size);
-                        //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Kimai_Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
-                        $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
-                        $this->SetFont('', '', $current_font_size);
-                        if ($_REQUEST['time_type'] == "dec_time") {
-                            if (isset($this->columns['dec_time'])) {
-                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
-                            }
-                        } else {
-                            if (isset($this->columns['time'])) {
-                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
-                            }
-                        }
-                        if (isset($this->columns['wage'])) {
-                            $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill);
-                        }
-                        $this->Ln();
-                    }
-                }
-            }
+            if ($show_comment) 
+                $this->addMultilineText($row['comment'], $fill, $w);
+            $show_description = !empty($row['description']);
+            if ($show_description) 
+                $this->addMultilineText($row['description'], $fill, $w);
             $fill = ! $fill;
             $moneySum += $row['wage'];
             if ($_REQUEST['time_type'] == "dec_time") {
@@ -225,6 +194,51 @@ class MYPDF extends BasePDF
             }
         }
     }
+
+    /**
+     * Helper function to add possibly multiline text value to the output table, eg comments or description
+     *
+     * @param string $txtValue text to print.
+     * @param bool $fill
+     * @param array $w width of the columns
+     *
+     */
+    private function addMultilineText($txt_value, $fill, $w)
+    {
+                // line width
+                $line_width = 58;
+                // split in lines
+                $lines = explode("\n",
+                    wordwrap(stripslashes($txt_value), $line_width, "\n", true));
+                // loop through all lines an add a cell for each line
+                if (is_array($lines)) {
+                    // determine font sizes to work with
+                    $current_font_size = $this->getFontSizePt();
+                    if ($current_font_size <= 0) {
+                        $current_font_size = 12;
+                    }
+                    $font_size = $current_font_size - 2;
+                    foreach ($lines as $line) {
+                        $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill);
+                        $this->SetFont('', 'I', $font_size);
+                        $this->Cell($w[1], 6, $line, 'LR', 0, 'L', $fill);
+                        $this->SetFont('', '', $current_font_size);
+                        if ($_REQUEST['time_type'] == "dec_time") {
+                            if (isset($this->columns['dec_time'])) {
+                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+                            }
+                        } else {
+                            if (isset($this->columns['time'])) {
+                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+                            }
+                        }
+                        if (isset($this->columns['wage'])) {
+                            $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill);
+                        }
+                        $this->Ln();
+                    }
+                }
+            }
 }
 
 $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
