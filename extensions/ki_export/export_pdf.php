@@ -132,6 +132,11 @@ class MYPDF extends BasePDF
                 $this->SetFont('');
             }
             $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill);
+            foreach ($w as $col=>$colwidth) 
+                if ($col > 0) 
+                    $this->Cell($colwidth, 6, '', 'LR', 0, 'C', $fill);
+            $this->Ln();
+            $this->Cell($w[0], 6, $this->dateformat($row['time_out']), 'LR', 0, 'C', $fill);
             if (isset($this->columns['trackingNumber'])) {
                 $trackingnumber = " (#" . $row['trackingNumber'] . ") - ";
             } else {
@@ -243,7 +248,7 @@ class MYPDF extends BasePDF
 
 $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-$pdf->date_format = $dateformat;
+$pdf->date_format = $dateformat . ' ' . $timeformat;
 $pdf->columns = $columns;
 $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
