@@ -4,7 +4,7 @@
 ?>
 
 #adminPanel_extension_panel {
-    top:120px;
+    top:150px;
     z-index:2;
     border:1px solid black; 
     margin:0;
