@@ -108,7 +108,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
                 'active' => 1,
                 'password' => encode_password(md5(uniqid(rand(), true)))
             ));
-            $this->database->setGroupMemberships($userId, array($this->getDefaultGroups()));
+            $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
             return true;
         }
 

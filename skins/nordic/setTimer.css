@@ -1,0 +1,15 @@
+#settimer {
+	/*display: inline-block;*/
+	/*margin-left: auto;*/
+	/*margin-right: auto;*/
+	text-align: center;
+}
+
+#settimer a,
+#settimer a:visited {
+	color: black;
+}
+
+#settimer a:hover {
+	color: darkgray;
+}
