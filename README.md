@@ -21,15 +21,23 @@ You can get more information about this time-tracking software:
 This is just a short feature list, play around with the [demo installation](http://www.kimai.org/demo/) to see all features:
  
 * Multi-user management
+* Customer login with read only privileges
 * Every user has its own timesheet
 * Extensive and role-based permission management
 * Manage customers, projects and activities
 * Track project budgets
 * Record expenses
 * Print invoices in multiple formats (ODT, ODS, HTML)
-* Export data in multiple formats (PDF, XLS, CSV, direct print)
+* Export data in multiple formats (PDF, XLSX, CSV, direct print)
 * SOAP and JSON API
+* LDAP login provider
 * Native apps ... see our [Apps page](http://www.kimai.org/apps/)
+
+## Missing features
+
+* Different rates for different working hours. Rates can only be set for users, projects and activities
+* Budgets based on time
+* No workflow ([approval process](https://github.com/kimai/kimai/issues/470))
 
 ![Screenshot](http://www.kimai.org/assets/kimai08.jpg)
 
@@ -39,12 +47,11 @@ Getting Started
 Kimai requires a webserver with PHP and a database (MySQL recommended).
 Accessing the backend through a supported browser.
 
-Please see the [INSTALL.md](INSTALL.md) in this folder in order to set up Kimai
-on your webserver.
+Please see the [INSTALL.md](INSTALL.md) in this folder in order to set up Kimai on your webserver.
 
 ## Contributing
 
-We would love to get input from all developer out there.
+We would love to get input from all developers out there.
 Please read our [contribution guidelines](https://github.com/kimai/kimai/blob/master/.github/CONTRIBUTING.md) to find out how.
 
 ## Support / Donate

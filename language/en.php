@@ -335,6 +335,12 @@ EOD
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
     'weekdays' => array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
     'weekdays_short' => array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"),
+    'quicklink_today' => 'Today',
+    'quicklink_yesterday' => 'Yesterday',
+    'quicklink_lastWeek' => 'Last Week',
+    'quicklink_lastMonth' => 'Last Month',
+    'quicklink_thisWeek' => 'This Week',
+    'quicklink_thisMonth' => 'This Month',
 
     'errorMessages' => array(
         'permissionDenied' => 'Permission denied',

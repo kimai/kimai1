@@ -55,7 +55,7 @@ function pageHeight() {
 // returns the amount of space the Header and the Tabbar are currently taking
 //
 function headerHeight() {
-    header = 90;
+    header = 120;
     tabbar = 25;
     /* always plus 10 pixels of horizontal padding */
     return header + tabbar + 10;
@@ -705,10 +705,10 @@ function lists_set_heightTop() {
         $('#usersShrink').css("height","211px");
         $('#customersShrink').css("height","211px");
         // push customer/project/activity subtables in place TOP
-        var subs = pageHeight()-headerHeight()-90+25;
+        var subs = pageHeight()-headerHeight()-60+25;
         $("#users,#customers,#projects,#activities").css("top",subs);
         // push faked table heads of subtables in place
-        var subs = pageHeight()-headerHeight()-90;    
+        var subs = pageHeight()-headerHeight()-60;
         $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
         $('#extensionShrink').css("top",subs-10);
         $('#usersShrink').css("top",subs);
@@ -1025,4 +1025,70 @@ function clearFloaterErrorMessages() {
  */
 function prependZeroIfNeeded(value) {
     return ((value < 10) ? '0' : '') + value;
+}
+
+
+// ----------------------------------------------------------------------------------------
+//  quicklinks for timer presets
+//
+
+function mktime(hour,minute,second,month,day,year){
+	a=new Date(year, month, day, hour, minute, second);
+	return (a.getTime()/1000).toFixed(0);
+}
+
+function getMonday(date) {
+	date = new Date(date);
+	var day = date.getDay(),
+		diff = date.getDate() - day + (day == 0 ? -6 : 1);
+	return new Date(date.setDate(diff));
+}
+
+function setTimerToYesterday() {
+	var today = new Date();
+	setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate() - 1, today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate() - 1, today.getFullYear()));
+}
+
+function setTimerToToday() {
+	var today = new Date();
+	setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate(), today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate(), today.getFullYear()));
+}
+
+function setTimerToLastWeek() {
+	var beforeOneWeek = new Date(new Date().getTime() - 60 * 60 * 24 * 7 * 1000)
+		, day = beforeOneWeek.getDay()
+		, diffToMonday = beforeOneWeek.getDay() - 1
+		, lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000)
+		, lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
+	setTimeframe(mktime(0, 0, 0, lastMonday.getMonth(), lastMonday.getDate(), lastMonday.getFullYear()), mktime(23, 59, 59, lastSunday.getMonth(), lastSunday.getDate(), lastSunday.getFullYear()));
+}
+
+function setTimerToLastMonth() {
+	var timerStartDay = new Date();
+	timerStartDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth(), 0);
+	timerStartDay.setDate(1);
+
+	// 0 will result in the last day of the previous month
+	var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
+
+	setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+}
+
+function setTimerToCurrentWeek() {
+	var today = new Date();
+	var thisDay = today.getDay(),
+		diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
+	var monday = new Date(today.setDate(diffToMonday));
+	var sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (7 - today.getDay()));
+	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, sunday.getMonth(), sunday.getDate(), sunday.getFullYear()));
+}
+
+function setTimerToCurrentMonth() {
+	var timerStartDay = new Date();
+	timerStartDay.setDate(1);
+
+	// 0 will result in the last day of the previous month
+	var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
+
+	setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }

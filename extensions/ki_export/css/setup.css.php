@@ -14,7 +14,7 @@
 }
 
 #xp { 
-    top:200px;
+    top:230px;
     z-index:2;
 }
 
@@ -31,7 +31,7 @@
     font-weight:bold;
 }
 
-#export_head { top:175px; }
+#export_head { top:205px; }
 
 #export_head table { border:none; }
 
