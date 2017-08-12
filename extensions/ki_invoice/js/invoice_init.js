@@ -37,11 +37,11 @@ function invoice_extension_resize() {
 
     var $invoice_extension_header = $("#invoice_extension_header");
     $invoice_extension_header.css("width", pagew - 27);
-    $invoice_extension_header.css("top", headerHeight()+30);
+    $invoice_extension_header.css("top", headerHeight());
     $invoice_extension_header.css("left", 10);
 
     var $invoice_extension_wrap = $("#invoice_extension_wrap");
-    $invoice_extension_wrap.css("top", headerHeight() + 60);
+    $invoice_extension_wrap.css("top", headerHeight() + 30);
     $invoice_extension_wrap.css("left", 10);
     $invoice_extension_wrap.css("width", pagew - 7);
     $("#invoice_extension").css("height", pageHeight() - headerHeight() - 64);

@@ -56,19 +56,19 @@ function deb_ext_resize() {
     halb = (pagew-10)/2-10;
 
     $("#deb_ext_kga_header").css("width", halb-27);
-    $("#deb_ext_kga_header").css("top", headerHeight()+30);
+    $("#deb_ext_kga_header").css("top", headerHeight());
     $("#deb_ext_kga_header").css("left", 10);
     
-    $("#deb_ext_kga_wrap").css("top", headerHeight()+60);
+    $("#deb_ext_kga_wrap").css("top", headerHeight()+30);
     $("#deb_ext_kga_wrap").css("left", 10);
     $("#deb_ext_kga_wrap").css("width", halb-7);
     $("#deb_ext_kga").css("height", pageHeight()-headerHeight()-64);
 
     $("#deb_ext_logfile_header").css("width", halb-17);
-    $("#deb_ext_logfile_header").css("top", headerHeight()+30);
+    $("#deb_ext_logfile_header").css("top", headerHeight());
     $("#deb_ext_logfile_header").css("left", halb+15);
 
-    $("#deb_ext_logfile_wrap").css("top", headerHeight()+50);
+    $("#deb_ext_logfile_wrap").css("top", headerHeight()+20);
     $("#deb_ext_logfile_wrap").css("left", halb+5);
     $("#deb_ext_logfile_wrap").css("width", halb+5);
     $("#deb_ext_logfile").css("height", pageHeight()-headerHeight()-64);

@@ -55,7 +55,7 @@ function pageHeight() {
 // returns the amount of space the Header and the Tabbar are currently taking
 //
 function headerHeight() {
-    header = 90;
+    header = 120;
     tabbar = 25;
     /* always plus 10 pixels of horizontal padding */
     return header + tabbar + 10;
@@ -705,10 +705,10 @@ function lists_set_heightTop() {
         $('#usersShrink').css("height","211px");
         $('#customersShrink').css("height","211px");
         // push customer/project/activity subtables in place TOP
-        var subs = pageHeight()-headerHeight()-90+25;
+        var subs = pageHeight()-headerHeight()-60+25;
         $("#users,#customers,#projects,#activities").css("top",subs);
         // push faked table heads of subtables in place
-        var subs = pageHeight()-headerHeight()-90;    
+        var subs = pageHeight()-headerHeight()-60;
         $("#users_head,#customers_head,#projects_head,#activities_head").css("top",subs);
         $('#extensionShrink').css("top",subs-10);
         $('#usersShrink').css("top",subs);
