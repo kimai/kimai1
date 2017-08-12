@@ -273,6 +273,17 @@
         
     </div>
 
+    <div id="topactions">
+        <div id="settimer">
+            <a style="cursor: pointer;" onclick="setTimerToToday(); return false;"><?php echo $this->kga['lang']['quicklink_today']?></a> |
+            <a style="cursor: pointer;" onclick="setTimerToYesterday(); return false;"><?php echo $this->kga['lang']['quicklink_yesterday']?></a> |
+            <a style="cursor: pointer;" onclick="setTimerToLastWeek(); return false;"><?php echo $this->kga['lang']['quicklink_lastWeek']?></a> |
+            <a style="cursor: pointer;" onclick="setTimerToLastMonth(); return false;"><?php echo $this->kga['lang']['quicklink_lastMonth']?></a> |
+            <a style="cursor: pointer;" onclick="setTimerToCurrentWeek(); return false;"><?php echo $this->kga['lang']['quicklink_thisWeek']?></a> |
+            <a style="cursor: pointer;" onclick="setTimerToCurrentMonth(); return false;"><?php echo $this->kga['lang']['quicklink_thisMonth']?></a>
+        </div>
+    </div>
+
     <div id="fliptabs" class="menuBackground">
         <ul class="menu">
             
