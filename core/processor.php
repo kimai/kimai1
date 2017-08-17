@@ -83,6 +83,7 @@ switch ($axAction) {
         $preferences['hideClearedEntries'] = getRequestBool('hideClearedEntries');
         $preferences['showCommentsByDefault'] = getRequestBool('showCommentsByDefault');
         $preferences['showTrackingNumber'] = getRequestBool('showTrackingNumber');
+        $preferences['showBillability'] = getRequestBool('showBillability');
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines'] = getRequestBool('hideOverlapLines');
         $preferences['showQuickNote'] = getRequestBool('showQuickNote');

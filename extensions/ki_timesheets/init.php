@@ -110,11 +110,13 @@ $view->assign('activity_annotations', $ann);
 $view->assign('hideComments', true);
 $view->assign('showOverlapLines', false);
 $view->assign('showTrackingNumber', false);
+$view->assign('showBillability', false);
 
 if (isset($kga['user'])) {
     $view->assign('hideComments', !$kga->getSettings()->isShowComments());
     $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
     $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
+    $view->assign('showBillability', $kga->getSettings()->isShowBillability());
 }
 
 $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));

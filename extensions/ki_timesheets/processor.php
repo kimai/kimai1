@@ -84,6 +84,37 @@ function timesheetAccessAllowed($entry, $action, &$errors)
 switch ($axAction) {
 
     // ==============================================
+    // = quick change of billability                =
+    // ==============================================
+    case 'billabilityChange':
+        header('Content-Type: application/json;charset=utf-8');
+        $errors = array();
+        $action = 'edit';
+
+        $data = $database->timeSheet_get_data($_REQUEST['id']);
+
+        // check if editing or deleting with the old values would be allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        $data['billable'] = $_REQUEST['billable'];
+
+        // check if editing or deleting with the new values is allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors'=>$errors));
+            break;
+        }
+
+        // TIME RIGHT - EDIT ENTRY
+        Kimai_Logger::logfile("timeEntry_edit: " .$_REQUEST['id']);
+        $database->timeEntry_edit($_REQUEST['id'], $data);
+
+        echo json_encode(array('errors' => $errors));
+        break;
+
+    // ==============================================
     // = start a new recording based on another one =
     // ==============================================
     case 'record':
@@ -433,12 +464,14 @@ switch ($axAction) {
         $view->assign('hideComments', true);
         $view->assign('showOverlapLines', false);
         $view->assign('showTrackingNumber', false);
+        $view->assign('showBillability', false);
 
         // user can change these settings
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
             $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
             $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
+            $view->assign('showBillability', $kga->getSettings()->isShowBillability());
         }
 
         $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));

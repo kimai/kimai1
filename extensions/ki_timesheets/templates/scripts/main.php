@@ -11,6 +11,10 @@
             <col class="from"/>
             <col class="to"/>
             <col class="time"/>
+            <?php if ($this->showBillability) { ?>
+                <col class="billability" />
+                <col class="billableTime" />
+            <?php } ?>
             <?php if ($this->showRates): ?>
                 <col class="wage"/>
             <?php endif; ?>
@@ -30,6 +34,10 @@
             <td class="from"><?php echo $this->kga['lang']['in'] ?></td>
             <td class="to"><?php echo $this->kga['lang']['out'] ?></td>
             <td class="time"><?php echo $this->kga['lang']['time'] ?></td>
+            <?php if ($this->showBillability) { ?>
+                <td class="billable"><?php echo $this->kga['lang']['billable']?></td>
+                <td class="time_billable"><?php echo $this->kga['lang']['time_billable']?></td>
+            <?php } ?>
             <?php if ($this->showRates): ?>
                 <td class="wage"><?php echo $this->kga['lang']['wage'] ?></td>
             <?php endif; ?>

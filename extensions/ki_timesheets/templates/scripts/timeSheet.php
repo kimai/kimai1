@@ -2,6 +2,15 @@
 
 $dateFormat = $this->kga->getDateFormat(1);
 
+if ($this->showBillability) {
+    $billableValues = $this->kga['billable'];
+    $billableText = array();
+    foreach ($billableValues as $billableValue) {
+        $billableText[] = $billableValue . '%';
+    }
+    $this->billable = array_combine($billableValues, $billableText);
+}
+
 if ($this->timeSheetEntries) {
     ?>
         <div id="timeSheetTable">
@@ -12,6 +21,9 @@ if ($this->timeSheetEntries) {
                 <col class="from" />
                 <col class="to" />
                 <col class="time" />
+            <?php if ($this->showBillability) { ?>
+                <col class="billable" />
+            <?php } ?>
             <?php if ($this->showRates) { ?>
                 <col class="wage" />
             <?php } ?>
@@ -126,6 +138,48 @@ if ($this->timeSheetEntries) {
             }
             ?>
         </td>
+        <?php if ($this->showBillability): ?>
+            <td class="billable <?php echo $tdClass; ?>">
+                <?php
+                if (isset($row['billable'])) {
+                    if (isset($row['duration'])) {
+                        // billability dropdown
+                        echo $this->formSelect(
+                            'billable',
+                            $row['billable'],
+                            array(
+                                'id' => 'billable_' . $row['timeEntryID'],
+                                'class' => 'formfield',
+                                'onchange' => 'ts_updateBillability(' . $row['timeEntryID'] . ')'
+                            ),
+                            $this->billable);
+
+                        // effective billable time
+                        echo "&nbsp;(";
+                        if ($row['billable'] == 100) {
+                            echo $row['formattedDuration'];
+                        } else {
+                            if ($row['billable'] >= 0) {
+                                $billableMinutes = ($row['duration'] / 60) * ($row['billable'] / 100);
+                                $hours = ceil(floor($billableMinutes / 60 / 24)) + ceil(floor($billableMinutes / 60));
+                                $minutes = ceil($billableMinutes - floor($billableMinutes / 60) * 60);
+                                echo $hours . ":" . sprintf('%02d', $minutes);
+                            } else {
+                                echo "&ndash;:&ndash;&ndash;";
+                            }
+                        }
+                        echo ")";
+                    }
+                } else {
+                    if (isset($row['duration'])) {
+                        echo $row['formattedDuration'];
+                    } else {
+                        echo "&ndash;:&ndash;&ndash;";
+                    }
+                }
+                ?>
+            </td>
+        <?php endif; ?>
         <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
