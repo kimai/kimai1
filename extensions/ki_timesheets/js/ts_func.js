@@ -519,6 +519,13 @@ function ts_getEndDate() {
 	return ts_getDateFromStrings($("#end_day").val(), $("#end_time").val());
 }
 
+function ts_prefillEndDate() {
+	if (!$("#end_day").val()) {
+		$("#end_day").val($("#start_day").val());
+		$('#end_day').trigger('change');
+	}
+}
+
 /**
  * Change the end time field, based on the duration, while editing a timesheet record
  */
