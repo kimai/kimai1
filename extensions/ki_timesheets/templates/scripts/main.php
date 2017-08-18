@@ -17,8 +17,8 @@
             <col class="customer"/>
             <col class="project"/>
             <col class="activity"/>
+            <col class="description"/>
             <?php if ($this->showTrackingNumber) { ?>
-                <col class="description"/>
                 <col class="trackingnumber"/>
             <?php } ?>
             <col class="username"/>
