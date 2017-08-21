@@ -17,8 +17,8 @@
             <col class="customer"/>
             <col class="project"/>
             <col class="activity"/>
+            <col class="description"/>
             <?php if ($this->showTrackingNumber) { ?>
-                <col class="description"/>
                 <col class="trackingnumber"/>
             <?php } ?>
             <col class="username"/>
@@ -36,8 +36,8 @@
             <td class="customer"><?php echo $this->kga['lang']['customer'] ?></td>
             <td class="project"><?php echo $this->kga['lang']['project'] ?></td>
             <td class="activity"><?php echo $this->kga['lang']['activity'] ?></td>
+            <td class="description"><?php echo $this->kga['lang']['description'] ?></td>
             <?php if ($this->showTrackingNumber) { ?>
-                <td class="description"><?php echo $this->kga['lang']['description'] ?></td>
                 <td class="trackingnumber"><?php echo $this->kga['lang']['trackingNumber'] ?></td>
             <?php } ?>
             <td class="username"><?php echo $this->kga['lang']['username'] ?></td>
