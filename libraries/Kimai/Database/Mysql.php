@@ -1675,7 +1675,7 @@ class Kimai_Database_Mysql
             $this->logLastError('user_edit rollback');
             return false;
         }
-        
+
         return false;
     }
 
@@ -2355,11 +2355,11 @@ class Kimai_Database_Mysql
             if (isset($data[$key]) == true) {
                 // budget is added to total budget for activity. So if we change the budget, we need
                 // to first subtract the previous entry before adding the new one
-//          	if($key == 'budget') {
-//          		$budgetChange = - $value;
-//          	} else if($key == 'approved') {
-//          		$approvedChange = - $value;
-//          	}
+                //if($key == 'budget') {
+                //	$budgetChange = - $value;
+                //} else if($key == 'approved') {
+                //	$approvedChange = - $value;
+                //}
                 $new_array[$key] = $data[$key];
             } else {
                 $new_array[$key] = $original_array[$key];
