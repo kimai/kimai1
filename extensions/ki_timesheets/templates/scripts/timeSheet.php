@@ -48,11 +48,12 @@ if ($this->timeSheetEntries)
                 $ts_buffer = strftime("%H%M", $end);
 
         $tdClass = "";
+
         if ($this->showOverlapLines && $end > $time_buffer) {
             $tdClass = " time_overlap";
-        } elseif ($this->kga->isShowDaySeperatorLines()['show_daySeperatorLines'] && $start != $day_buffer) {
+        } elseif ($this->kga->isShowDaySeperatorLines() && $start != $day_buffer) {
             $tdClass = " break_day";
-        } elseif ($this->kga['show_gabBreaks'] && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
+        } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
             $tdClass = " break_gap";
         }
 
