@@ -365,6 +365,7 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
         "exportCSV" => "CSV-eksport",
         "exportPDF" => "PDF-eksport",
         "exportXLS" => "Excel-eksport",
+        "exportInddXML" => "Indesign CS 6 XML eksport",
         "print" => "Udskrift",
         "export_timeformat_help" => "Hjælp til tidsformat",
 

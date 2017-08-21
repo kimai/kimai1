@@ -408,6 +408,7 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
         "exportCSV" => "Exporteer naar CSV",
         "exportPDF" => "Exporteer naar PDF",
         "exportXLS" => "Exporteer naar Excel",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Print",
         "export_timeformat_help" => "Tijdsformaat help",
 

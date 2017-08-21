@@ -391,3 +391,468 @@ function csv_prepare_field($field, $column_delimiter, $quote_char)
 
     return $field;
 }
+
+/**
+ * @param $seconds
+ * @return string
+ */
+function secsToHTime($seconds)
+{
+    $hours = floor($seconds / (60 * 60));
+
+    $divisor_for_minutes = $seconds % (60 * 60);
+    $minutes = floor($divisor_for_minutes / 60);
+
+    // extract the remaining seconds
+    $divisor_for_seconds = $divisor_for_minutes % 60;
+    $seconds = ceil($divisor_for_seconds);
+
+    return $hours . 'h' . ($minutes > 0 ? ' ' . $minutes . 'm' : '');
+}
+
+/**
+ * @param array $rawData
+ * @return string
+ */
+function prepareInddXML(array $rawData)
+{
+    global $kga;
+    
+    $dec_point = ".";
+    $thousands_sep = "'";
+    $dateformat = "Y m d";
+    $prettifyXML = false; // true messes with Indd Newlines
+    $collect_kndall = array();
+
+    $line = 0;    // Line counter, to get an accurate "aid:trows" value
+    // CS6 won't explain if these figures are wrong... it just fails.
+
+    foreach ($rawData as $id => $vals) {
+        // ruud re-arranging
+
+        if ($vals['type'] == 'timeSheet') {
+            $collect_kndall[$vals['customerID']]['customerID'] = $vals['customerID'];
+            $collect_kndall[$vals['customerID']]['customerName'] = $vals['customerName'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['projectID'] = $vals['projectID'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['projectName'] = $vals['projectName'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['zef_ARR'][] = $vals;
+        } elseif ($vals['type'] == 'exp') {
+            $collect_kndall[$vals['customerID']]['customerID'] = $vals['customerID'];
+            $collect_kndall[$vals['customerID']]['customerName'] = $vals['customerName'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['projectID'] = $vals['projectID'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['projectName'] = $vals['projectName'];
+            $collect_kndall[$vals['customerID']]['pct_ARR'][$vals['projectID']]['exp_ARR'][] = $vals;
+        }
+    }
+    $starter = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Root></Root>';
+
+    define('ADOBE_NAMESPACE', 'http://ns.adobe.com/AdobeInDesign/4.0/');
+    $base = new SimpleXMLElement($starter);
+
+    $Holder = $base->addChild('ProtocolHolder'); // Indd takes this as a Text Box
+    $Protocol = $Holder->addChild('ProtocolTable');
+    $Protocol->addAttribute('aid:table', 'table', ADOBE_NAMESPACE);
+
+    // Defined at the End, to add the right numbar of lines:
+    // $Protocol->addAttribute('aid:trows', $line, ADOBE_NAMESPACE);
+    // $Protocol->addAttribute('aid:tcols', '7', ADOBE_NAMESPACE);
+
+    // Aid:
+    // Table: "aid:trows" and "aid:tcols" tell Indd what to expect later. Must be right. Indd CS6 won't explain. (I implemented $line therefor)
+    // Cells: "aid:crows" and "aid:ccols" are eqivalent to colspan and rowspan in HTML. Must sum up right.
+    // BUT: I think these spans sometimes prevent Indd CS6 from reloading/replacing a completely different XML.
+    // Maybe the specs would allow a ROW parent to cells, just for visible debug ease, maybe not.
+
+    foreach ($collect_kndall AS $pct_kndID => $pct_kndIDVALS) {
+        $grandtotalALLPROJ = 0;
+        $projcount = 0;
+
+        // FULL LINE
+        // More variants in formatting here, since these are titles... The Dot (.) is just aesthetics.
+        $ProtocolTableCust = $Protocol->addChild('ProtocCustTitle', "");
+        $ProtocolTableCust->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+        $ProtocolTableCust->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+        $ProtocolTableCust->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+        $ProtocolTableCust->addChild('ProtocCustTitle.CUSTSTRING', "Protokoll: ");
+        $ProtocolTableCust->addChild('ProtocCustTitle.CUSTVALUE', $pct_kndIDVALS['customerName']);
+        $line++;
+
+        foreach ($pct_kndIDVALS['pct_ARR'] AS $pct_ID => $pct_IDVALS) {
+            $thisprojectname = $pct_IDVALS['projectName'];
+            $grandtotal = 0;
+            $ivehadatitle = false;
+            if (isset($pct_IDVALS['zef_ARR'])) {
+                $firsttodo = true;
+                $total = 0;
+                $time = 0;
+                foreach ($pct_IDVALS['zef_ARR'] AS $zef_ARRVALS) {
+                    // DOING WORKTIME
+
+                    if ($firsttodo) {    // Strictly speaking this is not elegant...
+                        $firsttodo = false;
+                        // FULL LINE
+                        $ProtocolTableTopic = $Protocol->addChild('ProtocType', "");
+                        $ProtocolTableTopic->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addChild('ProtocType.PROJECTSTRING', "Projekt: ");
+                        $ProtocolTableTopic->addChild('ProtocType.PROJECTVALUE', $thisprojectname);
+                        $ivehadatitle = true;
+                        $line++;
+                        // FULL LINE
+                        $ProtocolTableTopic = $Protocol->addChild('ProtocType', "");
+                        $ProtocolTableTopic->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                        $ProtocolTableTopic->addChild('ProtocType.TYPESTRING', "Arbeit"); // Work (ZEF)
+                        $line++;
+
+                        // FULL LINE
+                        // BTW these widths are repeated exactly at the title route in EXP below
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Datum');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "57.54330708661416", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Dauer');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "41.10236220481494", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Satz');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "24.094488188885833", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Betrag');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "52.44094488188976", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Arbeit');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "92.62598425187798", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'Kommentar');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "229.106299212689", ADOBE_NAMESPACE);
+
+                        $ProtocolTableZEFHeader = $Protocol->addChild('ProtocZEFHeader', 'C');
+                        $ProtocolTableZEFHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableZEFHeader->addAttribute('aid:ccolwidth', "15.023622047153538", ADOBE_NAMESPACE);
+                        $line++;
+                    }
+
+                    // The acctual ZEF entries
+                    // FULL LINE
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', date($dateformat, $zef_ARRVALS['time_in']));
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', secsToHTime($zef_ARRVALS['duration']));
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                    $time += $zef_ARRVALS['duration'];
+
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', intval($zef_ARRVALS['rate']));
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntriesWage', $zef_ARRVALS['wage']);
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                    $total += $zef_ARRVALS['wage'];
+
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', $zef_ARRVALS['activityName']);
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    // Rubish Cleanup
+                    $thisentry = str_replace("Fastin:", "", $zef_ARRVALS['comment']);
+                    $thisentry = str_replace("F:", "", $thisentry);
+                    $thisentry = str_replace("\n", "", $thisentry); // may have to fiddle with this one. Indd CS6 takes a lot for a newline.
+                    $thisentry = preg_replace('/^\s*/', "", $thisentry);
+                    $thisentry = preg_replace('/\s*$/', "", $thisentry); // is this trim()? ;-)
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', $thisentry);
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableZEFEntry = $Protocol->addChild('ProtocZEFEntries', $zef_ARRVALS['cleared'] == 1 ? "c" : "");
+                    $ProtocolTableZEFEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableZEFEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                    $line++;
+                } // FI foreach($pct_IDVALS['zef_ARR'] 
+
+                // Sum ups with special formatting on "wage"
+                // FULL LINE
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', secsToHTime($time));
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooterWage', number_format($total, 2, $dec_point, $thousands_sep) . "");
+
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $grandtotal += $total;
+
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFFooter', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $line++;
+
+                // FULL LINE
+                $ProtocolTableZEFFooter = $Protocol->addChild('ProtocZEFSpacer', '');
+                $ProtocolTableZEFFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableZEFFooter->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                $line++;
+            }
+
+            if (isset($pct_IDVALS['exp_ARR'])) {
+                $firsttodo = true;
+                $total = 0;
+                foreach ($pct_IDVALS['exp_ARR'] AS $exp_ARRVALS) {
+                    // DOING EXPENSES
+                    if ($firsttodo) {
+                        $firsttodo = false;
+                        // FULL LINE
+                        if (!$ivehadatitle) {
+                            $ProtocolTableEXPFooter = $Protocol->addChild('ProtocType', "");
+                            $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                            $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                            $ProtocolTableEXPFooter->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                            $ProtocolTableEXPFooter->addChild('ProtocType.PROJECTSTRING', "Projekt: ");
+                            $ProtocolTableEXPFooter->addChild('ProtocType.PROJECTVALUE', $thisprojectname);
+                        }
+                        $line++;
+                        // FULL LINE
+                        $ProtocolTableEXPFooter = $Protocol->addChild('ProtocType', "");
+                        $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPFooter->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPFooter->addChild('ProtocType.TYPESTRING', "Spesen"); // Espenses
+                        $line++;
+
+                        // FULL LINE
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', 'Datum');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "57.54330708661416", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', '');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "41.10236220481494", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', '');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "24.094488188885833", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', 'Betrag');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "52.44094488188976", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', '');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "92.62598425187798", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', 'Kommentar');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "229.106299212689", ADOBE_NAMESPACE);
+
+                        $ProtocolTableEXPHeader = $Protocol->addChild('ProtocEXPHeader', 'C');
+                        $ProtocolTableEXPHeader->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                        $ProtocolTableEXPHeader->addAttribute('aid:ccolwidth', "15.023622047153538", ADOBE_NAMESPACE);
+                        $line++;
+                    }
+
+                    // The acctual EXP entries
+
+                    // FULL LINE
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', date($dateformat, $exp_ARRVALS['time_in']));
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', "");
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', "");
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntriesWage', $exp_ARRVALS['wage']);
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                    $total += $exp_ARRVALS['wage'];
+
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', "");
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    // Rubish Cleanup
+                    $thisentry = str_replace("Fastin:", "", $exp_ARRVALS['comment']);
+                    $thisentry = str_replace("F:", "", $thisentry);
+                    $thisentry = str_replace("\n", "", $thisentry); // may have to fiddle with this one. Indd CS6 takes a lot for a newline.
+                    $thisentry = preg_replace('/^\s*/', "", $thisentry);
+                    $thisentry = preg_replace('/\s*$/', "", $thisentry);
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', $thisentry);
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+
+                    $ProtocolTableEXPEntry = $Protocol->addChild('ProtocEXPEntries', $exp_ARRVALS['cleared'] == 1 ? "c" : "");
+                    $ProtocolTableEXPEntry->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                    $ProtocolTableEXPEntry->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                    $line++;
+                }
+                
+                // Sum ups with special formatting on "wage"
+                // FULL LINE
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooterWage', number_format($total, 2, $dec_point, $thousands_sep) . "");
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $grandtotal += $total;
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPFooter', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '1', ADOBE_NAMESPACE);
+                $line++;
+
+                // FULL LINE
+                $ProtocolTableEXPFooter = $Protocol->addChild('ProtocEXPSpacer', '');
+                $ProtocolTableEXPFooter->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+                $ProtocolTableEXPFooter->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+                $line++;
+            }
+
+            // FULL LINE
+            // In Switzerland we write 500.- Fr. instead of 500.00 Fr.
+            $numform = str_replace($dec_point . '00', $dec_point . '-', number_format($grandtotal, 2, $dec_point, $thousands_sep));
+            $ProtocolTableLastspacer = $Protocol->addChild('ProtocCustGrandtotalTXT', "$thisprojectname");
+            $ProtocolTableLastspacer->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:ccols', '3', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer = $Protocol->addChild('ProtocCustGrandtotalVAL', $numform . ' ' . $kga['conf']['currency_sign']);
+            $ProtocolTableLastspacer->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:ccols', '4', ADOBE_NAMESPACE);
+            $grandtotalALLPROJ += $grandtotal;
+            $line++;
+
+            // FULL LINE
+            $ProtocolTableLastspacer = $Protocol->addChild('ProtocProJLastSpacer', '');
+            $ProtocolTableLastspacer->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+            $line++;
+
+            $projcount++;
+        }
+
+        if ($projcount > 1) {
+            // Helper Line, possibly useless. Combines all Projects' totals.
+            // FULL LINE
+            $numform = str_replace($dec_point . "00", $dec_point . "-", number_format($grandtotalALLPROJ, 2, $dec_point, $thousands_sep));
+            $ProtocolTableLastspacer = $Protocol->addChild('ProtocCustGrandtotalAllproj', "Zusammen " . $numform . ' ' . $kga['conf']['currency_sign']);
+            $ProtocolTableLastspacer->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+            $ProtocolTableLastspacer->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+            $line++;
+        }
+
+        // FULL LINE
+        $ProtocolTableLastspacer = $Protocol->addChild('ProtocCustLastSpacer', "");
+        $ProtocolTableLastspacer->addAttribute('aid:table', 'cell', ADOBE_NAMESPACE);
+        $ProtocolTableLastspacer->addAttribute('aid:crows', '1', ADOBE_NAMESPACE);
+        $ProtocolTableLastspacer->addAttribute('aid:ccols', '7', ADOBE_NAMESPACE);
+        $line++;
+    }
+
+    // because $line
+    $Protocol->addAttribute('aid:trows', $line, ADOBE_NAMESPACE);
+    $Protocol->addAttribute('aid:tcols', '7', ADOBE_NAMESPACE);
+
+    // Roundtrip for debugging the XML structure. $prettifyXML = false, means passthrough
+    $dom = new DOMDocument();
+    $dom->preserveWhiteSpace = false;
+    $dom->loadXML($base->asXML()); //$base handover
+    $dom->formatOutput = $prettifyXML; // TRUE is prettify
+
+    return $dom->saveXml();
+}

@@ -422,6 +422,7 @@ EOD
         "exportCSV" => "CSV输出",
         "exportPDF" => "PDF输出",
         "exportXLS" => "Excel输出",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "打印",
         "export_timeformat_help" => "时间格式帮助",
 

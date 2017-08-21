@@ -411,6 +411,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportCSV" => "CSV Export",
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Print",
         "export_timeformat_help" => "Time Format Help",
         'subtotal' => 'Sub Total',

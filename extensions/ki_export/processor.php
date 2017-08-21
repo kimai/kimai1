@@ -38,6 +38,7 @@ if ($axAction == 'export_csv' ||
     $axAction == 'export_pdf2' ||
     $axAction == 'export_html' ||
     $axAction == 'export_xls' ||
+    $axAction == 'export_INDDXML' ||
     $axAction == 'reload') {
 
     if (isset($_REQUEST['axColumns'])) {
@@ -108,7 +109,9 @@ if ($axAction == 'export_csv' ||
 }
 
 switch ($axAction) {
-    // set status cleared
+    /**
+     * set status cleared
+     */
     case 'set_cleared':
         if (isset($kga['customer'])) {
             echo 0;
@@ -127,15 +130,18 @@ switch ($axAction) {
         echo $success ? 1 : 0;
         break;
 
-
-    // save selected columns
+    /**
+     * save selected columns
+     */
     case 'toggle_header':
         // $axValue: header name
         $success = export_toggle_header($axValue);
         echo $success ? 1 : 0;
         break;
 
-    // Load data and return it
+    /**
+     * Load data and return it
+     */
     case 'reload':
         $view->assign('exportData', export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable));
 
@@ -165,7 +171,9 @@ switch ($axAction) {
         echo $view->render("table.php");
         break;
 
-    // Export as html file
+    /**
+     * Export as html file
+     */
     case 'export_html':
 
         $database->user_set_preferences(array(
@@ -510,5 +518,29 @@ switch ($axAction) {
             $orderedExportData[$customerID][$projectID][] = $row;
         }
         require('export_pdf2.php');
+        break;
+
+    /**
+     * Export as Indesign flavoured XML
+     */
+    case 'export_INDDXML':
+
+        $database->user_set_preferences(array(
+            'decimal_separator' => $_REQUEST['decimal_separator'],
+            'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
+        ), 'ki_export.inddxml.');
+
+        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
+            false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        
+        for ($i = 0; $i < count($exportData); $i++) {
+            $exportData[$i]['decimalDuration'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['decimalDuration']);
+            $exportData[$i]['rate'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['rate']);
+            $exportData[$i]['wage'] = str_replace(".", $_REQUEST['decimal_separator'], $exportData[$i]['wage']);
+        }
+
+        header('Content-type: text/xml');
+        header('Content-Disposition: attachment; filename="indd.xml"');
+        echo prepareInddXML($exportData);
         break;
 }

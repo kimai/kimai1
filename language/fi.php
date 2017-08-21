@@ -375,6 +375,7 @@ Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Ki
         "exportCSV" => "CSV vienti",
         "exportPDF" => "PDF vienti",
         "exportXLS" => "Excel vienti",
+        "exportInddXML" => "Indesign CS 6 XML vienti",
         "print" => "Tulosta",
         "export_timeformat_help" => "Aikaformaatin ohje",
 

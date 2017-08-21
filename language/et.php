@@ -445,6 +445,7 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         "exportCSV" => "CSV-faili eksportimine",
         "exportPDF" => "PDF-faili eksportimine",
         "exportXLS" => "Eksportimine Excelisse",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Print",
         "export_timeformat_help" => "Info ajavormingu kohta",
 

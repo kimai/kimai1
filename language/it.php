@@ -303,6 +303,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportCSV" => "Esporta CSV",
         "exportPDF" => "Esporta PDF",
         "exportXLS" => "Esporta Excel",
+        "exportInddXML" => "Esporta Indesign CS 6 XML",
         "print" => "Stampa",
         "export_timeformat_help" => "Aiuto su formati orario",
 

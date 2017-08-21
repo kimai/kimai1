@@ -55,6 +55,13 @@ function export_extension_onload() {
 		floaterShow('../extensions/ki_export/floaters.php', 'XLS', 0, 0, 600);
 		return false;
 	});
+	
+	$('#export_extension_export_INDDXML').click(function(){
+		this.blur();
+		floaterShow('../extensions/ki_export/floaters.php', 'INDDXML',0,0,600,570);
+		return false;
+	});
+	
 	$('#export_extension_export_csv').click(function () {
 		this.blur();
 		floaterShow('../extensions/ki_export/floaters.php', 'CSV', 0, 0, 600);
@@ -241,7 +248,6 @@ function export_extension_timeframe_changed() {
 	}
 }
 
-
 function export_extension_customers_changed() {
 	if ($('.ki_export').css('display') == "block") {
 		export_extension_reload();
@@ -316,7 +322,6 @@ function export_toggle_column(name) {
 		$.post(export_extension_path + "processor.php", {axAction: "toggle_header", axValue: name},
 			returnfunction
 		);
-
 	}
 	else {
 		returnfunction = new Function("data", "if (data!=1) return;\
@@ -359,7 +364,6 @@ function export_toggle_cleared(id) {
 		$.post(export_extension_path + "processor.php", {axAction: "set_cleared", axValue: 0, id: id},
 			returnfunction
 		);
-
 	}
 	else {
 		returnfunction = new Function("data", "if (data!=1) return;\

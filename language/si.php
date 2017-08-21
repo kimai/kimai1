@@ -374,6 +374,7 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
         "exportCSV" => "CSV Izvoz",
         "exportPDF" => "PDF Izvoz",
         "exportXLS" => "Excel Izvoz",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Natisni",
         "export_timeformat_help" => "Pomoč za format časa",
 

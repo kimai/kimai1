@@ -414,6 +414,7 @@ Kimaiをクリーンインストールができるために、別の接頭辞を
 		"exportCSV" => "CSV 出力",
 		"exportPDF" => "PDF 出力",
 		"exportXLS" => "Excel 出力",
+		"exportInddXML" => "Indesign CS 6 XML 出力",
 		"print" => "印刷",
 		"export_timeformat_help" => "時間フォーマットのヘルプ",
 		'subtotal' => '小計',

@@ -311,6 +311,7 @@ Escoja otro prefijo de tabla o elimine las tablas existentes con este prefijo pa
         "exportCSV" => "Exportación CSV",
         "exportPDF" => "Exportación PDF",
         "exportXLS" => "Exportación Excel",
+        "exportInddXML" => "Exportación Indesign CS 6 XML",
         "print" => "Imprimir",
         "export_timeformat_help" => "Ayuda del formato de tiempo",
 

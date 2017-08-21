@@ -308,6 +308,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportCSV" => "Exportar para CSV",
         "exportPDF" => "Exportar para PDF",
         "exportXLS" => "Exportar para Excel",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Imprimir",
         "export_timeformat_help" => "Ajuda do Timeformat",
 

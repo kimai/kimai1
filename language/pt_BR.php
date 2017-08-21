@@ -434,6 +434,7 @@ EOD
         'exportCSV' => 'Exportar CSV',
         'exportPDF' => 'Exportar PDF',
         'exportXLS' => 'Exportar Planilha',
+        'exportInddXML' => "Indesign CS 6 XML Export",
         'print' => 'Imprimir',
         'export_timeformat_help' => 'Ajuda de formato de hora',
         'subtotal' => 'Subtotal',

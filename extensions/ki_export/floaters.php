@@ -70,4 +70,14 @@ switch ($axAction) {
         echo $view->render("floaters/help_timeformat.php");
         break;
 
+    case "INDDXML":
+        $defaults = array(
+            'reverse_order' => 0,
+            'decimal_separator' => $kga['conf']['decimalSeparator']
+        );
+        $prefs = $database->user_get_preferences_by_prefix('ki_export.inddxml.');
+        $view->assign('prefs', array_merge($defaults, $prefs));
+        
+        echo $view->render("floaters/export_INDDXML.php");
+        break;
 }

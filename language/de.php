@@ -432,6 +432,7 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         "exportCSV" => "CSV Export",
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Drucken",
         "export_timeformat_help" => "Zeitformat Hilfe",
         'subtotal' => 'Zwischensumme',

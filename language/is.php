@@ -374,6 +374,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportCSV" => "Flytja út CSV",
         "exportPDF" => "Flytja út PDF",
         "exportXLS" => "Flytja út Excel",
+        "exportInddXML" => "Flytja út Indesign CS 6 XML",
         "print" => "Prenta",
         "export_timeformat_help" => "Hjálp tímasniðs",
 

@@ -467,6 +467,7 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         "exportCSV" => "Export CSV",
         "exportPDF" => "Export PDF",
         "exportXLS" => "Export Excel",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Imprimer",
         "export_timeformat_help" => "Aide sur le format heure",
 

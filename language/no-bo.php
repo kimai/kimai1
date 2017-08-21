@@ -310,6 +310,7 @@ return array(
         "exportCSV" => "CSV eksport",
         "exportPDF" => "PDF eksport",
         "exportXLS" => "Excel eksport",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Utskrift",
         "export_timeformat_help" => "Hjelp med tidsformat",
 

@@ -366,6 +366,7 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
         "exportCSV" => "CSV eksport",
         "exportPDF" => "PDF eksport",
         "exportXLS" => "Excel eksport",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Druk",
         "export_timeformat_help" => "Pomoc formatu czasu",
 

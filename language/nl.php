@@ -416,6 +416,7 @@ EOD
         "exportCSV" => "CSV Export",
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Print",
         "export_timeformat_help" => "Tijd opmaak help",
         'subtotal' => 'Sub Totaal',

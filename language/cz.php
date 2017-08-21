@@ -369,6 +369,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportCSV" => "CSV Export",
         "exportPDF" => "PDF Export",
         "exportXLS" => "Excel Export",
+        "exportInddXML" => "Indesign CS 6 XML Export",
         "print" => "Tisk",
         "export_timeformat_help" => "Nápověda formátu času",
         

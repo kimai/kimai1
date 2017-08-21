@@ -41,9 +41,9 @@
     <div class="l">
         <div class="w">
             <div class="c">
-                <a id="export_extension_select_filter" href="#" class="select_btn"><?php echo $this->kga['lang']['filter'] ?></a>
-                <a id="export_extension_select_location" href="#" class="select_btn"><?php echo $this->kga['lang']['export_extension']['stdrd_location'] ?></a>
-                <a id="export_extension_select_timeformat" href="#" class="select_btn"><?php echo $this->kga['lang']['export_extension']['timeformat'] ?></a>
+                <a id="export_extension_select_filter" href="#" class="select_btn" title="<?php echo $this->kga['lang']['filter'] ?>"><?php echo $this->kga['lang']['filter'] ?></a>
+                <a id="export_extension_select_location" href="#" class="select_btn" title="<?php echo $this->kga['lang']['export_extension']['stdrd_location'] ?>"><?php echo $this->kga['lang']['export_extension']['stdrd_location'] ?></a>
+                <a id="export_extension_select_timeformat" href="#" class="select_btn" title="<?php echo $this->kga['lang']['export_extension']['timeformat'] ?>"><?php echo $this->kga['lang']['export_extension']['timeformat'] ?></a>
             </div>
         </div>
         <div class="l">&nbsp;</div>
@@ -51,10 +51,11 @@
     <div class="r">
         <div class="w">
             <div class="c">
-                <a id="export_extension_export_pdf" href="#" class="output_btn"><?php echo $this->kga['lang']['export_extension']['exportPDF'] ?></a>
-                <a id="export_extension_export_xls" href="#" class="output_btn"><?php echo $this->kga['lang']['export_extension']['exportXLS'] ?></a>
-                <a id="export_extension_export_csv" href="#" class="output_btn"><?php echo $this->kga['lang']['export_extension']['exportCSV'] ?></a>
-                <a id="export_extension_print" href="#" class="output_btn"><?php echo $this->kga['lang']['export_extension']['print'] ?></a>
+                <a id="export_extension_export_pdf" href="#" class="output_btn" title="<?php echo $this->kga['lang']['export_extension']['exportPDF'] ?>"><?php echo $this->kga['lang']['export_extension']['exportPDF'] ?></a>
+                <a id="export_extension_export_xls" href="#" class="output_btn" title="<?php echo $this->kga['lang']['export_extension']['exportXLS'] ?>"><?php echo $this->kga['lang']['export_extension']['exportXLS'] ?></a>
+                <a id="export_extension_export_INDDXML" href="#" class="output_btn" title="<?php echo $this->kga['lang']['export_extension']['exportInddXML'] ?>"><?php echo $this->kga['lang']['export_extension']['exportInddXML'] ?></a>
+                <a id="export_extension_export_csv" href="#" class="output_btn" title="<?php echo $this->kga['lang']['export_extension']['exportCSV'] ?>"><?php echo $this->kga['lang']['export_extension']['exportCSV'] ?></a>
+                <a id="export_extension_print" href="#" class="output_btn" title="<?php echo $this->kga['lang']['export_extension']['print'] ?>"><?php echo $this->kga['lang']['export_extension']['print'] ?></a>
             </div>
         </div>
         <div class="l">&nbsp;</div>
