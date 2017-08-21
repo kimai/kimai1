@@ -2,11 +2,9 @@
 
 $dateFormat = $this->kga->getDateFormat(1);
 
-if ($this->timeSheetEntries)
-{
+if ($this->timeSheetEntries) {
     ?>
         <div id="timeSheetTable">
-        
           <table>
             <colgroup>
                 <col class="option" />
@@ -47,18 +45,16 @@ if ($this->timeSheetEntries)
                 $end = (isset($row['end']) && $row['end']) ? $row['end'] : 0;
                 $ts_buffer = strftime("%H%M", $end);
 
-        $tdClass = "";
+                $tdClass = '';
 
-        if ($this->showOverlapLines && $end > $time_buffer) {
-            $tdClass = " time_overlap";
-        } elseif ($this->kga->isShowDaySeperatorLines() && $start != $day_buffer) {
-            $tdClass = " break_day";
-        } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
-            $tdClass = " break_gap";
-        }
-
+                if ($this->showOverlapLines && $end > $time_buffer) {
+                    $tdClass = " time_overlap";
+                } elseif ($this->kga->isShowDaySeperatorLines() && $start != $day_buffer) {
+                    $tdClass = " break_day";
+                } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M",$time_buffer) - strftime("%H%M",$row['end']) > 1)) {
+                    $tdClass = " break_gap";
+                }
         ?>
-
         <?php if ($row['end']): ?>
             <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
         <?php else: ?>
@@ -68,17 +64,13 @@ if ($this->timeSheetEntries)
         <td nowrap class="option <?php echo $tdClass; ?>">
 
         <?php if (isset($this->kga['user'])): // only users can see options ?>
-
             <?php if ($row['end']): // Stop oder Record Button? ?>
-
                 <?php if ($this->kga->isShowRecordAgain()): ?>
                   <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
-                     href ="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
+                     href="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
                      width='13' height='13' alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
                 <?php endif; ?>
-
             <?php else: ?>
-
                 <a href ='#' class='stop' onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
                     src="<?php echo $this->skin('grfx/button_stopthis.gif'); ?>" width='13'
                     height='13' alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
@@ -86,7 +78,7 @@ if ($this->timeSheetEntries)
             <?php endif; ?>
 
             <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
-                <a href ='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
+                <a href='#' onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
                    title='<?php echo $this->kga['lang']['edit']?>'><img
                    src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
                    alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
@@ -99,15 +91,13 @@ if ($this->timeSheetEntries)
                 <?php endif; ?>
 
                 <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
-                    <a href ='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
+                    <a href='#' class='quickdelete' onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
                         src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
                         height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
                         border=0 /></a>
                 <?php endif; ?>
             <?php endif; ?>
-
         <?php endif; ?>
-
         </td>
 
         <td class="date <?php echo $tdClass; ?>">
@@ -127,7 +117,6 @@ if ($this->timeSheetEntries)
             }
         ?>
         </td>
-
         <td class="time <?php echo $tdClass; ?>">
             <?php
             if (isset($row['duration'])) {
@@ -137,7 +126,6 @@ if ($this->timeSheetEntries)
             }
             ?>
         </td>
-
         <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
@@ -149,11 +137,9 @@ if ($this->timeSheetEntries)
             ?>
             </td>
         <?php endif; ?>
-
         <td class="customer <?php echo $tdClass; ?>">
             <?php echo $this->escape($row['customerName']) ?>
         </td>
-
         <td class="project <?php echo $tdClass; ?>">
             <a href ="#" class="preselect_lnk"
                 onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
@@ -164,14 +150,12 @@ if ($this->timeSheetEntries)
                 <?php endif; ?>
             </a>
         </td>
-
         <td class="activity <?php echo $tdClass; ?>">
-            <a href ="#" class="preselect_lnk"
+            <a href="#" class="preselect_lnk"
                 onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                 return false;">
                 <?php echo $this->escape($row['activityName'])?>
             </a>
-
             <?php if ($row['comment']): ?>
                 <?php if ($row['commentType'] == '0'): ?>
                     <a href="#" onclick="ts_comment(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/blase.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['comment'])?>' border="0" /></a>
@@ -182,20 +166,17 @@ if ($this->timeSheetEntries)
                 <?php endif; ?>
             <?php endif; ?>
         </td>
-
         <td class="description <?php echo $tdClass; ?>" >
-            <?php echo $this->escape($this->truncate($row['description'],50,'...')) ?>
+            <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
             <?php if ($row['description']): ?>
                 <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
             <?php endif; ?>
         </td>
-
         <?php if ($this->showTrackingNumber) { ?>
         <td class="trackingnumber <?php echo $tdClass; ?>">
             <?php echo $this->escape($row['trackingNumber']) ?>
         </td>
         <?php } ?>
-
         <td class="username <?php echo $tdClass; ?>">
           <?php if ($row['userAlias']): ?>
             <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
@@ -203,22 +184,18 @@ if ($this->timeSheetEntries)
             <?php echo $this->escape($row['userName']) ?>
           <?php endif; ?>
         </td>
-
         </tr>
-
         <?php if ($row['comment']): ?>
             <tr id="c<?php echo $row['timeEntryID']?>" class="comm<?php echo $this->escape($row['commentType'])?>" <?php if ($this->hideComments): ?> style="display:none" <?php endif; ?> >
                 <td colspan="11"><?php echo nl2br($this->escape($row['comment']))?></td>
             </tr>
         <?php endif; ?>
-
         <?php
         $day_buffer = strftime("%d",$row['start']);
         $time_buffer = $row['start'];
         $end_buffer = $row['end'];
     }
     ?>
-
                 </tbody>
             </table>
         </div>
@@ -239,7 +216,7 @@ if ($this->timeSheetEntries)
 
     <?php if ($this->latest_running_entry == null): ?>
     updateRecordStatus(false);
-  <?php else: ?>
+    <?php else: ?>
     updateRecordStatus(
         <?php echo $this->latest_running_entry['timeEntryID']?>,
         <?php echo $this->latest_running_entry['start']?>,
