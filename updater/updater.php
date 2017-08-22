@@ -1188,6 +1188,11 @@ if ((int)$revisionDB < 1394) {
 // release of kimai 1.3.1
 // release of kimai 1.3.2
 
+if ((int) $revisionDB < 1395) {
+    Kimai_Logger::logfile("-- update to r1395");
+    exec_query("ALTER TABLE ${p}customers ADD COLUMN `cron_job_active` tinyint(1) NOT NULL DEFAULT '0' AFTER `trash`");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

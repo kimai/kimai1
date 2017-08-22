@@ -253,6 +253,7 @@ switch ($axAction) {
                 $data['homepage'] = $_REQUEST['homepage'];
                 $data['visible'] = getRequestBool('visible');
                 $data['filter'] = $_REQUEST['customerFilter'];
+                $data['cron_job_active'] = getRequestBool('cronJobActive');
 
                 // If password field is empty don't overwrite the password.
                 if (isset($_REQUEST['password']) && $_REQUEST['password'] != "") {

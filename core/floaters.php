@@ -107,6 +107,9 @@ switch ($axAction) {
             }
         } else {
             $view->assign('timezone', $kga['timezone']);
+            $view->assign('customer', [
+                'cronJobActive' => false
+            ]);
         }
 
         $view->assign('timezones', timezoneList());

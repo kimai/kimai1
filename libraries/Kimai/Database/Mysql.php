@@ -410,6 +410,7 @@ class Kimai_Database_Mysql
 
         $values['visible'] = MySQL::SQLValue($data['visible'], MySQL::SQLVALUE_NUMBER);
         $values['filter'] = MySQL::SQLValue($data['filter'], MySQL::SQLVALUE_NUMBER);
+        $values['cron_job_active'] = MySQL::SQLValue($data['cronJobActive'], MySQL::SQLVALUE_NUMBER);
 
         $table = $this->getCustomerTable();
         $result = $this->conn->InsertRow($table, $values);
@@ -480,7 +481,7 @@ class Kimai_Database_Mysql
             }
         }
 
-        $numbers = ['visible', 'filter'];
+        $numbers = ['visible', 'filter', 'cron_job_active'];
         foreach ($numbers as $key) {
             if (isset($data[$key])) {
                 $values[$key] = MySQL::SQLValue($data[$key], MySQL::SQLVALUE_NUMBER);
@@ -3215,12 +3216,12 @@ class Kimai_Database_Mysql
         $p = $this->kga['server_prefix'];
 
         if (empty($groups)) {
-            $query = "SELECT customerID, name, contact, visible
+            $query = "SELECT customerID, name, contact, visible, cron_job_active
               FROM ${p}customers
               WHERE trash=0
               ORDER BY visible DESC, name;";
         } else {
-            $query = "SELECT DISTINCT customerID, name, contact, visible
+            $query = "SELECT DISTINCT customerID, name, contact, visible, cron_job_active
               FROM ${p}customers
               JOIN ${p}groups_customers AS g_c USING (customerID)
               WHERE g_c.groupID IN (" . implode($groups, ',') . ")
@@ -3244,6 +3245,7 @@ class Kimai_Database_Mysql
                 $arr[$i]['name'] = $row->name;
                 $arr[$i]['contact'] = $row->contact;
                 $arr[$i]['visible'] = $row->visible;
+                $arr[$i]['cronJobActive'] = $row->cron_job_active;
                 $i++;
             }
             return $arr;

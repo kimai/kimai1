@@ -1,4 +1,4 @@
-<a href="#" onclick="floaterShow('floaters.php','add_edit_customer',0,0,450); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/add.png'); ?>" width="22" height="16" alt="<?php echo $this->translate('new_customer')?>"></a> <?php echo $this->translate('new_customer')?>
+<a href="#" onclick="floaterShow('floaters.php','add_edit_customer',0,0,800); $(this).blur(); return false;"><img src="<?php echo $this->skin('grfx/add.png'); ?>" width="22" height="16" alt="<?php echo $this->translate('new_customer')?>"></a> <?php echo $this->translate('new_customer')?>
 <br/><br/>
 <table>
 	<thead>
@@ -7,6 +7,7 @@
 			<th width="25%"><?php echo $this->translate('customer')?></th>
 			<th><?php echo $this->translate('contactPerson')?></th>
 			<th width="25%"><?php echo $this->translate('groups')?></th>
+            <th><?php echo $this->translate('cronJobActive')?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -39,6 +40,11 @@
 				</td>
 				<td class="<?php if ($isHidden) { echo 'hidden'; } ?>">
 					<?php echo $this->escape($row['groups'])?>
+				</td>
+				<td>
+					<?php if (isset($row['cronJobActive']) && $row['cronJobActive'] == 1): ?>
+						<img src="<?php echo $this->skin('grfx/jipp.gif') ?>" alt="<?php echo $this->translate('activeAccount') ?>" title="<?php echo $this->translate('activeAccount') ?>" border="0" width="16" height="16" />
+					<?php endif; ?>
 				</td>
 			</tr>
 			<?php

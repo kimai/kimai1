@@ -38,6 +38,11 @@
                     <span class="bb"><?php echo $this->translate('comment') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
+            <li class="tab norm"><a href="#cronjob">
+                    <span class="aa">&nbsp;</span>
+                    <span class="bb"><?php echo $this->translate('cronjob') ?></span>
+                    <span class="cc">&nbsp;</span>
+		        </a></li>
         </ul>
     </div>
     <form id="add_edit_customer" action="processor.php" method="post">
@@ -157,6 +162,14 @@
                             'class' => 'comment',
                             'style' => 'width:620px'
                         ]); ?>
+                    </li>
+                </ul>
+            </fieldset>
+            <fieldset id="cronjob">
+                <ul>
+                    <li>
+                        <label for="cronJobActive"><?php echo $this->translate('cronJobActive') ?>:</label>
+                        <?php echo $this->formCheckbox('cronJobActive', '1', ['checked' => $this->customer['cronJobActive']]);?>
                     </li>
                 </ul>
             </fieldset>

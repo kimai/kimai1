@@ -178,7 +178,8 @@ $query = "CREATE TABLE `${p}customers` (
   `mail` varchar(255) NULL,
   `homepage` varchar(255) NULL,
   `timezone` varchar(255) NOT NULL,
-  `trash` TINYINT(1) NOT NULL DEFAULT '0'
+  `trash` TINYINT(1) NOT NULL DEFAULT '0',
+  `cron_job_active` tinyint(1) NOT NULL DEFAULT '0'
 ) AUTO_INCREMENT=1;";
 exec_query($query);
 

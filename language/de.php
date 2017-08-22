@@ -524,4 +524,6 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
 
     "log_delete" => "Protokoll gelöscht",
 
+	'cronjob' => 'Cronjob',
+	'cronJobActive' => 'Cronjob aktiv'
 ];

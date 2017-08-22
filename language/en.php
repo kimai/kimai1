@@ -534,4 +534,6 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'log_delete' => 'log cleared',
     ],
 
+	'cronjob' => 'Cronjob',
+	'cronJobActive' => 'Cronjob active'
 ];
