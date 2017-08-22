@@ -27,7 +27,7 @@
  * of customers.
  */
 
-// insert KSPI 
+// insert KSPI
 $isCoreProcessor = 1;
 $dir_templates = "templates/core/";
 require("../includes/kspi.php");

@@ -21,7 +21,7 @@
  * =============================
  * = Floating Window Generator =
  * =============================
- * 
+ *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * some HTML will be returned, which will then be shown in a floater.
  */
@@ -51,7 +51,7 @@ switch ($axAction) {
           echo $view->render("floaters/security_warning.php");
         }
     break;
-   
+
     /**
      * Display the preferences dialog.
      */
@@ -59,7 +59,7 @@ switch ($axAction) {
         if (isset($kga['customer'])) {
             die();
         }
-        
+
         $allSkins = glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'skins' . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
         $skins = array();
         foreach ($allSkins as $skin) {
@@ -86,7 +86,7 @@ switch ($axAction) {
 
         echo $view->render("floaters/preferences.php");
     break;
-    
+
     /**
      * Display the dialog to add or edit a customer.
      */
@@ -102,7 +102,6 @@ switch ($axAction) {
 
         if ($id) {
             // Edit mode. Fill the dialog with the data of the customer.
-
             $data = $database->customer_get_data($id);
             if ($data) {
                 $view->assign('name', $data['name']);
@@ -131,7 +130,6 @@ switch ($axAction) {
         }
 
         $view->assign('timezones', timezoneList());
-
         $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
 
         // A new customer is assigned to the group of the current user by default.
@@ -148,12 +146,12 @@ switch ($axAction) {
 
         $countries = Zend_Locale::getTranslationList('Territory', $kga['language'], 2);
         asort($countries);
-        
+
         $view->assign('countries', $countries);
 
         echo $view->render("floaters/add_edit_customer.php");
     break;
-        
+
     /**
      * Display the dialog to add or edit a project.
      */
@@ -170,7 +168,7 @@ switch ($axAction) {
         $view->assign('customers', makeSelectBox("customer", $kga['user']['groups'], (isset($data) ? $data['customerID'] : null)));
         $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
         $view->assign('allActivities', $database->get_activities($kga['user']['groups']));
- 
+
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
@@ -204,7 +202,7 @@ switch ($axAction) {
             $view->assign('selectedActivities', array());
             $view->assign('internal', false);
         }
-        
+
         // Set defaults for a new project.
         if (!$id) {
             $view->assign('selectedGroups', array());
@@ -221,7 +219,7 @@ switch ($axAction) {
 
         echo $view->render("floaters/add_edit_project.php");
     break;
-    
+
     /**
      * Display the dialog to add or edit an activity.
      */
@@ -248,7 +246,7 @@ switch ($axAction) {
                 $view->assign('myRate', $data['myRate']);
                 $view->assign('fixedRate', $data['fixedRate']); // default fixed rate (not assigned to project)
                 $view->assign('selectedGroups', $database->activity_get_groups($id));
-                
+
                 $selectedProjectIds = $database->activity_get_projectIds($id);
                 $view->assign('selectedProjectIds', $selectedProjectIds);
 
@@ -263,13 +261,13 @@ switch ($axAction) {
                 $view->assign('id', $id);
             }
         }
-        
+
         // Create a <select> element to choose the projects
         $view->assign('allProjects', $database->get_projects($kga['user']['groups']));
 
         // Create a <select> element to choose the groups
         $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
-        
+
         // Set defaults for a new project.
         if (!$id) {
             $selectedGroups = array();
@@ -285,5 +283,5 @@ switch ($axAction) {
 
         echo $view->render("floaters/add_edit_activity.php");
     break;
-    
+
 }
