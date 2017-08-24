@@ -463,6 +463,7 @@ switch ($axAction)
             $config_data['decimalSeparator'] = $_REQUEST['decimalSeparator'];
             $config_data['durationWithSeconds'] = getRequestBool('durationWithSeconds');
             $config_data['exactSums'] = getRequestBool('exactSums');
+            $config_data['LaTeXExec'] = $_REQUEST['LaTeX_exec'];
             $editLimit = false;
             if (getRequestBool('editLimitEnabled')) {
                 $hours = (int)$_REQUEST['editLimitHours'];

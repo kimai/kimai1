@@ -257,6 +257,8 @@ return array(
     "roundTimesheetEntries" => "Round new timesheet entries to",
     "minutes" => "Minutes",
     "seconds" => "Seconds",
+    "LaTeXExecutable" => "Full path to LaTeX executable, i.e., 'pdflatex'. For more information, see https://www.ctan.org/",
+    "cannotExecute" => "Your system does not allow execution of external files. LaTeX invoice generation will be disabled.",
     "and" => "and",
     "customerlogin" => "customer login",
     "expense" => "Expense",

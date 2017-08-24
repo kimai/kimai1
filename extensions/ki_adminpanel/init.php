@@ -121,6 +121,13 @@ if ($showAdvancedTab) {
         $view->assign('roundSeconds', $kga['conf']['roundSeconds']);
     }
 
+    if (!function_exists('exec')) {
+        // deactivate latex functionality
+        $view->assign('execAvailable', false);
+    } else {
+        $view->assign('execAvailable', true);
+    }
+
     $view->assign('tab_advanced', $view->render("advanced.php"));
     $view->assign('tab_database', $view->render("database.php"));
 }

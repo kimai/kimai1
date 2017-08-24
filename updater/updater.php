@@ -1174,6 +1174,11 @@ if ((int)$revisionDB < 1393) {
     exec_query("ALTER TABLE `${p}timeSheet` CHANGE `fixedRate` `fixedRate` DECIMAL(10,2) NULL");
 }
 
+if ((int)$revisionDB < 1394) {
+    Kimai_Logger::logfile("-- update to r1394");
+    exec_query("INSERT INTO `${p}configuration` (`option`,`value`) VALUES('LaTeXExec', '')");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

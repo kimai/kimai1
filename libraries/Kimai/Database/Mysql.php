@@ -2950,6 +2950,7 @@ class Kimai_Database_Mysql
                     // break is not here on purpose!
 
                 case 'adminmail':
+                case 'LaTeXExec':
                 case 'loginTries':
                 case 'loginBanTime':
                 case 'currency_name':

@@ -53,15 +53,29 @@ $view->assign('roundingOptions', $roundingOptions);
 // Extract all Invoice Templates in groups
 $invoice_template_files = array();
 $allInvoices = glob('invoices/*');
-foreach($allInvoices as $tplFile)
-{
-    $extension = 'HTML';
+foreach ($allInvoices as $tplFile) {
+    $extension = '';
     $tplInfo = pathinfo($tplFile);
     if (!is_dir($tplFile)) {
         $extension = strtoupper($tplInfo['extension']);
+    } else {
+        //Check if index.html or invoice.tex is there
+        if (file_exists($tplFile . '/index.html')) {
+            $extension = 'HTML';
+        } elseif (file_exists($tplFile . '/invoice.tex')) {
+            $extension = 'LaTeX';
+            //Test if we can execute pdflatex
+            if (!function_exists('exec') or !is_executable($kga['LaTeXExec'])) {
+                Kimai_Logger::logfile('Could not execute pdflatex. Check your installation!');
+                $extension = '';
+            }
+        }
     }
     $filename = str_replace('_', ' ', $tplInfo['filename']);
-    $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
+    //Only add if the extension was detected.
+    if ($extension != '') {
+        $invoice_template_files[$extension][$tplInfo['basename']] = ucfirst($filename);
+    }
 }
 
 $view->assign('invoice_templates', $invoice_template_files);
