@@ -55,7 +55,7 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
         $invoiceID = date('y', $in) . $customer['customerID'] . date('m', $in) . date('d', $in);
         $checksum = new Kimai_Invoice_Checksum();
         $invoiceID = $checksum->generateChecksum('OCR', $invoiceID, true);
-        Kimai_Logger::logfile('invoiceID: ' . $invoiceID);
+        Kimai_Logger::logfile('InvoiceID: ' . $invoiceID);
         $this->getModel()->setInvoiceId($invoiceID);
 
         $data = $this->getModel()->toArray();
@@ -123,7 +123,7 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
     public function sendResponse($fileName)
     {
         Kimai_Logger::logfile('File to send: ' . $fileName);
-        header('Content-Type: pdf');
+        header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
         header('Content-Length: ' . filesize($fileName));
         ob_clean();
@@ -141,7 +141,7 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
     }
 
     /**
-     * Returns if the file can be rendered.
+     * Check if the file can be rendered.
      *
      * @return bool
      */
