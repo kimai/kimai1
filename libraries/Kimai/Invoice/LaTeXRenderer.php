@@ -118,17 +118,17 @@ class Kimai_Invoice_LaTeXRenderer extends Kimai_Invoice_AbstractRenderer
     }
 
     /**
-     * @return null
+     * @param string $fileName
      */
-    public function sendResponse($data)
+    public function sendResponse($fileName)
     {
-        Kimai_Logger::logfile('File to send: ' . $data);
+        Kimai_Logger::logfile('File to send: ' . $fileName);
         header('Content-Type: pdf');
-        header('Content-Disposition: attachment; filename="' . basename($data) . '"');
-        header('Content-Length: ' . filesize($data));
+        header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
+        header('Content-Length: ' . filesize($fileName));
         ob_clean();
         flush();
-        readfile($data);
+        readfile($fileName);
         exit;
     }
 
