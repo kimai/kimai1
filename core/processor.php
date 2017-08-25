@@ -27,10 +27,12 @@
  * of customers.
  */
 
-// insert KSPI
 $isCoreProcessor = 1;
-$dir_templates = "templates/core/";
-require("../includes/kspi.php");
+$dir_templates = 'templates/core/';
+require('../includes/kspi.php');
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -38,7 +40,7 @@ switch ($axAction) {
      * Append a new entry to the logfile.
      */
     case 'logfile':
-        Kimai_Logger::logfile("JavaScript: " . $axValue);
+        Kimai_Logger::logfile('JavaScript: ' . $axValue);
         break;
 
     /**
@@ -204,7 +206,7 @@ switch ($axAction) {
 
         $view->assign('show_project_edit_button', coreObjectActionAllowed('project', 'edit'));
 
-        echo $view->render("lists/projects.php");
+        echo $view->render('lists/projects.php');
         break;
 
     /**
@@ -215,7 +217,7 @@ switch ($axAction) {
     case 'reload_activities':
         if (isset($kga['customer'])) {
             $view->assign('activities', $database->get_activities_by_customer($kga['customer']['customerID']));
-        } else if (isset($_REQUEST['project'])) {
+        } elseif (isset($_REQUEST['project'])) {
             $view->assign('activities', $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']));
         } else {
             $view->assign('activities', $database->get_activities($kga['user']['groups']));
@@ -223,7 +225,7 @@ switch ($axAction) {
 
         $view->assign('show_activity_edit_button', coreObjectActionAllowed('activity', 'edit'));
 
-        echo $view->render("lists/activities.php");
+        echo $view->render('lists/activities.php');
         break;
 
     /**
@@ -235,7 +237,7 @@ switch ($axAction) {
             /**
              * add or edit a customer
              */
-            case "customer":
+            case 'customer':
                 $data['name'] = $_REQUEST['name'];
                 $data['comment'] = $_REQUEST['comment'];
                 $data['company'] = $_REQUEST['company'];
@@ -278,7 +280,8 @@ switch ($axAction) {
                     $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
-                if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['customerGroups'])) {
+                if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups,
+                    $_REQUEST['customerGroups'])) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
@@ -304,7 +307,7 @@ switch ($axAction) {
             /**
              * add or edit a project
              */
-            case "project":
+            case 'project':
                 $data['name'] = $_REQUEST['name'];
                 $data['customerID'] = $_REQUEST['customerID'];
                 $data['comment'] = $_REQUEST['projectComment'];
@@ -330,7 +333,8 @@ switch ($axAction) {
                     $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
-                if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['projectGroups'])) {
+                if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups,
+                    $_REQUEST['projectGroups'])) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
@@ -391,7 +395,7 @@ switch ($axAction) {
             /**
              * add or edit a activity
              */
-            case "activity":
+            case 'activity':
                 $data['name'] = $_REQUEST['name'];
                 $data['comment'] = $_REQUEST['comment'];
                 $data['visible'] = getRequestBool('visible');

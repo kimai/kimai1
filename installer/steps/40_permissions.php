@@ -1,5 +1,5 @@
-<?php 
-echo '<script type="text/javascript" charset="utf-8">current=40;</script>';
+<?php
+echo '<script type="text/javascript">current=40;</script>';
 
 if ($_REQUEST['lang'] == "de") {
     echo<<<EOD
@@ -41,4 +41,4 @@ EOD;
     <span class="ch_correctit invisible arrow">Please correct the write-permissions and press the button again!</span><br/>
 EOD;
 }
-echo '<script type="text/javascript" charset="utf-8">check_permissions();</script>';
+echo '<script type="text/javascript">check_permissions();</script>';

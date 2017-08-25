@@ -30,7 +30,6 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        $kga = $this->getKga();
         $database = $this->getDatabase();
 
         $userId = $database->user_name2id($username);
@@ -62,7 +61,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $mail = new Zend_Mail('utf-8');
         $mail->setFrom($kga['conf']['adminmail'], 'Kimai - Open Source Time Tracking');
         $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
-        
+
         $transport = new Zend_Mail_Transport_Sendmail();
 
         $passwordResetHash = str_shuffle(MD5(microtime()));
@@ -77,12 +76,12 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         } else {
             $userId = $database->user_name2id($name);
             $user = $database->user_get_data($userId);
-            
+
             $database->user_edit($userId, array('passwordResetHash' => $passwordResetHash));
 
             $mail->addTo($user['mail']);
         }
-        
+
         Kimai_Logger::logfile('password reset: ' . $name . ($is_customer ? ' as customer' : ' as user'));
 
         $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
@@ -118,7 +117,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         if ($is_customer) {
             $customerId = $database->customer_nameToID($username);
             $customer = $database->customer_get_data($customerId);
-            
+
             if ($key != $customer['passwordResetHash']) {
                 return array(
                     'message' => $kga['lang']['passwordReset']['invalidKey']
@@ -146,7 +145,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             );
             $database->user_edit($userId, $data);
         }
-        
+
         return array(
             'message' => $kga['lang']['passwordReset']['success'],
             'showLoginLink' => true,

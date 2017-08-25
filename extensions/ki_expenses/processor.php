@@ -17,15 +17,17 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
 require 'private_db_layer_mysql.php';
+
+$database = Kimai_Registry::getDatabase();
 
 function expenseAccessAllowed($entry, $action, &$errors)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -58,7 +60,10 @@ function expenseAccessAllowed($entry, $action, &$errors)
         if ($database->checkMembershipPermission($kga['user']['userID'], $assignedOwnGroups, $permissionName)) {
             return true;
         } else {
-            Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
+            Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(
+                ", ",
+                    $assignedOwnGroups
+            ) . " for user " . $kga['user']['name']);
             $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
             return false;
         }
@@ -74,8 +79,7 @@ function expenseAccessAllowed($entry, $action, &$errors)
     }
 }
 
-switch ($axAction)
-{
+switch ($axAction) {
 
     // ===========================================
     // = Load expense data from DB and return it =
@@ -170,7 +174,8 @@ switch ($axAction)
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(array(
-            'errors' => $errors));
+            'errors' => $errors
+        ));
         break;
 
     // =============================
@@ -217,7 +222,7 @@ switch ($axAction)
                 $kga['lang']['errorMessages']['emptyField'],
                 $kga['lang']['designation']
             );
-        } else if (!is_numeric($_REQUEST['edit_value'])) {
+        } elseif (!is_numeric($_REQUEST['edit_value'])) {
             $errors['edit_value'] = $kga['lang']['errorMessages']['wrongData'];
         }
 

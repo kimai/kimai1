@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require('../../includes/kspi.php');
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -208,7 +209,7 @@ switch ($axAction) {
         echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
         break;
-    
+
     case "add_edit_timeSheetQuickNote":
         if (isset($kga['customer'])) die();
         // ================================================

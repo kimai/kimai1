@@ -19,8 +19,6 @@
 
 namespace KimaiTest;
 
-use Kimai_View;
-
 /**
  * @coversDefaultClass Kimai_View
  */
@@ -32,10 +30,10 @@ class ViewTest extends TestCase
      */
     public function testInit()
     {
-        $myKga = new \Kimai_Config(array('foo' => 'bar'));
+        $myKga = new \Kimai_Config(['foo' => 'bar']);
         $this->setKga($myKga);
 
-        $view = new Kimai_View();
+        $view = new \Kimai_View();
 
         $helperPaths = $view->getHelperPaths();
         $this->assertArrayHasKey('Zend_View_Helper_', $helperPaths);

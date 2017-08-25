@@ -17,8 +17,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Include Basics
 include '../../includes/basics.php';
+
+$database = Kimai_Registry::getDatabase();
 
 $user = checkUser();
 

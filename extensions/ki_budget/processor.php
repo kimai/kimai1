@@ -20,6 +20,9 @@
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require '../../includes/kspi.php';
+
+$database = Kimai_Registry::getDatabase();
+
 require 'private_func.php';
 
 $view = new Kimai_View();

@@ -21,18 +21,13 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
     die('You cannot call this file directly');
 }
 
-
-if ((int)$revisionDB == $kga['revision'])
-{
+if ((int)$revisionDB == $kga['revision']) {
     echo '<script type="text/javascript">window.location.href = "../index.php";</script>';
-}
-else
-{
+} else {
     $l2 = $kga['lang']['login'];
     $l3 = $kga['lang']['updater'][90];
 
-    if (!$errors)
-    {
+    if (!$errors) {
         $l1 = $kga['lang']['updater'][80];
 
         echo <<<EOD
@@ -43,9 +38,7 @@ $("#link").addClass("success");
 $("#queries").append("$executed_queries $l3</p>");
 </script>
 EOD;
-    }
-    else
-    {
+    } else {
         $l1 = $kga['lang']['updater'][100];
 
         echo <<<EOD
@@ -62,8 +55,7 @@ EOD;
 ?>
 </table>
 <?php
-if (isset($new_passwords))
-{
+if (isset($new_passwords)) {
     ?>
     <br/><br/>
     <script type="text/javascript">

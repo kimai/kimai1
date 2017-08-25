@@ -60,7 +60,7 @@ function calculate_expenses_sum($projectId)
  */
 function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expensesOccurred, &$kga)
 {
-    global $database;
+    $database = Kimai_Registry::getDatabase();
 
     $wages = array();
     $expensesOccurred = false;
@@ -117,9 +117,9 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
                 continue;
             }
             $wages[$projectID][$activity['activityID']] = array(
-                'name' => $activity['name'], 
-                'budget' => 0, 
-                'budget_total' => 0, 
+                'name' => $activity['name'],
+                'budget' => 0,
+                'budget_total' => 0,
                 'approved' => 0,
                 'approved_total' => 0,
                 'total' => 0
@@ -144,7 +144,7 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             $wages[$projectID]['approved'] += $activity['approved'];
         }
     }
-   
+
     /* sum up wages for every project and every activity */
     foreach ($projects as $project) {
         $projectId = $project['projectID'];

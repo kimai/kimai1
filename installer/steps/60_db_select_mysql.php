@@ -13,7 +13,7 @@ set_include_path(
 
 require_once WEBROOT . '/libraries/autoload.php';
 
-echo '<script type="text/javascript" charset="utf-8">current=60;</script>';
+echo '<script type="text/javascript">current=60;</script>';
 
 $hostname = isset($_REQUEST['hostname']) ? $_REQUEST['hostname'] : 'localhost';
 $username = isset($_REQUEST['username']) ? $_REQUEST['username'] : '';
@@ -209,7 +209,7 @@ if ($lang == 'de') {
 if (($database === '' && $create_database === '') || $errors || ! isset($_REQUEST['redirect'])) {
     echo ob_get_clean();
 } else {
-    echo '<script type="text/javascript" charset="utf-8">db_proceed();</script>';
+    echo '<script type="text/javascript">db_proceed();</script>';
 }
 
 $con->Close();

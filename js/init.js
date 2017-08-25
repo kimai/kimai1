@@ -17,9 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =====================================================================
-// = Runs when the DOM of the Kimai GUI is loaded => MAIN init script! =
-// =====================================================================
+// Runs when the DOM of the Kimai GUI is loaded => MAIN init script!
 
 var userColumnWidth;
 var customerColumnWidth;
@@ -54,8 +52,7 @@ $(document).ready(function () {
 		// automatic tab-change on reload
 		ki_active_tab_target = Cookies.get('ki_active_tab_target_' + userID);
 		ki_active_tab_path = Cookies.get('ki_active_tab_path_' + userID);
-	}
-	else {
+	} else {
 		ki_active_tab_target = null;
 		ki_active_tab_path = null;
 	}

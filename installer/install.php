@@ -29,7 +29,8 @@
  * @param string $query string query to execute
  */
 function exec_query($query) {
-    global $database, $errors;
+    global $errors;
+    $database = Kimai_Registry::getDatabase();
 
     $conn = $database->getConnectionHandler();
     $success = $conn->Query($query);
@@ -42,9 +43,9 @@ function exec_query($query) {
     }
 }
 
-function quoteForSql($input) {
-    global $database;
-
+function quoteForSql($input)
+{
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
     return "'" . $conn->SQLFix($input) . "'";
 }

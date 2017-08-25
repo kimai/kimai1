@@ -163,7 +163,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#floater_innerwrap').tabs({selected: 0});
-      
+
         var $core_prefs = $('#core_prefs');
         $core_prefs.ajaxForm({
             beforeSubmit: function () {
@@ -184,7 +184,7 @@
                 $core_prefs.removeAttr('submitting');
                 window.location.reload();
             },
-            'error': function () {
+            error: function () {
                 $core_prefs.removeAttr('submitting');
             }
         });

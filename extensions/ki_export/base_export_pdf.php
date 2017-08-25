@@ -52,7 +52,7 @@ class BasePDF extends TCPDF
      */
     public function timespan($number)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if ($number == -1) {
             return "-------";
         } else {
@@ -69,7 +69,7 @@ class BasePDF extends TCPDF
      */
     public function time_unit($time)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
 
         return $time . " " . $kga['lang']['export_extension']['duration_unit'];
     }
@@ -156,7 +156,7 @@ class BasePDF extends TCPDF
      */
     public function printSummary($header, $data)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
 
         $summarizedData = $this->summarize($data);
 
@@ -250,10 +250,12 @@ class BasePDF extends TCPDF
 
     /**
      * Create the summary data array.
+     * @param array $orderedExportData
+     * @return array
      */
     function summarize($orderedExportData)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         // arrays for keeping track to print summary
         $timeSheetSummary = array();
         $expenseSummary = array();

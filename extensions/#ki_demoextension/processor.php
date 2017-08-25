@@ -17,12 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Always include the Kimai Standard Processor Initialization!
-
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates   = "templates/";
-require("../../includes/kspi.php");
+$dir_templates = 'templates/';
+require('../../includes/kspi.php');
+
+$kga = Kimai_Registry::getConfig();
 
 switch ($axAction) {
     case 'test':

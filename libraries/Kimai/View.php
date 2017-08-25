@@ -31,7 +31,7 @@ class Kimai_View extends Zend_View
         $this->addHelperPath(APPLICATION_PATH . '/libraries/Kimai/View/Helper/', 'Kimai_View_Helper');
 
         parent::init();
-        
+
         $kga = Kimai_Registry::getConfig();
         $this->assign('kga', $kga);
     }

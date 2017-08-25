@@ -24,8 +24,12 @@
  */
 class Zend_View_Helper_JsEscape extends Zend_View_Helper_Abstract
 {
+    /**
+     * @param string $text
+     * @return mixed
+     */
     public function jsEscape($text)
     {
         return str_replace("'", "\\'", $this->view->escape($text));
     }
-} 
+}

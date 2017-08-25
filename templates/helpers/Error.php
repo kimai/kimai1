@@ -25,6 +25,10 @@
  */
 class Zend_View_Helper_Error extends Zend_View_Helper_Abstract
 {
+    /**
+     * @param string $message
+     * @return string
+     */
     public function error($message = null)
     {
         if ($message === null) {
@@ -32,4 +36,4 @@ class Zend_View_Helper_Error extends Zend_View_Helper_Abstract
         }
         return '<div class="error">' . $message . '</div>';
     }
-} 
+}

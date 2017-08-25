@@ -21,10 +21,10 @@
  * Handle all AJAX calls from the installer.
  */
 
-defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-require_once WEBROOT . 'libraries/autoload.php';
+require_once WEBROOT . '/libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val)
@@ -146,7 +146,7 @@ switch ($axAction) {
     /**
      * Create the autoconf.php file.
      */
-    case ("write_config"):
+    case "write_config":
         include "../includes/func.php";
         // special characters " and $ are escaped
         $database = $_REQUEST['database'];
@@ -178,7 +178,7 @@ switch ($axAction) {
     /**
      * Create the database.
      */
-    case ('make_database'):
+    case 'make_database':
         $databaseName = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
         $username = $_REQUEST['username'];
