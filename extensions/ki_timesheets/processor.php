@@ -64,7 +64,6 @@ function timesheetAccessAllowed($entry, $action, &$errors)
             $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
             return false;
         }
-
     }
 
     $permissionName = 'ki_timesheets-otherEntry-otherGroup-' . $action;
@@ -75,7 +74,6 @@ function timesheetAccessAllowed($entry, $action, &$errors)
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
         return false;
     }
-
 }
 
 // ==================
@@ -140,7 +138,6 @@ switch ($axAction) {
             $userData['lastProject'] = $timeSheetEntry['projectID'];
             $userData['lastActivity'] = $timeSheetEntry['activityID'];
             $database->user_edit($kga['user']['userID'], $userData);
-
 
             $project = $database->project_get_data($timeSheetEntry['projectID']);
             $customer = $database->customer_get_data($project['customerID']);
@@ -464,14 +461,14 @@ switch ($axAction) {
         $view->assign('hideComments', true);
         $view->assign('showOverlapLines', false);
         $view->assign('showTrackingNumber', false);
-        $showBillability = false;
 
+        $showBillability = false;
         // user can change these settings
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
             $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
             $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
-            $showBillability =  $kga->getSettings()->isShowBillability();
+            $showBillability = $kga->getSettings()->isShowBillability();
         }
 
         $view->assign('showBillability', $showBillability);
