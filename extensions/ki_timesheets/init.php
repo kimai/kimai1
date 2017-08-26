@@ -110,9 +110,8 @@ $view->assign('activity_annotations', $ann);
 $view->assign('hideComments', true);
 $view->assign('showOverlapLines', false);
 $view->assign('showTrackingNumber', false);
-$view->assign('showBillability', false);
-$showBillability = false;
 
+$showBillability = false;
 if (isset($kga['user'])) {
     $view->assign('hideComments', !$kga->getSettings()->isShowComments());
     $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
@@ -123,9 +122,8 @@ if (isset($kga['user'])) {
 $view->assign('showBillability', $showBillability);
 $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
-
 $defaults = array(
-    'table_time_format' => $kga['conf']['table_time_format'],
+    'table_time_format' => $kga['conf']['table_time_format']
 );
 $prefs = $database->user_get_preferences_by_prefix('ui.');
 $view->assign('prefs', array_merge($defaults, $prefs));
