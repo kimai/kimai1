@@ -464,16 +464,17 @@ switch ($axAction) {
         $view->assign('hideComments', true);
         $view->assign('showOverlapLines', false);
         $view->assign('showTrackingNumber', false);
-        $view->assign('showBillability', false);
+        $showBillability = false;
 
         // user can change these settings
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
             $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
             $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
-            $view->assign('showBillability', $kga->getSettings()->isShowBillability());
+            $showBillability =  $kga->getSettings()->isShowBillability();
         }
 
+        $view->assign('showBillability', $showBillability);
         $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
         echo $view->render("timeSheet.php");
