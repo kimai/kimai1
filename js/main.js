@@ -1076,16 +1076,15 @@ function setTimerToCurrentWeek() {
 	var thisDay = today.getDay(),
 		diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
 	var monday = new Date(today.setDate(diffToMonday));
-	var sunday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (7 - today.getDay()));
-	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, sunday.getMonth(), sunday.getDate(), sunday.getFullYear()));
+	var timerEndDay = new Date();
+
+	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
 
 function setTimerToCurrentMonth() {
 	var timerStartDay = new Date();
 	timerStartDay.setDate(1);
-
-	// 0 will result in the last day of the previous month
-	var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
+	var timerEndDay = new Date();
 
 	setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
