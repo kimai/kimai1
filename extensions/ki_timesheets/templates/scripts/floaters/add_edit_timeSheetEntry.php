@@ -84,7 +84,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="start_day"><?php echo $this->kga['lang']['day'] ?>:</label>
                         <input id='start_day' type='text' name='start_day' value='<?php echo $this->escape($this->start_day) ?>' maxlength='10' size='10' tabindex='6'
-                               onChange="ts_prefillEndDate(); ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
                         -
                         <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day) ?>' maxlength='10' size='10' tabindex='7'
                                onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
