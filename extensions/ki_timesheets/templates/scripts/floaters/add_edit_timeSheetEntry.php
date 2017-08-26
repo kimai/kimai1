@@ -93,10 +93,10 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         <label for="start_time"><?php echo $this->kga['lang']['timelabel'] ?>:</label>
                         <input id='start_time' type='text' name='start_time'
                                value='<?php echo $this->escape($this->start_time) ?>' maxlength='8' size='8' tabindex='8'
-                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_prefillEndDate(); ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
                         -
                         <input id='end_time' type='text' name='end_time' value='<?php echo $this->escape($this->end_time) ?>' maxlength='8' size='8' tabindex='9'
-                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_prefillEndDate(); ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
                         <a id="currentTime" href="#" onclick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;"><?php echo $this->kga['lang']['now'] ?></a>
                     </li>
                     <li>
