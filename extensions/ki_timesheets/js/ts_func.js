@@ -577,3 +577,32 @@ function ts_comment(id) {
 	$('#c' + id).toggle();
 	return false;
 }
+
+/**
+ * directly update billability value in timesheet list
+ *
+ * @param id of timesheet entry
+ */
+function ts_updateBillability(id) {
+	var billableValue = document.getElementById('billable_' + id);
+	billableValue = billableValue.options[billableValue.selectedIndex].value;
+	$.post(ts_ext_path + "processor.php",
+		{
+			axAction: "billabilityChange",
+			axValue: 0,
+			id: id,
+			billable: billableValue
+		},
+		function (result) {
+			if (result.errors.length == 0) {
+				ts_ext_reload();
+			} else {
+				var messages = [];
+				for (var index in result.errors) {
+					messages.push(result.errors[index]);
+				}
+				alert(messages.join("\n"));
+			}
+		}
+	);
+}

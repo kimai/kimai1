@@ -299,6 +299,7 @@ return array(
     'hideClearedEntries' => 'abgerechnete Einträge verstecken',
     'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
     'showTrackingNumber' => 'Auftragsnummer in Zeiterfassung anzeigen',
+    'showBillability' => 'Verechenbarkeit in Zeiterfassung anzeigen',
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
     'defaultLocation' => 'Standard Ort',
     'showQuickNote'	=> 'Zeige Schnellbearbeitungs-Button',

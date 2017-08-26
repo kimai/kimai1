@@ -299,6 +299,7 @@ return array(
     'hideClearedEntries' => 'hide cleared entries',
     'showCommentsByDefault' => 'show comments by default',
     'showTrackingNumber' => 'show tracking number in timesheet',
+    'showBillability' => 'show billability in timesheet',
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
     'defaultLocation' => 'Default location',
     'showQuickNote'	=> 'show quick note button',

@@ -65,6 +65,7 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
             'showCommentsByDefault' => 0,
             'hideOverlapLines' => 0,
             'showTrackingNumber' => 0,
+            'showBillability' => 0,
             'sublistAnnotations' => 0,
         );
     }
@@ -149,6 +150,17 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     public function isShowTrackingNumber()
     {
         return $this->get('showTrackingNumber', 0) == 1;
+    }
+
+    /**
+     * Whether the user sees the billability in his timesheet.
+     * Can be configured by the user himself.
+     *
+     * @return bool
+     */
+    public function isShowBillability()
+    {
+        return $this->get('showBillability', 0) == 1;
     }
 
     /**
