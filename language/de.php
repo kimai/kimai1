@@ -303,6 +303,7 @@ return array(
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
     'defaultLocation' => 'Standard Ort',
     'showQuickNote'	=> 'Zeige Schnellbearbeitungs-Button',
+    'inlineEditingOfDescriptions'	=> 'Direktbearbeitung von Beschreibungen',
     'general' => 'Allgemein',
     'address' => 'Adresse',
     'contact' => 'Kontakt',

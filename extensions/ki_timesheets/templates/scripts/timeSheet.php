@@ -221,10 +221,14 @@ if ($this->timeSheetEntries) {
             <?php endif; ?>
         </td>
         <td class="description <?php echo $tdClass; ?>" >
-            <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
-            <?php if ($row['description']): ?>
-                <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
-            <?php endif; ?>
+                <?php if ($this->inlineEditingOfDescriptions): ?>
+                    <textarea rows="1" style="width: 100%; resize:none" id="description_<?php echo $row['timeEntryID']; ?>" onfocus="$(this).attr('rows',3);" onfocusout="$(this).attr('rows',1);" onchange="ts_updateDescription(<?php echo $row['timeEntryID']; ?>, 0)"><?php echo htmlspecialchars($row['description']); ?></textarea>
+                <?php else: ?>
+                    <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
+                    <?php if ($row['description']): ?>
+                        <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+                    <?php endif; ?>
+                <?php endif; ?>
         </td>
         <?php if ($this->showTrackingNumber) { ?>
         <td class="trackingnumber <?php echo $tdClass; ?>">

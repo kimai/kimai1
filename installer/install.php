@@ -309,6 +309,7 @@ $query = "INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
 ('$randomAdminID', 'ui.hideOverlapLines', '1'),
 ('$randomAdminID', 'ui.showTrackingNumber', '1'),
 ('$randomAdminID', 'ui.showBillability', '0'),
+('$randomAdminID', 'ui.inlineEditingOfDescriptions', '0'),
 ('$randomAdminID', 'timezone', " . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 

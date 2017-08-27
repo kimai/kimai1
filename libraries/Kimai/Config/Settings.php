@@ -67,6 +67,7 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
             'showTrackingNumber' => 0,
             'showBillability' => 0,
             'sublistAnnotations' => 0,
+            'inlineEditingOfDescriptions' => 0,
         );
     }
 
@@ -217,6 +218,14 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
     public function isShowQuickNote()
     {
         return (bool)$this->get('showQuickNote', false);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInlineEditingOfDescriptionsSet()
+    {
+        return $this->get('inlineEditingOfDescriptions', 0) == 1;
     }
 
     /**
