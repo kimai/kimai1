@@ -615,7 +615,6 @@ function ts_updateBillability(id) {
 }
 
 /**
- *
  * @param id id of timesheet entry
  * @param reload only reload if forced
  */
@@ -624,7 +623,7 @@ function ts_updateDescription(id, reload) {
 	var descriptionValue = document.getElementById('description_' + id);
 	descriptionValue = descriptionValue.value;
 	$('#loader').show();
-	$.post(ts_ext_path + "processor.php",
+	$.post(ts_ext_path + 'processor.php',
 		{
 			axAction: "descriptionChange",
 			axValue: 0,
@@ -634,7 +633,7 @@ function ts_updateDescription(id, reload) {
 		function (result) {
 			$('#loader').hide();
 			if (result.errors.length == 0) {
-				if (reload == 1) {
+				if (reload === 1) {
 					ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
 				}
 			} else {
