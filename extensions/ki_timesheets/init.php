@@ -112,14 +112,17 @@ $view->assign('showOverlapLines', false);
 $view->assign('showTrackingNumber', false);
 
 $showBillability = false;
+$inlineEditingOfDescriptions = false;
 if (isset($kga['user'])) {
     $view->assign('hideComments', !$kga->getSettings()->isShowComments());
     $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
     $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
     $showBillability = $kga->getSettings()->isShowBillability();
+    $inlineEditingOfDescriptions = $kga->getSettings()->isInlineEditingOfDescriptionsSet();
 }
 
 $view->assign('showBillability', $showBillability);
+$view->assign('inlineEditingOfDescriptions', $inlineEditingOfDescriptions);
 $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
 $defaults = array(

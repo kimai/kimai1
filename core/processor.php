@@ -87,6 +87,7 @@ switch ($axAction) {
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines'] = getRequestBool('hideOverlapLines');
         $preferences['showQuickNote'] = getRequestBool('showQuickNote');
+        $preferences['inlineEditingOfDescriptions'] = getRequestBool('inlineEditingOfDescriptions');
         $preferences['defaultLocation'] = isset($_REQUEST['defaultLocation']) ? $_REQUEST['defaultLocation'] : '';
         $preferences['table_time_format'] = $_REQUEST['table_time_format'];
 

@@ -113,6 +113,37 @@ switch ($axAction) {
         break;
 
     // ==============================================
+    // = quick change of description                =
+    // ==============================================
+    case 'descriptionChange':
+        header('Content-Type: application/json;charset=utf-8');
+        $errors = array();
+        $action = 'edit';
+
+        $data = $database->timeSheet_get_data($_REQUEST['id']);
+
+        // check if editing or deleting with the old values would be allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        $data['description'] = $_REQUEST['description'];
+
+        // check if editing or deleting with new values is allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        // TIME RIGHT - EDIT ENTRY
+        Kimai_Logger::logfile("timeEntry_edit: " . $_REQUEST['id']);
+        $database->timeEntry_edit($_REQUEST['id'], $data);
+
+        echo json_encode(array('errors' => $errors));
+        break;
+
+    // ==============================================
     // = start a new recording based on another one =
     // ==============================================
     case 'record':
@@ -463,15 +494,18 @@ switch ($axAction) {
         $view->assign('showTrackingNumber', false);
 
         $showBillability = false;
+        $inlineEditingOfDescriptions = false;
         // user can change these settings
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
             $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
             $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
             $showBillability = $kga->getSettings()->isShowBillability();
+            $inlineEditingOfDescriptions = $kga->getSettings()->isInlineEditingOfDescriptionsSet();
         }
 
         $view->assign('showBillability', $showBillability);
+        $view->assign('inlineEditingOfDescriptions', $inlineEditingOfDescriptions);
         $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
         echo $view->render("timeSheet.php");

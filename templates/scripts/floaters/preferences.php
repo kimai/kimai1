@@ -143,6 +143,10 @@
                         <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => $this->kga->getSettings()->isShowQuickNote())), $this->kga['lang']['showQuickNote'] ?>
                     </li>
                     <li>
+                        <label for="inlineEditingOfDescriptions"></label>
+                        <?php echo $this->formCheckbox('inlineEditingOfDescriptions', '1', array('checked' => $this->kga->getSettings()->isInlineEditingOfDescriptionsSet())), $this->kga['lang']['inlineEditingOfDescriptions'] ?>
+                    </li>
+                    <li>
                         <label for="table_time_format"></label>
                         <?php echo $this->kga['lang']['table_time_format']?>:
                         <?php echo $this->formText('table_time_format', $this->prefs['table_time_format'], array('size' => 20)); ?>

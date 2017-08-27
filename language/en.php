@@ -303,6 +303,7 @@ return array(
     'hideOverlapLines' => 'Don\'t indicate time overlap of entries',
     'defaultLocation' => 'Default location',
     'showQuickNote'	=> 'show quick note button',
+    'inlineEditingOfDescriptions'	=> 'inline editing of descriptions',
     'general' => 'General',
     'address' => 'Address',
     'contact' => 'Contact',
