@@ -623,6 +623,7 @@ function ts_updateDescription(id, reload) {
 	reload = typeof reload !== 'undefined' ? reload : 1;
 	var descriptionValue = document.getElementById('description_' + id);
 	descriptionValue = descriptionValue.value;
+	$('#loader').show();
 	$.post(ts_ext_path + "processor.php",
 		{
 			axAction: "descriptionChange",
@@ -631,6 +632,7 @@ function ts_updateDescription(id, reload) {
 			description: descriptionValue
 		},
 		function (result) {
+			$('#loader').hide();
 			if (result.errors.length == 0) {
 				if (reload == 1) {
 					ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
