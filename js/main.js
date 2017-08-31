@@ -326,14 +326,16 @@ function updateTimeframeWarning() {
 function startRecord(projectID,activityID,userID) {
     var now = Math.floor(((new Date()).getTime()) / 1000);
     startsec = now;
-    offset = 0;
     show_stopwatch();
     value = projectID +"|"+ activityID;
+	$('#buzzer').addClass('disabled');
     $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
         function(response){
             var data = jQuery.parseJSON(response);
             currentRecording = data['id'];
-            $('#buzzer').removeClass('disabled');
+			timeout_updateRecordStatus = setTimeout(function(){ 
+				$('#buzzer').removeClass('disabled');
+			}, 3000);
         }
     );
 }
@@ -348,6 +350,7 @@ function stopRecord() {
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "background-color", "#F00" );
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
     show_selectors();
+	$('#buzzer').addClass('disabled');
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(response){
               ts_ext_reload();
@@ -356,20 +359,31 @@ function stopRecord() {
                 var data = jQuery.parseJSON(response);
                 editRecord(data['id']);
               }
+			  timeout_updateRecordStatus = setTimeout(function(){ 
+				$('#buzzer').removeClass('disabled');
+			  }, 3000);
+			  
         }
     );
 }
 
 function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
+
+  // if awaiting updateRecordStatus from buzzer
+  if (typeof timeout_updateRecordStatus != 'undefined'){
+	  clearTimeout(timeout_updateRecordStatus);
+	  $('#buzzer').removeClass('disabled');
+  }
+	
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
     show_selectors();
     return;
   }
-
+  
   startsec = record_startTime + offset;
-
+  
   if (selected_project != projectID)
     buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
@@ -398,16 +412,15 @@ function show_selectors() {
 }
 
 function buzzer() {
-  if ( currentRecording == -1 && $('#buzzer').hasClass('disabled') ) return;
-
+	
+  if ( currentRecording == 0 || $('#buzzer').hasClass('disabled') ) return;
 
   if (currentRecording > -1) {
-      stopRecord();
+	  stopRecord();
       currentRecording=0;
     } else {
         setTimeframe(undefined,new Date());
         startRecord(selected_project,selected_activity,userID);
-        $('#buzzer').addClass('disabled');
     }
 }
 
