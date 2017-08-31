@@ -326,7 +326,6 @@ function updateTimeframeWarning() {
 function startRecord(projectID,activityID,userID) {
     var now = Math.floor(((new Date()).getTime()) / 1000);
     startsec = now;
-    offset = 0;
     show_stopwatch();
     value = projectID +"|"+ activityID;
     $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
