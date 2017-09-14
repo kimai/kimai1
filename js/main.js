@@ -256,10 +256,10 @@ function n_uhr() {
 // grabs entered timeframe and writes it to database
 // after that it reloads all tables
 //
-function setTimeframe(fromDate,toDate) {
+function setTimeframe(fromDate,toDate, callback) {
 
     timeframe = '';
-
+    
     if (fromDate != undefined) {
       setTimeframeStart(fromDate);
       timeframe += strftime('%m-%d-%Y',fromDate);
@@ -267,9 +267,9 @@ function setTimeframe(fromDate,toDate) {
     else {
       timeframe += "0-0-0";
     }
-
+    
     timeframe += "|";
-
+    
     if (toDate != undefined) {
       setTimeframeEnd(toDate);
       timeframe += strftime('%m-%d-%Y',toDate);
@@ -277,13 +277,17 @@ function setTimeframe(fromDate,toDate) {
     else {
       timeframe += "0-0-0";
     }
-
-    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 },
+    
+    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 }, 
         function(response) {
-            hook_timeframe_changed();
+			if (typeof callback === "function"){
+				callback();
+			}else{
+				hook_timeframe_changed();
+			}
         }
     );
-
+    
     updateTimeframeWarning();
 }
 
@@ -326,18 +330,21 @@ function updateTimeframeWarning() {
 function startRecord(projectID,activityID,userID) {
     var now = Math.floor(((new Date()).getTime()) / 1000);
     startsec = now;
-    show_stopwatch();
     value = projectID +"|"+ activityID;
 	$('#buzzer').addClass('disabled');
-    $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
-        function(response){
-            var data = jQuery.parseJSON(response);
-            currentRecording = data['id'];
-			timeout_updateRecordStatus = setTimeout(function(){ 
-				$('#buzzer').removeClass('disabled');
-			}, 3000);
-        }
-    );
+	show_stopwatch();
+	setTimeframe(undefined,new Date(), function(){ 
+		$.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
+			function(response){
+				var data = jQuery.parseJSON(response);
+				currentRecording = data['id'];
+				timeout_updateRecordStatus = setTimeout(function(){ 
+					$('#buzzer').removeClass('disabled');
+				}, 3000);
+				ts_ext_reload();
+			}
+		);  
+	});		
 }
 
 
@@ -349,11 +356,10 @@ function stopRecord() {
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "background-color", "#F00" );
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
-    show_selectors();
 	$('#buzzer').addClass('disabled');
+	show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(response){
-              ts_ext_reload();
               document.title = default_title;
               if (openAfterRecorded) {
                 var data = jQuery.parseJSON(response);
@@ -362,28 +368,33 @@ function stopRecord() {
 			  timeout_updateRecordStatus = setTimeout(function(){ 
 				$('#buzzer').removeClass('disabled');
 			  }, 3000);
-			  
+			  ts_ext_reload();
         }
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
-
+function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) { // Updated
   // if awaiting updateRecordStatus from buzzer
   if (typeof timeout_updateRecordStatus != 'undefined'){
 	  clearTimeout(timeout_updateRecordStatus);
+	  delete timeout_updateRecordStatus;
 	  $('#buzzer').removeClass('disabled');
   }
-	
+
   if (record_ID == false) {
     // no recording is running anymore
     currentRecording = -1;
     show_selectors();
     return;
   }
-  
+
+  // Update offset accuracy
+  if ( typeof stopwatch_init_time != 'undefined' && (stopwatch_init_time + offset) != record_startTime ){
+	offset = stopwatch_init_time - record_startTime;
+  }
+
   startsec = record_startTime + offset;
-  
+ 
   if (selected_project != projectID)
     buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
@@ -397,6 +408,7 @@ function show_stopwatch() {
     $("#ticker_project").html($("#selected_project").html());
     $("#ticker_activity").html($("#selected_activity").html());
     $("ul#ticker").newsticker();
+    stopwatch_init_time = Math.floor((new Date()).getTime() / 1000);
     ticktac();
 }
 
@@ -412,16 +424,15 @@ function show_selectors() {
 }
 
 function buzzer() {
-	
+
   if ( currentRecording == 0 || $('#buzzer').hasClass('disabled') ) return;
 
   if (currentRecording > -1) {
-	  stopRecord();
-      currentRecording=0;
-    } else {
-        setTimeframe(undefined,new Date());
-        startRecord(selected_project,selected_activity,userID);
-    }
+	stopRecord();
+    currentRecording=0;
+  } else {  
+    startRecord(selected_project,selected_activity,userID);	  
+  }
 }
 
 function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
@@ -514,6 +525,7 @@ function ticktac() {
 function ticktack_off() {
     if (timeoutTicktack) {
         clearTimeout(timeoutTicktack);
+	delete stopwatch_init_time;
         timeoutTicktack = 0;
         $("#h").html("00");
         $("#m").html("00");
