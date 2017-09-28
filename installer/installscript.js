@@ -210,14 +210,17 @@ function host_proceed() {
 	username = $('#user').val();
 	password = $('#pass').val();
 
-	if (username == "") {
+	if (username == '') {
 		var caution = '';
 		
-		if (language == "en") {
-			caution = "You must enter a user name!";
+		if (language == "de") {
+			caution = "Sie müssen einen Benutzernamen eingeben!";
+		} else if (language == "bg") {
+			caution = "Трябва да зададете потребителско име!";
 		} else {
-			caution = "Sie müssen einen Benutzer-Namen eingeben!";
+			caution = "You must enter a username!";
 		}
+
 		$('#caution').html(caution);
 	} else {
 		step_ahead();
@@ -248,12 +251,15 @@ function db_check() {
 	var databaseGiven = $('#db_names').is('select') ? database != "0" : database != "";
 
 	if (!databaseGiven && create_database == "") {
-		if (language == "en") {
-			$('#db_select_label').html("You have to choose either one of these ...");
-			$('#db_create_label').html("... or create a new one!");
-		} else {
+		if (language == "de") {
 			$('#db_select_label').html("Sie müssen entweder hier eine Datenbank auswählen ...");
 			$('#db_create_label').html("... oder hier eine neue erstellen!");
+		} else if (language == "bg") {
+			$('#db_select_label').html("Трябва да избере една база данни ...");
+			$('#db_create_label').html("... или да създадете нова база данни!");
+		} else {
+			$('#db_select_label').html("You have to choose either one of these ...");
+			$('#db_create_label').html("... or create a new one!");
 		}
 		$('#db_select_label').addClass("arrow");
 		$('#db_create_label').addClass("arrow");

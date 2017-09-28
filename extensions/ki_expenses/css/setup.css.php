@@ -16,7 +16,7 @@
 
 
 #expenses { 
-    top:150px;
+    top:180px;
     z-index:2;
 }
 
@@ -33,7 +33,7 @@
     font-weight:bold;
 }
 
-#expenses_head { top:125px; }
+#expenses_head { top:155px; }
 
 #expenses_head table { border:none; }
 

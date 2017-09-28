@@ -127,6 +127,10 @@
                     </li>
                     <?php } ?>
                     <li>
+                        <label for="showBillability"></label>
+                        <?php echo $this->formCheckbox('showBillability', '1', array('checked' => $this->kga->getSettings()->isShowBillability())), $this->kga['lang']['showBillability'] ?>
+                    </li>
+                    <li>
                         <label for="hideOverlapLines"></label>
                         <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => !$this->kga->getSettings()->isShowOverlapLines())), $this->kga['lang']['hideOverlapLines'] ?>
                     </li>
@@ -137,6 +141,10 @@
                     <li>
                         <label for="showQuickNote"></label>
                         <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => $this->kga->getSettings()->isShowQuickNote())), $this->kga['lang']['showQuickNote'] ?>
+                    </li>
+                    <li>
+                        <label for="inlineEditingOfDescriptions"></label>
+                        <?php echo $this->formCheckbox('inlineEditingOfDescriptions', '1', array('checked' => $this->kga->getSettings()->isInlineEditingOfDescriptionsSet())), $this->kga['lang']['inlineEditingOfDescriptions'] ?>
                     </li>
                     <li>
                         <label for="table_time_format"></label>

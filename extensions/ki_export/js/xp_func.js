@@ -329,6 +329,25 @@ function export_toggle_column(name) {
 }
 
 /**
+ * Check if any checked entrys are in the list and confirm toggle if there are any.
+ */
+function export_toogle_cleared_confirm() {
+	var checked_elements = 0;
+	$('#xptable td.cleared>a').each(function() {
+		if ($(this).hasClass("is_cleared")) {
+			checked_elements++;
+		}
+	});
+	if (checked_elements > 0) {
+		// TODO: add translations somehow
+		if (!confirm('There are ' + checked_elements + ' already cleared entries!\nDo you really want to set these entries to uncleared?')) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
  * Toggle the cleared state of an entry.
  */
 function export_toggle_cleared(id) {

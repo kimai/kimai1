@@ -1,0 +1,12 @@
+#settimer {
+	text-align: center;
+}
+
+#settimer a,
+#settimer a:visited {
+	color: white;
+}
+
+#settimer a:hover {
+	color: lightgray;
+}

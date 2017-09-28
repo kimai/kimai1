@@ -11,18 +11,14 @@
 	</thead>
 	<tbody>
 	<?php
-	if (!isset($this->customers) || $this->customers == '0' || count($this->customers) == 0)
-	{
+	if (!isset($this->customers) || $this->customers == '0' || count($this->customers) == 0) {
 		?>
 		<tr>
 			<td nowrap colspan="3"><?php echo $this->error(); ?></td>
 		</tr>
 		<?php
-	}
-	else
-	{
-		foreach ($this->customers as $row)
-		{
+	} else {
+		foreach ($this->customers as $row) {
 			$isHidden = $row['visible'] != 1;
 			?>
 			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
