@@ -212,9 +212,9 @@ class Kimai_Remote_Database
 
         $query = "$select
   			FROM ${p}expenses e
-	  		Join ${p}projects p USING(e.projectID)
-	  		Join ${p}customers p USING(p.customerID)
-	  		Join ${p}users u USING(e.userID)
+	  		Join ${p}projects p USING(projectID)
+	  		Join ${p}customers c USING(customerID)
+	  		Join ${p}users u USING(userID)
 	  		$where
 	  		ORDER BY timestamp $orderDirection $limit";
 
@@ -341,5 +341,4 @@ class Kimai_Remote_Database
         $query = MySQL::BuildSQLDelete($table, $filter);
         return $this->conn->Query($query);
     }
-
 }
