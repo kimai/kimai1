@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // http://www.kimai.org
@@ -27,18 +28,22 @@
  */
 class Kimai_Remote_Database
 {
+
     /**
      * @var array|null
      */
     private $kga = null;
+
     /**
      * @var string
      */
     private $tablePrefix = null;
+
     /**
      * @var Kimai_Database_Mysql
      */
     private $dbLayer = null;
+
     /**
      * @var MySQL
      */
@@ -183,19 +188,19 @@ class Kimai_Remote_Database
                 break;
             case -1:
             default:
-                // return all expenses - refundable and non refundable
+            // return all expenses - refundable and non refundable
         }
 
         if (!empty($limitRows)) {
-            $startRows = (int)$startRows;
+            $startRows = (int) $startRows;
             $limit = "LIMIT $startRows, $limitRows";
         } else {
             $limit = "";
         }
 
-        $select = "SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID, projectID,
-  					customerName, customerID, projectName, comment, refundable,
-  					commentType, userName, cleared";
+        $select = "SELECT e.expenseID, e.timestamp, e.multiplier, e.value, e.projectID, e.designation, e.userID,
+  					c.name AS customerName, c.customerID, p.name AS projectName, e.comment, e.refundable,
+  					e.commentType, u.name AS userName, e.cleared";
 
         $where = empty($whereClauses) ? '' : "WHERE " . implode(" AND ", $whereClauses);
         $orderDirection = $reverse_order ? 'ASC' : 'DESC';
@@ -206,10 +211,10 @@ class Kimai_Remote_Database
         }
 
         $query = "$select
-  			FROM ${p}expenses
-	  		Join ${p}projects USING(projectID)
-	  		Join ${p}customers USING(customerID)
-	  		Join ${p}users USING(userID)
+  			FROM ${p}expenses e
+	  		Join ${p}projects p USING(projectID)
+	  		Join ${p}customers c USING(customerID)
+	  		Join ${p}users u USING(userID)
 	  		$where
 	  		ORDER BY timestamp $orderDirection $limit";
 
@@ -229,7 +234,7 @@ class Kimai_Remote_Database
         // toArray();
         while (!$conn->EndOfSeek()) {
             $row = $conn->Row();
-            $arr[$i] = (array)$row;
+            $arr[$i] = (array) $row;
             $i++;
         }
 
