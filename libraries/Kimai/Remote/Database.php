@@ -193,9 +193,9 @@ class Kimai_Remote_Database
             $limit = "";
         }
 
-        $select = "SELECT expenseID, timestamp, multiplier, value, projectID, designation, userID, projectID,
-  					customerName, customerID, projectName, comment, refundable,
-  					commentType, userName, cleared";
+        $select = "SELECT e.expenseID, e.timestamp, e.multiplier, e.value, e.projectID, e.designation, e.userID,
+  					c.name AS customerName, c.customerID, p.name AS projectName, e.comment, e.refundable,
+  					e.commentType, u.name AS userName, e.cleared";
 
         $where = empty($whereClauses) ? '' : "WHERE " . implode(" AND ", $whereClauses);
         $orderDirection = $reverse_order ? 'ASC' : 'DESC';
@@ -206,10 +206,10 @@ class Kimai_Remote_Database
         }
 
         $query = "$select
-  			FROM ${p}expenses
-	  		Join ${p}projects USING(projectID)
-	  		Join ${p}customers USING(customerID)
-	  		Join ${p}users USING(userID)
+  			FROM ${p}expenses e
+	  		Join ${p}projects p USING(e.projectID)
+	  		Join ${p}customers p USING(p.customerID)
+	  		Join ${p}users u USING(e.userID)
 	  		$where
 	  		ORDER BY timestamp $orderDirection $limit";
 
