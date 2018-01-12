@@ -269,6 +269,11 @@ class MYPDF extends BasePDF {
     else
       $comment_string = '';
 
+    if (isset($this->columns['description']) && !empty($row['description']))
+      $description_string = $kga['lang']['description'] . ': <i>' . nl2br($row['description']) . '</i>';
+    else
+      $description_string = '';
+
     if (isset($this->columns['time']) && !empty($row['formattedDuration']))
       $time_string = $kga['lang']['export_extension']['duration'] . ': <i>' . $row['formattedDuration'] . ' ' . $kga['lang']['export_extension']['duration_unit'] . '</i>';
     else
@@ -286,7 +291,7 @@ class MYPDF extends BasePDF {
 
     $activity_fills_row = empty($user_string) || ($this->GetStringWidth($activity_string) + $this->GetStringWidth($user_string) > $w[1]);
 
-    $field_rows = 4; // number of rows in block of values
+    $field_rows = 5; // number of rows in block of values
 
     if (!empty($activity_string) && !empty($user_string) && $activity_fills_row)
       $field_rows++;
@@ -300,13 +305,17 @@ class MYPDF extends BasePDF {
     if (empty($comment_string))
       $field_rows--;
 
+    if (empty($description_string))
+      $field_rows--;
+
     if (empty($time_string) && empty($rate_string))
       $field_rows--;
 
     $probable_comment_lines = $this->getHtmlStringLines($comment_string, $w[1]);
+    $probable_description_lines = $this->getHtmlStringLines($description_string, $w[1]);
 
     // check if page break is nessessary
-    if ($this->getPageHeight() - $this->pagedim[$this->page]['bm'] - ($this->getY() + ($field_rows + $probable_comment_lines + 4) * 6) < 0) {
+    if ($this->getPageHeight() - $this->pagedim[$this->page]['bm'] - ($this->getY() + ($field_rows + $probable_comment_lines + $probable_description_lines + 4) * 6) < 0) {
       if (isset($this->columns['wage']) && isset($this->columns['dec_time'])) {
         $this->ln();
         $this->WriteHtmlCell($w[0] + $w[1] + $w[2], 6, $this->getX(), $this->getY(), $this->timespan($this->timeSum), '', 0, 0, true, 'R');
@@ -328,7 +337,7 @@ class MYPDF extends BasePDF {
     $this->ln();
     $this->Cell($w[0], 6, $from_date_string, '', 0, 'R');
     
-    for ($i = 0; $i < 5; $i++) {
+    for ($i = 0; $i < 6; $i++) {
       $handled_row = false;
 
       switch ($i) {
@@ -393,6 +402,12 @@ class MYPDF extends BasePDF {
             $handled_row = true;
           }
           break;
+        case 5: // row with description
+          if (!empty($description_string)) {
+            $this->WriteHtmlCell($w[1], 6, $this->getX(), $this->getY(), $description_string, 'L');
+            $handled_row = true;
+          }
+          break;
 
       }
 
@@ -401,7 +416,10 @@ class MYPDF extends BasePDF {
 
         if ($field_rows == 0) { // if this is the last row
           $this->ln($this->getLastH());
-          $this->Cell($w[0], 6, '');
+          if ($i == 0)
+            $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
+          else
+            $this->Cell($w[0], 6, '');
           $this->Cell($w[1], 6, '', 'T');
           $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY() - $this->getLastH(), $wage_string, '', 0, 0, true, 'R');
           $this->ln();
@@ -410,7 +428,10 @@ class MYPDF extends BasePDF {
         }
         else {
           $this->ln();
-          $this->Cell($w[0], 6, '');
+          if ($i == 0)
+            $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
+          else
+            $this->Cell($w[0], 6, '');
         }
       }
     }
