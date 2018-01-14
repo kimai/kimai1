@@ -21,6 +21,8 @@ $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require '../../includes/kspi.php';
 
+$database = Kimai_Registry::getDatabase();
+
 require 'functions.php';
 
 switch ($axAction)
@@ -46,7 +48,7 @@ switch ($axAction)
         if ($database->user_name2id($userData['name']) !== false) {
             $errors[] = $kga['lang']['errorMessages']['userExistsAlready'];
         }
-        
+
         // check for customer with same name
         if ($database->customer_nameToID($userData['name']) !== false) {
             $errors[] = $kga['lang']['errorMessages']['customerWithSameName'];

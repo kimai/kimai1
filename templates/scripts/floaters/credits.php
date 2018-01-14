@@ -3,10 +3,10 @@
         <span id="floater_title"><?php echo $this->kga['lang']['about']?></span>
         <div class="right">
             <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close']?></a>
-        </div>       
+        </div>
     </div>
     <div class="floater_content" style="margin:10px">
-        <h2>Kimai - Open Source Time Tracking</h2> 
+        <h2>Kimai - Open Source Time Tracking</h2>
         <p>
             <?php echo 'v' . $this->kga['version'] . '.' . $this->kga['revision'] . ' - &copy; ' . $this->devtimespan;?> by the Kimai-Team:
             <br/>

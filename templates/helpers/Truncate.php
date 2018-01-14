@@ -25,6 +25,12 @@
 class Zend_View_Helper_Truncate extends Zend_View_Helper_Abstract
 {
 
+    /**
+     * @param string $text
+     * @param int $maxLength
+     * @param string $append
+     * @return string
+     */
     public function truncate($text, $maxLength, $append = '')
     {
         if (strlen($text) > $maxLength) {
@@ -33,5 +39,4 @@ class Zend_View_Helper_Truncate extends Zend_View_Helper_Abstract
 
         return $text;
     }
-
-} 
+}

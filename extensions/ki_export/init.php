@@ -20,6 +20,8 @@
 include '../../includes/basics.php';
 require "private_func.php";
 
+$database = Kimai_Registry::getDatabase();
+
 $user = checkUser();
 
 // ============================================

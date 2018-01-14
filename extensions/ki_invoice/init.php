@@ -19,6 +19,8 @@
 
 include '../../includes/basics.php';
 
+$database = Kimai_Registry::getDatabase();
+
 $user = checkUser();
 
 $view = new Kimai_View();

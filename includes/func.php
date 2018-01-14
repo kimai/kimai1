@@ -85,7 +85,8 @@ function timezoneList()
  */
 function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = array())
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     $sel = array();
 
@@ -142,7 +143,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             $groups = $database->get_groups();
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
                 $groups = array_filter($groups, function ($group) {
-                    global $kga;
+                    $kga = Kimai_Registry::getConfig();
 
                     return array_search($group['groupID'], $kga['user']['groups']) !== false;
                 });
@@ -404,7 +405,7 @@ EOD;
  */
 function get_timeframe()
 {
-    global $kga;
+    $kga = Kimai_Registry::getConfig();
 
     $timeFrame = array(null, null);
 
@@ -460,7 +461,7 @@ function getRequestBool($name)
  */
 function getRequestDecimal($value)
 {
-    global $kga;
+    $kga = Kimai_Registry::getConfig();
     if (trim($value) != '') {
         return (double)str_replace($kga['conf']['decimalSeparator'], '.', $value);
     }
@@ -482,7 +483,8 @@ function getRequestDecimal($value)
  */
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         return false;
@@ -568,7 +570,8 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
  */
 function coreObjectActionAllowed($objectTypeName, $action)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action")) {
         return true;
@@ -589,8 +592,8 @@ function coreObjectActionAllowed($objectTypeName, $action)
  */
 function encode_password($password)
 {
-    global $kga;    
-    
+    $kga = Kimai_Registry::getConfig();
+
     $salt = $kga['password_salt'];
     return md5($salt . $password . $salt);
 }

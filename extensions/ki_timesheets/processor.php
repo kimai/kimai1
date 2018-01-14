@@ -21,14 +21,17 @@
 // = TS PROCESSOR =
 // ================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 function timesheetAccessAllowed($entry, $action, &$errors)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -415,9 +418,9 @@ switch ($axAction) {
     // =============================================
     case 'reload_timeSheet':
         $filters = explode('|', $axValue);
-        
+
         if (empty($filters[0])) {
-            $filterUsers = array();  
+            $filterUsers = array();
         } else {
             $filterUsers = explode(':', $filters[0]);
         }
@@ -428,7 +431,7 @@ switch ($axAction) {
             },
             $database->get_customers($kga['user']['groups'])
         );
-        
+
         if (!empty($filters[1])) {
             $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
         }
@@ -436,7 +439,7 @@ switch ($axAction) {
         $filterProjects = array_map(
             function($project) {
                 return $project['projectID'];
-            }, 
+            },
             $database->get_projects($kga['user']['groups'])
         );
         if (!empty($filters[2])) {
@@ -451,9 +454,9 @@ switch ($axAction) {
         );
 
         if (!empty($filters[3])) {
-            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));  
+            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
         }
-          
+
 
         // if no userfilter is set, set it to current user
         if (isset($kga['user']) && count($filterUsers) == 0) {

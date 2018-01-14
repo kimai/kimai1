@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates";
 require("../../includes/kspi.php");
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 

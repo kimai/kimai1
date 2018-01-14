@@ -21,16 +21,17 @@
 // = INVOICE PROCESSOR =
 // =====================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 // ==================
 // = handle request =
 // ==================
-switch ($axAction)
-{
+switch ($axAction) {
     // ==========================
     // = Change the default vat =
     // ==========================
@@ -49,7 +50,8 @@ switch ($axAction)
     // ==========================
     case 'projects':
         if (isset($kga['customer'])) {
-            $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'], $kga['customer']['groups']);
+            $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'],
+                $kga['customer']['groups']);
         } else {
             $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
         }

@@ -19,7 +19,7 @@ You can get more information about this time-tracking software:
 ## Features
 
 This is just a short feature list, play around with the [demo installation](http://www.kimai.org/demo/) to see all features:
- 
+
 * Multi-user management
 * Customer login with read only privileges
 * Every user has its own timesheet

@@ -54,6 +54,8 @@ if (version_compare(PHP_VERSION, $min_php_version) < 0)
 
 require_once '../includes/basics.php';
 
+$database = Kimai_Registry::getDatabase();
+
 if (!$kga['revision']) {
     exitUpdater('DB updated failed', 'Database update cannot be executed:', '<b>Revision not defined</b>');
 }

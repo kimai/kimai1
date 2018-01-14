@@ -59,13 +59,9 @@
 		<div id="login" <?php if ($this->keyCorrect): ?>style="display:block" <?php endif; ?>>
 			<form action="index.php?a=checklogin" name="form1" method="post">
 				<fieldset>
-					<label for="password">
-						<?php echo $this->translate('newPassword') ?>:
-					</label>
+					<label for="password"><?php echo $this->translate('newPassword') ?>:</label>
 					<input type="password" name="password" id="password" />
-					<label for="password2">
-						<?php echo $this->translate('retypePassword') ?>:
-					</label>
+					<label for="password2"><?php echo $this->translate('retypePassword') ?>:</label>
 					<input type="password" name="password2" id="password2" />
 					<button id="loginButton" type="submit"></button>
 				</fieldset>

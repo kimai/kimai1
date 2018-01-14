@@ -19,6 +19,8 @@
 
 include('base_export_pdf.php');
 
+$database = Kimai_Registry::getDatabase();
+
 class MYPDF extends BasePDF
 {
 
@@ -34,7 +36,9 @@ class MYPDF extends BasePDF
      */
     public function Footer()
     {
-        global $kga;
+        global $customerData, $projectData;
+
+        $kga = Kimai_Registry::getConfig();
 
         // Position at 1.5 cm from bottom
         $this->SetY(-15);
@@ -62,7 +66,7 @@ class MYPDF extends BasePDF
      */
     public function ColoredTable($header, $data)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         $dateWidth = max($this->GetStringWidth($header[0]),
             $this->GetStringWidth($this->dateformat(mktime(0, 0, 0, 12, 31, 2000))));
         $dateWidth += 4;

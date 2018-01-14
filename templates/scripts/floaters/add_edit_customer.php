@@ -178,7 +178,7 @@
         });
         var $add_edit_customer = $('#add_edit_customer');
         $add_edit_customer.ajaxForm({
-            'beforeSubmit': function () {
+            beforeSubmit: function () {
                 clearFloaterErrorMessages();
                 if ($add_edit_customer.attr('submitting')) {
                     return false;
@@ -187,7 +187,7 @@
                     return true;
                 }
             },
-            'success': function (result) {
+            success: function (result) {
                 $add_edit_customer.removeAttr('submitting');
                 for (var fieldName in result.errors) {
                     setFloaterErrorMessage(fieldName, result.errors[fieldName]);
@@ -197,7 +197,7 @@
                     hook_customers_changed();
                 }
             },
-            'error': function () {
+            error: function () {
                 $add_edit_customer.removeAttr('submitting');
             }
         });

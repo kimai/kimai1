@@ -144,10 +144,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#floater_innerwrap').tabs({selected: 0});
-        
+
         var $add_edit_activity = $('#add_edit_activity');
         $add_edit_activity.ajaxForm({
-            'beforeSubmit': function () {
+            beforeSubmit: function () {
                 clearFloaterErrorMessages();
 
                 if ($add_edit_activity.attr('submitting')) {
@@ -157,7 +157,7 @@
                     return true;
                 }
             },
-            'success': function (result) {
+            success: function (result) {
                 $add_edit_activity.removeAttr('submitting');
                 for (var fieldName in result.errors) {
                     setFloaterErrorMessage(fieldName, result.errors[fieldName]);
@@ -167,11 +167,11 @@
                     hook_activities_changed();
                 }
             },
-            'error': function () {
+            error: function () {
                 $add_edit_activity.removeAttr('submitting');
             }
         });
-        
+
         var $projectstab = $('#projectstab');
         var $addRow = $projectstab.find('.addRow');
 

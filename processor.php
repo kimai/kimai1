@@ -27,7 +27,7 @@ if (!isset($_REQUEST['a'])) {
 }
 
 if (!isset($_POST['name']) || is_array($_POST['name'])) {
-    $name = "";
+    $name = '';
 } else {
     $name = $_POST['name'];
 }

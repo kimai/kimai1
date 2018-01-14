@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates";
 require '../../includes/kspi.php';
+
+$database = Kimai_Registry::getDatabase();
 
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');
@@ -55,7 +56,7 @@ switch ($axAction) {
             $view->assign('groups', array_filter(
                 $groups,
                 function ($group) {
-                    global $kga;
+                    $kga = Kimai_Registry::getConfig();
                     return array_search($group['groupID'], $kga['user']['groups']) !== false;
                 }
             ));
