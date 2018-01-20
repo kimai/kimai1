@@ -1174,6 +1174,12 @@ if ((int)$revisionDB < 1393) {
     exec_query("ALTER TABLE `${p}timeSheet` CHANGE `fixedRate` `fixedRate` DECIMAL(10,2) NULL");
 }
 
+if ((int)$revisionDB < 1394) {
+    Kimai_Logger::logfile("-- update to r1394");
+    exec_query("ALTER TABLE `${p}preferences` CHANGE `option` `option` VARCHAR(190) NULL");
+    exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NULL");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

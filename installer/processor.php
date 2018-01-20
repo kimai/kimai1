@@ -188,7 +188,7 @@ switch ($axAction) {
         $result = false;
         $config = new Kimai_Config(array());
 
-        $database = new Kimai_Database_Mysql(, false);
+        $database = new Kimai_Database_Mysql($config, false);
         $database->connect($hostname, null, $username, $password, true);
         $conn = $database->getConnectionHandler();
 
