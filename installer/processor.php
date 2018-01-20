@@ -160,7 +160,7 @@ switch ($axAction) {
         $timezone = $_REQUEST['timezone'];
 
         $kimaiConfig = new Kimai_Config(array(
-            'server_prefix' => $server_prefix,
+            'server_prefix' => $prefix,
             'server_hostname' => $hostname,
             'server_database' => $database,
             'server_username' => $username,
@@ -186,8 +186,9 @@ switch ($axAction) {
 
         $db_error = false;
         $result = false;
+        $config = new Kimai_Config(array());
 
-        $database = new Kimai_Database_Mysql($result, false);
+        $database = new Kimai_Database_Mysql(, false);
         $database->connect($hostname, null, $username, $password, true);
         $conn = $database->getConnectionHandler();
 
