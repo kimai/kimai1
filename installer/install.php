@@ -94,7 +94,7 @@ exec_query($query);
 
 $query = "CREATE TABLE `${p}preferences` (
   `userID` int(10) NOT NULL,
-  `option` varchar(255) NOT NULL,
+  `option` varchar(190) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`userID`,`option`)
 );";
@@ -225,7 +225,7 @@ $query = "CREATE TABLE `${p}timeSheet` (
 exec_query($query);
 
 $query = "CREATE TABLE `${p}configuration` (
-  `option` varchar(255) NOT NULL,
+  `option` varchar(190) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY  (`option`)
 );";
