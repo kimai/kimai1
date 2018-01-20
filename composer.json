@@ -2,18 +2,14 @@
     "name": "kimai/kimai",
     "type": "project",
     "description": "Time Tracking with PHP",
-    "keywords": ["timetracking", "projectmanagement", "invoicing"],
+    "keywords": ["timetracking", "projectmanagement", "invoicing", "freelancer"],
     "homepage": "https://github.com/kimai/kimai",
-    "license": "GPL-3.0",
-    "version": "1.1.0",
+    "license": "GPL-3.0-or-later",
     "authors": [
         { "name": "Severin Leonhardt", "homepage": "https://github.com/ServiusHack" },
         { "name": "Kevin Papst", "homepage": "https://github.com/kevinpapst" },
         { "name": "Simon Schaufelberger", "homepage": "https://github.com/simonschaufi" }
     ],
-    "config": {
-        "vendor-dir": "libraries"
-    },
     "require": {
         "php": ">=5.4.0",
         "tecnickcom/tcpdf": "^6.2.12",
@@ -34,5 +30,8 @@
         "files": [
             "libraries/phpclasses/ultimatemysql/mysql.class.php"
         ]
+    },
+    "config": {
+        "vendor-dir": "libraries"
     }
 }
