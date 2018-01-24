@@ -5,7 +5,7 @@ $customers = $this->filterListEntries($this->customers);
 <table>
     <tbody>
     <?php
-    if (count($customers) == 0) {
+    if (count($customers) > 0) {
         foreach ($customers as $customer) {
             ?>
             <tr id="row_customer" data-id="<?php echo $customer['customerID'] ?>"
