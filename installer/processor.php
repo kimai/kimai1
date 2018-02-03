@@ -78,10 +78,10 @@ switch ($axAction) {
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
     case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+		if (PHP_VERSION_ID < 50400){
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
-        }
+	    }
 
         if (!extension_loaded('mysqli')) {
             $errors++;

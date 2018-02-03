@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo '';
+// this breaks the phpjs/strftime library that is out of date anyway - strftime does not have swedish
+// echo $this->kga['lang']['countryCode'];
+ ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow"/>
@@ -17,20 +20,32 @@
     <?php foreach ($this->css_extension_files as $object): ?>
         <link rel="stylesheet" href="<?php echo $this->escape($object) ?>" type="text/css" media="screen"/>
     <?php endforeach; ?>
+ <link rel="stylesheet" href="../libraries/jQuery/jquery.ui.timepicker.css" type="text/css" />
     <!-- /Extension Stylesheets -->
 
     <!-- Libraries -->
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.form.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.10.2.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js"></script>
-    <script type="text/javascript" src="../libraries/phpjs/strftime.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
-    <!-- /Libraries -->
-
+    <script src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
+    <script src="../libraries/jQuery/jquery.form.min.js"></script>
+    <script src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
+    <script src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
+    <script src="../libraries/jQuery/jquery-ui.min.js"></script>
+	 <!-- conditional locale include - todo use same for timepicker -->
+	<?php 
+		if(preg_match('"^([a-z]{2})(-[A-Z]{2})?$"', $this->kga['lang']['countryCode'],$temp)){ 
+			if (is_file("../libraries/jQuery/i18n/datepicker-$temp[0].js")) 
+				echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[0].js\"></script>\n";
+			elseif (is_file("../libraries/jQuery/i18n/datepicker-$temp[1].js")) 
+				echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[1].js\"></script>\n";
+			else echo "\n	<!-- ".getcwd()." xxxx $temp[1] XXXX $temp[0] jquery ui i18n ".$this->kga['lang']['countryCode'].' -->';
+		}
+	?>
+	<!-- /conditional -->
+    <script src="../libraries/jQuery/jquery.ui.timepicker.min.js"></script>
+    <script src="../libraries/phpjs/strftime.min.js"></script>
+	<script src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
+    <!-- /Libs -->
+    
     <!-- Libraries Extensions -->
     <script type="text/javascript" src="../libraries/jQuery/jquery.jqplot.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jqplot.pieRenderer.min.js"></script>
