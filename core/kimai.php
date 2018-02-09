@@ -53,6 +53,12 @@ $extensions->loadConfigurations();
 $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
+if (isset($kga['lang']['countryCode'])) {
+
+	//locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
+	setlocale(LC_ALL, $kga['lang']['countryCode'].'.'.$kga['server_charset']);
+
+}
 
 // ===============================================
 // = get time for the probably running stopwatch =
@@ -76,10 +82,10 @@ $dp_start = 0;
 if ($kga['calender_start'] != "") {
     $dp_start = $kga['calender_start'];
 } else if (isset($kga['user'])) {
-    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
+    $dp_start = date($kga->getDateFormat(3), $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date("d/m/Y", time());
+$dp_today = date($kga->getDateFormat(3), time());
 
 $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);

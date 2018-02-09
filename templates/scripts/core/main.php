@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="<?php echo '';
+<html lang="<?php //echo '';
 // this breaks the phpjs/strftime library that is out of date anyway - strftime does not have swedish
-// echo $this->kga['lang']['countryCode'];
+echo $this->kga['lang']['countryCode'];
  ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -42,7 +42,7 @@
 	?>
 	<!-- /conditional -->
     <script src="../libraries/jQuery/jquery.ui.timepicker.min.js"></script>
-    <script src="../libraries/phpjs/strftime.min.js"></script>
+    <!--<script src="../libraries/phpjs/strftime.min.js"></script>-->
 	<script src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
     <!-- /Libs -->
     
@@ -65,6 +65,8 @@
     <!-- /Extension JavaScripts -->
 
     <script type="text/javascript">
+		
+	
         var skin = "<?php echo $this->escape($this->skin()->getName()); ?>";
 
         var lang_checkUsername = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
@@ -102,7 +104,7 @@
         var default_title = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
         var revision = <?php echo $this->kga['revision'] ?>;
         var timeframeDateFormat = "<?php echo $this->escape($this->kga->getDateFormat(2)) ?>";
-
+		var dateFormat = '<?php echo $this->escape($this->kga->getDateFormat(0)) ?>';
         var selected_customer = '<?php echo $this->customerData['customerID']?>';
         var selected_project = '<?php echo $this->projectData['projectID']?>';
         var selected_activity = '<?php echo $this->activityData['activityID']?>';
@@ -110,6 +112,7 @@
         var pickerClicked = '';
 
         var weekdayNames = <?php echo $this->weekdays_short_array?>;
+		
 
         $.datepicker.setDefaults({
             showOtherMonths: true,
@@ -181,7 +184,7 @@
                 handle: '#floater_handle'
             });
 
-            $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat, new Date()));
+            $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +  $.datepicker.formatDate(  window.dateFormat, new Date() ));
 
             // give browser time to render page. afterwards make sure lists are resized correctly
             setTimeout(lists_resize, 500);
@@ -227,7 +230,7 @@
         <script type="text/javascript">
             $(function () {
                 $('.date-pick').datepicker({
-                    dateFormat: 'mm/dd/yy',
+                    dateFormat: window.dateFormat,
                     onSelect: function (dateText, instance) {
                         if (this == $('#pick_in')[0]) {
                             setTimeframe(new Date(dateText), undefined);

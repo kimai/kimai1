@@ -44,6 +44,17 @@ var lists_customer_annotations = {};
 var lists_project_annotations = {};
 var lists_activity_annotations = {};
 
+
+var language;
+if (window.navigator.languages) {
+    language = window.navigator.languages[0];
+} else {
+    language = window.navigator.userLanguage || window.navigator.language;
+}
+
+console.log(language);
+console.log($.datepicker.formatDate('yy-mm-dd', new Date()));
+
 $(document).ready(function () {
 
 	var preselected_customer = 0;
