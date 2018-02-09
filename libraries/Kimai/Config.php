@@ -176,14 +176,13 @@ class Kimai_Config extends Kimai_ArrayObject
 
     /**
      * Sets the system language.
-	 * There are 2 - the system language and the user language
+     * There are 2 - the system language and the user language
      *
      * @param $language
      */
     public function setLanguage($language)
     {
         $this->set('language', $language);
-		
     }
 
     /**
