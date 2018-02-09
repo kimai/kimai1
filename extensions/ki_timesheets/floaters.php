@@ -83,7 +83,7 @@ switch ($axAction) {
 
             $view->assign('userID', $timeSheetEntry['userID']);
 
-            $view->assign('start_day', date($kga->getDateFormat(3), $timeSheetEntry['start']));
+            $view->assign('start_day', date($kga->getDateFormat(3), $timeSheetEntry['start']));// use the users date format
             $view->assign('start_time', date("H:i:s", $timeSheetEntry['start']));
 
             if ($timeSheetEntry['end'] == 0) {

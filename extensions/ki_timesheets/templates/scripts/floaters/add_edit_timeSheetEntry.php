@@ -377,6 +377,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 
 				var startDate = $.datepicker.parseDate(window.dateFormat,$('#start_day').val());
 				var endDate = $.datepicker.parseDate(window.dateFormat,$('#end_day').val());
+/* use datepicker because the phpjs doesn't have many locales and is out of date */ 
 				console.log(window.dateFormat,' in ',startDate);
 				console.log(window.dateFormat,' out ',endDate);
 
@@ -388,7 +389,6 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                 var endTimeSet = $('#end_day').val() != '' || $('#end_time').val() != '';
 
                 if (!endTimeSet) {
-console.log('returning true');
                     return true;
                 } // no need to validate timerange if end time is not set
 
@@ -397,7 +397,9 @@ console.log('returning true');
                         alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
                         return false;
                  }
-                /*var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
+                /*
+				dont need this 
+				var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
                 var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
 
 
@@ -422,7 +424,8 @@ console.log('returning true');
                         break;
                     } // if this part is smaller we don't care for the other parts
                 }
-*/
+
+				*/
                 if (startDate.getTime() === endDate.getTime()) {
 						console.log(' same day ');
                     // test if start time is before end time if it's the same day

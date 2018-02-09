@@ -234,6 +234,7 @@ function n_uhr() {
 
     if (currentDay != Jetzt.getDate()) {
         // it's the next day
+/* strftime requires that phpjs library that only has a few locales and breaks if you set a doc language that it lacks */
         $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + $.datepicker.formatDate(  window.dateFormat, Jetzt ));
         currentDay = Jetzt.getDate();
 

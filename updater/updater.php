@@ -1182,9 +1182,9 @@ if ((int)$revisionDB < 1394) {
     exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NULL");
 }
 
-
-if ((int)$revisionDB < 1395) {
-    Kimai_Logger::logfile("-- update to r1395");
+/* want a table to store how many hours per week I should work so that I can keep track of flex */
+if ((int)$revisionDB < 1390) {
+    Kimai_Logger::logfile("-- update to r1395 whatever");
     $query =
         "CREATE TABLE `${p}work_hours` (
 `userID` int(10) DEFAULT NULL,

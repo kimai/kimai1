@@ -54,8 +54,10 @@ $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 if (isset($kga['lang']['countryCode'])) {
-
-	//locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
+	/*
+	locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
+	not sure that this has any effect. Kimai is using the zend framework for dates
+	*/
 	setlocale(LC_ALL, $kga['lang']['countryCode'].'.'.$kga['server_charset']);
 
 }
@@ -82,6 +84,7 @@ $dp_start = 0;
 if ($kga['calender_start'] != "") {
     $dp_start = $kga['calender_start'];
 } else if (isset($kga['user'])) {
+	/* use the users date format */
     $dp_start = date($kga->getDateFormat(3), $database->getjointime($kga['user']['userID']));
 }
 
@@ -99,7 +102,7 @@ if (isset($kga['customer'])) {
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker = "";
+$localized_DatePicker = ""; // is this used?
 
 $view->assign('weekdays_array', sprintf(
     "['%s','%s','%s','%s','%s','%s','%s']\n",

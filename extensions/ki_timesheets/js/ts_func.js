@@ -49,16 +49,19 @@ function ts_formatTime(value) {
  * @returns {string}
  */
 function ts_formatDate(value) {
-console.log('ts_formatDate ',value);
+	/* console.log('ts_formatDate ',value); 
+
+	We dont need the day month year - using the datepicker date format function
+	*/
 	var day = prependZeroIfNeeded(value.getDate());
 	var month = prependZeroIfNeeded(value.getMonth() + 1);
 	var year = value.getFullYear();
 	console.log(value.toLocaleDateString());
-return ($.datepicker.formatDate(  window.dateFormat,value ));
-/* return value.toLocaleDateString();
+	return ($.datepicker.formatDate(  window.dateFormat,value ));
+/* 
+
 	return day + '.' + month + '.' + year;
-	todo local date 
-	window.dateFormat */
+*/
 	
 }
 
@@ -486,7 +489,7 @@ function ts_getDateFromStrings(dateStr, timeStr) {
 	console.log('ts_getDateFromStrings ' ,dateStr);
 	if(dateStr=='') return null;
 	var result = $.datepicker.parseDate(window.dateFormat, dateStr);
-/*
+/* use datepicker above
 	var result = new Date(dateStr);
 	if(result==NaN){
 		console.log('ts_getDateFromStrings bad date ' ,dateStr);
@@ -495,13 +498,20 @@ function ts_getDateFromStrings(dateStr, timeStr) {
 */
 	console.log(result);
 	/*alert(result);
-	var dateArray = dateStr.split(/[/.-]/);*/
+	var dateArray = dateStr.split(/[/.-]/);
+
+the users time format is not respected though
+*/
+
 	var timeArray = timeStr.split(/:|\./);
-	/*if (dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
+
+	/* uneeded
+if (dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
 		return null;
 	}
 	result.setFullYear(dateArray[0], dateArray[1] - 1, dateArray[2]);
-	result.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);*/
+	result.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);
+*/
 	if (timeArray[0].length > 2) {
 		result.setHours(timeArray[0].substring(0, 2));
 		result.setMinutes(timeArray[0].substring(2, 4));
