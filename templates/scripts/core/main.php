@@ -62,42 +62,32 @@
     <!-- /Extension JavaScripts -->
 
     <script type="text/javascript">
-		
-	
-        var skin = "<?php echo $this->escape($this->skin()->getName()); ?>";
-
-        var lang_checkUsername = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
+	    var skin = "<?php echo $this->escape($this->skin()->getName()); ?>";
+		var lang_checkUsername = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
         var lang_checkGroupname = "<?php echo $this->escape($this->kga['lang']['checkGroupname']); ?>";
         var lang_checkStatusname = "<?php echo $this->escape($this->kga['lang']['checkStatusname']); ?>";
         var lang_passwordsDontMatch = "<?php echo $this->escape($this->kga['lang']['passwordsDontMatch']); ?>";
         var lang_passwordTooShort = "<?php echo $this->escape($this->kga['lang']['passwordTooShort']); ?>";
         var lang_sure = "<?php echo $this->escape($this->kga['lang']['sure']); ?>";
-
         var currentRecording = <?php echo $this->currentRecording?>;
         var openAfterRecorded = <?php echo json_encode($this->openAfterRecorded) ?>;
-
         <?php if ($this->kga->getSettings()->getQuickDeleteType() == 2): ?>
         var confirmText = "<?php echo $this->escape($this->kga['lang']['sure']) ?>";
         <?php else: ?>
         var confirmText = undefined;
         <?php endif; ?>
-
         <?php if (isset($this->kga['user'])): ?>
         var userID = <?php echo $this->kga['user']['userID']; ?>;
         <?php else: ?>
         var userID = null;
         <?php endif; ?>
-
         <?php if (!$this->kga->getSettings()->isUseSmoothFading()): ?>
         fading_enabled = false;
         <?php endif; ?>
-
         var timeoutTicktack = 0;
-
         var now = <?php echo $this->current_time ?>;
         var offset = Math.floor(((new Date()).getTime()) / 1000) - now;
         var startsec = <?php echo $this->current_timer_start ?> +offset;
-
         var default_title = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
         var revision = <?php echo $this->kga['revision'] ?>;
         var timeframeDateFormat = "<?php echo $this->escape($this->kga->getDateFormat(2)) ?>";
@@ -105,13 +95,10 @@
         var selected_customer = '<?php echo $this->customerData['customerID']?>';
         var selected_project = '<?php echo $this->projectData['projectID']?>';
         var selected_activity = '<?php echo $this->activityData['activityID']?>';
-
         var pickerClicked = '';
-
         var weekdayNames = <?php echo $this->weekdays_short_array?>;
-		
-
-        $.datepicker.setDefaults({
+	
+		$.datepicker.setDefaults({
             showOtherMonths: true,
             selectOtherMonths: true,
             nextText: '',

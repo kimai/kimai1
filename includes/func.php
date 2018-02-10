@@ -258,7 +258,6 @@ function checkDBversion($path)
 function convert_time_strings($in, $out)
 {
     
-	echo $in, $out;
 	$explode_in = explode("-", $in);
     $explode_out = explode("-", $out);
 
