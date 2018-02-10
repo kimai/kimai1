@@ -577,29 +577,15 @@ switch ($axAction) {
 		if($validinDate->format($kga->getDateFormat(3)) != $_REQUEST['start_day']){
 			 $errors['start_day'] = $kga['lang']['TimeDateInputError'];
 		}
-/* the zend framework doesn't have very good docs and the date functions in native php are ok
-		if (!$validateDate->isValid($_REQUEST['start_day'])) {
-            $errors['start_day'] = $kga['lang']['TimeDateInputError'];
-        }
-        $validateTime = new Zend_Validate_Date(array('format' => 'HH:mm:ss'));
-
-       
-
-        if (!$validateTime->isValid($_REQUEST['start_time'])) {
-            $_REQUEST['start_time'] = $_REQUEST['start_time'] . ':00';
-            if (!$validateTime->isValid($_REQUEST['start_time'])) {
-                $errors['start_time'] = $kga['lang']['TimeDateInputError'];
-            }
-        }
-*/
+		
 		if(empty($_REQUEST['end_day'])){
 			$validoutDate = null;
-			if(!empty($_REQUEST['duration']) && ($minutes = (integer) $_REQUEST['duration'])){
-				/*  duration - only handles minutes */
+			if(!empty($_REQUEST['duration']) && ($minutes = (integer) $_REQUEST['duration']) && ($minutes > 0) ){
+				/*  use duration rather than endtime - this only handles minutes */
 				Kimai_Logger::logfile("using minutes duration instead of endtime: ".$minutes);
 				$validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time'])->modify("+$minutes minutes");
-				//$validoutDate->add(new DateInterval("PT".$minutes."M"));
-				//Kimai_Logger::logfile($validoutDate);
+				// could do it this way: $validoutDate->add(new DateInterval("PT".$minutes."M"));
+				
 			}
 			
 		}else{
@@ -608,21 +594,7 @@ switch ($axAction) {
 				$errors['end_day'] = $kga['lang']['TimeDateInputError'];
 			}
 		}
-		/*
-		 Kimai_Logger::logfile("outdate ".$_REQUEST['end_day']);
-
-        if ($_REQUEST['end_day'] != '' && !$validateDate->isValid($_REQUEST['end_day'])) {
-            $errors['end_day'] = $kga['lang']['TimeDateInputError'];
-        }
-
-
-        if ($_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time'])) {
-            $_REQUEST['end_time'] = $_REQUEST['end_time'] . ':00';
-            if (!$validateTime->isValid($_REQUEST['end_time'])) {
-                $errors['end_time'] = $kga['lang']['TimeDateInputError'];
-            }
-        }
-*/
+		
         if (!is_numeric($data['activityID'])) {
             $errors['activityID'] = $kga['lang']['errorMessages']['noActivitySelected'];
         }
@@ -635,25 +607,8 @@ switch ($axAction) {
             echo json_encode(array('errors' => $errors));
             return;
         }
-
-       // $edit_in_day = $validinDate;
-       // $edit_in_time = Zend_Locale_Format::getTime($_REQUEST['start_time'], array('date_format' => 'HH:mm:ss'));
-       // $edit_in = array_merge($edit_in_day, $edit_in_time);
-       // $inDate = new Zend_Date($edit_in);
+		// legacy variable names
 		$inDate = $validinDate;
-
-       // if ($_REQUEST['end_day'] != '' || $_REQUEST['end_time'] != '') {
-        //    $edit_out_day = $validoutDate;
-/* is this zend date stuff  obsolete? */
-        //    $edit_out_time = Zend_Locale_Format::getTime($_REQUEST['end_time'], array('date_format' => 'HH:mm:ss'));
-
-           
-// $edit_out = array_merge($edit_out_day, $edit_out_time);
-  //          $outDate = new Zend_Date($edit_out);
-			
-       // } else {
-       //     $outDate = null;
-       // }
 		$outDate  = $validoutDate;
 		
         $data['start'] = $inDate->getTimestamp();

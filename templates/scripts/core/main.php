@@ -240,8 +240,8 @@ echo $this->kga['lang']['countryCode'];
                         }
                     }
                 });
-                setTimeframeStart(new Date(<?php echo $this->timeframe_in * 1000?>));
-                setTimeframeEnd(new Date(<?php echo $this->timeframe_out * 1000?>));
+                setTimeframeStart(new Date(<?php echo $this->timeframe_in * 1000; ?>));
+                setTimeframeEnd(new Date(<?php echo $this->timeframe_out * 1000; ?>));
                 updateTimeframeWarning();
             });
         </script>

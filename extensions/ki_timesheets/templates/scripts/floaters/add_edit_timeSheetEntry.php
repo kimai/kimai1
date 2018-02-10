@@ -374,14 +374,14 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm({
             'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-
+				// use jquery ui datepicker because the phpjs doesn't have many locales and is out of date 
 				var startDate = $.datepicker.parseDate(window.dateFormat,$('#start_day').val());
 				var endDate = $.datepicker.parseDate(window.dateFormat,$('#end_day').val());
-/* use datepicker because the phpjs doesn't have many locales and is out of date */ 
-				console.log(window.dateFormat,' in ',startDate);
-				console.log(window.dateFormat,' out ',endDate);
-
-                if (((startDate===null) || ( endDate===null) && $('#end_day').val() != '') || !$('#start_time').val().match(ts_timeFormatExp) || 	( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
+				
+	
+                if (((startDate===null) || ( endDate===null) && $('#end_day').val() != '') ||
+				!$('#start_time').val().match(ts_timeFormatExp) || 
+				( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
                     alert("<?php echo $this->kga['lang']['TimeDateInputError']?>");
                     return false;
                 }
@@ -397,38 +397,9 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
                         return false;
                  }
-                /*
-				dont need this 
-				var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
-                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
-
-
-                for (var i = 3; i >= 1; i--) {
-                    var inVal = inDayMatches[i];
-                    var outVal = outDayMatches[i];
-
-                    inVal = parseInt(inVal);
-                    outval = parseInt(outVal);
-
-                    if (inVal == undefined) {
-                        inVal = 0;
-                    }
-                    if (outVal == undefined) {
-                        outVal = 0;
-                    }
-
-                    if (inVal > outVal) {
-                        alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
-                        return false;
-                    } else if (inVal < outVal) {
-                        break;
-                    } // if this part is smaller we don't care for the other parts
-                }
-
-				*/
+                
                 if (startDate.getTime() === endDate.getTime()) {
-						console.log(' same day ');
-                    // test if start time is before end time if it's the same day
+					// test if start time is before end time if it's the same day
                     var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
                     var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
                     for (var i = 1; i <= 3; i++) {

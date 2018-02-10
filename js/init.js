@@ -44,16 +44,13 @@ var lists_customer_annotations = {};
 var lists_project_annotations = {};
 var lists_activity_annotations = {};
 
-
+// because defaulting the locale to the user's browser language would be an idea if we support it. Not being used 
 var language;
 if (window.navigator.languages) {
-    language = window.navigator.languages[0];
+	language = window.navigator.languages[0];
 } else {
-    language = window.navigator.userLanguage || window.navigator.language;
+	language = window.navigator.userLanguage || window.navigator.language;
 }
-
-console.log(language);
-console.log($.datepicker.formatDate('yy-mm-dd', new Date()));
 
 $(document).ready(function () {
 
@@ -74,7 +71,11 @@ $(document).ready(function () {
 	}
 
 	$('#main_tools_button').hoverIntent({
-		sensitivity: 7, interval: 300, over: showTools, timeout: 6000, out: hideTools
+		sensitivity: 7,
+		interval: 300,
+		over: showTools,
+		timeout: 6000,
+		out: hideTools
 	});
 
 	$('#main_credits_button').click(function () {
@@ -88,7 +89,6 @@ $(document).ready(function () {
 		floaterShow('floaters.php', 'prefs', 0, 0, 450);
 		return false;
 	});
-
 
 	$('#buzzer').click(function () {
 		buzzer();
@@ -111,10 +111,10 @@ $(document).ready(function () {
 		resize_menu();
 		resize_floater();
 
-        if (lists_resizeTimer) {
-            clearTimeout(lists_resizeTimer);
-        }
-        lists_resizeTimer = setTimeout(lists_resize, 500);
+		if (lists_resizeTimer) {
+			clearTimeout(lists_resizeTimer);
+		}
+		lists_resizeTimer = setTimeout(lists_resize, 500);
 	});
 
 	// Implement missing method for browsers like IE.

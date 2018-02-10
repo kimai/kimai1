@@ -49,20 +49,7 @@ function ts_formatTime(value) {
  * @returns {string}
  */
 function ts_formatDate(value) {
-	/* console.log('ts_formatDate ',value); 
-
-	We dont need the day month year - using the datepicker date format function
-	*/
-	var day = prependZeroIfNeeded(value.getDate());
-	var month = prependZeroIfNeeded(value.getMonth() + 1);
-	var year = value.getFullYear();
-	console.log(value.toLocaleDateString());
-	return ($.datepicker.formatDate(  window.dateFormat,value ));
-/* 
-
-	return day + '.' + month + '.' + year;
-*/
-	
+	return ($.datepicker.formatDate(window.dateFormat, value));
 }
 
 /**
@@ -88,11 +75,11 @@ function ts_ext_applyHoverIntent() {
 	$('#timeSheet tr').hoverIntent({
 		sensitivity: 1,
 		interval: 500,
-		over: function() {
+		over: function () {
 			$('#timeSheet tr').removeClass('hover');
 			$(this).addClass('hover');
 		},
-		out: function() {
+		out: function () {
 			$(this).removeClass('hover');
 		}
 	});
@@ -111,7 +98,7 @@ function ts_ext_resize() {
  */
 function ts_ext_set_tableWrapperWidths() {
 	ts_ext_get_dimensions();
-	$("#timeSheet_head,#timeSheet").css("width",timeSheet_width);
+	$("#timeSheet_head,#timeSheet").css("width", timeSheet_width);
 	ts_ext_set_TableWidths();
 }
 
@@ -136,8 +123,8 @@ function ts_ext_set_heightTop() {
 function ts_ext_set_TableWidths() {
 	ts_ext_get_dimensions();
 	// set table widths
-	($("#timeSheet").innerHeight()-$("#timeSheet table").outerHeight()>0)?scr=0:scr=scroller_width; // width of timeSheet table depending on scrollbar or not
-	$("#timeSheet table").css("width",timeSheet_width-scr);
+	($("#timeSheet").innerHeight() - $("#timeSheet table").outerHeight() > 0) ? scr = 0 : scr = scroller_width; // width of timeSheet table depending on scrollbar or not
+	$("#timeSheet table").css("width", timeSheet_width - scr);
 	$("div#timeSheet > div > table > tbody > tr > td.trackingnumber").css("width", $("#timeSheet_head > table > tbody > tr > td.trackingnumber").width());
 	// stretch duration column in faked timeSheet table head
 	$("#timeSheet_head > table > tbody > tr > td.time").css("width", $("div#timeSheet > div > table > tbody > tr > td.time").width());
@@ -216,7 +203,7 @@ function ts_ext_reload() {
 		id: 0,
 		first_day: new Date($('#pick_in').val()).getTime() / 1000,
 		last_day: new Date($('#pick_out').val()).getTime() / 1000
-	}, function(data) {
+	}, function (data) {
 		$("#timeSheet").html(data);
 
 		ts_ext_set_TableWidths();
@@ -226,7 +213,7 @@ function ts_ext_reload() {
 
 /**
  * reloads timesheet, customer, project and activity tables
- * 
+ *
  * @param project
  * @param noUpdateRate
  * @param activity
@@ -261,7 +248,7 @@ function ts_ext_reload_activities(project, noUpdateRate, activity, timeSheetEntr
 
 /**
  * reloads budget
- * 
+ *
  * everything in data['timeSheetEntry'] has to be subtracted in case the time sheet entry is in the db already
  * part of this activity. In other cases, we already took case on server side that the values are 0
  * @param data
@@ -306,18 +293,18 @@ function ts_ext_updateBudget(data) {
 			budgetUsed -= data['timeSheetEntry']['duration'] / 3600 * data['timeSheetEntry']['rate'];
 		}
 	}
-	$('#budget_activity_used').text(Math.round(budgetUsed,2));
+	$('#budget_activity_used').text(Math.round(budgetUsed, 2));
 }
 
 /**
  * this function is attached to the little green arrows in front of each timesheet record
  * and starts recording that activity anew
- * 
+ *
  * @param project
  * @param activity
  * @param id
  */
-function ts_ext_recordAgain(project,activity,id) {
+function ts_ext_recordAgain(project, activity, id) {
 	$('#timeSheetEntry' + id + '>td>a').blur();
 
 	if (currentRecording > -1) {
@@ -328,10 +315,10 @@ function ts_ext_recordAgain(project,activity,id) {
 	var now = Math.floor(((new Date()).getTime()) / 1000);
 	startsec = now;
 	show_stopwatch();
-	$('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
+	$('#timeSheetEntry' + id + '>td>a').removeAttr('onclick');
 
 	$.post(ts_ext_path + "processor.php", {
-		axAction: "record", 
+		axAction: "record",
 		axValue: 0,
 		id: id
 	}, function (data) {
@@ -357,7 +344,7 @@ function ts_ext_recordAgain(project,activity,id) {
 /**
  * this function is attached to the little green arrows in front of each timesheet record
  * and starts recording that activity anew
- * 
+ *
  * @param id
  */
 function ts_ext_stopRecord(id) {
@@ -384,7 +371,7 @@ function ts_ext_stopRecord(id) {
  * @param id
  */
 function quickdelete(id) {
-	$('#timeSheetEntry'+id+'>td>a').blur();
+	$('#timeSheetEntry' + id + '>td>a').blur();
 
 	if (confirmText != undefined) {
 		var check = confirm(confirmText);
@@ -486,32 +473,13 @@ function pasteNow(value) {
  * @returns {Date}
  */
 function ts_getDateFromStrings(dateStr, timeStr) {
-	console.log('ts_getDateFromStrings ' ,dateStr);
-	if(dateStr=='') return null;
+	if (dateStr == '')
+		return null;
 	var result = $.datepicker.parseDate(window.dateFormat, dateStr);
-/* use datepicker above
-	var result = new Date(dateStr);
-	if(result==NaN){
-		console.log('ts_getDateFromStrings bad date ' ,dateStr);
-		
-	}	
-*/
-	console.log(result);
-	/*alert(result);
-	var dateArray = dateStr.split(/[/.-]/);
-
-the users time format is not respected though
-*/
-
+	
+	// the users time format is not respected (todo)
 	var timeArray = timeStr.split(/:|\./);
 
-	/* uneeded
-if (dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
-		return null;
-	}
-	result.setFullYear(dateArray[0], dateArray[1] - 1, dateArray[2]);
-	result.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);
-*/
 	if (timeArray[0].length > 2) {
 		result.setHours(timeArray[0].substring(0, 2));
 		result.setMinutes(timeArray[0].substring(2, 4));
@@ -621,25 +589,23 @@ function ts_comment(id) {
 function ts_updateBillability(id) {
 	var billableValue = document.getElementById('billable_' + id);
 	billableValue = billableValue.options[billableValue.selectedIndex].value;
-	$.post(ts_ext_path + "processor.php",
-		{
-			axAction: "billabilityChange",
-			axValue: 0,
-			id: id,
-			billable: billableValue
-		},
+	$.post(ts_ext_path + "processor.php", {
+		axAction: "billabilityChange",
+		axValue: 0,
+		id: id,
+		billable: billableValue
+	},
 		function (result) {
-			if (result.errors.length == 0) {
-				ts_ext_reload();
-			} else {
-				var messages = [];
-				for (var index in result.errors) {
-					messages.push(result.errors[index]);
-				}
-				alert(messages.join("\n"));
+		if (result.errors.length == 0) {
+			ts_ext_reload();
+		} else {
+			var messages = [];
+			for (var index in result.errors) {
+				messages.push(result.errors[index]);
 			}
+			alert(messages.join("\n"));
 		}
-	);
+	});
 }
 
 /**
@@ -651,26 +617,24 @@ function ts_updateDescription(id, reload) {
 	var descriptionValue = document.getElementById('description_' + id);
 	descriptionValue = descriptionValue.value;
 	$('#loader').show();
-	$.post(ts_ext_path + 'processor.php',
-		{
-			axAction: "descriptionChange",
-			axValue: 0,
-			id: id,
-			description: descriptionValue
-		},
+	$.post(ts_ext_path + 'processor.php', {
+		axAction: "descriptionChange",
+		axValue: 0,
+		id: id,
+		description: descriptionValue
+	},
 		function (result) {
-			$('#loader').hide();
-			if (result.errors.length == 0) {
-				if (reload === 1) {
-					ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
-				}
-			} else {
-				var messages = [];
-				for (var index in result.errors) {
-					messages.push(result.errors[index]);
-				}
-				alert(messages.join("\n"));
+		$('#loader').hide();
+		if (result.errors.length == 0) {
+			if (reload === 1) {
+				ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
 			}
+		} else {
+			var messages = [];
+			for (var index in result.errors) {
+				messages.push(result.errors[index]);
+			}
+			alert(messages.join("\n"));
 		}
-	);
+	});
 }
