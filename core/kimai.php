@@ -57,11 +57,11 @@ Kimai_Logger::logfile("in ".$in. ( $inddate->format(Datetime::ATOM)));
 $out = $timeframe[1];
 Kimai_Logger::logfile("in ".$out);
 if (isset($kga['lang']['countryCode'])) {
-	/*
-	Not sure that this has any effect. Kimai has been using the zend framework for dates and it's own translations
-	this didn't work: locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
-	*/
-	setlocale(LC_ALL, $kga['lang']['countryCode'].'.'.$kga['server_charset']);
+  /*
+  Not sure that this has any effect. Kimai has been using the zend framework for dates and it's own translations
+  this didn't work: locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
+  */
+  setlocale(LC_ALL, $kga['lang']['countryCode'].'.'.$kga['server_charset']);
 
 }
 
@@ -87,7 +87,7 @@ $dp_start = 0;
 if ($kga['calender_start'] != "") {
     $dp_start = $kga['calender_start'];
 } elseif (isset($kga['user'])) {
-	// use the user's date format 
+    // use the user's date format 
     $dp_start = date($kga->getDateFormat(3), $database->getjointime($kga['user']['userID']));
 }
 

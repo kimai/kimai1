@@ -1,0 +1,35 @@
+diff --git a/libraries/Kimai/Config.php b/libraries/Kimai/Config.php
+index 63194ed2fc026ce37d43811e4cc2d40740131f88..027a83341c7e8b9479a31df4368309664bc208b4 100644
+--- a/libraries/Kimai/Config.php
++++ b/libraries/Kimai/Config.php
+@@ -176,14 +176,13 @@ class Kimai_Config extends Kimai_ArrayObject
+ 
+     /**
+      * Sets the system language.
+-.... * There are 2 - the system language and the user language
++     * There are 2 - the system language and the user language
+      *
+      * @param $language
+      */
+     public function setLanguage($language)
+     {
+         $this->set('language', $language);
+     }
+ 
+     /**
+
+
+/* want a table to store how many hours per week I should work so that I can keep track of flex */
+if ((int)$revisionDB < 1390) {
+    Kimai_Logger::logfile("-- update to r1395 whatever");
+    $query =
+        "CREATE TABLE `${p}work_hours` (
+`userID` int(10) DEFAULT NULL,
+`minutesperweek` int(5) DEFAULT NULL,
+`flex` tinyint(1) NOT NULL default 1,
+fromdate TIMESTAMP ,
+PRIMARY KEY (`userID`, `fromdate`)
+);";
+    exec_query($query);
+  
+}

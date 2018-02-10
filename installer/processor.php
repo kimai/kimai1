@@ -76,12 +76,13 @@ switch ($axAction) {
      *  - MySQLi extension available
      *  - iconv extension available
      *  - memory limit should be at least 20 MB for reliable PDF export
+     *  - (PHP_VERSION_ID < 50400) might be a better test
      */
     case "checkRequirements":
-		if (PHP_VERSION_ID < 50400){
+        if (version_compare(PHP_VERSION, '5.4') < 0) {
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
-	    }
+        }
 
         if (!extension_loaded('mysqli')) {
             $errors++;

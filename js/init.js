@@ -47,9 +47,9 @@ var lists_activity_annotations = {};
 // because defaulting the locale to the user's browser language would be an idea if we support it. Not being used 
 var language;
 if (window.navigator.languages) {
-	language = window.navigator.languages[0];
+    language = window.navigator.languages[0];
 } else {
-	language = window.navigator.userLanguage || window.navigator.language;
+    language = window.navigator.userLanguage || window.navigator.language;
 }
 
 $(document).ready(function () {
