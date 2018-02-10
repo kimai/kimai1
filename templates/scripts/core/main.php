@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php //echo '';
-// this breaks the phpjs/strftime library that is out of date anyway - strftime does not have swedish
-echo $this->kga['lang']['countryCode'];
- ?>">
+<html lang="<?php echo $this->kga['lang']['countryCode']; ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow"/>
@@ -37,7 +34,7 @@ echo $this->kga['lang']['countryCode'];
 				echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[0].js\"></script>\n";
 			elseif (is_file("../libraries/jQuery/i18n/datepicker-$temp[1].js")) 
 				echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[1].js\"></script>\n";
-			else echo "\n	<!-- ".getcwd()." xxxx $temp[1] XXXX $temp[0] jquery ui i18n ".$this->kga['lang']['countryCode'].' -->';
+			else echo "\n	<!-- ".getcwd()."  $temp[1]  $temp[0] missing the jquery ui i18n libs for ".$this->kga['lang']['countryCode'].' -->';
 		}
 	?>
 	<!-- /conditional -->
@@ -57,7 +54,7 @@ echo $this->kga['lang']['countryCode'];
     <script type="text/javascript" src="../js/main.js"></script>
     <script type="text/javascript" src="../js/init.js"></script>
     <!-- /Default JavaScript -->
-
+	
     <!-- Extension JavaScripts -->
     <?php foreach ($this->js_extension_files as $object): ?>
         <script type="text/javascript" src="<?php echo $this->escape($object); ?>"></script>
