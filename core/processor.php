@@ -119,6 +119,7 @@ switch ($axAction) {
         if (!isset($kga['user'])) {
             die();
         }
+        // remove when sure it works
         Kimai_Logger::logfile("setTimeframe " . $axValue);
         $timeframe = explode('|', $axValue);
         $timeframe_in = DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[0])->getTimestamp();

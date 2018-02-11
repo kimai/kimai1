@@ -212,7 +212,6 @@ if (!isset($kga['customer'])) {
     if (!$lastActivity['trash']) {
         $activityData = $lastActivity;
     }
-
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);

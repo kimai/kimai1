@@ -1182,9 +1182,6 @@ if ((int)$revisionDB < 1394) {
     exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NULL");
 }
 
-
-
-
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================
