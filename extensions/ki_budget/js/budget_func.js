@@ -191,8 +191,8 @@ function budget_extension_reload() {
 		data: {
 			axAction: 'reload',
 			axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|'+filterProjects.join(":"),
-			first_day: new Date($('#pick_in').val()).getTime()/1000,
-			last_day: new Date($('#pick_out').val()).getTime()/1000,
+			first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+            last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
 			id: 0
 		},
 		success: function( data ) {

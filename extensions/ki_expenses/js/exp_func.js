@@ -180,8 +180,8 @@ function expense_extension_reload() {
 			axAction: "reload_exp", 
 			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"), 
 			id: 0,
-			first_day: new Date($('#pick_in').val()).getTime()/1000, 
-			last_day: new Date($('#pick_out').val()).getTime()/1000
+			first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+            last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
 		},
 		function(data) {
 			$("#expenses").html(data);

@@ -198,9 +198,6 @@ function timesheet_extension_activities_changed() {
  * reloads timesheet, customer, project and activity tables
  */
 function ts_ext_reload() {
-    console.log($('#pick_in').val());
-    console.log($('#pick_out').val());
-
     $.post(ts_ext_path + "processor.php", {
         axAction: "reload_timeSheet",
         axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|' + filterProjects.join(":") + '|' + filterActivities.join(":"),
