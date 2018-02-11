@@ -53,9 +53,12 @@ $extensions->loadConfigurations();
 $timeframe = get_timeframe();
 $in = $timeframe[0];
 $inddate =new DateTime("@$in");
-Kimai_Logger::logfile("in ".$in. ( $inddate->format(Datetime::ATOM)));
+
+Kimai_Logger::logfile("in ".$in.' '. ( $inddate->format(Datetime::ATOM)));
 $out = $timeframe[1];
-Kimai_Logger::logfile("in ".$out);
+$outdate =new DateTime("@$out");
+Kimai_Logger::logfile("out ".$out.' '. ( $outdate->format(Datetime::ATOM)));
+
 if (isset($kga['lang']['countryCode'])) {
   /*
   Not sure that this has any effect. Kimai has been using the zend framework for dates and it's own translations

@@ -121,11 +121,16 @@ switch ($axAction) {
         }
         Kimai_Logger::logfile("timeframe " . $axValue);
         $timeframe = explode('|', $axValue);
-		$timeframe_in = (int) DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[0])->getTimestamp();
+        $timeframe_debug = DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[0]);
+        Kimai_Logger::logfile("timeframe in check " .$timeframe_debug->format($kga->getDateFormat(3)));
+		$timeframe_in = DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[0])->getTimestamp();
 		if ($timeframe_in < 950000000) {
             $timeframe_in = $in;
         }
-		$timeframe_out = (int)  DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[1])->getTimestamp();
+        $timeframe_out =  DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[1])->getTimestamp();
+        $timeframe_debug = DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[1]);
+        Kimai_Logger::logfile("timeframe out check " .$timeframe_debug->format($kga->getDateFormat(3)));
+        Kimai_Logger::logfile("timeframe out check " .$timeframe_debug->getTimestamp());
         if ($timeframe_out < 950000000) {
             $timeframe_out = $out;
         }

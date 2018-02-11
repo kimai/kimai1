@@ -4,12 +4,12 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 <div id="floater_innerwrap">
     <div id="floater_handle">
         <span id="floater_title"><?php
-            if (isset($this->id)) {
-                echo $this->kga['lang']['edit'];
-            } else {
-                echo $this->kga['lang']['add'];
-            }
-            ?></span>
+if (isset($this->id)) {
+    echo $this->kga['lang']['edit'];
+} else {
+    echo $this->kga['lang']['add'];
+}
+?></span>
         <div class="right">
             <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
             <a href="#" class="help" onclick="$(this).blur(); $('#help').slideToggle();"><?php echo $this->kga['lang']['help'] ?></a>
@@ -39,11 +39,11 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
     </div>
 
     <form id="ts_ext_form_add_edit_timeSheetEntry" action="../extensions/ki_timesheets/processor.php" method="post">
-        <input type="hidden" name="id" value="<?php echo $this->id?>" />
+        <input type="hidden" name="id" value="<?php echo $this->id ?>" />
         <input type="hidden" name="axAction" value="add_edit_timeSheetEntry" />
-        <input type="hidden" id="stepMinutes" value="<?php echo $this->kga['conf']['roundMinutes']?>" />
-        <input type="hidden" id="stepSeconds" value="<?php echo $this->kga['conf']['roundSeconds']?>" />
-        <input type="hidden" id="roundTimesheetEntries" value="<?php echo $this->kga['conf']['roundTimesheetEntries']?>" />
+        <input type="hidden" id="stepMinutes" value="<?php echo $this->kga['conf']['roundMinutes'] ?>" />
+        <input type="hidden" id="stepSeconds" value="<?php echo $this->kga['conf']['roundSeconds'] ?>" />
+        <input type="hidden" id="roundTimesheetEntries" value="<?php echo $this->kga['conf']['roundTimesheetEntries'] ?>" />
         <div id="floater_tabs" class="floater_content">
             <fieldset id="general">
                 <ul>
@@ -51,13 +51,13 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         <label for="projectID"><?php echo $this->kga['lang']['project'] ?>:</label>
                         <div class="multiFields">
                             <?php echo $this->formSelect('projectID', $this->projectID, array(
-                                'size' => '5',
-                                'id' => 'add_edit_timeSheetEntry_projectID',
-                                'class' => 'formfield',
-                                'style' => 'width:400px',
-                                'tabindex' => '1',
-                                'onChange' => "ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());"
-                            ), $this->projects); ?>
+    'size' => '5',
+    'id' => 'add_edit_timeSheetEntry_projectID',
+    'class' => 'formfield',
+    'style' => 'width:400px',
+    'tabindex' => '1',
+    'onChange' => "ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());",
+), $this->projects); ?>
                             <br/>
                             <input type="text" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value);"/>
                         </div>
@@ -66,13 +66,13 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         <label for="activityID"><?php echo $this->kga['lang']['activity'] ?>:</label>
                         <div class="multiFields">
                             <?php echo $this->formSelect('activityID', $this->activityID, array(
-                                'size' => '5',
-                                'id' => 'add_edit_timeSheetEntry_activityID',
-                                'class' => 'formfield',
-                                'style' => 'width:400px',
-                                'tabindex' => '3',
-                                'onChange' => "getBestRates();"
-                            ), $this->activities); ?>
+    'size' => '5',
+    'id' => 'add_edit_timeSheetEntry_activityID',
+    'class' => 'formfield',
+    'style' => 'width:400px',
+    'tabindex' => '3',
+    'onChange' => "getBestRates();",
+), $this->activities); ?>
                             <br/>
                             <input type="text" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value);"/>
                         </div>
@@ -84,25 +84,25 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="start_day"><?php echo $this->kga['lang']['day'] ?>:</label>
                         <input id='start_day' type='text' name='start_day' value='<?php echo $this->escape($this->start_day) ?>' maxlength='10' size='10' tabindex='6'
-                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif;?> />
                         -
                         <input id='end_day' type='text' name='end_day' value='<?php echo $this->escape($this->end_day) ?>' maxlength='10' size='10' tabindex='7'
-                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif;?> />
                     </li>
                     <li>
                         <label for="start_time"><?php echo $this->kga['lang']['timelabel'] ?>:</label>
                         <input id='start_time' type='text' name='start_time'
                                value='<?php echo $this->escape($this->start_time) ?>' maxlength='8' size='8' tabindex='8'
-                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif;?> />
                         -
                         <input id='end_time' type='text' name='end_time' value='<?php echo $this->escape($this->end_time) ?>' maxlength='8' size='8' tabindex='9'
-                               onChange="ts_prefillEndDate(); ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif; ?> />
+                               onChange="ts_prefillEndDate(); ts_timeToDuration();" <?php if ($autoSelection): ?> onclick="this.select();" <?php endif;?> />
                         <a id="currentTime" href="#" onclick="pasteNow(); ts_timeToDuration(); $(this).blur(); return false;"><?php echo $this->kga['lang']['now'] ?></a>
                     </li>
                     <li>
                         <label for="duration"><?php echo $this->kga['lang']['durationlabel'] ?>:</label>
                         <input id='duration' type='text' name='duration' value='' onChange="ts_durationToTime();" maxlength='8' size='8'
-                               tabindex='10' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                               tabindex='10' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                     </li>
                 </ul>
             </fieldset>
@@ -111,15 +111,15 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="location"><?php echo $this->kga['lang']['location'] ?>:</label>
                         <input id='location' type='text' name='location' value='<?php echo $this->escape($this->location) ?>' maxlength='50' size='20'
-                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                     </li>
                     <?php if ($this->kga->isTrackingNumberEnabled()): ?>
                         <li>
                             <label for="trackingNumber"><?php echo $this->kga['lang']['trackingNumber'] ?>:</label>
                             <input id='trackingNumber' type='text' name='trackingNumber' value='<?php echo $this->escape($this->trackingNumber) ?>' maxlength='20' size='20'
-                                   tabindex='12' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                                   tabindex='12' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                         </li>
-                    <?php endif; ?>
+                    <?php endif;?>
                     <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
                         <textarea id='comment' style="width:395px" class='comment' name='comment' cols='40' rows='5' tabindex='13'><?php echo $this->escape($this->comment) ?></textarea>
@@ -132,25 +132,25 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         <li>
                             <label for="userID"><?php echo $this->kga['lang']['user'] ?>:</label>
                             <?php echo $this->formSelect(
-                                isset($this->id) ? 'userID' : 'userID[]',
-                                $this->userID,
-                                array(
-                                    'id' => 'userID',
-                                    'class' => 'formfield',
-                                    'multiple' => isset($this->id) ? '' : 'multiple',
-                                    'tabindex' => '14'),
-                                $this->users); ?>
+    isset($this->id) ? 'userID' : 'userID[]',
+    $this->userID,
+    array(
+        'id' => 'userID',
+        'class' => 'formfield',
+        'multiple' => isset($this->id) ? '' : 'multiple',
+        'tabindex' => '14'),
+    $this->users); ?>
                         </li>
                     <?php else: ?>
                         <input type="hidden" name="userID" value="<?php echo $this->kga['user']['userID']; ?>"/>
-                    <?php endif; ?>
+                    <?php endif;?>
                     <li>
                         <label for="erase"><?php echo $this->kga['lang']['erase'] ?>:</label>
                         <input type='checkbox' id='erase' name='erase' tabindex='15'/>
                     </li>
                     <li>
                         <label for="cleared"><?php echo $this->kga['lang']['cleared'] ?>:</label>
-                        <input type='checkbox' id='cleared' name='cleared' <?php if ($this->cleared): ?> checked="checked" <?php endif; ?> tabindex='16'/>
+                        <input type='checkbox' id='cleared' name='cleared' <?php if ($this->cleared): ?> checked="checked" <?php endif;?> tabindex='16'/>
                     </li>
                 </ul>
             </fieldset>
@@ -159,26 +159,26 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="budget_val"><?php echo $this->kga['lang']['budget'] ?>:</label>
                         <input id='budget_val' type='text' name='budget' value='<?php echo $this->escape($this->budget) ?>' maxlength='50' size='20'
-                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                     </li>
                     <li>
                         <label for="approved"><?php echo $this->kga['lang']['approved'] ?>:</label>
                         <input id='approved' type='text' name='approved' value='<?php echo $this->escape($this->approved) ?>' maxlength='50' size='20'
-                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                               tabindex='11' <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                     </li>
                     <li>
                         <label for="statusID"><?php echo $this->kga['lang']['status'] ?>:</label>
                         <?php echo $this->formSelect('statusID', $this->statusID, array(
-                            'id' => 'statusID',
-                            'class' => 'formfield',
-                            'tabindex' => '15'), $this->status); ?>
+    'id' => 'statusID',
+    'class' => 'formfield',
+    'tabindex' => '15'), $this->status); ?>
                     </li>
                     <li>
                         <label for="billable"><?php echo $this->kga['lang']['billable'] ?>:</label>
                         <?php echo $this->formSelect('billable', $this->billable_active, array(
-                            'id' => 'billable',
-                            'class' => 'formfield',
-                            'tabindex' => '16'), $this->billable); ?>
+    'id' => 'billable',
+    'class' => 'formfield',
+    'tabindex' => '16'), $this->billable); ?>
                     </li>
                     <?php if ($this->showRate): ?>
                         <li>
@@ -186,9 +186,9 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                             <input id="rate" type="text" name="rate" value="<?php echo $this->escape($this->rate) ?>" size="5" tabindex="10"/>
                             <label for="fixedRate" style="float: none; margin-left: 60px;"><?php echo $this->kga['lang']['fixedRate'] ?>:</label>
                             <input id="fixedRate" type="text" name="fixedRate" value="<?php echo $this->escape($this->fixedRate) ?>" size="5"
-                                   tabindex="10" <?php if ($autoSelection): ?> onclick="this.select();"<?php endif; ?> />
+                                   tabindex="10" <?php if ($autoSelection): ?> onclick="this.select();"<?php endif;?> />
                         </li>
-                    <?php endif; ?>
+                    <?php endif;?>
                     <li>
                         <table>
                             <tr>
@@ -205,11 +205,11 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                             </tr>
                         </table>
                     </li>
-                    <?php if (isset($this->id)) { ?>
+                    <?php if (isset($this->id)) {?>
                         <li>
                             <div id="chart"></div>
                         </li>
-                    <?php } ?>
+                    <?php }?>
                 </ul>
             </fieldset>
         </div>
@@ -288,14 +288,20 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 
         $('#start_day').datepicker({
             onSelect: function (dateText, instance) {
-                $('#end_day').datepicker("option", "minDate", $('#start_day').datepicker("getDate"));
+                $('#end_day').datepicker({
+                      dateFormat: window.dateFormat,
+                      minDate: $('#start_day').datepicker("getDate"),
+                    });
                 ts_timeToDuration();
             }
         });
 
         $('#end_day').datepicker({
             onSelect: function (dateText, instance) {
-                $('#start_day').datepicker("option", "maxDate", $('#end_day').datepicker("getDate"));
+                $('#start_day').datepicker({
+                      dateFormat: window.dateFormat,
+                      maxDate: $('#end_day').datepicker("getDate"),
+                    });
                 ts_timeToDuration();
             }
         });
@@ -369,20 +375,20 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                 .append("<a>" + item.desc + "</a>")
                 .appendTo(ul);
         };
-        <?php endif; ?>
+        <?php endif;?>
 
         $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm({
             'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-				// use jquery ui datepicker because the phpjs doesn't have many locales and is out of date 
+				// use jquery ui datepicker because the phpjs doesn't have many locales and is out of date
 				var startDate = $.datepicker.parseDate(window.dateFormat,$('#start_day').val());
 				var endDate = $.datepicker.parseDate(window.dateFormat,$('#end_day').val());
-				
-	
+
+
                 if (((startDate===null) || ( endDate===null) && $('#end_day').val() != '') ||
-				!$('#start_time').val().match(ts_timeFormatExp) || 
+				!$('#start_time').val().match(ts_timeFormatExp) ||
 				( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
-                    alert("<?php echo $this->kga['lang']['TimeDateInputError']?>");
+                    alert("<?php echo $this->kga['lang']['TimeDateInputError'] ?>");
                     return false;
                 }
 
@@ -397,7 +403,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
                         return false;
                  }
-                
+
                 if (startDate.getTime() === endDate.getTime()) {
 					// test if start time is before end time if it's the same day
                     var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
@@ -424,7 +430,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         }
 
                         if (inVal > outVal) {
-                            alert("<?php echo $this->kga['lang']['StartTimeBeforeEndTime']?>");
+                            alert("<?php echo $this->kga['lang']['StartTimeBeforeEndTime'] ?>");
                             return false;
                         } else if (inVal < outVal) {
                             break;
@@ -458,13 +464,13 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                 $('#ts_ext_form_add_edit_timeSheetEntry').removeAttr('submitting');
             }
         });
-        <?php if (isset($this->id)) { ?>
-        ts_ext_reload_activities(<?php echo $this->projectID?>, true);
-        <?php } else { ?>
+        <?php if (isset($this->id)) {?>
+        ts_ext_reload_activities(<?php echo $this->projectID ?>, true);
+        <?php } else {?>
         $("#add_edit_timeSheetEntry_projectID").val(selected_project);
         $("#add_edit_timeSheetEntry_activityID").val(selected_activity);
         ts_ext_reload_activities(selected_project);
-        <?php } ?>
+        <?php }?>
 
         ts_timeToDuration();
         // ts_timeToDuration will set the value of duration. The first time, the value
@@ -484,14 +490,14 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
             var rate = $('#rate').val();
             <?php else: ?>
             var rate = 0;
-            <?php endif; ?>
+            <?php endif;?>
             var budgetCalculatedTwice = secs / 3600 * rate;
             $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text()) - budgetCalculatedTwice), 2);
         }
-        <?php if (isset($this->id)) { ?>
+        <?php if (isset($this->id)) {?>
         //TODO: chart will not be generated..WHY??
         //generateChart();
-        <?php } ?>
+        <?php }?>
     });
     // document ready
 
@@ -511,7 +517,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         var rate = $('#rate').val();
         <?php else: ?>
         var rate = 0;
-        <?php endif; ?>
+        <?php endif;?>
         previousUsed = secs / 3600 * rate;
     }
 
@@ -531,7 +537,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         var rate = $('#rate').val();
         <?php else: ?>
         var rate = 0;
-        <?php endif; ?>
+        <?php endif;?>
         var used = secs / 3600 * rate;
         $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text()) - previousUsed + used), 2);
     }
@@ -551,11 +557,11 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         var rate = $('#rate').val();
         <?php else: ?>
         var rate = 0;
-        <?php endif; ?>
+        <?php endif;?>
         var budget = $('#budget_val').val();
         var used = secs / 3600 * rate;
-        var usedString = '<?php echo $this->kga['lang']['used']?>';
-        var budgetString = '<?php echo $this->kga['lang']['budget_available']?>';
+        var usedString = '<?php echo $this->kga['lang']['used'] ?>';
+        var budgetString = '<?php echo $this->kga['lang']['budget_available'] ?>';
         var chartdata = [[usedString, used], [budgetString, budget - used]];
 
         try {
@@ -578,8 +584,8 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     placement: 'insideGrid'
                 },
                 grid: {
-                    background: 'white', 
-                    borderWidth: 0, 
+                    background: 'white',
+                    borderWidth: 0,
                     shadow: false
                 }
             });

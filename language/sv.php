@@ -85,9 +85,9 @@ return array(
     "username" => "Användarnamn",
     "password" => "Lösenord",
     "newPassword" => "Nytt Lösenord",
-	"retypePassword" => "Nytt Lösenord igen",
+    "retypePassword" => "Nytt Lösenord igen",
     "minLength" => "minst 5 tecken!",
-	
+
     "update" => "Databasstrukturen för den Installerade Kimai versionen måste uppdateras.<br />Vi rekommenderar att säkerhetskopia görs på registeruppgifterna så att ingen data går förlorad<br />under processen.",
     "updateNow" => "Uppdatera databasen nu!",
     "stop" => "Stopp!",
@@ -220,8 +220,8 @@ return array(
     'display_date_format' => 'Datumformat (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'table_date_format' => 'Datumformat för tabell (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'table_time_format' => 'Tidsformat (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">strftime()</a>)',
-	
-	'round_time' => 'Round time to ',
+
+    'round_time' => 'Round time to ',
     'round_time_minute' => ' minute(s).',
     'logged_in_as' => 'logged in as:',
 
@@ -239,16 +239,14 @@ return array(
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
     'weekdays' => array("Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"),
     'weekdays_short' => array("Sön", "Mon", "Tis", "Ons", "Tor", "Fri", "Lör"),
-	
-	'quicklink_today' => 'Idag',
+
+    'quicklink_today' => 'Idag',
     'quicklink_yesterday' => 'Igår',
     'quicklink_lastWeek' => 'Förra veckan',
     'quicklink_lastMonth' => 'Förra månad',
     'quicklink_thisWeek' => 'Denna vecka',
     'quicklink_thisMonth' => 'Denna månad',
-	
-	
-	
+
     'errors' => array(
         0 => array('hdl' => "Kunde inte koppla till databasen!",
             'txt' => "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta."),
@@ -256,7 +254,7 @@ return array(
         1 => array('hdl' => "Fel vid installation!",
             'txt' => 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.', ),
     ),
 
     'updater' => array(
@@ -287,7 +285,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         7 => "blev återställd.",
         8 => "skapa säkerhetskopia",
         9 => "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)"),
-    
+
     'export_extension' => array(
         "print_hint" => "Klicka OK för att öppna en skrivbar tabell.",
         "dl_hint" => "Klikcka OK för att ladda ner en exporterad fil.",
@@ -342,7 +340,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
         'duration_unit' => 'h',
     ),
-    
+
     'ext_invoice' => array(
         'invoiceTitle' => 'Create invoice',
         'invoiceProject' => 'Projects',
@@ -350,7 +348,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceOptionShort' => 'Short Invoice',
         'invoiceOptionRound' => 'Round time',
         'invoiceButton' => 'Create',
-        'noData' => 'There are no time entries for the selected project & time period.'
+        'noData' => 'There are no time entries for the selected project & time period.',
     ),
 
     'extensions' => array(
@@ -360,7 +358,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'deb_ext' => 'Debug',
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
-        'ki_export' => 'Export'
+        'ki_export' => 'Export',
     ),
 
     "log_delete" => "log rensas",

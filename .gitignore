@@ -1,6 +1,7 @@
 /.project
 *.*~
 .settings
+.vscode
 .idea/
 .DS_Store
 

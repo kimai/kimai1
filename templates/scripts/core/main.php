@@ -217,10 +217,10 @@
                     dateFormat: window.dateFormat,
                     onSelect: function (dateText, instance) {
                         if (this == $('#pick_in')[0]) {
-                            setTimeframe(new Date(dateText), undefined);
+                            setTimeframe($.datepicker.parseDate(window.dateFormat,dateText), undefined);
                         }
                         if (this == $('#pick_out')[0]) {
-                            setTimeframe(undefined, new Date(dateText));
+                            setTimeframe(undefined, $.datepicker.parseDate(window.dateFormat,dateText));
                         }
                     }
                 });
