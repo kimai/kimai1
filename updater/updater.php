@@ -1176,8 +1176,8 @@ if ((int)$revisionDB < 1393) {
 
 if ((int)$revisionDB < 1394) {
     Kimai_Logger::logfile("-- update to r1394");
-    exec_query("ALTER TABLE `${p}preferences` CHANGE `option` `option` VARCHAR(190) NULL");
-    exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NULL");
+    exec_query("ALTER TABLE `${p}preferences` CHANGE `option` `option` VARCHAR(190) NOT NULL");
+    exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NOT NULL");
 }
 
 // ================================================================================
