@@ -72,9 +72,14 @@ $in = $timeframe[0];
 $out = $timeframe[1];
 
 if (isset($_REQUEST['first_day'])) {
+    // date dormat changes are pretty fragile
+    // Kimai_Logger::logfile(__FILE__);
+    // Kimai_Logger::logfile("first_day from:".$in.' to: ' . $_REQUEST['first_day'].' '.date('Y-m-d',$_REQUEST['first_day']));
     $in = (int)$_REQUEST['first_day'];
+    
 }
-if (isset($_REQUEST['last_day'])) {
+if (isset($_REQUEST['last_day']) && ($_REQUEST['last_day']!='NaN')) {
+    // Kimai_Logger::logfile("last_day from: ".$out.' to: '. $_REQUEST['last_day'].' '.date('Y-m-d',$_REQUEST['last_day']));
     $out = mktime(23, 59, 59, date("n", $_REQUEST['last_day']), date("j", $_REQUEST['last_day']),
         date("Y", $_REQUEST['last_day']));
 }

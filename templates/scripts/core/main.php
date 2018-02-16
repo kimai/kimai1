@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $this->kga['lang']['countryCode']; ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow"/>
@@ -17,20 +17,33 @@
     <?php foreach ($this->css_extension_files as $object): ?>
         <link rel="stylesheet" href="<?php echo $this->escape($object) ?>" type="text/css" media="screen"/>
     <?php endforeach; ?>
+ <link rel="stylesheet" href="../libraries/jQuery/jquery.ui.timepicker.css" type="text/css" />
     <!-- /Extension Stylesheets -->
 
     <!-- Libraries -->
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.form.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.10.2.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js"></script>
-    <script type="text/javascript" src="../libraries/phpjs/strftime.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
-    <!-- /Libraries -->
-
+    <script src="../libraries/components/jquery/jquery.min.js"></script>
+    <script src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
+    <script src="..//libraries/jQuery/jquery.form.min.js"></script>
+    <script src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
+    <script src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
+    <script src="../libraries/components/jqueryui/jquery-ui.min.js"></script>
+    <!-- conditional locale include - todo use same for timepicker -->
+    <?php 
+    // some jquery libraries can be managed with composer /libraries/components/jqueryui
+        if(preg_match('"^([a-z]{2})(-[A-Z]{2})?$"', $this->kga['lang']['countryCode'],$temp)){ 
+            if (is_file("../libraries/components/jqueryui/i18n/jquery.ui.datepicker-$temp[0].js")) 
+                echo "<script src=\"../libraries/components/jqueryui/i18n/jquery.ui.datepicker-$temp[0].js\"></script>\n";
+            elseif (is_file("../libraries/components/jqueryui/i18n/jquery.ui.datepicker-$temp[1].js")) 
+                echo "<script src=\"../libraries/components/jqueryui/i18n/jquery.ui.datepicker-$temp[1].js\"></script>\n";
+            else echo "\n    <!-- ".getcwd()."  $temp[1]  $temp[0] missing the jquery ui i18n libs for ".$this->kga['lang']['countryCode'].' -->';
+        }
+    ?>
+    <!-- /conditional -->
+    <script src="../libraries/jQuery/jquery.ui.timepicker.min.js"></script>
+    <!--<script src="../libraries/phpjs/strftime.min.js"></script>-->
+    <script src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
+    <!-- /Libs -->
+    
     <!-- Libraries Extensions -->
     <script type="text/javascript" src="../libraries/jQuery/jquery.jqplot.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jqplot.pieRenderer.min.js"></script>
@@ -87,7 +100,7 @@
         var default_title = "<?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name'])?> - Kimai";
         var revision = <?php echo $this->kga['revision'] ?>;
         var timeframeDateFormat = "<?php echo $this->escape($this->kga->getDateFormat(2)) ?>";
-
+        var dateFormat = '<?php echo $this->escape($this->kga->getDateFormat(0)) ?>';
         var selected_customer = '<?php echo $this->customerData['customerID']?>';
         var selected_project = '<?php echo $this->projectData['projectID']?>';
         var selected_activity = '<?php echo $this->activityData['activityID']?>';
@@ -166,7 +179,7 @@
                 handle: '#floater_handle'
             });
 
-            $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat, new Date()));
+            $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +  $.datepicker.formatDate(  window.dateFormat, new Date() ));
 
             // give browser time to render page. afterwards make sure lists are resized correctly
             setTimeout(lists_resize, 500);
@@ -212,18 +225,18 @@
         <script type="text/javascript">
             $(function () {
                 $('.date-pick').datepicker({
-                    dateFormat: 'mm/dd/yy',
+                    dateFormat: window.dateFormat,
                     onSelect: function (dateText, instance) {
                         if (this == $('#pick_in')[0]) {
-                            setTimeframe(new Date(dateText), undefined);
+                            setTimeframe($.datepicker.parseDate(window.dateFormat,dateText), undefined);
                         }
                         if (this == $('#pick_out')[0]) {
-                            setTimeframe(undefined, new Date(dateText));
+                            setTimeframe(undefined, $.datepicker.parseDate(window.dateFormat,dateText));
                         }
                     }
                 });
-                setTimeframeStart(new Date(<?php echo $this->timeframe_in * 1000?>));
-                setTimeframeEnd(new Date(<?php echo $this->timeframe_out * 1000?>));
+                setTimeframeStart(new Date(<?php echo $this->timeframe_in * 1000; ?>));
+                setTimeframeEnd(new Date(<?php echo $this->timeframe_out * 1000; ?>));
                 updateTimeframeWarning();
             });
         </script>

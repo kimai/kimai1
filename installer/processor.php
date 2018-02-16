@@ -72,13 +72,33 @@ switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5.4
+     *  - PHP major version >= 5.6
      *  - MySQLi extension available
      *  - iconv extension available
+     *  - todo there are some more extensions required by the libs
+         phpspreadsheet needs all these:
+        "php": "^5.6|^7.0",
+        "ext-ctype": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-SimpleXML": "*",
+        "ext-xml": "*",
+        "ext-xmlreader": "*",
+        "ext-xmlwriter": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*",
+        "psr/simple-cache": "^1.0"
+
+
+
      *  - memory limit should be at least 20 MB for reliable PDF export
+     *  - (PHP_VERSION_ID < 50600) is a better test. 
      */
     case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+        if (PHP_VERSION_ID < 50600){
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
         }

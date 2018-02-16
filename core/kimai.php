@@ -52,7 +52,20 @@ $extensions->loadConfigurations();
 // ============================================
 $timeframe = get_timeframe();
 $in = $timeframe[0];
+// $inddate =new DateTime("@$in");
+// Kimai_Logger::logfile("in ".$in.' '. ( $inddate->format(Datetime::ATOM)));
 $out = $timeframe[1];
+// $outdate =new DateTime("@$out");
+// Kimai_Logger::logfile("out ".$out.' '. ( $outdate->format(Datetime::ATOM)));
+
+if (isset($kga['lang']['countryCode'])) {
+    /*
+    Not sure that this has any effect. Kimai has been using the zend framework for dates and it's own kimai specifc translations
+    this didn't work: locale_set_default($kga['lang']['countryCode'].'.'.$kga['server_charset']);
+     */
+    setlocale(LC_ALL, $kga['lang']['countryCode'] . '.' . $kga['server_charset']);
+
+}
 
 // ===============================================
 // = get time for the probably running stopwatch =
@@ -75,11 +88,12 @@ $wd = $kga['lang']['weekdays_short'][date("w", time())];
 $dp_start = 0;
 if ($kga['calender_start'] != "") {
     $dp_start = $kga['calender_start'];
-} else if (isset($kga['user'])) {
-    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
+} elseif (isset($kga['user'])) {
+    // use the user's date format
+    $dp_start = date($kga->getDateFormat(3), $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date("d/m/Y", time());
+$dp_today = date($kga->getDateFormat(3), time());
 
 $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);
@@ -93,6 +107,7 @@ if (isset($kga['customer'])) {
 // ===========================
 // = DatePicker localization =
 // ===========================
+// is this used?
 $localized_DatePicker = "";
 
 $view->assign('weekdays_array', sprintf(
@@ -182,20 +197,21 @@ $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 $view->assign('lang_checkGlobalRoleName', $kga['lang']['checkGlobalRoleName']);
 $view->assign('lang_checkMembershipRoleName', $kga['lang']['checkMembershipRoleName']);
 
-$customerData = array('customerID'=>false, 'name'=>'');
-$projectData  = array('projectID'=>false, 'name'=>'');
-$activityData = array('activityID'=>false, 'name'=>'');
+$customerData = array('customerID' => false, 'name' => '');
+$projectData = array('projectID' => false, 'name' => '');
+$activityData = array('activityID' => false, 'name' => '');
 
 if (!isset($kga['customer'])) {
-  //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
-  $lastProject = $database->project_get_data($kga['user']['lastProject']);
-  $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
-  if (!$lastProject['trash']) {
-    $projectData = $lastProject;
-    $customerData = $database->customer_get_data($lastProject['customerID']);
-  }
-  if (!$lastActivity['trash'])
-    $activityData = $lastActivity;
+    //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
+    $lastProject = $database->project_get_data($kga['user']['lastProject']);
+    $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
+    if (!$lastProject['trash']) {
+        $projectData = $lastProject;
+        $customerData = $database->customer_get_data($lastProject['customerID']);
+    }
+    if (!$lastActivity['trash']) {
+        $activityData = $lastActivity;
+    }
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);
@@ -205,7 +221,7 @@ $view->assign('activityData', $activityData);
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
 foreach ($extensions->phpIncludeFiles() as $includeFile) {
-  require_once $includeFile;
+    require_once $includeFile;
 }
 
 // =======================
@@ -226,8 +242,8 @@ if (isset($kga['customer'])) {
         array(
             'customerID' => $kga['customer']['customerID'],
             'name' => $kga['customer']['name'],
-            'visible' => $kga['customer']['visible']
-        )
+            'visible' => $kga['customer']['visible'],
+        ),
     ));
 } else {
     $view->assign('customers', $database->get_customers($kga['user']['groups']));

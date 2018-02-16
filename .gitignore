@@ -1,8 +1,10 @@
 /.project
 *.*~
 .settings
+.vscode
 .idea/
 .DS_Store
+*.bak
 
 /temporary/*
 !/temporary/.htaccess
@@ -10,10 +12,12 @@
 # the kimai config file
 /includes/autoconf.php
 
-/libraries/*
+#jquery ui
+/components/**
+/libraries/**
 # libraries that will be autoloaded but cannot be fetched from external repositories
 !/libraries/Kimai/
 !/libraries/jQuery/
 !/libraries/phpclasses/
-!/libraries/phpjs/
 !/libraries/TinyButStrongPlugins/
+

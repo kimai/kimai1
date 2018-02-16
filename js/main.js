@@ -234,12 +234,12 @@ function n_uhr() {
 
     if (currentDay != Jetzt.getDate()) {
         // it's the next day
-        $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat, Jetzt));
+        $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + $.datepicker.formatDate(window.dateFormat, Jetzt));
         currentDay = Jetzt.getDate();
 
         // If the difference to the datepicker end date is less than one and a half day.
         // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
-        if (Jetzt - $('#pick_out').datepicker("getDate") < 1.5 * 24 * 60 * 60 * 1000) {
+        if ((Jetzt - $('#pick_out').datepicker("getDate")) < (1.5 * 24 * 60 * 60 * 1000)) {
             setTimeframe(undefined, Jetzt);
         }
     }
@@ -269,9 +269,8 @@ function setTimeframe(fromDate,toDate, callback) {
 
     if (fromDate != undefined) {
         setTimeframeStart(fromDate);
-        timeframe += strftime('%m-%d-%Y', fromDate);
-    }
-    else {
+        timeframe += $.datepicker.formatDate(window.dateFormat, fromDate);
+    } else {
         timeframe += "0-0-0";
     }
 
@@ -279,35 +278,45 @@ function setTimeframe(fromDate,toDate, callback) {
 
     if (toDate != undefined) {
         setTimeframeEnd(toDate);
-        timeframe += strftime('%m-%d-%Y', toDate);
-    }
-    else {
+        timeframe += $.datepicker.formatDate(window.dateFormat, toDate);
+    } else {
         timeframe += "0-0-0";
     }
 
-    $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 },
+    $.post("processor.php", {
+            axAction: "setTimeframe",
+            axValue: timeframe,
+            id: 0
+        },
         function(response) {
-			if (typeof callback === "function"){
-				callback();
-			}else{
-				hook_timeframe_changed();
-			}
-        }
-    );
+            if (typeof callback === "function") {
+                callback();
+            } else {
+                hook_timeframe_changed();
+            }
+        });
 
     updateTimeframeWarning();
 }
 
 function setTimeframeStart(fromDate) {
-    $('#ts_in').html(strftime(timeframeDateFormat, fromDate));
-    $('#pick_in').val(strftime('%m/%d/%Y', fromDate));
-    $('#pick_out').datepicker("option", "minDate", fromDate);
+
+    $('#ts_in').html($.datepicker.formatDate(window.dateFormat, fromDate));
+    $('#pick_in').val($.datepicker.formatDate(window.dateFormat, fromDate));
+    $('#pick_out').datepicker({
+        dateFormat: window.dateFormat,
+        minDate: fromDate,
+    });
 }
 
 function setTimeframeEnd(toDate) {
-    $('#ts_out').html(strftime(timeframeDateFormat, toDate));
-    $('#pick_out').val(strftime('%m/%d/%Y', toDate));
-    $('#pick_in').datepicker("option", "maxDate", toDate);
+
+    $('#ts_out').html($.datepicker.formatDate(window.dateFormat, toDate));
+    $('#pick_out').val($.datepicker.formatDate(window.dateFormat, toDate));
+    $('#pick_in').datepicker({
+        dateFormat: window.dateFormat,
+        minDate: toDate,
+    });
 }
 
 function updateTimeframeWarning() {
@@ -326,7 +335,6 @@ function updateTimeframeWarning() {
     }
 
 }
-
 
 // ----------------------------------------------------------------------------------------
 // starts a new recording when the start-buzzer is hidden
@@ -350,7 +358,6 @@ function startRecord(projectID, activityID, userID) {
 		);
 	});
 }
-
 
 // ----------------------------------------------------------------------------------------
 // stops the current recording when the stop-buzzer is hidden
@@ -533,7 +540,7 @@ function ticktac() {
 function ticktack_off() {
     if (timeoutTicktack) {
         clearTimeout(timeoutTicktack);
-	delete stopwatch_init_time;
+        delete stopwatch_init_time;
         timeoutTicktack = 0;
         $("#h").html("00");
         $("#m").html("00");
@@ -1096,49 +1103,62 @@ function getMonday(date) {
 }
 
 function setTimerToYesterday() {
-    var today = new Date();
-    setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate() - 1, today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate() - 1, today.getFullYear()));
+    var day = new Date();
+    day.setDate(day.getDate() - 1);
+    var night = day;
+    night.setHours(23, 59, 59, 999);
+    day.setHours(0, 0, 0, 0);
+    setTimeframe(day, night);
 }
 
 function setTimerToToday() {
     var today = new Date();
-    setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate(), today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate(), today.getFullYear()));
+    today.setHours(0, 0, 0, 0);
+    var tonight = new Date();
+    tonight.setHours(23, 59, 59, 999);
+    setTimeframe(today, tonight);
 }
 
 function setTimerToLastWeek() {
     var beforeOneWeek = new Date(new Date().getTime() - 60 * 60 * 24 * 7 * 1000),
-        day = beforeOneWeek.getDay(),
-        diffToMonday = beforeOneWeek.getDay() - 1,
-        lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000),
-        lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
-    setTimeframe(mktime(0, 0, 0, lastMonday.getMonth(), lastMonday.getDate(), lastMonday.getFullYear()), mktime(23, 59, 59, lastSunday.getMonth(), lastSunday.getDate(), lastSunday.getFullYear()));
+    day = beforeOneWeek.getDay(),
+    diffToMonday = beforeOneWeek.getDay() - 1,
+    lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000),
+    lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
+    lastMonday.setHours(0, 0, 0, 0);
+    lastSunday.setHours(23, 59, 59, 999);
+    setTimeframe(lastMonday, lastSunday);
 }
 
 function setTimerToLastMonth() {
     var timerStartDay = new Date();
-    timerStartDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth(), 0);
+    timerStartDay.setMonth(timerStartDay.getMonth() - 1);
     timerStartDay.setDate(1);
-
-    // 0 will result in the last day of the previous month
-    var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
-
-    setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    timerStartDay.setHours(0, 0, 0, 0);
+    var timerEndDay = new Date();
+    timerEndDay.setDate(1);
+    timerEndDay.setDate(timerEndDay.getDate() - 1);
+    timerEndDay.setHours(23, 59, 59, 999);
+    setTimeframe(timerStartDay, timerEndDay);
 }
 
 function setTimerToCurrentWeek() {
-	var today = new Date();
-	var thisDay = today.getDay(),
-		diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
-	var monday = new Date(today.setDate(diffToMonday));
-	var timerEndDay = new Date();
+    var today = new Date();
+    var thisDay = today.getDay(),
+    diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
+    var monday = new Date(today.setDate(diffToMonday));
+    monday.setHours(0, 0, 0, 0);
+    var timerEndDay = new Date();
+    timerEndDay.setHours(23, 59, 59, 999);
 
-	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    setTimeframe(monday, timerEndDay);
 }
 
 function setTimerToCurrentMonth() {
-	var timerStartDay = new Date();
-	timerStartDay.setDate(1);
-	var timerEndDay = new Date();
-
-    setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    var timerStartDay = new Date();
+    timerStartDay.setDate(1);
+    timerStartDay.setHours(0, 0, 0, 0);
+    var timerEndDay = new Date();
+    timerEndDay.setHours(23, 59, 59, 999);
+    setTimeframe(timerStartDay, timerEndDay);
 }

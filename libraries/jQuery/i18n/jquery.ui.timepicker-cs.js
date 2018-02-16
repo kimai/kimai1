@@ -4,7 +4,7 @@ jQuery(function($){
     $.timepicker.regional['cs'] = {
                 hourText: 'Hodiny',
                 minuteText: 'Minuty',
-                amPmText: ['AM', 'PM'] ,
+                amPmText: ['dop.', 'odp.'] ,
                 closeButtonText: 'Zavřít',
                 nowButtonText: 'Nyní',
                 deselectButtonText: 'Odoznačit' }

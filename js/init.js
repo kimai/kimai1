@@ -44,6 +44,14 @@ var lists_customer_annotations = {};
 var lists_project_annotations = {};
 var lists_activity_annotations = {};
 
+// because defaulting the locale to the user's browser language would be an idea if we support it. Not being used 
+var language;
+if (window.navigator.languages) {
+    language = window.navigator.languages[0];
+} else {
+    language = window.navigator.userLanguage || window.navigator.language;
+}
+
 $(document).ready(function () {
 
 	var preselected_customer = 0;
@@ -77,7 +85,6 @@ $(document).ready(function () {
 		floaterShow('floaters.php', 'prefs', 0, 0, 450);
 		return false;
 	});
-
 
 	$('#buzzer').click(function () {
 		buzzer();

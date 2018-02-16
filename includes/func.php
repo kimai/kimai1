@@ -257,6 +257,7 @@ function checkDBversion($path)
  */
 function convert_time_strings($in, $out)
 {
+    // obsolete ?
     $explode_in = explode("-", $in);
     $explode_out = explode("-", $out);
 

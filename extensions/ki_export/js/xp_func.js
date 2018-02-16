@@ -286,8 +286,8 @@ function export_extension_reload() {
 			filter_cleared: $('#export_extension_tab_filter_cleared').val(),
 			filter_refundable: $('#export_extension_tab_filter_refundable').val(),
 			filter_type: $('#export_extension_tab_filter_type').val(),
-			first_day: new Date($('#pick_in').val()).getTime() / 1000,
-			last_day: new Date($('#pick_out').val()).getTime() / 1000
+			first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+            last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
 		},
 		function (data) {
 			$("#xp").html(data);
