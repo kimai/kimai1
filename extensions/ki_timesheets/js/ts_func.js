@@ -519,6 +519,13 @@ function ts_getEndDate() {
 	return ts_getDateFromStrings($("#end_day").val(), $("#end_time").val());
 }
 
+function ts_prefillEndDate() {
+	if (!$("#end_day").val()) {
+		$("#end_day").val($("#start_day").val());
+		$('#end_day').trigger('change');
+	}
+}
+
 /**
  * Change the end time field, based on the duration, while editing a timesheet record
  */
@@ -576,4 +583,66 @@ function ts_timeToDuration() {
 function ts_comment(id) {
 	$('#c' + id).toggle();
 	return false;
+}
+
+/**
+ * directly update billability value in timesheet list
+ *
+ * @param id of timesheet entry
+ */
+function ts_updateBillability(id) {
+	var billableValue = document.getElementById('billable_' + id);
+	billableValue = billableValue.options[billableValue.selectedIndex].value;
+	$.post(ts_ext_path + "processor.php",
+		{
+			axAction: "billabilityChange",
+			axValue: 0,
+			id: id,
+			billable: billableValue
+		},
+		function (result) {
+			if (result.errors.length == 0) {
+				ts_ext_reload();
+			} else {
+				var messages = [];
+				for (var index in result.errors) {
+					messages.push(result.errors[index]);
+				}
+				alert(messages.join("\n"));
+			}
+		}
+	);
+}
+
+/**
+ * @param id id of timesheet entry
+ * @param reload only reload if forced
+ */
+function ts_updateDescription(id, reload) {
+	reload = typeof reload !== 'undefined' ? reload : 1;
+	var descriptionValue = document.getElementById('description_' + id);
+	descriptionValue = descriptionValue.value;
+	$('#loader').show();
+	$.post(ts_ext_path + 'processor.php',
+		{
+			axAction: "descriptionChange",
+			axValue: 0,
+			id: id,
+			description: descriptionValue
+		},
+		function (result) {
+			$('#loader').hide();
+			if (result.errors.length == 0) {
+				if (reload === 1) {
+					ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
+				}
+			} else {
+				var messages = [];
+				for (var index in result.errors) {
+					messages.push(result.errors[index]);
+				}
+				alert(messages.join("\n"));
+			}
+		}
+	);
 }

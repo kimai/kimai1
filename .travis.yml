@@ -17,3 +17,5 @@ before_script:
 
 script:
   - ./libraries/bin/phpunit --configuration=phpunit.travis.xml
+
+dist: trusty

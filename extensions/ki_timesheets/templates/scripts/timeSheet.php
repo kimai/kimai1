@@ -2,6 +2,15 @@
 
 $dateFormat = $this->kga->getDateFormat(1);
 
+if ($this->showBillability) {
+    $billableValues = $this->kga['billable'];
+    $billableText = array();
+    foreach ($billableValues as $billableValue) {
+        $billableText[] = $billableValue . '%';
+    }
+    $this->billable = array_combine($billableValues, $billableText);
+}
+
 if ($this->timeSheetEntries) {
     ?>
         <div id="timeSheetTable">
@@ -12,6 +21,9 @@ if ($this->timeSheetEntries) {
                 <col class="from" />
                 <col class="to" />
                 <col class="time" />
+            <?php if ($this->showBillability) { ?>
+                <col class="billable" />
+            <?php } ?>
             <?php if ($this->showRates) { ?>
                 <col class="wage" />
             <?php } ?>
@@ -126,6 +138,48 @@ if ($this->timeSheetEntries) {
             }
             ?>
         </td>
+        <?php if ($this->showBillability): ?>
+            <td class="billable <?php echo $tdClass; ?>">
+                <?php
+                if (isset($row['billable'])) {
+                    if (isset($row['duration'])) {
+                        // billability dropdown
+                        echo $this->formSelect(
+                            'billable',
+                            $row['billable'],
+                            array(
+                                'id' => 'billable_' . $row['timeEntryID'],
+                                'class' => 'formfield',
+                                'onchange' => 'ts_updateBillability(' . $row['timeEntryID'] . ')'
+                            ),
+                            $this->billable);
+
+                        // effective billable time
+                        echo "&nbsp;(";
+                        if ($row['billable'] == 100) {
+                            echo $row['formattedDuration'];
+                        } else {
+                            if ($row['billable'] >= 0) {
+                                $billableMinutes = ($row['duration'] / 60) * ($row['billable'] / 100);
+                                $hours = ceil(floor($billableMinutes / 60 / 24)) + ceil(floor($billableMinutes / 60));
+                                $minutes = ceil($billableMinutes - floor($billableMinutes / 60) * 60);
+                                echo $hours . ":" . sprintf('%02d', $minutes);
+                            } else {
+                                echo "&ndash;:&ndash;&ndash;";
+                            }
+                        }
+                        echo ")";
+                    }
+                } else {
+                    if (isset($row['duration'])) {
+                        echo $row['formattedDuration'];
+                    } else {
+                        echo "&ndash;:&ndash;&ndash;";
+                    }
+                }
+                ?>
+            </td>
+        <?php endif; ?>
         <?php if ($this->showRates): ?>
             <td class="wage <?php echo $tdClass; ?> ">
             <?php
@@ -167,10 +221,14 @@ if ($this->timeSheetEntries) {
             <?php endif; ?>
         </td>
         <td class="description <?php echo $tdClass; ?>" >
-            <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
-            <?php if ($row['description']): ?>
-                <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
-            <?php endif; ?>
+                <?php if ($this->inlineEditingOfDescriptions): ?>
+                    <textarea rows="1" style="width: 100%; resize:none" id="description_<?php echo $row['timeEntryID']; ?>" onfocus="$(this).attr('rows',3);" onfocusout="$(this).attr('rows',1);" onchange="ts_updateDescription(<?php echo $row['timeEntryID']; ?>, 0)"><?php echo htmlspecialchars($row['description']); ?></textarea>
+                <?php else: ?>
+                    <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
+                    <?php if ($row['description']): ?>
+                        <a href="#" onclick="$(this).blur();  return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
+                    <?php endif; ?>
+                <?php endif; ?>
         </td>
         <?php if ($this->showTrackingNumber) { ?>
         <td class="trackingnumber <?php echo $tdClass; ?>">

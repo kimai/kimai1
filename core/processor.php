@@ -27,7 +27,7 @@
  * of customers.
  */
 
-// insert KSPI 
+// insert KSPI
 $isCoreProcessor = 1;
 $dir_templates = "templates/core/";
 require("../includes/kspi.php");
@@ -83,9 +83,11 @@ switch ($axAction) {
         $preferences['hideClearedEntries'] = getRequestBool('hideClearedEntries');
         $preferences['showCommentsByDefault'] = getRequestBool('showCommentsByDefault');
         $preferences['showTrackingNumber'] = getRequestBool('showTrackingNumber');
+        $preferences['showBillability'] = getRequestBool('showBillability');
         $preferences['sublistAnnotations'] = $_REQUEST['sublistAnnotations'];
         $preferences['hideOverlapLines'] = getRequestBool('hideOverlapLines');
         $preferences['showQuickNote'] = getRequestBool('showQuickNote');
+        $preferences['inlineEditingOfDescriptions'] = getRequestBool('inlineEditingOfDescriptions');
         $preferences['defaultLocation'] = isset($_REQUEST['defaultLocation']) ? $_REQUEST['defaultLocation'] : '';
         $preferences['table_time_format'] = $_REQUEST['table_time_format'];
 
