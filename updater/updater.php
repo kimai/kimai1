@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -1178,8 +1178,8 @@ if ((int)$revisionDB < 1393) {
 
 if ((int)$revisionDB < 1394) {
     Kimai_Logger::logfile("-- update to r1394");
-    exec_query("ALTER TABLE `${p}preferences` CHANGE `option` `option` VARCHAR(190) NULL");
-    exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NULL");
+    exec_query("ALTER TABLE `${p}preferences` CHANGE `option` `option` VARCHAR(190) NOT NULL");
+    exec_query("ALTER TABLE `${p}configuration` CHANGE `option` `option` VARCHAR(190) NOT NULL");
 }
 
 // ================================================================================

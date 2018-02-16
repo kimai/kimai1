@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -595,7 +595,7 @@ if (isset($_REQUEST['create_bookmarks'])) {
     $pdf->Bookmark($pdf_title, 0, 0);
 }
 
-//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
+//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "https://www.kimai.org", true, 'T', 'R'); // include company logo
 
 
 $pdf->WriteHtml('<h1>' . $pdf_title . '</h1>');

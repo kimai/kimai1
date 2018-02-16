@@ -13,10 +13,10 @@
             Torsten Höltge, Severin Leonhardt, Kevin Papst, Simon Schaufelberger, Oleg Britvin, Martin Klemkow ...
         </p>
         <p>
-            <a href="http://www.kimai.org" target="_blank">Kimai Homepage</a> |
+            <a href="https://www.kimai.org" target="_blank">Kimai Homepage</a> |
             <a href="http://forum.kimai.org/" target="_blank">Forum</a> |
             <a href="https://github.com/kimai/kimai" target="_blank">GitHub</a> |
-            <a href="http://www.kimai.org/download/" target="_blank">Download</a> |
+            <a href="https://www.kimai.org/download/" target="_blank">Download</a> |
             <a href="http://forum.kimai.org/index.php?board=10.0" target="_blank">Friendly Hacks</a>
         </p>
         <p>
@@ -33,7 +33,7 @@
                 $this->kga['lang']['credits'],
                 'http://forum.kimai.org',
                 'https://github.com/kimai/kimai/archive/master.zip',
-                'http://www.kimai.org/donate/',
+                'https://www.kimai.org/donate/',
                 'https://github.com/kimai/kimai/issues',
                 'https://github.com/kimai/kimai/tree/master/language'
             );

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -29,7 +29,7 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="installscript.js"></script>
     <title>Kimai Installation</title>
-    
+
     <script type="text/javascript">
         var step = 1;
         var current = 0;
@@ -87,7 +87,7 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
             </div>
             <div class="invisible" id="installsteps">
                 <?php include 'steps/10_language.php'; ?>
-            </div>      
+            </div>
         </div>
         <div id="footer" class="invisible"></div>
     </div>
