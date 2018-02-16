@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // set document information
-        $pdf->SetCreator('Kimai Timetracking (http://www.kimai.org)');
+        $pdf->SetCreator('Kimai Timetracking (https://www.kimai.org)');
         //$pdf->SetAuthor('Kevin Papst');
 
         //$pdf->SetTitle('Invoice');

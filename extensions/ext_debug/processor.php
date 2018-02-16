@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -31,16 +31,16 @@ switch ($axAction)
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
-    case "reloadLogfile":    
+    case "reloadLogfile":
         $logdatei = WEBROOT . "temporary/logfile.txt";
         $fh = fopen($logdatei, 'r');
-        
+
         $theData = "";
         $i = 0;
-        
+
         $lines = $kga['logfile_lines'];
         $filearray = [];
-        
+
         while (!feof($fh)) {
             $filearray[$i] = fgets($fh);
             $i++;
@@ -59,10 +59,10 @@ switch ($axAction)
                 if ($line != "") $theData .= $line . "<br/>";
             }
         }
-        
+
         echo $theData;
     break;
-    
+
     /**
      * Empty the logfile.
      */

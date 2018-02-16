@@ -12,14 +12,14 @@ that runs on (almost) every webserver with PHP and MySQL.
 
 You can get more information about this time-tracking software:
 
-* at our [website](http://www.kimai.org)
+* at our [website](https://www.kimai.org)
 * at our [forum](http://forum.kimai.org)
-* in the [documentation](http://www.kimai.org/documentation/)
+* in the [documentation](https://www.kimai.org/documentation/)
 
 ## Features
 
-This is just a short feature list, play around with the [demo installation](http://www.kimai.org/demo/) to see all features:
- 
+This is just a short feature list, play around with the [demo installation](https://www.kimai.org/demo/) to see all features:
+
 * Multi-user management
 * Customer login with read only privileges
 * Every user has its own timesheet
@@ -31,7 +31,7 @@ This is just a short feature list, play around with the [demo installation](http
 * Export data in multiple formats (PDF, XLSX, CSV, direct print)
 * SOAP and JSON API
 * LDAP login provider
-* Native apps ... see our [Apps page](http://www.kimai.org/apps/)
+* Native apps ... see our [Apps page](https://www.kimai.org/apps/)
 
 ## Missing features
 
@@ -39,7 +39,7 @@ This is just a short feature list, play around with the [demo installation](http
 * Budgets based on time
 * No workflow ([approval process](https://github.com/kimai/kimai/issues/470))
 
-![Screenshot](http://www.kimai.org/assets/kimai08.jpg)
+![Screenshot](https://www.kimai.org/assets/kimai08.jpg)
 
 Getting Started
 ---------------

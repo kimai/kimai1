@@ -9,7 +9,7 @@
 		<echo>
 			Build file for Kimai - Open Source Time Tracking
 			Copyright (C) Kimai Team since 2006
-			See http://www.kimai.org/ for further informations
+			See https://www.kimai.org/ for further informations
 			Distributed under the terms of the GPL v3
 		</echo>
 	</target>
@@ -55,7 +55,7 @@
 		<move todir="${target.release.dir}/extensions/#ext_debug/">
 			<fileset dir="${target.release.dir}/extensions/ext_debug/"/>
 		</move>
-		
+
 		<!-- empty status -->
 		<move file="${target.release.dir}/includes/version.php" tofile="${target.release.dir}/includes/version.php.modified">
 			<filterchain>
