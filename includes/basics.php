@@ -26,6 +26,10 @@
 defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
+if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
+    die('Please run <code>composer install --no-dev</code> on the command line to install all php dependencies.');
+}
+
 set_include_path(
     implode(
         PATH_SEPARATOR,
