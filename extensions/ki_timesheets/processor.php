@@ -571,33 +571,32 @@ switch ($axAction) {
         $data['approved'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['approved']);
         $data['userID'] = $_REQUEST['userID'];
 
+        // hide on release 
+        Kimai_Logger::logfile("outdate: ".$_REQUEST['end_day'] .' '. $_REQUEST['end_time'].', ' .$kga->getDateFormat(3).' H:i:s');
+        Kimai_Logger::logfile("indate: ".$_REQUEST['start_day'] .' '.$_REQUEST['start_time'] .', ' .$kga->getDateFormat(3).' H:i:s');
+
         // check if the posted time values are possible
-     	Kimai_Logger::logfile("outdate: ".$_REQUEST['end_day'] .' '. $_REQUEST['end_time'].', ' .$kga->getDateFormat(3).' H:i:s');
-		Kimai_Logger::logfile("indate: ".$_REQUEST['start_day'] .' '.$_REQUEST['start_time'] .', ' .$kga->getDateFormat(3).' H:i:s');
-		
-		
-		$validinDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time']);
-		if($validinDate->format($kga->getDateFormat(3)) != $_REQUEST['start_day']){
-			 $errors['start_day'] = $kga['lang']['TimeDateInputError'];
-		}
-		
-		if(empty($_REQUEST['end_day'])){
-			$validoutDate = null;
-			if(!empty($_REQUEST['duration']) && ($minutes = (integer) $_REQUEST['duration']) && ($minutes > 0) ){
-				/*  use duration rather than endtime - this only handles minutes */
-				Kimai_Logger::logfile("using minutes duration instead of endtime: ".$minutes);
-				$validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time'])->modify("+$minutes minutes");
-				// could do it this way: $validoutDate->add(new DateInterval("PT".$minutes."M"));
-				
-			}
-			
-		}else{
-			$validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['end_day'].' '.$_REQUEST['end_time']);
-			if($validoutDate->format($kga->getDateFormat(3)) != $_REQUEST['end_day']){
-				$errors['end_day'] = $kga['lang']['TimeDateInputError'];
-			}
-		}
-		
+        $validinDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time']);
+        if($validinDate->format($kga->getDateFormat(3)) != $_REQUEST['start_day']){
+             $errors['start_day'] = $kga['lang']['TimeDateInputError'];
+        }
+
+        if(empty($_REQUEST['end_day'])){
+            $validoutDate = null;
+            if(!empty($_REQUEST['duration']) && ($minutes = (integer) $_REQUEST['duration']) && ($minutes > 0) ){
+                /*  use duration rather than endtime - this only handles minutes */
+                Kimai_Logger::logfile("using minutes duration instead of endtime: ".$minutes);
+                $validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time'])->modify("+$minutes minutes");
+                // could do it this way: $validoutDate->add(new DateInterval("PT".$minutes."M"));
+           }
+
+        }else{
+            $validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['end_day'].' '.$_REQUEST['end_time']);
+            if($validoutDate->format($kga->getDateFormat(3)) != $_REQUEST['end_day']){
+                $errors['end_day'] = $kga['lang']['TimeDateInputError'];
+            }
+        }
+
         if (!is_numeric($data['activityID'])) {
             $errors['activityID'] = $kga['lang']['errorMessages']['noActivitySelected'];
         }
@@ -610,10 +609,10 @@ switch ($axAction) {
             echo json_encode(array('errors' => $errors));
             return;
         }
-		// legacy variable names
-		$inDate = $validinDate;
-		$outDate  = $validoutDate;
-		
+        // legacy variable names
+        $inDate = $validinDate;
+        $outDate  = $validoutDate;
+        
         $data['start'] = $inDate->getTimestamp();
 
         if ($outDate != null) {

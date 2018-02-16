@@ -17,12 +17,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 function logfile(entry) {
-    $.post("processor.php", {
-        axAction: "logfile",
-        axValue: entry,
-        id: 0
-    });
+    $.post("processor.php", {axAction: "logfile", axValue: entry, id: 0});
 }
 
 // ----------------------------------------------------------------------------------------
@@ -65,12 +62,13 @@ function headerHeight() {
     return header + tabbar + 10;
 }
 
+
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
 //
 function floaterShow(phpFile, axAction, axValue, id, width, callback) {
     if ($('#floater').css("display") == "block") {
-        $("#floater").fadeOut(fading_enabled ? 500 : 0, function() {
+        $("#floater").fadeOut(fading_enabled ? 500 : 0, function () {
             floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
         });
     } else {
@@ -79,16 +77,15 @@ function floaterShow(phpFile, axAction, axValue, id, width, callback) {
 }
 
 function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
-    $("#floater").load(phpFile, {
+    $("#floater").load(phpFile,
+        {
             axAction: axAction,
             axValue: axValue,
             id: id
         },
-        function() {
+        function () {
 
-            $('#floater').css({
-                width: width + "px"
-            });
+            $('#floater').css({width: width + "px"});
 
             resize_floater();
 
@@ -96,9 +93,7 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             if (x < 0) {
                 x = 0;
             }
-            $("#floater").css({
-                left: x + "px"
-            });
+            $("#floater").css({left: x + "px"});
             $("#floater").fadeIn(fading_enabled ? 200 : 0);
 
             $('#focus').focus();
@@ -106,12 +101,12 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             $('#floater_content').css("height", $('#floater_dimensions').outerHeight() + 5);
 
             // toggle class of the proberbly existing extended options button
-            $(".options").toggle(function() {
+            $(".options").toggle(function () {
                 el = $(this);
                 el.addClass("up");
                 el.removeClass("down");
                 return false;
-            }, function() {
+            }, function () {
                 el = $(this);
                 el.addClass("down");
                 el.removeClass("up");
@@ -122,7 +117,8 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
                 callback();
             }
 
-        });
+        }
+    );
 }
 
 function resize_floater() {
@@ -130,17 +126,13 @@ function resize_floater() {
     height -= $('#floater').outerHeight() - $('#floater').height(); // floater border and padding
     height -= $('#floater_tabs').outerHeight() - $('#floater_tabs').height(); // floaterTab border and padding
     height -= $('#floater_handle').outerHeight(true) + $('.menuBackground').outerHeight(true) + $('#formbuttons').outerHeight(true); // other elements heights
-    $('#floater_tabs').css({
-        'max-height': height + "px"
-    });
+    $('#floater_tabs').css({'max-height': height + "px"});
 
     var y = ($(window).height() - $('#floater').height()) / 2;
     if (y < 0) {
         y = 0;
     }
-    $("#floater").css({
-        top: y + "px"
-    });
+    $("#floater").css({top: y + "px"});
 
 }
 
@@ -155,12 +147,14 @@ function floaterClose() {
     return false;
 }
 
+
 // ----------------------------------------------------------------------------------------
 // change extension by tab
 //
 function changeTab(target, path) {
 
     kill_reg_timeouts();
+
 
     if ($("#loader").is(':hidden')) {
         // if previous extension was loaded save visibility of lists
@@ -204,6 +198,7 @@ function kill_timeout(to) {
     eval(evalstring);
 }
 
+
 function showTools() {
     $('#main_tools_menu').fadeIn(fading_enabled ? 200 : 0);
 }
@@ -212,14 +207,16 @@ function hideTools() {
     $('#main_tools_menu').fadeOut(fading_enabled ? 200 : 0);
 }
 
+
 // ----------------------------------------------------------------------------------------
 // checks if a new stable Kimai version is available for download
 //
 function checkupdate(path) {
     $.post('core/checkupdate.php',
-        function(response) {
+        function (response) {
             $('#checkupdate').html(response);
-        });
+        }
+    );
 }
 
 // ----------------------------------------------------------------------------------------
@@ -251,7 +248,8 @@ function n_uhr() {
 
     if (Sekunden % 2 == 0) {
         ZeitString += n_seperator;
-    } else {
+    }
+    else {
         ZeitString += ":";
     }
 
@@ -265,8 +263,10 @@ function n_uhr() {
 // grabs entered timeframe and writes it to database
 // after that it reloads all tables
 //
-function setTimeframe(fromDate, toDate, callback) {
+function setTimeframe(fromDate,toDate, callback) {
+
     timeframe = '';
+
     if (fromDate != undefined) {
         setTimeframeStart(fromDate);
         timeframe += $.datepicker.formatDate(window.dateFormat, fromDate);
@@ -329,7 +329,8 @@ function updateTimeframeWarning() {
 
     if (new Date($('#pick_out').val()) < today) {
         $('#ts_out').addClass('datewarning')
-    } else {
+    }
+    else {
         $('#ts_out').removeClass('datewarning')
     }
 
@@ -341,77 +342,71 @@ function updateTimeframeWarning() {
 function startRecord(projectID, activityID, userID) {
     var now = Math.floor(((new Date()).getTime()) / 1000);
     startsec = now;
-    value = projectID + "|" + activityID;
-    $('#buzzer').addClass('disabled');
-    show_stopwatch();
-    setTimeframe(undefined, new Date(), function() {
-        $.post("processor.php", {
-                axAction: "startRecord",
-                axValue: value,
-                id: userID
-            },
-            function(response) {
-                var data = jQuery.parseJSON(response);
-                currentRecording = data['id'];
-                timeout_updateRecordStatus = setTimeout(function() {
-                    $('#buzzer').removeClass('disabled');
-                }, 3000);
-                ts_ext_reload();
-            });
-    });
+    value = projectID +"|"+ activityID;
+	$('#buzzer').addClass('disabled');
+	show_stopwatch();
+	setTimeframe(undefined,new Date(), function(){
+		$.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
+			function(response){
+				var data = jQuery.parseJSON(response);
+				currentRecording = data['id'];
+				timeout_updateRecordStatus = setTimeout(function(){
+					$('#buzzer').removeClass('disabled');
+				}, 3000);
+				ts_ext_reload();
+			}
+		);
+	});
 }
 
 // ----------------------------------------------------------------------------------------
 // stops the current recording when the stop-buzzer is hidden
 //
 function stopRecord() {
-    $("#timeSheetTable>table>tbody>tr#timeSheetEntry" + currentRecording + ">td>a.stop>img").attr("src", "../skins/" + skin + "/grfx/loading13_red.gif");
-    $("#timeSheetTable>table>tbody>tr#timeSheetEntry" + currentRecording + ">td").css("background-color", "#F00");
-    $("#timeSheetTable>table>tbody>tr#timeSheetEntry" + currentRecording + ">td").css("color", "#FFF");
-    $('#buzzer').addClass('disabled');
-    show_selectors();
-    $.post("processor.php", {
-            axAction: "stopRecord",
-            axValue: 0,
-            id: currentRecording
-        },
-        function(response) {
-            document.title = default_title;
-            if (openAfterRecorded) {
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "background-color", "#F00" );
+    $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
+	$('#buzzer').addClass('disabled');
+	show_selectors();
+    $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
+        function(response){
+              document.title = default_title;
+              if (openAfterRecorded) {
                 var data = jQuery.parseJSON(response);
                 editRecord(data['id']);
-            }
-            timeout_updateRecordStatus = setTimeout(function() {
-                $('#buzzer').removeClass('disabled');
-            }, 3000);
-            ts_ext_reload();
-        });
+              }
+			  timeout_updateRecordStatus = setTimeout(function(){
+				$('#buzzer').removeClass('disabled');
+			  }, 3000);
+			  ts_ext_reload();
+        }
+    );
 }
 
 function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) { // Updated
-    // if awaiting updateRecordStatus from buzzer
-    if (typeof timeout_updateRecordStatus != 'undefined') {
-        clearTimeout(timeout_updateRecordStatus);
-        delete timeout_updateRecordStatus;
-        $('#buzzer').removeClass('disabled');
-    }
+  // if awaiting updateRecordStatus from buzzer
+  if (typeof timeout_updateRecordStatus != 'undefined'){
+	  clearTimeout(timeout_updateRecordStatus);
+	  delete timeout_updateRecordStatus;
+	  $('#buzzer').removeClass('disabled');
+  }
 
-    if (record_ID == false) {
-        // no recording is running anymore
-        currentRecording = -1;
-        show_selectors();
-        return;
-    }
+  if (record_ID == false) {
+    // no recording is running anymore
+    currentRecording = -1;
+    show_selectors();
+    return;
+  }
 
-    // Update offset accuracy
-    if (typeof stopwatch_init_time != 'undefined' && (stopwatch_init_time + offset) != record_startTime) {
-        offset = stopwatch_init_time - record_startTime;
-    }
+  // Update offset accuracy
+  if ( typeof stopwatch_init_time != 'undefined' && (stopwatch_init_time + offset) != record_startTime ){
+	offset = stopwatch_init_time - record_startTime;
+  }
 
-    startsec = record_startTime + offset;
+  startsec = record_startTime + offset;
 
-    if (selected_project != projectID)
-        buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
+  if (selected_project != projectID)
+    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -440,39 +435,32 @@ function show_selectors() {
 
 function buzzer() {
 
-    if (currentRecording == 0 || $('#buzzer').hasClass('disabled'))
-        return;
+  if ( currentRecording == 0 || $('#buzzer').hasClass('disabled') ) return;
 
-    if (currentRecording > -1) {
-        stopRecord();
-        currentRecording = 0;
-    } else {
-        startRecord(selected_project, selected_activity, userID);
-    }
+  if (currentRecording > -1) {
+	stopRecord();
+    currentRecording=0;
+  } else {
+    startRecord(selected_project,selected_activity,userID);
+  }
 }
 
 function buzzer_preselect_project(projectID, projectName, customerID, customerName, updateRecording) {
     selected_customer = customerID;
     selected_project = projectID;
-    $.post("processor.php", {
-        axAction: "saveBuzzerPreselection",
-        project: projectID
-    });
+    $.post("processor.php", {axAction: "saveBuzzerPreselection", project: projectID});
     $("#selected_customer").html(customerName);
     $("#selected_project").html(projectName);
     $("#selected_customer").removeClass("none");
 
-    lists_reload('activity', function() {
+    lists_reload('activity', function () {
         buzzer_preselect_update_ui('projects', projectID, updateRecording);
     });
 }
 
 function buzzer_preselect_activity(activityID, activityName, updateRecording) {
     selected_activity = activityID;
-    $.post("processor.php", {
-        axAction: "saveBuzzerPreselection",
-        activity: activityID
-    });
+    $.post("processor.php", {axAction: "saveBuzzerPreselection", activity: activityID});
     $("#selected_activity").html(activityName);
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
@@ -504,9 +492,10 @@ function buzzer_preselect_update_ui(selector, selectedID, updateRecording) {
                 project: selected_project,
                 activity: selected_activity
             },
-            function(data) {
+            function (data) {
                 ts_ext_reload();
-            });
+            }
+        );
     }
 }
 
@@ -559,6 +548,7 @@ function ticktack_off() {
     }
 }
 
+
 // ----------------------------------------------------------------------------------------
 // shows dialogue for editing an item in either customer, project or activity list
 //
@@ -568,6 +558,7 @@ function editSubject(subject, id) {
     return false;
 }
 
+
 // ----------------------------------------------------------------------------------------
 // filters project and activity fields in add/edit record dialog
 
@@ -575,7 +566,7 @@ function filter_selects(id, needle) {
     // cache initialisieren
     if (typeof window['__cacheselect_' + id] == "undefined") {
         window['__cacheselect_' + id] = [];
-        $('#' + id + ' option ').each(function(index) {
+        $('#' + id + ' option ').each(function (index) {
             window['__cacheselect_' + id].push({
                 'value': $(this).val(),
                 'text': $(this).text()
@@ -586,8 +577,7 @@ function filter_selects(id, needle) {
     var selectedValue = $('#' + id).val();
     $('#' + id).removeOption(/./);
 
-    var i,
-        cs = window['__cacheselect_' + id];
+    var i, cs = window['__cacheselect_' + id];
     for (i = 0; i < cs.length; ++i) {
         if (cs[i].text.toLowerCase().indexOf(needle.toLowerCase()) !== -1) {
             $('#' + id).addOption(cs[i].value, cs[i].text);
@@ -603,7 +593,8 @@ function lists_visible(visible) {
         lists_resize();
         $('body>.lists').show();
         lists_resize();
-    } else {
+    }
+    else {
         $('body>.lists').hide();
     }
 }
@@ -633,7 +624,7 @@ function lists_userShrinkHide() {
 }
 
 function lists_shrinkExtToggle() {
-    (extensionShrinkMode) ? extensionShrinkMode = 0: extensionShrinkMode = 1;
+    (extensionShrinkMode) ? extensionShrinkMode = 0 : extensionShrinkMode = 1;
     if (extensionShrinkMode) {
         $('#extensionShrink').css("background-image", "url('../skins/" + skin + "/grfx/timeSheetShrink_down.png')");
     } else {
@@ -644,7 +635,7 @@ function lists_shrinkExtToggle() {
 }
 
 function lists_shrinkCustomerToggle() {
-    (customerShrinkMode) ? customerShrinkMode = 0: customerShrinkMode = 1;
+    (customerShrinkMode) ? customerShrinkMode = 0 : customerShrinkMode = 1;
     if (customerShrinkMode) {
         $('#customers, #customers_head, #customers_foot').fadeOut(fading_enabled ? "slow" : 0, lists_set_tableWrapperWidths);
         $('#customersShrink').css("background-image", "url('../skins/" + skin + "/grfx/customerShrink_right.png')");
@@ -663,7 +654,7 @@ function lists_shrinkCustomerToggle() {
 }
 
 function lists_shrinkUserToggle() {
-    (userShrinkMode) ? userShrinkMode = 0: userShrinkMode = 1;
+    (userShrinkMode) ? userShrinkMode = 0 : userShrinkMode = 1;
     if (userShrinkMode) {
         $('#users, #users_head, #users_foot').fadeOut(fading_enabled ? "slow" : 0, lists_set_tableWrapperWidths);
         $('#usersShrink').css("background-image", "url('../skins/" + skin + "/grfx/customerShrink_right.png')");
@@ -782,13 +773,13 @@ function lists_set_heightTop() {
 function lists_set_TableWidths() {
     lists_get_dimensions();
     // set table widths
-    ($("#users").innerHeight() - $("#users table").outerHeight() > 0) ? scr = 0: scr = scroller_width; // same goes for subtables ....
+    ($("#users").innerHeight() - $("#users table").outerHeight() > 0) ? scr = 0 : scr = scroller_width; // same goes for subtables ....
     $("#users table").css("width", userColumnWidth - scr);
-    ($("#customers").innerHeight() - $("#customers table").outerHeight() > 0) ? scr = 0: scr = scroller_width; // same goes for subtables ....
+    ($("#customers").innerHeight() - $("#customers table").outerHeight() > 0) ? scr = 0 : scr = scroller_width; // same goes for subtables ....
     $("#customers table").css("width", customerColumnWidth - scr);
-    ($("#projects").innerHeight() - $("#projects table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+    ($("#projects").innerHeight() - $("#projects table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
     $("#projects table").css("width", projectColumnWidth - scr);
-    ($("#activities").innerHeight() - $("#activities table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+    ($("#activities").innerHeight() - $("#activities table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
     $("#activities table").css("width", activityColumnWidth - scr);
 }
 
@@ -798,48 +789,38 @@ function lists_set_TableWidths() {
 function lists_reload(subject, callback) {
     switch (subject) {
         case "user":
-            $.post("processor.php", {
-                    axAction: "reload_users",
-                    axValue: 0,
-                    id: 0
-                },
-                function(data) {
+            $.post("processor.php", {axAction: "reload_users", axValue: 0, id: 0},
+                function (data) {
                     $("#users").html(data);
-                    ($("#users").innerHeight() - $("#users table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+                    ($("#users").innerHeight() - $("#users table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
                     $("#users table").css("width", customerColumnWidth - scr);
                     lists_live_filter('user', $('#filt_user').val());
                     lists_write_annotations('user');
                     if (typeof(callback) != "undefined") {
                         callback();
                     }
-                });
+                }
+            );
             break;
         case "customer":
-            $.post("processor.php", {
-                    axAction: "reload_customers",
-                    axValue: 0,
-                    id: 0
-                },
-                function(data) {
+            $.post("processor.php", {axAction: "reload_customers", axValue: 0, id: 0},
+                function (data) {
                     $("#customers").html(data);
-                    ($("#customers").innerHeight() - $("#customers table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+                    ($("#customers").innerHeight() - $("#customers table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
                     $("#customers table").css("width", customerColumnWidth - scr);
                     lists_live_filter('customer', $('#filter_customer').val());
                     lists_write_annotations('customer');
                     if (typeof(callback) != "undefined") {
                         callback();
                     }
-                });
+                }
+            );
             break;
         case "project":
-            $.post("processor.php", {
-                    axAction: "reload_projects",
-                    axValue: 0,
-                    id: 0
-                },
-                function(data) {
+            $.post("processor.php", {axAction: "reload_projects", axValue: 0, id: 0},
+                function (data) {
                     $("#projects").html(data);
-                    ($("#projects").innerHeight() - $("#projects table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+                    ($("#projects").innerHeight() - $("#projects table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
                     $("#projects table").css("width", projectColumnWidth - scr);
                     $('#projects>table>tbody>tr>td>a.preselect#ps' + selected_project + '>img').attr('src', '../skins/' + skin + '/grfx/preselect_on.png');
                     lists_live_filter('project', $('#filter_project').val());
@@ -847,31 +828,29 @@ function lists_reload(subject, callback) {
                     if (typeof(callback) != "undefined") {
                         callback();
                     }
-                });
+                }
+            );
             break;
         case "activity":
-            $.post("processor.php", {
-                    axAction: "reload_activities",
-                    axValue: 0,
-                    id: 0,
-                    project: selected_project
-                },
-                function(data) {
+            $.post("processor.php", {axAction: "reload_activities", axValue: 0, id: 0, project: selected_project},
+                function (data) {
                     $("#activities").html(data);
-                    ($("#activities").innerHeight() - $("#activities table").outerHeight() > 0) ? scr = 0: scr = scroller_width;
+                    ($("#activities").innerHeight() - $("#activities table").outerHeight() > 0) ? scr = 0 : scr = scroller_width;
                     $("#activities table").css("width", activityColumnWidth - scr);
                     $('#activities>table>tbody>tr>td>a.preselect#ps' + selected_activity + '>img').attr('src', '../skins/' + skin + '/grfx/preselect_on.png');
                     lists_live_filter('activity', $('#filter_activity').val());
                     lists_write_annotations('activity');
                     if ($('#row_activity[data-id="' + selected_activity + '"]').length == 0) {
                         $('#buzzer').addClass('disabled');
-                    } else {
+                    }
+                    else {
                         $('#buzzer').removeClass('disabled');
                     }
                     if (typeof(callback) != "undefined") {
                         callback();
                     }
-                });
+                }
+            );
             break;
     }
 }
@@ -880,10 +859,10 @@ function lists_reload(subject, callback) {
 //  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
 //
 function lists_live_filter(div_list, needle) {
-    $('#' + div_list + ' tr ').filter(function(index) {
+    $('#' + div_list + ' tr ').filter(function (index) {
         return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) === -1);
     }).css('display', 'none');
-    $('#' + div_list + ' tr ').filter(function(index) {
+    $('#' + div_list + ' tr ').filter(function (index) {
         return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) !== -1);
     }).css('display', '');
 }
@@ -910,6 +889,7 @@ function lists_customer_prefilter(customer, filter, singleFilter) {
         $("#projects .project").removeClass("TableRowInvisible");
     }
 }
+
 
 // ----------------------------------------------------------------------------------------
 //  table row changes color on rollover - preselection link on whole row
@@ -971,7 +951,7 @@ function lists_write_annotations(part) {
 }
 
 function lists_filter_select_all(subjectPlural) {
-    $('#' + subjectPlural + ' tr').each(function(index) {
+    $('#' + subjectPlural + ' tr').each(function (index) {
         if ($(this).hasClass('fhighlighted')) {
             return;
         }
@@ -983,7 +963,7 @@ function lists_filter_select_all(subjectPlural) {
 }
 
 function lists_filter_deselect_all(subjectPlural) {
-    $('#' + subjectPlural + ' tr').each(function(index) {
+    $('#' + subjectPlural + ' tr').each(function (index) {
         if (!$(this).hasClass('fhighlighted')) {
             return;
         }
@@ -995,7 +975,7 @@ function lists_filter_deselect_all(subjectPlural) {
 }
 
 function lists_filter_select_invert(subjectPlural) {
-    $('#' + subjectPlural + ' tr').each(function(index) {
+    $('#' + subjectPlural + ' tr').each(function (index) {
         var subjectSingular = $(this).attr('id').substring(4);
         lists_toggle_filter(subjectSingular, parseInt($(this).attr('data-id')));
     });
@@ -1023,7 +1003,8 @@ function lists_toggle_filter(subject, id) {
                 filterActivities.splice(filterActivities.indexOf(id), 1);
                 break;
         }
-    } else {
+    }
+    else {
         rowElement.addClass('fhighlighted');
         switch (subject) {
             case 'user':
@@ -1053,10 +1034,10 @@ function lists_update_filter(subject, id) {
 
 function resize_menu() {
     $('#menu').css('width',
-        $('#display').position()['left'] -
-        $('#menu').position()['left'] -
-        20 +
-        parseInt($('#display').css('margin-left')));
+        $('#display').position()['left']
+        - $('#menu').position()['left']
+        - 20
+        + parseInt($('#display').css('margin-left')));
 }
 
 function validatePassword(password, retypePassword) {
@@ -1106,6 +1087,7 @@ function prependZeroIfNeeded(value) {
     return ((value < 10) ? '0' : '') + value;
 }
 
+
 //  quicklinks for timer presets
 
 function mktime(hour, minute, second, month, day, year) {
@@ -1139,10 +1121,10 @@ function setTimerToToday() {
 
 function setTimerToLastWeek() {
     var beforeOneWeek = new Date(new Date().getTime() - 60 * 60 * 24 * 7 * 1000),
-        day = beforeOneWeek.getDay(),
-        diffToMonday = beforeOneWeek.getDay() - 1,
-        lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000),
-        lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
+    day = beforeOneWeek.getDay(),
+    diffToMonday = beforeOneWeek.getDay() - 1,
+    lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000),
+    lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
     lastMonday.setHours(0, 0, 0, 0);
     lastSunday.setHours(23, 59, 59, 999);
     setTimeframe(lastMonday, lastSunday);
@@ -1163,7 +1145,7 @@ function setTimerToLastMonth() {
 function setTimerToCurrentWeek() {
     var today = new Date();
     var thisDay = today.getDay(),
-        diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
+    diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
     var monday = new Date(today.setDate(diffToMonday));
     monday.setHours(0, 0, 0, 0);
     var timerEndDay = new Date();

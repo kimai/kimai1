@@ -87,7 +87,6 @@ return array(
     "newPassword" => "Nytt Lösenord",
     "retypePassword" => "Nytt Lösenord igen",
     "minLength" => "minst 5 tecken!",
-
     "update" => "Databasstrukturen för den Installerade Kimai versionen måste uppdateras.<br />Vi rekommenderar att säkerhetskopia görs på registeruppgifterna så att ingen data går förlorad<br />under processen.",
     "updateNow" => "Uppdatera databasen nu!",
     "stop" => "Stopp!",
@@ -254,7 +253,7 @@ return array(
         1 => array('hdl' => "Fel vid installation!",
             'txt' => 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.', ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
     ),
 
     'updater' => array(
@@ -285,7 +284,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         7 => "blev återställd.",
         8 => "skapa säkerhetskopia",
         9 => "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)"),
-
+    
     'export_extension' => array(
         "print_hint" => "Klicka OK för att öppna en skrivbar tabell.",
         "dl_hint" => "Klikcka OK för att ladda ner en exporterad fil.",
@@ -340,7 +339,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
         'duration_unit' => 'h',
     ),
-
+    
     'ext_invoice' => array(
         'invoiceTitle' => 'Create invoice',
         'invoiceProject' => 'Projects',
@@ -348,7 +347,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceOptionShort' => 'Short Invoice',
         'invoiceOptionRound' => 'Round time',
         'invoiceButton' => 'Create',
-        'noData' => 'There are no time entries for the selected project & time period.',
+        'noData' => 'There are no time entries for the selected project & time period.'
     ),
 
     'extensions' => array(
@@ -358,7 +357,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'deb_ext' => 'Debug',
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
-        'ki_export' => 'Export',
+        'ki_export' => 'Export'
     ),
 
     "log_delete" => "log rensas",

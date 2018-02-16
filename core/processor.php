@@ -123,7 +123,7 @@ switch ($axAction) {
         Kimai_Logger::logfile("setTimeframe " . $axValue);
         $timeframe = explode('|', $axValue);
         $timeframe_in = DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[0])->getTimestamp();
-		if ($timeframe_in < 950000000) {
+        if ($timeframe_in < 950000000) {
             $timeframe_in = $in;
         }
         $timeframe_out =  DateTime::createFromFormat($kga->getDateFormat(3), $timeframe[1])->getTimestamp();

@@ -72,12 +72,12 @@ if (isset($kga['lang']['countryCode'])) {
 // ===============================================
 $current_timer = array();
 if (isset($kga['customer'])) {
-    $current_timer['all'] = 0;
-    $current_timer['hour'] = 0;
-    $current_timer['min'] = 0;
-    $current_timer['sec'] = 0;
+  $current_timer['all']  = 0;
+  $current_timer['hour'] = 0;
+  $current_timer['min']  = 0;
+  $current_timer['sec']  = 0;
 } else {
-    $current_timer = $database->get_current_timer();
+  $current_timer = $database->get_current_timer();
 }
 
 // =======================================

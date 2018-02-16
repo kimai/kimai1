@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": "^5.6|^7.0",
-		"ext-ctype": "*",
+        "ext-ctype": "*",
         "ext-dom": "*",
         "ext-gd": "*",
         "ext-iconv": "*",
@@ -25,18 +25,17 @@
         "ext-zip": "*",
         "ext-zlib": "*",	
         "tecnickcom/tcpdf": "^6.2.12",
-        "zendframework/zend-mvc": ">=3.0",
         "zf1/zend-registry": "~1.12",
         "zf1/zend-cache":"~1.12",
         "zf1/zend-locale":"~1.12",
         "zf1/zend-view":"~1.12",
-        "components/jqueryui":">1.10",
-        "trentrichardson/jquery-timepicker-addon":">1.1",
+        "components/jqueryui":">1.1",
         "phpoffice/phpspreadsheet": ">1",
         "tinybutstrong/tinybutstrong": ">=3.10"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
+        "zendframework/zend-mvc": ">=3.0",
         "jquery-form/form": ">3.1"
     },
     "autoload": {

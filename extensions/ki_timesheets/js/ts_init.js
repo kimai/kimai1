@@ -43,6 +43,8 @@ so this project needs to have an i18n version of jqueryui
 $.datepicker.setDefaults( $.datepicker.regional[ "sv" ] );
 this is iso standard
 var ts_dayFormatExp = new RegExp("^([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})$");
+
+ts_dayFormatExp no longer used
 */
 var ts_dayFormatExp = new RegExp("^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})$");
 var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2})?(:[0-9]{1,2})?$");
