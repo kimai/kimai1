@@ -466,8 +466,10 @@ switch ($axAction) {
         if (isset($kga['customer'])) {
             $filterCustomers = array($kga['customer']['customerID']);
         }
-        Kimai_Logger::logfile(__FILE__);
-        Kimai_Logger::logfile("  in: ". $in . ",  out: ".$out.', '.( $out - $in ));
+        // Using timestamps and storing ints makes it hard to see the date and time.
+        // $in and $out are timestamps for the beginning and end of the displayed time interval
+        // Kimai_Logger::logfile(__FILE__);
+        // Kimai_Logger::logfile("  in: ". $in . ",  out: ".$out.', '.( $out - $in ));
         $timeSheetEntries = $database->get_timeSheet($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, 1);
         if (count($timeSheetEntries) > 0) {
             $view->assign('timeSheetEntries', $timeSheetEntries);

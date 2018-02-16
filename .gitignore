@@ -16,5 +16,9 @@
 !/libraries/Kimai/
 !/libraries/jQuery/
 !/libraries/phpclasses/
-!/libraries/phpjs/
 !/libraries/TinyButStrongPlugins/
+/components/form
+i18n
+jquery-ui
+jquery
+components

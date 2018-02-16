@@ -21,19 +21,20 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libraries -->
-    <script src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script src="../libraries/components/jquery/jquery.min.js"></script>
     <script src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
     <script src="../libraries/jQuery/jquery.form.min.js"></script>
     <script src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
     <script src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-    <script src="../libraries/jQuery/jquery-ui.min.js"></script>
+    <script src="../libraries/components/jqueryui/jquery-ui.min.js"></script>
     <!-- conditional locale include - todo use same for timepicker -->
     <?php 
+	// the libraries can be done with composer /libraries/components/jqueryui
         if(preg_match('"^([a-z]{2})(-[A-Z]{2})?$"', $this->kga['lang']['countryCode'],$temp)){ 
-            if (is_file("../libraries/jQuery/i18n/datepicker-$temp[0].js")) 
-                echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[0].js\"></script>\n";
-            elseif (is_file("../libraries/jQuery/i18n/datepicker-$temp[1].js")) 
-                echo "<script src=\"../libraries/jQuery/i18n/datepicker-$temp[1].js\"></script>\n";
+            if (is_file("../libraries/components/jqueryui/ui/i18n/datepicker-$temp[0].js")) 
+                echo "<script src=\"../libraries/components/ui/jqueryui/i18n/datepicker-$temp[0].js\"></script>\n";
+            elseif (is_file("../libraries/components/jqueryui/ui/i18n/datepicker-$temp[1].js")) 
+                echo "<script src=\"../libraries/components/jqueryui/ui/i18n/datepicker-$temp[1].js\"></script>\n";
             else echo "\n    <!-- ".getcwd()."  $temp[1]  $temp[0] missing the jquery ui i18n libs for ".$this->kga['lang']['countryCode'].' -->';
         }
     ?>

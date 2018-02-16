@@ -72,17 +72,18 @@ switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5.4
+     *  - PHP major version >= 5.6
      *  - MySQLi extension available
      *  - iconv extension available
+     *  - todo there are some more extensions required by the libs
      *  - memory limit should be at least 20 MB for reliable PDF export
-     *  - (PHP_VERSION_ID < 50400) might be a better test
+     *  - (PHP_VERSION_ID < 50600) might be a better test. 
      */
     case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+		if (PHP_VERSION_ID < 50600){
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
-        }
+	    }
 
         if (!extension_loaded('mysqli')) {
             $errors++;
