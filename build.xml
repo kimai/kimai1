@@ -1,7 +1,7 @@
 <project name="Kimai" default="help">
 
 	<!-- values depending on the Kimai version and your development environment -->
-	<property name="release.version" value="1.1.0"/>
+	<property name="release.version" value="1.2.2"/>
 	<property name="release.directory" location="/tmp/kimai/"/>
 
 	<!-- default target just dumps a copyright notice -->
@@ -46,6 +46,9 @@
 					<exclude name=".idea/"/>
 					<exclude name="tests/"/>
 					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
+					<exclude name="libraries/phpoffice/phpexcel/Examples/**"/>
+					<exclude name="libraries/phpoffice/phpexcel/unitTests/**"/>
+					<exclude name="libraries/symfony/yaml/Tests/**"/>
 					<exclude name="libraries/tecnickcom/tcpdf/examples/**"/>
 				</patternset>
 			</fileset>
