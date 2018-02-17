@@ -109,6 +109,12 @@ div.ki_timesheet>div#timeSheet>div#timeSheetTable>table>tbody>tr>td.username {
     width:40px;
 }
 
+#timeSheet_head td.billable,
+#timeSheet td.billable
+{
+    width:115px;
+}
+
 #timeSheet_head td.wage,
 #timeSheet td.wage
 {

@@ -210,7 +210,7 @@ if ($this->projectsFilter != ""): ?>
 <?php if (isset($this->columns['customer'])):     ?> <th><?php echo $this->kga['lang']['customer']?></th>    <?php endif; ?>
 <?php if (isset($this->columns['project'])):      ?> <th><?php echo $this->kga['lang']['project']?></th>     <?php endif; ?>
 <?php if (isset($this->columns['activity'])):     ?> <th><?php echo $this->kga['lang']['activity']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['description'])):  ?> <th>D<?php echo $this->kga['lang']['description']?></th> <?php endif; ?>
+<?php if (isset($this->columns['description'])):  ?> <th><?php echo $this->kga['lang']['description']?></th> <?php endif; ?>
 <?php if (isset($this->columns['comment'])):      ?> <th><?php echo $this->kga['lang']['comment']?></th>     <?php endif; ?>
 <?php if (isset($this->columns['location'])):     ?> <th><?php echo $this->kga['lang']['location']?></th>   <?php endif; ?>
 <?php if (isset($this->columns['trackingNumber'])):   ?> <th><?php echo $this->kga['lang']['trackingNumber']?></th>  <?php endif; ?>

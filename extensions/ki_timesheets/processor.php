@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -64,7 +64,6 @@ function timesheetAccessAllowed($entry, $action, &$errors)
             $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
             return false;
         }
-
     }
 
     $permissionName = 'ki_timesheets-otherEntry-otherGroup-' . $action;
@@ -75,13 +74,74 @@ function timesheetAccessAllowed($entry, $action, &$errors)
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
         return false;
     }
-
 }
 
 // ==================
 // = handle request =
 // ==================
 switch ($axAction) {
+
+    // ==============================================
+    // = quick change of billability                =
+    // ==============================================
+    case 'billabilityChange':
+        header('Content-Type: application/json;charset=utf-8');
+        $errors = array();
+        $action = 'edit';
+
+        $data = $database->timeSheet_get_data($_REQUEST['id']);
+
+        // check if editing or deleting with the old values would be allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        $data['billable'] = $_REQUEST['billable'];
+
+        // check if editing or deleting with the new values is allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors'=>$errors));
+            break;
+        }
+
+        // TIME RIGHT - EDIT ENTRY
+        Kimai_Logger::logfile("timeEntry_edit: " .$_REQUEST['id']);
+        $database->timeEntry_edit($_REQUEST['id'], $data);
+
+        echo json_encode(array('errors' => $errors));
+        break;
+
+    // ==============================================
+    // = quick change of description                =
+    // ==============================================
+    case 'descriptionChange':
+        header('Content-Type: application/json;charset=utf-8');
+        $errors = array();
+        $action = 'edit';
+
+        $data = $database->timeSheet_get_data($_REQUEST['id']);
+
+        // check if editing or deleting with the old values would be allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        $data['description'] = $_REQUEST['description'];
+
+        // check if editing or deleting with new values is allowed
+        if (!timesheetAccessAllowed($data, $action, $errors)) {
+            echo json_encode(array('errors' => $errors));
+            break;
+        }
+
+        // TIME RIGHT - EDIT ENTRY
+        Kimai_Logger::logfile("timeEntry_edit: " . $_REQUEST['id']);
+        $database->timeEntry_edit($_REQUEST['id'], $data);
+
+        echo json_encode(array('errors' => $errors));
+        break;
 
     // ==============================================
     // = start a new recording based on another one =
@@ -109,7 +169,6 @@ switch ($axAction) {
             $userData['lastProject'] = $timeSheetEntry['projectID'];
             $userData['lastActivity'] = $timeSheetEntry['activityID'];
             $database->user_edit($kga['user']['userID'], $userData);
-
 
             $project = $database->project_get_data($timeSheetEntry['projectID']);
             $customer = $database->customer_get_data($project['customerID']);
@@ -434,13 +493,19 @@ switch ($axAction) {
         $view->assign('showOverlapLines', false);
         $view->assign('showTrackingNumber', false);
 
+        $showBillability = false;
+        $inlineEditingOfDescriptions = false;
         // user can change these settings
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
             $view->assign('showOverlapLines', $kga->getSettings()->isShowOverlapLines());
             $view->assign('showTrackingNumber', $kga->isTrackingNumberEnabled() && $kga->getSettings()->isShowTrackingNumber());
+            $showBillability = $kga->getSettings()->isShowBillability();
+            $inlineEditingOfDescriptions = $kga->getSettings()->isInlineEditingOfDescriptionsSet();
         }
 
+        $view->assign('showBillability', $showBillability);
+        $view->assign('inlineEditingOfDescriptions', $inlineEditingOfDescriptions);
         $view->assign('showRates', isset($kga['user']) && $database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-showRates'));
 
         echo $view->render("timeSheet.php");

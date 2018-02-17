@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -299,9 +299,11 @@ return array(
     'hideClearedEntries' => 'abgerechnete Einträge verstecken',
     'showCommentsByDefault' => 'Kommentare standardmäßig anzeigen',
     'showTrackingNumber' => 'Auftragsnummer in Zeiterfassung anzeigen',
+    'showBillability' => 'Verechenbarkeit in Zeiterfassung anzeigen',
     'hideOverlapLines' => 'Zeitüberschneidungen nicht markieren',
     'defaultLocation' => 'Standard Ort',
     'showQuickNote'	=> 'Zeige Schnellbearbeitungs-Button',
+    'inlineEditingOfDescriptions'	=> 'Direktbearbeitung von Beschreibungen',
     'general' => 'Allgemein',
     'address' => 'Adresse',
     'contact' => 'Kontakt',

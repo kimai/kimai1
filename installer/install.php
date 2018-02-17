@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -308,6 +308,8 @@ $query = "INSERT INTO `${p}preferences` (`userID`,`option`,`value`) VALUES
 ('$randomAdminID', 'ui.showCommentsByDefault', '0'),
 ('$randomAdminID', 'ui.hideOverlapLines', '1'),
 ('$randomAdminID', 'ui.showTrackingNumber', '1'),
+('$randomAdminID', 'ui.showBillability', '0'),
+('$randomAdminID', 'ui.inlineEditingOfDescriptions', '0'),
 ('$randomAdminID', 'timezone', " . quoteForSql($_REQUEST['timezone']) . ");";
 exec_query($query);
 
