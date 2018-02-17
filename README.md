@@ -5,6 +5,8 @@
 Kimai Time Tracking
 ===================
 
+[![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
+
 ![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
 This is the repository of Kimai, a open source time tracking software
