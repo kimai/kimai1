@@ -5,7 +5,7 @@
 Kimai Time Tracking
 ===================
 
-[![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
 
 ![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
