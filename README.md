@@ -16,7 +16,6 @@ You can get more information about this time-tracking software:
 
 * at our [website](https://www.kimai.org)
 * in the [documentation](https://www.kimai.org/documentation/)
-* at our [forum](http://forum.kimai.org) (read only)
 
 ## Features
 
