@@ -13,8 +13,8 @@ that runs on (almost) every webserver with PHP and MySQL.
 You can get more information about this time-tracking software:
 
 * at our [website](https://www.kimai.org)
-* at our [forum](http://forum.kimai.org)
 * in the [documentation](https://www.kimai.org/documentation/)
+* at our [forum](http://forum.kimai.org) (read only)
 
 ## Features
 
@@ -41,13 +41,11 @@ This is just a short feature list, play around with the [demo installation](http
 
 ![Screenshot](https://www.kimai.org/assets/kimai08.jpg)
 
-Getting Started
----------------
+## Getting Started
 
 Kimai requires a webserver with PHP and a database (MySQL recommended).
-Accessing the backend through a supported browser.
 
-Please see the [INSTALL.md](INSTALL.md) in this folder in order to set up Kimai on your webserver.
+Please see the [online documentation](https://www.kimai.org/documentation/installation/) in order to set up Kimai on your webserver.
 
 ## Contributing
 
