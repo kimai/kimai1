@@ -5,6 +5,8 @@
 Kimai Time Tracking
 ===================
 
+[![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
+
 ![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
 This is the repository of Kimai, a open source time tracking software
@@ -13,7 +15,6 @@ that runs on (almost) every webserver with PHP and MySQL.
 You can get more information about this time-tracking software:
 
 * at our [website](https://www.kimai.org)
-* at our [forum](http://forum.kimai.org)
 * in the [documentation](https://www.kimai.org/documentation/)
 
 ## Features
@@ -41,13 +42,11 @@ This is just a short feature list, play around with the [demo installation](http
 
 ![Screenshot](https://www.kimai.org/assets/kimai08.jpg)
 
-Getting Started
----------------
+## Getting Started
 
 Kimai requires a webserver with PHP and a database (MySQL recommended).
-Accessing the backend through a supported browser.
 
-Please see the [INSTALL.md](INSTALL.md) in this folder in order to set up Kimai on your webserver.
+Please see the [online documentation](https://www.kimai.org/documentation/installation/) in order to set up Kimai on your webserver.
 
 ## Contributing
 
