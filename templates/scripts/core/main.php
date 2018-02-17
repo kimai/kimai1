@@ -178,7 +178,9 @@
                 cursor: 'move',
                 handle: '#floater_handle'
             });
-
+            if (typeof Jetzt === 'undefined') {
+                Jetzt = new Date();
+            }
             $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " +  $.datepicker.formatDate(  window.dateFormat, new Date() ));
 
             // give browser time to render page. afterwards make sure lists are resized correctly
