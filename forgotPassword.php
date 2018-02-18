@@ -40,6 +40,8 @@ if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
 
 require 'includes/basics.php';
 
+$database = Kimai_Registry::getDatabase();
+
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 

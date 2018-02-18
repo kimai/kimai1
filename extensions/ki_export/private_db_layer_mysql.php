@@ -28,7 +28,8 @@
  */
 function export_timeSheetEntry_set_cleared($id, $cleared)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $table = $kga['server_prefix'] . "timeSheet";
@@ -54,7 +55,8 @@ function export_timeSheetEntry_set_cleared($id, $cleared)
  */
 function export_expense_set_cleared($id, $cleared)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $table = $kga['server_prefix'] . "expenses";
@@ -80,7 +82,9 @@ function export_expense_set_cleared($id, $cleared)
  */
 function export_toggle_header($header)
 {
-    global $kga, $database, $all_column_headers;
+    global $all_column_headers;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header, $all_column_headers);
@@ -107,7 +111,9 @@ function export_toggle_header($header)
  */
 function export_get_disabled_headers($userID)
 {
-    global $kga, $database, $all_column_headers;
+    global $all_column_headers;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $disabled_headers = array();
@@ -116,7 +122,7 @@ function export_get_disabled_headers($userID)
     $filter['option'] = MySQL::SQLValue('export_disabled_columns');
     $table = $kga['server_prefix'] . "preferences";
 
-    if (! $conn->SelectRows($table, $filter)) {
+    if (!$conn->SelectRows($table, $filter)) {
         return 0;
     }
 

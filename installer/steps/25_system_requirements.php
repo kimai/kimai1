@@ -1,4 +1,4 @@
-<script type="text/javascript" charset="utf-8">current = 25;</script>
+<script type="text/javascript">current = 25;</script>
 
 <?php
 if ($_REQUEST['lang'] == "de") {
@@ -51,4 +51,4 @@ if ($_REQUEST['lang'] == "de") {
     <?php
 }
 ?>
-<script type="text/javascript" charset="utf-8">check_system_requirements();</script>
+<script type="text/javascript">check_system_requirements();</script>

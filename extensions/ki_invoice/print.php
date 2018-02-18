@@ -18,12 +18,12 @@
  */
 
 include_once '../../includes/basics.php';
+require_once 'private_func.php';
 
-// insert KSPI
+$database = Kimai_Registry::getDatabase();
+
 $isCoreProcessor = 0;
 $user = checkUser();
-
-require_once 'private_func.php';
 
 if (!isset($_REQUEST['projectID']) || count($_REQUEST['projectID']) == 0) {
     die($kga['lang']['ext_invoice']['noProject']);

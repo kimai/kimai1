@@ -124,7 +124,7 @@ abstract class Kimai_Invoice_AbstractRenderer
 
     protected function prepareCustomerArray($customer)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         $new = array(
             'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
             'companyName' => isset($customer['company']) ? $customer['company'] : '',

@@ -32,7 +32,7 @@ class Kimai_Format
      */
     public static function formatDuration($sek)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if (is_array($sek)) {
             // Convert all values of the array.
             $arr = array();
@@ -59,7 +59,7 @@ class Kimai_Format
      */
     public static function formatCurrency($number, $htmlNoWrap = true)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if (is_array($number)) {
             // Convert all values of the array.
             $arr = array();
@@ -91,7 +91,7 @@ class Kimai_Format
      */
     public static function formatAnnotations(&$ann)
     {
-        global $database, $kga;
+        $kga = Kimai_Registry::getConfig();
 
         $type = 0;
         if (isset($kga['user'])) {

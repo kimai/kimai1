@@ -44,7 +44,8 @@ class Kimai_Remote_Api
 
     public function __construct()
     {
-        global $kga, $database;
+        $kga = Kimai_Registry::getConfig();
+        $database = Kimai_Registry::getDatabase();
 
         // remember the most important stuff
         $this->kga = $kga;

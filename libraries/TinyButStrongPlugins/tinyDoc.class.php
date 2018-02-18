@@ -98,14 +98,6 @@ class tinyDoc extends clsTinyButStrong
 
 
   /**
-   * Constructor.
-   */
-  public function __construct()
-  {
-  }
-
-
-  /**
    * Create a new unique file from a source file
    *
    * @param mixed $options  The pathname of source document (empty array by default)

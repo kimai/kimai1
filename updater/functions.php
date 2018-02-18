@@ -47,7 +47,8 @@ function exitUpdater($title, $message, $message2)
  */
 function exec_query($query, $errorProcessing = true, $displayQuery = null)
 {
-    global $database, $kga, $errors, $executed_queries;
+    global $errors, $executed_queries;
+    $database = Kimai_Registry::getDatabase();
 
     $conn = $database->getConnectionHandler();
 
@@ -112,6 +113,6 @@ function printLine($level, $text, $errorInfo = '')
  */
 function quoteForSql($input)
 {
-    global $database;
+    $database = Kimai_Registry::getDatabase();
     return "'" . $database->getConnectionHandler()->SQLFix($input) . "'";
 }

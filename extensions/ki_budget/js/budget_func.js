@@ -183,25 +183,25 @@ function budget_extension_plot(plotdata) {
  * reloads timesheet, customer, project and activity tables
  */
 function budget_extension_reload() {
-	$('#loader').show();
-	$.ajax({
-		dataType: 'html',
-		url: budget_extension_path + 'processor.php',
-		type: 'POST',
-		data: {
-			axAction: 'reload',
-			axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|'+filterProjects.join(":"),
-			first_day: new Date($('#pick_in').val()).getTime()/1000,
-			last_day: new Date($('#pick_out').val()).getTime()/1000,
-			id: 0
-		},
-		success: function( data ) {
-			$('#budgetArea').html(data);
-			$('#loader').hide();
-		},
-		error: function(error) {
-			$('#loader').hide();
-			alert(error);
-		}
-	});
+    $('#loader').show();
+    $.ajax({
+        dataType: 'html',
+        url: budget_extension_path + 'processor.php',
+        type: 'POST',
+        data: {
+            axAction: 'reload',
+            axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|' + filterProjects.join(":"),
+            first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+            last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
+            id: 0
+        },
+        success: function(data) {
+            $('#budgetArea').html(data);
+            $('#loader').hide();
+        },
+        error: function(error) {
+            $('#loader').hide();
+            alert(error);
+        }
+    });
 }

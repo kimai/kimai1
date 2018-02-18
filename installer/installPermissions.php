@@ -1,36 +1,42 @@
 <?php
 
-function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
-  global $p;
-  $query = 
-  "CREATE TABLE `${p}${tableName}` (
+$database = Kimai_Registry::getDatabase();
+
+function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions)
+{
+    global $p;
+    $query = "CREATE TABLE `${p}${tableName}` (
   `${idColumnName}` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR( 255 ) NOT NULL,";
 
-  $permissionColumns = array();
-  $permissionColumnDefinitions = array();
-  foreach ($permissions as $permission) {
-    $permissionColumns[] = '`' . $permission . '`';
-    $permissionColumnDefinitions[] = '`' . $permission . '` TINYINT DEFAULT 0';
-  }
-  $query .= implode(', ', $permissionColumnDefinitions);
+    $permissionColumns = array();
+    $permissionColumnDefinitions = array();
+    foreach ($permissions as $permission) {
+        $permissionColumns[] = '`' . $permission . '`';
+        $permissionColumnDefinitions[] = '`' . $permission . '` TINYINT DEFAULT 0';
+    }
+    $query .= implode(', ', $permissionColumnDefinitions);
 
-  $query .= ") ENGINE = InnoDB ";
+    $query .= ") ENGINE = InnoDB";
 
-  return $query;
+    return $query;
 }
 
-function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions) {
-  global $p;
-  foreach ($allowedPermissions as &$permission)
-    $permission = '`' . $permission . '`';
+function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions)
+{
+    global $p;
+    foreach ($allowedPermissions as &$permission) {
+        $permission = '`' . $permission . '`';
+    }
 
-  if (count($allowedPermissions) == 0)
-    $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
-  else
-    $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
-    implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
-  return $query;
+    if (count($allowedPermissions) == 0) {
+        $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
+    } else {
+        $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ',
+                $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
+            implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
+    }
+    return $query;
 }
 
 // Global roles table
@@ -39,19 +45,31 @@ $globalPermissions = array();
 $membershipPermissions = array();
 
 // extension permissions
-foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension)
-  $globalPermissions[] = $extension . '-access';
+foreach (
+    array('deb_ext',
+        'adminPanel_extension',
+        'ki_budget',
+        'ki_expenses',
+        'ki_export',
+        'ki_invoice',
+        'ki_timesheet',
+        'demo_ext'
+    ) as $extension) {
+    $globalPermissions[] = $extension . '-access';
+}
 
 // domain object permissions
-foreach (array('customer', 'project', 'activity', 'user') as $object)
-  foreach (array('add', 'edit', 'delete', 'assign', 'unassign') as $action) {
-    $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
-    $membershipPermissions[] = 'core-' . $object . '-' . $action;
-  }
+foreach (array('customer', 'project', 'activity', 'user') as $object) {
+    foreach (array('add', 'edit', 'delete', 'assign', 'unassign') as $action) {
+        $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
+        $membershipPermissions[] = 'core-' . $object . '-' . $action;
+    }
+}
 
 // status permissions
-foreach (array('add', 'edit', 'delete') as $action)
-  $globalPermissions[] = 'core-status-' . $action;
+foreach (array('add', 'edit', 'delete') as $action) {
+    $globalPermissions[] = 'core-status-' . $action;
+}
 
 // group permissions
 $globalPermissions[] = 'core-group-add';

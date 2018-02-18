@@ -26,10 +26,11 @@
  * some HTML will be returned, which will then be shown in a floater.
  */
 
-// insert KSPI
 $isCoreProcessor = 1;
 $dir_templates = "templates/scripts/"; // folder of the template files
 require "../includes/kspi.php";
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 

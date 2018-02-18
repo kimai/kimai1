@@ -85,6 +85,7 @@ return array(
     "username" => "Användarnamn",
     "password" => "Lösenord",
     "newPassword" => "Nytt Lösenord",
+    "retypePassword" => "Nytt Lösenord igen",
     "minLength" => "minst 5 tecken!",
     "update" => "Databasstrukturen för den Installerade Kimai versionen måste uppdateras.<br />Vi rekommenderar att säkerhetskopia görs på registeruppgifterna så att ingen data går förlorad<br />under processen.",
     "updateNow" => "Uppdatera databasen nu!",
@@ -215,8 +216,10 @@ return array(
     'currency_name' => 'Namn på valuta.',
     'currency_sign' => 'Symbol för valuta.',
     'currency_first' => 'Show currency name in front of value (e.g. &euro; 100,00)',
-    'display_date_format' => 'Date format of the timespan (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
-    'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'display_date_format' => 'Datumformat (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'table_date_format' => 'Datumformat för tabell (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'table_time_format' => 'Tidsformat (<a href="https://php.net/manual/en/function.strftime.php" target="_blank">strftime()</a>)',
+
     'round_time' => 'Round time to ',
     'round_time_minute' => ' minute(s).',
     'logged_in_as' => 'logged in as:',
@@ -235,6 +238,13 @@ return array(
     'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
     'weekdays' => array("Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"),
     'weekdays_short' => array("Sön", "Mon", "Tis", "Ons", "Tor", "Fri", "Lör"),
+
+    'quicklink_today' => 'Idag',
+    'quicklink_yesterday' => 'Igår',
+    'quicklink_lastWeek' => 'Förra veckan',
+    'quicklink_lastMonth' => 'Förra månad',
+    'quicklink_thisWeek' => 'Denna vecka',
+    'quicklink_thisMonth' => 'Denna månad',
 
     'errors' => array(
         0 => array('hdl' => "Kunde inte koppla till databasen!",

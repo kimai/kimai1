@@ -35,7 +35,17 @@ var timesheet_projects_changed_hook_flag = 0;
 var timesheet_activities_changed_hook_flag = 0;
 
 
+/* 
+needs to change 
+datepicker can be localised with weekday names and format
+so this project needs to have an i18n version of jqueryui
+//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/i18n/jquery-ui-i18n.min.js
+$.datepicker.setDefaults( $.datepicker.regional[ "sv" ] );
+this is iso standard
+var ts_dayFormatExp = new RegExp("^([0-9]{2,4})-([0-9]{1,2})-([0-9]{1,2})$");
 
+ts_dayFormatExp no longer used
+*/
 var ts_dayFormatExp = new RegExp("^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})$");
 var ts_timeFormatExp = new RegExp("^([0-9]{1,2})(:[0-9]{1,2})?(:[0-9]{1,2})?$");
 

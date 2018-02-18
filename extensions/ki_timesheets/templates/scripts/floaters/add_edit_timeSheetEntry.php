@@ -288,14 +288,20 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
 
         $('#start_day').datepicker({
             onSelect: function (dateText, instance) {
-                $('#end_day').datepicker("option", "minDate", $('#start_day').datepicker("getDate"));
+                $('#end_day').datepicker({
+                      dateFormat: window.dateFormat,
+                      minDate: $('#start_day').datepicker("getDate"),
+                    });
                 ts_timeToDuration();
             }
         });
 
         $('#end_day').datepicker({
             onSelect: function (dateText, instance) {
-                $('#start_day').datepicker("option", "maxDate", $('#end_day').datepicker("getDate"));
+                $('#start_day').datepicker({
+                      dateFormat: window.dateFormat,
+                      maxDate: $('#end_day').datepicker("getDate"),
+                    });
                 ts_timeToDuration();
             }
         });
@@ -374,10 +380,15 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
         $('#ts_ext_form_add_edit_timeSheetEntry').ajaxForm({
             'beforeSubmit': function () {
                 clearFloaterErrorMessages();
-                if (!$('#start_day').val().match(ts_dayFormatExp) ||
-                    ( !$('#end_day').val().match(ts_dayFormatExp) && $('#end_day').val() != '') || !$('#start_time').val().match(ts_timeFormatExp) ||
-                    ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
-                    alert("<?php echo $this->kga['lang']['TimeDateInputError']?>");
+                // use jquery ui datepicker because the phpjs doesn't have many locales and is out of date
+                var startDate = $.datepicker.parseDate(window.dateFormat,$('#start_day').val());
+                var endDate = $.datepicker.parseDate(window.dateFormat,$('#end_day').val());
+
+
+                if (((startDate===null) || ( endDate===null) && $('#end_day').val() != '') ||
+                !$('#start_time').val().match(ts_timeFormatExp) ||
+                ( !$('#end_time').val().match(ts_timeFormatExp) && $('#end_time').val() != '')) {
+                    alert("<?php echo $this->kga['lang']['TimeDateInputError'] ?>");
                     return false;
                 }
 
@@ -388,31 +399,13 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                 } // no need to validate timerange if end time is not set
 
                 // test if start day is before end day
-                var inDayMatches = $('#start_day').val().match(ts_dayFormatExp);
-                var outDayMatches = $('#end_day').val().match(ts_dayFormatExp);
-                for (var i = 3; i >= 1; i--) {
-                    var inVal = inDayMatches[i];
-                    var outVal = outDayMatches[i];
-
-                    inVal = parseInt(inVal);
-                    outval = parseInt(outVal);
-
-                    if (inVal == undefined) {
-                        inVal = 0;
-                    }
-                    if (outVal == undefined) {
-                        outVal = 0;
-                    }
-
-                    if (inVal > outVal) {
+                if (startDate.getTime() > endDate.getTime()) {
                         alert("<?php $this->kga['lang']['StartTimeBeforeEndTime']?>");
                         return false;
-                    } else if (inVal < outVal) {
-                        break;
-                    } // if this part is smaller we don't care for the other parts
-                }
-                if (inDayMatches[0] == outDayMatches[0]) {
-                    // test if start time is before end time if it's the same day
+                 }
+
+                if (startDate.getTime() === endDate.getTime()) {
+                     // test if start time is before end time if it's the same day
                     var inTimeMatches = $('#start_time').val().match(ts_timeFormatExp);
                     var outTimeMatches = $('#end_time').val().match(ts_timeFormatExp);
                     for (var i = 1; i <= 3; i++) {

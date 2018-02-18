@@ -32,7 +32,7 @@ $activityIndexMap = array();
  */
 function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 {
-    global $database;
+    $database = Kimai_Registry::getDatabase();
 
     $limitCommentSize = true;
     $results = array();

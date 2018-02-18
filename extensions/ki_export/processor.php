@@ -21,12 +21,12 @@
  * Export Processor.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require("../../includes/kspi.php");
+$dir_templates = 'templates/';
+require('../../includes/kspi.php');
+require('private_func.php');
 
-require("private_func.php");
+$database = Kimai_Registry::getDatabase();
 
 
 // ============================
@@ -172,8 +172,8 @@ switch ($axAction) {
           'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
           'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0),
           'ki_export.print.');
-          
-       
+
+
         $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
         $timeSum = 0;
         $wageSum = 0;
@@ -205,7 +205,7 @@ switch ($axAction) {
                 $timeSheetSummary[$one_entry['activityID']]['name']         = html_entity_decode($one_entry['activityName']);
                 $timeSheetSummary[$one_entry['activityID']]['time']         = $one_entry['decimalDuration'];
                 $timeSheetSummary[$one_entry['activityID']]['wage']         = $one_entry['wage'];
-                $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget']; 
+                $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget'];
                 $timeSheetSummary[$one_entry['activityID']]['approved'] = $one_entry['approved'];
               }
             }
@@ -215,11 +215,11 @@ switch ($axAction) {
               $expenseInfo['wage'] = $one_entry['wage'];
               $expenseInfo['budget'] = null;
               $expenseInfo['approved'] = null;
-              
+
               $expenseSummary[] = $expenseInfo;
             }
           }
-          
+
           $summary = array_merge($timeSheetSummary, $expenseSummary);
             $view->assign('summary', $summary);
         }

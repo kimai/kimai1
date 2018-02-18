@@ -71,7 +71,7 @@ class ArrayObjectTest extends TestCase
         $this->assertFalse($sut->has('foo'));
         $this->assertFalse($sut->has('bar'));
 
-        $sut->add(array('foo' => 'hello', 'bar' => 'world'));
+        $sut->add(['foo' => 'hello', 'bar' => 'world']);
 
         $this->assertTrue($sut->has('foo'));
         $this->assertTrue($sut->has('bar'));

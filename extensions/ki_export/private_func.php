@@ -66,7 +66,8 @@ include('private_db_layer_mysql.php');
  */
 function export_get_data($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $timeSheetEntries = array();
     $expenses = array();
     if ($filter_type != 1) {
@@ -293,7 +294,8 @@ function merge_annotations(&$timeSheetEntries, &$expenses)
  */
 function export_get_user_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_users($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_user($start, $end, $users, $customers, $projects);
@@ -317,7 +319,8 @@ function export_get_user_annotations($start, $end, $users = null, $customers = n
  */
 function export_get_customer_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_customers($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_customer($start, $end, $users, $customers, $projects);
@@ -341,7 +344,8 @@ function export_get_customer_annotations($start, $end, $users = null, $customers
  */
 function export_get_project_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_projects($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_project($start, $end, $users, $customers, $projects);
@@ -365,10 +369,8 @@ function export_get_project_annotations($start, $end, $users = null, $customers 
  */
 function export_get_activity_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $database;
-    $arr = $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
-
-    return $arr;
+    $database = Kimai_Registry::getDatabase();
+    return $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
 }
 
 /**

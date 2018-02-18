@@ -22,11 +22,11 @@ $invoiceDate    = $this->invoiceDate;
 $sumHours       = 0;
 
 // calculate total hours
-foreach($entries as $row) { 
+foreach($entries as $row) {
 	$sumHours += $row['hour'];
 }
 
-global $kga;
+$kga = Kimai_Registry::getConfig();
 $months = $kga['lang']['months'];
 $monthIndex = (int)date('n', $beginDate)-1;
 $year = date('Y', $beginDate);

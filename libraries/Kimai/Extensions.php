@@ -52,7 +52,7 @@ class Kimai_Extensions
      */
     public function loadConfigurations()
     {
-        global $database;
+        $database = Kimai_Registry::getDatabase();
         $handle = opendir($this->extensionsDir);
 
         if (!$handle) {

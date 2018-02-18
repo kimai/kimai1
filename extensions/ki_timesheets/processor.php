@@ -21,14 +21,17 @@
 // = TS PROCESSOR =
 // ================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 function timesheetAccessAllowed($entry, $action, &$errors)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -415,9 +418,9 @@ switch ($axAction) {
     // =============================================
     case 'reload_timeSheet':
         $filters = explode('|', $axValue);
-        
+
         if (empty($filters[0])) {
-            $filterUsers = array();  
+            $filterUsers = array();
         } else {
             $filterUsers = explode(':', $filters[0]);
         }
@@ -428,7 +431,7 @@ switch ($axAction) {
             },
             $database->get_customers($kga['user']['groups'])
         );
-        
+
         if (!empty($filters[1])) {
             $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
         }
@@ -436,7 +439,7 @@ switch ($axAction) {
         $filterProjects = array_map(
             function($project) {
                 return $project['projectID'];
-            }, 
+            },
             $database->get_projects($kga['user']['groups'])
         );
         if (!empty($filters[2])) {
@@ -451,9 +454,9 @@ switch ($axAction) {
         );
 
         if (!empty($filters[3])) {
-            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));  
+            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
         }
-          
+
 
         // if no userfilter is set, set it to current user
         if (isset($kga['user']) && count($filterUsers) == 0) {
@@ -463,7 +466,10 @@ switch ($axAction) {
         if (isset($kga['customer'])) {
             $filterCustomers = array($kga['customer']['customerID']);
         }
-
+        // Using timestamps and storing ints makes it hard to see the date and time.
+        // $in and $out are timestamps for the beginning and end of the displayed time interval
+        // Kimai_Logger::logfile(__FILE__);
+        // Kimai_Logger::logfile("  in: ". $in . ",  out: ".$out.', '.( $out - $in ));
         $timeSheetEntries = $database->get_timeSheet($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, 1);
         if (count($timeSheetEntries) > 0) {
             $view->assign('timeSheetEntries', $timeSheetEntries);
@@ -565,29 +571,29 @@ switch ($axAction) {
         $data['approved'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['approved']);
         $data['userID'] = $_REQUEST['userID'];
 
+        // hide on release 
+        Kimai_Logger::logfile("outdate: ".$_REQUEST['end_day'] .' '. $_REQUEST['end_time'].', ' .$kga->getDateFormat(3).' H:i:s');
+        Kimai_Logger::logfile("indate: ".$_REQUEST['start_day'] .' '.$_REQUEST['start_time'] .', ' .$kga->getDateFormat(3).' H:i:s');
+
         // check if the posted time values are possible
-        $validateDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy'));
-        $validateTime = new Zend_Validate_Date(array('format' => 'HH:mm:ss'));
-
-        if (!$validateDate->isValid($_REQUEST['start_day'])) {
-            $errors['start_day'] = $kga['lang']['TimeDateInputError'];
+        $validinDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time']);
+        if($validinDate->format($kga->getDateFormat(3)) != $_REQUEST['start_day']){
+             $errors['start_day'] = $kga['lang']['TimeDateInputError'];
         }
 
-        if (!$validateTime->isValid($_REQUEST['start_time'])) {
-            $_REQUEST['start_time'] = $_REQUEST['start_time'] . ':00';
-            if (!$validateTime->isValid($_REQUEST['start_time'])) {
-                $errors['start_time'] = $kga['lang']['TimeDateInputError'];
-            }
-        }
+        if(empty($_REQUEST['end_day'])){
+            $validoutDate = null;
+            if(!empty($_REQUEST['duration']) && ($minutes = (integer) $_REQUEST['duration']) && ($minutes > 0) ){
+                /*  use duration rather than endtime - this only handles minutes */
+                Kimai_Logger::logfile("using minutes duration instead of endtime: ".$minutes);
+                $validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['start_day'].' '.$_REQUEST['start_time'])->modify("+$minutes minutes");
+                // could do it this way: $validoutDate->add(new DateInterval("PT".$minutes."M"));
+           }
 
-        if ($_REQUEST['end_day'] != '' && !$validateDate->isValid($_REQUEST['end_day'])) {
-            $errors['end_day'] = $kga['lang']['TimeDateInputError'];
-        }
-
-        if ($_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time'])) {
-            $_REQUEST['end_time'] = $_REQUEST['end_time'] . ':00';
-            if (!$validateTime->isValid($_REQUEST['end_time'])) {
-                $errors['end_time'] = $kga['lang']['TimeDateInputError'];
+        }else{
+            $validoutDate = DateTime::createFromFormat($kga->getDateFormat(3).'  H:i:s', $_REQUEST['end_day'].' '.$_REQUEST['end_time']);
+            if($validoutDate->format($kga->getDateFormat(3)) != $_REQUEST['end_day']){
+                $errors['end_day'] = $kga['lang']['TimeDateInputError'];
             }
         }
 
@@ -603,23 +609,10 @@ switch ($axAction) {
             echo json_encode(array('errors' => $errors));
             return;
         }
-
-        $edit_in_day = Zend_Locale_Format::getDate($_REQUEST['start_day'], array('date_format' => 'dd.MM.yyyy'));
-        $edit_in_time = Zend_Locale_Format::getTime($_REQUEST['start_time'], array('date_format' => 'HH:mm:ss'));
-        $edit_in = array_merge($edit_in_day, $edit_in_time);
-        $inDate = new Zend_Date($edit_in);
-
-        if ($_REQUEST['end_day'] != '' || $_REQUEST['end_time'] != '') {
-            $edit_out_day = Zend_Locale_Format::getDate($_REQUEST['end_day'], array('date_format' => 'dd.MM.yyyy'));
-            $edit_out_time = Zend_Locale_Format::getTime($_REQUEST['end_time'], array('date_format' => 'HH:mm:ss'));
-
-            $edit_out = array_merge($edit_out_day, $edit_out_time);
-
-            $outDate = new Zend_Date($edit_out);
-        } else {
-            $outDate = null;
-        }
-
+        // legacy variable names
+        $inDate = $validinDate;
+        $outDate  = $validoutDate;
+        
         $data['start'] = $inDate->getTimestamp();
 
         if ($outDate != null) {

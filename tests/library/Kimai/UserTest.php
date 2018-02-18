@@ -26,11 +26,9 @@ use Kimai_User;
  */
 class UserTest extends TestCase
 {
-
     public function testName()
     {
-        $user = new Kimai_User(array('name' => 'foo'));
+        $user = new Kimai_User(['name' => 'foo']);
         $this->assertEquals('foo', $user->getName());
     }
-
 }

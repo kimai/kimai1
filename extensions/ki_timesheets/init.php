@@ -22,8 +22,10 @@
 // ==================================
 include('../../includes/basics.php');
 
-$dir_templates = "templates/";
-$datasrc = "config.ini";
+$database = Kimai_Registry::getDatabase();
+
+$dir_templates = 'templates/';
+$datasrc = 'config.ini';
 $settings = parse_ini_file($datasrc);
 $dir_ext = $settings['EXTENSION_DIR'];
 
@@ -37,7 +39,7 @@ $in = $timeframe[0];
 $out = $timeframe[1];
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->setBasePath(WEBROOT . '/extensions/' . $dir_ext . '/' . $dir_templates);
 $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
 $view->assign('kga', $kga);

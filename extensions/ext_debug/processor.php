@@ -21,21 +21,21 @@
 // = DEBUG PROCESSOR =
 // ===================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
+$dir_templates = 'templates/';
 require "../../includes/kspi.php";
 
-switch ($axAction)
-{
+$kga = Kimai_Registry::getConfig();
+
+switch ($axAction) {
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
     case "reloadLogfile":
-        $logdatei = WEBROOT . "temporary/logfile.txt";
+        $logdatei = WEBROOT . '/temporary/logfile.txt';
         $fh = fopen($logdatei, 'r');
 
-        $theData = "";
+        $theData = '';
         $i = 0;
 
         $lines = $kga['logfile_lines'];
@@ -52,16 +52,20 @@ switch ($axAction)
             $start = count($filearray);
             $goal = $start - $lines;
             for ($line = $start - 1; ($line > $goal && $line > 0); $line--) {
-                if ($filearray[$line] != "") $theData .= $filearray[$line] . "<br/>";
+                if ($filearray[$line] != "") {
+                    $theData .= $filearray[$line] . "<br/>";
+                }
             }
         } else {
             foreach ($filearray as $line) {
-                if ($line != "") $theData .= $line . "<br/>";
+                if ($line != "") {
+                    $theData .= $line . "<br/>";
+                }
             }
         }
 
         echo $theData;
-    break;
+        break;
 
     /**
      * Empty the logfile.
@@ -75,14 +79,14 @@ switch ($axAction)
         } else {
             die();
         }
-    break;
+        break;
 
     /**
      * Write some message to the logfile.
      */
     case "shoutbox":
-        Kimai_Logger::logfile("[".Kimai_Registry::getUser()->getName()."] " . $axValue);
-    break;
+        Kimai_Logger::logfile("[" . Kimai_Registry::getUser()->getName() . "] " . $axValue);
+        break;
 
     /**
      * Return the $kga variable (Kimai Global Array). Strip out some sensitive
@@ -106,8 +110,7 @@ switch ($axAction)
             ),
         );
 
-        switch($axValue)
-        {
+        switch ($axValue) {
             case 'plain':
                 $output = $kga;
                 $output['conf'] = '## HIDDEN ##';
@@ -131,9 +134,9 @@ switch ($axAction)
         }
 
         // clean out some data that is way too private to be shown in the frontend ...
-        foreach($filter as $k => $v) {
+        foreach ($filter as $k => $v) {
             if (is_array($v)) {
-                foreach($v as $k2 => $v2) {
+                foreach ($v as $k2 => $v2) {
                     if (isset($output[$k]) && isset($output[$k][$k2])) {
                         $output[$k][$k2] = $v2;
                     }
@@ -145,5 +148,5 @@ switch ($axAction)
 
         print_r($output);
 
-    break;
+        break;
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1098ca21c8d6bca5707631739e95c29e",
+    "content-hash": "096359b77016a53ca38310fe725a16aa",
     "packages": [
         {
             "name": "phpoffice/phpexcel",
@@ -125,6 +125,46 @@
                 "qrcode"
             ],
             "time": "2017-04-26T08:14:48+00:00"
+        },
+        {
+            "name": "tinybutstrong/tinybutstrong",
+            "version": "v3.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Skrol29/tinybutstrong.git",
+                "reference": "09726cd6c2941a6026e3604e27f30a31accb2b03"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Skrol29/tinybutstrong/zipball/09726cd6c2941a6026e3604e27f30a31accb2b03",
+                "reference": "09726cd6c2941a6026e3604e27f30a31accb2b03",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "tbs_class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Skrol29",
+                    "email": "skrol29dev@gmail.com"
+                }
+            ],
+            "description": "Template Engine for Pro and Beginners ",
+            "homepage": "http://www.tinybutstrong.com",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2018-01-18T00:15:53+00:00"
         },
         {
             "name": "zendframework/zendframework1",

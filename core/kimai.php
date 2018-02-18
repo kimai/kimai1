@@ -19,8 +19,10 @@
 
 // =============================
 // = Smarty (initialize class) =
-// ============================= 
+// =============================
 require_once '../includes/basics.php';
+
+$database = Kimai_Registry::getDatabase();
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
@@ -39,7 +41,7 @@ $user = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
-// der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
+// der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen.
 checkDBversion("..");
 
 $extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
@@ -61,8 +63,7 @@ if (isset($kga['customer'])) {
   $current_timer['hour'] = 0;
   $current_timer['min']  = 0;
   $current_timer['sec']  = 0;
-}
-else {
+} else {
   $current_timer = $database->get_current_timer();
 }
 
@@ -194,7 +195,7 @@ if (!isset($kga['customer'])) {
     $customerData = $database->customer_get_data($lastProject['customerID']);
   }
   if (!$lastActivity['trash'])
-    $activityData = $lastActivity;    
+    $activityData = $lastActivity;
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);
@@ -268,7 +269,7 @@ $view->assign('show_activity_edit_button', isset($kga['user']) && coreObjectActi
 $view->assign('activity_display', $view->render("lists/activities.php"));
 
 if (isset($kga['user'])) {
-    $view->assign('showInstallWarning', file_exists(WEBROOT . 'installer'));
+    $view->assign('showInstallWarning', file_exists(WEBROOT . '/installer'));
 } else {
     $view->assign('showInstallWarning', false);
 }

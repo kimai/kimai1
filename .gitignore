@@ -12,9 +12,8 @@
 
 /libraries/*
 # libraries that will be autoloaded but cannot be fetched from external repositories
-!/libraries/Kimai
-!/libraries/jQuery
-!/libraries/phpclasses
-!/libraries/phpjs
-!/libraries/TinyButStrong
-/bin/
+!/libraries/Kimai/
+!/libraries/jQuery/
+!/libraries/phpclasses/
+!/libraries/phpjs/
+!/libraries/TinyButStrongPlugins/

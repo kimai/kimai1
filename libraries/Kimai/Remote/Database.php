@@ -28,7 +28,7 @@
 class Kimai_Remote_Database
 {
     /**
-     * @var array|null
+     * @var Kimai_Config|null
      */
     private $kga = null;
     /**
@@ -46,7 +46,7 @@ class Kimai_Remote_Database
 
     /**
      * Kimai_Remote_Database constructor.
-     * @param array $kga
+     * @param Kimai_Config $kga
      * @param Kimai_Database_Mysql $database
      */
     public function __construct($kga, $database)

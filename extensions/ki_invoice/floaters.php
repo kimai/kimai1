@@ -17,17 +17,15 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require("../../includes/kspi.php");
+$dir_templates = 'templates/';
+require('../../includes/kspi.php');
 
 switch ($axAction) {
-    case "editVat":
+    case 'editVat':
         if (isset($kga['customer'])) {
             die();
         }
-        $view->assign('kga', $kga);
         echo $view->render("floaters/editVat.php");
         break;
 }

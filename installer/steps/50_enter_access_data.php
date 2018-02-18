@@ -1,5 +1,5 @@
 <?php
-echo '<script type="text/javascript" charset="utf-8">current=50;</script>';
+echo '<script type="text/javascript">current=50;</script>';
 
 $hostname = (isset($_REQUEST['hostname']) && $_REQUEST['hostname'] != '') ? $_REQUEST['hostname'] : 'localhost';
 $username = isset($_REQUEST['username']) ? $_REQUEST['username'] : '';

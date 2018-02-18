@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require('../../includes/kspi.php');
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -82,14 +83,14 @@ switch ($axAction) {
 
             $view->assign('userID', $timeSheetEntry['userID']);
 
-            $view->assign('start_day', date("d.m.Y", $timeSheetEntry['start']));
+            $view->assign('start_day', date($kga->getDateFormat(3), $timeSheetEntry['start']));// use the users date format
             $view->assign('start_time', date("H:i:s", $timeSheetEntry['start']));
 
             if ($timeSheetEntry['end'] == 0) {
                 $view->assign('end_day', '');
                 $view->assign('end_time', '');
             } else {
-                $view->assign('end_day', date("d.m.Y", $timeSheetEntry['end']));
+                $view->assign('end_day', date($kga->getDateFormat(3), $timeSheetEntry['end']));
                 $view->assign('end_time', date("H:i:s", $timeSheetEntry['end']));
             }
 
@@ -133,8 +134,8 @@ switch ($axAction) {
 
             $view->assign('users', $users);
 
-            $view->assign('start_day', date("d.m.Y"));
-            $view->assign('end_day', date("d.m.Y"));
+            $view->assign('start_day', date($kga->getDateFormat(3)));
+            $view->assign('end_day', date($kga->getDateFormat(3)));
 
             $view->assign('userID', $kga['user']['userID']);
 
@@ -208,7 +209,7 @@ switch ($axAction) {
         echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
         break;
-    
+
     case "add_edit_timeSheetQuickNote":
         if (isset($kga['customer'])) die();
         // ================================================

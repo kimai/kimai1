@@ -17,16 +17,15 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
 
-include 'private_db_layer_mysql.php';
+$database = Kimai_Registry::getDatabase();
 
-switch ($axAction)
-{
+require 'private_db_layer_mysql.php';
 
+switch ($axAction) {
     case "add_edit_record":
         if (isset($kga['customer'])) {
             die();
@@ -38,8 +37,7 @@ switch ($axAction)
         // ==============================================
         // = display edit dialog for timesheet record   =
         // ==============================================
-        if ($id)
-        {
+        if ($id) {
             $expense = get_expense($id);
             $view->assign('id', $id);
             $view->assign('comment', $expense['comment']);
@@ -53,30 +51,30 @@ switch ($axAction)
             $view->assign('refundable', $expense['refundable']);
 
             // check if this entry may be edited
-            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit'))
-              break;
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit')) {
+                break;
+            }
 
             if (!isset($view->projects[$expense['projectID']])) {
-              // add the currently assigned project to the list
-              $projectData = $database->project_get_data($expense['projectID']);
-              $customerData = $database->customer_get_data($projectData['customerID']);
-              $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
+                // add the currently assigned project to the list
+                $projectData = $database->project_get_data($expense['projectID']);
+                $customerData = $database->customer_get_data($projectData['customerID']);
+                $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
             }
-        }
-        else
-        {
+        } else {
             $view->assign('id', 0);
             $view->assign('edit_day', date("d.m.Y"));
             $view->assign('edit_time', date("H:i:s"));
             $view->assign('multiplier', '1' . $kga['conf']['decimalSeparator'] . '0');
 
-          // check if this entry may be added
-          if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add'))
-            break;
+            // check if this entry may be added
+            if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add')) {
+                break;
+            }
         }
 
         echo $view->render("floaters/add_edit_record.php");
 
-    break;
+        break;
 
 }

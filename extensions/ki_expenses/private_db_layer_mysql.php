@@ -18,44 +18,46 @@
  */
 
 /**
- * delete expense entry 
+ * delete expense entry
  *
  * @param integer $id -> ID of record
  * @return object
  */
 function expense_delete($id)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
     $filter["expenseID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix'] . "expenses";
     $query = MySQL::BuildSQLDelete($table, $filter);
-    return $conn->Query($query);    
-} 
+    return $conn->Query($query);
+}
 
 /**
- * create exp entry 
+ * create exp entry
  *
  * @param $userID
- * @param array $data  array with record data
+ * @param array $data array with record data
  * @return bool|int
  */
 function expense_create($userID, $data)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
- 
+
     $data = $database->clean_data($data);
 
-    $values ['projectID']    = MySQL::SQLValue($data ['projectID'], MySQL::SQLVALUE_NUMBER);
-    $values ['designation']  = MySQL::SQLValue($data ['designation']);
-    $values ['comment']      = MySQL::SQLValue($data ['comment']);
-    $values ['commentType']  = MySQL::SQLValue($data ['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values ['timestamp']    = MySQL::SQLValue($data ['timestamp'], MySQL::SQLVALUE_NUMBER);
-    $values ['multiplier']   = MySQL::SQLValue($data ['multiplier'], MySQL::SQLVALUE_NUMBER);
-    $values ['value']        = MySQL::SQLValue($data ['value'], MySQL::SQLVALUE_NUMBER);
-    $values ['userID']       = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-    $values ['refundable']   = MySQL::SQLValue($data ['refundable'], MySQL::SQLVALUE_NUMBER);
+    $values ['projectID'] = MySQL::SQLValue($data ['projectID'], MySQL::SQLVALUE_NUMBER);
+    $values ['designation'] = MySQL::SQLValue($data ['designation']);
+    $values ['comment'] = MySQL::SQLValue($data ['comment']);
+    $values ['commentType'] = MySQL::SQLValue($data ['commentType'], MySQL::SQLVALUE_NUMBER);
+    $values ['timestamp'] = MySQL::SQLValue($data ['timestamp'], MySQL::SQLVALUE_NUMBER);
+    $values ['multiplier'] = MySQL::SQLValue($data ['multiplier'], MySQL::SQLVALUE_NUMBER);
+    $values ['value'] = MySQL::SQLValue($data ['value'], MySQL::SQLVALUE_NUMBER);
+    $values ['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
+    $values ['refundable'] = MySQL::SQLValue($data ['refundable'], MySQL::SQLVALUE_NUMBER);
 
     $table = $kga['server_prefix'] . "expenses";
     $result = $conn->InsertRow($table, $values);
@@ -83,11 +85,20 @@ function expense_create($userID, $data)
  * @param null $filterCleared
  * @return array
  */
-function get_expenses($start, $end, $users = null, $customers = null, $projects = null, $limit = false, $reverse_order = false, $filter_refundable = -1, $filterCleared = null)
-{
-    global $kga, $database;
+function get_expenses(
+    $start,
+    $end,
+    $users = null,
+    $customers = null,
+    $projects = null,
+    $limit = false,
+    $reverse_order = false,
+    $filter_refundable = -1,
+    $filterCleared = null
+) {
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    $p = $kga['server_prefix'];
 
     // -1 for disabled, 0 for only not cleared entries
     if (!is_numeric($filterCleared)) {
@@ -96,7 +107,7 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
             $filterCleared = 0;
         }
     }
-    
+
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
     $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
     $limit = MySQL::SQLValue($limit, MySQL::SQLVALUE_NUMBER);
@@ -106,35 +117,35 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
 
     if (isset($kga['customer'])) {
-        $whereClauses[] = "project.internal = 0";
+        $whereClauses[] = 'project.internal = 0';
     }
 
     if ($start) {
-        $whereClauses[] = "timestamp >= $start";
+        $whereClauses[] = 'timestamp >= ' . $start;
     }
     if ($end) {
-        $whereClauses[] = "timestamp <= $end";
+        $whereClauses[] = 'timestamp <= ' . $end;
     }
     if ($filterCleared > -1) {
-        $whereClauses[] = "cleared = $filterCleared";
+        $whereClauses[] = 'cleared = ' . $filterCleared;
     }
 
     switch ($filter_refundable) {
-    	case 0:
-    		$whereClauses[] = "refundable > 0";
-    		break;
-    	case 1:
-    		$whereClauses[] = "refundable <= 0";
-    		break;
-    	case -1:
-    	default:
-    		// return all expenses - refundable and non refundable
+        case 0:
+            $whereClauses[] = 'refundable > 0';
+            break;
+        case 1:
+            $whereClauses[] = 'refundable <= 0';
+            break;
+        case -1:
+        default:
+            // return all expenses - refundable and non refundable
     }
 
     if ($limit) {
-        $limit = "LIMIT " . $kga->getSettings()->getRowLimit();
+        $limit = 'LIMIT ' . $kga->getSettings()->getRowLimit();
     } else {
-        $limit = "";
+        $limit = '';
     }
 
     $query = "SELECT expenses.*,
@@ -145,9 +156,9 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
              Join ${p}projects AS project USING(projectID)
              Join ${p}customers AS customer USING(customerID)
              Join ${p}users AS user USING(userID) "
-              .(count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
-             ' ORDER BY timestamp ' . ($reverse_order ? 'ASC ' : 'DESC ') . $limit . ";";
-    
+        . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
+        ' ORDER BY timestamp ' . ($reverse_order ? 'ASC ' : 'DESC ') . $limit . ";";
+
     $conn->Query($query);
 
     $i = 0;
@@ -155,30 +166,30 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
     /* TODO: needs revision as foreach loop */
     $conn->MoveFirst();
     while (!$conn->EndOfSeek()) {
-      $row = $conn->Row();
-      $arr[$i]['expenseID']      = $row->expenseID;
-      $arr[$i]['timestamp']      = $row->timestamp;
-      $arr[$i]['multiplier']     = $row->multiplier;
-      $arr[$i]['value']          = $row->value;
-      $arr[$i]['designation']    = $row->designation;
-      $arr[$i]['comment']        = $row->comment;
-      $arr[$i]['commentType']    = $row->commentType;
-      $arr[$i]['refundable']     = $row->refundable;
-      $arr[$i]['cleared']        = $row->cleared;
+        $row = $conn->Row();
+        $arr[$i]['expenseID'] = $row->expenseID;
+        $arr[$i]['timestamp'] = $row->timestamp;
+        $arr[$i]['multiplier'] = $row->multiplier;
+        $arr[$i]['value'] = $row->value;
+        $arr[$i]['designation'] = $row->designation;
+        $arr[$i]['comment'] = $row->comment;
+        $arr[$i]['commentType'] = $row->commentType;
+        $arr[$i]['refundable'] = $row->refundable;
+        $arr[$i]['cleared'] = $row->cleared;
 
-      $arr[$i]['customerID']     = $row->customerID;
-      $arr[$i]['customerName']   = $row->customerName;
+        $arr[$i]['customerID'] = $row->customerID;
+        $arr[$i]['customerName'] = $row->customerName;
 
-      $arr[$i]['projectID']      = $row->projectID;
-      $arr[$i]['projectName']    = $row->projectName;
-      $arr[$i]['projectComment'] = $row->projectComment;
+        $arr[$i]['projectID'] = $row->projectID;
+        $arr[$i]['projectName'] = $row->projectName;
+        $arr[$i]['projectComment'] = $row->projectComment;
 
-      $arr[$i]['userID']         = $row->userID;
-      $arr[$i]['userName']       = $row->userName;
-      $arr[$i]['userAlias']      = $row->userAlias;
-      $i++;
+        $arr[$i]['userID'] = $row->userID;
+        $arr[$i]['userName'] = $row->userName;
+        $arr[$i]['userAlias'] = $row->userAlias;
+        $i++;
     }
-    
+
     return $arr;
 }
 
@@ -190,14 +201,16 @@ function get_expenses($start, $end, $users = null, $customers = null, $projects 
  * @return array
  * @author sl
  */
-function get_expense($id) {
-    global $kga, $database;
+function get_expense($id)
+{
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
-    $id    = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-    $p     = $kga['server_prefix'];
-  
-    $query = "SELECT * FROM ${p}expenses WHERE expenseID = $id LIMIT 1;";
+    $id = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+    $p = $kga['server_prefix'];
+
+    $query = 'SELECT * FROM ' . $p . 'expenses WHERE expenseID = ' . $id . ' LIMIT 1;';
 
     $conn->Query($query);
     return $conn->RowArray(0, MYSQLI_ASSOC);
@@ -206,49 +219,51 @@ function get_expense($id) {
 /**
  * Returns the data of a certain expense record
  *
- * @param integer $expenseID        expenseID of the record
- * @global array $kga          kimai-global-array
+ * @param integer $expenseID expenseID of the record
+ * @global array $kga kimai-global-array
  * @return array               the record's data as array, false on failure
  * @author ob
  */
-function expense_get($expenseID) {
-    global $kga, $database;
+function expense_get($expenseID)
+{
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    
+
     $p = $kga['server_prefix'];
-    
+
     $expenseID = MySQL::SQLValue($expenseID, MySQL::SQLVALUE_NUMBER);
 
     if ($expenseID) {
-        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE expenseID = " . $expenseID);
+        $result = $conn->Query('SELECT * FROM ' . $p . 'expenses WHERE expenseID = ' . $expenseID);
     } else {
-        $result = $conn->Query("SELECT * FROM ${p}expenses WHERE userID = " . $kga['user']['userID'] . " ORDER BY expenseID DESC LIMIT 1");
+        $result = $conn->Query('SELECT * FROM ' . $p . 'expenses WHERE userID = ' . $kga['user']['userID'] . ' ORDER BY expenseID DESC LIMIT 1');
     }
-    
+
     if (!$result) {
-      return false;
+        return false;
     } else {
         return $conn->RowArray(0, MYSQLI_ASSOC);
     }
 }
 
 /**
- * edit exp entry 
+ * edit exp entry
  *
  * @param integer $id ID of record
- * @param integer $data  array with new record data
+ * @param array $data array with new record data
  * @return bool
  */
 function expense_edit($id, $data)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    
     $data = $database->clean_data($data);
-   
+
     $original_array = expense_get($id);
     $new_array = array();
-    
+
     foreach ($original_array as $key => $value) {
         if (isset($data[$key]) == true) {
             $new_array[$key] = $data[$key];
@@ -257,25 +272,27 @@ function expense_edit($id, $data)
         }
     }
 
-    $values ['projectID']    = MySQL::SQLValue($new_array ['projectID'], MySQL::SQLVALUE_NUMBER);
-    $values ['designation']  = MySQL::SQLValue($new_array ['designation']);
-    $values ['comment']      = MySQL::SQLValue($new_array ['comment']);
-    $values ['commentType']  = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values ['timestamp']    = MySQL::SQLValue($new_array ['timestamp'], MySQL::SQLVALUE_NUMBER);
-    $values ['multiplier']   = MySQL::SQLValue($new_array ['multiplier'], MySQL::SQLVALUE_NUMBER);
-    $values ['value']        = MySQL::SQLValue($new_array ['value'], MySQL::SQLVALUE_NUMBER);
-    $values ['refundable']   = MySQL::SQLValue($new_array ['refundable'], MySQL::SQLVALUE_NUMBER);
-                                   
+    $values ['projectID'] = MySQL::SQLValue($new_array ['projectID'], MySQL::SQLVALUE_NUMBER);
+    $values ['designation'] = MySQL::SQLValue($new_array ['designation']);
+    $values ['comment'] = MySQL::SQLValue($new_array ['comment']);
+    $values ['commentType'] = MySQL::SQLValue($new_array ['commentType'], MySQL::SQLVALUE_NUMBER);
+    $values ['timestamp'] = MySQL::SQLValue($new_array ['timestamp'], MySQL::SQLVALUE_NUMBER);
+    $values ['multiplier'] = MySQL::SQLValue($new_array ['multiplier'], MySQL::SQLVALUE_NUMBER);
+    $values ['value'] = MySQL::SQLValue($new_array ['value'], MySQL::SQLVALUE_NUMBER);
+    $values ['refundable'] = MySQL::SQLValue($new_array ['refundable'], MySQL::SQLVALUE_NUMBER);
+
     $filter ['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $table = $kga['server_prefix'] . "expenses";
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
 
     $success = true;
-    
-    if (!$conn->Query($query)) $success = false;
-    
+
+    if (!$conn->Query($query)) {
+        $success = false;
+    }
+
     return $success;
-} 
+}
 
 /**
  * Get the sum of expenses for every user.
@@ -289,39 +306,44 @@ function expense_edit($id, $data)
  */
 function expenses_by_user($start, $end, $users = null, $customers = null, $projects = null)
 {
-    global $kga, $database;
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    
+
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
-    $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
+    $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
     $p = $database->getTablePrefix();
     $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}users.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end"; 
-
-   $query = "SELECT SUM(value*multiplier) as expenses, userID
+    if ($start) {
+        $whereClauses[] = 'timestamp >= ' . $start;
+    }
+    if ($end) {
+        $whereClauses[] = 'timestamp <= ' . $end;
+    }
+    $query = "SELECT SUM(value * multiplier) as expenses, userID
              FROM ${p}expenses
              Join ${p}projects USING(projectID)
              Join ${p}customers USING(customerID)
-             Join ${p}users USING(userID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
-             " GROUP BY userID;";
+             Join ${p}users USING(userID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ",
+            $whereClauses) .
+        " GROUP BY userID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
-   
+    if (!$rows) {
+        return array();
+    }
 
-    $arr = array(); 
+    $arr = array();
     foreach ($rows as $row) {
         $arr[$row['userID']] = $row['expenses'];
     }
-    
+
     return $arr;
 }
 
@@ -337,37 +359,44 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
  */
 function expenses_by_customer($start, $end, $users = null, $customers = null, $projects = null)
 {
-    global $kga, $database;
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    
+
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
-    $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
+    $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
     $p = $database->getTablePrefix();
-    
+
     $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}customers.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end"; 
-    
-    $query = "SELECT SUM(value*multiplier) as expenses, customerID FROM ${p}expenses
+    if ($start) {
+        $whereClauses[] = 'timestamp >= ' . $start;
+    }
+    if ($end) {
+        $whereClauses[] = 'timestamp <= ' . $end;
+    }
+
+    $query = "SELECT SUM(value * multiplier) as expenses, customerID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
-            Left Join ${p}customers USING(customerID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
-            " GROUP BY customerID;";
+            Left Join ${p}customers USING(customerID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ",
+            $whereClauses) .
+        " GROUP BY customerID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
+    if (!$rows) {
+        return array();
+    }
 
     $arr = array();
     foreach ($rows as $row) {
         $arr[$row['customerID']] = $row['expenses'];
     }
-    
+
     return $arr;
 }
 
@@ -383,30 +412,37 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
  */
 function expenses_by_project($start, $end, $users = null, $customers = null, $projects = null)
 {
-    global $kga, $database;
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    
+
     $start = MySQL::SQLValue($start, MySQL::SQLVALUE_NUMBER);
-    $end   = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
+    $end = MySQL::SQLValue($end, MySQL::SQLVALUE_NUMBER);
 
     $p = $database->getTablePrefix();
     $whereClauses = $database->timeSheet_whereClausesFromFilters($users, $customers, $projects);
     $whereClauses[] = "${p}projects.trash = 0";
 
-    if ($start)
-      $whereClauses[] = "timestamp >= $start";
-    if ($end)
-      $whereClauses[] = "timestamp <= $end";
- 
-    $query = "SELECT sum(value*multiplier) as expenses, projectID FROM ${p}expenses
+    if ($start) {
+        $whereClauses[] = 'timestamp >= ' . $start;
+    }
+    if ($end) {
+        $whereClauses[] = 'timestamp <= ' . $end;
+    }
+
+    $query = "SELECT sum(value * multiplier) as expenses, projectID FROM ${p}expenses
             Left Join ${p}projects USING(projectID)
-            Left Join ${p}customers USING(customerID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
-       " GROUP BY projectID;";
+            Left Join ${p}customers USING(customerID) " . (count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ",
+            $whereClauses) .
+        " GROUP BY projectID;";
 
     $result = $conn->Query($query);
-    if (!$result) return array();
+    if (!$result) {
+        return array();
+    }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
-    if (!$rows) return array();
+    if (!$rows) {
+        return array();
+    }
 
     $arr = array();
     foreach ($rows as $row) {

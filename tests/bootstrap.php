@@ -19,7 +19,7 @@
  */
 
 // TODO: check include path
-ini_set ( 'date.timezone', 'Europe/Berlin' );
+ini_set('date.timezone', 'Europe/Berlin');
 
 if (!file_exists(__DIR__ . '/../libraries/autoload.php')) {
     die('You have to execute "composer install" or "composer update" before executing unit tests!');

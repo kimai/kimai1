@@ -49,11 +49,7 @@ function ts_formatTime(value) {
  * @returns {string}
  */
 function ts_formatDate(value) {
-	var day = prependZeroIfNeeded(value.getDate());
-	var month = prependZeroIfNeeded(value.getMonth() + 1);
-	var year = value.getFullYear();
-
-	return day + '.' + month + '.' + year;
+    return ($.datepicker.formatDate(window.dateFormat, value));
 }
 
 /**
@@ -201,18 +197,19 @@ function timesheet_extension_activities_changed() {
  * reloads timesheet, customer, project and activity tables
  */
 function ts_ext_reload() {
-	$.post(ts_ext_path + "processor.php", {
-		axAction: "reload_timeSheet",
-		axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|' + filterProjects.join(":") + '|' + filterActivities.join(":"),
-		id: 0,
-		first_day: new Date($('#pick_in').val()).getTime() / 1000,
-		last_day: new Date($('#pick_out').val()).getTime() / 1000
-	}, function(data) {
-		$("#timeSheet").html(data);
+    $.post(ts_ext_path + "processor.php", {
+        axAction: "reload_timeSheet",
+        axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|' + filterProjects.join(":") + '|' + filterActivities.join(":"),
+        id: 0,
+        first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+        last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
 
-		ts_ext_set_TableWidths();
-		ts_ext_applyHoverIntent();
-	});
+    }, function(data) {
+        $("#timeSheet").html(data);
+
+        ts_ext_set_TableWidths();
+        ts_ext_applyHoverIntent();
+    });
 }
 
 /**
@@ -477,30 +474,30 @@ function pasteNow(value) {
  * @returns {Date}
  */
 function ts_getDateFromStrings(dateStr, timeStr) {
-	var result = new Date();
-	var dateArray = dateStr.split(/\./);
-	var timeArray = timeStr.split(/:|\./);
-	if (dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
-		return null;
-	}
-	result.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);
-	if (timeArray[0].length > 2) {
-		result.setHours(timeArray[0].substring(0, 2));
-		result.setMinutes(timeArray[0].substring(2, 4));
-	} else {
-		result.setHours(timeArray[0]);
-	}
-	if (timeArray.length > 1) {
-		result.setMinutes(timeArray[1]);
-	} else {
-		result.setMinutes(0);
-	}
-	if (timeArray.length > 2) {
-		result.setSeconds(timeArray[2]);
-	} else {
-		result.setSeconds(0);
-	}
-	return result;
+    if (dateStr == '')
+        return null;
+    var result = $.datepicker.parseDate(window.dateFormat, dateStr);
+
+    // the users time format is not respected (todo)
+    var timeArray = timeStr.split(/:|\./);
+
+    if (timeArray[0].length > 2) {
+        result.setHours(timeArray[0].substring(0, 2));
+        result.setMinutes(timeArray[0].substring(2, 4));
+    } else {
+        result.setHours(timeArray[0]);
+    }
+    if (timeArray.length > 1) {
+        result.setMinutes(timeArray[1]);
+    } else {
+        result.setMinutes(0);
+    }
+    if (timeArray.length > 2) {
+        result.setSeconds(timeArray[2]);
+    } else {
+        result.setSeconds(0);
+    }
+    return result;
 }
 
 /**

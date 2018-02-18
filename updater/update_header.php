@@ -21,9 +21,8 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
     die('You cannot call this file directly');
 }
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+?><!DOCTYPE html>
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Kimai Update <?php echo $kga['version'] . "." . $kga['revision']; ?></title>
@@ -142,7 +141,7 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
             width: 100px;
         }
     </style>
-    <script src="../libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
 </head>
 <body>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>

@@ -164,10 +164,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#floater_innerwrap').tabs({selected: 0});
-        
+
         var $addProject = $('#addProject');
         $addProject.ajaxForm({
-            'beforeSubmit': function () {
+            beforeSubmit: function () {
                 clearFloaterErrorMessages();
 
                 if ($addProject.attr('submitting')) {
@@ -178,7 +178,7 @@
                     return true;
                 }
             },
-            'success': function (result) {
+            success: function (result) {
                 $addProject.removeAttr('submitting');
 
                 for (var fieldName in result.errors) {
@@ -191,7 +191,7 @@
                     hook_activities_changed();
                 }
             },
-            'error': function () {
+            error: function () {
                 $addProject.removeAttr('submitting');
             }
         });
