@@ -176,20 +176,20 @@ function expense_extension_triggerCHE() {
 // reloads timesheet, customer, project and activity tables
 //
 function expense_extension_reload() {
-	$.post(expense_extension_path + "processor.php", { 
-			axAction: "reload_exp", 
-			axValue: filterUsers.join(":")+'|'+filterCustomers.join(":")+'|'+filterProjects.join(":"), 
-			id: 0,
-			first_day: new Date($('#pick_in').val()).getTime()/1000, 
-			last_day: new Date($('#pick_out').val()).getTime()/1000
-		},
-		function(data) {
-			$("#expenses").html(data);
+    $.post(expense_extension_path + "processor.php", {
+            axAction: "reload_exp",
+            axValue: filterUsers.join(":") + '|' + filterCustomers.join(":") + '|' + filterProjects.join(":"),
+            id: 0,
+            first_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_in').val())).getTime() / 1000,
+            last_day: new Date($.datepicker.parseDate(window.dateFormat, $('#pick_out').val())).getTime() / 1000,
+        },
+        function(data) {
+            $("#expenses").html(data);
 
-			expense_extension_set_TableWidths();
-			expense_extension_applyHoverIntent();
-		}
-	);
+            expense_extension_set_TableWidths();
+            expense_extension_applyHoverIntent();
+        }
+    );
 }
 
 
