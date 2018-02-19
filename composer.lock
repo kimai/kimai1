@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "096359b77016a53ca38310fe725a16aa",
+    "content-hash": "f3789c41c190e1b670377ae4fc93dc5e",
     "packages": [
         {
             "name": "phpoffice/phpexcel",
@@ -125,6 +125,53 @@
                 "qrcode"
             ],
             "time": "2017-04-26T08:14:48+00:00"
+        },
+        {
+            "name": "tinybutstrong/opentbs",
+            "version": "v1.9.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Skrol29/opentbs.git",
+                "reference": "7502c157432a6b08fe8732e6ad7d167db4694708"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Skrol29/opentbs/zipball/7502c157432a6b08fe8732e6ad7d167db4694708",
+                "reference": "7502c157432a6b08fe8732e6ad7d167db4694708",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0",
+                "tinybutstrong/tinybutstrong": ">=3.10.1"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "tbs_plugin_opentbs.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Skrol29",
+                    "email": "skrol29dev@gmail.com"
+                }
+            ],
+            "description": "With OpenTBS you can merge OpenOffice - LibreOffice and Ms Office documents with PHP using the TinyButStrong template engine. Simple use OpenOffice - LibreOffice or Ms Office to edit your templates : DOCX, XLSX, PPTX, ODT, OSD, ODP and other formats.",
+            "homepage": "http://www.tinybutstrong.com/opentbs.php",
+            "keywords": [
+                "docx",
+                "odp",
+                "ods",
+                "odt",
+                "pptx",
+                "templating",
+                "xlsx"
+            ],
+            "time": "2018-02-13T22:12:35+00:00"
         },
         {
             "name": "tinybutstrong/tinybutstrong",

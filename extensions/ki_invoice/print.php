@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // https://www.kimai.org
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -65,8 +65,8 @@ $customer = $database->customer_get_data($projectObjects[0]['customerID']);
 $customerName = html_entity_decode($customer['name']);
 $beginDate = $in;
 $endDate = $out;
-$invoiceID = $customer['name'] . "-" . date("y", $in) . "-" . date("m", $in);
 $today = time();
+$invoiceID = date("Y", $today) . "." . date("m", $today). date("d", $today) . "-" . ($today % 86400);
 $dueDate = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
 
 $round = 0;
@@ -123,6 +123,13 @@ if (isset($_REQUEST['sort_invoice']))
     }
 }
 
+// generate invoice position numbers
+$i = 1;
+foreach ($invoiceArray as $k => $v) {
+    $invoiceArray[$k]['position'] = $i;
+    $i++;
+}
+
 $vat_rate = $customer['vat'];
 if (!is_numeric($vat_rate)) {
     $vat_rate = $kga->getDefaultVat();
@@ -163,13 +170,17 @@ $model->setDateFormat($kga->getDateFormat(2));
 $model->setCurrencySign($kga->getCurrencySign());
 $model->setCurrencyName($kga->getCurrencyName());
 $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
+$model->setFttltime($fttltime);
 
 // ---------------------------------------------------------------------------
+
 $renderers = array(
-    'odt' => new Kimai_Invoice_OdtRenderer(),
+//    'odt' => new Kimai_Invoice_OdtRenderer(),
     'html' => new Kimai_Invoice_HtmlRenderer(),
-    'pdf' => new Kimai_Invoice_HtmlToPdfRenderer()
+    'pdf' => new Kimai_Invoice_HtmlToPdfRenderer(),
+    'doc-odt' => new Kimai_Invoice_DocxOdtRenderer()
 );
+
 
 /* @var $renderer Kimai_Invoice_AbstractRenderer */
 foreach ($renderers as $rendererType => $renderer) {
