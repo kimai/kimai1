@@ -18,22 +18,9 @@
     color: #AF0000 !important;
 }
 
-.menu li span.aa {
-    width:5px; 
-    height:18px; 
-    float:left; 
-    padding:3px 0 0 0;
-}
-
 .menu li span.bb {
     height:18px;
     float:left;
-    padding:3px 0 0 0;
-}
-.menu li span.cc {
-    width:5px;
-    height:18px;
-    float:left; 
     padding:3px 0 0 0;
 }
 
