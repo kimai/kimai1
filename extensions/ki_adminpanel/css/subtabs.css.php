@@ -1,6 +1,5 @@
 <?php
 	header('Content-type: text/css');
-	$table_header_lighter = "../../../skins/standard/grfx/g3_table_header_lighter.png";
 ?>
 
 .adminPanel_extension_panel_header {
@@ -8,7 +7,14 @@
   padding: 0;
 }
 .adminPanel_extension_panel_header a {
-  background-image: url('<?php echo $table_header_lighter; ?>');
+	background: -moz-linear-gradient(90deg, rgba(188,188,188,1) 0%, rgba(188,188,188,1) 45%, rgba(213,213,213,1) 65%, rgba(213,213,213,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(213,213,213,1)), color-stop(35%, rgba(213,213,213,1)), color-stop(55%, rgba(188,188,188,1)), color-stop(100%, rgba(188,188,188,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(90deg, rgba(188,188,188,1) 0%, rgba(188,188,188,1) 45%, rgba(213,213,213,1) 65%, rgba(213,213,213,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(90deg, rgba(188,188,188,1) 0%, rgba(188,188,188,1) 45%, rgba(213,213,213,1) 65%, rgba(213,213,213,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(90deg, rgba(188,188,188,1) 0%, rgba(188,188,188,1) 45%, rgba(213,213,213,1) 65%, rgba(213,213,213,1) 100%); /* ie10+ */
+	background: linear-gradient(0deg, rgba(188,188,188,1) 0%, rgba(188,188,188,1) 45%, rgba(213,213,213,1) 65%, rgba(213,213,213,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#D5D5D5', endColorstr='#BCBCBC',GradientType=0 ); /* ie6-9 */
+
   height: 19px;
   text-align: left;
   color: #333333;

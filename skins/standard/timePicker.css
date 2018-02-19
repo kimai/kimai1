@@ -27,11 +27,12 @@
     cursor: pointer;
 }
 
-
 .ui-timepicker-hours td, .ui-timepicker-minutes td {
-    background: url(grfx/picker_bg_norm.png) no-repeat;
-    width: 40px;
-    height: 40px;
+    background: rgb(124, 124, 124);
+    border: 1px solid rgb(88, 88, 88);
+    border-radius: 7px;
+    width: 36px;
+    height: 36px;
     color: #000;
     text-align: center;
 }
@@ -42,32 +43,8 @@
 }
 
 .ui-timepicker-hours td:hover, .ui-timepicker-minutes td:hover {
-    background: url(grfx/picker_bg_hover.png) no-repeat;
+    background: rgb(255, 204, 1);
+    border: 1px solid rgb(137, 72, 31);
+    border-radius: 7px;
     color: #000;
 }
-
-
-/*#ui-timepicker-div td.ui-datepicker-today {
-    background: url(grfx/picker_bg_today.png) no-repeat;
-    font-weight: bold;
-}
-
-#ui-timepicker-div td.ui-datepicker-today:hover {
-    background: url(grfx/picker_bg_today_hover.png) no-repeat;
-}
-
-#ui-timepicker-div td.ui-datepicker-today a {
-    color: #fff;
-}
-
-
-#ui-timepicker-div td.ui-datepicker-current-day,
-#ui-timepicker-div td.ui-datepicker-current-day:hover
-{
-    background: url(grfx/picker_bg_selected.png) no-repeat;
-}
-
-#ui-timepicker-div td.ui-datepicker-current-day a {
-  color:#fff;
-}
-*/
