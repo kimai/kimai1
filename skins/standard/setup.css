@@ -71,23 +71,6 @@ input {
      z-index:10;
      color:white;
      font-size:smaller;
-
-}
-
-#stopwatch {
-     background:url("grfx/g3_display_watch.png") no-repeat;
-     position:absolute;
-     margin:0;
-     top:22px;
-     right:95px;
-     width:136px;
-     height:44px;
-     z-index:10;
-     font: 22px "Lucida Grande", Lucida, Verdana, sans-serif;
-     text-align: center;
-     padding: 8px 0 0;
-     display: none;
-     color: #51534a;
 }
 
 #button_comment {
