@@ -194,6 +194,10 @@ switch ($axAction) {
             $view->assign('approved_activity', 0);
             $view->assign('budget_activity_used', 0);
 
+            //ab: Set billable default Value 
+            $view->assign('billable_active', $kga['billable'][$kga['billableDefault']]);
+            //ab: End billable default Value;
+
             $view->assign('cleared', false);
         }
 

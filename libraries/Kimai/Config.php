@@ -25,6 +25,7 @@ class Kimai_Config extends Kimai_ArrayObject
     const DEFAULT_LANGUAGE = 'language';
     const DEFAULT_AUTHENTICATOR = 'authenticator';
     const DEFAULT_BILLABLE = 'billable';
+    const DEFAULT_BILLABLEIDX = 'billableDefault';
     const DEFAULT_SKIN = 'skin';
 
     /**
@@ -52,6 +53,8 @@ class Kimai_Config extends Kimai_ArrayObject
         switch ($config) {
             case self::DEFAULT_BILLABLE:
                 return array(0, 50, 100);
+            case self::DEFAULT_BILLABLEIDX:
+                return 0;
             case self::DEFAULT_AUTHENTICATOR:
                 return 'kimai';
             case self::DEFAULT_SKIN:
@@ -88,6 +91,7 @@ class Kimai_Config extends Kimai_ArrayObject
             'language' => self::getDefault(self::DEFAULT_LANGUAGE),
             'authenticator' => self::getDefault(self::DEFAULT_AUTHENTICATOR),
             'billable' => self::getDefault(self::DEFAULT_BILLABLE),
+            'billableDefault' => 0,
             'skin' => self::getDefault(self::DEFAULT_SKIN),
             'conf' => new Kimai_Config_Settings()
         );
@@ -112,7 +116,15 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return $this->get('show_TrackingNr');
     }
-
+ /* Dublicate function
+    **
+     * @return array
+     *
+    public function getBillable()
+    {
+        return $this->get('billable');
+    }
+*/
     /**
      * Returns the actual Kimai version from the database.
      * This is NOT the installed software version, but the version of the database structure.
@@ -231,15 +243,24 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         return $this->get('billable');
     }
+    /**
+     * @return int
+     */
+    public function getBillableDefault()
+    {
+        return (int) $this->get('billableDefault');
+    }
 
     /**
      * Sets the billable values as array.
      *
      * @param array $billable
+     * @param int $billableDefault default Index to $billable 
      */
-    public function setBillable(array $billable)
+    public function setBillable(array $billable, $billableDefault = 0)
     {
         $this->set('billable', $billable);
+        $this->set('billableDefault', $billableDefault);
     }
 
     /**

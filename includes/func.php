@@ -343,6 +343,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
 
     // fetch skin from global config with "standard" fallback
     $skin = !empty($kga->getSkin()) ? $kga->getSkin() : Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN);
+    $billableDefault = !empty($kga->getBillableDefault()) ? var_export($kga->getBillableDefault(), true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLEIDX), true);
     $billable = !empty($kga->getBillable()) ? var_export($kga->getBillable(), true) : var_export(Kimai_Config::getDefault(Kimai_Config::DEFAULT_BILLABLE), true);
     $authenticator = !empty($kga->getAuthenticator()) ? $kga->getAuthenticator() : Kimai_Config::getDefault(Kimai_Config::DEFAULT_AUTHENTICATOR);
     $lang = !empty($lang) ? $lang : Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
@@ -351,7 +352,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // https://www.kimai.org
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
