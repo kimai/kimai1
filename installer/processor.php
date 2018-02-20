@@ -65,20 +65,20 @@ function getpass()
 
 $axAction = strip_tags($_REQUEST['axAction']);
 
-$javascript = "";
+$javascript = '';
 $errors = 0;
 
 switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5.4
+     *  - PHP major version >= 5.5
      *  - MySQLi extension available
      *  - iconv extension available
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
-    case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+    case 'checkRequirements':
+        if (version_compare(PHP_VERSION, '5.5') < 0) {
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
         }
@@ -118,7 +118,7 @@ switch ($axAction) {
     /**
      * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
-    case "checkRights":
+    case 'checkRights':
         if ((file_exists("../includes/autoconf.php") && !is_writeable("../includes/autoconf.php")) || !is_writeable("../includes/")) {
             $errors++;
             $javascript .= "$('span.ch_autoconf').addClass('fail');";
@@ -146,8 +146,8 @@ switch ($axAction) {
     /**
      * Create the autoconf.php file.
      */
-    case ("write_config"):
-        include "../includes/func.php";
+    case 'write_config':
+        include '../includes/func.php';
         // special characters " and $ are escaped
         $database = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
@@ -178,7 +178,7 @@ switch ($axAction) {
     /**
      * Create the database.
      */
-    case ('make_database'):
+    case 'make_database':
         $databaseName = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
         $username = $_REQUEST['username'];

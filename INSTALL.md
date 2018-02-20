@@ -29,7 +29,7 @@ Kimai requires a web server with a PHP environment and a database. The minimum
 system requirements for running Kimai are:
 
 * Webserver capable of running PHP applications (Apache, Nginx, IIS or other)
-* PHP 5.4
+* PHP 5.5
 * MySQL 5.5 up to 5.7 or compatible
 * more than 100 MB of disk space
 
