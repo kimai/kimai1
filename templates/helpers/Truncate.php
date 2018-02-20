@@ -33,9 +33,16 @@ class Zend_View_Helper_Truncate extends Zend_View_Helper_Abstract
      */
     public function truncate($text, $maxLength, $append = '')
     {
-        if (strlen($text) > $maxLength) {
-            return substr($text, 0, $maxLength) . $append;
+    	if (extension_loaded('mbstring')) {
+			if (mb_strlen($text) > $maxLength) {
+				return mb_substr($text, 0, $maxLength) . $append;
+			}
+        } else {
+			if (strlen($text) > $maxLength) {
+				return substr($text, 0, $maxLength) . $append;
+			}
         }
+        
 
         return $text;
     }
