@@ -406,11 +406,15 @@ function quickdelete(id) {
  * edit a timesheet record
  * @param id
  */
-function editRecord(id, endtimes) {
+function editRecord(id, endtimes, starttimes) {
     // search for the previous end time
-    window.endtime = "";
+    window.previousEndTime = "";
+    window.nextStartTime = "";
     if (endtimes.length > 0) {
-        window.endtime = endtimes.find("td.to").text().trim();
+        window.previousEndTime = endtimes.find("td.to").text().trim();
+    }
+    if (starttimes.length > 0) {
+        window.nextStartTime = starttimes.find("td.from").text().trim();
     }
     floaterShow(ts_ext_path + "floaters.php", "add_edit_timeSheetEntry", 0, id, 650);
 }
@@ -473,29 +477,46 @@ function pasteNow(value) {
     $("#end_day").datepicker("setDate", now);
 }
 /**
- * pastes the date and time in the outPoint field of the
+ * pastes time in the start field of the
  * change dialog for timesheet entries
  *
- *
- * @param value
  */
 function pasteLastEnd() {
-    if (window.endtime == undefined || window.endtime == '') {
+    if (window.previousEndTime == undefined || window.previousEndTime == '') {
         $("#lastendTime").hide();
         return;
     }
-
-    if (window.endtime.match(/^\d\d:\d\d$/) && $("#start_time").val().trim().match(/^\d\d:\d\d:\d\d$/)) {
-        window.endtime += ':00';
+    if (window.previousEndTime.match(/^\d\d:\d\d$/) && $("#start_time").val().trim().match(/^\d\d:\d\d:\d\d$/)) {
+        window.previousEndTime += ':00';
     }
-    if ((window.endtime != $("#start_time").val().trim())) {
-        $("#start_time").val(window.endtime);
+    if ((window.previousEndTime != $("#start_time").val().trim())) {
+        $("#start_time").val(window.previousEndTime);
         $('#start_time').trigger('change');
     } else {
         $("#lastendTime").hide();
     }
 }
 
+/**
+ * pastes the  time in the end field of the
+ * change dialog for timesheet entries
+ *
+ */
+function pastePreviousStart() {
+    if (window.nextStartTime == undefined || window.nextStartTime == '') {
+        $("#previousStartTime").hide();
+        return;
+    }
+    if (window.nextStartTime.match(/^\d\d:\d\d$/) && $("#end_time").val().trim().match(/^\d\d:\d\d:\d\d$/)) {
+        window.nextStartTime += ':00';
+    }
+    if ((window.nextStartTime != $("#end_time").val().trim())) {
+        $("#end_time").val(window.nextStartTime);
+        $('#end_time').trigger('change');
+    } else {
+        $("#previousStartTime").hide();
+    }
+}
 /**
  * Returns a Date object, based on 2 strings
  * @param dateStr

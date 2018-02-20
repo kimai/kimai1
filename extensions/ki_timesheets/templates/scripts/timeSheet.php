@@ -90,7 +90,7 @@ if ($this->timeSheetEntries) {
             <?php endif; ?>
 
             <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
-                <a href='#' onclick="editRecord(<?php echo $row['timeEntryID']?>,$(this).parent().parent().next('tr')); $(this).blur(); return false;"
+                <a href='#' onclick="editRecord(<?php echo $row['timeEntryID']?>, $(this).parent().parent().next('tr'), $(this).parent().parent().prev('tr')); $(this).blur(); return false;"
                    title='<?php echo $this->kga['lang']['edit']?>'><img
                    src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
                    alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
