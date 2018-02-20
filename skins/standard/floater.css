@@ -2,7 +2,7 @@
     border:1px solid #fff;
 	position: absolute;
 	padding:5px;
-	background: url("grfx/floaterborder.png");
+	background: rgb(245, 245, 245);
 	z-index: 500;
 	display:none;
 }

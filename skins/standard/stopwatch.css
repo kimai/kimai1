@@ -26,14 +26,14 @@
 #stopwatch .watch {
     position:relative;
     color:red;
-    top:11px;
+    top:14px;
     font-family:arial, sans-serif;
     font-size:35px;
-    width:205px;
-    height:52px;
+    width:100%;
     padding:0;
-    overflow:hidden;
     line-height:13px;
+    display: inline-block;
+    text-align: center;
 }
 
 #stopwatch_ticker {
@@ -54,7 +54,7 @@
     width:220px;
     height:15px;
     margin-left:-40px;
-    margin-top:-3px;
+    margin-top:-5px;
     padding:0;
     overflow:hidden;
 }
