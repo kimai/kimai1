@@ -1,5 +1,7 @@
 #settimer {
 	text-align: center;
+    top: calc(50% - 0.7em);
+    position: relative;
 }
 
 #settimer a,
