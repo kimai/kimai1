@@ -39,7 +39,6 @@ class Kimai_Invoice_DocxOdtRenderer extends Kimai_Invoice_AbstractRenderer
      */
     public function render()
     {
-
         $doc = new clsTinyButStrong;
         $doc->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
        
@@ -63,7 +62,6 @@ class Kimai_Invoice_DocxOdtRenderer extends Kimai_Invoice_AbstractRenderer
         
         $doc->Show(OPENTBS_DOWNLOAD, $invoiceFilename);
         $doc->LoadTemplate(false);
-
     }
 
     /**
