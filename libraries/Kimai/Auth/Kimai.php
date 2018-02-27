@@ -59,10 +59,38 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $is_customer = $database->is_customer_name($name);
 
         $mail = new Zend_Mail('utf-8');
-        $mail->setFrom($kga['conf']['adminmail'], 'Kimai - Open Source Time Tracking');
+        $mail->setFrom($kga['adminmail'], 'Kimai - Open Source Time Tracking');
         $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
+        
+        switch ($kga['mail_transport']) {
+            case 'file':
+                Kimai_Logger::logfile('file transport not supported');
+                break;
+            case 'sendmail':
+                $transport = new Zend_Mail_Transport_Sendmail();
+                break;
+            case 'smtp':
+                $config = array(
+                    'name' => $kga['smtp_name'],
+                    'host' => $kga['smtp_host'],
+                    'port' => $kga['smtp_port']
+                );
+                /* Authentication is required */
+                if ($kga['smtp_auth'] != '') {
+                    $config['auth'] = $kga['smtp_auth'];
+                    $config['username'] = $kga['smtp_user'];
+                    $config['password'] = $kga['smtp_pass'];
+                }
+                /* SSL/TLS does not seem to depend on the auth method */
+                if ($kga['smtp_ssl'] != '') {
+                    $config['ssl'] = $kga['smtp_ssl'];
+                }
 
-        $transport = new Zend_Mail_Transport_Sendmail();
+                $transport = new Zend_Mail_Transport_Smtp($kga['smtp_host'], $config);
+                break;
+            default:
+                Kimai_Logger::logfile('Mail transport mechanism specified is unsupported');
+        }
 
         $passwordResetHash = str_shuffle(MD5(microtime()));
 
