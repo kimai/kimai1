@@ -39,7 +39,7 @@ function step_back() {
 		case 25: target = '20_gpl'; break;
 		case 28: target = '25_system_requirements'; break;
 		case 30: target = '28_timezone'; break;
-		case 40: target = '28_timezone'; break;
+		case 40: target = '30_enter_mail_server_details'; break;
 		case 45: target = '40_permissions'; break;
 		case 50: target = '40_permissions'; break;
 		case 60: target = '50_enter_access_data'; break;
@@ -55,10 +55,24 @@ function step_back() {
 			password: password,
 			lang: language,
 			prefix: prefix,
-			database: database
+			database: database,
+			mail_transport: mail_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
+			if (target == '30_enter_mail_server_details') {
+				transport = $('#mail_transport').val();
+				if (transport == 'sendmail') {
+					$('.smtp').hide();
+				}
+			}
 		});
 	});
 }
@@ -153,15 +167,65 @@ function timezone_proceed() {
 	step_ahead();
 	timezone = $('#timezone').val();
 	$('#installsteps').slideUp(500, function() {
+		target = "30_enter_mail_server_details";
+
+		$.post('steps/30_enter_mail_server_details.php', {
+			lang: language
+		}, function(data) {
+			$('#installsteps').html(data);
+			$('#installsteps').slideDown(500);
+			transport = $('#mail_transport').val();
+			if (transport == 'sendmail') {
+				$('.smtp').hide();
+			}
+		});
+	});
+}
+
+// -------------------------------------------------
+// Mail Server selection
+
+function mail_proceed() {
+	step_ahead();
+	mail_transport = $('#mail_transport').val();
+	smtp_host = $('#smtp_host').val();
+	smtp_port = $('#smtp_port').val();
+	smtp_user = $('#smtp_user').val();
+	smtp_pass = $('#smtp_pass').val();
+	smtp_auth = $('#smtp_auth').val();
+	smtp_ssl = $('#smtp_ssl').val();
+	smtp_name = $('#smtp_name').val();
+	$('#installsteps').slideUp(500, function() {
 		target = "40_permissions";
 
 		$.post('steps/40_permissions.php', {
-			lang: language
+			lang: language,
+			mail_transport: mail_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
 		});
 	});
+}
+
+function mail_transport_select() {
+	var selected = $('select[name="mail_transport"] option:selected').text();
+	// show current
+	if ( selected == 'smtp') {
+		$('.smtp').show();
+	} else if ( selected == 'file') {
+		$('.smtp').show();
+	} else {
+		// hide all
+		$('.smtp').hide();
+	}
 }
 
 // -------------------------------------------------
@@ -194,7 +258,15 @@ function cp_proceed() {
 		target = "50_enter_access_data";
 
 		$.post("steps/50_enter_access_data.php", {
-			lang: language
+			lang: language,
+			mail_transport: mail_transport,
+			smtp_host: smtp_host,
+			smtp_port: smtp_port,
+			smtp_user: smtp_user,
+			smtp_pass: smtp_pass,
+			smtp_auth: smtp_auth,
+			smtp_ssl: smtp_ssl,
+			smtp_name: smtp_name
 		}, function(data) {
 			$('#installsteps').html(data);
 			$('#installsteps').slideDown(500);
@@ -231,7 +303,15 @@ function host_proceed() {
 				hostname: hostname,
 				username: username,
 				password: password,
-				lang: language
+				lang: language,
+				mail_transport: mail_transport,
+				smtp_host: smtp_host,
+				smtp_port: smtp_port,
+				smtp_user: smtp_user,
+				smtp_pass: smtp_pass,
+				smtp_auth: smtp_auth,
+				smtp_ssl: smtp_ssl,
+				smtp_name: smtp_name
 			}, function(data) {
 				$('#installsteps').html(data);
 				$('#installsteps').slideDown(500);
@@ -273,7 +353,15 @@ function db_check() {
 				database: database,
 				create_database: create_database,
 				prefix: prefix,
-				redirect: true
+				redirect: true,
+				mail_transport: mail_transport,
+				smtp_host: smtp_host,
+				smtp_port: smtp_port,
+				smtp_user: smtp_user,
+				smtp_pass: smtp_pass,
+				smtp_auth: smtp_auth,
+				smtp_ssl: smtp_ssl,
+				smtp_name: smtp_name
 			}, function(data) {
 				$('#installsteps').html(data);
 				$('#installsteps').slideDown(500);
@@ -302,7 +390,15 @@ function db_proceed() {
 		password: password,
 		lang: language,
 		database: database,
-		prefix: prefix
+		prefix: prefix,
+		mail_transport: mail_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function(data) {
 		$('#installsteps').html(data);
 		$('td.use_db').html(database);
@@ -331,7 +427,15 @@ function create_db() {
 		password: password,
 		lang: language,
 		prefix: prefix,
-		database: database
+		database: database,
+		mail_transport: mail_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function(data) {
 		if (data == "1") {
 			write_config();
@@ -358,7 +462,15 @@ function write_config() {
 		lang: language,
 		prefix: prefix,
 		database: database,
-		timezone: timezone
+		timezone: timezone,
+		mail_transport: mail_transport,
+		smtp_host: smtp_host,
+		smtp_port: smtp_port,
+		smtp_user: smtp_user,
+		smtp_pass: smtp_pass,
+		smtp_auth: smtp_auth,
+		smtp_ssl: smtp_ssl,
+		smtp_name: smtp_name
 	}, function (data) {
 		$('#wrapper').fadeOut(2000);
 		$('#footer').fadeOut(2000, function () {

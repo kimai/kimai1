@@ -22,7 +22,7 @@ if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
     die('Please run <code>composer install --no-dev</code> on the command line to install all php dependencies.');
 }
 
-$installsteps = 8;
+$installsteps = 9;
 $kga = array();
 require('../includes/version.php');
 $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
@@ -47,6 +47,14 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
         var username = '';
         var password = '';
         var timezone = '';
+        var mail_transport = '';
+        var smtp_host = '';
+        var smtp_port = '';
+        var smtp_user = '';
+        var smtp_pass = '';
+        var smtp_name = '';
+        var smtp_auth = '';
+        var smtp_ssl = '';
     </script>
 </head>
 <body>
