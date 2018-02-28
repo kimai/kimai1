@@ -34,7 +34,15 @@ class Kimai_Remote_Api
      * @var \Kimai_Remote_Database
      */
     private $backend = null;
+
+    /**
+     * @var
+     */
     private $user = null;
+
+    /**
+     * @var \Kimai_Config
+     */
     private $kga = null;
 
     /**
@@ -115,8 +123,8 @@ class Kimai_Remote_Api
      * If $projectId and $activityId are empty the last activity will be restarted.
      *
      * @param string $apiKey
-     * @param integer $projectId
-     * @param integer $activityId
+     * @param int $projectId
+     * @param int $activityId
      * @return array
      */
     public function startRecord($apiKey, $projectId, $activityId)
@@ -157,7 +165,6 @@ class Kimai_Remote_Api
         } else {
             return $this->getErrorResult("Unable to start, invalid params?");
         }
-        return $this->getErrorResult();
     }
 
     /**
@@ -165,8 +172,9 @@ class Kimai_Remote_Api
      * current activity will be stopped.
      *
      * @param string $apiKey
-     * @param integer $entryId
-     * @return boolean
+     * @param int $entryId
+     *
+     * @return array
      */
     public function stopRecord($apiKey, $entryId)
     {
@@ -199,7 +207,6 @@ class Kimai_Remote_Api
         } else {
             return $this->getErrorResult("Unable to stop, not recording?");
         }
-        return $this->getErrorResult();
     }
 
     /**
@@ -290,7 +297,6 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $projects = array();
         $kga = $this->getKimaiEnv();
         $user = $this->getUser();
 
@@ -325,7 +331,7 @@ class Kimai_Remote_Api
      * only tasks for that project are shown.
      *
      * @param string $apiKey
-     * @param integer|array $projectId
+     * @param int|array $projectId
      * @see 'reload_activities'
      * @return array|boolean
      */
@@ -335,7 +341,6 @@ class Kimai_Remote_Api
             return $this->getAuthErrorResult();
         }
 
-        $tasks = array();
         $kga = $this->getKimaiEnv();
         $user = $this->getUser();
 
@@ -417,15 +422,14 @@ class Kimai_Remote_Api
         $result = $this->getDebugResult(array($current), array($debugItems));
         */
 
-        $result = $this->getSuccessResult(array($current));
-        return $result;
+        return $this->getSuccessResult(array($current));
     }
 
     /**
      * Returns a list of recorded times.
      * @param string $apiKey
-     * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
-     * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $from a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $to a MySQL DATE/DATETIME/TIMESTAMP
      * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
      * @param int $start limit start
      * @param int $limit count rows to select
@@ -454,9 +458,6 @@ class Kimai_Remote_Api
             $totalCount = $backend->get_timeSheet($in, $out, array($user['userID']), null, null, null, true, false, $cleared, $start, $limit, true);
             return $this->getSuccessResult($timeSheetEntries, $totalCount);
         }
-
-        $result = $this->getErrorResult();
-        return $result;
     }
 
     /**
@@ -484,8 +485,7 @@ class Kimai_Remote_Api
             return $this->getSuccessResult(array($timeSheetEntry));
         }
 
-        $result = $this->getErrorResult();
-        return $result;
+        return $this->getErrorResult();
     }
 
     
@@ -568,7 +568,6 @@ class Kimai_Remote_Api
         }
 
         $backend = $this->getBackend();
-        $kga = $this->getKimaiEnv();
         $user = $this->getUser();
 
         // check for project
@@ -656,8 +655,6 @@ class Kimai_Remote_Api
                 return $this->getErrorResult('Failed to add entry.');
             }
         }
-        $result = $this->getErrorResult();
-        return $result;
     }
 
     /**
@@ -679,8 +676,6 @@ class Kimai_Remote_Api
         }
 
         $backend = $this->getBackend();
-        $kga = $this->getKimaiEnv();
-
         if ($backend->timeEntry_delete($id)) {
             $result = $this->getSuccessResult(array());
         }
@@ -690,8 +685,8 @@ class Kimai_Remote_Api
     /**
      * Returns a list of expenses.
      * @param string $apiKey
-     * @param integer $from a MySQL DATE/DATETIME/TIMESTAMP
-     * @param integer $to a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $from a MySQL DATE/DATETIME/TIMESTAMP
+     * @param int $to a MySQL DATE/DATETIME/TIMESTAMP
      * @param int $refundable -1 all, 0 only refundable
      * @param int $cleared -1 no filtering, 0 uncleared only, 1 cleared only
      * @param int $start limit start
@@ -719,9 +714,7 @@ class Kimai_Remote_Api
             $arr_exp = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit);
             $totalCount = $backend->get_expenses($in, $out, array($user['userID']), null, null, false, $refundable, $cleared, $start, $limit, true);
         }
-        $result = $this->getSuccessResult($arr_exp, $totalCount);
-
-        return $result;
+        return $this->getSuccessResult($arr_exp, $totalCount);
     }
 
     /**
@@ -749,8 +742,7 @@ class Kimai_Remote_Api
             return $this->getSuccessResult(array($expense));
         }
 
-        $result = $this->getErrorResult();
-        return $result;
+        return $this->getErrorResult();
     }
 
     /**
@@ -771,7 +763,6 @@ class Kimai_Remote_Api
         }
 
         $backend = $this->getBackend();
-        $kga = $this->getKimaiEnv();
         $user = $this->getUser();
 
         // check for project
@@ -780,7 +771,7 @@ class Kimai_Remote_Api
             return $this->getErrorResult('Invalid projectId.');
         }
 
-        // converto to timestamp
+        // convert to timestamp
         $timestamp = (int) strtotime($record['date']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
 
         // make sure the timestamp is not negative
@@ -832,8 +823,6 @@ class Kimai_Remote_Api
                 return $this->getErrorResult('Failed to add entry.');
             }
         }
-        $result = $this->getErrorResult();
-        return $result;
     }
 
     /**
@@ -855,8 +844,6 @@ class Kimai_Remote_Api
         }
 
         $backend = $this->getBackend();
-        $kga = $this->getKimaiEnv();
-
         if ($backend->expense_delete($id)) {
             $result = $this->getSuccessResult(array());
         }
@@ -887,7 +874,7 @@ class Kimai_Remote_Api
     /**
      * Returns the current kimai environment.
      *
-     * @return integer|null
+     * @return \Kimai_Config
      */
     private function getKimaiEnv()
     {
@@ -1002,7 +989,6 @@ class Kimai_Remote_Api
      */
     private function getTasksByProjectId($projectId, $user)
     {
-        $tasks = array();
         $tasks = $this->getBackend()->get_activities_by_project($projectId, $user['groups']);
         /**
          * we need to copy the array with new keys (remove the customerID key)
@@ -1022,8 +1008,6 @@ class Kimai_Remote_Api
                 'effort' => $task['effort']
             );
         }
-        $tasks = $tempTasks;
-
-        return $tasks;
+        return $tempTasks;
     }
 }
