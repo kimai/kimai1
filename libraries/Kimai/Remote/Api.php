@@ -489,7 +489,7 @@ class Kimai_Remote_Api
     }
 
     
-        /**
+    /**
      * updateActiveRecording
      * Updates an already running timer, this function allows
      * you to change a project, activity description and start time.
@@ -499,7 +499,8 @@ class Kimai_Remote_Api
      * @param array $record
      * @return array
      */
-    public function updateActiveRecording($apiKey, array $record) {
+    public function updateActiveRecording($apiKey, array $record) 
+    {
         if (!$this->init($apiKey, 'updateActiveRecording', true)) {
             return $this->getAuthErrorResult();
         }
