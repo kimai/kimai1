@@ -252,9 +252,9 @@ class Kimai_Database_Mysql
      * that are invisible and thus unmanagable to the user as the user lacks access to the Projects.
      * It is implicitly assumed that the user has access to the Activity and the Projects designated by the method parameters.
      *
-     * @param integer $activityID the id of the Activity to associate
+     * @param int $activityID the id of the Activity to associate
      * @param array $projectIDs the array of Project ids to associate
-     * @param integer $group the user's group id
+     * @param int $group the user's group id
      * @return bool
      */
     public function assignActivityToProjectsForGroup($activityID, $projectIDs, $group)
@@ -270,9 +270,9 @@ class Kimai_Database_Mysql
      * that are invisible and thus unmanagable to the user as the user lacks access to the Activities.
      * It is implicitly assumed that the user has access to the Project and the Activities designated by the method parameters.
      *
-     * @param integer $projectID the id of the Project to associate
+     * @param int $projectID the id of the Project to associate
      * @param array $activityIDs the array of Activity ids to associate
-     * @param integer $group the user's group id
+     * @param int $group the user's group id
      * @return bool
      */
     public function assignProjectToActivitiesForGroup($projectID, $activityIDs, $group)
@@ -288,8 +288,8 @@ class Kimai_Database_Mysql
      * looks at the assignments.
      * @param string $parentSubject a string designating the parent in the assignment, must be one of "project" or "activity"
      * @param string $subject a string designating the child in the assignment, must be one of "project" or "activity"
-     * @param integer $parentId the id of the parent
-     * @param integer $group the id of the user's group
+     * @param int $parentId the id of the parent
+     * @param int $group the id of the user's group
      * @return array the array of ids of those child Projects or Activities that are assigned to the parent Activity or Project but are invisible to the user
      */
     public function getNonManagableAssignedElementIds($parentSubject, $subject, $parentId, $group)
@@ -1248,8 +1248,8 @@ class Kimai_Database_Mysql
     /**
      * update the data for activity per project, which is budget, approved and effort
      *
-     * @param integer $projectID
-     * @param integer $activityID
+     * @param int $projectID
+     * @param int $activityID
      * @param array $data
      * @return bool
      */
@@ -1287,7 +1287,7 @@ class Kimai_Database_Mysql
     /**
      * returns all the activities which were assigned to a project
      *
-     * @param integer $projectID  ID of the project
+     * @param int $projectID  ID of the project
      * @return array         contains the activityIDs of the activities or false on error
      * @author sl
      */
@@ -1315,7 +1315,7 @@ class Kimai_Database_Mysql
     /**
      * returns all the activity ids which were assigned to a project
      *
-     * @param integer $projectID  ID of the project
+     * @param int $projectID  ID of the project
      * @return array         contains the activityIDs of the activities or false on error
      * @author sl
      */
@@ -1548,7 +1548,7 @@ class Kimai_Database_Mysql
      * Adds a new user
      *
      * @param array $data  username, email, and other data of the new user
-     * @return boolean|integer     false on failure, otherwise the new user id
+     * @return boolean|int     false on failure, otherwise the new user id
      * @author th
      */
     public function user_create($data)
@@ -1728,7 +1728,7 @@ class Kimai_Database_Mysql
      * Get a preference for a user. If no user ID is given the current user is used.
      *
      * @param string  $key     name of the preference to fetch
-     * @param integer $userId  (optional) id of the user to fetch the preference for
+     * @param int $userId  (optional) id of the user to fetch the preference for
      * @return string value of the preference or null if there is no such preference
      * @author sl
      */
@@ -1758,7 +1758,7 @@ class Kimai_Database_Mysql
      * Get several preferences for a user. If no user ID is given the current user is used.
      *
      * @param array   $keys    names of the preference to fetch in an array
-     * @param integer $userId  (optional) id of the user to fetch the preference for
+     * @param int $userId  (optional) id of the user to fetch the preference for
      * @return array  with keys for every found preference and the found value
      * @author sl
      */
@@ -1798,7 +1798,7 @@ class Kimai_Database_Mysql
      * If no user ID is given the current user is used.
      *
      * @param string  $prefix   prefix all preferenc keys to fetch have in common
-     * @param integer $userId  (optional) id of the user to fetch the preference for
+     * @param int $userId  (optional) id of the user to fetch the preference for
      * @return array  with keys for every found preference and the found value
      * @author sl
      */
@@ -1837,7 +1837,7 @@ class Kimai_Database_Mysql
      *
      * @param array   $data   key/value pairs to store
      * @param string  $prefix prefix for all preferences
-     * @param integer $userId (optional) id of another user than the current
+     * @param int $userId (optional) id of another user than the current
      * @return boolean        true on success, false on failure
      * @author sl
      */
@@ -1958,7 +1958,7 @@ class Kimai_Database_Mysql
     /**
      * Returns the number of time sheet entries with a certain status
      *
-     * @param integer $statusID   ID of the status
+     * @param int $statusID   ID of the status
      * @return int            		the number of timesheet entries with this status
      * @author mo
      */
@@ -2187,7 +2187,7 @@ class Kimai_Database_Mysql
     /**
      * Returns a list of IDs of all current recordings.
      *
-     * @param integer $userID ID of user in table users
+     * @param int $userID ID of user in table users
      * @return array with all IDs of current recordings. This array will be empty if there are none.
      * @author sl
      */
@@ -2243,7 +2243,7 @@ class Kimai_Database_Mysql
     /**
      * Returns the data of a certain time record
      *
-     * @param integer $timeEntryID  timeEntryID of the record
+     * @param int $timeEntryID  timeEntryID of the record
      * @return array         the record's data (time, activity id, project id etc) as array, false on failure
      * @author th
      */
@@ -2280,7 +2280,7 @@ class Kimai_Database_Mysql
     /**
      * delete time sheet entry
      *
-     * @param integer $id -> ID of record
+     * @param int $id -> ID of record
      * @author th
      * @return object
      */
@@ -2337,7 +2337,7 @@ class Kimai_Database_Mysql
     /**
      * edit time sheet entry
      *
-     * @param integer $id ID of record
+     * @param int $id ID of record
      * @param array $data array with new record data
      * @author th
      * @return bool
@@ -2530,7 +2530,7 @@ class Kimai_Database_Mysql
     /**
      * returns list of projects for specific group and specific customer as array
      *
-     * @param integer $customerID customer id
+     * @param int $customerID customer id
      * @param array $groups list of group ids
      * @return array
      * @author ob
@@ -2654,15 +2654,15 @@ class Kimai_Database_Mysql
     /**
      * returns timesheet for specific user as multidimensional array
      *
-     * @param integer $start start of timeframe in unix seconds
-     * @param integer $end end of timeframe in unix seconds
+     * @param int $start start of timeframe in unix seconds
+     * @param int $end end of timeframe in unix seconds
      * @param array $users
      * @param array $customers
      * @param array $projects
      * @param array $activities
      * @param bool $limit
      * @param bool $reverse_order
-     * @param integer $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
+     * @param int $filterCleared where -1 (default) means no filtering, 0 means only not cleared entries, 1 means only cleared entries
      * @param int $startRows
      * @param int $limitRows
      * @param bool $countOnly
@@ -2815,7 +2815,10 @@ class Kimai_Database_Mysql
     /**
      * A drop-in function to replace checkuser() and be compatible with none-cookie environments.
      *
-     * @author th/kp
+     * @param $kimai_user
+     *
+     * @return mixed
+     * @throws \Exception
      */
     public function checkUserInternal($kimai_user)
     {
@@ -2892,8 +2895,6 @@ class Kimai_Database_Mysql
         } else {
             return $this->kga['customer'];
         }
-
-        return null;
     }
 
     /**
@@ -3042,7 +3043,7 @@ class Kimai_Database_Mysql
     /**
      * returns configuration data for specified user
      *
-     * @param integer $userID
+     * @param int $userID
      * @return array $this->kga
      */
     public function get_user_config($userID)
@@ -3075,7 +3076,7 @@ class Kimai_Database_Mysql
     /**
      * returns configuration for specified customer
      *
-     * @param integer $userID
+     * @param int $userID
      * @return array
      */
     public function get_customer_config($userID)
@@ -3128,8 +3129,8 @@ class Kimai_Database_Mysql
     /**
      * returns time summary of current timesheet
      *
-     * @param integer $start start of timeframe in unix seconds
-     * @param integer $end end of timeframe in unix seconds
+     * @param int $start start of timeframe in unix seconds
+     * @param int $end end of timeframe in unix seconds
      * @param null $users
      * @param null $customers
      * @param null $projects
@@ -3305,7 +3306,7 @@ class Kimai_Database_Mysql
      *  take rows which have NULL or the project id in that column.
      *
      * @author sl
-     * @param integer $projectID
+     * @param int $projectID
      * @param array $groups
      * @return array
      */
@@ -3359,7 +3360,7 @@ class Kimai_Database_Mysql
     /**
      * returns list of activities used with specified customer
      *
-     * @param integer $customer_ID filter for only this ID of a customer
+     * @param int $customer_ID filter for only this ID of a customer
      * @return array
      * @author sl
      */
@@ -3496,7 +3497,7 @@ class Kimai_Database_Mysql
      * when the keys match the user is allowed to access the Kimai GUI.
      * match test is performed via public function userCheck()
      *
-     * @param integer $user ID of user in table users
+     * @param int $user ID of user in table users
      * @return string
      * @author th
      */
@@ -3727,7 +3728,7 @@ class Kimai_Database_Mysql
     /**
      * Performed when the stop buzzer is hit.
      *
-     * @param integer $id id of the entry to stop
+     * @param int $id id of the entry to stop
      * @author th, sl
      * @return boolean
      */
@@ -3759,7 +3760,7 @@ class Kimai_Database_Mysql
     /**
      * starts timesheet record
      *
-     * @param integer $projectID ID of project to record
+     * @param int $projectID ID of project to record
      * @param $activityID
      * @param $user
      * @return int id of the new entry or false on failure
@@ -3852,7 +3853,7 @@ class Kimai_Database_Mysql
     /**
      * return ID of specific user named 'XXX'
      *
-     * @param integer $name name of user in table users
+     * @param int $name name of user in table users
      * @return int id of the customer
      */
     public function customer_nameToID($name)
@@ -3879,7 +3880,7 @@ class Kimai_Database_Mysql
      * @param string $table
      * @param string $endColumn
      * @param string $filterColumn
-     * @param integer $value
+     * @param int $value
      * @return string|bool
      */
     private function name2id($table, $endColumn, $filterColumn, $value)
@@ -3929,8 +3930,8 @@ class Kimai_Database_Mysql
     /**
      * returns the date of the first timerecord of a user (when did the user join?)
      * this is needed for the datepicker
-     * @param integer $userID id of user
-     * @return integer unix seconds of first timesheet record
+     * @param int $userID id of user
+     * @return int unix seconds of first timesheet record
      * @author th
      */
     public function getjointime($userID)
@@ -3958,7 +3959,7 @@ class Kimai_Database_Mysql
     /**
      * returns list of users the given user can watch
      *
-     * @param integer $user ID of user in table users
+     * @param int $user ID of user in table users
      * @return array
      * @author sl
      */
@@ -4016,8 +4017,8 @@ class Kimai_Database_Mysql
      * Checks if a user (given by user ID) can be accessed by another user (given by user array):
      *
      * @see get_watchable_users
-     * @param integer $user user to check for
-     * @param integer $userID user to check if watchable
+     * @param int $user user to check for
+     * @param int $userID user to check if watchable
      * @return boolean if watchable, false otherwiese
      * @author sl
      */
@@ -4038,8 +4039,8 @@ class Kimai_Database_Mysql
      * returns assoc. array where the index is the ID of a user and the value the time
      * this user has accumulated in the given time with respect to the filtersettings
      *
-     * @param integer $start from this timestamp
-     * @param integer $end to this  timestamp
+     * @param int $start from this timestamp
+     * @param int $end to this  timestamp
      * @param array $users IDs of user in table users
      * @param array $customers IDs of customer in table customers
      * @param array $projects IDs of project in table projects
@@ -4128,8 +4129,8 @@ class Kimai_Database_Mysql
     /**
      * returns list of time summary attached to customer ID's within specific timeframe as array
      *
-     * @param integer $start start of timeframe in unix seconds
-     * @param integer $end end of timeframe in unix seconds
+     * @param int $start start of timeframe in unix seconds
+     * @param int $end end of timeframe in unix seconds
      * @param array $users filter for only this ID of a user
      * @param array $customers filter for only this ID of a customer
      * @param array $projects filter for only this ID of a project
@@ -4214,8 +4215,8 @@ class Kimai_Database_Mysql
     /**
      * returns list of time summary attached to project ID's within specific timeframe as array
      *
-     * @param integer $start start time in unix seconds
-     * @param integer $end end time in unix seconds
+     * @param int $start start time in unix seconds
+     * @param int $end end time in unix seconds
      * @param array $users filter for only this ID of a user
      * @param array $customers filter for only this ID of a customer
      * @param array $projects filter for only this ID of a project
@@ -4299,8 +4300,8 @@ class Kimai_Database_Mysql
     /**
      * returns list of time summary attached to activity ID's within specific timeframe as array
      *
-     * @param integer $start start time in unix seconds
-     * @param integer $end end time in unix seconds
+     * @param int $start start time in unix seconds
+     * @param int $end end time in unix seconds
      * @param array $users filter for only this ID of a user
      * @param array $customers filter for only this ID of a customer
      * @param array $projects filter for only this ID of a project
@@ -4671,8 +4672,8 @@ class Kimai_Database_Mysql
     /**
      * get the whole budget used for the activity
      *
-     * @param integer $projectID
-     * @param integer $activityID
+     * @param int $projectID
+     * @param int $activityID
      * @return int
      */
     public function get_budget_used($projectID, $activityID)
@@ -4940,7 +4941,7 @@ class Kimai_Database_Mysql
     /**
      * Check if a user is allowed to access an object for a given action.
      *
-     * @param integer $userId the ID of the user
+     * @param int $userId the ID of the user
      * @param array $objectGroups list of group IDs of the object to check
      * @param string $permission name of the permission to check for
      * @param string $requiredFor (all|any) whether the permission must be present for all groups or at least one
@@ -4972,9 +4973,9 @@ class Kimai_Database_Mysql
     /**
      * Returns the membership roleID the user has in the given group.
      *
-     * @param integer $userID the ID of the user
-     * @param integer $groupID the ID of the group
-     * @return integer|bool membership roleID or false if user is not in the group
+     * @param int $userID the ID of the user
+     * @param int $groupID the ID of the group
+     * @return int|bool membership roleID or false if user is not in the group
      */
     public function user_get_membership_role($userID, $groupID)
     {
@@ -4996,7 +4997,7 @@ class Kimai_Database_Mysql
     /**
      * Check if a membership role gives permission for a specific action.
      *
-     * @param integer $roleID the ID of the membership role
+     * @param int $roleID the ID of the membership role
      * @param string $permission name of the action / permission
      * @return bool true if permissions is granted, false otherwise
      */
@@ -5019,7 +5020,7 @@ class Kimai_Database_Mysql
     /**
      * Check if a global role gives permission for a specific action.
      *
-     * @param integer $roleID the ID of the global role
+     * @param int $roleID the ID of the global role
      * @param string $permission name of the action / permission
      * @return bool true if permissions is granted, false otherwise
      */

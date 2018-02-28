@@ -27,8 +27,8 @@ class Kimai_Format
      * Format a duration given in seconds according to the global setting. Either
      * seconds are shown or not.
      *
-     * @param integer|array one value in seconds or an array of values in seconds
-     * @return integer|array depending on the $sek param which contains the formatted duration
+     * @param int|array one value in seconds or an array of values in seconds
+     * @return int|array depending on the $sek param which contains the formatted duration
      */
     public static function formatDuration($sek)
     {
@@ -53,9 +53,9 @@ class Kimai_Format
     /**
      * Format a currency or an array of currencies accordingly.
      *
-     * @param integer|array $number one value or an array of decimal numbers
+     * @param int|array $number one value or an array of decimal numbers
      * @param bool $htmlNoWrap
-     * @return integer|array|string formatted string(s)
+     * @return int|array|string formatted string(s)
      */
     public static function formatCurrency($number, $htmlNoWrap = true)
     {
@@ -132,7 +132,7 @@ class Kimai_Format
     /**
      * Returns hours, minutes and seconds as array.
      *
-     * @param integer $sek number of seconds to extract the time from
+     * @param int $sek number of seconds to extract the time from
      * @return array
      */
     public static function hourminsec($sek)
