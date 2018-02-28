@@ -389,7 +389,7 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->timeSheet_get_data($result[0]);
 
         // do not expose all values, but only the public visible ones
-        $keys = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration');
+        $keys = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration','description');
         $current = array();
         foreach ($keys as $key) {
             if (array_key_exists($key, $result)) {
@@ -409,6 +409,7 @@ class Kimai_Remote_Api
         $current['customerName'] = $timeSheet[0]['customerName'];
         $current['projectName'] = $timeSheet[0]['projectName'];
         $current['activityName'] = $timeSheet[0]['activityName'];
+        $current['description'] = $timeSheet[0]['description'];
 
         /*
         $debugItems = array();
@@ -487,6 +488,68 @@ class Kimai_Remote_Api
         return $result;
     }
 
+    
+        /**
+     * updateActiveRecording
+     * Updates an already running timer, this function allows
+     * you to change a project, activity description and start time.
+     * If you add an end time this will stop the activity, as per Kimai's normal process
+     * 
+     * @param string $apiKey
+     * @param array $record
+     * @return array
+     */
+    public function updateActiveRecording($apiKey, array $record) {
+        if (!$this->init($apiKey, 'updateActiveRecording', true)) {
+            return $this->getAuthErrorResult();
+        }
+        $user = $this->getUser();
+        $uid = $user['userID'];
+        $result = $this->getBackend()->get_current_recordings($uid);
+        
+        // no "last" activity existing
+        if (count($result) == 0) {
+            return $this->getErrorResult('No active recording.');
+        }
+        // valid $record?
+        if (empty($record)) {
+            return $this->getErrorResult('Invalid record');
+        }
+        $entryId = $result[0];
+        
+        if (isset($record['projectID'])) {
+            $data['projectID'] = $record['projectID'];
+        }
+        if (isset($record['activityID'])) {
+            $data['activityID'] = $record['activityID'];
+        }
+        if (isset($record['description'])) {
+            $data['description'] = $record['description'];
+        }
+        if (isset($record['start'])) {
+            $in = (int) strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+            $data['start'] = $in;
+        }
+        // If you include a stop time this will stop the active time
+        if (isset($record['end'])) {
+            $out = (int) strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+            // make sure the timestamp is not negative
+            if ($in <= 0 || $out <= 0 || $out - $in <= 0) {
+                return $this->getErrorResult('Invalid from/to, make sure there is at least a second difference.');
+            } else {
+                $data['end'] = $out;
+            }
+        }
+        //call timeEntry_edit
+        $result = $this->getBackend()->timeEntry_edit($entryId, $data);
+        if ($result) {
+            return $this->getSuccessResult(array());
+        } else {
+            return $this->getErrorResult('Failed to update record.');
+        }
+        return $this->getErrorResult();
+    }
+    
     /**
      * @param string $apiKey
      * @param array $record
