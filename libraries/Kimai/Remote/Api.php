@@ -394,7 +394,7 @@ class Kimai_Remote_Api
         $result = $this->getBackend()->timeSheet_get_data($result[0]);
 
         // do not expose all values, but only the public visible ones
-        $keys = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration','description');
+        $keys = array('timeEntryID', 'activityID', 'projectID', 'start', 'end', 'duration', 'description');
         $current = array();
         foreach ($keys as $key) {
             if (array_key_exists($key, $result)) {
