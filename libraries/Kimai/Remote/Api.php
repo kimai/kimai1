@@ -494,12 +494,12 @@ class Kimai_Remote_Api
      * Updates an already running timer, this function allows
      * you to change a project, activity description and start time.
      * If you add an end time this will stop the activity, as per Kimai's normal process
-     * 
+     *
      * @param string $apiKey
      * @param array $record
      * @return array
      */
-    public function updateActiveRecording($apiKey, array $record) 
+    public function updateActiveRecording($apiKey, array $record)
     {
         if (!$this->init($apiKey, 'updateActiveRecording', true)) {
             return $this->getAuthErrorResult();
