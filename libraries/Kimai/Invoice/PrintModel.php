@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // https://www.kimai.org
+ * Kimai - Open Source Time Tracking // http://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -49,6 +49,10 @@ class Kimai_Invoice_PrintModel
      * @var int
      */
     private $total = 0;
+    /**
+     * @var string
+     */
+    private $fttltime = "";
     /**
      * @var array
      */
@@ -100,6 +104,7 @@ class Kimai_Invoice_PrintModel
             'vat'           => $this->getVat(),
             'vatRate'       => $this->getVatRate(),
             'total'         => $this->getTotal(),
+            'fttltime'      => $this->getfttltime(),
             'projects'      => $this->getProjects(), // array
             'invoiceId'     => $this->getInvoiceId(),
             'beginDate'     => $this->getBeginDate(),
@@ -334,6 +339,22 @@ class Kimai_Invoice_PrintModel
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * @param int $total
+     */
+    public function setFttltime($fttl)
+    {
+        $this->fttltime = $fttl;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFttltime()
+    {
+        return $this->fttltime;
     }
 
     /**
