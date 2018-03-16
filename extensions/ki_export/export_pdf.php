@@ -27,9 +27,9 @@ class MYPDF extends BasePDF
     /**
      * Widths of all columns
      */
-    var $w = array();
+    var $w = [];
 
-    var $columns = array();
+    var $columns = [];
 
     /**
      * Print a footer on every page.
@@ -70,12 +70,12 @@ class MYPDF extends BasePDF
         $dateWidth = max($this->GetStringWidth($header[0]),
             $this->GetStringWidth($this->dateformat(mktime(0, 0, 0, 12, 31, 2000))));
         $dateWidth += 4;
-        $w = array(
+        $w = [
             $dateWidth,
             $this->getPageWidth() - $this->pagedim[$this->page]['lm'] - $this->pagedim[$this->page]['rm'] - $dateWidth,
             0,
             0
-        );
+        ];
         if (isset($this->columns['wage'])) {
             $w[3] = 30;
             $w[1] -= 30;
@@ -325,17 +325,17 @@ if (isset($_REQUEST['print_summary'])) {
     $pdf->ln();
     $pdf->WriteHtml('<h3>' . $kga['lang']['export_extension']['summary'] . '</h3>');
     $pdf->ln();
-    $pdf->printSummary(array(
+    $pdf->printSummary([
         $kga['lang']['activity'],
         $kga['lang']['export_extension']['duration'],
         $kga['lang']['export_extension']['costs']
-    ), $orderedExportData);
+    ], $orderedExportData);
 
     $pdf->AddPage();
 }
 
 // Write to the PDF document which, if any, customer filters were applied.
-$customers = array();
+$customers = [];
 foreach ($filterCustomers as $customerID) {
     $customer_info = $database->customer_get_data($customerID);
     $customers[] = $customer_info['name'];
@@ -349,7 +349,7 @@ if (count($customers) > 0) {
 }
 
 // Write to the PDF document which, if any, project filters were applied.
-$projects = array();
+$projects = [];
 foreach ($filterProjects as $projectID) {
     $project_info = $database->project_get_data($projectID);
     $projects[] = $project_info['name'];
@@ -380,12 +380,12 @@ foreach ($orderedExportData as $customer) {
 
     foreach ($project_ids as $project_id) {
         // process each project in second dimension
-        $pdf->ColoredTable(array(
+        $pdf->ColoredTable([
             $kga['lang']['datum'],
             $kga['lang']['activity'],
             $kga['lang']['export_extension']['duration'],
             $kga['lang']['export_extension']['costs']
-        ), $customer[$project_id]);
+        ], $customer[$project_id]);
         $pdf->ln();
         $pdf->ln();
         $pdf->ln();

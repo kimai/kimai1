@@ -61,7 +61,7 @@
                     </li>
                     <li>
                         <label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', array('checked' => $this->visible || !$this->id)); ?>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -73,7 +73,7 @@
                         <td></td>
                     </tr>
                     <?php
-                    $assignedProjects = array();
+                    $assignedProjects = [];
                     if (isset($this->selectedProjects) && is_array($this->selectedProjects)) {
                         foreach ($this->selectedProjects as $selectedProject) {
                             $assignedProjects[] = $selectedProject['projectID'];
@@ -96,7 +96,7 @@
                         }
                     }
 
-                    $selectArray = array(-1 => '');
+                    $selectArray = [-1 => ''];
                     foreach ($this->allProjects as $project) {
                         if (array_search($project['projectID'], $assignedProjects) === false) {
                             $selectArray[$project['projectID']] = $this->ellipsis($project['name'], 30) . ' (' . $this->ellipsis($project['customerName'], 30) . ')';
@@ -113,12 +113,13 @@
                 <ul>
                     <li>
                         <label for="activityGroups"><?php echo $this->kga['lang']['groups'] ?>:</label>
-                        <?php echo $this->formSelect('activityGroups[]', $this->selectedGroups, array(
+                        <?php echo $this->formSelect('activityGroups[]', $this->selectedGroups, [
                             'class' => 'formfield',
                             'id' => 'activityGroups',
                             'multiple' => 'multiple',
                             'size' => 3,
-                            'style' => 'width:255px'), $this->groups); ?>
+                            'style' => 'width:255px'
+                        ], $this->groups); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -126,11 +127,11 @@
                 <ul>
                     <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('comment', $this->comment, array(
+                        <?php echo $this->formTextarea('comment', $this->comment, [
                             'cols' => 30,
                             'rows' => 5,
                             'class' => 'comment'
-                        )); ?>
+                        ]); ?>
                     </li>
                 </ul>
             </fieldset>

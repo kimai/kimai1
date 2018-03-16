@@ -39,12 +39,12 @@ switch ($axAction) {
 
         $userDetails['rate'] = $database->get_rate($userDetails['userID'], NULL, NULL);
 
-        $view->assign('globalRoles', array());
+        $view->assign('globalRoles', []);
         foreach ($database->global_roles() as $role) {
             $view->globalRoles[$role['globalRoleID']] = $role['name'];
         }
 
-        $view->assign('memberships', array());
+        $view->assign('memberships', []);
         foreach ($database->getGroupMemberships($id) as $groupId) {
             $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
@@ -62,7 +62,7 @@ switch ($axAction) {
             ));
         }
 
-        $view->assign('membershipRoles', array());
+        $view->assign('membershipRoles', []);
         foreach ($database->membership_roles() as $role) {
             $view->membershipRoles[$role['membershipRoleID']] = $role['name'];
         }

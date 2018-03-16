@@ -75,10 +75,10 @@ switch ($_REQUEST['a'])
     default:
         $view->assign('devtimespan', '2006-' . date('y'));
         $view->assign('keyCorrect', $keyCorrect);
-        $view->assign('requestData', array(
+        $view->assign('requestData', [
             'key' => $key,
             'name' => $name
-        ));
+        ]);
 
         echo $view->render('login/forgotPassword.php');
         break;

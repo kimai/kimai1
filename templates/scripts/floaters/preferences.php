@@ -44,8 +44,9 @@
                     </li>
                     <li>
                         <label for="rate"><?php echo $this->kga['lang']['my_rate'] ?>:</label>
-                        <?php echo $this->formText('rate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->rate), array(
-                            'size' => 9)); ?>
+                        <?php echo $this->formText('rate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->rate), [
+                            'size' => 9
+                        ]); ?>
                     </li>
                     <li>
                         <label for="lang"><?php echo $this->kga['lang']['lang'] ?>:</label>
@@ -57,12 +58,12 @@
                     </li>
                     <li>
                         <label for="autoselection"></label>
-                        <?php echo $this->formCheckbox('autoselection', '1', array('checked' => $this->kga->getSettings()->isUseAutoSelection()));
+                        <?php echo $this->formCheckbox('autoselection', '1', ['checked' => $this->kga->getSettings()->isUseAutoSelection()]);
                         echo $this->kga['lang']['autoselection'] ?>
                     </li>
                     <li>
                         <label for="openAfterRecorded"></label>
-                        <?php echo $this->formCheckbox('openAfterRecorded', '1', array('checked' => $this->kga->getSettings()->isShowAfterRecorded()));
+                        <?php echo $this->formCheckbox('openAfterRecorded', '1', ['checked' => $this->kga->getSettings()->isShowAfterRecorded()]);
                         echo $this->kga['lang']['openAfterRecorded'] ?>
                     </li>
                 </ul>
@@ -71,33 +72,33 @@
                 <ul>
                     <li>
                         <?php echo $this->kga['lang']['sublistAnnotations'] ?>:
-                        <?php echo $this->formSelect('sublistAnnotations', $this->kga->getSettings()->getSublistAnnotationType(), null, array(
+                        <?php echo $this->formSelect('sublistAnnotations', $this->kga->getSettings()->getSublistAnnotationType(), null, [
                             $this->kga['lang']['timelabel'], $this->kga['lang']['export_extension']['costs'], $this->kga['lang']['timelabel'] . ' & ' . $this->kga['lang']['export_extension']['costs']
-                        )); ?>
+                        ]); ?>
                     </li>
                     <li>
                         <label for="flip_project_display"></label>
-                        <?php echo $this->formCheckbox('flip_project_display', '1', array('checked' => $this->kga->getSettings()->isFlipProjectDisplay())),
+                        <?php echo $this->formCheckbox('flip_project_display', '1', ['checked' => $this->kga->getSettings()->isFlipProjectDisplay()]),
                         $this->kga['lang']['flip_project_display'] ?>
                     </li>
                     <li>
                         <label for="project_comment_flag"></label>
-                        <?php echo $this->formCheckbox('project_comment_flag', '1', array('checked' => $this->kga->getSettings()->isShowProjectComment())),
+                        <?php echo $this->formCheckbox('project_comment_flag', '1', ['checked' => $this->kga->getSettings()->isShowProjectComment()]),
                         $this->kga['lang']['project_comment_flag'] ?>
                     </li>
                     <li>
                         <label for="showIDs"></label>
-                        <?php echo $this->formCheckbox('showIDs', '1', array('checked' => $this->kga->getSettings()->isShowIds())),
+                        <?php echo $this->formCheckbox('showIDs', '1', ['checked' => $this->kga->getSettings()->isShowIds()]),
                         $this->kga['lang']['showIDs'] ?>
                     </li>
                     <li>
                         <label for="noFading"></label>
-                        <?php echo $this->formCheckbox('noFading', '1', array('checked' => !$this->kga->getSettings()->isUseSmoothFading())),
+                        <?php echo $this->formCheckbox('noFading', '1', ['checked' => !$this->kga->getSettings()->isUseSmoothFading()]),
                         $this->kga['lang']['noFading'] ?>
                     </li>
                     <li>
                         <label for="user_list_hidden"></label>
-                        <?php echo $this->formCheckbox('user_list_hidden', '1', array('checked' => $this->kga->getSettings()->isUserListHidden())),
+                        <?php echo $this->formCheckbox('user_list_hidden', '1', ['checked' => $this->kga->getSettings()->isUserListHidden()]),
                         $this->kga['lang']['user_list_hidden'] ?>
                     </li>
                 </ul>
@@ -106,50 +107,50 @@
                 <ul>
                     <li>
                         <label for="rowlimit"><?php echo $this->kga['lang']['rowlimit'] ?>:</label>
-                        <?php echo $this->formText('rowlimit', $this->kga->getSettings()->getRowLimit(), array('size' => 9)); ?>
+                        <?php echo $this->formText('rowlimit', $this->kga->getSettings()->getRowLimit(), ['size' => 9]); ?>
                     </li>
                     <li>
                         <label for="hideClearedEntries"></label>
-                        <?php echo $this->formCheckbox('hideClearedEntries', '1', array('checked' => $this->kga->getSettings()->isHideClearedEntries())), $this->kga['lang']['hideClearedEntries'] ?>
+                        <?php echo $this->formCheckbox('hideClearedEntries', '1', ['checked' => $this->kga->getSettings()->isHideClearedEntries()]), $this->kga['lang']['hideClearedEntries'] ?>
                     </li>
                     <li>
                         <?php echo $this->kga['lang']['quickdelete'] ?>:
-                        <?php echo $this->formSelect('quickdelete', $this->kga->getSettings()->getQuickDeleteType(), null, array($this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm'])); ?>
+                        <?php echo $this->formSelect('quickdelete', $this->kga->getSettings()->getQuickDeleteType(), null, [$this->kga['lang']['quickdeleteHide'], $this->kga['lang']['quickdeleteShow'], $this->kga['lang']['quickdeleteShowConfirm']]); ?>
                     </li>
                     <li>
                         <label for="showCommentsByDefault"></label>
-                        <?php echo $this->formCheckbox('showCommentsByDefault', '1', array('checked' => $this->kga->getSettings()->isShowComments())), $this->kga['lang']['showCommentsByDefault'] ?>
+                        <?php echo $this->formCheckbox('showCommentsByDefault', '1', ['checked' => $this->kga->getSettings()->isShowComments()]), $this->kga['lang']['showCommentsByDefault'] ?>
                     </li>
                     <?php if ($this->kga->isTrackingNumberEnabled()) { ?>
                     <li>
                         <label for="showTrackingNumber"></label>
-                        <?php echo $this->formCheckbox('showTrackingNumber', '1', array('checked' => $this->kga->getSettings()->isShowTrackingNumber())), $this->kga['lang']['showTrackingNumber'] ?>
+                        <?php echo $this->formCheckbox('showTrackingNumber', '1', ['checked' => $this->kga->getSettings()->isShowTrackingNumber()]), $this->kga['lang']['showTrackingNumber'] ?>
                     </li>
                     <?php } ?>
                     <li>
                         <label for="showBillability"></label>
-                        <?php echo $this->formCheckbox('showBillability', '1', array('checked' => $this->kga->getSettings()->isShowBillability())), $this->kga['lang']['showBillability'] ?>
+                        <?php echo $this->formCheckbox('showBillability', '1', ['checked' => $this->kga->getSettings()->isShowBillability()]), $this->kga['lang']['showBillability'] ?>
                     </li>
                     <li>
                         <label for="hideOverlapLines"></label>
-                        <?php echo $this->formCheckbox('hideOverlapLines', '1', array('checked' => !$this->kga->getSettings()->isShowOverlapLines())), $this->kga['lang']['hideOverlapLines'] ?>
+                        <?php echo $this->formCheckbox('hideOverlapLines', '1', ['checked' => !$this->kga->getSettings()->isShowOverlapLines()]), $this->kga['lang']['hideOverlapLines'] ?>
                     </li>
                     <li>
                         <label for="defaultLocation"><?php echo $this->kga['lang']['defaultLocation']?>:</label>
-                        <?php echo $this->formText('defaultLocation', $this->kga->getSettings()->getDefaultLocation(), array('size' => 20)); ?>
+                        <?php echo $this->formText('defaultLocation', $this->kga->getSettings()->getDefaultLocation(), ['size' => 20]); ?>
                     </li>
                     <li>
                         <label for="showQuickNote"></label>
-                        <?php echo $this->formCheckbox('showQuickNote', '1', array('checked' => $this->kga->getSettings()->isShowQuickNote())), $this->kga['lang']['showQuickNote'] ?>
+                        <?php echo $this->formCheckbox('showQuickNote', '1', ['checked' => $this->kga->getSettings()->isShowQuickNote()]), $this->kga['lang']['showQuickNote'] ?>
                     </li>
                     <li>
                         <label for="inlineEditingOfDescriptions"></label>
-                        <?php echo $this->formCheckbox('inlineEditingOfDescriptions', '1', array('checked' => $this->kga->getSettings()->isInlineEditingOfDescriptionsSet())), $this->kga['lang']['inlineEditingOfDescriptions'] ?>
+                        <?php echo $this->formCheckbox('inlineEditingOfDescriptions', '1', ['checked' => $this->kga->getSettings()->isInlineEditingOfDescriptionsSet()]), $this->kga['lang']['inlineEditingOfDescriptions'] ?>
                     </li>
                     <li>
                         <label for="table_time_format"></label>
                         <?php echo $this->kga['lang']['table_time_format']?>:
-                        <?php echo $this->formText('table_time_format', $this->prefs['table_time_format'], array('size' => 20)); ?>
+                        <?php echo $this->formText('table_time_format', $this->prefs['table_time_format'], ['size' => 20]); ?>
                     </li>
                 </ul>
             </fieldset>

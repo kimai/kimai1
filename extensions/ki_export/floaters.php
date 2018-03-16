@@ -26,7 +26,7 @@ $database = Kimai_Registry::getDatabase();
 switch ($axAction) {
 
     case "PDF":
-        $defaults = array(
+        $defaults = [
             'print_comments' => 1,
             'print_summary' => 1,
             'create_bookmarks' => 1,
@@ -35,7 +35,7 @@ switch ($axAction) {
             'reverse_order' => 0,
             'pdf_format' => 'export_pdf',
             'time_type' => 'dec_time'
-        );
+        ];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.pdf.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
@@ -43,7 +43,7 @@ switch ($axAction) {
         break;
 
     case "XLS":
-        $defaults = array('reverse_order' => 0);
+        $defaults = ['reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
@@ -51,7 +51,7 @@ switch ($axAction) {
         break;
 
     case "CSV":
-        $defaults = array('column_delimiter' => ',', 'quote_char' => '"', 'reverse_order' => 0);
+        $defaults = ['column_delimiter' => ',', 'quote_char' => '"', 'reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
@@ -59,7 +59,7 @@ switch ($axAction) {
         break;
 
     case "print":
-        $defaults = array('print_summary' => 1, 'reverse_order' => 0);
+        $defaults = ['print_summary' => 1, 'reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 

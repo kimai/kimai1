@@ -47,7 +47,7 @@ class Kimai_User extends Kimai_ArrayObject
      */
     public function getGroups()
     {
-        return $this->get('groups', array());
+        return $this->get('groups', []);
     }
 
     /**

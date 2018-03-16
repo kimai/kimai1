@@ -30,7 +30,7 @@
 		foreach ($this->activities as $activity) {
 			$isHidden = $activity['visible'] != 1;
 			?>
-			<tr class="<?php echo $this->cycle(array("odd", "even"))->next()?>">
+			<tr class="<?php echo $this->cycle(["odd", "even"])->next()?>">
 				<td class="option">
 					<a href="#" onclick="editSubject('activity',<?php echo $activity['activityID']?>); $(this).blur(); return false;">
 						<img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13" alt="<?php echo $this->kga['lang']['edit']?>" title="<?php echo $this->kga['lang']['edit']?>" border="0" /></a>
@@ -43,7 +43,7 @@
 				</td>
 				<td>
 					<?php
-					$activityProjects = array();
+					$activityProjects = [];
 					foreach($activity['projects'] as $project) {
 						$name = $this->escape($project['name']) . ' (' . $this->escape($this->ellipsis($project['customer_name'], 30)) . ')';
 						if ($project['visible'] != 1 || $project['customerVisible'] != 1) {

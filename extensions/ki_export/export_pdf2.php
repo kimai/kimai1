@@ -21,7 +21,7 @@ include('base_export_pdf.php');
 
 class MYPDF extends BasePDF
 {
-    public $w = array();
+    public $w = [];
     public $print_time;
     public $columns;
 
@@ -37,11 +37,11 @@ class MYPDF extends BasePDF
      */
     public function columnWidths($max_time_width, $max_money_width)
     {
-        return array(
+        return [
             $max_time_width,
             $this->getPageWidth() - $this->pagedim[$this->page]['lm'] - $this->pagedim[$this->page]['rm'] - $max_time_width - $max_money_width,
             $max_money_width
-        );
+        ];
     }
 
 
@@ -624,11 +624,11 @@ if (isset($_REQUEST['print_summary'])) {
 
     $pdf->WriteHtml('<h4>' . $kga['lang']['export_extension']['summary'] . '</h4>');
     $pdf->ln();
-    $pdf->printSummary(array(
+    $pdf->printSummary([
         $kga['lang']['activity'],
         $kga['lang']['export_extension']['duration'],
         $kga['lang']['export_extension']['costs']
-    ), $orderedExportData);
+    ], $orderedExportData);
 
     $pdf->AddPage();
 }

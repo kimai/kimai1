@@ -159,7 +159,7 @@ switch ($axAction) {
         $salt = createPassword(20);
         $timezone = $_REQUEST['timezone'];
 
-        $kimaiConfig = new Kimai_Config(array(
+        $kimaiConfig = new Kimai_Config([
             'server_prefix' => $prefix,
             'server_hostname' => $hostname,
             'server_database' => $database,
@@ -168,7 +168,7 @@ switch ($axAction) {
             'server_charset' => $charset,
             'defaultTimezone' => $timezone,
             'password_salt' => $salt
-        ));
+        ]);
         Kimai_Registry::setConfig($kimaiConfig);
 
         write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone);
@@ -186,7 +186,7 @@ switch ($axAction) {
 
         $db_error = false;
         $result = false;
-        $config = new Kimai_Config(array());
+        $config = new Kimai_Config([]);
 
         $database = new Kimai_Database_Mysql($config, false);
         $database->connect($hostname, null, $username, $password, true);

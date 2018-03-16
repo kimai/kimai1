@@ -9,7 +9,7 @@ $activities = $this->filterListEntries($this->activities);
         foreach ($activities as $activity) {
             ?>
             <tr id="row_activity" data-id="<?php echo $activity['activityID'] ?>"
-                class="<?php echo $this->cycle(array('odd', 'even'))->next() ?>">
+                class="<?php echo $this->cycle(['odd', 'even'])->next() ?>">
                 <td nowrap class="option">
                     <?php if ($this->show_activity_edit_button): ?>
                         <a href="#"

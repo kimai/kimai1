@@ -30,7 +30,7 @@
 		{
 			$isHidden = $row['visible'] != 1 || $row['customerVisible'] != 1;
 			?>
-			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
+			<tr class="<?php echo $this->cycle(["odd", "even"])->next()?>">
 				<td class="option">
 					<a href="#" onclick="editSubject('project',<?php echo $row['projectID']?>); $(this).blur(); return false;"><img
 						src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13"

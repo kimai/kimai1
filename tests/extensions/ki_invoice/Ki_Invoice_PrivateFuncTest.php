@@ -33,11 +33,11 @@ class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
 
     public function testext_invoice_empty_entry()
     {
-        $keys = array(
+        $keys = [
             'type', 'desc', 'start', 'end', 'hour', 'fDuration', 'duration', 'timestamp', 'amount', 'description',
             'rate', 'comment', 'username', 'useralias', 'location', 'trackingNr', 'projectID', 'projectName',
             'projectComment', 'date'
-        );
+        ];
 
         $actual = ext_invoice_empty_entry();
 
@@ -60,11 +60,11 @@ class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $actual);
 
         $input = [
-            0 => ['desc' => '2', 'timestamp' => 20],
-            1 => ['desc' => '1', 'timestamp' => 10],
-            2 => ['desc' => '5', 'timestamp' => 50],
-            3 => ['desc' => '3', 'timestamp' => 30],
-            4 => ['desc' => '4', 'timestamp' => 40],
+            0 => ['asc' => '2', 'timestamp' => 20],
+            1 => ['asc' => '1', 'timestamp' => 10],
+            2 => ['asc' => '5', 'timestamp' => 50],
+            3 => ['asc' => '3', 'timestamp' => 30],
+            4 => ['asc' => '4', 'timestamp' => 40],
         ];
 
         uasort($input, 'ext_invoice_sort_by_date_asc');
@@ -72,11 +72,11 @@ class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $input,
             [
-                1 => ['desc' => '1', 'timestamp' => 10],
-                0 => ['desc' => '2', 'timestamp' => 20],
-                3 => ['desc' => '3', 'timestamp' => 30],
-                4 => ['desc' => '4', 'timestamp' => 40],
-                2 => ['desc' => '5', 'timestamp' => 50],
+                1 => ['asc' => '1', 'timestamp' => 10],
+                0 => ['asc' => '2', 'timestamp' => 20],
+                3 => ['asc' => '3', 'timestamp' => 30],
+                4 => ['asc' => '4', 'timestamp' => 40],
+                2 => ['asc' => '5', 'timestamp' => 50],
             ]
         );
     }

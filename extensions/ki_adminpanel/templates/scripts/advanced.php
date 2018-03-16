@@ -17,7 +17,7 @@
             </div>
             <div>
                 <?php echo $this->kga['lang']['lang']?>:
-                <?php echo $this->formSelect('language', $this->kga->getLanguage(true), array('class' => 'formfield'), array_combine($this->languages, $this->languages)); ?>
+                <?php echo $this->formSelect('language', $this->kga->getLanguage(true), ['class' => 'formfield'], array_combine($this->languages, $this->languages)); ?>
             </div>
 
             <div>

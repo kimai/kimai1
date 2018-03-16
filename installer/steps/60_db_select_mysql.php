@@ -5,9 +5,9 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(dirna
 set_include_path(
     implode(
         PATH_SEPARATOR,
-        array(
+        [
             realpath(APPLICATION_PATH . '/libraries/zendframework/zendframework1/library/'),
-        )
+        ]
     )
 );
 
@@ -55,7 +55,7 @@ while ($row = $con->RowArray(null, MYSQLI_NUM)) {
     }
 }
 
-$useDatabases = array();
+$useDatabases = [];
 
 if ($showDatabasesAllowed) {
     try {

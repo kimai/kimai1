@@ -35,7 +35,7 @@ class Kimai_Format
         $kga = Kimai_Registry::getConfig();
         if (is_array($sek)) {
             // Convert all values of the array.
-            $arr = array();
+            $arr = [];
             foreach ($sek as $key => $value) {
                 $arr[$key] = self::formatDuration($value);
             }
@@ -62,7 +62,7 @@ class Kimai_Format
         $kga = Kimai_Registry::getConfig();
         if (is_array($number)) {
             // Convert all values of the array.
-            $arr = array();
+            $arr = [];
             foreach ($number as $key => $value) {
                 $arr[$key] = self::formatCurrency($value);
             }

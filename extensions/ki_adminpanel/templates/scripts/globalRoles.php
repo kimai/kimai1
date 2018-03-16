@@ -24,7 +24,7 @@
     } else {
         foreach ($this->globalRoles as $globalRole) {
             ?>
-            <tr class='<?php echo $this->cycle(array("odd", "even"))->next() ?>'>
+            <tr class='<?php echo $this->cycle(["odd", "even"])->next() ?>'>
                 <td class="option">
                     <a href="#" onclick="adminPanel_extension_editGlobalRole('<?php echo $globalRole['globalRoleID'] ?>'); $(this).blur(); return false;">
                         <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" title="<?php echo $this->kga['lang']['editGlobalRole'] ?>" width="13" height="13" alt="<?php echo $this->kga['lang']['editGlobalRole'] ?>" border="0"></a>

@@ -57,7 +57,7 @@ if (count($invoiceArray) == 0) {
 $date = time();
 $month = $kga['lang']['months'][date("n", $out) - 1];
 $year = date("Y", $out);
-$projectObjects = array();
+$projectObjects = [];
 foreach ($_REQUEST['projectID'] as $projectID) {
     $projectObjects[] = $database->project_get_data($projectID);
 }
@@ -165,11 +165,11 @@ $model->setCurrencyName($kga->getCurrencyName());
 $model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
 
 // ---------------------------------------------------------------------------
-$renderers = array(
+$renderers = [
     'odt' => new Kimai_Invoice_OdtRenderer(),
     'html' => new Kimai_Invoice_HtmlRenderer(),
     'pdf' => new Kimai_Invoice_HtmlToPdfRenderer()
-);
+];
 
 /* @var $renderer Kimai_Invoice_AbstractRenderer */
 foreach ($renderers as $rendererType => $renderer) {

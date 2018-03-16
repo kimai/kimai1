@@ -83,12 +83,12 @@ function timezoneList()
  * @param array $showIds an array of IDs that should be shown, no matter of their visibility
  * @return array
  */
-function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = array())
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = [])
 {
     $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
 
-    $sel = array();
+    $sel = [];
 
     switch ($subject) {
         case 'project':
@@ -407,7 +407,7 @@ function get_timeframe()
 {
     $kga = Kimai_Registry::getConfig();
 
-    $timeFrame = array(null, null);
+    $timeFrame = [null, null];
 
     if (isset($kga['user'])) {
         $timeFrame[0] = $kga['user']['timeframeBegin'];
