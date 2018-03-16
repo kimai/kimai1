@@ -9,10 +9,10 @@ $projects = $this->filterListEntries($this->projects);
         foreach ($projects as $project) {
             ?>
             <tr id="row_project" data-id="<?php echo $project['projectID'] ?>"
-                class="project customer<?php echo $project['customerID'] ?> <?php echo $this->cycle(array(
+                class="project customer<?php echo $project['customerID'] ?> <?php echo $this->cycle([
                     'odd',
                     'even'
-                ))->next() ?>">
+                ])->next() ?>">
                 <td nowrap class="option">
 
                     <?php if ($this->show_project_edit_button): ?>

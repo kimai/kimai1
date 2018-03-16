@@ -37,7 +37,7 @@ ini_set('soap.wsdl_cache_ttl', 0); // cache lifetime
 
 // TODO check what works better, with or without?
 //$soapOpts = array('soap_version' => SOAP_1_2, 'encoding' => 'UTF-8'/*, 'uri' => $wsdlUrl*/);
-$soapOpts = array();
+$soapOpts = [];
 
 if (isset($_GET['wsdl']) || isset($_GET['WSDL'])) {
 	$autodiscover = new Zend_Soap_AutoDiscover();

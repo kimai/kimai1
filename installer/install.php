@@ -275,7 +275,7 @@ exec_query($query);
 // Permissions that were later added follow below.
 require("installPermissions.php");
 
-foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
+foreach (['customer', 'project', 'activity', 'group', 'user'] as $object) {
     exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
     exec_query("UPDATE `${p}globalRoles` SET `core-$object-otherGroup-view` = 1 WHERE `name` = 'Admin';");
 }

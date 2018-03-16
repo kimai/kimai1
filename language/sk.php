@@ -25,7 +25,7 @@
  * Use at your own risk
  * slovak
  */
-return array(
+return [
     "countryCode" => "sk-SK",
     "preferences" => "Predvľby",
     "total" => "Celkom",
@@ -96,7 +96,7 @@ return array(
     "passwordsDontMatch" => "Zadané heslá sa nezhodujú.",
     "passwordTooShort" => "Heslo musí mať minimálne 5 znakov.",
     "forgotPassword" => "Zabudol som heslo",
-    "passwordReset" => array(
+    "passwordReset" => [
         "button" => "Zresetovať heslo",
         "notSupported" => "Aktuálne aktivovaný doplnok autentifikácie nepodporuje resetovanie hesla.",
         "instructions" => "Zadajte svoje používateľské meno a na priradenú emailovú adresu Vám bude odoslaný email obsahujúci odkaz. Nezobrazí sa žiadne upozornenie či je Vaše používateľské meno správne, alebo nie. Presvedčte sa teda, že ho zadávate správne!",
@@ -106,7 +106,7 @@ return array(
         "returnToLogin" => "návrat na prihlasovaciu stránku",
         "invalidKey" => "Bezpečnostný kľúč sa nezhoduje s tým, ktorý bol odoslaný emailom. Presvedčte sa, že vo svojom prehliadači otvárate celý odkaz.",
         "success" => "Vaše heslo bolo zmenené.",
-    ),
+    ],
     "minLength" => "min. 5 znakov!",
     "update" => "Databázová štruktúra inštalácie Kimai musí byť aktualizovaná.<br />Odporúčame vám zálohovať všetky údaje, aby ste minimalizovali stratu existujúcich údajov počas procesu aktualizácie<br />.",
     "updateNow" => "Aktualizovať databázu!",
@@ -336,10 +336,10 @@ EOD
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
-    'weekdays' => array("Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"),
-    'weekdays_short' => array("Ned", "Pon", "Uto", "Str", "Štv", "Pia", "Sob"),
+    'months' => ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    'weekdays' => ["Nedeľa", "Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota"],
+    'weekdays_short' => ["Ned", "Pon", "Uto", "Str", "Štv", "Pia", "Sob"],
     'quicklink_today' => 'Dnes',
     'quicklink_yesterday' => 'Včera',
     'quicklink_lastWeek' => 'Minulý týždeň',
@@ -347,7 +347,7 @@ EOD
     'quicklink_thisWeek' => 'Tento týždeň',
     'quicklink_thisMonth' => 'Tento mesiac',
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Prístup zamietnutý',
         'userWithSameName' => 'Názov zákazníka sa nesmie zhodovať s názvom používateľa.',
         'userExistsAlready' => 'Používateľský účet už existuje.',
@@ -359,22 +359,26 @@ EOD
         'multiplierNegative' => 'Násobiteľ musí byť väčší ako 0.',
         'emptyField' => 'Chýbajúca hodnota pre položku: %s',
         'wrongData' => 'Zadané údaje sú neplatné',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Ste si istý, že chcete zmeniť svoju vlastnú globálnu roľu z "%OLD%" na "%NEW%"?\nMôže to viesť k zníženiu oprávnení!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Nepodarilo sa pripojiť k databázi!",
-                   'txt' => "Prosím uistite sa, že databáza pacuje má aktívny PDO konektor a položky v súbore \'autoconf.php\' v adresári \'includes\' sú správne."),
-        1 => array('hdl' => "Chyba počas inštalácie!",
-                   'txt' => 'Kimai nedokáže vytvoriť potrebné tabuľky nakoľko tabuľky s názvom name už existujú.<br/>
+    'errors' => [
+        0 => [
+            'hdl' => "Nepodarilo sa pripojiť k databázi!",
+            'txt' => "Prosím uistite sa, že databáza pacuje má aktívny PDO konektor a položky v súbore \'autoconf.php\' v adresári \'includes\' sú správne."
+        ],
+        1 => [
+            'hdl' => "Chyba počas inštalácie!",
+            'txt' => 'Kimai nedokáže vytvoriť potrebné tabuľky nakoľko tabuľky s názvom name už existujú.<br/>
 Pre aktualizáciu existujúcej inštalácie prosím kliknite <a href="../index.php">sem</a>.<br/>
-Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto prefixom, aby bolo možné vykonať čistú inštaláciu.')
-    ),
+Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto prefixom, aby bolo možné vykonať čistú inštaláciu.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Áno, mám vytvorenú zálohu Kimai databázy. Aktualizovať!",
         10 => "Legenda:",
         20 => "Dotazy boli vykonané úspešne.",
@@ -391,9 +395,9 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         130 => "Nie je možné zapisovať do autoconf.php.",
         140 => "aktualizácia súboru autoconf.php",
         'timezone' => 'Kimai teraz podporuje časové pásma. Prosím vyberte si svoju časovú zónu. Bude použitá pre všetkých používateľov a zákazníkov. Používatelia si môžu časovú zónu meniť sami.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Nástroj na obnovenia databázy nie je celkom otestovaný! Používajte na svoje vlastné riziko!",
         1 => "Dostupné zálohy:",
         2 => "obnova",
@@ -406,9 +410,9 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         9 => "Tieto zálohy sú v skutočnosti iba snímky (snapshots)! To znamená, že sú stále v produkčnej databáze, rovnako ako vaše aktuálne pracovné dáta. Zálohy prostredníctvom tohoto nástroja NIE SÚ náhradou za skutočné zálohy na zálohovacie médiá. Na zálohovanie existujee množstvo nástrojov kotré sú dostupne (aj zdaarma) na webe ;)",
         10 => "Vyžaduje sa overenie",
         11 => "Aby ste zabránili neautorizovaným osobám vytvárať, mazať alebo obnovovať zálohy, je potrebné nastaviť premennú \'\$password_salt\' v súbore include/autoconf.php. Pozostáva iba z čísel a písmen."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "kliknite na OK pre otvorenie tlačiteľnej tabuľky.",
         "dl_hint" => "Kliknite na OK pre stiahnutie súboru s exportom.",
         "tab_filter" => "Filter",
@@ -460,9 +464,9 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         'time_type' => 'Formát času',
         'dec_time' => 'Desatinný čas',
         'time' => 'Štandardný čas',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Vytvoriť faktúru',
         'invoiceCustomer' => 'Zákazník',
         'invoiceProject' => 'Projekty',
@@ -480,15 +484,15 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         'orderDateAsc' => 'Dátum - najprv najstaršie',
         'orderDateDesc' => 'Dátum - najprv najnovšie',
         'noDateSelected' => 'Chýba časové obdobie',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'nepoužívaný'
-    ),
+    ],
 
     'extensionsTitle' => 'Rozšírenia',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'prezrieť',
         'edit' => 'upraviť',
         'delete' => 'zmazať',
@@ -501,9 +505,9 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         'showRates' => 'zobraz sadzby',
         'editRates' => 'uprav sadzby',
         'editAdvanced' => 'upraviť rozšírené nastavenia'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Panel administrátora',
         'ki_timesheet' => 'Pracovný výkaz',
         'ki_timesheets' => 'Pracovný výkaz',
@@ -515,19 +519,19 @@ Vyberte si iný prefix tabuliek, alebo vymažte existujúce tabuľky s týmto pr
         'ki_export' => 'Export',
         'core' => 'Oprávnenia',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>Je dostupná oficiálna aktualizácia, obsahujúca nové funkcie a opravené chyby. Dôrazne doporučujeme aktualizovať.</b>",
         'beta' => "<i>Je dostupná nová beta verzia. Môžete si ju stiahnuť zo stránok na testovanie, ale nikdy ju nepoužívajte v produkčnom prostredí.</i>",
         'current' => "Používate najnovšiu verziu :)"
-    ),
+    ],
 
-    'debug' => array(
+    'debug' => [
         'lines' => '(obmedzené na %s riadkov)',
         'logfile' => 'LOGSÚBOR',
         'clear' => 'Vyčistiť súbor protokolu',
         'log_delete' => 'súbor protokolu vyčistený',
-    ),
+    ],
 
-);
+];

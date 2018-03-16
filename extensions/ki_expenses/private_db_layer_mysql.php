@@ -162,7 +162,7 @@ function get_expenses(
     $conn->Query($query);
 
     $i = 0;
-    $arr = array();
+    $arr = [];
     /* TODO: needs revision as foreach loop */
     $conn->MoveFirst();
     while (!$conn->EndOfSeek()) {
@@ -262,7 +262,7 @@ function expense_edit($id, $data)
     $data = $database->clean_data($data);
 
     $original_array = expense_get($id);
-    $new_array = array();
+    $new_array = [];
 
     foreach ($original_array as $key => $value) {
         if (isset($data[$key]) == true) {
@@ -332,14 +332,14 @@ function expenses_by_user($start, $end, $users = null, $customers = null, $proje
 
     $result = $conn->Query($query);
     if (!$result) {
-        return array();
+        return [];
     }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) {
-        return array();
+        return [];
     }
 
-    $arr = array();
+    $arr = [];
     foreach ($rows as $row) {
         $arr[$row['userID']] = $row['expenses'];
     }
@@ -385,14 +385,14 @@ function expenses_by_customer($start, $end, $users = null, $customers = null, $p
 
     $result = $conn->Query($query);
     if (!$result) {
-        return array();
+        return [];
     }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) {
-        return array();
+        return [];
     }
 
-    $arr = array();
+    $arr = [];
     foreach ($rows as $row) {
         $arr[$row['customerID']] = $row['expenses'];
     }
@@ -437,14 +437,14 @@ function expenses_by_project($start, $end, $users = null, $customers = null, $pr
 
     $result = $conn->Query($query);
     if (!$result) {
-        return array();
+        return [];
     }
     $rows = $conn->RecordsArray(MYSQLI_ASSOC);
     if (!$rows) {
-        return array();
+        return [];
     }
 
-    $arr = array();
+    $arr = [];
     foreach ($rows as $row) {
         $arr[$row['projectID']] = $row['expenses'];
     }

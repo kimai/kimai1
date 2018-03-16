@@ -33,10 +33,10 @@ if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
 set_include_path(
     implode(
         PATH_SEPARATOR,
-        array(
+        [
             '.',
             realpath(APPLICATION_PATH . 'libraries/'),
-        )
+        ]
     )
 );
 
@@ -53,7 +53,7 @@ require_once WEBROOT . '/includes/func.php';
 // The $kga (formerly Kimai Global Array) is initialized here
 // It was replaced by an proxy object, but until refactored it is still used as array in a lot of places
 require_once WEBROOT . '/includes/autoconf.php';
-$kga = new Kimai_Config(array(
+$kga = new Kimai_Config([
     'server_prefix' => $server_prefix,
     'server_hostname' => $server_hostname,
     'server_database' => $server_database,
@@ -62,7 +62,7 @@ $kga = new Kimai_Config(array(
     'server_charset' => $server_charset,
     'defaultTimezone' => $defaultTimezone,
     'password_salt' => isset($password_salt) ? $password_salt : ''
-));
+]);
 
 // will inject the version variables into the Kimai_Config object
 require WEBROOT . '/includes/version.php';
@@ -88,7 +88,7 @@ Kimai_Registry::setConfig($kga);
 // ============ global namespace cleanup ============
 // remove some variables from the global namespace, that should either be
 // not accessible or which are available through the kga config object
-$cleanup = array(
+$cleanup = [
     'server_prefix',
     'server_hostname',
     'server_database',
@@ -101,7 +101,7 @@ $cleanup = array(
     'defaultTimezone',
     'billable',
     'skin'
-);
+];
 
 foreach ($cleanup as $varName) {
     if (isset($$varName)) {
@@ -146,8 +146,8 @@ if (!file_exists($tmpDir) || !is_dir($tmpDir) || !is_writable($tmpDir)) {
     die('Kimai needs write permissions for: temporary/');
 }
 
-$frontendOptions = array('lifetime' => 7200, 'automatic_serialization' => true);
-$backendOptions = array('cache_dir' => $tmpDir);
+$frontendOptions = ['lifetime' => 7200, 'automatic_serialization' => true];
+$backendOptions = ['cache_dir' => $tmpDir];
 $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 Kimai_Registry::setCache($cache);
 Zend_Locale::setCache($cache);

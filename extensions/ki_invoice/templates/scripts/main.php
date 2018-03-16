@@ -9,18 +9,20 @@
                     <label for="invoice_customerID">
                         <?php echo $this->translate('ext_invoice:invoiceCustomer') ?>
                     </label>
-                    <?php echo $this->formSelect('customerID', $this->preselected_customer, array(
+                    <?php echo $this->formSelect('customerID', $this->preselected_customer, [
                         'id' => 'invoice_customerID', 
-                        'class' => 'formfield'), $this->customers); ?>
+                        'class' => 'formfield'
+                    ], $this->customers); ?>
                 </div>
                 <div>
                     <label for="invoice_projectID">
                         <?php echo $this->translate('ext_invoice:invoiceProject') ?>
                     </label>
-                    <?php echo $this->formSelect('projectID[]', $this->preselected_project, array(
+                    <?php echo $this->formSelect('projectID[]', $this->preselected_project, [
                         'id' => 'invoice_projectID', 
                         'class' => 'formfield', 
-                        'multiple' => 'multiple'), $this->projects); ?>
+                        'multiple' => 'multiple'
+                    ], $this->projects); ?>
                 </div>
                 <div>
                     <label for="invoice_start_day">
@@ -38,10 +40,10 @@
                     echo $this->formSelect(
                         'ivform_file',
                         null,
-                        array(
+                        [
                             'id' => 'invoice_form_docs',
                             'class' => 'formfield'
-                        ),
+                        ],
                         $this->invoice_templates
                     );
                     ?>
@@ -63,9 +65,10 @@
                     <label for="invoice_round_ID">
                         <?php echo $this->translate('ext_invoice:invoiceOptionRound') ?>
                     </label>
-                    <?php echo $this->formSelect('roundValue', null, array(
+                    <?php echo $this->formSelect('roundValue', null, [
                         'id' => 'invoice_round_ID',
-                        'class' => 'formfield'), $this->roundingOptions); ?>
+                        'class' => 'formfield'
+                    ], $this->roundingOptions); ?>
                 </div>
                 <div>
                     <label for="filter_cleared">

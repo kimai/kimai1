@@ -273,7 +273,7 @@ if ((int)$revisionDB < 1067) {
     }
 
     // Reset all passwords
-    $new_passwords = array();
+    $new_passwords = [];
     $users = $database->queryAll("SELECT * FROM ${p}usr");
     foreach ($users as $user) {
         if ($user['usr_name'] == 'admin') {
@@ -443,9 +443,11 @@ if ((int)$revisionDB < 1225) {
 PRIMARY KEY (`userID`,`var`)
 );");
 
-    $columns = array('rowlimit', 'skin', 'autoselection', 'quickdelete',
+    $columns = [
+        'rowlimit', 'skin', 'autoselection', 'quickdelete',
         'lang', 'flip_pct_display', 'pct_comment_flag', 'showIDs', 'noFading',
-        'export_disabled_columns', 'user_list_hidden', 'timezone');
+        'export_disabled_columns', 'user_list_hidden', 'timezone'
+    ];
 
     // move user configuration over to preferences table, which are still in use
     foreach ($columns as $column) {
@@ -453,7 +455,7 @@ PRIMARY KEY (`userID`,`var`)
     }
 
     // add unused columns and drop all in usr table
-    $columns = array_merge($columns, array('zef_anzahl', 'filter', 'filter_knd', 'filter_pct', 'filter_evt', 'view_knd', 'view_pct', 'view_evt'));
+    $columns = array_merge($columns, ['zef_anzahl', 'filter', 'filter_knd', 'filter_pct', 'filter_evt', 'view_knd', 'view_pct', 'view_evt']);
     foreach ($columns as $column) {
         exec_query("ALTER TABLE ${p}usr DROP $column");
     }
@@ -954,7 +956,7 @@ if ((int)$revisionDB < 1374) {
 
 if ((int)$revisionDB < 1375) {
     Kimai_Logger::logfile('-- update to r1375');
-    foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
+    foreach (['customer', 'project', 'activity', 'group', 'user'] as $object) {
         exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 1;");
         exec_query("ALTER TABLE `${p}globalRoles` CHANGE `core-$object-otherGroup-view` `core-$object-otherGroup-view` tinyint DEFAULT 0;");
     }

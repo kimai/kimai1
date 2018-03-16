@@ -50,7 +50,7 @@
                 <ul>
                     <li>
                         <label for="name"><?php echo $this->kga['lang']['customer'] ?>*:</label>
-                        <?php echo $this->formText('name', $this->name, array('required' => 'required')); ?>
+                        <?php echo $this->formText('name', $this->name, ['required' => 'required']); ?>
                     </li>
                     <li>
                         <label for="vat"><?php echo $this->kga['lang']['vat'] ?>:</label>
@@ -58,17 +58,17 @@
                     </li>
                     <li>
                         <label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', array('checked' => $this->visible || !$this->id)); ?>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
                     </li>
                     <li>
                         <label for="password"><?php echo $this->kga['lang']['password'] ?>:</label>
                         <div class="multiFields">
-                            <?php echo $this->formPassword('password', '', array(
+                            <?php echo $this->formPassword('password', '', [
                                 'cols' => 30,
                                 'rows' => 3,
                                 'disabled' => (!$this->password) ? 'disabled' : ''
-                            )); ?><br/>
-                            <?php echo $this->formCheckbox('no_password', '1', array('class' => 'disableInput', 'checked' => !$this->password));
+                            ]); ?><br/>
+                            <?php echo $this->formCheckbox('no_password', '1', ['class' => 'disableInput', 'checked' => !$this->password]);
                             echo $this->kga['lang']['nopassword'] ?>
                         </div>
                     </li>
@@ -102,10 +102,11 @@
                     </li>
                     <li>
                         <label for="country"><?php echo $this->kga['lang']['country'] ?>:</label>
-                        <?php echo $this->formSelect('country', $this->country, array(
+                        <?php echo $this->formSelect('country', $this->country, [
                             'class' => 'formfield',
                             'id' => 'country',
-                            'style' => 'width:255px'), $this->countries); ?>
+                            'style' => 'width:255px'
+                        ], $this->countries); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -137,12 +138,13 @@
                 <ul>
                     <li>
                         <label for="customerGroups"><?php echo $this->kga['lang']['groups'] ?>:</label>
-                        <?php echo $this->formSelect('customerGroups[]', $this->selectedGroups, array(
+                        <?php echo $this->formSelect('customerGroups[]', $this->selectedGroups, [
                             'class' => 'formfield',
                             'id' => 'customerGroups',
                             'multiple' => 'multiple',
                             'size' => 3,
-                            'style' => 'width:255px'), $this->groups); ?>
+                            'style' => 'width:255px'
+                        ], $this->groups); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -150,11 +152,11 @@
                 <ul>
                     <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('comment', $this->comment, array(
+                        <?php echo $this->formTextarea('comment', $this->comment, [
                             'cols' => 30,
                             'rows' => 5,
                             'class' => 'comment'
-                        )); ?>
+                        ]); ?>
                     </li>
                 </ul>
             </fieldset>

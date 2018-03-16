@@ -23,7 +23,7 @@ if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
 }
 
 $installsteps = 8;
-$kga = array();
+$kga = [];
 require('../includes/version.php');
 $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 ?><!DOCTYPE html>

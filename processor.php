@@ -48,13 +48,13 @@ switch ($_REQUEST['a']) {
 
     case 'forgotPassword':
         if (!method_exists($authPlugin, 'forgotPassword')) {
-            echo json_encode(array(
+            echo json_encode([
                 'message' => $kga['lang']['passwordReset']['notSupported']
-            ));
+            ]);
         } else {
-            echo json_encode(array(
+            echo json_encode([
                 'message' => $authPlugin->forgotPassword($name)
-            ));
+            ]);
         }
         break;
 

@@ -25,7 +25,7 @@ class Kimai_Update_Version
     /**
      * @var array
      */
-    private $vars = array();
+    private $vars = [];
 
     public function __construct(array $versionInfo)
     {
@@ -79,7 +79,7 @@ class Kimai_Update_Version
      */
     protected function validate(array $versionInfo)
     {
-        $required = array("time", "version", "status", "revision");
+        $required = ["time", "version", "status", "revision"];
         foreach ($required as $k) {
             if (!isset($versionInfo[$k])) {
                 return false;

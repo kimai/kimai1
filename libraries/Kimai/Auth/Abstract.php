@@ -170,7 +170,7 @@ abstract class Kimai_Auth_Abstract
             }
         }
 
-        return array($group => $membership);
+        return [$group => $membership];
     }
 
     /**

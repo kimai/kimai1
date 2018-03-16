@@ -9,10 +9,10 @@ $customers = $this->filterListEntries($this->customers);
         foreach ($customers as $customer) {
             ?>
             <tr id="row_customer" data-id="<?php echo $customer['customerID'] ?>"
-                class="customer customer<?php echo $customer['customerID'] ?> <?php echo $this->cycle(array(
+                class="customer customer<?php echo $customer['customerID'] ?> <?php echo $this->cycle([
                     'odd',
                     'even'
-                ))->next() ?>">
+                ])->next() ?>">
                 <td nowrap class="option">
                     <?php if ($this->show_customer_edit_button): ?>
                         <a href="#"
