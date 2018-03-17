@@ -41,8 +41,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
     // timesheet entries
     $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, false, false, $filter_cleared);
 
-    foreach($timeSheetEntries as $entry)
-    {
+    foreach($timeSheetEntries as $entry) {
         // active recordings will be omitted
         if ($entry['end'] == 0) {
             continue;
@@ -50,6 +49,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
         $arr = ext_invoice_empty_entry();
 
+        $arr['timeEntryID'] = $entry['timeEntryID'];
         $arr['type'] = 'timeSheet';
         $arr['desc'] = $entry['activityName'];
         $arr['start'] = $entry['start'];
@@ -75,14 +75,12 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
     // --------------------------------------------------------------------------------
     // if expenses extension is used, load expenses as well
-    if (file_exists('../ki_expenses/private_db_layer_mysql.php'))
-    {
+    if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
         include_once '../ki_expenses/private_db_layer_mysql.php';
 
         $expenses = get_expenses($start, $end, null, null, $projects, false, false, -1, $filter_cleared);
 
-        foreach($expenses as $entry)
-        {
+        foreach($expenses as $entry) {
             $arr = ext_invoice_empty_entry();
 
             $arr['type'] = 'expense';
@@ -117,8 +115,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
     }
 
     $allEntries = array();
-    foreach($results as $entry)
-    {
+    foreach($results as $entry) {
         if ($limitCommentSize) {
             $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
         }
@@ -145,6 +142,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
             $duration = $array[$index]['duration'];
             $array[$index] = array(
                 'type' => 'timeSheet',
+                'timeEntryID' => $row['timeEntryID'],
                 'desc' => $row['desc'],
                 'start' => ($start < $row['start']) ? $start : $row['start'],
                 'end' => ($end > $row['end']) ? $end : $row['end'],

@@ -91,7 +91,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
         }
 
         // User is authenticated by web server. Does the user exist in Kimai yet?
-        
+
         $check_username = $this->HTAUTH_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
         $userId = $this->database->user_name2id($check_username);
         if ($userId !== false) {
