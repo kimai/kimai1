@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-$all_column_headers = array(
+$all_column_headers = [
     'date',
     'from',
     'to',
@@ -38,7 +38,7 @@ $all_column_headers = array(
     'trackingNumber',
     'user',
     'cleared'
-);
+];
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
@@ -68,8 +68,8 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
 {
     global $expense_ext_available;
     $database = Kimai_Registry::getDatabase();
-    $timeSheetEntries = array();
-    $expenses = array();
+    $timeSheetEntries = [];
+    $expenses = [];
     if ($filter_type != 1) {
         $timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
     }
@@ -77,10 +77,10 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     if ($filter_type != 0 && $expense_ext_available) {
         $expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
     }
-    $result_arr = array();
+    $result_arr = [];
     $timeSheetEntries_index = 0;
     $expenses_index = 0;
-    $keys = array(
+    $keys = [
         'type',
         'id',
         'time_in',
@@ -110,9 +110,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         'trackingNumber',
         'username',
         'cleared'
-    );
+    ];
     while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
-        $arr = array();
+        $arr = [];
         foreach ($keys as $key) {
             $arr[$key] = null;
         }
@@ -186,7 +186,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     while ($timeSheetEntries_index < count($timeSheetEntries)) {
         if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
             // active recordings will be omitted
-            $arr = array();
+            $arr = [];
             foreach ($keys as $key) {
                 $arr[$key] = null;
             }
@@ -230,7 +230,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         $timeSheetEntries_index++;
     }
     while ($expenses_index < count($expenses)) {
-        $arr = array();
+        $arr = [];
         foreach ($keys as $key) {
             $arr[$key] = null;
         }

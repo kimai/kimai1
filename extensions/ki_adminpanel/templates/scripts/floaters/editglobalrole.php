@@ -1,7 +1,7 @@
 <?php
 
-$extensions = array();
-$keyHierarchy = array();
+$extensions = [];
+$keyHierarchy = [];
 
 $this->getHelper('ParseHierarchy')->parseHierarchy($this->permissions, $extensions, $keyHierarchy);
 ?>

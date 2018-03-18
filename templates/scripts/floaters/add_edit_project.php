@@ -47,15 +47,15 @@
             <fieldset id="general">
                 <ul>
                     <li><label for="name"><?php echo $this->kga['lang']['project'] ?>*:</label>
-                        <?php echo $this->formText('name', $this->name, array('required' => 'required')); ?> </li>
+                        <?php echo $this->formText('name', $this->name, ['required' => 'required']); ?> </li>
                     <li><label for="customerID"><?php echo $this->kga['lang']['customer'] ?>:</label>
-                        <?php echo $this->formSelect('customerID', $this->selectedCustomer, array('class' => 'formfield'), $this->customers); ?>
+                        <?php echo $this->formSelect('customerID', $this->selectedCustomer, ['class' => 'formfield'], $this->customers); ?>
                     </li>
                     <li><label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', array('checked' => $this->visible || !$this->id)); ?>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
                     </li>
                     <li><label for="internal"><?php echo $this->kga['lang']['internalProject'] ?>:</label>
-                        <?php echo $this->formCheckbox('internal', '1', array('checked' => $this->internal)); ?>
+                        <?php echo $this->formCheckbox('internal', '1', ['checked' => $this->internal]); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -91,7 +91,7 @@
                         <td></td>
                     </tr>
                     <?php
-                    $assignedActivities = array();
+                    $assignedActivities = [];
                     if (isset($this->selectedActivities) && is_array($this->selectedActivities)) {
                         foreach ($this->selectedActivities as $selectedActivity) {
                             $assignedActivities[] = $selectedActivity['activityID'];
@@ -119,7 +119,7 @@
                         }
                     }
 
-                    $selectArray = array(-1 => '');
+                    $selectArray = [-1 => ''];
                     foreach ($this->allActivities as $activity) {
                         if (array_search($activity['activityID'], $assignedActivities) === false) {
                             $selectArray[$activity['activityID']] = $activity['name'];
@@ -134,23 +134,24 @@
             <fieldset id="groups">
                 <ul>
                     <li>
-                        <?php echo $this->formSelect('projectGroups[]', $this->selectedGroups, array(
+                        <?php echo $this->formSelect('projectGroups[]', $this->selectedGroups, [
                             'class' => 'formfield',
                             'id' => 'projectGroups',
                             'multiple' => 'multiple',
                             'size' => 3,
-                            'style' => 'width:255px'), $this->groups); ?>
+                            'style' => 'width:255px'
+                        ], $this->groups); ?>
                     </li>
                 </ul>
             </fieldset>
             <fieldset id="comment">
                 <ul>
                     <li><label for="projectComment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('projectComment', $this->comment, array(
+                        <?php echo $this->formTextarea('projectComment', $this->comment, [
                             'cols' => 30,
                             'rows' => 5,
                             'class' => 'comment'
-                        )); ?>
+                        ]); ?>
                     </li>
                 </ul>
             </fieldset>

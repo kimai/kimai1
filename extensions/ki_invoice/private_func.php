@@ -18,7 +18,7 @@
  */
 
 // when creating the short form contains index of each activity in the array
-$activityIndexMap = array();
+$activityIndexMap = [];
 
 /**
  * Get a combined array with time recordings and expenses to export.
@@ -35,7 +35,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
     $database = Kimai_Registry::getDatabase();
 
     $limitCommentSize = true;
-    $results = array();
+    $results = [];
 
     // --------------------------------------------------------------------------------
     // timesheet entries
@@ -116,7 +116,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         }
     }
 
-    $allEntries = array();
+    $allEntries = [];
     foreach($results as $entry)
     {
         if ($limitCommentSize) {
@@ -143,7 +143,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
             $start = $array[$index]['start'];
             $end = $array[$index]['end'];
             $duration = $array[$index]['duration'];
-            $array[$index] = array(
+            $array[$index] = [
                 'type' => 'timeSheet',
                 'desc' => $row['desc'],
                 'start' => ($start < $row['start']) ? $start : $row['start'],
@@ -165,7 +165,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
                 'projectComment' => $row['projectComment'],
                 // FIXME use date_format_3 instead
                 'date' => date("m/d/Y", $row['timestamp']),
-            );
+            ];
             return;
         } else {
             $activityIndexMap[$row['desc']] = count($array);
@@ -176,7 +176,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
 
 function ext_invoice_empty_entry()
 {
-    return array(
+    return [
         'type' => null,
         'desc' => null,
         'start' => null,
@@ -197,7 +197,7 @@ function ext_invoice_empty_entry()
         'projectName' => null,
         'projectComment' => null,
         'date' => null,
-    );
+    ];
 }
 
 function ext_invoice_sort_by_date_asc($a, $b)

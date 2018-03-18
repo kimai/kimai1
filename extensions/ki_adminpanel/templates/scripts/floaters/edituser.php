@@ -31,8 +31,9 @@
                     </li>
                     <li>
                         <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole'] ?>:</label>
-                        <?php echo $this->formSelect('globalRoleID', $this->user_details['globalRoleID'], array(
-                            'class' => 'formfield'), $this->globalRoles); ?>
+                        <?php echo $this->formSelect('globalRoleID', $this->user_details['globalRoleID'], [
+                            'class' => 'formfield'
+                        ], $this->globalRoles); ?>
                     </li>
                     <li>
                         <label for="password"><?php echo $this->kga['lang']['newPassword'] ?>:</label>
@@ -69,8 +70,8 @@
                     </tr>
                     <?php
 
-                    $selectArray = array(-1 => '');
-                    $assignedGroups = array();
+                    $selectArray = [-1 => ''];
+                    $assignedGroups = [];
                     foreach ($this->groups as $group) {
                         if (array_key_exists($group['groupID'], $this->memberships)) {
                             $group['membershipRoleID'] = $this->memberships[$group['groupID']];
@@ -87,7 +88,7 @@
                                 <?php echo $this->escape($assignedGroup['name']), $this->formHidden('assignedGroups[]', $assignedGroup['groupID']); ?>
                             </td>
                             <td>
-                                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], array('size' => 1, 'multiple' => false), $this->membershipRoles); ?>
+                                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], ['size' => 1, 'multiple' => false], $this->membershipRoles); ?>
                             </td>
                             <td>
                                 <a class="deleteButton">

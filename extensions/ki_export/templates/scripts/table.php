@@ -26,7 +26,7 @@ if (count($this->exportData) > 0)
 
                 ?>
                 <tr id="xp<?php echo $row['type'], $row['id'] ?>"
-                    class="<?php echo $this->cycle(array("odd", "even"))->next() ?> <?php if (!$row['time_out']): ?>active<?php endif; ?> <?php if ($isExpense): ?> expense<?php endif; ?>">
+                    class="<?php echo $this->cycle(["odd", "even"])->next() ?> <?php if (!$row['time_out']): ?>active<?php endif; ?> <?php if ($isExpense): ?> expense<?php endif; ?>">
                     <td class="date <?php echo $tdClass;
                     if (isset($this->disabled_columns['date'])) echo "disabled"; ?>
                     ">

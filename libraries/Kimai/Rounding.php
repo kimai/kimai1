@@ -25,7 +25,7 @@ class Kimai_Rounding
         $stepWidth = $steps * 60;
 
         if ($steps == 0) {
-            $bestTime = array();
+            $bestTime = [];
             $bestTime['start'] = $start;
             $bestTime['end'] = $end;
             $bestTime['duration'] = $end - $start;
@@ -44,7 +44,7 @@ class Kimai_Rounding
 
 
         // assuming the earlier start end end time are the best (likely not always true)
-        $bestTime = array();
+        $bestTime = [];
         $bestTime['start'] = $earlierStart;
         $bestTime['end'] = $earlierEnd;
         $bestTime['duration'] = $earlierEnd - $earlierStart;

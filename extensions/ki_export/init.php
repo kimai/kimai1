@@ -53,9 +53,9 @@ $users = null;
 $customers = null;
 
 if (isset($kga['customer'])) {
-    $customers = array($kga['customer']['customerID']);
+    $customers = [$kga['customer']['customerID']];
 } else {
-    $users = array($kga['user']['userID']);
+    $users = [$kga['user']['userID']];
 }
 
 // Get the total amount of time shown in the table.

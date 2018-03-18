@@ -66,7 +66,7 @@ if (isset($kga['lang']['countryCode'])) {
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
-$current_timer = array();
+$current_timer = [];
 if (isset($kga['customer'])) {
   $current_timer['all']  = 0;
   $current_timer['hour'] = 0;
@@ -95,7 +95,7 @@ $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);
 
 if (isset($kga['customer'])) {
-    $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']))));
+    $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, null, [$kga['customer']['customerID']])));
 } else {
     $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, $kga['user']['userID'])));
 }
@@ -192,9 +192,9 @@ $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 $view->assign('lang_checkGlobalRoleName', $kga['lang']['checkGlobalRoleName']);
 $view->assign('lang_checkMembershipRoleName', $kga['lang']['checkMembershipRoleName']);
 
-$customerData = array('customerID'=>false, 'name'=>'');
-$projectData  = array('projectID'=>false, 'name'=>'');
-$activityData = array('activityID'=>false, 'name'=>'');
+$customerData = ['customerID'=>false, 'name'=>''];
+$projectData  = ['projectID'=>false, 'name'=>''];
+$activityData = ['activityID'=>false, 'name'=>''];
 
 if (!isset($kga['customer'])) {
   //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
@@ -232,13 +232,13 @@ $view->assign('user_display', $view->render('lists/users.php'));
 // = display customer table =
 // ========================
 if (isset($kga['customer'])) {
-    $view->assign('customers', array(
-        array(
+    $view->assign('customers', [
+        [
             'customerID' => $kga['customer']['customerID'],
             'name' => $kga['customer']['name'],
             'visible' => $kga['customer']['visible']
-        )
-    ));
+        ]
+    ]);
 } else {
     $view->assign('customers', $database->get_customers($kga['user']['groups']));
 }

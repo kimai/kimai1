@@ -125,7 +125,7 @@ abstract class Kimai_Invoice_AbstractRenderer
     protected function prepareCustomerArray($customer)
     {
         $kga = Kimai_Registry::getConfig();
-        $new = array(
+        $new = [
             'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
             'companyName' => isset($customer['company']) ? $customer['company'] : '',
             'customerStreet' => isset($customer['street']) ? $customer['street'] : '',
@@ -139,7 +139,7 @@ abstract class Kimai_Invoice_AbstractRenderer
             'customerMobile' => isset($customer['mobile']) ? $customer['mobile'] : '',
             'customerURL' => isset($customer['homepage']) ? $customer['homepage'] : '',
             'customerVat' => isset($customer['vat']) ? $customer['vat'] : '',
-        );
+        ];
 
         return $new;
     }

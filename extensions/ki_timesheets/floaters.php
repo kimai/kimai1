@@ -59,7 +59,7 @@ switch ($axAction) {
             }
 
             // set list of users to what the user may do
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
                 $users = makeSelectBox("allUser", $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {
@@ -122,7 +122,7 @@ switch ($axAction) {
             // create new record
             $view->assign('statusID', $kga->getDefaultStatus());
 
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-add')) {
                 $users = makeSelectBox('allUser', $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-add')) {
@@ -200,7 +200,7 @@ switch ($axAction) {
         $view->assign('status', $kga->getStatuses());
 
         $billableValues = $kga['billable'];
-        $billableText = array();
+        $billableText = [];
         foreach ($billableValues as $billableValue) {
             $billableText[] = $billableValue . '%';
         }
@@ -239,7 +239,7 @@ switch ($axAction) {
             }
 
             // set list of users to what the user may do
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
                 $users = makeSelectBox("allUser", $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {

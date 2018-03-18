@@ -24,7 +24,7 @@
     } else {
         foreach ($this->statuses as $statusarray) {
             ?>
-            <tr class='<?php echo $this->cycle(array("odd", "even"))->next() ?>'>
+            <tr class='<?php echo $this->cycle(["odd", "even"])->next() ?>'>
                 <td class="option">
                     <a href="#" onclick="adminPanel_extension_editStatus('<?php echo $statusarray['statusID'] ?>'); $(this).blur(); return false;"><img
                             src="<?php echo $this->skin('grfx/edit2.gif'); ?>" title="<?php echo $this->kga['lang']['editstatus'] ?>"

@@ -31,7 +31,7 @@
     } else {
         foreach ($this->users as $userarray) {
             ?>
-            <tr class='<?php echo $this->cycle(array("odd", "even"))->next() ?>'>
+            <tr class='<?php echo $this->cycle(["odd", "even"])->next() ?>'>
                 <?php /* ########## Option cells ########## */ ?>
                 <td class="option">
                     <a href="#" onclick="adminPanel_extension_editUser('<?php echo $userarray['userID'] ?>'); $(this).blur(); return false;">

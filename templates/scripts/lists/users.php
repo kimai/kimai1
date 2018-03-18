@@ -5,7 +5,7 @@
         foreach ($this->users as $user) {
             ?>
             <tr id="row_user" data-id="<?php echo $user['userID'] ?>"
-                class="<?php echo $this->cycle(array('odd', 'even'))->next() ?>">
+                class="<?php echo $this->cycle(['odd', 'even'])->next() ?>">
                 <td nowrap class="option">
                     <a href="#"
                        onclick="lists_update_filter('user',<?php echo $user['userID'] ?>); $(this).blur(); return false;"><img

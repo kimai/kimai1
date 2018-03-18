@@ -170,13 +170,13 @@ abstract class Kimai_Auth_Abstract
             }
         }
 
-        return array($group => $membership);
+        return [$group => $membership];
     }
 
     /**
      * Return an ID of a global role to which users should be added, if they authenticated but are not known to Kimai.
      * The default implementation uses the first role or, if present, a role called 'User'.
-     * @return integer global role ID
+     * @return int global role ID
      */
     public function getDefaultGlobalRole()
     {

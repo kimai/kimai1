@@ -38,7 +38,7 @@ if ($this->expenses)
             $tdClass = "break_gap";
         }
         ?>
-        <tr id="expEntry<?php echo $row['expenseID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
+        <tr id="expEntry<?php echo $row['expenseID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?>">
 
             <td nowrap class="option <?php echo $tdClass ?>">
 
@@ -113,7 +113,7 @@ if ($this->expenses)
         $timestamp_buffer = $cur_timestamp_buffer;
     }
     ?>
-                
+
     </tbody>
     </table>
     </div>
@@ -126,14 +126,14 @@ else
 }
 ?>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
     expense_user_annotations = <?php echo json_encode($this->user_annotations); ?>;
     expense_customer_annotations = <?php echo json_encode($this->customer_annotations) ?>;
     expense_project_annotations = <?php echo json_encode($this->project_annotations) ?>;
     expense_activity_annotations = <?php echo json_encode($this->activity_annotations) ?>;
     expenses_total = '<?php echo $this->total?>';
-    
+
     lists_update_annotations(parseInt($('#gui div.ki_expenses').attr('id').substring(7)),expense_user_annotations,expense_customer_annotations,expense_project_annotations,expense_activity_annotations);
     $('#display_total').html(expenses_total);
-    
+
 </script>

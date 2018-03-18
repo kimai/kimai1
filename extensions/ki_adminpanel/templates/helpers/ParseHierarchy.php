@@ -48,7 +48,7 @@ class Zend_View_Helper_ParseHierarchy extends Zend_View_Helper_Abstract
 
       foreach ($keyParts as $keyPart) {
         if (!array_key_exists($keyPart, $currentHierarchyLevel))
-          $currentHierarchyLevel[$keyPart] = array();
+          $currentHierarchyLevel[$keyPart] = [];
         $currentHierarchyLevel = &$currentHierarchyLevel[$keyPart];
       }
 

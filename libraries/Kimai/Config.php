@@ -51,7 +51,7 @@ class Kimai_Config extends Kimai_ArrayObject
     {
         switch ($config) {
             case self::DEFAULT_BILLABLE:
-                return array(0, 50, 100);
+                return [0, 50, 100];
             case self::DEFAULT_AUTHENTICATOR:
                 return 'kimai';
             case self::DEFAULT_SKIN:
@@ -69,7 +69,7 @@ class Kimai_Config extends Kimai_ArrayObject
      */
     protected function getCoreDefaults()
     {
-        return array(
+        return [
             // number of lines shown from the logfile in debug extension. Set to "@" to display the entire file (might freeze your browser...)
             'logfile_lines' => 100,
             // TODO remove this setting completely, can always be turned on (or move to extension)
@@ -90,7 +90,7 @@ class Kimai_Config extends Kimai_ArrayObject
             'billable' => self::getDefault(self::DEFAULT_BILLABLE),
             'skin' => self::getDefault(self::DEFAULT_SKIN),
             'conf' => new Kimai_Config_Settings()
-        );
+        ];
     }
 
     /**

@@ -32,7 +32,7 @@ class Kimai_Utility_ArrayUtility
      */
     public static function arrayDiffAssocRecursive(array $array1, array $array2)
     {
-        $differenceArray = array();
+        $differenceArray = [];
         foreach ($array1 as $key => $value) {
             if (!array_key_exists($key, $array2)) {
                 $differenceArray[$key] = $value;
@@ -51,7 +51,7 @@ class Kimai_Utility_ArrayUtility
      */
     public static function setKeyFromValue(array $array)
     {
-        $newArray = array();
+        $newArray = [];
         foreach ($array as $item) {
             $newArray[$item] = $item;
         }

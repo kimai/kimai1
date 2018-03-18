@@ -4,7 +4,7 @@ $dateFormat = $this->kga->getDateFormat(1);
 
 if ($this->showBillability) {
     $billableValues = $this->kga['billable'];
-    $billableText = array();
+    $billableText = [];
     foreach ($billableValues as $billableValue) {
         $billableText[] = $billableValue . '%';
     }
@@ -68,9 +68,9 @@ if ($this->timeSheetEntries) {
                 }
         ?>
         <?php if ($row['end']): ?>
-            <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?>">
+            <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?>">
         <?php else: ?>
-            <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(array("odd","even"))->next()?> active">
+            <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?> active">
         <?php endif; ?>
 
         <td nowrap class="option <?php echo $tdClass; ?>">
@@ -144,11 +144,11 @@ if ($this->timeSheetEntries) {
                         echo $this->formSelect(
                             'billable',
                             $row['billable'],
-                            array(
+                            [
                                 'id' => 'billable_' . $row['timeEntryID'],
                                 'class' => 'formfield',
                                 'onchange' => 'ts_updateBillability(' . $row['timeEntryID'] . ')'
-                            ),
+                            ],
                             $this->billable);
 
                         // effective billable time

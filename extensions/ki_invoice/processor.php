@@ -41,7 +41,7 @@ switch ($axAction) {
             echo "0";
             return;
         }
-        $database->configuration_edit(array('defaultVat' => $vat));
+        $database->configuration_edit(['defaultVat' => $vat]);
         echo "1";
         break;
 
@@ -56,7 +56,7 @@ switch ($axAction) {
             $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
         }
 
-        $js_projects = array();
+        $js_projects = [];
         foreach ($db_projects as $project) {
             $js_projects[$project['projectID']] = $project['name'];
         }

@@ -21,7 +21,7 @@
 		foreach ($this->customers as $row) {
 			$isHidden = $row['visible'] != 1;
 			?>
-			<tr class="<?php echo $this->cycle(array("odd","even"))->next()?>">
+			<tr class="<?php echo $this->cycle(["odd", "even"])->next()?>">
 				<td class="option">
 					<a href="#" onclick="editSubject('customer',<?php echo $row['customerID']?>); $(this).blur(); return false;"><img
 						src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13" alt="<?php echo $this->kga['lang']['edit']?>"
