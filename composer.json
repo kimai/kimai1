@@ -11,7 +11,7 @@
         { "name": "Simon Schaufelberger", "homepage": "https://github.com/simonschaufi" }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "tecnickcom/tcpdf": "^6.2.12",
         "zendframework/zendframework1": "^1.12",
         "phpoffice/phpexcel": "1.8.*",

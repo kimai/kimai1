@@ -176,7 +176,7 @@ function export_extension_set_heightTop() {
  */
 function export_extension_set_TableWidths() {
 	export_extension_get_dimensions();
-	// set table widths   
+	// set table widths
 
 	($("#xp").innerHeight() - $("#xp table").outerHeight() > 0) ? scr = 0 : scr = scroller_width; // width of export table depending on scrollbar or not
 	$("#xp table").css("width", export_width - scr);
@@ -271,7 +271,7 @@ function export_extension_activities_changed() {
 // reloads timesheet, customer, project and activity tables
 //
 function export_extension_reload() {
-	// don't reload if extension is not loaded  
+	// don't reload if extension is not loaded
 	if ($('.ki_export').html() == '') {
 		return;
 	}
@@ -340,7 +340,7 @@ function export_toogle_cleared_confirm() {
 	});
 	if (checked_elements > 0) {
 		// TODO: add translations somehow
-		if (!confirm('There are ' + checked_elements + ' already cleared entries!\nDo you really want to set these entries to uncleared?')) {
+		if (!confirm('There are already ' + checked_elements + ' cleared entries!\nDo you really want to set these entries to uncleared?')) {
 			return false;
 		}
 	}

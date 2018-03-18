@@ -24,7 +24,7 @@
 require_once 'functions.php';
 
 define('KIMAI_UPDATER_RUNNING', true);
-$min_php_version = '5.4';
+$min_php_version = '5.5';
 
 // check all requirements/file permissions before starting an upgrade process
 if (!file_exists('../includes/autoconf.php')) {
