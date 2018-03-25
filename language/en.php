@@ -461,6 +461,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_type' => 'Time format',
         'dec_time' => 'Decimal time',
         'time' => 'Standard time',
+        'cleared' => 'Cleared',
     ],
 
     'ext_invoice' => [
@@ -472,6 +473,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'defaultVat' => 'VAT rate',
         'invoiceOptionShort' => 'Short Invoice',
         'invoiceOptionRound' => 'Round time',
+        'markEntriesAsCleared' => 'Mark entries as cleared',
         'invoiceButton' => 'Create',
         'noData' => 'There are no entries for the selected project & time period',
         'noProject' => 'No project was selected.',
