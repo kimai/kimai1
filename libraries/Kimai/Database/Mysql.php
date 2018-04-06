@@ -2444,15 +2444,35 @@ class Kimai_Database_Mysql
      */
     public function setTimeEntriesAsCleared(array $entries)
     {
-        $ids = array_map(function ($entry) {
-            return $entry['timeEntryID'];
-        }, $entries);
+        // timesheet entries
+        $timeSheetEntries = array_filter($entries, function ($entry) {
+            return $entry['type'] == 'timeSheet';
+        });
 
-        $update['cleared'] = 1;
+        $ids = array_map(function ($entry) {
+            return $this->conn->SQLFix($entry['timeEntryID']);
+        }, $timeSheetEntries);
+
+        $update = ['cleared' => 1];
 
         $where = ['timeEntryID IN (' . implode(',', $ids) . ')'];
 
-        return $this->conn->UpdateRows($this->getTimeSheetTable(), $update, $where);
+        $resultTimeSheet = $this->conn->UpdateRows($this->getTimeSheetTable(), $update, $where);
+
+        // expenses
+        $expenses = array_filter($entries, function ($entry) {
+            return $entry['type'] == 'expense';
+        });
+
+        $ids = array_map(function ($entry) {
+            return $this->conn->SQLFix($entry['expenseID']);
+        }, $expenses);
+
+        $where = ['expenseID IN (' . implode(',', $ids) . ')'];
+
+        $resultExpenses = $this->conn->UpdateRows($this->getExpenseTable(), $update, $where);
+
+        return $resultTimeSheet && $resultExpenses;
     }
 
     /**

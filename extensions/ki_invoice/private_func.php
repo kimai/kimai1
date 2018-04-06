@@ -83,6 +83,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         foreach($expenses as $entry) {
             $arr = ext_invoice_empty_entry();
 
+            $arr['expenseID'] = $entry['expenseID'];
             $arr['type'] = 'expense';
             $arr['desc'] = $entry['designation'];
             $arr['start'] = $entry['timestamp'];
