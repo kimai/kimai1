@@ -41,14 +41,14 @@
             <?php if ($this->showRates): ?>
                 <td class="wage"><?php echo $this->kga['lang']['wage'] ?></td>
             <?php endif; ?>
-            <td class="customer"><?php echo $this->kga['lang']['customer'] ?></td>
-            <td class="project"><?php echo $this->kga['lang']['project'] ?></td>
-            <td class="activity"><?php echo $this->kga['lang']['activity'] ?></td>
-            <td class="description"><?php echo $this->kga['lang']['description'] ?></td>
+            <td class="customer"><?php echo $this->escape($this->kga['lang']['customer']); ?></td>
+            <td class="project"><?php echo $this->escape($this->kga['lang']['project']); ?></td>
+            <td class="activity"><?php echo $this->escape($this->kga['lang']['activity']); ?></td>
+            <td class="description"><?php echo $this->escape($this->kga['lang']['description']); ?></td>
             <?php if ($this->showTrackingNumber) { ?>
-                <td class="trackingnumber"><?php echo $this->kga['lang']['trackingNumber'] ?></td>
+                <td class="trackingnumber"><?php echo $this->escape($this->kga['lang']['trackingNumber']); ?></td>
             <?php } ?>
-            <td class="username"><?php echo $this->kga['lang']['username'] ?></td>
+            <td class="username"><?php echo $this->escape($this->kga['lang']['username']); ?></td>
         </tr>
         </tbody>
     </table>

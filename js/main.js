@@ -17,7 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 function logfile(entry) {
     $.post("processor.php", { axAction: "logfile", axValue: entry, id: 0 });
 }
@@ -61,8 +60,6 @@ function headerHeight() {
     return header + tabbar + 10;
 }
 
-
-
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
 //
@@ -72,7 +69,7 @@ function floaterShow(phpFile, axAction, axValue, id, width, callback) {
             floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
         });
     } else {
-            floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
+        floaterLoadContent(phpFile, axAction, axValue, id, width, callback);
     }
 }
 function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
@@ -84,34 +81,34 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
         },
         function() {
 
-          $('#floater').css({width: width+"px"});
+            $('#floater').css({width: width+"px"});
 
-          resize_floater();
+            resize_floater();
 
-          x = ($(document).width()-(width+10))/2;
-          if (x<0) x=0;
-          $("#floater").css({left:x+"px"});
-          $("#floater").fadeIn(fading_enabled?200:0);
+            x = ($(document).width()-(width+10))/2;
+            if (x<0) x=0;
+            $("#floater").css({left:x+"px"});
+            $("#floater").fadeIn(fading_enabled?200:0);
 
-          $('#focus').focus();
-          $('.extended').hide();
-          $('#floater_content').css("height",$('#floater_dimensions').outerHeight()+5);
+            $('#focus').focus();
+            $('.extended').hide();
+            $('#floater_content').css("height",$('#floater_dimensions').outerHeight()+5);
 
-          // toggle class of the proberbly existing extended options button
-          $(".options").toggle(function(){
-              el = $(this);
-              el.addClass("up");
-              el.removeClass("down");
-              return false;
-          },function(){
-              el = $(this);
-              el.addClass("down");
-              el.removeClass("up");
-              return false;
-          });
+            // toggle class of the proberbly existing extended options button
+            $(".options").toggle(function(){
+                el = $(this);
+                el.addClass("up");
+                el.removeClass("down");
+                return false;
+            },function(){
+                el = $(this);
+                el.addClass("down");
+                el.removeClass("up");
+                return false;
+            });
 
-          if (callback != undefined)
-            callback();
+            if (callback !== undefined)
+                callback();
 
         }
     );
@@ -127,7 +124,6 @@ function resize_floater() {
     var y = ($(window).height() - $('#floater').height()) / 2;
     if (y<0) y=0;
     $("#floater").css({top:y+"px"});
-
 }
 
 // ----------------------------------------------------------------------------------------
@@ -149,41 +145,40 @@ function changeTab(target,path) {
 
     kill_reg_timeouts();
 
+    if ($("#loader").is(':hidden')) {
+        // if previous extension was loaded save visibility of lists
+        lists_visibility[$('#fliptabs li.act').attr('id')] = $('body>.lists').is(':visible');
+    }
 
-  if ($("#loader").is(':hidden')) {
-    // if previous extension was loaded save visibility of lists
-    lists_visibility[$('#fliptabs li.act').attr('id')] = $('body>.lists').is(':visible');
-  }
+    $('#fliptabs li').removeClass('act');
+    $('#fliptabs li').addClass('norm');
 
-	$('#fliptabs li').removeClass('act');
-	$('#fliptabs li').addClass('norm');
+    tab='#exttab_'+target;
+    $(tab).removeClass('norm');
+    $(tab).addClass('act');
 
-	tab='#exttab_'+target;
-	$(tab).removeClass('norm');
-	$(tab).addClass('act');
+    $('.ext').css('display','none');
 
-	$('.ext').css('display','none');
-
-	div='#extdiv_'+target;
-	$(div).css('display','block');
+    div='#extdiv_'+target;
+    $(div).css('display','block');
 
     // we don't want to load the tab content every time the tab is changed ...
     is_extension_loaded = $(div).html();
-	if (!is_extension_loaded) {
-	    $("#loader").show();
-      lists_visible(false);
-    	path = '../extensions/' + path.replace('../extensions/','') ;
-    	$(div).load(path);
-	} else {
-	    $("#loader").hide();
-      // restore visibility of lists
-      lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
-      lists_write_annotations();
-	}
+    if (!is_extension_loaded) {
+        $("#loader").show();
+        lists_visible(false);
+        path = '../extensions/' + path.replace('../extensions/','') ;
+        $(div).load(path);
+    } else {
+        $("#loader").hide();
+        // restore visibility of lists
+        lists_visible(lists_visibility[$('#fliptabs li.act').attr('id')]);
+        lists_write_annotations();
+    }
     if (userID) {
-	  Cookies.set('ki_active_tab_target_' + userID, target);
-	  Cookies.set('ki_active_tab_path_' + userID, path);
-	}
+        Cookies.set('ki_active_tab_target_' + userID, target);
+        Cookies.set('ki_active_tab_path_' + userID, path);
+    }
 }
 
 function kill_timeout(to) {
@@ -192,13 +187,12 @@ function kill_timeout(to) {
     eval(evalstring);
 }
 
-
 function showTools() {
-  $('#main_tools_menu').fadeIn(fading_enabled?200:0);
+    $('#main_tools_menu').fadeIn(fading_enabled?200:0);
 }
 
 function hideTools() {
-  $('#main_tools_menu').fadeOut(fading_enabled?200:0);
+    $('#main_tools_menu').fadeOut(fading_enabled?200:0);
 }
 
 
@@ -218,38 +212,37 @@ function checkupdate(path){
 //
 var ZeitString, DatumsString = "";
 function n_uhr() {
-	n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
-	Jetzt = new Date();
-	//aktuelle Uhrzeit
-	Stunden = Jetzt.getHours();
-	Minuten = Jetzt.getMinutes();
-	Sekunden = Jetzt.getSeconds();
+    n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
+    Jetzt = new Date();
+    //aktuelle Uhrzeit
+    Stunden = Jetzt.getHours();
+    Minuten = Jetzt.getMinutes();
+    Sekunden = Jetzt.getSeconds();
 
-	if (currentDay != Jetzt.getDate()) {
-		// it's the next day
-		$('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
-		currentDay = Jetzt.getDate();
+    if (currentDay != Jetzt.getDate()) {
+        // it's the next day
+        $('#n_date').html(weekdayNames[Jetzt.getDay()] + " " + strftime(timeframeDateFormat,Jetzt));
+        currentDay = Jetzt.getDate();
 
-		// If the difference to the datepicker end date is less than one and a half day.
-		// One day is exactly when we need to switch. Some more time is given (but not 2 full days).
-		if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
-			setTimeframe(undefined,Jetzt);
-		}
-	}
+        // If the difference to the datepicker end date is less than one and a half day.
+        // One day is exactly when we need to switch. Some more time is given (but not 2 full days).
+        if (Jetzt-$('#pick_out').datepicker("getDate") < 1.5*24*60*60*1000) {
+            setTimeframe(undefined,Jetzt);
+        }
+    }
 
-	var ZeitString = prependZeroIfNeeded(Stunden);
+    var ZeitString = prependZeroIfNeeded(Stunden);
 
-	if (Sekunden %2 == 0) {
-		ZeitString += n_seperator;
-	}
-	else {
-		ZeitString += ":";
-	}
+    if (Sekunden %2 == 0) {
+        ZeitString += n_seperator;
+    } else {
+        ZeitString += ":";
+    }
 
-	ZeitString += prependZeroIfNeeded(Minuten);
+    ZeitString += prependZeroIfNeeded(Minuten);
 
-	$('#n_uhr').html(ZeitString);
-	setTimeout("n_uhr()", 1000);
+    $('#n_uhr').html(ZeitString);
+    setTimeout("n_uhr()", 1000);
 }
 
 // ----------------------------------------------------------------------------------------
@@ -261,21 +254,19 @@ function setTimeframe(fromDate,toDate) {
     timeframe = '';
 
     if (fromDate != undefined) {
-      setTimeframeStart(fromDate);
-      timeframe += strftime('%m-%d-%Y',fromDate);
-    }
-    else {
-      timeframe += "0-0-0";
+        setTimeframeStart(fromDate);
+        timeframe += strftime('%m-%d-%Y',fromDate);
+    } else {
+        timeframe += "0-0-0";
     }
 
     timeframe += "|";
 
     if (toDate != undefined) {
-      setTimeframeEnd(toDate);
-      timeframe += strftime('%m-%d-%Y',toDate);
-    }
-    else {
-      timeframe += "0-0-0";
+        setTimeframeEnd(toDate);
+        timeframe += strftime('%m-%d-%Y',toDate);
+    } else {
+        timeframe += "0-0-0";
     }
 
     $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 },
@@ -288,15 +279,15 @@ function setTimeframe(fromDate,toDate) {
 }
 
 function setTimeframeStart(fromDate) {
-  $('#ts_in').html(strftime(timeframeDateFormat,fromDate));
-  $('#pick_in').val(strftime('%m/%d/%Y',fromDate));
-  $('#pick_out').datepicker( "option", "minDate", fromDate );
+    $('#ts_in').html(strftime(timeframeDateFormat,fromDate));
+    $('#pick_in').val(strftime('%m/%d/%Y',fromDate));
+    $('#pick_out').datepicker( "option", "minDate", fromDate );
 }
 
 function setTimeframeEnd(toDate) {
-  $('#ts_out').html(strftime(timeframeDateFormat,toDate));
-  $('#pick_out').val(strftime('%m/%d/%Y',toDate));
-  $('#pick_in').datepicker( "option", "maxDate", toDate );
+    $('#ts_out').html(strftime(timeframeDateFormat,toDate));
+    $('#pick_out').val(strftime('%m/%d/%Y',toDate));
+    $('#pick_in').datepicker( "option", "maxDate", toDate );
 }
 
 function updateTimeframeWarning() {
@@ -308,17 +299,12 @@ function updateTimeframeWarning() {
     today.setHours(0);
 
     if (new Date($('#pick_out').val()) < today) {
-      $('#ts_out').addClass('datewarning')
+        $('#ts_out').addClass('datewarning')
     }
     else {
-      $('#ts_out').removeClass('datewarning')
+        $('#ts_out').removeClass('datewarning')
     }
-
 }
-
-
-
-
 
 // ----------------------------------------------------------------------------------------
 // starts a new recording when the start-buzzer is hidden
@@ -338,8 +324,6 @@ function startRecord(projectID,activityID,userID) {
     );
 }
 
-
-
 // ----------------------------------------------------------------------------------------
 // stops the current recording when the stop-buzzer is hidden
 //
@@ -350,28 +334,28 @@ function stopRecord() {
     show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(response){
-              ts_ext_reload();
-              document.title = default_title;
-              if (openAfterRecorded) {
+            ts_ext_reload();
+            document.title = default_title;
+            if (openAfterRecorded) {
                 var data = jQuery.parseJSON(response);
                 editRecord(data['id']);
-              }
+            }
         }
     );
 }
 
 function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
-  if (record_ID == false) {
-    // no recording is running anymore
-    currentRecording = -1;
-    show_selectors();
-    return;
-  }
+    if (record_ID == false) {
+        // no recording is running anymore
+        currentRecording = -1;
+        show_selectors();
+        return;
+    }
 
-  startsec = record_startTime + offset;
+    startsec = record_startTime + offset;
 
-  if (selected_project != projectID)
-    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
+    if (selected_project != projectID)
+        buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -393,17 +377,16 @@ function show_selectors() {
     $("#stopwatch_ticker").css('display','none');
     $("#buzzer").removeClass("act");
     if (!(selected_customer && selected_project && selected_activity)) {
-      $('#buzzer').addClass('disabled');
+        $('#buzzer').addClass('disabled');
     }
 }
 
 function buzzer() {
-  if ( currentRecording == -1 && $('#buzzer').hasClass('disabled') ) return;
+    if ( currentRecording == -1 && $('#buzzer').hasClass('disabled') ) return;
 
-
-  if (currentRecording > -1) {
-      stopRecord();
-      currentRecording=0;
+    if (currentRecording > -1) {
+        stopRecord();
+        currentRecording=0;
     } else {
         setTimeframe(undefined,new Date());
         startRecord(selected_project,selected_activity,userID);
@@ -412,52 +395,52 @@ function buzzer() {
 }
 
 function buzzer_preselect_project(projectID,projectName,customerID,customerName,updateRecording) {
-  selected_customer = customerID;
-  selected_project = projectID;
-  $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
-  $("#selected_customer").html(customerName);
-  $("#selected_project").html(projectName);
-  $("#selected_customer").removeClass("none");
+    selected_customer = customerID;
+    selected_project = projectID;
+    $.post("processor.php", { axAction: "saveBuzzerPreselection", project:projectID});
+    $("#selected_customer").text(customerName);
+    $("#selected_project").text(projectName);
+    $("#selected_customer").removeClass("none");
 
-  lists_reload('activity', function() {
-    buzzer_preselect_update_ui('projects', projectID, updateRecording);
-  });
+    lists_reload('activity', function() {
+        buzzer_preselect_update_ui('projects', projectID, updateRecording);
+    });
 }
 
 function buzzer_preselect_activity(activityID,activityName,updateRecording) {
     selected_activity = activityID;
     $.post("processor.php", { axAction: "saveBuzzerPreselection", activity:activityID});
-    $("#selected_activity").html(activityName);
+    $("#selected_activity").text(activityName);
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
 
 function buzzer_preselect_update_ui(selector,selectedID,updateRecording) {
 
-  if (updateRecording == undefined) {
-    updateRecording = true;
-  }
+    if (updateRecording == undefined) {
+        updateRecording = true;
+    }
 
-  $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
-  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
-  $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID).blur();
+    $('#'+selector+'>table>tbody>tr>td>a.preselect>img').attr('src','../skins/'+skin+'/grfx/preselect_off.png');
+    $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
+    $('#'+selector+'>table>tbody>tr>td>a.preselect#ps'+selectedID).blur();
 
-  if (selected_project && selected_activity && $('#activities>table>tbody>tr>td>a.preselect>img[src$="preselect_on.png"]').length > 0) {
-    $('#buzzer').removeClass('disabled');
-  }
-  else
-    return;
+    if (selected_project && selected_activity && $('#activities>table>tbody>tr>td>a.preselect>img[src$="preselect_on.png"]').length > 0) {
+        $('#buzzer').removeClass('disabled');
+    }
+    else
+        return;
 
-  $("#ticker_customer").html($("#selected_customer").html());
-  $("#ticker_project").html($("#selected_project").html());
-  $("#ticker_activity").html($("#selected_activity").html());
+    $("#ticker_customer").html($("#selected_customer").html());
+    $("#ticker_project").html($("#selected_project").html());
+    $("#ticker_activity").html($("#selected_activity").html());
 
-  if (currentRecording > -1 && updateRecording) {
-    $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running", id: currentRecording, project:selected_project, activity:selected_activity},
-      function(data) {
-        ts_ext_reload();
-      }
-    );
-  }
+    if (currentRecording > -1 && updateRecording) {
+        $.post("../extensions/ki_timesheets/processor.php", { axAction: "edit_running", id: currentRecording, project:selected_project, activity:selected_activity},
+            function(data) {
+                ts_ext_reload();
+            }
+        );
+    }
 }
 
 // ----------------------------------------------------------------------------------------
@@ -508,7 +491,6 @@ function ticktack_off() {
     }
 }
 
-
 // ----------------------------------------------------------------------------------------
 // shows dialogue for editing an item in either customer, project or activity list
 //
@@ -518,42 +500,41 @@ function editSubject(subject, id) {
     return false;
 }
 
-
 // ----------------------------------------------------------------------------------------
 // filters project and activity fields in add/edit record dialog
 
 function filter_selects(id, needle) {
-  // cache initialisieren
-  if(typeof window['__cacheselect_'+id] == "undefined") {
-    window['__cacheselect_'+id] = [];
-    $('#'+id+' option ').each(function(index) {
-      window['__cacheselect_'+id].push({
-        'value':$(this).val()
-        , 'text':$(this).text()
-      })
-    })
-  }
+    // cache initialisieren
+    if(typeof window['__cacheselect_'+id] == "undefined") {
+        window['__cacheselect_'+id] = [];
+        $('#'+id+' option ').each(function(index) {
+            window['__cacheselect_'+id].push({
+                'value':$(this).val()
+                , 'text':$(this).text()
+            })
+        })
+    }
 
-  var selectedValue = $('#'+id).val();
-  $('#'+id).removeOption(/./);
+    var selectedValue = $('#'+id).val();
+    $('#'+id).removeOption(/./);
 
-  var i, cs = window['__cacheselect_'+id];
-  for(i=0; i<cs.length; ++i) {
-    if(cs[i].text.toLowerCase().indexOf(needle.toLowerCase()) !== -1) $('#'+id).addOption(cs[i].value, cs[i].text);
-  }
-  $('#'+id).val(selectedValue);
+    var i, cs = window['__cacheselect_'+id];
+    for(i=0; i<cs.length; ++i) {
+        if(cs[i].text.toLowerCase().indexOf(needle.toLowerCase()) !== -1) $('#'+id).addOption(cs[i].value, cs[i].text);
+    }
+    $('#'+id).val(selectedValue);
 }
 
 // -----------------------------------------------------------------------------
 
 function lists_visible(visible) {
-  if (visible) {
-    lists_resize();
-    $('body>.lists').show();
-    lists_resize();
-  }
-  else
-    $('body>.lists').hide();
+    if (visible) {
+        lists_resize();
+        $('body>.lists').show();
+        lists_resize();
+    } else {
+        $('body>.lists').hide();
+    }
 }
 
 function lists_extensionShrinkShow() {
@@ -597,48 +578,48 @@ function lists_shrinkCustomerToggle() {
         $('#customers, #customers_head, #customers_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
         if (!userShrinkMode)
-          $('#usersShrink').hide();
+            $('#usersShrink').hide();
     } else {
         lists_set_tableWrapperWidths();
         $('#customers, #customers_head, #customers_foot').fadeIn(fading_enabled?"slow":0);
         $('#customersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
         lists_resize();
         if (!userShrinkMode)
-          $('#usersShrink').show();
+            $('#usersShrink').show();
     }
 }
 
 function lists_shrinkUserToggle() {
-    (userShrinkMode)?userShrinkMode=0:userShrinkMode=1;
+    (userShrinkMode) ? userShrinkMode = 0 : userShrinkMode = 1;
     if (userShrinkMode) {
         $('#users, #users_head, #users_foot').fadeOut(fading_enabled?"slow":0,lists_set_tableWrapperWidths);
         $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_right.png')");
     } else {
         $('#users, #users_head, #users_foot').fadeIn(fading_enabled?"slow":0);
-    lists_set_tableWrapperWidths();
+        lists_set_tableWrapperWidths();
         $('#usersShrink').css("background-image","url('../skins/"+skin+"/grfx/customerShrink_left.png')");
     }
 }
 
 function lists_get_dimensions() {
     scroller_width = 17;
-    if (navigator.platform.substr(0,3)=='Mac') {
+    if (navigator.platform.substr(0, 3) === 'Mac') {
         scroller_width = 16;
     }
 
-    subtableCount=4;
+    subtableCount = 4;
     if (customerShrinkMode) {
-      subtableCount--;
+        subtableCount --;
     }
     if (userShrinkMode) {
-      subtableCount--;
+        subtableCount --;
     }
     subtableWidth = (pageWidth()-10)/subtableCount-7;
 
-    userColumnWidth = subtableWidth-5;
-    customerColumnWidth = subtableWidth-5; // subtract the space between the panels
-    projectColumnWidth = subtableWidth-6;
-    activityColumnWidth = subtableWidth-5;
+    userColumnWidth = subtableWidth - 5;
+    customerColumnWidth = subtableWidth - 5; // subtract the space between the panels
+    projectColumnWidth = subtableWidth - 6;
+    activityColumnWidth = subtableWidth - 5;
 }
 
 function lists_resize() {
@@ -666,31 +647,30 @@ function lists_set_left() {
 
     // push project/activity subtables in place LEFT
 
-    leftmargin=0;
-    rightmargin=0;
-    userShrinkPos=0;
-    if (userShrinkMode==0) {
-      leftmargin+=subtableWidth;
-      rightmargin+=7;
-      userShrinkPos+=subtableWidth+7;
+    leftmargin = 0;
+    rightmargin = 0;
+    userShrinkPos = 0;
+    if (userShrinkMode == 0) {
+        leftmargin += subtableWidth;
+        rightmargin += 7;
+        userShrinkPos += subtableWidth + 7;
     }
 
     $("#customers, #customers_head, #customers_foot").css("left",leftmargin+rightmargin+10);
     $('#usersShrink').css("left",userShrinkPos);
 
-    customerShrinkPos=userShrinkPos;
+    customerShrinkPos = userShrinkPos;
 
-    if (customerShrinkMode==0) {
-      leftmargin+=subtableWidth;
-      rightmargin+=7;
-      customerShrinkPos+=subtableWidth+7;
+    if (customerShrinkMode == 0) {
+        leftmargin += subtableWidth;
+        rightmargin += 7;
+        customerShrinkPos += subtableWidth + 7;
     }
 
     $("#projects, #projects_head, #projects_foot").css("left",leftmargin+rightmargin+10);
 
     $("#activities, #activities_head, #activities_foot").css("left",subtableWidth+leftmargin+rightmargin+15); //22
     $('#customersShrink').css("left",customerShrinkPos);
-
 }
 
 function lists_set_heightTop() {
@@ -750,12 +730,12 @@ function lists_reload(subject, callback) {
                     ($("#users").innerHeight()-$("#users table").outerHeight()>0)?scr=0:scr=scroller_width;
                     $("#users table").css("width",customerColumnWidth-scr);
                     lists_live_filter('user', $('#filt_user').val());
-		    lists_write_annotations('user');
+                    lists_write_annotations('user');
                     if (typeof(callback) != "undefined")
-                      callback();
+                        callback();
                 }
             );
-    break;
+            break;
         case "customer":
             $.post("processor.php", { axAction: "reload_customers", axValue: 0, id: 0 },
                 function(data) {
@@ -765,10 +745,10 @@ function lists_reload(subject, callback) {
                     lists_live_filter('customer', $('#filter_customer').val());
                     lists_write_annotations('customer');
                     if (typeof(callback) != "undefined")
-                      callback();
+                        callback();
                 }
             );
-    break;
+            break;
         case "project":
             $.post("processor.php", { axAction: "reload_projects", axValue: 0, id: 0 },
                 function(data) {
@@ -779,10 +759,10 @@ function lists_reload(subject, callback) {
                     lists_live_filter('project', $('#filter_project').val());
                     lists_write_annotations('project');
                     if (typeof(callback) != "undefined")
-                      callback();
+                        callback();
                 }
             );
-    break;
+            break;
         case "activity":
             $.post("processor.php", { axAction: "reload_activities", axValue: 0, id: 0, project:selected_project },
                 function(data) {
@@ -791,18 +771,18 @@ function lists_reload(subject, callback) {
                     $("#activities table").css("width",activityColumnWidth-scr);
                     $('#activities>table>tbody>tr>td>a.preselect#ps'+selected_activity+'>img').attr('src','../skins/'+skin+'/grfx/preselect_on.png');
                     lists_live_filter('activity', $('#filter_activity').val());
-		    lists_write_annotations('activity');
-        if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
-          $('#buzzer').addClass('disabled');
-        }
-        else {
-          $('#buzzer').removeClass('disabled');
-        }
-        if (typeof(callback) != "undefined")
-          callback();
+                    lists_write_annotations('activity');
+                    if ($('#row_activity[data-id="'+selected_activity+'"]').length == 0) {
+                        $('#buzzer').addClass('disabled');
+                    }
+                    else {
+                        $('#buzzer').removeClass('disabled');
+                    }
+                    if (typeof(callback) != "undefined")
+                        callback();
                 }
             );
-    break;
+            break;
     }
 }
 
@@ -810,32 +790,34 @@ function lists_reload(subject, callback) {
 //  Live Filter by The One And Only T.C. (TOAOTC) - THX - WOW! ;)
 //
 function lists_live_filter(div_list, needle) {
-  $('#'+div_list+' tr ').filter(function(index) {
-    return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) === -1);
-  }).css('display','none');
-  $('#'+div_list+' tr ').filter(function(index) {
-    return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) !== -1);
-  }).css('display','');
+    $('#'+div_list+' tr ').filter(function(index) {
+        return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) === -1);
+    }).css('display','none');
+    $('#'+div_list+' tr ').filter(function(index) {
+        return ($(this).children('td:nth-child(2)').text().toLowerCase().indexOf(needle.toLowerCase()) !== -1);
+    }).css('display','');
 }
 
 function lists_customer_highlight(customer) {
-  $(".customer").removeClass("filterProjectForPreselection");
-  $(".project").removeClass("filterProjectForPreselection");
-  $("#projects .customer"+customer).addClass("filterProjectForPreselection");
-  $("#projects .project").removeClass("TableRowInvisible");
+    $(".customer").removeClass("filterProjectForPreselection");
+    $(".project").removeClass("filterProjectForPreselection");
+    $("#projects .customer"+customer).addClass("filterProjectForPreselection");
+    $("#projects .project").removeClass("TableRowInvisible");
 }
 
 function lists_customer_prefilter(customer, filter, singleFilter) {
-  if (singleFilter && filter)
-      $("#projects .project").addClass("TableRowInvisible");
+    if (singleFilter && filter)
+        $("#projects .project").addClass("TableRowInvisible");
 
-  if (filter)
-    $("#projects .customer"+customer).removeClass("TableRowInvisible");
-  else
-    $("#projects .customer"+customer).addClass("TableRowInvisible");
+    if (filter) {
+        $("#projects .customer" + customer).removeClass("TableRowInvisible");
+    } else {
+        $("#projects .customer" + customer).addClass("TableRowInvisible");
+    }
 
-  if (singleFilter && !filter)
-      $("#projects .project").removeClass("TableRowInvisible");
+    if (singleFilter && ! filter) {
+        $("#projects .project").removeClass("TableRowInvisible");
+    }
 }
 
 
@@ -843,78 +825,79 @@ function lists_customer_prefilter(customer, filter, singleFilter) {
 //  table row changes color on rollover - preselection link on whole row
 //
 function lists_change_color(tableRow,highLight) {
-  if (highLight) {
-    $(tableRow).parents("tr").addClass("highlightProjectForPreselection");
-  } else {
-    $(tableRow).parents("tr").removeClass("highlightProjectForPreselection");
-  }
+    if (highLight) {
+        $(tableRow).parents("tr").addClass("highlightProjectForPreselection");
+    } else {
+        $(tableRow).parents("tr").removeClass("highlightProjectForPreselection");
+    }
 }
 
 function lists_update_annotations(id,user,customer,project,activity)
 {
-  lists_user_annotations[id] = user;
-  lists_customer_annotations[id] = customer;
-  lists_project_annotations[id] = project;
-  lists_activity_annotations[id] = activity;
+    lists_user_annotations[id] = user;
+    lists_customer_annotations[id] = customer;
+    lists_project_annotations[id] = project;
+    lists_activity_annotations[id] = activity;
 
-  if ($('.menu li#exttab_'+id).hasClass('act'))
-    lists_write_annotations();
+    if ($('.menu li#exttab_' + id).hasClass('act')) {
+        lists_write_annotations();
+    }
 }
 
 function lists_write_annotations(part)
 {
-  var id = parseInt($('#fliptabs li.act').attr('id').substring(7));
+    var id = parseInt($('#fliptabs li.act').attr('id').substring(7));
 
-  if (!part || part == 'user') {
-    $('#users>table>tbody td.annotation').html("");
-    if (lists_user_annotations[id] != null)
-      for (var i in lists_user_annotations[id])
-        $('#row_user[data-id="'+i+'"]>td.annotation').html(lists_user_annotations[id][i]);
-  }
-  if (!part || part == 'customer') {
-    $('#customers>table>tbody td.annotation').html("");
-    if (lists_customer_annotations[id] != null)
-      for (var i in lists_customer_annotations[id])
-        $('#row_customer[data-id="'+i+'"]>td.annotation').html(lists_customer_annotations[id][i]);
-  }
-  if (!part || part == 'project') {
-    $('#projects>table>tbody td.annotation').html("");
-    if (lists_project_annotations[id] != null)
-      for (var i in lists_project_annotations[id])
-        $('#row_project[data-id="'+i+'"]>td.annotation').html(lists_project_annotations[id][i]);
-  }
-  if (!part || part == 'activity') {
-    $('#activities>table>tbody td.annotation').html("");
-    if (lists_activity_annotations[id] != null)
-      for (var i in lists_activity_annotations[id])
-        $('#row_activity[data-id="'+i+'"]>td.annotation').html(lists_activity_annotations[id][i]);
-  }
+    if (!part || part == 'user') {
+        $('#users>table>tbody td.annotation').html("");
+        if (lists_user_annotations[id] != null)
+            for (var i in lists_user_annotations[id])
+                $('#row_user[data-id="'+i+'"]>td.annotation').html(lists_user_annotations[id][i]);
+    }
+    if (!part || part == 'customer') {
+        $('#customers>table>tbody td.annotation').html("");
+        if (lists_customer_annotations[id] != null)
+            for (var i in lists_customer_annotations[id])
+                $('#row_customer[data-id="'+i+'"]>td.annotation').html(lists_customer_annotations[id][i]);
+    }
+    if (!part || part == 'project') {
+        $('#projects>table>tbody td.annotation').html("");
+        if (lists_project_annotations[id] != null)
+            for (var i in lists_project_annotations[id])
+                $('#row_project[data-id="'+i+'"]>td.annotation').html(lists_project_annotations[id][i]);
+    }
+    if (!part || part == 'activity') {
+        $('#activities>table>tbody td.annotation').html("");
+        if (lists_activity_annotations[id] != null)
+            for (var i in lists_activity_annotations[id])
+                $('#row_activity[data-id="'+i+'"]>td.annotation').html(lists_activity_annotations[id][i]);
+    }
 }
 
 function lists_filter_select_all(subjectPlural) {
-  $('#'+subjectPlural+' tr').each(function(index) {
-    if ( $(this).hasClass('fhighlighted') ) return;
+    $('#'+subjectPlural+' tr').each(function(index) {
+        if ( $(this).hasClass('fhighlighted') ) return;
 
-    var subjectSingular = $(this).attr('id').substring(4);
-    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
-  });
+        var subjectSingular = $(this).attr('id').substring(4);
+        lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
+    });
     hook_filter();
 }
 function lists_filter_deselect_all(subjectPlural) {
-  $('#'+subjectPlural+' tr').each(function(index) {
-    if (! $(this).hasClass('fhighlighted') ) return;
+    $('#'+subjectPlural+' tr').each(function(index) {
+        if (! $(this).hasClass('fhighlighted') ) return;
 
-    var subjectSingular = $(this).attr('id').substring(4);
-    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
-  });
+        var subjectSingular = $(this).attr('id').substring(4);
+        lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
+    });
     hook_filter();
 }
 
 function lists_filter_select_invert(subjectPlural) {
-  $('#'+subjectPlural+' tr').each(function(index) {
-    var subjectSingular = $(this).attr('id').substring(4);
-    lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
-  });
+    $('#'+subjectPlural+' tr').each(function(index) {
+        var subjectSingular = $(this).attr('id').substring(4);
+        lists_toggle_filter(subjectSingular,parseInt($(this).attr('data-id')));
+    });
     hook_filter();
 }
 
@@ -924,41 +907,39 @@ function lists_toggle_filter(subject,id) {
     if (rowElement.hasClass('fhighlighted')) {
         rowElement.removeClass('fhighlighted');
         switch (subject) {
-        case 'user':
-          filterUsers.splice(filterUsers.indexOf(id),1);
-        break;
-        case 'customer':
-          filterCustomers.splice(filterCustomers.indexOf(id),1);
-          var singleFilter = $('.fhighlighted',rowElement.parent()).length == 0;
-          lists_customer_prefilter(id, false, singleFilter);
-        break;
-        case 'project':
-          filterProjects.splice(filterProjects.indexOf(id),1);
-        break;
-        case 'activity':
-          filterActivities.splice(filterActivities.indexOf(id),1);
-        break;
-      }
-    }
-    else
-    {
-      rowElement.addClass('fhighlighted');
-      switch (subject) {
-        case 'user':
-          filterUsers.push(id);
-        break;
-        case 'customer':
-          filterCustomers.push(id);
-          var singleFilter = $('.fhighlighted',rowElement.parent()).length == 1;
-          lists_customer_prefilter(id, true, singleFilter);
-        break;
-        case 'project':
-          filterProjects.push(id);
-        break;
-        case 'activity':
-          filterActivities.push(id);
-        break;
-      }
+            case 'user':
+                filterUsers.splice(filterUsers.indexOf(id),1);
+                break;
+            case 'customer':
+                filterCustomers.splice(filterCustomers.indexOf(id),1);
+                var singleFilter = $('.fhighlighted',rowElement.parent()).length == 0;
+                lists_customer_prefilter(id, false, singleFilter);
+                break;
+            case 'project':
+                filterProjects.splice(filterProjects.indexOf(id),1);
+                break;
+            case 'activity':
+                filterActivities.splice(filterActivities.indexOf(id),1);
+                break;
+        }
+    } else {
+        rowElement.addClass('fhighlighted');
+        switch (subject) {
+            case 'user':
+                filterUsers.push(id);
+                break;
+            case 'customer':
+                filterCustomers.push(id);
+                var singleFilter = $('.fhighlighted',rowElement.parent()).length == 1;
+                lists_customer_prefilter(id, true, singleFilter);
+                break;
+            case 'project':
+                filterProjects.push(id);
+                break;
+            case 'activity':
+                filterActivities.push(id);
+                break;
+        }
     }
 }
 
@@ -970,49 +951,44 @@ function lists_update_filter(subject,id) {
 }
 
 function resize_menu() {
-  $('#menu').css('width',
-    $('#display').position()['left']
-    -$('#menu').position()['left']
-    -20
-    +parseInt($('#display').css('margin-left')));
+    $('#menu').css('width', $('#display').position()['left'] - $('#menu').position()['left'] -20 + parseInt($('#display').css('margin-left')));
 }
 
 function validatePassword(password,retypePassword) {
     if (password != retypePassword) {
         alert(lang_passwordsDontMatch);
         return false;
-    }
-    else if (password.length < 5) {
+    } else if (password.length < 5) {
         alert(lang_passwordTooShort);
         return false;
-    }
-    else
+    } else {
         return true;
+    }
 }
 
 function setFloaterErrorMessage(fieldName,message) {
-  if (fieldName == '')
-    fieldName = "floater_tabs";
+    if (fieldName == '')
+        fieldName = "floater_tabs";
 
-  var li = $("#floater_innerwrap #"+fieldName).closest('li');
-  if (li.length == 0) {
-      li = $("#floater_innerwrap [name='"+fieldName+"']").closest('li');
-  }
-  if (li.length == 0) {
-      li = $("#floater_innerwrap form");
-  }
-  li.prepend('<div class="errorMessage">'+message+'</div>');
-  li.addClass('errorField');
+    var li = $("#floater_innerwrap #"+fieldName).closest('li');
+    if (li.length == 0) {
+        li = $("#floater_innerwrap [name='"+fieldName+"']").closest('li');
+    }
+    if (li.length == 0) {
+        li = $("#floater_innerwrap form");
+    }
+    li.prepend('<div class="errorMessage">'+message+'</div>');
+    li.addClass('errorField');
 
-  // indicate in tab header
-  var id = li.closest('fieldset').attr('id');
-  $("#floater_innerwrap .menu a[href='#" + id + "']").addClass("tabError");
+    // indicate in tab header
+    var id = li.closest('fieldset').attr('id');
+    $("#floater_innerwrap .menu a[href='#" + id + "']").addClass("tabError");
 }
 
 function clearFloaterErrorMessages() {
-  $("#floater_innerwrap .errorMessage").remove();
-  $("#floater_tabs li").removeClass("errorField");
-  $("#floater_innerwrap .menu a").removeClass("tabError");
+    $("#floater_innerwrap .errorMessage").remove();
+    $("#floater_tabs li").removeClass("errorField");
+    $("#floater_innerwrap .menu a").removeClass("tabError");
 }
 
 /**
@@ -1024,67 +1000,66 @@ function prependZeroIfNeeded(value) {
     return ((value < 10) ? '0' : '') + value;
 }
 
-
 // ----------------------------------------------------------------------------------------
 //  quicklinks for timer presets
 //
 
 function mktime(hour,minute,second,month,day,year){
-	a=new Date(year, month, day, hour, minute, second);
-	return (a.getTime()/1000).toFixed(0);
+    a=new Date(year, month, day, hour, minute, second);
+    return (a.getTime()/1000).toFixed(0);
 }
 
 function getMonday(date) {
-	date = new Date(date);
-	var day = date.getDay(),
-		diff = date.getDate() - day + (day == 0 ? -6 : 1);
-	return new Date(date.setDate(diff));
+    date = new Date(date);
+    var day = date.getDay(),
+        diff = date.getDate() - day + (day == 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
 }
 
 function setTimerToYesterday() {
-	var today = new Date();
-	setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate() - 1, today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate() - 1, today.getFullYear()));
+    var today = new Date();
+    setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate() - 1, today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate() - 1, today.getFullYear()));
 }
 
 function setTimerToToday() {
-	var today = new Date();
-	setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate(), today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate(), today.getFullYear()));
+    var today = new Date();
+    setTimeframe(mktime(0, 0, 0, today.getMonth(), today.getDate(), today.getFullYear()), mktime(23, 59, 59, today.getMonth(), today.getDate(), today.getFullYear()));
 }
 
 function setTimerToLastWeek() {
-	var beforeOneWeek = new Date(new Date().getTime() - 60 * 60 * 24 * 7 * 1000)
-		, day = beforeOneWeek.getDay()
-		, diffToMonday = beforeOneWeek.getDay() - 1
-		, lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000)
-		, lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
-	setTimeframe(mktime(0, 0, 0, lastMonday.getMonth(), lastMonday.getDate(), lastMonday.getFullYear()), mktime(23, 59, 59, lastSunday.getMonth(), lastSunday.getDate(), lastSunday.getFullYear()));
+    var beforeOneWeek = new Date(new Date().getTime() - 60 * 60 * 24 * 7 * 1000)
+        , day = beforeOneWeek.getDay()
+        , diffToMonday = beforeOneWeek.getDay() - 1
+        , lastMonday = new Date(beforeOneWeek.getTime() - 60 * 60 * 24 * diffToMonday * 1000)
+        , lastSunday = new Date(lastMonday.getTime() + 60 * 60 * 24 * 6 * 1000);
+    setTimeframe(mktime(0, 0, 0, lastMonday.getMonth(), lastMonday.getDate(), lastMonday.getFullYear()), mktime(23, 59, 59, lastSunday.getMonth(), lastSunday.getDate(), lastSunday.getFullYear()));
 }
 
 function setTimerToLastMonth() {
-	var timerStartDay = new Date();
-	timerStartDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth(), 0);
-	timerStartDay.setDate(1);
+    var timerStartDay = new Date();
+    timerStartDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth(), 0);
+    timerStartDay.setDate(1);
 
-	// 0 will result in the last day of the previous month
-	var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
+    // 0 will result in the last day of the previous month
+    var timerEndDay = new Date(timerStartDay.getFullYear(), timerStartDay.getMonth() + 1, 0);
 
-	setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
 
 function setTimerToCurrentWeek() {
-	var today = new Date();
-	var thisDay = today.getDay(),
-		diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
-	var monday = new Date(today.setDate(diffToMonday));
-	var timerEndDay = new Date();
+    var today = new Date();
+    var thisDay = today.getDay(),
+        diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
+    var monday = new Date(today.setDate(diffToMonday));
+    var timerEndDay = new Date();
 
-	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
 
 function setTimerToCurrentMonth() {
-	var timerStartDay = new Date();
-	timerStartDay.setDate(1);
-	var timerEndDay = new Date();
+    var timerStartDay = new Date();
+    timerStartDay.setDate(1);
+    var timerEndDay = new Date();
 
-	setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
