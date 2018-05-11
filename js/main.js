@@ -1114,7 +1114,7 @@ function setTimerToLastWeek() {
     lastMonday.setDate(lastMonday.getDate() - (lastMonday.getDay() + 6) % 7);
     // set to previous Monday
     lastMonday.setDate(lastMonday.getDate() - 7);
-    var lastSunday = new Date();
+    var lastSunday = new Date(lastMonday.getTime());
     lastSunday.setDate(lastMonday.getDate() + 6);
     lastMonday.setHours(0, 0, 0, 0);
     lastSunday.setHours(23, 59, 59, 999);
