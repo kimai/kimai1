@@ -52,7 +52,7 @@ if (count($invoiceArray) == 0) {
     die($kga['lang']['ext_invoice']['noData']);
 }
 
-// ----------------------- FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES -----------------------
+// FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES
 
 $date = time();
 $month = $kga['lang']['months'][date("n", $out) - 1];
@@ -100,17 +100,15 @@ if (isset($_REQUEST['roundValue']) && (float)$_REQUEST['roundValue'] > 0) {
 $ttltime = 0;
 $rawTotalTime = 0;
 $total = 0;
-while (list($id, $fd) = each($invoiceArray)) {
-    $total += $invoiceArray[$id]['amount'];
-    $ttltime += $invoiceArray[$id]['hour'];
+foreach ($invoiceArray as $value) {
+    $total += $value['amount'];
+    $ttltime += $value['hour'];
 }
 $fttltime = Kimai_Format::formatDuration($ttltime * 3600);
 
 // sort invoice entries
-if (isset($_REQUEST['sort_invoice']))
-{
-    switch($_REQUEST['sort_invoice'])
-    {
+if (isset($_REQUEST['sort_invoice'])) {
+    switch ($_REQUEST['sort_invoice']) {
         case 'date_asc':
             uasort($invoiceArray, 'ext_invoice_sort_by_date_asc');
             break;
@@ -138,6 +136,10 @@ if (strpos($tplFilename, '/') !== false) {
     // prevent directory traversal
     header("HTTP/1.0 400 Bad Request");
     die;
+}
+
+if (isset($_POST['mark_entries_as_cleared']) && $_POST['mark_entries_as_cleared'] == 1) {
+    $database->setTimeEntriesAsCleared($invoiceArray);
 }
 
 // ---------------------------------------------------------------------------

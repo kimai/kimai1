@@ -1,15 +1,25 @@
 #selector {
-    background: url("grfx/g3_buzzer_display.png") no-repeat;
     color:#51534A;
     overflow:hidden;
     width:224px;
-    height:69px;
+    height:65px;
     display:block;
     position:absolute;
     top:11px;
     right:95px;
     font-size:11px;
     z-index:20;
+    
+    background: -moz-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(249,249,251,1)), color-stop(100%, rgba(224,226,199,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* ie10+ */
+	background: linear-gradient(0deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F9F9FB', endColorstr='#E0E2C7',GradientType=0 ); /* ie6-9 */
+
+	border-radius: 10px;
+	border: 2px inset gray;
 }
 
 #selector .preselection {
