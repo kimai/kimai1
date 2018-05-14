@@ -18,9 +18,7 @@
  */
 
 /**
- * ==================
- * = Core Processor =
- * ==================
+ * Core Processor
  *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * actions are performed, e.g. editing preferences or returning a list

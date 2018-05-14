@@ -18,17 +18,15 @@
  */
 
 /**
- * =============================
- * = Floating Window Generator =
- * =============================
+ * Floating Window Generator
  *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * some HTML will be returned, which will then be shown in a floater.
  */
 
 $isCoreProcessor = 1;
-$dir_templates = "templates/scripts/"; // folder of the template files
-require "../includes/kspi.php";
+$dir_templates = 'templates/scripts/'; // folder of the template files
+require '../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
 

@@ -28,7 +28,7 @@
  */
 
 // Bootstrap Kimai
-require(dirname(__FILE__) . "/../includes/basics.php");
+require(dirname(__FILE__) . '/../includes/basics.php');
 
 header('Access-Control-Allow-Origin: *');
 
