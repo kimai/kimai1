@@ -361,7 +361,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(serverTime, record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName ) { // Updated
+function updateRecordStatus(serverTime, record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
     // if awaiting updateRecordStatus from buzzer
     if (typeof timeout_updateRecordStatus != 'undefined'){
         clearTimeout(timeout_updateRecordStatus);
@@ -409,7 +409,7 @@ function show_selectors() {
 }
 
 function buzzer() {
-    if ( currentRecording == 0 || $('#buzzer').hasClass('disabled') ) return;
+    if (currentRecording == 0 || $('#buzzer').hasClass('disabled')) return;
 
     if (currentRecording > -1) {
         stopRecord();
