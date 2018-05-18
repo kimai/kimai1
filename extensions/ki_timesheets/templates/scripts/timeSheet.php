@@ -263,9 +263,10 @@ if ($this->timeSheetEntries) {
     $('#display_total').html(ts_total);
 
     <?php if ($this->latest_running_entry == null): ?>
-    updateRecordStatus(false);
+    updateRecordStatus(<?php echo time(); ?>, false);
     <?php else: ?>
     updateRecordStatus(
+        <?php echo time(); ?>,
         <?php echo $this->latest_running_entry['timeEntryID']?>,
         <?php echo $this->latest_running_entry['start']?>,
         <?php echo $this->latest_running_entry['customerID']?>,
