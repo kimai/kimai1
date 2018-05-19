@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 /**
  * russian
  */
-return array(
+return [
     "countryCode" => "ru_RU",
     "preferences" => "Настройки",
     "total" => "Итого",
@@ -89,7 +89,7 @@ return array(
     "passwordsDontMatch" => "Пароли не совпали.",
     "passwordTooShort" => "Нужно минимум 5 знаков.",
     "forgotPassword" => "Забыл пароль :(",
-    "passwordReset" => array(
+    "passwordReset" => [
         "notSupported" => "Установленый плагин не поддерживает сброс пароля.",
         "instructions" => "Введите логин и пароль. Логин должен быть наверняка верным!",
         "mailSubject" => "Kimai - сброс пароля",
@@ -98,7 +98,7 @@ return array(
         "returnToLogin" => "назад к странице входа",
         "invalidKey" => "Ключ не совпал. Точно ссылка полностью была скопирована из письма?",
         "success" => "Пароль был изменен.",
-    ),
+    ],
     "minLength" => "минимум 5 символов!",
     "update" => "База данных будет обновлена.<br />Сделайте бэкап перед обновлением! Это реально нужно, чтобы админ потом не ругался.",
     "updateNow" => "Обновите базу данных!",
@@ -316,17 +316,17 @@ return array(
         by extending its <a href="%5$s">translations</a>.
         If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"),
-    'months_short' => array("Яна", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"),
-    'weekdays' => array("Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"),
-    'weekdays_short' => array("Вос", "Пон", "Вто", "Сре", "Чет", "Пят", "Суб"),
+    'months' => ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+    'months_short' => ["Яна", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+    'weekdays' => ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+    'weekdays_short' => ["Вос", "Пон", "Вто", "Сре", "Чет", "Пят", "Суб"],
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Permission denied',
         'userWithSameName' => 'A customer name can not be the same as a user name.',
         'customerWithSameName' => 'A user name can not be the same as a customer name.',
@@ -335,22 +335,26 @@ EOD
         'noActivitySelected' => 'No activity selected.',
         'noProjectSelected' => 'No project selected.',
         'multiplierNegative' => 'The multiplier must be larger than 0.',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Are you sure you want to change your own global role from "%OLD%" to "%NEW%"?\nThis can lead to less permissions!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Database could not be connected!",
-            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
-        1 => array('hdl' => "Error during installation!",
+    'errors' => [
+        0 => [
+            'hdl' => "Database could not be connected!",
+            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."
+        ],
+        1 => [
+            'hdl' => "Error during installation!",
             'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Yes, I have a backup of my Kimai database! Proceed updating!",
         10 => "Legend:",
         20 => "Query was executed successfully.",
@@ -367,9 +371,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         130 => "Could not write to autoconf.php.",
         140 => "update file autoconf.php",
         'timezone' => 'Kimai now supports timezones. Please select your default time zone. It will be used for all users and customers. Users can change their time zone.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "This backup restore utility is not yet tested! Use at your own risk!",
         1 => "Available backups:",
         2 => "recover",
@@ -382,9 +386,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)",
         10 => "Authentication required",
         11 => "To prevent unauthorized persons from creating, deleting or restoring backups, you need to give the password salt stored in include/autoconf.php. It only consists of letters and numbers."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Click OK to open a printable table.",
         "dl_hint" => "Click OK to download export-file.",
         "tab_filter" => "Filter",
@@ -433,9 +437,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'reverse_order' => 'older entries first',
         'time_period' => 'Time period',
         'duration_unit' => 'h',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Создать счет на оплату',
         'invoiceTimePeriod' => 'Период',
         'invoiceTemplate' => 'Шаблон',
@@ -445,15 +449,15 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'noData' => 'Нет записей за текущий перион.',
         'noProject' => 'Проект не выбран.',
         'defaultVat' => 'Размер налога'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'unused'
-    ),
+    ],
 
     'extensionsTitle' => 'Extensions',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'View',
         'edit' => 'edit',
         'delete' => 'delete',
@@ -466,9 +470,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'showRates' => 'show rates',
         'editRates' => 'edit rates',
         'editAdvanced' => 'edit advanced settings'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Администратор',
         'ki_timesheet' => 'Отметки времени',
         'ki_timesheets' => 'Отметки времени',
@@ -480,14 +484,14 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ki_export' => 'Экспорт',
         'core' => 'Права доступа',
         'demo_ext' => 'Демо'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest that you update.</b>",
         'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
         'current' => "You are running the latest version :)"
-    ),
+    ],
 
     "log_delete" => "log cleared",
 
-);
+];

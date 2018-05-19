@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,10 +20,10 @@
 /*
  * 中文参考翻译
  *
- * 这部分文件属于 Kimai 
- * Kimai 是开源的时间日志记录应用程序 // http://www.kimai.org
+ * 这部分文件属于 Kimai
+ * Kimai 是开源的时间日志记录应用程序 // https://www.kimai.org
  * (c) 2006-2009 Kimai-开发团队
- * 
+ *
  * Kimai 是自由软件; 遵循 GNU GPL v3 协议, 2007-06-29
  *
  */
@@ -47,7 +47,7 @@
  */
 
 
-return array(
+return [
     "countryCode" => "zh-ZH",
     "preferences" => "设置",
     "total" => "汇总",
@@ -339,26 +339,30 @@ return array(
         by extending its <a href="%5$s">translations</a>.
         If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
 
-    'months' => array("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"),
-    'months_short' => array("一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"),
-    'weekdays' => array("星期日", "星期一", "星期二", "星期三", "星期四", "星期>五", "星期六"),
-    'weekdays_short' => array("周日", "周一", "周二", "周三", "周四", "周五", "周六"),
+    'months' => ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+    'months_short' => ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+    'weekdays' => ["星期日", "星期一", "星期二", "星期三", "星期四", "星期>五", "星期六"],
+    'weekdays_short' => ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
 
-    'errors' => array(
-        0 => array('hdl' => "数据库不能联接!",
-            'txt' => "先确认数据库已运行，然后PDO配置激活，配置文件'autoconf.php'."),
+    'errors' => [
+        0 => [
+            'hdl' => "数据库不能联接!",
+            'txt' => "先确认数据库已运行，然后PDO配置激活，配置文件'autoconf.php'."
+        ],
 
-        1 => array('hdl' => "安装时有错误!",
-            'txt' => 'Kimai 数据表已经存在无法创建，请先清除后再次安装.')
-    ),
+        1 => [
+            'hdl' => "安装时有错误!",
+            'txt' => 'Kimai 数据表已经存在无法创建，请先清除后再次安装.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "是的, 我有一个kimai要备份! 开始更新中!",
         10 => "图例:",
         20 => "查询成功.",
@@ -375,9 +379,9 @@ EOD
         130 => "不能写入autoconf.php.",
         140 => "更新文件autoconf.php",
         'timezone' => 'mai 现在支持时区,请选择您的默认时区,它将用于所有用户和客户,用户可以更改时区的时间.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "这个数据备份没有经过测试，存在风险的.",
         1 => "可用的备份:",
         2 => "回滚",
@@ -387,9 +391,10 @@ EOD
         6 => "备份来自",
         7 => "回滚数据",
         8 => "创建备份",
-        9 => "数据备份只是一个数据快照，不同于底层数据库备份，根据需要选定备份策略."),
+        9 => "数据备份只是一个数据快照，不同于底层数据库备份，根据需要选定备份策略."
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "点击打开一个打印表格.",
         "dl_hint" => "点击下载该输出文件.",
 
@@ -449,9 +454,9 @@ EOD
 
         'duration_unit' => '小时',
 
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         "invoiceTitle" => "创建账单明细",
         "invoiceProject" => "项目列表",
         "invoiceTimePeriod" => "时间周期范围",
@@ -461,13 +466,13 @@ EOD
         "invoiceButton" => "创建",
         'noData' => '选择的项目在指定的时间周期内没有数据记录条目..',
         'defaultVat' => '默认税率'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => '未使用'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => '计时统计列表',
         'adminPanel_extension' => '管理控制面板',
         'ki_expenses' => '计费统计列表',
@@ -476,7 +481,7 @@ EOD
         'deb_ext' => '调试数据',
         'demo_ext' => '扩展功能显示',
         'ki_invoice' => '账单格式导出'
-    ),
+    ],
 
     "log_delete" => "登录清除",
-);
+];

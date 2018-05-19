@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -30,10 +30,10 @@ class Zend_View_Helper_FilterListEntries extends Zend_View_Helper_Abstract
     public function filterListEntries($entries, $filterHidden = true)
     {
         if (!is_array($entries) || count($entries) == 0) {
-            return array();
+            return [];
         }
 
-        $listEntries = array();
+        $listEntries = [];
         foreach ($entries as $row) {
             if ($filterHidden &&
                 ($this->filter($row, 'visible') || $this->filter($row, 'customerVisible'))) {

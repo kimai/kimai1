@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -71,7 +71,7 @@ class ArrayObjectTest extends TestCase
         $this->assertFalse($sut->has('foo'));
         $this->assertFalse($sut->has('bar'));
 
-        $sut->add(array('foo' => 'hello', 'bar' => 'world'));
+        $sut->add(['foo' => 'hello', 'bar' => 'world']);
 
         $this->assertTrue($sut->has('foo'));
         $this->assertTrue($sut->has('bar'));

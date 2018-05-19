@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ class Kimai_User extends Kimai_ArrayObject
      */
     public function getGroups()
     {
-        return $this->get('groups', array());
+        return $this->get('groups', []);
     }
 
     /**

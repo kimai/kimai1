@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -47,7 +47,8 @@ function exitUpdater($title, $message, $message2)
  */
 function exec_query($query, $errorProcessing = true, $displayQuery = null)
 {
-    global $database, $kga, $errors, $executed_queries;
+    global $errors, $executed_queries;
+    $database = Kimai_Registry::getDatabase();
 
     $conn = $database->getConnectionHandler();
 
@@ -112,6 +113,6 @@ function printLine($level, $text, $errorInfo = '')
  */
 function quoteForSql($input)
 {
-    global $database;
+    $database = Kimai_Registry::getDatabase();
     return "'" . $database->getConnectionHandler()->SQLFix($input) . "'";
 }

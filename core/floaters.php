@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -18,18 +18,17 @@
  */
 
 /**
- * =============================
- * = Floating Window Generator =
- * =============================
+ * Floating Window Generator
  *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * some HTML will be returned, which will then be shown in a floater.
  */
 
-// insert KSPI
 $isCoreProcessor = 1;
-$dir_templates = "templates/scripts/"; // folder of the template files
-require "../includes/kspi.php";
+$dir_templates = 'templates/scripts/'; // folder of the template files
+require '../includes/kspi.php';
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -61,13 +60,13 @@ switch ($axAction) {
         }
 
         $allSkins = glob(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'skins' . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
-        $skins = array();
+        $skins = [];
         foreach ($allSkins as $skin) {
             $name = basename($skin);
             $skins[$name] = $name;
         }
 
-        $languages = array();
+        $languages = [];
         foreach (Kimai_Translation_Service::getAvailableLanguages() as $lang) {
             $languages[$lang] = $lang;
         }
@@ -78,9 +77,9 @@ switch ($axAction) {
         $view->assign('user', $kga['user']);
         $view->assign('rate', $database->get_rate($kga['user']['userID'], null, null));
 
-        $defaults = array(
+        $defaults = [
             'table_time_format' => $kga->getTableTimeFormat()
-        );
+        ];
         $prefs = $database->user_get_preferences_by_prefix('ui.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
@@ -91,7 +90,7 @@ switch ($axAction) {
      * Display the dialog to add or edit a customer.
      */
     case 'add_edit_customer':
-        $oldGroups = array();
+        $oldGroups = [];
         if ($id) {
             $oldGroups = $database->customer_get_groupIDs($id);
         }
@@ -134,7 +133,7 @@ switch ($axAction) {
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
-            $view->assign('selectedGroups', array());
+            $view->assign('selectedGroups', []);
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-user-add')) {
@@ -156,7 +155,7 @@ switch ($axAction) {
      * Display the dialog to add or edit a project.
      */
     case 'add_edit_project':
-        $oldGroups = array();
+        $oldGroups = [];
         if ($id) {
             $oldGroups = $database->project_get_groupIDs($id);
         }
@@ -199,13 +198,13 @@ switch ($axAction) {
         }
 
         if (!isset($view->id)) {
-            $view->assign('selectedActivities', array());
+            $view->assign('selectedActivities', []);
             $view->assign('internal', false);
         }
 
         // Set defaults for a new project.
         if (!$id) {
-            $view->assign('selectedGroups', array());
+            $view->assign('selectedGroups', []);
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-project-add')) {
@@ -224,7 +223,7 @@ switch ($axAction) {
      * Display the dialog to add or edit an activity.
      */
     case 'add_edit_activity':
-        $oldGroups = array();
+        $oldGroups = [];
         if ($id) {
           $oldGroups = $database->activity_get_groupIDs($id);
         }
@@ -233,7 +232,7 @@ switch ($axAction) {
             die();
         }
 
-        $selectedProjectIds = array();
+        $selectedProjectIds = [];
 
         if ($id) {
             $data = $database->activity_get_data($id);
@@ -270,7 +269,7 @@ switch ($axAction) {
 
         // Set defaults for a new project.
         if (!$id) {
-            $selectedGroups = array();
+            $selectedGroups = [];
             foreach ($kga['user']['groups'] as $group) {
                $membershipRoleID = $database->user_get_membership_role($kga['user']['userID'], $group);
                if ($database->membership_role_allows($membershipRoleID, 'core-activity-add')) {

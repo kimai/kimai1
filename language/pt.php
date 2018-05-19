@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * by José Ricardo Cardoso and Marco Rodrigues <gothicx@sapo.pt>
  */
 
-return array(
+return [
     "countryCode" => "pt-PT",
     "preferences" => "Preferências",
     "total" => "Total",
@@ -239,20 +239,24 @@ return array(
     'multiplier' => 'Multiplier',
 
 
-    'months' => array("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
-    'weekdays' => array("Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"),
-    'weekdays_short' => array("Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"),
+    'months' => ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    'weekdays' => ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"],
+    'weekdays_short' => ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
 
-    'errors' => array(
-        0 => array('hdl' => "Database could not be connected!",
-            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
-        1 => array('hdl' => "Erro durante a instalação!",
+    'errors' => [
+        0 => [
+            'hdl' => "Database could not be connected!",
+            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."
+        ],
+        1 => [
+            'hdl' => "Erro durante a instalação!",
             'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
-    'updater' => array(
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
+    'updater' => [
         0 => "Yes, I have a backup of my Kimai database! Proceed updating!",
         10 => "Legenda:",
         20 => "Query was executed successfully.",
@@ -267,8 +271,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         110 => "New Passwords",
         120 => "See below for new passwords for every user.",
         130 => "Could not write to autoconf.php.",
-        140 => "update file autoconf.php"),
-    'backup' => array(
+        140 => "update file autoconf.php"
+    ],
+    'backup' => [
         0 => "This backup restore utility is not yet tested! Use at your own risk!",
         1 => "Backups disponíveis:",
         2 => "recuperar",
@@ -278,9 +283,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         6 => "Backup from",
         7 => "was recovered.",
         8 => "create backup",
-        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
+        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Clique em OK para abrir a tabela imprimida.",
         "dl_hint" => "Clique em OK para descarregar o ficheiro exportado.",
@@ -330,9 +336,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'reverse_order' => 'older entries first',
         'time_period' => 'time period',
         'duration_unit' => 'h',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Criar factura',
         'invoiceProject' => 'Projectos',
         'invoiceTimePeriod' => 'Período de tempo',
@@ -340,9 +346,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceOptionRound' => 'Arredondar tempo',
         'invoiceButton' => 'Criar',
         'noData' => 'There are no time entries for the selected project & time period.'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Timesheet',
         'ki_expenses' => 'Expenses',
         'ki_invoice' => 'Invoice',
@@ -350,7 +356,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
         'ki_export' => 'Export'
-    ),
+    ],
 
     "log_delete" => "log limpo",
-);
+];

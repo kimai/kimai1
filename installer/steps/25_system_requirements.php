@@ -1,11 +1,11 @@
-<script type="text/javascript" charset="utf-8">current = 25;</script>
+<script type="text/javascript">current = 25;</script>
 
 <?php
 if ($_REQUEST['lang'] == "de") {
     ?>
     <h2>Systemanforderungen</h2>
     Die folgenden Punkte m&uuml;ssen erf&uuml;llt sein:<br/>
-    <div class="sp_phpversion fail">mindestens PHP Version 5.4</div>
+    <div class="sp_phpversion fail">mindestens PHP Version 5.5</div>
     <div class="sp_mysql">Die <b>MySQLi</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
     <div class="sp_iconv">Die <b>iconv</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
     <div class="sp_dom">Die <b>DOM</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
@@ -21,7 +21,7 @@ if ($_REQUEST['lang'] == "de") {
     ?>
     <h2>Изисквания към системата</h2>
     Следните точни трябва да са изпълнени:<br/>
-    <div class="sp_phpversion fail">Версия на PHP най-малко 5.4</div>
+    <div class="sp_phpversion fail">Версия на PHP най-малко 5.5</div>
     <div class="sp_mysql"><b>MySQLi</b> разширението за PHP трябва да е активирано</div>
     <div class="sp_iconv"><b>iconv</b> разширението за PHP трябва да е активирано</div>
     <div class="sp_dom"><b>DOM</b> разширението за PHP трябва да е активирано</div>
@@ -37,7 +37,7 @@ if ($_REQUEST['lang'] == "de") {
     ?>
     <h2>System Requirements</h2>
     The following conditions must be met:<br/>
-    <div class="sp_phpversion fail">at least PHP version 5.4</div>
+    <div class="sp_phpversion fail">at least PHP version 5.5</div>
     <div class="sp_mysql">The <b>MySQLi</b> extension for PHP has to be loaded</div>
     <div class="sp_iconv">The <b>iconv</b> extension for PHP has to be loaded</div>
     <div class="sp_dom">The <b>DOM</b> extension for PHP has to be loaded</div>
@@ -51,4 +51,4 @@ if ($_REQUEST['lang'] == "de") {
     <?php
 }
 ?>
-<script type="text/javascript" charset="utf-8">check_system_requirements();</script>
+<script type="text/javascript">check_system_requirements();</script>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -30,7 +30,6 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
      */
     public function authenticate($username, $password, &$userId)
     {
-        $kga = $this->getKga();
         $database = $this->getDatabase();
 
         $userId = $database->user_name2id($username);
@@ -62,7 +61,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         $mail = new Zend_Mail('utf-8');
         $mail->setFrom($kga['conf']['adminmail'], 'Kimai - Open Source Time Tracking');
         $mail->setSubject($kga['lang']['passwordReset']['mailSubject']);
-        
+
         $transport = new Zend_Mail_Transport_Sendmail();
 
         $passwordResetHash = str_shuffle(MD5(microtime()));
@@ -71,18 +70,18 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             $customerId = $database->customer_nameToID($name);
             $customer = $database->customer_get_data($customerId);
 
-            $database->customer_edit($customerId, array('passwordResetHash' => $passwordResetHash));
+            $database->customer_edit($customerId, ['passwordResetHash' => $passwordResetHash]);
 
             $mail->addTo($customer['mail']);
         } else {
             $userId = $database->user_name2id($name);
             $user = $database->user_get_data($userId);
-            
-            $database->user_edit($userId, array('passwordResetHash' => $passwordResetHash));
+
+            $database->user_edit($userId, ['passwordResetHash' => $passwordResetHash]);
 
             $mail->addTo($user['mail']);
         }
-        
+
         Kimai_Logger::logfile('password reset: ' . $name . ($is_customer ? ' as customer' : ' as user'));
 
         $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
@@ -118,38 +117,38 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         if ($is_customer) {
             $customerId = $database->customer_nameToID($username);
             $customer = $database->customer_get_data($customerId);
-            
+
             if ($key != $customer['passwordResetHash']) {
-                return array(
+                return [
                     'message' => $kga['lang']['passwordReset']['invalidKey']
-                );
+                ];
             }
 
-            $data = array(
+            $data = [
                 'password' => encode_password($password),
                 'passwordResetHash' => null
-            );
+            ];
             $database->customer_edit($customerId, $data);
         } else {
             $userId = $database->user_name2id($username);
             $user = $database->user_get_data($userId);
 
             if ($key != $user['passwordResetHash']) {
-                return array(
+                return [
                     'message' => $kga['lang']['passwordReset']['invalidKey']
-                );
+                ];
             }
 
-            $data = array(
+            $data = [
                 'password' => encode_password($password),
                 'passwordResetHash' => null
-            );
+            ];
             $database->user_edit($userId, $data);
         }
-        
-        return array(
+
+        return [
             'message' => $kga['lang']['passwordReset']['success'],
             'showLoginLink' => true,
-        );
+        ];
     }
 }

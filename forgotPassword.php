@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -40,6 +40,8 @@ if (!isset($_REQUEST['key']) || is_array($_REQUEST['key'])) {
 
 require 'includes/basics.php';
 
+$database = Kimai_Registry::getDatabase();
+
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
 
@@ -73,10 +75,10 @@ switch ($_REQUEST['a'])
     default:
         $view->assign('devtimespan', '2006-' . date('y'));
         $view->assign('keyCorrect', $keyCorrect);
-        $view->assign('requestData', array(
+        $view->assign('requestData', [
             'key' => $key,
             'name' => $name
-        ));
+        ]);
 
         echo $view->render('login/forgotPassword.php');
         break;

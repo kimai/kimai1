@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 /**
  * deutsch
  */
-return array(
+return [
     "countryCode" => "de-DE",
     "preferences" => "Einstellungen",
     "total" => "Gesamt",
@@ -89,7 +89,7 @@ return array(
     "passwordsDontMatch" => "Die beiden eingegebenen Passwörter stimmen nicht überein.",
     "passwordTooShort" => "Das eingegebene Passwort hat nicht mindestens 5 Zeichen.",
     "forgotPassword" => "Passwort vergessen",
-    "passwordReset" => array(
+    "passwordReset" => [
         "button" => "Passwort zurücksetzen",
         "notSupported" => "Das aktuelle Authentifizierungsplugin unterstützt kein Zurücksetzen des Passworts.",
         "instructions" => "Geben Sie Ihren Benutzernamen ein und eine Mail mit einem Link wird an die hinterlegte Mail-Adresse versendet. Achten Sie auf eine korrekte Eingabe, da Fehleingaben nicht angezeigt werden.",
@@ -99,7 +99,7 @@ return array(
         "returnToLogin" => "zurück zur Anmeldeseite",
         "invalidKey" => "Der Sicherheitsschlüssel stimmt nicht mit dem per Mail versendeten überein. Stellen Sie sicher, dass die vollständige URL aus der Mail im Browser geöffnet wurde.",
         "success" => "Ihr Passwort wurde geändert.",
-    ),
+    ],
     "minLength" => "min. 5 Zeichen!",
     "update" => "Die Datenbank-Struktur der installierten Kimai Version muss aktualisiert werden.<br />Wir empfehlen, vor der Aktualisierung ein Backup Ihrer gespeicherten Zeiterfassung<br />zu machen, um sicher zu gehen, dass Ihre Zeitdaten nicht beschädigt werden.",
     "updateNow" => "Datenbank-Aktualisierung jetzt durchführen!",
@@ -333,10 +333,10 @@ EOD
     'credits_thanks' => 'Weiteren Dank für Ihre Unterstützung an:',
     'credits_libs' => 'Unser Dank geht auch an die Projekte:',
 
-    'months' => array("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"),
-    'months_short' => array("Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"),
-    'weekdays' => array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"),
-    'weekdays_short' => array("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"),
+    'months' => ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+    'months_short' => ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+    'weekdays' => ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
+    'weekdays_short' => ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
     'quicklink_today' => 'Heute',
     'quicklink_yesterday' => 'Gestern',
     'quicklink_lastWeek' => 'Letzte Woche',
@@ -344,7 +344,7 @@ EOD
     'quicklink_thisWeek' => 'Diese Woche',
     'quicklink_thisMonth' => 'Dieser Monat',
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Keine Berechtigung',
         'userWithSameName' => 'Kundennamen dürfen nicht gleich lauten wie Benutzernamen.',
         'userExistsAlready' => 'Benutzer existiert bereits.',
@@ -356,22 +356,26 @@ EOD
         'multiplierNegative' => 'Der Multiplikator muss größer als 0 sein.',
         'emptyField' => 'Fehlender Wert für Feld: %s',
         'wrongData' => 'Die eingetragenen Daten sind fehlerhaft',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Möchten Sie ihre globale Rolle von "%OLD%" zu "%NEW%" ändern? \nDas kann zu weniger Berechtigungen führen!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Datenbankverbindung verweigert!",
-                   'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."),
-        1 => array('hdl' => "Fehler bei der Installation!",
-                   'txt' => 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
+    'errors' => [
+        0 => [
+            'hdl' => "Datenbankverbindung verweigert!",
+            'txt' => "Bitte stellen Sie sicher das Datenbank und eventuell PDO-Erweiterung laufen und die Einstellungen in der Datei 'autoconf.php' im Ordner 'includes' richtig sind."
+        ],
+        1 => [
+            'hdl' => "Fehler bei der Installation!",
+            'txt' => 'Kimai kann benötigte Tabellen nicht erstellen, da bereits Tabellen mit gleichem Namen existieren.<br/>
 Falls Sie Kimai nur updaten wollen klicken Sie bitte <a href="../index.php">hier</a>.<br/>
-Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabellen mit diesem Präfix, damit Kimai eine Neuinstallation vornehmen kann.')
-    ),
+Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabellen mit diesem Präfix, damit Kimai eine Neuinstallation vornehmen kann.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, Ich habe ein Backup meiner Kimai-Datenbank! Update starten!",
         10 => "Legende:",
         20 => "Query wurde erfolgreich ausgeführt.",
@@ -388,9 +392,9 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         130 => "autoconf.php konnte nicht geschrieben werden.",
         140 => "Schreibe neue autoconf.php",
         'timezone' => 'Kimai unterstützt jetzt Zeitzonen. Bitte wählen sie ihre Standardzeitzone. Diese gilt für alle Benutzer und Kunden. Benutzer können ihre Zeitzone später ändern.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Dieses Backup-Utility wurde noch nicht hinreichend getestet! Nutzung auf eigenes Risiko!",
         1 => "Vorhandene Backups:",
         2 => "wiederherstellen",
@@ -403,9 +407,9 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         9 => "Diese Backups sind genaugenommen Snapshots! D.h. sie liegen in genau der gleichen Datenbank wie Ihre Live-Daten. Das Backup über dieses Utility ersetzt NICHT ein echtes Backup Ihrer Datanbank auf einem anderen Datenträger. Tools zum Sichern von Datenbanken gibt es reichlich im Internet ;)",
         10 => "Autorisierung erforderlich",
         11 => "Um nicht autorisierte Personen daran zu hindern Backups zu erstellen, zu löschen oder widerherzustellen müssen sie den Passwort Salt (\$password_salt) aus include/autoconf.php eingeben. Dieser besteht nur aus Buchstaben und Zahlen."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Klicken Sie auf OK um eine druckbare Tabelle anzuzeigen.",
         "dl_hint" => "Klicken Sie auf OK um den Download zu starten.",
         "tab_filter" => "Filter",
@@ -454,17 +458,19 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'reverse_order' => 'Ältere Einträge zuerst',
         'time_period' => 'Zeitraum',
         'duration_unit' => 'Std.',
-    ),
+        'cleared' => 'Abgerechnet',
+    ],
 
-    'ext_invoice' => array(
-        "invoiceTitle" => "Rechnung erstellen",
-        "invoiceCustomer" => "Kunde",
-        "invoiceProject" => "Projekte",
-        "invoiceTimePeriod" => "Zeitspanne",
-        "invoiceTemplate" => "Rechnungsvorlage",
-        "invoiceOptionShort" => "Kurze Abrechnung",
-        "invoiceOptionRound" => "Zeiten runden",
-        "invoiceButton" => "Erstellen",
+    'ext_invoice' => [
+        'invoiceTitle' => 'Rechnung erstellen',
+        'invoiceCustomer' => 'Kunde',
+        'invoiceProject' => 'Projekte',
+        'invoiceTimePeriod' => 'Zeitspanne',
+        'invoiceTemplate' => 'Rechnungsvorlage',
+        'invoiceOptionShort' => 'Kurze Abrechnung',
+        'invoiceOptionRound' => 'Zeiten runden',
+        'markEntriesAsCleared' => 'Zeiten als abgerechnet markieren',
+        'invoiceButton' => 'Erstellen',
         'noData' => 'Für die ausgewählte Zeitspanne existieren keine Einträge',
         'noProject' => 'Fehlende Projektauswahl',
         'defaultVat' => 'Mehrwertsteuer',
@@ -474,15 +480,15 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'orderDateAsc' => 'Datum - älteste zuerst',
         'orderDateDesc' => 'Datum - neueste zuerst',
         'noDateSelected' => 'Fehlende Zeitspanne',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'frei'
-    ),
+    ],
 
     'extensionsTitle' => 'Erweiterungen',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Ansehen',
         'edit' => 'Bearbeiten',
         'delete' => 'Löschen',
@@ -495,9 +501,9 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'showRates' => 'Stundenlohn anzeigen',
         'editRates' => 'Stundenlohn bearbeiten',
         'editAdvanced' => 'Erweiterte Einstellungen bearbeiten',
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Administration',
         'ki_timesheet' => 'Zeiterfassung',
         'ki_timesheets' => 'Zeiterfassung',
@@ -509,14 +515,14 @@ Wählen Sie ein anderes Tabellenpräfix oder löschen Sie die existierenden Tabe
         'ki_export' => 'Export',
         'core' => 'Berechtigungen',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>Es gibt ein offizielles Update, das neue Funktionen und Fehlerkorrekturen enthält. Es wird empfohlen zu aktualisieren.</b>",
         'beta' => "<i>Es gibt eine neue Beta Version. Sie können es zum Testen von der Download Seite laden, aber bitte nicht produktiv einsetzen.</i>",
         'current' => "Ihre Version ist auf dem neusten Stand"
-    ),
+    ],
 
     "log_delete" => "Protokoll gelöscht",
 
-);
+];

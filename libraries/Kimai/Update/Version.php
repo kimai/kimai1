@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -25,7 +25,7 @@ class Kimai_Update_Version
     /**
      * @var array
      */
-    private $vars = array();
+    private $vars = [];
 
     public function __construct(array $versionInfo)
     {
@@ -79,7 +79,7 @@ class Kimai_Update_Version
      */
     protected function validate(array $versionInfo)
     {
-        $required = array("time", "version", "status", "revision");
+        $required = ["time", "version", "status", "revision"];
         foreach ($required as $k) {
             if (!isset($versionInfo[$k])) {
                 return false;

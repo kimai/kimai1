@@ -2,7 +2,7 @@
 
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -28,26 +28,25 @@ use KimaiTest\TestCase;
 class ArrayUtilityTest extends TestCase
 {
 
-    //////////////////////////////////////
     // Tests concerning arrayDiffAssocRecursive
-    //////////////////////////////////////
+
     /**
      * @test
      */
     public function arrayDiffAssocRecursiveHandlesOneDimensionalArrays()
     {
-        $array1 = array(
+        $array1 = [
             'key1' => 'value1',
             'key2' => 'value2',
             'key3' => 'value3'
-        );
-        $array2 = array(
+        ];
+        $array2 = [
             'key1' => 'value1',
             'key3' => 'value3'
-        );
-        $expectedResult = array(
+        ];
+        $expectedResult = [
             'key2' => 'value2'
-        );
+        ];
         $actualResult = \Kimai_Utility_ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -57,34 +56,34 @@ class ArrayUtilityTest extends TestCase
      */
     public function arrayDiffAssocRecursiveHandlesMultiDimensionalArrays()
     {
-        $array1 = array(
+        $array1 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21',
                 'key22' => 'value22',
-                'key23' => array(
+                'key23' => [
                     'key231' => 'value231',
                     'key232' => 'value232'
-                )
-            )
-        );
-        $array2 = array(
+                ]
+            ]
+        ];
+        $array2 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21',
-                'key23' => array(
+                'key23' => [
                     'key231' => 'value231'
-                )
-            )
-        );
-        $expectedResult = array(
-            'key2' => array(
+                ]
+            ]
+        ];
+        $expectedResult = [
+            'key2' => [
                 'key22' => 'value22',
-                'key23' => array(
+                'key23' => [
                     'key232' => 'value232'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $actualResult = \Kimai_Utility_ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }
@@ -94,23 +93,23 @@ class ArrayUtilityTest extends TestCase
      */
     public function arrayDiffAssocRecursiveHandlesMixedArrays()
     {
-        $array1 = array(
-            'key1' => array(
+        $array1 = [
+            'key1' => [
                 'key11' => 'value11',
                 'key12' => 'value12'
-            ),
+            ],
             'key2' => 'value2',
             'key3' => 'value3'
-        );
-        $array2 = array(
+        ];
+        $array2 = [
             'key1' => 'value1',
-            'key2' => array(
+            'key2' => [
                 'key21' => 'value21'
-            )
-        );
-        $expectedResult = array(
+            ]
+        ];
+        $expectedResult = [
             'key3' => 'value3'
-        );
+        ];
         $actualResult = \Kimai_Utility_ArrayUtility::arrayDiffAssocRecursive($array1, $array2);
         $this->assertEquals($expectedResult, $actualResult);
     }

@@ -59,13 +59,9 @@
 		<div id="login" <?php if ($this->keyCorrect): ?>style="display:block" <?php endif; ?>>
 			<form action="index.php?a=checklogin" name="form1" method="post">
 				<fieldset>
-					<label for="password">
-						<?php echo $this->translate('newPassword') ?>:
-					</label>
+					<label for="password"><?php echo $this->translate('newPassword') ?>:</label>
 					<input type="password" name="password" id="password" />
-					<label for="password2">
-						<?php echo $this->translate('retypePassword') ?>:
-					</label>
+					<label for="password2"><?php echo $this->translate('retypePassword') ?>:</label>
 					<input type="password" name="password2" id="password2" />
 					<button id="loginButton" type="submit"></button>
 				</fieldset>
@@ -80,7 +76,7 @@
 			<p id="cookiewarning"><strong style="color:red"><?php echo $this->translate('cookiewarning') ?></strong></p>
 		</div>
 	</div>
-	<?php echo $this->partial('misc/copyrightnotes.php', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
+	<?php echo $this->partial('misc/copyrightnotes.php', ['kga' => $this->kga, 'devtimespan' => $this->devtimespan]); ?>
 </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -33,13 +33,13 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
     public function render()
     {
         /* @var array $l */
-        require_once(WEBROOT . 'libraries/tecnickcom/tcpdf/examples/lang/eng.php');
+        require_once(WEBROOT . '/libraries/tecnickcom/tcpdf/examples/lang/eng.php');
 
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
         // set document information
-        $pdf->SetCreator('Kimai Timetracking (http://www.kimai.org)');
+        $pdf->SetCreator('Kimai Timetracking (https://www.kimai.org)');
         //$pdf->SetAuthor('Kevin Papst');
 
         //$pdf->SetTitle('Invoice');
@@ -51,7 +51,7 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
 
         // set header and footer fonts
         //$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-        $pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        $pdf->setFooterFont([PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA]);
 
         // set default monospaced font
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);

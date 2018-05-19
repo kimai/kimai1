@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-$all_column_headers = array(
+$all_column_headers = [
     'date',
     'from',
     'to',
@@ -38,7 +38,7 @@ $all_column_headers = array(
     'trackingNumber',
     'user',
     'cleared'
-);
+];
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
@@ -66,9 +66,10 @@ include('private_db_layer_mysql.php');
  */
 function export_get_data($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1)
 {
-    global $expense_ext_available, $database;
-    $timeSheetEntries = array();
-    $expenses = array();
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
+    $timeSheetEntries = [];
+    $expenses = [];
     if ($filter_type != 1) {
         $timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
     }
@@ -76,10 +77,10 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     if ($filter_type != 0 && $expense_ext_available) {
         $expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
     }
-    $result_arr = array();
+    $result_arr = [];
     $timeSheetEntries_index = 0;
     $expenses_index = 0;
-    $keys = array(
+    $keys = [
         'type',
         'id',
         'time_in',
@@ -109,9 +110,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         'trackingNumber',
         'username',
         'cleared'
-    );
+    ];
     while ($timeSheetEntries_index < count($timeSheetEntries) && $expenses_index < count($expenses)) {
-        $arr = array();
+        $arr = [];
         foreach ($keys as $key) {
             $arr[$key] = null;
         }
@@ -185,7 +186,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
     while ($timeSheetEntries_index < count($timeSheetEntries)) {
         if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
             // active recordings will be omitted
-            $arr = array();
+            $arr = [];
             foreach ($keys as $key) {
                 $arr[$key] = null;
             }
@@ -229,7 +230,7 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         $timeSheetEntries_index++;
     }
     while ($expenses_index < count($expenses)) {
-        $arr = array();
+        $arr = [];
         foreach ($keys as $key) {
             $arr[$key] = null;
         }
@@ -293,7 +294,8 @@ function merge_annotations(&$timeSheetEntries, &$expenses)
  */
 function export_get_user_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_users($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_user($start, $end, $users, $customers, $projects);
@@ -317,7 +319,8 @@ function export_get_user_annotations($start, $end, $users = null, $customers = n
  */
 function export_get_customer_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_customers($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_customer($start, $end, $users, $customers, $projects);
@@ -341,7 +344,8 @@ function export_get_customer_annotations($start, $end, $users = null, $customers
  */
 function export_get_project_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $expense_ext_available, $database;
+    global $expense_ext_available;
+    $database = Kimai_Registry::getDatabase();
     $arr = $database->get_time_projects($start, $end, $users, $customers, $projects, $activities);
     if ($expense_ext_available) {
         $expenses = expenses_by_project($start, $end, $users, $customers, $projects);
@@ -365,10 +369,8 @@ function export_get_project_annotations($start, $end, $users = null, $customers 
  */
 function export_get_activity_annotations($start, $end, $users = null, $customers = null, $projects = null, $activities = null)
 {
-    global $database;
-    $arr = $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
-
-    return $arr;
+    $database = Kimai_Registry::getDatabase();
+    return $database->get_time_activities($start, $end, $users, $customers, $projects, $activities);
 }
 
 /**

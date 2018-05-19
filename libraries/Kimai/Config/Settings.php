@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
      *
      * @param array $settings
      */
-    public function __construct(array $settings = array())
+    public function __construct(array $settings = [])
     {
         $data = array_merge(
             $this->getDefaults(),
@@ -47,7 +47,7 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
      */
     protected function getDefaults()
     {
-        return array(
+        return [
             'rowlimit' => 100,
             'skin' => Kimai_Config::getDefault(Kimai_Config::DEFAULT_SKIN),
             'autoselection' => 1,
@@ -68,7 +68,7 @@ class Kimai_Config_Settings extends Kimai_ArrayObject
             'showBillability' => 0,
             'sublistAnnotations' => 0,
             'inlineEditingOfDescriptions' => 0,
-        );
+        ];
     }
 
     /**

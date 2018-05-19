@@ -1,7 +1,7 @@
 <?php
 /**
 * This file is part of
-* Kimai - Open Source Time Tracking // http://www.kimai.org
+* Kimai - Open Source Time Tracking // https://www.kimai.org
 * (c) Kimai-Development-Team since 2006
 *
 * Kimai is free software; you can redistribute it and/or modify
@@ -17,8 +17,9 @@
 * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
 */
 
-// Include Basics
 include '../../includes/basics.php';
+
+$kga = Kimai_Registry::getConfig();
 
 $user = checkUser();
 
@@ -27,14 +28,14 @@ $view->addBasePath(__DIR__ . '/templates/');
 
 $view->assign('delete_logfile', $kga['delete_logfile']);
 $view->assign(
-	'kga_sections', 
-	array(
+	'kga_sections',
+	[
         'all' => '',
         'plain' => 'plain',
         'lang' => 'translations',
         'user' => 'user',
         'conf' => 'config',
-    )
+    ]
 );
 $view->assign('limitText', sprintf($view->translate('debug:lines'), $kga['logfile_lines']));
 

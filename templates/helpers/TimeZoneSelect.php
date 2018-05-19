@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -29,7 +29,7 @@ class Zend_View_Helper_TimeZoneSelect extends Zend_View_Helper_FormSelect
     public function timeZoneSelect($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
     {
         if ($options === null) {
-            $options = array();
+            $options = [];
             $timezones = timezoneList();
             foreach ($timezones as $zoneName) {
                 $options[$zoneName] = $zoneName;

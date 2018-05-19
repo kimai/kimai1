@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,17 +17,15 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require("../../includes/kspi.php");
+$dir_templates = 'templates/';
+require('../../includes/kspi.php');
 
 switch ($axAction) {
-    case "editVat":
+    case 'editVat':
         if (isset($kga['customer'])) {
             die();
         }
-        $view->assign('kga', $kga);
         echo $view->render("floaters/editVat.php");
         break;
 }

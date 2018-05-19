@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -19,25 +19,27 @@
 
 namespace KimaiTest;
 
-use PHPUnit_Framework_TestCase;
-
 /**
  * Base and helper class for Kimai Unittests.
  */
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var array
+     * @var \Kimai_Config
      */
     private $kgaLast;
 
-
+    /**
+     * @param \Kimai_Config $kgaNew
+     */
     protected function setKga($kgaNew)
     {
-        global $kga;
+        if (\Kimai_Registry::isRegistered('Kimai_Config')) {
+            $kga = \Kimai_Registry::getConfig();
 
-        if (null !== $kga) {
-            $this->kgaLast = clone $kga;
+            if (null !== $kga) {
+                $this->kgaLast = clone $kga;
+            }
         }
         $kga = $kgaNew;
         \Kimai_Registry::setConfig($kga);
@@ -49,10 +51,7 @@ class TestCase extends PHPUnit_Framework_TestCase
             return;
         }
 
-        global $kga;
-
         $kga = $this->kgaLast;
         \Kimai_Registry::setConfig($kga);
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -121,11 +121,11 @@ abstract class Kimai_Invoice_AbstractRenderer
     {
         return false;
     }
-    
+
     protected function prepareCustomerArray($customer)
     {
-        global $kga;
-        $new = array(
+        $kga = Kimai_Registry::getConfig();
+        $new = [
             'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
             'companyName' => isset($customer['company']) ? $customer['company'] : '',
             'customerStreet' => isset($customer['street']) ? $customer['street'] : '',
@@ -139,7 +139,7 @@ abstract class Kimai_Invoice_AbstractRenderer
             'customerMobile' => isset($customer['mobile']) ? $customer['mobile'] : '',
             'customerURL' => isset($customer['homepage']) ? $customer['homepage'] : '',
             'customerVat' => isset($customer['vat']) ? $customer['vat'] : '',
-        );
+        ];
 
         return $new;
     }

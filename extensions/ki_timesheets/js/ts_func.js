@@ -1,6 +1,6 @@
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -217,7 +217,7 @@ function ts_ext_reload() {
 
 /**
  * reloads timesheet, customer, project and activity tables
- * 
+ *
  * @param project
  * @param noUpdateRate
  * @param activity
@@ -252,7 +252,7 @@ function ts_ext_reload_activities(project, noUpdateRate, activity, timeSheetEntr
 
 /**
  * reloads budget
- * 
+ *
  * everything in data['timeSheetEntry'] has to be subtracted in case the time sheet entry is in the db already
  * part of this activity. In other cases, we already took case on server side that the values are 0
  * @param data
@@ -303,7 +303,7 @@ function ts_ext_updateBudget(data) {
 /**
  * this function is attached to the little green arrows in front of each timesheet record
  * and starts recording that activity anew
- * 
+ *
  * @param project
  * @param activity
  * @param id
@@ -316,13 +316,12 @@ function ts_ext_recordAgain(project,activity,id) {
 	}
 
 	$('#timeSheetEntry' + id + '>td>a.recordAgain>img').attr("src", "../skins/" + skin + "/grfx/loading13.gif");
-	var now = Math.floor(((new Date()).getTime()) / 1000);
-	startsec = now;
+	startsec = Math.floor(((new Date()).getTime()) / 1000);
 	show_stopwatch();
 	$('#timeSheetEntry'+id+'>td>a').removeAttr('onclick');
 
 	$.post(ts_ext_path + "processor.php", {
-		axAction: "record", 
+		axAction: "record",
 		axValue: 0,
 		id: id
 	}, function (data) {
@@ -348,7 +347,7 @@ function ts_ext_recordAgain(project,activity,id) {
 /**
  * this function is attached to the little green arrows in front of each timesheet record
  * and starts recording that activity anew
- * 
+ *
  * @param id
  */
 function ts_ext_stopRecord(id) {
@@ -434,7 +433,7 @@ function getBestRates() {
 			return;
 		}
 
-		if (data.hourlyRate == false) {
+		if (data.hourlyRate === false) {
 			//TODO: why does Kimai do this? If we already set a rate
 			// we might want to keep it, not just reset it to empty..?
 			// $("#ts_ext_form_add_edit_timeSheetEntry #rate").val('');
@@ -442,7 +441,7 @@ function getBestRates() {
 			$("#ts_ext_form_add_edit_timeSheetEntry #rate").val(data.hourlyRate);
 		}
 
-		if (data.fixedRate == false) {
+		if (data.fixedRate === false) {
 			$("#ts_ext_form_add_edit_timeSheetEntry #fixedRate").val('');
 		} else {
 			$("#ts_ext_form_add_edit_timeSheetEntry #fixedRate").val(data.fixedRate);
@@ -480,7 +479,7 @@ function ts_getDateFromStrings(dateStr, timeStr) {
 	var result = new Date();
 	var dateArray = dateStr.split(/\./);
 	var timeArray = timeStr.split(/:|\./);
-	if (dateArray.length != 3 || timeArray.length < 1 || timeArray.length > 3) {
+	if (dateArray.length !== 3 || timeArray.length < 1 || timeArray.length > 3) {
 		return null;
 	}
 	result.setFullYear(dateArray[2], dateArray[1] - 1, dateArray[0]);
@@ -601,7 +600,7 @@ function ts_updateBillability(id) {
 			billable: billableValue
 		},
 		function (result) {
-			if (result.errors.length == 0) {
+			if (result.errors.length === 0) {
 				ts_ext_reload();
 			} else {
 				var messages = [];
@@ -632,7 +631,7 @@ function ts_updateDescription(id, reload) {
 		},
 		function (result) {
 			$('#loader').hide();
-			if (result.errors.length == 0) {
+			if (result.errors.length === 0) {
 				if (reload === 1) {
 					ts_ext_reload(); // This resulted in a lost of focus when typing right after a click (timesheet) - so, if.
 				}

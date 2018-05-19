@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,10 +21,10 @@
  * Handle all AJAX calls from the installer.
  */
 
-defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-require_once WEBROOT . 'libraries/autoload.php';
+require_once WEBROOT . '/libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val)
@@ -65,20 +65,20 @@ function getpass()
 
 $axAction = strip_tags($_REQUEST['axAction']);
 
-$javascript = "";
+$javascript = '';
 $errors = 0;
 
 switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5.4
+     *  - PHP major version >= 5.5
      *  - MySQLi extension available
      *  - iconv extension available
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
-    case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+    case 'checkRequirements':
+        if (version_compare(PHP_VERSION, '5.5') < 0) {
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
         }
@@ -118,7 +118,7 @@ switch ($axAction) {
     /**
      * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
-    case "checkRights":
+    case 'checkRights':
         if ((file_exists("../includes/autoconf.php") && !is_writeable("../includes/autoconf.php")) || !is_writeable("../includes/")) {
             $errors++;
             $javascript .= "$('span.ch_autoconf').addClass('fail');";
@@ -146,8 +146,8 @@ switch ($axAction) {
     /**
      * Create the autoconf.php file.
      */
-    case ("write_config"):
-        include "../includes/func.php";
+    case 'write_config':
+        include '../includes/func.php';
         // special characters " and $ are escaped
         $database = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
@@ -159,8 +159,8 @@ switch ($axAction) {
         $salt = createPassword(20);
         $timezone = $_REQUEST['timezone'];
 
-        $kimaiConfig = new Kimai_Config(array(
-            'server_prefix' => $server_prefix,
+        $kimaiConfig = new Kimai_Config([
+            'server_prefix' => $prefix,
             'server_hostname' => $hostname,
             'server_database' => $database,
             'server_username' => $username,
@@ -168,7 +168,7 @@ switch ($axAction) {
             'server_charset' => $charset,
             'defaultTimezone' => $timezone,
             'password_salt' => $salt
-        ));
+        ]);
         Kimai_Registry::setConfig($kimaiConfig);
 
         write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone);
@@ -178,7 +178,7 @@ switch ($axAction) {
     /**
      * Create the database.
      */
-    case ('make_database'):
+    case 'make_database':
         $databaseName = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
         $username = $_REQUEST['username'];
@@ -186,8 +186,9 @@ switch ($axAction) {
 
         $db_error = false;
         $result = false;
+        $config = new Kimai_Config([]);
 
-        $database = new Kimai_Database_Mysql($result, false);
+        $database = new Kimai_Database_Mysql($config, false);
         $database->connect($hostname, null, $username, $password, true);
         $conn = $database->getConnectionHandler();
 

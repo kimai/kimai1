@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -29,7 +29,8 @@
  * @param string $query string query to execute
  */
 function exec_query($query) {
-    global $database, $errors;
+    global $errors;
+    $database = Kimai_Registry::getDatabase();
 
     $conn = $database->getConnectionHandler();
     $success = $conn->Query($query);
@@ -42,9 +43,9 @@ function exec_query($query) {
     }
 }
 
-function quoteForSql($input) {
-    global $database;
-
+function quoteForSql($input)
+{
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
     return "'" . $conn->SQLFix($input) . "'";
 }
@@ -93,7 +94,7 @@ exec_query($query);
 
 $query = "CREATE TABLE `${p}preferences` (
   `userID` int(10) NOT NULL,
-  `option` varchar(255) NOT NULL,
+  `option` varchar(190) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`userID`,`option`)
 );";
@@ -224,7 +225,7 @@ $query = "CREATE TABLE `${p}timeSheet` (
 exec_query($query);
 
 $query = "CREATE TABLE `${p}configuration` (
-  `option` varchar(255) NOT NULL,
+  `option` varchar(190) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY  (`option`)
 );";
@@ -274,7 +275,7 @@ exec_query($query);
 // Permissions that were later added follow below.
 require("installPermissions.php");
 
-foreach (array('customer', 'project', 'activity', 'group', 'user') as $object) {
+foreach (['customer', 'project', 'activity', 'group', 'user'] as $object) {
     exec_query("ALTER TABLE `${p}globalRoles` ADD `core-$object-otherGroup-view` tinyint DEFAULT 0;");
     exec_query("UPDATE `${p}globalRoles` SET `core-$object-otherGroup-view` = 1 WHERE `name` = 'Admin';");
 }

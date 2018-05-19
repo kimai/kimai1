@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -83,11 +83,12 @@ function timezoneList()
  * @param array $showIds an array of IDs that should be shown, no matter of their visibility
  * @return array
  */
-function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = array())
+function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = false, $showIds = [])
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
-    $sel = array();
+    $sel = [];
 
     switch ($subject) {
         case 'project':
@@ -142,7 +143,7 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
             $groups = $database->get_groups();
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view')) {
                 $groups = array_filter($groups, function ($group) {
-                    global $kga;
+                    $kga = Kimai_Registry::getConfig();
 
                     return array_search($group['groupID'], $kga['user']['groups']) !== false;
                 });
@@ -350,7 +351,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -404,9 +405,9 @@ EOD;
  */
 function get_timeframe()
 {
-    global $kga;
+    $kga = Kimai_Registry::getConfig();
 
-    $timeFrame = array(null, null);
+    $timeFrame = [null, null];
 
     if (isset($kga['user'])) {
         $timeFrame[0] = $kga['user']['timeframeBegin'];
@@ -460,7 +461,7 @@ function getRequestBool($name)
  */
 function getRequestDecimal($value)
 {
-    global $kga;
+    $kga = Kimai_Registry::getConfig();
     if (trim($value) != '') {
         return (double)str_replace($kga['conf']['decimalSeparator'], '.', $value);
     }
@@ -482,7 +483,8 @@ function getRequestDecimal($value)
  */
 function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $newGroups)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         return false;
@@ -568,7 +570,8 @@ function checkGroupedObjectPermission($objectTypeName, $action, $oldGroups, $new
  */
 function coreObjectActionAllowed($objectTypeName, $action)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if ($database->global_role_allows($kga['user']['globalRoleID'], "core-$objectTypeName-otherGroup-$action")) {
         return true;
@@ -589,8 +592,8 @@ function coreObjectActionAllowed($objectTypeName, $action)
  */
 function encode_password($password)
 {
-    global $kga;    
-    
+    $kga = Kimai_Registry::getConfig();
+
     $salt = $kga['password_salt'];
     return md5($salt . $password . $salt);
 }

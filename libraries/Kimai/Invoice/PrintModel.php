@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ class Kimai_Invoice_PrintModel
     /**
      * @var array
      */
-    private $entries = array();
+    private $entries = [];
     /**
      * @var int
      */
@@ -36,7 +36,7 @@ class Kimai_Invoice_PrintModel
     /**
      * @var array
      */
-    private $customer = array();
+    private $customer = [];
     /**
      * @var int
      */
@@ -52,7 +52,7 @@ class Kimai_Invoice_PrintModel
     /**
      * @var array
      */
-    private $projects = array();
+    private $projects = [];
     /**
      * @var string
      */
@@ -93,7 +93,7 @@ class Kimai_Invoice_PrintModel
      */
     public function toArray()
     {
-        return array(
+        return [
             'entries'       => $this->getEntries(), // array
             'amount'        => $this->getAmount(),
             'customer'      => $this->getCustomer(), // array
@@ -109,7 +109,7 @@ class Kimai_Invoice_PrintModel
             'dueDate'       => $this->getDueDate(),
             'currencySign'  => $this->getCurrencySign(),
             'currencyName'  => $this->getCurrencyName()
-        );
+        ];
     }
 
     /**

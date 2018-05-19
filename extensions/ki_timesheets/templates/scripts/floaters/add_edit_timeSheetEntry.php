@@ -50,14 +50,14 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="projectID"><?php echo $this->kga['lang']['project'] ?>:</label>
                         <div class="multiFields">
-                            <?php echo $this->formSelect('projectID', $this->projectID, array(
+                            <?php echo $this->formSelect('projectID', $this->projectID, [
                                 'size' => '5',
                                 'id' => 'add_edit_timeSheetEntry_projectID',
                                 'class' => 'formfield',
                                 'style' => 'width:400px',
                                 'tabindex' => '1',
                                 'onChange' => "ts_ext_reload_activities($('#add_edit_timeSheetEntry_projectID').val(),undefined,$('#add_edit_timeSheetEntry_activityID').val(), $('input[name=\'id\']').val());"
-                            ), $this->projects); ?>
+                            ], $this->projects); ?>
                             <br/>
                             <input type="text" style="width:395px;margin-top:3px" tabindex="2" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_projectID', this.value);"/>
                         </div>
@@ -65,14 +65,14 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     <li>
                         <label for="activityID"><?php echo $this->kga['lang']['activity'] ?>:</label>
                         <div class="multiFields">
-                            <?php echo $this->formSelect('activityID', $this->activityID, array(
+                            <?php echo $this->formSelect('activityID', $this->activityID, [
                                 'size' => '5',
                                 'id' => 'add_edit_timeSheetEntry_activityID',
                                 'class' => 'formfield',
                                 'style' => 'width:400px',
                                 'tabindex' => '3',
                                 'onChange' => "getBestRates();"
-                            ), $this->activities); ?>
+                            ], $this->activities); ?>
                             <br/>
                             <input type="text" style="width:395px;margin-top:3px" tabindex="4" size="10" name="filter" id="filter" onkeyup="filter_selects('add_edit_timeSheetEntry_activityID', this.value);"/>
                         </div>
@@ -134,11 +134,12 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                             <?php echo $this->formSelect(
                                 isset($this->id) ? 'userID' : 'userID[]',
                                 $this->userID,
-                                array(
+                                [
                                     'id' => 'userID',
                                     'class' => 'formfield',
                                     'multiple' => isset($this->id) ? '' : 'multiple',
-                                    'tabindex' => '14'),
+                                    'tabindex' => '14'
+                                ],
                                 $this->users); ?>
                         </li>
                     <?php else: ?>
@@ -168,17 +169,19 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     </li>
                     <li>
                         <label for="statusID"><?php echo $this->kga['lang']['status'] ?>:</label>
-                        <?php echo $this->formSelect('statusID', $this->statusID, array(
+                        <?php echo $this->formSelect('statusID', $this->statusID, [
                             'id' => 'statusID',
                             'class' => 'formfield',
-                            'tabindex' => '15'), $this->status); ?>
+                            'tabindex' => '15'
+                        ], $this->status); ?>
                     </li>
                     <li>
                         <label for="billable"><?php echo $this->kga['lang']['billable'] ?>:</label>
-                        <?php echo $this->formSelect('billable', $this->billable_active, array(
+                        <?php echo $this->formSelect('billable', $this->billable_active, [
                             'id' => 'billable',
                             'class' => 'formfield',
-                            'tabindex' => '16'), $this->billable); ?>
+                            'tabindex' => '16'
+                        ], $this->billable); ?>
                     </li>
                     <?php if ($this->showRate): ?>
                         <li>
@@ -591,8 +594,8 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     placement: 'insideGrid'
                 },
                 grid: {
-                    background: 'white', 
-                    borderWidth: 0, 
+                    background: 'white',
+                    borderWidth: 0,
                     shadow: false
                 }
             });

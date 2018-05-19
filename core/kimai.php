@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,10 +17,9 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =============================
-// = Smarty (initialize class) =
-// ============================= 
 require_once '../includes/basics.php';
+
+$database = Kimai_Registry::getDatabase();
 
 $view = new Zend_View();
 $view->setBasePath(WEBROOT . '/templates');
@@ -39,8 +38,8 @@ $user = checkUser();
 
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
-// der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen. 
-checkDBversion("..");
+// der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen.
+checkDBversion('..');
 
 $extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
 $extensions->loadConfigurations();
@@ -55,15 +54,14 @@ $out = $timeframe[1];
 // ===============================================
 // = get time for the probably running stopwatch =
 // ===============================================
-$current_timer = array();
+$current_timer = [];
 if (isset($kga['customer'])) {
-  $current_timer['all']  = 0;
-  $current_timer['hour'] = 0;
-  $current_timer['min']  = 0;
-  $current_timer['sec']  = 0;
-}
-else {
-  $current_timer = $database->get_current_timer();
+    $current_timer['all'] = 0;
+    $current_timer['hour'] = 0;
+    $current_timer['min'] = 0;
+    $current_timer['sec'] = 0;
+} else {
+    $current_timer = $database->get_current_timer();
 }
 
 // =======================================
@@ -84,7 +82,7 @@ $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);
 
 if (isset($kga['customer'])) {
-    $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, null, array($kga['customer']['customerID']))));
+    $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, null, [$kga['customer']['customerID']])));
 } else {
     $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, $kga['user']['userID'])));
 }
@@ -92,7 +90,7 @@ if (isset($kga['customer'])) {
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker = "";
+$localized_DatePicker = '';
 
 $view->assign('weekdays_array', sprintf(
     "['%s','%s','%s','%s','%s','%s','%s']\n",
@@ -181,20 +179,21 @@ $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 $view->assign('lang_checkGlobalRoleName', $kga['lang']['checkGlobalRoleName']);
 $view->assign('lang_checkMembershipRoleName', $kga['lang']['checkMembershipRoleName']);
 
-$customerData = array('customerID'=>false, 'name'=>'');
-$projectData  = array('projectID'=>false, 'name'=>'');
-$activityData = array('activityID'=>false, 'name'=>'');
+$customerData = ['customerID' => false, 'name' => ''];
+$projectData = ['projectID' => false, 'name' => ''];
+$activityData = ['activityID' => false, 'name' => ''];
 
 if (!isset($kga['customer'])) {
-  //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
-  $lastProject = $database->project_get_data($kga['user']['lastProject']);
-  $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
-  if (!$lastProject['trash']) {
-    $projectData = $lastProject;
-    $customerData = $database->customer_get_data($lastProject['customerID']);
-  }
-  if (!$lastActivity['trash'])
-    $activityData = $lastActivity;    
+    //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
+    $lastProject = $database->project_get_data($kga['user']['lastProject']);
+    $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
+    if (!$lastProject['trash']) {
+        $projectData = $lastProject;
+        $customerData = $database->customer_get_data($lastProject['customerID']);
+    }
+    if (!$lastActivity['trash']) {
+        $activityData = $lastActivity;
+    }
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);
@@ -204,7 +203,7 @@ $view->assign('activityData', $activityData);
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
 foreach ($extensions->phpIncludeFiles() as $includeFile) {
-  require_once $includeFile;
+    require_once $includeFile;
 }
 
 // =======================
@@ -221,13 +220,13 @@ $view->assign('user_display', $view->render('lists/users.php'));
 // = display customer table =
 // ========================
 if (isset($kga['customer'])) {
-    $view->assign('customers', array(
-        array(
+    $view->assign('customers', [
+        [
             'customerID' => $kga['customer']['customerID'],
             'name' => $kga['customer']['name'],
             'visible' => $kga['customer']['visible']
-        )
-    ));
+        ]
+    ]);
 } else {
     $view->assign('customers', $database->get_customers($kga['user']['groups']));
 }
@@ -268,7 +267,7 @@ $view->assign('show_activity_edit_button', isset($kga['user']) && coreObjectActi
 $view->assign('activity_display', $view->render("lists/activities.php"));
 
 if (isset($kga['user'])) {
-    $view->assign('showInstallWarning', file_exists(WEBROOT . 'installer'));
+    $view->assign('showInstallWarning', file_exists(WEBROOT . '/installer'));
 } else {
     $view->assign('showInstallWarning', false);
 }

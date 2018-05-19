@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  * nederlands - België
  * by Dylan Kiss
  */
-return array(
+return [
     "countryCode" => "nl-BE",
     "preferences" => "Voorkeuren",
     "total" => "Totaal",
@@ -317,32 +317,36 @@ return array(
         by extending its <a href="%5$s">translations</a>.
         If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
-    'weekdays' => array("Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"),
-    'weekdays_short' => array("Zon", "Maa", "Din", "Woe", "Don", "Vri", "Zat"),
+    'months' => ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Maa", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    'weekdays' => ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"],
+    'weekdays_short' => ["Zon", "Maa", "Din", "Woe", "Don", "Vri", "Zat"],
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'userWithSameName' => 'De naam van een klant kan niet dezelfde zijn als een gebruikersnaam.',
         'customerWithSameName' => 'Een gebruikersnaam kan niet dezelfde zijn als de naam van een klant.'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Er kon geen verbinding worden gemaakt met de database!",
-            'txt' => "Controleer of de database draait, een actieve PDO connector heeft en de entries in 'autoconf.php' in de map 'includes' correct zijn."),
+    'errors' => [
+        0 => [
+            'hdl' => "Er kon geen verbinding worden gemaakt met de database!",
+            'txt' => "Controleer of de database draait, een actieve PDO connector heeft en de entries in 'autoconf.php' in de map 'includes' correct zijn."
+        ],
 
-        1 => array('hdl' => "Fout tijdens de installatie!",
+        1 => [
+            'hdl' => "Fout tijdens de installatie!",
             'txt' => 'Kimai kan de nodige tabellen niet aanmaken omdat deze al bestonden.<br/>
 Klik <a href="../index.php">hier</a> om de bestaande installatie te updaten.<br/>
-Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zodat Kimai een propere installatie kan uitvoeren.')
-    ),
+Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zodat Kimai een propere installatie kan uitvoeren.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, ik heb een backup van mijn Kimai database! Ga door met updaten!",
         10 => "Legenda:",
         20 => "Query is succesvol uitgevoerd.",
@@ -359,9 +363,9 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
         130 => "Kon niet schrijven in autoconf.php.",
         140 => "update bestand autoconf.php",
         'timezone' => 'Kimai ondersteunt nu tijdzones. Selecteer je standaard tijdzone. Het zal worden gebruikt voor alle gebruikers en klanten. Gebruikers kunnen kun tijdzone aanpassen.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Deze backup restore utility is nog niet getest! Gebruik op eigen risico!",
         1 => "Beschikbare backups:",
         2 => "terugzetten",
@@ -371,10 +375,11 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
         6 => "Backup van",
         7 => "is teruggezet.",
         8 => "maak backup",
-        9 => "Deze backups zijn eigenlijk snapshots! Dit betekent dat ze nog steeds aanwezig zijn in dezelfde database als de huidige Kimai data. Backups via deze weg vervangen NIET de echte backups op een ander fysiek medium. Er zijn verschillende tools beschikbaar voor database backups op het internet ;)"),
+        9 => "Deze backups zijn eigenlijk snapshots! Dit betekent dat ze nog steeds aanwezig zijn in dezelfde database als de huidige Kimai data. Backups via deze weg vervangen NIET de echte backups op een ander fysiek medium. Er zijn verschillende tools beschikbaar voor database backups op het internet ;)"
+    ],
 
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Klik op OK om een afdrukbare tabel te openen.",
         "dl_hint" => "Klik op OK om een export-bestand te downloaden.",
@@ -435,10 +440,10 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
 
         'duration_unit' => 'u',
 
-    ),
+    ],
 
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Maak factuur',
         'invoiceProject' => 'Projecten',
         'invoiceTimePeriod' => 'Tijdsperiode',
@@ -448,20 +453,20 @@ Kies een andere tabel prefix of verwijder bestaande tabellen met deze prefix zod
         'invoiceButton' => 'Maak',
         'noData' => 'Er zijn geen tijdsregistraties voor het geselecteerde project en tijdsperiode.',
         'defaultVat' => 'Standaard BTW tarief'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'ongebruikt'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Timesheet',
         'adminPanel_extension' => 'Admin paneel',
         'ki_expenses' => 'Uitgaven',
         'ki_export' => 'Export',
         'ki_budget' => 'Budget',
         'ki_invoice' => 'Factuur'
-    ),
+    ],
 
     "log_delete" => "log gewist",
-);
+];

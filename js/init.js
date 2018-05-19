@@ -1,7 +1,7 @@
 /* -*- Mode: jQuery; tab-width: 4; indent-tabs-mode: nil -*- */
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,9 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =====================================================================
-// = Runs when the DOM of the Kimai GUI is loaded => MAIN init script! =
-// =====================================================================
+// Runs when the DOM of the Kimai GUI is loaded => MAIN init script!
 
 var userColumnWidth;
 var customerColumnWidth;
@@ -54,8 +52,7 @@ $(document).ready(function () {
 		// automatic tab-change on reload
 		ki_active_tab_target = Cookies.get('ki_active_tab_target_' + userID);
 		ki_active_tab_path = Cookies.get('ki_active_tab_path_' + userID);
-	}
-	else {
+	} else {
 		ki_active_tab_target = null;
 		ki_active_tab_path = null;
 	}

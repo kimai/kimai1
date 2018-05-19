@@ -7,11 +7,11 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Kimai Error</title>
     <link rel="stylesheet" type="text/css" media="screen" href="skins/<?php echo $this->skin()->getName(); ?>/error.css" />
-    <script src="libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript"> 
+    <script src="libraries/jQuery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
         $(document).ready(function() {
             $('#ok').focus();
-        }); 
+        });
     </script>
 </head>
 <body>

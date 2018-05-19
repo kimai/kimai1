@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,12 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Always include the Kimai Standard Processor Initialization!
-
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates   = "templates/";
-require("../../includes/kspi.php");
+$dir_templates = 'templates/';
+require('../../includes/kspi.php');
+
+$kga = Kimai_Registry::getConfig();
 
 switch ($axAction) {
     case 'test':

@@ -52,7 +52,7 @@ class BasePDF extends TCPDF
      */
     public function timespan($number)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if ($number == -1) {
             return "-------";
         } else {
@@ -69,7 +69,7 @@ class BasePDF extends TCPDF
      */
     public function time_unit($time)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
 
         return $time . " " . $kga['lang']['export_extension']['duration_unit'];
     }
@@ -83,7 +83,7 @@ class BasePDF extends TCPDF
      */
     public function SumStdTime($time1, $timesum)
     {
-        $times = array($time1, $timesum);
+        $times = [$time1, $timesum];
         $seconds = 0;
         foreach ($times as $time) {
             list($hour, $minute) = explode(':', $time);
@@ -156,11 +156,11 @@ class BasePDF extends TCPDF
      */
     public function printSummary($header, $data)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
 
         $summarizedData = $this->summarize($data);
 
-        $w = array($this->getPageWidth() - $this->pagedim[$this->page]['lm'] - $this->pagedim[$this->page]['rm'], 0, 0);
+        $w = [$this->getPageWidth() - $this->pagedim[$this->page]['lm'] - $this->pagedim[$this->page]['rm'], 0, 0];
         if (isset($this->columns['wage'])) {
             $w[2] = 30;
             $w[0] -= 30;
@@ -250,13 +250,15 @@ class BasePDF extends TCPDF
 
     /**
      * Create the summary data array.
+     * @param array $orderedExportData
+     * @return array
      */
     function summarize($orderedExportData)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         // arrays for keeping track to print summary
-        $timeSheetSummary = array();
-        $expenseSummary = array();
+        $timeSheetSummary = [];
+        $expenseSummary = [];
 
         foreach ($orderedExportData as $customer) {
             $project_ids = array_keys($customer);

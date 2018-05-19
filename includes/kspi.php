@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -23,32 +23,28 @@
  */
 
 /**
- * ==================================================================
  * Bootstrap Zend
- * ==================================================================
  *
  * - Ensure library/ is on include_path
  * - Register Autoloader
  */
 
-// bootstrap kimai
-require("basics.php");
+require('basics.php');
 
+$dir_ext = '';
 // check if we are in an extension
 if (!$isCoreProcessor) {
-  $datasrc = "config.ini";
-  $settings = parse_ini_file($datasrc);
-  $dir_ext = $settings['EXTENSION_DIR'];
+    $datasrc = 'config.ini';
+    $settings = parse_ini_file($datasrc);
+    $dir_ext = $settings['EXTENSION_DIR'];
 }
 
-// =============================
-// = Zend_View (configuration) =
-// =============================
+// Zend_View (configuration)
 $view = new Zend_View();
 if ($isCoreProcessor) {
-  $view->setBasePath(WEBROOT . '/templates');
+    $view->setBasePath(WEBROOT . '/templates');
 } else {
-  $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+    $view->setBasePath(WEBROOT . '/extensions/' . $dir_ext . '/' . $dir_templates);
 }
 $view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
 
@@ -60,35 +56,32 @@ $user = checkUser();
 
 $view->assign('kga', $kga);
 
-// ==================
-// = security check =
-// ==================
+// security check
 if (isset($_REQUEST['axAction']) && !is_array($_REQUEST['axAction']) && $_REQUEST['axAction'] != "") {
-  $axAction = strip_tags($_REQUEST['axAction']);
+    $axAction = strip_tags($_REQUEST['axAction']);
 } else {
-  $axAction = '';
+    $axAction = '';
 }
 
 $axValue = isset($_REQUEST['axValue']) ? strip_tags($_REQUEST['axValue']) : '';
 $id = isset($_REQUEST['id']) ? strip_tags($_REQUEST['id']) : null;
 
-
-// ============================================
-// = initialize currently displayed timeframe =
-// ============================================
+// initialize currently displayed timeframe
 $timeframe = get_timeframe();
 $in = $timeframe[0];
 $out = $timeframe[1];
 
 if (isset($_REQUEST['first_day'])) {
-  $in  = (int)$_REQUEST['first_day'];
+    $in = (int)$_REQUEST['first_day'];
 }
 if (isset($_REQUEST['last_day'])) {
-  $out = mktime(23, 59, 59, date("n", $_REQUEST['last_day']), date("j", $_REQUEST['last_day']), date("Y", $_REQUEST['last_day']));
+    $out = mktime(23, 59, 59, date("n", $_REQUEST['last_day']), date("j", $_REQUEST['last_day']),
+        date("Y", $_REQUEST['last_day']));
 }
 
-if ($axAction != "reloadLogfile") {
-    Kimai_Logger::logfile("KSPI axAction (" . (array_key_exists('customer', $kga) ? $kga['customer']['name'] : $kga['user']['name']) . "): " . $axAction);
+if ($axAction != 'reloadLogfile') {
+    Kimai_Logger::logfile("KSPI axAction (" . (array_key_exists('customer',
+            $kga) ? $kga['customer']['name'] : $kga['user']['name']) . "): " . $axAction);
 }
 
 // prevent IE from caching the response

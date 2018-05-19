@@ -1,8 +1,8 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
- * (c) Kimai-Development-Team since 2006
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
+ * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
  *
  * First version - André Couto <andre@7zio.com>
  */
-return array(
+return [
     'countryCode' => 'pt-BR',
     'preferences' => 'Preferências',
     'total' => 'Total',
@@ -95,7 +95,7 @@ return array(
     'passwordsDontMatch' => 'Senha não confere.',
     'passwordTooShort' => 'Senha muito curta.',
     'forgotPassword' => 'Esqueci minha senha',
-    'passwordReset' => array(
+    'passwordReset' => [
         'button' => 'Alterar senha',
         'notSupported' => 'O plugin de autenticação em uso não suporta alterar a senha.',
         'instructions' => 'Informe seu usuário e um email com um link será enviado para a conta cadastrada. Caso não receba o email, certifique-se se informou seu usuário corretamente e verifique sua Caixa de Spam!',
@@ -105,7 +105,7 @@ return array(
         'returnToLogin' => 'voltar ao login',
         'invalidKey' => 'A chave de segurança não confere com a chave enviado para o email. Certifique-se de que a URL completa foi aberta pelo seu navegador.',
         'success' => 'Sua senha foi alterada.',
-    ),
+    ],
     'minLength' => 'min. de 5 caracteres!',
     'update' => 'A estrutura da base de dados instalada do Kimai precisa ser atualizada.<br/>É recomendado efetuar o backup dos seus dados antes de proceguir com a atualização.',
     'updateNow' => 'Atualizar a base de dados agora!',
@@ -335,10 +335,10 @@ EOD
     'credits_thanks' => 'Agradecemos pelo apoio à:',
     'credits_libs' => 'Agradecemos também aos projetos:',
 
-    'months' => array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'),
-    'months_short' => array('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'),
-    'weekdays' => array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'),
-    'weekdays_short' => array('Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'),
+    'months' => ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    'months_short' => ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    'weekdays' => ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+    'weekdays_short' => ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
     'quicklink_today' => 'Hoje',
     'quicklink_yesterday' => 'Ontem',
     'quicklink_lastWeek' => 'Semana passada',
@@ -346,7 +346,7 @@ EOD
     'quicklink_thisWeek' => 'Semana corrente',
     'quicklink_thisMonth' => 'Mês corrente',
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Permissão negada',
         'userWithSameName' => 'Um nome de cliente não pode ser igual a um nome de usuário.',
         'userExistsAlready' => 'O usuário já existe.',
@@ -358,22 +358,26 @@ EOD
         'multiplierNegative' => 'O multiplicador deve ser maior que 0.',
         'emptyField' => 'Campo vazio: %s',
         'wrongData' => 'Os dados informados são inválidos',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Tem certeza de que deseja alterar sua própria função global de "% OLD%" para "% NEW%"? \nIsso pode restringir suas permissões!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => 'Falha ao conectar com o banco de dados!',
-                   'txt' => 'Certifique-se de que o banco de dados esteja em execução, com um conector PDO ativo e, as configurações em \'autoconf.php\', na pasta \'includes\', estejam corretas.'),
-        1 => array('hdl' => 'Erro durante a instalação!',
-                   'txt' => 'Kimai não consegue criar tabelas necessárias porque as tabelas já existem. <br/>
+    'errors' => [
+        0 => [
+            'hdl' => 'Falha ao conectar com o banco de dados!',
+            'txt' => 'Certifique-se de que o banco de dados esteja em execução, com um conector PDO ativo e, as configurações em \'autoconf.php\', na pasta \'includes\', estejam corretas.'
+        ],
+        1 => [
+            'hdl' => 'Erro durante a instalação!',
+            'txt' => 'Kimai não consegue criar tabelas necessárias porque as tabelas já existem. <br/>
         Para atualizar sua instalação existente, clique em <a href="../index.php">aqui</a>. <br/>
-        Escolha outro prefixo de tabela ou exclua as tabelas existentes com este prefixo para permitir que Kimai faça uma instalação limpa.')
-    ),
+        Escolha outro prefixo de tabela ou exclua as tabelas existentes com este prefixo para permitir que Kimai faça uma instalação limpa.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => 'Sim, eu tenho um backup do meu banco de dados Kimai. Continue atualizando!',
         10 => 'Legenda:',
         20 => 'Query executada com sucesso.',
@@ -390,9 +394,9 @@ EOD
         130 => 'Não foi possível gravar em autoconf.php.',
         140 => 'Atualize o arquivo autoconf.php',
         'timezone' => 'O Kimai agora suporta fuso horário. Selecione seu fuso horário padrão. Será usado para todos os usuários e clientes. Os usuários podem mudar o fuso horário individualmente.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => 'Este utilitário de restauração de backup ainda não foi testado! Use por sua conta e risco!',
         1 => 'Backups disponíveis:',
         2 => 'Recuperar',
@@ -405,9 +409,9 @@ EOD
         9 => 'Esses backups são apenas cópias instantâneas (snapshots)! O que significa que eles ainda vivem dentro do mesmo banco de dados que seus dados de trabalho reais do Kimai. Os backups por meio deste utilitário não são substituição de backups reais em um meio de dados fisicamente diferente. Existem muitas ferramentas para backups de banco de dados disponíveis na web;)',
         10 => 'Autentificação necessária',
         11 => 'Para evitar que pessoas não autorizadas criem, excluam ou restaurem backups, você deve fornecer a senha, armazenada em include/autoconf.php. Ela consiste apenas em letras e números.'
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         'print_hint' => 'Clique em OK para abrir uma tabela imprimível.',
         'dl_hint' => 'Clique em OK para baixar o arquivo de exportação.',
         'tab_filter' => 'Filtro',
@@ -459,9 +463,9 @@ EOD
         'time_type' => 'Formato de hora',
         'dec_time' => 'Hora decimal',
         'time' => 'Horário padrão',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Criar fatura',
         'invoiceCustomer' => 'Cliente',
         'invoiceProject' => 'Projetos',
@@ -479,15 +483,15 @@ EOD
         'orderDateAsc' => 'Antigos primeiro',
         'orderDateDesc' => 'Novos primeiro',
         'noDateSelected' => 'Nenhum período selecionado',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'Não utilizado'
-    ),
+    ],
 
     'extensionsTitle' => 'Extensões',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Ver',
         'edit' => 'Editar',
         'delete' => 'Excluir',
@@ -500,9 +504,9 @@ EOD
         'showRates' => 'Mostrar taxas',
         'editRates' => 'Editar taxas',
         'editAdvanced' => 'Editar configurações avançadas'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Administrar',
         'ki_timesheet' => 'Registro de Tarefas',
         'ki_timesheets' => 'Registros de Tarefas',
@@ -514,19 +518,19 @@ EOD
         'ki_export' => 'Exportar',
         'core' => 'Permissões',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => '<b>Está disponível uma atualização oficial, com novos recursos e correções de problemas. A atualização é recomendada.</b>',
         'beta' => '<i>Nova versão beta disponível. O Beta pode ser encontrado na página de download para testar, mas não recomendamos o uso em ambientes de produção.</i>',
         'current' => 'Você já está na versão mais recente! :)'
-    ),
+    ],
 
-    'debug' => array(
+    'debug' => [
         'lines' => '(Limitar em %s linhas)',
         'logfile' => 'Arquivo de Log',
         'clear' => 'Limpar Arquivo de Log',
         'log_delete' => 'Log excluído',
-    ),
+    ],
 
-);
+];

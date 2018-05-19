@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 /**
  * Estonian by andres99
  */
-return array(
+return [
     "countryCode" => "et-EE",
     "preferences" => "Minu eelistused",
     "total" => "Kokku",
@@ -89,7 +89,7 @@ return array(
     "passwordsDontMatch" => "Sisestatud paroolid ei ole ühesugused.",
     "passwordTooShort" => "See parool on lühem kui 5 märki.",
     "forgotPassword" => "Unustasin parooli.",
-    "passwordReset" => array(
+    "passwordReset" => [
         "notSupported" => "See autentimisplugin ei toeta parooli lähtestamist.",
         "instructions" => "Sisestage oma kasutajatunnus: saadan sellega seotud e-posti aadressile kirja, mis sisaldab linki. Kasutajatunnuse korrektsust ma ei kontrolli, nii et sisestage kindlasti õige kasutajatunnus!",
         "mailSubject" => "Kimai: parooli lähtestamine",
@@ -98,7 +98,7 @@ return array(
         "returnToLogin" => "Tagasi sisselogimislehele",
         "invalidKey" => "Turvavõti ei sobi e-postiga saadetud turvavõtmega. Kontrollige, et brauser avaks aadressi kogu pikkuses.",
         "success" => "Teie parool on muudetud.",
-    ),
+    ],
     "minLength" => "vähemalt 5 märki!",
     "update" => "Installitud Kimai versiooni andmebaasi struktuuri tuleb uuendada.<br />Soovitame teha salvestatud töödest varukoopia, et andmed uuendamise ajal<br/>kaotsi ei läheks.",
     "updateNow" => "Uuenda andmebaasi nüüd!",
@@ -341,17 +341,17 @@ return array(
         Kui leiate tarkvaras vigu või teil on mõtteid, kuidas seda paremaks muuta, võtke meiega foorumi kaudu ühendust.
         Või veel parem koostage <a href="%4$s">veateade</a>
 EOD
-,
+    ,
     'credits_license' => 'See programm on vaba tarkvara ja on avaldatud \'AS IS\' (niisugusel kujul, nagu ta on) ilma mingisuguse garantiita vastavalt %1$s.',
     'credits_thanks' => 'Täname toetuse eest:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember"),
-    'months_short' => array("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"),
-    'weekdays' => array("pühapäev", "esmaspäev", "teisipäev", "kolmapäev", "neljapäev", "reede", "laupäev"),
-    'weekdays_short' => array("P", "E", "T", "K", "N", "R", "L"),
+    'months' => ["jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember"],
+    'months_short' => ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+    'weekdays' => ["pühapäev", "esmaspäev", "teisipäev", "kolmapäev", "neljapäev", "reede", "laupäev"],
+    'weekdays_short' => ["P", "E", "T", "K", "N", "R", "L"],
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Ligipääs keelatud!',
         'userWithSameName' => 'Kliendi nimi ei tohi kattuda kasutaja nimega.',
         'customerWithSameName' => 'Kasutaja nimi ei tohi kattuda kliendi nimega.',
@@ -360,23 +360,27 @@ EOD
         'noActivitySelected' => 'Ühtegi tööd ei ole valitud.',
         'noProjectSelected' => 'Ühtegi projekti ei ole valitud.',
         'multiplierNegative' => 'Kordaja peab olema suurem kui 0.',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Kas olete kindel, et soovite muuta omaenda üldise rolli "%OLD%" rolliks "%NEW%"?\nSelle tagajärjel võivad teie volitused kahaneda!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Andmebaasiga ei õnnestunud ühendust luua!",
-            'txt' => "Veenduge, et andmebaas töötaks ja et oleks aktiivne PDO-ühendus ja et kataloogis 'includes' olevas failis 'autoconf.php' oleks õige konfiguratsioon."),
+    'errors' => [
+        0 => [
+            'hdl' => "Andmebaasiga ei õnnestunud ühendust luua!",
+            'txt' => "Veenduge, et andmebaas töötaks ja et oleks aktiivne PDO-ühendus ja et kataloogis 'includes' olevas failis 'autoconf.php' oleks õige konfiguratsioon."
+        ],
 
-        1 => array('hdl' => "Viga installimisel!",
+        1 => [
+            'hdl' => "Viga installimisel!",
             'txt' => 'Kimai ei saa vajalikke tabeleid luua, sest samanimelised tabelid on juba olemas.<br/>
 Installitud versiooni uuendamiseks klõpsake <a href="../index.php">here</a>.<br/>
-Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga tabelid, et Kimai saaks end korralikult installida.')
-    ),
+Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga tabelid, et Kimai saaks end korralikult installida.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Jah, mul on Kimai andmebaasist varukoopia. Asume uuendama!",
         10 => "Selgitused:",
         20 => "Pöördus oli edukas.",
@@ -393,9 +397,9 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         130 => "Faili autoconf.php ei õnnestunud kirjutada.",
         140 => "Faili autoconf.php uuendamine",
         'timezone' => 'Kimai toetab nüüd ajavööndeid. Valige oma tavaline ajavöönd. See hakkab kehtima kõikidele kasutajatele ja klientidele. Kasutajad saavad ise ajavööndit muuta.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Seda varundamisutiliiti ei ole veel testitud! Kasutage omal riskil!",
         1 => "Olemasolevad varukoopiad:",
         2 => "Taasta",
@@ -408,10 +412,10 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         9 => "Need varukoopiad on tegelikult hetkeseisu salvestused. See tähendab, et need on jätkuvalt samas andmebaasis, kus asuvad ka Kimai jooksvad tööandmed. Selle utiliidiga tehtud varukoopiad EI asenda päris varukoopiaid, mis tehakse teisele füüsilisele andmekandjale. Veebis on saadaval palju mitmesugust andmebaaside varundamise tarkvara ;)",
         10 => "Teil tuleb end autentida.",
         11 => "Selleks et volitamata isikud ei saaks varukoopiaid luua, kustutada ega taastada, on teil vaja kirjutada parool, mis on salvestatud failis include/autoconf.php. See parool koosneb ainult tähtedest ja numbritest."
-    ),
+    ],
 
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Prinditava tabeli avamiseks klõpsake OK.",
         "dl_hint" => "Eksportfaili allalaadimiseks klõpsake OK.",
@@ -471,9 +475,9 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         'time_period' => 'Ajavahemik',
 
         'duration_unit' => 'h',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Koosta arve',
         'invoiceProject' => 'Projekt',
         'invoiceTimePeriod' => 'Ajavahemik',
@@ -483,15 +487,15 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         'invoiceButton' => 'Koosta',
         'noData' => 'Valitud projekti kohta ei ole selles ajavahemikus ajaarvestuse kirjeid.',
         'defaultVat' => 'Tavaline käibemaksumäär'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'kasutamata'
-    ),
+    ],
 
     'extensionsTitle' => 'Lisad',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Vaatamine',
         'edit' => 'Muutmine',
         'delete' => 'Kustutamine',
@@ -504,9 +508,9 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         'showRates' => 'Tunnitasude kuvamine',
         'editRates' => 'Tunnitasude muutmine',
         'editAdvanced' => 'Eriseadete muutmine'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Admin',
         'ki_timesheet' => 'Ajaarvestus',
         'ki_timesheets' => 'Ajaarvestus',
@@ -518,8 +522,8 @@ Määrake mingi muu tabeliprefiks või kustutage olemasolevad selle prefiksiga t
         'ki_export' => 'Eksport',
         'core' => 'Õigused',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
     "log_delete" => "Logi tühjendatud.",
 
-);
+];

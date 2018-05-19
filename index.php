@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -26,6 +26,9 @@ ob_start();
 
 require_once 'includes/basics.php';
 
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
+
 $view = new Kimai_View();
 
 $authPlugin = Kimai_Registry::getAuthenticator();
@@ -33,9 +36,7 @@ $authPlugin = Kimai_Registry::getAuthenticator();
 // current database setup correct?
 checkDBversion(".");
 
-// ==========================
-// = installation required? =
-// ==========================
+// installation required?
 if (count($database->get_users()) == 0) {
     $view->assign('devtimespan', '2006-' . date('y'));
     if (isset($_REQUEST['disagreedGPL'])) {
@@ -64,9 +65,7 @@ if (!isset($_POST['password']) || is_array($_POST['password'])) {
     $password = $_POST['password'];
 }
 
-// =========================
-// = User requested logout =
-// =========================
+// User requested logout
 $justLoggedOut = false;
 if ($_REQUEST['a'] == 'logout') {
     setcookie('kimai_key', '0');
@@ -74,9 +73,7 @@ if ($_REQUEST['a'] == 'logout') {
     $justLoggedOut = true;
 }
 
-// ===========================
-// = User already logged in? =
-// ===========================
+// User already logged in?
 if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['kimai_user'] != '0' && $_COOKIE['kimai_key'] != '0' && !$_REQUEST['a'] == 'logout') {
     if ($database->get_seq($_COOKIE['kimai_user']) == $_COOKIE['kimai_key']) {
         header('Location: core/kimai.php');
@@ -84,16 +81,14 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
     }
 }
 
-// ======================================
-// = if possible try an automatic login =
-// ======================================
+// if possible try an automatic login
 if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
     if ($userId === false) {
-        $userId = $database->user_create(array(
+        $userId = $database->user_create([
             'name' => $name,
             'globalRoleID' => $kga['user']['globalRoleID'],
             'active' => 1
-        ));
+        ]);
         $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
     }
     $userData = $database->user_get_data($userId);
@@ -107,9 +102,7 @@ if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performA
     header('Location: core/kimai.php');
 }
 
-// =================================================================
-// = processing login and displaying either login screen or errors =
-// =================================================================
+// processing login and displaying either login screen or errors
 switch ($_REQUEST['a']) {
 
     case 'checklogin':
@@ -142,11 +135,11 @@ switch ($_REQUEST['a']) {
             // perform login of user
             if ($authPlugin->authenticate($name, $password, $userId)) {
                 if ($userId === false) {
-                    $userId = $database->user_create(array(
+                    $userId = $database->user_create([
                         'name' => $name,
                         'globalRoleID' => $authPlugin->getDefaultGlobalRole(),
                         'active' => 1
-                    ));
+                    ]);
                     $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
                 }
 
@@ -189,7 +182,7 @@ switch ($_REQUEST['a']) {
             }
         }
         break;
-    
+
     default:
         // Show login panel
         $view->assign('devtimespan', '2006-' . date('y'));

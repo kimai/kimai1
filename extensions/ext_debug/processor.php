@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,26 +21,26 @@
 // = DEBUG PROCESSOR =
 // ===================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
+$dir_templates = 'templates/';
 require "../../includes/kspi.php";
 
-switch ($axAction)
-{
+$kga = Kimai_Registry::getConfig();
+
+switch ($axAction) {
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
-    case "reloadLogfile":    
-        $logdatei = WEBROOT . "temporary/logfile.txt";
+    case "reloadLogfile":
+        $logdatei = WEBROOT . '/temporary/logfile.txt';
         $fh = fopen($logdatei, 'r');
-        
-        $theData = "";
+
+        $theData = '';
         $i = 0;
-        
+
         $lines = $kga['logfile_lines'];
         $filearray = [];
-        
+
         while (!feof($fh)) {
             $filearray[$i] = fgets($fh);
             $i++;
@@ -52,17 +52,21 @@ switch ($axAction)
             $start = count($filearray);
             $goal = $start - $lines;
             for ($line = $start - 1; ($line > $goal && $line > 0); $line--) {
-                if ($filearray[$line] != "") $theData .= $filearray[$line] . "<br/>";
+                if ($filearray[$line] != "") {
+                    $theData .= $filearray[$line] . "<br/>";
+                }
             }
         } else {
             foreach ($filearray as $line) {
-                if ($line != "") $theData .= $line . "<br/>";
+                if ($line != "") {
+                    $theData .= $line . "<br/>";
+                }
             }
         }
-        
+
         echo $theData;
-    break;
-    
+        break;
+
     /**
      * Empty the logfile.
      */
@@ -75,14 +79,14 @@ switch ($axAction)
         } else {
             die();
         }
-    break;
+        break;
 
     /**
      * Write some message to the logfile.
      */
     case "shoutbox":
-        Kimai_Logger::logfile("[".Kimai_Registry::getUser()->getName()."] " . $axValue);
-    break;
+        Kimai_Logger::logfile("[" . Kimai_Registry::getUser()->getName() . "] " . $axValue);
+        break;
 
     /**
      * Return the $kga variable (Kimai Global Array). Strip out some sensitive
@@ -91,23 +95,22 @@ switch ($axAction)
     case "reloadKGA":
 
         $output = $kga;
-        $filter = array(
+        $filter = [
             'server_hostname' => "xxx",
             'server_database' => "xxx",
             'server_username' => "xxx",
             'server_password' => "xxx",
             'password_salt' => "xxx",
-            'user' => array(
+            'user' => [
                 'secure' => "xxx",
                 'userID' => "xxx",
                 'pw' => "xxx",
                 'password' => "xxx",
                 'apikey' => "xxx"
-            ),
-        );
+            ],
+        ];
 
-        switch($axValue)
-        {
+        switch ($axValue) {
             case 'plain':
                 $output = $kga;
                 $output['conf'] = '## HIDDEN ##';
@@ -117,7 +120,7 @@ switch ($axAction)
 
             case 'lang':
                 $output = $kga['lang'];
-                $filter = array();
+                $filter = [];
                 break;
 
             case 'user':
@@ -131,9 +134,9 @@ switch ($axAction)
         }
 
         // clean out some data that is way too private to be shown in the frontend ...
-        foreach($filter as $k => $v) {
+        foreach ($filter as $k => $v) {
             if (is_array($v)) {
-                foreach($v as $k2 => $v2) {
+                foreach ($v as $k2 => $v2) {
                     if (isset($output[$k]) && isset($output[$k][$k2])) {
                         $output[$k][$k2] = $v2;
                     }
@@ -145,5 +148,5 @@ switch ($axAction)
 
         print_r($output);
 
-    break;
+        break;
 }

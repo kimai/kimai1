@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
      * @var string
      */
     protected $skinName = null;
+
     /**
      * @var string
      */
@@ -47,6 +48,9 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $url = '../skins/' . $this->getName() . '/';
@@ -78,4 +82,4 @@ class Zend_View_Helper_Skin extends Zend_View_Helper_Abstract
 
         return $this->skinName;
     }
-} 
+}

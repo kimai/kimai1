@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -19,6 +19,8 @@
 
 include '../../includes/basics.php';
 
+$database = Kimai_Registry::getDatabase();
+
 $user = checkUser();
 
 $view = new Kimai_View();
@@ -26,7 +28,7 @@ $view->addBasePath(__DIR__ . '/templates/');
 
 // get list of projects for select box
 if (isset($kga['customer'])) {
-    $view->assign('customers', array($kga['customer']['customerID'] => $kga['customer']['name']));
+    $view->assign('customers', [$kga['customer']['customerID'] => $kga['customer']['name']]);
 } else {
     $view->assign('customers', makeSelectBox("customer", $kga['user']['groups']));
 }
@@ -34,24 +36,24 @@ if (isset($kga['customer'])) {
 $tmpCustomers = array_keys($view->customers);
 $projects = $database->get_projects_by_customer($tmpCustomers[0], $kga['user']['groups']);
 
-$tmpProjects = array();
+$tmpProjects = [];
 foreach ($projects as $project) {
     $tmpProjects[$project['projectID']] = $project['name'];
 }
 $view->assign('projects', $tmpProjects);
 
 // Select values for Round Time option
-$roundingOptions = array(
+$roundingOptions = [
     '0' => '',
     '1' => '0.1h',
     '2.5' => '0.25h',
     '5' => '0.5h',
     '10' => '1.0h'
-);
+];
 $view->assign('roundingOptions', $roundingOptions);
 
 // Extract all Invoice Templates in groups
-$invoice_template_files = array();
+$invoice_template_files = [];
 $allInvoices = glob('invoices/*');
 foreach($allInvoices as $tplFile)
 {

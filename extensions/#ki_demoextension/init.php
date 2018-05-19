@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,23 +17,22 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Include Basics
 include('../../includes/basics.php');
 
-$dir_templates = "templates/";
-$datasrc       = "config.ini";
-$settings      = parse_ini_file($datasrc);
-$dir_ext       = $settings['EXTENSION_DIR'];
+$dir_templates = 'templates/';
+$datasrc = 'config.ini';
+$settings = parse_ini_file($datasrc);
+$dir_ext = $settings['EXTENSION_DIR'];
 
 $user = checkUser();
 // =========================================
 // = Get the currently displayed timeframe =
 // =========================================
 $timeframe = get_timeframe();
-$in        = $timeframe[0];
-$out       = $timeframe[1];
+$in = $timeframe[0];
+$out = $timeframe[1];
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
+$view->setBasePath(WEBROOT . '/extensions/' . $dir_ext . '/' . $dir_templates);
 
 echo $view->render('index.php');

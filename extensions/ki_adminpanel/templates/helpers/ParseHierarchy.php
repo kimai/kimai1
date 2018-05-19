@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -48,7 +48,7 @@ class Zend_View_Helper_ParseHierarchy extends Zend_View_Helper_Abstract
 
       foreach ($keyParts as $keyPart) {
         if (!array_key_exists($keyPart, $currentHierarchyLevel))
-          $currentHierarchyLevel[$keyPart] = array();
+          $currentHierarchyLevel[$keyPart] = [];
         $currentHierarchyLevel = &$currentHierarchyLevel[$keyPart];
       }
 

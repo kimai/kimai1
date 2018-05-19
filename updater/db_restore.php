@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,9 +21,11 @@
  * This file allows the user to create and restore backups. The backups are
  * kept within the database, so they aren't true backups but more like
  * snapshots.
- */ 
+ */
 
 require_once '../includes/basics.php';
+
+$database = Kimai_Registry::getDatabase();
 
 if (isset($_REQUEST['submit']) &&
 	isset($_REQUEST['salt']) &&
@@ -43,7 +45,7 @@ $authenticated = (isset($_COOKIE['db_restore_authCode']) && $_COOKIE['db_restore
  * @param $query query to execute as string
  */
 function exec_query($query) {
-	global $conn, $kga, $errors, $executed_queries;
+	global $conn, $errors;
 
 	$success = $conn->Query($query);
 	$errorInfo = serialize($conn->Error());
@@ -55,21 +57,19 @@ function exec_query($query) {
 	}
 }
 
-if (isset($_REQUEST['submit']) && $authenticated)
-{
+if (isset($_REQUEST['submit']) && $authenticated) {
 	$version_temp = $database->get_DBversion();
 	$versionDB  = $version_temp[0];
 	$revisionDB = $version_temp[1];
 	$p = $kga['server_prefix'];
 	$conn = $database->getConnectionHandler();
 
-	if ($_REQUEST['submit'] == $kga['lang']['backup'][8])
-	{
+	if ($_REQUEST['submit'] == $kga['lang']['backup'][8]) {
 		/**
 		 * Create a backup.
 		 */
 		Kimai_Logger::logfile("-- begin backup -----------------------------------");
-		$backup_stamp = time();  
+		$backup_stamp = time();
 		$query = ("SHOW TABLES;");
 
 		if (is_object($conn)) {
@@ -94,8 +94,7 @@ if (isset($_REQUEST['submit']) && $authenticated)
 		header("location: db_restore.php");
 	}
 
-	if ($_REQUEST['submit'] == $kga['lang']['backup'][3]) 
-	{
+	if ($_REQUEST['submit'] == $kga['lang']['backup'][3]) {
 		/**
 		 * Delete backups.
 		 */
@@ -108,26 +107,22 @@ if (isset($_REQUEST['submit']) && $authenticated)
 			$tables = $conn->RecordsArray();
 		}
 
-		foreach ($tables as $row)
-		{
-			if ((substr($row[0], 0, 10) == "kimai_bak_"))
-			{
-				if (in_array(substr($row[0], 10, 10), $dates))
-				{
-					$arr2[] = "DROP TABLE `" . $row[0] . "`;";	
-				}
-			}
-		}
+        foreach ($tables as $row) {
+            if ((substr($row[0], 0, 10) == "kimai_bak_")) {
+                if (in_array(substr($row[0], 10, 10), $dates)) {
+                    $arr2[] = "DROP TABLE `" . $row[0] . "`;";
+                }
+            }
+        }
 
-		if (is_object($conn)) 
-		{
-			foreach ($arr2 AS $row)
-			{
-				$success = $conn->Query($row);
-				if (!$success)
-					break;
-			}
-		}
+        if (is_object($conn)) {
+            foreach ($arr2 AS $row) {
+                $success = $conn->Query($row);
+                if (!$success) {
+                    break;
+                }
+            }
+        }
 		header("location: db_restore.php");
 	}
 }
@@ -204,16 +199,11 @@ if (isset($_REQUEST['submit']) && $authenticated)
 <div class="main">
 <?php
 // restore
-if ($authenticated && isset($_REQUEST['submit']))
-{
-	if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) 
-	{
-		if (count($_REQUEST['dates']) > 1) 
-		{
+if ($authenticated && isset($_REQUEST['submit'])) {
+	if (($_REQUEST['submit'] == $kga['lang']['backup'][2]) && (isset($_REQUEST['dates']))) {
+		if (count($_REQUEST['dates']) > 1) {
 			echo "<h1 class='fail'>" . $kga['lang']['backup'][5] . "</h1>";
-		}
-		else
-		{
+		} else {
 			$restoreDate = intval($_REQUEST['dates'][0]);
 			$query = ("SHOW TABLES;");
 
@@ -222,15 +212,12 @@ if ($authenticated && isset($_REQUEST['submit']))
 				$tables = $conn->RecordsArray();
 			}
 
-			$arr = array();
-			$arr2 = array();
+			$arr = [];
+			$arr2 = [];
 
-			foreach ($tables as $row)
-			{
-				if ((substr($row[0], 0, 10) == "kimai_bak_"))
-				{
-					if (substr($row[0], 10, 10) == $restoreDate)
-					{
+			foreach ($tables as $row) {
+				if ((substr($row[0], 0, 10) == "kimai_bak_")) {
+					if (substr($row[0], 10, 10) == $restoreDate) {
 						$table = $row[0];
 						$arr[] = $table;
 						$arr2[] = substr($row[0], 21, 100);
@@ -259,45 +246,36 @@ if ($authenticated && isset($_REQUEST['submit']))
 
 echo '<form method="post" accept-charset="utf-8">';
 
-if (!$authenticated)
-{
+if (!$authenticated) {
 	echo "<h1>" . $kga['lang']['backup'][10] . "</h1>";
 	echo '<p class="caution">', $kga['lang']['backup'][11], '</p>';
 	echo '<input type="text" name="salt"/>';
 	echo '<input type="submit" name="submit" value="', $kga['lang']['login'], '"/>';
-}
-else
-{
+} else {
 	echo "<h1>" . $kga['lang']['backup'][1] . "</h1>";
 
 	$query = ("SHOW TABLES;");
 
 	$result_backup = $database->queryAll($query);
 
-	$arr = array();
-	$arr2 = array();
+	$arr = [];
+	$arr2 = [];
 
-	foreach ($result_backup as $row)
-	{
-		if ((substr($row[0], 0, 10) == "kimai_bak_"))
-		{
-			$time = substr($row[0], 10, 10);
-			$arr[] = $time;
-		}
-	}
+    foreach ($result_backup as $row) {
+        if ((substr($row[0], 0, 10) == "kimai_bak_")) {
+            $time = substr($row[0], 10, 10);
+            $arr[] = $time;
+        }
+    }
 
 	$neues_array = array_unique($arr);
 
-	foreach ($neues_array AS $date)
-	{
+	foreach ($neues_array AS $date) {
 		$value = @date("d. M Y - H:i:s", $date);
 
-		if (@date("dMY", $date) == @date("dMY", time()))
-		{
+		if (@date("dMY", $date) == @date("dMY", time())) {
 			$label = $kga['lang']['heute'] . @date(" - H:i:s", $date);
-		}
-		else
-		{
+		} else {
 			$label = $value;
 		}
 		echo <<<EOD
@@ -307,7 +285,6 @@ else
 		</p>
 EOD;
 	}
-
 	?>
 	<p class="submit">
 		<input type="submit" name="submit" value="<?php echo $kga['lang']['backup'][2]; ?>"> <!-- restore -->

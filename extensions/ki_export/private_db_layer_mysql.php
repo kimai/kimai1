@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -28,7 +28,8 @@
  */
 function export_timeSheetEntry_set_cleared($id, $cleared)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $table = $kga['server_prefix'] . "timeSheet";
@@ -54,7 +55,8 @@ function export_timeSheetEntry_set_cleared($id, $cleared)
  */
 function export_expense_set_cleared($id, $cleared)
 {
-    global $kga, $database;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $table = $kga['server_prefix'] . "expenses";
@@ -80,7 +82,9 @@ function export_expense_set_cleared($id, $cleared)
  */
 function export_toggle_header($header)
 {
-    global $kga, $database, $all_column_headers;
+    global $all_column_headers;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
     $header_number = array_search($header, $all_column_headers);
@@ -107,16 +111,18 @@ function export_toggle_header($header)
  */
 function export_get_disabled_headers($userID)
 {
-    global $kga, $database, $all_column_headers;
+    global $all_column_headers;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
-    $disabled_headers = array();
+    $disabled_headers = [];
 
     $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
     $filter['option'] = MySQL::SQLValue('export_disabled_columns');
     $table = $kga['server_prefix'] . "preferences";
 
-    if (! $conn->SelectRows($table, $filter)) {
+    if (!$conn->SelectRows($table, $filter)) {
         return 0;
     }
 

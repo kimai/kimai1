@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * By Conny Sjölund
  * We take no responsibility for any consequence.
  */
-return array(
+return [
     "countryCode" => "sv-SV",
     "preferences" => "Inställningar",
     "total" => "Totalt",
@@ -231,22 +231,26 @@ return array(
 
     'multiplier' => 'Multiplier',
 
-    'months' => array("January", "February", "Mars", "April", "May", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
-    'weekdays' => array("Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"),
-    'weekdays_short' => array("Sön", "Mon", "Tis", "Ons", "Tor", "Fri", "Lör"),
+    'months' => ["January", "February", "Mars", "April", "May", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    'weekdays' => ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"],
+    'weekdays_short' => ["Sön", "Mon", "Tis", "Ons", "Tor", "Fri", "Lör"],
 
-    'errors' => array(
-        0 => array('hdl' => "Kunde inte koppla till databasen!",
-            'txt' => "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta."),
+    'errors' => [
+        0 => [
+            'hdl' => "Kunde inte koppla till databasen!",
+            'txt' => "Vänligen kontrollera att din databas är aktiverad, har du aktiv PDO kontakt och är uppgifterna i 'autoconf.php' i mappen 'includes' �r korrekta."
+        ],
 
-        1 => array('hdl' => "Fel vid installation!",
+        1 => [
+            'hdl' => "Fel vid installation!",
             'txt' => 'Kimai kan inte skapa tabell eftersom namn med tabellen redan existerar.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, jag har en säkerhetskopia av min Kimai databas! Fortsätt uppdateringen!",
         10 => "Förklaring:",
         20 => "Förfrågan utfördes framgångsrikt.",
@@ -261,9 +265,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         110 => "Nya Lösenord",
         120 => "Se nedan för nya lösenord för varje användare.",
         130 => "Kunde inte skriva till autoconf.php.",
-        140 => "uppdatera filen autoconf.php"),
+        140 => "uppdatera filen autoconf.php"
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Detta säkerhetskopieringsverktyg är inte ännu testat! Används på egen risk!",
         1 => "Tillgängliga säkerhetskopior:",
         2 => "återställ",
@@ -273,9 +278,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         6 => "Säkerhetskopia från",
         7 => "blev återställd.",
         8 => "skapa säkerhetskopia",
-        9 => "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)"),
-    
-    'export_extension' => array(
+        9 => "Dessa säkerhetskopior är egentligen ögonblicksbilder! Vilket innebär att de fortfarande finns i samma databas som din egentliga arbetsdata för Kimai. Säkerhetskopior via detta verktyg ersätter INTE verkliga fyskiska säkerhetskopior pä skild media. Det finns flera verktyg för säkerhetskopiering av databaser på internet ;)"
+    ],
+
+    'export_extension' => [
         "print_hint" => "Klicka OK för att öppna en skrivbar tabell.",
         "dl_hint" => "Klikcka OK för att ladda ner en exporterad fil.",
 
@@ -328,9 +334,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_period' => 'time period',
 
         'duration_unit' => 'h',
-    ),
-    
-    'ext_invoice' => array(
+    ],
+
+    'ext_invoice' => [
         'invoiceTitle' => 'Create invoice',
         'invoiceProject' => 'Projects',
         'invoiceTimePeriod' => 'Period of time',
@@ -338,9 +344,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceOptionRound' => 'Round time',
         'invoiceButton' => 'Create',
         'noData' => 'There are no time entries for the selected project & time period.'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Timesheet',
         'ki_expenses' => 'Expenses',
         'ki_invoice' => 'Invoice',
@@ -348,7 +354,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
         'ki_export' => 'Export'
-    ),
+    ],
 
     "log_delete" => "log rensas",
-);
+];

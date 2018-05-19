@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -18,11 +18,11 @@
  */
 
  /* Translated by: George Stamate (GxGL) - stamate_george@yahoo.com */
- 
+
 /**
  * romanian
  */
-return array(
+return [
     "countryCode" => "ro-RO",
     "preferences" => "Preferinte",
     "total" => "Total",
@@ -93,7 +93,7 @@ return array(
     "passwordsDontMatch" => "Parolele introduse nu se potrivesc.",
     "passwordTooShort" => "Parola nu are cel putin 5 caractere.",
     "forgotPassword" => "Mi-am uitat parola",
-    "passwordReset" => array(
+    "passwordReset" => [
         "button" => "Resetare parola",
         "notSupported" => "Momentan resetarea parolei nu este suportata.",
         "instructions" => "Introduceti numele de utilizator si un e-mail continand un link de resetare va fi trimis pe adresa de e-mail asociata numelui de utilizator. Nu vor fi indicatii ca numele de utilizator este corect sau nu, asa ca introduceti-l cu atentie si corect!",
@@ -103,7 +103,7 @@ return array(
         "returnToLogin" => "inapoi la pagina de conectare",
         "invalidKey" => "Cheia de siguranta nu se potriveste cu cea trimisa pe e-mail. Asigurati-va ca in browser s-a deschis url-ul complet (verificati bara de adrese).",
         "success" => "Parola a fost schimbata.",
-    ),
+    ],
     "minLength" => "min. 5 caractere!",
     "update" => "Structura basei de date trebuie actualizata.<br />Recomandam ca inaintea acestei operatiuni sa faceti un back-up al bazei de date pentru a preveni pierderile<br />din timpul procesului de actualizare.",
     "updateNow" => "Actualizare baza de date!",
@@ -333,12 +333,12 @@ EOD
     'credits_thanks' => 'Multumim in continuare pentru sprijinul acordat:',
     'credits_libs' => 'Multumirile noastre merg si catre proiectele:',
 
-    'months' => array("Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decemberie"),
-    'months_short' => array("Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Nov", "Dec"),
-    'weekdays' => array("Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata", "Duminica"),
-    'weekdays_short' => array("Lun", "Mar", "Mie", "Joi", "Vin", "Sam", "Dum"),
+    'months' => ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decemberie"],
+    'months_short' => ["Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    'weekdays' => ["Luni", "Marti", "Miercuri", "Joi", "Vineri", "Sambata", "Duminica"],
+    'weekdays_short' => ["Lun", "Mar", "Mie", "Joi", "Vin", "Sam", "Dum"],
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Permisiune respinsa',
         'userWithSameName' => 'Numele unui client nu poate fi acealsi cu al unu nume de utilizator.',
         'userExistsAlready' => 'Utilizatorul exista deja.',
@@ -350,22 +350,26 @@ EOD
         'multiplierNegative' => 'Multiplicatorul trebuie sa fie mai mare ca 0.',
         'emptyField' => 'Nu exista valoare pentru campul: %s',
         'wrongData' => 'Data introdusa nu este valida',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Esti sigur ca vrei sa schimbi rolul tau global din "%OLD%" in "%NEW%"?\nAsta iti poate afecta permisiunile!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Nu s-a putut conecta la baza de date!",
-                   'txt' => "Asigura-te ca serviciul de baze de date ruleaza si ca are un conector PDO activ. De asemenea verifica si daca inregisrarile din fisierul 'autoconf.php' ce se afla in directorul 'includes' sunt corecte."),
-        1 => array('hdl' => "Eroare la instalare!",
-                   'txt' => 'Kimai nu a putut crea unele tabele pentru ca unele cu acelasi nume exista deja.<br/>
+    'errors' => [
+        0 => [
+            'hdl' => "Nu s-a putut conecta la baza de date!",
+            'txt' => "Asigura-te ca serviciul de baze de date ruleaza si ca are un conector PDO activ. De asemenea verifica si daca inregisrarile din fisierul 'autoconf.php' ce se afla in directorul 'includes' sunt corecte."
+        ],
+        1 => [
+            'hdl' => "Eroare la instalare!",
+            'txt' => 'Kimai nu a putut crea unele tabele pentru ca unele cu acelasi nume exista deja.<br/>
 Pentru a actualiza instalarea curenta te rugam sa faci click <a href="../index.php">aici</a>.<br/>
-Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permite Kimai sa se instaleze corect.')
-    ),
+Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permite Kimai sa se instaleze corect.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Da, am facut deja backup la baza de date! Te rog actualizeaza!",
         10 => "Legenda:",
         20 => "Interogarea a fost executata cu succes.",
@@ -382,9 +386,9 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         130 => "Fisierul autoconf.php nu poate fi scris.",
         140 => "actualizare fisier autoconf.php",
         'timezone' => 'Acum Kimai suporta fusuri orare. Selecteaza fusul orar initial. Acesta va fi folosit pentru toti utilizatorii si clientii. Utilizatorii au optiunea de a-si schimba fusul orar.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Acest utilitar de Backup nu a fost inca testat! Il folosesti pe propria raspundere!",
         1 => "Backup-uri disponibile:",
         2 => "recuperare",
@@ -397,9 +401,9 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         9 => "Aceste backup-uri sunt defapt snapshot-uri! Asta inseamna ca inca sunt in aceasi baza de date cu care lucreaza Kimai. Backup-urile realizate cu acest utilitar NU sunt o inlocuire a unui backup real realizat pe un dispozitiv fizic. Poti gasi o sumedenie de aplicatii pentru backup al bazelor de date pe internet. ;)",
         10 => "Autentificare obligatorie",
         11 => "Pentru a prevenii persoanele neautorizate sa creeze, sa stearga, sau sa restaureze backup-uri, trebuie sa introduci 'password salt' ce se afla in fisierul include/autoconf.php. Este o insiruire de numere si caractere."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Click OK pentru a deschide un table printabil.",
         "dl_hint" => "Click OK pentru a descarca fisierul exportat.",
         "tab_filter" => "Filtru",
@@ -451,9 +455,9 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         'time_type' => 'Format timp',
         'dec_time' => 'Timp zecimal',
         'time' => 'Timp standard',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Creare Factura',
         'invoiceCustomer' => 'Client',
         'invoiceProject' => 'Proiecte',
@@ -471,15 +475,15 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         'orderDateAsc' => 'Data(Asc) - Cele vechi primele',
         'orderDateDesc' => 'Data(Desc) - Cele noi primele',
         'noDateSelected' => 'Perioada de timp lipseste',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'ne folosit'
-    ),
+    ],
 
     'extensionsTitle' => 'Extensii',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Vizualizare',
         'edit' => 'editare',
         'delete' => 'stergere',
@@ -492,9 +496,9 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         'showRates' => 'arata tarifele',
         'editRates' => 'editeaza tarifele',
         'editAdvanced' => 'editeaza setarile avansate'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Panou Administrare',
         'ki_timesheet' => 'Pontaj',
         'ki_timesheets' => 'Pontaje',
@@ -506,19 +510,19 @@ Alege un alt prefix pentru tabele sau stergele pe cele existente pentru a permit
         'ki_export' => 'Export',
         'core' => 'Permisiuni',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>O actualizare oficiala este disponibila. Recomandam aceasta actualizare!</b>",
         'beta' => "<i>O versiune BETA este disponibila. Aceasta poate fi descarcata de pe pagina noastra pentru teste, dar nu o recomandam pentru folosirea in productie.</i>",
         'current' => "Rulezi deja cu ultima versiune. :)"
-    ),
+    ],
 
-    'debug' => array(
+    'debug' => [
         'lines' => '(limitat la %s linii)',
         'logfile' => 'Fisier jurnal',
         'clear' => 'Goleste fisierul de jurnal',
         'log_delete' => 'jurnalul a fost golit.',
-    ),
+    ],
 
-);
+];

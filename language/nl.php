@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  * nederlands
  * by Paul Brand and Vasilis van Gemert
  */
-return array(
+return [
     "countryCode" => "nl-NL",
     "preferences" => "Voorkeuren",
     "total" => "Totaal",
@@ -89,7 +89,7 @@ return array(
     "passwordsDontMatch" => "Ingevoerde wachtwoorden komen niet overeen.",
     "passwordTooShort" => "Het wachtwoord heeft niet tenminste 5 karakters.",
     "forgotPassword" => "Wachtwoord vergeten",
-    "passwordReset" => array(
+    "passwordReset" => [
         "button" => "Wachtwoord opnieuw instellen",
         "notSupported" => "Het herstellen van het wachtwoord wordt door de huidige authenticatie plugin niet ondersteund.",
         "instructions" => "Voer een gebruikersnaam in en een email zal worden gestuurd naar het adres dat geassocieerd wordt met de opegegeven gebruikersnaam. Zorg ervoor dat de gebruikersnaam juist is omdat een foute invoer niet wordt aangegeven!",
@@ -99,7 +99,7 @@ return array(
         "returnToLogin" => "ga terug naar de login pagina",
         "invalidKey" => "De beveiligingssleutel komt niet overeen met de sleutel in de email. Zorg ervoor dat de complete URL is geopend door je browser.",
         "success" => "Je wachtwoord is veranderd.",
-    ),
+    ],
     "minLength" => "Het wachtwoord moet minimaal 5 karakters bevatten!",
     "update" => "De structuur van de huidige Kimai-database moet geupdate worden.<br />Maak voor de zekerheid een back up van uw database zodat u geen gegevens verliest tijdens het updaten.",
     "updateNow" => "De database moet nu geüpdatet worden!",
@@ -324,12 +324,12 @@ EOD
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
-    'weekdays' => array("zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"),
-    'weekdays_short' => array("zo", "ma", "di", "wo", "do", "vr", "za"),
+    'months' => ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    'weekdays' => ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"],
+    'weekdays_short' => ["zo", "ma", "di", "wo", "do", "vr", "za"],
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Toestemming geweigerd',
         'userWithSameName' => 'Een klantnaam kan niet hetzelfde zijn als de gebruikersnaam.',
         'userExistsAlready' => 'Gebruiker bestaat al.',
@@ -341,21 +341,25 @@ EOD
         'multiplierNegative' => 'De vermenigvuldiger moet groter zijn dan 0.',
         'emptyField' => 'Waarde mist in veld: %s',
         'wrongData' => 'De gegeven data in ongeldig',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Weet je zeker dat je je eigen globale rol wilt veranderen van "%OLD%" naar "%NEW%"?\n Dit kan leiden tot minder bevoegdheden!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Database kon niet verbinden!",
-            'txt' => "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'autoconf.php' in folder 'includes' correct zijn."),
+    'errors' => [
+        0 => [
+            'hdl' => "Database kon niet verbinden!",
+            'txt' => "Controleer svp of de database server is gestart, of er een actieve PDO verbinding is en kijk of de gegevens in 'autoconf.php' in folder 'includes' correct zijn."
+        ],
 
-        1 => array('hdl' => "Fout tijdens installatie!",
-            'txt' => 'Kimai kon geen tabellen aanmaken in de database omdat deze al bestonden.<br/>Om de bestaande installatie te update klik <a href="../index.php">hier</a>.<br/>Kies een andre tabel prefix of gooi de bestaande met de huidige prefix tabellen weg om een Kamai geheel opnieuw te installeren.')
-    ),
+        1 => [
+            'hdl' => "Fout tijdens installatie!",
+            'txt' => 'Kimai kon geen tabellen aanmaken in de database omdat deze al bestonden.<br/>Om de bestaande installatie te update klik <a href="../index.php">hier</a>.<br/>Kies een andre tabel prefix of gooi de bestaande met de huidige prefix tabellen weg om een Kamai geheel opnieuw te installeren.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, er is een backup van mijn Kimai database! Ga door met updaten!",
         10 => "Legenda:",
         20 => "Query met succes uitgevoerd.",
@@ -372,9 +376,9 @@ EOD
         130 => "Kon niet schijven naar autoconf.php.",
         140 => "update bestand autoconf.php",
         'timezone' => 'Kimai understeund nu tijdzones. Selecteer de standaard tijdzone. Deze zal gebruikt worden voor alle gebruikers en klanten. Gebruikers kunnen hun eigen tijdzone aanpassen.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Dit programma om de backup terug te zetten is nog niet getest. Gebruik op eigen risico!",
         1 => "Beschikbare backups:",
         2 => "herstellen",
@@ -387,9 +391,9 @@ EOD
         9 => "Deze backups zijn in werkelijkheid snapshots! Wat betekend dat deze nog steed aanwezig zijn in dezelfde database als waar de huidige Kimai data staat. Backupen via deze manier is GEEN vervanging van een echte backup op een fysiek ander medium. Er zijn verschillende tools op het web te verkrijgen om database backups te maken.",
         10 => "Authenticatie vereist",
         11 => "Om te voorkomen dat ongeauthoriseerde personen backups maken, verwijderen of herstellen, moet je het password salt opgeven die opgeslagen staat in include/autoconf.php. Het bestaat alleen uit letters en getallen."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Klik op OK om een tabel te openen die je kunt printen.",
         "dl_hint" => "Klik op OK om bestand te downloaden.",
         "tab_filter" => "Filter",
@@ -441,9 +445,9 @@ EOD
         'time_type' => 'Tijd opmaak',
         'dec_time' => 'Decimale tijd',
         'time' => 'Standaard tijd',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Maak factuur',
         'invoiceCustomer' => 'Klanten',
         'invoiceProject' => 'Projecten',
@@ -461,15 +465,15 @@ EOD
         'orderDateAsc' => 'Datum - oudste eerst',
         'orderDateDesc' => 'Datum - nieuwste eerst',
         'noDateSelected' => 'Er mist een tijdvak',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'ongebruikt'
-    ),
+    ],
 
     'extensionsTitle' => 'Extensies',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Bekijk',
         'edit' => 'Bewerk',
         'delete' => 'Verwijder',
@@ -482,9 +486,9 @@ EOD
         'showRates' => 'toon tarieven',
         'editRates' => 'bewerk tarieven',
         'editAdvanced' => 'bewerk geavanceerde instellingen'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
       'adminPanel_extension' => 'Admin Paneel',
       'ki_timesheet' => 'Rooster',
       'ki_timesheets' => 'Roosters',
@@ -496,13 +500,13 @@ EOD
       'ki_export' => 'Exporteer',
       'core' => 'Toestemmingen',
       'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest that you update.</b>",
         'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
         'current' => "You are running the latest version :)"
-    ),
+    ],
 
     "log_delete" => "log gewist",
-);
+];

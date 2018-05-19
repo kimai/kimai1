@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ include '../ki_expenses/private_db_layer_mysql.php';
 function calculate_expenses_sum($projectId)
 {
     $expenseSum = 0;
-    $expenses = get_expenses(0, time(), null, null, array($projectId));
+    $expenses = get_expenses(0, time(), null, null, [$projectId]);
 
     foreach ($expenses as $expense) {
         $expenseSum += $expense['value'];
@@ -60,9 +60,9 @@ function calculate_expenses_sum($projectId)
  */
 function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expensesOccurred, &$kga)
 {
-    global $database;
+    $database = Kimai_Registry::getDatabase();
 
-    $wages = array();
+    $wages = [];
     $expensesOccurred = false;
 
     $billableLangString = $kga['lang']['billable'];
@@ -116,14 +116,14 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             if ($activity['visible'] != 1) {
                 continue;
             }
-            $wages[$projectID][$activity['activityID']] = array(
-                'name' => $activity['name'], 
-                'budget' => 0, 
-                'budget_total' => 0, 
+            $wages[$projectID][$activity['activityID']] = [
+                'name' => $activity['name'],
+                'budget' => 0,
+                'budget_total' => 0,
                 'approved' => 0,
                 'approved_total' => 0,
                 'total' => 0
-            );
+            ];
             if (!isset($activity['budget']) || $activity['budget'] <= 0) {
                 continue;
             }
@@ -144,11 +144,11 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             $wages[$projectID]['approved'] += $activity['approved'];
         }
     }
-   
+
     /* sum up wages for every project and every activity */
     foreach ($projects as $project) {
         $projectId = $project['projectID'];
-        $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, array($projectId));
+        $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, [$projectId]);
         foreach ($timeSheetEntries as $timeSheetEntry) {
             $projectID = $projectId;
             if (isset($wages[$projectID][$timeSheetEntry['activityID']]) && is_array($wages[$projectID][$timeSheetEntry['activityID']])) {

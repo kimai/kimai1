@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  * polish translation by prometheus@o2.pl
  *
  */
-return array(
+return [
     "countryCode" => "pl-PL",
     "preferences" => "Preferencje",
     "total" => "Łącznie",
@@ -281,27 +281,31 @@ return array(
         Jesli znajdziesz jakiekolwiek błędy lub masz pomysły na nowe elementy, czuj się nieskrępowany aby skontaktować się z nami poprzez forum.
         Lub lepiej: stwórz nowe <a href="%4$s">zgloszenie-ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'Program ten jest wolny i opublikowany \'TAK JAK\' bez jakielkolwiek gwarancji zgodnie z warunkami %1$s.',
     'credits_thanks' => 'Dalsze podziękowania za wsparcie dla:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"),
-    'months_short' => array("Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"),
-    'weekdays' => array("Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"),
-    'weekdays_short' => array("Nie", "Pon", "Wto", "Śro", "Czw", "Pią", "Sob"),
+    'months' => ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+    'months_short' => ["Sty", "Lut", "Mar", "Kwi", "Maj", "Cze", "Lip", "Sie", "Wrz", "Paź", "Lis", "Gru"],
+    'weekdays' => ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+    'weekdays_short' => ["Nie", "Pon", "Wto", "Śro", "Czw", "Pią", "Sob"],
 
-    'errors' => array(
-        0 => array('hdl' => "Nie można podłączyć się do bazy danych!",
-            'txt' => "Sprawdź czy baza danych pracuje i ma aktywną wtyczkę PDO i wpisy w  'autoconf.php' w folderze 'includes' są poprawne."),
+    'errors' => [
+        0 => [
+            'hdl' => "Nie można podłączyć się do bazy danych!",
+            'txt' => "Sprawdź czy baza danych pracuje i ma aktywną wtyczkę PDO i wpisy w  'autoconf.php' w folderze 'includes' są poprawne."
+        ],
 
-        1 => array('hdl' => "Błąd podczas instalacji!",
+        1 => [
+            'hdl' => "Błąd podczas instalacji!",
             'txt' => 'Kimai nie może utworzyć wymaganych tabel ponieważ takowe już istnieją.<br/>
 Aby zaktualizować istniejącą instalację kliknij <a href="../index.php">here</a>.<br/>
-Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu zezwolenia Kimai na przeprowadzenie czystej instalacji.')
-    ),
+Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu zezwolenia Kimai na przeprowadzenie czystej instalacji.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Tak mam kopię bazy danych Kimai! Wykonaj aktualizację!",
         10 => "Legenda:",
         20 => "Wykonanie zapytanie zakończyło się powodzeniem.",
@@ -318,9 +322,9 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
         130 => "Nie można zapisać pliku autoconf.php.",
         140 => "aktualizacja pliku  autoconf.php",
         'timezone' => 'Kimai wspiera strefy czasowe. Proszę wybrać domyślną strefę. Będzie ona użyta dla wszystkich użytkowników i klientów. Użytkownicy mogą zmienić ich  strefy czasowe.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "To narzędzie odzyskiwania kopii bezpieczeństwa nie zostało jeszcze przetestowane! Używasz na własne ryzyko!",
         1 => "Osiągalne kopie bezpieczeństwa:",
         2 => "odtwórz",
@@ -330,10 +334,11 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
         6 => "Kopia bezpieczeństwa",
         7 => "została odtworzona.",
         8 => "utwórz kopię bezpieczeństwa",
-        9 => "Te kopie bezpieczeństwa są właściwie migawkami! To znaczy wciąż istnieją w tej samej bazie danych z jaką pracuje Kimai. Kopie wykonane poprzez to narzędzi nie stanowi zastępstwa w miejsce kopii wykonanych na innych fizycznych mediach. W sieci isnieje wiele narzędzi do wykonywania kopii baz danych ;)"),
+        9 => "Te kopie bezpieczeństwa są właściwie migawkami! To znaczy wciąż istnieją w tej samej bazie danych z jaką pracuje Kimai. Kopie wykonane poprzez to narzędzi nie stanowi zastępstwa w miejsce kopii wykonanych na innych fizycznych mediach. W sieci isnieje wiele narzędzi do wykonywania kopii baz danych ;)"
+    ],
 
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Klik OK aby otworzyć drukowalną tablicę.",
         "dl_hint" => "Klik OK aby pobrać plik eksportu.",
 
@@ -392,10 +397,10 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
         'time_period' => 'Okres czasu',
 
         'duration_unit' => 'godz.',
-    ),
+    ],
 
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Utwórz rachunek',
         'invoiceProject' => 'Projekt',
         'invoiceTimePeriod' => 'Okres czasu',
@@ -405,20 +410,20 @@ Wybierz inny prefix tabeli lub usuń istniejące tabele z tym prefixem w celu ze
         'invoiceButton' => 'Utwórz',
         'noData' => 'Brak wpisów czasu dla wybranego projektu i okresu czasu.',
         'defaultVat' => 'Domyślny VAT'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'nieużywane'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Arkusz czasu',
         'adminPanel_extension' => 'Panel admina',
         'ki_expenses' => 'Wydatki',
         'ki_export' => 'Eksport',
         'ki_budget' => 'Budżet',
         'ki_invoice' => 'Rachunki'
-    ),
+    ],
 
     "log_delete" => "zaloguj wyczyszczone",
-);
+];

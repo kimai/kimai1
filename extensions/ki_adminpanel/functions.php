@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -36,9 +36,9 @@ function getGroupsData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGroup
         );
     }
 
-    return array(
+    return [
         'groups' => $allowedGroups
-    );
+    ];
 }
 
 /**
@@ -55,11 +55,11 @@ function getProjectsData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGro
         $projects = $database->get_projects($kgaUser['groups']);
     }
 
-    $result = array();
+    $result = [];
 
     if ($projects !== null && is_array($projects)) {
         foreach ($projects as $row => $project) {
-            $groupNames = array();
+            $groupNames = [];
             foreach ($database->project_get_groupIDs($project['projectID']) as $groupID) {
                 if (!$viewOtherGroupsAllowed && array_search($groupID, $kgaUser['groups']) === false) {
                     continue;
@@ -90,7 +90,7 @@ function getCustomersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGr
     }
 
     foreach ($customers as $row => $data) {
-        $groupNames = array();
+        $groupNames = [];
         $groups = $database->customer_get_groupIDs($data['customerID']);
         if ($groups !== false) {
             foreach ($groups as $groupID) {
@@ -104,9 +104,9 @@ function getCustomersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGr
         }
     }
 
-    return array(
+    return [
         'customers' => $customers
-    );
+    ];
 }
 
 /**
@@ -117,11 +117,11 @@ function getCustomersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGr
  */
 function getUsersData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGroupsAllowed)
 {
-    $result = array(
+    $result = [
         'showDeletedUsers' => get_cookie('adminPanel_extension_show_deleted_users', 0),
         'curr_user' => $kgaUser['name'],
         'users' => getEditUserList($database, $kgaUser, $viewOtherGroupsAllowed)
-    );
+    ];
     return $result;
 }
 
@@ -154,7 +154,7 @@ function getActivitiesData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherG
     }
 
     foreach ($activities as $row => $activity) {
-        $groupNames = array();
+        $groupNames = [];
         foreach ($database->activity_get_groups($activity['activityID']) as $groupID) {
             if (!$viewOtherGroupsAllowed && array_search($groupID, $kgaUser['groups']) === false) {
                 continue;
@@ -163,14 +163,14 @@ function getActivitiesData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherG
             $groupNames[] = $data['name'];
         }
         $activities[$row]['groups'] = implode(", ", $groupNames);
-        $activities[$row]['projects'] = $database->activity_get_projects($activity['activityID']) ?: array();
+        $activities[$row]['projects'] = $database->activity_get_projects($activity['activityID']) ?: [];
     }
 
-    $result = array();
+    $result = [];
     if (count($activities) > 0) {
         $result['activities'] = $activities;
     } else {
-        $result['activities'] = array();
+        $result['activities'] = [];
     }
     $result['projects'] = $database->get_projects($groups);
     $result['selected_activity_filter'] = $activity_filter;
@@ -186,7 +186,7 @@ function getActivitiesData(Kimai_Database_Mysql $database, $kgaUser, $viewOtherG
  */
 function getEditUserList(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGroupsAllowed)
 {
-    $users = array();
+    $users = [];
     $showDeletedUsers = get_cookie('adminPanel_extension_show_deleted_users', 0);
 
     if ($database->global_role_allows($kgaUser['globalRoleID'], 'core-user-otherGroup-view')) {
@@ -208,7 +208,7 @@ function getEditUserList(Kimai_Database_Mysql $database, $kgaUser, $viewOtherGro
             }
         }
 
-        $user['groups'] = array();
+        $user['groups'] = [];
 
         $groups = $database->getGroupMemberships($user['userID']);
         if (is_array($groups)) {

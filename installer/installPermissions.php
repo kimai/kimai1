@@ -1,57 +1,76 @@
 <?php
 
-function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions) {
-  global $p;
-  $query = 
-  "CREATE TABLE `${p}${tableName}` (
+$database = Kimai_Registry::getDatabase();
+
+function buildRoleTableCreateQuery($tableName, $idColumnName, $permissions)
+{
+    global $p;
+    $query = "CREATE TABLE `${p}${tableName}` (
   `${idColumnName}` int(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR( 255 ) NOT NULL,";
 
-  $permissionColumns = array();
-  $permissionColumnDefinitions = array();
-  foreach ($permissions as $permission) {
-    $permissionColumns[] = '`' . $permission . '`';
-    $permissionColumnDefinitions[] = '`' . $permission . '` TINYINT DEFAULT 0';
-  }
-  $query .= implode(', ', $permissionColumnDefinitions);
+    $permissionColumns = [];
+    $permissionColumnDefinitions = [];
+    foreach ($permissions as $permission) {
+        $permissionColumns[] = '`' . $permission . '`';
+        $permissionColumnDefinitions[] = '`' . $permission . '` TINYINT DEFAULT 0';
+    }
+    $query .= implode(', ', $permissionColumnDefinitions);
 
-  $query .= ") ENGINE = InnoDB ";
+    $query .= ") ENGINE = InnoDB";
 
-  return $query;
+    return $query;
 }
 
-function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions) {
-  global $p;
-  foreach ($allowedPermissions as &$permission)
-    $permission = '`' . $permission . '`';
+function buildRoleInsertQuery($tableName, $roleName, $allowedPermissions, $allPermissions)
+{
+    global $p;
+    foreach ($allowedPermissions as &$permission) {
+        $permission = '`' . $permission . '`';
+    }
 
-  if (count($allowedPermissions) == 0)
-    $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
-  else
-    $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ', $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
-    implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
-  return $query;
+    if (count($allowedPermissions) == 0) {
+        $query = "INSERT INTO `${p}${tableName}` (`name`)  VALUES ('" . $roleName . "');";
+    } else {
+        $query = "INSERT INTO `${p}${tableName}` (`name`, " . implode(', ',
+                $allowedPermissions) . ")  VALUES ('" . $roleName . "', " .
+            implode(', ', array_fill(0, count($allowedPermissions), '1')) . ");";
+    }
+    return $query;
 }
 
 // Global roles table
-$globalPermissions = array();
+$globalPermissions = [];
 
-$membershipPermissions = array();
+$membershipPermissions = [];
 
 // extension permissions
-foreach (array('deb_ext', 'adminPanel_extension', 'ki_budget', 'ki_expenses', 'ki_export', 'ki_invoice', 'ki_timesheet', 'demo_ext') as $extension)
-  $globalPermissions[] = $extension . '-access';
+foreach (
+    [
+        'deb_ext',
+        'adminPanel_extension',
+        'ki_budget',
+        'ki_expenses',
+        'ki_export',
+        'ki_invoice',
+        'ki_timesheet',
+        'demo_ext'
+    ] as $extension) {
+    $globalPermissions[] = $extension . '-access';
+}
 
 // domain object permissions
-foreach (array('customer', 'project', 'activity', 'user') as $object)
-  foreach (array('add', 'edit', 'delete', 'assign', 'unassign') as $action) {
-    $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
-    $membershipPermissions[] = 'core-' . $object . '-' . $action;
-  }
+foreach (['customer', 'project', 'activity', 'user'] as $object) {
+    foreach (['add', 'edit', 'delete', 'assign', 'unassign'] as $action) {
+        $globalPermissions[] = 'core-' . $object . '-otherGroup-' . $action;
+        $membershipPermissions[] = 'core-' . $object . '-' . $action;
+    }
+}
 
 // status permissions
-foreach (array('add', 'edit', 'delete') as $action)
-  $globalPermissions[] = 'core-status-' . $action;
+foreach (['add', 'edit', 'delete'] as $action) {
+    $globalPermissions[] = 'core-status-' . $action;
+}
 
 // group permissions
 $globalPermissions[] = 'core-group-add';
@@ -101,7 +120,7 @@ $connection = $database->getConnectionHandler();
 $globalAdminRoleID = $connection->GetLastInsertID();
 
 // global user role
-$allowedPermissions = array(
+$allowedPermissions = [
   'ki_budget-access',
   'ki_expenses-access',
   'ki_export-access',
@@ -114,7 +133,7 @@ $allowedPermissions = array(
   'ki_expenses-ownEntry-add',
   'ki_expenses-ownEntry-edit',
   'ki_expenses-ownEntry-delete',
-);
+];
 $query = buildRoleInsertQuery('globalRoles', 'User', $allowedPermissions, $globalPermissions);
 exec_query($query);
 $globalUserRoleID = $connection->GetLastInsertID();
@@ -130,20 +149,20 @@ exec_query($query);
 $membershipAdminRoleID = $connection->GetLastInsertID();
 
 // membership user role
-$allowedPermissions = array();
+$allowedPermissions = [];
 $query = buildRoleInsertQuery('membershipRoles', 'User', $allowedPermissions, $membershipPermissions);
 exec_query($query);
 $membershipUserRoleID = $connection->GetLastInsertID();
 
 // membership groupleader role
-$allowedPermissions = array_merge($allowedPermissions, array(
+$allowedPermissions = array_merge($allowedPermissions, [
   'ki_timesheets-otherEntry-ownGroup-add',
   'ki_timesheets-otherEntry-ownGroup-edit',
   'ki_timesheets-otherEntry-ownGroup-delete',
   'ki_expenses-otherEntry-ownGroup-add',
   'ki_expenses-otherEntry-ownGroup-edit',
   'ki_expenses-otherEntry-ownGroup-delete',
-));
+]);
 $query = buildRoleInsertQuery('membershipRoles', 'Groupleader', $allowedPermissions, $membershipPermissions);
 exec_query($query);
 $membershipGroupleaderRoleID = $connection->GetLastInsertID();

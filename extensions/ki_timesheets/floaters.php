@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require('../../includes/kspi.php');
+
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -58,7 +59,7 @@ switch ($axAction) {
             }
 
             // set list of users to what the user may do
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
                 $users = makeSelectBox("allUser", $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {
@@ -121,7 +122,7 @@ switch ($axAction) {
             // create new record
             $view->assign('statusID', $kga->getDefaultStatus());
 
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-add')) {
                 $users = makeSelectBox('allUser', $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-add')) {
@@ -199,7 +200,7 @@ switch ($axAction) {
         $view->assign('status', $kga->getStatuses());
 
         $billableValues = $kga['billable'];
-        $billableText = array();
+        $billableText = [];
         foreach ($billableValues as $billableValue) {
             $billableText[] = $billableValue . '%';
         }
@@ -208,7 +209,7 @@ switch ($axAction) {
         echo $view->render("floaters/add_edit_timeSheetEntry.php");
 
         break;
-    
+
     case "add_edit_timeSheetQuickNote":
         if (isset($kga['customer'])) die();
         // ================================================
@@ -238,7 +239,7 @@ switch ($axAction) {
             }
 
             // set list of users to what the user may do
-            $users = array();
+            $users = [];
             if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-otherEntry-otherGroup-edit')) {
                 $users = makeSelectBox("allUser", $kga['user']['groups']);
             } elseif ($database->checkMembershipPermission($kga['user']['userID'], $database->getGroupMemberships($kga['user']['userID']), 'ki_timesheets-otherEntry-ownGroup-edit')) {

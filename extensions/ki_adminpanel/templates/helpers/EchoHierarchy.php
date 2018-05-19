@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -33,12 +33,12 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
    * @param array $parentKeys all keys of the parents, the closest one at the end
    * @param integer $level the level in the hierarchy
    */
-  public function echoHierarchy($kga, $keyHierarchy, $parentKeys = array(), $level = 0) {
+  public function echoHierarchy($kga, $keyHierarchy, $parentKeys = [], $level = 0) {
     $originalLevel = $level;
     $noLegendOnLevel[] = 0;
 
     // If the hierarchy only contains one key that key is "jumped" to simplify the displayed hierarchy.
-    $jumpedKeys = array();
+    $jumpedKeys = [];
     while ($this->isJumpable($keyHierarchy)) {
       $keys = array_keys($keyHierarchy);
       $jumpedKeys[] = $keys[0];
@@ -55,7 +55,7 @@ class Zend_View_Helper_EchoHierarchy extends Zend_View_Helper_Abstract
       else
         echo "<fieldset class=\"hierarchyLevel${level}\">";
 
-      $names = array();
+      $names = [];
       for ($i = max(0, $originalLevel - 1); $i < count($parentKeys); $i++) {
         if (array_search($i, $noLegendOnLevel) !== false) continue;
 

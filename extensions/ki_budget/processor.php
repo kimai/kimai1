@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,6 +20,9 @@
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
 require '../../includes/kspi.php';
+
+$database = Kimai_Registry::getDatabase();
+
 require 'private_func.php';
 
 $view = new Kimai_View();
@@ -28,7 +31,7 @@ $view->addBasePath(__DIR__ . '/templates/');
 $filters = explode('|', $axValue);
 
 if (empty($filters[0])) {
-    $filterUsers = array();
+    $filterUsers = [];
 } else {
     $filterUsers = explode(':', $filters[0]);
 }
@@ -72,7 +75,7 @@ if (isset($kga['user']) && count($filterUsers) === 0) {
 }
 
 if (isset($kga['customer'])) {
-    $filterCustomers = array($kga['customer']['customerID']);
+    $filterCustomers = [$kga['customer']['customerID']];
 }
 
 // ==================
@@ -84,8 +87,8 @@ switch ($axAction) {
         // track which activities we want to see, so we can exclude them when we create the plot
         $activitiesFilter = false;
         $projectsFilter = false;
-        $projectsSelected = array();
-        $activitiesSelected = array();
+        $projectsSelected = [];
+        $activitiesSelected = [];
 
         if (is_array($filterProjects) && count($filterProjects) > 0) {
             $projectsFilter = $filterProjects;
@@ -102,7 +105,7 @@ switch ($axAction) {
         } else {
             $customers = $database->get_customers($kga['user']['groups']);
             if (is_array($filterCustomers) && count($filterCustomers) > 0) {
-                $projects = array();
+                $projects = [];
                 foreach ($filterCustomers as $customerId) {
                     $projects = array_merge($database->get_projects_by_customer($customerId), $projects);
                 }
@@ -132,8 +135,8 @@ switch ($axAction) {
         {
             $arr_plotdata = budget_plot_data($projects, $projectsSelected, $activitiesSelected, $expensesOccured, $kga);
 
-            $renderProjects = array();
-            $plotData = array();
+            $renderProjects = [];
+            $plotData = [];
 
             // filter out projects that are a) not selected or b) have no relevant/zero data to be displayed
             foreach ($projects as $project)
@@ -159,7 +162,7 @@ switch ($axAction) {
                 $renderProjects[] = $project;
 
                 // filter out activities that have no relevant/zero data to be plotted
-                $plotData[$temp] = array();
+                $plotData[$temp] = [];
                 foreach ($arr_plotdata[$temp] as $id => $activity)
                 {
                     $isActivity = is_array($activity) && isset($activity['name']);
@@ -183,12 +186,12 @@ switch ($axAction) {
             $view->assign('projects', $renderProjects);
             $view->assign('activities', $activities);
         } else {
-            $view->assign('projects', array());
+            $view->assign('projects', []);
         }
         $view->assign('projects_selected', $projectsSelected);
         $view->assign('activities_selected', $activitiesSelected);
 
-        $chartColors = array(
+        $chartColors = [
             '#efefef',
             '#4bb2c5',
             '#EAA228',
@@ -201,14 +204,14 @@ switch ($axAction) {
             '#d8b83f',
             '#ff5800',
             '#0085cc'
-        );
+        ];
         $view->assign('chartColors', json_encode($chartColors));
 
         // Create the keys which explain to the user which color means what for the project based charts
-        $keys = array();
-        $keys[] = array('color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']);
+        $keys = [];
+        $keys[] = ['color' => $chartColors[0], 'name' => $kga['lang']['ext_budget']['unusedBudget']];
         if ($expensesOccurred) {
-            $keys[] = array('color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']);
+            $keys[] = ['color' => $chartColors[1], 'name' => $kga['lang']['export_extension']['expenses']];
         }
 
         // the activity based charts only need numbers

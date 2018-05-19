@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -91,7 +91,7 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
         }
 
         // User is authenticated by web server. Does the user exist in Kimai yet?
-        
+
         $check_username = $this->HTAUTH_FORCE_USERNAME_LOWERCASE ? strtolower($check_username) : $check_username;
         $userId = $this->database->user_name2id($check_username);
         if ($userId !== false) {
@@ -102,12 +102,12 @@ class Kimai_Auth_Http extends Kimai_Auth_Abstract
         if ($this->HTAUTH_USER_AUTOCREATE) {
             // AutoCreate the user and return true
             // Set a random password, unknown to the user. Autologin must be used until user sets own password
-            $userId = $this->database->user_create(array(
+            $userId = $this->database->user_create([
                 'name' => $check_username,
                 'globalRoleID' => $this->getDefaultGlobalRole(),
                 'active' => 1,
                 'password' => encode_password(md5(uniqid(rand(), true)))
-            ));
+            ]);
             $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
             return true;
         }

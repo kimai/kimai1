@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  *
  * Aleksandra Zupanc, CRM sistemi http://www.crmsistemi.si
  */
-return array(
+return [
     "countryCode" => "si-SI",
     "preferences" => "Nastavitve",
     "total" => "Skupaj",
@@ -289,27 +289,31 @@ return array(
         <br /><br />
         Slovenski prevod: Aleksandra Zupanc, CRM sistemi d.o.o. <a href="http://www.crmsistemi.si">http://www.crmsistemi.si</a>
 EOD
-,
+    ,
     'credits_license' => 'To je odprtokodni program in je objavljen \'KOT JE\' brez kakršne koli garancije pod naslednjimi pogoji %1$s.',
     'credits_thanks' => 'Velika zahvala za podporo tudi:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"),
-    'weekdays' => array("Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"),
-    'weekdays_short' => array("Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"),
+    'months' => ["Januar", "Februar", "Marec", "April", "Maj", "Junij", "Julij", "Avgust", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Avg", "Sep", "Okt", "Nov", "Dec"],
+    'weekdays' => ["Nedelja", "Ponedeljek", "Torek", "Sreda", "Četrtek", "Petek", "Sobota"],
+    'weekdays_short' => ["Ned", "Pon", "Tor", "Sre", "Čet", "Pet", "Sob"],
 
-    'errors' => array(
-        0 => array('hdl' => "Paza podatkov se ne more povezati!",
-            'txt' => "Prosim preverite, če imate vklopljeno bazo podatkov, če imate aktiven PDO konektor in če so vnosi v 'autoconf.php' ter mapi 'includes' pravilni."),
+    'errors' => [
+        0 => [
+            'hdl' => "Paza podatkov se ne more povezati!",
+            'txt' => "Prosim preverite, če imate vklopljeno bazo podatkov, če imate aktiven PDO konektor in če so vnosi v 'autoconf.php' ter mapi 'includes' pravilni."
+        ],
 
-        1 => array('hdl' => "Napaka pri inštaliranju!",
+        1 => [
+            'hdl' => "Napaka pri inštaliranju!",
             'txt' => 'Kimai ne more ustvariti potrebnih tabel, ker tabele s tem imenom že obstajajo.<br/>
 Za posodobitev obstoječe inštalacije prosim kliknite na <a href="../index.php">here</a>.<br/>
-Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to referenco, da bo lahko Kimai izvedel nemoteno inštalacijo.')
-    ),
+Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to referenco, da bo lahko Kimai izvedel nemoteno inštalacijo.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Da, imam varnostno kopijo moje Kimai baze podatkov! Prični s posodabljanjem!",
         10 => "Legenda:",
         20 => "Poizvedba je bila uspešno izvedena.",
@@ -326,9 +330,9 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
         130 => "Ne morem zapisati v autoconf.php.",
         140 => "posodobitev datoteke autoconf.php",
         'timezone' => 'Kimai sedaj podpira časovne pasove. Prosim izberite vaš privzet časovni pas. Uporabljen bo za vse uporabnike in stranke. Uporabniki lahko spremenijo svoj časovni pas.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Varnostna kopija obnovitve konfiguracije še ni bila testirana! Uporaba na lastno odgovornost!",
         1 => "Na vojo so nove varnostne kopije:",
         2 => "obnovi",
@@ -338,9 +342,10 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
         6 => "Varnostna kopija od",
         7 => "je bila obnovljena.",
         8 => "naredi varnostno kopijo",
-        9 => "Varnostne kopije so v bistvu posnetki! Kar pomeni, da še vedno živijo v enaki bazi podatkov kot delovna baza vašega Kimai programa. Varnostne kopije preko teh pripomočkov niso nadomestilo za prave varnostne kopije na drugem nosilcu podatkov. Na spletnih straneh lahko najdete veliko drugih orodij za varnostno kopiranje podatkovnih baz ;)"),
-    
-    'export_extension' => array(
+        9 => "Varnostne kopije so v bistvu posnetki! Kar pomeni, da še vedno živijo v enaki bazi podatkov kot delovna baza vašega Kimai programa. Varnostne kopije preko teh pripomočkov niso nadomestilo za prave varnostne kopije na drugem nosilcu podatkov. Na spletnih straneh lahko najdete veliko drugih orodij za varnostno kopiranje podatkovnih baz ;)"
+    ],
+
+    'export_extension' => [
 
         "print_hint" => "za odpiranje tabele za printanje kliknite Vredu.",
         "dl_hint" => "Za nalaganje izvožene datoteke kliknite Vredu.",
@@ -400,9 +405,9 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
         'time_period' => 'Časovno obdobje',
 
         'duration_unit' => 'h',
-    ),
-    
-    'ext_invoice' => array(
+    ],
+
+    'ext_invoice' => [
         'invoiceTitle' => 'Ustvari račun',
         'invoiceProject' => 'Projekti',
         'invoiceTimePeriod' => 'Časovni razpon',
@@ -412,21 +417,21 @@ Izberite drugo refernčno preglednico, ali pa izbrišite obstoječe tabele s to 
         'invoiceForm' => 'Oblika računa',
         'noData' => 'V označenih projektih ni časovnih vnosov in časovnega obdobja.',
         'defaultVat' => 'privzeti davek'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'nerabljen'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Časovnica',
         'ki_expenses' => 'Izdatki',
         'ki_export' => 'Izvoz',
         'ki_budget' => 'Proračun',
         'adminPanel_extension' => 'Nastavitve',
         'ki_invoice' => 'Računi'
-    ),
+    ],
 
     "log_delete" => "přihlásit vymazána",
 
-);
+];

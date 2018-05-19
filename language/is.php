@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
  * by Lappari
  *
  */
-return array(
+return [
     "countryCode" => "is-IS",
     "preferences" => "Stillingar",
     "total" => "Alls",
@@ -196,12 +196,12 @@ return array(
     "showIDs" => "Sýna auðkenni",
     "error" => "Villa!",
     "checkupdate" => "Leita að uppfærslu",
-    
+
     "selectedForRecording" => "Valið fyrir skráningu:",
     "selectedCustomerLabel" => "V:",
     "selectedProjectLabel" => "V:",
     "selectedActivityLabel" => "V:",
-    
+
     "testCustomer" => "Prufu-Viðskiptavinur",
     "testProject" => "Prufu-Verkefni",
     "testActivity" => "Prufa",
@@ -215,17 +215,17 @@ return array(
     "wage" => "Laun",
 
     "customerlogin" => "Innskráning viðskiptavinar",
-    
+
     "expense" => "Kostnaður",
     "designation" => "Áhersla",
-    
+
     "cleared" => "Afmáð",
-    
+
     "atLeastOneGroup" => 'Þú verður að velja 1 hóp að lágmarki.',
-    
+
     "noFading" => "Minni sjónhrif",
     "user_list_hidden" => "Fela alltof notendur",
-    
+
     'show_update_warn' => 'Slökkva á viðvörunum fyrir uppfærslu.',
     'check_at_startup' => 'Sýna skilaboð á forsíðu ef nýrri útgáfa er fáanleg.',
     'show_daySeperatorLines' => 'Aðskylja daga með línu.',
@@ -268,19 +268,19 @@ return array(
     "filter" => "Sía",
 
     'internalProject' => 'Innanhús verkefni',
-    
+
     'exactSums' => 'Sýna nákvæma upphæð',
-    
+
     'securityWarning' => 'Örrygis viðvörun',
     'installerWarningHeadline' => 'Uppsetningar mappa er enn til staðar!',
     'installerWarningText' => 'Þú ættir að eyða uppsetningar möppu strax þannig að enginn geti enduruppsett kerfið og þannig eytt þinni uppsetningu.',
 
     'change' => 'breyta',
-    
+
     'sublistAnnotations' => 'útskýringar',
-    
+
     'TimeDateInputError' => 'Form tíma og/eða dagssetningar er rangt.',
-    
+
     'StartTimeBeforeEndTime' => 'Upphafstími verður að vera áður en eldri en lokatími.',
 
     'credits' => <<<'EOD'
@@ -291,26 +291,30 @@ return array(
         by extending its <a href="%5$s">translations</a>.
         If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Janúar", "Febrúar", "Mars", "Apríl", "Maí", "Juní", "Júlí", "Ágúst", "September", "Október", "November", "Desember"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"),
-    'weekdays' => array("Sunnadagur", "Mánudagur", "Þriðjudagur", "Miðvikudagur", "Fimmtudagur", "Föstudagur", "Laugardagur"),
-    'weekdays_short' => array("Sun", "Mán", "Þri", "Mið", "Fim", "Fös", "Lau"),
+    'months' => ["Janúar", "Febrúar", "Mars", "Apríl", "Maí", "Juní", "Júlí", "Ágúst", "September", "Október", "November", "Desember"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"],
+    'weekdays' => ["Sunnadagur", "Mánudagur", "Þriðjudagur", "Miðvikudagur", "Fimmtudagur", "Föstudagur", "Laugardagur"],
+    'weekdays_short' => ["Sun", "Mán", "Þri", "Mið", "Fim", "Fös", "Lau"],
 
-    'errors' => array(
-        0 => array('hdl' => "Ekki næst samband við gagnagrunn!",
-            'txt' => "Vertu viss um að gagnggrunnur sé í gangi, að hann hafi PDO tengingu og að gildin í 'autoconf.php' í möppunni 'includes' séu rétt."),
-        1 => array('hdl' => "Villa í uppsetningu!",
+    'errors' => [
+        0 => [
+            'hdl' => "Ekki næst samband við gagnagrunn!",
+            'txt' => "Vertu viss um að gagnggrunnur sé í gangi, að hann hafi PDO tengingu og að gildin í 'autoconf.php' í möppunni 'includes' séu rétt."
+        ],
+        1 => [
+            'hdl' => "Villa í uppsetningu!",
             'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
-    
-    'updater' => array(
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
+
+    'updater' => [
         0 => "Já, Ég er búinn að taka afrit af gagngrunninum! Haltu áfram við uppfærslu!",
         10 => "Legend:",
         20 => "Fyrirspurn tókst.",
@@ -327,9 +331,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         130 => "Get ekki skrifað í autoconf.php.",
         140 => "Uppfæri autoconf.php",
         'timezone' => 'Vinsamlega veljið default time belti. Það verður notað for alla nýja notendur and viðskiptavini. Notendur geta samt breytt time belti.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Þetta forrit hefur ekki verið prófað að fullu! Notist án ábyrgðar!",
         1 => "Nothæf afrit:",
         2 => "Endurheimta",
@@ -339,9 +343,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         6 => "Afrita frá",
         7 => "Var endurheimt.",
         8 => "Útbúa afrit",
-        9 => "Þessi afrit eru í raun skotmyndir af kerfinu! Þær eru hýstar í sama gagnagrunni. Þau koma ekki í staðin fyrir venjulega afritun á annan miðil ;)"),
-    
-    'export_extension' => array(
+        9 => "Þessi afrit eru í raun skotmyndir af kerfinu! Þær eru hýstar í sama gagnagrunni. Þau koma ekki í staðin fyrir venjulega afritun á annan miðil ;)"
+    ],
+
+    'export_extension' => [
         "print_hint" => "Smelltu á Í lagi til að sjá prentanlegar töflur.",
         "dl_hint" => "Smelltu á Í lagi til að flytja út skrá.",
 
@@ -400,10 +405,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_period' => 'Tímabil',
         
         'duration_unit' => 'h',
-    ),
+    ],
 
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Útbúa reikning',
         'invoiceProject' => 'Verkefni',
         'invoiceTimePeriod' => 'Tímabil',
@@ -412,15 +417,15 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceButton' => 'Útbúa',
         'noData' => 'Það er engin time innsláttur for þessu verkefni & time og á þessu tímabili.',
         'defaultVat' => 'default VSK'
-    ),
+    ],
 
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'unused'
-    ),
+    ],
 
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Timesheet',
         'ki_expenses' => 'Expenses',
         'ki_invoice' => 'Invoice',
@@ -428,10 +433,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
         'ki_export' => 'Export'
-    ),
+    ],
 
     "log_delete" => "skrá eytt",
-);
+];
 
 
 ?>

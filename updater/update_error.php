@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,12 +21,18 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
     die('You cannot call this file directly');
 }
 
-if (empty($title)) { $title = 'Update error'; }
-if (empty($message)) { $message = 'An unknown error occured during the update'; }
-if (empty($message2)) { $message2 = 'Sorry!'; }
+if (empty($title)) {
+    $title = 'Update error';
+}
+if (empty($message)) {
+    $message = 'An unknown error occured during the update';
+}
+if (empty($message2)) {
+    $message2 = 'Sorry!';
+}
 
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="robots" content="noindex,nofollow"/>

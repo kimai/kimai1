@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,16 +21,17 @@
 // = INVOICE PROCESSOR =
 // =====================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 // ==================
 // = handle request =
 // ==================
-switch ($axAction)
-{
+switch ($axAction) {
     // ==========================
     // = Change the default vat =
     // ==========================
@@ -40,7 +41,7 @@ switch ($axAction)
             echo "0";
             return;
         }
-        $database->configuration_edit(array('defaultVat' => $vat));
+        $database->configuration_edit(['defaultVat' => $vat]);
         echo "1";
         break;
 
@@ -49,12 +50,13 @@ switch ($axAction)
     // ==========================
     case 'projects':
         if (isset($kga['customer'])) {
-            $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'], $kga['customer']['groups']);
+            $db_projects = $database->get_projects_by_customer($kga['customer']['customerID'],
+                $kga['customer']['groups']);
         } else {
             $db_projects = $database->get_projects_by_customer($_GET['customerID'], $kga['user']['groups']);
         }
 
-        $js_projects = array();
+        $js_projects = [];
         foreach ($db_projects as $project) {
             $js_projects[$project['projectID']] = $project['name'];
         }

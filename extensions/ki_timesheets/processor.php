@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,14 +21,17 @@
 // = TS PROCESSOR =
 // ================
 
-// insert KSPI
 $isCoreProcessor = 0;
-$dir_templates = "templates/";
-require "../../includes/kspi.php";
+$dir_templates = 'templates/';
+require '../../includes/kspi.php';
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 function timesheetAccessAllowed($entry, $action, &$errors)
 {
-    global $database, $kga;
+    $kga = Kimai_Registry::getConfig();
+    $database = Kimai_Registry::getDatabase();
 
     if (!isset($kga['user'])) {
         $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -86,14 +89,14 @@ switch ($axAction) {
     // ==============================================
     case 'billabilityChange':
         header('Content-Type: application/json;charset=utf-8');
-        $errors = array();
+        $errors = [];
         $action = 'edit';
 
         $data = $database->timeSheet_get_data($_REQUEST['id']);
 
         // check if editing or deleting with the old values would be allowed
         if (!timesheetAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -101,7 +104,7 @@ switch ($axAction) {
 
         // check if editing or deleting with the new values is allowed
         if (!timesheetAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('errors'=>$errors));
+            echo json_encode(['errors'=>$errors]);
             break;
         }
 
@@ -109,7 +112,7 @@ switch ($axAction) {
         Kimai_Logger::logfile("timeEntry_edit: " .$_REQUEST['id']);
         $database->timeEntry_edit($_REQUEST['id'], $data);
 
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(['errors' => $errors]);
         break;
 
     // ==============================================
@@ -117,14 +120,14 @@ switch ($axAction) {
     // ==============================================
     case 'descriptionChange':
         header('Content-Type: application/json;charset=utf-8');
-        $errors = array();
+        $errors = [];
         $action = 'edit';
 
         $data = $database->timeSheet_get_data($_REQUEST['id']);
 
         // check if editing or deleting with the old values would be allowed
         if (!timesheetAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -132,7 +135,7 @@ switch ($axAction) {
 
         // check if editing or deleting with new values is allowed
         if (!timesheetAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -140,14 +143,14 @@ switch ($axAction) {
         Kimai_Logger::logfile("timeEntry_edit: " . $_REQUEST['id']);
         $database->timeEntry_edit($_REQUEST['id'], $data);
 
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(['errors' => $errors]);
         break;
 
     // ==============================================
     // = start a new recording based on another one =
     // ==============================================
     case 'record':
-        $response = array();
+        $response = [];
 
         $timeSheetEntry = $database->timeSheet_get_data($id);
 
@@ -156,7 +159,7 @@ switch ($axAction) {
         $timeSheetEntry['duration'] = 0;
         $timeSheetEntry['cleared'] = 0;
 
-        $errors = array();
+        $errors = [];
         timesheetAccessAllowed($timeSheetEntry, 'edit', $errors);
         $response['errors'] = $errors;
 
@@ -164,7 +167,7 @@ switch ($axAction) {
 
             $newTimeSheetEntryID = $database->timeEntry_create($timeSheetEntry);
 
-            $userData = array();
+            $userData = [];
             $userData['lastRecord'] = $newTimeSheetEntryID;
             $userData['lastProject'] = $timeSheetEntry['projectID'];
             $userData['lastActivity'] = $timeSheetEntry['activityID'];
@@ -189,7 +192,7 @@ switch ($axAction) {
     // = stop recording =
     // ==================
     case 'stop':
-        $errors = array();
+        $errors = [];
 
         $data = $database->timeSheet_get_data($id);
 
@@ -201,7 +204,7 @@ switch ($axAction) {
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(
-            array('errors' => $errors)
+            ['errors' => $errors]
         );
         break;
 
@@ -209,7 +212,7 @@ switch ($axAction) {
     // = set comment for a running recording =
     // =======================================
     case 'edit_running':
-        $errors = array();
+        $errors = [];
 
         $data = $database->timeSheet_get_data($id);
 
@@ -227,7 +230,7 @@ switch ($axAction) {
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(
-            array('errors' => $errors)
+            ['errors' => $errors]
         );
         break;
 
@@ -235,7 +238,7 @@ switch ($axAction) {
     // = Erase timesheet entry via quickdelete =
     // =========================================
     case 'quickdelete':
-        $errors = array();
+        $errors = [];
 
         $data = $database->timeSheet_get_data($id);
 
@@ -247,7 +250,7 @@ switch ($axAction) {
 
         header('Content-Type: application/json;charset=utf-8');
         echo json_encode(
-            array('errors' => $errors)
+            ['errors' => $errors]
         );
         break;
 
@@ -255,7 +258,7 @@ switch ($axAction) {
     // = Get the best rate for the project and activity =
     // ==================================================
     case 'bestFittingRates':
-        $data = array('errors' => array());
+        $data = ['errors' => []];
 
         if (!isset($kga['user'])) {
             $data['errors'][] = $kga['lang']['editLimitError'];
@@ -278,7 +281,7 @@ switch ($axAction) {
     // = Get the new budget data after changing project or activity =
     // ==============================================================
     case 'budgets':
-        $data = array('errors' => array());
+        $data = ['errors' => []];
 
         if (!isset($kga['user'])) {
             $data['errors'][] = $kga['lang']['editLimitError'];
@@ -311,7 +314,7 @@ switch ($axAction) {
     // = Get all rates for the project and activity =
     // ==============================================
     case 'allFittingRates':
-        $data = array('errors' => array());
+        $data = ['errors' => []];
 
         if (!isset($kga['user'])) {
             $data['errors'][] = $kga['lang']['editLimitError'];
@@ -328,7 +331,7 @@ switch ($axAction) {
                 foreach ($rates as $rate) {
                     $line = Kimai_Format::formatCurrency($rate['rate']);
 
-                    $setFor = array(); // contains the list of "types" for which this rate was set
+                    $setFor = []; // contains the list of "types" for which this rate was set
                     if ($rate['userID'] != null) {
                         $setFor[] = $kga['lang']['username'];
                     }
@@ -343,7 +346,7 @@ switch ($axAction) {
                         $line .= ' (' . implode($setFor, ', ') . ')';
                     }
 
-                    $data['rates'][] = array('value' => $rate['rate'], 'desc' => $line);
+                    $data['rates'][] = ['value' => $rate['rate'], 'desc' => $line];
                 }
             }
         }
@@ -356,7 +359,7 @@ switch ($axAction) {
     // = Get all rates for the project and activity =
     // ==============================================
     case 'allFittingFixedRates':
-        $data = array('errors' => array());
+        $data = ['errors' => []];
 
         if (!isset($kga['user'])) {
             $data['errors'][] = $kga['lang']['editLimitError'];
@@ -373,7 +376,7 @@ switch ($axAction) {
                 foreach ($rates as $rate) {
                     $line = Kimai_Format::formatCurrency($rate['rate']);
 
-                    $setFor = array(); // contains the list of "types" for which this rate was set
+                    $setFor = []; // contains the list of "types" for which this rate was set
                     if ($rate['projectID'] != null) {
                         $setFor[] = $kga['lang']['project'];
                     }
@@ -386,7 +389,7 @@ switch ($axAction) {
                         $line .= ' (' . implode($setFor, ', ') . ')';
                     }
 
-                    $data['rates'][] = array('value' => $rate['rate'], 'desc' => $line);
+                    $data['rates'][] = ['value' => $rate['rate'], 'desc' => $line];
                 }
             }
 
@@ -415,9 +418,9 @@ switch ($axAction) {
     // =============================================
     case 'reload_timeSheet':
         $filters = explode('|', $axValue);
-        
+
         if (empty($filters[0])) {
-            $filterUsers = array();  
+            $filterUsers = [];
         } else {
             $filterUsers = explode(':', $filters[0]);
         }
@@ -428,7 +431,7 @@ switch ($axAction) {
             },
             $database->get_customers($kga['user']['groups'])
         );
-        
+
         if (!empty($filters[1])) {
             $filterCustomers = array_intersect($filterCustomers, explode(':', $filters[1]));
         }
@@ -436,7 +439,7 @@ switch ($axAction) {
         $filterProjects = array_map(
             function($project) {
                 return $project['projectID'];
-            }, 
+            },
             $database->get_projects($kga['user']['groups'])
         );
         if (!empty($filters[2])) {
@@ -451,9 +454,9 @@ switch ($axAction) {
         );
 
         if (!empty($filters[3])) {
-            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));  
+            $filterActivities = array_intersect($filterActivities, explode(':', $filters[3]));
         }
-          
+
 
         // if no userfilter is set, set it to current user
         if (isset($kga['user']) && count($filterUsers) == 0) {
@@ -461,7 +464,7 @@ switch ($axAction) {
         }
 
         if (isset($kga['customer'])) {
-            $filterCustomers = array($kga['customer']['customerID']);
+            $filterCustomers = [$kga['customer']['customerID']];
         }
 
         $timeSheetEntries = $database->get_timeSheet($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, 1);
@@ -516,7 +519,7 @@ switch ($axAction) {
     // ==============================
     case 'add_edit_timeSheetEntry':
         header('Content-Type: application/json;charset=utf-8');
-        $errors = array();
+        $errors = [];
 
         $action = 'add';
 
@@ -532,7 +535,7 @@ switch ($axAction) {
 
             // check if editing or deleting with the old values would be allowed
             if (!timesheetAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array('errors' => $errors));
+                echo json_encode(['errors' => $errors]);
                 break;
             }
         }
@@ -540,7 +543,7 @@ switch ($axAction) {
         // delete the record and stop processing at this point
         if (isset($_REQUEST['erase'])) {
             $database->timeEntry_delete($id);
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -566,8 +569,8 @@ switch ($axAction) {
         $data['userID'] = $_REQUEST['userID'];
 
         // check if the posted time values are possible
-        $validateDate = new Zend_Validate_Date(array('format' => 'dd.MM.yyyy'));
-        $validateTime = new Zend_Validate_Date(array('format' => 'HH:mm:ss'));
+        $validateDate = new Zend_Validate_Date(['format' => 'dd.MM.yyyy']);
+        $validateTime = new Zend_Validate_Date(['format' => 'HH:mm:ss']);
 
         if (!$validateDate->isValid($_REQUEST['start_day'])) {
             $errors['start_day'] = $kga['lang']['TimeDateInputError'];
@@ -600,18 +603,18 @@ switch ($axAction) {
         }
 
         if (count($errors) > 0) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             return;
         }
 
-        $edit_in_day = Zend_Locale_Format::getDate($_REQUEST['start_day'], array('date_format' => 'dd.MM.yyyy'));
-        $edit_in_time = Zend_Locale_Format::getTime($_REQUEST['start_time'], array('date_format' => 'HH:mm:ss'));
+        $edit_in_day = Zend_Locale_Format::getDate($_REQUEST['start_day'], ['date_format' => 'dd.MM.yyyy']);
+        $edit_in_time = Zend_Locale_Format::getTime($_REQUEST['start_time'], ['date_format' => 'HH:mm:ss']);
         $edit_in = array_merge($edit_in_day, $edit_in_time);
         $inDate = new Zend_Date($edit_in);
 
         if ($_REQUEST['end_day'] != '' || $_REQUEST['end_time'] != '') {
-            $edit_out_day = Zend_Locale_Format::getDate($_REQUEST['end_day'], array('date_format' => 'dd.MM.yyyy'));
-            $edit_out_time = Zend_Locale_Format::getTime($_REQUEST['end_time'], array('date_format' => 'HH:mm:ss'));
+            $edit_out_day = Zend_Locale_Format::getDate($_REQUEST['end_day'], ['date_format' => 'dd.MM.yyyy']);
+            $edit_out_time = Zend_Locale_Format::getTime($_REQUEST['end_time'], ['date_format' => 'HH:mm:ss']);
 
             $edit_out = array_merge($edit_out_day, $edit_out_time);
 
@@ -629,7 +632,7 @@ switch ($axAction) {
 
         if ($id) { // TIME RIGHT - NEW OR EDIT ?
             if (!timesheetAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array('errors' => $errors));
+                echo json_encode(['errors' => $errors]);
                 break;
             }
 
@@ -645,7 +648,7 @@ switch ($axAction) {
                 $data['userID'] = $userID;
 
                 if (!timesheetAccessAllowed($data, $action, $errors)) {
-                    echo json_encode(array('errors' => $errors));
+                    echo json_encode(['errors' => $errors]);
                     $database->transaction_rollback();
                     break 2;
                 }
@@ -660,7 +663,7 @@ switch ($axAction) {
             $database->transaction_end();
         }
 
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(['errors' => $errors]);
         break;
 
     // ===================================
@@ -668,7 +671,7 @@ switch ($axAction) {
     // ===================================
     case 'add_edit_timeSheetQuickNote':
         header('Content-Type: application/json;charset=utf-8');
-        $errors = array();
+        $errors = [];
 
         $action = 'add';
 
@@ -678,7 +681,7 @@ switch ($axAction) {
 
             // check if editing or deleting with the old values would be allowed
             if (!timesheetAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array('errors' => $errors));
+                echo json_encode(['errors' => $errors]);
                 break;
             }
         }
@@ -690,7 +693,7 @@ switch ($axAction) {
         $data['userID'] = $_REQUEST['userID'];
 
         if (!timesheetAccessAllowed($data, $action, $errors)) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -703,6 +706,6 @@ switch ($axAction) {
             Kimai_Logger::logfile("timeNote_create");
             $database->timeEntry_create($data);
         }
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(['errors' => $errors]);
         break;
 }

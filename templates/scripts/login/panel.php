@@ -109,7 +109,7 @@
 			<p id="cookiewarning"><strong style="color:red"><?php echo $this->translate('cookiewarning') ?></strong></p>
 		</div>
 	</div>
-	<?php echo $this->partial('misc/copyrightnotes.php', array('kga' => $this->kga, 'devtimespan' => $this->devtimespan)); ?>
+	<?php echo $this->partial('misc/copyrightnotes.php', ['kga' => $this->kga, 'devtimespan' => $this->devtimespan]); ?>
 </div>
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  * czech
  *
  */
-return array(
+return [
     "countryCode" => "cz-CZ",
     "preferences" => "Předvolby",
     "total" => "Celkem",
@@ -97,7 +97,7 @@ return array(
     "add" => "Přidej",
     "running" => "Běží...",
     "company" => "Společnost",
-    
+
     "vat" => "DPH",
     "contactPerson" => "Kontaktní osoba",
 
@@ -160,7 +160,7 @@ return array(
     "month" => "Měsíc",
     "day" => "Den",
     "year" => "Rok",
-    
+
     "lang" => "Jazyk",
 
     "ac" => "Automatically continued entry.",
@@ -197,31 +197,31 @@ return array(
     "selectedCustomerLabel" => "Z:",
     "selectedProjectLabel" => "P:",
     "selectedActivityLabel" => "T:",
-    
+
     "testCustomer" => "Test-Customer",
     "testProject" => "Test-Project",
     "testActivity" => "testing",
-    
+
     "budget" => "Rozpočet",
     "rate" => "Sazba (za hodinu)",
     "rate_short" => "Sazba",
     "default_rate" => "Základní sazba",
     "my_rate" => "Moje sazba",
-    
+
     "wage" => "Hodnota",
-    
+
     "customerlogin" => "zákaznický login",
-    
+
     "expense" => "Náklad",
     "designation" => "Označení",
-    
+
     "cleared" => "cleared",
-    
+
     "atLeastOneGroup" => 'Alespoň jedna skupina musí být vybrána.',
-    
+
     "noFading" => "no fading effect",
     "user_list_hidden" => "hide user list by default",
-    
+
     'show_update_warn' => 'Vypni varování před aktualizací.',
     'check_at_startup' => 'Zobraz zprávu o nových verzích na přihlašovací stránce.',
     'show_daySeperatorLines' => 'Nakresli čáru mezi položka z různých dní.',
@@ -242,7 +242,7 @@ return array(
     'view_filter' => 'filtruj',
     'unassigned' => 'nepřiřazené',
     'all_activities' => '&lt;&lt;vše&gt;&gt;',
-    
+
     'durationWithSeconds' => 'Ukaž trvání s přesností na sekundy.',
 
     'multiplier' => 'Multiplier',
@@ -286,26 +286,30 @@ return array(
         by extending its <a href="%5$s">translations</a>.
         If you find bugs or have ideas for features, please create a <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'This program is free software and published \'AS IS\' without any kind of warranty under the terms of the %1$s.',
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"),
-    'months_short' => array("Led", "Únr", "Bře", "Dub", "Kvě", "Čer", "Čec", "Srp", "Zář", "Říj", "Lis", "Pro"),
-    'weekdays' => array("Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"),
-    'weekdays_short' => array("Ne", "Po", "Út", "St", "Čt", "Pá", "So"),
+    'months' => ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+    'months_short' => ["Led", "Únr", "Bře", "Dub", "Kvě", "Čer", "Čec", "Srp", "Zář", "Říj", "Lis", "Pro"],
+    'weekdays' => ["Neděle", "Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota"],
+    'weekdays_short' => ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
 
-    'errors' => array(
-        0 => array('hdl' => "Nemohu se připojit k databázi!",
-            'txt' => "Zkontroluj zda databáze běží, hje aktivní PDO a údaje v 'autoconf.php' v adresáři 'includes' jsou v pořádku."),
-        1 => array('hdl' => "Chyba v průběhu instalace!",
+    'errors' => [
+        0 => [
+            'hdl' => "Nemohu se připojit k databázi!",
+            'txt' => "Zkontroluj zda databáze běží, hje aktivní PDO a údaje v 'autoconf.php' v adresáři 'includes' jsou v pořádku."
+        ],
+        1 => [
+            'hdl' => "Chyba v průběhu instalace!",
             'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Yes, I have a backup of my Kimai database! Proceed updating!",
         10 => "Legend:",
         20 => "Query was executed successfully.",
@@ -322,9 +326,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         130 => "Could not write to autoconf.php.",
         140 => "update file autoconf.php",
         'timezone' => 'Kimai now supports timezones. Please select your default time zone. It will be used for all users and customers. Users can change their time zone.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "This backup restore utility is not yet tested! Use at your own risk!",
         1 => "Dostupné zálohy:",
         2 => "obnov",
@@ -334,9 +338,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         6 => "Backup from",
         7 => "was recovered.",
         8 => "vytvoř zálohu",
-        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
+        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Click OK to open a printable table.",
         "dl_hint" => "Click OK to download export-file.",
 
@@ -371,7 +376,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "exportXLS" => "Excel Export",
         "print" => "Tisk",
         "export_timeformat_help" => "Nápověda formátu času",
-        
+
         'subtotal' => 'Mezisoučet',
         'finalamount' => 'Celkem',
         'pdf_headline' => 'Seznam odpracovaných časů a nákladů',
@@ -395,9 +400,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_period' => 'Období',
 
         'duration_unit' => 'h',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         "invoiceTitle" => "Tvorba faktury",
         "invoiceCustomer" => "Zákazník",
         "invoiceProject" => "Projekt",
@@ -407,19 +412,19 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "invoiceButton" => "Vytvoř",
         'noData' => 'Nejsou data pro zvolený projekt a období.',
         'defaultVat' => 'defaultní DPH'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'unused'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Časy',
         'ki_expenses' => 'Náklady',
         'ki_invoice' => 'Faktury',
         'adminPanel_extension' => 'Administrace',
         'ki_budget' => 'Rozpočet'
-    ),
+    ],
 
     "log_delete" => "přihlásit vymazána",
-);
+];

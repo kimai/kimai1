@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 /**
  * english
  */
-return array(
+return [
     "countryCode" => "en-EN",
     "preferences" => "Preferences",
     "total" => "Total",
@@ -91,7 +91,7 @@ return array(
     "passwordsDontMatch" => "The passwords you've entered don't match.",
     "passwordTooShort" => "The password doesn't have at least 5 characters.",
     "forgotPassword" => "Forgot my password",
-    "passwordReset" => array(
+    "passwordReset" => [
         "button" => "Reset password",
         "notSupported" => "The current authentication plugin doesn't support resetting the password.",
         "instructions" => "Enter your username and an email containing a link will be sent to the associated email address. There will be no indication if your username is correct so make sure to enter it correctly!",
@@ -101,7 +101,7 @@ return array(
         "returnToLogin" => "return to login page",
         "invalidKey" => "The security key doesn't match the key sent by email. Make sure the complete URL is opened by your browser.",
         "success" => "Your password has been changed.",
-    ),
+    ],
     "minLength" => "min. 5 characters!",
     "update" => "The database structure of the installed Kimai version has to be updated.<br />We recommend to backup your recorded data to make sure no data gets lost<br />during the update process.",
     "updateNow" => "Update the database now!",
@@ -334,10 +334,10 @@ EOD
     'credits_thanks' => 'Further thanks for support to:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
-    'weekdays' => array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
-    'weekdays_short' => array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"),
+    'months' => ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    'weekdays' => ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    'weekdays_short' => ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     'quicklink_today' => 'Today',
     'quicklink_yesterday' => 'Yesterday',
     'quicklink_lastWeek' => 'Last Week',
@@ -345,7 +345,7 @@ EOD
     'quicklink_thisWeek' => 'This Week',
     'quicklink_thisMonth' => 'This Month',
 
-    'errorMessages' => array(
+    'errorMessages' => [
         'permissionDenied' => 'Permission denied',
         'userWithSameName' => 'A customer name can not be the same as a user name.',
         'userExistsAlready' => 'User exists already.',
@@ -357,22 +357,26 @@ EOD
         'multiplierNegative' => 'The multiplier must be larger than 0.',
         'emptyField' => 'Missing value for field: %s',
         'wrongData' => 'The given data is invalid',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Are you sure you want to change your own global role from "%OLD%" to "%NEW%"?\nThis can lead to less permissions!'
-    ),
+    ],
 
-    'errors' => array(
-        0 => array('hdl' => "Database could not be connected!",
-                   'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
-        1 => array('hdl' => "Error during installation!",
-                   'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
+    'errors' => [
+        0 => [
+            'hdl' => "Database could not be connected!",
+            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."
+        ],
+        1 => [
+            'hdl' => "Error during installation!",
+            'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Yes, I have a backup of my Kimai database! Proceed updating!",
         10 => "Legend:",
         20 => "Query was executed successfully.",
@@ -389,9 +393,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         130 => "Could not write to autoconf.php.",
         140 => "update file autoconf.php",
         'timezone' => 'Kimai now supports timezones. Please select your default time zone. It will be used for all users and customers. Users can change their time zone.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "This backup restore utility is not yet tested! Use at your own risk!",
         1 => "Available backups:",
         2 => "recover",
@@ -404,9 +408,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)",
         10 => "Authentication required",
         11 => "To prevent unauthorized persons from creating, deleting or restoring backups, you need to give the password salt stored in include/autoconf.php. It only consists of letters and numbers."
-    ),
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Click OK to open a printable table.",
         "dl_hint" => "Click OK to download export-file.",
         "tab_filter" => "Filter",
@@ -458,9 +462,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_type' => 'Time format',
         'dec_time' => 'Decimal time',
         'time' => 'Standard time',
-    ),
+        'cleared' => 'Cleared',
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Create invoice',
         'invoiceCustomer' => 'Customer',
         'invoiceProject' => 'Projects',
@@ -469,6 +474,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'defaultVat' => 'VAT rate',
         'invoiceOptionShort' => 'Short Invoice',
         'invoiceOptionRound' => 'Round time',
+        'markEntriesAsCleared' => 'Mark entries as cleared',
         'invoiceButton' => 'Create',
         'noData' => 'There are no entries for the selected project & time period',
         'noProject' => 'No project was selected.',
@@ -478,15 +484,15 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'orderDateAsc' => 'Date - oldest first',
         'orderDateDesc' => 'Date - newest first',
         'noDateSelected' => 'Missing time period',
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'unused'
-    ),
+    ],
 
     'extensionsTitle' => 'Extensions',
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'View',
         'edit' => 'edit',
         'delete' => 'delete',
@@ -499,9 +505,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'showRates' => 'show rates',
         'editRates' => 'edit rates',
         'editAdvanced' => 'edit advanced settings'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'adminPanel_extension' => 'Admin Panel',
         'ki_timesheet' => 'Timesheet',
         'ki_timesheets' => 'Timesheet',
@@ -513,19 +519,19 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ki_export' => 'Export',
         'core' => 'Permissions',
         'demo_ext' => 'Demo'
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => "<b>An official update is available, with new features and bugfixes. We strongly suggest that you update.</b>",
         'beta' => "<i>New beta version available. You can fetch it from the download page for testing, but don't use it for production environments.</i>",
         'current' => "You are running the latest version :)"
-    ),
+    ],
 
-    'debug' => array(
+    'debug' => [
         'lines' => '(limited to %s lines)',
         'logfile' => 'LOGFILE',
         'clear' => 'Clear logfile',
         'log_delete' => 'log cleared',
-    ),
+    ],
 
-);
+];

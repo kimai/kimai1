@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
  * danish
  *
  */
-return array(
+return [
     "countryCode" => "da-DK",
     "preferences" => "Indstillinger",
     "total" => "Total",
@@ -279,27 +279,31 @@ return array(
         Skulle du finde fejl eller have idéer til nye funktioner er du meget velkommen til at tage kontakt til os gennem forummet.
         Eller endnu bedre: Opret en <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'Dette program er Fri Software og stillet til rådighed som den forefindes uden nogen form for garanti under vilkårene i %1$s.',
     'credits_thanks' => 'Yderligere tak for støtten til:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"),
-    'weekdays' => array("Sønday", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"),
-    'weekdays_short' => array("Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"),
+    'months' => ["Januar", "Februar", "Marts", "April", "Maj", "Juni", "Juli", "August", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    'weekdays' => ["Sønday", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+    'weekdays_short' => ["Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"],
 
-    'errors' => array(
-        0 => array('hdl' => "Der kunne ikke oprettes kontakt til databasen!",
-            'txt' => "Efterse venligst, at databasen er aktiv, har en aktiv PDO-connector og at oplysningerne i 'autoconfig.php' i mappen 'includes' er opført korrekt."),
+    'errors' => [
+        0 => [
+            'hdl' => "Der kunne ikke oprettes kontakt til databasen!",
+            'txt' => "Efterse venligst, at databasen er aktiv, har en aktiv PDO-connector og at oplysningerne i 'autoconfig.php' i mappen 'includes' er opført korrekt."
+        ],
 
-        1 => array('hdl' => "Fejl under installation!",
+        1 => [
+            'hdl' => "Fejl under installation!",
             'txt' => 'Kimai er ikke i stand til at oprette de påkrævede tabeller, fordi tabeller med samme navn allerede findes.<br/>
 For at opdatere din eksisterende installation, så tryl <a href="../index.php">her</a>.<br/>
-Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med det aktuelle præfiks for at tillade Kimai at oprette en ren installation.')
-    ),
+Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med det aktuelle præfiks for at tillade Kimai at oprette en ren installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, jeg har en sikkerhedskopi af min Kimai-database! Fortsæt med opdateringen!",
         10 => "Forklaring:",
         20 => "Databasekommandoer afsluttedes korrekt.",
@@ -316,9 +320,9 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
         130 => "Kunne ikke skrive til autoconf.php.",
         140 => "opdater filen autoconf.php",
         'timezone' => 'Kimai understøtter nu tidszoner. Vælg venligst standardtidszone. Den vil blive brugt til alle brugere og kunder. Brugere kan skrifte deres tidszone.',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Denne funktion til at genetablere sikkerhedskopier er endnu ikke gennemprøvet. Brug den på egen risiko!",
         1 => "Tilgængelige sikkerhedskopier:",
         2 => "gendan",
@@ -328,10 +332,11 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
         6 => "Sikkerhedskopi fra",
         7 => "blev gendannet.",
         8 => "opret sikkerhedskopi",
-        9 => "Disse sikkerhedskopier er reelt snapshots - hvilket betyder, at de fortsat findes i samme database som dine aktuelle arbejdsdata for Kimai. Sikkerhedskopiering ved hjælp af denne funktion skal IKKE ses som en erstatning for virkelige sikkerhedskopier på et fysisk andet datamedie. Der er masser af værktøjer til sikkerhedskopiering af databaser til rådighed på nettet ;)"),
+        9 => "Disse sikkerhedskopier er reelt snapshots - hvilket betyder, at de fortsat findes i samme database som dine aktuelle arbejdsdata for Kimai. Sikkerhedskopiering ved hjælp af denne funktion skal IKKE ses som en erstatning for virkelige sikkerhedskopier på et fysisk andet datamedie. Der er masser af værktøjer til sikkerhedskopiering af databaser til rådighed på nettet ;)"
+    ],
 
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Tryk OK for at åbne udskriftsklar tabel.",
         "dl_hint" => "Tryk OK for at downloade eksporteret fil.",
@@ -390,10 +395,10 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
         'reverse_order' => 'ældre posteringer først',
         'time_period' => 'Tidsperiode',
         'duration_unit' => 't',
-    ),
+    ],
 
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Opret faktura',
         'invoiceCustomer' => 'Kunde',
         'invoiceProject' => 'Projekter',
@@ -403,14 +408,14 @@ Vælg venligst et andet tabel-præfiks eller slet de eksisterende tabeller med d
         'invoiceButton' => 'Opret',
         'noData' => 'Der er ingen tidsregistreringer i det angivne tidsrum.',
         'defaultVat' => 'standardmoms'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'uanvendt'
-    ),
+    ],
 
-    'extensions' => array(),
+    'extensions' => [],
 
     "log_delete" => "log ryddet",
 
-);
+];

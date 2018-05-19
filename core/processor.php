@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -18,19 +18,19 @@
  */
 
 /**
- * ==================
- * = Core Processor =
- * ==================
+ * Core Processor
  *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * actions are performed, e.g. editing preferences or returning a list
  * of customers.
  */
 
-// insert KSPI
 $isCoreProcessor = 1;
-$dir_templates = "templates/core/";
-require("../includes/kspi.php");
+$dir_templates = 'templates/core/';
+require('../includes/kspi.php');
+
+$kga = Kimai_Registry::getConfig();
+$database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
@@ -38,7 +38,7 @@ switch ($axAction) {
      * Append a new entry to the logfile.
      */
     case 'logfile':
-        Kimai_Logger::logfile("JavaScript: " . $axValue);
+        Kimai_Logger::logfile('JavaScript: ' . $axValue);
         break;
 
     /**
@@ -50,7 +50,7 @@ switch ($axAction) {
             return;
         }
 
-        $data = array();
+        $data = [];
         if (isset($_REQUEST['project'])) {
             $data['lastProject'] = $_REQUEST['project'];
         }
@@ -92,7 +92,7 @@ switch ($axAction) {
         $preferences['table_time_format'] = $_REQUEST['table_time_format'];
 
         $database->user_set_preferences($preferences, 'ui.');
-        $database->user_set_preferences(array('timezone' => $_REQUEST['timezone']));
+        $database->user_set_preferences(['timezone' => $_REQUEST['timezone']]);
 
         $rate = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
         if (is_numeric($rate)) {
@@ -146,9 +146,9 @@ switch ($axAction) {
 
         $IDs = explode('|', $axValue);
         $newID = $database->startRecorder($IDs[0], $IDs[1], $id);
-        echo json_encode(array(
+        echo json_encode([
             'id' => $newID
-        ));
+        ]);
         break;
 
     /**
@@ -156,9 +156,9 @@ switch ($axAction) {
      */
     case 'stopRecord':
         $database->stopRecorder($id);
-        echo json_encode(array(
+        echo json_encode([
             'id' => $id
-        ));
+        ]);
         break;
 
     /**
@@ -182,7 +182,7 @@ switch ($axAction) {
      */
     case 'reload_customers':
         if (isset($kga['customer'])) {
-            $view->assign('customers', array($database->customer_get_data($kga['customer']['customerID'])));
+            $view->assign('customers', [$database->customer_get_data($kga['customer']['customerID'])]);
         } else {
             $view->assign('customers', $database->get_customers($kga['user']['groups']));
         }
@@ -204,7 +204,7 @@ switch ($axAction) {
 
         $view->assign('show_project_edit_button', coreObjectActionAllowed('project', 'edit'));
 
-        echo $view->render("lists/projects.php");
+        echo $view->render('lists/projects.php');
         break;
 
     /**
@@ -215,7 +215,7 @@ switch ($axAction) {
     case 'reload_activities':
         if (isset($kga['customer'])) {
             $view->assign('activities', $database->get_activities_by_customer($kga['customer']['customerID']));
-        } else if (isset($_REQUEST['project'])) {
+        } elseif (isset($_REQUEST['project'])) {
             $view->assign('activities', $database->get_activities_by_project($_REQUEST['project'], $kga['user']['groups']));
         } else {
             $view->assign('activities', $database->get_activities($kga['user']['groups']));
@@ -223,7 +223,7 @@ switch ($axAction) {
 
         $view->assign('show_activity_edit_button', coreObjectActionAllowed('activity', 'edit'));
 
-        echo $view->render("lists/activities.php");
+        echo $view->render('lists/activities.php');
         break;
 
     /**
@@ -235,7 +235,7 @@ switch ($axAction) {
             /**
              * add or edit a customer
              */
-            case "customer":
+            case 'customer':
                 $data['name'] = $_REQUEST['name'];
                 $data['comment'] = $_REQUEST['comment'];
                 $data['company'] = $_REQUEST['company'];
@@ -262,13 +262,13 @@ switch ($axAction) {
                     $data['password'] = '';
                 }
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->customer_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if ($database->user_name2id($data['name']) !== false) {
                     $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
@@ -278,7 +278,8 @@ switch ($axAction) {
                     $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
-                if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['customerGroups'])) {
+                if (!checkGroupedObjectPermission('Customer', $id ? 'edit' : 'add', $oldGroups,
+                    $_REQUEST['customerGroups'])) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
@@ -295,16 +296,16 @@ switch ($axAction) {
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
 
                 break;
 
             /**
              * add or edit a project
              */
-            case "project":
+            case 'project':
                 $data['name'] = $_REQUEST['name'];
                 $data['customerID'] = $_REQUEST['customerID'];
                 $data['comment'] = $_REQUEST['projectComment'];
@@ -318,19 +319,20 @@ switch ($axAction) {
                 $data['myRate'] = getRequestDecimal($_REQUEST['myRate']);
                 $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->project_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if (count($_REQUEST['projectGroups']) == 0) {
                     $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
-                if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups, $_REQUEST['projectGroups'])) {
+                if (!checkGroupedObjectPermission('Project', $id ? 'edit' : 'add', $oldGroups,
+                    $_REQUEST['projectGroups'])) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
@@ -357,8 +359,8 @@ switch ($axAction) {
                                 continue;
                             }
 
-                            $data = array();
-                            foreach (array('budget', 'effort', 'approved') as $key) {
+                            $data = [];
+                            foreach (['budget', 'effort', 'approved'] as $key) {
                                 $value = getRequestDecimal($_REQUEST[$key][$index]);
                                 if ($value !== null) {
                                     $data[$key] = max(0, $value);
@@ -378,20 +380,20 @@ switch ($axAction) {
                             $database->remove_fixed_rate($id, $item);
                         }
                     } else {
-                        $database->assignProjectToActivitiesForGroup($id, array(), $kga['user']['groups']);
+                        $database->assignProjectToActivitiesForGroup($id, [], $kga['user']['groups']);
                     }
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
                 break;
 
             /**
              * add or edit a activity
              */
-            case "activity":
+            case 'activity':
                 $data['name'] = $_REQUEST['name'];
                 $data['comment'] = $_REQUEST['comment'];
                 $data['visible'] = getRequestBool('visible');
@@ -401,13 +403,13 @@ switch ($axAction) {
                 $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
                 $activityGroups = $_REQUEST['activityGroups'];
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->activity_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if (count($_REQUEST['activityGroups']) == 0) {
                     $errorMessages['activityGroups'] = $kga['lang']['atLeastOneGroup'];
@@ -441,7 +443,7 @@ switch ($axAction) {
                             }
                         }
                     } else {
-                        $database->assignActivityToProjectsForGroup($id, array(), $kga['user']['groups']);
+                        $database->assignActivityToProjectsForGroup($id, [], $kga['user']['groups']);
                     }
 
                     // set the activity group and activity project mappings
@@ -451,9 +453,9 @@ switch ($axAction) {
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
                 break;
         }
         break;

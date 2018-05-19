@@ -60,7 +60,7 @@
                 <a onclick="export_toggle_column('user');" title="<?php echo $this->kga['lang']['username'] ?>"><?php echo $this->ellipsis($this->kga['lang']['username'], 4) ?></a>
             </td>
             <td class="cleared">
-                <a onclick="if (export_toogle_cleared_confirm()) { $('#xptable td.cleared>a').click(); }; return false;">invert</a>
+                <a title="<?php echo $this->translate('export_extension:cleared') ?>" onclick="if (export_toogle_cleared_confirm()) { $('#xptable td.cleared>a').click(); } return false;">invert</a>
             </td>
         </tr>
         </tbody>

@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -52,8 +52,8 @@ abstract class Kimai_Auth_Abstract
         if ($kga !== null) {
             $this->setKga($kga);
         }
-        if (file_exists(WEBROOT . 'includes/auth.php')) {
-            $config = include WEBROOT . 'includes/auth.php';
+        if (file_exists(WEBROOT . '/includes/auth.php')) {
+            $config = include WEBROOT . '/includes/auth.php';
             foreach ($config as $key => $value) {
                 $this->setConfig($key, $value);
             }
@@ -170,13 +170,13 @@ abstract class Kimai_Auth_Abstract
             }
         }
 
-        return array($group => $membership);
+        return [$group => $membership];
     }
 
     /**
      * Return an ID of a global role to which users should be added, if they authenticated but are not known to Kimai.
      * The default implementation uses the first role or, if present, a role called 'User'.
-     * @return integer global role ID
+     * @return int global role ID
      */
     public function getDefaultGlobalRole()
     {

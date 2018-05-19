@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -24,8 +24,12 @@
  */
 class Zend_View_Helper_JsEscape extends Zend_View_Helper_Abstract
 {
+    /**
+     * @param string $text
+     * @return mixed
+     */
     public function jsEscape($text)
     {
         return str_replace("'", "\\'", $this->view->escape($text));
     }
-} 
+}

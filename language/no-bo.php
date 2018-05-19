@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -32,7 +32,7 @@
  * Use it on your own risk.
  * We take no responsibility for any consequence.
  */
-return array(
+return [
     "countryCode" => "no",
     "preferences" => "Innstillinger",
     "total" => "Totalt",
@@ -239,20 +239,24 @@ return array(
 
     'multiplier' => 'Multiplier',
 
-    'months' => array("Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"),
-    'months_short' => array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"),
-    'weekdays' => array("Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"),
-    'weekdays_short' => array("Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"),
+    'months' => ["Januar", "Februar", "Mars", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Desember"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Des"],
+    'weekdays' => ["Søndag", "Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag"],
+    'weekdays_short' => ["Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"],
 
-    'errors' => array(
-        0 => array('hdl' => "Kunne ikke koble til databasen!",
-            'txt' => "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'autoconf.php' i mappen 'includes' er korrekte."),
+    'errors' => [
+        0 => [
+            'hdl' => "Kunne ikke koble til databasen!",
+            'txt' => "Vær så snill å kontrollere at din database er aktivert, har en aktiv PDO tilkobling og at oppføringene i 'autoconf.php' i mappen 'includes' er korrekte."
+        ],
 
-        1 => array('hdl' => "Feil under installasjonen!",
-            'txt' => 'Kimai klarer ikke å opprette nødvendige oppføringer i databasen fordi gjeldende oppføringer med samme navn finnes fra før.<br/> For å oppdatere din gjeldende installasjon vær så snill å trykk  å <a href="../index.php">her</a>.<br/> Velg et annet fortegn til tabellene eller slett gjeldende tabeller med dette fortegnet slik at Kimai får anledning til å utføre en basis installasjon.')
-    ),
+        1 => [
+            'hdl' => "Feil under installasjonen!",
+            'txt' => 'Kimai klarer ikke å opprette nødvendige oppføringer i databasen fordi gjeldende oppføringer med samme navn finnes fra før.<br/> For å oppdatere din gjeldende installasjon vær så snill å trykk  å <a href="../index.php">her</a>.<br/> Velg et annet fortegn til tabellene eller slett gjeldende tabeller med dette fortegnet slik at Kimai får anledning til å utføre en basis installasjon.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Ja, jeg har en sikkerhetskopi av min Kimai database! Fortsett med oppdateringen!",
         10 => "Tegnforklaring:",
         20 => "Spørringen var vellykket.",
@@ -267,9 +271,10 @@ return array(
         110 => "Nye passord",
         120 => "Se nedenfor om nye passord for den enkelte bruker.",
         130 => "Kunne ikke skrive til filen autoconf.php.",
-        140 => "oppdaterer filen autoconf.php"),
+        140 => "oppdaterer filen autoconf.php"
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Dette verktøyet for sikkerhetskopierings- og gjenoppretting er ikke ferdig testet! Bruk det på eget ansvar!",
         1 => "Tilgjengelige sikkerhetskopier:",
         2 => "Gjenopprett",
@@ -279,9 +284,10 @@ return array(
         6 => "Sikkerhetskopier fra",
         7 => "ble gjenopprettet.",
         8 => "opprett sikkerhetskopi",
-        9 => "Disse sikkerhetskopiene er egentlig øyeblikksbilder! Det vil si at de eksisterer som en del av samme database som Kimai benytter. Sikkerhetskopi med dette verktøyet er IKKE en erstatning for skikkelige sikkerhetskopier over på et annet fysisk medium. Det finnes rikelig med verktøy for sikkerhetskopiering av databaser på nettet;)"),
+        9 => "Disse sikkerhetskopiene er egentlig øyeblikksbilder! Det vil si at de eksisterer som en del av samme database som Kimai benytter. Sikkerhetskopi med dette verktøyet er IKKE en erstatning for skikkelige sikkerhetskopier over på et annet fysisk medium. Det finnes rikelig med verktøy for sikkerhetskopiering av databaser på nettet;)"
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
         "print_hint" => "Trykk OK for å opprette en ny utskriftsvennlig side i tabellformat.",
         "dl_hint" => "Trykk OK for å opprette og laste ned dokumentet.",
 
@@ -334,9 +340,9 @@ return array(
         'time_period' => 'time period',
 
         'duration_unit' => 'h',
-    ),
-    
-    'ext_invoice' => array(
+    ],
+
+    'ext_invoice' => [
         'invoiceTitle' => 'Lag faktura',
         'invoiceProject' => 'Prosjekter',
         'invoiceTimePeriod' => 'Tidsperiode',
@@ -344,9 +350,9 @@ return array(
         'invoiceOptionRound' => 'Rundetid',
         'invoiceButton' => 'Lag',
         'noData' => 'There are no time entries for the selected project & time period.'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Timesheet',
         'ki_expenses' => 'Expenses',
         'ki_invoice' => 'Invoice',
@@ -354,7 +360,7 @@ return array(
         'ap_ext' => 'Preference',
         'ki_budget' => 'Budget',
         'ki_export' => 'Export'
-    ),
+    ],
 
     "log_delete" => "logg ryddet",
-);
+];

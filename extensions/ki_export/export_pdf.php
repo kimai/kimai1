@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -19,31 +19,35 @@
 
 include('base_export_pdf.php');
 
+$database = Kimai_Registry::getDatabase();
+
 class MYPDF extends BasePDF
 {
 
     /**
      * Widths of all columns
      */
-    var $w = array();
+    var $w = [];
 
-    var $columns = array();
+    var $columns = [];
 
     /**
      * Print a footer on every page.
      */
     public function Footer()
     {
-        global $kga, $customerData, $projectData;
+        global $customerData, $projectData;
 
-        // Position at 1.5 cm from bottom 
+        $kga = Kimai_Registry::getConfig();
+
+        // Position at 1.5 cm from bottom
         $this->SetY(-15);
 
         // customer data
         //$this->SetFont('freesans', '', 8); // Set font
         //$this->Cell(80, 10, $customerData['name'].' ('.$projectData['pct_name'].')', 0, 0, 'L');
 
-        // Page number 
+        // Page number
         $this->SetFont('freesans', 'I', 8); // Set font
         $this->Cell(30, 10,
             $kga['lang']['export_extension']['page'] . ' ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(),
@@ -62,16 +66,16 @@ class MYPDF extends BasePDF
      */
     public function ColoredTable($header, $data)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         $dateWidth = max($this->GetStringWidth($header[0]),
             $this->GetStringWidth($this->dateformat(mktime(0, 0, 0, 12, 31, 2000))));
         $dateWidth += 4;
-        $w = array(
+        $w = [
             $dateWidth,
             $this->getPageWidth() - $this->pagedim[$this->page]['lm'] - $this->pagedim[$this->page]['rm'] - $dateWidth,
             0,
             0
-        );
+        ];
         if (isset($this->columns['wage'])) {
             $w[3] = 30;
             $w[1] -= 30;
@@ -81,14 +85,14 @@ class MYPDF extends BasePDF
             $w[1] -= 30;
         }
 
-        // Header 
+        // Header
         $this->printHeader($w, $header);
 
-        // Color and font restoration 
+        // Color and font restoration
         $this->SetFillColor(224, 235, 255);
         $this->SetTextColor(0);
         $this->SetFont('');
-        // Data 
+        // Data
         $fill = 0;
         $moneySum = 0;
         if ($_REQUEST['time_type'] == "dec_time") {
@@ -98,7 +102,6 @@ class MYPDF extends BasePDF
         }
 
         foreach ($data as $row) {
-
             $show_comment = ! empty($row['comment']) && isset($_REQUEST['print_comments']);
             // check if page break is nessessary
             if ($this->getPageHeight() - $this->pagedim[$this->page]['bm'] - ($this->getY() + 20 + ($show_comment ? 6 : 0)) < 0) {
@@ -126,12 +129,19 @@ class MYPDF extends BasePDF
                 $this->AddPage();
                 $this->printHeader($w, $header);
 
-                // Color and font restoration 
+                // Color and font restoration
                 $this->SetFillColor(224, 235, 255);
                 $this->SetTextColor(0);
                 $this->SetFont('');
             }
             $this->Cell($w[0], 6, $this->dateformat($row['time_in']), 'LR', 0, 'C', $fill);
+            foreach ($w as $col => $colwidth) {
+                if ($col > 0) {
+                    $this->Cell($colwidth, 6, '', 'LR', 0, 'C', $fill);
+                }
+            }
+            $this->Ln();
+            $this->Cell($w[0], 6, $this->dateformat($row['time_out']), 'LR', 0, 'C', $fill);
             if (isset($this->columns['trackingNumber'])) {
                 $trackingnumber = " (#" . $row['trackingNumber'] . ") - ";
             } else {
@@ -158,42 +168,12 @@ class MYPDF extends BasePDF
             }
             $this->Ln();
 
-            //Kommentar anzeigen:
             if ($show_comment) {
-                // comment line width
-                $comment_line_width = 58;
-                // split comment in lines
-                $comment_lines = explode("\n",
-                    wordwrap(stripslashes($row['comment']), $comment_line_width, "\n", true));
-                // loop through all comment lines an add a cell for each line
-                if (is_array($comment_lines)) {
-                    // determine font sizes to work with
-                    $current_font_size = $this->getFontSizePt();
-                    if ($current_font_size <= 0) {
-                        $current_font_size = 12;
-                    }
-                    $comment_font_size = $current_font_size - 2;
-                    foreach ($comment_lines as $comment_line) {
-                        $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill);
-                        $this->SetFont('', 'I', $comment_font_size);
-                        //$this->Cell($w[1], 6, $kga['lang']['comment'].': '.nl2br(Kimai_Format::addEllipsis($row['comment'],40)), 'LR', 0, 'L', $fill);
-                        $this->Cell($w[1], 6, $comment_line, 'LR', 0, 'L', $fill);
-                        $this->SetFont('', '', $current_font_size);
-                        if ($_REQUEST['time_type'] == "dec_time") {
-                            if (isset($this->columns['dec_time'])) {
-                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
-                            }
-                        } else {
-                            if (isset($this->columns['time'])) {
-                                $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
-                            }
-                        }
-                        if (isset($this->columns['wage'])) {
-                            $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill);
-                        }
-                        $this->Ln();
-                    }
-                }
+                $this->addMultilineText($row['comment'], $fill, $w);
+            }
+            $show_description = !empty($row['description']);
+            if ($show_description) {
+                $this->addMultilineText($row['description'], $fill, $w);
             }
             $fill = ! $fill;
             $moneySum += $row['wage'];
@@ -225,11 +205,54 @@ class MYPDF extends BasePDF
             }
         }
     }
+
+    /**
+     * Helper function to add possibly multiline text value to the output table, eg comments or description
+     *
+     * @param string $txtValue text to print.
+     * @param bool $fill
+     * @param array $w width of the columns
+     */
+    private function addMultilineText($txtValue, $fill, $w)
+    {
+        // line width
+        $line_width = 58;
+        // split in lines
+        $lines = explode("\n", wordwrap(stripslashes($txtValue), $line_width, "\n", true));
+        // loop through all lines an add a cell for each line
+        if (is_array($lines)) {
+            // determine font sizes to work with
+            $current_font_size = $this->getFontSizePt();
+            if ($current_font_size <= 0) {
+                $current_font_size = 12;
+            }
+            $font_size = $current_font_size - 2;
+            foreach ($lines as $line) {
+                $this->Cell($w[0], 6, '', 'L', 0, 'C', $fill);
+                $this->SetFont('', 'I', $font_size);
+                $this->Cell($w[1], 6, $line, 'LR', 0, 'L', $fill);
+                $this->SetFont('', '', $current_font_size);
+                if ($_REQUEST['time_type'] == "dec_time") {
+                    if (isset($this->columns['dec_time'])) {
+                        $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+                    }
+                } else {
+                    if (isset($this->columns['time'])) {
+                        $this->Cell($w[2], 6, '', 'LR', 0, 'R', $fill);
+                    }
+                }
+                if (isset($this->columns['wage'])) {
+                    $this->Cell($w[3], 6, '', 'LR', 0, 'R', $fill);
+                }
+                $this->Ln();
+            }
+        }
+    }
 }
 
 $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-$pdf->date_format = $dateformat;
+$pdf->date_format = $dateformat . ' ' . $timeformat;
 $pdf->columns = $columns;
 $pdf->print_time = time();
 $pdf->SetDisplayMode('default', 'continuous'); //PDF-Seitenanzeige fortlaufend
@@ -276,7 +299,7 @@ if (isset($_REQUEST['create_bookmarks'])) {
     $pdf->Bookmark($pdf_title, 0, 0);
 }
 
-//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "http://www.kimai.org", true, 'T', 'R'); // include company logo
+//$pdf->ImageEps('kimai-logo.ai', 0, 10, 60, 0, "https://www.kimai.org", true, 'T', 'R'); // include company logo
 
 $pdf->WriteHtml('<h1>' . $pdf_title . '</h1>');
 $pdf->ln();
@@ -302,17 +325,17 @@ if (isset($_REQUEST['print_summary'])) {
     $pdf->ln();
     $pdf->WriteHtml('<h3>' . $kga['lang']['export_extension']['summary'] . '</h3>');
     $pdf->ln();
-    $pdf->printSummary(array(
+    $pdf->printSummary([
         $kga['lang']['activity'],
         $kga['lang']['export_extension']['duration'],
         $kga['lang']['export_extension']['costs']
-    ), $orderedExportData);
+    ], $orderedExportData);
 
     $pdf->AddPage();
 }
 
 // Write to the PDF document which, if any, customer filters were applied.
-$customers = array();
+$customers = [];
 foreach ($filterCustomers as $customerID) {
     $customer_info = $database->customer_get_data($customerID);
     $customers[] = $customer_info['name'];
@@ -326,7 +349,7 @@ if (count($customers) > 0) {
 }
 
 // Write to the PDF document which, if any, project filters were applied.
-$projects = array();
+$projects = [];
 foreach ($filterProjects as $projectID) {
     $project_info = $database->project_get_data($projectID);
     $projects[] = $project_info['name'];
@@ -357,12 +380,12 @@ foreach ($orderedExportData as $customer) {
 
     foreach ($project_ids as $project_id) {
         // process each project in second dimension
-        $pdf->ColoredTable(array(
+        $pdf->ColoredTable([
             $kga['lang']['datum'],
             $kga['lang']['activity'],
             $kga['lang']['export_extension']['duration'],
             $kga['lang']['export_extension']['costs']
-        ), $customer[$project_id]);
+        ], $customer[$project_id]);
         $pdf->ln();
         $pdf->ln();
         $pdf->ln();

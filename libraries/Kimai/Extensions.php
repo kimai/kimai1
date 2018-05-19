@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -22,22 +22,22 @@
  */
 class Kimai_Extensions
 {
-    private $ext_configs = array();
-    private $php_include_files = array();
-    private $css_extension_files = array();
-    private $js_extension_files = array();
-    private $extensions = array();
-    private $tab_change_trigger = array();
-    private $timeframe_changed_hooks = array();
-    private $record_hooks = array();
-    private $buzzer_stop_hooks = array();
-    private $users_changed_hooks = array();
-    private $customers_changed_hooks = array();
-    private $projects_changed_hooks = array();
-    private $activities_changed_hooks = array();
-    private $filter_hooks = array(); // list filter hooks
-    private $resize_hooks = array(); // resize hooks
-    private $timeouts = array();
+    private $ext_configs = [];
+    private $php_include_files = [];
+    private $css_extension_files = [];
+    private $js_extension_files = [];
+    private $extensions = [];
+    private $tab_change_trigger = [];
+    private $timeframe_changed_hooks = [];
+    private $record_hooks = [];
+    private $buzzer_stop_hooks = [];
+    private $users_changed_hooks = [];
+    private $customers_changed_hooks = [];
+    private $projects_changed_hooks = [];
+    private $activities_changed_hooks = [];
+    private $filter_hooks = []; // list filter hooks
+    private $resize_hooks = []; // resize hooks
+    private $timeouts = [];
     private $extensionsDir;
     private $kga;
 
@@ -52,7 +52,7 @@ class Kimai_Extensions
      */
     public function loadConfigurations()
     {
-        global $database;
+        $database = Kimai_Registry::getDatabase();
         $handle = opendir($this->extensionsDir);
 
         if (!$handle) {
@@ -86,11 +86,12 @@ class Kimai_Extensions
                 continue;
             }
 
-            $this->extensions[] = array(
+            $this->extensions[] = [
                 'name' => $settings['EXTENSION_NAME'],
                 'key' => $settings['EXTENSION_KEY'],
                 'initFile' => $settings['EXTENSION_INIT_FILE'],
-                'tabChangeTrigger' => isset($settings['TAB_CHANGE_TRIGGER']) ? $settings['TAB_CHANGE_TRIGGER'] : "");
+                'tabChangeTrigger' => isset($settings['TAB_CHANGE_TRIGGER']) ? $settings['TAB_CHANGE_TRIGGER'] : ""
+            ];
 
             $this->addOptionalValue($settings, 'CSS_INCLUDE_FILES', $this->css_extension_files);
 

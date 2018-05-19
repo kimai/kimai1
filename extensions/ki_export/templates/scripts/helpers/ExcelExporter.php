@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) 2006-2009 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -34,25 +34,25 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	 * ]
 	 * @var array
 	 */
-	protected static $COLUMN_CONFIG = array(
-		'date' => array('fieldName' => 'time_in', 'type' => 'date', 'langLabel' => 'datum'),
-		'from' => array('fieldName' => 'time_in', 'type' => 'time', 'langLabel' => 'in'),
-		'to' => array('fieldName' => 'time_out', 'type' => 'time', 'langLabel' => 'out'),
-		'time' => array('fieldName' => 'duration', 'type' => 'duration', 'sum' => true),
-		'dec_time' => array('fieldName' => 'duration', 'type' => 'floatDurationHours', 'langLabel' => 'timelabel', 'sum' => true),
-		'rate' => array('type' => 'float'),
-		'wage' => array('type' => 'money', 'sum' => true),
-		'budget' => array('type' => 'money', 'sum' => true),
-		'approved' => array('type' => 'boolean'),
-		'billable' => array('type' => 'percent'),
-		'customer' => array('fieldName' => 'customerName'),
-		'project' => array('fieldName' => 'projectName'),
-		'activity' => array('fieldName' => 'activityName'),
-		'description' => array('type' => 'text'),
-		'comment' => array('type' => 'text'),
-		'user' => array('fieldName' => 'username', 'langLabel' => 'username'),
-		'cleared' => array('type' => 'boolean'),
-	);
+	protected static $COLUMN_CONFIG = [
+        'date' => ['fieldName' => 'time_in', 'type' => 'date', 'langLabel' => 'datum'],
+        'from' => ['fieldName' => 'time_in', 'type' => 'time', 'langLabel' => 'in'],
+        'to' => ['fieldName' => 'time_out', 'type' => 'time', 'langLabel' => 'out'],
+        'time' => ['fieldName' => 'duration', 'type' => 'duration', 'sum' => true],
+        'dec_time' => ['fieldName' => 'duration', 'type' => 'floatDurationHours', 'langLabel' => 'timelabel', 'sum' => true],
+        'rate' => ['type' => 'float'],
+        'wage' => ['type' => 'money', 'sum' => true],
+        'budget' => ['type' => 'money', 'sum' => true],
+        'approved' => ['type' => 'boolean'],
+        'billable' => ['type' => 'percent'],
+        'customer' => ['fieldName' => 'customerName'],
+        'project' => ['fieldName' => 'projectName'],
+        'activity' => ['fieldName' => 'activityName'],
+        'description' => ['type' => 'text'],
+        'comment' => ['type' => 'text'],
+        'user' => ['fieldName' => 'username', 'langLabel' => 'username'],
+        'cleared' => ['type' => 'boolean'],
+    ];
 
 	/**
 	 * vertical offset for data rows
@@ -204,7 +204,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 		foreach($this->exportData_arr as $y => $data) {
 			foreach($this->activeColumns_arr as $x => $columnName) {
 				$curAddr = self::excelAddr($x, $y + self::EXCEL_HEADER_OFFSET);
-				$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : array();
+				$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : [];
 				$key = array_key_exists('fieldName', $fieldConf) ? $fieldConf['fieldName'] : $columnName;
 
 				$type = array_key_exists('type', $fieldConf) ? $fieldConf['type'] : 'string';
@@ -251,7 +251,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	protected function writeSums() {
 		for($x = count($this->activeColumns_arr) - 1; $x >= 0; $x--) {
 			$columnName = $this->activeColumns_arr[$x];
-			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : array();
+			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : [];
 			$doSum = array_key_exists('sum', $fieldConf) ? $fieldConf['sum'] : false;
 			$curAddr = self::excelAddr($x, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr));
 
@@ -307,7 +307,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	 */
 	protected function formatDataRowsByType() {
 		foreach($this->activeColumns_arr as $x => $columnName) {
-			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : array();
+			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : [];
 			$key = array_key_exists('fieldName', $fieldConf) ? $fieldConf['fieldName'] : $columnName;
 			$doSum = array_key_exists('sum', $fieldConf) ? $fieldConf['sum'] : false;
 			$curRange = self::excelRange($x, self::EXCEL_HEADER_OFFSET, $x, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr) - ($doSum ? 0 : 1));
@@ -359,18 +359,18 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	protected function addCellBorders() {
 		// thin lines on the outline, hair lines for all the interior cell borders:
 		$this->sheet->getStyle(self::excelRange(0, 0, count($this->activeColumns_arr) - 1, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr) - ($this->anySumsWereAdded ? 0 : 1)))
-					->applyFromArray(array(
-						'borders'	 => array(
-							'allborders' => array(
-								'style'	 => PHPExcel_Style_Border::BORDER_HAIR,
-								'color' => array('argb' => 'FFAAAAAA'),
-							),
-							'outline' => array(
-								'style'	 => PHPExcel_Style_Border::BORDER_THIN,
-								'color' => array('argb' => 'FF000000'),
-							),
-						),
-					));
+					->applyFromArray([
+                        'borders'	 => [
+                            'allborders' => [
+                                'style'	 => PHPExcel_Style_Border::BORDER_HAIR,
+                                'color' => ['argb' => 'FFAAAAAA'],
+                            ],
+                            'outline' => [
+                                'style'	 => PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => ['argb' => 'FF000000'],
+                            ],
+                        ],
+                    ]);
 
 		// date seperating borders:
 		$curDate = NULL;
@@ -379,13 +379,13 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 			if ($date !== $curDate) {
 				if ($curDate !== NULL) {
 					$this->sheet->getStyle(self::excelRange(0, $y + self::EXCEL_HEADER_OFFSET, count($this->activeColumns_arr) - 1, $y + self::EXCEL_HEADER_OFFSET))
-								->applyFromArray(array(
-									'borders'	 => array(
-										'top' => array(
-											'color' => array('argb' => 'FF000000'),
-										),
-									),
-								));
+								->applyFromArray([
+                                    'borders'	 => [
+                                        'top' => [
+                                            'color' => ['argb' => 'FF000000'],
+                                        ],
+                                    ],
+                                ]);
 				}
 
 				$curDate = $date;
@@ -398,19 +398,19 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 	 * background color, alignment)
 	 */
 	protected function formatHeaders() {
-		// bold & thin cell border outline:		
+		// bold & thin cell border outline:
 		$this->sheet->getStyle(self::excelRange(0, 0, count($this->activeColumns_arr) - 1, 0))
-					->applyFromArray(array(
-						'font' => array(
+					->applyFromArray([
+                        'font' => [
 							'bold' => 'true'
-						),
-						'borders' => array(
-							'outline' => array(
-								'style'	=> PHPExcel_Style_Border::BORDER_THIN,
-								'color' => array('argb' => 'FF000000'),
-							),
-						),
-					));
+                        ],
+                        'borders' => [
+                            'outline' => [
+                                'style'	=> PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => ['argb' => 'FF000000'],
+                            ],
+                        ],
+                    ]);
 
 		// gray background color:
 		$this->sheet->getStyle(self::excelRange(0, 0, count($this->activeColumns_arr) - 1, 0))
@@ -419,7 +419,7 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 
 		// align headers for numeric fields right:
 		foreach($this->activeColumns_arr as $x => $columnName) {
-			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : array();
+			$fieldConf = array_key_exists($columnName, self::$COLUMN_CONFIG) ? self::$COLUMN_CONFIG[$columnName] : [];
 			$type = array_key_exists('type', $fieldConf) ? $fieldConf['type'] : 'string';
 			$curAddr = self::excelAddr($x, 0);
 
@@ -431,19 +431,19 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 				case 'floatDurationHours':
 				case 'money':
 					$this->sheet->getStyle($curAddr)
-								->applyFromArray(array(
-									'alignment'	 => array(
+								->applyFromArray([
+                                    'alignment'	 => [
 										'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-									),
-								));
+                                    ],
+                                ]);
 					break;
 				default:
 					$this->sheet->getStyle($curAddr)
-								->applyFromArray(array(
-									'alignment'	 => array(
+								->applyFromArray([
+                                    'alignment'	 => [
 										'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-									),
-								));
+                                    ],
+                                ]);
 					break;
 			}
 		}
@@ -459,17 +459,17 @@ class Kimai_Export_ExcelExporter extends PHPExcel {
 		}
 
 		$this->sheet->getStyle(self::excelRange(0, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr), count($this->activeColumns_arr) - 1, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr)))
-					->applyFromArray(array(
-						'font' => array(
+					->applyFromArray([
+                        'font' => [
 							'bold' => 'true'
-						),
-						'borders' => array(
-							'outline' => array(
-								'style'	=> PHPExcel_Style_Border::BORDER_THIN,
-								'color' => array('argb' => 'FF000000'),
-							),
-						),
-					));
+                        ],
+                        'borders' => [
+                            'outline' => [
+                                'style'	=> PHPExcel_Style_Border::BORDER_THIN,
+                                'color' => ['argb' => 'FF000000'],
+                            ],
+                        ],
+                    ]);
 
 		$this->sheet->getStyle(self::excelRange(0, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr), count($this->activeColumns_arr) - 1, self::EXCEL_HEADER_OFFSET + count($this->exportData_arr)))
 					->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)

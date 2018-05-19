@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -27,15 +27,15 @@ class Kimai_Format
      * Format a duration given in seconds according to the global setting. Either
      * seconds are shown or not.
      *
-     * @param integer|array one value in seconds or an array of values in seconds
-     * @return integer|array depending on the $sek param which contains the formatted duration
+     * @param int|array one value in seconds or an array of values in seconds
+     * @return int|array depending on the $sek param which contains the formatted duration
      */
     public static function formatDuration($sek)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if (is_array($sek)) {
             // Convert all values of the array.
-            $arr = array();
+            $arr = [];
             foreach ($sek as $key => $value) {
                 $arr[$key] = self::formatDuration($value);
             }
@@ -53,16 +53,16 @@ class Kimai_Format
     /**
      * Format a currency or an array of currencies accordingly.
      *
-     * @param integer|array $number one value or an array of decimal numbers
+     * @param int|array $number one value or an array of decimal numbers
      * @param bool $htmlNoWrap
-     * @return integer|array|string formatted string(s)
+     * @return int|array|string formatted string(s)
      */
     public static function formatCurrency($number, $htmlNoWrap = true)
     {
-        global $kga;
+        $kga = Kimai_Registry::getConfig();
         if (is_array($number)) {
             // Convert all values of the array.
-            $arr = array();
+            $arr = [];
             foreach ($number as $key => $value) {
                 $arr[$key] = self::formatCurrency($value);
             }
@@ -91,7 +91,7 @@ class Kimai_Format
      */
     public static function formatAnnotations(&$ann)
     {
-        global $database, $kga;
+        $kga = Kimai_Registry::getConfig();
 
         $type = 0;
         if (isset($kga['user'])) {
@@ -132,7 +132,7 @@ class Kimai_Format
     /**
      * Returns hours, minutes and seconds as array.
      *
-     * @param integer $sek number of seconds to extract the time from
+     * @param int $sek number of seconds to extract the time from
      * @return array
      */
     public static function hourminsec($sek)

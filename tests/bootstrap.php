@@ -3,7 +3,7 @@
  * This file is part of
  * Kimai - Open Source Time Tracking
  * (c) Kimai-Development-Team since 2006
- * http://www.kimai.org
+ * https://www.kimai.org
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  */
 
 // TODO: check include path
-ini_set ( 'date.timezone', 'Europe/Berlin' );
+ini_set('date.timezone', 'Europe/Berlin');
 
 if (!file_exists(__DIR__ . '/../libraries/autoload.php')) {
     die('You have to execute "composer install" or "composer update" before executing unit tests!');

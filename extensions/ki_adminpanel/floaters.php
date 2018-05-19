@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -17,10 +17,11 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// insert KSPI
 $isCoreProcessor = 0;
 $dir_templates = "templates";
 require '../../includes/kspi.php';
+
+$database = Kimai_Registry::getDatabase();
 
 $view = new Kimai_View();
 $view->addBasePath(__DIR__ . '/templates/');
@@ -38,12 +39,12 @@ switch ($axAction) {
 
         $userDetails['rate'] = $database->get_rate($userDetails['userID'], NULL, NULL);
 
-        $view->assign('globalRoles', array());
+        $view->assign('globalRoles', []);
         foreach ($database->global_roles() as $role) {
             $view->globalRoles[$role['globalRoleID']] = $role['name'];
         }
 
-        $view->assign('memberships', array());
+        $view->assign('memberships', []);
         foreach ($database->getGroupMemberships($id) as $groupId) {
             $view->memberships[$groupId] = $database->user_get_membership_role($id, $groupId);
         }
@@ -55,13 +56,13 @@ switch ($axAction) {
             $view->assign('groups', array_filter(
                 $groups,
                 function ($group) {
-                    global $kga;
+                    $kga = Kimai_Registry::getConfig();
                     return array_search($group['groupID'], $kga['user']['groups']) !== false;
                 }
             ));
         }
 
-        $view->assign('membershipRoles', array());
+        $view->assign('membershipRoles', []);
         foreach ($database->membership_roles() as $role) {
             $view->membershipRoles[$role['membershipRoleID']] = $role['name'];
         }

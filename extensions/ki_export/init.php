@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of
- * Kimai - Open Source Time Tracking // http://www.kimai.org
+ * Kimai - Open Source Time Tracking // https://www.kimai.org
  * (c) Kimai-Development-Team since 2006
  *
  * Kimai is free software; you can redistribute it and/or modify
@@ -19,6 +19,8 @@
 
 include '../../includes/basics.php';
 require "private_func.php";
+
+$database = Kimai_Registry::getDatabase();
 
 $user = checkUser();
 
@@ -51,9 +53,9 @@ $users = null;
 $customers = null;
 
 if (isset($kga['customer'])) {
-    $customers = array($kga['customer']['customerID']);
+    $customers = [$kga['customer']['customerID']];
 } else {
-    $users = array($kga['user']['userID']);
+    $users = [$kga['user']['userID']];
 }
 
 // Get the total amount of time shown in the table.
