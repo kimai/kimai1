@@ -277,6 +277,7 @@ return array(
     'date_format_0' => 'Date format for the datepicker (<a href="http://api.jqueryui.com/datepicker/#utility-formatDate" target="_blank">notation for dateFormat</a>)',
     'date_format_3' => 'Date format of datepicker in PHP (must match the datepicker format above - <a href="http://php.net/manual/en/function.date.php" target="_blank">notation for date</a>)',
     'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
+    'table_time_format' => 'Time format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Round time to ',
     'round_time_minute' => ' minute(s).',
     'allowRoundDown' => 'Allow rounding entries down.',
