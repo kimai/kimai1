@@ -373,6 +373,13 @@ EOD
     'months_short' => ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
     'weekdays' => ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
     'weekdays_short' => ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    'quicklink_today' => "Aujourd'hui",
+    'quicklink_yesterday' => "Hier",
+    'quicklink_lastWeek' => "Semaine dernière",
+    'quicklink_lastMonth' => "Mois dernier",
+    'quicklink_thisWeek' => "Cette semaine",
+    'quicklink_thisMonth' => "Ce mois",
+
 
     'errorMessages' => [
         'permissionDenied' => 'Permission refusée',
