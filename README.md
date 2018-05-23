@@ -1,11 +1,12 @@
+[![Latest Stable Version](https://poser.pugx.org/kimai/kimai/v/stable)](https://packagist.org/packages/kimai/kimai)
+[![Total Downloads](https://poser.pugx.org/kimai/kimai/downloads)](https://packagist.org/packages/kimai/kimai)
 [![Build status](https://travis-ci.org/kimai/kimai.svg?branch=master)](https://travis-ci.org/kimai/kimai "Current build status")
  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Average time to resolve an issue")
  [![Percentage of issues still open](http://isitmaintained.com/badge/open/kimai/kimai.svg)](http://isitmaintained.com/project/kimai/kimai "Percentage of issues still open")
+ [![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
 
 Kimai Time Tracking
 ===================
-
-[![Join the chat at https://gitter.im/kimai/kimai](https://badges.gitter.im/kimai/kimai.svg)](https://gitter.im/kimai/kimai)
 
 ![Kimai](https://raw.githubusercontent.com/kimai/documentation/master/assets/intro.jpg)
 
