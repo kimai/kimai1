@@ -33,7 +33,7 @@ foreach ($this->projects as $project)
             if ($projectPlotData['budget'] - $projectPlotData['budget'] < 0) {
                 ?>
                 <tr>
-                    <td class="budgetminus"><?php echo $this->kga['lang']['budget_minus'] ?>:</td>
+                    <td class="budgetminus"><?php echo $this->translate('budget_minus') ?>:</td>
                     <td><?php
                         $budget = $projectPlotData['budget'];
                         $total = $projectPlotData['total'];
@@ -77,7 +77,7 @@ foreach ($this->projects as $project)
                 {
                     ?>
                     <tr>
-                        <td class="budgetminus"><?php echo $this->kga['lang']['budget_minus'] ?>:</td>
+                        <td class="budgetminus"><?php echo $this->translate('budget_minus') ?>:</td>
                         <td><?php
                             $budget = $activity['budget_total'];
                             $total = $activity['total'];
