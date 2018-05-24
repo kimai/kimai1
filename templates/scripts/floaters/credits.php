@@ -8,7 +8,7 @@
     <div class="floater_content" style="margin:10px">
         <h2>Kimai - Open Source Time Tracking</h2>
         <p>
-            <?php echo 'v' . $this->kga['version'] . '.' . $this->kga['revision'] . ' - &copy; ' . $this->devtimespan;?> by the Kimai-Team:
+            <?php echo 'v' . $this->kga['version'] . '.' . $this->kga['revision'] . ' - &copy; 2006-' . date('y');?> by the Kimai-Team:
             <br/>
             Torsten Höltge, Severin Leonhardt, Kevin Papst, Simon Schaufelberger, Oleg Britvin, Martin Klemkow ...
         </p>

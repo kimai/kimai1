@@ -45,23 +45,23 @@
                 <ul>
                     <li>
                         <label for="name"><?php echo $this->kga['lang']['activity'] ?>:</label>
-                        <?php echo $this->formText('name', $this->name); ?>
+                        <?php echo $this->formText('name', $this->activity['name'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="defaultRate"><?php echo $this->kga['lang']['default_rate'] ?>:</label>
-                        <?php echo $this->formText('defaultRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->defaultRate)); ?>
+                        <?php echo $this->formText('defaultRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->activity['defaultRate'])); ?>
                     </li>
                     <li>
                         <label for="myRate"><?php echo $this->kga['lang']['my_rate'] ?>:</label>
-                        <?php echo $this->formText('myRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->myRate)); ?>
+                        <?php echo $this->formText('myRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->activity['myRate'])); ?>
                     </li>
                     <li>
                         <label for="fixedRate"><?php echo $this->kga['lang']['fixedRate'] ?>:</label>
-                        <?php echo $this->formText('fixedRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->fixedRate)); ?>
+                        <?php echo $this->formText('fixedRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->activity['fixedRate'])); ?>
                     </li>
                     <li>
                         <label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->activity['visible'] || !$this->id]); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -117,8 +117,8 @@
                             'class' => 'formfield',
                             'id' => 'activityGroups',
                             'multiple' => 'multiple',
-                            'size' => 3,
-                            'style' => 'width:255px'
+                            'size' => 5,
+                            'style' => 'width:620px'
                         ], $this->groups); ?>
                     </li>
                 </ul>
@@ -127,17 +127,18 @@
                 <ul>
                     <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('comment', $this->comment, [
+                        <?php echo $this->formTextarea('comment', $this->activity['comment'], [
                             'cols' => 30,
                             'rows' => 5,
-                            'class' => 'comment'
+                            'class' => 'comment',
+                            'style' => 'width:620px'
                         ]); ?>
                     </li>
                 </ul>
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class="btn_norm" type="button" value="<?php echo $this->kga['lang']['cancel'] ?>" onclick="floaterClose();return false;"/>
+	        <button class="btn_norm" type="button" onclick="floaterClose();"><?php echo $this->kga['lang']['cancel'] ?></button>
             <input class="btn_ok" type="submit" value="<?php echo $this->kga['lang']['submit'] ?>"/>
         </div>
     </form>

@@ -37,9 +37,7 @@ switch ($axAction) {
      * set from 2006 to the current year.
      */
     case 'credits':
-        $view->assign('devtimespan', '2006-' . date('y'));
-
-        echo $view->render("floaters/credits.php");
+        echo $view->render('floaters/credits.php');
     break;
 
     /**
@@ -47,7 +45,7 @@ switch ($axAction) {
      */
     case 'securityWarning':
         if ($axValue == 'installer') {
-          echo $view->render("floaters/security_warning.php");
+            echo $view->render('floaters/security_warning.php');
         }
     break;
 
@@ -103,24 +101,7 @@ switch ($axAction) {
             // Edit mode. Fill the dialog with the data of the customer.
             $data = $database->customer_get_data($id);
             if ($data) {
-                $view->assign('name', $data['name']);
-                $view->assign('comment', $data['comment']);
-                $view->assign('password', $data['password']);
-                $view->assign('timezone', $data['timezone']);
-                $view->assign('company', $data['company']);
-                $view->assign('vat', $data['vat']);
-                $view->assign('contact', $data['contact']);
-                $view->assign('street', $data['street']);
-                $view->assign('zipcode', $data['zipcode']);
-                $view->assign('city', $data['city']);
-                $view->assign('country', $data['country']);
-                $view->assign('phone', $data['phone']);
-                $view->assign('fax', $data['fax']);
-                $view->assign('mobile', $data['mobile']);
-                $view->assign('mail', $data['mail']);
-                $view->assign('homepage', $data['homepage']);
-                $view->assign('visible', $data['visible']);
-                $view->assign('filter', $data['filter']);
+                $view->assign('customer', $data);
                 $view->assign('selectedGroups', $database->customer_get_groupIDs($id));
                 $view->assign('id', $id);
             }
@@ -129,7 +110,7 @@ switch ($axAction) {
         }
 
         $view->assign('timezones', timezoneList());
-        $view->assign('groups', makeSelectBox("group", $kga['user']['groups']));
+        $view->assign('groups', makeSelectBox('group', $kga['user']['groups']));
 
         // A new customer is assigned to the group of the current user by default.
         if (!$id) {
@@ -171,19 +152,8 @@ switch ($axAction) {
         if ($id) {
             $data = $database->project_get_data($id);
             if ($data) {
-                $view->assign('name', $data['name']);
-                $view->assign('comment', $data['comment']);
-                $view->assign('visible', $data['visible']);
-                $view->assign('internal', $data['internal']);
-                $view->assign('filter', $data['filter']);
-                $view->assign('budget', $data['budget']);
-                $view->assign('effort', $data['effort']);
-                $view->assign('approved', $data['approved']);
-                $view->assign('selectedCustomer', $data['customerID']);
+                $view->assign('project', $data);
                 $view->assign('selectedActivities', $database->project_get_activities($id));
-                $view->assign('defaultRate', $data['defaultRate']);
-                $view->assign('myRate', $data['myRate']);
-                $view->assign('fixedRate', $data['fixedRate']);
                 $view->assign('selectedGroups', $database->project_get_groupIDs($id));
                 $view->assign('id', $id);
 
@@ -216,7 +186,7 @@ switch ($axAction) {
             $view->assign('id', 0);
         }
 
-        echo $view->render("floaters/add_edit_project.php");
+        echo $view->render('floaters/add_edit_project.php');
     break;
 
     /**
@@ -237,13 +207,7 @@ switch ($axAction) {
         if ($id) {
             $data = $database->activity_get_data($id);
             if ($data) {
-                $view->assign('name', $data['name']);
-                $view->assign('comment', $data['comment']);
-                $view->assign('visible', $data['visible']);
-                $view->assign('filter', $data['filter']);
-                $view->assign('defaultRate', $data['defaultRate']);
-                $view->assign('myRate', $data['myRate']);
-                $view->assign('fixedRate', $data['fixedRate']); // default fixed rate (not assigned to project)
+                $view->assign('activity', $data);
                 $view->assign('selectedGroups', $database->activity_get_groups($id));
 
                 $selectedProjectIds = $database->activity_get_projectIds($id);
@@ -280,7 +244,7 @@ switch ($axAction) {
             $view->assign('id', 0);
         }
 
-        echo $view->render("floaters/add_edit_activity.php");
+        echo $view->render('floaters/add_edit_activity.php');
     break;
 
 }

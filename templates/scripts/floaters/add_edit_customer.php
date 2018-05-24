@@ -50,31 +50,30 @@
                 <ul>
                     <li>
                         <label for="name"><?php echo $this->kga['lang']['customer'] ?>*:</label>
-                        <?php echo $this->formText('name', $this->name, ['required' => 'required']); ?>
+                        <?php echo $this->formText('name', $this->customer['name'], ['required' => 'required', 'size' => 100]); ?>
                     </li>
                     <li>
                         <label for="vat"><?php echo $this->kga['lang']['vat'] ?>:</label>
-                        <?php echo $this->formText('vat', $this->vat); ?>
+                        <?php echo $this->formText('vat', $this->customer['vat'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->customer['visible'] || !$this->id]); ?>
                     </li>
                     <li>
                         <label for="password"><?php echo $this->kga['lang']['password'] ?>:</label>
                         <div class="multiFields">
                             <?php echo $this->formPassword('password', '', [
-                                'cols' => 30,
-                                'rows' => 3,
-                                'disabled' => (!$this->password) ? 'disabled' : ''
+                                'disabled' => (!$this->customer['password']) ? 'disabled' : '',
+                                'size' => 100
                             ]); ?><br/>
-                            <?php echo $this->formCheckbox('no_password', '1', ['class' => 'disableInput', 'checked' => !$this->password]);
+                            <?php echo $this->formCheckbox('no_password', '1', ['class' => 'disableInput', 'checked' => !$this->customer['password']]);
                             echo $this->kga['lang']['nopassword'] ?>
                         </div>
                     </li>
                     <li>
                         <label for="timezone"><?php echo $this->kga['lang']['timezone'] ?>:</label>
-                        <?php echo $this->timeZoneSelect('timezone', $this->timezone); ?>
+                        <?php echo $this->timeZoneSelect('timezone', $this->customer['timezone'], ['style' => 'width:620px']); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -82,30 +81,30 @@
                 <ul>
                     <li>
                         <label for="company"><?php echo $this->kga['lang']['company'] ?>:</label>
-                        <?php echo $this->formText('company', $this->company); ?>
+                        <?php echo $this->formText('company', $this->customer['company'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="contactPerson"><?php echo $this->kga['lang']['contactPerson'] ?>:</label>
-                        <?php echo $this->formText('contactPerson', $this->contact); ?>
+                        <?php echo $this->formText('contactPerson', $this->customer['contact'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="street"><?php echo $this->kga['lang']['street'] ?>:</label>
-                        <?php echo $this->formText('street', $this->street); ?>
+                        <?php echo $this->formText('street', $this->customer['street'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="zipcode"><?php echo $this->kga['lang']['zipcode'] ?>:</label>
-                        <?php echo $this->formText('zipcode', $this->zipcode); ?>
+                        <?php echo $this->formText('zipcode', $this->customer['zipcode'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="city"><?php echo $this->kga['lang']['city'] ?>:</label>
-                        <?php echo $this->formText('city', $this->city); ?>
+                        <?php echo $this->formText('city', $this->customer['city'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="country"><?php echo $this->kga['lang']['country'] ?>:</label>
-                        <?php echo $this->formSelect('country', $this->country, [
+                        <?php echo $this->formSelect('country', $this->customer['country'], [
                             'class' => 'formfield',
                             'id' => 'country',
-                            'style' => 'width:255px'
+                            'style' => 'width:620px'
                         ], $this->countries); ?>
                     </li>
                 </ul>
@@ -114,23 +113,23 @@
                 <ul>
                     <li>
                         <label for="phone"><?php echo $this->kga['lang']['telephon'] ?>:</label>
-                        <?php echo $this->formText('phone', $this->phone); ?>
+                        <?php echo $this->formText('phone', $this->customer['phone'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="fax"><?php echo $this->kga['lang']['fax'] ?>:</label>
-                        <?php echo $this->formText('fax', $this->fax); ?>
+                        <?php echo $this->formText('fax', $this->customer['fax'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="mobile"><?php echo $this->kga['lang']['mobilephone'] ?>:</label>
-                        <?php echo $this->formText('mobile', $this->mobile); ?>
+                        <?php echo $this->formText('mobile', $this->customer['mobile'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="mail"><?php echo $this->kga['lang']['mail'] ?>:</label>
-                        <?php echo $this->formText('mail', $this->mail); ?>
+                        <?php echo $this->formText('mail', $this->customer['mail'], ['size' => 100]); ?>
                     </li>
                     <li>
                         <label for="homepage"><?php echo $this->kga['lang']['homepage'] ?>:</label>
-                        <?php echo $this->formText('homepage', $this->homepage); ?>
+                        <?php echo $this->formText('homepage', $this->customer['homepage'], ['size' => 100]); ?>
                     </li>
                 </ul>
             </fieldset>
@@ -142,8 +141,8 @@
                             'class' => 'formfield',
                             'id' => 'customerGroups',
                             'multiple' => 'multiple',
-                            'size' => 3,
-                            'style' => 'width:255px'
+                            'size' => 5,
+                            'style' => 'width:620px'
                         ], $this->groups); ?>
                     </li>
                 </ul>
@@ -152,18 +151,19 @@
                 <ul>
                     <li>
                         <label for="comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('comment', $this->comment, [
+                        <?php echo $this->formTextarea('comment', $this->customer['comment'], [
                             'cols' => 30,
                             'rows' => 5,
-                            'class' => 'comment'
+                            'class' => 'comment',
+                            'style' => 'width:620px'
                         ]); ?>
                     </li>
                 </ul>
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-            <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+	        <button class="btn_norm" type="button" onclick="floaterClose();"><?php echo $this->kga['lang']['cancel'] ?></button>
+            <input class="btn_ok" type="submit" value="<?php echo $this->kga['lang']['submit'] ?>"/>
         </div>
     </form>
 </div>
