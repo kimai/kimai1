@@ -78,31 +78,31 @@ if ($this->timeSheetEntries) {
                             <?php if ($this->kga->isShowRecordAgain()): ?>
                             <a onclick="ts_ext_recordAgain(<?php echo $row['projectID']?>,<?php echo $row['activityID']?>,<?php echo $row['timeEntryID']?>); return false;"
                                href="#" class="recordAgain"><img src="<?php echo $this->skin('grfx/button_recordthis.gif'); ?>"
-                                                                 width="13" height="13" alt='<?php echo $this->kga['lang']['recordAgain']?>' title='<?php echo $this->kga['lang']['recordAgain']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
+                                                                 width="13" height="13" alt='<?php echo $this->translate('recordAgain')?>' title="<?php echo $this->translate('recordAgain')?> (ID:<?php echo $row['timeEntryID']?>)" border="0" /></a>
                             <?php endif; ?>
                         <?php else: ?>
                             <a href="#" class="stop" onclick="ts_ext_stopRecord(<?php echo $row['timeEntryID']?>); return false;"><img
                                         src="<?php echo $this->skin('grfx/button_stopthis.gif'); ?>" width="13"
-                                        height="13" alt='<?php echo $this->kga['lang']['stop']?>' title='<?php echo $this->kga['lang']['stop']?> (ID:<?php echo $row['timeEntryID']?>)' border='0' /></a>
+                                        height="13" alt='<?php echo $this->translate('stop')?>' title="<?php echo $this->translate('stop')?> (ID: <?php echo $row['timeEntryID']?>)" border="0" /></a>
                         <?php endif; ?>
 
                         <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
                             <a href="#" onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-                               title='<?php echo $this->kga['lang']['edit']?>'><img
+                               title="<?php echo $this->translate('edit')?>"><img
                                         src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13"
-                                        alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border="0" /></a>
+                                        alt="<?php echo $this->translate('edit')?>" title="<?php echo $this->translate('edit')?>" border="0" /></a>
 
                             <?php if ($this->kga->getSettings()->isShowQuickNote()): ?>
                                 <a href="#" onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
-                                   title='<?php echo $this->kga['lang']['editNote']?>'><img
+                                   title='<?php echo $this->translate('editNote')?>'><img
                                             src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width="14" height="14"
-                                            alt="<?php echo $this->kga['lang']['editNote']?>" title='<?php echo $this->kga['lang']['editNote']?>' border="0" /></a>
+                                            alt="<?php echo $this->translate('editNote')?>" title="<?php echo $this->translate('editNote')?>" border="0" /></a>
                             <?php endif; ?>
 
                             <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
                                 <a href="#" class="quickdelete" onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
-                                            src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13'
-                                            height="13" alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>'
+                                            src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width="13"
+                                            height="13" alt="<?php echo $this->translate('quickdelete')?>" title="<?php echo $this->translate('quickdelete')?>"
                                             border="0" /></a>
                             <?php endif; ?>
                         <?php endif; ?>

@@ -1,8 +1,6 @@
 <html>
   <head>
     <title></title>
-    <meta content="">
-    
 	<style type="text/css" media="all">
 		body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
 		  margin: 0;
@@ -45,11 +43,10 @@
 		  font-weight: bold;
 		  margin-bottom: 10px;
 		}
-		
 	</style>
-		
+
 	<style type="text/css" media="print">
-		
+
 		body {
 			color: black;
 			font-family: Arial, Verdana, sans-serif;
@@ -75,14 +72,10 @@
 			display: none;
 		}
 
-		#div_liste {
-
-		}
-
 		#invertbtn, .invertclm {
 			display: none;
 		}
-		
+
 	</style>
 
 	<style type="text/css" media="screen">
@@ -118,35 +111,35 @@
   </head>
   <body>
 
-<h2> <?php echo $this->kga['lang']['export_extension']['time_period']?>: <?php echo $this->escape($this->timespan) ?></h2>
+<h2><?php echo $this->translate('export_extension:time_period')?>: <?php echo $this->escape($this->timespan) ?></h2>
 
 <?php if ($this->customersFilter != ""): ?>
-<br/><b><?php echo $this->kga['lang']['customers']?></b>: <?php echo $this->escape($this->customersFilter) ?>
-<?php endif; 
+<br/><b><?php echo $this->translate('customers')?></b>: <?php echo $this->escape($this->customersFilter) ?>
+<?php endif;
 if ($this->projectsFilter != ""): ?>
-<br/><b><?php echo $this->kga['lang']['projects']?></b>: <?php echo $this->escape($this->projectsFilter) ?>
+<br/><b><?php echo $this->translate('projects')?></b>: <?php echo $this->escape($this->projectsFilter) ?>
 <?php endif; ?>
 <br/>
 
 <?php if ($this->summary != 0): ?>
-  <h2><?php echo $this->kga['lang']['export_extension']['summary']?></h2>
+  <h2><?php echo $this->translate('export_extension:summary')?></h2>
 
 
   <table border="1">
     <tbody>
       <tr>
-        <th><?php echo $this->kga['lang']['activity']?></th>
+        <th><?php echo $this->translate('activity')?></th>
   <?php if (isset($this->columns['dec_time'])): ?>
-        <th><?php echo $this->kga['lang']['export_extension']['duration']?></th>
+        <th><?php echo $this->translate('export_extension:duration')?></th>
   <?php endif; ?>
   <?php if (isset($this->columns['wage'])): ?>
-        <th><?php echo $this->kga['lang']['export_extension']['costs']?></th>
+        <th><?php echo $this->translate('export_extension:costs')?></th>
   <?php endif; ?>
   <?php if (isset($this->columns['budget'])): ?>
-        <th><?php echo $this->kga['lang']['budget']?></th>
+        <th><?php echo $this->translate('budget')?></th>
   <?php endif; ?>
   <?php if (isset($this->columns['approved'])): ?>
-        <th><?php echo $this->kga['lang']['approved']?></th>
+        <th><?php echo $this->translate('approved')?></th>
   <?php endif; ?>
       </tr>
 
@@ -170,7 +163,7 @@ if ($this->projectsFilter != ""): ?>
 
       <tr>
         <td>
-          <i><?php echo $this->kga['lang']['export_extension']['finalamount']?></i>
+          <i><?php echo $this->translate('export_extension:finalamount')?></i>
         </td>
   <?php if (isset($this->columns['dec_time'])): ?>
         <td><?php echo $this->escape(number_format($this->timeSum, 2, $this->kga['conf']['decimalSeparator'], ""))?></td>
@@ -190,40 +183,40 @@ if ($this->projectsFilter != ""): ?>
   </table>
 <?php endif; ?>
 
-<h2><?php echo $this->kga['lang']['export_extension']['full_list']?></h2>
+<h2><?php echo $this->translate('export_extension:full_list')?></h2>
 
           <table border="1">
             <tbody>
 
                 <tr>
-<?php if (isset($this->columns['date'])):         ?> <th><?php echo $this->kga['lang']['datum']?></th>       <?php endif; ?>
-<?php if (isset($this->columns['from'])):         ?> <th><?php echo $this->kga['lang']['in']?></th>          <?php endif; ?>
-<?php if (isset($this->columns['to'])):           ?> <th><?php echo $this->kga['lang']['out']?></th>         <?php endif; ?>
-<?php if (isset($this->columns['time'])):         ?> <th><?php echo $this->kga['lang']['time']?></th>        <?php endif; ?>
-<?php if (isset($this->columns['dec_time'])):     ?> <th><?php echo $this->kga['lang']['timelabel']?></th>   <?php endif; ?>
-<?php if (isset($this->columns['rate'])):         ?> <th><?php echo $this->kga['lang']['rate']?></th>        <?php endif; ?>
+<?php if (isset($this->columns['date'])):         ?> <th><?php echo $this->translate('datum')?></th>       <?php endif; ?>
+<?php if (isset($this->columns['from'])):         ?> <th><?php echo $this->translate('in')?></th>          <?php endif; ?>
+<?php if (isset($this->columns['to'])):           ?> <th><?php echo $this->translate('out')?></th>         <?php endif; ?>
+<?php if (isset($this->columns['time'])):         ?> <th><?php echo $this->translate('time')?></th>        <?php endif; ?>
+<?php if (isset($this->columns['dec_time'])):     ?> <th><?php echo $this->translate('timelabel')?></th>   <?php endif; ?>
+<?php if (isset($this->columns['rate'])):         ?> <th><?php echo $this->translate('rate')?></th>        <?php endif; ?>
 <?php if (isset($this->columns['wage'])):         ?> <th><?php echo $this->kga->getCurrencyName()?></th>       <?php endif; ?>
-<?php if (isset($this->columns['budget'])):       ?> <th><?php echo $this->kga['lang']['budget']?></th>      <?php endif; ?>
-<?php if (isset($this->columns['approved'])):     ?> <th><?php echo $this->kga['lang']['approved']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['status'])):       ?> <th><?php echo $this->kga['lang']['status']?></th>      <?php endif; ?>
-<?php if (isset($this->columns['billable'])):     ?> <th><?php echo $this->kga['lang']['billable']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['customer'])):     ?> <th><?php echo $this->kga['lang']['customer']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['project'])):      ?> <th><?php echo $this->kga['lang']['project']?></th>     <?php endif; ?>
-<?php if (isset($this->columns['activity'])):     ?> <th><?php echo $this->kga['lang']['activity']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['description'])):  ?> <th><?php echo $this->kga['lang']['description']?></th> <?php endif; ?>
-<?php if (isset($this->columns['comment'])):      ?> <th><?php echo $this->kga['lang']['comment']?></th>     <?php endif; ?>
-<?php if (isset($this->columns['location'])):     ?> <th><?php echo $this->kga['lang']['location']?></th>   <?php endif; ?>
-<?php if (isset($this->columns['trackingNumber'])):   ?> <th><?php echo $this->kga['lang']['trackingNumber']?></th>  <?php endif; ?>
-<?php if (isset($this->columns['user'])):         ?> <th><?php echo $this->kga['lang']['username']?></th>    <?php endif; ?>
-<?php if (isset($this->columns['cleared'])):      ?> <th><?php echo $this->kga['lang']['cleared']?></th>     <?php endif; ?>
+<?php if (isset($this->columns['budget'])):       ?> <th><?php echo $this->translate('budget')?></th>      <?php endif; ?>
+<?php if (isset($this->columns['approved'])):     ?> <th><?php echo $this->translate('approved')?></th>    <?php endif; ?>
+<?php if (isset($this->columns['status'])):       ?> <th><?php echo $this->translate('status')?></th>      <?php endif; ?>
+<?php if (isset($this->columns['billable'])):     ?> <th><?php echo $this->translate('billable')?></th>    <?php endif; ?>
+<?php if (isset($this->columns['customer'])):     ?> <th><?php echo $this->translate('customer')?></th>    <?php endif; ?>
+<?php if (isset($this->columns['project'])):      ?> <th><?php echo $this->translate('project')?></th>     <?php endif; ?>
+<?php if (isset($this->columns['activity'])):     ?> <th><?php echo $this->translate('activity')?></th>    <?php endif; ?>
+<?php if (isset($this->columns['description'])):  ?> <th><?php echo $this->translate('description')?></th> <?php endif; ?>
+<?php if (isset($this->columns['comment'])):      ?> <th><?php echo $this->translate('comment')?></th>     <?php endif; ?>
+<?php if (isset($this->columns['location'])):     ?> <th><?php echo $this->translate('location')?></th>   <?php endif; ?>
+<?php if (isset($this->columns['trackingNumber'])):   ?> <th><?php echo $this->translate('trackingNumber')?></th>  <?php endif; ?>
+<?php if (isset($this->columns['user'])):         ?> <th><?php echo $this->translate('username')?></th>    <?php endif; ?>
+<?php if (isset($this->columns['cleared'])):      ?> <th><?php echo $this->translate('cleared')?></th>     <?php endif; ?>
 
                 </tr>
-               
+
 <?php foreach ($this->exportData as $row): ?>
 
-    
+
                 <tr>
-    
+
 
 <?php if (isset($this->columns['date'])): ?>
                     <td>
@@ -249,14 +242,14 @@ if ($this->projectsFilter != ""): ?>
 
 <?php if (isset($this->columns['to'])): ?>
                     <td>
-                    
+
 <?php if ($row['time_out']): ?>
                         <?php  if ($this->custom_timeformat)
                             echo $this->escape(strftime($this->custom_timeformat,$row['time_out']));
                           else
                             echo $this->escape(strftime("%H:%M", $row['time_in']));
                         ?>
-<?php else: ?>      
+<?php else: ?>
                         &ndash;&ndash;:&ndash;&ndash;
 <?php endif; ?>
                     </td>
@@ -335,7 +328,7 @@ if ($this->projectsFilter != ""): ?>
 
 <?php if (isset($this->columns['activity'])): ?>
                     <td>
-                            <?php echo $this->escape($row['activityName']); ?> 
+                            <?php echo $this->escape($row['activityName']); ?>
                     </td>
 <?php endif; ?>
 
@@ -357,7 +350,7 @@ if ($this->projectsFilter != ""): ?>
 <?php if (isset($this->columns['location'])): ?>
                     <td>
                         <?php echo $this->escape($row['location']); ?>
-                        
+
                     </td>
 <?php endif; ?>
 
@@ -365,7 +358,7 @@ if ($this->projectsFilter != ""): ?>
 <?php if (isset($this->columns['trackingNumber'])): ?>
                     <td>
                         <?php echo $this->escape($row['trackingNumber']); ?>
-                        
+
                     </td>
 <?php endif; ?>
 
@@ -373,26 +366,26 @@ if ($this->projectsFilter != ""): ?>
 <?php if (isset($this->columns['user'])): ?>
                     <td>
                         <?php echo $this->escape($row['username']); ?>
-                        
+
                     </td>
 <?php endif; ?>
 
 
 <?php if (isset($this->columns['cleared'])): ?>
 					<td>
-                      <?php if ($row['cleared']) echo $this->kga['lang']['cleared']?>
+                      <?php if ($row['cleared']) echo $this->translate('cleared')?>
 					</td>
 <?php endif; ?>
-					
+
 
                 </tr>
-               
+
 <?php endforeach; ?>
 
 <?php if ($this->timeSum > 0 || $this->wageSum > 0): ?>
 <tr>
 <td colspan="<?php echo count($this->columns)?>">
-<?php echo $this->kga['lang']['export_extension']['finalamount']?>
+<?php echo $this->translate('export_extension:finalamount')?>
 </td>
 </tr>
 <tr>
@@ -424,7 +417,7 @@ if ($this->projectsFilter != ""): ?>
   <?php if (isset($this->columns['cleared'])): ?> <td></td> <?php endif; ?>
 </tr>
 <?php endif; ?>
-            </tbody>   
+            </tbody>
         </table>
 </body>
 </html>

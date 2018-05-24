@@ -1,8 +1,8 @@
 <div id="floater_innerwrap">
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['about']?></span>
+        <span id="floater_title"><?php echo $this->translate('about')?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close']?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->translate('close') ?></a>
         </div>
     </div>
     <div class="floater_content" style="margin:10px">
@@ -22,7 +22,7 @@
         <p>
             <strong><?php
                 echo sprintf(
-                    $this->kga['lang']['credits_license'],
+                    $this->translate('credits_license'),
                     '<a href="../COPYING" target="_blank">GPL 3</a>'
                 );
             ?></strong>
@@ -30,7 +30,7 @@
         <p>
             <?php
             echo sprintf(
-                $this->kga['lang']['credits'],
+                $this->translate('credits'),
                 'http://forum.kimai.org',
                 'https://github.com/kimai/kimai/archive/master.zip',
                 'https://www.kimai.org/donate/',
@@ -40,14 +40,14 @@
             ?>
         </p>
         <p>
-            <strong><?php echo $this->kga['lang']['credits_thanks']?></strong>
+            <strong><?php echo $this->translate('credits_thanks')?></strong>
             Vasilis van Gemert, Maximilian Kern, Enrico Ties, Thomas Wensing, John Resig, Kelvin Luck, Urs Gerig, Willem van Gemert,
             Torben Boe and HamBug Studios, Klaus Franken, Chris (Urban Willi), Andreas Berndt, Niels Hoffmann, Günter Hengsbach,
             Paul Brand, Joaqu&iacute;n G. de la Zerda, Allesandro Bertoldo, Jos&eacute; Ricardo Cardoso,
             RRZE (Regionales Rechenzentrum Erlangen) ...
         </p>
         <p>
-            <strong><?php echo $this->kga['lang']['credits_libs']?></strong>
+            <strong><?php echo $this->translate('credits_libs')?></strong>
                 <a href="http://framework.zend.com/" target="_blank">Zend Framework</a>,
                 <a href="http://jquery.com/" target="_blank">jQuery</a>,
                 <a href="http://phpjs.org/" target="_blank">phpjs</a>,

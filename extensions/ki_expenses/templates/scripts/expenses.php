@@ -43,12 +43,12 @@ if ($this->expenses)
             <td nowrap class="option <?php echo $tdClass ?>">
 
             <?php if (isset($this->kga['user']) && (!$this->kga->isEditLimit() || time() - $row['timestamp'] <= $this->kga->getEditLimit())): ?>
-                <a href ='#' onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->kga['lang']['edit']?>'>
-                <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['edit']?>' title='<?php echo $this->kga['lang']['edit']?>' border='0' /></a>
+                <a href ='#' onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->translate('edit')?>'>
+                <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13" alt='<?php echo $this->translate('edit')?>' title='<?php echo $this->translate('edit')?>' border="0" /></a>
 
                 <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
                     <a href ='#' class='quickdelete' onclick="expense_quickdelete(<?php echo $row['expenseID']?>); return false;">
-                    <img src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width='13' height='13' alt='<?php echo $this->kga['lang']['quickdelete']?>' title='<?php echo $this->kga['lang']['quickdelete']?>' border=0 />
+                    <img src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width="13" height="13" alt='<?php echo $this->translate('quickdelete')?>' title='<?php echo $this->translate('quickdelete')?>' border=0 />
                     </a>
                 <?php endif; ?>
             <?php endif; ?>
@@ -68,7 +68,7 @@ if ($this->expenses)
             </td>
 
             <td class="refundable <?php echo $tdClass ?>">
-                    <?php echo $row['refundable'] ? $this->kga['lang']['yes'] : $this->kga['lang']['no'] ?>
+                    <?php echo $row['refundable'] ? $this->translate('yes') : $this->translate('no') ?>
             </td>
 
             <td class="customer <?php echo $tdClass ?>">
