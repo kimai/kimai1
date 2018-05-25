@@ -49,7 +49,7 @@
             <fieldset id="general">
                 <ul>
                     <li><label for="name"><?php echo $this->translate('project') ?>*:</label>
-                        <?php echo $this->formText('name', $this->project['name'], ['required' => 'required', 'size' => 100]); ?>
+                        <?php echo $this->formText('name', $this->project['name'], ['required' => 'required', 'style' => 'width:620px']); ?>
                     </li>
                     <li><label for="customerID"><?php echo $this->translate('customer') ?>:</label>
                         <?php echo $this->formSelect('customerID', $this->project['customerID'], ['class' => 'formfield', 'style' => 'width:620px'], $this->customers); ?>

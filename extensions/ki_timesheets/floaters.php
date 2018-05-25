@@ -206,11 +206,11 @@ switch ($axAction) {
         }
         $view->assign('billable', array_combine($billableValues, $billableText));
 
-        echo $view->render("floaters/add_edit_timeSheetEntry.php");
+        echo $view->render('floaters/add_edit_timeSheetEntry.php');
 
         break;
 
-    case "add_edit_timeSheetQuickNote":
+    case 'add_edit_timeSheetQuickNote':
         if (isset($kga['customer'])) die();
         // ================================================
         // = display edit dialog for timesheet quick note =

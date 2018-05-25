@@ -50,11 +50,11 @@
                 <ul>
                     <li>
                         <label for="name"><?php echo $this->translate('customer') ?>*:</label>
-                        <?php echo $this->formText('name', $this->customer['name'], ['required' => 'required', 'size' => 100]); ?>
+                        <?php echo $this->formText('name', $this->customer['name'], ['required' => 'required', 'style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="vat"><?php echo $this->translate('vat') ?>:</label>
-                        <?php echo $this->formText('vat', $this->customer['vat'], ['size' => 100]); ?>
+                        <?php echo $this->formText('vat', $this->customer['vat'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="visible"><?php echo $this->translate('visibility') ?>:</label>
@@ -65,7 +65,7 @@
                         <div class="multiFields">
                             <?php echo $this->formPassword('password', '', [
                                 'disabled' => (!$this->customer['password']) ? 'disabled' : '',
-                                'size' => 100
+                                'style' => 'width:620px'
                             ]); ?><br/>
                             <?php echo $this->formCheckbox('no_password', '1', ['class' => 'disableInput', 'checked' => !$this->customer['password']]);
                             echo $this->translate('nopassword') ?>
@@ -81,23 +81,23 @@
                 <ul>
                     <li>
                         <label for="company"><?php echo $this->translate('company') ?>:</label>
-                        <?php echo $this->formText('company', $this->customer['company'], ['size' => 100]); ?>
+                        <?php echo $this->formText('company', $this->customer['company'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="contactPerson"><?php echo $this->translate('contactPerson') ?>:</label>
-                        <?php echo $this->formText('contactPerson', $this->customer['contact'], ['size' => 100]); ?>
+                        <?php echo $this->formText('contactPerson', $this->customer['contact'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="street"><?php echo $this->translate('street') ?>:</label>
-                        <?php echo $this->formText('street', $this->customer['street'], ['size' => 100]); ?>
+                        <?php echo $this->formText('street', $this->customer['street'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="zipcode"><?php echo $this->translate('zipcode') ?>:</label>
-                        <?php echo $this->formText('zipcode', $this->customer['zipcode'], ['size' => 100]); ?>
+                        <?php echo $this->formText('zipcode', $this->customer['zipcode'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="city"><?php echo $this->translate('city') ?>:</label>
-                        <?php echo $this->formText('city', $this->customer['city'], ['size' => 100]); ?>
+                        <?php echo $this->formText('city', $this->customer['city'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="country"><?php echo $this->translate('country') ?>:</label>
@@ -113,23 +113,23 @@
                 <ul>
                     <li>
                         <label for="phone"><?php echo $this->translate('telephon') ?>:</label>
-                        <?php echo $this->formText('phone', $this->customer['phone'], ['size' => 100]); ?>
+                        <?php echo $this->formText('phone', $this->customer['phone'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="fax"><?php echo $this->translate('fax') ?>:</label>
-                        <?php echo $this->formText('fax', $this->customer['fax'], ['size' => 100]); ?>
+                        <?php echo $this->formText('fax', $this->customer['fax'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="mobile"><?php echo $this->translate('mobilephone') ?>:</label>
-                        <?php echo $this->formText('mobile', $this->customer['mobile'], ['size' => 100]); ?>
+                        <?php echo $this->formText('mobile', $this->customer['mobile'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="mail"><?php echo $this->translate('mail') ?>:</label>
-                        <?php echo $this->formText('mail', $this->customer['mail'], ['size' => 100]); ?>
+                        <?php echo $this->formText('mail', $this->customer['mail'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="homepage"><?php echo $this->translate('homepage') ?>:</label>
-                        <?php echo $this->formText('homepage', $this->customer['homepage'], ['size' => 100]); ?>
+                        <?php echo $this->formText('homepage', $this->customer['homepage'], ['style' => 'width:620px']); ?>
                     </li>
                 </ul>
             </fieldset>

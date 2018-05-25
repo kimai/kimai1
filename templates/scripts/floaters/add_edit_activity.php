@@ -45,7 +45,7 @@
                 <ul>
                     <li>
                         <label for="name"><?php echo $this->translate('activity') ?>:</label>
-                        <?php echo $this->formText('name', $this->activity['name'], ['size' => 100]); ?>
+                        <?php echo $this->formText('name', $this->activity['name'], ['style' => 'width:620px']); ?>
                     </li>
                     <li>
                         <label for="defaultRate"><?php echo $this->translate('default_rate') ?>:</label>
