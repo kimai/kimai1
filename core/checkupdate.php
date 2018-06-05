@@ -31,8 +31,8 @@ $result = $check->checkForUpdate($kga['version'], $kga['revision']);
 
 if ($result == Kimai_Update_Check::RELEASE) {
     echo $kga['lang']['updatecheck']['release'];
-} else if ($result == Kimai_Update_Check::BETA) {
+} elseif ($result == Kimai_Update_Check::BETA) {
     echo $kga['lang']['updatecheck']['beta'];
-} else if ($result == Kimai_Update_Check::CURRENT) {
+} elseif ($result == Kimai_Update_Check::CURRENT) {
     echo $kga['lang']['updatecheck']['current'];
 }

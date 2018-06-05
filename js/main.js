@@ -378,7 +378,7 @@ function stopRecord() {
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) { // Updated
+function updateRecordStatus(serverTime, record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
     // if awaiting updateRecordStatus from buzzer
     if (typeof timeout_updateRecordStatus != 'undefined') {
         clearTimeout(timeout_updateRecordStatus);
@@ -393,10 +393,8 @@ function updateRecordStatus(record_ID, record_startTime, customerID, customerNam
         return;
     }
 
-    // Update offset accuracy
-    if (typeof stopwatch_init_time != 'undefined' && (stopwatch_init_time + offset) != record_startTime) {
-        offset = stopwatch_init_time - record_startTime;
-    }
+    // calculate offset (note: this does not take into account network latencies - but I guess for display this should be accurate enough)
+    var offset = serverTime - ((new Date()).getTime() / 1000);
 
     startsec = record_startTime + offset;
 
@@ -412,13 +410,13 @@ function show_stopwatch() {
     $("#ticker_customer").html($("#selected_customer").html());
     $("#ticker_project").html($("#selected_project").html());
     $("#ticker_activity").html($("#selected_activity").html());
+
     if ($("ul#ticker").length > 0) {
         $("#stopwatch_ticker").css('margin-top', '10px');
         $("#stopwatch_ticker").css('height', '30px');
         $("#stopwatch_ticker").css('overflow', 'hidden');
         $("ul#ticker").css('animation', 'ticker 5s cubic-bezier(1, 0, .5, 0) infinite');
     }
-    stopwatch_init_time = Math.floor((new Date()).getTime() / 1000);
     ticktac();
 }
 
@@ -434,7 +432,6 @@ function show_selectors() {
 }
 
 function buzzer() {
-
     if (currentRecording == 0 || $('#buzzer').hasClass('disabled')) return;
 
     if (currentRecording > -1) {
@@ -540,7 +537,6 @@ function ticktac() {
 function ticktack_off() {
     if (timeoutTicktack) {
         clearTimeout(timeoutTicktack);
-        delete stopwatch_init_time;
         timeoutTicktack = 0;
         $("#h").html("00");
         $("#m").html("00");

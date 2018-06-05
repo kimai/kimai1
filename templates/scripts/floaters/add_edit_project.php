@@ -2,38 +2,40 @@
     <div id="floater_handle">
         <span id="floater_title"><?php
             if (isset($this->id) && $this->id !== 0) {
-                echo $this->kga['lang']['edit'] . ': ' . $this->kga['lang']['project'];
+                echo $this->translate('edit') . ': ' . $this->translate('project');
             } else {
-                echo $this->kga['lang']['new_project'];
+                echo $this->translate('new_project');
             }
         ?></span>
-        <div class="right"><a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a></div>
+        <div class="right">
+	        <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->translate('close') ?></a>
+        </div>
     </div>
     <div class="menuBackground">
         <ul class="menu tabSelection">
             <li class="tab norm"><a href="#general">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['general'] ?></span>
+                    <span class="bb"><?php echo $this->translate('general') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
             <li class="tab norm"><a href="#money">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['budget'] ?></span>
+                    <span class="bb"><?php echo $this->translate('budget') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
             <li class="tab norm"><a href="#activitiestab">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['activities'] ?></span>
+                    <span class="bb"><?php echo $this->translate('activities') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
             <li class="tab norm"><a href="#groups">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['groups'] ?></span>
+                    <span class="bb"><?php echo $this->translate('groups') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
             <li class="tab norm"><a href="#comment">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['comment'] ?></span>
+                    <span class="bb"><?php echo $this->translate('comment') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
         </ul>
@@ -46,48 +48,49 @@
         <div id="floater_tabs" class="floater_content">
             <fieldset id="general">
                 <ul>
-                    <li><label for="name"><?php echo $this->kga['lang']['project'] ?>*:</label>
-                        <?php echo $this->formText('name', $this->name, ['required' => 'required']); ?> </li>
-                    <li><label for="customerID"><?php echo $this->kga['lang']['customer'] ?>:</label>
-                        <?php echo $this->formSelect('customerID', $this->selectedCustomer, ['class' => 'formfield'], $this->customers); ?>
+                    <li><label for="name"><?php echo $this->translate('project') ?>*:</label>
+                        <?php echo $this->formText('name', $this->project['name'], ['required' => 'required', 'style' => 'width:620px']); ?>
                     </li>
-                    <li><label for="visible"><?php echo $this->kga['lang']['visibility'] ?>:</label>
-                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->visible || !$this->id]); ?>
+                    <li><label for="customerID"><?php echo $this->translate('customer') ?>:</label>
+                        <?php echo $this->formSelect('customerID', $this->project['customerID'], ['class' => 'formfield', 'style' => 'width:620px'], $this->customers); ?>
                     </li>
-                    <li><label for="internal"><?php echo $this->kga['lang']['internalProject'] ?>:</label>
-                        <?php echo $this->formCheckbox('internal', '1', ['checked' => $this->internal]); ?>
+                    <li><label for="visible"><?php echo $this->translate('visibility') ?>:</label>
+                        <?php echo $this->formCheckbox('visible', '1', ['checked' => $this->project['visible'] || !$this->id]); ?>
+                    </li>
+                    <li><label for="internal"><?php echo $this->translate('internalProject') ?>:</label>
+                        <?php echo $this->formCheckbox('internal', '1', ['checked' => $this->project['internal']]); ?>
                     </li>
                 </ul>
             </fieldset>
             <fieldset id="money">
                 <ul>
-                    <li><label for="defaultRate"><?php echo $this->kga['lang']['default_rate'] ?>:</label>
-                        <?php echo $this->formText('defaultRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->defaultRate)); ?>
+                    <li><label for="defaultRate"><?php echo $this->translate('default_rate') ?>:</label>
+                        <?php echo $this->formText('defaultRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['defaultRate'])); ?>
                     </li>
-                    <li><label for="myRate"><?php echo $this->kga['lang']['my_rate'] ?>:</label>
-                        <?php echo $this->formText('myRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->myRate)); ?>
+                    <li><label for="myRate"><?php echo $this->translate('my_rate') ?>:</label>
+                        <?php echo $this->formText('myRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['myRate'])); ?>
                     </li>
-                    <li><label for="fixedRate"><?php echo $this->kga['lang']['fixedRate'] ?>:</label>
-                        <?php echo $this->formText('fixedRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->fixedRate)); ?>
+                    <li><label for="fixedRate"><?php echo $this->translate('fixedRate') ?>:</label>
+                        <?php echo $this->formText('fixedRate', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['fixedRate'])); ?>
                     </li>
-                    <li><label for="project_budget"><?php echo $this->kga['lang']['budget'] ?>:</label>
-                        <?php echo $this->formText('project_budget', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->budget)); ?>
+                    <li><label for="project_budget"><?php echo $this->translate('budget') ?>:</label>
+                        <?php echo $this->formText('project_budget', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['budget'])); ?>
                     </li>
-                    <li><label for="project_effort"><?php echo $this->kga['lang']['effort'] ?>:</label>
-                        <?php echo $this->formText('project_effort', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->effort)); ?>
+                    <li><label for="project_effort"><?php echo $this->translate('effort') ?>:</label>
+                        <?php echo $this->formText('project_effort', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['effort'])); ?>
                     </li>
-                    <li><label for="project_approved"><?php echo $this->kga['lang']['approved'] ?>:</label>
-                        <?php echo $this->formText('project_approved', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->approved)); ?>
+                    <li><label for="project_approved"><?php echo $this->translate('approved') ?>:</label>
+                        <?php echo $this->formText('project_approved', str_replace('.', $this->kga['conf']['decimalSeparator'], $this->project['approved'])); ?>
                     </li>
                 </ul>
             </fieldset>
             <fieldset id="activitiestab">
                 <table class="activitiesTable">
                     <tr>
-                        <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->kga['lang']['activities'] ?>:</label></td>
-                        <td><label for="budget" style="text-align: left;"><?php echo $this->kga['lang']['budget'] ?>:</label></td>
-                        <td><label for="effort" style="text-align: left;"><?php echo $this->kga['lang']['effort'] ?>:</label></td>
-                        <td><label for="approved" style="text-align: left;"><?php echo $this->kga['lang']['approved'] ?>:</label></td>
+                        <td><label for="assignedActivities" style="text-align: left;"><?php echo $this->translate('activities') ?>:</label></td>
+                        <td><label for="budget" style="text-align: left;"><?php echo $this->translate('budget') ?>:</label></td>
+                        <td><label for="effort" style="text-align: left;"><?php echo $this->translate('effort') ?>:</label></td>
+                        <td><label for="approved" style="text-align: left;"><?php echo $this->translate('approved') ?>:</label></td>
                         <td></td>
                     </tr>
                     <?php
@@ -138,27 +141,28 @@
                             'class' => 'formfield',
                             'id' => 'projectGroups',
                             'multiple' => 'multiple',
-                            'size' => 3,
-                            'style' => 'width:255px'
+                            'size' => 5,
+                            'style' => 'width:620px'
                         ], $this->groups); ?>
                     </li>
                 </ul>
             </fieldset>
             <fieldset id="comment">
                 <ul>
-                    <li><label for="projectComment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <?php echo $this->formTextarea('projectComment', $this->comment, [
+                    <li><label for="projectComment"><?php echo $this->translate('comment') ?>:</label>
+                        <?php echo $this->formTextarea('projectComment', $this->project['comment'], [
                             'cols' => 30,
                             'rows' => 5,
-                            'class' => 'comment'
+                            'class' => 'comment',
+                            'style' => 'width:620px'
                         ]); ?>
                     </li>
                 </ul>
             </fieldset>
         </div>
         <div id="formbuttons">
-            <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-            <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+	        <button type="button" class="btn_norm" onclick="floaterClose();"><?php echo $this->translate('cancel') ?></button>
+            <input type="submit" class="btn_ok" value="<?php echo $this->translate('submit') ?>"/>
         </div>
     </form>
 </div>

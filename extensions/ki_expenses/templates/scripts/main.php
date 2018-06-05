@@ -1,7 +1,7 @@
 <div id="expenses_head">
     <div class="left">
         <?php if (isset($this->kga['user'])): ?>
-            <a href="#" onclick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600); $(this).blur(); return false;"><?php echo $this->kga['lang']['add'] ?></a>
+            <a href="#" onclick="floaterShow('../extensions/ki_expenses/floaters.php','add_edit_record',0,0,600); $(this).blur(); return false;"><?php echo $this->translate('add') ?></a>
         <?php endif; ?>
     </div>
     <table>
@@ -19,14 +19,14 @@
         <tbody>
         <tr>
             <td class="option">&nbsp;</td>
-            <td class="date"><?php echo $this->kga['lang']['datum'] ?></td>
-            <td class="time"><?php echo $this->kga['lang']['timelabel'] ?></td>
-            <td class="value"><?php echo $this->kga['lang']['expense'] ?></td>
-            <td class="refundable"><?php echo $this->kga['lang']['refundable'] ?></td>
-            <td class="customer"><?php echo $this->kga['lang']['customer'] ?></td>
-            <td class="project"><?php echo $this->kga['lang']['project'] ?></td>
-            <td class="designation"><?php echo $this->kga['lang']['designation'] ?></td>
-            <td class="username"><?php echo $this->kga['lang']['username'] ?></td>
+            <td class="date"><?php echo $this->translate('datum') ?></td>
+            <td class="time"><?php echo $this->translate('timelabel') ?></td>
+            <td class="value"><?php echo $this->translate('expense') ?></td>
+            <td class="refundable"><?php echo $this->translate('refundable') ?></td>
+            <td class="customer"><?php echo $this->translate('customer') ?></td>
+            <td class="project"><?php echo $this->translate('project') ?></td>
+            <td class="designation"><?php echo $this->translate('designation') ?></td>
+            <td class="username"><?php echo $this->translate('username') ?></td>
         </tr>
         </tbody>
     </table>

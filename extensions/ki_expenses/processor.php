@@ -155,7 +155,7 @@ switch ($axAction) {
             $view->assign('hideComments', true);
         }
 
-        echo $view->render("expenses.php");
+        echo $view->render('expenses.php');
         break;
 
     // =======================================
@@ -274,7 +274,7 @@ switch ($axAction) {
         }
 
         // parse new day and time
-        $edit_day = Kimai_Format::expand_date_shortcut($_REQUEST['edit_day']);
+        $edit_day = DateTime::createFromFormat($kga->getDateFormat(3), $_REQUEST['edit_day'])->format('d.m.Y');
         $edit_time = Kimai_Format::expand_time_shortcut($_REQUEST['edit_time']);
 
         // validate day and time

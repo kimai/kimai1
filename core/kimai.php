@@ -17,9 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-// =============================
-// = Smarty (initialize class) =
-// =============================
 require_once '../includes/basics.php';
 
 $database = Kimai_Registry::getDatabase();
@@ -42,7 +39,7 @@ $user = checkUser();
 // Jedes neue update schreibt seine Versionsnummer in die Datenbank.
 // Beim nächsten Update kommt dann in der Datei /includes/var.php die neue V-Nr. mit.
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen.
-checkDBversion("..");
+checkDBversion('..');
 
 $extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
 $extensions->loadConfigurations();
@@ -68,12 +65,12 @@ if (isset($kga['lang']['countryCode'])) {
 // ===============================================
 $current_timer = [];
 if (isset($kga['customer'])) {
-  $current_timer['all']  = 0;
-  $current_timer['hour'] = 0;
-  $current_timer['min']  = 0;
-  $current_timer['sec']  = 0;
+    $current_timer['all'] = 0;
+    $current_timer['hour'] = 0;
+    $current_timer['min'] = 0;
+    $current_timer['sec'] = 0;
 } else {
-  $current_timer = $database->get_current_timer();
+    $current_timer = $database->get_current_timer();
 }
 
 // =======================================
@@ -103,7 +100,7 @@ if (isset($kga['customer'])) {
 // ===========================
 // = DatePicker localization =
 // ===========================
-$localized_DatePicker = "";
+$localized_DatePicker = '';
 
 $view->assign('weekdays_array', sprintf(
     "['%s','%s','%s','%s','%s','%s','%s']\n",
@@ -192,20 +189,21 @@ $view->assign('lang_checkStatusname', $kga['lang']['checkStatusname']);
 $view->assign('lang_checkGlobalRoleName', $kga['lang']['checkGlobalRoleName']);
 $view->assign('lang_checkMembershipRoleName', $kga['lang']['checkMembershipRoleName']);
 
-$customerData = ['customerID'=>false, 'name'=>''];
-$projectData  = ['projectID'=>false, 'name'=>''];
-$activityData = ['activityID'=>false, 'name'=>''];
+$customerData = ['customerID' => false, 'name' => ''];
+$projectData = ['projectID' => false, 'name' => ''];
+$activityData = ['activityID' => false, 'name' => ''];
 
 if (!isset($kga['customer'])) {
-  //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
-  $lastProject = $database->project_get_data($kga['user']['lastProject']);
-  $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
-  if (!$lastProject['trash']) {
-    $projectData = $lastProject;
-    $customerData = $database->customer_get_data($lastProject['customerID']);
-  }
-  if (!$lastActivity['trash'])
-    $activityData = $lastActivity;
+    //$lastTimeSheetRecord = $database->timeSheet_get_data(false);
+    $lastProject = $database->project_get_data($kga['user']['lastProject']);
+    $lastActivity = $database->activity_get_data($kga['user']['lastActivity']);
+    if (!$lastProject['trash']) {
+        $projectData = $lastProject;
+        $customerData = $database->customer_get_data($lastProject['customerID']);
+    }
+    if (!$lastActivity['trash']) {
+        $activityData = $lastActivity;
+    }
 }
 $view->assign('customerData', $customerData);
 $view->assign('projectData', $projectData);
@@ -215,7 +213,7 @@ $view->assign('activityData', $activityData);
 // = INCLUDE EXTENSION PHP FILE            =
 // =========================================
 foreach ($extensions->phpIncludeFiles() as $includeFile) {
-  require_once $includeFile;
+    require_once $includeFile;
 }
 
 // =======================

@@ -25,9 +25,8 @@ $database = Kimai_Registry::getDatabase();
 
 require 'functions.php';
 
-switch ($axAction)
-{
-    case "createUser" :
+switch ($axAction) {
+    case 'createUser':
         // create new user account
         $userData['name'] = trim($axValue);
         $userData['globalRoleID'] = $kga['user']['globalRoleID'];
@@ -73,7 +72,7 @@ switch ($axAction)
         );
         break;
 
-    case "createStatus" :
+    case 'createStatus':
         $status_data['status'] = trim($axValue);
 
         // validate data
@@ -95,7 +94,7 @@ switch ($axAction)
         );
         break;
 
-    case "createGroup" :
+    case 'createGroup' :
         $group['name'] = trim($axValue);
 
         // validate data
@@ -117,12 +116,11 @@ switch ($axAction)
         );
         break;
 
-    case "refreshSubtab" :
+    case 'refreshSubtab' :
         $viewOtherGroupsAllowed = $database->global_role_allows($kga['user']['globalRoleID'], 'core-group-otherGroup-view');
 
-        switch ($axValue)
-        {
-            case "users":
+        switch ($axValue) {
+            case 'users':
                 $userData = getUsersData($database, $kga['user'], $viewOtherGroupsAllowed);
                 foreach($userData as $key => $value) {
                     $view->assign($key, $value);
@@ -130,7 +128,7 @@ switch ($axAction)
                 echo $view->render('users.php');
                 break;
 
-            case "groups":
+            case 'groups':
                 $groupsData = getGroupsData($database, $kga['user'], $viewOtherGroupsAllowed);
                 foreach($groupsData as $key => $value) {
                     $view->assign($key, $value);
@@ -138,16 +136,16 @@ switch ($axAction)
                 echo $view->render('groups.php');
                 break;
 
-            case "status":
+            case 'status':
                 $view->assign('statuses', $database->get_statuses());
                 echo $view->render('status.php');
                 break;
 
-            case "database" :
+            case 'database':
                 echo $view->render('database.php');
                 break;
 
-            case "customers" :
+            case 'customers':
                 $customersData = getCustomersData($database, $kga['user'], $viewOtherGroupsAllowed);
                 foreach ($customersData as $key => $value) {
                     $view->assign($key, $value);
@@ -155,7 +153,7 @@ switch ($axAction)
                 echo $view->render('customers.php');
                 break;
 
-            case "projects" :
+            case 'projects':
                 $projectsData = getProjectsData($database, $kga['user'], $viewOtherGroupsAllowed);
                 foreach ($projectsData as $key => $value) {
                     $view->assign($key, $value);
@@ -163,7 +161,7 @@ switch ($axAction)
                 echo $view->render('projects.php');
                 break;
 
-            case "activities" :
+            case 'activities':
                 $activitiesData = getActivitiesData($database, $kga['user'], $viewOtherGroupsAllowed);
                 foreach($activitiesData as $key => $data) {
                     $view->assign($key, $data);
@@ -171,19 +169,19 @@ switch ($axAction)
                 echo $view->render('activities.php');
                 break;
 
-            case "globalRoles":
+            case 'globalRoles':
                 $view->assign('globalRoles', $database->global_roles());
                 echo $view->render('globalRoles.php');
                 break;
 
-            case "membershipRoles":
+            case 'membershipRoles':
                 $view->assign('membershipRoles', $database->membership_roles());
                 echo $view->render('membershipRoles.php');
                 break;
         }
         break;
 
-    case "deleteUser":
+    case 'deleteUser':
         $oldGroups = $database->getGroupMemberships($id);
         $errors = [];
 
@@ -223,7 +221,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteGroup" :
+    case 'deleteGroup':
         $errors = [];
 
         if (!checkGroupedObjectPermission('group', 'delete', [$id], [$id])) {
@@ -243,7 +241,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteStatus" :
+    case 'deleteStatus':
         $errors = [];
         if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'core-status-delete')) {
             $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -262,7 +260,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteProject" :
+    case 'deleteProject':
         $errors = [];
         $oldGroups = $database->project_get_groupIDs($id);
 
@@ -284,7 +282,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteCustomer" :
+    case 'deleteCustomer':
         $errors = [];
         $oldGroups = $database->customer_get_groupIDs($id);
 
@@ -305,7 +303,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteActivity" :
+    case 'deleteActivity':
         $errors = [];
         $oldGroups = $database->activity_get_groupIDs($id);
 
@@ -326,22 +324,21 @@ switch ($axAction)
         );
         break;
 
-    case "banUser" :
+    case 'banUser':
         // Ban a user from login
         $sts['active'] = 0;
         $database->user_edit($id, $sts);
-        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/lock.png' width='16' height='16' />", $kga['lang']['bannedUser'], $kga['lang']['bannedUser'], $view->skin()->getName());
+        echo sprintf('<img border="0" title="%s" alt="%s" src="../skins/%s/grfx/lock.png" width="16" height="16" />', $kga['lang']['bannedUser'], $kga['lang']['bannedUser'], $view->skin()->getName());
         break;
 
-    case "unbanUser" :
+    case 'unbanUser':
         // Unban a user from login
         $sts['active'] = 1;
         $database->user_edit($id, $sts);
-        echo sprintf("<img border='0' title='%s' alt='%s' src='../skins/%s/grfx/jipp.gif' width='16' height='16' />", $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $view->skin()->getName());
+        echo sprintf('<img border="0" title="%s" alt="%s" src="../skins/%s/grfx/jipp.gif" width="16" height="16" />', $kga['lang']['activeAccount'], $kga['lang']['activeAccount'], $view->skin()->getName());
         break;
 
-    case "sendEditUser" :
-
+    case 'sendEditUser':
         // process editUser form
         $userData['name'] = trim($_REQUEST['name']);
         $userData['mail'] = $_REQUEST['mail'];
@@ -383,7 +380,7 @@ switch ($axAction)
         );
         break;
 
-    case "sendEditGroup" :
+    case 'sendEditGroup':
         // process editGroup form
         $group['name'] = trim($_REQUEST['name']);
 
@@ -405,7 +402,7 @@ switch ($axAction)
         );
         break;
 
-    case "sendEditStatus" :
+    case 'sendEditStatus':
         // process editStatus form
         $status_data['status'] = trim($_REQUEST['status']);
 
@@ -428,7 +425,7 @@ switch ($axAction)
         );
         break;
 
-    case "sendEditAdvanced" :
+    case 'sendEditAdvanced':
         $errors = [];
         if (!isset($kga['user']) || !$database->global_role_allows($kga['user']['globalRoleID'], 'adminPanel_extension-editAdvanced')) {
             $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
@@ -505,11 +502,11 @@ switch ($axAction)
         );
         break;
 
-    case "toggleDeletedUsers" :
+    case 'toggleDeletedUsers' :
         setcookie("adminPanel_extension_show_deleted_users", $axValue);
         break;
 
-    case "createGlobalRole":
+    case 'createGlobalRole':
         $role_data['name'] = trim($axValue);
 
         $errors = [];
@@ -533,7 +530,7 @@ switch ($axAction)
         );
         break;
 
-    case "createMembershipRole":
+    case 'createMembershipRole':
         $role_data['name'] = trim($axValue);
 
         $errors = [];
@@ -559,7 +556,7 @@ switch ($axAction)
         );
         break;
 
-    case "editGlobalRole":
+    case 'editGlobalRole':
         $id = $_REQUEST['id'];
         $newData = $_REQUEST;
         unset($newData['id']);
@@ -593,7 +590,7 @@ switch ($axAction)
         );
         break;
 
-    case "editMembershipRole":
+    case 'editMembershipRole':
         $id = $_REQUEST['id'];
         $newData = $_REQUEST;
         unset($newData['id']);
@@ -627,7 +624,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteGlobalRole":
+    case 'deleteGlobalRole':
         $errors = [];
 
         if (!isset($kga['user'])) {
@@ -646,7 +643,7 @@ switch ($axAction)
         );
         break;
 
-    case "deleteMembershipRole":
+    case 'deleteMembershipRole':
         $errors = [];
 
         if (!isset($kga['user'])) {

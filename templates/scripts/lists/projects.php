@@ -14,28 +14,27 @@ $projects = $this->filterListEntries($this->projects);
                     'even'
                 ])->next() ?>">
                 <td nowrap class="option">
-
                     <?php if ($this->show_project_edit_button): ?>
                         <a href="#"
                            onclick="editSubject('project',<?php echo $project['projectID'] ?>); $(this).blur(); return false;">
                             <img src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width='13' height='13'
-                                 alt='<?php echo $this->kga['lang']['edit'] ?>'
-                                 title='<?php echo $this->kga['lang']['edit'] ?> (ID:<?php echo $project['projectID'] ?>)'
+                                 alt='<?php echo $this->translate('edit') ?>'
+                                 title='<?php echo $this->translate('edit') ?> (ID:<?php echo $project['projectID'] ?>)'
                                  border='0'/>
                         </a>
                     <?php endif; ?>
                     <a href="#"
                        onclick="lists_update_filter('project',<?php echo $project['projectID'] ?>); $(this).blur(); return false;">
                         <img src="<?php echo $this->skin('grfx/filter.png'); ?>" width='13' height='13'
-                             alt='<?php echo $this->kga['lang']['filter'] ?>'
-                             title='<?php echo $this->kga['lang']['filter'] ?>' border='0'/>
+                             alt='<?php echo $this->translate('filter') ?>'
+                             title='<?php echo $this->translate('filter') ?>' border='0'/>
                     </a>
                     <a href="#" class="preselect"
                        onclick="buzzer_preselect_project(<?php echo $project['projectID'] ?>,'<?php echo $this->jsEscape($project['name']) ?>',<?php echo $project['customerID'] ?>,'<?php echo $this->jsEscape($project['customerName']) ?>'); return false;"
                        id="ps<?php echo $project['projectID'] ?>">
                         <img src="<?php echo $this->skin('grfx/preselect_off.png'); ?>" width='13' height='13'
-                             alt='<?php echo $this->kga['lang']['select'] ?>'
-                             title='<?php echo $this->kga['lang']['select'] ?> (ID:<?php echo $project['projectID'] ?>)'
+                             alt='<?php echo $this->translate('select') ?>'
+                             title='<?php echo $this->translate('select') ?> (ID:<?php echo $project['projectID'] ?>)'
                              border='0'/>
                     </a>
                 </td>

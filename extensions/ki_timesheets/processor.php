@@ -409,7 +409,7 @@ switch ($axAction) {
             if (!$activity['visible']) {
                 continue;
             }
-            echo '<option value="' . $activity['activityID'] . '">' . $activity['name'] . '</option>\n';
+            echo '<option value="' . $activity['activityID'] . '">' . htmlspecialchars($activity['name']) . '</option>';
         }
         break;
 

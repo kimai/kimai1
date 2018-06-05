@@ -28,8 +28,8 @@ function expense_delete($id)
     $kga = Kimai_Registry::getConfig();
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
-    $filter["expenseID"] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
-    $table = $kga['server_prefix'] . "expenses";
+    $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
+    $table = $kga['server_prefix'] . 'expenses';
     $query = MySQL::BuildSQLDelete($table, $filter);
     return $conn->Query($query);
 }
@@ -49,15 +49,15 @@ function expense_create($userID, $data)
 
     $data = $database->clean_data($data);
 
-    $values ['projectID'] = MySQL::SQLValue($data ['projectID'], MySQL::SQLVALUE_NUMBER);
-    $values ['designation'] = MySQL::SQLValue($data ['designation']);
-    $values ['comment'] = MySQL::SQLValue($data ['comment']);
-    $values ['commentType'] = MySQL::SQLValue($data ['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values ['timestamp'] = MySQL::SQLValue($data ['timestamp'], MySQL::SQLVALUE_NUMBER);
-    $values ['multiplier'] = MySQL::SQLValue($data ['multiplier'], MySQL::SQLVALUE_NUMBER);
-    $values ['value'] = MySQL::SQLValue($data ['value'], MySQL::SQLVALUE_NUMBER);
-    $values ['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
-    $values ['refundable'] = MySQL::SQLValue($data ['refundable'], MySQL::SQLVALUE_NUMBER);
+    $values['projectID'] = MySQL::SQLValue($data['projectID'], MySQL::SQLVALUE_NUMBER);
+    $values['designation'] = MySQL::SQLValue($data['designation']);
+    $values['comment'] = MySQL::SQLValue($data['comment']);
+    $values['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
+    $values['timestamp'] = MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER);
+    $values['multiplier'] = MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER);
+    $values['value'] = MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER);
+    $values['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
+    $values['refundable'] = MySQL::SQLValue($data['refundable'], MySQL::SQLVALUE_NUMBER);
 
     $table = $kga['server_prefix'] . "expenses";
     $result = $conn->InsertRow($table, $values);

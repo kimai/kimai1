@@ -10,8 +10,8 @@
                     <a href="#"
                        onclick="lists_update_filter('user',<?php echo $user['userID'] ?>); $(this).blur(); return false;"><img
                                 src="<?php echo $this->skin('grfx/filter.png'); ?>" width="13" height="13"
-                                alt="<?php echo $this->kga['lang']['filter'] ?>"
-                                title="<?php echo $this->kga['lang']['filter'] ?>" border="0"/>
+                                alt="<?php echo $this->translate('filter') ?>"
+                                title="<?php echo $this->translate('filter') ?>" border="0"/>
                     </a>
                 </td>
                 <td width="100%" class="clients">
