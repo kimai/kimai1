@@ -124,12 +124,14 @@ function resetRequirementsIndicators() {
 	$('div.sp_iconv').removeClass("fail");
 	$('div.sp_memory').removeClass("fail");
 	$('div.sp_dom').removeClass("fail");
+	$('div.sp_zip').removeClass("fail");
 
 	$('div.sp_phpversion').addClass("ok");
 	$('div.sp_mysql').addClass("ok");
 	$('div.sp_iconv').addClass("ok");
 	$('div.sp_memory').addClass("ok");
 	$('div.sp_dom').addClass("ok");
+	$('div.sp_zip').addClass("ok");
 }
 
 function system_requirements_proceed() {

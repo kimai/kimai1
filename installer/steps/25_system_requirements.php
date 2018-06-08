@@ -9,6 +9,7 @@ if ($_REQUEST['lang'] == "de") {
     <div class="sp_mysql">Die <b>MySQLi</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
     <div class="sp_iconv">Die <b>iconv</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
     <div class="sp_dom">Die <b>DOM</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
+    <div class="sp_zip">Die <b>ZIP</b> Erweiterung f&uuml;r PHP muss aktiviert sein</div>
     <br/><br/>
     Damit der PDF Export zuverl&auml;ssig funktioniert m&uuml;ssen folgende Punkte erf&uuml;llt sein:<br/>
     <div class="sp_memory">Das Skript muss mind. 20MB an Speicher nutzen k&ouml;nnen</div>
@@ -25,6 +26,7 @@ if ($_REQUEST['lang'] == "de") {
     <div class="sp_mysql"><b>MySQLi</b> разширението за PHP трябва да е активирано</div>
     <div class="sp_iconv"><b>iconv</b> разширението за PHP трябва да е активирано</div>
     <div class="sp_dom"><b>DOM</b> разширението за PHP трябва да е активирано</div>
+    <div class="sp_zip"><b>ZIP</b> разширението за PHP трябва да е активирано</div>
     <br/><br/>
     За да можете да ползвате безпроблемно експорта в PDF формат трябва да са изпълнени следните условия:<br/>
     <div class="sp_memory">Скриптът трябва да може да ползва най-малко 20MБ работна памет</div>
@@ -41,6 +43,7 @@ if ($_REQUEST['lang'] == "de") {
     <div class="sp_mysql">The <b>MySQLi</b> extension for PHP has to be loaded</div>
     <div class="sp_iconv">The <b>iconv</b> extension for PHP has to be loaded</div>
     <div class="sp_dom">The <b>DOM</b> extension for PHP has to be loaded</div>
+    <div class="sp_zip">The <b>ZIP</b> extension for PHP has to be loaded</div>
     <br/><br/>
     For PDF export the following requirement must be met:<br/>
     <div class="sp_memory">Allowed memory usage should be at least 20MB</div>

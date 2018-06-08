@@ -93,9 +93,13 @@ switch ($axAction) {
             $javascript .= "$('div.sp_iconv').addClass('fail');";
         }
 
-        if (!class_exists('DOMDocument')) {
+        if (!class_exists('DOMDocument') || !extension_loaded('dom')) {
             $errors++;
             $javascript .= "$('div.sp_dom').addClass('fail');";
+        }
+        if (!class_exists('ZipArchive') || !extension_loaded('zip')) {
+            $errors++;
+            $javascript .= "$('div.sp_zip').addClass('fail');";
         }
 
         if (return_bytes(ini_get('memory_limit')) < 20000000) {
