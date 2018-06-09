@@ -445,10 +445,10 @@ class Kimai_Remote_Api
         if (empty($record)) {
             return $this->getErrorResult('Invalid record');
         }
-        $result = array();
+        $result = [];
 
         if (isset($record['timeEntryID'])) {
-            $result[]=$record['timeEntryID'];
+            $result[] = $record['timeEntryID'];
         } else {
             $user = $this->getUser();
             $result = $this->getBackend()->get_current_recordings($user['userID']);
@@ -458,7 +458,7 @@ class Kimai_Remote_Api
         if (count($result) == 0) {
             return $this->getErrorResult('No active recording.');
         } else {
-            $timeSheetEntry=$this->getBackend()->timeSheet_get_data($result[0]);            
+            $timeSheetEntry = $this->getBackend()->timeSheet_get_data($result[0]);
         }
 
         if (empty($timeSheetEntry)) {
