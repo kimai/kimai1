@@ -52,12 +52,12 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         $arr['timeEntryID'] = $entry['timeEntryID'];
         $arr['type'] = 'timeSheet';
         $arr['desc'] = $entry['activityName'];
-        $arr['start'] = $entry['start'];
-        $arr['end'] = $entry['end'];
+        $arr['start'] = intval($entry['start']);
+        $arr['end'] = intval($entry['end']);
         $arr['hour'] = $entry['duration'] / 3600;
         $arr['fDuration'] = $entry['formattedDuration']; // @deprecated use duration instead
         $arr['duration'] = $entry['duration'];
-        $arr['timestamp'] = $entry['start'];
+        $arr['timestamp'] = intval($entry['start']);
         $arr['amount'] = $entry['wage'];
         $arr['description'] = $entry['description'];
         $arr['rate'] = $entry['rate'];
