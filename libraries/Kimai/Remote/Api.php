@@ -428,9 +428,8 @@ class Kimai_Remote_Api
     /**
      * updateActiveRecording
      * Updates an already running timer, this function allows
-     * you to change a project, activity description, comment and start time.
+     * you to change a project, activity description and start time.
      * If you add an end time this will stop the activity, as per Kimai's normal process
-     * Note: you can edit a recording if timeEntryID defined in parameters
      *
      * @param string $apiKey
      * @param array $record
@@ -445,29 +444,16 @@ class Kimai_Remote_Api
         if (empty($record)) {
             return $this->getErrorResult('Invalid record');
         }
-        $result = [];
 
-        if (isset($record['timeEntryID'])) {
-            $result[] = $record['timeEntryID'];
-        } else {
-            $user = $this->getUser();
-            $result = $this->getBackend()->get_current_recordings($user['userID']);
-        }
-       
+        $user = $this->getUser();
+        $result = $this->getBackend()->get_current_recordings($user['userID']);
+
         // no "last" activity existing
         if (count($result) == 0) {
             return $this->getErrorResult('No active recording.');
-        } else {
-            $timeSheetEntry = $this->getBackend()->timeSheet_get_data($result[0]);
         }
-
-        if (empty($timeSheetEntry)) {
-            return $this->getErrorResult('No active recording for the specified timeEntryID.');
-        }
-
 
         $data = [];
-
         if (isset($record['projectID'])) {
             $data['projectID'] = $record['projectID'];
         }
@@ -477,16 +463,11 @@ class Kimai_Remote_Api
         if (isset($record['description'])) {
             $data['description'] = $record['description'];
         }
-        if (isset($record['comment'])) {
-            $data['comment'] = $record['comment'];
-        }
-
-        $in = $timeSheetEntry['start'];
+        $in = 0;
         if (isset($record['start'])) {
             $in = (int)strtotime($record['start']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
+            $data['start'] = $in;
         }
-        $data['start'] = $in;
-
         // If you include a stop time this will stop the active time
         if (isset($record['end'])) {
             $out = (int)strtotime($record['end']); // has to be a MySQL DATE/DATETIME/TIMESTAMP
