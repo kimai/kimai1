@@ -314,7 +314,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
         'subtotal' => 'Sub totale',
         'finalamount' => 'Totale',
-        'pdf_headline' => 'Lista dei temnpi di lavoro e spese',
+        'pdf_headline' => 'Lista dei tempi di lavoro e spese',
         'costs' => 'Costi',
         'expense' => 'Spesa',
         'summary' => 'Sommario',
