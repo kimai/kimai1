@@ -18,6 +18,12 @@ You can get more information about this time-tracking software:
 * at our [website](https://www.kimai.org)
 * in the [documentation](https://www.kimai.org/documentation/)
 
+## Announcement Kimai v2 (June 2018)
+
+We are thrilled to announce  that we are working on the **next major version of Kimai**.
+
+Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
+
 ## Features
 
 This is just a short feature list, play around with the [demo installation](https://www.kimai.org/demo/) to see all features:
