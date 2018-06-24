@@ -20,9 +20,9 @@ You can get more information about this time-tracking software:
 
 ## Announcement Kimai v2 (June 2018)
 
-We are thrilled to announce  that we are working on the **next version of Kimai v2**.
+We are thrilled to announce  that we are working on the **next major version of Kimai**.
 
-Please [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
+Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-announcement/) to find out more.
 
 ## Features
 
