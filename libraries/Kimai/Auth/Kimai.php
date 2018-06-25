@@ -85,7 +85,7 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
         Kimai_Logger::logfile('password reset: ' . $name . ($is_customer ? ' as customer' : ' as user'));
 
         $ssl = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
-        $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
+        $url = ($ssl ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . ':' . $_SERVER[SERVER_PORT] . dirname($_SERVER['SCRIPT_NAME']) . '/forgotPassword.php?name=' . urlencode($name) . '&key=' . $passwordResetHash;
 
         $message = $kga['lang']['passwordReset']['mailMessage'];
         $message = str_replace('%{URL}', $url, $message);
