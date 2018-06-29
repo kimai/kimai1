@@ -161,7 +161,7 @@ class Kimai_Remote_Api
 
         $result = $this->getBackend()->startRecorder($projectId, $activityId, $uid);
         if ($result) {
-            return $this->getSuccessResult([]);
+            return $this->getSuccessResult([['timeEntryID' => $result]]);
         } else {
             return $this->getErrorResult("Unable to start, invalid params?");
         }

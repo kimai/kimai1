@@ -45,6 +45,7 @@
 					<exclude name="README.md"/>
 					<exclude name=".idea/"/>
 					<exclude name="tests/"/>
+					<exclude name="includes/autoconf.php"/>
 					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
 					<exclude name="libraries/phpoffice/phpexcel/Examples/**"/>
 					<exclude name="libraries/phpoffice/phpexcel/unitTests/**"/>
