@@ -97,6 +97,10 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         <label for="erase"><?php echo $this->translate('erase') ?>:</label>
                         <input type="checkbox" name="erase" id="erase" tabindex="15"/>
                     </li>
+	                <li>
+		                <label for="cleared"><?php echo $this->translate('cleared') ?>:</label>
+		                <input type="checkbox" name="cleared" id="cleared" <?php if ($this->expense['cleared']): ?> checked="checked" <?php endif; ?> tabindex="16"/>
+	                </li>
                 </ul>
             </fieldset>
         </div>

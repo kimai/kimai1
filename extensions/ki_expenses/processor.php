@@ -264,6 +264,7 @@ switch ($axAction) {
         $data['designation'] = $_REQUEST['designation'];
         $data['comment'] = (isset($_REQUEST['comment']) && !empty($_REQUEST['comment'])) ? $_REQUEST['comment'] : '';
         $data['commentType'] = $_REQUEST['commentType'];
+        $data['cleared'] = isset($_REQUEST['cleared']);
         $data['refundable'] = getRequestBool('refundable');
         $data['multiplier'] = getRequestDecimal($_REQUEST['multiplier']);
         $data['value'] = getRequestDecimal($_REQUEST['edit_value']);

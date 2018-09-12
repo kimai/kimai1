@@ -32,7 +32,6 @@ if ($this->expenses) {
             }
 	        ?>
 	        <tr id="expEntry<?php echo $row['expenseID']?>" class="<?php echo $this->cycle(['odd', 'even'])->next()?>">
-
 	            <td nowrap class="option <?php echo $tdClass ?>">
 	            <?php if (isset($this->kga['user']) && (!$this->kga->isEditLimit() || time() - $row['timestamp'] <= $this->kga->getEditLimit())): ?>
 	                <a href="#" onclick="expense_editRecord(<?php echo $row['expenseID']?>); $(this).blur(); return false;" title='<?php echo $this->translate('edit')?>'>

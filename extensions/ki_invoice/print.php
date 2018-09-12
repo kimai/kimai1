@@ -55,8 +55,8 @@ if (count($invoiceArray) == 0) {
 // FETCH ALL KIND OF DATA WE NEED WITHIN THE INVOICE TEMPLATES
 
 $date = time();
-$month = $kga['lang']['months'][date("n", $out) - 1];
-$year = date("Y", $out);
+$month = $kga['lang']['months'][date('n', $out) - 1];
+$year = date('Y', $out);
 $projectObjects = [];
 foreach ($_REQUEST['projectID'] as $projectID) {
     $projectObjects[] = $database->project_get_data($projectID);
@@ -65,9 +65,9 @@ $customer = $database->customer_get_data($projectObjects[0]['customerID']);
 $customerName = html_entity_decode($customer['name']);
 $beginDate = $in;
 $endDate = $out;
-$invoiceID = $customer['name'] . "-" . date("y", $in) . "-" . date("m", $in);
+$invoiceID = $customer['name'] . '-' . date('y', $in) . '-' . date('m', $in);
 $today = time();
-$dueDate = mktime(0, 0, 0, date("m") + 1, date("d"), date("Y"));
+$dueDate = mktime(0, 0, 0, date('m') + 1, date('d'), date('Y'));
 
 $round = 0;
 // do we have to round the time ?
@@ -81,7 +81,7 @@ if (isset($_REQUEST['roundValue']) && (float)$_REQUEST['roundValue'] > 0) {
             $rounded = ext_invoice_round_value($invoiceArray[$time_index]['hour'], $round / 10);
 
             // Write a logfile entry for each value that is rounded.
-            Kimai_Logger::logfile("Round " . $invoiceArray[$time_index]['hour'] . " to " . $rounded . " with " . $round);
+            Kimai_Logger::logfile('Round ' . $invoiceArray[$time_index]['hour'] . ' to ' . $rounded . ' with ' . $round);
 
             if ($invoiceArray[$time_index]['hour'] == 0) {
                 // make sure we do not raise a "divison by zero" - there might be entries with the zero seconds
@@ -129,12 +129,12 @@ if (!is_numeric($vat_rate)) {
 $vat = $vat_rate * $total / 100;
 $gtotal = $total + $vat;
 
-$baseFolder = dirname(__FILE__) . "/invoices/";
+$baseFolder = dirname(__FILE__) . '/invoices/';
 $tplFilename = $_REQUEST['ivform_file'];
 
 if (strpos($tplFilename, '/') !== false) {
     // prevent directory traversal
-    header("HTTP/1.0 400 Bad Request");
+    header('HTTP/1.0 400 Bad Request');
     die;
 }
 
@@ -164,7 +164,7 @@ $model->setInvoiceDate(time());
 $model->setDateFormat($kga->getDateFormat(2));
 $model->setCurrencySign($kga->getCurrencySign());
 $model->setCurrencyName($kga->getCurrencyName());
-$model->setDueDate(mktime(0, 0, 0, date("m") + 1, date("d"), date("Y")));
+$model->setDueDate(mktime(0, 0, 0, date('m') + 1, date('d'), date('Y')));
 
 // ---------------------------------------------------------------------------
 $renderers = [
