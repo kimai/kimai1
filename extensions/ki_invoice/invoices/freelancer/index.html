@@ -55,8 +55,8 @@ $translations = [
 			<h1><?php echo htmlspecialchars($translations['title']); ?></h1>
 			<address>
 				<p>
-					<label><?php echo $translations['month']; ?></label>
-					<span contenteditable="true"><?php echo $months[$monthIndex] . ' ' . $year; ?></span>
+					<label><?php echo htmlspecialchars($translations['month']); ?></label>
+					<span contenteditable="true"><?php echo htmlspecialchars($months[$monthIndex]) . ' ' . $year; ?></span>
 				</p>
 				<p>
 					<label><?php echo htmlspecialchars($translations['customer']); ?></label>
@@ -83,7 +83,7 @@ $translations = [
 				</thead>
 				<tfoot>
 					<tr>
-						<th><span></span></th>
+						<th></th>
 						<th><span><?php echo htmlspecialchars($translations['total']); ?></span></th>
 						<th><span><?php echo number_format($sumHours, 2); ?></span></th>
 					</tr>
