@@ -247,7 +247,7 @@ function expense_edit($id, array $data)
     $values['designation'] = MySQL::SQLValue($new_array['designation']);
     $values['comment'] = MySQL::SQLValue($new_array['comment']);
     $values['commentType'] = MySQL::SQLValue($new_array['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values['cleared'] = MySQL::SQLValue($new_array['cleared'], MySQL::SQLVALUE_NUMBER);
+    $values['cleared'] = MySQL::SQLValue($new_array['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
     $values['timestamp'] = MySQL::SQLValue($new_array['timestamp'], MySQL::SQLVALUE_NUMBER);
     $values['multiplier'] = MySQL::SQLValue($new_array['multiplier'], MySQL::SQLVALUE_NUMBER);
     $values['value'] = MySQL::SQLValue($new_array['value'], MySQL::SQLVALUE_NUMBER);
