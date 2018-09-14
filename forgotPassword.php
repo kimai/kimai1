@@ -43,7 +43,7 @@ require 'includes/basics.php';
 $database = Kimai_Registry::getDatabase();
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 $authPlugin = Kimai_Registry::getAuthenticator();
 

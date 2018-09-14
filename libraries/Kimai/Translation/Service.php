@@ -33,7 +33,7 @@ class Kimai_Translation_Service
     public static function getAvailableLanguages()
     {
         $languages = [];
-        foreach (glob(WEBROOT . '/language/*.php') as $langFile) {
+        foreach (glob(WEBROOT . 'language/*.php') as $langFile) {
             $languages[] = str_replace(".php", "", basename($langFile));
         }
         sort($languages);

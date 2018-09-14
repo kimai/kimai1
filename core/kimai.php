@@ -22,7 +22,7 @@ require_once '../includes/basics.php';
 $database = Kimai_Registry::getDatabase();
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 // prevent IE from caching the response
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
@@ -41,7 +41,7 @@ $user = checkUser();
 // der updater.php weiss dann welche Aenderungen an der Datenbank vorgenommen werden muessen.
 checkDBversion('..');
 
-$extensions = new Kimai_Extensions($kga, WEBROOT . '/extensions/');
+$extensions = new Kimai_Extensions($kga, WEBROOT . 'extensions/');
 $extensions->loadConfigurations();
 
 // ============================================
@@ -267,7 +267,7 @@ $view->assign('show_activity_edit_button', isset($kga['user']) && coreObjectActi
 $view->assign('activity_display', $view->render("lists/activities.php"));
 
 if (isset($kga['user'])) {
-    $view->assign('showInstallWarning', file_exists(WEBROOT . '/installer'));
+    $view->assign('showInstallWarning', file_exists(WEBROOT . 'installer'));
 } else {
     $view->assign('showInstallWarning', false);
 }

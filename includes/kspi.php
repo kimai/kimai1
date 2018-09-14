@@ -42,11 +42,11 @@ if (!$isCoreProcessor) {
 // Zend_View (configuration)
 $view = new Zend_View();
 if ($isCoreProcessor) {
-    $view->setBasePath(WEBROOT . '/templates');
+    $view->setBasePath(WEBROOT . 'templates');
 } else {
-    $view->setBasePath(WEBROOT . '/extensions/' . $dir_ext . '/' . $dir_templates);
+    $view->setBasePath(WEBROOT . 'extensions/' . $dir_ext . '/' . $dir_templates);
 }
-$view->addHelperPath(WEBROOT . '/templates/helpers', 'Zend_View_Helper');
+$view->addHelperPath(WEBROOT . 'templates/helpers', 'Zend_View_Helper');
 
 
 // ============================================================================================
