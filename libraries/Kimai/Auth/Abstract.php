@@ -52,8 +52,8 @@ abstract class Kimai_Auth_Abstract
         if ($kga !== null) {
             $this->setKga($kga);
         }
-        if (file_exists(WEBROOT . '/includes/auth.php')) {
-            $config = include WEBROOT . '/includes/auth.php';
+        if (file_exists(WEBROOT . 'includes/auth.php')) {
+            $config = include WEBROOT . 'includes/auth.php';
             foreach ($config as $key => $value) {
                 $this->setConfig($key, $value);
             }

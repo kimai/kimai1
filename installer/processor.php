@@ -24,7 +24,7 @@
 defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val)
