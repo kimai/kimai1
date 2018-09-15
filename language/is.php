@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Tracking Number",
     "cookiewarning" => "Virkja vefkökur áður haldið er áfram.",
     "JSwarning" => "JavaScript þarf að vera virkt.",
-    "designation" => "designation",
     "banned" => "Bann (Notandi læstur)",
     "tooManyLogins" => "Of margar innskráningar tilraunir - Notandi bannaður.",
     "accessDenied" => "Aðgangur bannaður!",
@@ -360,7 +359,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         "stdrd_location" => "Stöðluð-Staðsetning",
         "timeformat" => "Form Tíma",
         "dateformat" => "Form dagssetningar",
-        
+
         "refundable_all" => "allt",
         "refundable_refundable" => "aðeins endurrukkanlegt",
         "refundable_not_refundable" => "aðeins órukkanlegt",
@@ -400,13 +399,12 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'times_and_expenses' => 'tímar and kostnaður',
         'times' => 'tímar',
         'expenses' => 'kostnaður',
-        
+
         'reverse_order' => 'elstu skráningar fyrst',
         'time_period' => 'Tímabil',
-        
+
         'duration_unit' => 'h',
     ],
-
 
     'ext_invoice' => [
         'invoiceTitle' => 'Útbúa reikning',
@@ -419,11 +417,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'defaultVat' => 'default VSK'
     ],
 
-
     'ext_budget' => [
         'unusedBudget' => 'unused'
     ],
-
 
     'extensions' => [
         'ki_timesheet' => 'Timesheet',
@@ -437,6 +433,3 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
     "log_delete" => "skrá eytt",
 ];
-
-
-?>

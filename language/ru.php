@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Трек нормер",
     "cookiewarning" => "Включите куки в браузере для продолжения.",
     "JSwarning" => "JavaScript должен быть включен.",
-    "designation" => "Описание",
     "banned" => "Заблокирован (Учетка отключена)",
     "tooManyLogins" => "Слишком много попыток входа, логин отключен.",
     "accessDenied" => "Доступ закрыт!",

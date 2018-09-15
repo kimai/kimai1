@@ -73,7 +73,6 @@ return [
     "trackingnr" => "Localizador",
     "cookiewarning" => "¡Las cookies deben estar activadas! Actívelas antes de proceder.",
     "JSwarning" => "¡JavaScript debe estar activado! Esta versión no funciona sin estar activadas.",
-    "designation" => "designación",
     "banned" => "Baneado (Cuenta bloqueada)",
     "tooManyLogins" => "Demasiados errores al iniciar sesión - usuario suspendido.",
     "accessDenied" => "¡Acceso denegado!",

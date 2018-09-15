@@ -72,7 +72,6 @@ return [
     "trackingNumber" => "Tracking nummer",
     "cookiewarning" => "Schakel cookies in vooraleer verder te gaan.",
     "JSwarning" => "JavaScript moet ingeschakeld zijn.",
-    "designation" => "Omschrijving",
     "banned" => "Verbannen (Account geblokkeerd)",
     "tooManyLogins" => "Te veel foutieve login pogingen - gebruiker tijdelijk geblokkeerd.",
     "accessDenied" => "Toegang geweigerd!",

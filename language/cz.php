@@ -69,7 +69,6 @@ return [
     "trackingNumber" => "Tracking Number",
     "cookiewarning" => "Před použitím zapni cookies.",
     "JSwarning" => "JavaScript musí být zapnutý.",
-    "designation" => "designation",
     "banned" => "Banned (Účet zablokován)",
     "tooManyLogins" => "Mnoho špatných přihlášení - user suspended.",
     "accessDenied" => "Přístup zakázán!",

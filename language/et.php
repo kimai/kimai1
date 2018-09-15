@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Nr.",
     "cookiewarning" => "Enne jätkamist lubage brauseris küpsised.",
     "JSwarning" => "JavaScript peab olema sisse lülitatud.",
-    "designation" => "Kirjeldus",
     "banned" => "Konto blokeeritud!",
     "tooManyLogins" => "Liiga palju ebaõnnestunud sisselogimiskatseid: kasutaja õigused on peatatud.",
     "accessDenied" => "Edasi ei saa!",

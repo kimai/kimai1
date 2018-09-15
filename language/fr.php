@@ -16,15 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 
 /**
@@ -86,7 +77,6 @@ return [
     "trackingNumber" => "N°",
     "cookiewarning" => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
     "JSwarning" => "JavaScript doit être activé! Cette version ne fonctionne pas sans cela.",
-    "designation" => "désignation",
     "banned" => "Bloqué (Compte bloqué)",
     "tooManyLogins" => "Trop de mauvaises tentatives de connexion - utilisateur bloqué.",
     "accessDenied" => "Accès refusé !",
@@ -232,7 +222,6 @@ return [
     "checkGroupname" => "Vous devez entrer un nom de groupe dans le champ à gauche du bouton ajouter-un-groupe!",
     "checkGlobalRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
     "checkMembershipRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
-    "checkStatusname" => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
     "clickToReload" => "Cliquer ici pour relancer l'interface graphique",
     "sure" => "Etes-vous sûr?",
     "clock" => "Horloge",
@@ -427,7 +416,6 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau horaire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
     ],
 
-
     'backup' => [
         0 => "L'outil de sauvegarde/restauration n' a pas encore été testé! A utiliser à vos propres risques!",
         1 => "Sauvegardes disponibles:",
@@ -567,4 +555,3 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
     "log_delete" => "Le journal a été effacé",
 
 ];
-?>

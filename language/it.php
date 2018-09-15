@@ -69,7 +69,6 @@ return [
     "trackingNumber" => "Tracking Number",
     "cookiewarning" => "I cookie devo essere accettati! Attivare i cookie per procedere.",
     "JSwarning" => "JavaScript deve essere abilitato! Questa versione altrimenti non funziona.",
-    "designation" => "descrizione",
     "banned" => "Sospeso (Account bloccato)",
     "tooManyLogins" => "Troppi tentativi falliti - utente sospeso.",
     "accessDenied" => "Accesso negato!",

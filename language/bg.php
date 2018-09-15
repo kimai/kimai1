@@ -464,7 +464,6 @@ EOD
         "invoiceProject" => "Проекти",
         "invoiceTimePeriod" => "Времеви интервал",
         "invoiceTemplate" => "Образец фактура",
-        'defaultVat' => 'VAT rate',
         "invoiceOptionShort" => "Кратък отчет",
         "invoiceOptionRound" => "Закръгли времената",
         "invoiceButton" => "Създай",
