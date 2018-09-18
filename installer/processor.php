@@ -21,7 +21,7 @@
  * Handle all AJAX calls from the installer.
  */
 
-defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)));
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
 require_once WEBROOT . 'libraries/autoload.php';

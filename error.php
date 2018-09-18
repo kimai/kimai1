@@ -17,9 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!defined('WEBROOT')) {
-    define('WEBROOT', dirname(__FILE__));
-}
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 
 require_once WEBROOT . 'libraries/autoload.php';
 
