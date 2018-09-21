@@ -50,7 +50,7 @@ function expense_create($userID, array $data)
     $values['designation'] = MySQL::SQLValue($data['designation']);
     $values['comment'] = MySQL::SQLValue($data['comment']);
     $values['commentType'] = MySQL::SQLValue($data['commentType'], MySQL::SQLVALUE_NUMBER);
-    $values['cleared'] = MySQL::SQLValue($data['cleared'], MySQL::SQLVALUE_NUMBER);
+    $values['cleared'] = MySQL::SQLValue($data['cleared'] ? 1 : 0, MySQL::SQLVALUE_NUMBER);
     $values['timestamp'] = MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER);
     $values['multiplier'] = MySQL::SQLValue($data['multiplier'], MySQL::SQLVALUE_NUMBER);
     $values['value'] = MySQL::SQLValue($data['value'], MySQL::SQLVALUE_NUMBER);
