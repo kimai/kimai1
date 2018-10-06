@@ -19,7 +19,6 @@
                 <?php echo $this->translate('lang')?>:
                 <?php echo $this->formSelect('language', $this->kga->getLanguage(true), ['class' => 'formfield'], array_combine($this->languages, $this->languages)); ?>
             </div>
-
             <div>
                 <input type="checkbox" name="show_update_warn" <?php if ($this->kga['show_update_warn']): ?> checked="checked" <?php endif; ?> value="1" class="formfield"> <?php echo $this->translate('show_update_warn')?>
             </div>
@@ -116,18 +115,18 @@
         });
 
         $('#adminPanel_extension_form_editadv').ajaxForm({
-            target: '#adminPanel_extension_output',
-            success: function (result) {
-                if (result.errors.length == 0) {
-                    window.location.reload();
-                    return;
+	        success: function (result) {
+                if (result.errors.length > 0) {
+	                /* FIXME: output json error messages as html
+                	$('#adminPanel_extension_form_editadv_submit').blur();
+
+	                var $adminPanel_extension_output = $('#adminPanel_extension_output');
+	                $adminPanel_extension_output.width($('.adminPanel_extension_panel_header').width() - 22);
+	                $adminPanel_extension_output.show();
+	                */
+                } else {
+	                window.location.reload();
                 }
-                $('#adminPanel_extension_form_editadv_submit').blur();
-                var $adminPanel_extension_output = $('#adminPanel_extension_output');
-                $adminPanel_extension_output.width($('.adminPanel_extension_panel_header').width() - 22);
-                $adminPanel_extension_output.fadeIn(fading_enabled ? 500 : 0, function () {
-                    $adminPanel_extension_output.fadeOut(fading_enabled ? 4000 : 0);
-                });
             }
         });
     });
