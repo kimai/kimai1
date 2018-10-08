@@ -71,7 +71,6 @@ if ($this->timeSheetEntries) {
                 <?php else: ?>
                     <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?> active">
                 <?php endif; ?>
-
                 <td nowrap class="option <?php echo $tdClass; ?>">
                     <?php if (isset($this->kga['user'])): // only users can see options ?>
                         <?php if ($row['end']): // Stop oder Record Button? ?>
@@ -85,20 +84,17 @@ if ($this->timeSheetEntries) {
                                         src="<?php echo $this->skin('grfx/button_stopthis.gif'); ?>" width="13"
                                         height="13" alt='<?php echo $this->translate('stop')?>' title="<?php echo $this->translate('stop')?> (ID: <?php echo $row['timeEntryID']?>)" border="0" /></a>
                         <?php endif; ?>
-
-                        <?php if (!$this->kga->isEditLimit() || time() - $row['end'] <= $this->kga->getEditLimit()): ?>
+                        <?php if ($this->entryCanBeEdited($row)): ?>
                             <a href="#" onclick="editRecord(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
                                title="<?php echo $this->translate('edit')?>"><img
                                         src="<?php echo $this->skin('grfx/edit2.gif'); ?>" width="13" height="13"
                                         alt="<?php echo $this->translate('edit')?>" title="<?php echo $this->translate('edit')?>" border="0" /></a>
-
                             <?php if ($this->kga->getSettings()->isShowQuickNote()): ?>
                                 <a href="#" onclick="editQuickNote(<?php echo $row['timeEntryID']?>); $(this).blur(); return false;"
                                    title='<?php echo $this->translate('editNote')?>'><img
                                             src="<?php echo $this->skin('grfx/editor_icon.png'); ?>" width="14" height="14"
                                             alt="<?php echo $this->translate('editNote')?>" title="<?php echo $this->translate('editNote')?>" border="0" /></a>
                             <?php endif; ?>
-
                             <?php if ($this->kga->getSettings()->isShowQuickDelete()): ?>
                                 <a href="#" class="quickdelete" onclick="quickdelete(<?php echo $row['timeEntryID']?>); return false;"><img
                                             src="<?php echo $this->skin('grfx/button_trashcan.png'); ?>" width="13"
@@ -108,31 +104,28 @@ if ($this->timeSheetEntries) {
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td class="date <?php echo $tdClass; ?>">
-                    <?php echo $this->escape(strftime($dateFormat, $row['start'])); ?>
-                </td>
-                <td class="from <?php echo $tdClass; ?>">
-                    <?php echo $this->escape(strftime("%H:%M", $row['start'])); ?>
-                </td>
-                <td class="to <?php echo $tdClass; ?>">
-                    <?php
+                <td class="date <?php echo $tdClass; ?>"><?php
+	                echo $this->escape(strftime($dateFormat, $row['start']));
+	                ?></td>
+                <td class="from <?php echo $tdClass; ?>"><?php
+	                echo $this->escape(strftime("%H:%M", $row['start']));
+	                ?></td>
+                <td class="to <?php echo $tdClass; ?>"><?php
                     if ($row['end']) {
                         echo $this->escape(strftime("%H:%M", $row['end']));
                     } else {
                         echo "&ndash;&ndash;:&ndash;&ndash;";
-                    } ?>
-                </td>
-                <td class="time <?php echo $tdClass; ?>">
-                    <?php
+                    }
+                    ?></td>
+                <td class="time <?php echo $tdClass; ?>"><?php
                     if (isset($row['duration'])) {
                         echo $row['formattedDuration'];
                     } else {
                         echo "&ndash;:&ndash;&ndash;";
-                    } ?>
-                </td>
+                    }
+                    ?></td>
                 <?php if ($this->showBillability): ?>
-                    <td class="billable <?php echo $tdClass; ?>">
-                        <?php
+                    <td class="billable <?php echo $tdClass; ?>"><?php
                         if (isset($row['billable'])) {
                             if (isset($row['duration'])) {
                                 // billability dropdown
@@ -161,7 +154,7 @@ if ($this->timeSheetEntries) {
                                         echo "&ndash;:&ndash;&ndash;";
                                     }
                                 }
-                                echo ")";
+                                echo ')';
                             }
                         } else {
                             if (isset($row['duration'])) {
@@ -169,29 +162,28 @@ if ($this->timeSheetEntries) {
                             } else {
                                 echo "&ndash;:&ndash;&ndash;";
                             }
-                        } ?>
-                    </td>
+                        }
+                        ?></td>
                 <?php endif; ?>
                 <?php if ($this->showRates): ?>
-                    <td class="wage <?php echo $tdClass; ?>">
-                        <?php
+                    <td class="wage <?php echo $tdClass; ?>"><?php
                         if (isset($row['wage'])) {
                             echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $row['wage']));
                         } else {
                             echo "&ndash;";
-                        } ?>
-                    </td>
+                        }
+                        ?></td>
                 <?php endif; ?>
-                <td class="customer <?php echo $tdClass; ?>">
-                    <?php echo $this->escape($row['customerName']) ?>
-                </td>
+                <td class="customer <?php echo $tdClass; ?>"><?php
+	                echo $this->escape($row['customerName']);
+	                ?></td>
                 <td class="project <?php echo $tdClass; ?>">
                     <a href="#" class="preselect_lnk"
-                       onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName'])?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
+                       onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName']); ?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                                return false;">
                         <?php echo $this->escape($row['projectName'])?>
                         <?php if ($this->kga->getSettings()->isShowProjectComment() && $row['projectComment']): ?>
-                            <span class="lighter">(<?php echo $this->escape($row['projectComment'])?>)</span>
+                            <span class="lighter">(<?php echo $this->escape($row['projectComment']); ?>)</span>
                         <?php endif; ?>
                     </a>
                 </td>
@@ -199,7 +191,7 @@ if ($this->timeSheetEntries) {
                     <a href="#" class="preselect_lnk"
                        onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                                return false;">
-                        <?php echo $this->escape($row['activityName'])?>
+                        <?php echo $this->escape($row['activityName']); ?>
                     </a>
                     <?php if ($row['comment']): ?>
                         <?php if ($row['commentType'] == '0'): ?>
@@ -211,26 +203,26 @@ if ($this->timeSheetEntries) {
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td class="description <?php echo $tdClass; ?>">
-                    <?php if ($this->inlineEditingOfDescriptions): ?>
+                <td class="description <?php echo $tdClass; ?>"><?php
+	                if ($this->inlineEditingOfDescriptions): ?>
                         <textarea rows="1" style="width: 100%; resize:none" id="description_<?php echo $row['timeEntryID']; ?>" onfocus="$(this).attr('rows',3);" onfocusout="$(this).attr('rows',1);" onchange="ts_updateDescription(<?php echo $row['timeEntryID']; ?>, 0)"><?php echo htmlspecialchars($row['description']); ?></textarea>
                     <?php else: ?>
                         <?php echo $this->escape($this->truncate($row['description'], 50, '...')) ?>
                         <?php if ($row['description']): ?>
                             <a href="#" onclick="$(this).blur(); return false;" ><img src="<?php echo $this->skin('grfx/blase_sys.gif'); ?>" width="12" height="13" title='<?php echo $this->escape($row['description'])?>' border="0" /></a>
                         <?php endif; ?>
-                    <?php endif; ?>
-                </td>
+                    <?php endif;
+                    ?></td>
                 <?php if ($this->showTrackingNumber): ?>
-                    <td class="trackingnumber <?php echo $tdClass; ?>">
-                        <?php echo $this->escape($row['trackingNumber']) ?>
-                    </td>
+                    <td class="trackingnumber <?php echo $tdClass; ?>"><?php
+	                    echo $this->escape($row['trackingNumber']);
+	                    ?></td>
                 <?php endif; ?>
                 <td class="username <?php echo $tdClass; ?>">
                     <?php if ($row['userAlias']): ?>
-                        <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')' ?>
+                        <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')'; ?>
                     <?php else: ?>
-                        <?php echo $this->escape($row['userName']) ?>
+                        <?php echo $this->escape($row['userName']); ?>
                     <?php endif; ?>
                 </td>
                 </tr>
