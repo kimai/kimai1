@@ -1129,6 +1129,29 @@ function setTimerToLastMonth() {
     setTimeframe(timerStartDay, timerEndDay);
 }
 
+function setTimerToCurrentYear() {
+    var timerStartDay = new Date();
+    timerStartDay.setMonth(0);
+    timerStartDay.setDate(1);
+    timerStartDay.setHours(0, 0, 0, 0);
+    var timerEndDay = new Date();
+    timerEndDay.setDate(1);
+    timerEndDay.setDate(timerEndDay.getDate() - 1);
+    timerEndDay.setHours(23, 59, 59, 999);
+    setTimeframe(timerStartDay, timerEndDay);
+}
+function setTimerToLastYear() {
+    var timerStartDay = new Date();
+    timerStartDay.setFullYear(timerStartDay.getFullYear() - 1);
+    timerStartDay.setMonth(0);
+    timerStartDay.setDate(1);
+    timerStartDay.setHours(0, 0, 0, 0);
+    var timerEndDay = new Date();
+    timerEndDay.setDate(1);
+    timerEndDay.setDate(timerEndDay.getDate() - 1);
+    timerEndDay.setHours(23, 59, 59, 999);
+    setTimeframe(timerStartDay, timerEndDay);
+}
 function setTimerToCurrentWeek() {
     var monday = new Date();
     monday.setDate(monday.getDate() - (monday.getDay() + 6) % 7);

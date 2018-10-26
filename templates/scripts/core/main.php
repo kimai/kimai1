@@ -290,6 +290,7 @@
 </div>
 <div id="topactions">
     <div id="settimer">
+    
         <a style="cursor: pointer;"
            onclick="setTimerToToday(); return false;"><?php echo $this->translate('quicklink_today') ?></a> |
         <a style="cursor: pointer;"
@@ -301,7 +302,12 @@
         <a style="cursor: pointer;"
            onclick="setTimerToCurrentWeek(); return false;"><?php echo $this->translate('quicklink_thisWeek') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToCurrentMonth(); return false;"><?php echo $this->translate('quicklink_thisMonth') ?></a>
+           onclick="setTimerToCurrentMonth(); return false;"><?php echo $this->translate('quicklink_thisMonth') ?></a> |
+        <a style="cursor: pointer;"
+           onclick="setTimerToCurrentYear(); return false;"><?php echo $this->translate('quicklink_thisYear') ?></a>
+           |
+        <a style="cursor: pointer;"
+           onclick="setTimerToLastYear(); return false;"><?php echo $this->translate('quicklink_lastYear') ?></a>
     </div>
 </div>
 <div id="fliptabs" class="menuBackground">

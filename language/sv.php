@@ -243,6 +243,9 @@ return [
     'quicklink_lastMonth' => 'Förra månad',
     'quicklink_thisWeek' => 'Denna vecka',
     'quicklink_thisMonth' => 'Denna månad',
+    'quicklink_thisYear'=> 'Året',
+    'quicklink_lastYear'=> 'Förra året',
+    
     'errors' => [
         0 => [
             'hdl' => "Kunde inte koppla till databasen!",

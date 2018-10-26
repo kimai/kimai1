@@ -344,6 +344,8 @@ EOD
     'quicklink_lastMonth' => 'Last Month',
     'quicklink_thisWeek' => 'This Week',
     'quicklink_thisMonth' => 'This Month',
+    'quicklink_thisYear'=> 'This Year',
+    'quicklink_lastYear'=> 'Last Year',
 
     'errorMessages' => [
         'permissionDenied' => 'Permission denied',
