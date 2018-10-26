@@ -20,11 +20,11 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libraries -->
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.form.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
     <!-- /Libraries -->

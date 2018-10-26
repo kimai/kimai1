@@ -31,7 +31,7 @@ $browser_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link type="text/css" rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="installscript.js"></script>
     <title>Kimai Installation</title>
     <script type="text/javascript">

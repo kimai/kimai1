@@ -17,7 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * Portuguese (Portugal)
  * by José Ricardo Cardoso and Marco Rodrigues <gothicx@sapo.pt>
@@ -77,7 +76,6 @@ return [
 
     "cookiewarning" => "Permissões de Cookies devem ser activadas! Por favor active esta opção no seu browser antes de ontinuar.",
     "JSwarning" => "JavaScript deve estar ligado! Esta opção é indispensável para o funcionamento da aplicação..",
-    "designation" => "designação",
     "banned" => "Banido (Conta bloqueada)",
     "tooManyLogins" => "Demasiadas tentativas - conta de utilizador suspensa.",
     "accessDenied" => "Acesso negado!",

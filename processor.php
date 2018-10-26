@@ -35,7 +35,7 @@ if (!isset($_POST['name']) || is_array($_POST['name'])) {
 require 'includes/basics.php';
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 // =========================
 // = authentication method =

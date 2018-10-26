@@ -4524,7 +4524,7 @@ class Kimai_Database_Mysql
             return false;
         }
 
-        if ($this->conn->RowCount() == -1) {
+        if ($this->conn->RowCount() == 0) {
             // no error, but no best fitting rate, return default value
             Kimai_Logger::logfile("get_best_fitting_rate - using default rate 0.00");
             return 0.0;

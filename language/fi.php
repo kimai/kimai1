@@ -72,7 +72,6 @@ return [
     "trackingnr" => "Seurantanumero",
     "cookiewarning" => "Kytke ensin keksiasetukset päälle",
     "JSwarning" => "JavaScript on oltava päällä.",
-    "designation" => "nimittäminen",
     "banned" => "Estetty (tunnus lukittu)",
     "tooManyLogins" => "Liian monta epäonnistunutta kirjautumisyritystä - tunnus jäädytetty.",
     "accessDenied" => "Pääsy kielletty!",

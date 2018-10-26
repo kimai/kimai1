@@ -44,12 +44,19 @@
 					<exclude name="build.xml"/>
 					<exclude name="README.md"/>
 					<exclude name=".idea/"/>
-					<exclude name="tests/"/>
+					<exclude name="includes/autoconf.php"/>
 					<exclude name="libraries/phpclasses/ultimatemysql/example*"/>
 					<exclude name="libraries/phpoffice/phpexcel/Examples/**"/>
 					<exclude name="libraries/phpoffice/phpexcel/unitTests/**"/>
 					<exclude name="libraries/symfony/yaml/Tests/**"/>
 					<exclude name="libraries/tecnickcom/tcpdf/examples/**"/>
+					<exclude name="temporary/"/>
+					<exclude name="tests/"/>
+				</patternset>
+			</fileset>
+			<fileset dir=".">
+				<patternset id="always.include.files">
+					<include name="temporary/.htaccess"/>
 				</patternset>
 			</fileset>
 		</copy>

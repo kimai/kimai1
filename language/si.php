@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Številka za sledenje",
     "cookiewarning" => "Vključi piškotke preden začneš.",
     "JSwarning" => "JavaScript mora biti aktiven.",
-    "designation" => "oznaka",
     "banned" => "Prepovedano (Račun zakljenjen)",
     "tooManyLogins" => "Preveč nepravilnih prijav - uporabnik ukinjen.",
     "accessDenied" => "Dostop zavrnjen!",

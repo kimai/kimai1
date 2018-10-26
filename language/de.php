@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Auftragsnummer",
     "cookiewarning" => "Bitte schalten Sie Cookies an bevor Sie sich anmelden.",
     "JSwarning" => "JavaScript muss eingeschaltet sein.",
-    "designation" => "Bezeichnung",
     "banned" => "Account gesperrt",
     "tooManyLogins" => "Zu viele falsche Versuche - Benutzer ist gesperrt.",
     "accessDenied" => "Zutritt verweigert!",
