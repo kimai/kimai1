@@ -66,16 +66,16 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.2.22",
+            "version": "6.2.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "ac6e92fccc7d9383dfd787056831349621b1aca2"
+                "reference": "367241059ca166e3a76490f4448c284e0a161f15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/ac6e92fccc7d9383dfd787056831349621b1aca2",
-                "reference": "ac6e92fccc7d9383dfd787056831349621b1aca2",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/367241059ca166e3a76490f4448c284e0a161f15",
+                "reference": "367241059ca166e3a76490f4448c284e0a161f15",
                 "shasum": ""
             },
             "require": {
@@ -124,7 +124,7 @@
                 "pdf417",
                 "qrcode"
             ],
-            "time": "2018-09-14T15:26:29+00:00"
+            "time": "2018-10-16T17:24:05+00:00"
         },
         {
             "name": "tinybutstrong/tinybutstrong",
@@ -681,7 +681,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.9.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -739,16 +739,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.45",
+            "version": "v2.8.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "fbf876678e29dc634430dcf0096e216eb0004467"
+                "reference": "0e16589861f192dbffb19b06683ce3ef58f7f99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/fbf876678e29dc634430dcf0096e216eb0004467",
-                "reference": "fbf876678e29dc634430dcf0096e216eb0004467",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/0e16589861f192dbffb19b06683ce3ef58f7f99d",
+                "reference": "0e16589861f192dbffb19b06683ce3ef58f7f99d",
                 "shasum": ""
             },
             "require": {
@@ -785,7 +785,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-07-26T09:03:18+00:00"
+            "time": "2018-10-02T16:27:16+00:00"
         }
     ],
     "aliases": [],
