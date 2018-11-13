@@ -80,6 +80,10 @@
 	border-radius: 4px;
 }
 
+#floater_innerwrap .input-width {
+	width: calc(100% - 125px);
+}
+
 #floater_innerwrap .errorMessage {
 	color: white;
 	text-align: center;
