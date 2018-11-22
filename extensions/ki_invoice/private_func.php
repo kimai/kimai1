@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
-
+if(!isset($kga)) $kga = Kimai_Registry::getConfig();
 // when creating the short form contains index of each activity in the array
 $activityIndexMap = [];
 
@@ -33,6 +33,7 @@ $activityIndexMap = [];
 function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 {
     $database = Kimai_Registry::getDatabase();
+    global $kga;
 
     $limitCommentSize = true;
     $results = [];
@@ -121,7 +122,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
             $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
         }
         // FIXME use date_format_3 instead
-        $entry['date'] = date("m/d/Y", $entry['timestamp']);
+        $entry['date'] = date($kga->getDateFormat(3), $entry['timestamp']);
 
         $allEntries[] = $entry;
     }
@@ -131,7 +132,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
 function invoice_add_to_array(&$array, $row, $short_form)
 {
-    global $activityIndexMap;
+    global $activityIndexMap, $kga;
 
     if ($short_form && $row['type'] == 'timeSheet') {
         if (isset($activityIndexMap[$row['desc']])) {
@@ -163,7 +164,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
                 'projectName' => $row['projectName'],
                 'projectComment' => $row['projectComment'],
                 // FIXME use date_format_3 instead
-                'date' => date("m/d/Y", $row['timestamp']),
+                'date' => date($kga->getDateFormat(3), $row['timestamp']),
             ];
             return;
         } else {

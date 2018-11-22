@@ -233,8 +233,8 @@ return [
 
     'multiplier' => 'Multiplier',
 
-    'months' => ["January", "February", "Mars", "April", "May", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
-    'months_short' => ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+    'months' => ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"],
+    'months_short' => ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
     'weekdays' => ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"],
     'weekdays_short' => ["Sön", "Mon", "Tis", "Ons", "Tor", "Fri", "Lör"],
     'quicklink_today' => 'Idag',

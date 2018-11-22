@@ -763,6 +763,7 @@ function lists_set_heightTop() {
     }
 
     lists_set_TableWidths();
+    lists_add_subtotals_per_week();
 }
 
 function lists_set_TableWidths() {
@@ -1024,6 +1025,15 @@ function lists_update_filter(subject, id) {
     hook_filter();
     // finally update timetable
 }
+function lists_add_subtotals_per_week() {
+    let currentdate='';
+    let minutes=0;
+    $('#timeSheetTable tr' ).each(function(index) {
+       console.log( $(this).attr('data-bdate'), $(this).attr('data-bday'), index, $(this).children().eq(4).text());
+    });
+}
+
+
 
 function resize_menu() {
     $('#menu').css('width',
@@ -1136,10 +1146,11 @@ function setTimerToCurrentYear() {
     timerStartDay.setHours(0, 0, 0, 0);
     var timerEndDay = new Date();
     timerEndDay.setDate(1);
+    timerEndDay.setMonth(12); // jan 1 next year
     timerEndDay.setDate(timerEndDay.getDate() - 1);
     timerEndDay.setHours(23, 59, 59, 999);
     setTimeframe(timerStartDay, timerEndDay);
-}
+    }
 function setTimerToLastYear() {
     var timerStartDay = new Date();
     timerStartDay.setFullYear(timerStartDay.getFullYear() - 1);
@@ -1147,8 +1158,8 @@ function setTimerToLastYear() {
     timerStartDay.setDate(1);
     timerStartDay.setHours(0, 0, 0, 0);
     var timerEndDay = new Date();
-    timerEndDay.setFullYear(timerEndDay.getFullYear() - 1);
     timerEndDay.setDate(1);
+    timerEndDay.setMonth(0)
     timerEndDay.setDate(timerEndDay.getDate() - 1);
     timerEndDay.setHours(23, 59, 59, 999);
     setTimeframe(timerStartDay, timerEndDay);
