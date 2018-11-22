@@ -141,7 +141,7 @@ if (!defined('KIMAI_UPDATER_RUNNING')) {
             width: 100px;
         }
     </style>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 <h1>Kimai Auto Updater v<?php echo $kga['version'] . "." . $kga['revision']; ?></h1>

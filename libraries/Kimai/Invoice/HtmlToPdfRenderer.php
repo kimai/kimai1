@@ -27,14 +27,9 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
 
     /**
      * Render the invoice.
-     *
-     * @return mixed
      */
     public function render()
     {
-        /* @var array $l */
-        require_once(WEBROOT . '/libraries/tecnickcom/tcpdf/examples/lang/eng.php');
-
         // create new PDF document
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -68,6 +63,11 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
         //set some language-dependent strings
+        $l = [];
+        $l['a_meta_charset'] = 'UTF-8';
+        $l['a_meta_dir'] = 'ltr';
+        $l['a_meta_language'] = 'en';
+        $l['w_page'] = 'page';
         $pdf->setLanguageArray($l);
 
         // set font
@@ -88,6 +88,9 @@ class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
         $pdf->Output('invoice.pdf', 'I');
     }
 
+    /**
+     * @return string
+     */
     protected function getTemplateFilename()
     {
         return 'index.html.pdf';

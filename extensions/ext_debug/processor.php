@@ -32,7 +32,7 @@ switch ($axAction) {
      * Return the logfile in reverse order, so the last entries are shown first.
      */
     case "reloadLogfile":
-        $logdatei = WEBROOT . '/temporary/logfile.txt';
+        $logdatei = WEBROOT . 'temporary/logfile.txt';
         $fh = fopen($logdatei, 'r');
 
         $theData = '';

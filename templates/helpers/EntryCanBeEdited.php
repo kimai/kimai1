@@ -2,7 +2,7 @@
 /**
  * This file is part of
  * Kimai - Open Source Time Tracking // https://www.kimai.org
- * (c) Kimai-Development-Team - since 2006
+ * (c) 2006-2012 Kimai-Development-Team
  *
  * Kimai is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,37 +18,22 @@
  */
 
 /**
- * Class Kimai_Translation_Service
- *
- * All things related to translations.
+ * Class Zend_View_Helper_EntryCanBeEdited
  */
-class Kimai_Translation_Service
+class Zend_View_Helper_EntryCanBeEdited extends Zend_View_Helper_Abstract
 {
-
     /**
-     * Returns an array of all language codes.
+     * @param array $entry
      *
-     * @return array
+     * @return bool
      */
-    public static function getAvailableLanguages()
+    public function entryCanBeEdited(array $entry)
     {
-        $languages = [];
-        foreach (glob(WEBROOT . 'language/*.php') as $langFile) {
-            $languages[] = str_replace(".php", "", basename($langFile));
+        $kga = Kimai_Registry::getConfig();
+
+        if (!$kga->isEditLimit() || time() - $entry['end'] <= $kga->getEditLimit()) {
+            return true;
         }
-        sort($languages);
-
-        return $languages;
-    }
-
-    /**
-     * Load a translation data.
-     *
-     * @param $name
-     * @return Kimai_Translation_Data
-     */
-    public function load($name)
-    {
-        return new Kimai_Translation_Data($name);
+        return false;
     }
 }

@@ -31,7 +31,7 @@ $months = $kga['lang']['months'];
 $monthIndex = (int)date('n', $beginDate)-1;
 $year = date('Y', $beginDate);
 
-$translations   = array(
+$translations = [
 	'title'	=> 'Projektbericht',
 	'date' => 'Datum',
 	'activity' => 'Tätigkeit',
@@ -43,33 +43,32 @@ $translations   = array(
 	'contact' => 'Abteilung',
 	'footer-freelancer' => 'Leistungsbestätigung - Name Berater / Unterschrift',
 	'footer-customer' => 'Leistungsbestätigung - Name Kunde / Unterschrift',
-);
-
+];
 ?><html>
 	<head>
 		<meta charset="utf-8">
-		<title><?php echo $translations['title']; ?></title>
+		<title><?php echo htmlspecialchars($translations['title']); ?></title>
 		<link rel="stylesheet" href="invoices/freelancer/style.css">
 	</head>
 	<body>
 		<header>
-			<h1><?php echo $translations['title']; ?></h1>
+			<h1><?php echo htmlspecialchars($translations['title']); ?></h1>
 			<address>
 				<p>
-					<label><?php echo $translations['month']; ?></label>
-					<span contenteditable="true"><?php echo $months[$monthIndex] . ' ' . $year; ?></span>
+					<label><?php echo htmlspecialchars($translations['month']); ?></label>
+					<span contenteditable="true"><?php echo htmlspecialchars($months[$monthIndex]) . ' ' . $year; ?></span>
 				</p>
 				<p>
-					<label><?php echo $translations['customer']; ?></label>
-					<span contenteditable="true"><?php echo $customer['company']; ?></span>
+					<label><?php echo htmlspecialchars($translations['customer']); ?></label>
+					<span contenteditable="true"><?php echo htmlspecialchars($customer['company']); ?></span>
 				</p>
 				<p>
-					<label><?php echo $translations['contact']; ?></label>
-					<span contenteditable="true"><?php echo $customer['contact']; ?></span>
+					<label><?php echo htmlspecialchars($translations['contact']); ?></label>
+					<span contenteditable="true"><?php echo htmlspecialchars($customer['contact']); ?></span>
 				</p>
 				<p>
-					<label><?php echo $translations['freelancer']; ?></label>
-					<span contenteditable="true"><?php echo $entries[0]['useralias']; ?></span>
+					<label><?php echo htmlspecialchars($translations['freelancer']); ?></label>
+					<span contenteditable="true"><?php echo htmlspecialchars($entries[0]['useralias']); ?></span>
 				</p>
 			</address>
 		</header>
@@ -77,15 +76,15 @@ $translations   = array(
 			<table class="inventory">
 				<thead>
 					<tr>
-						<th><span><?php echo $translations['date']; ?></span></th>
-						<th><span><?php echo $translations['activity']; ?></span></th>
-						<th><span><?php echo $translations['hours']; ?></span></th>
+						<th><span><?php echo htmlspecialchars($translations['date']); ?></span></th>
+						<th><span><?php echo htmlspecialchars($translations['activity']); ?></span></th>
+						<th><span><?php echo htmlspecialchars($translations['hours']); ?></span></th>
 					</tr>
 				</thead>
 				<tfoot>
 					<tr>
-						<th><span></span></th>
-						<th><span><?php echo $translations['total']; ?></span></th>
+						<th></th>
+						<th><span><?php echo htmlspecialchars($translations['total']); ?></span></th>
 						<th><span><?php echo number_format($sumHours, 2); ?></span></th>
 					</tr>
 				</tfoot>
@@ -93,7 +92,7 @@ $translations   = array(
 				<?php foreach($entries as $row) { ?>
 					<tr>
 						<td><span><?php echo date('d.m.', $row['timestamp']); ?></span></td>
-						<td><span><?php echo $row['desc']; ?> - <?php echo $row['projectName']; ?></span></td>
+						<td><span><?php echo htmlspecialchars($row['desc']); ?> - <?php echo htmlspecialchars($row['projectName']); ?></span></td>
 						<td><span><?php echo number_format($row['hour'], 2); ?></span></td>
 					</tr>
 				<?php } ?>
@@ -102,8 +101,8 @@ $translations   = array(
 		</article>
 		<aside>
 			<address>
-				<p><?php echo $translations['footer-freelancer']; ?></p>
-				<p><?php echo $translations['footer-customer']; ?></p>
+				<p><?php echo htmlspecialchars($translations['footer-freelancer']); ?></p>
+				<p><?php echo htmlspecialchars($translations['footer-customer']); ?></p>
 			</address>
 		</aside>
 	</body>

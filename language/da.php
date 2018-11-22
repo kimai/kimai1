@@ -69,7 +69,6 @@ return [
     "trackingNumber" => "Trackingnummer",
     "cookiewarning" => "Aktiver Cookies, inden du fortsætter.",
     "JSwarning" => "Javascript er påkrævet.",
-    "designation" => "designation",
     "banned" => "Blokeret (Konto låst)",
     "tooManyLogins" => "For mange fejlagtige loginforsøg - bruger suspenderet.",
     "accessDenied" => "Adgang nægtet!",

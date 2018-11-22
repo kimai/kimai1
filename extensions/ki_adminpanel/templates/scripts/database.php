@@ -10,7 +10,7 @@
     echo $this->translate('no');
 } ?>
 
-<?php if (file_exists(WEBROOT . '/updater/db_restore.php')) { ?>
+<?php if (file_exists(WEBROOT . 'updater/db_restore.php')) { ?>
     <br /><br />
     <a href="../updater/db_restore.php"><?php echo $this->translate('DBbackup') ?></a>
 <?php } ?>

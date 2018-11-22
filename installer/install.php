@@ -365,7 +365,7 @@ exec_query($query);
 
 if ($errors) {
     $view = new Zend_View();
-    $view->setBasePath(WEBROOT . '/templates');
+    $view->setBasePath(WEBROOT . 'templates');
 
     $view->assign('headline', $kga['lang']['errors'][1]['hdl']);
     $view->assign('message', $kga['lang']['errors'][1]['txt']);

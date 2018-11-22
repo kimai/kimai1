@@ -122,10 +122,15 @@ abstract class Kimai_Invoice_AbstractRenderer
         return false;
     }
 
-    protected function prepareCustomerArray($customer)
+    /**
+     * @param array $customer
+     *
+     * @return array
+     */
+    protected function prepareCustomerArray(array $customer)
     {
         $kga = Kimai_Registry::getConfig();
-        $new = [
+        return [
             'customerContact' => isset($customer['contact']) ? $customer['contact'] : '',
             'companyName' => isset($customer['company']) ? $customer['company'] : '',
             'customerStreet' => isset($customer['street']) ? $customer['street'] : '',
@@ -140,7 +145,5 @@ abstract class Kimai_Invoice_AbstractRenderer
             'customerURL' => isset($customer['homepage']) ? $customer['homepage'] : '',
             'customerVat' => isset($customer['vat']) ? $customer['vat'] : '',
         ];
-
-        return $new;
     }
 }

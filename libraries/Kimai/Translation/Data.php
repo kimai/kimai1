@@ -36,7 +36,7 @@ class Kimai_Translation_Data extends \ArrayObject
     public function __construct($language)
     {
         $default = Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
-        $data = include WEBROOT . '/language/'.$default.'.php';
+        $data = include WEBROOT . 'language/'.$default.'.php';
         parent::__construct($data, \ArrayObject::ARRAY_AS_PROPS);
         $this->addTranslations($language);
     }
@@ -55,7 +55,7 @@ class Kimai_Translation_Data extends \ArrayObject
             return;
         }
 
-        $languageFile = WEBROOT . '/language/'.$language.'.php';
+        $languageFile = WEBROOT . 'language/'.$language.'.php';
         if (!file_exists($languageFile)) {
             Kimai_Logger::logfile('Requested translation is missing: ' . $language);
             return;

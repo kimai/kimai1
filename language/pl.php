@@ -69,7 +69,6 @@ return [
     "trackingNumber" => "Znak",
     "cookiewarning" => "Przed kontynuacją włącz cookies/ciasteczka.",
     "JSwarning" => "Skrypt Javy musi być aktywny.",
-    "designation" => "Przeznaczenie",
     "banned" => "Konto zostało zablokowane",
     "tooManyLogins" => "Za dużo błędnych logowań - użytkownik zawieszony.",
     "accessDenied" => "Dostęp zabroniony!",

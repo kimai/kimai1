@@ -71,7 +71,6 @@ return [
     "trackingNumber" => "Register Nummer",
     "cookiewarning" => "Aktivera kakor (Cookies) innan du fortsätter.",
     "JSwarning" => "JavaScript måste vara aktiverat.",
-    "designation" => "beteckning",
     "banned" => "Banned (Kontot låst)",
     "tooManyLogins" => "För många felaktiga inloggningar - användaren frånkopplad.",
     "accessDenied" => "Nekat tillträde!",

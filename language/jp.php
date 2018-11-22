@@ -72,7 +72,6 @@ return [
     "trackingNumber" => "追跡番号",
     "cookiewarning" => "進む前にクッキー許可してください",
     "JSwarning" => "JavaScriptは活性化必要がある",
-    "designation" => "説明",
     "banned" => "禁止されてる(アカウントがロックされている)",
     "tooManyLogins" => "ログインは間違い過ぎた - ユーザーは禁止される",
     "accessDenied" => "アクセス禁止！",
