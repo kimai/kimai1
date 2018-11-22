@@ -65,11 +65,15 @@ if ($this->timeSheetEntries) {
                     $tdClass = " break_day";
                 } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M", $time_buffer) - strftime("%H%M", $row['end']) > 1)) {
                     $tdClass = " break_gap";
-                } ?>
+                }
+                $trdata =' data-bday="'.strftime("%u",$row['start'] ).'"  data-bdate="'.strftime("%Y%m%d",$row['start'] ).'" ';
+               
+               
+                ?>
                 <?php if ($row['end']): ?>
-                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?>">
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next(); echo " $tdClass";?>" <?php echo $trdata;?>>
                 <?php else: ?>
-                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next()?> active">
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo $this->cycle(["odd", "even"])->next(); echo " $tdClass";?> active" <?php echo $trdata;?>>
                 <?php endif; ?>
                 <td nowrap class="option <?php echo $tdClass; ?>">
                     <?php if (isset($this->kga['user'])): // only users can see options ?>

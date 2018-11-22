@@ -1147,6 +1147,7 @@ function setTimerToLastYear() {
     timerStartDay.setDate(1);
     timerStartDay.setHours(0, 0, 0, 0);
     var timerEndDay = new Date();
+    timerEndDay.setFullYear(timerEndDay.getFullYear() - 1);
     timerEndDay.setDate(1);
     timerEndDay.setDate(timerEndDay.getDate() - 1);
     timerEndDay.setHours(23, 59, 59, 999);
