@@ -96,6 +96,7 @@
         var revision = <?php echo $this->kga['revision'] ?>;
         var timeframeDateFormat = "<?php echo $this->escape($this->kga->getDateFormat(2)) ?>";
         var dateFormat = '<?php echo $this->escape($this->kga->getDateFormat(0)) ?>';
+        var dateLocale =  '<?php echo $this->kga['lang']['countryCode']; ?>';
         var selected_customer = '<?php echo $this->customerData['customerID']?>';
         var selected_project = '<?php echo $this->projectData['projectID']?>';
         var selected_activity = '<?php echo $this->activityData['activityID']?>';

@@ -260,7 +260,7 @@ if ($this->timeSheetEntries) {
 
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
-
+    lists_add_subtotals_per_week();
     <?php if ($this->latest_running_entry == null): ?>
     updateRecordStatus(<?php echo time(); ?>, false);
     <?php else: ?>

@@ -763,7 +763,7 @@ function lists_set_heightTop() {
     }
 
     lists_set_TableWidths();
-    lists_add_subtotals_per_week();
+   
 }
 
 function lists_set_TableWidths() {
@@ -792,6 +792,7 @@ function lists_reload(subject, callback) {
                     $("#users table").css("width", customerColumnWidth - scr);
                     lists_live_filter('user', $('#filt_user').val());
                     lists_write_annotations('user');
+                  //  lists_add_subtotals_per_week();
                     if (typeof(callback) != "undefined") {
                         callback();
                     }
@@ -1025,11 +1026,100 @@ function lists_update_filter(subject, id) {
     hook_filter();
     // finally update timetable
 }
+
+Date.prototype.getWeek = function() {
+    var onejan = new Date(this.getFullYear(),0,1);
+    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
+}
+
 function lists_add_subtotals_per_week() {
-    let currentdate='';
-    let minutes=0;
-    $('#timeSheetTable tr' ).each(function(index) {
-       console.log( $(this).attr('data-bdate'), $(this).attr('data-bday'), index, $(this).children().eq(4).text());
+    let date = '';
+    let lastdate = '';
+    let dow = 0;
+    let lastdow=9;
+    let month = 0; 
+    let lastmonth=100;
+    let firstdate = new Date(); 
+    let tdate=new Date();
+    let rdate=new Date();
+    let seconds = 0;
+    let secondsweek = 0;
+    let secondsmonth = 0;
+    let secondsyear = 0;
+    let secondsall = 0;
+      
+    let colspan = 0;
+    if ($('#timeSheetTable').hasClass('totalled')) {
+        return;
+    }
+    $('#timeSheetTable').addClass('totalled');
+    let timesheetrows = $('#timeSheetTable tr');
+    let lastindex = timesheetrows.length - 1;
+    timesheetrows.each(function (index) {
+        if ($(this).attr('data-bdate') != null) {
+            date = $(this).attr('data-bdate');
+            month = parseInt(date.substr(4, 2));
+            dow = parseInt($(this).attr('data-bday'));
+            let weekrow='';
+            let monthrow='';
+            let yrow='';
+            let allrow='';
+            let tempsec = parseInt($(this).attr('data-bsec'));
+            if ((lastdate != date) || (index == lastindex)) {
+                if (lastdate != '') {
+                    console.log('newday', dow, month);
+                    tdate=new Date(lastdate.substr(0, 4),lastdate.substr(4, 2)-1,lastdate.substr(6, 2));
+                    rdate=new Date(date.substr(0, 4),date.substr(4, 2)-1,date.substr(6, 2));
+                    if ((dow < lastdow) && (lastdow != 9)) {
+                        console.log('newweek', dow, month,lastdate,tdate);
+                        //secondsweek += tempsec;  
+                        weekrow = '<tr><td colspan=4>total week ' + tdate.getWeek() + '</td><td colspan=2>' + (secondsweek / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsweek / 60).toFixed(2) + ' minutes</th></tr>';
+                        secondsweek = 0;
+                    }
+                    lastdow = dow;
+                    if (month != lastmonth) {
+                        if (lastmonth != 100) {
+                            console.log('newmonth', dow, month);
+                            //secondsmonth += tempsec;
+                            monthrow = '<tr><td colspan=4>total month ' + lastmonth + '</td><td colspan=2>' + (secondsmonth / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsmonth / 60).toFixed(2) + ' minutes</th></tr>';
+                            secondsmonth = 0;
+                        }
+                        lastmonth = month;
+                    }
+                    // if($(this).attr('data-bday'))
+                    if (index == lastindex) {
+                        seconds = seconds + tempsec;
+                        secondsweek += tempsec;
+                        secondsmonth += tempsec;
+                        secondsyear += tempsec;
+                        secondsall += tempsec;
+                        let daysdiff=Math.round((firstdate-rdate)/(1000*60*60*24));    
+
+                        if (daysdiff > 1) weekrow = '<tr><td  colspan=4>total week ' + rdate.getWeek() + '</td><td colspan=2>' + (secondsweek / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsweek / 60).toFixed(2) + ' minutes</th></tr>';
+                        if (daysdiff > 26) monthrow = '<tr><td  colspan=4>total month ' + lastmonth + '</td><td colspan=2>' + (secondsmonth / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsmonth / 60).toFixed(2) + ' minutes</th></tr>';
+                        if (daysdiff > 364) yrow = '<tr><td  colspan=4>total year ' + '?' + '</td><td colspan=2>' + (secondsyear / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsyear / 60).toFixed(2) + ' minutes</th></tr>';
+                        if ((daysdiff > 1) && (secondsall > secondsweek))
+                            allrow = '<tr><td colspan=4>total all' + '??' + '</td><td colspan=2>' + (secondsall / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsall / 60).toFixed(2) + ' minutes</th></tr>';
+                        $(this).after('<tr><td colspan=4>total day ' + rdate.toLocaleDateString(window.dateLocale) + '</td><td colspan=2>' + (seconds / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (seconds / 60).toFixed(2) + ' minutes</th></tr>' + weekrow + monthrow + yrow + allrow);
+                    } else if (typeof tdate === 'object') {
+                        $(this).before('<tr><td colspan=4>total day ' + tdate.toLocaleDateString(window.dateLocale) + '</td><td colspan=2>' + (seconds / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (seconds / 60).toFixed(2) + ' minutes</th></tr>' + weekrow + monthrow + yrow + allrow);
+                    }
+                } else {
+                    colspan = $(this).children().length - 6;
+                    firstdate = new Date(date.substr(0, 4),date.substr(4, 2)-1,date.substr(6, 2));
+                }
+                lastdate = date;
+                
+                seconds = tempsec;
+            } else {
+                seconds = seconds + tempsec;
+            }
+            secondsweek += tempsec;
+            secondsmonth += tempsec;
+            secondsyear += tempsec;
+            secondsall += tempsec;
+            //console.log($(this).attr('data-bdate'), $(this).attr('data-bday'), $(this).attr('data-bsec'), index, timesheetrows.length, $(this).children().eq(4).text(), dow, month,secondsweek,(firstdate-rdate) );
+        }
     });
 }
 
