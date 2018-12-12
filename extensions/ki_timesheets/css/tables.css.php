@@ -38,7 +38,7 @@ div.ki_timesheet tr.odd td
     border-bottom: none;
     border-left: none;
     border-right: 1px dotted #CCC;
-    padding: 2px 3px 2px 3px;
+    padding: 2px 2px 3px 2px;
 }
 
 
@@ -114,16 +114,22 @@ div.ki_timesheet>div#timeSheet>div#timeSheetTable>table>tbody>tr>td.username {
     width:115px;
 }
 
+#timeSheet_head td.project,
+#timeSheet td.project
+{
+    width:115px;
+}
+
 #timeSheet_head td.wage,
 #timeSheet td.wage
 {
-    width:40px;
+    width:50px;
 }
 
 #timeSheet_head td.description,
 #timeSheet td.description
 {
-    width:450px;
+    width:350px;
 }
 
 #timeSheet_head td.from,
@@ -154,7 +160,7 @@ div#timeSheet_head div.left a
     text-indent:-500px;
 }
 
-div#timeSheet_head td {padding: 3px 4px 4px 6px;}
+div#timeSheet_head td {padding: 4px 2px 4px 2px;}
 
 
 tbody tr.comm0 td {
@@ -186,6 +192,3 @@ tbody tr.comm2 td {
 .time_overlap {
         border-top:2px solid red;
 }
-
-
-

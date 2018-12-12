@@ -1027,16 +1027,48 @@ function lists_update_filter(subject, id) {
     // finally update timetable
 }
 
-Date.prototype.getWeek = function() {
-    var onejan = new Date(this.getFullYear(),0,1);
-    return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
-}
+/**
+ * Returns the week number for this date.  dowOffset is the day of week the week
+ * "starts" on for your locale - it can be from 0 to 6. If dowOffset is 1 (Monday),
+ * the week returned is the ISO 8601 week number.
+ * @param int dowOffset
+ * @return int
+ */
+Date.prototype.getWeek = function (dowOffset) {
+    /*getWeek() was developed by Nick Baicoianu at MeanFreePath: http://www.meanfreepath.com */
+    
+        dowOffset = typeof(dowOffset) == 'int' ? dowOffset : 1; //default dowOffset to 1
+        var newYear = new Date(this.getFullYear(),0,1);
+        var day = newYear.getDay() - dowOffset; //the day of week the year begins on
+        day = (day >= 0 ? day : day + 7);
+        var daynum = Math.floor((this.getTime() - newYear.getTime() - 
+        (this.getTimezoneOffset()-newYear.getTimezoneOffset())*60000)/86400000) + 1;
+        var weeknum;
+        //if the year starts before the middle of a week
+        if(day < 4) {
+            weeknum = Math.floor((daynum+day-1)/7) + 1;
+            if(weeknum > 52) {
+                nYear = new Date(this.getFullYear() + 1,0,1);
+                nday = nYear.getDay() - dowOffset;
+                nday = nday >= 0 ? nday : nday + 7;
+                /*if the next year starts before the middle of
+                  the week, it is week #1 of that year*/
+                weeknum = nday < 4 ? 1 : 53;
+            }
+        }
+        else {
+            weeknum = Math.floor((daynum+day-1)/7);
+        }
+        return weeknum;
+    };
 
 function lists_add_subtotals_per_week() {
     let date = '';
     let lastdate = '';
     let dow = 0;
     let lastdow=9;
+    let lastweeknum=0;
+    let weeknum=0;
     let month = 0; 
     let lastmonth=100;
     let firstdate = new Date(); 
@@ -1058,6 +1090,8 @@ function lists_add_subtotals_per_week() {
     timesheetrows.each(function (index) {
         if ($(this).attr('data-bdate') != null) {
             date = $(this).attr('data-bdate');
+            rdate=new Date(date.substr(0, 4),date.substr(4, 2)-1,date.substr(6, 2));
+            weeknum = rdate.getWeek(0);
             month = parseInt(date.substr(4, 2));
             dow = parseInt($(this).attr('data-bday'));
             let weekrow='';
@@ -1067,21 +1101,27 @@ function lists_add_subtotals_per_week() {
             let tempsec = parseInt($(this).attr('data-bsec'));
             if ((lastdate != date) || (index == lastindex)) {
                 if (lastdate != '') {
-                    console.log('newday', dow, month);
-                    tdate=new Date(lastdate.substr(0, 4),lastdate.substr(4, 2)-1,lastdate.substr(6, 2));
-                    rdate=new Date(date.substr(0, 4),date.substr(4, 2)-1,date.substr(6, 2));
-                    if ((dow < lastdow) && (lastdow != 9)) {
-                        console.log('newweek', dow, month,lastdate,tdate);
-                        //secondsweek += tempsec;  
-                        weekrow = '<tr><td colspan=4>total week ' + tdate.getWeek() + '</td><td colspan=2>' + (secondsweek / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsweek / 60).toFixed(2) + ' minutes</th></tr>';
-                        secondsweek = 0;
+                    //console.log('newday ', dow, month);
+                    tdate = new Date(lastdate.substr(0, 4), lastdate.substr(4, 2) - 1, lastdate.substr(6, 2));
+
+                    if (weeknum != lastweeknum) {
+                        
+                        //secondsweek += tempsec; 
+
+                        if (lastweeknum > 0) {
+                            //console.log('newweek ', dow, lastdow, 'week',weeknum,'lastweek', lastweeknum, lastdate, tdate,rdate);
+                            weekrow = '<tr><td colspan=4>Week ' + tdate.getWeek() + '</td><td colspan=2>' + secstoHMS(secondsweek) + ' </td><th colspan=' + colspan + '> </th></tr>';
+                            secondsweek = 0;
+                        }
+                        lastweeknum = weeknum;
+                        
                     }
                     lastdow = dow;
                     if (month != lastmonth) {
                         if (lastmonth != 100) {
-                            console.log('newmonth', dow, month);
-                            //secondsmonth += tempsec;
-                            monthrow = '<tr><td colspan=4>total month ' + lastmonth + '</td><td colspan=2>' + (secondsmonth / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsmonth / 60).toFixed(2) + ' minutes</th></tr>';
+                            //console.log('newmonth', dow, month);
+                            secondsmonth += tempsec;
+                            monthrow = '<tr><td colspan=4>Month ' + lastmonth + '</td><td colspan=2>' + secstoHMS(secondsmonth) + ' </td><th colspan=' + colspan + '> </th></tr>';
                             secondsmonth = 0;
                         }
                         lastmonth = month;
@@ -1093,20 +1133,22 @@ function lists_add_subtotals_per_week() {
                         secondsmonth += tempsec;
                         secondsyear += tempsec;
                         secondsall += tempsec;
-                        let daysdiff=Math.round((firstdate-rdate)/(1000*60*60*24));    
+                        let daysdiff = Math.round((firstdate - rdate) / (1000 * 60 * 60 * 24));
 
-                        if (daysdiff > 1) weekrow = '<tr><td  colspan=4>total week ' + rdate.getWeek() + '</td><td colspan=2>' + (secondsweek / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsweek / 60).toFixed(2) + ' minutes</th></tr>';
-                        if (daysdiff > 26) monthrow = '<tr><td  colspan=4>total month ' + lastmonth + '</td><td colspan=2>' + (secondsmonth / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsmonth / 60).toFixed(2) + ' minutes</th></tr>';
-                        if (daysdiff > 364) yrow = '<tr><td  colspan=4>total year ' + '?' + '</td><td colspan=2>' + (secondsyear / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsyear / 60).toFixed(2) + ' minutes</th></tr>';
+                        if (daysdiff > 1) weekrow = '<tr><td  colspan=4>Week ' + rdate.getWeek() + '</td><td colspan=2>' + secstoHMS(secondsweek) + '</td><th colspan=' + colspan + '> </th></tr>';
+                        if (daysdiff > 26) monthrow = '<tr><td  colspan=4>Month ' + lastmonth + '</td><td colspan=2>' + secstoHMS(secondsmonth) + '</td><th colspan=' + colspan + '> </th></tr>';
+                        if (daysdiff > 364) yrow = '<tr><td  colspan=4>Year ' + '?' + '</td><td colspan=2>' + secstoHMS(secondsyear) + '</td><th colspan=' + colspan + '> </th></tr>';
                         if ((daysdiff > 1) && (secondsall > secondsweek))
-                            allrow = '<tr><td colspan=4>total all' + '??' + '</td><td colspan=2>' + (secondsall / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (secondsall / 60).toFixed(2) + ' minutes</th></tr>';
-                        $(this).after('<tr><td colspan=4>total day ' + rdate.toLocaleDateString(window.dateLocale) + '</td><td colspan=2>' + (seconds / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (seconds / 60).toFixed(2) + ' minutes</th></tr>' + weekrow + monthrow + yrow + allrow);
+                            allrow = '<tr><td colspan=4>All ' + '</td><td colspan=2>' + secstoHMS(secondsall) + '</td><th colspan=' + colspan + '> </th></tr>';
+                        $(this).after('<tr><td colspan=4>' + $.datepicker.formatDate('DD', rdate) + ' ' + ts_formatDate(rdate) +
+                         '</td><td colspan=2>' + secstoHMS(seconds) + '</td><th colspan=' + colspan + '> </th></tr>' + weekrow + monthrow + yrow + allrow);
                     } else if (typeof tdate === 'object') {
-                        $(this).before('<tr><td colspan=4>total day ' + tdate.toLocaleDateString(window.dateLocale) + '</td><td colspan=2>' + (seconds / 3600).toFixed(2) + ' hours</td><th colspan=' + colspan + '>' + (seconds / 60).toFixed(2) + ' minutes</th></tr>' + weekrow + monthrow + yrow + allrow);
+                        $(this).before('<tr><td colspan=4>' + $.datepicker.formatDate('DD', tdate) + ' ' + ts_formatDate(tdate) +
+                         '</td><td colspan=2>' + secstoHMS(seconds) + '</td><th colspan=' + colspan + '> </th></tr>' + weekrow + monthrow + yrow + allrow);
                     }
                 } else {
                     colspan = $(this).children().length - 6;
-                    firstdate = new Date(date.substr(0, 4),date.substr(4, 2)-1,date.substr(6, 2));
+                    firstdate = new Date(date.substr(0, 4), date.substr(4, 2) - 1, date.substr(6, 2));
                 }
                 lastdate = date;
                 
@@ -1118,7 +1160,7 @@ function lists_add_subtotals_per_week() {
             secondsmonth += tempsec;
             secondsyear += tempsec;
             secondsall += tempsec;
-            //console.log($(this).attr('data-bdate'), $(this).attr('data-bday'), $(this).attr('data-bsec'), index, timesheetrows.length, $(this).children().eq(4).text(), dow, month,secondsweek,(firstdate-rdate) );
+           // console.log($(this).attr('data-bdate'), $(this).attr('data-bday'), $(this).attr('data-bsec'), index, timesheetrows.length, $(this).children().eq(4).text(), dow, month,secondsweek,(firstdate-rdate),rdate.getWeek() );
         }
     });
 }
@@ -1178,6 +1220,17 @@ function clearFloaterErrorMessages() {
  */
 function prependZeroIfNeeded(value) {
     return ((value < 10) ? '0' : '') + value;
+}
+
+
+
+    
+function secstoHMS(seconds) {
+            let secs = prependZeroIfNeeded(seconds % 60);
+            let durationSecs = Math.floor(seconds / 60);
+            let mins = prependZeroIfNeeded(durationSecs % 60);
+            let hours = prependZeroIfNeeded(Math.floor(durationSecs / 60));
+            return(hours + ":" + mins + ":" + secs);
 }
 
 

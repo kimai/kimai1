@@ -601,21 +601,21 @@ function ts_durationToTime() {
  * Change the duration field, based on the time, while editing a timesheet record
  */
 function ts_timeToDuration() {
-    begin = ts_getStartDate();
-    end = ts_getEndDate();
+    let begin = ts_getStartDate();
+    let end = ts_getEndDate();
     if (begin == null || end == null) {
         $("#duration").val("");
     } else {
-        beginSecs = Math.floor(begin.getTime() / 1000);
-        endSecs = Math.floor(end.getTime() / 1000);
-        durationSecs = endSecs - beginSecs;
+        let beginSecs = Math.floor(begin.getTime() / 1000);
+        let endSecs = Math.floor(end.getTime() / 1000);
+        let durationSecs = endSecs - beginSecs;
         if (durationSecs < 0) {
             $("#duration").val("");
         } else {
-            secs = prependZeroIfNeeded(durationSecs % 60);
+            let secs = prependZeroIfNeeded(durationSecs % 60);
             durationSecs = Math.floor(durationSecs / 60);
-            mins = prependZeroIfNeeded(durationSecs % 60);
-            hours = prependZeroIfNeeded(Math.floor(durationSecs / 60));
+            let mins = prependZeroIfNeeded(durationSecs % 60);
+            let hours = prependZeroIfNeeded(Math.floor(durationSecs / 60));
             $("#duration").val(hours + ":" + mins + ":" + secs);
             $('#duration').trigger('change');
         }
