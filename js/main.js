@@ -1160,7 +1160,7 @@ function lists_add_subtotals_per_week() {
             secondsmonth += tempsec;
             secondsyear += tempsec;
             secondsall += tempsec;
-           // console.log($(this).attr('data-bdate'), $(this).attr('data-bday'), $(this).attr('data-bsec'), index, timesheetrows.length, $(this).children().eq(4).text(), dow, month,secondsweek,(firstdate-rdate),rdate.getWeek() );
+          
         }
     });
 }

@@ -88,7 +88,7 @@
 
         var timeoutTicktack = 0;
 
-        var now = <?php echo $this->current_time ?>;
+        var now = <?php echo $this->current_time; /* globals should be: let window.now = ... */ ?>;
         var offset = Math.floor(((new Date()).getTime()) / 1000) - now;
         var startsec = <?php echo $this->current_timer_start ?> +offset;
 
