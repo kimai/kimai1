@@ -28,7 +28,7 @@ class Kimai_Invoice_OdtRenderer extends Kimai_Invoice_AbstractRenderer
     /**
      * Render the invoice.
      *
-     * @return mixed
+     * @throws \tinyDocException
      */
     public function render()
     {
