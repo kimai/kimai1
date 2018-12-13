@@ -67,18 +67,15 @@ if ($this->timeSheetEntries) {
                 } elseif ($this->kga->isShowGabBreaks() && (strftime("%H%M", $time_buffer) - strftime("%H%M", $row['end']) > 1)) {
                     $tdClass = " break_gap";
                 }
-                // data for day of week, date and seconds for javascript summary 
+                // data for javascript generated summary: day of week, date and seconds worked
                 $trdata =' data-bday="'.strftime("%u",$row['start'] ).'"  data-bdate="'.strftime("%Y%m%d",$row['start'] ).'" data-bsec="'.$ts_seconds.'" ';
-                             
                 ?>
                 <?php if ($row['end']): ?>
-                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php //echo $this->cycle(["odd", "even"])->next(); 
-                    echo " $tdClass";?>" <?php echo $trdata;?>>
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo "$tdClass"; ?>" <?php echo $trdata;?>>
                 <?php else: ?>
-                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php //echo $this->cycle(["odd", "even"])->next(); 
-                    echo " $tdClass";?> active" <?php echo $trdata;?>>
+                    <tr id="timeSheetEntry<?php echo $row['timeEntryID']?>" class="<?php echo "$tdClass"; ?> active" <?php echo $trdata;?>>
                 <?php endif; ?>
-                <td nowrap class="option <?php //echo $tdClass; ?>">
+                <td nowrap class="option">
                     <?php if (isset($this->kga['user'])): // only users can see options ?>
                         <?php if ($row['end']): // Stop oder Record Button? ?>
                             <?php if ($this->kga->isShowRecordAgain()): ?>
@@ -111,20 +108,20 @@ if ($this->timeSheetEntries) {
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td class="date <?php //echo $tdClass; ?>"><?php
+                <td class="date"><?php
 	                echo $this->escape(strftime($dateFormat, $row['start']));
 	                ?></td>
-                <td class="from <?php //echo $tdClass; ?>"><?php
+                <td class="from"><?php
 	                echo $this->escape(strftime("%H:%M", $row['start']));
 	                ?></td>
-                <td class="to <?php //echo $tdClass; ?>"><?php
+                <td class="to"><?php
                     if ($row['end']) {
                         echo $this->escape(strftime("%H:%M", $row['end']));
                     } else {
                         echo "&ndash;&ndash;:&ndash;&ndash;";
                     }
                     ?></td>
-                <td class="time <?php //echo $tdClass; ?>"><?php
+                <td class="time"><?php
                     if (isset($row['duration'])) {
                         echo $row['formattedDuration'];
                     } else {
@@ -132,7 +129,7 @@ if ($this->timeSheetEntries) {
                     }
                     ?></td>
                 <?php if ($this->showBillability): ?>
-                    <td class="billable <?php //echo $tdClass; ?>"><?php
+                    <td class="billable"><?php
                         if (isset($row['billable'])) {
                             if (isset($row['duration'])) {
                                 // billability dropdown
@@ -173,7 +170,7 @@ if ($this->timeSheetEntries) {
                         ?></td>
                 <?php endif; ?>
                 <?php if ($this->showRates): ?>
-                    <td class="wage <?php //echo $tdClass; ?>"><?php
+                    <td class="wage"><?php
                         if (isset($row['wage'])) {
                             echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $row['wage']));
                         } else {
@@ -181,10 +178,10 @@ if ($this->timeSheetEntries) {
                         }
                         ?></td>
                 <?php endif; ?>
-                <td class="customer <?php //echo $tdClass; ?>"><?php
+                <td class="customer"><?php
 	                echo $this->escape($row['customerName']);
 	                ?></td>
-                <td class="project <?php // echo $tdClass; ?>">
+                <td class="project">
                     <a href="#" class="preselect_lnk"
                        onclick="buzzer_preselect_project(<?php echo $row['projectID']?>,'<?php echo $this->jsEscape($row['projectName']); ?>',<?php echo $this->jsEscape($row['customerID'])?>,'<?php echo $this->jsEscape($row['customerName'])?>');
                                return false;">
@@ -194,7 +191,7 @@ if ($this->timeSheetEntries) {
                         <?php endif; ?>
                     </a>
                 </td>
-                <td class="activity <?php // echo $tdClass; ?>">
+                <td class="activity">
                     <a href="#" class="preselect_lnk"
                        onclick="buzzer_preselect_activity(<?php echo $row['activityID']?>,'<?php echo $this->jsEscape($row['activityName'])?>',0,0);
                                return false;">
@@ -210,7 +207,7 @@ if ($this->timeSheetEntries) {
                         <?php endif; ?>
                     <?php endif; ?>
                 </td>
-                <td class="description <?php // echo $tdClass; ?>"><?php
+                <td class="description"><?php
 	                if ($this->inlineEditingOfDescriptions): ?>
                         <textarea rows="1" style="width: 100%; resize:none" id="description_<?php echo $row['timeEntryID']; ?>" onfocus="$(this).attr('rows',3);" onfocusout="$(this).attr('rows',1);" onchange="ts_updateDescription(<?php echo $row['timeEntryID']; ?>, 0)"><?php echo htmlspecialchars($row['description']); ?></textarea>
                     <?php else: ?>
@@ -221,11 +218,11 @@ if ($this->timeSheetEntries) {
                     <?php endif;
                     ?></td>
                 <?php if ($this->showTrackingNumber): ?>
-                    <td class="trackingnumber <?php // echo $tdClass; ?>"><?php
+                    <td class="trackingnumber"><?php
 	                    echo $this->escape($row['trackingNumber']);
 	                    ?></td>
                 <?php endif; ?>
-                <td class="username <?php // echo $tdClass; ?>">
+                <td class="username">
                     <?php if ($row['userAlias']): ?>
                         <?php echo $this->escape($row['userAlias']) . ' (' . $this->escape($row['userName']) . ')'; ?>
                     <?php else: ?>
@@ -253,10 +250,10 @@ if ($this->timeSheetEntries) {
 ?>
 <script type="text/javascript">
     ts_user_annotations = <?php echo json_encode($this->user_annotations); ?>;
-    ts_customer_annotations = <?php echo json_encode($this->customer_annotations) ?>;
-    ts_project_annotations = <?php echo json_encode($this->project_annotations) ?>;
-    ts_activity_annotations = <?php echo json_encode($this->activity_annotations) ?>;
-    ts_total = '<?php echo $this->total?>';
+    ts_customer_annotations = <?php echo json_encode($this->customer_annotations); ?>;
+    ts_project_annotations = <?php echo json_encode($this->project_annotations); ?>;
+    ts_activity_annotations = <?php echo json_encode($this->activity_annotations); ?>;
+    ts_total = '<?php echo $this->total; ?>';
 
     lists_update_annotations(parseInt($('#gui div.ki_timesheet').attr('id').substring(7)),ts_user_annotations,ts_customer_annotations,ts_project_annotations,ts_activity_annotations);
     $('#display_total').html(ts_total);
