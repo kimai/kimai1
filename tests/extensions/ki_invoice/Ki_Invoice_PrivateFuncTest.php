@@ -33,11 +33,11 @@ class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
 
     public function testext_invoice_empty_entry()
     {
-        $keys = [
+        $keys = array(
             'type', 'desc', 'start', 'end', 'hour', 'fDuration', 'duration', 'timestamp', 'amount', 'description',
             'rate', 'comment', 'username', 'useralias', 'location', 'trackingNr', 'projectID', 'projectName',
             'projectComment', 'date'
-        ];
+         );
 
         $actual = ext_invoice_empty_entry();
 
