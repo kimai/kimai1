@@ -17,27 +17,27 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest;
-
+//namespace KimaiTest;
+use PHPUnit\Framework\TestCase;
 /**
  * Testing functions of invoice extension
  *
  * @package KimaiTest
  */
-class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
+class Ki_Invoice_PrivateFuncTest extends TestCase
 {
     protected function setUp()
     {
-        include_once APPLICATION_PATH . 'extensions/ki_invoice/private_func.php';
+        require_once APPLICATION_PATH . 'extensions/ki_invoice/private_func.php';
     }
 
     public function testext_invoice_empty_entry()
     {
-        $keys = array(
+        $keys = [
             'type', 'desc', 'start', 'end', 'hour', 'fDuration', 'duration', 'timestamp', 'amount', 'description',
             'rate', 'comment', 'username', 'useralias', 'location', 'trackingNr', 'projectID', 'projectName',
             'projectComment', 'date'
-         );
+        ];
 
         $actual = ext_invoice_empty_entry();
 

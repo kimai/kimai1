@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
-if(!isset($kga)) $kga = Kimai_Registry::getConfig();
+// if(!isset($kga)) $kga = Kimai_Registry::getConfig();
 // when creating the short form contains index of each activity in the array
 $activityIndexMap = [];
 
@@ -34,6 +34,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 {
     $database = Kimai_Registry::getDatabase();
     global $kga;
+    $kga = Kimai_Registry::getConfig();
 
     $limitCommentSize = true;
     $results = [];
@@ -133,7 +134,7 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 function invoice_add_to_array(&$array, $row, $short_form)
 {
     global $activityIndexMap, $kga;
-
+    $kga = Kimai_Registry::getConfig();
     if ($short_form && $row['type'] == 'timeSheet') {
         if (isset($activityIndexMap[$row['desc']])) {
             $index = $activityIndexMap[$row['desc']];

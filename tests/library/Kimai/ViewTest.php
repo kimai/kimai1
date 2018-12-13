@@ -17,12 +17,12 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest;
+//namespace KimaiTest;
 
 /**
  * @coversDefaultClass Kimai_View
  */
-class ViewTest extends TestCase
+class ViewTest extends myTestCase
 {
 
     /**

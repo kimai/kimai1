@@ -18,9 +18,7 @@
     </filter>
 
     <logging>
-        <log type="coverage-html" target="temporary/coverage" charset="UTF-8"
-             yui="true" highlight="false"
-             lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-html" target="temporary/coverage" lowUpperBound="35" highLowerBound="70"/>
     </logging>
 
 </phpunit>

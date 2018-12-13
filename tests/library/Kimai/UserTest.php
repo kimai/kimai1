@@ -17,14 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest;
+//namespace KimaiTest;
 
-use Kimai_User;
+//use Kimai_User;
 
 /**
  * @coversDefaultClass Kimai_User
  */
-class UserTest extends TestCase
+class UserTest extends myTestCase
 {
     public function testName()
     {

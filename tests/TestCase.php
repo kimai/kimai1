@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
-
-namespace KimaiTest;
+use PHPUnit\Framework\TestCase;
+//namespace KimaiTest;
 
 /**
  * Base and helper class for Kimai Unittests.
  */
-class TestCase extends \PHPUnit_Framework_TestCase
+class myTestCase extends  TestCase
 {
     /**
      * @var \Kimai_Config

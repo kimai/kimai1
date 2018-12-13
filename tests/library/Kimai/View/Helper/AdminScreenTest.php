@@ -17,15 +17,15 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest\View\Helper;
+//namespace KimaiTest\View\Helper;
 
-use KimaiTest\TestCase;
-use Kimai_View_Helper_AdminScreen;
+//use KimaiTest\TestCase;
+//use Kimai_View_Helper_AdminScreen;
 
 /**
  * @coversDefaultClass Kimai_View_Helper_AdminScreen
  */
-class AdminScreenTest extends TestCase
+class AdminScreenTest extends myTestCase
 {
 
     /**

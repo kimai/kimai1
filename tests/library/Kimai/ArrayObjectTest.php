@@ -17,14 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace KimaiTest;
+//namespace KimaiTest;
 
-use Kimai_ArrayObject;
+//use Kimai_ArrayObject;
 
 /**
  * @coversDefaultClass Kimai_ArrayObject
  */
-class ArrayObjectTest extends TestCase
+class ArrayObjectTest extends myTestCase
 {
 
     /**
