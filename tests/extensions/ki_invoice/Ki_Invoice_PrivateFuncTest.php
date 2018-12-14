@@ -24,7 +24,7 @@ namespace KimaiTest;
  *
  * @package KimaiTest
  */
-class Ki_Invoice_PrivateFuncTest extends \PHPUnit_Framework_TestCase
+class Ki_Invoice_PrivateFuncTest extends \PHPUnit\Framework\TestCase
 {
     protected function setUp()
     {
