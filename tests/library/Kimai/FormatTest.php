@@ -17,14 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-//namespace KimaiTest;
+namespace KimaiTest;
 
-//use Kimai_Format;
+use Kimai_Format;
 
 /**
  * @coversDefaultClass Kimai_Format
  */
-class FormatTest extends myTestCase
+class FormatTest extends TestCase
 {
 
     /**

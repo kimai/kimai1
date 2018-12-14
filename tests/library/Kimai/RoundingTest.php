@@ -17,14 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-//namespace KimaiTest;
+namespace KimaiTest;
 
-//use Kimai_Rounding;
+use Kimai_Rounding;
 
 /**
  * @coversDefaultClass Kimai_Rounding
  */
-class RoundingTest extends myTestCase
+class RoundingTest extends TestCase
 {
 
     /**

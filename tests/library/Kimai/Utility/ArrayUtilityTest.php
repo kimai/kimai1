@@ -18,14 +18,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-//namespace KimaiTest\Utility;
+namespace KimaiTest\Utility;
 
-//use KimaiTest\TestCase;
+use KimaiTest\TestCase;
 
 /**
  * Test case
  */
-class ArrayUtilityTest extends myTestCase
+class ArrayUtilityTest extends TestCase
 {
 
     // Tests concerning arrayDiffAssocRecursive
