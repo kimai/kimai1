@@ -577,7 +577,7 @@ switch ($axAction) {
         }
 
         if (!$validateTime->isValid($_REQUEST['start_time'])) {
-            $_REQUEST['start_time'] = $_REQUEST['start_time'] . ':00';
+            $_REQUEST['start_time'] .= ':00';
             if (!$validateTime->isValid($_REQUEST['start_time'])) {
                 $errors['start_time'] = $kga['lang']['TimeDateInputError'];
             }
@@ -588,7 +588,7 @@ switch ($axAction) {
         }
 
         if ($_REQUEST['end_time'] != '' && !$validateTime->isValid($_REQUEST['end_time'])) {
-            $_REQUEST['end_time'] = $_REQUEST['end_time'] . ':00';
+            $_REQUEST['end_time'] .= ':00';
             if (!$validateTime->isValid($_REQUEST['end_time'])) {
                 $errors['end_time'] = $kga['lang']['TimeDateInputError'];
             }
@@ -623,10 +623,17 @@ switch ($axAction) {
             $outDate = null;
         }
 
-        $data['start'] = $inDate->getTimestamp();
+        $rounded = Kimai_Rounding::roundTimespan(
+            $inDate->getTimestamp(),
+            $outDate->getTimestamp(),
+            $kga->getRoundPrecisionRecorderTimes(),
+            $kga->isRoundDownRecorderTimes()
+        );
 
-        if ($outDate != null) {
-            $data['end'] = $outDate->getTimestamp();
+        $data['start'] = $rounded['start'];
+
+        if ($outDate !== null) {
+            $data['end'] = $rounded['end'];
             $data['duration'] = $data['end'] - $data['start'];
         }
 
@@ -637,7 +644,7 @@ switch ($axAction) {
             }
 
             // TIME RIGHT - EDIT ENTRY
-            Kimai_Logger::logfile("timeEntry_edit: " . $id);
+            Kimai_Logger::logfile('timeEntry_edit: ' . $id);
             $database->timeEntry_edit($id, $data);
         } else {
             // TIME RIGHT - NEW ENTRY
@@ -653,7 +660,7 @@ switch ($axAction) {
                     break 2;
                 }
 
-                Kimai_Logger::logfile("timeEntry_create");
+                Kimai_Logger::logfile('timeEntry_create');
                 $createdId = $database->timeEntry_create($data);
                 if (!$createdId) {
                     $errors[''] = $kga['lang']['error'];
