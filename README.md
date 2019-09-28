@@ -16,7 +16,7 @@ that runs on (almost) every webserver with PHP and MySQL.
 You can get more information about this time-tracking software:
 
 * at our [website](https://www.kimai.org)
-* in the [documentation](https://www.kimai.org/documentation/)
+* in the [documentation](https://www.kimai.org/v1/)
 
 ## Announcement Kimai v2 (June 2018)
 
@@ -26,7 +26,7 @@ Go ahead and [read our blog posting](https://www.kimai.org/blog/2018/kimai-v2-an
 
 ## Features
 
-This is just a short feature list, play around with the [demo installation](https://www.kimai.org/demo/) to see all features:
+This is just a short and uncomplete feature list:
 
 * Multi-user management
 * Customer login with read only privileges
@@ -39,7 +39,7 @@ This is just a short feature list, play around with the [demo installation](http
 * Export data in multiple formats (PDF, XLSX, CSV, direct print)
 * SOAP and JSON API
 * LDAP login provider
-* Native apps ... see our [Apps page](https://www.kimai.org/apps/)
+* Native apps ... see our [Apps page](https://www.kimai.org/v1/apps.html)
 
 ## Missing features
 
@@ -47,13 +47,11 @@ This is just a short feature list, play around with the [demo installation](http
 * Budgets based on time
 * No workflow ([approval process](https://github.com/kimai/kimai/issues/470))
 
-![Screenshot](https://www.kimai.org/assets/kimai08.jpg)
-
 ## Getting Started
 
 Kimai requires a webserver with PHP and a database (MySQL recommended).
 
-Please see the [online documentation](https://www.kimai.org/documentation/installation/) in order to set up Kimai on your webserver.
+Please see the [online documentation](https://www.kimai.org/v1/installation.html) in order to set up Kimai on your webserver.
 
 ## Contributing
 
