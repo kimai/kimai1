@@ -31,12 +31,14 @@ class Kimai_Translation_Data extends \ArrayObject
      * Create a translation object:
      * pre-fill with english and replace by $language specific data.
      *
-     * @param array|null|object $language
+     * @param array|string|object $language
+     *
+     * @throws \Exception
      */
     public function __construct($language)
     {
         $default = Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
-        $data = include WEBROOT . 'language/'.$default.'.php';
+        $data = include WEBROOT . 'language/' . $default . '.php';
         parent::__construct($data, \ArrayObject::ARRAY_AS_PROPS);
         $this->addTranslations($language);
     }
@@ -44,28 +46,28 @@ class Kimai_Translation_Data extends \ArrayObject
     /**
      * Adds the translations for the given language.
      *
-     * @param $language
-     * @throws Exception
+     * @param string $language
+     * @param string $path
      */
-    public function addTranslations($language)
+    public function addTranslations($language, $path = null)
     {
-        // no need to load the default or already requested language again!
-        $default = Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
-        if (empty($language) || $language == $default || $language == $this->language) {
-            return;
+        if ($path === null) {
+            // no need to load the default or already requested language again!
+            $default = Kimai_Config::getDefault(Kimai_Config::DEFAULT_LANGUAGE);
+            if (empty($language) || $language == $default || $language == $this->language) {
+                return;
+            }
+            $path = WEBROOT;
         }
 
-        $languageFile = WEBROOT . 'language/'.$language.'.php';
+        $languageFile = $path . 'language/' . $language . '.php';
         if (!file_exists($languageFile)) {
             Kimai_Logger::logfile('Requested translation is missing: ' . $language);
             return;
         }
 
         $this->language = $language;
-        $data = array_replace_recursive(
-            $this->getArrayCopy(),
-            include $languageFile
-        );
+        $data = array_replace_recursive($this->getArrayCopy(), include $languageFile);
 
         $this->exchangeArray($data);
     }

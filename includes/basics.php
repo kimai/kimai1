@@ -133,13 +133,9 @@ unset($authPlugin);
 $database->initializeConfig($kga);
 
 // ============ setup translation object ============
-$service = new Kimai_Translation_Service();
-Kimai_Registry::setTranslation(
-    $service->load(
-        $kga->getLanguage()
-    )
-);
-unset($service);
+$translationService = new Kimai_Translation_Service();
+$translationService->load();
+unset($translationService);
 
 $tmpDir = WEBROOT . 'temporary/';
 if (!file_exists($tmpDir) || !is_dir($tmpDir) || !is_writable($tmpDir)) {

@@ -36,6 +36,7 @@ class Kimai_Registry extends Zend_Registry
      * Return the global configuration, merged with all user related configurations.
      *
      * @return Kimai_Config
+     * @throws \Zend_Exception
      */
     public static function getConfig()
     {
@@ -46,6 +47,7 @@ class Kimai_Registry extends Zend_Registry
      * Returns the database layer to use.
      *
      * @return Kimai_Database_Mysql
+     * @throws \Zend_Exception
      */
     public static function getDatabase()
     {
@@ -74,6 +76,7 @@ class Kimai_Registry extends Zend_Registry
 
     /**
      * @return Kimai_User
+     * @throws \Zend_Exception
      */
     public static function getUser()
     {
@@ -101,7 +104,7 @@ class Kimai_Registry extends Zend_Registry
     {
         return self::get('Zend_Cache');
     }
-    
+
     /**
      * @param Kimai_Auth_Abstract $authenticator
      */
@@ -112,6 +115,7 @@ class Kimai_Registry extends Zend_Registry
 
     /**
      * @return Kimai_Auth_Abstract
+     * @throws \Zend_Exception
      */
     public static function getAuthenticator()
     {
@@ -120,6 +124,8 @@ class Kimai_Registry extends Zend_Registry
 
     /**
      * @param Kimai_Translation_Data $translation
+     *
+     * @throws \Zend_Exception
      */
     public static function setTranslation(Kimai_Translation_Data $translation)
     {
@@ -129,6 +135,7 @@ class Kimai_Registry extends Zend_Registry
 
     /**
      * @return Kimai_Translation_Data
+     * @throws \Zend_Exception
      */
     public static function getTranslation()
     {

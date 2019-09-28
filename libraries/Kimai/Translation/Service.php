@@ -26,6 +26,18 @@ class Kimai_Translation_Service
 {
 
     /**
+     * Load a translation data.
+     *
+     * @throws \Exception
+     */
+    public function load()
+    {
+        $language = Kimai_Registry::getConfig()->getLanguage();
+        $translationData = new Kimai_Translation_Data($language);
+        Kimai_Registry::setTranslation($translationData);
+    }
+
+    /**
      * Returns an array of all language codes.
      *
      * @return array
@@ -34,21 +46,10 @@ class Kimai_Translation_Service
     {
         $languages = [];
         foreach (glob(WEBROOT . 'language/*.php') as $langFile) {
-            $languages[] = str_replace(".php", "", basename($langFile));
+            $languages[] = str_replace('.php', '', basename($langFile));
         }
         sort($languages);
 
         return $languages;
-    }
-
-    /**
-     * Load a translation data.
-     *
-     * @param $name
-     * @return Kimai_Translation_Data
-     */
-    public function load($name)
-    {
-        return new Kimai_Translation_Data($name);
     }
 }
