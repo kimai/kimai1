@@ -474,7 +474,15 @@ switch ($axAction) {
                 $kga['server_prefix'],
                 $_REQUEST['language'],
                 $kga['password_salt'],
-                $_REQUEST['defaultTimezone']
+                $_REQUEST['defaultTimezone'],
+                $kga['mail_transport'],
+                $kga['smtp_name'],
+                $kga['smtp_host'],
+                $kga['smtp_port'],
+                $kga['smtp_auth'],
+                $kga['smtp_user'],
+                $kga['smtp_pass'],
+                $kga['smtp_ssl']
             );
         }
 
