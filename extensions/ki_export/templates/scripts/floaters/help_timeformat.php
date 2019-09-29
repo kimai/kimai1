@@ -1,8 +1,8 @@
 <div id="floater_innerwrap">
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['export_extension']['export_timeformat_help'] ?></span>
+        <span id="floater_title"><?php echo $this->translate('export_extension:export_timeformat_help') ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->translate('close') ?></a>
         </div>
     </div>
     <div class="floater_content">

@@ -17,7 +17,6 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 function logfile(entry) {
     $.post("processor.php", {axAction: "logfile", axValue: entry, id: 0});
 }
@@ -61,7 +60,6 @@ function headerHeight() {
     /* always plus 10 pixels of horizontal padding */
     return header + tabbar + 10;
 }
-
 
 // ----------------------------------------------------------------------------------------
 // shows floating dialog windows based on processor data
@@ -116,7 +114,6 @@ function floaterLoadContent(phpFile, axAction, axValue, id, width, callback) {
             if (callback != undefined) {
                 callback();
             }
-
         }
     );
 }
@@ -133,7 +130,6 @@ function resize_floater() {
         y = 0;
     }
     $("#floater").css({top: y + "px"});
-
 }
 
 // ----------------------------------------------------------------------------------------
@@ -155,7 +151,6 @@ function changeTab(target, path) {
 
     kill_reg_timeouts();
 
-
     if ($("#loader").is(':hidden')) {
         // if previous extension was loaded save visibility of lists
         lists_visibility[$('#fliptabs li.act').attr('id')] = $('body>.lists').is(':visible');
@@ -164,17 +159,17 @@ function changeTab(target, path) {
     $('#fliptabs li').removeClass('act');
     $('#fliptabs li').addClass('norm');
 
-    tab = '#exttab_' + target;
+    var tab = '#exttab_' + target;
     $(tab).removeClass('norm');
     $(tab).addClass('act');
 
     $('.ext').css('display', 'none');
 
-    div = '#extdiv_' + target;
+    var div = '#extdiv_' + target;
     $(div).css('display', 'block');
 
     // we don't want to load the tab content every time the tab is changed ...
-    is_extension_loaded = $(div).html();
+    var is_extension_loaded = $(div).html();
     if (!is_extension_loaded) {
         $("#loader").show();
         lists_visible(false);
@@ -193,11 +188,9 @@ function changeTab(target, path) {
 }
 
 function kill_timeout(to) {
-    evalstring = "try {if (" + to + ") clearTimeout(" + to + ")}catch(e){}";
-    // alert(evalstring);
+    var evalstring = "try {if (" + to + ") clearTimeout(" + to + ")}catch(e){}";
     eval(evalstring);
 }
-
 
 function showTools() {
     $('#main_tools_menu').fadeIn(fading_enabled ? 200 : 0);
@@ -225,7 +218,7 @@ function checkupdate(path) {
 var ZeitString, DatumsString = "";
 
 function n_uhr() {
-    n_seperator = "<span style=\"color:#EAEAD7;\">:</span>";
+    n_seperator = '<span style="color:#EAEAD7;">:</span>';
     Jetzt = new Date();
     //aktuelle Uhrzeit
     Stunden = Jetzt.getHours();
@@ -246,10 +239,9 @@ function n_uhr() {
 
     var ZeitString = prependZeroIfNeeded(Stunden);
 
-    if (Sekunden % 2 == 0) {
+    if (Sekunden %2 === 0) {
         ZeitString += n_seperator;
-    }
-    else {
+    } else {
         ZeitString += ":";
     }
 
@@ -267,31 +259,29 @@ function setTimeframe(fromDate,toDate, callback) {
 
     timeframe = '';
 
-    if (fromDate != undefined) {
+    if (fromDate !== undefined) {
         setTimeframeStart(fromDate);
         timeframe += strftime('%m-%d-%Y', fromDate);
-    }
-    else {
+    } else {
         timeframe += "0-0-0";
     }
 
     timeframe += "|";
 
-    if (toDate != undefined) {
+    if (toDate !== undefined) {
         setTimeframeEnd(toDate);
         timeframe += strftime('%m-%d-%Y', toDate);
-    }
-    else {
+    } else {
         timeframe += "0-0-0";
     }
 
     $.post("processor.php", { axAction: "setTimeframe", axValue: timeframe, id: 0 },
         function(response) {
-			if (typeof callback === "function"){
-				callback();
-			}else{
-				hook_timeframe_changed();
-			}
+            if (typeof callback === "function"){
+                callback();
+            }else{
+                hook_timeframe_changed();
+            }
         }
     );
 
@@ -320,37 +310,32 @@ function updateTimeframeWarning() {
 
     if (new Date($('#pick_out').val()) < today) {
         $('#ts_out').addClass('datewarning')
-    }
-    else {
+    } else {
         $('#ts_out').removeClass('datewarning')
     }
-
 }
-
 
 // ----------------------------------------------------------------------------------------
 // starts a new recording when the start-buzzer is hidden
 //
 function startRecord(projectID, activityID, userID) {
-    var now = Math.floor(((new Date()).getTime()) / 1000);
-    startsec = now;
+    startsec = Math.floor(((new Date()).getTime()) / 1000);
     value = projectID +"|"+ activityID;
-	$('#buzzer').addClass('disabled');
-	show_stopwatch();
-	setTimeframe(undefined,new Date(), function(){
-		$.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
-			function(response){
-				var data = jQuery.parseJSON(response);
-				currentRecording = data['id'];
-				timeout_updateRecordStatus = setTimeout(function(){
-					$('#buzzer').removeClass('disabled');
-				}, 3000);
-				ts_ext_reload();
-			}
-		);
-	});
+    $('#buzzer').addClass('disabled');
+    show_stopwatch();
+    setTimeframe(undefined,new Date(), function(){
+        $.post("processor.php", { axAction: "startRecord", axValue: value, id: userID},
+            function(response){
+                var data = jQuery.parseJSON(response);
+                currentRecording = data['id'];
+                timeout_updateRecordStatus = setTimeout(function(){
+                    $('#buzzer').removeClass('disabled');
+                }, 3000);
+                ts_ext_reload();
+            }
+        );
+    });
 }
-
 
 // ----------------------------------------------------------------------------------------
 // stops the current recording when the stop-buzzer is hidden
@@ -359,47 +344,45 @@ function stopRecord() {
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td>a.stop>img").attr("src","../skins/"+skin+"/grfx/loading13_red.gif");
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "background-color", "#F00" );
     $("#timeSheetTable>table>tbody>tr#timeSheetEntry"+currentRecording+">td").css( "color", "#FFF" );
-	$('#buzzer').addClass('disabled');
-	show_selectors();
+    $('#buzzer').addClass('disabled');
+    show_selectors();
     $.post("processor.php", { axAction: "stopRecord", axValue: 0, id: currentRecording},
         function(response){
-              document.title = default_title;
-              if (openAfterRecorded) {
+            document.title = default_title;
+            if (openAfterRecorded) {
                 var data = jQuery.parseJSON(response);
                 editRecord(data['id']);
-              }
-			  timeout_updateRecordStatus = setTimeout(function(){
-				$('#buzzer').removeClass('disabled');
-			  }, 3000);
-			  ts_ext_reload();
+            }
+            timeout_updateRecordStatus = setTimeout(function(){
+                $('#buzzer').removeClass('disabled');
+            }, 3000);
+            ts_ext_reload();
         }
     );
 }
 
-function updateRecordStatus(record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) { // Updated
-  // if awaiting updateRecordStatus from buzzer
-  if (typeof timeout_updateRecordStatus != 'undefined'){
-	  clearTimeout(timeout_updateRecordStatus);
-	  delete timeout_updateRecordStatus;
-	  $('#buzzer').removeClass('disabled');
-  }
+function updateRecordStatus(serverTime, record_ID, record_startTime, customerID, customerName, projectID, projectName, activityID, activityName) {
+    // if awaiting updateRecordStatus from buzzer
+    if (typeof timeout_updateRecordStatus != 'undefined'){
+        clearTimeout(timeout_updateRecordStatus);
+        delete timeout_updateRecordStatus;
+        $('#buzzer').removeClass('disabled');
+    }
 
-  if (record_ID == false) {
-    // no recording is running anymore
-    currentRecording = -1;
-    show_selectors();
-    return;
-  }
+    if (record_ID == false) {
+        // no recording is running anymore
+        currentRecording = -1;
+        show_selectors();
+        return;
+    }
+    
+    // calculate offset (note: this does not take into account network latencies - but I guess for display this should be accurate enough)
+    var offset = serverTime - ((new Date()).getTime() / 1000);
 
-  // Update offset accuracy
-  if ( typeof stopwatch_init_time != 'undefined' && (stopwatch_init_time + offset) != record_startTime ){
-	offset = stopwatch_init_time - record_startTime;
-  }
+    startsec = record_startTime + offset;
 
-  startsec = record_startTime + offset;
-
-  if (selected_project != projectID)
-    buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
+    if (selected_project != projectID)
+        buzzer_preselect_project(projectID, projectName, customerID, customerName, false);
 }
 
 function show_stopwatch() {
@@ -411,7 +394,6 @@ function show_stopwatch() {
     $("#ticker_project").html($("#selected_project").html());
     $("#ticker_activity").html($("#selected_activity").html());
     $("ul#ticker").newsticker();
-    stopwatch_init_time = Math.floor((new Date()).getTime() / 1000);
     ticktac();
 }
 
@@ -427,23 +409,22 @@ function show_selectors() {
 }
 
 function buzzer() {
+    if (currentRecording == 0 || $('#buzzer').hasClass('disabled')) return;
 
-  if ( currentRecording == 0 || $('#buzzer').hasClass('disabled') ) return;
-
-  if (currentRecording > -1) {
-	stopRecord();
-    currentRecording=0;
-  } else {
-    startRecord(selected_project,selected_activity,userID);
-  }
+    if (currentRecording > -1) {
+        stopRecord();
+        currentRecording=0;
+    } else {
+        startRecord(selected_project,selected_activity,userID);
+    }
 }
 
 function buzzer_preselect_project(projectID, projectName, customerID, customerName, updateRecording) {
     selected_customer = customerID;
     selected_project = projectID;
     $.post("processor.php", {axAction: "saveBuzzerPreselection", project: projectID});
-    $("#selected_customer").html(customerName);
-    $("#selected_project").html(projectName);
+    $("#selected_customer").text(customerName);
+    $("#selected_project").text(projectName);
     $("#selected_customer").removeClass("none");
 
     lists_reload('activity', function () {
@@ -454,7 +435,7 @@ function buzzer_preselect_project(projectID, projectName, customerID, customerNa
 function buzzer_preselect_activity(activityID, activityName, updateRecording) {
     selected_activity = activityID;
     $.post("processor.php", {axAction: "saveBuzzerPreselection", activity: activityID});
-    $("#selected_activity").html(activityName);
+    $("#selected_activity").text(activityName);
     buzzer_preselect_update_ui('activities', activityID, updateRecording);
 }
 
@@ -480,15 +461,14 @@ function buzzer_preselect_update_ui(selector, selectedID, updateRecording) {
 
     if (currentRecording > -1 && updateRecording) {
         $.post("../extensions/ki_timesheets/processor.php", {
-                axAction: "edit_running",
-                id: currentRecording,
-                project: selected_project,
-                activity: selected_activity
-            },
-            function (data) {
-                ts_ext_reload();
-            }
-        );
+            axAction: "edit_running",
+            id: currentRecording,
+            project: selected_project,
+            activity: selected_activity
+        },
+        function (data) {
+            ts_ext_reload();
+        });
     }
 }
 
@@ -533,14 +513,12 @@ function ticktac() {
 function ticktack_off() {
     if (timeoutTicktack) {
         clearTimeout(timeoutTicktack);
-	delete stopwatch_init_time;
         timeoutTicktack = 0;
         $("#h").html("00");
         $("#m").html("00");
         $("#s").html("00");
     }
 }
-
 
 // ----------------------------------------------------------------------------------------
 // shows dialogue for editing an item in either customer, project or activity list
@@ -551,18 +529,17 @@ function editSubject(subject, id) {
     return false;
 }
 
-
 // ----------------------------------------------------------------------------------------
 // filters project and activity fields in add/edit record dialog
 
 function filter_selects(id, needle) {
     // cache initialisieren
-    if (typeof window['__cacheselect_' + id] == "undefined") {
-        window['__cacheselect_' + id] = [];
-        $('#' + id + ' option ').each(function (index) {
-            window['__cacheselect_' + id].push({
-                'value': $(this).val(),
-                'text': $(this).text()
+    if(typeof window['__cacheselect_'+id] == "undefined") {
+        window['__cacheselect_'+id] = [];
+        $('#'+id+' option ').each(function(index) {
+            window['__cacheselect_'+id].push({
+                'value':$(this).val(),
+                'text':$(this).text()
             })
         })
     }
@@ -586,8 +563,7 @@ function lists_visible(visible) {
         lists_resize();
         $('body>.lists').show();
         lists_resize();
-    }
-    else {
+    } else {
         $('body>.lists').hide();
     }
 }
@@ -835,8 +811,7 @@ function lists_reload(subject, callback) {
                     lists_write_annotations('activity');
                     if ($('#row_activity[data-id="' + selected_activity + '"]').length == 0) {
                         $('#buzzer').addClass('disabled');
-                    }
-                    else {
+                    } else {
                         $('#buzzer').removeClass('disabled');
                     }
                     if (typeof(callback) != "undefined") {
@@ -1072,7 +1047,6 @@ function clearFloaterErrorMessages() {
 }
 
 /**
- *
  * @param value
  * @returns {string}
  */
@@ -1126,19 +1100,19 @@ function setTimerToLastMonth() {
 }
 
 function setTimerToCurrentWeek() {
-	var today = new Date();
-	var thisDay = today.getDay(),
-		diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
-	var monday = new Date(today.setDate(diffToMonday));
-	var timerEndDay = new Date();
+    var today = new Date();
+    var thisDay = today.getDay(),
+        diffToMonday = today.getDate() - thisDay + (thisDay == 0 ? -6 : 1);
+    var monday = new Date(today.setDate(diffToMonday));
+    var timerEndDay = new Date();
 
-	setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
+    setTimeframe(mktime(0, 0, 0, monday.getMonth(), monday.getDate(), monday.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }
 
 function setTimerToCurrentMonth() {
-	var timerStartDay = new Date();
-	timerStartDay.setDate(1);
-	var timerEndDay = new Date();
+    var timerStartDay = new Date();
+    timerStartDay.setDate(1);
+    var timerEndDay = new Date();
 
     setTimeframe(mktime(0, 0, 0, timerStartDay.getMonth(), timerStartDay.getDate(), timerStartDay.getFullYear()), mktime(23, 59, 59, timerEndDay.getMonth(), timerEndDay.getDate(), timerEndDay.getFullYear()));
 }

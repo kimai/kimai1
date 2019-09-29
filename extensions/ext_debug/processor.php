@@ -32,7 +32,7 @@ switch ($axAction) {
      * Return the logfile in reverse order, so the last entries are shown first.
      */
     case "reloadLogfile":
-        $logdatei = WEBROOT . '/temporary/logfile.txt';
+        $logdatei = WEBROOT . 'temporary/logfile.txt';
         $fh = fopen($logdatei, 'r');
 
         $theData = '';
@@ -95,20 +95,20 @@ switch ($axAction) {
     case "reloadKGA":
 
         $output = $kga;
-        $filter = array(
+        $filter = [
             'server_hostname' => "xxx",
             'server_database' => "xxx",
             'server_username' => "xxx",
             'server_password' => "xxx",
             'password_salt' => "xxx",
-            'user' => array(
+            'user' => [
                 'secure' => "xxx",
                 'userID' => "xxx",
                 'pw' => "xxx",
                 'password' => "xxx",
                 'apikey' => "xxx"
-            ),
-        );
+            ],
+        ];
 
         switch ($axValue) {
             case 'plain':
@@ -120,7 +120,7 @@ switch ($axAction) {
 
             case 'lang':
                 $output = $kga['lang'];
-                $filter = array();
+                $filter = [];
                 break;
 
             case 'user':

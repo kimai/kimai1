@@ -84,11 +84,11 @@ if (isset($_COOKIE['kimai_user']) && isset($_COOKIE['kimai_key']) && $_COOKIE['k
 // if possible try an automatic login
 if (!$justLoggedOut && $authPlugin->autoLoginPossible() && $authPlugin->performAutoLogin($userId)) {
     if ($userId === false) {
-        $userId = $database->user_create(array(
+        $userId = $database->user_create([
             'name' => $name,
             'globalRoleID' => $kga['user']['globalRoleID'],
             'active' => 1
-        ));
+        ]);
         $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
     }
     $userData = $database->user_get_data($userId);
@@ -135,11 +135,11 @@ switch ($_REQUEST['a']) {
             // perform login of user
             if ($authPlugin->authenticate($name, $password, $userId)) {
                 if ($userId === false) {
-                    $userId = $database->user_create(array(
+                    $userId = $database->user_create([
                         'name' => $name,
                         'globalRoleID' => $authPlugin->getDefaultGlobalRole(),
                         'active' => 1
-                    ));
+                    ]);
                     $database->setGroupMemberships($userId, $authPlugin->getDefaultGroups());
                 }
 

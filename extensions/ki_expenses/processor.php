@@ -87,7 +87,7 @@ switch ($axAction) {
     case 'reload_exp':
         $filters = explode('|', $axValue);
         if (empty($filters[0])) {
-            $filterUsers = array();
+            $filterUsers = [];
         } else {
             $filterUsers = explode(':', $filters[0]);
         }
@@ -120,7 +120,7 @@ switch ($axAction) {
         }
 
         if (isset($kga['customer'])) {
-            $filterCustomers = array($kga['customer']['customerID']);
+            $filterCustomers = [$kga['customer']['customerID']];
         }
 
         $view->assign('expenses', get_expenses($in, $out, $filterUsers, $filterCustomers, $filterProjects, 1));
@@ -147,7 +147,7 @@ switch ($axAction) {
         $ann = Kimai_Format::formatCurrency($ann);
         $view->assign('project_annotations', $ann);
 
-        $view->assign('activity_annotations', array());
+        $view->assign('activity_annotations', []);
 
         if (isset($kga['user'])) {
             $view->assign('hideComments', !$kga->getSettings()->isShowComments());
@@ -155,14 +155,14 @@ switch ($axAction) {
             $view->assign('hideComments', true);
         }
 
-        echo $view->render("expenses.php");
+        echo $view->render('expenses.php');
         break;
 
     // =======================================
     // = Erase expense entry via quickdelete =
     // =======================================
     case 'quickdelete':
-        $errors = array();
+        $errors = [];
 
         $data = expense_get($id);
 
@@ -173,9 +173,9 @@ switch ($axAction) {
         }
 
         header('Content-Type: application/json;charset=utf-8');
-        echo json_encode(array(
+        echo json_encode([
             'errors' => $errors
-        ));
+        ]);
         break;
 
     // =============================
@@ -183,7 +183,7 @@ switch ($axAction) {
     // =============================
     case 'add_edit_record':
         header('Content-Type: application/json;charset=utf-8');
-        $errors = array();
+        $errors = [];
 
         // determine action for permission check
         $action = 'add';
@@ -201,7 +201,7 @@ switch ($axAction) {
 
             // check if editing or deleting with the old values would be allowed
             if (!expenseAccessAllowed($data, $action, $errors)) {
-                echo json_encode(array('errors' => $errors));
+                echo json_encode(['errors' => $errors]);
                 break;
             }
         }
@@ -209,7 +209,7 @@ switch ($axAction) {
         // delete now because next steps don't need to be taken for deleted entries
         if (isset($_REQUEST['erase'])) {
             expense_delete($id);
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -255,7 +255,7 @@ switch ($axAction) {
         }
 
         if (count($errors) > 0) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -264,6 +264,7 @@ switch ($axAction) {
         $data['designation'] = $_REQUEST['designation'];
         $data['comment'] = (isset($_REQUEST['comment']) && !empty($_REQUEST['comment'])) ? $_REQUEST['comment'] : '';
         $data['commentType'] = $_REQUEST['commentType'];
+        $data['cleared'] = isset($_REQUEST['cleared']);
         $data['refundable'] = getRequestBool('refundable');
         $data['multiplier'] = getRequestDecimal($_REQUEST['multiplier']);
         $data['value'] = getRequestDecimal($_REQUEST['edit_value']);
@@ -274,7 +275,7 @@ switch ($axAction) {
         }
 
         // parse new day and time
-        $edit_day = Kimai_Format::expand_date_shortcut($_REQUEST['edit_day']);
+        $edit_day = DateTime::createFromFormat($kga->getDateFormat(3), $_REQUEST['edit_day'])->format('d.m.Y');
         $edit_time = Kimai_Format::expand_time_shortcut($_REQUEST['edit_time']);
 
         // validate day and time
@@ -290,7 +291,7 @@ switch ($axAction) {
         expenseAccessAllowed($data, $action, $errors);
 
         if (count($errors) > 0) {
-            echo json_encode(array('errors' => $errors));
+            echo json_encode(['errors' => $errors]);
             break;
         }
 
@@ -305,7 +306,7 @@ switch ($axAction) {
             }
         }
 
-        echo json_encode(array('errors' => $errors));
+        echo json_encode(['errors' => $errors]);
         break;
 
 }

@@ -1,8 +1,8 @@
 #floater {
-	width:35em;
-	border:2px solid #048;
+	width: 35em;
+	border: 2px solid #048;
 	position: absolute;
-	padding:5px;
+	padding: 5px;
 	background-color: #7bf;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
@@ -11,194 +11,194 @@
 	-webkit-box-shadow: 5px 10px 15px 0px #222;
 	box-shadow: 5px 10px 15px 0px #222;
 	z-index: 500;
-	display:none;
+	display: none;
 }
 
 .floater_content {
-    color: #000;
-  font-size:11px;
+	color: #000;
+	font-size: 11px;
 }
 
-.floater_content a, 
+.floater_content a,
 .floater_content a:visited {
-  color:#00c;
+	color: #00c;
 }
 
 #floater_innerwrap {
-    background-color:#f0f0f0;
-    border: 1px solid #222;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+	background-color: #f0f0f0;
+	border: 1px solid #222;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 
 #floater_tabs {
-  padding:10px;
-  overflow: auto;
+	padding: 10px;
+	overflow: auto;
 }
-
 
 /* forms */
 #floater_innerwrap form {
-  clear:both; /* because of tab selection */
-  margin:5px;
+	clear: both; /* because of tab selection */
+	margin: 5px;
 }
 
 #floater_innerwrap .multiFields {
-    margin-left:115px;
+	margin-left: 115px;
 }
 
 #floater_innerwrap fieldset {
-    border:none;
-}
-#floater_innerwrap fieldset label {
-    margin-right:5px;
-    width:110px;
-    float:left;
-    text-align:right;
-}
-#floater_innerwrap fieldset ul {
-    margin:0;
-    padding:0;
-    list-style:none;
-}
-#floater_innerwrap fieldset li {
-    border-bottom:1px dotted #666;
-    padding: 5px 0;
-}
-#floater_innerwrap select,
-#floater_innerwrap input,
-#floater_innerwrap textarea
-{
-    background-color:#fff;
-    border:2px inset #888;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+	border: none;
 }
 
+#floater_innerwrap fieldset label {
+	margin-right: 5px;
+	width: 110px;
+	float: left;
+	text-align: right;
+}
+
+#floater_innerwrap fieldset ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#floater_innerwrap fieldset li {
+	border-bottom: 1px dotted #666;
+	padding: 5px 0;
+}
+
+#floater_innerwrap select,
+#floater_innerwrap input,
+#floater_innerwrap button,
+#floater_innerwrap textarea {
+	background-color: #fff;
+	border: 2px inset #888;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+
+#floater_innerwrap .errorMessage {
+	color: white;
+	text-align: center;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+
+#floater_innerwrap .errorField {
+	background-color: #af0000;
+	border: 1px dotted white;
+	color: white;
+	border-radius: 10px;
+}
 
 /* BUTTONS */
 
 #formbuttons {
-    margin-top:10px;
+	margin-top: 10px;
 }
 
 #formbuttons .btn_ok {
-    cursor: pointer;
-    border:4px outset #5b1;
-    background-color:#4AA917;
-    font-weight:bold;
-    color:#fff;
+	cursor: pointer;
+	border: 4px outset #5b1;
+	background-color: #4aa917;
+	font-weight: bold;
+	color: #fff;
 }
 
 #formbuttons .btn_ok:hover {
-    color:#fd0;
+	color: #fd0;
 }
 
 #formbuttons .btn_ok:active {
-    color:#fd0;
-    border:4px inset #5b1;
+	color: #fd0;
+	border: 4px inset #5b1;
 }
 
 #formbuttons .btn_norm {
-    cursor: pointer;
-    border:4px outset #c31;
-    background-color:#B72917;
-    font-weight:bold;
-    color:#fff;
+	cursor: pointer;
+	border: 4px outset #c31;
+	background-color: #b72917;
+	font-weight: bold;
+	color: #fff;
 }
 
 #formbuttons .btn_norm:hover {
-    color:#fd0;
+	color: #fd0;
 }
 
 #formbuttons .btn_norm:active {
-    color:#fd0;
-    border:4px inset #c31;
+	color: #fd0;
+	border: 4px inset #c31;
 }
 
-#floater div#help {
-    cursor: pointer;
-    font-size:10px;
-    background-color:#666;
-    border-bottom:1px solid #777;
+#floater #help {
+	cursor: pointer;
+	font-size: 10px;
+	background-color: #666;
+	border-bottom: 1px solid #777;
 }
 
-#floater div#help div.content {
-    padding:10px;
-    color:#fff; 
+#floater #help div.content {
+	padding: 10px;
+	color: #fff;
 }
 
 /* Floater Handle */
 
-
 #floater_handle {
-    background-color: #26a;
-    border-bottom:1px solid #111;
-    padding:2px;
-    padding-left:10px;
-    font-weight:bold;
-    line-height:18px;
-    color: #FFFFFF;
-    height:20px;
+	background-color: #26a;
+	border-bottom: 1px solid #111;
+	padding: 2px;
+	padding-left: 10px;
+	font-weight: bold;
+	line-height: 18px;
+	color: #fff;
+	height: 20px;
 }
 
 #floater_handle:hover {
-    cursor: move;
+	cursor: move;
 }
 
-#floater_handle div.right { 
-    position:absolute;
-    overflow:hidden;
-    width:80px;
-    height:16px;
-    top:9px;
-    right:10px;
+#floater_handle div.right {
+	position: absolute;
+	overflow: hidden;
+	width: 80px;
+	height: 16px;
+	top: 9px;
+	right: 10px;
 }
 
 #floater_handle div.right a {
-    cursor: pointer;
-    margin-left:2px;
-    float:right;
-    overflow:hidden;
-    display:block;
-    width:22px;
-    height:16px;
-    text-indent:-500px;
+	cursor: pointer;
+	margin-left: 2px;
+	float: right;
+	overflow: hidden;
+	display: block;
+	width: 22px;
+	height: 16px;
+	text-indent: -500px;
 }
 
-#floater_handle div.right a.close { 
-    background: url('grfx/close.png') no-repeat;
+#floater_handle div.right a.close {
+	background: url('grfx/close.png') no-repeat;
 }
 
-#floater_handle div.right a.options.down { 
-    background: url('grfx/options2.png') no-repeat 0 0;
+#floater_handle div.right a.options.down {
+	background: url('grfx/options2.png') no-repeat 0 0;
 }
 
-#floater_handle div.right a.options.up { 
-    background: url('grfx/options2.png') no-repeat 0 -16px;
+#floater_handle div.right a.options.up {
+	background: url('grfx/options2.png') no-repeat 0 -16px;
 }
 
-#floater_handle div.right a.help { 
-    background: url('grfx/help.png') no-repeat 0 0;
+#floater_handle div.right a.help {
+	background: url('grfx/help.png') no-repeat 0 0;
 }
-
 
 .ui-tabs .ui-tabs-hide {
-  display:none;
-}
-
-#floater_innerwrap .errorMessage {
-  color:white;
-  text-align:center;
-  padding-bottom:5px;
-  font-weight: bold;
-}
-
-#floater_innerwrap .errorField {
-  background-color:#af0000;
-  border:1px dotted white;
-  color:white;
-  border-radius: 10px;
+	display: none;
 }

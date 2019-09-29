@@ -1,20 +1,20 @@
 <div id="floater_innerwrap">
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['editUser'] ?></span>
+        <span id="floater_title"><?php echo $this->translate('editUser') ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->translate('close') ?></a>
         </div>
     </div>
     <div class="menuBackground">
         <ul class="menu tabSelection">
             <li class="tab norm"><a href="#general">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['general'] ?></span>
+                    <span class="bb"><?php echo $this->translate('general') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
             <li class="tab norm"><a href="#groupstab">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb"><?php echo $this->kga['lang']['groups'] ?></span>
+                    <span class="bb"><?php echo $this->translate('groups') ?></span>
                     <span class="cc">&nbsp;</span>
                 </a></li>
         </ul>
@@ -26,37 +26,38 @@
             <fieldset id="general">
                 <ul>
                     <li>
-                        <label for="name"><?php echo $this->kga['lang']['username'] ?>:</label>
+                        <label for="name"><?php echo $this->translate('username') ?>:</label>
                         <input class="formfield" type="text" id="name" name="name" value="<?php echo $this->escape($this->user_details['name']) ?>" maxlength=20 size=20/>
                     </li>
                     <li>
-                        <label for="globalRoleID"><?php echo $this->kga['lang']['globalRole'] ?>:</label>
-                        <?php echo $this->formSelect('globalRoleID', $this->user_details['globalRoleID'], array(
-                            'class' => 'formfield'), $this->globalRoles); ?>
+                        <label for="globalRoleID"><?php echo $this->translate('globalRole') ?>:</label>
+                        <?php echo $this->formSelect('globalRoleID', $this->user_details['globalRoleID'], [
+                            'class' => 'formfield'
+                        ], $this->globalRoles); ?>
                     </li>
                     <li>
-                        <label for="password"><?php echo $this->kga['lang']['newPassword'] ?>:</label>
-                        <input class="formfield" type="password" name="password" size="9" id="password"/> <?php echo $this->kga['lang']['minLength'] ?>
+                        <label for="password"><?php echo $this->translate('newPassword') ?>:</label>
+                        <input class="formfield" type="password" name="password" size="9" id="password"/> <?php echo $this->translate('minLength') ?>
                         <?php if ($this->user_details['password'] == ""): ?>
                             <br/>
                             <img src="<?php echo $this->skin('grfx/caution_mini.png'); ?>" alt="Caution" valign="middle"/>
-                            <strong style="color:red"><?php echo $this->kga['lang']['nopasswordset'] ?></strong>
+                            <strong style="color:red"><?php echo $this->translate('nopasswordset') ?></strong>
                         <?php endif; ?>
                     </li>
                     <li>
-                        <label for="retypePassword"><?php echo $this->kga['lang']['retypePassword'] ?>:</label>
+                        <label for="retypePassword"><?php echo $this->translate('retypePassword') ?>:</label>
                         <input class="formfield" type="password" name="retypePassword" id="retypePassword" size="9"/>
                     </li>
                     <li>
-                        <label for="rate"><?php echo $this->kga['lang']['rate'] ?>:</label>
+                        <label for="rate"><?php echo $this->translate('rate') ?>:</label>
                         <input class="formfield" type="text" id="rate" name="rate" value="<?php echo $this->escape(str_replace('.', $this->kga['conf']['decimalSeparator'], $this->user_details['rate'])); ?>"/>
                     </li>
                     <li>
-                        <label for="mail"><?php echo $this->kga['lang']['mail'] ?>:</label>
+                        <label for="mail"><?php echo $this->translate('mail') ?>:</label>
                         <input class="formfield" type="text" id="mail" name="mail" value="<?php echo $this->escape($this->user_details['mail']) ?>"/>
                     </li>
                     <li>
-                        <label for="alias"><?php echo $this->kga['lang']['alias'] ?>:</label>
+                        <label for="alias"><?php echo $this->translate('alias') ?>:</label>
                         <input class="formfield" type="text" id="alias" name="alias" value="<?php echo $this->escape($this->user_details['alias']) ?>"/>
                     </li>
                 </ul>
@@ -64,13 +65,13 @@
             <fieldset id="groupstab">
                 <table class="groupsTable">
                     <tr>
-                        <td><label><?php echo $this->kga['lang']['groups'] ?>:</label></td>
-                        <td><label><?php echo $this->kga['lang']['membershipRole'] ?>:</label></td>
+                        <td><label><?php echo $this->translate('groups') ?>:</label></td>
+                        <td><label><?php echo $this->translate('membershipRole') ?>:</label></td>
                     </tr>
                     <?php
 
-                    $selectArray = array(-1 => '');
-                    $assignedGroups = array();
+                    $selectArray = [-1 => ''];
+                    $assignedGroups = [];
                     foreach ($this->groups as $group) {
                         if (array_key_exists($group['groupID'], $this->memberships)) {
                             $group['membershipRoleID'] = $this->memberships[$group['groupID']];
@@ -87,7 +88,7 @@
                                 <?php echo $this->escape($assignedGroup['name']), $this->formHidden('assignedGroups[]', $assignedGroup['groupID']); ?>
                             </td>
                             <td>
-                                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], array('size' => 1, 'multiple' => false), $this->membershipRoles); ?>
+                                <?php echo $this->formSelect('membershipRoles[]', $assignedGroup['membershipRoleID'], ['size' => 1, 'multiple' => false], $this->membershipRoles); ?>
                             </td>
                             <td>
                                 <a class="deleteButton">
@@ -105,8 +106,8 @@
                 </table>
             </fieldset>
             <div id="formbuttons">
-                <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-                <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>'/>
+	            <button type="button" class="btn_norm" onclick="floaterClose();"><?php echo $this->translate('cancel') ?></button>
+	            <input type="submit" class="btn_ok" value="<?php echo $this->translate('submit') ?>"/>
             </div>
         </form>
     </div>
@@ -167,7 +168,7 @@
         var memberships = <?php echo json_encode($this->membershipRoles); ?>;
 
         $('#adminPanel_extension_form_editUser').ajaxForm(options);
-        
+
         function deleteButtonClicked() {
             var row = $(this).parent().parent()[0];
             var id = $('#groupsTable', row).val();

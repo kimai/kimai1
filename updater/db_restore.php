@@ -212,8 +212,8 @@ if ($authenticated && isset($_REQUEST['submit'])) {
 				$tables = $conn->RecordsArray();
 			}
 
-			$arr = array();
-			$arr2 = array();
+			$arr = [];
+			$arr2 = [];
 
 			foreach ($tables as $row) {
 				if ((substr($row[0], 0, 10) == "kimai_bak_")) {
@@ -258,8 +258,8 @@ if (!$authenticated) {
 
 	$result_backup = $database->queryAll($query);
 
-	$arr = array();
-	$arr2 = array();
+	$arr = [];
+	$arr2 = [];
 
     foreach ($result_backup as $row) {
         if ((substr($row[0], 0, 10) == "kimai_bak_")) {

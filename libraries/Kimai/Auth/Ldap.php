@@ -49,7 +49,7 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
      * Accounts that should be verified locally only (in Kimai database)
      * @var array
      */
-    private $LDAP_LOCAL_ACCOUNTS = array('admin');
+    private $LDAP_LOCAL_ACCOUNTS = ['admin'];
     /**
      * Automatically create a user in kimai if the login is successful
      * @var bool
@@ -121,15 +121,15 @@ class Kimai_Auth_Ldap extends Kimai_Auth_Abstract
         if ($userId === false) {
             // User does not exist (yet)
             if ($this->LDAP_USER_AUTOCREATE) { // Create it!
-                $userId = $this->database->user_create(array(
+                $userId = $this->database->user_create([
                     'name' => $check_username,
                     'globalRoleID' => $this->getDefaultGlobalRole(),
                     'active' => 1
-                ));
+                ]);
                 $this->database->setGroupMemberships($userId, $this->getDefaultGroups());
 
                 // Set a password, to calm kimai down
-                $usr_data = array('password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt']));
+                $usr_data = ['password' => md5($this->kga['password_salt'] . md5(uniqid(rand(), true)) . $this->kga['password_salt'])];
                 $this->database->user_edit($userId, $usr_data);
             } else {
                 $userId = false;

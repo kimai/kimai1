@@ -33,11 +33,11 @@ class Zend_View_Helper_CommentTypeSelect extends Zend_View_Helper_FormSelect
         return $this->formSelect(
             'commentType',
             $value,
-            array(
+            [
                 'id' => 'commentType',
                 'class' => 'formfield',
                 'tabindex' => '14'
-            ),
+            ],
             $this->getTypes()
         );
     }
@@ -47,10 +47,10 @@ class Zend_View_Helper_CommentTypeSelect extends Zend_View_Helper_FormSelect
      */
     protected function getTypes()
     {
-        return array(
+        return [
             0 => $this->view->translate('ctype0'),
             1 => $this->view->translate('ctype1'),
             2 => $this->view->translate('ctype2')
-        );
+        ];
     }
 }

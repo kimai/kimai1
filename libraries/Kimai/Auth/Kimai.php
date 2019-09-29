@@ -98,14 +98,14 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             $customerId = $database->customer_nameToID($name);
             $customer = $database->customer_get_data($customerId);
 
-            $database->customer_edit($customerId, array('passwordResetHash' => $passwordResetHash));
+            $database->customer_edit($customerId, ['passwordResetHash' => $passwordResetHash]);
 
             $mail->addTo($customer['mail']);
         } else {
             $userId = $database->user_name2id($name);
             $user = $database->user_get_data($userId);
 
-            $database->user_edit($userId, array('passwordResetHash' => $passwordResetHash));
+            $database->user_edit($userId, ['passwordResetHash' => $passwordResetHash]);
 
             $mail->addTo($user['mail']);
         }
@@ -147,36 +147,36 @@ class Kimai_Auth_Kimai extends Kimai_Auth_Abstract
             $customer = $database->customer_get_data($customerId);
 
             if ($key != $customer['passwordResetHash']) {
-                return array(
+                return [
                     'message' => $kga['lang']['passwordReset']['invalidKey']
-                );
+                ];
             }
 
-            $data = array(
+            $data = [
                 'password' => encode_password($password),
                 'passwordResetHash' => null
-            );
+            ];
             $database->customer_edit($customerId, $data);
         } else {
             $userId = $database->user_name2id($username);
             $user = $database->user_get_data($userId);
 
             if ($key != $user['passwordResetHash']) {
-                return array(
+                return [
                     'message' => $kga['lang']['passwordReset']['invalidKey']
-                );
+                ];
             }
 
-            $data = array(
+            $data = [
                 'password' => encode_password($password),
                 'passwordResetHash' => null
-            );
+            ];
             $database->user_edit($userId, $data);
         }
 
-        return array(
+        return [
             'message' => $kga['lang']['passwordReset']['success'],
             'showLoginLink' => true,
-        );
+        ];
     }
 }

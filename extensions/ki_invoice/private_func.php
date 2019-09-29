@@ -18,7 +18,7 @@
  */
 
 // when creating the short form contains index of each activity in the array
-$activityIndexMap = array();
+$activityIndexMap = [];
 
 /**
  * Get a combined array with time recordings and expenses to export.
@@ -35,14 +35,13 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
     $database = Kimai_Registry::getDatabase();
 
     $limitCommentSize = true;
-    $results = array();
+    $results = [];
 
     // --------------------------------------------------------------------------------
     // timesheet entries
     $timeSheetEntries = $database->get_timeSheet($start, $end, null, null, $projects, null, false, false, $filter_cleared);
 
-    foreach($timeSheetEntries as $entry)
-    {
+    foreach($timeSheetEntries as $entry) {
         // active recordings will be omitted
         if ($entry['end'] == 0) {
             continue;
@@ -50,14 +49,15 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
         $arr = ext_invoice_empty_entry();
 
+        $arr['timeEntryID'] = $entry['timeEntryID'];
         $arr['type'] = 'timeSheet';
         $arr['desc'] = $entry['activityName'];
-        $arr['start'] = $entry['start'];
-        $arr['end'] = $entry['end'];
+        $arr['start'] = (int)$entry['start'];
+        $arr['end'] = (int)$entry['end'];
         $arr['hour'] = $entry['duration'] / 3600;
         $arr['fDuration'] = $entry['formattedDuration']; // @deprecated use duration instead
         $arr['duration'] = $entry['duration'];
-        $arr['timestamp'] = $entry['start'];
+        $arr['timestamp'] = (int)$entry['start'];
         $arr['amount'] = $entry['wage'];
         $arr['description'] = $entry['description'];
         $arr['rate'] = $entry['rate'];
@@ -75,24 +75,23 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
 
     // --------------------------------------------------------------------------------
     // if expenses extension is used, load expenses as well
-    if (file_exists('../ki_expenses/private_db_layer_mysql.php'))
-    {
+    if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
         include_once '../ki_expenses/private_db_layer_mysql.php';
 
         $expenses = get_expenses($start, $end, null, null, $projects, false, false, -1, $filter_cleared);
 
-        foreach($expenses as $entry)
-        {
+        foreach($expenses as $entry) {
             $arr = ext_invoice_empty_entry();
 
+            $arr['expenseID'] = $entry['expenseID'];
             $arr['type'] = 'expense';
             $arr['desc'] = $entry['designation'];
-            $arr['start'] = $entry['timestamp'];
-            $arr['end'] = $entry['timestamp'];
+            $arr['start'] = (int)$entry['timestamp'];
+            $arr['end'] = (int)$entry['timestamp'];
             $arr['hour'] = null;
             $arr['fDuration'] = $entry['multiplier']; // @deprecated use duration instead
             $arr['duration'] = $entry['multiplier'];
-            $arr['timestamp'] = $entry['timestamp'];
+            $arr['timestamp'] = (int)$entry['timestamp'];
             $arr['amount'] = sprintf("%01.2f", $entry['value'] * $entry['multiplier']);
             $arr['description'] = $entry['designation'];
             $arr['rate'] = $entry['value'];
@@ -116,9 +115,8 @@ function invoice_get_data($start, $end, $projects, $filter_cleared, $short_form)
         }
     }
 
-    $allEntries = array();
-    foreach($results as $entry)
-    {
+    $allEntries = [];
+    foreach($results as $entry) {
         if ($limitCommentSize) {
             $entry['comment'] = Kimai_Format::addEllipsis($entry['comment'], 150);
         }
@@ -143,8 +141,9 @@ function invoice_add_to_array(&$array, $row, $short_form)
             $start = $array[$index]['start'];
             $end = $array[$index]['end'];
             $duration = $array[$index]['duration'];
-            $array[$index] = array(
+            $array[$index] = [
                 'type' => 'timeSheet',
+                'timeEntryID' => $row['timeEntryID'],
                 'desc' => $row['desc'],
                 'start' => ($start < $row['start']) ? $start : $row['start'],
                 'end' => ($end > $row['end']) ? $end : $row['end'],
@@ -165,7 +164,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
                 'projectComment' => $row['projectComment'],
                 // FIXME use date_format_3 instead
                 'date' => date("m/d/Y", $row['timestamp']),
-            );
+            ];
             return;
         } else {
             $activityIndexMap[$row['desc']] = count($array);
@@ -176,7 +175,7 @@ function invoice_add_to_array(&$array, $row, $short_form)
 
 function ext_invoice_empty_entry()
 {
-    return array(
+    return [
         'type' => null,
         'desc' => null,
         'start' => null,
@@ -197,7 +196,7 @@ function ext_invoice_empty_entry()
         'projectName' => null,
         'projectComment' => null,
         'date' => null,
-    );
+    ];
 }
 
 function ext_invoice_sort_by_date_asc($a, $b)

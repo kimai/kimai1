@@ -1,9 +1,7 @@
 <?php
-if (count($this->exportData) > 0)
-{
+if (count($this->exportData) > 0) {
     $showGabBreaks = $this->kga->isShowGabBreaks();
     $showDaySeperatorLines = $this->kga->isShowDaySeperatorLines();
-
     ?>
     <div id="xptable">
         <table>
@@ -11,11 +9,8 @@ if (count($this->exportData) > 0)
             <?php
             $day_buffer = 0;
             $time_in_buffer = 0;
-            ?>
 
-            <?php
-            foreach ($this->exportData as $row)
-            {
+            foreach ($this->exportData as $row) {
                 $isExpense = $row['type'] == "expense";
                 $tdClass = '';
                 if (strftime("%d", $row['time_in']) != $day_buffer && $showDaySeperatorLines) {
@@ -23,10 +18,9 @@ if (count($this->exportData) > 0)
                 } elseif ($row['time_out'] != $time_in_buffer && $showGabBreaks) {
                     $tdClass = "break_gap ";
                 }
-
                 ?>
                 <tr id="xp<?php echo $row['type'], $row['id'] ?>"
-                    class="<?php echo $this->cycle(array("odd", "even"))->next() ?> <?php if (!$row['time_out']): ?>active<?php endif; ?> <?php if ($isExpense): ?> expense<?php endif; ?>">
+                    class="<?php echo $this->cycle(["odd", "even"])->next() ?> <?php if (!$row['time_out']): ?>active<?php endif; ?> <?php if ($isExpense): ?> expense<?php endif; ?>">
                     <td class="date <?php echo $tdClass;
                     if (isset($this->disabled_columns['date'])) echo "disabled"; ?>
                     ">
@@ -179,9 +173,7 @@ if (count($this->exportData) > 0)
         </table>
     </div>
     <?php
-}
-else
-{
+} else {
     echo $this->error();
 }
 ?>

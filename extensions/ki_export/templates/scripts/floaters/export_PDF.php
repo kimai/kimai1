@@ -1,8 +1,8 @@
 <div id="floater_innerwrap">
     <div id="floater_handle">
-        <span id="floater_title"><?php echo $this->kga['lang']['export_extension']['exportPDF'] ?></span>
+        <span id="floater_title"><?php echo $this->translate('export_extension:exportPDF') ?></span>
         <div class="right">
-            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->kga['lang']['close'] ?></a>
+            <a href="#" class="close" onclick="floaterClose();return false;"><?php echo $this->translate('close') ?></a>
         </div>
     </div>
     <div id="help">
@@ -24,54 +24,54 @@
             <fieldset>
                 <ul>
                     <li>
-                        <label for="print_comments"><?php echo $this->kga['lang']['export_extension']['print_comment'] ?>:</label>
+                        <label for="print_comments"><?php echo $this->translate('export_extension:print_comment') ?>:</label>
                         <input type="checkbox" value="true" name="print_comments" id="print_comments" <?php if ($this->prefs['print_comments']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
-                        <label for="print_summary"><?php echo $this->kga['lang']['export_extension']['print_summary'] ?>:</label>
+                        <label for="print_summary"><?php echo $this->translate('export_extension:print_summary') ?>:</label>
                         <input type="checkbox" value="true" name="print_summary" id="print_summary" <?php if ($this->prefs['print_summary']): ?> checked="checked" <?php endif; ?>>
                     </li>
                     <li>
-                        <label for="create_bookmarks"><?php echo $this->kga['lang']['export_extension']['create_bookmarks'] ?>:</label>
+                        <label for="create_bookmarks"><?php echo $this->translate('export_extension:create_bookmarks') ?>:</label>
                         <input type="checkbox" value="true" name="create_bookmarks" id="create_bookmarks" <?php if ($this->prefs['create_bookmarks']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
-                        <label for="download_pdf"><?php echo $this->kga['lang']['export_extension']['download_pdf'] ?>:</label>
+                        <label for="download_pdf"><?php echo $this->translate('export_extension:download_pdf') ?>:</label>
                         <input type="checkbox" value="true" name="download_pdf" id="download_pdf" <?php if ($this->prefs['download_pdf']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
-                        <label for="customer_new_page"><?php echo $this->kga['lang']['export_extension']['customer_new_page'] ?>:</label>
+                        <label for="customer_new_page"><?php echo $this->translate('export_extension:customer_new_page') ?>:</label>
                         <input type="checkbox" value="true" name="customer_new_page" id="customer_new_page" <?php if ($this->prefs['customer_new_page']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
-                        <label for="reverse_order"><?php echo $this->kga['lang']['export_extension']['reverse_order'] ?>:</label>
+                        <label for="reverse_order"><?php echo $this->translate('export_extension:reverse_order') ?>:</label>
                         <input type="checkbox" value="true" name="reverse_order" id="reverse_order" <?php if ($this->prefs['reverse_order']): ?> checked="checked" <?php endif; ?>/>
                     </li>
                     <li>
-                        <label for="time_type"><?php echo $this->kga['lang']['export_extension']['time_type']?>:</label>
+                        <label for="time_type"><?php echo $this->translate('export_extension:time_type')?>:</label>
                         <select name="time_type" id="time_type">
-                            <option value="dec_time" <?php if ($this->prefs['time_type'] == 'dec_time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['dec_time'] ?></option>
-                            <option value="time" <?php if ($this->prefs['time_type'] == 'time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['time'] ?></option>
-                        </select>    
-                    </li>
-                    <li>
-                        <label for="document_comment"><?php echo $this->kga['lang']['comment'] ?>:</label>
-                        <textarea name="document_comment" id="document_comment"></textarea>
-                    </li>
-                    <li>
-                        <label for="axAction"><?php echo $this->kga['lang']['export_extension']['pdf_format'] ?>:</label>
-                        <select name="axAction" id="axAction">
-                            <option value="export_pdf" <?php if ($this->prefs['pdf_format'] == 'export_pdf'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['export_pdf'] ?></option>
-                            <option value="export_pdf2" <?php if ($this->prefs['pdf_format'] == 'export_pdf2'): ?> selected="selected"<?php endif; ?>> <?php echo $this->kga['lang']['export_extension']['export_pdf2'] ?></option>
+                            <option value="dec_time" <?php if ($this->prefs['time_type'] == 'dec_time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->translate('export_extension:dec_time') ?></option>
+                            <option value="time" <?php if ($this->prefs['time_type'] == 'time'): ?> selected="selected"<?php endif; ?>> <?php echo $this->translate('export_extension:time') ?></option>
                         </select>
                     </li>
                     <li>
-                        <?php echo $this->kga['lang']['export_extension']['dl_hint'] ?>
+                        <label for="document_comment"><?php echo $this->translate('comment') ?>:</label>
+                        <textarea name="document_comment" id="document_comment"></textarea>
+                    </li>
+                    <li>
+                        <label for="axAction"><?php echo $this->translate('export_extension:pdf_format') ?>:</label>
+                        <select name="axAction" id="axAction">
+                            <option value="export_pdf" <?php if ($this->prefs['pdf_format'] == 'export_pdf'): ?> selected="selected"<?php endif; ?>> <?php echo $this->translate('export_extension:export_pdf') ?></option>
+                            <option value="export_pdf2" <?php if ($this->prefs['pdf_format'] == 'export_pdf2'): ?> selected="selected"<?php endif; ?>> <?php echo $this->translate('export_extension:export_pdf2') ?></option>
+                        </select>
+                    </li>
+                    <li>
+                        <?php echo $this->translate('export_extension:dl_hint') ?>
                     </li>
                 </ul>
                 <div id="formbuttons">
-                    <input class='btn_norm' type='button' value='<?php echo $this->kga['lang']['cancel'] ?>' onclick='floaterClose();return false;'/>
-                    <input class='btn_ok' type='submit' value='<?php echo $this->kga['lang']['submit'] ?>' onclick="floaterClose();"/>
+	                <button type="button" class="btn_norm" onclick="floaterClose();"><?php echo $this->translate('cancel') ?></button>
+	                <input type="submit" class="btn_ok" value="<?php echo $this->translate('submit') ?>" onclick="floaterClose();"/>
                 </div>
             </fieldset>
         </form>

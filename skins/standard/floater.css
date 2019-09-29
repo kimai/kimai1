@@ -1,186 +1,190 @@
 #floater {
-    border:1px solid #fff;
+	border: 1px solid #fff;
 	position: absolute;
-	padding:5px;
-	background: url("grfx/floaterborder.png");
+	padding: 5px;
+	background: rgb(245, 245, 245);
 	z-index: 500;
-	display:none;
+	display: none;
 }
 
 .floater_content {
-    color: #FFFFFF;
-  font-size:11px;
+	color: #fff;
+	font-size: 11px;
 }
 
-.floater_content a, 
+.floater_content a,
 .floater_content a:visited {
-  color:#fff;
+	color: #fff;
 }
 
 #floater_innerwrap {
-    background-color:#444;
-    border: 1px solid #222;
+	background-color: #444;
+	border: 1px solid #222;
 }
 
 #floater_tabs {
-	padding:10px;
+	padding: 10px;
 	overflow: auto;
 }
 
-
 /* forms */
 #floater_innerwrap form {
-  clear:both; /* because of tab selection */
-  margin:5px;
+	clear: both; /* because of tab selection */
+	margin: 5px;
 }
 
 #floater_innerwrap fieldset {
-    border:none;
+	border: none;
 }
 
 #floater_innerwrap .multiFields {
-    margin-left:115px;
+	margin-left: 115px;
 }
 
 #floater_innerwrap fieldset label {
-    margin-right:5px;
-    width:110px;
-    float:left;
-    text-align:right;
+	margin-right: 5px;
+	width: 110px;
+	float: left;
+	text-align: right;
 }
+
 #floater_innerwrap fieldset ul {
-    margin:0;
-    padding:0;
-    list-style:none;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
+
 #floater_innerwrap fieldset li {
-    border-bottom:1px dotted #666;
-    padding: 5px 0;
+	border-bottom: 1px dotted #666;
+	padding: 5px 0;
 }
+
 #floater_innerwrap select,
 #floater_innerwrap input,
-#floater_innerwrap textarea
-{
-    background-color:#fff;
-    border:3px double #bbb;
+#floater_innerwrap button,
+#floater_innerwrap textarea {
+	background-color: #fff;
+	border: 3px double #bbb;
 }
 
 #floater_innerwrap select[disabled],
 #floater_innerwrap input[disabled],
-#floater_innerwrap textarea[disabled]
-{
-  background-color:#ddd;
-  color:#ddd;
-  border:3px double #999;
+#floater_innerwrap button[disabled],
+#floater_innerwrap textarea[disabled] {
+	background-color: #ddd;
+	color: #ddd;
+	border: 3px double #999;
 }
 
+#floater_innerwrap .errorMessage {
+	color: white;
+	text-align: center;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+
+#floater_innerwrap .errorField {
+	background-color: #af0000;
+	border: 1px dotted white;
+}
 
 /* BUTTONS */
 
 #formbuttons {
-    margin-top:10px;
+	margin-top: 10px;
 }
 
 #formbuttons .btn_ok {
-    cursor: pointer;
-    background-color:#4AA917;
-    font-weight:bold;
-    color:#fff;
+	cursor: pointer;
+	background-color: #4aa917;
+	font-weight: bold;
+	color: #fff;
 }
 
 #formbuttons .btn_norm {
-    cursor: pointer;
-    background-color:#B72917;
-    font-weight:bold;
-    color:#fff;
+	cursor: pointer;
+	background-color: #b72917;
+	font-weight: bold;
+	color: #fff;
 }
 
-
-#floater div#help {
-    cursor: pointer;
-    font-size:10px;
-    background-color:#666;
-    border-bottom:1px solid #777;
+#floater #help {
+	cursor: pointer;
+	font-size: 10px;
+	background-color: #666;
+	border-bottom: 1px solid #777;
 }
 
-#floater div#help div.content {
-    padding:10px;
-    color:#fff; 
+#floater #help div.content {
+	padding: 10px;
+	color: #fff;
 }
 
 /* Floater Handle */
 
-
 #floater_handle {
-    background: url("grfx/g3_table_header.png");
-    border-bottom:1px solid #555;
-    padding:2px;
-    padding-left:10px;
-    font-weight:bold;
-    line-height:18px;
-    color: #FFFFFF;
-    height:20px;
+	border-bottom: 1px solid #555;
+	padding: 2px;
+	padding-left: 10px;
+	font-weight: bold;
+	line-height: 18px;
+	color: #fff;
+	height: 20px;
+
+	background: -moz-linear-gradient(270deg, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(102, 102, 102, 1)), color-stop(100%, rgba(51, 51, 51, 1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(270deg, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(270deg, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(270deg, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%); /* ie10+ */
+	background: linear-gradient(180deg, rgba(102, 102, 102, 1) 0%, rgba(51, 51, 51, 1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#666666', endColorstr='#333333', GradientType=0); /* ie6-9 */
 }
 
 #floater_handle:hover {
-    cursor: move;
+	cursor: move;
 }
 
-#floater_handle div.right { 
-    position:absolute;
-    overflow:hidden;
-    width:80px;
-    height:16px;
-    top:9px;
-    right:10px;
+#floater_handle div.right {
+	position: absolute;
+	overflow: hidden;
+	width: 80px;
+	height: 16px;
+	top: 9px;
+	right: 10px;
 }
 
 #floater_handle div.right a {
-    cursor: pointer;
-    margin-left:2px;
-    float:right;
-    overflow:hidden;
-    display:block;
-    width:22px;
-    height:16px;
-    text-indent:-500px;
+	cursor: pointer;
+	margin-left: 2px;
+	float: right;
+	overflow: hidden;
+	display: block;
+	width: 22px;
+	height: 16px;
+	text-indent: -500px;
 }
 
-#floater_handle div.right a.close { 
-    background: url('grfx/close.png') no-repeat;
+#floater_handle div.right a.close {
+	background: url('grfx/close.png') no-repeat;
 }
 
-#floater_handle div.right a.options.down { 
-    background: url('grfx/options2.png') no-repeat 0 0;
+#floater_handle div.right a.options.down {
+	background: url('grfx/options2.png') no-repeat 0 0;
 }
 
-#floater_handle div.right a.options.up { 
-    background: url('grfx/options2.png') no-repeat 0 -16px;
+#floater_handle div.right a.options.up {
+	background: url('grfx/options2.png') no-repeat 0 -16px;
 }
 
-#floater_handle div.right a.help { 
-    background: url('grfx/help.png') no-repeat 0 0;
+#floater_handle div.right a.help {
+	background: url('grfx/help.png') no-repeat 0 0;
 }
-
 
 .ui-tabs .ui-tabs-hide {
-  display:none;
+	display: none;
 }
 
 .activitiesTable input,
 .projectsTable input {
-  width: 100px
-}
-
-
-#floater_innerwrap .errorMessage {
-  color:white;
-  text-align:center;
-  padding-bottom:5px;
-  font-weight: bold;
-}
-
-#floater_innerwrap .errorField {
-  background-color:#af0000;
-  border:1px dotted white;
+	width: 100px
 }

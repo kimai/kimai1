@@ -18,9 +18,7 @@
  */
 
 /**
- * ==================
- * = Core Processor =
- * ==================
+ * Core Processor
  *
  * Called via AJAX from the Kimai user interface. Depending on $axAction
  * actions are performed, e.g. editing preferences or returning a list
@@ -29,7 +27,7 @@
 
 $isCoreProcessor = 1;
 $dir_templates = 'templates/core/';
-require('../includes/kspi.php');
+require '../includes/kspi.php';
 
 $kga = Kimai_Registry::getConfig();
 $database = Kimai_Registry::getDatabase();
@@ -52,7 +50,7 @@ switch ($axAction) {
             return;
         }
 
-        $data = array();
+        $data = [];
         if (isset($_REQUEST['project'])) {
             $data['lastProject'] = $_REQUEST['project'];
         }
@@ -94,7 +92,7 @@ switch ($axAction) {
         $preferences['table_time_format'] = $_REQUEST['table_time_format'];
 
         $database->user_set_preferences($preferences, 'ui.');
-        $database->user_set_preferences(array('timezone' => $_REQUEST['timezone']));
+        $database->user_set_preferences(['timezone' => $_REQUEST['timezone']]);
 
         $rate = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
         if (is_numeric($rate)) {
@@ -148,9 +146,9 @@ switch ($axAction) {
 
         $IDs = explode('|', $axValue);
         $newID = $database->startRecorder($IDs[0], $IDs[1], $id);
-        echo json_encode(array(
+        echo json_encode([
             'id' => $newID
-        ));
+        ]);
         break;
 
     /**
@@ -158,9 +156,9 @@ switch ($axAction) {
      */
     case 'stopRecord':
         $database->stopRecorder($id);
-        echo json_encode(array(
+        echo json_encode([
             'id' => $id
-        ));
+        ]);
         break;
 
     /**
@@ -184,7 +182,7 @@ switch ($axAction) {
      */
     case 'reload_customers':
         if (isset($kga['customer'])) {
-            $view->assign('customers', array($database->customer_get_data($kga['customer']['customerID'])));
+            $view->assign('customers', [$database->customer_get_data($kga['customer']['customerID'])]);
         } else {
             $view->assign('customers', $database->get_customers($kga['user']['groups']));
         }
@@ -264,13 +262,13 @@ switch ($axAction) {
                     $data['password'] = '';
                 }
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->customer_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if ($database->user_name2id($data['name']) !== false) {
                     $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
@@ -298,9 +296,9 @@ switch ($axAction) {
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
 
                 break;
 
@@ -321,13 +319,13 @@ switch ($axAction) {
                 $data['myRate'] = getRequestDecimal($_REQUEST['myRate']);
                 $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->project_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if (count($_REQUEST['projectGroups']) == 0) {
                     $errorMessages['projectGroups'] = $kga['lang']['atLeastOneGroup'];
@@ -361,8 +359,8 @@ switch ($axAction) {
                                 continue;
                             }
 
-                            $data = array();
-                            foreach (array('budget', 'effort', 'approved') as $key) {
+                            $data = [];
+                            foreach (['budget', 'effort', 'approved'] as $key) {
                                 $value = getRequestDecimal($_REQUEST[$key][$index]);
                                 if ($value !== null) {
                                     $data[$key] = max(0, $value);
@@ -382,14 +380,14 @@ switch ($axAction) {
                             $database->remove_fixed_rate($id, $item);
                         }
                     } else {
-                        $database->assignProjectToActivitiesForGroup($id, array(), $kga['user']['groups']);
+                        $database->assignProjectToActivitiesForGroup($id, [], $kga['user']['groups']);
                     }
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
                 break;
 
             /**
@@ -405,13 +403,13 @@ switch ($axAction) {
                 $data['fixedRate'] = getRequestDecimal($_REQUEST['fixedRate']);
                 $activityGroups = $_REQUEST['activityGroups'];
 
-                $oldGroups = array();
+                $oldGroups = [];
                 if ($id) {
                     $oldGroups = $database->activity_get_groupIDs($id);
                 }
 
                 // validate data
-                $errorMessages = array();
+                $errorMessages = [];
 
                 if (count($_REQUEST['activityGroups']) == 0) {
                     $errorMessages['activityGroups'] = $kga['lang']['atLeastOneGroup'];
@@ -445,7 +443,7 @@ switch ($axAction) {
                             }
                         }
                     } else {
-                        $database->assignActivityToProjectsForGroup($id, array(), $kga['user']['groups']);
+                        $database->assignActivityToProjectsForGroup($id, [], $kga['user']['groups']);
                     }
 
                     // set the activity group and activity project mappings
@@ -455,9 +453,9 @@ switch ($axAction) {
                 }
 
                 header('Content-Type: application/json;charset=utf-8');
-                echo json_encode(array(
+                echo json_encode([
                     'errors' => $errorMessages
-                ));
+                ]);
                 break;
         }
         break;

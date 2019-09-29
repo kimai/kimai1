@@ -1,26 +1,26 @@
 #export_panel { padding: 10px 10px 10px 10px; }
-#export_panel .r .l,#export_panel .l .l,
-#export_panel .l .w .c,
-#export_panel .r .w .c,
-#export_panel .w .c .w .c,
-#export_panel .w .c .l,
-#export_panel .w .c .r,
-#export_panel .r .r 
-{background: url('../grfx/stats_panel.png');}
+
 
 #export_panel .l,#export_panel .r,#export_panel .w 			{ float: left; }
-#export_panel .l,#export_panel .r,#export_panel .c 			{ height: 49px; }
+#export_panel .l,#export_panel .r,#export_panel .c 			{ height: 45px; }
 #export_panel .l .l,#export_panel .r .l,#export_panel .r .r	{width: 4px;}
-#export_panel .l .w .c,#export_panel .r .w .c  			{background-position: 0 98px;}
 
-#export_panel .l            						{ margin-left: -100%; width: 133px;}
+#export_panel .l            						{ margin-left: -100%;}
 #export_panel .r 									{ width: 183px; margin-left: -183px;}
 #export_panel .r .r 								{ background-position: -27px 0; margin-left: -4px;}
 #export_panel .w            						{ width: 100%; }
 #export_panel .w .c         						{ margin: 0 183px 0 133px; }
-#export_panel .w .c .w .c 							{ margin: 0 8px 0 15px; background-position: 0 49px;}
-#export_panel .w .c .l 								{ background-position: -4px 0; width: 15px;}
-#export_panel .w .c .r 								{ background-position: -19px 0; width: 8px; margin-left: -10px;}
+#export_panel .w .c .w .c 							{ height: 41px; margin: 1px 8px 0 8px; padding: 0 8px 0 15px;
+    background: -moz-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(249,249,251,1)), color-stop(100%, rgba(224,226,199,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(90deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* ie10+ */
+	background: linear-gradient(0deg, rgba(224,226,199,1) 0%, rgba(249,249,251,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F9F9FB', endColorstr='#E0E2C7',GradientType=0 ); /* ie6-9 */
+
+	border-radius: 10px;
+	border: 2px inset gray;}
 #export_panel .l .w .c 								{ margin: 0 0 0 1px;}
 #export_panel .r .w .c 								{ margin: 0 4px 0 2px;}
 

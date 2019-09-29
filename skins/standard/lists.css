@@ -14,7 +14,6 @@
 #users_head, #customers_head, #projects_head, #activities_head {
     border:1px solid black; 
     border-bottom:none;
-    background-image: url('grfx/g3_table_header.png');
     position:absolute;
     height:25px;
     text-align:left;
@@ -23,12 +22,19 @@
     font-size:11px;
     font-weight:bold;
     padding:3px 0 0 5px;
+    
+    background: -moz-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(102,102,102,1)), color-stop(100%, rgba(51,51,51,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ie10+ */
+	background: linear-gradient(180deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#333333',GradientType=0 ); /* ie6-9 */
 }
 
 #users_foot, #customers_foot, #projects_foot, #activities_foot {
     border:1px solid black; 
     border-top:none;
-    background-image: url('grfx/g3_table_header.png');
     position:absolute;
     height:20px;
     text-align:left;
@@ -37,6 +43,14 @@
     font-size:11px;
     font-weight:bold;
     padding:3px 0 0 5px;
+    
+    background: -moz-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(102,102,102,1)), color-stop(100%, rgba(51,51,51,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ie10+ */
+	background: linear-gradient(180deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#333333',GradientType=0 ); /* ie6-9 */
 }
 
 #customersShrink {
@@ -172,7 +186,6 @@ a.selectInvertLink
 
 .livefilterfield {
     float:right;
-    background-image:url("grfx/filter_bg.jpg");
     border:1px solid #555;
     height:12px;
     margin:0;
@@ -181,6 +194,13 @@ a.selectInvertLink
     margin-right:8px;
     color:#fff;
     font-size:9px;
+    background: -moz-linear-gradient(270deg, rgba(136,136,136,1) 0%, rgba(96,96,96,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(136,136,136,1)), color-stop(100%, rgba(96,96,96,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(270deg, rgba(136,136,136,1) 0%, rgba(96,96,96,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(270deg, rgba(136,136,136,1) 0%, rgba(96,96,96,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(270deg, rgba(136,136,136,1) 0%, rgba(96,96,96,1) 100%); /* ie10+ */
+	background: linear-gradient(180deg, rgba(136,136,136,1) 0%, rgba(96,96,96,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#888888', endColorstr='#606060',GradientType=0 ); /* ie6-9 */
 }
 
 
@@ -263,7 +283,13 @@ div.lists table thead {
 }
 
 div.lists table thead th {
-    background-image: url('grfx/g3_table_header.png');
+	background: -moz-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(102,102,102,1)), color-stop(100%, rgba(51,51,51,1))); /* safari4+,chrome */
+	background: -webkit-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* opera 11.10+ */
+	background: -ms-linear-gradient(270deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* ie10+ */
+	background: linear-gradient(180deg, rgba(102,102,102,1) 0%, rgba(51,51,51,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#333333',GradientType=0 ); /* ie6-9 */
 }
 
 div.lists tr.even td,

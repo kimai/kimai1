@@ -20,12 +20,12 @@
     <!-- /Extension Stylesheets -->
 
     <!-- Libraries -->
-    <script type="text/javascript" src="../libraries/jQuery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.hoverIntent.minified.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.form.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.newsticker.pack.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/js.cookie-2.1.0.min.js"></script>
-    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../libraries/jQuery/jquery-ui-1.12.1.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery-ui-timepicker/jquery.ui.timepicker.js"></script>
     <script type="text/javascript" src="../libraries/phpjs/strftime.min.js"></script>
     <script type="text/javascript" src="../libraries/jQuery/jquery.selectboxes.min.js"></script>
@@ -52,18 +52,18 @@
     <script type="text/javascript">
         var skin = "<?php echo $this->escape($this->skin()->getName()); ?>";
 
-        var lang_checkUsername = "<?php echo $this->escape($this->kga['lang']['checkUsername']); ?>";
-        var lang_checkGroupname = "<?php echo $this->escape($this->kga['lang']['checkGroupname']); ?>";
-        var lang_checkStatusname = "<?php echo $this->escape($this->kga['lang']['checkStatusname']); ?>";
-        var lang_passwordsDontMatch = "<?php echo $this->escape($this->kga['lang']['passwordsDontMatch']); ?>";
-        var lang_passwordTooShort = "<?php echo $this->escape($this->kga['lang']['passwordTooShort']); ?>";
-        var lang_sure = "<?php echo $this->escape($this->kga['lang']['sure']); ?>";
+        var lang_checkUsername = "<?php echo $this->escape($this->translate('checkUsername')); ?>";
+        var lang_checkGroupname = "<?php echo $this->escape($this->translate('checkGroupname')); ?>";
+        var lang_checkStatusname = "<?php echo $this->escape($this->translate('checkStatusname')); ?>";
+        var lang_passwordsDontMatch = "<?php echo $this->escape($this->translate('passwordsDontMatch')); ?>";
+        var lang_passwordTooShort = "<?php echo $this->escape($this->translate('passwordTooShort')); ?>";
+        var lang_sure = "<?php echo $this->escape($this->translate('sure')); ?>";
 
         var currentRecording = <?php echo $this->currentRecording?>;
         var openAfterRecorded = <?php echo json_encode($this->openAfterRecorded) ?>;
 
         <?php if ($this->kga->getSettings()->getQuickDeleteType() == 2): ?>
-        var confirmText = "<?php echo $this->escape($this->kga['lang']['sure']) ?>";
+        var confirmText = "<?php echo $this->escape($this->translate('sure')) ?>";
         <?php else: ?>
         var confirmText = undefined;
         <?php endif; ?>
@@ -196,14 +196,14 @@
                     alt="Logout"/></a>
         <a id="main_tools_button" href="#"><img src="<?php echo $this->skin('grfx/g3_menu_dropdown.png'); ?>" width="44"
                                                 height="27" alt="Menu Dropdown"/></a>
-        <br/><?php echo $this->kga['lang']['logged_in_as'] ?>
+        <br/><?php echo $this->translate('logged_in_as') ?>
         <b><?php echo isset($this->kga['user']) ? $this->escape($this->kga['user']['name']) : $this->escape($this->kga['customer']['name']) ?></b>
     </div>
     <div id="main_tools_menu">
         <div class="slider">
-            <a href="#" id="main_credits_button"><?php echo $this->kga['lang']['about'] ?></a>
+            <a href="#" id="main_credits_button"><?php echo $this->translate('about') ?></a>
             <?php if (!isset($this->kga['customer'])) { ?>
-                | <a href="#" id="main_prefs_button"><?php echo $this->kga['lang']['preferences'] ?></a>
+                | <a href="#" id="main_prefs_button"><?php echo $this->translate('preferences') ?></a>
             <?php } ?>
         </div>
         <div class="end"></div>
@@ -236,7 +236,7 @@
 
         <div id="infos">
             <span id="n_date"></span>&nbsp;
-            <a href="#" title="<?php echo $this->escape($this->kga['lang']['now']); ?>"
+            <a href="#" title="<?php echo $this->escape($this->translate('now')); ?>"
                onclick="setTimeframe(new Date(),new Date()); return false;"><img
                         src="<?php echo $this->skin('grfx/timeframe_now.png'); ?>" width="12" height="14"
                         alt="Select date of today"/></a>&nbsp;
@@ -251,14 +251,14 @@
     <?php if (isset($this->kga['user'])): ?>
         <div id="selector">
             <div class="preselection">
-                <strong><?php echo $this->kga['lang']['selectedForRecording'] ?></strong><br/>
-                <strong class="short"><?php echo $this->kga['lang']['selectedCustomerLabel'] ?></strong><span
+                <strong><?php echo $this->translate('selectedForRecording') ?></strong><br/>
+                <strong class="short"><?php echo $this->translate('selectedCustomerLabel') ?></strong><span
                         class="selection"
                         id="selected_customer"><?php echo $this->escape($this->customerData['name']) ?></span><br/>
-                <strong class="short"><?php echo $this->kga['lang']['selectedProjectLabel'] ?></strong><span
+                <strong class="short"><?php echo $this->translate('selectedProjectLabel') ?></strong><span
                         class="selection"
                         id="selected_project"><?php echo $this->escape($this->projectData['name']) ?></span><br/>
-                <strong class="short"><?php echo $this->kga['lang']['selectedActivityLabel'] ?></strong><span
+                <strong class="short"><?php echo $this->translate('selectedActivityLabel') ?></strong><span
                         class="selection"
                         id="selected_activity"><?php echo $this->escape($this->activityData['name']) ?></span><br/>
             </div>
@@ -281,49 +281,40 @@
 <div id="topactions">
     <div id="settimer">
         <a style="cursor: pointer;"
-           onclick="setTimerToToday(); return false;"><?php echo $this->kga['lang']['quicklink_today'] ?></a> |
+           onclick="setTimerToToday(); return false;"><?php echo $this->translate('quicklink_today') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToYesterday(); return false;"><?php echo $this->kga['lang']['quicklink_yesterday'] ?></a> |
+           onclick="setTimerToYesterday(); return false;"><?php echo $this->translate('quicklink_yesterday') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToLastWeek(); return false;"><?php echo $this->kga['lang']['quicklink_lastWeek'] ?></a> |
+           onclick="setTimerToLastWeek(); return false;"><?php echo $this->translate('quicklink_lastWeek') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToLastMonth(); return false;"><?php echo $this->kga['lang']['quicklink_lastMonth'] ?></a> |
+           onclick="setTimerToLastMonth(); return false;"><?php echo $this->translate('quicklink_lastMonth') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToCurrentWeek(); return false;"><?php echo $this->kga['lang']['quicklink_thisWeek'] ?></a> |
+           onclick="setTimerToCurrentWeek(); return false;"><?php echo $this->translate('quicklink_thisWeek') ?></a> |
         <a style="cursor: pointer;"
-           onclick="setTimerToCurrentMonth(); return false;"><?php echo $this->kga['lang']['quicklink_thisMonth'] ?></a>
+           onclick="setTimerToCurrentMonth(); return false;"><?php echo $this->translate('quicklink_thisMonth') ?></a>
     </div>
 </div>
 <div id="fliptabs" class="menuBackground">
     <ul class="menu">
         <li class="tab act" id="exttab_0">
-            <a href="javascript:void(0);"
-               onclick="changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();">
+            <a href="javascript:void(0);" onclick="changeTab(0,'ki_timesheets/init.php'); timesheet_extension_tab_changed();">
                 <span class="aa">&nbsp;</span>
-                <span class="bb">
-                    <?php
-                    if (isset($this->kga['lang']['extensions']['ki_timesheet'])) {
-                        echo $this->kga['lang']['extensions']['ki_timesheet'];
-                    } else {
-                        echo "Timesheet";
-                    }
-                    ?></span>
+                <span class="bb"><?php echo $this->translate('extensions:ki_timesheet'); ?></span>
                 <span class="cc">&nbsp;</span>
             </a>
         </li>
         <?php for ($i = 0; $i < count($this->extensions); $i++):
             $extension = $this->extensions[$i];
-            if (!$extension['name'] OR $extension['key'] == "ki_timesheet") {
+            if (!$extension['name'] OR $extension['key'] == 'ki_timesheet') {
                 continue;
             } ?>
             <li class="tab norm" id="exttab_<?php echo $i + 1; ?>">
                 <a href="javascript:void(0);"
                    onclick="changeTab(<?php echo $i + 1 ?>, '<?php echo $extension['initFile'] ?>'); <?php echo $extension['tabChangeTrigger'] ?>;">
                     <span class="aa">&nbsp;</span>
-                    <span class="bb">
-                    <?php
+                    <span class="bb"><?php
                     if (isset($this->kga['lang']['extensions'][$extension['key']])) {
-                        echo $this->kga['lang']['extensions'][$extension['key']];
+                        echo $this->translate('extensions:' . $extension['key']);
                     } else {
                         echo $this->escape($extension['name']);
                     }
@@ -352,22 +343,22 @@
     <div id="users_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('users', this.value);" type="text" id="filt_user"
                name="filt_user"/>
-        <?php echo $this->kga['lang']['users'] ?>
+        <?php echo $this->translate('users') ?>
     </div>
     <div id="customers_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('customers', this.value);" type="text"
                id="filter_customer" name="filter_customer"/>
-        <?php echo $this->kga['lang']['customers'] ?>
+        <?php echo $this->translate('customers') ?>
     </div>
     <div id="projects_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('projects', this.value);" type="text"
                id="filter_project" name="filter_project"/>
-        <?php echo $this->kga['lang']['projects'] ?>
+        <?php echo $this->translate('projects') ?>
     </div>
     <div id="activities_head">
         <input class="livefilterfield" onkeyup="lists_live_filter('activities', this.value);" type="text"
                id="filter_activity" name="filter_activity"/>
-        <?php echo $this->kga['lang']['activities'] ?>
+        <?php echo $this->translate('activities') ?>
     </div>
 
     <div id="users"><?php echo $this->user_display ?></div>

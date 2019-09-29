@@ -1,11 +1,10 @@
 <!--
 IMPORTANT NOTE:
-Javascript or jQuery stuff that should run when your extension *has finished loading*  
-should sit in an special onload function like this:
+Javascript or jQuery stuff that should run when your extension *has finished loading*
+should sit in a special onload function like this:
 -->
 <script type="text/javascript">
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         demo_ext_onload();
     });
 </script>

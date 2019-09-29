@@ -64,7 +64,7 @@ class Kimai_Remote_Database
      */
     public function __call($fnName, $arguments)
     {
-        return call_user_func_array(array($this->dbLayer, $fnName), $arguments);
+        return call_user_func_array([$this->dbLayer, $fnName], $arguments);
     }
 
     /**
@@ -207,9 +207,9 @@ class Kimai_Remote_Database
 
         $query = "$select
   			FROM ${p}expenses e
-	  		Join ${p}projects p USING(e.projectID)
-	  		Join ${p}customers p USING(p.customerID)
-	  		Join ${p}users u USING(e.userID)
+	  		Join ${p}projects p USING(projectID)
+	  		Join ${p}customers c USING(customerID)
+	  		Join ${p}users u USING(userID)
 	  		$where
 	  		ORDER BY timestamp $orderDirection $limit";
 
@@ -224,7 +224,7 @@ class Kimai_Remote_Database
 
 
         $i = 0;
-        $arr = array();
+        $arr = [];
         $conn->MoveFirst();
         // toArray();
         while (!$conn->EndOfSeek()) {
@@ -247,7 +247,7 @@ class Kimai_Remote_Database
         $conn = $this->conn;
         $data = $this->dbLayer->clean_data($data);
 
-        $values = array();
+        $values = [];
         if (isset($data['timestamp'])) {
             $values['timestamp'] = MySQL::SQLValue($data['timestamp'], MySQL::SQLVALUE_NUMBER);
         }
@@ -295,7 +295,7 @@ class Kimai_Remote_Database
         $data = $this->dbLayer->clean_data($data);
 
         $original_array = $this->expense_get($id);
-        $new_array = array();
+        $new_array = [];
 
         foreach ($original_array as $key => $value) {
             if (isset($data[$key]) == true) {

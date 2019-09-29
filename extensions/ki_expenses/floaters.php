@@ -26,29 +26,20 @@ $database = Kimai_Registry::getDatabase();
 require 'private_db_layer_mysql.php';
 
 switch ($axAction) {
-    case "add_edit_record":
+    case 'add_edit_record':
         if (isset($kga['customer'])) {
             die();
         }
 
-        $view->assign('projects', makeSelectBox("project", $kga['user']['groups'])); // select for projects
-        $view->assign('activities', makeSelectBox("activity", $kga['user']['groups'])); // select for activities
+        $projects = makeSelectBox('project', $kga['user']['groups']);
+        $view->assign('projects', $projects); // select for projects
+        $view->assign('activities', makeSelectBox('activity', $kga['user']['groups'])); // select for activities
 
         // ==============================================
         // = display edit dialog for timesheet record   =
         // ==============================================
         if ($id) {
-            $expense = get_expense($id);
-            $view->assign('id', $id);
-            $view->assign('comment', $expense['comment']);
-            $view->assign('edit_day', date("d.m.Y", $expense['timestamp']));
-            $view->assign('edit_time', date("H:i:s", $expense['timestamp']));
-            $view->assign('multiplier', $expense['multiplier']);
-            $view->assign('edit_value', $expense['value']);
-            $view->assign('designation', $expense['designation']);
-            $view->assign('selected_project', $expense['projectID']);
-            $view->assign('commentType', $expense['commentType']);
-            $view->assign('refundable', $expense['refundable']);
+            $expense = expense_get($id);
 
             // check if this entry may be edited
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-edit')) {
@@ -62,19 +53,26 @@ switch ($axAction) {
                 $view->projects[$projectData['projectID']] = $customerData['name'] . ':' . $projectData['name'];
             }
         } else {
-            $view->assign('id', 0);
-            $view->assign('edit_day', date("d.m.Y"));
-            $view->assign('edit_time', date("H:i:s"));
-            $view->assign('multiplier', '1' . $kga['conf']['decimalSeparator'] . '0');
+            // defaults
+            $expense = [
+                'timestamp' => time(),
+                'commentType' => '',
+                'comment' => '',
+                'refundable' => true,
+                'designation' => '',
+                'projectID' => array_keys($projects)[0],
+                'value' => '',
+                'multiplier' => 1
+            ];
 
             // check if this entry may be added
             if (!$database->global_role_allows($kga['user']['globalRoleID'], 'ki_expenses-ownEntry-add')) {
                 break;
             }
         }
+        $view->assign('expense', $expense);
 
-        echo $view->render("floaters/add_edit_record.php");
+        echo $view->render('floaters/add_edit_record.php');
 
         break;
-
 }

@@ -21,7 +21,7 @@
  * italiano
  * by Allesandro Bertoldo
  */
-return array(
+return [
     "countryCode" => "it-IT",
     "preferences" => "Preferenze",
     "total" => "Totale",
@@ -69,7 +69,6 @@ return array(
     "trackingNumber" => "Tracking Number",
     "cookiewarning" => "I cookie devo essere accettati! Attivare i cookie per procedere.",
     "JSwarning" => "JavaScript deve essere abilitato! Questa versione altrimenti non funziona.",
-    "designation" => "descrizione",
     "banned" => "Sospeso (Account bloccato)",
     "tooManyLogins" => "Troppi tentativi falliti - utente sospeso.",
     "accessDenied" => "Accesso negato!",
@@ -229,22 +228,26 @@ return array(
 
     'multiplier' => 'Multiplier',
 
-    'months' => array("Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"),
-    'months_short' => array("Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"),
-    'weekdays' => array("Domenica", "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato"),
-    'weekdays_short' => array("Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"),
+    'months' => ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"],
+    'months_short' => ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+    'weekdays' => ["Domenica", "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato"],
+    'weekdays_short' => ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
 
-    'errors' => array(
-        0 => array('hdl' => "Database could not be connected!",
-            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."),
+    'errors' => [
+        0 => [
+            'hdl' => "Database could not be connected!",
+            'txt' => "Please make sure your Database is running, has an active PDO connector and the entries in 'autoconf.php' in folder 'includes' are correct."
+        ],
 
-        1 => array('hdl' => "Error during installation!",
+        1 => [
+            'hdl' => "Error during installation!",
             'txt' => 'Kimai is unable to create necessary tables because tables with the name name already exist.<br/>
 To update your existing installation please click <a href="../index.php">here</a>.<br/>
-Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.')
-    ),
+Choose another table prefix or delete existing tables with this prefix in order to allow Kimai to perform a clean installation.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Yes, I have a backup of my Kimai database! Proceed updating!",
         10 => "Legend:",
         20 => "Query was executed successfully.",
@@ -259,9 +262,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         110 => "New Passwords",
         120 => "See below for new passwords for every user.",
         130 => "Could not write to autoconf.php.",
-        140 => "update file autoconf.php"),
+        140 => "update file autoconf.php"
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "This backup restore utility is not yet tested! Use at your own risk!",
         1 => "Available backups:",
         2 => "recover",
@@ -271,9 +275,10 @@ Choose another table prefix or delete existing tables with this prefix in order 
         6 => "Backup from",
         7 => "was recovered.",
         8 => "create backup",
-        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"),
+        9 => "These backups are actually snapshots! Meaning they still live within the very same database as your actual Kimai work data. Backups via this utility are NO substitution for real backups on a physically different data medium. There are plenty of tools for database backups available on the web ;)"
+    ],
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Click OK to open a printable table.",
         "dl_hint" => "Click OK to download export-file.",
@@ -308,7 +313,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
 
         'subtotal' => 'Sub totale',
         'finalamount' => 'Totale',
-        'pdf_headline' => 'Lista dei temnpi di lavoro e spese',
+        'pdf_headline' => 'Lista dei tempi di lavoro e spese',
         'costs' => 'Costi',
         'expense' => 'Spesa',
         'summary' => 'Sommario',
@@ -327,9 +332,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'time_period' => 'periodo di tempo',
 
         'duration_unit' => 'h',
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Crea fattura',
         'invoiceProject' => 'Progetti',
         'invoiceTimePeriod' => 'Periodo di tempo',
@@ -337,9 +342,9 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'invoiceOptionRound' => 'Round time',
         'invoiceButton' => 'Crea',
         'noData' => 'Non ci sono inserimenti per il progetto e periodo di tempo selezionati.'
-    ),
+    ],
 
-    'extensions' => array(
+    'extensions' => [
         'ki_timesheet' => 'Orari',
         'ki_expenses' => 'Spese',
         'ki_invoice' => 'Fattura',
@@ -347,7 +352,7 @@ Choose another table prefix or delete existing tables with this prefix in order 
         'ap_ext' => 'Preferenze',
         'ki_budget' => 'Budget',
         'ki_export' => 'Esporta'
-    ),
+    ],
 
     "log_delete" => "log eliminato",
-);
+];

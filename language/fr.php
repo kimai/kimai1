@@ -16,15 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Kimai; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 
 /**
@@ -33,7 +24,7 @@
  * et diaoul 02/11/10 encodé en ANSI AS UTF-8 rev 394
  * updated by Claude Gelinas 10-12-2014
  */
-return array(
+return [
     "countryCode" => "fr-FR",
     "preferences" => "Préférences",
     "total" => "Total",
@@ -86,7 +77,6 @@ return array(
     "trackingNumber" => "N°",
     "cookiewarning" => "Les cookies doivent être acceptés! Autoriser les cookies avant de continuer.",
     "JSwarning" => "JavaScript doit être activé! Cette version ne fonctionne pas sans cela.",
-    "designation" => "désignation",
     "banned" => "Bloqué (Compte bloqué)",
     "tooManyLogins" => "Trop de mauvaises tentatives de connexion - utilisateur bloqué.",
     "accessDenied" => "Accès refusé !",
@@ -105,7 +95,7 @@ return array(
     "passwordTooShort" => "le mot de passe est de moins de 5 caractères.",
     "forgotPassword" => "Mot de passe oublié",
 
-    "passwordReset" => array(
+    "passwordReset" => [
         "notSupported" => "Le plugin présent ne supporte pas la réinitialisation du mot de passe.",
         "instructions" => "Entrer votre nom d'usager et un courriel contenant un lien sera envoyé à l'adresse courriel associée. Il n'y aura pas d'avertissement si votre nom d'usager est incorecte alors asurez-vous de l'inscrire correctement!",
         "mailSubject" => "Kimai - réinitialisation du mot de passe",
@@ -114,7 +104,7 @@ return array(
         "returnToLogin" => "retour à la page de connection",
         "invalidKey" => "Le code de sécurité ne concorde pas avec la clé transmise par courriel. Assurez-vous que le lien complet est ouvert par votre navigateur.",
         "success" => "Votre mot de passe a été changé.",
-    ),
+    ],
 
     "minLength" => "min. 5 caractères!",
     "update" => "La structure de la base de données de la version Kimai installée a été mise à jour.<br />Nous recommandons de sauvegarder vos données pour éviter toute perte<br />durant la procédure de mise a jour.",
@@ -232,7 +222,6 @@ return array(
     "checkGroupname" => "Vous devez entrer un nom de groupe dans le champ à gauche du bouton ajouter-un-groupe!",
     "checkGlobalRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
     "checkMembershipRoleName" => "Vous devez entrer un nom de rôle dans le champ à gauche du bouton ajouter-un-rôle!",
-    "checkStatusname" => "Vous devez entrer un nom de statut dans le champ à gauche du bouton ajouter-un-statut!",
     "clickToReload" => "Cliquer ici pour relancer l'interface graphique",
     "sure" => "Etes-vous sûr?",
     "clock" => "Horloge",
@@ -363,18 +352,25 @@ et pourront être modifiés par la suite au besoin, sans limite.</strong>',
         Si vous trouvez des bugs ou avez des idées de fonctionnalités, n'\hésitez pas à nous contacter sur le forum.
         Ou encore mieux: créer un <a href="%4$s">ticket</a>.
 EOD
-,
+    ,
     'credits_license' => 'Ce logiciel est un logiciel libre et publié \'EN L\'ETAT\' sans aucune espèce de garantie sous les conditions de la %1$s.',
     'credits_thanks' => 'Des remerciement aussi pour le support à:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
 
-    'months' => array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"),
-    'months_short' => array("Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"),
-    'weekdays' => array("Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"),
-    'weekdays_short' => array("Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"),
+    'months' => ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
+    'months_short' => ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+    'weekdays' => ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+    'weekdays_short' => ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+    'quicklink_today' => "Aujourd'hui",
+    'quicklink_yesterday' => "Hier",
+    'quicklink_lastWeek' => "Semaine dernière",
+    'quicklink_lastMonth' => "Mois dernier",
+    'quicklink_thisWeek' => "Cette semaine",
+    'quicklink_thisMonth' => "Ce mois",
 
-    'errorMessages' => array(
+
+    'errorMessages' => [
         'permissionDenied' => 'Permission refusée',
         "userWithSameName" => "Le nom d'un client ne peut être le même que le nom d'un usager.",
         "customerWithSameName" => "Le nom d'un usager ne peut être le même que le nom d'un client.",
@@ -383,21 +379,25 @@ EOD
         'noActivitySelected' => 'Aucune activité sélectionnée.',
         'noProjectSelected' => 'Aucun projet sélectionné.',
         'multiplierNegative' => 'Le multiplicateur doit être plus grand que 0.',
-    ),
+    ],
 
-    'confirmations' => array(
+    'confirmations' => [
         'ownGlobalRoleChange' => 'Etes vous certain de vouloir changer votre propre rôle globale de "%OLD%" à "%NEW%"?\n Ceci pourrait conduire à des permissions miondres!',
-    ),
-    'errors' => array(
-        0 => array('hdl' => "Impossible de se connecter à la base de données!",
-            'txt' => "Vérifier que la base de données fonctionne, possède un connecteur PDO actif et que les entrées dans le fichier 'conf.php' du répertoire 'includes' sont correctes."),
-        1 => array('hdl' => "Erreur durant l'installation!",
+    ],
+    'errors' => [
+        0 => [
+            'hdl' => "Impossible de se connecter à la base de données!",
+            'txt' => "Vérifier que la base de données fonctionne, possède un connecteur PDO actif et que les entrées dans le fichier 'conf.php' du répertoire 'includes' sont correctes."
+        ],
+        1 => [
+            'hdl' => "Erreur durant l'installation!",
             'txt' => 'Kimai ne peut créer les tables neccessaires car des tables avec ce nom de préfixe existent déjà.<br/>
 Pour mettre à jour l\'installation existante, merci de cliquer <a href="../index.php">Ici</a>.<br/>
-Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce préfixe pour permettre à Kimai une installation correcte.')
-    ),
+Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce préfixe pour permettre à Kimai une installation correcte.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Oui, j'ai une sauvegarde de la base Kimai! Continuer la mise à jour!",
         10 => "Légende",
         20 => "La requête a été exécutée correctement.",
@@ -414,10 +414,9 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         130 => "Impossible d'écrire dans autoconf.php.",
         140 => "Mise a jour du fichier autoconf.php",
         'timezone' => 'Kimai supporte les fuseaux horaires. SVP sélectioner votre fuseau horaire par défaut.Il sera utilisé pour tous les utilisateurs et clients. les utilisateurs peuvent changer leur fuseau horaire.',
-    ),
+    ],
 
-
-    'backup' => array(
+    'backup' => [
         0 => "L'outil de sauvegarde/restauration n' a pas encore été testé! A utiliser à vos propres risques!",
         1 => "Sauvegardes disponibles:",
         2 => "restauré",
@@ -430,10 +429,10 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         9 => "Ces sauvegardes sont des instantanés! Ceci signifie qu'ils continuent de vivre dans la base de données actuelle dans laquelle Kimai stocke ces données. Les sauvegardes via cet utilitaire ne remplacent pas les sauvegardes sur un media physique séparé. Il y a plein d'outils de sauvegarde de base de données sur le web ;)",
         10 => "Identification requise",
         11 => "Pour empêcher les personnes non-autorisées de créer, effacer ou restaurer une sauvegarde vous devez donner le code d'injection du mote de passe inscrite dans include/autoconf.php. Il est constitué de lettre et de chiffres.",
-    ),
+    ],
 
 
-    'export_extension' => array(
+    'export_extension' => [
 
         "print_hint" => "Cliquer sur OK pour ouvrir un tableau imprimable.",
         "dl_hint" => "Cliquer sur OK pour télécharger le fichier exporté.",
@@ -496,9 +495,9 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'time_type' => 'Format du temps',
         'dec_time' => 'Temps decimal',
         'time' => 'Temps standard',
-    ),
+    ],
 
-    'permissions' => array(
+    'permissions' => [
         'view' => 'Vue',
         'edit' => 'éditer',
         'delete' => 'effacer',
@@ -511,9 +510,9 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'showRates' => 'voir le taux',
         'editRates' => 'éditer le taux',
         'editAdvanced' => 'édition avancée'
-    ),
+    ],
 
-    'ext_invoice' => array(
+    'ext_invoice' => [
         'invoiceTitle' => 'Créer une facture',
         'invoiceProject' => 'Tâches',
         'invoiceTimePeriod' => 'Période',
@@ -524,15 +523,15 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'noData' => 'Il n\' y a pas de données de temps pour le projet et la période choisis.',
         'noProject' => 'Aucun projet n\'a été sélectionné.',
         'defaultVat' => 'TVA par défaut'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'Disponible'
-    ),
+    ],
 
     "extensionsTitle" => "Titre d'extension",
 
-    'extensions' => array(
+    'extensions' => [
         "adminPanel_extension" => "Panneau d'administration",
         'ki_timesheet' => 'Feuille de temps',
         'ki_timesheets' => 'Feuilles de temps',
@@ -544,16 +543,15 @@ Choisissez un autre préfixe de table ou supprimez les tables existantes avec ce
         'ki_export' => 'Exporter',
         'core' => 'noyau',
         'demo_ext' => 'Extension de démonstration',
-    ),
+    ],
 
-    'updatecheck' => array(
+    'updatecheck' => [
         'release' => '<b>Une mise à jour officielle est disponible, avec de nouvelles fonctionnalités et corrections de bugs. Nous vous suggérons fortement de mettre à niveau.</b>',
         "beta" => "<i>Nouvelle version Beta disponible. Vous pouvez la récupérer sur la page de téléchargement pour la tester, mais ne l'utilisez pas en environnement de production.</i>",
         'current' => 'Vous utilisez la dernière version :)',
-    ),
+    ],
 
 
     "log_delete" => "Le journal a été effacé",
 
-);
-?>
+];

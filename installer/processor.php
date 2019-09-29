@@ -21,10 +21,10 @@
  * Handle all AJAX calls from the installer.
  */
 
-defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)));
+defined('WEBROOT') || define('WEBROOT', dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../'));
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 // from php documentation at http://www.php.net/manual/de/function.ini-get.php
 function return_bytes($val)
@@ -65,20 +65,20 @@ function getpass()
 
 $axAction = strip_tags($_REQUEST['axAction']);
 
-$javascript = "";
+$javascript = '';
 $errors = 0;
 
 switch ($axAction) {
 
     /**
      * Check for the requirements of Kimai:
-     *  - PHP major version >= 5.4
+     *  - PHP major version >= 5.5
      *  - MySQLi extension available
      *  - iconv extension available
      *  - memory limit should be at least 20 MB for reliable PDF export
      */
-    case "checkRequirements":
-        if (version_compare(PHP_VERSION, '5.4') < 0) {
+    case 'checkRequirements':
+        if (version_compare(PHP_VERSION, '5.5') < 0) {
             $errors++;
             $javascript .= "$('div.sp_phpversion').addClass('fail');";
         }
@@ -93,9 +93,13 @@ switch ($axAction) {
             $javascript .= "$('div.sp_iconv').addClass('fail');";
         }
 
-        if (!class_exists('DOMDocument')) {
+        if (!class_exists('DOMDocument') || !extension_loaded('dom')) {
             $errors++;
             $javascript .= "$('div.sp_dom').addClass('fail');";
+        }
+        if (!class_exists('ZipArchive') || !extension_loaded('zip')) {
+            $errors++;
+            $javascript .= "$('div.sp_zip').addClass('fail');";
         }
 
         if (return_bytes(ini_get('memory_limit')) < 20000000) {
@@ -118,7 +122,7 @@ switch ($axAction) {
     /**
      * Check access rights to autoconf.php, the logfile and the temporary folder.
      */
-    case "checkRights":
+    case 'checkRights':
         if ((file_exists("../includes/autoconf.php") && !is_writeable("../includes/autoconf.php")) || !is_writeable("../includes/")) {
             $errors++;
             $javascript .= "$('span.ch_autoconf').addClass('fail');";
@@ -146,8 +150,8 @@ switch ($axAction) {
     /**
      * Create the autoconf.php file.
      */
-    case "write_config":
-        include "../includes/func.php";
+    case 'write_config':
+        include '../includes/func.php';
         // special characters " and $ are escaped
         $database = $_REQUEST['database'];
         $hostname = $_REQUEST['hostname'];
@@ -167,7 +171,7 @@ switch ($axAction) {
         $smtp_pass = $_REQUEST['smtp_pass'];
         $smtp_ssl = $_REQUEST['smtp_ssl'];
 
-        $kimaiConfig = new Kimai_Config(array(
+        $kimaiConfig = new Kimai_Config([
             'server_prefix' => $prefix,
             'server_hostname' => $hostname,
             'server_database' => $database,
@@ -184,7 +188,7 @@ switch ($axAction) {
             'smtp_ssl' => $smtp_ssl,
             'defaultTimezone' => $timezone,
             'password_salt' => $salt
-        ));
+        ]);
         Kimai_Registry::setConfig($kimaiConfig);
 
         write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone, $mail_transport,
@@ -203,7 +207,7 @@ switch ($axAction) {
 
         $db_error = false;
         $result = false;
-        $config = new Kimai_Config(array());
+        $config = new Kimai_Config([]);
 
         $database = new Kimai_Database_Mysql($config, false);
         $database->connect($hostname, null, $username, $password, true);

@@ -5,13 +5,13 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(dirna
 set_include_path(
     implode(
         PATH_SEPARATOR,
-        array(
+        [
             realpath(APPLICATION_PATH . '/libraries/zendframework/zendframework1/library/'),
-        )
+        ]
     )
 );
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 echo '<script type="text/javascript">current=60;</script>';
 
@@ -55,7 +55,7 @@ while ($row = $con->RowArray(null, MYSQLI_NUM)) {
     }
 }
 
-$useDatabases = array();
+$useDatabases = [];
 
 if ($showDatabasesAllowed) {
     try {

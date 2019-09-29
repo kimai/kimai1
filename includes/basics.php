@@ -33,27 +33,27 @@ if (!file_exists(WEBROOT . 'libraries/autoload.php')) {
 set_include_path(
     implode(
         PATH_SEPARATOR,
-        array(
+        [
             '.',
             realpath(APPLICATION_PATH . 'libraries/'),
-        )
+        ]
     )
 );
 
-if (!file_exists(WEBROOT . '/includes/autoconf.php')) {
+if (!file_exists(WEBROOT . 'includes/autoconf.php')) {
     header('Location: installer/index.php');
     exit;
 }
 
 ini_set('display_errors', '0');
 
-require_once WEBROOT . '/libraries/autoload.php';
-require_once WEBROOT . '/includes/func.php';
+require_once WEBROOT . 'libraries/autoload.php';
+require_once WEBROOT . 'includes/func.php';
 
 // The $kga (formerly Kimai Global Array) is initialized here
 // It was replaced by an proxy object, but until refactored it is still used as array in a lot of places
-require_once WEBROOT . '/includes/autoconf.php';
-$kga = new Kimai_Config(array(
+require_once WEBROOT . 'includes/autoconf.php';
+$kga = new Kimai_Config([
     'server_prefix' => $server_prefix,
     'server_hostname' => $server_hostname,
     'server_database' => $server_database,
@@ -70,10 +70,10 @@ $kga = new Kimai_Config(array(
     'smtp_ssl' => $smtp_ssl,
     'defaultTimezone' => $defaultTimezone,
     'password_salt' => isset($password_salt) ? $password_salt : ''
-));
+]);
 
 // will inject the version variables into the Kimai_Config object
-require WEBROOT . '/includes/version.php';
+require WEBROOT . 'includes/version.php';
 
 // write vars from autoconf.php into kga
 if (isset($language)) {
@@ -96,7 +96,7 @@ Kimai_Registry::setConfig($kga);
 // ============ global namespace cleanup ============
 // remove some variables from the global namespace, that should either be
 // not accessible or which are available through the kga config object
-$cleanup = array(
+$cleanup = [
     'server_prefix',
     'server_hostname',
     'server_database',
@@ -109,7 +109,7 @@ $cleanup = array(
     'defaultTimezone',
     'billable',
     'skin'
-);
+];
 
 foreach ($cleanup as $varName) {
     if (isset($$varName)) {
@@ -149,13 +149,13 @@ Kimai_Registry::setTranslation(
 );
 unset($service);
 
-$tmpDir = WEBROOT . '/temporary/';
+$tmpDir = WEBROOT . 'temporary/';
 if (!file_exists($tmpDir) || !is_dir($tmpDir) || !is_writable($tmpDir)) {
     die('Kimai needs write permissions for: temporary/');
 }
 
-$frontendOptions = array('lifetime' => 7200, 'automatic_serialization' => true);
-$backendOptions = array('cache_dir' => $tmpDir);
+$frontendOptions = ['lifetime' => 7200, 'automatic_serialization' => true];
+$backendOptions = ['cache_dir' => $tmpDir];
 $cache = Zend_Cache::factory('Core', 'File', $frontendOptions, $backendOptions);
 Kimai_Registry::setCache($cache);
 Zend_Locale::setCache($cache);

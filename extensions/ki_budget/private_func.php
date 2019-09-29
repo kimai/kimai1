@@ -28,7 +28,7 @@ include '../ki_expenses/private_db_layer_mysql.php';
 function calculate_expenses_sum($projectId)
 {
     $expenseSum = 0;
-    $expenses = get_expenses(0, time(), null, null, array($projectId));
+    $expenses = get_expenses(0, time(), null, null, [$projectId]);
 
     foreach ($expenses as $expense) {
         $expenseSum += $expense['value'];
@@ -62,7 +62,7 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
 {
     $database = Kimai_Registry::getDatabase();
 
-    $wages = array();
+    $wages = [];
     $expensesOccurred = false;
 
     $billableLangString = $kga['lang']['billable'];
@@ -116,14 +116,14 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
             if ($activity['visible'] != 1) {
                 continue;
             }
-            $wages[$projectID][$activity['activityID']] = array(
+            $wages[$projectID][$activity['activityID']] = [
                 'name' => $activity['name'],
                 'budget' => 0,
                 'budget_total' => 0,
                 'approved' => 0,
                 'approved_total' => 0,
                 'total' => 0
-            );
+            ];
             if (!isset($activity['budget']) || $activity['budget'] <= 0) {
                 continue;
             }
@@ -148,7 +148,7 @@ function budget_plot_data($projects, $projectsFilter, $activitiesFilter, &$expen
     /* sum up wages for every project and every activity */
     foreach ($projects as $project) {
         $projectId = $project['projectID'];
-        $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, array($projectId));
+        $timeSheetEntries = $database->get_timeSheet(0, time(), null, null, [$projectId]);
         foreach ($timeSheetEntries as $timeSheetEntry) {
             $projectID = $projectId;
             if (isset($wages[$projectID][$timeSheetEntry['activityID']]) && is_array($wages[$projectID][$timeSheetEntry['activityID']])) {

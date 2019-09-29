@@ -21,7 +21,7 @@
  * finnish
  * by Klaus Kuusela (Jun 15 2013) UTF-8
  */
-return array(
+return [
     "countryCode" => "fi-FI",
     "preferences" => "Asetukset",
     "total" => "Yhteissumma",
@@ -72,7 +72,6 @@ return array(
     "trackingnr" => "Seurantanumero",
     "cookiewarning" => "Kytke ensin keksiasetukset päälle",
     "JSwarning" => "JavaScript on oltava päällä.",
-    "designation" => "nimittäminen",
     "banned" => "Estetty (tunnus lukittu)",
     "tooManyLogins" => "Liian monta epäonnistunutta kirjautumisyritystä - tunnus jäädytetty.",
     "accessDenied" => "Pääsy kielletty!",
@@ -287,27 +286,31 @@ return array(
 	    Mikäli löydät virheitä tai sinulla on uusia ideoita, laita toki viestiä keskusteluun.
 	    Ehkä vielä paremmin: luo tästä uusi <a href="%4$s">tiketti</a>.
 EOD
-,
+    ,
     'credits_license' => 'Tämä ohjelma on avoin sovellus ja julkaistu "SELLAISENAAN" ilman mitään varoituksia ja lisenssillä %1$s.',
     'credits_thanks' => 'Kiitokset tuesta:',
     'credits_libs' => 'Our thanks also go to the projects:',
 
-    'months' => array("tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"),
-    'months_short' => array("tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"),
-    'weekdays' => array("sunnuntai", "maanantai", "tiistai", "keskiviikko", "torstai", "perjantai", "lauantai"),
-    'weekdays_short' => array("su", "ma", "ti", "ke", "to", "pe", "la"),
+    'months' => ["tammikuu", "helmikuu", "maaliskuu", "huhtikuu", "toukokuu", "kesäkuu", "heinäkuu", "elokuu", "syyskuu", "lokakuu", "marraskuu", "joulukuu"],
+    'months_short' => ["tammi", "helmi", "maalis", "huhti", "touko", "kesä", "heinä", "elo", "syys", "loka", "marras", "joulu"],
+    'weekdays' => ["sunnuntai", "maanantai", "tiistai", "keskiviikko", "torstai", "perjantai", "lauantai"],
+    'weekdays_short' => ["su", "ma", "ti", "ke", "to", "pe", "la"],
 
-    'errors' => array(
-        0 => array('hdl' => "Tietokantaa ei ole kytketty!",
-            'txt' => "Varmista että tietokanta on käynnissä ja sillä on aktiivinen PDO liitännäinen sekä että asetukset 'autoconf.php' -tiedostossa (includes-kansiossa) on oikein"),
+    'errors' => [
+        0 => [
+            'hdl' => "Tietokantaa ei ole kytketty!",
+            'txt' => "Varmista että tietokanta on käynnissä ja sillä on aktiivinen PDO liitännäinen sekä että asetukset 'autoconf.php' -tiedostossa (includes-kansiossa) on oikein"
+        ],
 
-        1 => array('hdl' => "Virhe asennuksessa!",
+        1 => [
+            'hdl' => "Virhe asennuksessa!",
             'txt' => 'Kimai ei voi luoda tarvittavia tauluja sillä tietokannasta löytyi taulut samalla nimellä<br/>
 Päivittääksesi olemassa olevan asennuksen, klikkaa <a href="../index.php">tästä</a>.<br/>
-Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Kimai:n puhtaalta pöydältä.')
-    ),
+Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Kimai:n puhtaalta pöydältä.'
+        ]
+    ],
 
-    'updater' => array(
+    'updater' => [
         0 => "Kyllä, Minulla on kopio Kimain tietokannasta! Jatka päivitystä!",
         10 => "Selite:",
         20 => "Kysely suoritettu onnistuneesti.",
@@ -324,9 +327,9 @@ Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Ki
         130 => "Autoconf.php -tiedostoon kirjoitus ei onnistunut.",
         140 => "päivitä tiedosto autoconf.php",
         'timezone' => 'Kimai tukee nyt aikavyöhykkeitä. Valitse oma oletusaikavyöhykkeesi. Tätä käytetään niin käyttäjille kuin asiakkaillekin. Käyttäjä voi päivittää aikavyöhykkeensä omaksensa',
-    ),
+    ],
 
-    'backup' => array(
+    'backup' => [
         0 => "Tätä varmuuskopion palautustyökalua ei ole testattu. Käytä omalla vastuulla!",
         1 => "Saatavissa olevan varmuuskopiot:",
         2 => "palautus",
@@ -336,10 +339,11 @@ Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Ki
         6 => "Varmuuskopio (jostain)",
         7 => "palautettu.",
         8 => "luo varmuuskopio",
-        9 => "Nämä varmuuskopiot ovat itse asiassa tilannekatsauksia! Tarkoittaa että nämä elävät samannimisen tietokannan mukaan kuten todellinen Kimai työtiedostotkin. Tämän työkalun kautta laaditut varmuuskopiot eivät vastaa todellisuudessa ns. oikeita varmuuskopioita toiselle medialle. Netissä on saataville lukuisia varmuuskopiointiohjelmia ja työkaluja. ;) "),
+        9 => "Nämä varmuuskopiot ovat itse asiassa tilannekatsauksia! Tarkoittaa että nämä elävät samannimisen tietokannan mukaan kuten todellinen Kimai työtiedostotkin. Tämän työkalun kautta laaditut varmuuskopiot eivät vastaa todellisuudessa ns. oikeita varmuuskopioita toiselle medialle. Netissä on saataville lukuisia varmuuskopiointiohjelmia ja työkaluja. ;) "
+    ],
 
 
-    'xp_ext' => array(
+    'xp_ext' => [
 
         "print_hint" => "Klikkaa OK avataksesi tulostettava taulu.",
         "dl_hint" => "Klikkaa OK ladataksesi viety tiedosto.",
@@ -401,9 +405,9 @@ Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Ki
         'time_period' => 'Aikaperiodi',
 
         'duration_unit' => 't',
-    ),
-    
-    'ext_invoice' => array(
+    ],
+
+    'ext_invoice' => [
         'invoiceTitle' => 'Laadi lasku',
         'invoiceProject' => 'Projektit',
         'invoiceTimePeriod' => 'Aikaperiodi',
@@ -412,11 +416,11 @@ Valitse uusi taulujen etuliite tai poista olemassa olevan taulut asentaaksesi Ki
         'invoiceButton' => 'Luo',
         'noData' => 'Ei uusia kirjauksia valittuun projektille & aikajaksolle',
         'defaultVat' => 'oletus ALV'
-    ),
+    ],
 
-    'ext_budget' => array(
+    'ext_budget' => [
         'unusedBudget' => 'käyttämätön'
-    ),
+    ],
 
-    'extensions' => array()
-);
+    'extensions' => []
+];

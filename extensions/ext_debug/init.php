@@ -29,13 +29,13 @@ $view->addBasePath(__DIR__ . '/templates/');
 $view->assign('delete_logfile', $kga['delete_logfile']);
 $view->assign(
 	'kga_sections',
-	array(
+	[
         'all' => '',
         'plain' => 'plain',
         'lang' => 'translations',
         'user' => 'user',
         'conf' => 'config',
-    )
+    ]
 );
 $view->assign('limitText', sprintf($view->translate('debug:lines'), $kga['logfile_lines']));
 

@@ -116,7 +116,7 @@ function export_get_disabled_headers($userID)
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
-    $disabled_headers = array();
+    $disabled_headers = [];
 
     $filter['userID'] = MySQL::SQLValue($userID, MySQL::SQLVALUE_NUMBER);
     $filter['option'] = MySQL::SQLValue('export_disabled_columns');

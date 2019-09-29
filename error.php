@@ -17,16 +17,14 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (!defined('WEBROOT')) {
-    define('WEBROOT', dirname(__FILE__));
-}
+defined('WEBROOT') || define('WEBROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
-require_once WEBROOT . '/libraries/autoload.php';
+require_once WEBROOT . 'libraries/autoload.php';
 
 $kga = Kimai_Registry::getConfig();
 
 $view = new Zend_View();
-$view->setBasePath(WEBROOT . '/templates');
+$view->setBasePath(WEBROOT . 'templates');
 
 if (!isset($_REQUEST['err'])) {
     $_REQUEST['err'] = '';
