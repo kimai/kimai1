@@ -49,11 +49,12 @@ function timesheetAccessAllowed($entry, $action, &$errors)
         $permissionName = 'ki_timesheets-ownEntry-' . $action;
         if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
             return true;
-        } else {
-            Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
-            $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
-            return false;
         }
+
+        Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
+        $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+
+        return false;
     }
 
     $assignedOwnGroups = array_intersect($groups, $database->getGroupMemberships($kga['user']['userID']));
@@ -62,21 +63,23 @@ function timesheetAccessAllowed($entry, $action, &$errors)
         $permissionName = 'ki_timesheets-otherEntry-ownGroup-' . $action;
         if ($database->checkMembershipPermission($kga['user']['userID'], $assignedOwnGroups, $permissionName)) {
             return true;
-        } else {
-            Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
-            $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
-            return false;
         }
+
+        Kimai_Logger::logfile("missing membership permission $permissionName of own group(s) " . implode(", ", $assignedOwnGroups) . " for user " . $kga['user']['name']);
+        $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+
+        return false;
     }
 
     $permissionName = 'ki_timesheets-otherEntry-otherGroup-' . $action;
     if ($database->global_role_allows($kga['user']['globalRoleID'], $permissionName)) {
         return true;
-    } else {
-        Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
-        $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
-        return false;
     }
+
+    Kimai_Logger::logfile("missing global permission $permissionName for user " . $kga['user']['name']);
+    $errors[''] = $kga['lang']['errorMessages']['permissionDenied'];
+
+    return false;
 }
 
 // ==================
@@ -557,7 +560,7 @@ switch ($axAction) {
         if ($database->global_role_allows($kga['user']['globalRoleID'], 'ki_timesheets-editRates')) {
             $data['rate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['rate']);
             $data['fixedRate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['fixedRate']);
-        } else if (!$id) {
+        } elseif (!$id) {
             $data['rate'] = $database->get_best_fitting_rate($kga['user']['userID'], $data['projectID'], $data['activityID']);
             $data['fixedRate'] = str_replace($kga['conf']['decimalSeparator'], '.', $_REQUEST['fixedRate']);
         }
@@ -619,22 +622,19 @@ switch ($axAction) {
             $edit_out = array_merge($edit_out_day, $edit_out_time);
 
             $outDate = new Zend_Date($edit_out);
-        } else {
-            $outDate = null;
-        }
 
-        $rounded = Kimai_Rounding::roundTimespan(
-            $inDate->getTimestamp(),
-            $outDate->getTimestamp(),
-            $kga->getRoundPrecisionRecorderTimes(),
-            $kga->isRoundDownRecorderTimes()
-        );
-
-        $data['start'] = $rounded['start'];
-
-        if ($outDate !== null) {
+            $rounded = Kimai_Rounding::roundTimespan(
+                $inDate->getTimestamp(),
+                $outDate->getTimestamp(),
+                $kga->getRoundPrecisionRecorderTimes(),
+                $kga->isRoundDownRecorderTimes()
+            );
+            $data['start'] = $rounded['start'];
             $data['end'] = $rounded['end'];
             $data['duration'] = $data['end'] - $data['start'];
+        } else {
+            $data['start'] = $inDate->getTimestamp();
+            $outDate = null;
         }
 
         if ($id) { // TIME RIGHT - NEW OR EDIT ?
