@@ -410,7 +410,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                     if (inVal > outVal) {
                         alert("<?php $this->translate('StartTimeBeforeEndTime')?>");
                         return false;
-                    } else if (inVal < outVal) {
+                    } elseif (inVal < outVal) {
                         break;
                     } // if this part is smaller we don't care for the other parts
                 }
@@ -442,7 +442,7 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         if (inVal > outVal) {
                             alert("<?php echo $this->translate('StartTimeBeforeEndTime')?>");
                             return false;
-                        } else if (inVal < outVal) {
+                        } elseif (inVal < outVal) {
                             break;
                         } // if this part is smaller we don't care for the other parts
                     }

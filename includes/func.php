@@ -45,7 +45,7 @@ function checkUser()
         }
     }
 
-    Kimai_Logger::logfile("Kicking user because of missing cookie.");
+    Kimai_Logger::logfile('Kicking user because of missing cookie.');
     kickUser();
 }
 
@@ -193,8 +193,8 @@ function makeSelectBox($subject, $groups, $selection = null, $includeDeleted = f
  */
 function random_code($length)
 {
-    $code = "";
-    $string = "ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789";
+    $code = '';
+    $string = 'ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz0123456789';
     mt_srand((double)microtime() * 1000000);
     for ($i = 1; $i <= $length; $i++) {
         $code .= substr($string, mt_rand(0, strlen($string) - 1), 1);
@@ -211,8 +211,8 @@ function random_code($length)
  */
 function random_number($length)
 {
-    $number = "";
-    $string = "0123456789";
+    $number = '';
+    $string = '0123456789';
     mt_srand((double)microtime() * 1000000);
     for ($i = 1; $i <= $length; $i++) {
         $number .= substr($string, mt_rand(0, strlen($string) - 1), 1);
@@ -257,14 +257,14 @@ function checkDBversion($path)
  */
 function convert_time_strings($in, $out)
 {
-    $explode_in = explode("-", $in);
-    $explode_out = explode("-", $out);
+    $explode_in = explode('-', $in);
+    $explode_out = explode('-', $out);
 
-    $date_in = explode(".", $explode_in[0]);
-    $date_out = explode(".", $explode_out[0]);
+    $date_in = explode('.', $explode_in[0]);
+    $date_out = explode('.', $explode_out[0]);
 
-    $time_in = explode(":", $explode_in[1]);
-    $time_out = explode(":", $explode_out[1]);
+    $time_in = explode(':', $explode_in[1]);
+    $time_out = explode(':', $explode_out[1]);
 
     $time['in'] = mktime($time_in[0], $time_in[1], $time_in[2], $date_in[1], $date_in[0], $date_in[2]);
     $time['out'] = mktime($time_out[0], $time_out[1], $time_out[2], $date_out[1], $date_out[0], $date_out[2]);
@@ -295,9 +295,9 @@ function get_cookie($cookie_name, $default = null)
  */
 function createPassword($length)
 {
-    $chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    $chars = '234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $i = 0;
-    $password = "";
+    $password = '';
     while ($i <= $length) {
         $password .= $chars{mt_rand(0, strlen($chars) - 1)};
         $i++;
@@ -315,11 +315,36 @@ function createPassword($length)
  * @param $lang
  * @param $salt
  * @param $timezone
+ * @param $mail_transport
+ * @param string $smtp_name
+ * @param string $smtp_host
+ * @param string $smtp_port
+ * @param string $smtp_auth
+ * @param string $smtp_user
+ * @param string $smtp_pass
+ * @param string $smtp_ssl
+ *
  * @return bool
  */
-function write_config_file($database, $hostname, $username, $password, $charset, $prefix, $lang, $salt, $timezone =null, $mail_transport,
-            $smtp_name = null, $smtp_host = null, $smtp_port = null, $smtp_auth = null, $smtp_user = null, $smtp_pass = null, $smtp_ssl = null)
-{
+function write_config_file(
+    $database,
+    $hostname,
+    $username,
+    $password,
+    $charset,
+    $prefix,
+    $lang,
+    $salt,
+    $timezone = null,
+    $mail_transport,
+    $smtp_name = null,
+    $smtp_host = null,
+    $smtp_port = null,
+    $smtp_auth = null,
+    $smtp_user = null,
+    $smtp_pass = null,
+    $smtp_ssl = null
+) {
     $kga = Kimai_Registry::getConfig();
 
     $database = addcslashes($database, '"$');
@@ -327,7 +352,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
     $username = addcslashes($username, '"$');
     $password = addcslashes($password, '"$');
 
-    $file = fopen(realpath(dirname(__FILE__)) . '/autoconf.php', 'w');
+    $file = fopen(realpath(__DIR__) . '/autoconf.php', 'wb');
     if (!$file) {
         return false;
     }
@@ -336,7 +361,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
     if (!empty($timezone)) {
         $timezone = addcslashes($timezone, '"$');
         $timezone = '"' . $timezone . '"';
-    } else if (isset($kga['defaultTimezone'])) {
+    } elseif (isset($kga['defaultTimezone'])) {
         $timezone = '"' . $kga['defaultTimezone'] . '"';
     } else {
         $timezone = 'date_default_timezone_get()';
@@ -393,7 +418,7 @@ function write_config_file($database, $hostname, $username, $password, $charset,
 
 EOD;
 
-    fputs($file, $config);
+    fwrite($file, $config);
     fclose($file);
 
     return true;
@@ -424,9 +449,9 @@ function get_timeframe()
     }
 
     /* database has no entries? */
-    $mon = date("n");
-    $day = date("j");
-    $Y = date("Y");
+    $mon = date('n');
+    $day = date('j');
+    $Y = date('Y');
     if (!$timeFrame[0]) {
         $timeFrame[0] = mktime(0, 0, 0, $mon, 1, $Y);
     }
@@ -450,7 +475,7 @@ function getRequestBool($name)
             return 1;
         }
 
-        $temp = intval($_REQUEST[$name]);
+        $temp = (int)$_REQUEST[$name];
         if ($temp == 1 || $temp == 0) {
             return $temp;
         }

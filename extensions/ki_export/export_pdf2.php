@@ -525,20 +525,20 @@ class MYPDF extends BasePDF
                     if ($i == 0) {
                         $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
                     } else {
-                        $this->Cell($w[0], 6, '');
+                        $this->Cell($w[0], 6);
                     }
                     $this->Cell($w[1], 6, '', 'T');
                     $this->WriteHtmlCell($w[2], 6, $this->getX(), $this->getY() - $this->getLastH(), $wage_string, '', 0, 0, true, 'R');
                     $this->ln();
                     //$this->ln();
                     break; // leave for loop
+                }
+
+                $this->ln();
+                if ($i == 0) {
+                    $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
                 } else {
-                    $this->ln();
-                    if ($i == 0) {
-                        $this->Cell($w[0], 6, $to_date_string, '', 0, 'R');
-                    } else {
-                        $this->Cell($w[0], 6, '');
-                    }
+                    $this->Cell($w[0], 6);
                 }
             }
         }
@@ -715,5 +715,5 @@ foreach ($orderedExportData as $customer) {
 
 $pdf->Output(
     'invoice_' . date('Y-m-d_H-i-s', $pdf->print_time) . '.pdf',
-    ((isset($_REQUEST['download_pdf'])) ? 'D' : 'I')
+    (isset($_REQUEST['download_pdf']) ? 'D' : 'I')
 ); // D=Download I=Eingebunden

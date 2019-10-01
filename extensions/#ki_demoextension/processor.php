@@ -19,7 +19,7 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require('../../includes/kspi.php');
+require '../../includes/kspi.php';
 
 $kga = Kimai_Registry::getConfig();
 

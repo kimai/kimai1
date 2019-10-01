@@ -30,7 +30,7 @@ class Kimai_Update_Version
     public function __construct(array $versionInfo)
     {
         if (!$this->validate($versionInfo)) {
-            throw new Exception("Invalid version infos given");
+            throw new Exception('Invalid version infos given');
         }
         $this->vars = $versionInfo;
     }
@@ -48,8 +48,8 @@ class Kimai_Update_Version
         $remote = $this->vars['version'];
 
         if ($revision != null) {
-            $current = $current . '.' . $revision;
-            $remote  = $remote . '.' . $this->vars['revision'];
+            $current .= '.' . $revision;
+            $remote .= '.' . $this->vars['revision'];
         }
 
         return version_compare($remote, $current);
@@ -79,7 +79,7 @@ class Kimai_Update_Version
      */
     protected function validate(array $versionInfo)
     {
-        $required = ["time", "version", "status", "revision"];
+        $required = ['time', 'version', 'status', 'revision'];
         foreach ($required as $k) {
             if (!isset($versionInfo[$k])) {
                 return false;

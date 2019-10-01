@@ -116,9 +116,9 @@ class Kimai_Remote_Database
 
         if (!$result) {
             return false;
-        } else {
-            return $conn->RowArray(0, MYSQLI_ASSOC);
         }
+
+        return $conn->RowArray(0, MYSQLI_ASSOC);
     }
 
     /**

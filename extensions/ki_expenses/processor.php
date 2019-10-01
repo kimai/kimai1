@@ -168,7 +168,7 @@ switch ($axAction) {
 
         expenseAccessAllowed($data, 'delete', $errors);
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
             expense_delete($id);
         }
 
@@ -300,10 +300,8 @@ switch ($axAction) {
             if (expense_edit($id, $data) === false) {
                 $errors[''] = $kga['lang']['error'];
             }
-        } else {
-            if (expense_create($kga['user']['userID'], $data) === false) {
-                $errors[''] = $kga['lang']['error'];
-            }
+        } elseif (expense_create($kga['user']['userID'], $data) === false) {
+            $errors[''] = $kga['lang']['error'];
         }
 
         echo json_encode(['errors' => $errors]);

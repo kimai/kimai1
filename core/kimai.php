@@ -25,10 +25,10 @@ $view = new Zend_View();
 $view->setBasePath(WEBROOT . 'templates');
 
 // prevent IE from caching the response
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
 // ==================================
 // = implementing standard includes =
@@ -67,16 +67,16 @@ if (isset($kga['customer'])) {
 // =======================================
 // = Display date and time in the header =
 // =======================================
-$wd = $kga['lang']['weekdays_short'][date("w", time())];
+$wd = $kga['lang']['weekdays_short'][date('w')];
 
 $dp_start = 0;
-if ($kga['calender_start'] != "") {
+if ($kga['calender_start'] != '') {
     $dp_start = $kga['calender_start'];
-} else if (isset($kga['user'])) {
-    $dp_start = date("d/m/Y", $database->getjointime($kga['user']['userID']));
+} elseif (isset($kga['user'])) {
+    $dp_start = date('d/m/Y', $database->getjointime($kga['user']['userID']));
 }
 
-$dp_today = date("d/m/Y", time());
+$dp_today = date('d/m/Y');
 
 $view->assign('dp_start', $dp_start);
 $view->assign('dp_today', $dp_today);

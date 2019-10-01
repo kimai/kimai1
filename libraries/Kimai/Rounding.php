@@ -5,7 +5,6 @@
  */
 class Kimai_Rounding
 {
-
     /**
      * Find a beginning and end time whose timespan is as close to
      * the real timepsan as possible while being a multiple of $steps (in minutes).

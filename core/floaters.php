@@ -81,7 +81,7 @@ switch ($axAction) {
         $prefs = $database->user_get_preferences_by_prefix('ui.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/preferences.php");
+        echo $view->render('floaters/preferences.php');
     break;
 
     /**

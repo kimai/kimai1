@@ -27,10 +27,10 @@ class BasePDF extends TCPDF
     public function time($number)
     {
         if ($number == -1) {
-            return "-------";
-        } else {
-            return strftime($this->time_format, $number);
+            return '-------';
         }
+
+        return strftime($this->time_format, $number);
     }
 
     /**
@@ -54,11 +54,11 @@ class BasePDF extends TCPDF
     {
         $kga = Kimai_Registry::getConfig();
         if ($number == -1) {
-            return "-------";
-        } else {
-            return str_replace(".", $kga['conf']['decimalSeparator'],
-                sprintf("%01.2f", $number)) . " " . $kga['lang']['export_extension']['duration_unit'];
+            return '-------';
         }
+
+        return str_replace('.', $kga['conf']['decimalSeparator'],
+            sprintf('%01.2f', $number)) . ' ' . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
@@ -71,7 +71,7 @@ class BasePDF extends TCPDF
     {
         $kga = Kimai_Registry::getConfig();
 
-        return $time . " " . $kga['lang']['export_extension']['duration_unit'];
+        return $time . ' ' . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
@@ -109,7 +109,7 @@ class BasePDF extends TCPDF
         $s = $duration % 60;
         $m = (($duration - $s) / 60) % 60;
         $h = floor($duration / 3600);
-        $timeLength =  $h . ":" . substr('0' . $m, - 2);
+        $timeLength = $h . ':' . substr('0' . $m, - 2);
         return $this->time_unit($timeLength);
     }
 
@@ -175,7 +175,7 @@ class BasePDF extends TCPDF
 
         // Color and font restoration
         $this->SetFillColor(224, 235, 255);
-        $this->SetTextColor(0);
+        $this->SetTextColor();
         $this->SetFont('');
         // Data
         $fill = 0;

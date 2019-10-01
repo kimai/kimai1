@@ -42,10 +42,10 @@ $all_column_headers = [
 // Determine if the expenses extension is used.
 $expense_ext_available = false;
 if (file_exists('../ki_expenses/private_db_layer_mysql.php')) {
-    include('../ki_expenses/private_db_layer_mysql.php');
+    include '../ki_expenses/private_db_layer_mysql.php';
     $expense_ext_available = true;
 }
-include('private_db_layer_mysql.php');
+include 'private_db_layer_mysql.php';
 
 /**
  * Get a combined array with time recordings and expenses to export.

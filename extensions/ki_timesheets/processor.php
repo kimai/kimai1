@@ -166,7 +166,7 @@ switch ($axAction) {
         timesheetAccessAllowed($timeSheetEntry, 'edit', $errors);
         $response['errors'] = $errors;
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
 
             $newTimeSheetEntryID = $database->timeEntry_create($timeSheetEntry);
 
@@ -201,7 +201,7 @@ switch ($axAction) {
 
         timesheetAccessAllowed($data, 'edit', $errors);
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
             $database->stopRecorder($id);
         }
 
@@ -221,7 +221,7 @@ switch ($axAction) {
 
         timesheetAccessAllowed($data, 'edit', $errors);
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
             if (isset($_REQUEST['project'])) {
                 $database->timeEntry_edit_project($id, $_REQUEST['project']);
             }
@@ -247,7 +247,7 @@ switch ($axAction) {
 
         timesheetAccessAllowed($data, 'delete', $errors);
 
-        if (count($errors) == 0) {
+        if (count($errors) === 0) {
             $database->timeEntry_delete($id);
         }
 

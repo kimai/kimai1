@@ -23,8 +23,8 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require('../../includes/kspi.php');
-require('private_func.php');
+require '../../includes/kspi.php';
+require 'private_func.php';
 
 $database = Kimai_Registry::getDatabase();
 
@@ -169,10 +169,10 @@ switch ($axAction) {
     case 'export_html':
 
         $database->user_set_preferences([
-          'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
-          'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
+            'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
+            'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
         ],
-          'ki_export.print.');
+            'ki_export.print.');
 
 
         $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
@@ -194,39 +194,37 @@ switch ($axAction) {
             $timeSheetSummary = [];
             $expenseSummary = [];
             foreach ($exportData as $one_entry) {
+                if ($one_entry['type'] == 'timeSheet') {
+                    if (isset($timeSheetSummary[$one_entry['activityID']])) {
+                        $timeSheetSummary[$one_entry['activityID']]['time'] += $one_entry['decimalDuration']; //Sekunden
+                        $timeSheetSummary[$one_entry['activityID']]['wage'] += $one_entry['wage']; //Currency
+                        $timeSheetSummary[$one_entry['activityID']]['budget'] += $one_entry['budget']; //Currency
+                        $timeSheetSummary[$one_entry['activityID']]['approved'] += $one_entry['approved']; //Currency
+                    }
+                    else {
+                        $timeSheetSummary[$one_entry['activityID']]['name'] = html_entity_decode($one_entry['activityName']);
+                        $timeSheetSummary[$one_entry['activityID']]['time'] = $one_entry['decimalDuration'];
+                        $timeSheetSummary[$one_entry['activityID']]['wage'] = $one_entry['wage'];
+                        $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget'];
+                        $timeSheetSummary[$one_entry['activityID']]['approved'] = $one_entry['approved'];
+                    }
+                }
+                else {
+                    $expenseInfo['name']   = $kga['lang']['export_extension']['expense'] . ': ' . $one_entry['activityName'];
+                    $expenseInfo['time']   = -1;
+                    $expenseInfo['wage'] = $one_entry['wage'];
+                    $expenseInfo['budget'] = null;
+                    $expenseInfo['approved'] = null;
 
-            if ($one_entry['type'] == 'timeSheet') {
-              if (isset($timeSheetSummary[$one_entry['activityID']])) {
-                $timeSheetSummary[$one_entry['activityID']]['time']   += $one_entry['decimalDuration']; //Sekunden
-                $timeSheetSummary[$one_entry['activityID']]['wage']   += $one_entry['wage']; //Currency
-                $timeSheetSummary[$one_entry['activityID']]['budget'] += $one_entry['budget']; //Currency
-                $timeSheetSummary[$one_entry['activityID']]['approved'] += $one_entry['approved']; //Currency
-              }
-              else {
-                $timeSheetSummary[$one_entry['activityID']]['name']         = html_entity_decode($one_entry['activityName']);
-                $timeSheetSummary[$one_entry['activityID']]['time']         = $one_entry['decimalDuration'];
-                $timeSheetSummary[$one_entry['activityID']]['wage']         = $one_entry['wage'];
-                $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget'];
-                $timeSheetSummary[$one_entry['activityID']]['approved'] = $one_entry['approved'];
-              }
+                    $expenseSummary[] = $expenseInfo;
+                }
             }
-            else {
-              $expenseInfo['name']   = $kga['lang']['export_extension']['expense'] . ': ' . $one_entry['activityName'];
-              $expenseInfo['time']   = -1;
-              $expenseInfo['wage'] = $one_entry['wage'];
-              $expenseInfo['budget'] = null;
-              $expenseInfo['approved'] = null;
 
-              $expenseSummary[] = $expenseInfo;
-            }
-          }
-
-          $summary = array_merge($timeSheetSummary, $expenseSummary);
+            $summary = array_merge($timeSheetSummary, $expenseSummary);
             $view->assign('summary', $summary);
+        } else {
+            $view->assign('summary', 0);
         }
-        else
-          $view->assign('summary', 0);
-
 
         // Create filter descirption, Same is in PDF export
         $customers = [];
