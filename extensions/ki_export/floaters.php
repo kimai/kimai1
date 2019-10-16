@@ -19,7 +19,7 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates';
-require "../../includes/kspi.php";
+require '../../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
 
@@ -47,7 +47,7 @@ switch ($axAction) {
         $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/export_XLS.php");
+        echo $view->render('floaters/export_XLS.php');
         break;
 
     case 'CSV':
@@ -55,7 +55,7 @@ switch ($axAction) {
         $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/export_CSV.php");
+        echo $view->render('floaters/export_CSV.php');
         break;
 
     case 'print':
@@ -63,11 +63,11 @@ switch ($axAction) {
         $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/print.php");
+        echo $view->render('floaters/print.php');
         break;
 
     case 'help_timeformat':
-        echo $view->render("floaters/help_timeformat.php");
+        echo $view->render('floaters/help_timeformat.php');
         break;
 
 }

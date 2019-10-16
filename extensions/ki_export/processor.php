@@ -28,7 +28,6 @@ require 'private_func.php';
 
 $database = Kimai_Registry::getDatabase();
 
-
 // ============================
 // = parse general parameters =
 // ============================
@@ -38,8 +37,8 @@ if ($axAction == 'export_csv' ||
     $axAction == 'export_pdf2' ||
     $axAction == 'export_html' ||
     $axAction == 'export_xls' ||
-    $axAction == 'reload') {
-
+    $axAction == 'reload'
+) {
     if (isset($_REQUEST['axColumns'])) {
         $axColumns = explode('|', $_REQUEST['axColumns']);
         $columns = [];
@@ -127,7 +126,6 @@ switch ($axAction) {
         echo $success ? 1 : 0;
         break;
 
-
     // save selected columns
     case 'toggle_header':
         // $axValue: header name
@@ -137,9 +135,39 @@ switch ($axAction) {
 
     // Load data and return it
     case 'reload':
-        $view->assign('exportData', export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable));
+        $view->assign(
+            'exportData',
+            export_get_data(
+                $in,
+                $out,
+                $filterUsers,
+                $filterCustomers,
+                $filterProjects,
+                $filterActivities,
+                false,
+                $reverse_order,
+                $default_location,
+                $filter_cleared,
+                $filter_type,
+                false,
+                $filter_refundable
+            )
+        );
 
-        $view->assign('total', Kimai_Format::formatDuration($database->get_duration($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, $filter_cleared)));
+        $view->assign(
+            'total',
+            Kimai_Format::formatDuration(
+                $database->get_duration(
+                    $in,
+                    $out,
+                    $filterUsers,
+                    $filterCustomers,
+                    $filterProjects,
+                    $filterActivities,
+                    $filter_cleared
+                )
+            )
+        );
 
         $ann = export_get_user_annotations($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities);
         Kimai_Format::formatAnnotations($ann);
@@ -167,15 +195,26 @@ switch ($axAction) {
 
     // Export as html file
     case 'export_html':
-
         $database->user_set_preferences([
             'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
             'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
-        ],
-            'ki_export.print.');
+        ], 'ki_export.print.');
 
-
-        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities, false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $exportData = export_get_data(
+            $in,
+            $out,
+            $filterUsers,
+            $filterCustomers,
+            $filterProjects,
+            $filterActivities,
+            false,
+            $reverse_order,
+            $default_location,
+            $filter_cleared,
+            $filter_type,
+            false,
+            $filter_refundable
+        );
         $timeSum = 0;
         $wageSum = 0;
         $budgetSum = 0;
@@ -200,18 +239,16 @@ switch ($axAction) {
                         $timeSheetSummary[$one_entry['activityID']]['wage'] += $one_entry['wage']; //Currency
                         $timeSheetSummary[$one_entry['activityID']]['budget'] += $one_entry['budget']; //Currency
                         $timeSheetSummary[$one_entry['activityID']]['approved'] += $one_entry['approved']; //Currency
-                    }
-                    else {
+                    } else {
                         $timeSheetSummary[$one_entry['activityID']]['name'] = html_entity_decode($one_entry['activityName']);
                         $timeSheetSummary[$one_entry['activityID']]['time'] = $one_entry['decimalDuration'];
                         $timeSheetSummary[$one_entry['activityID']]['wage'] = $one_entry['wage'];
                         $timeSheetSummary[$one_entry['activityID']]['budget'] = $one_entry['budget'];
                         $timeSheetSummary[$one_entry['activityID']]['approved'] = $one_entry['approved'];
                     }
-                }
-                else {
-                    $expenseInfo['name']   = $kga['lang']['export_extension']['expense'] . ': ' . $one_entry['activityName'];
-                    $expenseInfo['time']   = -1;
+                } else {
+                    $expenseInfo['name'] = $kga['lang']['export_extension']['expense'] . ': ' . $one_entry['activityName'];
+                    $expenseInfo['time'] = -1;
                     $expenseInfo['wage'] = $one_entry['wage'];
                     $expenseInfo['budget'] = null;
                     $expenseInfo['approved'] = null;
@@ -251,8 +288,8 @@ switch ($axAction) {
         $view->assign('budgetSum', $budgetSum);
         $view->assign('approvedSum', $approvedSum);
 
-        header("Content-Type: text/html;charset=utf-8");
-        echo $view->render("formats/html.php");
+        header('Content-Type: text/html;charset=utf-8');
+        echo $view->render('formats/html.php');
         break;
 
     /**
@@ -264,35 +301,60 @@ switch ($axAction) {
             'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
         ], 'ki_export.xls.');
 
-        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
-            false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $exportData = export_get_data(
+            $in,
+            $out,
+            $filterUsers,
+            $filterCustomers,
+            $filterProjects,
+            $filterActivities,
+            false,
+            $reverse_order,
+            $default_location,
+            $filter_cleared,
+            $filter_type,
+            false,
+            $filter_refundable
+        );
         $view->assign('exportData', count($exportData) > 0 ? $exportData : 0);
 
         $view->assign('columns', $columns);
         $view->assign('custom_timeformat', $timeformat);
         $view->assign('custom_dateformat', $dateformat);
 
-        echo $view->render("formats/excel.php");
+        echo $view->render('formats/excel.php');
         break;
 
     /**
      * Exort as csv file.
      */
     case 'export_csv':
-
         $database->user_set_preferences([
             'column_delimiter' => $_REQUEST['column_delimiter'],
             'quote_char' => $_REQUEST['quote_char'],
             'reverse_order' => isset($_REQUEST['reverse_order']) ? 1 : 0
         ], 'ki_export.csv.');
 
-        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
-            false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $exportData = export_get_data(
+            $in,
+            $out,
+            $filterUsers,
+            $filterCustomers,
+            $filterProjects,
+            $filterActivities,
+            false,
+            $reverse_order,
+            $default_location,
+            $filter_cleared,
+            $filter_type,
+            false,
+            $filter_refundable
+        );
         $column_delimiter = $_REQUEST['column_delimiter'];
         $quote_char = $_REQUEST['quote_char'];
 
-        header("Content-Disposition:attachment;filename=export.csv");
-        header("Content-Type: text/csv ");
+        header('Content-Disposition:attachment;filename=export.csv');
+        header('Content-Type: text/csv');
 
         $row = [];
 
@@ -434,7 +496,6 @@ switch ($axAction) {
      * Export as tabular PDF document.
      */
     case 'export_pdf':
-
         $database->user_set_preferences([
             'print_comments' => isset($_REQUEST['print_comments']) ? 1 : 0,
             'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
@@ -446,8 +507,21 @@ switch ($axAction) {
             'pdf_format' => 'export_pdf'
         ], 'ki_export.pdf.');
 
-        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
-            false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $exportData = export_get_data(
+            $in,
+            $out,
+            $filterUsers,
+            $filterCustomers,
+            $filterProjects,
+            $filterActivities,
+            false,
+            $reverse_order,
+            $default_location,
+            $filter_cleared,
+            $filter_type,
+            false,
+            $filter_refundable
+        );
 
         $orderedExportData = [];
         foreach ($exportData as $row) {
@@ -475,7 +549,6 @@ switch ($axAction) {
      * Export as a PDF document in a list format.
      */
     case 'export_pdf2':
-
         $database->user_set_preferences([
             'print_comments' => isset($_REQUEST['print_comments']) ? 1 : 0,
             'print_summary' => isset($_REQUEST['print_summary']) ? 1 : 0,
@@ -486,8 +559,21 @@ switch ($axAction) {
             'pdf_format' => 'export_pdf2'
         ], 'ki_export.pdf.');
 
-        $exportData = export_get_data($in, $out, $filterUsers, $filterCustomers, $filterProjects, $filterActivities,
-            false, $reverse_order, $default_location, $filter_cleared, $filter_type, false, $filter_refundable);
+        $exportData = export_get_data(
+            $in,
+            $out,
+            $filterUsers,
+            $filterCustomers,
+            $filterProjects,
+            $filterActivities,
+            false,
+            $reverse_order,
+            $default_location,
+            $filter_cleared,
+            $filter_type,
+            false,
+            $filter_refundable
+        );
 
         // sort data into new array, where first dimension is customer and second dimension is project
         $orderedExportData = [];

@@ -57,8 +57,11 @@ class BasePDF extends TCPDF
             return '-------';
         }
 
-        return str_replace('.', $kga['conf']['decimalSeparator'],
-            sprintf('%01.2f', $number)) . ' ' . $kga['lang']['export_extension']['duration_unit'];
+        return str_replace(
+                   '.',
+                   $kga['conf']['decimalSeparator'],
+                   sprintf("%01.2f", $number)
+               ) . ' ' . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
@@ -188,7 +191,7 @@ class BasePDF extends TCPDF
                 $this->Cell(array_sum($w), 0, '', 'T');
                 $this->Ln();
                 $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 'R', false);
-                if ($_REQUEST['time_type'] == "dec_time") {
+                if ($_REQUEST['time_type'] == 'dec_time') {
                     if (isset($this->columns['dec_time'])) {
                         $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
                     }
@@ -210,7 +213,7 @@ class BasePDF extends TCPDF
                 $this->SetFont('');
             }
             $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);
-            if ($_REQUEST['time_type'] == "dec_time") {
+            if ($_REQUEST['time_type'] == 'dec_time') {
                 if (isset($this->columns['dec_time'])) {
                     $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill);
                 }
@@ -233,7 +236,7 @@ class BasePDF extends TCPDF
 
         $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'] . ':', '', 0, 'R', false);
         $this->SetFont('', 'B');
-        if ($_REQUEST['time_type'] == "dec_time") {
+        if ($_REQUEST['time_type'] == 'dec_time') {
             if (isset($this->columns['dec_time'])) {
                 $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
             }

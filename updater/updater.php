@@ -1187,6 +1187,7 @@ if ((int)$revisionDB < 1394) {
 // release of kimai 1.3.0
 // release of kimai 1.3.1
 // release of kimai 1.3.2
+// release of kimai 1.3.3
 
 // ================================================================================
 // FINALIZATION: update DB version number
