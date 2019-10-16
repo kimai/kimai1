@@ -64,18 +64,51 @@ include('private_db_layer_mysql.php');
  * @param int $limitCommentSize should comments be cut off, when they are too long
  * @return array with time recordings and expenses chronologically sorted
  */
-function export_get_data($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $default_location = '', $filter_cleared = -1, $filter_type = -1, $limitCommentSize = true, $filter_refundable = -1)
-{
+function export_get_data(
+    $start,
+    $end,
+    $users = null,
+    $customers = null,
+    $projects = null,
+    $activities = null,
+    $limit = false,
+    $reverse_order = false,
+    $default_location = '',
+    $filter_cleared = -1,
+    $filter_type = -1,
+    $limitCommentSize = true,
+    $filter_refundable = -1
+) {
     global $expense_ext_available;
     $database = Kimai_Registry::getDatabase();
     $timeSheetEntries = [];
     $expenses = [];
     if ($filter_type != 1) {
-        $timeSheetEntries = $database->get_timeSheet($start, $end, $users, $customers, $projects, $activities, $limit, $reverse_order, $filter_cleared);
+        $timeSheetEntries = $database->get_timeSheet(
+            $start,
+            $end,
+            $users,
+            $customers,
+            $projects,
+            $activities,
+            $limit,
+            $reverse_order,
+            $filter_cleared
+        );
     }
 
     if ($filter_type != 0 && $expense_ext_available) {
-        $expenses = get_expenses($start, $end, $users, $customers, $projects, $limit, $reverse_order, $filter_refundable, $filter_cleared);
+        $expenses = get_expenses(
+            $start,
+            $end,
+            $users,
+            $customers,
+            $projects,
+            $limit,
+            $reverse_order,
+            $filter_refundable,
+            $filter_cleared
+        );
     }
     $result_arr = [];
     $timeSheetEntries_index = 0;
@@ -118,7 +151,9 @@ function export_get_data($start, $end, $users = null, $customers = null, $projec
         }
         $arr['location'] = $default_location;
 
-        if ((! $reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp'])) || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))) {
+        if ((!$reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] > $expenses[$expenses_index]['timestamp']))
+            || ($reverse_order && ($timeSheetEntries[$timeSheetEntries_index]['start'] < $expenses[$expenses_index]['timestamp']))
+        ) {
             if ($timeSheetEntries[$timeSheetEntries_index]['end'] != 0) {
                 // active recordings will be omitted
                 $arr['type'] = 'timeSheet';
