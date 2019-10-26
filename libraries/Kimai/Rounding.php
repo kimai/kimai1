@@ -22,16 +22,16 @@ class Kimai_Rounding
     public static function roundTimespan($start, $end, $minutes, $allowRoundDown)
     {
         if ($allowRoundDown) {
-            return self::floorRounding($start, $end, $minutes);
+            return self::closestRounding($start, $end, $minutes);
         }
 
         return self::ceilRounding($start, $end, $minutes);
     }
 
-    private static function floorRounding($start, $end, $minutes)
+    private static function closestRounding($start, $end, $minutes)
     {
-        $roundedStart = self::getFloorRoundingStart($start, $minutes);
-        $roundedEnd = self::getFloorRoundingEnd($end, $minutes);
+        $roundedStart = self::getClosestRoundingStart($start, $minutes);
+        $roundedEnd = self::getClosestRoundingEnd($end, $minutes);
 
         if ($roundedStart === null || $roundedEnd === null) {
             return [
@@ -46,7 +46,7 @@ class Kimai_Rounding
         ];
     }
 
-    private static function getFloorRoundingStart($start, $minutes)
+    private static function getClosestRoundingStart($start, $minutes)
     {
         if ($minutes <= 0) {
             return null;
@@ -60,10 +60,13 @@ class Kimai_Rounding
             return null;
         }
 
+        if ($diff > ($seconds / 2)) {
+            return $timestamp - $diff + $seconds;
+        }
         return $timestamp - $diff;
     }
 
-    private static function getFloorRoundingEnd($end, $minutes)
+    private static function getClosestRoundingEnd($end, $minutes)
     {
         if ($minutes <= 0) {
             return null;
@@ -77,6 +80,9 @@ class Kimai_Rounding
             return null;
         }
 
+        if ($diff > ($seconds / 2)) {
+            return $timestamp - $diff + $seconds;
+        }
         return $timestamp - $diff;
     }
 
