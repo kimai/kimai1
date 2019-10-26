@@ -166,9 +166,9 @@ function invoice_add_to_array(&$array, $row, $short_form)
                 'date' => date("m/d/Y", $row['timestamp']),
             ];
             return;
-        } else {
-            $activityIndexMap[$row['desc']] = count($array);
         }
+
+        $activityIndexMap[$row['desc']] = count($array);
     }
     $array[] = $row;
 }

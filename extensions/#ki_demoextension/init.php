@@ -17,7 +17,7 @@
  * along with Kimai; If not, see <http://www.gnu.org/licenses/>.
  */
 
-include('../../includes/basics.php');
+include '../../includes/basics.php';
 
 $dir_templates = 'templates/';
 $datasrc = 'config.ini';

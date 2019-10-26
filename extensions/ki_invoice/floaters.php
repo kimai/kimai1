@@ -19,13 +19,13 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require('../../includes/kspi.php');
+require '../../includes/kspi.php';
 
 switch ($axAction) {
     case 'editVat':
         if (isset($kga['customer'])) {
             die();
         }
-        echo $view->render("floaters/editVat.php");
+        echo $view->render('floaters/editVat.php');
         break;
 }

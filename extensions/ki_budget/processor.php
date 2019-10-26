@@ -100,7 +100,7 @@ switch ($axAction) {
         }
         // Get all project for the logged in customer or the current user.
         if (isset($kga['customer'])) {
-            $projects = $database->get_projects_by_customer(($kga['customer']['customerID']));
+            $projects = $database->get_projects_by_customer($kga['customer']['customerID']);
             $activities = $database->get_activities();
         } else {
             $customers = $database->get_customers($kga['user']['groups']);
@@ -139,8 +139,7 @@ switch ($axAction) {
             $plotData = [];
 
             // filter out projects that are a) not selected or b) have no relevant/zero data to be displayed
-            foreach ($projects as $project)
-            {
+            foreach ($projects as $project) {
                 if (array_search($project['projectID'], $projectsSelected) === false) {
                     continue;
                 }
@@ -163,8 +162,7 @@ switch ($axAction) {
 
                 // filter out activities that have no relevant/zero data to be plotted
                 $plotData[$temp] = [];
-                foreach ($arr_plotdata[$temp] as $id => $activity)
-                {
+                foreach ($arr_plotdata[$temp] as $id => $activity) {
                     $isActivity = is_array($activity) && isset($activity['name']);
 
                     if ($isActivity && array_search($id, $activitiesSelected) === false) {

@@ -23,8 +23,8 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require('../../includes/kspi.php');
-require('private_func.php');
+require '../../includes/kspi.php';
+require 'private_func.php';
 
 $database = Kimai_Registry::getDatabase();
 

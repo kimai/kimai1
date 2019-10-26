@@ -28,7 +28,7 @@
  */
 
 // Bootstrap Kimai
-require(dirname(__FILE__) . "/../includes/basics.php");
+require __DIR__ . '/../includes/basics.php';
 
 ini_set('soap.wsdl_cache_enabled', 0); // TODO
 ini_set('soap.wsdl_cache_dir', APPLICATION_PATH . '/temporary/'); // TODO

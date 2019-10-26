@@ -18,7 +18,7 @@
  */
 
 $isCoreProcessor = 0;
-$dir_templates = "templates";
+$dir_templates = 'templates';
 require '../../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
@@ -33,7 +33,7 @@ switch ($axAction) {
     // =============================
     // = Builds edit-user dialogue =
     // =============================
-    case "editUser":
+    case 'editUser':
 
         $userDetails = $database->user_get_data($id);
 
@@ -89,20 +89,20 @@ switch ($axAction) {
     // =============================
     // = Builds edit-status dialogue =
     // =============================
-    case "editStatus":
+    case 'editStatus':
 
         $statusDetails = $database->status_get_data($_REQUEST['id']);
 
         $view->assign('status_details', $statusDetails);
 
-        echo $view->render("floaters/editstatus.php");
+        echo $view->render('floaters/editstatus.php');
 
         break;
 
     // =============================
     // = Builds edit-group dialogue =
     // =============================
-    case "editGlobalRole":
+    case 'editGlobalRole':
 
         $globalRoleDetails = $database->globalRole_get_data($_REQUEST['id']);
 
@@ -122,7 +122,7 @@ switch ($axAction) {
     // =============================
     // = Builds edit-group dialogue =
     // =============================
-    case "editMembershipRole":
+    case 'editMembershipRole':
 
         $membershipRoleDetails = $database->membershipRole_get_data($_REQUEST['id']);
 
@@ -135,7 +135,7 @@ switch ($axAction) {
         unset($view->permissions['membershipRoleID']);
         unset($view->permissions['name']);
 
-        echo $view->render("floaters/editglobalrole.php");
+        echo $view->render('floaters/editglobalrole.php');
 
         break;
 

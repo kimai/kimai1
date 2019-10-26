@@ -38,11 +38,11 @@ switch ($axAction) {
     case 'editVat':
         $vat = str_replace($kga['conf']['decimalSeparator'], '.', $_POST['vat']);
         if (!is_numeric($vat)) {
-            echo "0";
+            echo '0';
             return;
         }
         $database->configuration_edit(['defaultVat' => $vat]);
-        echo "1";
+        echo '1';
         break;
 
     // ==========================
@@ -60,7 +60,7 @@ switch ($axAction) {
         foreach ($db_projects as $project) {
             $js_projects[$project['projectID']] = $project['name'];
         }
-        header("Content-Type: application/json");
+        header('Content-Type: application/json');
         echo json_encode($js_projects);
         break;
 }

@@ -212,7 +212,9 @@ switch ($axAction) {
         break;
 
     case 'add_edit_timeSheetQuickNote':
-        if (isset($kga['customer'])) die();
+        if (isset($kga['customer'])) {
+            die();
+        }
         // ================================================
         // = display edit dialog for timesheet quick note =
         // ================================================

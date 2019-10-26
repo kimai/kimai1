@@ -54,7 +54,7 @@ class BasePDF extends TCPDF
     {
         $kga = Kimai_Registry::getConfig();
         if ($number == -1) {
-            return "-------";
+            return '-------';
         }
 
         return str_replace(
@@ -178,7 +178,7 @@ class BasePDF extends TCPDF
 
         // Color and font restoration
         $this->SetFillColor(224, 235, 255);
-        $this->SetTextColor(0);
+        $this->SetTextColor();
         $this->SetFont('');
         // Data
         $fill = 0;

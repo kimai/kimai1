@@ -48,7 +48,7 @@ $out = $dateOut->getTimestamp();
 
 $invoiceArray = invoice_get_data($in, $out, $_REQUEST['projectID'], $_REQUEST['filter_cleared'], isset($_REQUEST['short']));
 
-if (count($invoiceArray) == 0) {
+if (count($invoiceArray) === 0) {
     die($kga['lang']['ext_invoice']['noData']);
 }
 
@@ -129,7 +129,7 @@ if (!is_numeric($vat_rate)) {
 $vat = $vat_rate * $total / 100;
 $gtotal = $total + $vat;
 
-$baseFolder = dirname(__FILE__) . '/invoices/';
+$baseFolder = __DIR__ . '/invoices/';
 $tplFilename = $_REQUEST['ivform_file'];
 
 if (strpos($tplFilename, '/') !== false) {
@@ -145,8 +145,7 @@ if (isset($_POST['mark_entries_as_cleared']) && $_POST['mark_entries_as_cleared'
 // ---------------------------------------------------------------------------
 
 // totally unneccessary
-unset($customer['password']);
-unset($customer['passwordResetHash']);
+unset($customer['password'], $customer['passwordResetHash']);
 
 $model = new Kimai_Invoice_PrintModel();
 $model->setEntries($invoiceArray);

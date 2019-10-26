@@ -59,7 +59,7 @@ function export_expense_set_cleared($id, $cleared)
     $database = Kimai_Registry::getDatabase();
     $conn = $database->getConnectionHandler();
 
-    $table = $kga['server_prefix'] . "expenses";
+    $table = $kga['server_prefix'] . 'expenses';
     $values['cleared'] = $cleared ? 1 : 0;
     $filter['expenseID'] = MySQL::SQLValue($id, MySQL::SQLVALUE_NUMBER);
     $query = MySQL::BuildSQLUpdate($table, $values, $filter);
@@ -137,7 +137,7 @@ function export_get_disabled_headers($userID)
         }
 
         // next bit and array element
-        $code = $code / 2;
+        $code /= 2;
         $i++;
     }
 

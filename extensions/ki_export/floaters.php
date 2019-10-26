@@ -19,7 +19,7 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates';
-require('../../includes/kspi.php');
+require '../../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
 

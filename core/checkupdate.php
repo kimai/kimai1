@@ -22,7 +22,7 @@
  * The response will simply be passed through.
  */
 error_reporting(-1);
-require('../includes/basics.php');
+require '../includes/basics.php';
 
 header('Content-Type: text/html; charset=utf-8');
 

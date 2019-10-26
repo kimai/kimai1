@@ -26,7 +26,6 @@
  */
 class Kimai_User extends Kimai_ArrayObject
 {
-
     /**
      * Create a new user instance, either empty or with the given $settings.
      *

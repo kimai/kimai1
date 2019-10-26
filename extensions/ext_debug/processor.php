@@ -23,7 +23,7 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require "../../includes/kspi.php";
+require '../../includes/kspi.php';
 
 $kga = Kimai_Registry::getConfig();
 
@@ -31,9 +31,9 @@ switch ($axAction) {
     /**
      * Return the logfile in reverse order, so the last entries are shown first.
      */
-    case "reloadLogfile":
+    case 'reloadLogfile':
         $logdatei = WEBROOT . 'temporary/logfile.txt';
-        $fh = fopen($logdatei, 'r');
+        $fh = fopen($logdatei, 'rb');
 
         $theData = '';
         $i = 0;
@@ -52,14 +52,14 @@ switch ($axAction) {
             $start = count($filearray);
             $goal = $start - $lines;
             for ($line = $start - 1; ($line > $goal && $line > 0); $line--) {
-                if ($filearray[$line] != "") {
-                    $theData .= $filearray[$line] . "<br/>";
+                if ($filearray[$line] != '') {
+                    $theData .= $filearray[$line] . '<br/>';
                 }
             }
         } else {
             foreach ($filearray as $line) {
-                if ($line != "") {
-                    $theData .= $line . "<br/>";
+                if ($line != '') {
+                    $theData .= $line . '<br/>';
                 }
             }
         }
@@ -70,10 +70,10 @@ switch ($axAction) {
     /**
      * Empty the logfile.
      */
-    case "clearLogfile":
+    case 'clearLogfile':
         if ($kga['delete_logfile']) {
-            $logdatei = fopen(WEBROOT . "temporary/logfile.txt", "w");
-            fwrite($logdatei, "");
+            $logdatei = fopen(WEBROOT . 'temporary/logfile.txt', 'wb');
+            fwrite($logdatei, '');
             fclose($logdatei);
             echo $kga['lang']['log_delete'];
         } else {
@@ -84,29 +84,29 @@ switch ($axAction) {
     /**
      * Write some message to the logfile.
      */
-    case "shoutbox":
-        Kimai_Logger::logfile("[" . Kimai_Registry::getUser()->getName() . "] " . $axValue);
+    case 'shoutbox':
+        Kimai_Logger::logfile('[' . Kimai_Registry::getUser()->getName() . '] ' . $axValue);
         break;
 
     /**
      * Return the $kga variable (Kimai Global Array). Strip out some sensitive
      * information if not configured otherwise.
      */
-    case "reloadKGA":
+    case 'reloadKGA':
 
         $output = $kga;
         $filter = [
-            'server_hostname' => "xxx",
-            'server_database' => "xxx",
-            'server_username' => "xxx",
-            'server_password' => "xxx",
-            'password_salt' => "xxx",
+            'server_hostname' => 'xxx',
+            'server_database' => 'xxx',
+            'server_username' => 'xxx',
+            'server_password' => 'xxx',
+            'password_salt' => 'xxx',
             'user' => [
-                'secure' => "xxx",
-                'userID' => "xxx",
-                'pw' => "xxx",
-                'password' => "xxx",
-                'apikey' => "xxx"
+                'secure' => 'xxx',
+                'userID' => 'xxx',
+                'pw' => 'xxx',
+                'password' => 'xxx',
+                'apikey' => 'xxx'
             ],
         ];
 
