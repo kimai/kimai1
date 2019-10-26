@@ -26,7 +26,6 @@ use Kimai_Rounding;
  */
 class RoundingTest extends TestCase
 {
-
     /**
      * @covers ::roundTimespan
      */
@@ -39,11 +38,60 @@ class RoundingTest extends TestCase
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
         $this->assertArrayHasKey('end', $actual);
-        $this->assertArrayHasKey('duration', $actual);
 
-        $this->assertEquals($actual['start'], $start);
-        $this->assertEquals($actual['end'], $end);
-        $this->assertEquals($actual['duration'], $end - $start);
+        $this->assertEquals($start, $actual['start']);
+        $this->assertEquals($end, $actual['end']);
+    }
+
+    /**
+     * @covers ::roundTimespan
+     */
+    public function testRoundTimespanWithSteps15MinAndNoRoundDownOnExactStep()
+    {
+        $start = 1572109200;
+        $end = 1572110100;
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
+
+        $this->assertInternalType('array', $actual);
+        $this->assertArrayHasKey('start', $actual);
+        $this->assertArrayHasKey('end', $actual);
+
+        $this->assertEquals($start, $actual['start']);
+        $this->assertEquals($end, $actual['end']);
+    }
+
+    /**
+     * @covers ::roundTimespan
+     */
+    public function testRoundTimespanWithSteps15MinAndNoRoundDownOnAnyMinute()
+    {
+        $start = 1572109500;
+        $end = 1572110400;
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
+
+        $this->assertInternalType('array', $actual);
+        $this->assertArrayHasKey('start', $actual);
+        $this->assertArrayHasKey('end', $actual);
+
+        $this->assertEquals(1572110100, $actual['start']);
+        $this->assertEquals(1572111000, $actual['end']);
+    }
+
+    /**
+     * @covers ::roundTimespan
+     */
+    public function testRoundTimespanWithSteps15MinAndRoundDown(){
+
+        $start = 1572109200;
+        $end = 1572110100;
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+
+        $this->assertInternalType('array', $actual);
+        $this->assertArrayHasKey('start', $actual);
+        $this->assertArrayHasKey('end', $actual);
+
+        $this->assertEquals($start, $actual['start']);
+        $this->assertEquals($end, $actual['end']);
     }
 
     /**
@@ -59,12 +107,8 @@ class RoundingTest extends TestCase
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
         $this->assertArrayHasKey('end', $actual);
-        $this->assertArrayHasKey('duration', $actual);
-        $this->assertArrayHasKey('totalDeviation', $actual);
 
-        $this->assertEquals($actual['start'], 1458405900);
-        $this->assertEquals($actual['end'], 1458413100);
-        $this->assertEquals($actual['duration'], 7200);
-        $this->assertEquals($actual['totalDeviation'], 530);
+        $this->assertEquals(1458405900, $actual['start']);
+        $this->assertEquals(1458413100, $actual['end']);
     }
 }

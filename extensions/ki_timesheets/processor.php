@@ -624,8 +624,8 @@ switch ($axAction) {
             $outDate = new Zend_Date($edit_out);
 
             $rounded = Kimai_Rounding::roundTimespan(
-                $inDate->getTimestamp(),
-                $outDate->getTimestamp(),
+                (int)$inDate->getTimestamp(),
+                (int)$outDate->getTimestamp(),
                 $kga->getRoundPrecisionRecorderTimes(),
                 $kga->isRoundDownRecorderTimes()
             );
