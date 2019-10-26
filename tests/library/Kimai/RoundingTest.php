@@ -96,7 +96,6 @@ class RoundingTest extends TestCase
 
     /**
      * @covers ::roundTimespan
-     * @covers ::roundTimespanCheckIfBetter
      */
     public function testRoundTimespan()
     {
