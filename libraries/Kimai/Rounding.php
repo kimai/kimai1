@@ -7,96 +7,134 @@ class Kimai_Rounding
 {
     /**
      * Find a beginning and end time whose timespan is as close to
-     * the real timepsan as possible while being a multiple of $steps (in minutes).
+     * the real timespan as possible while being a multiple of $minutes.
      *
      * e.g.: 16:07:31 - 17:15:16 is "rounded" to 16:00:00 - 17:15:00
-     *       with steps set to 15
+     *       with steps set to 15 min
      *
      * @param int $start the beginning of the timespan
-     * @param int $end   the end of the timespan
-     * @param int $steps the steps in minutes (has to divide an hour, e.g. 5 is valid while 7 is not)
-     * @param $allowRoundDown
+     * @param int $end the end of the timespan
+     * @param int $minutes the steps in minutes (has to divide an hour, e.g. 5 is valid while 7 is not)
+     * @param bool $allowRoundDown
+     *
      * @return array
      */
-    public static function roundTimespan($start, $end, $steps, $allowRoundDown)
+    public static function roundTimespan($start, $end, $minutes, $allowRoundDown)
     {
-        // calculate how long a steps is (e.g. 15 second steps are 900 seconds long)
-        $stepWidth = $steps * 60;
-
-        if ($steps == 0) {
-            $bestTime = [];
-            $bestTime['start'] = $start;
-            $bestTime['end'] = $end;
-            $bestTime['duration'] = $end - $start;
-            return $bestTime;
+        if ($allowRoundDown) {
+            return self::closestRounding($start, $end, $minutes);
         }
 
-        // calculate how many seconds we are over the previous full step
-        $startSecondsOver = $start % $stepWidth;
-        $endSecondsOver = $end % $stepWidth;
-
-        // calculate earlier and later times of full step width
-        $earlierStart = $start - $startSecondsOver;
-        $earlierEnd = $end - $endSecondsOver;
-        $laterStart = $start + ($stepWidth - $startSecondsOver);
-        $laterEnd = $end + ($stepWidth - $endSecondsOver);
-
-
-        // assuming the earlier start end end time are the best (likely not always true)
-        $bestTime = [];
-        $bestTime['start'] = $earlierStart;
-        $bestTime['end'] = $earlierEnd;
-        $bestTime['duration'] = $earlierEnd - $earlierStart;
-        $bestTime['totalDeviation'] = abs($start - $earlierStart) + abs($end - $earlierEnd);
-
-        // check for better start and end times
-        self::roundTimespanCheckIfBetter($bestTime, $earlierStart, $laterEnd, $start, $end, $allowRoundDown);
-        self::roundTimespanCheckIfBetter($bestTime, $laterStart, $earlierEnd, $start, $end, $allowRoundDown);
-        self::roundTimespanCheckIfBetter($bestTime, $laterStart, $laterEnd, $start, $end, $allowRoundDown);
-
-        return $bestTime;
+        return self::ceilRounding($start, $end, $minutes);
     }
 
-    /**
-     * Check if the new time values are better than the old once in the array.
-     *
-     * @param $bestTime (called by reference)
-     *                  Array containing the, until now, best time data
-     * @param int $newStart suggestion for a better start time
-     * @param int $newEnd   suggestion for a better end time
-     * @param int $realStart the real start time
-     * @param int $realEnd   the real end time
-     * @param $allowRoundDown
-     */
-    private static function roundTimespanCheckIfBetter(&$bestTime, $newStart, $newEnd, $realStart, $realEnd, $allowRoundDown)
+    private static function closestRounding($start, $end, $minutes)
     {
-        $realDuration = $realEnd - $realStart;
-        $newDuration = $newEnd - $newStart;
+        $roundedStart = self::getClosestRoundingStart($start, $minutes);
+        $roundedEnd = self::getClosestRoundingEnd($end, $minutes);
 
-        if ($allowRoundDown) {
-            // new times are definitely worse, as the timespan is furher away from the real duration
-            if (abs($realDuration - $newDuration) > abs($realDuration - $bestTime['duration'])) {
-                return;
-            }
-
-            // still, this might be closer to the real time
-            if (abs($realStart - $newStart) + abs($realEnd - $newEnd) >= $bestTime['totalDeviation']) {
-                return;
-            }
-        } else {
-            if ($newDuration < $realDuration) {
-                return;
-            }
-
-            if ($newDuration > $bestTime['duration'] && $bestTime['duration'] > $realDuration) {
-                return;
-            }
+        if ($roundedStart === null || $roundedEnd === null) {
+            return [
+                'start' => $start,
+                'end' => $end,
+            ];
         }
 
-        // new time is better, update array
-        $bestTime['start'] = $newStart;
-        $bestTime['end'] = $newEnd;
-        $bestTime['duration'] = $newEnd - $newStart;
-        $bestTime['totalDeviation'] = abs($realStart - $newStart) + abs($realEnd - $newEnd);
+        return [
+            'start' => $roundedStart,
+            'end' => $roundedEnd,
+        ];
+    }
+
+    private static function getClosestRoundingStart($start, $minutes)
+    {
+        if ($minutes <= 0) {
+            return null;
+        }
+
+        $timestamp = $start;
+        $seconds = $minutes * 60;
+        $diff = $timestamp % $seconds;
+
+        if (0 === $diff) {
+            return null;
+        }
+
+        if ($diff > ($seconds / 2)) {
+            return $timestamp - $diff + $seconds;
+        }
+        return $timestamp - $diff;
+    }
+
+    private static function getClosestRoundingEnd($end, $minutes)
+    {
+        if ($minutes <= 0) {
+            return null;
+        }
+
+        $timestamp = $end;
+        $seconds = $minutes * 60;
+        $diff = $timestamp % $seconds;
+
+        if (0 === $diff) {
+            return null;
+        }
+
+        if ($diff > ($seconds / 2)) {
+            return $timestamp - $diff + $seconds;
+        }
+        return $timestamp - $diff;
+    }
+
+    private static function ceilRounding($start, $end, $minutes)
+    {
+        $roundedStart = self::getCeilRoundingStart($start, $minutes);
+        $roundedEnd = self::getCeilRoundingEnd($end, $minutes);
+
+        if ($roundedStart === null || $roundedEnd === null) {
+            return [
+                'start' => $start,
+                'end' => $end,
+            ];
+        }
+
+        return [
+            'start' => $roundedStart,
+            'end' => $roundedEnd,
+        ];
+    }
+
+    private static function getCeilRoundingStart($start, $minutes)
+    {
+        if ($minutes <= 0) {
+            return null;
+        }
+
+        $timestamp = $start;
+        $seconds = $minutes * 60;
+        $diff = $timestamp % $seconds;
+
+        if (0 === $diff) {
+            return null;
+        }
+
+        return $timestamp - $diff + $seconds;
+    }
+
+    private static function getCeilRoundingEnd($end, $minutes)
+    {
+        if ($minutes <= 0) {
+            return null;
+        }
+
+        $timestamp = $end;
+        $seconds = $minutes * 60;
+        $diff = $timestamp % $seconds;
+
+        if (0 === $diff) {
+            return null;
+        }
+
+        return $timestamp - $diff + $seconds;
     }
 }
