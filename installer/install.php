@@ -337,16 +337,16 @@ exec_query("INSERT INTO `${p}configuration` (`option`, `value`) VALUES
 ('date_format_3', 'd.m.Y'),
 ('table_time_format', '%H:%M'),
 ('language', '" . $kga['language'] . "'),
-('roundPrecision', '0'),
+('roundPrecision', '1'),
+('allowRoundDown', '1'),
 ('decimalSeparator', ','),
 ('durationWithSeconds', '0'),
 ('exactSums', '0'),
 ('defaultVat', '0'),
 ('editLimit', '0'),
 ('roundTimesheetEntries', '0'),
-('roundMinutes', '0'),
+('roundMinutes', '1'),
 ('roundSeconds', '0'),
-('allowRoundDown', '0'),
 ('defaultStatusID', '1')
 ");
 

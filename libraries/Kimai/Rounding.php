@@ -22,31 +22,30 @@ class Kimai_Rounding
     public static function roundTimespan($start, $end, $minutes, $allowRoundDown)
     {
         if ($allowRoundDown) {
-            return self::closestRounding($start, $end, $minutes);
+            return self::defaultRounding($start, $end, $minutes);
         }
 
         return self::ceilRounding($start, $end, $minutes);
     }
 
-    private static function closestRounding($start, $end, $minutes)
+    private static function defaultRounding($start, $end, $minutes)
     {
-        $roundedStart = self::getClosestRoundingStart($start, $minutes);
-        $roundedEnd = self::getClosestRoundingEnd($end, $minutes);
-
-        if ($roundedStart === null || $roundedEnd === null) {
-            return [
-                'start' => $start,
-                'end' => $end,
-            ];
-        }
+        $roundedStart = self::getDefaultRoundingStart($start, $minutes);
+        $roundedEnd = self::getDefaultRoundingEnd($end, $minutes);
 
         return [
-            'start' => $roundedStart,
-            'end' => $roundedEnd,
+            'start' => $roundedStart !== null ? $roundedStart : $start,
+            'end' => $roundedEnd !== null ? $roundedEnd : $end,
         ];
     }
 
-    private static function getClosestRoundingStart($start, $minutes)
+    /**
+     * @param int $start
+     * @param int $minutes
+     *
+     * @return float|int|null
+     */
+    private static function getDefaultRoundingStart($start, $minutes)
     {
         if ($minutes <= 0) {
             return null;
@@ -57,16 +56,19 @@ class Kimai_Rounding
         $diff = $timestamp % $seconds;
 
         if (0 === $diff) {
-            return null;
+            return $start;
         }
 
-        if ($diff > ($seconds / 2)) {
-            return $timestamp - $diff + $seconds;
-        }
         return $timestamp - $diff;
     }
 
-    private static function getClosestRoundingEnd($end, $minutes)
+    /**
+     * @param int $end
+     * @param int $minutes
+     *
+     * @return float|int|null
+     */
+    private static function getDefaultRoundingEnd($end, $minutes)
     {
         if ($minutes <= 0) {
             return null;
@@ -77,33 +79,36 @@ class Kimai_Rounding
         $diff = $timestamp % $seconds;
 
         if (0 === $diff) {
-            return null;
+            return $end;
         }
 
-        if ($diff > ($seconds / 2)) {
-            return $timestamp - $diff + $seconds;
-        }
-        return $timestamp - $diff;
+        return $timestamp - $diff + $seconds;
     }
 
+    /**
+     * @param int $start
+     * @param int $end
+     * @param int $minutes
+     *
+     * @return array
+     */
     private static function ceilRounding($start, $end, $minutes)
     {
         $roundedStart = self::getCeilRoundingStart($start, $minutes);
         $roundedEnd = self::getCeilRoundingEnd($end, $minutes);
 
-        if ($roundedStart === null || $roundedEnd === null) {
-            return [
-                'start' => $start,
-                'end' => $end,
-            ];
-        }
-
         return [
-            'start' => $roundedStart,
-            'end' => $roundedEnd,
+            'start' => $roundedStart !== null ? $roundedStart : $start,
+            'end' => $roundedEnd !== null ? $roundedEnd : $end,
         ];
     }
 
+    /**
+     * @param int $start
+     * @param int $minutes
+     *
+     * @return float|int|null
+     */
     private static function getCeilRoundingStart($start, $minutes)
     {
         if ($minutes <= 0) {
@@ -115,12 +120,18 @@ class Kimai_Rounding
         $diff = $timestamp % $seconds;
 
         if (0 === $diff) {
-            return null;
+            return $start;
         }
 
         return $timestamp - $diff + $seconds;
     }
 
+    /**
+     * @param int $end
+     * @param int $minutes
+     *
+     * @return float|int|null
+     */
     private static function getCeilRoundingEnd($end, $minutes)
     {
         if ($minutes <= 0) {
@@ -132,7 +143,7 @@ class Kimai_Rounding
         $diff = $timestamp % $seconds;
 
         if (0 === $diff) {
-            return null;
+            return $end;
         }
 
         return $timestamp - $diff + $seconds;
