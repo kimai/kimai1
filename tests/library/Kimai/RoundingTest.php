@@ -48,8 +48,8 @@ class RoundingTest extends TestCase
      */
     public function testRoundTimespanWithSteps15MinAndNoRoundDownOnExactStep()
     {
-        $start = 1572109200;
-        $end = 1572110100;
+        $start = strtotime('2019-10-26T17:00:00+00:00');
+        $end =   strtotime('2019-10-26T17:15:00+00:00');
         $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
 
         $this->assertInternalType('array', $actual);
@@ -65,25 +65,25 @@ class RoundingTest extends TestCase
      */
     public function testRoundTimespanWithSteps15MinAndNoRoundDownOnAnyMinute()
     {
-        $start = 1572109500;
-        $end = 1572110400;
+        $start = strtotime('2019-10-26T17:05:00+00:00'); // round up to 17:15
+        $end =   strtotime('2019-10-26T17:20:00+00:00'); // round up to 17:30
         $actual = Kimai_Rounding::roundTimespan($start, $end, 15, false);
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
         $this->assertArrayHasKey('end', $actual);
 
-        $this->assertEquals(1572110100, $actual['start']);
-        $this->assertEquals(1572111000, $actual['end']);
+        $this->assertEquals(strtotime('2019-10-26T17:15:00+00:00'), $actual['start']);
+        $this->assertEquals(strtotime('2019-10-26T17:30:00+00:00'), $actual['end']);
     }
 
     /**
      * @covers ::roundTimespan
      */
-    public function testRoundTimespanWithSteps15MinAndRoundDown(){
+    public function testRoundTimespanWithSteps15MinAndRoundDownOnExactStep(){
 
-        $start = 1572109200;
-        $end = 1572110100;
+        $start = strtotime('2019-10-26T17:00:00+00:00');
+        $end =   strtotime('2019-10-26T17:15:00+00:00');
         $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
 
         $this->assertInternalType('array', $actual);
@@ -97,17 +97,34 @@ class RoundingTest extends TestCase
     /**
      * @covers ::roundTimespan
      */
-    public function testRoundTimespan()
-    {
-        $start = 1458406233;
-        $end = 1458413297;
+    public function testRoundTimespanWithSteps15MinAndRoundDown(){
+
+        $start = strtotime('2019-10-26T17:05:00+00:00'); // round down to 17:00
+        $end =   strtotime('2019-10-26T17:16:00+00:00'); // round up to 17:30
         $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
 
         $this->assertInternalType('array', $actual);
         $this->assertArrayHasKey('start', $actual);
         $this->assertArrayHasKey('end', $actual);
 
-        $this->assertEquals(1458405900, $actual['start']);
-        $this->assertEquals(1458413100, $actual['end']);
+        $this->assertEquals(strtotime('2019-10-26T17:00:00+00:00'), $actual['start']);
+        $this->assertEquals(strtotime('2019-10-26T17:30:00+00:00'), $actual['end']);
+    }
+
+    /**
+     * @covers ::roundTimespan
+     */
+    public function testRoundTimespan()
+    {
+        $start = strtotime('2016-03-19T16:59:33+00:00'); // round down to 16:45
+        $end =   strtotime('2016-03-19T18:46:17+00:00'); // round up to 19:00
+        $actual = Kimai_Rounding::roundTimespan($start, $end, 15, true);
+
+        $this->assertInternalType('array', $actual);
+        $this->assertArrayHasKey('start', $actual);
+        $this->assertArrayHasKey('end', $actual);
+
+        $this->assertEquals(strtotime('2016-03-19T16:45:00+00:00'), $actual['start']);
+        $this->assertEquals(strtotime('2016-03-19T19:00:00+00:00'), $actual['end']);
     }
 }
