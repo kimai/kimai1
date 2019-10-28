@@ -19,7 +19,7 @@
 
 $isCoreProcessor = 0;
 $dir_templates = 'templates/';
-require('../../includes/kspi.php');
+require '../../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
 
@@ -139,6 +139,7 @@ switch ($axAction) {
 
             $view->assign('userID', $kga['user']['userID']);
 
+            // If we have a running recording and the "add manual entry floater" is opened, lastRecord is set
             if ($kga['user']['lastRecord'] != 0 && $kga['conf']['roundTimesheetEntries'] != '') {
                 $timeSheetData = $database->timeSheet_get_data($kga['user']['lastRecord']);
                 $minutes = date('i');
@@ -211,7 +212,9 @@ switch ($axAction) {
         break;
 
     case 'add_edit_timeSheetQuickNote':
-        if (isset($kga['customer'])) die();
+        if (isset($kga['customer'])) {
+            die();
+        }
         // ================================================
         // = display edit dialog for timesheet quick note =
         // ================================================

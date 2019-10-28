@@ -27,7 +27,7 @@
 
 $isCoreProcessor = 1;
 $dir_templates = 'templates/core/';
-require('../includes/kspi.php');
+require '../includes/kspi.php';
 
 $kga = Kimai_Registry::getConfig();
 $database = Kimai_Registry::getDatabase();
@@ -102,7 +102,7 @@ switch ($axAction) {
         }
 
         // If the password field is empty don't overwrite the old password.
-        if (trim($_REQUEST['password']) != "") {
+        if (trim($_REQUEST['password']) != '') {
             $userData['password'] = encode_password($_REQUEST['password']);
             $database->user_edit($kga['user']['userID'], $userData);
         }
@@ -274,7 +274,7 @@ switch ($axAction) {
                     $errorMessages['name'] = $kga['lang']['errorMessages']['userWithSameName'];
                 }
 
-                if (count($_REQUEST['customerGroups']) == 0) {
+                if (count($_REQUEST['customerGroups']) === 0) {
                     $errorMessages['customerGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
@@ -283,7 +283,7 @@ switch ($axAction) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
-                if (count($errorMessages) == 0) {
+                if (count($errorMessages) === 0) {
                     // add or update the customer
                     if (!$id) {
                         $id = $database->customer_create($data);
@@ -411,7 +411,7 @@ switch ($axAction) {
                 // validate data
                 $errorMessages = [];
 
-                if (count($_REQUEST['activityGroups']) == 0) {
+                if (count($_REQUEST['activityGroups']) === 0) {
                     $errorMessages['activityGroups'] = $kga['lang']['atLeastOneGroup'];
                 }
 
@@ -419,7 +419,7 @@ switch ($axAction) {
                     $errorMessages[''] = $kga['lang']['errorMessages']['permissionDenied'];
                 }
 
-                if (count($errorMessages) == 0) {
+                if (count($errorMessages) === 0) {
                     // add or update the activity
                     if (!$id) {
                         $id = $database->activity_create($data, $activityGroups);

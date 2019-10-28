@@ -24,7 +24,6 @@
  */
 class Kimai_Invoice_HtmlToPdfRenderer extends Kimai_Invoice_HtmlRenderer
 {
-
     /**
      * Render the invoice.
      */

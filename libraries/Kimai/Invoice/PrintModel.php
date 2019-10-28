@@ -24,7 +24,6 @@
  */
 class Kimai_Invoice_PrintModel
 {
-
     /**
      * @var array
      */

@@ -22,7 +22,6 @@
  */
 class Kimai_ArrayObject extends \ArrayObject
 {
-
     /**
      * @param $key
      * @return bool

@@ -422,10 +422,10 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                         var inVal = inTimeMatches[i];
                         var outVal = outTimeMatches[i];
 
-                        if (inVal[0] == ":") {
+                        if (inVal[0] == ':') {
                             inVal = inVal.substr(1);
                         }
-                        if (outVal[0] == ":") {
+                        if (outVal[0] == ':') {
                             outVal = outVal.substr(1);
                         }
 
@@ -497,17 +497,17 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
                 secs += parseInt(durationArray[2]);
             }
             <?php if ($this->showRate): ?>
-            var rate = $('#rate').val();
+                var rate = $('#rate').val();
             <?php else: ?>
-            var rate = 0;
+                var rate = 0;
             <?php endif; ?>
             var budgetCalculatedTwice = secs / 3600 * rate;
             $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text()) - budgetCalculatedTwice), 2);
         }
-        <?php if (isset($this->id)) { ?>
-        //TODO: chart will not be generated..WHY??
-        //generateChart();
-        <?php } ?>
+        <?php if (isset($this->id)) : ?>
+	        //TODO: chart will not be generated..WHY??
+	        //generateChart();
+        <?php endif; ?>
     });
     // document ready
 
@@ -524,9 +524,9 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
             }
         }
         <?php if ($this->showRate): ?>
-        var rate = $('#rate').val();
+            var rate = $('#rate').val();
         <?php else: ?>
-        var rate = 0;
+            var rate = 0;
         <?php endif; ?>
         previousUsed = secs / 3600 * rate;
     }
@@ -544,9 +544,9 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
             }
         }
         <?php if ($this->showRate): ?>
-        var rate = $('#rate').val();
+            var rate = $('#rate').val();
         <?php else: ?>
-        var rate = 0;
+            var rate = 0;
         <?php endif; ?>
         var used = secs / 3600 * rate;
         $('#budget_activity_used').text(Math.round(parseFloat($('#budget_activity_used').text()) - previousUsed + used), 2);
@@ -564,9 +564,9 @@ $autoSelection = $this->kga->getSettings()->isUseAutoSelection();
             }
         }
         <?php if ($this->showRate): ?>
-        var rate = $('#rate').val();
+            var rate = $('#rate').val();
         <?php else: ?>
-        var rate = 0;
+            var rate = 0;
         <?php endif; ?>
         var budget = $('#budget_val').val();
         var used = secs / 3600 * rate;

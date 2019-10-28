@@ -60,7 +60,7 @@ class Kimai_Extensions
         }
 
         while (false !== ($dir = readdir($handle))) {
-            if (is_file($dir) || $dir == "." || $dir == ".." || substr($dir, 0) == "." || substr($dir, 0, 1) == "#") {
+            if (is_file($dir) || $dir == '.' || $dir == '..' || substr($dir, 0) == '.' || substr($dir, 0, 1) == '#') {
                 continue;
             }
 
@@ -82,7 +82,7 @@ class Kimai_Extensions
                 if (!$database->global_role_allows($this->kga['user']['globalRoleID'], $settings['EXTENSION_KEY'] . '-access')) {
                     continue;
                 }
-            } elseif ($settings['CUSTOMER_ALLOWED'] != "1") {
+            } elseif ($settings['CUSTOMER_ALLOWED'] != '1') {
                 continue;
             }
 
@@ -90,7 +90,7 @@ class Kimai_Extensions
                 'name' => $settings['EXTENSION_NAME'],
                 'key' => $settings['EXTENSION_KEY'],
                 'initFile' => $settings['EXTENSION_INIT_FILE'],
-                'tabChangeTrigger' => isset($settings['TAB_CHANGE_TRIGGER']) ? $settings['TAB_CHANGE_TRIGGER'] : ""
+                'tabChangeTrigger' => isset($settings['TAB_CHANGE_TRIGGER']) ? $settings['TAB_CHANGE_TRIGGER'] : ''
             ];
 
             $this->addOptionalValue($settings, 'CSS_INCLUDE_FILES', $this->css_extension_files);
@@ -212,7 +212,7 @@ class Kimai_Extensions
 
     public function timeoutList()
     {
-        $timeoutlist = "";
+        $timeoutlist = '';
         foreach ($this->timeouts as $timeout) {
             $timeoutlist .= "kill_timeout('" . $timeout . "');";
         }

@@ -13,8 +13,8 @@ class Kimai_Logger
      */
     private function __construct()
     {
-        $this->file = fopen(WEBROOT . "temporary/logfile.txt", "a");
-        set_error_handler("Kimai_Logger::errorHandler");
+        $this->file = fopen(WEBROOT . 'temporary/logfile.txt', 'ab');
+        set_error_handler('Kimai_Logger::errorHandler');
         set_exception_handler('Kimai_Logger::exceptionHandler');
     }
 
@@ -33,7 +33,7 @@ class Kimai_Logger
      */
     public static function init()
     {
-        if (self::$instance == null) {
+        if (self::$instance === null) {
             self::$instance = new Kimai_Logger();
         }
     }
@@ -46,7 +46,7 @@ class Kimai_Logger
      */
     public static function logfile($value)
     {
-        if (self::$instance == null) {
+        if (self::$instance === null) {
             self::$instance = new Kimai_Logger();
         }
 
@@ -62,17 +62,16 @@ class Kimai_Logger
      */
     public function log($line)
     {
-        fputs($this->file, date("[d.m.Y H:i:s] ", time()) . $line . "\n");
+        fwrite($this->file, date('[d.m.Y H:i:s] ') . $line . "\n");
     }
 
     public static function exceptionHandler($exception)
     {
-        Kimai_Logger::logfile("Uncaught exception: " . $exception->getMessage());
+        Kimai_Logger::logfile('Uncaught exception: ' . $exception->getMessage());
     }
 
     public static function errorHandler($errno, $errstr, $errfile, $errline)
     {
-
         // If the @ error-control operator is set don't log the error.
         if (error_reporting() === 0) {
             return false;

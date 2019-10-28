@@ -18,14 +18,14 @@
  */
 
 $isCoreProcessor = 0;
-$dir_templates = "templates";
-require("../../includes/kspi.php");
+$dir_templates = 'templates';
+require '../../includes/kspi.php';
 
 $database = Kimai_Registry::getDatabase();
 
 switch ($axAction) {
 
-    case "PDF":
+    case 'PDF':
         $defaults = [
             'print_comments' => 1,
             'print_summary' => 1,
@@ -42,32 +42,32 @@ switch ($axAction) {
         echo $view->render("floaters/export_PDF.php");
         break;
 
-    case "XLS":
+    case 'XLS':
         $defaults = ['reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.xls.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/export_XLS.php");
+        echo $view->render('floaters/export_XLS.php');
         break;
 
-    case "CSV":
+    case 'CSV':
         $defaults = ['column_delimiter' => ',', 'quote_char' => '"', 'reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.csv.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/export_CSV.php");
+        echo $view->render('floaters/export_CSV.php');
         break;
 
-    case "print":
+    case 'print':
         $defaults = ['print_summary' => 1, 'reverse_order' => 0];
         $prefs = $database->user_get_preferences_by_prefix('ki_export.print.');
         $view->assign('prefs', array_merge($defaults, $prefs));
 
-        echo $view->render("floaters/print.php");
+        echo $view->render('floaters/print.php');
         break;
 
-    case "help_timeformat":
-        echo $view->render("floaters/help_timeformat.php");
+    case 'help_timeformat':
+        echo $view->render('floaters/help_timeformat.php');
         break;
 
 }

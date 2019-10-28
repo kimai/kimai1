@@ -22,7 +22,6 @@
  */
 class Kimai_Format
 {
-
     /**
      * Format a duration given in seconds according to the global setting. Either
      * seconds are shown or not.
@@ -69,11 +68,11 @@ class Kimai_Format
             return $arr;
         }
 
-        $value = str_replace(".", $kga['conf']['decimalSeparator'], sprintf("%01.2f", $number));
+        $value = str_replace('.', $kga['conf']['decimalSeparator'], sprintf('%01.2f', $number));
         if ($kga->isDisplayCurrencyFirst()) {
-            $value = $kga->getCurrencySign() . " " . $value;
+            $value = $kga->getCurrencySign() . ' ' . $value;
         } else {
-            $value = $value . " " . $kga->getCurrencySign();
+            $value .= ' ' . $kga->getCurrencySign();
         }
 
         if ($htmlNoWrap) {
@@ -174,48 +173,48 @@ class Kimai_Format
      */
     public static function expand_date_shortcut($date)
     {
-        $date = str_replace(" ", "", $date);
+        $date = str_replace(' ', '', $date);
 
         // empty string can't be a time value
-        if (strlen($date) == 0) {
+        if ($date == '') {
             return false;
         }
 
         // get the parts
         $parts = preg_split("/\./", $date);
 
-        if (count($parts) == 0 || count($parts) > 3) {
+        if (count($parts) === 0 || count($parts) > 3) {
             return false;
         }
 
         // check day
-        if (strlen($parts[0]) == 1) {
-            $parts[0] = "0" . $parts[0];
+        if (strlen($parts[0]) === 1) {
+            $parts[0] = '0' . $parts[0];
         }
 
         // check month
         if (!isset($parts[1])) {
-            $parts[1] = date("m");
-        } elseif (strlen($parts[1]) == 1) {
-            $parts[1] = "0" . $parts[1];
+            $parts[1] = date('m');
+        } elseif (strlen($parts[1]) === 1) {
+            $parts[1] = '0' . $parts[1];
         }
 
         // check year
         if (!isset($parts[2])) {
-            $parts[2] = date("Y");
-        } elseif (strlen($parts[2]) == 2) {
+            $parts[2] = date('Y');
+        } elseif (strlen($parts[2]) === 2) {
             if ($parts[2] > 70) {
                 $parts[2] = "19" . $parts[2];
             } else {
                 if ($parts[2] < 10) {
-                    $parts[2] = "200" . $parts[2];
+                    $parts[2] = '200' . $parts[2];
                 } else {
-                    $parts[2] = "20" . $parts[2];
+                    $parts[2] = '20' . $parts[2];
                 }
             }
         }
 
-        $return = implode(".", $parts);
+        $return = implode('.', $parts);
 
         if (!preg_match("/([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{2,4})/", $return)) {
             $return = false;
@@ -232,10 +231,10 @@ class Kimai_Format
      */
     public static function expand_time_shortcut($time)
     {
-        $time = str_replace(" ", "", $time);
+        $time = str_replace(' ', '', $time);
 
         // empty string can't be a time value
-        if (strlen($time) == 0) {
+        if (strlen($time) === 0) {
             return false;
         }
 
@@ -253,10 +252,10 @@ class Kimai_Format
 
         // fill unsued parts (eg. 12:00 given but 12:00:00 is needed)
         while (count($parts) < 3) {
-            $parts[] = "00";
+            $parts[] = '00';
         }
 
-        $return = implode(":", $parts);
+        $return = implode(':', $parts);
 
         $regex23 = '([0-1][0-9])|(2[0-3])'; // regular expression for hours
         $regex59 = '([0-5][0-9])'; // regular expression for minutes and seconds
@@ -305,7 +304,7 @@ class Kimai_Format
             $ok = 0;
         }
 
-        Kimai_Logger::logfile("time/datecheck: " . $ok);
+        Kimai_Logger::logfile('time/datecheck: ' . $ok);
 
         if ($ok) {
             return true;

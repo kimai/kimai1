@@ -27,10 +27,10 @@ class BasePDF extends TCPDF
     public function time($number)
     {
         if ($number == -1) {
-            return "-------";
-        } else {
-            return strftime($this->time_format, $number);
+            return '-------';
         }
+
+        return strftime($this->time_format, $number);
     }
 
     /**
@@ -54,11 +54,14 @@ class BasePDF extends TCPDF
     {
         $kga = Kimai_Registry::getConfig();
         if ($number == -1) {
-            return "-------";
-        } else {
-            return str_replace(".", $kga['conf']['decimalSeparator'],
-                sprintf("%01.2f", $number)) . " " . $kga['lang']['export_extension']['duration_unit'];
+            return '-------';
         }
+
+        return str_replace(
+                   '.',
+                   $kga['conf']['decimalSeparator'],
+                   sprintf("%01.2f", $number)
+               ) . ' ' . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
@@ -71,7 +74,7 @@ class BasePDF extends TCPDF
     {
         $kga = Kimai_Registry::getConfig();
 
-        return $time . " " . $kga['lang']['export_extension']['duration_unit'];
+        return $time . ' ' . $kga['lang']['export_extension']['duration_unit'];
     }
 
     /**
@@ -109,7 +112,7 @@ class BasePDF extends TCPDF
         $s = $duration % 60;
         $m = (($duration - $s) / 60) % 60;
         $h = floor($duration / 3600);
-        $timeLength =  $h . ":" . substr('0' . $m, - 2);
+        $timeLength = $h . ':' . substr('0' . $m, - 2);
         return $this->time_unit($timeLength);
     }
 
@@ -175,7 +178,7 @@ class BasePDF extends TCPDF
 
         // Color and font restoration
         $this->SetFillColor(224, 235, 255);
-        $this->SetTextColor(0);
+        $this->SetTextColor();
         $this->SetFont('');
         // Data
         $fill = 0;
@@ -188,7 +191,7 @@ class BasePDF extends TCPDF
                 $this->Cell(array_sum($w), 0, '', 'T');
                 $this->Ln();
                 $this->Cell($w[0], 6, $kga['lang']['export_extension']['subtotal'] . ':', '', 0, 'R', false);
-                if ($_REQUEST['time_type'] == "dec_time") {
+                if ($_REQUEST['time_type'] == 'dec_time') {
                     if (isset($this->columns['dec_time'])) {
                         $this->Cell($w[1], 6, $this->timespan($sum_time), 'R', 0, 'R', true);
                     }
@@ -210,7 +213,7 @@ class BasePDF extends TCPDF
                 $this->SetFont('');
             }
             $this->Cell($w[0], 6, $row['name'], 'LR', 0, 'L', $fill);
-            if ($_REQUEST['time_type'] == "dec_time") {
+            if ($_REQUEST['time_type'] == 'dec_time') {
                 if (isset($this->columns['dec_time'])) {
                     $this->Cell($w[1], 6, $this->timespan($row['time']), 'LR', 0, 'R', $fill);
                 }
@@ -233,7 +236,7 @@ class BasePDF extends TCPDF
 
         $this->Cell($w[0], 6, $kga['lang']['export_extension']['finalamount'] . ':', '', 0, 'R', false);
         $this->SetFont('', 'B');
-        if ($_REQUEST['time_type'] == "dec_time") {
+        if ($_REQUEST['time_type'] == 'dec_time') {
             if (isset($this->columns['dec_time'])) {
                 $this->Cell($w[1], 6, $this->timespan($sum_time), '', 0, 'R', true);
             }
