@@ -320,7 +320,6 @@ return [
     'StartTimeBeforeEndTime' => 'Die Startzeit muss vor der Endzeit liegen.',
 
     'credits' => <<<'EOD'
-        Wenn Sie Modifikationen vornehmen würden wir uns über eine Nachricht im <a href="%1$s">Forum</a> freuen.
         Die neueste Entwickler Version kann für Testzwecke <a href="%2$s">hier</a> heruntergeladen werden.
         <br /><br />
         Bitte unterstützen Sie die weitere Entwicklung von Kimai mit einer <a href="%3$s">Spende</a>

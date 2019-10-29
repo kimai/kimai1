@@ -309,7 +309,6 @@ return [
     'StartTimeBeforeEndTime' => 'De starttijd moet voor de eindtijd liggen.',
 
     'credits' => <<<'EOD'
-        If you do any alternations we would appreciate a posting on the <a href="%1$s">forum</a>.
         The latest developer version can be downloaded for test purposes <a href="%2$s">here</a>.
         <br /><br />
         Please support further development of Kimai with a <a href="%3$s">donation</a> or

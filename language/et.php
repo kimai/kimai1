@@ -332,7 +332,6 @@ return [
     'StartTimeBeforeEndTime' => 'Algusaeg peab olema enne lõpuaega.',
 
     'credits' => <<<'EOD'
-        Kui teete Kimai’sse muudatusi, oleksime tänulikud, kui sellest <a href="%1$s">meie foorumis</a> teada annate.
         Uusima arendusversiooni saate alla laadida <a href="%2$s">siit</a> (aga ainult testimiseks!).
         <br /><br />
         Palun toetage Kimai edasist arendamist <a href="%3$s">annetusega</a> või laiendades Kimai
