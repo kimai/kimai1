@@ -324,7 +324,6 @@ return [
     'StartTimeBeforeEndTime' => 'A hora de início deve ser anterior à de fim.',
 
     'credits' => <<<'EOD'
-        Se você fizer qualquer alteração, agradecemos um post no <a href="%1$s">forum</a>.
         A versão mais recente de desenvolvimento, pode ser baixada para fins de teste <a href="%2$s">aqui</a>.
         <br /><br />
         Por favor, apoie o desenvolvimento de Kimai com uma <a href="%3$s">doação</a> ou ajudando com as <a href="%5$s">traduções</a>.

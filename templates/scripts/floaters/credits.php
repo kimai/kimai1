@@ -14,30 +14,22 @@
         </p>
         <p>
             <a href="https://www.kimai.org" target="_blank">Kimai Homepage</a> |
-            <a href="http://forum.kimai.org/" target="_blank">Forum</a> |
             <a href="https://github.com/kimai/kimai" target="_blank">GitHub</a> |
-            <a href="https://www.kimai.org/download/" target="_blank">Download</a> |
-            <a href="http://forum.kimai.org/index.php?board=10.0" target="_blank">Friendly Hacks</a>
+            <a href="https://www.kimai.org/download/" target="_blank">Download</a>
         </p>
         <p>
-            <strong><?php
-                echo sprintf(
-                    $this->translate('credits_license'),
-                    '<a href="../COPYING" target="_blank">GPL 3</a>'
-                );
-            ?></strong>
+            <strong><?php echo sprintf($this->translate('credits_license'),
+		            '<a href="../COPYING" target="_blank">GPL 3</a>'
+	            ); ?></strong>
         </p>
         <p>
-            <?php
-            echo sprintf(
+            <?php echo sprintf(
                 $this->translate('credits'),
-                'http://forum.kimai.org',
                 'https://github.com/kimai/kimai/archive/master.zip',
                 'https://www.kimai.org/donate/',
                 'https://github.com/kimai/kimai/issues',
                 'https://github.com/kimai/kimai/tree/master/language'
-            );
-            ?>
+            ); ?>
         </p>
         <p>
             <strong><?php echo $this->translate('credits_thanks')?></strong>

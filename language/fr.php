@@ -345,7 +345,6 @@ et pourront être modifiés par la suite au besoin, sans limite.</strong>',
     'StartTimeBeforeEndTime' => 'Le temps de départ doit être antérieure au temps de fin.',
 
     'credits' => <<<'EOD'
-        Si vous faites des modifications, nous aprécierions que vous postiez sur <a href="%1$s">forum</a>.
         La dernière version peut être téléchargée <a href="%2$s">Ici</a> (Pour les test seulement!).
         <br /><br />
         SVP supportez les futurs développements de Kimai avec une <a href="%3$s">donation</a> ou en étendant sa <a href="%5$s">bibliothèque de langues</a>.
