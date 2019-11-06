@@ -2976,10 +2976,10 @@ class Kimai_Database_Mysql
                 case 'date_format_3':
                 case 'table_time_format':
                 case 'roundPrecision':
+                case 'roundingMethod':
                 case 'exactSums':
                 case 'defaultVat':
                 case 'editLimit':
-                case 'allowRoundDown':
                 case 'defaultStatusID':
                     $config->set($key, $value);
                     break;
@@ -3742,7 +3742,7 @@ class Kimai_Database_Mysql
             $activity['start'],
             time(),
             $this->kga->getRoundPrecisionRecorderTimes(),
-            $this->kga->isRoundDownRecorderTimes()
+            $this->kga->getRoundingMethod()
         );
 
         $values['start'] = $rounded['start'];

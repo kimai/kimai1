@@ -269,7 +269,6 @@ return [
     'table_date_format' => 'Date format for tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Округлять время до ',
     'round_time_minute' => ' минут.',
-    'allowRoundDown' => 'Разрешить округлять в меньшую сторону.',
     'logged_in_as' => 'Вошел как',
     'decimal_separator' => 'Decimal separator',
     'view_filter' => 'view filter',
