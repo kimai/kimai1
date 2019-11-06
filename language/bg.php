@@ -281,7 +281,6 @@ return [
     'table_time_format' => 'Формат на времето в табелите (<a href="http://php.net/manual/de/function.strftime.php" target="_blank">Нотация на strftime()</a>)',
     'round_time' => 'Закръгли времето на ',
     'round_time_minute' => ' Минути.',
-    'allowRoundDown' => 'Позволи закръгляне на времето.',
     'logged_in_as' => 'Потебител: ',
     'decimal_separator' => 'Десетична запетая',
     'view_filter' => 'Филтър',
