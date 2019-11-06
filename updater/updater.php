@@ -1191,6 +1191,11 @@ if ((int)$revisionDB < 1394) {
 // release of kimai 1.3.4
 // release of kimai 1.3.5
 
+if ((int)$revisionDB < 1400) {
+    Kimai_Logger::logfile('-- update to r1400');
+    exec_query("INSERT INTO `${p}configuration` VALUES('roundingMethod', 'default');");
+}
+
 // ================================================================================
 // FINALIZATION: update DB version number
 // ================================================================================

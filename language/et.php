@@ -277,7 +277,6 @@ return [
     'table_date_format' => 'Tabelite kuupäevavorming (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">tähiste juhend</a>)',
     'round_time' => 'Aeg ümardatakse täpsusele',
     'round_time_minute' => ' minut(it).',
-    'allowRoundDown' => 'Väiksemaks ümardamine on lubatud.',
     'logged_in_as' => 'Sees kasutajana',
 
     'decimal_separator' => 'Kümnendkohti eraldab',

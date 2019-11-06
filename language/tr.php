@@ -280,7 +280,6 @@ return [
     'table_time_format' => 'Tablolar için saat formatı (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Saati şuna yuvarla ',
     'round_time_minute' => ' dakika.',
-    'allowRoundDown' => 'Aşağı yuvarlamaya müsaade et.',
     'logged_in_as' => 'olarak giriş yapıldı:',
     'decimal_separator' => 'ondalık ayırıcısı',
     'view_filter' => 'filtreyi göster',

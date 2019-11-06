@@ -270,7 +270,6 @@ return [
     'table_date_format' => 'テーブルの日付フォーマット (<a href="http://php.net/manual/ja/function.strftime.php" target="_blank">strftime()の表記法</a>)',
     'round_time' => '時間を丸める',
     'round_time_minute' => ' 分に丸める',
-    'allowRoundDown' => 'エントリーに切り下げを可能する',
     'logged_in_as' => '現在ユーザー：',
     'decimal_separator' => '小数点の記号',
     'view_filter' => 'ビューフィルター',
