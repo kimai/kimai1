@@ -627,7 +627,7 @@ switch ($axAction) {
                 (int)$inDate->getTimestamp(),
                 (int)$outDate->getTimestamp(),
                 $kga->getRoundPrecisionRecorderTimes(),
-                $kga->isRoundDownRecorderTimes()
+                $kga->getRoundingMethod()
             );
             $data['start'] = $rounded['start'];
             $data['end'] = $rounded['end'];

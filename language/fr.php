@@ -286,7 +286,6 @@ return [
     'table_date_format' => 'Format de la date pour les tables (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">pour la fonction strftime()</a>)',
     'round_time' => 'Arrondir le temps à ',
     'round_time_minute' => ' minute(s).',
-    "allowRoundDown" => "Permettre d'arrondir l'entrée à la baisse.",
     'logged_in_as' => 'Connecté comme:',
 
     'decimal_separator' => 'Séparateur décimal',

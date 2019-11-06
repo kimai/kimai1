@@ -281,7 +281,6 @@ return [
     'table_date_format' => 'Formatarea datei pentru tabele (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notare pentru strftime()</a>)',
     'round_time' => 'Rotunjire timp cu ',
     'round_time_minute' => ' minut(e).',
-    'allowRoundDown' => 'Aplica la toate inregisrarile.',
     'logged_in_as' => 'conectat ca:',
     'decimal_separator' => 'Separator zecimal',
     'view_filter' => 'Filtrare',

@@ -284,7 +284,6 @@ return [
     'table_date_format' => 'Formát dátumu pre tabuľky (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notácia pre PHP funkciu strftime()</a>)',
     'round_time' => 'Zaokrúhľovať čas na ',
     'round_time_minute' => ' minúta(y).',
-    'allowRoundDown' => 'Povoliť zaokrúhľovanie smerom nadol.',
     'logged_in_as' => 'prihlásený ako:',
     'decimal_separator' => 'Oddeľovač desatín',
     'view_filter' => 'filtruj',

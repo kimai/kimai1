@@ -270,7 +270,6 @@ return [
     'table_date_format' => 'Datum opmaak voor tabellen (<a href="http://php.net/manual/en/function.strftime.php" target="_blank">notation for strftime()</a>)',
     'round_time' => 'Tijd afronden op ',
     'round_time_minute' => ' minuten.',
-    'allowRoundDown' => 'Sta toe invoer naar beneden af te ronden.',
     'logged_in_as' => 'Ingelogd als:',
     'decimal_separator' => 'Decimaal scheidingsteken',
     'view_filter' => 'toon filter',
