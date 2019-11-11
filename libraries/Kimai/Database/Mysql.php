@@ -2779,8 +2779,8 @@ class Kimai_Database_Mysql
                 // only calculate time after recording is complete
                 $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
-                $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
-
+                $arr[$i]['wage_decimal'] = round($arr[$i]['duration'] / 3600, 2) * $row->rate;
+                
                 $fixedRate = (double)$row->fixedRate;
                 if ($fixedRate) {
                     $arr[$i]['wage'] = sprintf("%01.2f", $fixedRate);
@@ -4054,7 +4054,7 @@ class Kimai_Database_Mysql
             $whereClauses[] = "start < $end";
         }
 
-        $query = "SELECT start, end, userID, (end - start) / 3600 * rate AS costs, fixedRate
+        $query = "SELECT start, end, userID, ROUND((end - start) / 3600, 2) * rate AS costs, fixedRate
               FROM ${p}timeSheet
               JOIN ${p}projects USING(projectID)
               JOIN ${p}customers USING(customerID)
@@ -4142,8 +4142,8 @@ class Kimai_Database_Mysql
         if ($end) {
             $whereClauses[] = "start < $end";
         }
-
-        $query = "SELECT start, end, customerID, (end - start) / 3600 * rate AS costs, fixedRate
+        
+        $query = "SELECT start, end, customerID, ROUND((end - start) / 3600, 2) * rate AS costs, fixedRate
               FROM ${p}timeSheet
               LEFT JOIN ${p}projects USING(projectID)
               LEFT JOIN ${p}customers USING(customerID) " .
@@ -4228,7 +4228,7 @@ class Kimai_Database_Mysql
             $whereClauses[] = "start < $end";
         }
 
-        $query = "SELECT start, end, projectID, (end - start) / 3600 * rate AS costs, fixedRate
+        $query = "SELECT start, end, projectID, ROUND((end - start) / 3600, 2) * rate AS costs, fixedRate
           FROM ${p}timeSheet
           LEFT JOIN ${p}projects USING(projectID)
           LEFT JOIN ${p}customers USING(customerID) " .
@@ -4312,7 +4312,7 @@ class Kimai_Database_Mysql
             $whereClauses[] = "start < $end";
         }
 
-        $query = "SELECT start, end, activityID, (end - start) / 3600 * rate AS costs, fixedRate
+        $query = "SELECT start, end, activityID, ROUND((end - start) / 3600, 2) * rate AS costs, fixedRate
           FROM ${p}timeSheet
           LEFT JOIN ${p}activities USING(activityID)
           LEFT JOIN ${p}projects USING(projectID)

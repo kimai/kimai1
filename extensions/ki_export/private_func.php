@@ -162,7 +162,7 @@ function export_get_data(
                 $arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
                 $arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
                 $arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-                $arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+                $arr['decimalDuration'] = sprintf("%01.2f", round($timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600, 2));
                 $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
                 $arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
                 $arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
@@ -233,7 +233,7 @@ function export_get_data(
             $arr['time_out'] = $timeSheetEntries[$timeSheetEntries_index]['end'];
             $arr['duration'] = $timeSheetEntries[$timeSheetEntries_index]['duration'];
             $arr['formattedDuration'] = $timeSheetEntries[$timeSheetEntries_index]['formattedDuration'];
-            $arr['decimalDuration'] = sprintf("%01.2f", $timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600);
+            $arr['decimalDuration'] = sprintf("%01.2f", round($timeSheetEntries[$timeSheetEntries_index]['duration'] / 3600, 2));
             $arr['rate'] = $timeSheetEntries[$timeSheetEntries_index]['rate'];
             $arr['wage'] = $timeSheetEntries[$timeSheetEntries_index]['wage'];
             $arr['wage_decimal'] = $timeSheetEntries[$timeSheetEntries_index]['wage_decimal'];
