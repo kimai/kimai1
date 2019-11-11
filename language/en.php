@@ -282,7 +282,7 @@ return [
     'round_time_minute' => ' minute(s).',
     'roundingMethod' => 'Rounding method',
     'roundingMethod_default' => 'Default (Start down, Stop up)',
-    'roundingMethod_closest' => 'Mathematical round (Start up/down, Stop up/down)',
+    'roundingMethod_closest' => 'Mathematical (Start up/down, Stop up/down)',
     'roundingMethod_ceil' => 'Always round up',
     'logged_in_as' => 'logged in as:',
     'decimal_separator' => 'Decimal separator',

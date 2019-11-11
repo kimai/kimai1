@@ -279,7 +279,7 @@ return [
     'round_time_minute' => ' Minute(n).',
     'roundingMethod' => 'Rundungsmethode',
     'roundingMethod_default' => 'Standard (Start ab, Stop auf)',
-    'roundingMethod_closest' => 'Mathematisch runden (Start auf/ab, Stop auf/ab)',
+    'roundingMethod_closest' => 'Mathematisch (Start auf/ab, Stop auf/ab)',
     'roundingMethod_ceil' => 'Immer Aufrunden',
     'logged_in_as' => 'Angemeldet als:',
     'decimal_separator' => 'Dezimal-Trennzeichen',
