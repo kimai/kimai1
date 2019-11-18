@@ -50,9 +50,6 @@
 					<exclude name="libraries/phpoffice/phpexcel/unitTests/**"/>
 					<exclude name="libraries/symfony/yaml/Tests/**"/>
 					<exclude name="libraries/tecnickcom/tcpdf/examples/**"/>
-					<exclude name="libraries/zendframework/zendframework1/demos/**"/>
-					<exclude name="libraries/zendframework/zendframework1/documentation/**"/>
-					<exclude name="libraries/zendframework/zendframework1/tests/**"/>
 					<exclude name="temporary/"/>
 					<exclude name="tests/"/>
 				</patternset>
