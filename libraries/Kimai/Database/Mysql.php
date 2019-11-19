@@ -2677,8 +2677,20 @@ class Kimai_Database_Mysql
      * @param bool $countOnly
      * @return array
      */
-    public function get_timeSheet($start, $end, $users = null, $customers = null, $projects = null, $activities = null, $limit = false, $reverse_order = false, $filterCleared = null, $startRows = 0, $limitRows = 0, $countOnly = false)
-    {
+    public function get_timeSheet(
+        $start,
+        $end,
+        $users = null,
+        $customers = null,
+        $projects = null,
+        $activities = null,
+        $limit = false,
+        $reverse_order = false,
+        $filterCleared = null,
+        $startRows = 0,
+        $limitRows = 0,
+        $countOnly = false
+    ) {
         // -1 for disabled, 0 for only not cleared entries
         if (!is_numeric($filterCleared)) {
             $filterCleared = -1;
@@ -2717,18 +2729,22 @@ class Kimai_Database_Mysql
                 $startRows = (int)$startRows;
                 $limit = "LIMIT $startRows, $limitRows";
             } else {
-                $limit = "LIMIT " . $this->kga->getSettings()->getRowLimit();
+                $limit = 'LIMIT ' . $this->kga->getSettings()->getRowLimit();
             }
         } else {
-            $limit = "";
+            $limit = '';
         }
 
-        $select = "SELECT timeSheet.*, status.status, customer.name AS customerName, customer.customerID as customerID, activity.name AS activityName,
-                        project.name AS projectName, project.comment AS projectComment, user.name AS userName, user.alias AS userAlias ";
+        $select = 'SELECT timeSheet.*, 
+            status.status,
+            customer.name AS customerName, customer.customerID as customerID,
+            activity.name AS activityName,
+            project.name AS projectName, project.comment AS projectComment,
+            user.name AS userName, user.alias AS userAlias ';
 
         if ($countOnly) {
-            $select = "SELECT COUNT(*) AS total";
-            $limit = "";
+            $select = 'SELECT COUNT(*) AS total';
+            $limit = '';
         }
 
         $query = "$select
@@ -2738,7 +2754,7 @@ class Kimai_Database_Mysql
                 JOIN ${p}users AS user USING(userID)
                 JOIN ${p}statuses AS status USING(statusID)
                 JOIN ${p}activities AS activity USING(activityID) "
-                 .(count($whereClauses) > 0 ? " WHERE " : " ") . implode(" AND ", $whereClauses) .
+                 . (count($whereClauses) > 0 ? ' WHERE ' : ' ') . implode(' AND ', $whereClauses) .
                  ' ORDER BY start ' . ($reverse_order ? 'ASC ' : 'DESC ') . $limit . ';';
 
         $result = $this->conn->Query($query);
@@ -2777,7 +2793,7 @@ class Kimai_Database_Mysql
 
             if ($row->end != 0) {
                 // only calculate time after recording is complete
-                $arr[$i]['duration'] = $arr[$i]['end'] - $arr[$i]['start'];
+                $arr[$i]['duration'] = $row->duration;
                 $arr[$i]['formattedDuration'] = Kimai_Format::formatDuration($arr[$i]['duration']);
                 $arr[$i]['wage_decimal'] = $arr[$i]['duration'] / 3600 * $row->rate;
 

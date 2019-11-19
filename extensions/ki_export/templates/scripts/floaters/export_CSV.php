@@ -10,7 +10,6 @@
     </div>
     <div class="floater_content">
         <form id="export_extension_form_export_CSV" action="../extensions/ki_export/processor.php" method="post">
-            <!-- <input type="hidden" name="id" value="" /> -->
             <input type="hidden" name="axAction" value="export_csv"/>
             <input type="hidden" name="axValue" id="axValue" value=""/>
             <input type="hidden" name="first_day" id="first_day" value=""/>
