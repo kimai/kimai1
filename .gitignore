@@ -1,8 +1,9 @@
 /.project
 *.*~
 .settings
-.idea/
+/.idea/
 .DS_Store
+/*.iml
 
 /temporary/*
 !/temporary/.htaccess
