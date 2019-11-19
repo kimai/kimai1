@@ -287,7 +287,6 @@ return [
     'round_time' => 'Arrondir le temps à ',
     'round_time_minute' => ' minute(s).',
     'logged_in_as' => 'Connecté en tant que :',
-    'logged_in_as' => 'Connecté en tant que:',
     'decimal_separator' => 'Séparateur décimal',
 
     'view_filter' => 'Voir le filtre',
